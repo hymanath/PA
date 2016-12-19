@@ -6246,6 +6246,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public List<CadreDashboardVO> get2016LocationWiseRegisteredCountsForConstitunecy(String type,Long locationScopeId,String locationType,Long districId){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
+			 
+			 Long vizagRuralId = 0l;
+			 if(districId.longValue() == 517){
+				 vizagRuralId = districId.longValue() ;
+				 districId = 13l;
+				 
+			 }
 		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency(type,locationScopeId,locationType, null,districId);
 		 	List<Object[]> totalList = null;
 		 //	if(type != null && type.trim().equalsIgnoreCase("Today")){
@@ -6263,44 +6270,236 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 	if(locationScopeId.longValue() == 4l){
 		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 		 	}
-		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList);
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList,vizagRuralId);
 		 	
-		 	 if(locationType =="AP" && locationType != null && districId == null || districId.longValue() == 0L){
+		 	if(vizagRuralId.longValue() == 517l){
+		 		List<CadreDashboardVO> vizagRuralConsts = removeVisakapatnamUrbanData(returnList);
+		 		returnList.removeAll(returnList);
+		 		returnList.addAll(vizagRuralConsts);
+		 	}
+		 	 if(locationType.equalsIgnoreCase("AP") && locationType != null &&  districId.longValue() == 0L && locationScopeId.longValue() == 3l){
 		 		 List<Long> constitencyIds  = new ArrayList<Long>(0);
 		 		 
 		         List<Object[]> constitencis = constituencyDAO.getDistrictConstituencies(13l);
 		         if(commonMethodsUtilService.isListOrSetValid(constitencis)){
 		        	 for (Object[] param : constitencis) {
 		        		 constitencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-		        		 
-					}
+		        	}
 		         }
+		         
 		         List<CadreDashboardVO>  assemblyList = get2016LocationWiseRegisteredCountsForConstitunecy(type,4L,locationType,13L);
-		         List<Object[]> vishakapatnamAssemblyList = districtConstituenciesDAO.getDistrictByConstituenciesIds(new HashSet<Long>(constitencyIds));
+		         List<Object[]> vishakapatnamRuralAssemblyList = districtConstituenciesDAO.getDistrictByConstituenciesIds(new HashSet<Long>(constitencyIds));
+		         List<Long> vizagRuralConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
 		         
-		         Map<Long,List<Long>>districtsAssemblyMap = new HashMap<Long, List<Long>>(0);
-		         if(commonMethodsUtilService.isListOrSetValid(vishakapatnamAssemblyList)){
-		           for (Object[] param : vishakapatnamAssemblyList) {
-		            Long district = commonMethodsUtilService.getLongValueForObject(param[0]);
-		            List<Long> constituencyLsit = new ArrayList<Long>(0);
-		            if(districtsAssemblyMap.get(district) != null)
-		              constituencyLsit = districtsAssemblyMap.get(district);
-		            
-		            constituencyLsit.add(commonMethodsUtilService.getLongValueForObject(param[2]));
-		            districtsAssemblyMap.put(district, constituencyLsit);
-		          }
-		         }
-		         
-		         if(commonMethodsUtilService.isMapValid(districtsAssemblyMap)){
-		        	 for (Long districtId : districtsAssemblyMap.keySet()) {
-						
-					}
-		         }
+		         setVisakhapatnamDetails(assemblyList,returnList,vizagRuralConstIds);
 		       }
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
 		 return returnList;    
+	}
+	
+	public List<CadreDashboardVO> removeVisakapatnamUrbanData(List<CadreDashboardVO> returnList){
+		List<CadreDashboardVO> vizagRuralConsts = new ArrayList<CadreDashboardVO>();
+		try{
+			
+			List<Long> vizagRuralConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+			if(returnList != null && returnList.size() >0){
+				for(CadreDashboardVO vo :returnList){
+					if(vizagRuralConstIds.contains(vo.getId())){
+						vizagRuralConsts.add(vo);
+					}
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in removeVisakapatnamUrbanData() method in CadreDashBoardService().",e);
+		}
+		return vizagRuralConsts;
+	}
+	
+	public void setVisakhapatnamDetails(List<CadreDashboardVO> assemblyList,List<CadreDashboardVO> returnList,List<Long> vizagRuralConstIds){
+		
+		try{
+			CadreDashboardVO vizagRural = new CadreDashboardVO();
+			CadreDashboardVO vizagUrban = new CadreDashboardVO();
+			if(assemblyList != null && assemblyList.size() >0){
+				for(CadreDashboardVO vo :assemblyList){
+					if(vizagRuralConstIds.contains(vo.getId())){
+						vizagRural.setId(517l);
+						
+						Long l1 = vo.getCount2014() != null? vo.getCount2014():0l;
+						Long v1 = vizagRural.getCount2014() != null? vizagRural.getCount2014():0l;
+						vizagRural.setCount2014(v1+vo.getCount2014());
+						
+						Long l2 = vo.getTotalRenewal() != null?vo.getTotalRenewal():0l;
+						Long v2 = vizagRural.getTotalRenewal() != null?vizagRural.getTotalRenewal():0l;
+						vizagRural.setTotalRenewal(v2+l2);
+						
+						if(vo.getTotalRenPerc() != null)
+						vizagRural.setTotalRenPerc(vizagRural.getTotalRenPerc() != null?vizagRural.getTotalRenPerc():0l+vo.getTotalRenPerc());
+						
+						if(vo.getPerc2014() != null)
+						vizagRural.setPerc2014(vizagRural.getPerc2014()!=null?vizagRural.getPerc2014():0l+vo.getPerc2014());
+						
+						Long l3 = vo.getCount2016() != null?vo.getCount2016():0l;
+						Long v3 = vizagRural.getCount2016() != null?vizagRural.getCount2016():0l;
+						vizagRural.setCount2016(v3+l3);
+						
+						//if(vo.getPerc2016() != null)
+						//vizagRural.setPerc2016(vizagRural.getPerc2016() != null ?vizagRural.getPerc2016():0l+vo.getPerc2016());
+						
+						Long l4 = vo.getNewCount() != null ?vo.getNewCount():0l;
+						Long v4 = vizagRural.getNewCount() != null ?vizagRural.getNewCount():0l;
+						vizagRural.setNewCount(v4+l4);
+						//vizagRural.setNewPerc(vizagRural.getNewPerc() != null ?vizagRural.getNewPerc():0l+vo.getNewPerc());
+						Long l5 = vo.getRenewalCount()!=null?vo.getRenewalCount():0l;
+						Long v5 = vizagRural.getRenewalCount()!=null?vizagRural.getRenewalCount():0l;
+						vizagRural.setRenewalCount(v5+l5);
+						//vizagRural.setRenewalPerc(vizagRural.getRenewalPerc()!= null?vizagRural.getRenewalPerc():0l+vo.getRenewalPerc());
+						if(vo.getLocationScopeId() != null)
+						vizagRural.setLocationScopeId(vo.getLocationScopeId());
+						vizagRural.setType(vo.getType());
+						Long l6 = vo.getCount2016Today() != null?vo.getCount2016Today():0l;
+						Long v6 = vizagRural.getCount2016Today() != null?vizagRural.getCount2016Today():0l;
+						vizagRural.setCount2016Today(v6+l6);
+						
+						Long l7 = vo.getMapPowerCount() !=null?vo.getMapPowerCount():0l;
+						Long v7 = vizagRural.getMapPowerCount() !=null?vizagRural.getMapPowerCount():0l;
+						vizagRural.setMapPowerCount(v7+l7);
+						vizagRural.setNo(vo.getNo());
+						vizagRural.setDistrictname(vo.getDistrictname());
+						vizagRural.setName("Visakhapatnam Rural");
+						vizagRural.setValue(vo.getValue());
+						
+						Long l8 = vo.getTargetCount() != null?vo.getTargetCount():0l;
+						Long v8 = vizagRural.getTargetCount() != null?vizagRural.getTargetCount():0l;
+						vizagRural.setTargetCount(v8+l8);
+						
+					}else{
+						vizagUrban.setId(13l);
+						Long l1 = vo.getCount2014() != null? vo.getCount2014():0l;
+						Long v1 = vizagUrban.getCount2014() != null? vizagUrban.getCount2014():0l;
+						vizagUrban.setCount2014(v1+vo.getCount2014());
+						
+						Long l2 = vo.getTotalRenewal() != null?vo.getTotalRenewal():0l;
+						Long v2 = vizagUrban.getTotalRenewal() != null?vizagUrban.getTotalRenewal():0l;
+						vizagUrban.setTotalRenewal(v2+l2);
+						
+						if(vo.getTotalRenPerc() != null)
+							vizagUrban.setTotalRenPerc(vizagUrban.getTotalRenPerc() != null?vizagUrban.getTotalRenPerc():0l+vo.getTotalRenPerc());
+						
+						if(vo.getPerc2014() != null)
+							vizagUrban.setPerc2014(vizagUrban.getPerc2014()!=null?vizagUrban.getPerc2014():0l+vo.getPerc2014());
+						
+						Long l3 = vo.getCount2016() != null?vo.getCount2016():0l;
+						Long v3 = vizagUrban.getCount2016() != null?vizagUrban.getCount2016():0l;
+						vizagUrban.setCount2016(v3+l3);
+						
+						//if(vo.getPerc2016() != null)
+						//vizagRural.setPerc2016(vizagRural.getPerc2016() != null ?vizagRural.getPerc2016():0l+vo.getPerc2016());
+						
+						Long l4 = vo.getNewCount() != null ?vo.getNewCount():0l;
+						Long v4 = vizagUrban.getNewCount() != null ?vizagUrban.getNewCount():0l;
+						vizagUrban.setNewCount(v4+l4);
+						//vizagRural.setNewPerc(vizagRural.getNewPerc() != null ?vizagRural.getNewPerc():0l+vo.getNewPerc());
+						Long l5 = vo.getRenewalCount()!=null?vo.getRenewalCount():0l;
+						Long v5 = vizagUrban.getRenewalCount()!=null?vizagUrban.getRenewalCount():0l;
+						vizagUrban.setRenewalCount(v5+l5);
+						//vizagRural.setRenewalPerc(vizagRural.getRenewalPerc()!= null?vizagRural.getRenewalPerc():0l+vo.getRenewalPerc());
+						if(vo.getLocationScopeId() != null)
+						vizagUrban.setLocationScopeId(vo.getLocationScopeId());
+						vizagUrban.setType(vo.getType());
+						Long l6 = vo.getCount2016Today() != null?vo.getCount2016Today():0l;
+						Long v6 = vizagUrban.getCount2016Today() != null?vizagUrban.getCount2016Today():0l;
+						vizagUrban.setCount2016Today(v6+l6);
+						
+						Long l7 = vo.getMapPowerCount() !=null?vo.getMapPowerCount():0l;
+						Long v7 = vizagUrban.getMapPowerCount() !=null?vizagUrban.getMapPowerCount():0l;
+						vizagUrban.setMapPowerCount(v7+l7);
+						vizagUrban.setNo(vo.getNo());
+						vizagUrban.setDistrictname(vo.getDistrictname());
+						vizagUrban.setName("Visakhapatnam");
+						vizagUrban.setValue(vo.getValue());
+						
+						Long l8 = vo.getTargetCount() != null?vo.getTargetCount():0l;
+						Long v8 = vizagUrban.getTargetCount() != null?vizagUrban.getTargetCount():0l;
+						vizagUrban.setTargetCount(v8+l8);
+					}
+				}
+			}
+			setPercentage(vizagUrban);
+			setPercentage(vizagRural);
+			returnList.add(vizagUrban);
+			returnList.add(vizagRural);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setVisakhapatnamDetails() method in CadreDashBoardService().",e);
+		}
+	}
+	
+	public void setPercentage(CadreDashboardVO vo){
+		
+		try{
+			String perc = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(vo.getTotalRenewal()*100.00/vo.getCount2014());
+			Long veryGood =0l ;
+			Long good = 0l ;
+			Long ok = 0l ;
+			Long poor = 0l ;
+			Long veryPoor = 0l ;
+			
+			Long renVeryGood =0l ;
+			Long renGood = 0l ;
+			Long renOk = 0l ;
+			Long renPoor = 0l ;
+			Long renVeryPoor = 0l ;
+			
+			vo.setTotalRenPerc(perc);
+			vo.setPerc2016(new BigDecimal(vo.getCount2016()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setPerc2014(new BigDecimal(vo.getCount2014()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setNewPerc(new BigDecimal(vo.getNewCount()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setRenewalPerc(new BigDecimal(vo.getRenewalCount()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			Double perCount2016=Double.parseDouble(vo.getPerc2016());
+			if(perCount2016 > 100){
+				vo.setLevelPerformanceType("VeryGood");
+				veryGood++;
+			}else if(perCount2016 > 90 && perCount2016 <= 100){
+				vo.setLevelPerformanceType("Good");
+				good ++;
+			}else if(perCount2016 > 80 && perCount2016 <= 90){
+				vo.setLevelPerformanceType("Ok");
+				ok++;
+			}else if(perCount2016 > 60 && perCount2016 <= 80){
+				vo.setLevelPerformanceType("Poor");  
+				poor++;
+			}else{
+				vo.setLevelPerformanceType("VeryPoor");
+				veryPoor++;
+			}
+			
+			if(vo.getTotalRenPerc() != null ){
+				Double totalRenPerc=Double.parseDouble(vo.getTotalRenPerc());					
+					if(totalRenPerc > 100){
+						vo.setRenewalPerformanceStatus("VeryGood");
+						renVeryGood++;
+					}else if(totalRenPerc > 90 && totalRenPerc <= 100){
+						vo.setRenewalPerformanceStatus("Good");
+						renGood++;
+					}else if(totalRenPerc > 80 && totalRenPerc <= 90){
+						vo.setRenewalPerformanceStatus("Ok");
+						renOk++;
+					}else if(totalRenPerc > 60 && totalRenPerc <= 80){
+						vo.setRenewalPerformanceStatus("Poor"); 
+						renPoor++;
+					}else{
+						vo.setRenewalPerformanceStatus("VeryPoor");
+						renVeryPoor++;
+					}
+				}
+			
+			vo.setPercentage(new BigDecimal(vo.getCount2016()*(100.0)/vo.getCount2014()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setPercentage() method in CadreDashBoardService().",e);
+		}
 	}
 	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
@@ -6322,14 +6521,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 	if(locationScopeId.longValue() == 4l){
 		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 		 	}
-		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList);
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList,0l);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
 		 return returnList;    
 	}
 	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list, List<Object[]> list2, List<Object[]> list3, List<Object[]> list4,
-			 String type,Long locationScopeId,List<Object[]> totalList){
+			 String type,Long locationScopeId,List<Object[]> totalList,Long districtId){
 		Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
 		Map<Long,Long> locationIdAndTodayCountMap = new LinkedHashMap<Long,Long>();
@@ -6354,18 +6553,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		//collect locaionId and today count
 		if(list2 != null && list2.size() > 0){
 			for(Object[] param : list2){
+				if(param[0] != null && (Long)param[0] != 13l)
 				locationIdAndTodayCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[3] != null ? param[3].toString():"0"));
 			}
 		}
 		//create a map for locationId and man power count
 		if(list3 != null && list3.size() > 0){
 			for(Object[] param : list3){
+				if(param[0] != null && (Long)param[0] != 13l)
 				locationIdAndManPowerCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
 			}
 		}
 		//create a map for constid and const name
 		if(list4 != null  && list.size() > 0){
 			for(Object[] param : list4){
+				if(param[0] != null && (Long)param[0] != 13l)
 				locIdAndLocNoMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
 			}
 		}
@@ -6374,6 +6576,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			for(Object[] param : totalList){
 				CadreDashboardVO vo = new CadreDashboardVO();
 				Long id = Long.valueOf(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if( id.longValue() != 13l){
 				vo.setId(id);
 				vo.setCount2014(commonMethodsUtilService.getLongValueForObject(param[1]));
 				vo.setTotalRenewal(commonMethodsUtilService.getLongValueForObject(param[7]));
@@ -6381,11 +6584,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				
 				locationWise2014CountMap.put(id, vo);
 			}
+			}
 		}
 		
 		if(list != null && !list.isEmpty()){
 	 		for (Object[] obj : list) {
 	 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+	 			if(id.longValue() != 13l){
 				CadreDashboardVO vo = new CadreDashboardVO();
 				vo.setId(id);
 				if(locationWise2014CountMap.get(id) != null){
@@ -6415,14 +6620,16 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				
 				
 				locationIds.add(id);
+				
 				returnList.add(vo);
+	 		}
 			}
 	 	}
 		//push today count to vo
 		if(list2 != null && list2.size() > 0 && returnList != null && returnList.size() > 0){
 			for(CadreDashboardVO param : returnList){
 				Long locId = param.getId();
-				if(locationIdAndTodayCountMap.get(locId) != null){
+				if(locationIdAndTodayCountMap.get(locId) != null  && locId.longValue() != 13l){
 					param.setCount2016Today(locationIdAndTodayCountMap.get(locId));
 				}
 			}
@@ -6465,7 +6672,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	 	
 	 	if(list1 != null && !list1.isEmpty()){
 	 		for (Object[] obj : list1) {
+	 			
 				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				if(id.longValue() != 13l){
 				String name = null;
 				 if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
 					 name = obj[1] != null ? obj[1].toString():"";
@@ -6475,7 +6684,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						Long t3 = Long.valueOf(obj[3] != null ? obj[3].toString():"0");//districtId
 						name = t+"-"+t1+"-"+t3;
 				}
+				 
 				locationNameMap.put(id, name);
+				}
 			}
 	 	}
 	 	
@@ -6487,7 +6698,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
 					vo.setName(locationNameMap.get(vo.getId()).split("-")[0]);
 					vo.setDistrictname(locationNameMap.get(vo.getId()).split("-")[1]);
-					vo.setValue(locationNameMap.get(vo.getId()).split("-")[2]);
+					if(districtId.longValue() != 517l && districtId.longValue() == 0l)
+						vo.setValue(locationNameMap.get(vo.getId()).split("-")[2]);
+					else
+						vo.setValue("517");
+						
 				}
 	 		}
 	 	}
@@ -6497,6 +6712,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			for (Object[] obj : targrtLst) {
 				Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 				Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				if(locaId.longValue() != 13l)
 				targetMap.put(locaId, count);
 			}
 		}
@@ -6934,7 +7150,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 	 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 			 
 				 //  
-				 prepairReturnList(cadreDashboardVOList1,distResultList,list2,list3,null,type,3l,totalList);
+				 prepairReturnList(cadreDashboardVOList1,distResultList,list2,list3,null,type,3l,totalList,0l);
 				 returnList.add(cadreDashboardVOList1);
 				 //get all the const belongs to above dist  
 				 List<Object[]> constList = constituencyDAO.getConstituenciesList(new ArrayList<Long>(distIdList));
@@ -6957,7 +7173,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 }
 				 list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType);
 				 list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
-				 prepairReturnList(cadreDashboardVOList2,constResultList,list2,list3,list4,type,4l,totalList);
+				 prepairReturnList(cadreDashboardVOList2,constResultList,list2,list3,list4,type,4l,totalList,0l);
 				 returnList.add(cadreDashboardVOList2);    
 				 return returnList;  
 			 } 
@@ -6973,7 +7189,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 }
 				 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType); 
 				 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);    
-				 prepairReturnList(cadreDashboardVOList1,constResultList,list2,list3,list4,type,4l,totalList);     
+				 prepairReturnList(cadreDashboardVOList1,constResultList,list2,list3,list4,type,4l,totalList,0l);     
 				 returnList.add(cadreDashboardVOList1);      
 				 return returnList;      
 			 }    
