@@ -689,6 +689,7 @@ $(document).on("click",".meetingLiCls",function(){
 		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
 	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
+		  $(".showMoreBlockCls").attr("attr_selected_type","stateLevel");
         $(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
@@ -720,6 +721,7 @@ $(document).on("click",".meetingLiCls",function(){
 		
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
 		$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		$(".showMoreBlockCls").attr("attr_selected_type","stateLevel");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		
 		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
@@ -750,14 +752,19 @@ $(document).on("click",".meetingLiCls",function(){
 			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(attrMainTypeMeetingId,meetingTypeId);
 		}
 	});
-	 $(document).on("click",".statelevelSessionMeeting",function(){
+	//santosh
+	    $(document).on("click",".statelevelSessionMeeting",function(){
+	   var partyMeetingId = $(this).attr("party_meetingId");
+		var partyMeetingTypeId = $(this).attr("party_meeting_type_id");
+		var partyMeetingMainTypeId = 3;
+		var partyMeetingIdArr = [];
+		partyMeetingIdArr.push(partyMeetingId);
 		//var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 		//var meetingTypeId = $(this).attr("attr_meeting_type_id");
-		$(".stateLevelMeetingsExpand,.specialMeetings,.stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		  $(".stateLevelMeetingsExpand,.specialMeetings,.stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		
-		
-		//$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
-		//$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		  $(".showMoreBlockCls").attr("attr_selected_type","sessionMeeting");
+		  //$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		
 		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
@@ -781,6 +788,7 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
+			
 			$(".statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".stateLevelMeetingBlock").show();
@@ -789,6 +797,8 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			//getstatelevelSessionMettings();
 			setSessioncolorsForStatus();
+		    getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
+		
 		}
 		
 	}); 
@@ -798,6 +808,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".stateLevelMeetingsExpand,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
 	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
+	    $(".showMoreBlockCls").attr("attr_selected_type","allMeeings");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".showMoreBlockCls,.moreMeetingsBlocksIcon,.stateLevelMeetingBlock").show();
 		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
@@ -820,27 +831,43 @@ $(document).on("click",".meetingLiCls",function(){
 			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);
        }
 	});
+	
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
 		$(this).addClass("unExpandBlock");
-		var mainTypeMeetingId = $(this).parent().attr("attr_main_type_meeting_id");
-		var meetingtypeId = $(this).parent().attr("attr_meeting_type_id");
-		if(mainTypeMeetingId != null && mainTypeMeetingId!=undefined && mainTypeMeetingId==2 || mainTypeMeetingId==3){
-		$(".moreMeetingsBlocksDetailed").show();	
-		 getParyMeetingTypeDetailsDistrictWise(mainTypeMeetingId,meetingtypeId);
-	     $("#meetingLevelHIghChartsDivId").html(' ');
-	     $("#userAccessLevelLocationDivId").html(' ');
-		}else{
-		getMeetingLevelDetails();
-		getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
-		getParyMeetingDetailsDistrictWise();
-		var party_meeting_id = $(this).attr("party_meeting_id");
-		//console.log(party_meeting_id);
-		getPartySpecialMeetingsMainTypeOverview(party_meeting_id);
-		$("#districtWisePartyMeetingTypeDivId").html(' ');
-		$(".moreMeetingsBlocksDetailed").show();
-		$(".moreMeetingsBlocks1").show();
-		}
-		//buildStatelevelSpecialMeetingsPerformanceReport();
+		var selectedType = $(this).parent().attr("attr_selected_type");
+		 if(selectedType != null && selectedType != undefined && selectedType=="sessionMeeting"){
+			  $("#meetingLevelHIghChartsDivId").html(' ');
+			 $("#userAccessLevelLocationDivId").html(' ');
+			 $("#districtWisePartyMeetingTypeDivId").html(' ');
+			  $("#districtWiseSpecialMeetingsGraph").html(' ');
+			 $("#partyMeetingOverviewTabDiv").html(' ');
+			 $(".moreMeetingsBlocksDetailed").show();
+			  $(".meetingPerformancCls").hide();
+			 var party_meeting_id = $(this).attr("party_meeting_id");
+			//console.log(party_meeting_id);
+			 getPartySpecialMeetingsMainTypeOverview(party_meeting_id);
+			 getParyMeetingDetailsDistrictWise(); 
+		 }else{
+			
+			 $("#districtWiseSpecialMeetingsGraph").html(' ');
+			 $("#partyMeetingOverviewTabDiv").html(' ');
+			var mainTypeMeetingId = $(this).parent().attr("attr_main_type_meeting_id");
+			var meetingtypeId = $(this).parent().attr("attr_meeting_type_id");
+			if(mainTypeMeetingId != null && mainTypeMeetingId!=undefined && mainTypeMeetingId==2 || mainTypeMeetingId==3){
+			$(".moreMeetingsBlocksDetailed").show();	
+			$(".meetingChortCls").hide();
+			 getParyMeetingTypeDetailsDistrictWise(mainTypeMeetingId,meetingtypeId);
+			 $("#meetingLevelHIghChartsDivId").html(' ');
+			 $("#userAccessLevelLocationDivId").html(' ');
+			}else{
+			getMeetingLevelDetails();
+			getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
+			$("#districtWisePartyMeetingTypeDivId").html(' ');
+			$(".moreMeetingsBlocksDetailed").show();
+			$(".moreMeetingsBlocks1").show();
+			}
+			//buildStatelevelSpecialMeetingsPerformanceReport(); 
+		 }
 	});
 	$(document).on("click",".unExpandBlock",function(){
 		$(this).removeClass("unExpandBlock");
@@ -2121,16 +2148,6 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 }
 
 // 
-$(document).on("click",".specialMeetingCls",function(){
-	var partyMeetingId = $(this).attr("party_meetingId");
-	var partyMeetingTypeId = $(this).attr("party_meeting_type_id");
-	var partyMeetingMainTypeId = 3;
-	var partyMeetingIdArr = [];
-	    partyMeetingIdArr.push(partyMeetingId);
-	getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
-	
-});
-
 function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
 	//for(var i in result){
 		var partyMeetingArr = result[0].subList1[0];
@@ -2236,7 +2253,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 										  str+='<tr>';
 											 str+='<td >';
-												str+='<span class="statelevelSessionMeeting pull-right" party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span></h4>';
 												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12" style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
 											 str+='</td>';
 											 str+='<td>';
