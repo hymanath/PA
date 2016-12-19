@@ -2106,6 +2106,12 @@ function getPartySpecialMeetingsMainTypeOverview(){
 		});
 	
 }
+
+// 
+$(document).on("click",".specialMeetingCls",function(){
+	
+	
+});
 function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
 	var partyMeetingTypeIdsString = 0;
 	var count =0;
@@ -2138,7 +2144,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='</td>';
 						 str+='<td>';//late
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
-							  str+='<p class="text-muted text-capital text-success">Attended</p>';
+							  str+='<p class="text-muted text-capital text-success">Attended</p>';//late
 						 str+='</td>';
 						    str+='<td>';
 							 str+='<h4  class="" style="cursor:pointer;" >200<span class="font-10 text-success"> 50%</span></h4>';
@@ -2146,7 +2152,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='</td>';  
 						  if(result[i].subList1 != null && result[i].subList1.length>0){
 								str+='<td>';
-								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateAttendedCount+'</span></h4>';
+								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateattendedPerc+'</span></h4>';
 								  str+='<p class="text-muted text-capital text_oragane">Late</p>';
 							 str+='</td>';  
 						  }
@@ -2155,26 +2161,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							  str+='<p class="text-muted text-capital">Absent</p>';    
 						 str+='</td>';        
 					 str+='</tr>';
-					  str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
-					  str+='<tr>';
-						 str+='<td >';
-							str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
-							  str+='<p class="text-muted f_12"><span class="specialMeeColor"></span> DEC-16 (Total Sessions)</p>';
-						 str+='</td>';
-						 str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text-success">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text_oragane">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						     
-					 str+='</tr>';
+					 
 					 
 					 if(result[i].subList1 != null && result[i].subList1.length>0){
 						
@@ -2187,7 +2174,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 										  str+='<tr>';
 											 str+='<td >';
-												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'" style="cursor:pointer;"></i></span></h4>';
 												  str+='<p class="text-muted f_12" style="font-size: 15px;"><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'(<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions" style="cursor:default;font-weight:bold;">'+result[i].subList1[k].subList1.length+'</span>)</p>';
 											 str+='</td>';
 											 str+='<td>';
@@ -2228,46 +2215,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							}
 						 }
 					 }
-					 
-					  
-					 /*
-					  str+='<tr>';
-						 str+='<td style="padding:0px;">';
-							  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">Session- ||</p>';
-						 str+='</td>';
-						 str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text-success">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text_oragane">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						     
-					 str+='</tr>';
-					 
-					  str+='<tr>';
-						 str+='<td style="padding:0px;">';
-							  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">Session- ||</p>';
-						 str+='</td>';
-						 str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text-success">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text_oragane">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						     
-					 str+='</tr>';  
+					
 				 str+='</tbody></table>';
 				
 				if($(window).width() < 300)
@@ -2281,6 +2229,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 	$("#"+divId).html(str);  
 	$('[data-toggle="tooltip"]').tooltip();
 }
+
 $(document).on("click",".meetingMemberDtlsCls",function(){
 	var meetingMainTypeId = $(this).attr("attr_main_type_id");
 	var meetingTypeIdStr = $(this).attr("attr_meeting_type_arr");
