@@ -74,12 +74,12 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		
 	}
 
-	public List<Object[]> getTabUserFirstLastRecordNew(Long cadreRegUserId,Long constituencyId,Long userId,Long districtId,Long stateId){
+	public List<Object[]> getTabUserFirstLastRecordNew(Long cadreRegUserId,Long constituencyId,Long userId,Long districtId,Long stateId,Date startDate,Date endDate){
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.startTime ,model.endTime ,model.cadreSurveyUserId,model.tabUserInfoId,model.totalRecords,model.tabUserName,model.tabUserInfo.mobileNo from " +
+		queryStr.append(" select model.startTime ,model.endTime ,model.cadreSurveyUserId,model.tabUserInfoId,sum(model.totalRecords),model.tabUserName,model.tabUserInfo.mobileNo from " +
 				" TabUserEnrollmentInfo model,CadreRegUserTabUser model1 where model.cadreSurveyUserId = model1.cadreSurveyUserId" +
-				" and date(model.surveyTime) = :today and model1.cadreRegUser.userType = 'FM' and model.enrollmentYearId = 4" );
+				" and model1.cadreRegUser.userType = 'FM' and model.enrollmentYearId = 4" );
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			queryStr.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		if(districtId != null && districtId.longValue() > 0l){
@@ -99,12 +99,15 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 			queryStr.append(" and model.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
 			queryStr.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
+		if(startDate !=null && endDate != null){
+			queryStr.append(" and date(model.surveyTime) between :startDate and :endDate ");
+		}
 		
-		queryStr.append(" order by model.endTime");
+		queryStr.append(" group by model.tabUserInfoId order by model.endTime");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		query.setDate("today",new DateUtilService().getCurrentDateAndTime());
+		//query.setDate("today",new DateUtilService().getCurrentDateAndTime());
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
@@ -113,7 +116,10 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 			query.setParameter("constituencyId", constituencyId);
 		if(userId != null && userId.longValue() > 0l)
 			query.setParameter("cadreSurveyUserId", userId);
-			
+		if(startDate !=null && endDate != null)	{
+			query.setDate("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
 		return query.list();
 		
 	}
