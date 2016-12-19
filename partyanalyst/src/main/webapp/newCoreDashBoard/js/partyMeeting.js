@@ -2146,10 +2146,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital text-success">Attended</p>';//late
 						 str+='</td>';
-						    str+='<td>';
-							 str+='<h4  class="" style="cursor:pointer;" >200<span class="font-10 text-success"> 50%</span></h4>';
-							  str+='<p class="text-muted text-capital text_oragane">Late</p>';
-						 str+='</td>';  
+					 
 						  if(result[i].subList1 != null && result[i].subList1.length>0){
 								str+='<td>';
 								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateattendedPerc+'</span></h4>';
@@ -2174,7 +2171,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 										  str+='<tr>';
 											 str+='<td >';
-												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'" style="cursor:pointer;"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
 												  str+='<p class="text-muted f_12" style="font-size: 15px;"><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'(<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions" style="cursor:default;font-weight:bold;">'+result[i].subList1[k].subList1.length+'</span>)</p>';
 											 str+='</td>';
 											 str+='<td>';
@@ -4105,9 +4102,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	
 	 var inviteeArr=[];  
 	 inviteeArr.push(result[i].invitedCount);
-	   
 	  var sessionList = result[i].subList1;
-	  console.log(sessionList);
 	   var attendedArr=[];
 	   var lateAttendedArr=[];
 	   var absentArr=[];
@@ -4125,10 +4120,6 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			  
 		  }
 	  }
-	 // console.log(inviteeArr);
-	  //console.log(attendedArr);
-	  //console.log(lateAttendedArr);
-	  //console.log(absentArr); 
 	  if(inviteeArr != 0 && inviteeArr.length > 0){
 		 
 		 $(function () {
