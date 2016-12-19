@@ -2124,6 +2124,14 @@ public class WebServiceHandler {
 			return webServiceHandlerService.setArticleDetailsIntoAlert(VO);
 		}
 		
+		@GET
+		@Path("/getAlertStatusOfArticle/{articleId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String getAlertStatusOfArticle(@PathParam("articleId") Long articleId){
+			return webServiceHandlerService.getAlertStatusOfArticle(articleId);
+		}
+		
 		
 		
 }
