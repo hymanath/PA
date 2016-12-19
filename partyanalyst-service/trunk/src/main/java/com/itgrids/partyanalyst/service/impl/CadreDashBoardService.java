@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -110,8 +111,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
     private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
     private ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO;
     private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
-	
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
     
+	
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -6253,6 +6264,39 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 		 	}
 		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList);
+		 	
+		 	 if(locationType =="AP" && locationType != null && districId == null || districId.longValue() == 0L){
+		 		 List<Long> constitencyIds  = new ArrayList<Long>(0);
+		 		 
+		         List<Object[]> constitencis = constituencyDAO.getDistrictConstituencies(13l);
+		         if(commonMethodsUtilService.isListOrSetValid(constitencis)){
+		        	 for (Object[] param : constitencis) {
+		        		 constitencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+		        		 
+					}
+		         }
+		         List<CadreDashboardVO>  assemblyList = get2016LocationWiseRegisteredCountsForConstitunecy(type,4L,locationType,13L);
+		         List<Object[]> vishakapatnamAssemblyList = districtConstituenciesDAO.getDistrictByConstituenciesIds(new HashSet<Long>(constitencyIds));
+		         
+		         Map<Long,List<Long>>districtsAssemblyMap = new HashMap<Long, List<Long>>(0);
+		         if(commonMethodsUtilService.isListOrSetValid(vishakapatnamAssemblyList)){
+		           for (Object[] param : vishakapatnamAssemblyList) {
+		            Long district = commonMethodsUtilService.getLongValueForObject(param[0]);
+		            List<Long> constituencyLsit = new ArrayList<Long>(0);
+		            if(districtsAssemblyMap.get(district) != null)
+		              constituencyLsit = districtsAssemblyMap.get(district);
+		            
+		            constituencyLsit.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+		            districtsAssemblyMap.put(district, constituencyLsit);
+		          }
+		         }
+		         
+		         if(commonMethodsUtilService.isMapValid(districtsAssemblyMap)){
+		        	 for (Long districtId : districtsAssemblyMap.keySet()) {
+						
+					}
+		         }
+		       }
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
