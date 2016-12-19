@@ -3486,4 +3486,13 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreCasteStateInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteStateInfoTempDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean id="tdpCadreGenderInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreGenderInfoTempDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
