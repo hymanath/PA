@@ -18,7 +18,7 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
            'This Year': [moment().startOf('Year'), moment()],
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
-	})
+	});
 	
 	var dates= $("#dateRangeIdForMeetings").val();
 	//$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
@@ -2129,9 +2129,7 @@ $(document).on("click",".specialMeetingCls",function(){
 	getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
 	
 });
-function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
-	var partyMeetingTypeIdsString = 0;
-	var count =0;
+
 function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
 	//for(var i in result){
 		var partyMeetingArr = result[0].subList1[0];
