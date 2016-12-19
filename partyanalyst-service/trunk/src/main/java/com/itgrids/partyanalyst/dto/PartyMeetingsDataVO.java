@@ -17,11 +17,13 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Long noOfMeetings=0l;
 	private Long invitedCount=0l;
 	private Long attendedCount=0l;
+	private Long lateAttendedCount=0L;
 	private Long invitteeAttendedCount=0l;
 	private Long notAttendedCount=0l;
 	
 	private Double invitedPerc=0.0;
 	private Double attendedPerc=0.0;
+	private Double lateattendedPerc=0.0;
 	private Double inviteeAttendedPerc=0.0;
 	private Double notAttendedPerc=0.0;
 	private List<PartyMeetingsDataVO> subList1;
@@ -30,7 +32,41 @@ public class PartyMeetingsDataVO implements Serializable{
 	
 	private List<PartyMeetingsDataVO> districtList;
 	
+	private String startTime;
+	private String endTime;
+	private String lateTime;
 	
+	
+	public Double getLateattendedPerc() {
+		return lateattendedPerc;
+	}
+	public void setLateattendedPerc(Double lateattendedPerc) {
+		this.lateattendedPerc = lateattendedPerc;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getLateTime() {
+		return lateTime;
+	}
+	public void setLateTime(String lateTime) {
+		this.lateTime = lateTime;
+	}
+	public Long getLateAttendedCount() {
+		return lateAttendedCount;
+	}
+	public void setLateAttendedCount(Long lateAttendedCount) {
+		this.lateAttendedCount = lateAttendedCount;
+	}
 	public Long getId() {
 		return id;
 	}
