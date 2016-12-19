@@ -20,14 +20,15 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  distinct model.partyMeetingId, " +//0
 		        " model.partyMeetingSessionId, " +//1
-		        " model.sessionType.type, '' , " +//2
+		        " model.sessionType.type, '' , " +//2,3
 		        " model.startTime, " +//4
 		        " model.endTime," +//5
 		        " model.lateTime," +//6
 		        " model.sessionType.startTime," +//7
 		        " model.sessionType.endTime," +//8
 		        " model.sessionType.lateTime, "+//9
-		        " model.sessionType.sessionTypeId   " +//10
+		        " model.sessionType.sessionTypeId," +//10
+		        " model.attendanceStartTime   " +//11
 		        " from PartyMeetingSession model where model.isDeleted='N' and " +
 				" model.partyMeetingId in (:partyMeetingsIds)  order by model.orderNo asc ");
 		Query query = getSession().createQuery(queryStr.toString());
