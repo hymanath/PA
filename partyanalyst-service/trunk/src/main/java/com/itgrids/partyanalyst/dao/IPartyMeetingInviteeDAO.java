@@ -38,7 +38,12 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getInvitteeAttendedCadreCountForMeetingsByPublicRepresentativeWise(PartyMeetingsInputVO inputVO);
 	public List<Long> getInvitedMemberCadreId(PartyMeetingsInputVO inputVO);
 	public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO);
+	//santosh
 	public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingId(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getDistrictWiseAttendedCountForPartyMeetingId(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingId(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getCommitteeWiseInvitedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getCommitteeWiseInvitteeAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getPublicRepresentativeWiseInvitteeAttendedCadreCountForMeetings(PartyMeetingsInputVO inputVO);
 }

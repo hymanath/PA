@@ -985,4 +985,27 @@ public List<Object[]> getInchargeTourSubmittedCandiatesDesignationWise(Long user
 		}
 		 return query.list();
 }
+ public List<Object[]> getTourSubmittedCandidateDetailsByCandiateIds(List<Long> candiateIds,Date fromDate,Date toDate){
+	 StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select " +
+	   				  " model.selfAppraisalCandidate.selfAppraisalDesignationId," +//0
+	   				  " model.selfAppraisalCandidate.selfAppraisalCandidateId," +//1
+	   				  " count(model.selfAppraisalCandidateDetailsId)," +//2
+	   				  " sum(model.ownTours)," +//3
+	   				  " sum(model.inchargeTours)  " + //4
+	   				  " from SelfAppraisalCandidateDetails model " +
+	   				  " where " +
+	   				  " model.selfAppraisalCandidateId in (:candiateIds) ");
+	   if(fromDate != null && toDate != null ){
+           queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+        }
+	    queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalCandidateId ");
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameterList("candiateIds", candiateIds);
+		if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+		}
+		return query.list();
+ }
 }

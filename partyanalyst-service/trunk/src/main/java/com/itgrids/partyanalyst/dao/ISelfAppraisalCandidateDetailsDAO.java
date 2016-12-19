@@ -31,5 +31,6 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getInchargeToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getOwnTourSubmittedCandiatesDesignationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> designationIds);
 	public List<Object[]> getInchargeTourSubmittedCandiatesDesignationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> designationIds);
+	public List<Object[]> getTourSubmittedCandidateDetailsByCandiateIds(List<Long> candiateIds,Date fromDate,Date toDate);
 	
 }

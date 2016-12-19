@@ -19,4 +19,8 @@ public interface ICoreDashboardToursService {
 	public List<TabLoginAuthVO> getUpdatedIMEINumberDetails(String imeiNo);
 	public String savingTabUserDetails(final Long loginUserId,final String userName,final String imeiNo);
 	public String updateUserORIMEIDetails(Long loginAuthId);
+	//New Tour Service
+	public ToursBasicVO getToursBasicOverviewDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId);
+	public List<List<ToursBasicVO>> getDesignationWiseMembersDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId);
+	public List<ToursBasicVO> getDesignationWiseAverageTourPerformanceDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId);
 }

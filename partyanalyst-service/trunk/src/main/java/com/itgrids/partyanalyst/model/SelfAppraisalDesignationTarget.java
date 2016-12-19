@@ -33,10 +33,12 @@ public class SelfAppraisalDesignationTarget {
 	private Date endTime;
 	private Long targetDays;
 	private Long selfAppraisalTourCategoryId;
+	private Long tourTypeId;
 	private String isActive;
 
 	private SelfAppraisalDesignation selfAppraisalDesignation;
 	private SelfAppraisalTourCategory selfAppraisalTourCategory;
+	private TourType tourType;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -76,7 +78,7 @@ public class SelfAppraisalDesignationTarget {
 	public void setTargetDays(Long targetDays) {
 		this.targetDays = targetDays;
 	}
-	@Column(name="tour_category")
+	@Column(name="self_appraisal_tour_category_id")
 	public Long getSelfAppraisalTourCategoryId() {
 		return selfAppraisalTourCategoryId;
 	}
@@ -89,6 +91,23 @@ public class SelfAppraisalDesignationTarget {
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	@Column(name = "tour_type_id")
+	public Long getTourTypeId() {
+		return tourTypeId;
+	}
+	public void setTourTypeId(Long tourTypeId) {
+		this.tourTypeId = tourTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tour_type_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TourType getTourType() {
+		return tourType;
+	}
+	public void setTourType(TourType tourType) {
+		this.tourType = tourType;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="self_appraisal_designation_id",insertable=false,updatable=false)

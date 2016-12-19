@@ -57,5 +57,12 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 	    " order by amat.userType.orderNo ");
 		return query.list();
 	}
+    public List<Object[]> getChildMemberIdsBasedOnParentTypeIds(List<Long> parentIds){
+    	StringBuilder queryStr = new StringBuilder();
+    	 queryStr.append("select model.parentMemberId,model.activityMemberId from ActivityMemberRelation model where model.parentMemberId in(:parentIds)");
+    	 Query query = getSession().createQuery(queryStr.toString());
+    	 query.setParameterList("parentIds", parentIds);
+    	 return query.list();
+    }
 	
 }
