@@ -3665,8 +3665,6 @@
 	    <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />
 	    <property name="sessionTypeDAO" ref="sessionTypeDAO" />  
 	    <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"/>
-	    
-	     <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO" />  
 	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
