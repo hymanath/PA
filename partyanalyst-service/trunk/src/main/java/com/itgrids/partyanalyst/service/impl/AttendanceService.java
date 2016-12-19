@@ -501,6 +501,8 @@ public class AttendanceService implements IAttendanceService{
 									if(userPartyMeetingVO.getDailyLateTime().length() ==0)
 										userPartyMeetingVO.setDailyLateTime(commonMethodsUtilService.getStringValueForObject(param[9]));//lateTime
 									
+									userPartyMeetingVO.setAttendanceStartTime(commonMethodsUtilService.getStringValueForObject(param[11]));
+									
 									subList.add(userPartyMeetingVO);
 									partyMeetingSesssionsMap.put(partyMeetingId, subList);
 								} catch (Exception e) {
