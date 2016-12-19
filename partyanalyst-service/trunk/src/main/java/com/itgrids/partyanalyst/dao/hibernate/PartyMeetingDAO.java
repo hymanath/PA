@@ -1565,6 +1565,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sb.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIds) ");	
 		}
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			sb.append(" and model.partyMeetingId in (:partyMeetingIds) ");
+		}
 		sb.append(" group by model.partyMeetingType.partyMeetingTypeId order by  model.partyMeetingId desc ");
 		Query query = getSession().createQuery(sb.toString());
 	    
@@ -1579,7 +1582,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
 		}
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-		
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
+		}
 	    return query.list();
 		
 	}
