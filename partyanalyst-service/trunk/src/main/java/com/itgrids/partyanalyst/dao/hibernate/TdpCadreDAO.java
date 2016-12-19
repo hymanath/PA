@@ -8913,4 +8913,148 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 			return query.list();
 		}
+	   
+	   //Gender Wise
+	   public List<Object[]> levelWiseTdpCadreDataByGender(String levelType,Long enrollmentYearId){
+			
+			StringBuilder sbS = new StringBuilder();
+			
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.tehsil.tehsilId,model.tdpCadre.gender ");//2
+				sbE.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId ,model.tdpCadre.gender ");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.localElectionBody.localElectionBodyId, model.tdpCadre.gender  ");
+				sbE.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model.tdpCadre.gender ");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.panchayat.panchayatId,model.tdpCadre.gender ");
+				sbE.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId,model.tdpCadre.gender ");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.ward.constituencyId ,model.tdpCadre.gender ");
+				sbE.append(" group by model.tdpCadre.userAddress.ward.constituencyId , model.gender");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId  , model.tdpCadre.userAddress.booth.boothId , model.tdpCadre.gender ");
+				sbE.append(" group by model.tdpCadre.userAddress.booth.boothId , model.tdpCadre.gender ");
+			}
+			sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId ) " +//3
+					"   from  TdpCadreEnrollmentYear model " +
+					"   where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+					"         model.tdpCadre.enrollmentYear = 2014  and model.enrollmentYearId = :enrollmentYearId" );
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("enrollmentYearId",enrollmentYearId);
+			
+			return query.list();
+		}
+	   
+	   public List<Object[]> levelWiseRenewalTdpCareDataByGender(String levelType){
+			
+			StringBuilder sbS = new StringBuilder();
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" tc.userAddress.tehsil.tehsilId, tc.gender ");//1
+				sbE.append(" group by tc.userAddress.tehsil.tehsilId ,  tc.gender ");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" tc.userAddress.localElectionBody.localElectionBodyId ,  tc.gender ");
+				sbE.append(" group by tc.userAddress.localElectionBody.localElectionBodyId ,   tc.gender ");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" tc.userAddress.panchayat.panchayatId ,  tc.gender ");
+				sbE.append(" group by tc.userAddress.panchayat.panchayatId ,  tc.gender ");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" tc.userAddress.ward.constituencyId ,  tc.gender ");
+				sbE.append(" group by tc.userAddress.ward.constituencyId ,  tc.gender ");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" tc.userAddress.booth.boothId ,  tc.gender ");
+				sbE.append(" group by tc.userAddress.booth.boothId ,  tc.gender ");
+			}
+			sbS.append("      ,count(distinct tc.tdpCadreId) " +//2
+					"   from  TdpCadre tc , TdpCadreEnrollmentYear year1, TdpCadreEnrollmentYear year2 " +
+					"   where tc.tdpCadreId = year1.tdpCadre.tdpCadreId and  tc.tdpCadreId = year2.tdpCadre.tdpCadreId and " +
+					"         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
+					"         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
+					"         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear ");
+					  
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
+			query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			
+			return query.list();
+		}
+	   
+	   //CASTE STATE WISE
+	   public List<Object[]> levelWiseTdpCadreDataByCasteState(String levelType,Long enrollmentYearId){
+			
+			StringBuilder sbS = new StringBuilder();
+			
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.tehsil.tehsilId,model.tdpCadre.casteState.casteStateId  ");//2
+				sbE.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId ,model.tdpCadre.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.localElectionBody.localElectionBodyId, model.tdpCadre.casteState.casteStateId  ");
+				sbE.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model.tdpCadre.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.panchayat.panchayatId, model.tdpCadre.casteState.casteStateId  ");
+				sbE.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, model.tdpCadre.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.ward.constituencyId ,  model.tdpCadre.casteState.casteStateId  ");
+				sbE.append(" group by model.tdpCadre.userAddress.ward.constituencyId ,  model.tdpCadre.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId  , model.tdpCadre.userAddress.booth.boothId ,  model.tdpCadre.casteState.casteStateId ");
+				sbE.append(" group by model.tdpCadre.userAddress.booth.boothId , model.tdpCadre.casteState.casteStateId ");
+			}
+			sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId ) " +//4
+					"   from  TdpCadreEnrollmentYear model " +
+					"   where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+					"          model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId" );
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("enrollmentYearId",enrollmentYearId);
+			
+			return query.list();
+		}
+	   
+	   public List<Object[]> levelWiseRenewalTdpCareDataByCasteState(String levelType){
+			
+			StringBuilder sbS = new StringBuilder();
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" tc.userAddress.tehsil.tehsilId, tc.casteState.casteStateId ");
+				sbE.append(" group by tc.userAddress.tehsil.tehsilId ,  tc.casteState.casteStateId  ");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" tc.userAddress.localElectionBody.localElectionBodyId , tc.casteState.casteStateId ");
+				sbE.append(" group by tc.userAddress.localElectionBody.localElectionBodyId ,  tc.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" tc.userAddress.panchayat.panchayatId ,   tc.casteState.casteStateId ");
+				sbE.append(" group by tc.userAddress.panchayat.panchayatId ,   tc.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" tc.userAddress.ward.constituencyId ,   tc.casteState.casteStateId ");
+				sbE.append(" group by tc.userAddress.ward.constituencyId ,   tc.casteState.casteStateId ");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" tc.userAddress.booth.boothId ,   tc.casteState.casteStateId ");
+				sbE.append(" group by tc.userAddress.booth.boothId ,   tc.casteState.casteStateId ");
+			}
+			sbS.append("      ,count(distinct tc.tdpCadreId) " +
+					"   from  TdpCadre tc , TdpCadreEnrollmentYear year1, TdpCadreEnrollmentYear year2 " +
+					"   where tc.tdpCadreId = year1.tdpCadre.tdpCadreId and  tc.tdpCadreId = year2.tdpCadre.tdpCadreId and " +
+					"         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
+					"         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
+					"         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear ");
+					  
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
+			query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			
+			return query.list();
+		}
 	}
