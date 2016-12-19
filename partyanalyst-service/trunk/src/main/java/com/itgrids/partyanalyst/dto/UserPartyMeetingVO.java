@@ -27,9 +27,15 @@ public class UserPartyMeetingVO implements Serializable{
 	private Long sessionId ;
 	private String sessionName;
 	private String description;
-	
+	private String attendanceStartTime;
 	private List<UserPartyMeetingVO> subList = new ArrayList<UserPartyMeetingVO>(0);
 	
+	public String getAttendanceStartTime() {
+		return attendanceStartTime;
+	}
+	public void setAttendanceStartTime(String attendanceStartTime) {
+		this.attendanceStartTime = attendanceStartTime;
+	}
 	public Long getSessionId() {
 		return sessionId;
 	}
