@@ -1554,7 +1554,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		sb.append(" select model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type,count(distinct model.partyMeetingId) " +
 				"   from   PartyMeeting model " +
 				"   where  model.isActive='Y' and model.startDate is not null and " +
-				"          model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId  ");
+				"          model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId   ");
 		
 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 			 sb.append(" and date(model.startDate) between :startDate and :endDate ");	 
@@ -1565,7 +1565,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sb.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIds) ");	
 		}
-		sb.append(" group by model.partyMeetingType.partyMeetingTypeId ");
+		sb.append(" group by model.partyMeetingType.partyMeetingTypeId order by  model.partyMeetingId desc ");
 		Query query = getSession().createQuery(sb.toString());
 	    
 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){

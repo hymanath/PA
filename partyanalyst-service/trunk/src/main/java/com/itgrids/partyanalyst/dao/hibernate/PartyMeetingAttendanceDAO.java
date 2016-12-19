@@ -587,4 +587,36 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
    return query.list();       
 	
 }
+
+	public List<Object[]> getSpecialMeetingsSessionWiseAttendence(){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" SELECT "+	
+					" pmt.party_meeting_type_id,pm.party_meeting_id,pms.party_meeting_session_id,st.type,a.tdp_cadre_id ,a.attended_time,min(time(a.attended_time))," +
+					" pms.late_time,st.late_time  "+
+					" from  "+
+					" party_meeting pm, party_meeting_session pms, "+
+					" party_meeting_attendance pma, "+
+					" attendance a , "+
+					" session_type st, "+
+					" party_meeting_type pmt, "+
+					" party_meeting_main_type pmmt "+
+					" where  "+
+					" pm.party_meeting_type_id = pmt.party_meeting_type_id and  "+
+					" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and  "+
+					" pm.party_meeting_id = pms.party_meeting_id and  "+
+					" pms.party_meeting_session_id = pma.party_meeting_session_id and  "+
+					" pma.party_meeting_id = pm.party_meeting_id and  "+
+					" a.attendance_id = pma.attendance_id and  "+
+					" pms.session_type_id = st.session_type_id   "+
+					" and pmmt.party_meeting_main_type_id = 3  "+
+					" GROUP BY  "+
+					" concat(pms.party_meeting_session_id,'-',a.tdp_cadre_id) "+
+					" order by  "+
+					" pm.party_meeting_id,pms.party_meeting_session_id,st.type,a.tdp_cadre_id  ");
+			
+			Query query = getSession().createSQLQuery(queryStr.toString());
+			
+			
+			return query.list();
+	}
 }
