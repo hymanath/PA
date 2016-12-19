@@ -379,6 +379,9 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 			if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			   sb.append(" and PMT.party_meeting_type_id in (:partyMeetingTypeIds) ");	
 			}
+			if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+				sb.append(" and PM.party_meeting_id in (:partyMeetingIds) ");
+			}
 			sb.append(" GROUP BY PMT.party_meeting_type_id");////
 			
 			Query query = getSession().createSQLQuery(sb.toString())
@@ -396,6 +399,10 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				query.setParameter("stateId",inputVO.getStateId());
 			}
 			query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+			if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+				query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
+			}
+			
 		   return query.list();
 			
 		}
@@ -705,7 +712,7 @@ public List<Object[]> getPublicRepresentativeWiseAttendedCadreCountForMeeting(Pa
 	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
 	return query.list();
 	}
-public List<Object[]> getSpecialMeetingsSessionWiseAttendence(){
+public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList){
 	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" SELECT "+	
 			" pmt.party_meeting_type_id,pm.party_meeting_id,pms.party_meeting_session_id,st.type,a.tdp_cadre_id ,a.attended_time,min(time(a.attended_time))," +
@@ -725,14 +732,20 @@ public List<Object[]> getSpecialMeetingsSessionWiseAttendence(){
 			" pma.party_meeting_id = pm.party_meeting_id and  "+
 			" a.attendance_id = pma.attendance_id and  "+
 			" pms.session_type_id = st.session_type_id   "+
-			" and pmmt.party_meeting_main_type_id = 3  "+
-			" GROUP BY  "+
+			" and pmmt.party_meeting_main_type_id = 3  ");
+	
+	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
+		queryStr.append(" and pm.party_meeting_id in (:partyMeetingIds) ");
+	}
+	queryStr.append(" GROUP BY  "+
 			" concat(pms.party_meeting_session_id,'-',a.tdp_cadre_id) "+
 			" order by  "+
 			" pm.party_meeting_id,pms.party_meeting_session_id,st.type,a.tdp_cadre_id  ");
 	
 	Query query = getSession().createSQLQuery(queryStr.toString());
-	
+	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
+		query.setParameterList("partyMeetingIds",partyMeetingIdsList);
+	}
 	
 	return query.list();
 }

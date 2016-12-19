@@ -200,6 +200,11 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sb.append(" and PMT.party_meeting_type_id in (:partyMeetingTypeIds) ");	
 		}
+		
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			sb.append(" and PM.party_meeting_id in (:partyMeetingIds) ");
+		}
+		
 		sb.append(" group by  PMT.party_meeting_type_id ");
 		
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -218,6 +223,9 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 			query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
 		}
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
+		}
 	   return query.list();
 	}
 	
@@ -249,6 +257,9 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sb.append(" and PMT.party_meeting_type_id in (:partyMeetingTypeIds) ");	
 		}
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			sb.append(" and PM.party_meeting_id in (:partyMeetingIds) ");
+		}
 		sb.append(" group by PMT.party_meeting_type_id ");
 		Query query = getSession().createSQLQuery(sb.toString())
 		.addScalar("partyMeetingId",Hibernate.LONG)
@@ -267,6 +278,9 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		}
 		
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+		if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size()>0){
+			query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
+		}
 	   return query.list();
 	}
 
