@@ -150,4 +150,23 @@ public class TdpCadreGenderInfoDAO extends GenericDaoHibernate<TdpCadreGenderInf
     	query.setParameterList("locationIdList",locationIdList);
     	return query.list();  
     }
+	
+	public int deleteAllRecords(List<Long> locationScopeIds){
+    	
+    	Query query = getSession().createSQLQuery(" delete from tdp_cadre_gender_info where location_scope_id in (:locationScopeIds) ");
+    	query.setParameterList("locationScopeIds",locationScopeIds);
+    	return query.executeUpdate();
+    }
+	
+	 public int insertTdpCadreLocationInfoUpToLowLevelByGender(){
+	    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  INSERT INTO tdp_cadre_gender_info( gender,constituency_id,location_scope_id , location_value,cadre_2014," +
+    	"                                  cadre_2016,new_cadre,new_cadre_percent,renewal_cadre,renewal_cadre_percent,inserted_time" +
+    	"                                 ) " +
+        "         SELECT TEMP.gender,TEMP.constituency_id,TEMP.location_scope_id,TEMP.location_value,TEMP.cadre_2014," +
+        "                TEMP.cadre_2016,TEMP.new_cadre,TEMP.new_cadre_percent,TEMP.renewal_cadre,TEMP.renewal_cadre_percent,TEMP.inserted_time " +
+        "         FROM   tdp_cadre_gender_info_temp TEMP " );
+    	return query.executeUpdate();
+	 }
 }
