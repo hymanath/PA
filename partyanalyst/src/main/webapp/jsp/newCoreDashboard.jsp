@@ -1864,7 +1864,7 @@
 									
 								</ul>
 							</div>
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -1874,10 +1874,11 @@
 										</div>
 									</div>
 									<div class="panel-body">
+										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="specialMeetingsPerformanceOverViewDiv"></div>
 									</div>
 								</div>
-							</div>-->
+							</div>
 							
 							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">

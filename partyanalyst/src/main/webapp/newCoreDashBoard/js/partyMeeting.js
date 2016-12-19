@@ -833,6 +833,7 @@ $(document).on("click",".meetingLiCls",function(){
 		}else{
 		getMeetingLevelDetails();
 		getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
+		getParyMeetingDetailsDistrictWise();
 		$("#districtWisePartyMeetingTypeDivId").html(' ');
 		$(".moreMeetingsBlocksDetailed").show();
 		$(".moreMeetingsBlocks1").show();
@@ -4455,4 +4456,141 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			$('#stateLevelMeetingBlockIdGr3'+i).html("No Data Available")
 		}		
   }
+}
+
+             
+	function getParyMeetingDetailsDistrictWise(){
+		$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var partyMeetingTypeArr = [26];   
+		var jsObj ={ 
+					 partyMeetingMainTypeId : 3,
+			   state : "ap",
+			   startDateString : '01/01/2016',
+			   endDateString : '20/12/2016',        
+			   partyMeetingTypeIds:partyMeetingTypeArr,
+			   partyMeetingId : 445220,   
+			   sessionId : 0                
+			   
+			  }           
+		$.ajax({
+		  type : 'POST',
+		  url : 'getParyMeetingDetailsDistrictWiseAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		  buildParyMeetingDetailsDistrictWise(result);
+		});                
+	}
+  
+  function buildParyMeetingDetailsDistrictWise(result){
+		$("#districtWiseSpecialMeetingsGraph").html('');
+		if(result != null && result.length > 0){
+			var str='';
+				str+='<div id="districtWiseGraphSpecialMee" class="chartLiD" style="height:300px" ></div>';
+												
+		}
+		$("#districtWiseSpecialMeetingsGraph").html(str);
+		
+		
+		
+	if(result != null && result.length > 0){
+		var locationNameArray =[];
+			var invitieCountArray = [];
+			var attendedCountArray = [];
+			var inviteAbsentCountArray = [];
+			
+		for(var i in result){
+			
+			
+			locationNameArray.push(result[i].locationName);
+			//invitieCountArray.push(result[i].invitieCount);
+			attendedCountArray.push(result[i].attendedCount);
+			inviteAbsentCountArray.push(result[i].inviteAbsentCount);
+		}					
+		
+						$(function () {
+							$('#districtWiseGraphSpecialMee').highcharts({
+								colors: ['#3C763D','#A94442'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: locationNameArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} - {point.percentage:.1f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return (this.y);
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Attended',
+									data: attendedCountArray
+								}, {
+									name: 'Absent',
+									data: inviteAbsentCountArray
+								}]
+							});
+						});
+				
+		
+	}else{
+		$("#districtWiseGraphSpecialMee").html("No Data Available")
+	}	
 }
