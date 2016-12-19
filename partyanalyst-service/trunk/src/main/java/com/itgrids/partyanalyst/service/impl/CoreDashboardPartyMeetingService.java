@@ -3816,10 +3816,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						    }
 					}else{
 							 Map<Long,Set<Long>> invteeAttnddMap = publicRepattendedCadreMap.get(entry.getKey());
-		  LOG.error("Error occured at setCommiteeLevelWiseInviteeMembers() in CoreDashboardPartyMeetingService {}",e);
+							  if(invteeAttnddMap != null && invteeAttnddMap.size() > 0){
 								  for(Entry<Long,Set<Long>> inviteeEntry:invteeAttnddMap.entrySet()){
 									  PartyMeetingsDataVO vo = getSessionTypeMatchVO(entry.getValue().getSubList1(),inviteeEntry.getKey());
-	
 									   if(vo != null){
 										   vo.setAttendedCount(Long.valueOf(inviteeEntry.getValue().size()));  
 									   }
