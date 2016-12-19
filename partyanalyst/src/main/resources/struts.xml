@@ -15121,5 +15121,10 @@
    			<param name="root">partyMeetingDataVOList</param> 
 		</result>
 	</action>  
+	<action name="getMeetingMemberDtlsAction" class="cadreRegistrationAction" method="getMeetingMemberDtls">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVOs</param> 
+		</result>
+	</action>
  </package>
 </struts>
