@@ -8,6 +8,7 @@ public class PartyMeetingsInputVO implements Serializable{
 	
 	private Long        partyMeetingMainTypeId;
 	private List<Long>  partyMeetingTypeIds;
+	private List<Long>        partyMeetingIds;
 	private Long        stateId;
   	private Date        startDate;
 	private Date        endDate;
@@ -51,11 +52,17 @@ public class PartyMeetingsInputVO implements Serializable{
 	public void setDistId(Long distId) {
 		this.distId = distId;
 	}
+	public List<Long> getPartyMeetingIds() {
+		return partyMeetingIds;
+	}
+	public void setPartyMeetingIds(List<Long> partyMeetingIds) {
+		this.partyMeetingIds = partyMeetingIds;
+	}
 	public Long getPartyMeetingId() {
 		return partyMeetingId;
 	}
 	public void setPartyMeetingId(Long partyMeetingId) {
 		this.partyMeetingId = partyMeetingId;
-	}
+	} 
 	
 }

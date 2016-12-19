@@ -32,6 +32,15 @@ public class PartyMeetingsDataVO implements Serializable{
 	
 	private List<PartyMeetingsDataVO> districtList;
 	
+	private Long allSessionAttendedCnt=0l;
+	private Long allSessionLateAttendedCnt=0l;
+	private Long allSessionAbsentCnt=0l;
+	private Double allSessionAttendedPer = 0.0d;
+	private Double allSessionLateAttendedCntPer = 0.0d;
+	private Double allSessionAbsentCntper = 0.0d;
+	private Long lateAttendedCnt=0l;
+	private Double lateAttendedCntPer = 0.0d;
+	
 	private String startTime;
 	private String endTime;
 	private String lateTime;
@@ -187,4 +196,53 @@ public class PartyMeetingsDataVO implements Serializable{
 	public void setDistrictList(List<PartyMeetingsDataVO> districtList) {
 		this.districtList = districtList;
 	}
+	public Long getAllSessionAttendedCnt() {
+		return allSessionAttendedCnt;
+	}
+	public void setAllSessionAttendedCnt(Long allSessionAttendedCnt) {
+		this.allSessionAttendedCnt = allSessionAttendedCnt;
+	}
+	public Long getAllSessionLateAttendedCnt() {
+		return allSessionLateAttendedCnt;
+	}
+	public void setAllSessionLateAttendedCnt(Long allSessionLateAttendedCnt) {
+		this.allSessionLateAttendedCnt = allSessionLateAttendedCnt;
+	}
+	public Long getAllSessionAbsentCnt() {
+		return allSessionAbsentCnt;
+	}
+	public void setAllSessionAbsentCnt(Long allSessionAbsentCnt) {
+		this.allSessionAbsentCnt = allSessionAbsentCnt;
+	}
+	public Long getLateAttendedCnt() {
+		return lateAttendedCnt;
+	}
+	public void setLateAttendedCnt(Long lateAttendedCnt) {
+		this.lateAttendedCnt = lateAttendedCnt;
+	}
+	public Double getLateAttendedCntPer() {
+		return lateAttendedCntPer;
+	}
+	public void setLateAttendedCntPer(Double lateAttendedCntPer) {
+		this.lateAttendedCntPer = lateAttendedCntPer;
+	}
+	public Double getAllSessionAttendedPer() {
+		return allSessionAttendedPer;
+	}
+	public void setAllSessionAttendedPer(Double allSessionAttendedPer) {
+		this.allSessionAttendedPer = allSessionAttendedPer;
+	}
+	public Double getAllSessionLateAttendedCntPer() {
+		return allSessionLateAttendedCntPer;
+	}
+	public void setAllSessionLateAttendedCntPer(Double allSessionLateAttendedCntPer) {
+		this.allSessionLateAttendedCntPer = allSessionLateAttendedCntPer;
+	}
+	public Double getAllSessionAbsentCntper() {
+		return allSessionAbsentCntper;
+	}
+	public void setAllSessionAbsentCntper(Double allSessionAbsentCntper) {
+		this.allSessionAbsentCntper = allSessionAbsentCntper;
+	}
+       
 }

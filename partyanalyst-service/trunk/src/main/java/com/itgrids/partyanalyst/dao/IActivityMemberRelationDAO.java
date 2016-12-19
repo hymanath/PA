@@ -11,4 +11,5 @@ public interface IActivityMemberRelationDAO extends GenericDao<ActivityMemberRel
 	public List<Object[]> getChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIds);
 	public List<Object[]> checkChildActivityMembersByParents(List<Long> parentActivityMemberIds);
 	public List<Object[]> getAllChildUserTypeMembersAndParentUserTypeMembers();
+	public List<Object[]> getChildMemberIdsBasedOnParentTypeIds(List<Long> parentIds);
 }
