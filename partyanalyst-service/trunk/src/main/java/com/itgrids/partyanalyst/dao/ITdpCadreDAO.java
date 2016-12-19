@@ -502,4 +502,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> levelWiseRenewalTdpCareDataByAgeRange(String levelType);
 	  public List<Object[]> levelWiseTdpCadreDataByAgeRange(String levelType,Long enrollmentYearId);
 	  
+	  public List<Object[]> levelWiseTdpCadreDataByGender(String levelType,Long enrollmentYearId);
+	  public List<Object[]> levelWiseRenewalTdpCareDataByGender(String levelType);
+	  
+	  public List<Object[]> levelWiseTdpCadreDataByCasteState(String levelType,Long enrollmentYearId);
+	  public List<Object[]> levelWiseRenewalTdpCareDataByCasteState(String levelType);
+	  
 } 
