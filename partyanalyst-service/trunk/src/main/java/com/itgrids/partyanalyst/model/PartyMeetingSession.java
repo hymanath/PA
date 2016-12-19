@@ -45,6 +45,7 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 	private Long orderNo;
 	
 	private Long sessionTypeId;
+	private Time attendanceStartTime;
 	
 	private SessionType sessionType;
 	private PartyMeeting partyMeeting;
@@ -196,8 +197,17 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 	public SessionType getSessionType() {
 		return sessionType;
 	}
-
 	public void setSessionType(SessionType sessionType) {
 		this.sessionType = sessionType;
 	}
+
+	@Column(name="attendance_start_time")
+	public Time getAttendanceStartTime() {
+		return attendanceStartTime;
+	}
+
+	public void setAttendanceStartTime(Time attendanceStartTime) {
+		this.attendanceStartTime = attendanceStartTime;
+	}
+	
 }
