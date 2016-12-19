@@ -1994,7 +1994,7 @@ assignedCandidatesUl1 li:last-child
 
 .specialMeeColorA::before {
     
-    content: "---- ";
+    content: "- ";
    
 }
 .border_top_noneCoh tbody tr td{
