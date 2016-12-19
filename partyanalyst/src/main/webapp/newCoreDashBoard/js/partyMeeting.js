@@ -2231,7 +2231,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										  str+='<tr>';
 											 str+='<td >';
 //												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;" party_meetingId="'+result[i].subList1[k].id+'" ><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'" style="cursor:pointer;"></i></span></h4>';
-												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right" party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
 												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12" style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
 											 str+='</td>';
 											 str+='<td>';
