@@ -29,7 +29,6 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
-
 import com.itgrids.partyanalyst.dao.ISessionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -3144,83 +3143,43 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingId(inputVO);
 			List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingId(inputVO);
 			List<Object[]> attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingId(inputVO);
-			
-			//create Dtls map for inviteesList start
-			Map<Long,Set<Long>> locIdAndinviteesCdrCountSetMap = new HashMap<Long,Set<Long>>();
+			//collect totol invited cadre ids
+			Set<Long> totalInviteesCadreList = new HashSet<Long>();
 			if(inviteesList != null && inviteesList.size() > 0){
 				for(Object[] param : inviteesList){
-					locationIdSet = locIdAndinviteesCdrCountSetMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
-					if(locationIdSet == null){
-						locationIdSet = new HashSet<Long>();
-						locIdAndinviteesCdrCountSetMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), locationIdSet);
-					}
-					locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));//cadreId
+					totalInviteesCadreList.add(commonMethodsUtilService.getLongValueForObject(param[3]));
 				}
 			}
-			//create Dtls map for inviteesList end
 			
-			//create Dtls map for invitteeAttendedList start
-			Map<Long,Set<Long>> locIdAndinvitteeAttendedCdrCountSetMap = new HashMap<Long,Set<Long>>();
+			//create map of sessionID and invite Attended cadre start
+			Map<Long,Set<Long>> sessionIdAndinviteAttendedCadreList = new HashMap<Long,Set<Long>>();
+			Set<Long> inviteAttendedCadreSet = null;
 			if(sessionId.longValue() == 0L){
 				if(invitteeAttendedList != null && invitteeAttendedList.size() > 0){
-					for(Object[] param : invitteeAttendedList){
-						locationIdSet = locIdAndinvitteeAttendedCdrCountSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(locationIdSet == null){
-							locationIdSet = new HashSet<Long>();
-							locIdAndinvitteeAttendedCdrCountSetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdSet);
+					for(Object[] param : invitteeAttendedList){  
+						inviteAttendedCadreSet = sessionIdAndinviteAttendedCadreList.get(commonMethodsUtilService.getLongValueForObject(param[5]));
+						if(inviteAttendedCadreSet == null){
+							inviteAttendedCadreSet = new HashSet<Long>();
+							sessionIdAndinviteAttendedCadreList.put(commonMethodsUtilService.getLongValueForObject(param[5]), inviteAttendedCadreSet);
 						}
-						locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
+						inviteAttendedCadreSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
 					}
 				}
 			}else{
 				if(invitteeAttendedList != null && invitteeAttendedList.size() > 0){
 					for(Object[] param : invitteeAttendedList){
 						if(sessionId.longValue() != commonMethodsUtilService.getLongValueForObject(param[5]))
-							continue;
-						locationIdSet = locIdAndinvitteeAttendedCdrCountSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(locationIdSet == null){
-							locationIdSet = new HashSet<Long>();
-							locIdAndinvitteeAttendedCdrCountSetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdSet);
+							continue; 
+						inviteAttendedCadreSet = sessionIdAndinviteAttendedCadreList.get(commonMethodsUtilService.getLongValueForObject(param[5]));
+						if(inviteAttendedCadreSet == null){
+							inviteAttendedCadreSet = new HashSet<Long>();
+							sessionIdAndinviteAttendedCadreList.put(commonMethodsUtilService.getLongValueForObject(param[5]), inviteAttendedCadreSet);
 						}
-						locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
+						inviteAttendedCadreSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
 					}
 				}
 			}
-			//create Dtls map for invitteeAttendedList end
-			
-			//create Dtls map for attendedList start
-			Map<Long,String> LocIdAndLocNameMap = new HashMap<Long,String>();
-			Map<Long,Set<Long>> locIdAndLocCountSetMap = new HashMap<Long,Set<Long>>();
-			if(sessionId.longValue() == 0L){
-				if(attendedList != null && attendedList.size() > 0){
-					for(Object[] param : attendedList){
-						locationIdSet = locIdAndLocCountSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(locationIdSet == null){
-							locationIdSet = new HashSet<Long>();
-							locIdAndLocCountSetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdSet);
-						}
-						locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
-						//push data into LocIdAndLocNameMap
-						LocIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-					}
-				}
-			}else{
-				if(attendedList != null && attendedList.size() > 0){
-					for(Object[] param : attendedList){
-						if(sessionId.longValue() != commonMethodsUtilService.getLongValueForObject(param[5]))
-							continue;     
-						locationIdSet = locIdAndLocCountSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(locationIdSet == null){
-							locationIdSet = new HashSet<Long>();
-							locIdAndLocCountSetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationIdSet);
-						}
-						locationIdSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));//cadreId
-						//push data into LocIdAndLocNameMap
-						LocIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-					}
-				}
-			}
-			//create Dtls map for attendedList end  
+			//create map of sessionID and invite cadre start
 			
 			//create map of sessionId and map of cadreId and attended time.5,2,4
 			Map<Long,Map<Long,String>> sessionIdAndCadreIdAndTimeMap = new HashMap<Long,Map<Long,String>>();
@@ -3346,10 +3305,6 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 									if(sessionIdAndCadreList.get(sesId) != null && sessionIdAndCadreList.get(sesId).size() > 0){
 										if(sessionIdAndCadreList.get(sesId).contains(idNameVO.getId())){
 											noOfPresent = noOfPresent + 1;
-											/*if(sessionIdAndCadreIdAndTimeMap.get(sesId) == null){
-												statusIdAndStausMap.put(sesId, "absent");
-												continue;
-											}*/  
 											String attTime = sessionIdAndCadreIdAndTimeMap.get(sesId).get(idNameVO.getId());
 											String ltTime = sessionIdAndLateTimeMap.get(sesId);
 											Date attendedTime = sdf.parse(attTime);
@@ -3383,17 +3338,206 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				}
 				
 			}else if(status.equalsIgnoreCase("late")){
+				//create a map which will contain only late cadre ids is a map.
+				Map<Long,Set<Long>> sessionIdAndLateCadresList = new HashMap<Long,Set<Long>>();
+				Set<Long> lateCadres = null;
+				Set<Long> allCadres = null;
+				Set<Long> allCadreOfBothSession = new HashSet<Long>();
+				if(sessionIdAndCadreList2 != null && sessionIdAndCadreList2.size() > 0){
+					for(Entry<Long,Set<Long>> entry : sessionIdAndCadreList2.entrySet()){
+						lateCadres = new HashSet<Long>();
+						allCadres = entry.getValue();
+						if(allCadres != null && allCadres.size() > 0){
+							lateCadres = new HashSet<Long>();
+							for(Long param : allCadres){
+								String attTime = sessionIdAndCadreIdAndTimeMap.get(entry.getKey()).get(param);
+								String ltTime = sessionIdAndLateTimeMap.get(entry.getKey());
+								Date attendedTime = sdf.parse(attTime);
+								Date lateTime = sdf.parse(ltTime);     
+								if(attendedTime.compareTo(lateTime)>=0){//true -> late
+									lateCadres.add(param);
+								}    
+							}
+						}
+						if(lateCadres.size() > 0){
+							sessionIdAndLateCadresList.put(entry.getKey(),lateCadres);
+						}
+					}
+				}
 				
-			}else if(status.equalsIgnoreCase("absent")){
-				
+				if(sessionIdAndLateCadresList != null && sessionIdAndLateCadresList.size() > 0){
+					for(Entry<Long,Set<Long>> entry : sessionIdAndLateCadresList.entrySet()){
+						allCadreOfBothSession.addAll(entry.getValue());
+					}
+					filterIdSet = new HashSet<Long>();
+					getCommonCadreIdInAllSession(allCadreOfBothSession,sessionIdAndLateCadresList, filterIdSet);
+				}
+				if(filterIdSet.size() > 0){
+						if(lateCadres != null && lateCadres.size() > 0){
+							membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(filterIdSet));
+							if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
+								for(Object[] obj : membersDesignationDtlsList){
+									noOfPresent = 0L;
+									statusIdAndStausMap = new HashMap<Long,String>();
+									cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+									idNameVO = idAndMemberDtlsMap.get(cadreId);
+									if(idNameVO != null){
+										String sts = idNameVO.getStatus();
+										if(obj[2] != null){
+											sts = sts+","+obj[2].toString();
+											idNameVO.setStatus(sts);
+											idAndMemberDtlsMap.put(cadreId, idNameVO);
+										}else{
+											if(obj[3] != null){
+												sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+												idNameVO.setStatus(sts);
+												idAndMemberDtlsMap.put(cadreId, idNameVO);
+											}
+										}  
+										
+									}else{
+										idNameVO = new IdNameVO();
+										idNameVO.setId(cadreId); //cadreId
+										idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+										idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : "");  
+										if(obj[2] != null){
+											idNameVO.setStatus(obj[2].toString());
+										}else if(obj[3] != null){
+											idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+										}else{
+											idNameVO.setStatus("");
+										}
+										idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+										idAndMemberDtlsMap.put(cadreId, idNameVO); 
+									}
+									//push session wise attendance here by taking cadre Id  
+									if(sessionIdList != null && sessionIdList.size() > 0){
+										for(Long sesId : sessionIdList){
+											if(sessionIdAndCadreList.get(sesId) != null && sessionIdAndCadreList.get(sesId).size() > 0){
+												if(sessionIdAndCadreList.get(sesId).contains(idNameVO.getId())){
+													noOfPresent = noOfPresent + 1;
+													String attTime = sessionIdAndCadreIdAndTimeMap.get(sesId).get(idNameVO.getId());
+													String ltTime = sessionIdAndLateTimeMap.get(sesId);
+													Date attendedTime = sdf.parse(attTime);
+													Date lateTime = sdf.parse(ltTime);
+													if(attendedTime.compareTo(lateTime)>=0){//true -> late
+														statusIdAndStausMap.put(sesId, "late");  
+													}else{
+														statusIdAndStausMap.put(sesId, "intime");  
+													}
+												}else{
+													statusIdAndStausMap.put(sesId, "absent");
+												}
+											}else{
+												statusIdAndStausMap.put(sesId, "absent");
+											}
+										}
+									}
+									//push attendance dtls
+									if(statusIdAndStausMap.size() > 0){
+										statusList = new ArrayList<String>();
+										statusList.add(String.valueOf(noOfPresent));
+										for(Long param : sessionIdList){
+											statusList.add(statusIdAndStausMap.get(param));
+										}
+									}
+									idNameVO.setSessionList(statusList);
+								}
+							}
+						}
+						idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());  
+					}
+			}else if(status.equalsIgnoreCase("absent")){ //totalInviteesCadreList   
+				Set<Long> uniqueInviteAttendedCadreSet = new HashSet<Long>();
+				if(sessionIdAndinviteAttendedCadreList != null && sessionIdAndinviteAttendedCadreList.size() > 0){
+					for(Entry<Long,Set<Long>> entry : sessionIdAndinviteAttendedCadreList.entrySet()){
+						uniqueInviteAttendedCadreSet.addAll(entry.getValue());
+					}	
+				}
+				//total invite absent cadre is totalInviteesCadreList
+				totalInviteesCadreList.removeAll(uniqueInviteAttendedCadreSet);
+				if(totalInviteesCadreList.size() > 0){
+					if(totalInviteesCadreList != null && totalInviteesCadreList.size() > 0){
+						membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(totalInviteesCadreList));
+						if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
+							for(Object[] obj : membersDesignationDtlsList){
+								noOfPresent = 0L;
+								statusIdAndStausMap = new HashMap<Long,String>();  
+								cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+								idNameVO = idAndMemberDtlsMap.get(cadreId);
+								if(idNameVO != null){
+									String sts = idNameVO.getStatus();
+									if(obj[2] != null){
+										sts = sts+","+obj[2].toString();
+										idNameVO.setStatus(sts);
+										idAndMemberDtlsMap.put(cadreId, idNameVO);
+									}else{
+										if(obj[3] != null){
+											sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+											idNameVO.setStatus(sts);
+											idAndMemberDtlsMap.put(cadreId, idNameVO);
+										}
+									}  
+									
+								}else{
+									idNameVO = new IdNameVO();
+									idNameVO.setId(cadreId); //cadreId
+									idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+									idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : "");  
+									if(obj[2] != null){
+										idNameVO.setStatus(obj[2].toString());
+									}else if(obj[3] != null){
+										idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+									}else{
+										idNameVO.setStatus("");
+									}
+									idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+									idAndMemberDtlsMap.put(cadreId, idNameVO); 
+								}
+								//push session wise attendance here by taking cadre Id  
+								if(sessionIdList != null && sessionIdList.size() > 0){
+									for(Long sesId : sessionIdList){
+										if(sessionIdAndCadreList.get(sesId) != null && sessionIdAndCadreList.get(sesId).size() > 0){
+											if(sessionIdAndCadreList.get(sesId).contains(idNameVO.getId())){
+												noOfPresent = noOfPresent + 1;  
+												String attTime = sessionIdAndCadreIdAndTimeMap.get(sesId).get(idNameVO.getId());
+												String ltTime = sessionIdAndLateTimeMap.get(sesId);
+												Date attendedTime = sdf.parse(attTime);
+												Date lateTime = sdf.parse(ltTime);
+												if(attendedTime.compareTo(lateTime)>=0){//true -> late
+													statusIdAndStausMap.put(sesId, "late");  
+												}else{
+													statusIdAndStausMap.put(sesId, "intime");  
+												}
+											}else{
+												statusIdAndStausMap.put(sesId, "absent");
+											}
+										}else{
+											statusIdAndStausMap.put(sesId, "absent");
+										}
+									}
+								}
+								//push attendance dtls
+								if(statusIdAndStausMap.size() > 0){
+									statusList = new ArrayList<String>();
+									statusList.add(String.valueOf(noOfPresent));
+									for(Long param : sessionIdList){
+										statusList.add(statusIdAndStausMap.get(param));
+									}
+								}
+								idNameVO.setSessionList(statusList);
+							}
+						}
+					}
+					idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());  
+				}
 			}
-			
-			return idNameVOs;
+			return idNameVOs;  
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("exception occurred in getMeetingMemberDtls()", e);
 		}
-		return null;
+		return null;    
 	}
 	/**
 	* @param Long partyMeetingMainTypeId
