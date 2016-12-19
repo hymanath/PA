@@ -1483,6 +1483,7 @@
 	 	<property name="constituencyDAO" ref="constituencyDAO" />	
 	 	<property name="paymentGatewayService" ref="paymentGatewayService" />			
 		<property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService" />
+		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService" />
 	  </bean>
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
