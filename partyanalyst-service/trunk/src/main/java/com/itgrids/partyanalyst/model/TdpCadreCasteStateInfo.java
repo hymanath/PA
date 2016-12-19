@@ -30,6 +30,7 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	private Long tdpCadreCasteStateInfoId;
 	private Long stateId;
     private Long districtId;
+    private Long constituencyId;
 	private Long casteStateId;
 	private Long locationScopeId;
 	private Long locationValue;
@@ -46,7 +47,8 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	private CasteState casteState;
 	private State  state;
 	private District district;
-
+	private Constituency constituency;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_caste_state_info_id", unique = true, nullable = false)
@@ -214,6 +216,28 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+
+	@Column(name = "constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
 	
 	
 }
