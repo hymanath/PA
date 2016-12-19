@@ -39,9 +39,6 @@ public class TdpCadreAgeInfoTemp extends BaseModel implements Serializable {
 	private String renewalCadrePercent;
 	private Date insertedTime;
 	private Long constituencyId;
-	
-    private VoterAgeRange voterAgeRange;
-    private Constituency constituency;
     
     @Id
   	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -140,28 +137,5 @@ public class TdpCadreAgeInfoTemp extends BaseModel implements Serializable {
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="age_range_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public VoterAgeRange getVoterAgeRange() {
-		return voterAgeRange;
-	}
-	public void setVoterAgeRange(VoterAgeRange voterAgeRange) {
-		this.voterAgeRange = voterAgeRange;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Constituency getConstituency() {
-		return constituency;
-	}
-	public void setConstituency(Constituency constituency) {
-		this.constituency = constituency;
-	}
-   
 	
 }
