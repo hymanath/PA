@@ -748,7 +748,6 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(attrMainTypeMeetingId,meetingTypeId);
-		   // getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(attrMainTypeMeetingId,meetingTypeId);//santosh			
 		}
 	});
 	 $(document).on("click",".statelevelSessionMeeting",function(){
@@ -789,10 +788,6 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			//getstatelevelSessionMettings();
-			var attrMainTypeMeetingId = 3;
-			var meetingTypeId = "26";
-			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(attrMainTypeMeetingId,meetingTypeId)
-			
 		}
 		
 	}); 
@@ -822,8 +817,7 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);
-            //getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIdsString);//santosh			
-		}
+       }
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
 		$(this).addClass("unExpandBlock");
@@ -2125,6 +2119,19 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 	
 }
 
+// 
+$(document).on("click",".specialMeetingCls",function(){
+	var partyMeetingId = $(this).attr("party_meetingId");
+	var partyMeetingTypeId = $(this).attr("party_meeting_type_id");
+	var partyMeetingMainTypeId = 3;
+	var partyMeetingIdArr = [];
+	    partyMeetingIdArr.push(partyMeetingId);
+	getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
+	
+});
+function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
+	var partyMeetingTypeIdsString = 0;
+	var count =0;
 function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
 	//for(var i in result){
 		var partyMeetingArr = result[0].subList1[0];
@@ -3789,317 +3796,10 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   
 	   $("#specialMeetingsPerformanceOverViewDiv").html(str);
    }
-	 function getstatelevelSessionMettings(){
-		var str='';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-    
-			    str+='<h5 class="text-capital">State Committee</h5>'; 
-				str+='<div class="row">';
-					str+='<div class="col-md-2 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr" style="height:120px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr1" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr2" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr3" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
-				str+='</div>';
-				
-    
-     str+='</div>'
-
-  $("#stateLevelMeetingBlockId").html(str);
-  
-		$(function () {
-			var chart;
-			$('#stateLevelMeetingBlockIdGr').highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,	
-					categories: ['Inv']
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					stackLabels: {
-						enabled: false,
-						style: {
-							fontWeight: 'bold',
-							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
-					}
-				},
-				legend: {
-					enabled: false,
-					align: 'right',
-					x: -30,
-					verticalAlign: 'top',
-					y: 25,
-					floating: true,
-					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-					borderColor: '#CCC',
-					borderWidth: 1,
-					shadow: false
-				},
-				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
-						
-				},
-				plotOptions: {
-					column: {
-						
-						dataLabels: {
-							align: 'top',
-							enabled: true,
-							//rotation: 270,
-							x: 0,
-							y: 0
-						}
-					}
-				},
-				series: [{
-					name: 'John',
-					data: [15]
-				}]
-			});
-		});
-		
-		$(function () {
-			$('#stateLevelMeetingBlockIdGr1').highcharts({
-				colors: ['#0066DC','#320199','#660032'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,	
-					categories: ['Attended']
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					stackLabels: {
-						enabled: false,
-						style: {
-							fontWeight: 'bold',
-							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
-					}
-				},
-				legend: {
-					enabled: false,
-					align: 'right',
-					x: -30,
-					verticalAlign: 'top',
-					y: 25,
-					floating: true,
-					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-					borderColor: '#CCC',
-					borderWidth: 1,
-					shadow: false
-				},
-				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
-						
-				},
-				plotOptions: {
-					column: {
-						
-						dataLabels: {
-							align: 'top',
-							enabled: true,
-							//rotation: 270,
-							x: 0,
-							y: 0
-						}
-					}
-				},
-				series: [{
-					name: 'John',
-					data: [15]
-				},{
-					name: 'John',
-					data: [6]
-				},{
-					name: 'John',
-					data: [12]
-				}]
-			});
-		});
-		$(function () {
-			$('#stateLevelMeetingBlockIdGr2').highcharts({
-				colors: ['#0066DC','#320199','#660032'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,	
-					categories: ['Late']
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					stackLabels: {
-						enabled: false,
-						style: {
-							fontWeight: 'bold',
-							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
-					}
-				},
-				legend: {
-					enabled: false,
-					align: 'right',
-					x: -30,
-					verticalAlign: 'top',
-					y: 25,
-					floating: true,
-					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-					borderColor: '#CCC',
-					borderWidth: 1,
-					shadow: false
-				},
-				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
-						
-				},
-				plotOptions: {
-					column: {
-						
-						dataLabels: {
-							align: 'top',
-							enabled: true,
-							//rotation: 270,
-							x: 0,
-							y: 0
-						}
-					}
-				},
-				series: [{
-					name: 'John',
-					data: [15]
-				},{
-					name: 'John',
-					data: [5]
-				},{
-					name: 'John',
-					data: [9]
-				}]
-			});
-		});
-		$(function () {
-			$('#stateLevelMeetingBlockIdGr3').highcharts({
-				colors: ['#0066DC','#320199','#660032'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,	
-					categories: ['Absent']
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					stackLabels: {
-						enabled: false,
-						style: {
-							fontWeight: 'bold',
-							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
-					}
-				},
-				legend: {
-					enabled: false,
-					align: 'right',
-					x: -30,
-					verticalAlign: 'top',
-					y: 25,
-					floating: true,
-					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-					borderColor: '#CCC',
-					borderWidth: 1,
-					shadow: false
-				},
-				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
-						
-				},
-				plotOptions: {
-					column: {
-						
-						dataLabels: {
-							align: 'top',
-							enabled: true,
-							//rotation: 270,
-							x: 0,
-							y: 0
-						}
-					}
-				},
-				series: [{
-					name: 'John',
-					data: [15]
-				},{
-					name: 'John',
-					data: [7]
-				},{
-					name: 'John',
-					data: [3]
-				}]
-			});
-		});
-	} 
-	
   /* Meeting Comment Block end */
   
   
-  function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIdsString){
+  function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIdsString,partyMeetingId){
 	$("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
@@ -4112,8 +3812,6 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		fromDateStr = datesArr[0]; 
 		toDateStr = datesArr[1]; 
 	}
-	var partyMeetingId = [];
-	partyMeetingId.push(445220)
 	var jsObj ={ 
 				 partyMeetingMainTypeId : partyMeetingMainTypeId,
 				 state : state,
@@ -4139,8 +3837,6 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	var str='';
 	
-	
-	
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 ">'; 
 	str+='<div class="row">';
 		str+='<ul class="list-inline pull-right">'; 
@@ -4164,6 +3860,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	str+='</div>'; 
 	
 	for(var i in result){
+		if(result[i].invitedCount == 0)
+			continue
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<h5 class="text-capital">'+result[i].name+'</h5>'; 
 			str+='<div class="row">';
@@ -4188,7 +3886,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	
   $("#stateLevelMeetingBlockId").html(str);
   for(var i in result){
-	
+	if(result[i].invitedCount == 0)
+		continue
 	 var inviteeArr=[];  
 	 var inviteeNameArray=[];
 	 inviteeArr.push(result[i].invitedCount);
@@ -4206,7 +3905,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			    lateAttendedArr.push({name:'All - Sessions',data:[sessionList[j].allSessionLateAttendedCnt]});	  
 			    absentArr.push({name:'All - Sessions',data:[sessionList[j].allSessionAbsentCnt]});	  
 			  }
-			    attendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].attendedCount]});	  
+			    attendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].invitteeAttendedCount]});	  
 			    lateAttendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].lateAttendedCnt]});	  
 			    absentArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].notAttendedCount]});	  
 			  
