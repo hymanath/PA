@@ -33,11 +33,13 @@ import com.itgrids.partyanalyst.dao.ITdpCadreAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreAgeInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteStateInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCasteStateInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceTypeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreGenderInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreGenderInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTempDAO;
@@ -67,8 +69,10 @@ import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.model.CardPrintValidation;
 import com.itgrids.partyanalyst.model.CardPrintValidationRejectReason;
 import com.itgrids.partyanalyst.model.TdpCadreAgeInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreCasteStateInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreDataSourceTypeInfo;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreGenderInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp1;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
@@ -121,7 +125,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
     private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
     private ITdpCadreAgeInfoTempDAO tdpCadreAgeInfoTempDAO;
-    
+    private ITdpCadreGenderInfoTempDAO tdpCadreGenderInfoTempDAO;
+    private ITdpCadreCasteStateInfoTempDAO tdpCadreCasteStateInfoTempDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -275,6 +280,17 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreAgeInfoTempDAO(
 			ITdpCadreAgeInfoTempDAO tdpCadreAgeInfoTempDAO) {
 		this.tdpCadreAgeInfoTempDAO = tdpCadreAgeInfoTempDAO;
+	}
+	
+	
+	public void setTdpCadreGenderInfoTempDAO(
+			ITdpCadreGenderInfoTempDAO tdpCadreGenderInfoTempDAO) {
+		this.tdpCadreGenderInfoTempDAO = tdpCadreGenderInfoTempDAO;
+	}
+	
+	public void setTdpCadreCasteStateInfoTempDAO(
+			ITdpCadreCasteStateInfoTempDAO tdpCadreCasteStateInfoTempDAO) {
+		this.tdpCadreCasteStateInfoTempDAO = tdpCadreCasteStateInfoTempDAO;
 	}
 	//Business methods
 	/**
@@ -5153,6 +5169,584 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			}
 	   }
 	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Pushing tdpCadre data low level based on gender.
+	  *  @since 19-DECEMBER-2016
+	  */   
+	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByGender(){
+		
+		   ResultStatus rs = null;
+		   try{
+			   
+			   TdpCadreLocationInfoVO totalDataVO = new TdpCadreLocationInfoVO();
+			   getLevelWiseDataByGender(totalDataVO);
+			   
+			   long tempStartTime = System.currentTimeMillis();
+			   rs =  saveTdpCadreDataToIntermediateTempByLowLevelByGender(totalDataVO);
+			   Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
+			   
+			   
+			   List<Long> locationScopeIds = new ArrayList<Long>();
+			   locationScopeIds.add(5L);
+			   locationScopeIds.add(6L);
+			   locationScopeIds.add(7L);
+			   locationScopeIds.add(8L);
+			   locationScopeIds.add(9L);
+			   
+			    long intermediateStartTime = System.currentTimeMillis();
+			    int deletedRecords =  tdpCadreGenderInfoDAO.deleteAllRecords(locationScopeIds);
+			    int insertedRecordsCount = tdpCadreGenderInfoDAO.insertTdpCadreLocationInfoUpToLowLevelByGender();
+			    Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+			    LOG.error("gender low level temp insert time is : " + tempSeconds  + " seconds && gender low level intermediate insert time is :"+interSeconds + " seconds" );
+			   
+		  }catch(Exception e){
+			  LOG.error("Exception raised in pushTdpCadreDataToIntermediateByLowLevelByGender() in CadreRegistrationServiceNew class", e);
+		  }
+		   return rs;
+	   }
 	
+	  public void getLevelWiseDataByGender(TdpCadreLocationInfoVO finalVO){
+	 	  
+		   try{ 
+			    //tehsil
+			       List<TdpCadreLocationInfoVO> tehsilList = levelWiseTdpCadreDataByGender("tehsil");
+			       finalVO.setTehsilList(tehsilList);
+			    
+			 //leb
+			      List<TdpCadreLocationInfoVO> lebList = levelWiseTdpCadreDataByGender("leb");
+			      finalVO.setAssemblyList(lebList);
+			    
+			  //panchayat
+			      List<TdpCadreLocationInfoVO> panchayatList = levelWiseTdpCadreDataByGender("panchayat");
+			      finalVO.setParliamentList(panchayatList);
+			      
+			   //ward
+			      List<TdpCadreLocationInfoVO> wardList = levelWiseTdpCadreDataByGender("ward");
+			      finalVO.setDistrictList(wardList);
+			      
+			    //booth
+			      List<TdpCadreLocationInfoVO> boothList = levelWiseTdpCadreDataByGender("booth");
+			      finalVO.setStateList(boothList);
+			   
+		   }catch(Exception e){
+			   LOG.error("Exception raised in getLevelWiseDataByGender() in CadreRegistrationServiceNew class", e);
+		   }
+	   }
+	  public List<TdpCadreLocationInfoVO> levelWiseTdpCadreDataByGender(String levelType){
+			
+			List<TdpCadreLocationInfoVO> finalList = null;
+			Map<Long,TdpCadreLocationInfoVO> levelMap = null;
+			try{
+				
+				//calc 2014 cadre data
+				Map<String,Long> previousCadreMap = new HashMap<String, Long>(0);
+				
+				if(!levelType.equalsIgnoreCase("booth")){
+					List<Object[]> prevList = tdpCadreDAO.levelWiseTdpCadreDataByGender(levelType , 3L);
+					if( prevList != null && prevList.size() > 0){
+						for(Object[] obj : prevList){
+							if(obj[1] != null && obj[2] !=null && obj[3] != null){
+								String key = obj[1].toString() + "_" + obj[2].toString();
+								previousCadreMap.put(key, (Long)obj[3]);
+							}
+						}
+					}
+				}
+				
+				 Long locationscopeId = getLocationScopeIdByLevelType(levelType);
+				//2016 Total  Records Count.
+				 List<Object[]> totalList = tdpCadreDAO.levelWiseTdpCadreDataByGender(levelType,4L);
+				 if(totalList != null && totalList.size() > 0){ 
+			       
+			    	  levelMap = new HashMap<Long, TdpCadreLocationInfoVO>();
+			    	  for(Object[] obj : totalList ){ 
+			    	   
+			    		  TdpCadreLocationInfoVO locationVO = null;
+			    		  if(obj[1]!=null)//tehsilId
+			    		  {
+			    			  locationVO = levelMap.get((Long)obj[1]);
+			    			  if(locationVO == null)
+			    			  {
+			    				  locationVO = new TdpCadreLocationInfoVO();
+			    				  locationVO.setId((Long)obj[1]);//locationid
+			    				  locationVO.setConstituencyId(obj[0]!=null?(Long)obj[0]:0l);
+			    				  locationVO.setLocationScopeId(locationscopeId);
+			    				  
+								  levelMap.put(locationVO.getId(),locationVO);
+			    			  }
+			    			  locationVO = levelMap.get((Long)obj[1]);
+			    			  if(locationVO.getSubMap1() == null ){
+			    				  locationVO.setSubMap1(new HashMap<String, TdpCadreLocationInfoVO>(0)); 
+			    			  }
+			    			  if(obj[2]!=null){//gender
+			    				  TdpCadreLocationInfoVO genderVO = locationVO.getSubMap1().get(obj[2].toString());
+			    				  if(genderVO == null){
+			    					  genderVO = new TdpCadreLocationInfoVO();
+			    					  genderVO.setName(obj[2]!=null ? obj[2].toString() : "");
+			    					  //2016 counts
+			    					  genderVO.setCadre2016Records(obj[3]!=null ? (Long)obj[3]:0l);
+			    					  genderVO.setCadre2016NewRecords(genderVO.getCadre2016Records());
+			    					  //2014 counts
+				    				  String key = locationVO.getId() + "_" +genderVO.getName() ;
+									  Long previousCadreDataCount = previousCadreMap.get(key);
+									  if(previousCadreDataCount != null && previousCadreDataCount > 0l){
+										  genderVO.setCadreCount(previousCadreDataCount);
+									   }
+									  locationVO.getSubMap1().put(genderVO.getName(), genderVO);
+			    				  }
+			    			  }
+			    			  
+			    		  }
+			    	  }
+			      }
+				 
+				//Renewal Records
+			      List<Object[]> renewalList = tdpCadreDAO.levelWiseRenewalTdpCareDataByGender(levelType);
+			      if(renewalList != null && renewalList.size() > 0){
+			    	  for( Object[] obj : renewalList){
+			    		  if(obj[0] != null && obj[1]!=null ){//tehsilId
+			    			  TdpCadreLocationInfoVO locationVO = levelMap.get((Long)obj[0]);
+			    			  if(locationVO != null && locationVO.getSubMap1() != null ){
+			    				  TdpCadreLocationInfoVO genderVO = locationVO.getSubMap1().get(obj[1].toString());
+			    				  if(genderVO != null){
+			    					  genderVO.setCadre2016RenewalRecords(obj[2]!= null ? (Long)obj[2] : 0l);
+			    					  genderVO.setCadre2016NewRecords( genderVO.getCadre2016Records() - genderVO.getCadre2016RenewalRecords() );
+			    				  }
+			    			  }
+			    		  }
+			    	  }
+			      }
+				 
+			    //calculating percantage
+			      if(levelMap != null && levelMap.size() > 0)
+			      {
+			    	  for(Map.Entry<Long, TdpCadreLocationInfoVO> locationEntry : levelMap.entrySet()){
+			    	      
+			    		  Map<String ,TdpCadreLocationInfoVO > subMap1 = locationEntry.getValue().getSubMap1();
+			    		  if(subMap1 != null && subMap1.size() > 0){
+			    			  
+			    			  for(Map.Entry<String, TdpCadreLocationInfoVO> genderEntry : subMap1.entrySet()){
+			    				  TdpCadreLocationInfoVO genderVO = genderEntry.getValue();
+			    				  if(genderVO != null &&  genderVO.getCadre2016Records() != null && genderVO.getCadre2016Records() > 0l){
+			    					  genderVO.setCadre2016RenewalRecordsPerc( calcPercantage( genderVO.getCadre2016RenewalRecords() , genderVO.getCadre2016Records()) );
+			    					  genderVO.setCadre2016NewRecordsPerc( calcPercantage( genderVO.getCadre2016NewRecords() , genderVO.getCadre2016Records()) );
+				    			  }
+			    			  }
+			    			  locationEntry.getValue().setSubList(new ArrayList<TdpCadreLocationInfoVO>(subMap1.values()));
+			    			  subMap1.clear();
+			    		  }
+			    	  }
+			    	  finalList = new ArrayList<TdpCadreLocationInfoVO>(levelMap.values());
+			      }
+			}catch(Exception e){
+				LOG.error("Exception raised in levelWiseTdpCadreDataByGender() in CadreRegistrationServiceNew class", e);
+			}
+			return finalList;
+		}
+	  
+	  public ResultStatus saveTdpCadreDataToIntermediateTempByLowLevelByGender(final TdpCadreLocationInfoVO dataVO){
+		   
+			final ResultStatus rs = new ResultStatus();
+			
+			try {
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        	
+			        	if(dataVO != null){
+			        		
+			        		int deletedRecords = tdpCadreGenderInfoTempDAO.deleteAllRecords();
+						    Date currentTime = dateUtilService.getCurrentDateAndTime();
+				        		
+					    	if(dataVO.getTehsilList() != null && dataVO.getTehsilList().size() > 0){//tehsil
+					    		savingServiceLowLevelByGender(dataVO.getTehsilList(),currentTime);
+					    	}
+					    	
+					    	if(dataVO.getAssemblyList() != null && dataVO.getAssemblyList().size() > 0){//leb
+					    		savingServiceLowLevelByGender(dataVO.getAssemblyList(),currentTime);
+					    	}
+					    	
+			        		if(dataVO.getParliamentList() != null && dataVO.getParliamentList().size() > 0){//panchayat
+			        			savingServiceLowLevelByGender(dataVO.getParliamentList(),currentTime);
+			        		}
+			        		
+			        		if(dataVO.getDistrictList() != null && dataVO.getDistrictList().size() > 0){//ward
+			        			savingServiceLowLevelByGender(dataVO.getDistrictList(),currentTime);
+			        		}
+			        		if(dataVO.getStateList() != null && dataVO.getStateList().size() > 0){//booth
+			        			savingServiceLowLevelByGender(dataVO.getStateList(),currentTime);
+			        		}
+				        	
+			        	}
+			        	   
+				          rs.setResultCode(1);
+				          rs.setMessage("success");
+			         }
+			   });
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at saveTdpCadreDataToIntermediateTempByLowLevelByGender", e);
+				rs.setResultCode(0);
+				rs.setMessage("failure");
+			}
+			return rs;
+		}
+	  public void savingServiceLowLevelByGender(List<TdpCadreLocationInfoVO> list , Date currentTime){
+		   	
+		   	try{
+					if( list != null && list.size() > 0)
+					{	
+						int i= 0;
+						for(TdpCadreLocationInfoVO locationVO : list  )
+						{	 
+							
+							 if(locationVO != null && locationVO.getSubList() != null && locationVO.getSubList().size() > 0){
+								
+								 for(TdpCadreLocationInfoVO genderVO : locationVO.getSubList()){
+									 
+									 i = i + 1;
+									 
+									 TdpCadreGenderInfoTemp info = new TdpCadreGenderInfoTemp();
+					    			  
+					    			  info.setLocationScopeId(locationVO.getLocationScopeId());
+					    			  info.setLocationValue(locationVO.getId());
+					    			  info.setConstituencyId(locationVO.getConstituencyId());
+					    			  
+					    			  if(genderVO.getName() != null && genderVO.getName().trim().length() > 0){
+					    				  info.setGender(genderVO.getName());
+					    			  }
+					    			  
+					    			  if(genderVO.getCadreCount() != null && genderVO.getCadreCount() > 0l){
+					    				  info.setCadre2014(genderVO.getCadreCount());  
+					    			  }
+					    			  
+					    			  if( genderVO.getCadre2016Records() != null && genderVO.getCadre2016Records() > 0l){
+					    				  info.setCadre2016(genderVO.getCadre2016Records()); 
+					    			  }
+					    			  
+					    			  if( genderVO.getCadre2016RenewalRecords() != null && genderVO.getCadre2016RenewalRecords() > 0l){
+					    				  info.setRenewalCadre(genderVO.getCadre2016RenewalRecords()); 
+					    			  }
+					    			  if(genderVO.getCadre2016RenewalRecordsPerc() != null && genderVO.getCadre2016RenewalRecordsPerc() > 0l){
+					    				  info.setRenewalCadrePercent(genderVO.getCadre2016RenewalRecordsPerc().toString());
+					    			  }
+					    			  
+					    			  if( genderVO.getCadre2016NewRecords() != null && genderVO.getCadre2016NewRecords() > 0l){
+					    				  info.setNewCadre(genderVO.getCadre2016NewRecords()); 
+					    			  }
+					    			  if(genderVO.getCadre2016NewRecordsPerc() != null && genderVO.getCadre2016NewRecordsPerc() > 0l){
+					    				  info.setNewCadrePercent(genderVO.getCadre2016NewRecordsPerc().toString());
+					    			  }
+					    			  
+					    			  info.setInsertedTime(currentTime);
+					    			  
+					    			  tdpCadreGenderInfoTempDAO.save(info);
+					    			  
+					    			  if( i % 100 == 0 ) { 
+					    			       //flush a batch of inserts and release memory:
+					    				  tdpCadreDAO.flushAndclearSession();
+					    			  }
+								 }
+							 }
+							
+				    	 }
+					};
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingServiceLowLevelByGender", e);
+				}
+		   }
+	  
+	  
+	  /**  
+		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+		  *  Pushing tdpCadre data low level based on Caste State.
+		  *  @since 19-DECEMBER-2016
+		  */
+		public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByCasteState(){
+			
+			   ResultStatus rs = null;
+			   try{
+				   
+				   TdpCadreLocationInfoVO totalDataVO = new TdpCadreLocationInfoVO();
+				   getLevelWiseDataByCasteState(totalDataVO);
+				   
+				   long tempStartTime = System.currentTimeMillis();
+				   rs =  saveTdpCadreDataToIntermediateTempByLowLevelByCasteState(totalDataVO);
+				   Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
+				   
+				   
+				   List<Long> locationScopeIds = new ArrayList<Long>();
+				   locationScopeIds.add(5L);
+				   locationScopeIds.add(6L);
+				   locationScopeIds.add(7L);
+				   locationScopeIds.add(8L);
+				   locationScopeIds.add(9L);
+				   
+				    long intermediateStartTime = System.currentTimeMillis();
+				    int deletedRecords =  tdpCadreCasteStateInfoDAO.deleteAllRecords(locationScopeIds);
+				    int insertedRecordsCount = tdpCadreCasteStateInfoDAO.insertTdpCadreLocationInfoUpToLowLevelByCasteState();
+				    Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+				    LOG.error("castestate low level temp insert time is : " + tempSeconds  + " seconds && castestate low level intermediate insert time is :"+interSeconds + " seconds" );
+				   
+			  }catch(Exception e){
+				  LOG.error("Exception raised in pushTdpCadreDataToIntermediateByLowLevelByCasteState() in CadreRegistrationServiceNew class", e);
+			  }
+			   return rs;
+		   }
+		
+		public void getLevelWiseDataByCasteState(TdpCadreLocationInfoVO finalVO){
+			  
+			   try{ 
+				    //tehsil
+				       List<TdpCadreLocationInfoVO> tehsilList = levelWiseTdpCadreDataByCasteState("tehsil");
+				       finalVO.setTehsilList(tehsilList);
+				    
+				 //leb
+				      List<TdpCadreLocationInfoVO> lebList = levelWiseTdpCadreDataByCasteState("leb");
+				      finalVO.setAssemblyList(lebList);
+				    
+				  //panchayat
+				      List<TdpCadreLocationInfoVO> panchayatList = levelWiseTdpCadreDataByCasteState("panchayat");
+				      finalVO.setParliamentList(panchayatList);
+				      
+				   //ward
+				      List<TdpCadreLocationInfoVO> wardList = levelWiseTdpCadreDataByCasteState("ward");
+				      finalVO.setDistrictList(wardList);
+				      
+				    //booth
+				      List<TdpCadreLocationInfoVO> boothList = levelWiseTdpCadreDataByCasteState("booth");
+				      finalVO.setStateList(boothList);
+				   
+			   }catch(Exception e){
+				   LOG.error("Exception raised in getLevelWiseDataByCasteState() in CadreRegistrationServiceNew class", e);
+			   }
+		   }
+		
+		
+		public List<TdpCadreLocationInfoVO> levelWiseTdpCadreDataByCasteState(String levelType){
+			
+			List<TdpCadreLocationInfoVO> finalList = null;
+			Map<Long,TdpCadreLocationInfoVO> levelMap = null;
+			try{
+				
+				//calc 2014 cadre data
+				Map<String,Long> previousCadreMap = new HashMap<String, Long>(0);
+				
+				if(!levelType.equalsIgnoreCase("booth")){
+					List<Object[]> prevList = tdpCadreDAO.levelWiseTdpCadreDataByCasteState(levelType , 3L);
+					if( prevList != null && prevList.size() > 0){
+						for(Object[] obj : prevList){
+							if(obj[1] != null && obj[2] !=null && obj[3] != null){
+								String key = obj[1].toString() + "_" + obj[2].toString();
+								previousCadreMap.put(key, (Long)obj[3]);
+							}
+						}
+					}
+				}
+				
+				 Long locationscopeId = getLocationScopeIdByLevelType(levelType);
+				//2016 Total  Records Count.
+				 List<Object[]> totalList = tdpCadreDAO.levelWiseTdpCadreDataByCasteState(levelType,4L);
+				 if(totalList != null && totalList.size() > 0){ 
+			       
+			    	  levelMap = new HashMap<Long, TdpCadreLocationInfoVO>();
+			    	  for(Object[] obj : totalList ){ 
+			    	   
+			    		  TdpCadreLocationInfoVO locationVO = null;
+			    		  if(obj[1]!=null)//tehsilId
+			    		  {
+			    			  locationVO = levelMap.get((Long)obj[1]);
+			    			  if(locationVO == null)
+			    			  {
+			    				  locationVO = new TdpCadreLocationInfoVO();
+			    				  locationVO.setId((Long)obj[1]);//locationid
+			    				  locationVO.setConstituencyId(obj[0]!=null?(Long)obj[0]:0l);
+			    				  locationVO.setLocationScopeId(locationscopeId);
+			    				  
+								  levelMap.put(locationVO.getId(),locationVO);
+			    			  }
+			    			  locationVO = levelMap.get((Long)obj[1]);
+			    			  if(locationVO.getSubMap() == null ){
+			    				  locationVO.setSubMap(new HashMap<Long, TdpCadreLocationInfoVO>(0)); 
+			    			  }
+			    			  if(obj[2]!=null){//casteStateId
+			    				  TdpCadreLocationInfoVO casteStateVO = locationVO.getSubMap().get((Long)obj[2]);
+			    				  if(casteStateVO == null){
+			    					  casteStateVO = new TdpCadreLocationInfoVO();
+			    					  casteStateVO.setId((Long)obj[2]);
+			    					  //2016 counts
+			    					  casteStateVO.setCadre2016Records(obj[3]!=null ? (Long)obj[3]:0l);
+			    					  casteStateVO.setCadre2016NewRecords(casteStateVO.getCadre2016Records());
+			    					  //2014 counts
+				    				  String key = locationVO.getId() + "_" +casteStateVO.getId() ;
+									  Long previousCadreDataCount = previousCadreMap.get(key);
+									  if(previousCadreDataCount != null && previousCadreDataCount > 0l){
+										  casteStateVO.setCadreCount(previousCadreDataCount);
+									   }
+									  locationVO.getSubMap().put(casteStateVO.getId(), casteStateVO);
+			    				  }
+			    			  }
+			    			  
+			    		  }
+			    	  }
+			      }
+				 
+				//Renewal Records
+			      List<Object[]> renewalList = tdpCadreDAO.levelWiseRenewalTdpCareDataByCasteState(levelType);
+			      if(renewalList != null && renewalList.size() > 0){
+			    	  for( Object[] obj : renewalList){
+			    		  if(obj[0] != null && obj[1]!=null ){//tehsilId
+			    			  TdpCadreLocationInfoVO locationVO = levelMap.get((Long)obj[0]);
+			    			  if(locationVO != null && locationVO.getSubMap() != null ){
+			    				  TdpCadreLocationInfoVO rangeVO = locationVO.getSubMap().get((Long)obj[1]);
+			    				  if(rangeVO != null){
+			    					  rangeVO.setCadre2016RenewalRecords(obj[2]!= null ? (Long)obj[2] : 0l);
+			    					  rangeVO.setCadre2016NewRecords( rangeVO.getCadre2016Records() - rangeVO.getCadre2016RenewalRecords() );
+			    				  }
+			    			  }
+			    		  }
+			    	  }
+			      }
+				 
+			    //calculating percantage
+			      if(levelMap != null && levelMap.size() > 0)
+			      {
+			    	  for(Map.Entry<Long, TdpCadreLocationInfoVO> locationEntry : levelMap.entrySet()){
+			    	      
+			    		  Map<Long ,TdpCadreLocationInfoVO > subMap = locationEntry.getValue().getSubMap();
+			    		  if(subMap != null && subMap.size() > 0){
+			    			  
+			    			  for(Map.Entry<Long, TdpCadreLocationInfoVO> casteStateEntry : subMap.entrySet()){
+			    				  TdpCadreLocationInfoVO casteStateVO = casteStateEntry.getValue();
+			    				  if(casteStateVO != null &&  casteStateVO.getCadre2016Records() != null && casteStateVO.getCadre2016Records() > 0l){
+			    					  casteStateVO.setCadre2016RenewalRecordsPerc( calcPercantage( casteStateVO.getCadre2016RenewalRecords() , casteStateVO.getCadre2016Records()) );
+			    					  casteStateVO.setCadre2016NewRecordsPerc( calcPercantage( casteStateVO.getCadre2016NewRecords() , casteStateVO.getCadre2016Records()) );
+				    			  }
+			    			  }
+			    			  locationEntry.getValue().setSubList(new ArrayList<TdpCadreLocationInfoVO>(subMap.values()));
+			    			  subMap.clear();
+			    		  }
+			    	  }
+			    	  finalList = new ArrayList<TdpCadreLocationInfoVO>(levelMap.values());
+			      }
+			}catch(Exception e){
+				LOG.error("Exception raised in levelWiseTdpCadreDataByCasteState() in CadreRegistrationServiceNew class", e);
+			}
+			return finalList;
+		}
+		
+		public ResultStatus saveTdpCadreDataToIntermediateTempByLowLevelByCasteState(final TdpCadreLocationInfoVO dataVO){
+			   
+			final ResultStatus rs = new ResultStatus();
+			
+			try {
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        	
+			        	if(dataVO != null){
+			        		
+			        		int deletedRecords = tdpCadreCasteStateInfoTempDAO.deleteAllRecords();
+						    Date currentTime = dateUtilService.getCurrentDateAndTime();
+				        		
+					    	if(dataVO.getTehsilList() != null && dataVO.getTehsilList().size() > 0){//tehsil
+					    		savingServiceLowLevelByCasteState(dataVO.getTehsilList(),currentTime);
+					    	}
+					    	
+					    	if(dataVO.getAssemblyList() != null && dataVO.getAssemblyList().size() > 0){//leb
+					    		savingServiceLowLevelByCasteState(dataVO.getAssemblyList(),currentTime);
+					    	}
+					    	
+			        		if(dataVO.getParliamentList() != null && dataVO.getParliamentList().size() > 0){//panchayat
+			        			savingServiceLowLevelByCasteState(dataVO.getParliamentList(),currentTime);
+			        		}
+			        		
+			        		if(dataVO.getDistrictList() != null && dataVO.getDistrictList().size() > 0){//ward
+			        			savingServiceLowLevelByCasteState(dataVO.getDistrictList(),currentTime);
+			        		}
+			        		if(dataVO.getStateList() != null && dataVO.getStateList().size() > 0){//booth
+			        			savingServiceLowLevelByCasteState(dataVO.getStateList(),currentTime);
+			        		}
+				        	
+			        	}
+			        	   
+				          rs.setResultCode(1);
+				          rs.setMessage("success");
+			         }
+			   });
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at saveTdpCadreDataToIntermediateTempByLowLevelByCasteState", e);
+				rs.setResultCode(0);
+				rs.setMessage("failure");
+			}
+			return rs;
+		}
+		
+		public void savingServiceLowLevelByCasteState(List<TdpCadreLocationInfoVO> list , Date currentTime){
+		   	
+		   	try{
+					if( list != null && list.size() > 0)
+					{	
+						int i= 0;
+						for(TdpCadreLocationInfoVO locationVO : list  )
+						{	 
+							
+							 if(locationVO != null && locationVO.getSubList() != null && locationVO.getSubList().size() > 0){
+								
+								 for(TdpCadreLocationInfoVO casteStateVO : locationVO.getSubList()){
+									 
+									 i = i + 1;
+									 
+									 TdpCadreCasteStateInfoTemp info = new TdpCadreCasteStateInfoTemp();
+					    			  
+					    			  info.setLocationScopeId(locationVO.getLocationScopeId());
+					    			  info.setLocationValue(locationVO.getId());
+					    			  info.setConstituencyId(locationVO.getConstituencyId());
+					    			  
+					    			  if(casteStateVO.getId() != null && casteStateVO.getId() > 0){
+					    				  info.setCasteStateId(casteStateVO.getId());
+					    			  }
+					    			  if(casteStateVO.getCadreCount() != null && casteStateVO.getCadreCount() > 0l){
+					    				  info.setCadre2014(casteStateVO.getCadreCount());  
+					    			  }
+					    			  
+					    			  if( casteStateVO.getCadre2016Records() != null && casteStateVO.getCadre2016Records() > 0l){
+					    				  info.setCadre2016(casteStateVO.getCadre2016Records()); 
+					    			  }
+					    			  
+					    			  if( casteStateVO.getCadre2016RenewalRecords() != null && casteStateVO.getCadre2016RenewalRecords() > 0l){
+					    				  info.setRenewalCadre(casteStateVO.getCadre2016RenewalRecords()); 
+					    			  }
+					    			  if(casteStateVO.getCadre2016RenewalRecordsPerc() != null && casteStateVO.getCadre2016RenewalRecordsPerc() > 0l){
+					    				  info.setRenewalCadrePercent(casteStateVO.getCadre2016RenewalRecordsPerc().toString());
+					    			  }
+					    			  
+					    			  if( casteStateVO.getCadre2016NewRecords() != null && casteStateVO.getCadre2016NewRecords() > 0l){
+					    				  info.setNewCadre(casteStateVO.getCadre2016NewRecords()); 
+					    			  }
+					    			  if(casteStateVO.getCadre2016NewRecordsPerc() != null && casteStateVO.getCadre2016NewRecordsPerc() > 0l){
+					    				  info.setNewCadrePercent(casteStateVO.getCadre2016NewRecordsPerc().toString());
+					    			  }
+					    			  
+					    			  info.setInsertedTime(currentTime);
+					    			  
+					    			  tdpCadreCasteStateInfoTempDAO.save(info);
+					    			  
+					    			  if( i % 100 == 0 ) { 
+					    			       //flush a batch of inserts and release memory:
+					    				  tdpCadreDAO.flushAndclearSession();
+					    			  }
+								 }
+							 }
+				    	 }
+					};
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingServiceLowLevelByCasteState", e);
+				}
+		   }
   	   
 }
