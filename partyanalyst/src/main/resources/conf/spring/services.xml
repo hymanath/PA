@@ -1724,13 +1724,30 @@
 	
 	<bean name="pushAgeWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="triggerAgeWiseTdpCadreCountsByLowLevel" />
-        <property name="cronExpression" value="0 13 19 * * ?" /> 
+        <property name="cronExpression" value="0 06 19 * * ?" /> 
 	</bean>
     <bean name="triggerAgeWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByAgeByLowLevel"/> 
 	</bean>
 	
+	<bean name="pushGenderWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerGenderWiseTdpCadreCountsByLowLevel" />
+        <property name="cronExpression" value="0 06 20 * * ?" /> 
+	</bean>
+    <bean name="triggerGenderWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByGenderByLowLevel"/> 
+	</bean>
+	
+	<bean name="pushCasteStateWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerCasteStateWiseTdpCadreCountsByLowLevel" />
+        <property name="cronExpression" value="0 06 21 * * ?" /> 
+	</bean>
+    <bean name="triggerCasteStateWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByCasteStateByLowLevel"/> 
+	</bean>
 	
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
@@ -1782,6 +1799,8 @@
 		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
 		    <ref bean="pushAgeWiseTdpCadreCounts"/> 
 		    <ref bean="pushAgeWiseTdpCadreCountsByLowLevel"/> 
+		    <ref bean="pushGenderWiseTdpCadreCountsByLowLevel"/>
+		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/>
         </list>
     	</property>
 	</bean>
@@ -3831,6 +3850,8 @@
 	   <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 	   <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 	   <property name="tdpCadreAgeInfoTempDAO" ref="tdpCadreAgeInfoTempDAO" />
+	   <property name="tdpCadreGenderInfoTempDAO" ref="tdpCadreGenderInfoTempDAO" />
+	   <property name="tdpCadreCasteStateInfoTempDAO" ref="tdpCadreCasteStateInfoTempDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
