@@ -2887,7 +2887,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			inputVO.setStateId(stateId);
 			inputVO.setPartyMeetingId(partyMeetingId);
 
-			List<Object[]> sessionInfo = partyMeetingSessionDAO.getSessionDetailsForPartyMeetings(new HashSet<Long>(){{ add(partyMeetingId);}});  
+			//List<Object[]> sessionInfo = partyMeetingSessionDAO.getSessionDetailsForPartyMeetings(new HashSet<Long>(){{ add(partyMeetingId);}});  
  
 			List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingId(inputVO);
 			List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingId(inputVO);
