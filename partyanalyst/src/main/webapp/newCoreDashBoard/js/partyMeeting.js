@@ -2146,10 +2146,9 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital text-success">Attended</p>';//late
 						 str+='</td>';
-					 
 						  if(result[i].subList1 != null && result[i].subList1.length>0){
 								str+='<td>';
-								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateattendedPerc+'</span></h4>';
+								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateattendedPerc+'%</span></h4>';
 								  str+='<p class="text-muted text-capital text_oragane">Late</p>';
 							 str+='</td>';  
 						  }
@@ -4078,30 +4077,62 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 }
 function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	var str='';
+	
+	
+	
+	str+='<div class="col-md-12 col-xs-12 col-sm-12 ">'; 
+	str+='<div class="row">';
+		str+='<ul class="list-inline pull-right">'; 
+			str+='<li class=""><span class="allSessionColor"></span> All Session</li>';
+			
+				if(result[0].subList1 != null && result[0].subList1.length > 0){
+					for(var j in result[0].subList1){
+						if(result[0].subList1[j].name == "Session - 1"){
+							str+='<li class="" ><span class="sessiononeColor"></span> '+result[0].subList1[j].name+'</li>'; 
+						}else if(result[0].subList1[j].name == "Session - 2"){
+							str+='<li class="" ><span class="sessiontwoColor"></span> '+result[0].subList1[j].name+'</li>'; 
+						}
+						
+					}
+				}
+						
+			
+			//str+='<li class="" ><span class="sessiontwoColor"></span> Session-2</li>'; 
+		str+='</ul>'; 
+	str+='</div>'; 
+	str+='</div>'; 
+	
 	for(var i in result){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			    str+='<h5 class="text-capital">'+result[i].name+'</h5>'; 
-				str+='<div class="row">';
-					str+='<div class="col-md-2 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-						str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width: 129px;"></div>';
-					str+='</div>';
+		str+='<h5 class="text-capital">'+result[i].name+'</h5>'; 
+			str+='<div class="row">';
+				str+='<div class="col-md-2 col-xs-12 col-sm-3">';
+					str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;"></div>';
 				str+='</div>';
+				
+				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+					str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 129px;"></div>';
+				str+='</div>';
+				
+				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+					str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 129px;"></div>';
+				str+='</div>';
+				
+				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+					str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width: 129px;"></div>';
+				str+='</div>';
+			str+='</div>';
      str+='</div>'	
 	}
+	
   $("#stateLevelMeetingBlockId").html(str);
   for(var i in result){
 	
 	 var inviteeArr=[];  
+	 var inviteeNameArray=[];
 	 inviteeArr.push(result[i].invitedCount);
+	 inviteeNameArray.push("Invitees");
+	  
 	  var sessionList = result[i].subList1;
 	   var attendedArr=[];
 	   var lateAttendedArr=[];
@@ -4120,7 +4151,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			  
 		  }
 	  }
-	  if(inviteeArr != 0 && inviteeArr.length > 0){
+	  //if(inviteeArr != 0 && inviteeArr.length > 0){
 		 
 		 $(function () {
 			var chart;
@@ -4135,9 +4166,17 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				xAxis: {
 					min: 0,
 					gridLineWidth: 0,
-					minorGridLineWidth: 0,	
-					categories: ['Inv']
+					minorGridLineWidth: 0,
+					
+					categories: inviteeNameArray,
+					labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 2)+'..';
+								},
+							}
 				},
+				
+			
 				yAxis: {
 					min: 0,
 					gridLineWidth: 0,
@@ -4166,8 +4205,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					shadow: false
 				},
 				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
+					headerFormat: '<b>All<br/>Session</b><br/>',
+					pointFormat: '{series.name}<br/>({point.y})',
 						
 				},
 				plotOptions: {
@@ -4177,9 +4216,16 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 							align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: 0,
-							y: 0
-						}
+							x: -10,
+							y: -10,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							},
+						},
 					}
 				},
 				series: [{
@@ -4188,7 +4234,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				}]
 			});
 		});  
-	  }
+	  //}
 	   if(attendedArr != 0 && attendedArr.length > 0){
 		 
 		$(function () {
@@ -4235,7 +4281,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				},
 				tooltip: {
 					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
+					pointFormat: '{series.name}({point.y})',
 						
 				},
 				plotOptions: {
@@ -4245,9 +4291,16 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 							align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: 0,
-							y: 0
-						}
+							x: -10,
+							y: -10,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							},
+						},
 					}
 				},
 				series: attendedArr
@@ -4301,7 +4354,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				},
 				tooltip: {
 					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}',
+					pointFormat: '{series.name}({point.y})',
 						
 				},
 				plotOptions: {
@@ -4311,9 +4364,16 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 							align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: 0,
-							y: 0
-						}
+							x: -10,
+							y: -10,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							},
+						},
 					}
 				},
 				series:lateAttendedArr 
@@ -4376,8 +4436,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 							align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: 0,
-							y: -5,
+							x: -10,
+							y: -10,
 							formatter: function() {
 								if (this.y === 0) {
 									return null;
@@ -4391,6 +4451,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				series: absentArr
 			});
 		});	
+		}else{
+			$('#stateLevelMeetingBlockIdGr3'+i).html("No Data Available")
 		}		
   }
 }
