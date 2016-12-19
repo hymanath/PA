@@ -31,6 +31,7 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	private String gender;
 	private Long stateId;
 	private Long districtId;
+	private Long constituencyId;
 	private Long   locationScopeId;
 	private Long   locationValue;
 	private Long   cadre2014;
@@ -45,6 +46,7 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	
 	private State state;
 	private District district;
+	private Constituency constituency;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -191,4 +193,25 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+	
+	@Column(name = "constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	
 }
