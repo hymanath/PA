@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
@@ -162,7 +163,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private List<MeetingDtlsVO> meetingDtlsVOs;
+	private List<IdNameVO> idNameVOs;
 	
+	public List<IdNameVO> getIdNameVOs() {
+		return idNameVOs;
+	}
+	public void setIdNameVOs(List<IdNameVO> idNameVOs) {
+		this.idNameVOs = idNameVOs;
+	}
 	public List<MeetingDtlsVO> getMeetingDtlsVOs() {
 		return meetingDtlsVOs;
 	}
@@ -3141,8 +3149,35 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}catch(Exception e){  
 		LOG.error("Exception raised at getPartyMeetingsMainTypeOverViewData() method of CoreDashBoard", e);
 	}
-	return Action.SUCCESS;
-}
-  //public List<PartyMeetingsDataVO> getParyMeetingDetailsDistrictWise(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long partyMeetingId)
+		return Action.SUCCESS;
+  }
+  public String getMeetingMemberDtls(){
+		try{
+			jobj = new JSONObject(getTask());  
+			
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			  
+			String state = jobj.getString("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");
+			Long partyMeetingId   = jobj.getLong("partyMeetingId");
+			Long sessionId   = jobj.getLong("sessionId");
+			String status   = jobj.getString("status");
+			idNameVOs = coreDashboardPartyMeetingService.getMeetingMemberDtls(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingId,sessionId,status);
+			
+	}catch(Exception e){    
+		LOG.error("Exception raised at getMeetingMemberDtls() method of CoreDashBoard", e);
+	}
+		return Action.SUCCESS;
+  }
+  //public List<IdNameVO> getMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, final Long partyMeetingId, Long sessionId, String status)
 }
 
