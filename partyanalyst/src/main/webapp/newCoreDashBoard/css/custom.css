@@ -2008,3 +2008,24 @@ border-right:none !important;
 	border-top:1px solid #d3d3d3 !important;
 	
 }
+.allSessionColor {
+    background-color: #0066DC;
+
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.sessiononeColor {
+    background-color: #320199;
+ 
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.sessiontwoColor {
+    background-color: #660032;
+
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
