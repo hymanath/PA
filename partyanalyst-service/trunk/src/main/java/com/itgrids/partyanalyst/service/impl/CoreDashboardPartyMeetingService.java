@@ -1504,6 +1504,10 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 		 List<Object[]> partySessionsInfo = partyMeetingSessionDAO.getSessionDetailsForPartiMeetings(new HashSet<Long>(meetingTypeVOMap.keySet()),inputVO.getPartyMeetingIds());
 		 if(commonMethodsUtilService.isListOrSetValid(partySessionsInfo) && commonMethodsUtilService.isMapValid(meetingTypeVOMap)){
 			 
+			 Map<String,Map<Long,List<Long>>> bothPartyMeetingSessionAttendededIdsMap = new HashMap<String,Map<Long, List<Long>>>(0);
+				bothPartyMeetingSessionAttendededIdsMap.put("TOTAL_ATTENDED",new HashMap<Long,List<Long>>(0));
+				bothPartyMeetingSessionAttendededIdsMap.put("LATE", new HashMap<Long,List<Long>>(0));
+				bothPartyMeetingSessionAttendededIdsMap.put("ABSENT",new HashMap<Long,List<Long>>(0));
 			 for (Object[] param : partySessionsInfo) {
 				 Long partyMeetingTypeId = commonMethodsUtilService.getLongValueForObject(param[10]);
 				 Long partyMeetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -1558,27 +1562,74 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 						
 						Long totalInviteesCount =0L;
 						Set<Long> inviteesIdsList = partyMeetingInviteesMap.get(partyMetingMainVO.getId());
-						if(commonMethodsUtilService.isListOrSetValid(inviteesList)){
+						if(commonMethodsUtilService.isListOrSetValid(inviteesIdsList)){
 							totalInviteesCount = Long.valueOf(String.valueOf(inviteesIdsList.size()));
 						}
 						partyMetingMainVO.setInvitedCount(totalInviteesCount);
 						Map<Long,Map<String,Set<Long>>> sessionWiseMap  = meetingsMap.get(partyMeetingId);
+						
+						
+						int sessionSize = 0;
 						if(commonMethodsUtilService.isMapValid(sessionWiseMap)){
+							sessionSize = sessionWiseMap.size();
 							Map<String,Set<Long>> statuswiseTdpCadresMap = sessionWiseMap.get(sessionVO.getId());
 							if(commonMethodsUtilService.isMapValid(statuswiseTdpCadresMap)){
 								for (String type : statuswiseTdpCadresMap.keySet()) {
 									Set<Long> cadreidsList = statuswiseTdpCadresMap.get(type);
+									
 									if(type.trim().equalsIgnoreCase("TOTAL_ATTENDED") && commonMethodsUtilService.isListOrSetValid(cadreidsList)){
+										if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+											Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+											for (Long tdpCadreId : cadreidsList) {
+												if(partyMeetingInviteesMap.get(partyMeetingId).contains(tdpCadreId)){
+													List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+													if(bothSessionAttendededIdsMap.get(tdpCadreId) != null){
+														tdpCadreIdsList = bothSessionAttendededIdsMap.get(tdpCadreId);
+													}
+													tdpCadreIdsList.add(tdpCadreId);
+													bothSessionAttendededIdsMap.put(tdpCadreId,tdpCadreIdsList);
+												}
+											}
+											bothPartyMeetingSessionAttendededIdsMap.put(type, bothSessionAttendededIdsMap);
+										}
 										sessionVO.setAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
 										float aPerc =  (float) (sessionVO.getAttendedCount() *100.0/totalInviteesCount);
 										String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
 										sessionVO.setAttendedPerc(Double.valueOf(perc));
 									}else if(type.trim().equalsIgnoreCase("LATE")){
+										if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+											Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+											for (Long tdpCadreId : cadreidsList) {
+												if(partyMeetingInviteesMap.get(partyMeetingId).contains(tdpCadreId)){
+													List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+													if(bothSessionAttendededIdsMap.get(tdpCadreId) != null){
+														tdpCadreIdsList = bothSessionAttendededIdsMap.get(tdpCadreId);
+													}
+													tdpCadreIdsList.add(tdpCadreId);
+													bothSessionAttendededIdsMap.put(tdpCadreId,tdpCadreIdsList);
+												}
+											}
+											bothPartyMeetingSessionAttendededIdsMap.put(type, bothSessionAttendededIdsMap);
+										}
 										sessionVO.setLateAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
 										float laPerc =  (float) (sessionVO.getLateAttendedCount() *100.0/totalInviteesCount);
 										String perc1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(laPerc);
 										sessionVO.setLateattendedPerc(Double.valueOf(perc1));
 									}else if(type.trim().equalsIgnoreCase("ABSENT")){
+										if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+											Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+											for (Long tdpCadreId : cadreidsList) {
+												if(partyMeetingInviteesMap.get(partyMeetingId).contains(tdpCadreId)){
+													List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+													if(bothSessionAttendededIdsMap.get(tdpCadreId) != null){
+														tdpCadreIdsList = bothSessionAttendededIdsMap.get(tdpCadreId);
+													}
+													tdpCadreIdsList.add(tdpCadreId);
+													bothSessionAttendededIdsMap.put(tdpCadreId,tdpCadreIdsList);
+												}
+											}
+											bothPartyMeetingSessionAttendededIdsMap.put(type, bothSessionAttendededIdsMap);
+										}
 										sessionVO.setNotAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
 										//sessionVO.setNotAttendedCount(totalInviteesCount - (sessionVO.getAttendedCount()+sessionVO.getLateAttendedCount()));
 										float naPerc =  (float) (sessionVO.getNotAttendedCount() *100.0/totalInviteesCount);
@@ -1593,23 +1644,73 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 						if(commonMethodsUtilService.isMapValid(meetingsWiseMap)){
 							for (String type : meetingsWiseMap.keySet()) {
 								Set<Long> cadreidsList = meetingsWiseMap.get(type);
-								
 								if(type.trim().equalsIgnoreCase("TOTAL_ATTENDED") && commonMethodsUtilService.isListOrSetValid(cadreidsList)){
-									partyMetingMainVO.setAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
-									float aPerc =  (float) (partyMetingMainVO.getAttendedCount() *100.0/totalInviteesCount);
-									String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
-									partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
+									if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+										Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+										List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+										if(commonMethodsUtilService.isMapValid(bothSessionAttendededIdsMap)){
+											for (Long tdpCadreId : bothSessionAttendededIdsMap.keySet()) {
+												List<Long> tdpCadreIdList = bothSessionAttendededIdsMap.get(tdpCadreId);
+												if(tdpCadreIdList != null && (tdpCadreIdList.size()==sessionSize)){
+													tdpCadreIdsList.add(tdpCadreId);
+												}
+											}
+											partyMetingMainVO.setAttendedCount(Long.valueOf(String.valueOf(tdpCadreIdsList.size())));
+											float aPerc =  (float) (partyMetingMainVO.getAttendedCount() *100.0/totalInviteesCount);
+											String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
+											partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
+										}
+									}else{
+										partyMetingMainVO.setAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
+										float aPerc =  (float) (partyMetingMainVO.getAttendedCount() *100.0/totalInviteesCount);
+										String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
+										partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
+									}
 								}else if(type.trim().equalsIgnoreCase("LATE")){
-									partyMetingMainVO.setLateAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
-									float laPerc =  (float) (partyMetingMainVO.getLateAttendedCount() *100.0/totalInviteesCount);
-									String perc1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(laPerc);
-									partyMetingMainVO.setLateattendedPerc(Double.valueOf(perc1));
+									if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+										Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+										List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+										if(commonMethodsUtilService.isMapValid(bothSessionAttendededIdsMap)){
+											for (Long tdpCadreId : bothSessionAttendededIdsMap.keySet()) {
+												List<Long> tdpCadreIdList = bothSessionAttendededIdsMap.get(tdpCadreId);
+												if(tdpCadreIdList != null && (tdpCadreIdList.size()==sessionSize)){
+													tdpCadreIdsList.add(tdpCadreId);
+												}
+											}
+											partyMetingMainVO.setLateAttendedCount(Long.valueOf(String.valueOf(tdpCadreIdsList.size())));
+											float aPerc =  (float) (partyMetingMainVO.getLateAttendedCount() *100.0/totalInviteesCount);
+											String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
+											partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
+										}
+									}else{
+										partyMetingMainVO.setLateAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
+										float laPerc =  (float) (partyMetingMainVO.getLateAttendedCount() *100.0/totalInviteesCount);
+										String perc1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(laPerc);
+										partyMetingMainVO.setLateattendedPerc(Double.valueOf(perc1));
+									}
 								}else if(type.trim().equalsIgnoreCase("ABSENT")){
-									partyMetingMainVO.setNotAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
-									//sessionVO.setNotAttendedCount(totalInviteesCount - (sessionVO.getAttendedCount()+sessionVO.getLateAttendedCount()));
-									float naPerc =  (float) (partyMetingMainVO.getNotAttendedCount() *100.0/totalInviteesCount);
-									String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
-									partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
+									if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+										Map<Long,List<Long>> bothSessionAttendededIdsMap = bothPartyMeetingSessionAttendededIdsMap.get(type);
+										List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+										if(commonMethodsUtilService.isMapValid(bothSessionAttendededIdsMap)){
+											for (Long tdpCadreId : bothSessionAttendededIdsMap.keySet()) {
+												List<Long> tdpCadreIdList = bothSessionAttendededIdsMap.get(tdpCadreId);
+												if(tdpCadreIdList != null && (tdpCadreIdList.size()==sessionSize)){
+													tdpCadreIdsList.add(tdpCadreId);
+												}
+											}
+											partyMetingMainVO.setNotAttendedCount(Long.valueOf(String.valueOf(tdpCadreIdsList.size())));
+											float aPerc =  (float) (partyMetingMainVO.getNotAttendedCount() *100.0/totalInviteesCount);
+											String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
+											partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
+										}
+									}else{
+										partyMetingMainVO.setNotAttendedCount(Long.valueOf(String.valueOf(cadreidsList.size())));
+										//sessionVO.setNotAttendedCount(totalInviteesCount - (sessionVO.getAttendedCount()+sessionVO.getLateAttendedCount()));
+										float naPerc =  (float) (partyMetingMainVO.getNotAttendedCount() *100.0/totalInviteesCount);
+										String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
+										partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
+									}
 								}
 							}
 						}
@@ -1620,27 +1721,6 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
 							partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
 						}
-						/*partyMetingMainVO.setAttendedCount(partyMetingMainVO.getAttendedCount()+sessionVO.getAttendedCount());
-						partyMetingMainVO.setLateAttendedCount(partyMetingMainVO.getLateAttendedCount()+sessionVO.getLateAttendedCount());
-						partyMetingMainVO.setNotAttendedCount(partyMetingMainVO.getNotAttendedCount()+sessionVO.getNotAttendedCount());
-						//partyMetingMainVO.setNotAttendedCount(totalInviteesCount - (sessionVO.getAttendedCount()+sessionVO.getLateAttendedCount()));
-						
-						if(totalInviteesCount.longValue()>0L){
-							float aPerc =  (float) (partyMetingMainVO.getAttendedCount() *100.0/totalInviteesCount);
-							String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
-							partyMetingMainVO.setAttendedPerc(Double.valueOf(perc));
-							
-							float laPerc =  (float) (partyMetingMainVO.getLateAttendedCount() *100.0/totalInviteesCount);
-							String perc1 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(laPerc);
-							partyMetingMainVO.setLateattendedPerc(Double.valueOf(perc1));
-							
-							float naPerc =  (float) (partyMetingMainVO.getNotAttendedCount() *100.0/totalInviteesCount);
-							String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
-							partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
-						}
-						*/
-						
-						
 						
 						sessionList.add(sessionVO);
 					}
