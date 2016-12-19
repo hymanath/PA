@@ -1855,7 +1855,7 @@
 								
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls ">
-										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
+										<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
 							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks1" style="display:none;">
 								<ul class="list-inline pull-right activeUlCls">
@@ -1880,6 +1880,7 @@
 								</div>
 							</div>
 							
+							<div id="partyMeetingOverviewTabDiv" class="moreMeetingsBlocksDetaild" style="padding:15px;"></div>
 							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
