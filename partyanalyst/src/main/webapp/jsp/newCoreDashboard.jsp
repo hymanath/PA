@@ -1876,9 +1876,10 @@
 									<div class="panel-body ">
 										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="partyMeetingOverviewTabDiv" class=""></div>
+										<div id="meetingMemberDtlsDivId" class=""></div>   
 									</div>
 								</div>
-							</div>
+							</div>    
 							
 							
 							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
@@ -3586,6 +3587,21 @@
 				<h4 class="modal-title" id="alertCntTitId">Tour Document</h4>  
 			</div>
 			<div class="modal-body" id="tourDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div><!--  /.modal -->
+<div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="">Member Details</h4>      
+			</div>
+			<div class="modal-body" id="meetingMemDetailsBodyId">    
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
