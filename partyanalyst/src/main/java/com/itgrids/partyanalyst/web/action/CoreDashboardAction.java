@@ -2022,9 +2022,9 @@ public String getPartyMeetingsMainTypeOverViewData(){
 			String state = jObj.getString("state");
 			String startDateString = jObj.getString("startDateString");
 			String endDateString   = jObj.getString("endDateString");
+			Long partyMeetingId = jObj.getLong("partyMeetingId");
 			
-			
-			partyMeetingDataVOList = coreDashboardPartyMeetingService.getPartyMeetingsMainTypeOverViewData(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getPartyMeetingsMainTypeOverViewData(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingId);
 			
 	}catch(Exception e){
 		LOG.error("Exception raised at getPartyMeetingsMainTypeOverViewData() method of CoreDashBoard", e);
