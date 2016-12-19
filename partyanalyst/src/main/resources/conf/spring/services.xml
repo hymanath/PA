@@ -3662,7 +3662,10 @@
 	    <property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
 	    <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
-	    <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />  
+	    <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />
+	    <property name="sessionTypeDAO" ref="sessionTypeDAO" />  
+	    <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"/>
+	    
 	     <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO" />  
 	   </bean>
 	
@@ -3867,7 +3870,13 @@
 	 <property name="transactionTemplate" ref="transactionTemplate" />
 	 <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
 	 <property name="tabLogInAuthDAO" ref="tabLogInAuthDAO" />
-	
+	 <property name="activityMemberRelationDAO" ref="activityMemberRelationDAO"></property>
+	 
+	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO" />
+	 <property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO" />
+	 <property name="selfAppraisalCandidateDayTourDAO" ref="selfAppraisalCandidateDayTourDAO"></property>
+	 
+	 
 	</bean>
 	
 	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService">

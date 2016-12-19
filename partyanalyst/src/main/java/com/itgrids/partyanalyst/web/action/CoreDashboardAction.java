@@ -87,6 +87,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private CadreRegistratedCountVO cadreRegistratedCountVO;
 	private ToursBasicVO toursBasicVO;
 	private List<ToursBasicVO> toursDtlsList;
+	private List<List<ToursBasicVO>> memberList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -157,13 +158,19 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	 * 
 	 */
 	
-	//setters And Getters
 	
+	//setters And Getters
+	public List<List<ToursBasicVO>> getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(List<List<ToursBasicVO>> memberList) {
+		this.memberList = memberList;
+	}
 	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
 	}
-
 	public String getTabUserDetails() {
 		return tabUserDetails;
 	}
@@ -761,7 +768,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCadreVO(CadreBasicVO cadreVO) {
 		this.cadreVO = cadreVO;
 	}
-
+    
 	//business methods
 	public String execute(){
 		try {
@@ -3279,6 +3286,84 @@ public String updateUserORIMEIDetails(){
 	}
 	return Action.SUCCESS;
 }
-
-
+public String getToursBasicOverviewDtls(){
+	try {
+		LOG.info("Entered into getToursBasicOverviewDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursBasicVO = coreDashboardToursService.getToursBasicOverviewDtls(stateId,fromDate,toDate,activityMemberId,userTypeId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getToursBasicOverviewDtls() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDesignationWiseMembersDtls(){
+	try {
+		LOG.info("Entered into getDesignationWiseMembersDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		memberList = coreDashboardToursService.getDesignationWiseMembersDtls(stateId,fromDate,toDate,activityMemberId,userTypeId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDesignationWiseMembersDtls() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDesignationWiseAverageTourPerformanceDtls(){
+	try {
+		LOG.info("Entered into getDesignationWiseMembersDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursDtlsList = coreDashboardToursService.getDesignationWiseAverageTourPerformanceDtls(stateId,fromDate,toDate,activityMemberId,userTypeId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDesignationWiseMembersDtls() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		List<Long> partyMeetingIds = new ArrayList<Long>();
+		JSONArray partyMeetingIdsArr=jObj.getJSONArray("partyMeetingIds");
+		if(partyMeetingIdsArr!=null &&  partyMeetingIdsArr.length()>0){
+			for( int i=0;i<partyMeetingIdsArr.length();i++){
+				partyMeetingIds.add(Long.valueOf(partyMeetingIdsArr.getString(i)));
+			}
+		}
+		
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");
+		
+		
+		partyMeetingDataVOList = coreDashboardPartyMeetingService.getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedMeetingSessionWise(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingIds);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
 }

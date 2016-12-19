@@ -15038,7 +15038,6 @@
 		<result name="input">/jsp/loginForm.jsp?src=userWiseCadreDemographicReports</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
-	
 	<action name="casteCategoryWiseCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="casteCategoryWiseCadreSummaryReport">
 			<result type="json" name="success">
 			<param name="root">cadreCountsVO</param>
@@ -15097,5 +15096,25 @@
 			<param name="root">cadreCountsGenderVOList</param>
 		</result>
 	</action>
+	<action name="getToursBasicOverviewDtlsAction" class="coreDashboardAction"  method="getToursBasicOverviewDtls">
+			<result type="json" name="success">
+			<param name="root">toursBasicVO</param>
+		</result>
+	</action>
+	<action name="getDesignationWiseMembersDtlsAction" class="coreDashboardAction"  method="getDesignationWiseMembersDtls">
+			<result type="json" name="success">
+			<param name="root">memberList</param>
+		</result>
+	</action>
+	<action name="getDesignationWiseAverageTourPerformanceDtlsAction" class="coreDashboardAction"  method="getDesignationWiseAverageTourPerformanceDtls">
+			<result type="json" name="success">
+			<param name="root">toursDtlsList</param>
+		</result>
+	</action>
+	<action name="getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtlsAction" class="coreDashboardAction" method="getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVOList</param> 
+		</result>
+	</action>  
  </package>
 </struts>
