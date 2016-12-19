@@ -29,5 +29,7 @@ public interface ITdpCadreCasteStateInfoDAO extends GenericDao<TdpCadreCasteStat
 	public List<Object[]> privilegedStateWiseTdpCadreCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
 	public List<Object[]> privilegedStateWiseTdpCadreMinorityCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
 	
+	public int deleteAllRecords(List<Long> locationScopeIds);
+	public int insertTdpCadreLocationInfoUpToLowLevelByCasteState();
 	
 }
