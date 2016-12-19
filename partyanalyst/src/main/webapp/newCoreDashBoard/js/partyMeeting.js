@@ -2132,39 +2132,77 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="invited" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].invitedCount+'<span class="font-10 text-success"></span></h4>';
 						  str+='<p class="text-muted text-capital">Invited</p>';
 						 str+='</td>';
-						 str+='<td>';
+						 str+='<td>';//late
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital text-success">Attended</p>';
 						 str+='</td>';
-						  /*  str+='<td>';
-							 str+='<h4  class="" style="cursor:pointer;" >200<span class="font-10 text-success"> 50%</span></h4>';
-							  str+='<p class="text-muted text-capital text_oragane">Late</p>';
-						 str+='</td>';  */
+						  if(result[i].subList1 != null && result[i].subList1.length>0){
+								str+='<td>';
+								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateAttendedCount+'</span></h4>';
+								  str+='<p class="text-muted text-capital text_oragane">Late</p>';
+							 str+='</td>';  
+						  }
 						 str+='<td>';  
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].notAttendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital">Absent</p>';    
 						 str+='</td>';        
 					 str+='</tr>';
-					/*  str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
-					  str+='<tr>';
-						 str+='<td >';
-							str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
-							  str+='<p class="text-muted f_12"><span class="specialMeeColor"></span> DEC-16 (Total Sessions)</p>';
-						 str+='</td>';
-						 str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text-success">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5 class="text_oragane">200</h5>';
-						 str+='</td>';
-						  str+='<td>';
-							str+='<h5>200</h5>';
-						 str+='</td>';
-						     
-					 str+='</tr>';
+					 
+					 if(result[i].subList1 != null && result[i].subList1.length>0){
+						
+						 
+						 for(var k in result[i].subList1){							 
+							 if(result[i].subList1[k].subList1.length != null && result[i].subList1[k].subList1.length >0){
+								 for(var s in result[i].subList1[k].subList1){
+									 if(s==0){
+										 
+										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
+										  str+='<tr>';
+											 str+='<td >';
+												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
+												  str+='<p class="text-muted f_12" style="font-size: 15px;"><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'(<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions" style="cursor:default;font-weight:bold;">'+result[i].subList1[k].subList1.length+'</span>)</p>';
+											 str+='</td>';
+											 str+='<td>';
+												str+='<h5>'+result[i].subList1[k].invitedCount+' </h5>';
+											 str+='</td>';
+											  str+='<td>';
+												str+='<h5 class="text-success">'+result[i].subList1[k].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
+											 str+='</td>';
+											  str+='<td>';
+												str+='<h5 class="text_oragane">'+result[i].subList1[k].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
+											 str+='</td>';
+											  str+='<td>';
+												str+='<h5>'+result[i].subList1[k].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].notAttendedPerc+'%</span></h5>';
+											 str+='</td>';
+												 
+										 str+='</tr>';
+										 
+									 }
+									  str+='<tr>';
+								 str+='<td style="padding:0px;">';
+									  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">'+result[i].subList1[k].subList1[s].name+'</p>';
+								 str+='</td>';
+								 str+='<td>';
+									str+='<h5></h5>';
+								 str+='</td>';
+								  str+='<td>';
+									str+='<h5 class="text-success">'+result[i].subList1[k].subList1[s].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
+								 str+='</td>';
+								  str+='<td>';
+									str+='<h5 class="text_oragane">'+result[i].subList1[k].subList1[s].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].lateattendedPerc+'%</span> </h5>';
+								 str+='</td>';
+								  str+='<td>';
+									str+='<h5>'+result[i].subList1[k].subList1[s].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].notAttendedPerc+'%</span></h5>';
+								 str+='</td>';
+									 
+							 str+='</tr>';
+								 }
+							}
+						 }
+					 }
+					 
+					  
+					 /*
 					  str+='<tr>';
 						 str+='<td style="padding:0px;">';
 							  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">Session- ||</p>';
@@ -2213,6 +2251,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 			  }
 			 $("#"+expandTypeId).attr("attr_partyMeetingTypeIdsString",partyMeetingTypeIdsString); 
 	$("#"+divId).html(str);  
+	$('[data-toggle="tooltip"]').tooltip();
 }
 $(document).on("click",".meetingMemberDtlsCls",function(){
 	var meetingMainTypeId = $(this).attr("attr_main_type_id");
