@@ -54,4 +54,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAlertDetailsByCadreWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long tdpCadreId,Long statusId,String resultType);
 	public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long districtId,Long catId);
 	 public Date getAlertLastUpdatedTime();
+	 public Long getAlertStatusOfArticle(Long articleId);
 }
