@@ -4193,5 +4193,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  }
 	  return lastUpdatedTimeStr;
 }
+  
+  public String getAlertStatusOfArticle(Long articleId){
+	  String result =null;
+	  try{
+		  
+		  Long article = alertDAO.getAlertStatusOfArticle(articleId);
+		  if(article !=null && article.longValue()>0l){
+			  result="Y";
+		  }else{
+			  result="N";
+		  }
+		  
+	  }catch(Exception e){
+		  LOG.error("Error occured at getAlertStatusOfArticle() in AlertService {}",e); 
+		  e.printStackTrace();
+	  }
+	  return result;
+  }
 }
 

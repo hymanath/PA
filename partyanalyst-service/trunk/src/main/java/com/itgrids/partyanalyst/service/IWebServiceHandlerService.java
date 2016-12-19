@@ -181,4 +181,5 @@ public interface IWebServiceHandlerService {
     public GISIssuesVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO);
     
     public String setArticleDetailsIntoAlert(ActionableVO VO);
+    public String getAlertStatusOfArticle(Long articleId);
 }

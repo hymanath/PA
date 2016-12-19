@@ -4366,5 +4366,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return result;
 	  }
 	  
+	  public String getAlertStatusOfArticle(Long articleId){
+		  String result = null;
+		  try{			  
+			  result = alertService.getAlertStatusOfArticle(articleId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertStatusOfArticle  method in WebServiceHandlerService");
+		  }
+		  return result;
+	  }
+	  
 }
 

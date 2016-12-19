@@ -2199,5 +2199,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	   Query query = getSession().createQuery("select max(model.createdTime) from Alert model where model.isDeleted='N' ");
 	   return (Date)query.uniqueResult();
    }
+   
+   public Long getAlertStatusOfArticle(Long articleId){
+	   Query query = getSession().createQuery(" select model.alertCategoryTypeId from Alert model " +
+	   		" where model.isDeleted='N' " +
+	   		" and model.alertCategoryId = 2l " +
+	   		" and model.alertCategoryTypeId = :articleId  ");
+	   
+	   query.setParameter("articleId", articleId);
+	   return (Long) query.uniqueResult();
+   }
 }
 
