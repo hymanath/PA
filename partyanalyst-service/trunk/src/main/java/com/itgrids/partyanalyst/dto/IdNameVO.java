@@ -64,6 +64,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String boardName;
 	private Long postionId;
 	private String positionName;
+	private List<String> sessionList;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -502,9 +503,17 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setPositionName(String positionName) {
 		this.positionName = positionName;
 	}
-	
-	
-	
-	
+
+	public List<String> getSessionList() {
+		return sessionList;
+	}
+
+	public void setSessionList(List<String> sessionList) {
+		this.sessionList = sessionList;
+	}
+
+	public void setDistId(Long distId) {
+		this.distId = distId;
+	}
 	
 }
