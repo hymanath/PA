@@ -734,7 +734,14 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     }
 	
 	public Double caclPercantage(Long subCount,Long totalCount){
-		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		Double d =0.0d;
+		try {
+			if(subCount != null && subCount.longValue()>0L && totalCount != null && totalCount.longValue()>0L )
+				d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		} catch (Exception e) {
+			LOG.error("Exception occurred in caclPercantage() method in CoreDashboardGenericService class",e);
+		}
+		
 		return d;
 	}
 	 /**

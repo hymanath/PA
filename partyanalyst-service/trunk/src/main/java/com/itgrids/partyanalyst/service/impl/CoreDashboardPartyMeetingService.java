@@ -1450,7 +1450,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							if(!commonMethodsUtilService.isListOrSetValid(cadreidsList1)){
 								cadreidsList1 = new HashSet<Long>(0);
 							}
-							if(cadreidsList1.contains(tdpCadreId)){
+							if(partyMeetingInviteesMap.get(partyMeetingId).contains(tdpCadreId)){
 								cadreidsList1.add(tdpCadreId);
 								statuswisePartyMeetingTdpCadresMap.put("LATE", cadreidsList1);
 							}
@@ -1590,6 +1590,13 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 								}
 							}
 						}
+						
+						if(totalInviteesCount.longValue()>0L){
+							partyMetingMainVO.setNotAttendedCount(totalInviteesCount-partyMetingMainVO.getAttendedCount());
+							float naPerc =  (float) (partyMetingMainVO.getNotAttendedCount() *100.0/totalInviteesCount);
+							String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
+							partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
+						}
 						/*partyMetingMainVO.setAttendedCount(partyMetingMainVO.getAttendedCount()+sessionVO.getAttendedCount());
 						partyMetingMainVO.setLateAttendedCount(partyMetingMainVO.getLateAttendedCount()+sessionVO.getLateAttendedCount());
 						partyMetingMainVO.setNotAttendedCount(partyMetingMainVO.getNotAttendedCount()+sessionVO.getNotAttendedCount());
@@ -1609,6 +1616,9 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							partyMetingMainVO.setNotAttendedPerc(Double.valueOf(perc2));
 						}
 						*/
+						
+						
+						
 						sessionList.add(sessionVO);
 					}
 				}
@@ -1620,22 +1630,35 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			 for(Long partyMeetingTypeId : meetingTypeVOMap.keySet()){
 				 PartyMeetingsDataVO meetingTypeVO = meetingTypeVOMap.get(partyMeetingTypeId);
 				 if(meetingTypeVO.getInvitedCount()!=null && meetingTypeVO.getInvitedCount() > 0l) {
-					 meetingTypeVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getAttendedCount(),meetingTypeVO.getInvitedCount()) );
-					 meetingTypeVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getInvitteeAttendedCount(),meetingTypeVO.getInvitedCount()) );
-					 meetingTypeVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getNotAttendedCount(),meetingTypeVO.getInvitedCount()) );
 					 
 					 List<PartyMeetingsDataVO> partyMetingsList = meetingTypeVO.getSubList1();
+					 Long attendedCount = 0L;
 					 Long lateCount = 0L;
+					 Long absentCount = 0L;
+					 Long invitedCount = 0L;
 					 if(commonMethodsUtilService.isListOrSetValid(partyMetingsList)){
 						 for (PartyMeetingsDataVO vo : partyMetingsList) {
+							 attendedCount = attendedCount+vo.getAttendedCount();
 							 lateCount = lateCount+vo.getLateAttendedCount();
+							 absentCount = absentCount+vo.getNotAttendedCount();
+							 invitedCount = invitedCount+vo.getInvitedCount();
 						}
+						 
 						 if(lateCount != null && lateCount.longValue()>0L){
 							 float aPerc =  (float) (lateCount *100.0/meetingTypeVO.getInvitedCount());
 								String perc = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(aPerc);
 								meetingTypeVO.setLateattendedPerc(Double.valueOf(perc));
 						 }
 					 }
+					 
+					 meetingTypeVO.setInvitedCount(invitedCount);
+					 meetingTypeVO.setAttendedCount(attendedCount);
+					 meetingTypeVO.setNotAttendedCount(absentCount);
+					 meetingTypeVO.setLateAttendedCount(lateCount);
+					 
+					 meetingTypeVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getAttendedCount(),meetingTypeVO.getInvitedCount()) );
+					 meetingTypeVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getInvitteeAttendedCount(),meetingTypeVO.getInvitedCount()) );
+					 meetingTypeVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getNotAttendedCount(),meetingTypeVO.getInvitedCount()) );
 				 }
 			 }
 			 finalList.addAll(meetingTypeVOMap.values());
