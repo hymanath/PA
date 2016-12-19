@@ -729,7 +729,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 				  " party_meeting_invitee PMI," +
 				  " party_meeting PM," +
 				  " party_meeting_type PMT," +
-				  " party_meeting_main_type PMMT," +
+				  " party_meeting_main_type PMMT," +  
 				  " tdp_cadre TC,user_address UA,district D " +
 				  " where  PMI.tdp_cadre_id = TC.tdp_cadre_id and " +
 				  " PMI.party_meeting_id = PM.party_meeting_id and " +
@@ -740,9 +740,9 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 				  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
 				  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
 		
-		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		/*if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 			sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
-		}
+		}*/
 		
 		if(inputVO.getStateId().longValue()==1l){
 			sb.append(" and D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
@@ -760,12 +760,12 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		sqlQuery.addScalar("partyMeetingId",Hibernate.LONG);
 		sqlQuery.addScalar("districtId",Hibernate.LONG);
 		sqlQuery.addScalar("districtName",Hibernate.STRING);
-		sqlQuery.addScalar("cadreId",Hibernate.LONG);
+		sqlQuery.addScalar("cadreId",Hibernate.LONG);  
 		
-		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		/*if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 			sqlQuery.setDate("startDate",inputVO.getStartDate());
 			sqlQuery.setDate("endDate",inputVO.getEndDate());	 
-		}
+		}*/
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sqlQuery.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
 		}
@@ -782,7 +782,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 				  " TC.tdp_cadre_id as cadreId, " +//2
 				  " TC.first_name as name, " +//3    
 				  " min(time(A.attended_time)) as time, " +//4
-				  " PMS.party_meeting_session_id as sessionId");//5
+				  " PMS.session_type_id as sessionId");//5
 		sb.append(" from ");
 		sb.append(" party_meeting_attendance PMA,attendance A,");
 		sb.append(" party_meeting_invitee PMI,party_meeting PM,");
@@ -810,8 +810,8 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		}
 		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");
-		sb.append(" group by  PMS.party_meeting_session_id,TC.tdp_cadre_id ");
-		sb.append(" order by PMS.party_meeting_session_id,D.district_id; ");
+		sb.append(" group by  PMS.session_type_id,TC.tdp_cadre_id ");
+		sb.append(" order by PMS.session_type_id,D.district_id; ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("districtId", Hibernate.LONG)
 				.addScalar("districtName", Hibernate.STRING)
@@ -834,7 +834,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 				  " TC.tdp_cadre_id as cadreId, " +//2
 				  " TC.first_name as name, " +//3
 				  " min(time(A.attended_time)) as time, " +//4
-				  " PMS.party_meeting_session_id as sessionId");//5
+				  " PMS.session_type_id as sessionId");//5
 		sb.append(" from ");
 		sb.append(" party_meeting_attendance PMA,attendance A,");
 		sb.append(" party_meeting PM,");
@@ -860,8 +860,8 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		}
 		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");
-		sb.append(" group by  PMS.party_meeting_session_id,TC.tdp_cadre_id ");
-		sb.append(" order by PMS.party_meeting_session_id,D.district_id; ");
+		sb.append(" group by  PMS.session_type_id,TC.tdp_cadre_id ");
+		sb.append(" order by PMS.session_type_id,D.district_id; ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("districtId", Hibernate.LONG)
 				.addScalar("districtName", Hibernate.STRING)
