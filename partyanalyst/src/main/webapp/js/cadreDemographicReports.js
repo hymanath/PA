@@ -424,7 +424,8 @@
 						str1+='<table class="table table-bordered tableHeaderStyle " id="constituencyWiseTableExcelDivId" >';
 						str1+='<thead>';
 							str1+='<tr>';
-								str1+='<th class="text-capital "><b>DISTRICT</th></b>';
+								str1+='<th class="text-capital "><b>District</th></b>';
+								str1+='<th class="text-capital "><b>Constituency</th></b>';
 								str1+='<th class="text-capital " ><b>Age Range</th></b>';
 								str1+='<th class="text-capital "><b>2014 Cadre</th></b>';
 								str1+='<th class="text-capital "><b>2014 Cadre %</th></b>';
@@ -439,9 +440,12 @@
 						str1+='</thead>';
 						str1+='<tbody>';
 						for(var i in result){
+							
+								
 								 if(result[i].subList !=null && result[i].subList.length>0){
 									for(var j in result[i].subList){
 										str1+='<tr>';
+										str1+='<td>'+result[i].superlocationName+'</td>';
 										str1+='<td>'+result[i].name+'</td>';
 										str1+='<td>'+result[i].subList[j].name+'</td>';
 										str1+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
@@ -456,6 +460,8 @@
 										str1+='</tr>';
 									}
 								} 
+								
+							
 						}
 						str1+='</tbody>';
 						str1+='</table>';
@@ -650,7 +656,7 @@
 	
 	//caste Category state wise  reports start
 	function getstateWiseTdpCadreCasteCounts(stateId,limit){
-		 $("#CasteCategoryStateWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		 $("#stateWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
 			         stateId : stateId,
 					 limit : limit
@@ -662,7 +668,7 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
-			 $("#CasteCategoryStateWiseSummaryDetails").html('');
+			 $("#stateWiseCasteDetails").html('');
 			 buildStateWiseTdpCadreCasteCountsAction(result,stateId);
 			
 		});
@@ -671,35 +677,9 @@
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">'+getState()+' state - caste wise report </h3>';
-						
-					str+='</div>';
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="CasteCategoryStateWiseReportExcel" >Export To Excel</button></h4>';
-					str+='</div>';
-				  	str+='</div>';
-				  	str+='</div>';
-				  	str+='<div class="panel-body">';
-					/*str+='<div class="row m_top">';
-						str+='<div class="col-md-12">';
-							str+='<div style="width:480px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >';
-								str+='<h5 style="text-align:center;">Drag Slider for 2014 cast Percentage </h5>';	
-								str+='<div id="sliderFrCstPrcntgWsId" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">';
-									str+='<a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>';
-								str+='</div>';
-								str+='<p style="padding-bottom:2px;">';
-									str+='<input type="text" id="amountFrCstPrcntage" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />';
-								str+='</p>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';*/
+			$("#aptsIdForStateWiseCaste").html(getState());
 					str+='<div class="table-responsive">';
-					str+='<table class="table table-bordered table-condensed CasteCategoryStateWiseDataTableId" id="">';
+					str+='<table class="table table-bordered table-condensed stateWiseCasteDetailsDataTableCls" id="">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
@@ -776,8 +756,12 @@
 						str+='</tbody>';
 						str+='</table>';
 						
-						str1+='<table class="table table-bordered table-condensed" id="casteCategoryStateWiseTableExcelDivId">';
+						str1+='<table class="table table-bordered table-condensed" id="stateWiseCasteTableToExcelDivId">';
+						
 						str1+='<thead>';
+						str1+='<tr>';
+							str1+='<th><h3 class="panel-title text-capital">state Wise caste report </h3></th>';
+						str1+='</tr>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Name</th></b>';
@@ -854,30 +838,26 @@
 						str1+='</table>';
 						
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
-			$("#CasteCategoryStateWiseSummaryDetails").html("NO DATA AVAILABLE");
+			$("#stateWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
 		
-		$("#CasteCategoryStateWiseSummaryDetails").html(str);
-		$("#excelReportCastCategoryStateWiseDetails").html(str1);
-		$(".CasteCategoryStateWiseDataTableId").dataTable();
-		$(".CasteCategoryStateWiseDataTableId").removeClass("dataTable");
+		$("#stateWiseCasteDetails").html(str);
+		$("#stateWiseCasteDetailsExcelReport").html(str1);
+		$(".stateWiseCasteDetailsDataTableCls").dataTable();
+		$(".stateWiseCasteDetailsDataTableCls").removeClass("dataTable");
 		
-		$(document).on("click","#CasteCategoryStateWiseReportExcel",function(){
-		   tableToExcel(casteCategoryStateWiseTableExcelDivId, getState() + 'STATE - CASTE WISE REPORT');      
+		$(document).on("click","#stateWiseCasteExcelReportId",function(){
+		   tableToExcel(stateWiseCasteTableToExcelDivId, getState() + 'STATE - CASTE WISE REPORT');      
 		});
-	}
+		
+	}	
 	//caste Category state wise  reports End
-	
 	
 	//caste Category district wise  reports start
 	function getdistrictWiseTdpCadreCasteCounts(stateId,districtId,limit){
-		 $("#CasteCategoryDistrictWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		 $("#districtWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
 			         stateId : stateId,   
 					 districtId : districtId,
@@ -890,31 +870,19 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
-			 $("#CasteCategoryDistrictWiseSummaryDetails").html('');
+			 $("#districtWiseCasteDetails").html('');
 			 buildDistrictWiseTdpCadreCasteCounts(result,stateId);
 			
 		});
 	}
+	
 	function buildDistrictWiseTdpCadreCasteCounts(result,stateId){
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">'+getState()+' STATE - DISTRICT WISE CASTE REPORT</h3>';
-						
-					str+='</div>';
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="CasteCategoryDistrictWiseReportExcel" >Export To Excel</button></h4>';
-					str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
+				$("#aptsIdFordistrictWiseCaste").html(getState());
 					str+='<div class="table-responsive">';
-					str+='<table class="table table-bordered table-condensed CasteCategoryDistrictWiseDataTableId" id="">';
+					str+='<table class="table table-bordered table-condensed districtWiseCasteDataTableCls" id="">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital "><b class="f_14">District</th></b>';
@@ -1001,7 +969,7 @@
 						str+='</tbody>';
 						str+='</table>';
 						//for fetching all records start 
-						str1+='<table class="table table-bordered table-condensed" id="CasteCategoryDistrictWiseTableExcelDivId">';
+						str1+='<table class="table table-bordered table-condensed" id="districtWiseCasteTableToExcelDivId">';
 						str1+='<thead>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">District</th></b>';
@@ -1089,22 +1057,20 @@
 						str1+='</table>';
 						//for fetching all records end
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
-			$("#CasteCategoryDistrictWiseSummaryDetails").html("NO DATA AVAILABLE");
+			$("#districtWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
 		
-		$("#CasteCategoryDistrictWiseSummaryDetails").html(str);
-		$("#excelDivGCasteCategoryDistrictWiseSummaryDetails").html(str1);
-		$(".CasteCategoryDistrictWiseDataTableId").dataTable();//{"aaSorting": [ [0,'asc'], [4,'desc'] ] }
-		$(".CasteCategoryDistrictWiseDataTableId").removeClass("dataTable");
+		$("#districtWiseCasteDetails").html(str);
+		$("#districtWiseCasteDetailsExcelReport").html(str1);
+		$(".districtWiseCasteDataTableCls").dataTable();//{"aaSorting": [ [0,'asc'], [4,'desc'] ] }
+		$(".districtWiseCasteDataTableCls").removeClass("dataTable");
 		
-		$(document).on("click","#CasteCategoryDistrictWiseReportExcel",function(){
-		  tableToExcel(CasteCategoryDistrictWiseTableExcelDivId, getState() +'STATE - DISTRICT WISE CASTE REPORT'); 
+			
+		
+		$(document).on("click","#districtWiseCasteExcelReportId",function(){
+		  tableToExcel(districtWiseCasteTableToExcelDivId, getState() +'STATE - DISTRICT WISE CASTE REPORT'); 
 		});
 		
 	}
@@ -1113,7 +1079,7 @@
 	
 	//caste Category Constituency wise  reports start
 	function getConstituencyWiseTdpCadreCasteCountsAction(stateId,districtId,limit){
-		 $("#CasteCategoryConstituencyWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		 $("#constituencyWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
 			         stateId : stateId,
 					 districtId : districtId,
@@ -1126,31 +1092,19 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
-			 $("#CasteCategoryConstituencyWiseSummaryDetails").html('');
+			 $("#constituencyWiseCasteDetails").html('');
 			 buildConstituencyWiseTdpCadreCasteCountsAction(result,stateId);
 			
 		});
 	}
+	
 	function buildConstituencyWiseTdpCadreCasteCountsAction(result,stateId){
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">'+getState()+' STATE - CONSTITUENCY WISE CASTE REPORT</h3>';
-						
-					str+='</div>';
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="CasteCategoryConstituencyWiseReportExcel" >Export To Excel</button></h4>';
-					str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
+				$("#aptsIdForConsWiseCaste").html(getState());
 					str+='<div class="table-responsive">';
-					str+='<table class="table table-bordered table-condensed CasteCategoryConstituencyWiseDataTableId" id="">';
+					str+='<table class="table table-bordered table-condensed constituencyWiseCasteDataTableCls" id="">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital "><b class="f_14">District</th></b>';
@@ -1174,7 +1128,8 @@
 									
 											str+='<tr>';
 											str+='<td>'+result[i].superlocationName+'</td>';
-											str+='<td>'+result[i].name+'</td>';
+											//str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+											str+='<td >'+result[i].name+'</td>';
 											str+='<td>'+result[i].subList[j].name+'</td>';
 											if(result[i].subList[j].previousCadreCount !=null && result[i].subList[j].previousCadreCount>0){
 											str+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
@@ -1224,10 +1179,6 @@
 										
 										str+='</tr>';
 									
-									
-									
-									
-									
 								}
 							}
 						}
@@ -1235,11 +1186,11 @@
 						str+='</tbody>';
 						str+='</table>';
 						//for fetching all records start 
-						str1+='<table class="table table-bordered table-condensed" id="CasteCategoryConstituencyWiseTableExcelDivId">';
+						str1+='<table class="table table-bordered table-condensed" id="constituencyWiseCasteTableToExcelDivId">';
 						str1+='<thead>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">District</th></b>';
-								str1+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
+								str1+='<th class="text-capital "><b class="f_14">Constituency</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Name</th></b>';
 								str1+='<th class="text-capital " ><b class="f_14">2014 cadre</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">2014 cadre&nbsp;%</th></b>';
@@ -1253,10 +1204,9 @@
 							str1+='</tr>';
 						str1+='</thead>';
 						str1+='<tbody>';
-						for(var i in result){
-							if(result[i].subList !=null && result[i].subList.length>0){
-								for(var j in result[i].subList){
-									
+							for(var i in result){
+								if(result[i].subList !=null && result[i].subList.length>0){
+									for(var j in result[i].subList){
 											str1+='<tr>';
 											str1+='<td>'+result[i].superlocationName+'</td>';
 											str1+='<td>'+result[i].name+'</td>';
@@ -1308,35 +1258,30 @@
 											}
 										
 										str1+='</tr>';
-									
-									
-									
-									
-									
+										
+									}
 								}
 							}
-						}
+						
 						
 						str1+='</tbody>';
 						str1+='</table>';
 						//for fetching all records end
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
-			$("#CasteCategoryConstituencyWiseSummaryDetails").html("NO DATA AVAILABLE");
+			$("#constituencyWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
 		
-		$("#CasteCategoryConstituencyWiseSummaryDetails").html(str);
-		$("#excelDivGCasteCategoryConstituencyWiseSummaryDetails").html(str1);
-		$(".CasteCategoryConstituencyWiseDataTableId").dataTable();
-		$(".CasteCategoryConstituencyWiseDataTableId").removeClass("dataTable");
+		$("#constituencyWiseCasteDetails").html(str);
+		$("#constituencyWiseCasteDetailsExcelReport").html(str1);
+		$(".constituencyWiseCasteDataTableCls").dataTable();
+		$(".constituencyWiseCasteDataTableCls").removeClass("dataTable");
 		
-		$(document).on("click","#CasteCategoryConstituencyWiseReportExcel",function(){
-			tableToExcel(CasteCategoryConstituencyWiseTableExcelDivId, getState() +' STATE - CONSTITUENCY WISE CASTE REPORT');   
+		
+		
+		$(document).on("click","#constituencyWiseCasteExcelReportId",function(){
+			tableToExcel(constituencyWiseCasteTableToExcelDivId, getState() +' STATE - CONSTITUENCY WISE CASTE REPORT'); 
 		});
 		
 	}
@@ -1494,7 +1439,7 @@
 				  str+='<div class="panel-body">';
 				  str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note:R - Renewal & N-New Cadre & M - Male & F - Female</label>';
 					str+='<div class="table-responsive m_top20">';
-					str+='<table class="table table-bordered tableHeaderStyle table-condensed " id="districtGenderWiseTableToExcel">';
+					str+='<table class="table table-bordered tableHeaderStyle table-condensed districtGenderWiseDataTableCls" id="districtGenderWiseTableToExcel">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital " rowspan="2" ><b>District</b></th>';
@@ -1565,6 +1510,8 @@
 		}
 		
 		$("#genderWiseDistrictDetails").html(str);
+		$('.districtGenderWiseDataTableCls').DataTable();
+		$('.districtGenderWiseDataTableCls').removeClass("dataTable")
 	}
 	$(document).on("click","#districtGenderWiseExcelId",function(){
 		tableToExcel(districtGenderWiseTableToExcel, getState() +' STATE - DISRTICT WISE GENDER REPORT');    
@@ -1691,23 +1638,23 @@
 							str1+='</tr>';
 							str1+='<tr>';
 								str1+='<th class="text-capital " ><b>Total</b></th>';
-								str1+='<th class="text-capital " ><b >M</b></th>';
-								str1+='<th class="text-capital " ><b>M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male</b></th>';
+								str1+='<th class="text-capital " ><b>Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
 							
 								str1+='<th class="text-capital " ><b >Total</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >R</th></b>';
-								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2014)</b></th>';
-								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2016)</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >N</b></th>';
-								str1+='<th class="text-capital " ><b >N&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Renewal</th></b>';
+								str1+='<th class="text-capital " ><b >Renewal (From 2014)</b></th>';
+								str1+='<th class="text-capital " ><b >Renewal (From 2016)</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >New</b></th>';
+								str1+='<th class="text-capital " ><b >New&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
 							str1+='</tr>';
 							
 						str1+='</thead>';
