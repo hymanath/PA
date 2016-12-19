@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -51,6 +53,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -156,6 +159,30 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private IdAndNameVO nameVO;
 	private List<CadreReportVO> cadreCnsttuncyList;
 	private List<FieldReportVO> fieldReportVOs;
+	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
+	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
+	private List<MeetingDtlsVO> meetingDtlsVOs;
+	
+	public List<MeetingDtlsVO> getMeetingDtlsVOs() {
+		return meetingDtlsVOs;
+	}
+	public void setMeetingDtlsVOs(List<MeetingDtlsVO> meetingDtlsVOs) {
+		this.meetingDtlsVOs = meetingDtlsVOs;
+	}
+	public ICoreDashboardPartyMeetingService getCoreDashboardPartyMeetingService() {
+		return coreDashboardPartyMeetingService;
+	}
+	public void setCoreDashboardPartyMeetingService(
+			ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService) {
+		this.coreDashboardPartyMeetingService = coreDashboardPartyMeetingService;
+	}
+	public List<PartyMeetingsDataVO> getPartyMeetingDataVOList() {
+		return partyMeetingDataVOList;
+	}
+	public void setPartyMeetingDataVOList(
+			List<PartyMeetingsDataVO> partyMeetingDataVOList) {
+		this.partyMeetingDataVOList = partyMeetingDataVOList;
+	}
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -3068,7 +3095,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
-public String getTsDistrictDetails(){
+  public String getTsDistrictDetails(){
 	  try{
 		  jobj = new JSONObject(getTask());
 			String locationType = jobj.getString("locationType");
@@ -3089,6 +3116,33 @@ public String getTsDistrictDetails(){
 		  LOG.error("Error occured at getLocationWiseCadreDetails() in CadreRegistrationAction class",e);  
 	  }
 	  return Action.SUCCESS;
+  }
+  public String getParyMeetingDetailsDistrictWise(){
+		try{
+			jobj = new JSONObject(getTask());  
+			
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			  
+			String state = jobj.getString("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");
+			Long partyMeetingId   = jobj.getLong("partyMeetingId");
+			Long sessionId   = jobj.getLong("sessionId");
+			meetingDtlsVOs = coreDashboardPartyMeetingService.getParyMeetingDetailsDistrictWise(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingId,sessionId);
+			
+	}catch(Exception e){  
+		LOG.error("Exception raised at getPartyMeetingsMainTypeOverViewData() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
 }
+  //public List<PartyMeetingsDataVO> getParyMeetingDetailsDistrictWise(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long partyMeetingId)
 }
 
