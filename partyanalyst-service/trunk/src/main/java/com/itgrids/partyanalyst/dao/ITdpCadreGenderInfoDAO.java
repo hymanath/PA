@@ -17,4 +17,7 @@ public interface ITdpCadreGenderInfoDAO extends GenericDao<TdpCadreGenderInfo,Lo
 	public List<Object[]> privilegedStateWiseCadreGenderCounts(List<Long> locationIdList, String accessType);
 	public List<Object[]> privilegedDistrictWiseCadreGenderCounts(List<Long> districtIdList );
 	public List<Object[]> privilegedConstituencyWiseCadreGenderCounts(List<Long> locationIdList );
+	
+	public int deleteAllRecords(List<Long> locationScopeIds);
+	public int insertTdpCadreLocationInfoUpToLowLevelByGender();
 }
