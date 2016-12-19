@@ -35,7 +35,7 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getAttendedCadreCountForMeetingsByCommitteeWise(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getAttendedCadreCountForMeetingsByByPublicRepresentativeWise(PartyMeetingsInputVO inputVO);
 	public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO);
-	public List<Object[]> getSpecialMeetingsSessionWiseAttendence();
+	public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList);
 	public List<Object[]> getCommitteeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 }
