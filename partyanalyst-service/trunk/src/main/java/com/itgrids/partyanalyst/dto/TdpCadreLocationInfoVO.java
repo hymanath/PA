@@ -37,6 +37,7 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	private List<TdpCadreLocationInfoVO> tehsilList;
 	
 	private Map<Long,TdpCadreLocationInfoVO> subMap;
+	private Map<String,TdpCadreLocationInfoVO> subMap1;
 	private List<TdpCadreLocationInfoVO> subList;
 	
 	private Long constituencyId;
@@ -179,6 +180,12 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	}
 	public void setSubList(List<TdpCadreLocationInfoVO> subList) {
 		this.subList = subList;
+	}
+	public Map<String, TdpCadreLocationInfoVO> getSubMap1() {
+		return subMap1;
+	}
+	public void setSubMap1(Map<String, TdpCadreLocationInfoVO> subMap1) {
+		this.subMap1 = subMap1;
 	}
 	
 }
