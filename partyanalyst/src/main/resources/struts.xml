@@ -15096,6 +15096,11 @@
 			<param name="root">cadreCountsGenderVOList</param>
 		</result>
 	</action>
+	<action name="getParyMeetingDetailsDistrictWiseAction" class="cadreRegistrationAction"  method="getParyMeetingDetailsDistrictWise">
+			<result type="json" name="success">
+			<param name="root">meetingDtlsVOs</param>
+		</result>
+	</action>
 	<action name="getToursBasicOverviewDtlsAction" class="coreDashboardAction"  method="getToursBasicOverviewDtls">
 			<result type="json" name="success">
 			<param name="root">toursBasicVO</param>
