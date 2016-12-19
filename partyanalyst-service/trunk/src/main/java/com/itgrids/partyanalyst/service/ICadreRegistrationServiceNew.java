@@ -59,5 +59,7 @@ public interface ICadreRegistrationServiceNew {
 	public List<CadreCountsVO> getBellowLevelLocationWiseAgeReport(Long constituecnyId, String searchType);
 	
 	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByAgeRange();
+	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByGender();
+	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByCasteState();
 	
 }
