@@ -1385,3 +1385,82 @@ function getToursBasicOverviewCountDetails()
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
+	//getToursBasicOverviewDtls();
+	function getToursBasicOverviewDtls()
+	{    
+	  var globalUserTypeId = 2;
+
+		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+		{ 
+			$("#tourOverviewDivId").html(' ');
+			 return;
+		}
+		var jsObj ={ 
+					 activityMemberId : 44,
+					 stateId : globalStateIdForTour,
+					 fromDate : "",
+					 toDate : "",
+					 userTypeId : globalUserTypeId
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getToursBasicOverviewDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	}
+	//getDesignationWiseMembersDtls();
+	function getDesignationWiseMembersDtls()
+	{     var globalUserTypeId = 2;
+		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+		{ 
+			$("#tourOverviewDivId").html(' ');
+			 return;
+		}
+		var jsObj ={ 
+					 activityMemberId : 44,
+					 stateId : globalStateIdForTour,
+					 fromDate : "",
+					 toDate : "",
+					 userTypeId : globalUserTypeId
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getDesignationWiseMembersDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	}
+	//getDesignationWiseAverageTourPerformanceDtls();
+	function getDesignationWiseAverageTourPerformanceDtls()
+	{     var globalUserTypeId = 2;
+		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+		{ 
+			$("#tourOverviewDivId").html(' ');
+			 return;
+		}
+		var jsObj ={ 
+					 activityMemberId : 44,
+					 stateId : globalStateIdForTour,
+					 fromDate : "",
+					 toDate : "",
+					 userTypeId : globalUserTypeId
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getDesignationWiseAverageTourPerformanceDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	}
+	
+	
