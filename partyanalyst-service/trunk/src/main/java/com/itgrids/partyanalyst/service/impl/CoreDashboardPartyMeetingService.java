@@ -1289,7 +1289,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
   *  This Service Method is used to get the getPartyMeetingsMainTypeOverView data.
   *  @since 09-SEPTEMBER-2016
   */
-public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
+public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString,Long partyMeetingsId){
 	
 	List<PartyMeetingsDataVO> finalList = new ArrayList<PartyMeetingsDataVO>();
 	
@@ -1305,7 +1305,13 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 		 inputVO.setEndDate(datesList.get(1));
 		 Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		 inputVO.setStateId(stateId);
-	     
+		 if(partyMeetingsId != null && partyMeetingsId.longValue()>0L){
+			 if(!commonMethodsUtilService.isListOrSetValid(inputVO.getPartyMeetingIds())){
+				 List<Long> partyMeetingIdsList = new ArrayList<Long>(0);
+				 partyMeetingIdsList.add(partyMeetingsId);
+				 inputVO.setPartyMeetingIds(partyMeetingIdsList);
+			 }
+		 }
 		 List<Object[]> noOfMeetingsList = partyMeetingDAO.getNoOfMeetingsByPartyMeetingTypeIds(inputVO);
 		 List<Object[]> inviteesList = partyMeetingInviteeDAO.getInvitedCountForPartyMeetingTypeIds(inputVO);
 		 List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCountForPartyMeetingTypeIds(inputVO);
@@ -1367,7 +1373,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			 }
 		 }
 		 
-		 List<Object[]> partyMeetingsSessionWiseAttendanceDetsils = partyMeetingAttendanceDAO.getSpecialMeetingsSessionWiseAttendence();
+		 List<Object[]> partyMeetingsSessionWiseAttendanceDetsils = partyMeetingAttendanceDAO.getSpecialMeetingsSessionWiseAttendence(inputVO.getPartyMeetingIds());
 		 Map<Long,Map<Long,Map<String,Set<Long>>>> meetingsMap = new HashMap<Long,Map<Long,Map<String,Set<Long>>>>(0);
 		 Map<Long, Map<String,Set<Long>>> meetingWiseLateAbsentDetailsMap = new HashMap<Long,Map<String, Set<Long>>>(0);
 		 List<Long> partyMeetingIdsLsit = new ArrayList<Long>(0);
@@ -1496,7 +1502,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			}
 		 }
 		 
-		 List<Object[]> partySessionsInfo = partyMeetingSessionDAO.getSessionDetailsForPartiMeetings(new HashSet<Long>(meetingTypeVOMap.keySet()));
+		 List<Object[]> partySessionsInfo = partyMeetingSessionDAO.getSessionDetailsForPartiMeetings(new HashSet<Long>(meetingTypeVOMap.keySet()),inputVO.getPartyMeetingIds());
 		 if(commonMethodsUtilService.isListOrSetValid(partySessionsInfo) && commonMethodsUtilService.isMapValid(meetingTypeVOMap)){
 			 
 			 for (Object[] param : partySessionsInfo) {
@@ -3810,9 +3816,10 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						    }
 					}else{
 							 Map<Long,Set<Long>> invteeAttnddMap = publicRepattendedCadreMap.get(entry.getKey());
-							  if(invteeAttnddMap != null && invteeAttnddMap.size() > 0){
+		  LOG.error("Error occured at setCommiteeLevelWiseInviteeMembers() in CoreDashboardPartyMeetingService {}",e);
 								  for(Entry<Long,Set<Long>> inviteeEntry:invteeAttnddMap.entrySet()){
 									  PartyMeetingsDataVO vo = getSessionTypeMatchVO(entry.getValue().getSubList1(),inviteeEntry.getKey());
+	
 									   if(vo != null){
 										   vo.setAttendedCount(Long.valueOf(inviteeEntry.getValue().size()));  
 									   }
