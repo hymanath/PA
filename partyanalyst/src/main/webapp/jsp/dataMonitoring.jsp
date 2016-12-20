@@ -92,10 +92,10 @@
       </div>
       <div class="modal-body">  
 <div>
-	<input type="radio" class="filterClass" name="fltrCls" value="Total" checked style="cursor:pointer"/> All &nbsp&nbsp
-	<input type="radio" class="filterClass" name="fltrCls" value="Pending" style="cursor:pointer"/> Not Verified &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="Total" checked style="cursor:pointer;"/> All &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="Pending" style="cursor:pointer;margin-left: 30px;"/> Not Verified &nbsp&nbsp
 	<input type="radio" class="filterClass" name="fltrCls" value="Verified" style="cursor:pointer"/> Verified &nbsp&nbsp
-	<input type="radio" class="filterClass" name="fltrCls" value="ImageNotMatched" style="cursor:pointer"/> Image Not Matched &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="ImageNotMatched" style="cursor:pointer;margin-left: 30px;"/> Image Not Matched &nbsp&nbsp
 	<input type="radio" class="filterClass" name="fltrCls" value="ImproperImage" style="cursor:pointer"/> Improper Image &nbsp&nbsp
 	<input type="radio" class="filterClass" name="fltrCls" value="NoImage" style="cursor:pointer"/> No Image &nbsp&nbsp
 	
