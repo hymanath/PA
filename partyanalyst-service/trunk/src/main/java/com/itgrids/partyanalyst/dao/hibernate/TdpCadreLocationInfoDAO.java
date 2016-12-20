@@ -999,7 +999,7 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 	       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 	    	   queryStr.append(" model1.district.districtId,");  
 	       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
-	    	   queryStr.append(" model2.districtId,"); 
+	    	   queryStr.append(" model2.districtId,");   
 	       }
 	        queryStr.append(" sum(model.cadre2014) from TdpCadreLocationInfo model ");
 	        if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
@@ -1009,7 +1009,7 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 	        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
 	        }
 		   if(constituencyIds != null && constituencyIds.size() > 0){
-	   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
+	   	     queryStr.append(" and model.locationValue in(:constituencyIds) and model.type = 'Total' ");
 	       }
 	       queryStr.append(" and model.locationScopeId=:locationScopeId ");
 	       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
