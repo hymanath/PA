@@ -1823,6 +1823,8 @@
 										<span class="headingColor text-capitalize">special meetings</span>
 										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
 										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
+										
+										<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 								    </h4>
 								 	<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
@@ -3595,20 +3597,23 @@
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
 <div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog">
-	<div class="modal-dialog" style="width:70%;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="">Member Details</h4>      
-			</div>
-			<div class="modal-body" id="meetingMemDetailsBodyId">    
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div><!--  /.modal-content -->  
-	</div><!--  /.modal-dialog -->
-</div><!--  /.modal -->
+ <div class="modal-dialog modal-lg" role="document">   
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="">Member Details</h4>      
+      </div>
+      <div class="modal-body" id="">   
+        <div class="col-sm-12 col-xs-12 col-sm-12">
+          <div id="meetingMemDetailsBodyId"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!—  /.modal-content —>  
+  </div><!—  /.modal-dialog —>
+</div><!—  /.modal —>
 <!-- Model for Debate Start-->           
 		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
 		  <div class="modal-dialog modal-lg">       
@@ -3789,7 +3794,7 @@
 		stateLevelCampDetails();
 	});
 	getLoggedInUserStructure();
-	
+
 	onLoadCalls();
 	
 	function onLoadCalls(){
