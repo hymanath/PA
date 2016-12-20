@@ -2164,15 +2164,15 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.attendedCount == 0 || partyMeetingArr.attendedCount == null){
 									str+='<td class="text-success" style="text-align:center" >Total&nbsp;Attended<br>'+partyMeetingArr.attendedCount+'</td>';
 								}else{
-									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="attended">Total&nbsp;Attended<br>'+partyMeetingArr.attendedCount+'</td>';
+									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="attended">Total&nbsp;Attended<br><u>'+partyMeetingArr.attendedCount+'</u></td>';
 								}
 								if(partyMeetingArr.lateAttendedCount == 0 || partyMeetingArr.lateAttendedCount == null){
 									str+='<td class="text_oragane" style="text-align:center" >Late&nbsp;Attended<br>'+partyMeetingArr.lateAttendedCount+'</td>';
 								}else{
-									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="late">Late&nbsp;Attended<br>'+partyMeetingArr.lateAttendedCount+'</td>';
+									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="late">Late&nbsp;Attended<br> <u>'+partyMeetingArr.lateAttendedCount+' </u></td>';
 								}
 								if(partyMeetingArr.notAttendedCount == 0 || partyMeetingArr.notAttendedCount == null){
-									str+='<td style="text-align:center">Absent<br>'+partyMeetingArr.notAttendedCount+'</td>';
+									str+='<td style="text-align:center">Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
 								}else{
 									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent">Absent<br>'+partyMeetingArr.notAttendedCount+'</td>';
 								}	
@@ -2195,17 +2195,17 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.subList1[k].attendedCount == 0 || partyMeetingArr.subList1[k].attendedCount == null){
 									str+='<td class="text-success" style="text-align:center" >Total&nbsp;Attended<br>'+partyMeetingArr.subList1[k].attendedCount+'</td>';
 								}else{
-									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended">Total&nbsp;Attended<br>'+partyMeetingArr.subList1[k].attendedCount+'</td>';
+									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended">Total&nbsp;Attended<br> <u>'+partyMeetingArr.subList1[k].attendedCount+' </u></td>';
 								}
 								if(partyMeetingArr.subList1[k].lateAttendedCount == 0 || partyMeetingArr.subList1[k].lateAttendedCount == null){
-									str+='<td class="text_oragane" style="text-align:center" >Late&nbsp;Attended<br>'+partyMeetingArr.subList1[k].lateAttendedCount+'</td>';
+									str+='<td class="text_oragane" style="text-align:center" >Late&nbsp;Attended<br><u>'+partyMeetingArr.subList1[k].lateAttendedCount+'</u></td>';
 								}else{
-									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="late">Late&nbsp;Attended<br>'+partyMeetingArr.subList1[k].lateAttendedCount+'</td>';
+									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="late">Late&nbsp;Attended<br><u>'+partyMeetingArr.subList1[k].lateAttendedCount+'</u></td>';
 								}
 								if(partyMeetingArr.subList1[k].notAttendedCount == 0 || partyMeetingArr.subList1[k].notAttendedCount == null){
 									str+='<td style="text-align:center" >Absent<br>'+partyMeetingArr.subList1[k].notAttendedCount+'</td>';    
 								}else{
-									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="absent">Absent<br>'+partyMeetingArr.subList1[k].notAttendedCount+'</td>';
+									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="absent">Absent<br><u>'+partyMeetingArr.subList1[k].notAttendedCount+'</u></td>';
 								}  
 							str+='</tr>';
 						str+='</tbody>';
@@ -2288,22 +2288,22 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 											if(result[i].subList1[k].attendedCount == 0){
 												str+='<h5 class="text-success">'+result[i].subList1[k].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
 											}else{
-												str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220">'+result[i].subList1[k].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
+												str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220"> <u>'+result[i].subList1[k].attendedCount+' </u><span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
 											}
 											
 											str+='</td>';
 											str+='<td>';
 												if(result[i].subList1[k].lateAttendedCount == 0){  
-													str+='<h5 class="text_oragane">'+result[i].subList1[k].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
+													str+='<h5 class="text_oragane"><u>'+result[i].subList1[k].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
 												}else{
-													str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="0" attr_party_meeting_id="445220">'+result[i].subList1[k].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
+													str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="0" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
 												}
 											 str+='</td>';
 											 str+='<td>';
 											 if(result[i].subList1[k].notAttendedCount == 0){
 												 str+='<h5>'+result[i].subList1[k].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].notAttendedPerc+'%</span></h5>';
 											 }else{
-												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220">'+result[i].subList1[k].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].notAttendedPerc+'%</span></h5>';
+												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].notAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].notAttendedPerc+'%</span></h5>';
 											 }
 												
 											 str+='</td>';
@@ -2321,7 +2321,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].attendedCount == 0){
 									 str+='<h5 class="text-success">'+result[i].subList1[k].subList1[s].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
 								 }else{
-									 str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220">'+result[i].subList1[k].subList1[s].attendedCount+' <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
+									 str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].subList1[s].attendedCount+'</u> <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
 								 }
 								 
 								 str+='</td>';
@@ -2329,7 +2329,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].lateAttendedCount == 0){
 									 str+='<h5 class="text_oragane">'+result[i].subList1[k].subList1[s].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].lateattendedPerc+'%</span> </h5>';
 								 }else{
-									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220">'+result[i].subList1[k].subList1[s].lateAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].lateattendedPerc+'%</span> </h5>';
+									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].subList1[s].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].lateattendedPerc+'%</span> </h5>';
 								 }
 									
 								 str+='</td>';
@@ -2337,7 +2337,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].notAttendedCount == 0){
 									 str+='<h5>'+result[i].subList1[k].subList1[s].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].notAttendedPerc+'%</span></h5>';
 								 }else{
-									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220">'+result[i].subList1[k].subList1[s].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].notAttendedPerc+'%</span></h5>';
+									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].subList1[s].notAttendedCount+' </u><span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].notAttendedPerc+'%</span></h5>';
 								 }   
 								 
 								 str+='</td>';
