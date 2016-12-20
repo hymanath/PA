@@ -1069,7 +1069,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			Long locationScopeId = jObj.getLong("locationScopeId");
 			String locationType = jObj.getString("locationType");
 			Long districtId = jObj.getLong("districtId");
-			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCountsForConstitunecy(type, locationScopeId, locationType,districtId);
+			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCountsForConstitunecy(type, locationScopeId, locationType,districtId,null);
 		}
 		catch(Exception e)
 		{
