@@ -207,7 +207,7 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 			" count(distinct model.tdpCadreId)," +
 			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
-			" where model.dataRejectReason.dataRejectReasonId is null ");
+			" where model.dataRejectReasonId is null ");
 	if(fromDate != null && toDate != null)
 		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 	
