@@ -9,6 +9,10 @@ import java.util.List;
  * @author Swadhin
  *
  */
+/**
+ * @author Swadhin
+ *
+ */
 public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long id;
 	private String name;
@@ -66,6 +70,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String positionName;
 	private List<String> sessionList;
 	
+	private String isInvitee;
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
 		return o2.getOrderId().compareTo(o1.getOrderId());
@@ -74,6 +79,15 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public IdNameVO(){}
 	
+	
+	public String getIsInvitee() {
+		return isInvitee;
+	}
+
+	public void setIsInvitee(String isInvitee) {
+		this.isInvitee = isInvitee;
+	}
+
 	public IdNameVO(Long id,String name){
 		this.id=id;
 		this.name=name;
