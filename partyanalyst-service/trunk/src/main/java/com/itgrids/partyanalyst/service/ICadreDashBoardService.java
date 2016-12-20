@@ -117,5 +117,5 @@ public interface ICadreDashBoardService {
 	 public List<RegistrationCountVO> getRegistrationCountDtls(String location, Long constId, String scope);
 	 public List<IdAndNameVO> getCadreRegistrationCountByConstituency(Long constituencyId,String fromDateStr,String toDateStr);
 	 public List<IdAndNameVO> getDataSourceTypeWiseCountsByType(String type);
-	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCountsForConstitunecy(String type,Long locationScopeId,String locationType,Long districId);
+	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCountsForConstitunecy(String type,Long locationScopeId,String locationType,Long districId,Long constType);
 }
