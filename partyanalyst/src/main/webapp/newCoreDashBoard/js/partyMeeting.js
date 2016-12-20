@@ -4482,6 +4482,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						str+='<th>Leader Name</th>';
 						str+='<th>Designation</th>';
 						str+='<th>Contact Number</th>';
+						str+='<th>Invitation Status</th>';  
 						str+='<th>All Sessions</th>';
 						str+='<th>Sessions-|</th>';
 						str+='<th>Sessions-||</th>';
@@ -4513,7 +4514,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						}else{
 							str+='<td>-</td>';
 						}
-						
+						if(result[i].isInvitee == "true"){
+							str+='<td>Invitee</td>'; 
+						}else{
+							str+='<td>Non Invitee</td>';   
+						}
 						for(var j in result[i].sessionList){
 							if(result[i].sessionList[j] == "intime"){
 								str+='<td class="text-success">Y</td>';
