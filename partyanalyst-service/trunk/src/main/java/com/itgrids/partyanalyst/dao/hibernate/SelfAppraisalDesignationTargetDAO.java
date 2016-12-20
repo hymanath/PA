@@ -56,8 +56,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
             }
              queryStr.append(" sum(model.targetDays) " +
 			 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
-			 " and model.selfAppraisalDesignation.isActive='Y'" +
-			 " and model.selfAppraisalTourCategory.isDeleted='N' ");
+			 " and model.selfAppraisalDesignation.isActive='Y' ");
            if(fromDate != null){
         	   queryStr.append(" and date(model.startTime)=:fromDate");
            }
@@ -65,7 +64,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
         	   queryStr.append(" and date(model.endTime)=:toDate"); 
            }
            if(type.equalsIgnoreCase("Category")){
-        	  queryStr.append(" and model.tourTypeId is null "); 
+        	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
            }else{
         	   queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
            }
