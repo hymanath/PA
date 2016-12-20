@@ -2735,7 +2735,7 @@
           <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
           <property name="tabUserEnrollmentInfoDAO"  ref="tabUserEnrollmentInfoDAO"></property>
           <property name="tdpCadreDataSourceTypeInfoDAO"  ref="tdpCadreDataSourceTypeInfoDAO"></property>
-             <!--<property name="districtConstituenciesDAO"  ref="districtConstituenciesDAO"></property>-->
+          <property name="districtConstituenciesDAO"  ref="districtConstituenciesDAO"></property>
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">
      
