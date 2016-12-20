@@ -4031,10 +4031,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<h5 class="text-capital">'+result[i].name+'</h5>'; 
 			str+='<div class="row">';
-				str+='<div class="col-md-1 col-xs-12 col-sm-3">';
+				if($(window).width() < 400)
+				{
+					str+='<div class="col-md-1 col-xs-12 col-sm-3">';
+						str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;"></div>';
+				}else{
+					str+='<div class="col-md-1 col-xs-12 col-sm-3">';
 					str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;min-width:60px;"></div>';
+				}
 				str+='</div>';
-				
 				if($(window).width() < 400)
 				{
 					str+='<div class="col-md-4 col-xs-12 col-sm-3">';
