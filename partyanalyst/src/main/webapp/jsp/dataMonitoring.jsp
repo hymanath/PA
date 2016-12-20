@@ -90,7 +90,19 @@
         <p id="userId">User ID - 12345</p>
         <p id="userDescriptionId"><i>Rahul - 9984845464</i></p>
       </div>
-      <div class="modal-body">   
+      <div class="modal-body">  
+<div>
+	<input type="radio" class="filterClass" name="fltrCls" value="Total" checked style="cursor:pointer"/> All &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="Pending" style="cursor:pointer"/> Not Verified &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="Verified" style="cursor:pointer"/> Verified &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="ImageNotMatched" style="cursor:pointer"/> Image Not Matched &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="ImproperImage" style="cursor:pointer"/> Improper Image &nbsp&nbsp
+	<input type="radio" class="filterClass" name="fltrCls" value="NoImage" style="cursor:pointer"/> No Image &nbsp&nbsp
+	
+	<!-- Hidden Variables -->
+	<input type="hidden" id="hdnCdrSrvyUserId"/>
+	<input type="hidden" id="hdnTabUserInfoId"/>
+</div>	  
         <div>
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" id="issuesDataMonitroing" role="tablist">
