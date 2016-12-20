@@ -2180,7 +2180,7 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.notAttendedCount == 0 || partyMeetingArr.notAttendedCount == null){
 									str+='<td style="text-align:center">Absent<br> 0  </td>';
 								}else{
-									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
+									str+='<td class="" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
 								}	
 						str+='</tr>';
 					str+='</tbody>';
@@ -2262,25 +2262,39 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="invited" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].invitedCount+'<span class="font-10 text-success"></span></h4>';
 						  str+='<p class="text-muted text-capital">Invited</p>';
 						 str+='</td>';
-						 str+='<td>';//late
+						 str+='<td class="text-muted text-capital">  </td>';
+						 str+='<td class="text-muted text-capital">  </td>';
+						 str+='<td class="text-muted text-capital" >  </td>';
+						 str+='<td class="text-muted text-capital" >  </td>';
+						 /*str+='<td>';//late
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital text-success">Attended</p>';//late
-						 str+='</td>';
-						  if(result[i].subList1 != null && result[i].subList1.length>0){
+						 str+='</td>';*/
+						/*  if(result[i].subList1 != null && result[i].subList1.length>0){
+							  var attendedCount = parseInt(result[i].attendedCount);
+								var lateCount = parseInt(result[i].lateAttendedCount);								
+								var perc = (lateCount*100.0/attendedCount);
+								
 								str+='<td>';
-								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+result[i].lateattendedPerc+'%</span></h4>';
+								 str+='<h4  class="" style="cursor:pointer;" >'+result[i].lateAttendedCount+'<span class="font-10 text-danger">'+perc.toFixed(2)+'%</span></h4>';
 								  str+='<p class="text-muted text-capital text_oragane">Late</p>';
 							 str+='</td>';  
 						  }
+						  */
+						 /*   var invitedCount = parseInt(result[i].invitedCount);
+							var lateCount = parseInt(result[i].lateAttendedCount);								
+							var perc = (lateCount*100.0/invitedCount);
+								
+								
 						 str+='<td>';  
-							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].notAttendedPerc+'%</span></h4>';
+							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h4>';
 							  str+='<p class="text-muted text-capital">Absent</p>';    
 						 str+='</td>';
-						 
-							str+='<td>';  
-							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].nonInviteeCount+' </h4>';
-							  str+='<p class="text-muted text-capital"> Non Invitees </p>';    
-						 str+='</td>';   						 
+						 */
+						//	str+='<td>';  
+							/* str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].nonInviteeCount+' </h4>';*/
+							//  str+='<p class="text-muted text-capital"> Non Invitees </p>';    
+						 //str+='</td>';   						 
 					 str+='</tr>';
 					 
 					 
@@ -2296,43 +2310,58 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										  str+='<tr>';
 											 str+='<td >';
 												str+='<span class="statelevelSessionMeeting pull-right"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
-												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12" style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
+												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12 " style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
 												  
 											 str+='</td>';
 											 str+='<td>';
 												str+='<h5>'+result[i].subList1[k].invitedCount+' </h5>';
 											str+='</td>';
-											str+='<td>';
+											 str+='<td class="text-muted text-capital"><p>Attended</p></td>';
+											 str+='<td class="text-muted text-capital"> <p>Late </p></td>';
+											 str+='<td class="text-muted text-capital" ><p> Absent </p></td>';
+											 str+='<td class="text-muted text-capital" ><p> Non Invitees</p> </td>';
+											 
+											/*str+='<td>';
 											if(result[i].subList1[k].attendedCount == 0 || result[i].subList1[k].attendedCount == null ){
 												str+='<h5 class="text-success"> 0  <span class="font-10 text-success"> 0.00 %</span> </h5>';
 											}else{
 												str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="false"> <u>'+result[i].subList1[k].attendedCount+' </u><span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
 											}
 											
-											str+='</td>';
-											str+='<td>';
+											str+='</td>';*/
+											/*str+='<td>';
 												if(result[i].subList1[k].lateAttendedCount == 0 || result[i].subList1[k].lateAttendedCount == null ){  
 													str+='<h5 class="text_oragane"> 0  <span class="font-10 text-danger">  0.00 %</span> </h5>';
 												}else{
-													str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].lateattendedPerc+'%</span> </h5>';
+													var attendedCount = parseInt(result[i].subList1[k].attendedCount);
+													var lateCount = parseInt(result[i].subList1[k].lateAttendedCount);
+													
+													var perc = (lateCount*100.0/attendedCount)
+													
+													
+													str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span> </h5>';
 												}
-											 str+='</td>';
-											 str+='<td>';
+											 str+='</td>';*/
+											 /*str+='<td>';
 											 if(result[i].subList1[k].notAttendedCount == 0 || result[i].subList1[k].notAttendedCount == null){
 												 str+='<h5> 0  <span class="font-10 text-danger">  0.00 %</span></h5>';
 											 }else{
-												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220"  attr_non_invitee="false"><u>'+result[i].subList1[k].notAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].notAttendedPerc+'%</span></h5>';
+												  var attendedCount = parseInt(result[i].subList1[k].invitedCount);
+													var lateCount = parseInt(result[i].subList1[k].notAttendedCount);
+													
+													var perc = (lateCount*100.0/attendedCount);
+												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220"  attr_non_invitee="false"><u>'+result[i].subList1[k].notAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h5>';
 											 }
 												
-											 str+='</td>';
-											  str+='<td>';
-											 if(result[i].subList1[k].nonInviteeCount == 0 || result[i].subList1[k].nonInviteeCount == null){
+											 str+='</td>';*/
+											 // str+='<td>';
+											/* if(result[i].subList1[k].nonInviteeCount == 0 || result[i].subList1[k].nonInviteeCount == null){
 												 str+='<h5>  - </h5>';
 											 }else{
 												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="true"><u>'+result[i].subList1[k].nonInviteeCount+'</u></h5>';
 											 }
-												
-											 str+='</td>';
+											*/	
+											// str+='</td>';
 											 
 										 str+='</tr>';
 										 
@@ -2356,7 +2385,12 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].lateAttendedCount == 0 || result[i].subList1[k].subList1[s].lateAttendedCount == null ){
 									 str+='<h5 class="text_oragane"> 0  <span class="font-10 text-danger"> 0.00 %</span> </h5>';
 								 }else{
-									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].lateattendedPerc+'%</span> </h5>';
+									var attendedCount = parseInt(result[i].subList1[k].subList1[s].attendedCount);
+									var lateCount = parseInt(result[i].subList1[k].subList1[s].lateAttendedCount);
+									
+									var perc = (lateCount*100.0/attendedCount);
+													
+									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span> </h5>';
 								 }
 									
 								 str+='</td>';
@@ -2364,7 +2398,13 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].notAttendedCount == 0 || result[i].subList1[k].subList1[s].notAttendedCount == null ){
 									 str+='<h5> 0  <span class="font-10 text-danger">  0.00 %</span></h5>';
 								 }else{
-									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].notAttendedCount+' </u><span class="font-10 text-danger"> '+result[i].subList1[k].subList1[s].notAttendedPerc+'%</span></h5>';
+									 
+									 var attendedCount = parseInt(result[i].subList1[k].invitedCount);
+									var lateCount = parseInt(result[i].subList1[k].subList1[s].notAttendedCount);
+									
+									var perc = (lateCount*100.0/attendedCount);
+									
+									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].notAttendedCount+' </u><span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h5>';
 								 }   
 								 
 								 str+='</td>';
@@ -3966,19 +4006,19 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		str+='<h5 class="text-capital">'+result[i].name+'</h5>'; 
 			str+='<div class="row">';
 				str+='<div class="col-md-2 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr'+i+'" style="height:120px;padding:0px;"></div>';
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 160px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 160px;padding:0px !important;"></div>';
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 160px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 160px;padding:0px;"></div>';
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width:160px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width:160px;padding:0px;"></div>';
 				str+='</div>';
 			str+='</div>';
      str+='</div>'	
