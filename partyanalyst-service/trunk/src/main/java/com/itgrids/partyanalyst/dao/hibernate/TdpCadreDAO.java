@@ -8200,6 +8200,14 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			 queryStr.append(" and tc.cadre_verification_status_id=2 "); 
 		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
 			 queryStr.append(" and tc.cadre_verification_status_id is null "); 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Verified")){
+			 queryStr.append(" and tc.cadre_verification_status_id is not null "); 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("ImageNotMatched")){
+			 queryStr.append(" and drr.data_reject_reason_id = 1 "); 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("ImproperImage")){
+			 queryStr.append(" and drr.data_reject_reason_id = 2 "); 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("NoImage")){
+			 queryStr.append(" and drr.data_reject_reason_id = 3 "); 
 		 }
          
 	    /*if(dataSourceType != null && dataSourceType.trim().length() > 0){
