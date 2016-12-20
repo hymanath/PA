@@ -3220,9 +3220,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					sessionIdAndLateTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[10]), lateTime);
 				}
 			}
-			List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingId(inputVO);
-			List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingId(inputVO);
-			List<Object[]> attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingId(inputVO);
+			List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingIdForSession(inputVO);
+			List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingIdForSession(inputVO);
+			List<Object[]> attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingIdForSession(inputVO);
 			//collect totol invited cadre ids
 			Set<Long> totalInviteesCadreList = new HashSet<Long>();
 			if(inviteesList != null && inviteesList.size() > 0){
@@ -3610,6 +3610,16 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						}
 					}
 					idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());  
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(idNameVOs)){
+				List<Long> tdpCadreIdsLsit = new ArrayList<Long>(0);
+				for (IdNameVO vo : idNameVOs) {
+					vo.setIsInvitee("false");
+					if(totalInviteesCadreList.contains(vo.getId())){
+						vo.setIsInvitee("true");
+					}
 				}
 			}
 			return idNameVOs;  
