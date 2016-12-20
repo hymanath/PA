@@ -3895,15 +3895,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						    }
 						    
 						    // state Level allSession absent Attended
-						      allSessionIds.clear();
-							  allSessionAttended.clear();
-							  Map<Long,Set<Long>> stateLeveAllSessionAbsent = inviteeAttendedMap.get(10l);
-							  if(stateLeveAllSessionAbsent != null && stateLeveAllSessionAbsent.size() > 0){
-								  for(Entry<Long,Set<Long>> entry:stateLeveAllSessionAbsent.entrySet()){
-									  allSessionIds.addAll(entry.getValue()); 
-								  }
-							  }
-							  allSessionAttended = getAllSessionAttendedMember(allSessionIds,stateLeveAllSessionAbsent);
+						      Map<Long,Set<Long>> stateLevelInviteeAttended = inviteeAttendedMap.get(10l);
+							  Set<Long> stateLevelInvitee = committWiseInviteeMap.get(10l);
+							  allSessionAttended = getAllSessionAbesntCadre(stateLevelInvitee,stateLevelInviteeAttended);//inviteeSet,AttendedSet
 							  List<PartyMeetingsDataVO> stateLevelSessionList = committeeLevelsMap.get(10l).getSubList1();
 							    if(stateLevelSessionList != null && stateLevelSessionList.size() > 0){
 							    	for(PartyMeetingsDataVO VO:stateLevelSessionList){
@@ -3913,16 +3907,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 							    }
 							  
 							    // District Level allSession Absent Attended
-							    allSessionIds.clear();
-								 allSessionAttended.clear();
-								  Map<Long,Set<Long>> districtLeveInviteeMap = inviteeAttendedMap.get(11l);
-								  if(districtLeveInviteeMap != null && districtLeveInviteeMap.size() > 0){
-									  for(Entry<Long,Set<Long>> entry:districtLeveInviteeMap.entrySet()){
-										  allSessionIds.addAll(entry.getValue()); 
-									  }
-								  }
-								
-								  allSessionAttended = getAllSessionAttendedMember(allSessionIds,districtLeveInviteeMap);
+							    Map<Long,Set<Long>> districtLeveInviteeAttendedMap = inviteeAttendedMap.get(11l);
+								Set<Long> districtLevelInvitee = committWiseInviteeMap.get(11l);
+								allSessionAttended = getAllSessionAbesntCadre(districtLevelInvitee,districtLeveInviteeAttendedMap);
 								  List<PartyMeetingsDataVO> districtLevelSessionList = committeeLevelsMap.get(11l).getSubList1();
 								    if(districtLevelSessionList != null && districtLevelSessionList.size() > 0){
 								    	for(PartyMeetingsDataVO VO:districtLevelSessionList){
@@ -3986,57 +3973,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						 }
 			        							  
 						 // other Type All allSession Attended
-						 //  allSessionIds.clear();
-						  // allSessionAttended.clear();
-						   List<Long> allOtherTypeSessionLst = new ArrayList<Long>();
-						  if(inviteeAttendedMap != null && inviteeAttendedMap.size() > 0){
-							  for(Entry<Long,Map<Long,Set<Long>>> entry:inviteeAttendedMap.entrySet()){
-								  if(entry.getKey() != 10l && entry.getKey() != 11l ){
-									  if(entry.getValue() != null && entry.getValue().size() > 0){
-										  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
-											  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
-										  }
-									  }
-								    }
-							  }
-						  }
-						        List<PartyMeetingsDataVO> subList = otherTypeVO.getSubList1();
-							     if(subList != null && subList.size() > 0){
-							    	 for(PartyMeetingsDataVO VO:subList){
-							    		 VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allOtherTypeSessionLst.size())); 
-							    	 }
-							     }
-						   // all session late attended count
-						 //  allSessionIds.clear();
-						   allOtherTypeSessionLst.clear();
-						  if(lateAttendedCadreMap != null && lateAttendedCadreMap.size() > 0){
-							  for(Entry<Long,Map<Long,Set<Long>>> entry:lateAttendedCadreMap.entrySet()){
-								  if(entry.getKey() != 10l && entry.getKey() != 11l ){
-									  if(entry.getValue() != null && entry.getValue().size() > 0){
-										  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
-											  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
-										  }
-									  }  
-								  }
-							  }
-						  }
-						/*  if(lateAttendedCadreMap != null && lateAttendedCadreMap.size() > 0){
-							  for(Entry<Long,Map<Long,Set<Long>>> entry:lateAttendedCadreMap.entrySet()){
-								if(entry.getKey() != 10l && entry.getKey() != 11l){
-									// allSessionAttended = getAllSessionAttendedMember(allSessionIds,entry.getValue());
-									 otherTypeVO.setAllSessionLateAttendedCnt(otherTypeVO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size()));
-								}
-							  }
-						 }*/
-						     List<PartyMeetingsDataVO> sessionList = otherTypeVO.getSubList1();
-						     if(sessionList != null && sessionList.size() > 0){
-						    	 for(PartyMeetingsDataVO VO:sessionList){
-						    		 VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allOtherTypeSessionLst.size())); 
-						    	 }
-						     }
-						 //all session absent count
 						   allSessionIds.clear();
-						   allSessionAttended.clear();
 						  if(inviteeAttendedMap != null && inviteeAttendedMap.size() > 0){
 							  for(Entry<Long,Map<Long,Set<Long>>> entry:inviteeAttendedMap.entrySet()){
 								  if(entry.getKey() != 10l && entry.getKey() != 11l ){
@@ -4044,30 +3981,52 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 										  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
 											  allSessionIds.addAll(sessionEntry.getValue()); 
 										  }
-									  }	  
-									   allSessionAttended = getAllSessionAttendedMember(allSessionIds,entry.getValue());
-					                   if(otherTypeVO.getSubList1() != null && otherTypeVO.getSubList1().size() > 0){
+									  }
+									  List<PartyMeetingsDataVO> subList = otherTypeVO.getSubList1();
+									     if(subList != null && subList.size() > 0){
+									    	 for(PartyMeetingsDataVO VO:subList){
+									    		 VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size())); 
+									    	 }
+									     }
+									     allSessionIds.clear();
+								    }
+							  }
+						  }
+						       
+						   // all session late attended count
+						  allSessionIds.clear();
+						  if(lateAttendedCadreMap != null && lateAttendedCadreMap.size() > 0){
+							  for(Entry<Long,Map<Long,Set<Long>>> entry:lateAttendedCadreMap.entrySet()){
+								  if(entry.getKey() != 10l && entry.getKey() != 11l ){
+									  if(entry.getValue() != null && entry.getValue().size() > 0){
+										  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
+											  allSessionIds.addAll(sessionEntry.getValue()); 
+										  }
+									  }  
+									  List<PartyMeetingsDataVO> sessionList = otherTypeVO.getSubList1();
+									     if(sessionList != null && sessionList.size() > 0){
+									    	 for(PartyMeetingsDataVO VO:sessionList){
+									    		 VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size())); 
+									    	 }
+									     }
+									     allSessionIds.clear();
+								  }
+							  }
+						  }
+						 //all session absent count
+						   allSessionAttended.clear();
+						  if(inviteeAttendedMap != null && inviteeAttendedMap.size() > 0){
+							  for(Entry<Long,Map<Long,Set<Long>>> entry:inviteeAttendedMap.entrySet()){
+								  if(entry.getKey() != 10l && entry.getKey() != 11l ){
+									  allSessionAttended = getAllSessionAbesntCadre(committWiseInviteeMap.get(entry.getKey()),entry.getValue());
+									   if(otherTypeVO.getSubList1() != null && otherTypeVO.getSubList1().size() > 0){
 									    	 for(PartyMeetingsDataVO VO:otherTypeVO.getSubList1()){
 									    		 VO.setAllSessionAbsentCnt(VO.getAllSessionAbsentCnt()+Long.valueOf(allSessionAttended.size()));
 									    	 }
 									    }
-					                   allSessionIds.clear();
-								  }
+					              }
 							  }
 						  }
-						/*  if(inviteeAttendedMap != null && inviteeAttendedMap.size() > 0){
-				                for(Entry<Long,Map<Long,Set<Long>>> entry:inviteeAttendedMap.entrySet()){
-				                if(entry.getKey() != 10l && entry.getKey() != 11l){
-				                   allSessionAttended = getAllSessionAttendedMember(allSessionIds,entry.getValue());
-				                   if(otherTypeVO.getSubList1() != null && otherTypeVO.getSubList1().size() > 0){
-								    	 for(PartyMeetingsDataVO VO:otherTypeVO.getSubList1()){
-								    		 VO.setAllSessionAbsentCnt(VO.getAllSessionAbsentCnt()+Long.valueOf(allSessionAttended.size()));
-								    	 }
-								     }
-				                }
-				                }
-				             }*/
-						   
 						  
 				/* Committee Block end */
 				
@@ -4230,23 +4189,30 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				  }
 				// MLA/MLC Level allSession Attended member
 				  Map<Long,Set<Long>> mlaAllSessionAbsent = publicRepinviteeAttendedMap.get(2l);
-				 List<Long>  mlaMlcallSessionList = new ArrayList<Long>();
+				   allSessionIds.clear();
 				  if(mlaAllSessionAbsent != null && mlaAllSessionAbsent.size() > 0){
 					  for(Entry<Long,Set<Long>> entry:mlaAllSessionAbsent.entrySet()){
-						  mlaMlcallSessionList.addAll(entry.getValue()); 
+						  allSessionIds.addAll(entry.getValue()); 
 					  }
 				  }
+				  List<PartyMeetingsDataVO> MLACDtlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
+				    if(MLACDtlsSessionList != null && MLACDtlsSessionList.size() > 0){
+				    	for(PartyMeetingsDataVO VO:MLACDtlsSessionList){
+				    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
+				    	}
+				    }
+				  allSessionIds.clear();
 				  Map<Long,Set<Long>> mlcCadreMap = publicRepinviteeAttendedMap.get(12l);
 				  if(mlcCadreMap != null && mlcCadreMap.size() > 0){
 					  for(Entry<Long,Set<Long>> entry:mlcCadreMap.entrySet()){
-						  mlaMlcallSessionList.addAll(entry.getValue()); 
+						  allSessionIds.addAll(entry.getValue()); 
 					  }
 				  }
 				 // allSessionAttended = getAllSessionAttendedMember(allSessionIds,mlaMlcCadreMap);
 				  List<PartyMeetingsDataVO> MLAMLCDtlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
 				    if(MLAMLCDtlsSessionList != null && MLAMLCDtlsSessionList.size() > 0){
 				    	for(PartyMeetingsDataVO VO:MLAMLCDtlsSessionList){
-				    		VO.setAllSessionAttendedCnt(Long.valueOf(mlaMlcallSessionList.size()));
+				    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
 				    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
 				    	}
 				    }
@@ -4263,8 +4229,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					  List<PartyMeetingsDataVO> MPSessionList = publicRepresentativesMap.get(1l).getSubList1();
 					    if(MPSessionList != null && MPSessionList.size() > 0){
 					    	for(PartyMeetingsDataVO VO:MPSessionList){
-					    		VO.setAllSessionAttendedCnt(Long.valueOf(allSessionIds.size()));
-					    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(1l).getInvitedCount()));
+					    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
 					    	}
 					    }
 					    // CONSTITUENCY INCHARGES Level allSession Attended
@@ -4276,34 +4241,40 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 								  allSessionIds.addAll(entry.getValue()); 
 							  }
 						  }
-						//  allSessionAttended = getAllSessionAttendedMember(allSessionIds,conInchargeDtls);
 						  List<PartyMeetingsDataVO> ciSessionList = publicRepresentativesMap.get(21l).getSubList1();
 						    if(ciSessionList != null && ciSessionList.size() > 0){
 						    	for(PartyMeetingsDataVO VO:ciSessionList){
-						    		VO.setAllSessionAttendedCnt(Long.valueOf(allSessionIds.size()));
+						    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
 						    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(21l).getInvitedCount()));
 						    	}
 						    }  
 						    
 						 // MLA/MLC Level allSession late Attended
-						      mlaMlcallSessionList.clear();
+						    allSessionIds.clear();
 							  Map<Long,Set<Long>> mlaLateCadreMap = publicReplateAttendedCadreMap.get(2l);
 							  if(mlaLateCadreMap != null && mlaLateCadreMap.size() > 0){
 								  for(Entry<Long,Set<Long>> entry:mlaLateCadreMap.entrySet()){
-									  mlaMlcallSessionList.addAll(entry.getValue()); 
+									  allSessionIds.addAll(entry.getValue()); 
 								  }
 							  }
-							  Map<Long,Set<Long>> mlcLateCadreMap = publicReplateAttendedCadreMap.get(12l);
-							  if(mlcLateCadreMap != null && mlcLateCadreMap.size() > 0){
-								  for(Entry<Long,Set<Long>> entry:mlcLateCadreMap.entrySet()){
-									  mlaMlcallSessionList.addAll(entry.getValue()); 
-								  }
-							  }
-							  //allSessionAttended = getAllSessionAttendedMember(allSessionIds,mlaMlcLateCadreMap);
 							  List<PartyMeetingsDataVO> mlaMlcLatetlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
 							    if(mlaMlcLatetlsSessionList != null && mlaMlcLatetlsSessionList.size() > 0){
 							    	for(PartyMeetingsDataVO VO:mlaMlcLatetlsSessionList){
-							    		VO.setAllSessionLateAttendedCnt(Long.valueOf(mlaMlcallSessionList.size()));
+							    		VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size()));
+							    	}
+							    }
+							    allSessionIds.clear();
+							  Map<Long,Set<Long>> mlcLateCadreMap = publicReplateAttendedCadreMap.get(12l);
+							  if(mlcLateCadreMap != null && mlcLateCadreMap.size() > 0){
+								  for(Entry<Long,Set<Long>> entry:mlcLateCadreMap.entrySet()){
+									  allSessionIds.addAll(entry.getValue()); 
+								  }
+							  }
+							  //allSessionAttended = getAllSessionAttendedMember(allSessionIds,mlaMlcLateCadreMap);
+							  List<PartyMeetingsDataVO> mlaMlcLtetlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
+							    if(mlaMlcLtetlsSessionList != null && mlaMlcLtetlsSessionList.size() > 0){
+							    	for(PartyMeetingsDataVO VO:mlaMlcLtetlsSessionList){
+							    		VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size()));
 							    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
 							    	}
 							    }
@@ -4345,31 +4316,18 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					    
 								    // MLA/MLC Level allSession Absent
 									  Map<Long,Set<Long>> mlaInviteeAttendedCadreIdMap = publicRepinviteeAttendedMap.get(2l);
-									  allSessionIds.clear();
-									  allSessionAttended.clear();
-									  if(mlaInviteeAttendedCadreIdMap != null && mlaInviteeAttendedCadreIdMap.size() > 0){
-										  for(Entry<Long,Set<Long>> entry:mlaInviteeAttendedCadreIdMap.entrySet()){
-											  allSessionIds.addAll(entry.getValue()); 
-										  }
-									  }
-									  allSessionAttended = getAllSessionAttendedMember(allSessionIds,mlaInviteeAttendedCadreIdMap);
+									  Set<Long> mlaInviteeSet = publicRepInviteeMap.get(2l);
+									  allSessionAttended = getAllSessionAbesntCadre(mlaInviteeSet,mlaInviteeAttendedCadreIdMap);
 									  List<PartyMeetingsDataVO> mlaMlcAbsentlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
 									    if(mlaMlcAbsentlsSessionList != null && mlaMlcAbsentlsSessionList.size() > 0){
 									    	for(PartyMeetingsDataVO VO:mlaMlcAbsentlsSessionList){
 									    		VO.setAllSessionAbsentCnt(Long.valueOf(allSessionAttended.size()));
-									    		VO.setAllSessionAbsentCntper(calculatePercantage(VO.getAllSessionAbsentCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
 									    	}
 									    }
 							          
-									    Map<Long,Set<Long>> mlcInviteeAttendedCadreIdMap = publicRepinviteeAttendedMap.get(12l);
-									    allSessionIds.clear();
-									    allSessionAttended.clear();
-										  if(mlcInviteeAttendedCadreIdMap != null && mlcInviteeAttendedCadreIdMap.size() > 0){
-											  for(Entry<Long,Set<Long>> entry:mlcInviteeAttendedCadreIdMap.entrySet()){
-												  allSessionIds.addAll(entry.getValue()); 
-											  }
-										  }
-										  allSessionAttended = getAllSessionAttendedMember(allSessionIds,mlcInviteeAttendedCadreIdMap);
+									      Map<Long,Set<Long>> mlcInviteeAttendedCadreIdMap = publicRepinviteeAttendedMap.get(12l);
+									 	  Set<Long> mlcInviteeSet = publicRepInviteeMap.get(12l);
+										  allSessionAttended = getAllSessionAbesntCadre(mlcInviteeSet,mlcInviteeAttendedCadreIdMap);
 										  List<PartyMeetingsDataVO> mlcAbsentlsSessionList = publicRepresentativesMap.get(2l).getSubList1();
 										    if(mlcAbsentlsSessionList != null && mlcAbsentlsSessionList.size() > 0){
 										    	for(PartyMeetingsDataVO VO:mlcAbsentlsSessionList){
@@ -4380,15 +4338,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 									    
 									    
 								 // MP Level allSession Absent
-								    Map<Long,Set<Long>> mPInviteeAttendedCadreMap = publicRepinviteeAttendedMap.get(1l);
-									   allSessionIds.clear();
-									   allSessionAttended.clear(); 
-									  if(mPInviteeAttendedCadreMap != null && mPInviteeAttendedCadreMap.size() > 0){
-										  for(Entry<Long,Set<Long>> entry:mPInviteeAttendedCadreMap.entrySet()){
-											  allSessionIds.addAll(entry.getValue()); 
-										  }
-									  }
-									  allSessionAttended = getAllSessionAttendedMember(allSessionIds,mPInviteeAttendedCadreMap);
+								      Map<Long,Set<Long>> mPInviteeAttendedCadreMap = publicRepinviteeAttendedMap.get(1l);
+									  Set<Long> mpInvitees = publicRepInviteeMap.get(1l);
+									  allSessionAttended = getAllSessionAbesntCadre(mpInvitees,mPInviteeAttendedCadreMap);
 									  List<PartyMeetingsDataVO> mpAbsentSessionList = publicRepresentativesMap.get(1l).getSubList1();
 									    if(mpAbsentSessionList != null && mpAbsentSessionList.size() > 0){
 									    	for(PartyMeetingsDataVO VO:mpLateSessionList){
@@ -4397,15 +4349,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 									    }
 									   }
 									    // CONSTITUENCY INCHARGES Level allSession Absent
-									    Map<Long,Set<Long>> ciInviteeAttendedMap= publicRepinviteeAttendedMap.get(21l);
-										   allSessionIds.clear();
-										   allSessionAttended.clear(); 
-										  if(ciInviteeAttendedMap != null && ciInviteeAttendedMap.size() > 0){
-											  for(Entry<Long,Set<Long>> entry:ciInviteeAttendedMap.entrySet()){
-												  allSessionIds.addAll(entry.getValue()); 
-											  }
-										  }
-										  allSessionAttended = getAllSessionAttendedMember(allSessionIds,ciInviteeAttendedMap);
+									      Map<Long,Set<Long>> ciInviteeAttendedMap= publicRepinviteeAttendedMap.get(21l);
+										  Set<Long> ciInvitees = publicRepInviteeMap.get(21l);
+										  allSessionAttended = getAllSessionAbesntCadre(ciInvitees,ciInviteeAttendedMap);
 										  List<PartyMeetingsDataVO> ciAbsentSessionList = publicRepresentativesMap.get(21l).getSubList1();
 										    if(ciAbsentSessionList != null && ciAbsentSessionList.size() > 0){
 										    	for(PartyMeetingsDataVO VO:ciAbsentSessionList){
@@ -4464,79 +4410,62 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 												     }	
 												 }
 									    // OtherType allSession Attended count
-												  allOtherTypeSessionLst.clear();
-											   //  allSessionAttended.clear();
+												  allSessionIds.clear();
 											  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
 													  if(entry.getKey() != 1l && entry.getKey() != 2l  && entry.getKey() !=12l &&  entry.getKey() != 21l){
 														  if(entry.getValue() != null && entry.getValue().size() > 0){
 															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
-																  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
+																  allSessionIds.addAll(sessionEntry.getValue()); 
 															  }
 														  }
+														  List<PartyMeetingsDataVO> publicRepresentativeSessionList = otherTypeVO.getSubList1();
+														     if(publicRepresentativeSessionList != null && publicRepresentativeSessionList.size() > 0){
+														    	 for(PartyMeetingsDataVO VO:publicRepresentativeSessionList){
+														    		 VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
+														    	 }
+														     }
+														     allSessionIds.clear();
 													    }
 												  }
 											  }
-											  List<PartyMeetingsDataVO> publicRepresentativeSessionList = otherTypeVO.getSubList1();
-											     if(publicRepresentativeSessionList != null && publicRepresentativeSessionList.size() > 0){
-											    	 for(PartyMeetingsDataVO VO:publicRepresentativeSessionList){
-											    		 VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allOtherTypeSessionLst.size()));
-											    	 }
-											     }
+											 
 											  // all session late attended count
-											     allOtherTypeSessionLst.clear();
-											  // allSessionAttended.clear();
+											   allSessionIds.clear();
 											  if(publicReplateAttendedCadreMap != null && publicReplateAttendedCadreMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicReplateAttendedCadreMap.entrySet()){
 													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 														  if(entry.getValue() != null && entry.getValue().size() > 0){
 															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
-																  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
+																  allSessionIds.addAll(sessionEntry.getValue()); 
 															  }
 														  }  
+														  List<PartyMeetingsDataVO> prsSessinLst = otherTypeVO.getSubList1();
+														     if(prsSessinLst != null && prsSessinLst.size() > 0){
+														    	 for(PartyMeetingsDataVO VO:prsSessinLst){
+														    		 VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size()));
+														    	 }
+														     }
+														     allSessionIds.clear();
 													  }
 												  }
 											  }
-											  List<PartyMeetingsDataVO> prsSessinLst = otherTypeVO.getSubList1();
-											     if(prsSessinLst != null && prsSessinLst.size() > 0){
-											    	 for(PartyMeetingsDataVO VO:prsSessinLst){
-											    		 VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allOtherTypeSessionLst.size()));
-											    	 }
-											     }
+											
 											 //all session absent count
-											   allSessionIds.clear();
-											   allSessionAttended.clear();
 											  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
 													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
-														  if(entry.getValue() != null && entry.getValue().size() > 0){
-															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
-																  allSessionIds.addAll(sessionEntry.getValue()); 
-															  }
-														  }	  
-														  allSessionAttended = getAllSessionAttendedMember(allSessionIds,entry.getValue());
+														  allSessionAttended = getAllSessionAbesntCadre(publicRepInviteeMap.get(entry.getKey()),entry.getValue());
 														   if(otherTypeVO.getSubList1() != null && otherTypeVO.getSubList1().size() > 0){
-														    	 for(PartyMeetingsDataVO VO:prsSessinLst){
+														    	 for(PartyMeetingsDataVO VO:otherTypeVO.getSubList1()){
 														    		 VO.setAllSessionAbsentCnt(VO.getAllSessionAbsentCnt()+Long.valueOf(allSessionAttended.size()));
 														    	 }
 														     }
-														   allSessionIds.clear();
 													  }
 												  }
 											  }
-											/*  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
-												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
-													if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
-														 allSessionAttended = getAllSessionAttendedMember(allSessionIds,entry.getValue());
-														   if(otherTypeVO.getSubList1() != null && otherTypeVO.getSubList1().size() > 0){
-														    	 for(PartyMeetingsDataVO VO:prsSessinLst){
-														    		 VO.setAllSessionAbsentCnt(VO.getAllSessionAbsentCnt()+Long.valueOf(allSessionAttended.size()));
-														    	 }
-														     }
-													}
-												  }
-											 }	    */
-							     if(otherTypeVO != null && otherTypeVO.getSubList1().size() > 0){
+					
+								  if(otherTypeVO != null && otherTypeVO.getSubList1().size() > 0){
 								   for(PartyMeetingsDataVO VO:otherTypeVO.getSubList1()){
 									   VO.setNotAttendedCount(otherTypeVO.getInvitedCount()-VO.getInvitteeAttendedCount());  
 									   VO.setAttendedPerc(calculatePercantage(VO.getAttendedCount(), otherTypeVO.getInvitedCount()));
@@ -4641,6 +4570,27 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		  LOG.error("Error occured at getSessionTypeMatchVO() in CoreDashboardPartyMeetingService {}",e);   
 	  }
 	return null;
+  }
+  public Set<Long> getAllSessionAbesntCadre(Set<Long> allSessionInviteeIds,Map<Long,Set<Long>> map){
+	  Set<Long> allSessionAbsent = new HashSet<Long>();
+ 	  try{
+ 		 Set<Long> allAttendedSet = new HashSet<Long>();
+		  if(map != null && map.size() > 0){
+			  for(Entry<Long,Set<Long>> entry:map.entrySet()){
+				  allAttendedSet.addAll(entry.getValue());
+			  }
+		  }
+		  if(allSessionInviteeIds != null && allSessionInviteeIds.size() > 0){
+			  for(Long id:allSessionInviteeIds){
+			    if(!allAttendedSet.contains(id)){
+			    	allSessionAbsent.add(id);
+			    }
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Error occured at getAllSessionAttendedMember() in CoreDashboardPartyMeetingService {}",e); 
+	  }
+ 	  return allSessionAbsent;
   }
   public Set<Long> getAllSessionAttendedMember(Set<Long> allSessionIds,Map<Long,Set<Long>> map){
 	  Set<Long> allSessionAttended = new HashSet<Long>();
