@@ -6438,16 +6438,16 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 			}
-			setPercentage(vizagUrban);
-			setPercentage(vizagRural);
-			returnList.add(vizagUrban);
-			returnList.add(vizagRural);
+			setPercentage(vizagUrban,returnList);
+			setPercentage(vizagRural,returnList);
+			//returnList.add(vizagUrban);
+			//returnList.add(vizagRural);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setVisakhapatnamDetails() method in CadreDashBoardService().",e);
 		}
 	}
 	
-	public void setPercentage(CadreDashboardVO vo){
+	public void setPercentage(CadreDashboardVO vo,List<CadreDashboardVO> returnList){
 		
 		try{
 			Long l1 =vo.getTotalRenewal() != null ?vo.getTotalRenewal():0l;
@@ -6525,8 +6525,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						renVeryPoor++;
 					}
 				}
+			
 			if(v1.longValue() != 0l)
 			vo.setPercentage(new BigDecimal(l2*(100.0)/v1).toString());
+			
+			returnList.add(vo);
+			
+			if(returnList !=null && !returnList.isEmpty()){
+				CadreDashboardVO countList=returnList.get(0);
+				countList.setVeryGood(countList.getVeryGood()+veryGood);
+				countList.setGood(countList.getGood()+good);
+				countList.setOk(countList.getOk()+ok);
+				countList.setPoor(countList.getPoor()+poor);
+				countList.setVeryPoor(countList.getVeryPoor()+veryPoor);
+				
+				countList.setRenVeryGood(countList.getRenVeryGood()+renVeryGood);
+				countList.setRenGood(countList.getRenGood()+renGood);
+				countList.setRenOk(countList.getRenOk()+renOk);
+				countList.setRenPoor(countList.getRenPoor()+renPoor);
+				countList.setRenVeryPoor(countList.getRenVeryPoor()+renVeryPoor);
+				
+			}
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setPercentage() method in CadreDashBoardService().",e);
 		}
