@@ -3362,7 +3362,7 @@ public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSee
 		partyMeetingDataVOList = coreDashboardPartyMeetingService.getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedMeetingSessionWise(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingIds);
 		
 }catch(Exception e){
-	LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+	LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
 }
 return Action.SUCCESS;
 }
