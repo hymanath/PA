@@ -1676,14 +1676,14 @@
 	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByOverall" />
     </bean>
     
-    <bean name="locationWiseRegistrationSMSTracking" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <!-- <bean name="locationWiseRegistrationSMSTracking" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="locationWiseMobileRegistration" />
     	<property name="cronExpression" value="0 30 2,8,16 * * ?" />
 	</bean>
 	 <bean name="locationWiseMobileRegistration" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     	<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="locationWiseRegistrationSMSTracking" />
-	</bean>
+	</bean> -->
 	
 	<bean name="pushDataSourceWisetdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerDataSourceWisetdpCadreCounts" />
@@ -1792,7 +1792,7 @@
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseByOverall" />
-		    <ref bean="locationWiseRegistrationSMSTracking"/>
+		    <!-- <ref bean="locationWiseRegistrationSMSTracking"/> -->
 		    <ref bean="pushDataSourceWisetdpCadreCounts" />
 		    
 		    <ref bean="pushGenderWiseTdpCadreCounts"/> 
