@@ -4577,7 +4577,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			  }
 		  }
 	  }catch(Exception e){
-		  LOG.error("Error occured at getAllSessionAttendedMember() in CoreDashboardPartyMeetingService {}",e); 
+		  LOG.error("Error occured at getAllSessionAbesntCadre() in CoreDashboardPartyMeetingService {}",e); 
 	  }
  	  return allSessionAbsent;
   }
