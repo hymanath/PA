@@ -4417,7 +4417,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 										  // public representative other type calculation
 										    if(publicRepInviteeMap != null && publicRepInviteeMap.size() > 0){
 												 for(Entry<Long,Set<Long>> entry:publicRepInviteeMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 														 if(entry.getValue() != null && entry.getValue().size() > 0){
 															 otherTypeVO.setInvitedCount(otherTypeVO.getInvitedCount()+Long.valueOf(entry.getValue().size()));	 
 														 }
@@ -4427,7 +4427,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 										 //attended			    
 											  if(publicRepattendedCadreMap != null && publicRepattendedCadreMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepattendedCadreMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 															   for(Entry<Long,Set<Long>> sessionTypeEntry:entry.getValue().entrySet()){
 																   PartyMeetingsDataVO sessionVO = getSessionTypeMatchVO(otherTypeVO.getSubList1(),sessionTypeEntry.getKey());
 																   if(sessionVO != null ){
@@ -4440,7 +4440,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											//late attended	  
 											  if(publicReplateAttendedCadreMap != null && publicReplateAttendedCadreMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicReplateAttendedCadreMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 															   for(Entry<Long,Set<Long>> sessionTypeEntry:entry.getValue().entrySet()){
 																   PartyMeetingsDataVO sessionVO = getSessionTypeMatchVO(otherTypeVO.getSubList1(),sessionTypeEntry.getKey());
 																   if(sessionVO != null ){
@@ -4453,7 +4453,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											//invitee attended
 												  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
 													  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
-														  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+														  if(entry.getKey() != 1l && entry.getKey() != 2l  && entry.getKey() !=12l && entry.getKey() != 21l){
 																   for(Entry<Long,Set<Long>> sessionTypeEntry:entry.getValue().entrySet()){
 																	   PartyMeetingsDataVO sessionVO = getSessionTypeMatchVO(otherTypeVO.getSubList1(),sessionTypeEntry.getKey());
 																	   if(sessionVO != null ){
@@ -4468,7 +4468,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											   //  allSessionAttended.clear();
 											  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l  && entry.getKey() !=12l &&  entry.getKey() != 21l){
 														  if(entry.getValue() != null && entry.getValue().size() > 0){
 															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
 																  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
@@ -4488,7 +4488,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											  // allSessionAttended.clear();
 											  if(publicReplateAttendedCadreMap != null && publicReplateAttendedCadreMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicReplateAttendedCadreMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 														  if(entry.getValue() != null && entry.getValue().size() > 0){
 															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
 																  allOtherTypeSessionLst.addAll(sessionEntry.getValue()); 
@@ -4508,7 +4508,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											   allSessionAttended.clear();
 											  if(publicRepinviteeAttendedMap != null && publicRepinviteeAttendedMap.size() > 0){
 												  for(Entry<Long,Map<Long,Set<Long>>> entry:publicRepinviteeAttendedMap.entrySet()){
-													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() != 21l){
+													  if(entry.getKey() != 1l && entry.getKey() != 2l && entry.getKey() !=12l && entry.getKey() != 21l){
 														  if(entry.getValue() != null && entry.getValue().size() > 0){
 															  for(Entry<Long,Set<Long>> sessionEntry:entry.getValue().entrySet()){
 																  allSessionIds.addAll(sessionEntry.getValue()); 
