@@ -307,6 +307,8 @@ function getUsers(constituencyId){
 		var userMobile = $(this).attr("attr_user_mobile");
 		var resultType="All"
 		var minValue = 0; 
+		var verificationStatus = "Total";
+		$("input:radio").attr("checked", false);
 		//if(webUserId==0){
 			$("#userId").html("Tab UserID - "+tabUserId+"");	
 			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");	
@@ -314,7 +316,8 @@ function getUsers(constituencyId){
 			//$("#userId").html("User ID - "+webUserId+"");	
 			//$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");		
 		//}
-	   
+	   $("#hdnCdrSrvyUserId").val(surveyUserId);
+	   $("#hdnTabUserInfoId").val(tabUserId);
 	   	$("#relativePaginationId").html(' ');
 		$("#selfPaginationId").html(' ');
 	    $("#issuesDataMonitroingDashboardModal").modal('show');
@@ -322,10 +325,10 @@ function getUsers(constituencyId){
 		$("#issuesDataMonitroing li:first-child").addClass("active");  
 		$(".activeCls").addClass("active");
 		$(".relativeCls").removeClass("active");
-		getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType);
+		getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType,verificationStatus);
 	});
 	
-	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
 		var fromDate = dateArr[0].trim();
@@ -354,7 +357,7 @@ function getUsers(constituencyId){
 			minValue :minValue,
             maxValue :40,
 			resultType:resultType,
-			verificationStatus:"Total",
+			verificationStatus:verificationStatus,
             dataSourceType:"",
 			stateId : 0
 		}    
@@ -366,7 +369,7 @@ function getUsers(constituencyId){
 		}).done(function(result){
 			$("#cadreValidateId").html('');
 			if(result != null && result.length > 0){  
-				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType);  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType,verificationStatus);  
 			}else{
 				if(resultType=="All"){    
 					$("#selfTblDivId").html('No Data Available...');
@@ -379,8 +382,17 @@ function getUsers(constituencyId){
 			}
 		});
 	}
+	
+	$(document).on("click",".filterClass",function(){
 		
-	function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+		var radioVal = $(this).val();
+		var surveyUserId = $("#hdnCdrSrvyUserId").val();
+		var tabUserId = $("#hdnTabUserInfoId").val();
+		
+		getMembersDetails(surveyUserId,tabUserId,0,"","",0,"All",radioVal);
+	});
+		
+	function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
 		$("#globalErrId").html('');  
 		$("#globalSuccId").html('');
 		if(resultType=="All" || resultType=="Self"){  
@@ -494,7 +506,7 @@ function getUsers(constituencyId){
 					cssStyle: 'light-theme',
 					onPageClick: function(pageNumber) {					
 						var num=(pageNumber-1)*40;
-						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Self");
+						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Self",verificationStatus);
 					}
 				});
 			}	
@@ -610,7 +622,7 @@ function getUsers(constituencyId){
 						cssStyle: 'light-theme',
 						onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*40;
-						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Relative");
+						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Relative",verificationStatus);
 					}
 				});
 			}	
