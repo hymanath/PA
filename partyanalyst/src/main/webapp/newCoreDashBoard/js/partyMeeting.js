@@ -4517,7 +4517,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						if(result[i].isInvitee == "true"){
 							str+='<td>Invitee</td>'; 
 						}else{
-							str+='<td>Non Invitee</td>';   
+							str+='<td class="text-danger">Non Invitee</td>';   
 						}
 						for(var j in result[i].sessionList){
 							if(result[i].sessionList[j] == "intime"){
