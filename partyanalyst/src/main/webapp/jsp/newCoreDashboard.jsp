@@ -1876,6 +1876,20 @@
 										</div>
 									</div>
 									<div class="panel-body ">
+									<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
+												<h4>Workshop - DEC - 20</h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<ul class="activeUlCls  list-inline pull-right">
+													<li class="active sessionsCls " attr_sessionId="0">All Sessions</li>
+													<li class="sessionsCls"  attr_sessionId="1">Morning Session</li>
+													<li class="sessionsCls"  attr_sessionId="2">Afternoon Session</li>
+												</ul>
+											</div>
+										</div>
+										</div>
 										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="partyMeetingOverviewTabDiv" class=""></div>
 										<div id="meetingMemberDtlsDivId" class=""></div>   
@@ -3604,9 +3618,9 @@
         <h4 class="modal-title" id="">Member Details</h4>      
       </div>
       <div class="modal-body" id="">   
-        <div class="col-sm-12 col-xs-12 col-sm-12">
+      
           <div id="meetingMemDetailsBodyId"></div>
-        </div>
+       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
