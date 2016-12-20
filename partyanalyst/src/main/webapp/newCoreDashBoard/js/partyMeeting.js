@@ -2180,7 +2180,7 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.notAttendedCount == 0 || partyMeetingArr.notAttendedCount == null){
 									str+='<td style="text-align:center">Absent<br> 0  </td>';
 								}else{
-									str+='<td class="" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
+									str+='<td class="getCmtMemDtls " style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
 								}	
 						str+='</tr>';
 					str+='</tbody>';
@@ -2307,19 +2307,49 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 									 if(s==0){
 										 
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
-										  str+='<tr>';
-											 str+='<td >';
-												str+='<span class="statelevelSessionMeeting pull-right"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
-												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12 " style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
-												  
-											 str+='</td>';
-											 str+='<td>';
-												str+='<h5>'+result[i].subList1[k].invitedCount+' </h5>';
+										 
+										 str+='<tr>';
+											str+='<td colspan=6>';
+												//str+='<p>';
+												str+='<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;">'+result[i].subList1[0].name+'</span>';
+											//str+='</td>';
+											
+											//str+='<td>';
+												str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px;margin-right: 15px; margin-left: 15px;""><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
+											//str+='</td>';
+											
+											//str+='<td>';
+												str+='<span class="text-capital">Total - Invitees : <b>'+result[i].subList1[k].invitedCount+'</b></span>';
+											//str+='</td>';
+											//str+='<td>';
+											//str+='</td>';
+											//str+='<td>';
+											//str+='</td>';
+											//str+='<td>';
+											//str+='</p>';
 											str+='</td>';
-											 str+='<td class="text-muted text-capital"><p>Attended</p></td>';
-											 str+='<td class="text-muted text-capital"> <p>Late </p></td>';
+											
+										 str+='</tr>';
+										 
+										 
+										  /* str+='<tr>';
+										  	 str+='<td class="col-xs-12">';
+												str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;" class="text-muted">'+result[i].subList1[0].name+'<span>('+result[i].subList1[k].invitedCount+')</span></p>';
+												
+											 str+='</td>';
+											 str+='<td class="pull-right">';
+											 str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
+											 str+='</td>';
+											  str+='</tr>';
+											  
+											  str+='<tr>';
+											 str+='<td>';
+												
+											str+='</td>';
+											 str+='<td class="text-muted text-capital text-success"><p>Attended</p></td>';
+											 str+='<td class="text-muted text-capital text_oragane"> <p>Late </p></td>';
 											 str+='<td class="text-muted text-capital" ><p> Absent </p></td>';
-											 str+='<td class="text-muted text-capital" ><p> Non Invitees</p> </td>';
+											 str+='<td class="text-muted text-capital" ><p> Non Invitees</p> </td>'; */
 											 
 											/*str+='<td>';
 											if(result[i].subList1[k].attendedCount == 0 || result[i].subList1[k].attendedCount == null ){
@@ -2363,16 +2393,23 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 											*/	
 											// str+='</td>';
 											 
+										 //str+='</tr>';
+										  str+='<tr>';
+												str+='<td></td>';
+											 str+='<td class="text-muted text-capital text-success"><p>Attended</p></td>';
+											 str+='<td class="text-muted text-capital text_oragane"> <p>Late </p></td>';
+											 str+='<td class="text-muted text-capital" ><p> Absent </p></td>';
+											 str+='<td class="text-muted text-capital" ><p data-toggle="tooltip" data-placement="top" title="Non Invitees">NI</p> </td>';
 										 str+='</tr>';
-										 
 									 }
+									 
+									
 									  str+='<tr>';
+									  
 								 str+='<td style="padding:0px;">';
 									  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:16px !important;">'+result[i].subList1[k].subList1[s].name+'</p>';
 								 str+='</td>';
-								 str+='<td>';
-									str+='<h5></h5>';
-								 str+='</td>';
+								 
 								 str+='<td>';
 								 if(result[i].subList1[k].subList1[s].attendedCount == 0 || result[i].subList1[k].subList1[s].attendedCount == null ){
 									 str+='<h5 class="text-success"> 0  <span class="font-10 text-success">  0.00 %</span></h5>';
@@ -2409,7 +2446,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 
 								 str+='</td>';
 									 
-								str+='<td>';
+								str+='<td style="text-align:center;">';
 								 if(result[i].subList1[k].subList1[s].nonInviteeCount == 0 || result[i].subList1[k].subList1[s].nonInviteeCount == null ){
 									 str+='<h5>  - </h5>';
 								 }else{
@@ -4682,10 +4719,4 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
      getPartySpecialMeetingsMainTypeOverview(0);
     
   }
-  
-  function buileeee(){
-	  var str='';
-	  
-		
-		$("#buttonmId").html(str);
-  }
+ 
