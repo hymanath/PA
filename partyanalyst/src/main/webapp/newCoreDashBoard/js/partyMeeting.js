@@ -2263,7 +2263,12 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='<td>';  
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].notAttendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital">Absent</p>';    
-						 str+='</td>';        
+						 str+='</td>';
+						 
+							str+='<td>';  
+							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].nonInviteeCount+' </h4>';
+							  str+='<p class="text-muted text-capital"> Non Invitees </p>';    
+						 str+='</td>';   						 
 					 str+='</tr>';
 					 
 					 
@@ -2278,8 +2283,9 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 										  str+='<tr>';
 											 str+='<td >';
-												str+='<span class="statelevelSessionMeeting pull-right"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
 												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12" style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
+												  
 											 str+='</td>';
 											 str+='<td>';
 												str+='<h5>'+result[i].subList1[k].invitedCount+' </h5>';
@@ -2307,6 +2313,15 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 											 }
 												
 											 str+='</td>';
+											  str+='<td>';
+											 if(result[i].subList1[k].nonInviteeCount == 0 || result[i].subList1[k].nonInviteeCount == null){
+												 str+='<h5>  - </h5>';
+											 }else{
+												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].nonInviteeCount+'</u></h5>';
+											 }
+												
+											 str+='</td>';
+											 
 										 str+='</tr>';
 										 
 									 }
@@ -2342,6 +2357,15 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 
 								 str+='</td>';
 									 
+								str+='<td>';
+								 if(result[i].subList1[k].subList1[s].nonInviteeCount == 0 || result[i].subList1[k].subList1[s].nonInviteeCount == null ){
+									 str+='<h5>  - </h5>';
+								 }else{
+									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220"><u>'+result[i].subList1[k].subList1[s].nonInviteeCount+' </u></h5>';
+								 }   
+								 
+								 str+='</td>';
+								 
 							 str+='</tr>';
 								 }
 							}
@@ -4474,8 +4498,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	});
 	function buildMeetingMemberDtls(result,position){
 		var str = '';
-		str+='<div class="row m_top10">';
-			str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
+			str+='<div class="row m_top10">';
+			  str+='<div class="table-responsive">';
+			  str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th>District Name</th>';
@@ -4535,7 +4560,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-		str+='</div>'; 
+		
 		if(position == "overview"){
 			$("#meetingMemDetailsBodyId").html(str);
 			$("#cmtMemberDtlsTableId").dataTable();   
@@ -4545,3 +4570,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}
 	   
 	}
+	
+	function refreshMeeting(){
+     getPartySpecialMeetingsMainTypeOverview(0);
+    
+  }
+  
