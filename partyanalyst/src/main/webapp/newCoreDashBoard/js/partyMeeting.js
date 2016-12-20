@@ -4409,6 +4409,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 
              
 	function getParyMeetingDetailsDistrictWise(sessionId){
+		$(".specialMeetingCls").show();
 		$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var partyMeetingTypeArr = [26];   
 		var jsObj ={ 
