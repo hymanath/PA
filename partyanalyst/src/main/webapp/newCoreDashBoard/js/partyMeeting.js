@@ -2835,20 +2835,18 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
      var subList = stateLevelMemDtlsArr[i];
      if(subList != null && subList.length > 0){
        for(var j in subList){
-		   if( subList[j].invitedCount == 0 && subList[j].attendedCount == 0 && subList[j].notAttendedCount==0){
+		   if( subList[j].invitedCount == 0 && subList[j].invitteeAttendedCount == 0 && subList[j].notAttendedCount==0){
 			   str+='<h5 class="text-capital"></h5>'; 
 		   }else{
 			    str+='<h5 class="text-capital">'+subList[j].name+'</h5>'; 
 				str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
 		   }
-            
-           
        }
      }
      }
      
      if(otherRslt != null ){
-		  if(otherRslt.invitedCount == 0 && otherRslt.attendedCount == 0 && otherRslt.notAttendedCount==0){
+		  if(otherRslt.invitedCount == 0 && otherRslt.invitteeAttendedCount == 0 && otherRslt.notAttendedCount==0){
 			  str+='<h5 class="text-capital"></h5>'; 
 		  }else{
 			   str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';
@@ -2865,15 +2863,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
      if(subList != null && subList.length > 0){
         for(var j in subList){
       var stateLevelPerArr=[];
-	  if(subList[j].invitedCount == 0){
-		 stateLevelPerArr.push(0); 
-	  }else{
-		  stateLevelPerArr.push(100);  
-	  }
-      stateLevelPerArr.push(subList[j].attendedPerc);
-      stateLevelPerArr.push(subList[j].notAttendedPerc);
+	  stateLevelPerArr.push(subList[j].invitedCount);  
+      stateLevelPerArr.push(subList[j].invitteeAttendedCount);
+      stateLevelPerArr.push(subList[j].notAttendedCount);
        
-      if( subList[j].invitedCount == 0 && subList[j].attendedCount == 0 && subList[j].notAttendedCount==0){
+      if( subList[j].invitedCount == 0 && subList[j].invitteeAttendedCount == 0 && subList[j].notAttendedCount==0){
 		 //$('#stateLevelMeetingGraph'+i+''+j).html("<h5>No Data Available</h5>");
 	  }else{
 		    $('#stateLevelMeetingGraph'+i+''+j).highcharts({
@@ -2891,7 +2885,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: ['invited','Attended','Absent'],
+				categories: ['invited','Invitees Attended','Absent'],
 				title: {
 				  text: null
 				},
@@ -2918,7 +2912,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 			  tooltip: {
 				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
 				shared: true,
-				valueSuffix: '%'
+				valueSuffix: ''
 			  },
 			  plotOptions: {
 				column: {
@@ -2929,7 +2923,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 					  if (this.y === 0) {
 						return null;
 					  } else {
-						return Highcharts.numberFormat(this.y) + '%';
+						return Highcharts.numberFormat(this.y,0);
 					  }
 					}
 					
@@ -2957,22 +2951,17 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 			  }]
 			}); 
 	  }
-	
      }
   }
   }
   //for other
   var stateLevelOtherPerArr=[];
      if(otherRslt != null ){
-	  if(otherRslt.invitedCount == 0){
-		 stateLevelOtherPerArr.push(0); 
-	  }else{
-		  stateLevelOtherPerArr.push(100);  
-	  }
-      stateLevelOtherPerArr.push(otherRslt.attendedPerc);
-      stateLevelOtherPerArr.push(otherRslt.notAttendedPerc);
+	   stateLevelOtherPerArr.push(otherRslt.invitedCount);  
+	  stateLevelOtherPerArr.push(otherRslt.invitteeAttendedCount);
+      stateLevelOtherPerArr.push(otherRslt.notAttendedCount);
 	  
-	  if(otherRslt.invitedCount == 0 && otherRslt.attendedCount == 0 && otherRslt.notAttendedCount==0){
+	  if(otherRslt.invitedCount == 0 && otherRslt.invitteeAttendedCount == 0 && otherRslt.notAttendedCount==0){
 		  //$('#stateLevelMeetingOtherId').html("<h5> No Data Available </h5>");
 	  }else{
 		   $('#stateLevelMeetingOtherId').highcharts({
@@ -2990,7 +2979,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
-				categories: ['invited','Attended','Absent'],
+				categories: ['invited','Invitees Attended','Absent'],
 				title: {
 				  text: null
 				},
@@ -3017,7 +3006,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 			  tooltip: {
 				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
 				shared: true,
-				valueSuffix: '%'
+				valueSuffix: ''
 			  },
 			  plotOptions: {
 				column: {
@@ -3028,7 +3017,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 					  if (this.y === 0) {
 						return null;
 					  } else {
-						return Highcharts.numberFormat(this.y) + '%';
+						return Highcharts.numberFormat(this.y,0);
 					  }
 					}  
 				  }
