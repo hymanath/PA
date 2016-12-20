@@ -1877,7 +1877,7 @@
 									</div>
 									<div class="panel-body ">
 									<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="col-md-12 col-xs-12 col-sm-12  specialMeetingCls" style="display:none;">
 											<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
 												<h4>Workshop - DEC - 20</h4>
 											</div>
@@ -1888,7 +1888,7 @@
 													<li class="sessionsCls"  attr_sessionId="2">Afternoon Session</li>
 												</ul>
 											</div>
-										</div>
+									</div>
 										</div>
 										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="partyMeetingOverviewTabDiv" class=""></div>
