@@ -77,6 +77,10 @@ public class ToursBasicVO {
 	private Double inchargeConstituencyTrDaysPer = 0.0d;
 	private Double ownConDistTrDaysPer = 0.0d;
 	
+	private Long govtWorkCnt=0l;
+	private Long govtWorkTargetDays=0l;
+	private Double govtWorkCntPer = 0.0d;
+	
 	public ToursBasicVO() {
 		super();
 	}
@@ -471,7 +475,22 @@ public class ToursBasicVO {
 	public void setOwnConDistTrDaysPer(Double ownConDistTrDaysPer) {
 		this.ownConDistTrDaysPer = ownConDistTrDaysPer;
 	}
-	
-	
-	
+	public Long getGovtWorkCnt() {
+		return govtWorkCnt;
+	}
+	public void setGovtWorkCnt(Long govtWorkCnt) {
+		this.govtWorkCnt = govtWorkCnt;
+	}
+	public Double getGovtWorkCntPer() {
+		return govtWorkCntPer;
+	}
+	public void setGovtWorkCntPer(Double govtWorkCntPer) {
+		this.govtWorkCntPer = govtWorkCntPer;
+	}
+	public Long getGovtWorkTargetDays() {
+		return govtWorkTargetDays;
+	}
+	public void setGovtWorkTargetDays(Long govtWorkTargetDays) {
+		this.govtWorkTargetDays = govtWorkTargetDays;
+	}
 }

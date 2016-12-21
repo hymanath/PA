@@ -3822,6 +3822,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					 if(entry.getValue().getSubList1() != null && entry.getValue().getSubList1().size() > 0){
 						 for(PartyMeetingsDataVO VO:entry.getValue().getSubList1()){
 							 VO.setNotAttendedCount(entry.getValue().getInvitedCount()-VO.getInvitteeAttendedCount());
+							 VO.setInviteeAttendedPerc(calculatePercantage(VO.getInvitteeAttendedCount(), entry.getValue().getInvitedCount()));
 							 VO.setAttendedPerc(calculatePercantage(VO.getAttendedCount(), entry.getValue().getInvitedCount()));
 							 VO.setNotAttendedPerc(calculatePercantage(VO.getNotAttendedCount(),entry.getValue().getInvitedCount()));
 							 VO.setLateAttendedCntPer(calculatePercantage(VO.getLateAttendedCnt(),entry.getValue().getInvitedCount()));
@@ -3844,7 +3845,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			    if(stateLevelList != null && stateLevelList.size() > 0){
 			    	for(PartyMeetingsDataVO VO:stateLevelList){
 			    		VO.setAllSessionAttendedCnt(Long.valueOf(allSessionIds.size()));
-			    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),committeeLevelsMap.get(10l).getInvitedCount()));
+			    		VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(),committeeLevelsMap.get(10l).getInvitedCount()));
 			    	}
 			    }
 			  
@@ -3860,7 +3861,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				    if(districtLevelList != null && districtLevelList.size() > 0){
 				    	for(PartyMeetingsDataVO VO:districtLevelList){
 				    		VO.setAllSessionAttendedCnt(Long.valueOf(allSessionIds.size()));
-				    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),committeeLevelsMap.get(11l).getInvitedCount()));
+				    		VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(),committeeLevelsMap.get(11l).getInvitedCount()));
 				    	}
 				    }
 				    
@@ -3920,7 +3921,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 								    if(districtLevelSessionList != null && districtLevelSessionList.size() > 0){
 								    	for(PartyMeetingsDataVO VO:districtLevelSessionList){
 								    		VO.setAllSessionAbsentCnt(Long.valueOf(allSessionAttended.size()));
-								    		VO.setAllSessionAbsentCntper(calculatePercantage(VO.getAllSessionLateAttendedCnt(),committeeLevelsMap.get(11l).getInvitedCount()));
+								    		VO.setAllSessionAbsentCntper(calculatePercantage(VO.getAllSessionAbsentCnt(),committeeLevelsMap.get(11l).getInvitedCount()));
 								    	}
 								    }
 								    
@@ -4187,6 +4188,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						 if(entry.getValue().getSubList1() != null && entry.getValue().getSubList1().size() > 0){
 							 for(PartyMeetingsDataVO VO:entry.getValue().getSubList1()){
 								 VO.setNotAttendedCount(entry.getValue().getInvitedCount()-VO.getInvitteeAttendedCount());
+								 VO.setInviteeAttendedPerc(calculatePercantage(VO.getInvitteeAttendedCount(), entry.getValue().getInvitedCount()));
 								 VO.setAttendedPerc(calculatePercantage(VO.getAttendedCount(), entry.getValue().getInvitedCount()));
 								 VO.setNotAttendedPerc(calculatePercantage(VO.getNotAttendedCount(),entry.getValue().getInvitedCount()));
 								 VO.setLateAttendedCntPer(calculatePercantage(VO.getLateAttendedCnt(),entry.getValue().getInvitedCount()));
@@ -4220,7 +4222,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				    if(mlaMlcMemberDtlsList != null && mlaMlcMemberDtlsList.size() > 0){
 				    	for(PartyMeetingsDataVO VO:mlaMlcMemberDtlsList){
 				    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
-				    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
+				    		VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
 				    	}
 				    }
 				      //MP allSession attended member
@@ -4235,6 +4237,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					    if(MPSessionList != null && MPSessionList.size() > 0){
 					    	for(PartyMeetingsDataVO VO:MPSessionList){
 					    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
+					    		VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(1l).getInvitedCount()));
 					    	}
 					    }
 					    // CONSTITUENCY INCHARGES  allSession Attended member
@@ -4249,7 +4252,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						    if(ciSessionList != null && ciSessionList.size() > 0){
 						    	for(PartyMeetingsDataVO VO:ciSessionList){
 						    		VO.setAllSessionAttendedCnt(VO.getAllSessionAttendedCnt()+Long.valueOf(allSessionIds.size()));
-						    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(21l).getInvitedCount()));
+						    		VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(21l).getInvitedCount()));
 						    	}
 						    }  
 						    
@@ -4278,7 +4281,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 							    if(mlaMlcLtetlsSessionList != null && mlaMlcLtetlsSessionList.size() > 0){
 							    	for(PartyMeetingsDataVO VO:mlaMlcLtetlsSessionList){
 							    		VO.setAllSessionLateAttendedCnt(VO.getAllSessionLateAttendedCnt()+Long.valueOf(allSessionIds.size()));
-							    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
+							    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionLateAttendedCnt(),publicRepresentativesMap.get(2l).getInvitedCount()));
 							    	}
 							    }
 					    
@@ -4294,7 +4297,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 							    if(mpLateSessionList != null && mpLateSessionList.size() > 0){
 							    	for(PartyMeetingsDataVO VO:mpLateSessionList){
 							    		VO.setAllSessionLateAttendedCnt(Long.valueOf(allSessionIds.size()));
-							    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(1l).getInvitedCount()));
+							    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionLateAttendedCnt(),publicRepresentativesMap.get(1l).getInvitedCount()));
 							    	}
 							    }
 							    // CONSTITUENCY INCHARGES  allSession late attended member
@@ -4311,7 +4314,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 								    if(ciLateAttendedSessionList != null && ciLateAttendedSessionList.size() > 0){
 								    	for(PartyMeetingsDataVO VO:ciLateAttendedSessionList){
 								    		VO.setAllSessionLateAttendedCnt(Long.valueOf(allSessionIds.size()));
-								    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionAttendedCnt(),publicRepresentativesMap.get(21l).getInvitedCount()));
+								    		VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionLateAttendedCnt(),publicRepresentativesMap.get(21l).getInvitedCount()));
 								    	}
 								    } 
 					    
@@ -4466,7 +4469,14 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					
 										  if(otherTypeVO != null && otherTypeVO.getSubList1().size() > 0){
 										   for(PartyMeetingsDataVO VO:otherTypeVO.getSubList1()){
+											   
 											   VO.setNotAttendedCount(otherTypeVO.getInvitedCount()-VO.getInvitteeAttendedCount());  
+											   
+											   VO.setAllSessionAttendedPer(calculatePercantage(VO.getAllSessionAttendedCnt(), otherTypeVO.getInvitedCount()));
+											   VO.setAllSessionAbsentCntper(calculatePercantage(VO.getAllSessionAbsentCnt(), otherTypeVO.getInvitedCount()));
+											   VO.setAllSessionLateAttendedCntPer(calculatePercantage(VO.getAllSessionLateAttendedCnt(), otherTypeVO.getInvitedCount()));
+											   
+											   VO.setInviteeAttendedPerc(calculatePercantage(VO.getInvitteeAttendedCount(), otherTypeVO.getInvitedCount()));
 											   VO.setAttendedPerc(calculatePercantage(VO.getAttendedCount(), otherTypeVO.getInvitedCount()));
 											   VO.setNotAttendedPerc(calculatePercantage(VO.getNotAttendedCount(),otherTypeVO.getInvitedCount()));
 											   VO.setLateAttendedCntPer(calculatePercantage(VO.getLateAttendedCnt(),otherTypeVO.getInvitedCount()));
