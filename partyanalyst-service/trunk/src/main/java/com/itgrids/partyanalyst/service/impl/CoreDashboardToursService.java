@@ -2029,10 +2029,14 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  
 					  ToursBasicVO categoryVO = new ToursBasicVO();
 					  
+					  boolean isOwnTypeLocation = false;
+					  
 					  for(ToursBasicVO VO:categoryList){
 						  
 						  String[] categryArr= VO.getName().split(" ");
+						  
 						  if(categryArr != null && categryArr.length > 0){
+							  
 							  if(categryArr[0].toString().equalsIgnoreCase("Own")){
 								  categoryVO.setId(VO.getId());
 								  if(categoryVO.getName() == null){
@@ -2054,12 +2058,15 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 								  if(VO.getNoNComplaincandidateIdsSet() != null){
 									  categoryVO.getNoNComplaincandidateIdsSet().addAll(VO.getNoNComplaincandidateIdsSet());
 								  }
-								  categoryVO.setSubmitedLeaderCnt(categoryVO.getSubmitedLeaderCnt());
+								  categoryVO.setSubmitedLeaderCnt(VO.getSubmitedLeaderCnt());
 								  categoryList.remove(VO);
+								  isOwnTypeLocation = true;
 							  }  
 						  }
 					  }
-					  entry.getValue().getSubList3().add(0, categoryVO);
+					  if(isOwnTypeLocation){
+						  entry.getValue().getSubList3().add(0, categoryVO);  
+					  }
 				  }
 			 }
 		 }
@@ -2086,7 +2093,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			/* Merge Sec And Org Sec Data */
 			 if(designationMap != null && designationMap.size() > 0){
 				     ToursBasicVO orgSecAndSecVO = new ToursBasicVO();
-				     orgSecAndSecVO.setDesignation("ORGANIZING SECRETARY/SECRETARY"); 
+				     orgSecAndSecVO.setName("ORGANIZING SECRETARY/SECRETARY"); 
 				     orgSecAndSecVO.setId(4l);
 				     
 					 ToursBasicVO orgSecVO = designationMap.get(4l);
@@ -2203,8 +2210,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 	if(designationVO != null){
 				 		designationVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
 				 		designationVO.setNotSubmitedLeaserCnt(designationVO.getNoOfLeaderCnt()-designationVO.getSubmitedLeaderCnt());
-				 		if(designationVO.getSubList() != null && designationVO.getSubList().size() > 0){
-				 			for(ToursBasicVO vo:designationVO.getSubList()){
+				 		if(designationVO.getSubList3() != null && designationVO.getSubList3().size() > 0){
+				 			for(ToursBasicVO vo:designationVO.getSubList3()){
 				 				vo.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
 				 			}
 				 		}
@@ -2484,7 +2491,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  setComplainceDtls(rtrnGovtDaysToursObjLst,candidateTargetMap);
 		  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, userTypeId,fromDate,toDate);
 		  setTourSubmitteedMemberDtls(rtrnMemberDtlsObjLst,memberDtlsMap,candidateTargetMap,designationIdAndNameMap);
-		 //merge all Own Loction Type Data
+		
+		  //merge all Own Location Type Data
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			 
 			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
@@ -2496,10 +2504,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						  List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
 						  
 						  if(categoryList != null && categoryList.size() > 0){
+							  
 							  ToursBasicVO categoryVO = new ToursBasicVO();
 							  
+							  boolean isOwnTypeLocation = false;
+							  
 							  for(ToursBasicVO VO:categoryList){
-								  
 								  String[] categryArr= VO.getName().split(" ");
 								  if(categryArr != null && categryArr.length > 0){
 									  if(categryArr[0].toString().equalsIgnoreCase("Own")){
@@ -2512,15 +2522,19 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 										  categoryVO.setTargetDays(categoryVO.getTargetDays()+VO.getTargetDays());
 										  categoryVO.setComplainceDays(categoryVO.getComplainceDays()+VO.getComplainceDays());
 										  categoryList.remove(VO);
+										  isOwnTypeLocation = true;
 									  }  
 								  }
 							  }
-							  candiateEntry.getValue().getSubList3().add(0, categoryVO);
+							  if(isOwnTypeLocation){
+								  candiateEntry.getValue().getSubList3().add(0, categoryVO);  
+							  }
 						  } 
 					  }
 				  }
 			  }
 		  }
+		  
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
 				  if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
@@ -2543,6 +2557,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 	 			}else if(categoryId == 01l){//ownDistrictConstituency
 						 	 				candiateVO.setOwnConDistTargetCnt(categoryVO.getTargetDays());
 						 	 				candiateVO.setOwnConDistTrDays(categoryVO.getComplainceDays());
+						 	 			}else if(categoryId == 2l){//govtWork
+						 	 				candiateVO.setGovtWorkCnt(categoryVO.getTargetDays());
+						 	 				candiateVO.setGovtWorkTargetDays(categoryVO.getTargetDays());
 						 	 			}
 							 		}
 						 	 		if(candiateVO.getSubList3() != null ){
@@ -2555,7 +2572,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  }
 				  }
 			  }
-		  //calculationg percentage
+		  //calculating percentage
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
 				  if(entry.getValue() != null && entry.getValue().size() > 0){
@@ -2621,7 +2638,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 List<ToursBasicVO> categoryList = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 				 if(categoryList == null ){
 					 categoryList = new CopyOnWriteArrayList<ToursBasicVO>();
-					 candidateMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryList);
+					 candidateMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), categoryList);
 				 }
 				 ToursBasicVO categoryVO = new ToursBasicVO();
 				 categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
