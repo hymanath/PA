@@ -1385,6 +1385,17 @@ function getToursBasicOverviewCountDetails()
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
+	
+	
+	
+	/* New Tours Ajax Call Based on New Screen */
+	
+	$(document).on("click",".newTourExpandIcon",function(){
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".tourNewBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".tourNewBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	});
+	
 	//getToursBasicOverviewDtls();
 	function getToursBasicOverviewDtls()
 	{    
@@ -1409,12 +1420,170 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			if(result != null ){
+			  buildTourOverviewRslt(result);	
+			}else{
+			 $("#tourOverviewNewDivId").html("NO DATA AVAILABLE.");	
+			}
 		});
 	}
-	//getDesignationWiseMembersDtls();
+	function buildTourOverviewRslt(result){
+		var overViewRslt = result.overAllDetailsVO;
+		var designationWiseList = result.subList;
+		var str='';
+		 if(overViewRslt != null){
+				   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4><span class="headingColor text-capital">Leaders</span></h4>';
+					str+='<div id="" class="m_top10">';
+						str+='<div class="pad_10 bg_ED">';
+							str+='<div class="row">';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+									    if(overViewRslt.noOfLeaderCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.noOfLeaderCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<p class="text-muted text-capital">total leaders</p>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+									   if(overViewRslt.submitedLeaderCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.submitedLeaderCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<small class="text-success" style="font-size:13px">'+overViewRslt.submitedCandidateTourPer+'%</small></h3>';
+										str+='<p class="text-muted text-capital">Submitted leaders</p>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+									    if(overViewRslt.notSubmitedLeaserCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.notSubmitedLeaserCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<small class="text-success" style="font-size:13px">'+overViewRslt.notsubmitedCandidateTourPer+'%</small></h3>';
+										str+='<p class="text-muted text-capital">Not Submitted leaders</p>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+									   if(overViewRslt.submitedLeaderCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.submitedLeaderCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<p class="text-muted text-capital">Submitted leaders</p>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+								 	  if(overViewRslt.complainceCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.complainceCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<p class="text-muted text-capital">Complaince</p>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+									str+='<div class="pad_10">';
+										if(overViewRslt.nonComplainceCnt > 0){
+										  str+='<h3 class="tourOverViewCls">'+overViewRslt.nonComplainceCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<p class="text-muted text-capital">Non-Complaince</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';	
+		    }
+		    if(designationWiseList != null && designationWiseList.length > 0){
+				for(var i in designationWiseList){
+				   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
+							str+='<div class="bg_ED m_top10">';
+								str+='<div class="row">';
+									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+										str+='<div class="table-responsive">';
+											str+='<table class="table border_top_none">';
+												str+='<tr>';
+													str+='<td class="text-muted f_14">Total Leaders</td>';
+													str+='<td class="text-muted f_14">Not Submitted</td>';
+													str+='<td class="text-muted f_14">Submitted</td>';
+													str+='<td class="text-muted f_14">Complaince</td>';
+													str+='<td class="text-muted f_14">Non-Complaince</td>';
+												str+='</tr>';
+												str+='<tr>';
+													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].noOfLeaderCnt+'</h4></td>';
+													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].notSubmitedLeaserCnt+'<small class="text-success">'+designationWiseList[i].notsubmitedCandidateTourPer+'%</small></h4></td>';
+													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].submitedLeaderCnt+'<small class="text-success">'+designationWiseList[i].submitedCandidateTourPer+'%</small></h4></td>';
+													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].complainceCnt+'</h4></td>';
+													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].nonComplainceCnt+'</h4></td>';
+												str+='</tr>';
+											str+='</table>';
+										str+='</div>';
+										str+='<hr style="margin: 10px 0 0;border-top: 1px solid #ccc"/>';
+									str+='</div>';
+									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+										str+='<div class="table-responsive">';
+										str+='<table class="table tableEMN ">';
+											str+='<thead>';
+												str+='<th style="border-bottom:none !important"></th>';
+												str+='<th class="text-muted f_14">Submited</th>';
+												str+='<th class="text-muted f_14">Compliance</th>';
+												str+='<th class="text-muted f_14">Non-Compliance</th>';
+											str+='</thead>';
+											str+='<tbody>';
+											 var categoryList = designationWiseList[i].subList3; 
+											 if(categoryList != null && categoryList.length > 0){
+												 for(var j in categoryList){
+												    str+='<tr>';
+													if(categoryList[j].name != null && categoryList[j].name.length > 0){
+													str+='<td style="border-top:none !important">'+categoryList[j].name+'</td>';	
+													}else{
+													str+='<td style="border-top:none !important"> - </td>';	
+													}
+													str+='<td class="bg_D8">'+categoryList[j].submitedLeaderCnt+'</td>';
+													str+='<td class="bg_D8">'+categoryList[j].complainceCnt+'</td>';
+													str+='<td class="bg_D8">'+categoryList[j].nonComplainceCnt+'</td>';
+												   str+='</tr>'; 
+												 }
+											 }
+											str+='</tbody>';
+										str+='</table>';
+									str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';	
+				}
+			}
+		    $("#tourOverviewNewDivId").html(str);       
+	}
+	
+	
+	$(document).on("click",".tourComplainceCls",function(){
+		  var resultType=$(this).attr("attr_value");
+		 if(resultType != null && resultType == "strong"){
+		  buildgDesignationWiseToursTopFiveComplainceRslt(globalUserTypeWiseTourComplainceRslt); 
+		 }else if(resultType == "poor"){
+		  buildgDesignationWiseToursPoorFiveComplainceRslt(globalUserTypeWiseTourComplainceRslt);
+		 }
+    });
+	
+	
+    var globalUserTypeWiseTourComplainceRslt;  
+	 //getDesignationWiseMembersDtls();
 	function getDesignationWiseMembersDtls()
-	{     var globalUserTypeId = 2;
+	{  
+ 	     var globalUserTypeId = 2;
 		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
@@ -1434,9 +1603,274 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(' ');
+			 buildgDesignationWiseToursTopFiveComplainceRslt(result);
+			 globalUserTypeWiseTourComplainceRslt = result;
 		});
 	}
+	
+	function buildgDesignationWiseToursTopFiveComplainceRslt(result){
+		var str='';
+		if(result != null && result.length > 0){
+		  var str='';
+		  for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
+				  if(result[i][0].designationId==4){
+				  if(result[i][0].complaincePer!=0){
+					  str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY</h5>';      
+				  }
+				  }
+				  if(result[i][0].designationId==5){
+				   if(result[i][0].complaincePer!=0){
+					 str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
+				   }
+			     }
+			   }else{ 
+				 if(result[i][0].complaincePer!=0){
+					str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
+				 }
+		      }
+			  str+='<div id="designationWiseComplainceTour'+i+'" style="height:80px;"></div>';
+			str+='</div>'
+		  }
+		}
+		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(str);
+	   if(result != null && result.length > 0){
+			for(var i in result){
+				var candidateNameArray = [];
+				var totalComplainceArr = [];
+				var countVar =0;
+			  if(result[i] !=null && result[i].length>0){
+					for(var j in result[i]){
+						countVar =countVar+1;
+						candidateNameArray.push(result[i][j].name);
+						totalComplainceArr.push(result[i][j].complaincePer);
+						if (countVar === 5) {
+							break;
+						}
+					}
+				}
+		if(result[i][0].complaincePer!=0){
+			var getWidth = $("#designationWiseComplainceTour"+i).parent().width()+'px';
+			$("#designationWiseComplainceTour"+i).width(getWidth);
+		    $(function () {
+			  $('#designationWiseComplainceTour'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: candidateNameArray,
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {formatter: function(){
+					return '<b>Tour Complaince:'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+                    'Name: '+ this.x;   
+				}      
+				},
+				plotOptions: {
+					column: {  
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%"; 
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series: [{
+					name: 'Complaince',
+					data: totalComplainceArr
+				}]
+			});
+		});
+		}else{
+		$("#designationWiseComplainceTour"+i).html("No Data Available");
+		$("#designationWiseComplainceTour"+i).css("height","35px");
+		$("#designationWiseComplainceTour"+i).hide();
+		} 
+	}
+	}else{
+    $("#buildgDesignationWiseToursTopFiveComplainceDivId").html('NO DATA AVAILABLE.');
+	}
+	}
+	
+	function buildgDesignationWiseToursPoorFiveComplainceRslt(result){
+		
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
+				  if(result[i][0].designationId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].designationId==5){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
+			   }
+				str+='<div id="designationWiseComplainceTour'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+			}
+		}
+		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(str);
+	  if(result != null && result.length > 0){
+		for(var i in result){
+				var candidateNameArray = [];
+				var totalComplainceArr = [];
+				var countVar = 0;
+				if(result[i] != null && result[i].length > 0){
+					var length = result[i].length - 1;
+					for(var j = length; j >= 0; j--){
+						candidateNameArray.push(result[i][j].name);
+						  totalComplainceArr.push(result[i][j].complaincePer);
+						countVar =countVar+1;
+						if (countVar === 5) {
+							break;
+						}
+					}	
+				}
+			//if( result[i][j].complaincePer!=0){
+		//if(totalComplainceArr.length > 0){	
+			var getWidth = $("#designationWiseComplainceTour"+i).parent().width()+'px';
+				$("#designationWiseComplainceTour"+i).width(getWidth);
+				$(function () {
+			   $('#designationWiseComplainceTour'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					categories: candidateNameArray,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {formatter: function(){
+					return '<b>Total Complaince:'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+                    'Name: '+ this.x; 
+				}      
+				},
+
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2)+"%";
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{
+					name: 'Complaince',
+					data: totalComplainceArr
+				}]
+			});
+		});
+		//}
+		/* }else{
+		$("#genSecTour"+i).html("No Data Available");
+		$("#genSecTour"+i).css("height","35px");	
+		} */
+		}
+	}else{
+	 $("#buildgDesignationWiseToursTopFiveComplainceDivId").html('NO DATA AVAILABLE.');
+	}
+	} 
+	
 	//getDesignationWiseAverageTourPerformanceDtls();
 	function getDesignationWiseAverageTourPerformanceDtls()
 	{     var globalUserTypeId = 2;
