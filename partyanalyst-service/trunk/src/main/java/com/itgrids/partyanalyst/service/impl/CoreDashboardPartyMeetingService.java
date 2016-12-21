@@ -3418,11 +3418,14 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											String ltTime = sessionIdAndLateTimeMap.get(sesId);
 											Date attendedTime = sdf.parse(attTime);
 											Date lateTime = sdf.parse(ltTime);
-											if(attendedTime.compareTo(lateTime)>=0){//true -> late
-												statusIdAndStausMap.put(sesId, "late");  
+											Long attTimeMilis = attendedTime.getTime();
+											Long ltTimeMilis = lateTime.getTime();
+											if(attTimeMilis > ltTimeMilis){//true -> late
+												statusIdAndStausMap.put(sesId, "late");
 											}else{
-												statusIdAndStausMap.put(sesId, "intime");  
+												statusIdAndStausMap.put(sesId, "intime");
 											}
+											
 										}else{
 											statusIdAndStausMap.put(sesId, "absent");
 										}
@@ -3462,8 +3465,10 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 								String attTime = sessionIdAndCadreIdAndTimeMap.get(entry.getKey()).get(param);
 								String ltTime = sessionIdAndLateTimeMap.get(entry.getKey());
 								Date attendedTime = sdf.parse(attTime);
-								Date lateTime = sdf.parse(ltTime);     
-								if(attendedTime.compareTo(lateTime)>=0){//true -> late
+								Date lateTime = sdf.parse(ltTime);
+								Long attTimeMilis = attendedTime.getTime();
+								Long ltTimeMilis = lateTime.getTime();
+								if(attTimeMilis > ltTimeMilis){//true -> late
 									lateCadres.add(param);
 								}    
 							}
@@ -3529,11 +3534,14 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 													String ltTime = sessionIdAndLateTimeMap.get(sesId);
 													Date attendedTime = sdf.parse(attTime);
 													Date lateTime = sdf.parse(ltTime);
-													if(attendedTime.compareTo(lateTime)>=0){//true -> late
-														statusIdAndStausMap.put(sesId, "late");  
+													Long attTimeMilis = attendedTime.getTime();
+													Long ltTimeMilis = lateTime.getTime();
+													if(attTimeMilis > ltTimeMilis){//true -> late
+														statusIdAndStausMap.put(sesId, "late");
 													}else{
-														statusIdAndStausMap.put(sesId, "intime");  
+														statusIdAndStausMap.put(sesId, "intime");
 													}
+													
 												}else{
 													statusIdAndStausMap.put(sesId, "absent");
 												}
@@ -3613,11 +3621,14 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 												String ltTime = sessionIdAndLateTimeMap.get(sesId);
 												Date attendedTime = sdf.parse(attTime);
 												Date lateTime = sdf.parse(ltTime);
-												if(attendedTime.compareTo(lateTime)>=0){//true -> late
-													statusIdAndStausMap.put(sesId, "late");  
+												Long attTimeMilis = attendedTime.getTime();
+												Long ltTimeMilis = lateTime.getTime();
+												if(attTimeMilis > ltTimeMilis){//true -> late
+													statusIdAndStausMap.put(sesId, "late");
 												}else{
-													statusIdAndStausMap.put(sesId, "intime");  
+													statusIdAndStausMap.put(sesId, "intime");
 												}
+												
 											}else{
 												statusIdAndStausMap.put(sesId, "absent");
 											}
