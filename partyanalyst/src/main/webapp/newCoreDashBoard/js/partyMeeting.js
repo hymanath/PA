@@ -4324,22 +4324,29 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}		
   }
 }
-
 	function getParyMeetingDetailsDistrictWise(sessionId,partyMeetingId,position){
 		$(".specialMeetingCls").show();
 		$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		//var partyMeetingTypeArr = [26];   
-		var partyMeetingTypeArr=[];
+		var partyMeetingTypeArr=[];  
 		$("#specialMeetingUlId li").each(function() {       
 		  if($(this).find("input").is(":checked")){
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
 		  }
-	   });
+		});
+		var state = globalState;  
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;   
+		var toDateStr;  
+		if(dates != null && dates!=undefined){   
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj ={ 
 					   partyMeetingMainTypeId : 3,  
-					   state : "ap",
-					   startDateString : '01/01/2016',
-					   endDateString : '20/12/2016',        
+					   state : state,
+					   startDateString : fromDateStr,
+					   endDateString : toDateStr,              
 					   partyMeetingTypeIds:partyMeetingTypeArr,           
 					   partyMeetingId : partyMeetingId,   
 					   sessionId : sessionId
