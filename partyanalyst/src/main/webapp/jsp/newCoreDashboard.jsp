@@ -1882,11 +1882,7 @@
 												<h4>Workshop - DEC - 20</h4>
 											</div>
 											<div class="col-md-6 col-xs-12 col-sm-6">
-												<ul class="activeUlCls  list-inline pull-right">
-													<li class="active sessionsCls " attr_sessionId="0">All Sessions</li>
-													<li class="sessionsCls"  attr_sessionId="1">Morning Session</li>
-													<li class="sessionsCls"  attr_sessionId="2">Afternoon Session</li>
-												</ul>
+												<div id="sessionBtnDivId"></div>
 											</div>
 									</div>
 										</div>
