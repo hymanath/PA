@@ -1661,9 +1661,9 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							List<Long> tdpCadreIsList = sessionWiseAbsentsMap.get(sessionVO.getId());
 							if(commonMethodsUtilService.isListOrSetValid(tdpCadreIsList)){
 								sessionVO.setNonInviteeCount(Long.valueOf(String.valueOf(tdpCadreIsList.size())));
-								float naPerc =  (float) (sessionVO.getNonInviteeCount() *100.0/sessionVO.getAttendedCount());
-								String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
-								sessionVO.setNonInviteePerc(Double.valueOf(perc2));
+								//float naPerc =  (float) (sessionVO.getNonInviteeCount() *100.0/sessionVO.getAttendedCount());
+								//String perc2 = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(naPerc);
+								//sessionVO.setNonInviteePerc(Double.valueOf(perc2));
 								
 								partyMetingMainVO.setNonInviteeCount(partyMetingMainVO.getNonInviteeCount()+sessionVO.getNonInviteeCount());
 							}
