@@ -4726,10 +4726,4 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}
 	   
 	}
-	
-	function refreshMeeting(){
-     getPartySpecialMeetingsMainTypeOverview(0);
-    
-  }
-  
   
