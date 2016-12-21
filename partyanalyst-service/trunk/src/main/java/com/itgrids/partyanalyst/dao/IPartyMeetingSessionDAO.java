@@ -11,4 +11,5 @@ import com.itgrids.partyanalyst.model.PartyMeetingSession;
 public interface IPartyMeetingSessionDAO extends GenericDao< PartyMeetingSession, Long>{
 	public List<Object[]> getSessionDetailsForPartyMeetings(Set<Long> partyMeetingsIds);
 	public List<Object[]> getSessionDetailsForPartiMeetings(Set<Long> partyMeetingsTypeIds,List<Long> partyMeetingsIds);
+	public List<Object[]> getPartyMeetingSession(Long partyMeetingId);
 }
