@@ -15126,5 +15126,10 @@
    			<param name="root">idNameVOs</param> 
 		</result>
 	</action>
+	<action name="getPartyMeetingSessionAction" class="cadreRegistrationAction" method="getPartyMeetingSession">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVOs</param> 
+		</result>
+	</action>
  </package>
 </struts>
