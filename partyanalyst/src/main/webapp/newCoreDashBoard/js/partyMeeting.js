@@ -835,7 +835,8 @@ $(document).on("click",".meetingLiCls",function(){
 	$(document).on("click",".sessionsCls",function(){
 		$('.sessionsCls').removeClass('active');
 		var sessionId = $(this).attr("attr_sessionId");
-		getParyMeetingDetailsDistrictWise(sessionId);
+		var partyMeetingId = $(this).attr("attr_party_meeting_id");
+		getParyMeetingDetailsDistrictWise(sessionId,partyMeetingId,"refreshBtn");      
 		$(this).addClass('active');
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
@@ -852,7 +853,7 @@ $(document).on("click",".meetingLiCls",function(){
 			 var party_meeting_id = $(this).attr("party_meeting_id");
 			//console.log(party_meeting_id);
 			 getPartySpecialMeetingsMainTypeOverview(party_meeting_id);
-			 getParyMeetingDetailsDistrictWise(0); 
+			 getParyMeetingDetailsDistrictWise(0,party_meeting_id,"");
 		 }else{
 			
 			 $("#districtWiseSpecialMeetingsGraph").html(' ');
@@ -2062,7 +2063,7 @@ $(document).on("click",".selectAllSpecialMeeting",function(){
 function getPartyMeetingsMainTypeStateLevelOverview(){
 	$("#stateLevelMeetingBasicCnt").closest(".panelBlock").show();
 	$("#stateLevelMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	var partyMeetingTypeArr=[];
+	   var partyMeetingTypeArr=[];
 	   $("#stateLevelMeetingUlId li").each(function() {
 		  if($(this).find("input").is(":checked")){
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
@@ -2141,7 +2142,7 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 		   if(result != null && result.length > 0){
 			   if(partyMeetingId >0 ){//111
 				   //partyMeetingOverviewTabDiv
-				   buildOverviewPartiMeetingOverviewResustlt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,fromDateStr,toDateStr,state);
+				   buildOverviewPartiMeetingOverviewResustlt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,fromDateStr,toDateStr,state,partyMeetingId);
 			   }else{
 				   $("#specialMeetingBasicCnt").html(" ");
 				buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,fromDateStr,toDateStr,state);
@@ -2155,7 +2156,7 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 }
 
 // 
-function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state){
+function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingId,expandTypeId,partyMeetingTypeArr,fromDateStr,toDateStr,state,partyMeetingId){
 	//for(var i in result){
 		var partyMeetingArr = result[0].subList1[0];
 		var str ='';
@@ -2170,17 +2171,17 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.attendedCount == 0 || partyMeetingArr.attendedCount == null){
 									str+='<td class="text-success" style="text-align:center" >Total&nbsp;Attended<br> 0 </td>';
 								}else{
-									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="attended" attr_non_invitee="false" >Total&nbsp;Attended<br><u>'+partyMeetingArr.attendedCount+'</u></td>';
+									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="0" attr_status="attended" attr_non_invitee="false" >Total&nbsp;Attended<br><u>'+partyMeetingArr.attendedCount+'</u></td>';
 								}
 								if(partyMeetingArr.lateAttendedCount == 0 || partyMeetingArr.lateAttendedCount == null){
 									str+='<td class="text_oragane" style="text-align:center" >Late&nbsp;Attended<br> 0 </td>';
 								}else{
-									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="late" attr_non_invitee="false" >Late&nbsp;Attended<br> <u>'+partyMeetingArr.lateAttendedCount+' </u></td>';
+									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="0" attr_status="late" attr_non_invitee="false" >Late&nbsp;Attended<br> <u>'+partyMeetingArr.lateAttendedCount+' </u></td>';
 								}
 								if(partyMeetingArr.notAttendedCount == 0 || partyMeetingArr.notAttendedCount == null){
 									str+='<td style="text-align:center">Absent<br> 0  </td>';
 								}else{
-									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
+									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="0" attr_status="absent" attr_non_invitee="false" >Absent<br> <u>'+partyMeetingArr.notAttendedCount+' </u></td>';
 								}	
 						str+='</tr>';
 					str+='</tbody>';
@@ -2201,22 +2202,22 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 								if(partyMeetingArr.subList1[k].attendedCount == 0 || partyMeetingArr.subList1[k].attendedCount == null){
 									str+='<td class="text-success" style="text-align:center" >Total&nbsp;Attended<br> 0 </td>';
 								}else{
-									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended" attr_non_invitee="false">Total&nbsp;Attended<br> <u>'+partyMeetingArr.subList1[k].attendedCount+' </u></td>';
+									str+='<td class="text-success getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended" attr_non_invitee="false">Total&nbsp;Attended<br> <u>'+partyMeetingArr.subList1[k].attendedCount+' </u></td>';
 								}
 								if(partyMeetingArr.subList1[k].lateAttendedCount == 0 || partyMeetingArr.subList1[k].lateAttendedCount == null){
 									str+='<td class="text_oragane" style="text-align:center" >Late&nbsp;Attended<br> 0 </td>';
 								}else{
-									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="late" attr_non_invitee="false" >Late&nbsp;Attended<br><u>'+partyMeetingArr.subList1[k].lateAttendedCount+'</u></td>';
+									str+='<td class="text_oragane getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="'+(parseInt(k)+1)+'" attr_status="late" attr_non_invitee="false" >Late&nbsp;Attended<br><u>'+partyMeetingArr.subList1[k].lateAttendedCount+'</u></td>';
 								}
 								if(partyMeetingArr.subList1[k].notAttendedCount == 0 || partyMeetingArr.subList1[k].notAttendedCount == null){
 									str+='<td style="text-align:center" >Absent<br> 0 </td>';    
 								}else{
-									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="absent" attr_non_invitee="false">Absent<br><u>'+partyMeetingArr.subList1[k].notAttendedCount+'</u></td>';
+									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="'+(parseInt(k)+1)+'" attr_status="absent" attr_non_invitee="false">Absent<br><u>'+partyMeetingArr.subList1[k].notAttendedCount+'</u></td>';
 								}  
 								if(partyMeetingArr.subList1[k].nonInviteeCount == 0 || partyMeetingArr.subList1[k].nonInviteeCount == null){
 									str+='<td><span data-toggle="tooltip" data-placement="top" title="Non Invitees Attended" style="cursor:default;"> NIA</span><br> 0 </td>'; 
 								}else{
-									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="445220" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended" attr_non_invitee="true" ><span data-toggle="tooltip" data-placement="top" title="Non Invitees Attended" > NIA</span><br><u>'+partyMeetingArr.subList1[k].nonInviteeCount+'</u></td>';
+									str+='<td class="getCmtMemDtls" style="text-align:center;cursor:pointer;" attr_party_meeting_id="'+partyMeetingId+'" attr_session_id="'+(parseInt(k)+1)+'" attr_status="attended" attr_non_invitee="true" ><span data-toggle="tooltip" data-placement="top" title="Non Invitees Attended" > NIA</span><br><u>'+partyMeetingArr.subList1[k].nonInviteeCount+'</u></td>';
 								}
 							str+='</tr>';
 						str+='</tbody>';
@@ -2299,8 +2300,6 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 					 
 					 
 					 if(result[i].subList1 != null && result[i].subList1.length>0){
-						
-						 
 						 for(var k in result[i].subList1){							 
 							 if(result[i].subList1[k].subList1.length != null && result[i].subList1[k].subList1.length >0){
 								 for(var s in result[i].subList1[k].subList1){
@@ -2310,90 +2309,11 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 
 										 str+='<tr>';
 											str+='<td colspan=6>';
-												//str+='<p>';
 												str+='<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;">'+result[i].subList1[0].name+'</span>';
-											//str+='</td>';
-											
-											//str+='<td>';
 												str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px;margin-right: 15px; margin-left: 15px;""><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
-											//str+='</td>';
-											
-											//str+='<td>';
 												str+='<span class="text-capital">Total - Invitees : <b>'+result[i].subList1[k].invitedCount+'</b></span>';
-											//str+='</td>';
-											//str+='<td>';
-											//str+='</td>';
-											//str+='<td>';
-											//str+='</td>';
-											//str+='<td>';
-											//str+='</p>';
-											str+='</td>';
-											
+												str+='</td>';
 										 str+='</tr>';
-										 
-										 
-										  /* str+='<tr>';
-										  	 str+='<td class="col-xs-12">';
-												str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;" class="text-muted">'+result[i].subList1[0].name+'<span>('+result[i].subList1[k].invitedCount+')</span></p>';
-												
-											 str+='</td>';
-											 str+='<td class="pull-right">';
-											 str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
-											 str+='</td>';
-											  str+='</tr>';
-											  
-											  str+='<tr>';
-											 str+='<td>';
-												
-											str+='</td>';
-											 str+='<td class="text-muted text-capital text-success"><p>Attended</p></td>';
-											 str+='<td class="text-muted text-capital text_oragane"> <p>Late </p></td>';
-											 str+='<td class="text-muted text-capital" ><p> Absent </p></td>';
-											 str+='<td class="text-muted text-capital" ><p> Non Invitees</p> </td>'; */
-											 
-											/*str+='<td>';
-											if(result[i].subList1[k].attendedCount == 0 || result[i].subList1[k].attendedCount == null ){
-												str+='<h5 class="text-success"> 0  <span class="font-10 text-success"> 0.00 %</span> </h5>';
-											}else{
-												str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="false"> <u>'+result[i].subList1[k].attendedCount+' </u><span class="font-10 text-success"> '+result[i].subList1[k].attendedPerc+'%</span> </h5>';
-											}
-											
-											str+='</td>';*/
-											/*str+='<td>';
-												if(result[i].subList1[k].lateAttendedCount == 0 || result[i].subList1[k].lateAttendedCount == null ){  
-													str+='<h5 class="text_oragane"> 0  <span class="font-10 text-danger">  0.00 %</span> </h5>';
-												}else{
-													var attendedCount = parseInt(result[i].subList1[k].attendedCount);
-													var lateCount = parseInt(result[i].subList1[k].lateAttendedCount);
-													
-													var perc = (lateCount*100.0/attendedCount)
-													
-													
-													str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span> </h5>';
-												}
-											 str+='</td>';*/
-											 /*str+='<td>';
-											 if(result[i].subList1[k].notAttendedCount == 0 || result[i].subList1[k].notAttendedCount == null){
-												 str+='<h5> 0  <span class="font-10 text-danger">  0.00 %</span></h5>';
-											 }else{
-												  var attendedCount = parseInt(result[i].subList1[k].invitedCount);
-													var lateCount = parseInt(result[i].subList1[k].notAttendedCount);
-													
-													var perc = (lateCount*100.0/attendedCount);
-												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="0" attr_party_meeting_id="445220"  attr_non_invitee="false"><u>'+result[i].subList1[k].notAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h5>';
-											 }
-												
-											 str+='</td>';*/
-											 // str+='<td>';
-											/* if(result[i].subList1[k].nonInviteeCount == 0 || result[i].subList1[k].nonInviteeCount == null){
-												 str+='<h5>  - </h5>';
-											 }else{
-												 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="0" attr_party_meeting_id="445220" attr_non_invitee="true"><u>'+result[i].subList1[k].nonInviteeCount+'</u></h5>';
-											 }
-											*/	
-											// str+='</td>';
-											 
-										 //str+='</tr>';
 										  str+='<tr>';
 												str+='<td></td>';
 											 str+='<td class="text-muted text-capital text-success"><p>Attended</p></td>';
@@ -2402,8 +2322,6 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 											 str+='<td class="text-muted text-capital" ><p data-toggle="tooltip" data-placement="top" title="Non Invitees">NI</p> </td>';
 										 str+='</tr>';
 									 }
-									 
-									
 									  str+='<tr>';
 									  
 								 str+='<td style="padding:0px;">';
@@ -2414,7 +2332,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].attendedCount == 0 || result[i].subList1[k].subList1[s].attendedCount == null ){
 									 str+='<h5 class="text-success"> 0  <span class="font-10 text-success">  0.00 %</span></h5>';
 								 }else{
-									 str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].attendedCount+'</u> <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
+									 str+='<h5 class="text-success getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="'+result[i].subList1[k].id+'" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].attendedCount+'</u> <span class="font-10 text-success"> '+result[i].subList1[k].subList1[s].attendedPerc+'%</span></h5>';
 								 }
 								 
 								 str+='</td>';
@@ -2427,7 +2345,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 									
 									var perc = (lateCount*100.0/attendedCount);
 													
-									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span> </h5>';
+									 str+='<h5 class="text_oragane getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="late" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="'+result[i].subList1[k].id+'" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].lateAttendedCount+'</u> <span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span> </h5>';
 								 }
 									
 								 str+='</td>';
@@ -2441,7 +2359,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 									
 									var perc = (lateCount*100.0/attendedCount);
 									
-									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].notAttendedCount+' </u><span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h5>';
+									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="absent" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="'+result[i].subList1[k].id+'" attr_non_invitee="false"><u>'+result[i].subList1[k].subList1[s].notAttendedCount+' </u><span class="font-10 text-danger"> '+perc.toFixed(2)+'%</span></h5>';
 								 }   
 								 
 								 str+='</td>';
@@ -2450,7 +2368,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 								 if(result[i].subList1[k].subList1[s].nonInviteeCount == 0 || result[i].subList1[k].subList1[s].nonInviteeCount == null ){
 									 str+='<h5>  - </h5>';
 								 }else{
-									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="445220" attr_non_invitee="true"><u>'+result[i].subList1[k].subList1[s].nonInviteeCount+' </u></h5>';
+									 str+='<h5 class="getCmtMemDtls" style="cursor:pointer;" attr_position="overview" attr_status="attended" attr_session_id="'+(parseInt(s)+1)+'" attr_party_meeting_id="'+result[i].subList1[k].id+'" attr_non_invitee="true"><u>'+result[i].subList1[k].subList1[s].nonInviteeCount+' </u></h5>';
 								 }   
 								 
 								 str+='</td>';
@@ -2473,14 +2391,14 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 			 $("#"+expandTypeId).attr("attr_partyMeetingTypeIdsString",partyMeetingTypeIdsString); 
 	$("#"+divId).html(str);  
 	$('[data-toggle="tooltip"]').tooltip();
-}
+}        
 
 $(document).on("click",".meetingMemberDtlsCls",function(){
 	var meetingMainTypeId = $(this).attr("attr_main_type_id");
 	var meetingTypeIdStr = $(this).attr("attr_meeting_type_arr");
 	var meetingTypeIdArr = meetingTypeIdStr.split(",");
 	var meetingId = $(this).attr("attr_meeting_id");
-	var startDate = $(this).attr("attr_start_date");
+	var startDate = $(this).attr("attr_start_date");      
 	var endDate = $(this).attr("attr_end_date");
 	var state = $(this).attr("attr_state");
 	var status = $(this).attr("attr_status");      
@@ -4407,18 +4325,23 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
   }
 }
 
-             
-	function getParyMeetingDetailsDistrictWise(sessionId){
+	function getParyMeetingDetailsDistrictWise(sessionId,partyMeetingId,position){
 		$(".specialMeetingCls").show();
 		$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		var partyMeetingTypeArr = [26];   
+		//var partyMeetingTypeArr = [26];   
+		var partyMeetingTypeArr=[];
+		$("#specialMeetingUlId li").each(function() {       
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   });
 		var jsObj ={ 
-						partyMeetingMainTypeId : 3,
+					   partyMeetingMainTypeId : 3,  
 					   state : "ap",
 					   startDateString : '01/01/2016',
 					   endDateString : '20/12/2016',        
-					   partyMeetingTypeIds:partyMeetingTypeArr,
-					   partyMeetingId : 445220,   
+					   partyMeetingTypeIds:partyMeetingTypeArr,           
+					   partyMeetingId : partyMeetingId,   
 					   sessionId : sessionId
 			  };
 			  
@@ -4428,16 +4351,19 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		  dataType : 'json',
 		  data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		  buildParyMeetingDetailsDistrictWise(result);
+			if(result != null && result.length > 0){
+				buildParyMeetingDetailsDistrictWise(result,partyMeetingId,position);
+			}else{
+				$("#districtWiseGraphSpecialMee").html("No Data Available");
+			}
 		});                
 	}
   
-  function buildParyMeetingDetailsDistrictWise(result){
+  function buildParyMeetingDetailsDistrictWise(result,partyMeetingId,position){
 		$("#districtWiseSpecialMeetingsGraph").html('');
 		if(result != null && result.length > 0){
 			var str='';
 				str+='<div id="districtWiseGraphSpecialMee" class="chartLiD" style="height:300px" ></div>';
-												
 		}
 		$("#districtWiseSpecialMeetingsGraph").html(str);
 		
@@ -4543,10 +4469,40 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				
 		
 	}else{
-		$("#districtWiseGraphSpecialMee").html("No Data Available")
-	}	
+		$("#districtWiseGraphSpecialMee").html("No Data Available");
+	}
+	if(position != "refreshBtn")
+		getSessionButton(partyMeetingId);  
 }
-	$(document).on("click",".getCmtMemDtls",function(){
+	function getSessionButton(partyMeetingId){
+		var jsObj ={
+					 partyMeetingId : partyMeetingId
+				};
+			  
+		$.ajax({  
+		  type : 'POST',
+		  url : 'getPartyMeetingSessionAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildSessionButton(result,partyMeetingId);
+			}else{
+				      
+			}
+		});
+	}
+	function buildSessionButton(result,partyMeetingId){
+		var str = '';
+		str+='<ul class="activeUlCls  list-inline pull-right">';
+		str+='<li class="active sessionsCls " attr_sessionId="0" attr_party_meeting_id="'+partyMeetingId+'">All Sessions</li>';
+		for(var i in result){
+			str+='<li class="sessionsCls"  attr_sessionId="'+result[i].id+'" attr_party_meeting_id="'+partyMeetingId+'">'+result[i].name+'</li>'; 
+		}
+		str+='</ul>'; 
+		$("#sessionBtnDivId").html(str);    		
+	}
+	$(document).on("click",".getCmtMemDtls",function(){  
 		var position = $(this).attr("attr_position");
 		var isNonInvitee = $(this).attr("attr_non_invitee");
 		
@@ -4726,4 +4682,5 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}
 	   
 	}
+	
   
