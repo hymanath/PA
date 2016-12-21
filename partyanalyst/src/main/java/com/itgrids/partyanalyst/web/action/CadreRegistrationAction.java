@@ -3178,6 +3178,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 		return Action.SUCCESS;
   }
-  //public List<IdNameVO> getMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, final Long partyMeetingId, Long sessionId, String status)
+  public String getPartyMeetingSession(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long partyMeetingId = jobj.getLong("partyMeetingId");    
+			idNameVOs = coreDashboardPartyMeetingService.getPartyMeetingSession(partyMeetingId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised at getPartyMeetingSession() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
 
