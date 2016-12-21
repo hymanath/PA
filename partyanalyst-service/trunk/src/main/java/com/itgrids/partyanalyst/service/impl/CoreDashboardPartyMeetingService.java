@@ -4632,5 +4632,25 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		  LOG.error("Error occured at setCommiteeLevelWiseInviteeMembers() in CoreDashboardPartyMeetingService {}",e);
 	  }
   }
+  public List<IdNameVO> getPartyMeetingSession(Long partyMeetingId){
+	  try{
+		  List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		  IdNameVO idNameVO = null;
+		  List<Object[]> meetingSessionList = partyMeetingSessionDAO.getPartyMeetingSession(partyMeetingId);
+		  if(meetingSessionList != null && meetingSessionList.size() > 0){
+				for(Object[] param : meetingSessionList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					idNameVOs.add(idNameVO);
+				}
+			}
+		  	return idNameVOs;    
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getPartyMeetingSession() in CoreDashboardPartyMeetingService {}",e);
+	  }
+	  return null;
+  }
 	
 }
