@@ -144,7 +144,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			sb.append(" ,CadreRegUserTabUser model4");
 		sb.append(" where model1.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUserId = model3.cadreSurveyUserId" +
-					" and model3.isEnabled = 'Y'" +
+					//" and model3.isEnabled = 'Y'" +
 					" and model1.cadreSurveyUserId = model4.cadreSurveyUser.cadreSurveyUserId" +
 					" and model4.cadreRegUser.userType = 'FM'" +
 					" and model1.isDeleted = 'N'");
@@ -174,8 +174,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		sb.append(" " +
 					" and model2.isDeleted = 'N'" +
 					" and model1.isDeleted = 'N'" +
-					" and model1.isEnabled = 'Y'" +
-					" and model3.isEnabled = 'Y'" +
+					//" and model1.isEnabled = 'Y'" +
+					//" and model3.isEnabled = 'Y'" +
 					//" and model3.isOtpVerified = 'Y' " +
 					" group by model1.cadreSurveyUserId,model3.tabUserInfoId" +
 					" order by model3.insertedTime desc ");
@@ -208,7 +208,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" );
 		
 		sb.append(" where model1.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
-					" and model1.cadreSurveyUser.isEnabled = 'Y'" +
+					//" and model1.cadreSurveyUser.isEnabled = 'Y'" );
 					" and model1.cadreRegUser.userType = 'FM'");
 					//" and model1.cadreRegUser.userType = 'FM'");
 		
