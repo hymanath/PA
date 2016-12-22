@@ -69,17 +69,17 @@ public class ToursBasicVO {
 	private Long inchargeConstituencyTrDays = 0l;
 	private Long ownConDistTrDays = 0l;
 	
-	private Long inchargeDistrictTargetCnt = 0l;
-	private Long inchargeConstituencyTargetCnt = 0l;
-	private Long ownConDistTargetCnt = 0l;
+	private Long inchargeDistrictComplainceDays = 0l;
+	private Long inchargeConstituencyComplainceDays = 0l;
+	private Long ownConDistComplainceDays = 0l;
 	
-	private Double inchargeDistrictTrDaystPer = 0.0d;
-	private Double inchargeConstituencyTrDaysPer = 0.0d;
-	private Double ownConDistTrDaysPer = 0.0d;
+	private Double inchargeDistrictComplaincePer = 0.0d;
+	private Double inchargeConstituencyComplaincePer = 0.0d;
+	private Double ownConDistComplaincePer = 0.0d;
 	
-	private Long govtWorkCnt=0l;
-	private Long govtWorkTargetDays=0l;
-	private Double govtWorkCntPer = 0.0d;
+	private Long govtWorkTrDays=0l;
+	private Long govtWorkComplainceDays=0l;
+	private Double govtWorkComplaincePer = 0.0d;
 	
 	public ToursBasicVO() {
 		super();
@@ -434,63 +434,63 @@ public class ToursBasicVO {
 	public void setOwnConDistTrDays(Long ownConDistTrDays) {
 		this.ownConDistTrDays = ownConDistTrDays;
 	}
-	public Long getInchargeDistrictTargetCnt() {
-		return inchargeDistrictTargetCnt;
+	public Long getInchargeDistrictComplainceDays() {
+		return inchargeDistrictComplainceDays;
 	}
-	public void setInchargeDistrictTargetCnt(Long inchargeDistrictTargetCnt) {
-		this.inchargeDistrictTargetCnt = inchargeDistrictTargetCnt;
+	public void setInchargeDistrictComplainceDays(
+			Long inchargeDistrictComplainceDays) {
+		this.inchargeDistrictComplainceDays = inchargeDistrictComplainceDays;
 	}
-
-	public Long getInchargeConstituencyTargetCnt() {
-		return inchargeConstituencyTargetCnt;
+	public Long getInchargeConstituencyComplainceDays() {
+		return inchargeConstituencyComplainceDays;
 	}
-	public void setInchargeConstituencyTargetCnt(Long inchargeConstituencyTargetCnt) {
-		this.inchargeConstituencyTargetCnt = inchargeConstituencyTargetCnt;
+	public void setInchargeConstituencyComplainceDays(
+			Long inchargeConstituencyComplainceDays) {
+		this.inchargeConstituencyComplainceDays = inchargeConstituencyComplainceDays;
 	}
-
-	public Long getOwnConDistTargetCnt() {
-		return ownConDistTargetCnt;
+	public Long getOwnConDistComplainceDays() {
+		return ownConDistComplainceDays;
 	}
-	public void setOwnConDistTargetCnt(Long ownConDistTargetCnt) {
-		this.ownConDistTargetCnt = ownConDistTargetCnt;
+	public void setOwnConDistComplainceDays(Long ownConDistComplainceDays) {
+		this.ownConDistComplainceDays = ownConDistComplainceDays;
 	}
-	public Double getInchargeDistrictTrDaystPer() {
-		return inchargeDistrictTrDaystPer;
+	public Double getInchargeDistrictComplaincePer() {
+		return inchargeDistrictComplaincePer;
 	}
-	public void setInchargeDistrictTrDaystPer(Double inchargeDistrictTrDaystPer) {
-		this.inchargeDistrictTrDaystPer = inchargeDistrictTrDaystPer;
+	public void setInchargeDistrictComplaincePer(
+			Double inchargeDistrictComplaincePer) {
+		this.inchargeDistrictComplaincePer = inchargeDistrictComplaincePer;
 	}
-	
-	public Double getInchargeConstituencyTrDaysPer() {
-		return inchargeConstituencyTrDaysPer;
+	public Double getInchargeConstituencyComplaincePer() {
+		return inchargeConstituencyComplaincePer;
 	}
-	public void setInchargeConstituencyTrDaysPer(
-			Double inchargeConstituencyTrDaysPer) {
-		this.inchargeConstituencyTrDaysPer = inchargeConstituencyTrDaysPer;
+	public void setInchargeConstituencyComplaincePer(
+			Double inchargeConstituencyComplaincePer) {
+		this.inchargeConstituencyComplaincePer = inchargeConstituencyComplaincePer;
 	}
-
-	public Double getOwnConDistTrDaysPer() {
-		return ownConDistTrDaysPer;
+	public Double getOwnConDistComplaincePer() {
+		return ownConDistComplaincePer;
 	}
-	public void setOwnConDistTrDaysPer(Double ownConDistTrDaysPer) {
-		this.ownConDistTrDaysPer = ownConDistTrDaysPer;
+	public void setOwnConDistComplaincePer(Double ownConDistComplaincePer) {
+		this.ownConDistComplaincePer = ownConDistComplaincePer;
 	}
-	public Long getGovtWorkCnt() {
-		return govtWorkCnt;
+	public Long getGovtWorkTrDays() {
+		return govtWorkTrDays;
 	}
-	public void setGovtWorkCnt(Long govtWorkCnt) {
-		this.govtWorkCnt = govtWorkCnt;
+	public void setGovtWorkTrDays(Long govtWorkTrDays) {
+		this.govtWorkTrDays = govtWorkTrDays;
 	}
-	public Double getGovtWorkCntPer() {
-		return govtWorkCntPer;
+	public Long getGovtWorkComplainceDays() {
+		return govtWorkComplainceDays;
 	}
-	public void setGovtWorkCntPer(Double govtWorkCntPer) {
-		this.govtWorkCntPer = govtWorkCntPer;
+	public void setGovtWorkComplainceDays(Long govtWorkComplainceDays) {
+		this.govtWorkComplainceDays = govtWorkComplainceDays;
 	}
-	public Long getGovtWorkTargetDays() {
-		return govtWorkTargetDays;
+	public Double getGovtWorkComplaincePer() {
+		return govtWorkComplaincePer;
 	}
-	public void setGovtWorkTargetDays(Long govtWorkTargetDays) {
-		this.govtWorkTargetDays = govtWorkTargetDays;
+	public void setGovtWorkComplaincePer(Double govtWorkComplaincePer) {
+		this.govtWorkComplaincePer = govtWorkComplaincePer;
 	}
+    
 }
