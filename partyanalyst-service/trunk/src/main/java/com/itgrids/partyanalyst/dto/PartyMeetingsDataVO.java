@@ -48,6 +48,9 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Long nonInviteeCount=0L;
 	private Double nonInviteePerc = 0.0d;
 	
+	private Long allSessionNonInviteeAttendedCnt=0l;
+	private Double allSessionNonInviteeAttendedPer=0.0d;
+	
 	public Long getNonInviteeCount() {
 		return nonInviteeCount;
 	}
@@ -258,5 +261,19 @@ public class PartyMeetingsDataVO implements Serializable{
 	public void setAllSessionAbsentCntper(Double allSessionAbsentCntper) {
 		this.allSessionAbsentCntper = allSessionAbsentCntper;
 	}
-       
+	public Long getAllSessionNonInviteeAttendedCnt() {
+		return allSessionNonInviteeAttendedCnt;
+	}
+	public void setAllSessionNonInviteeAttendedCnt(
+			Long allSessionNonInviteeAttendedCnt) {
+		this.allSessionNonInviteeAttendedCnt = allSessionNonInviteeAttendedCnt;
+	}
+	public Double getAllSessionNonInviteeAttendedPer() {
+		return allSessionNonInviteeAttendedPer;
+	}
+	public void setAllSessionNonInviteeAttendedPer(
+			Double allSessionNonInviteeAttendedPer) {
+		this.allSessionNonInviteeAttendedPer = allSessionNonInviteeAttendedPer;
+	}
+         
 }
