@@ -1634,12 +1634,15 @@ $(document).on("click",".searchChkboxClsR",function(){
 		/*setTimeout(function(){
 			     sendOtpToMble();
 		}, 1500);*/
-
+	var relatVtrId = $(this).attr("attr_relative_voter");
+	$("#hiddenReltVtrId").val(relatVtrId);
+	alert(relatVtrId);	
 });
 
 //7777
 function renwalOtpDetails()
 {	
+ var relaVtrId = $("#hiddenReltVtrId").val();
 
 $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
 		   $("#otpStusErrImgId").show();
@@ -1647,11 +1650,21 @@ $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Success
 		 $("#otpMsgDivId").html('');
 		   setTimeout(function(){
 			   $("#memChckBoxModalId").modal('hide');
-			   $(".nandhiniCls1 ").removeClass("hide");
-				$(".nandhiniCls1 ").addClass("animated fadeIn");
-			   $(".selectMembership ").addClass('hide');
-			   $(".nandhiniCls1").removeClass("animated fadeOut");
-			   // renMemberDetails();
+			  // $(".nandhiniCls1 ").removeClass("hide");
+				//$(".nandhiniCls1 ").addClass("animated fadeIn");
+			 //  $(".selectMembership ").addClass('hide');
+			  // $(".nandhiniCls1").removeClass("animated fadeOut");
+			  if(relaVtrId != null && relaVtrId != 0){
+				//alert(1);
+				$(".nandhiniCls1").removeClass("hide");
+				$(".nandhiniCls1").addClass("animated fadeIn");
+				$(".selectMembership").addClass('hide');
+				$(".profileDetailsBlock").addClass("hide");
+				$(".nandhiniCls1").removeClass("animated fadeOut");
+			}else{
+				renMemberDetails();
+			}
+			    
 				$("#otpStusErrImgId").hide();
 			   }, 1500);
 	
