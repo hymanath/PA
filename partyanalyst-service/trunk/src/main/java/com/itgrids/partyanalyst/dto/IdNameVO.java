@@ -71,6 +71,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<String> sessionList;
 	
 	private String isInvitee;
+	private List<String> attendedTimeList;
+	private List<String> attendedDateList;
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
 		return o2.getOrderId().compareTo(o1.getOrderId());
@@ -529,5 +531,20 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setDistId(Long distId) {
 		this.distId = distId;
 	}
-	
+
+	public List<String> getAttendedTimeList() {
+		return attendedTimeList;
+	}
+
+	public void setAttendedTimeList(List<String> attendedTimeList) {
+		this.attendedTimeList = attendedTimeList;
+	}
+
+	public List<String> getAttendedDateList() {
+		return attendedDateList;
+	}
+
+	public void setAttendedDateList(List<String> attendedDateList) {
+		this.attendedDateList = attendedDateList;
+	}
 }
