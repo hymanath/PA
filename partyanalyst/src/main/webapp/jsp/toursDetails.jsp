@@ -85,9 +85,9 @@
 							</div>
 						
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-								<!--<h4 class="panel-title text-capital" style="display:none" id="selectrofileId" >selected profile</h4>-->
-								<div class="pad_15 ">
-									<ul class="list-inline profileUl">
+								<!--<h4 class="panel-title text-capital" style="display:none" id="selectProfileId" >selected profile</h4>-->
+								
+									<ul class="list-inline ">
 										<li>
 											<!--<div class="pad_10">
 												<img src="Assests/img/profile.png" style="height: 30px;width: 30px;"/>
@@ -109,7 +109,7 @@
 											</div>-->
 										</li>
 									</ul>
-								</div>
+								
 
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -191,6 +191,8 @@
 <script src="Assets/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/Tours/toursDetails.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
  <!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
