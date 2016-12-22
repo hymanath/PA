@@ -16,6 +16,8 @@ public class MeetingDtlsVO implements Serializable {
 	private String phone;
 	private Long allSession;
 	private List<String> sessionList;
+	private Long meetingId;
+	private Long sessionId;
 	public Long getLocationId() {
 		return locationId;
 	}
@@ -82,4 +84,17 @@ public class MeetingDtlsVO implements Serializable {
 	public void setSessionList(List<String> sessionList) {
 		this.sessionList = sessionList;
 	}
+	public Long getMeetingId() {
+		return meetingId;
+	}
+	public void setMeetingId(Long meetingId) {
+		this.meetingId = meetingId;
+	}
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+	
 }

@@ -14,8 +14,6 @@ public class PartyMeetingsInputVO implements Serializable{
 	private Date        endDate;
 	private Long 		distId;
 	private Long partyMeetingId;
-	
-	
 	public Long getPartyMeetingMainTypeId() {
 		return partyMeetingMainTypeId;
 	}
