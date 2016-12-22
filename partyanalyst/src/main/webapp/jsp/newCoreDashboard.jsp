@@ -3381,6 +3381,21 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
+<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:9999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Tour Document</h4>  
+			</div>
+			<div class="modal-body" id="tourNewDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div><!--  /.modal -->
 <div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog">
  <div class="modal-dialog modal-lg" role="document">   
     <div class="modal-content">
@@ -3442,6 +3457,27 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 <!--end-->
+<!-- Tour Document Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="tourDocumentDivModalId">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="tourDcHeadingId"></h4>  
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="tourDocumentDivId"></div>
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div class="modal fade" id="myModalShowNew">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">

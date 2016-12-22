@@ -3,8 +3,8 @@ var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
 var customEndDateTours = moment().format('DD/MM/YYYY');
 	$("#tourDateRangePickerId").daterangepicker({
 		opens: 'left',
-	     startDate: moment().startOf('month'),
-         endDate:moment,  
+	     startDate: moment().subtract(1, 'month').startOf('month'),
+         endDate:moment().subtract(1, 'month').endOf('month'),  
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -32,7 +32,7 @@ var customEndDateTours = moment().format('DD/MM/YYYY');
 			globalTourFormDate = datesArr[0]; 
 			glovalTourToDate = datesArr[1]; 
 		}
-     $("#toursHeadingId").html("This Month( "+dates+" )");
+     $("#toursHeadingId").html("Last Month( "+dates+" )");
      $('#tourDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   var dates= $("#tourDateRangePickerId").val();
 	   $("#toursHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
@@ -1239,9 +1239,9 @@ function getToursBasicOverviewCountDetails()
 		tableToExcel(tourSubmittedDtlsDataTblid, 'Tours Submitted Details Report');
 	}
 	$(document).on('click','.tourDocCls',function(){
-		$("#cdrModelDivId").modal("show");
-		$("#tourDocHeadingId").html("Leaders Submitted Documents");
-		$("#cdrModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#tourDocumentDivModalId").modal("show");
+		$("#tourDcHeadingId").html("Leaders Submitted Documents");
+		$("#tourDocumentDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		var desigId = $(this).attr("attr_desig_id");
 		
 		var desigIds =desigId.split(",");
@@ -1263,7 +1263,7 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
 		}).done(function(result){
-			$("#cdrModelId").html('');     
+			$("#tourDocumentDivId").html('');     
 			if(result != null && result.length > 0){ 
 				buildDocumentDtls(result);
 			}        
@@ -1343,44 +1343,51 @@ function getToursBasicOverviewCountDetails()
 		 str+='</tbody>';
 		 str+='</table>';
 		str+='</div>';
-		$("#cdrModelId").html(str);    
+		$("#tourDocumentDivId").html(str);    
 		$("#tourDocumentTblid").dataTable({
 			"aaSorting": [[ 1, "desc" ]], 
 			"iDisplayLength" : 10,
 			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 		}); 
 	}
+	 $(document).on("click",".closeShowPdfCls",function(){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 500);                     
+	}); 
+	
 	$(document).on('click','#showPdfId',function(){
+		//$("#cdrModelId").modal("show");
 		var dbFilePath = $(this).attr("attr_filePath");         
 		var str = ''; 
 		var fileNameArr = dbFilePath.split(".");
 		var extName = fileNameArr[1];
 		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
-			$("#tourDocumentId").modal("hide");
+			$("#tourNewDocumentId").modal("hide");
 			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}else{
 			
 			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
-				$("#tourDocumentId").modal("show");
+				$("#tourNewDocumentId").modal("show");
 				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
 				str += '</iframe>';
 			}
 			if(extName.trim()=="jpg"){  
-				$("#tourDocumentId").modal("show");
+				$("#tourNewDocumentId").modal("show");
 				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
 				str += '</iframe>';
 			}              
 			if(extName.trim()=="doc" || extName.trim()=="docx"){
-				$("#tourDocumentId").modal("show");
+				$("#tourNewDocumentId").modal("show");
 				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
 				str += '</iframe>';
 			}
 			if(extName.trim()=="xls" || extName.trim()=="xlsx"){      
 				window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			}            
-			$("#tourDocumentBodyId").html(str);
+			$("#tourNewDocumentBodyId").html(str);
 			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
