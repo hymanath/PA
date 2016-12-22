@@ -56,7 +56,7 @@ $(document).on("click",".tourExpand",function(){
 		$(".toursHiddenBlock").toggle();      
 	},800);
 });
-$(document).on("click",".tourExpand",function(){
+/* $(document).on("click",".tourExpand",function(){
 	if( $(this).find("i").hasClass( "glyphicon glyphicon-fullscreen" )){
 		$(".moreToursBlocks1").hide();     
 		$(".tourExpandCls").hide();     
@@ -64,7 +64,7 @@ $(document).on("click",".tourExpand",function(){
 		$(".comparisonBlockTours").hide();  
 		$(".hideShowToursDateRangeCls").hide();	
 	}    
-});
+}); */
 $(document).on("click",".moreToursBlocksIcon",function(){
 	$(".moreToursBlocks1,.moreToursBlocksDetailed").toggle(); 
 	   getDistrictWiseToursSubmitedDetails();		
@@ -1914,11 +1914,121 @@ function getToursBasicOverviewCountDetails()
 				str1+='<div class="panel panel-default panelNew">';
 					str1+='<div class="panel-heading">';
 						str1+='<div class="row">';
-							str1+='<div class="col-md-8 col-xs-7 col-sm-7">';
+							str1+='<div class="col-md-5 col-xs-12 col-sm-6">';
 								str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
 							str1+='</div>';
+							str1+='<div class="col-md-7 col-xs-12 col-sm-6">';
+								str1+='<ul class="list-inline pull-right activeUlCls">';
+                            	str1+='<li class="active " style="margin-right: 20px;">COMPLAINCE</li>';
+                                str1+='<li class="" style="margin-right: 20px;">NON-COMPLAINCE</li>';
+								str1+='<li class="showHideFiltersToursSec" attr_id="'+result[i].id+'">Show/Hide Filters</li>';
+                            str1+='</ul>';
+							str1+='</div>';
 						str1+='</div>';
-						
+						 str1+='<div class="toursSessionDropDownCls" id="toursSessionDropDown'+result[i].id+'" style="right:13px;top:30px;display:none;z-index:999">';  
+										str1+='<i class="glyphicon glyphicon-remove pull-right toursBlockCloseCls" attr_id="'+result[i].id+'" style="cursor:pointer;"></i>';
+											str1+='<div role="tabpanel" class="tab-pane" id="">';
+												//str1+='<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>';
+												//str1+='<hr style ="margin-bottom:0px;" />';
+												str1+='<div class="checkbox">';
+												  str1+='<label>';
+													str1+='<input type="checkbox" value="">';
+													str1+='COMPLAINCE';
+												  str1+='</label>';
+												str1+='</div>';
+												str1+='<hr style ="margin-bottom:0px;" />';
+												str1+='<div class="row">';
+													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+														str1+='<p>Own Constituencie/District</p>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='Yes';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='No';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
+															str1+='<input id="ownDisConsSlider'+i+'" data-slider-id="ownDisConsSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+													str1+='</div>';
+												str1+='</div>';
+												str1+='<hr style ="margin-bottom:0px;" />';
+												str1+='<div class="row">';
+													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+														str1+='<p>Incharge District</p>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='Yes';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='No';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
+															str1+='<input id="DisSlider'+i+'" data-slider-id="DisSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+													str1+='</div>';
+												str1+='</div>';
+												str1+='<hr style ="margin-bottom:0px;" />';
+												str1+='<div class="row">';
+													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+														str1+='<p>Govt Works</p>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='Yes';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+														str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='No';
+														  str1+='</label>';
+														str1+='</div>';
+													str1+='</div>';
+													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
+															str1+='<input id="govtSlider'+i+'" data-slider-id="govtSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+													str1+='</div>';
+												str1+='</div>';
+												str1+='<hr style ="margin-bottom:0px;" />';
+												str1+='<div class="row">';
+												str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+													str1+='<div class="checkbox">';
+														  str1+='<label>';
+															str1+='<input type="checkbox" value="">';
+															str1+='COMPLAINCE';
+														  str1+='</label>';
+														str1+='</div>';
+												str1+='</div>';
+												str1+='<div class="col-md-9 col-xs-12 col-sm-3">';
+													str1+='<input id="mainSlider'+i+'" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+												str1+='</div>';
+												str1+='</div>';
+												
+											str1+='<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button>'; 
+										   str1+='</div>';
+									   str1+='</div>';
 					str1+='</div>';
 					str1+='<div class="panel-body">';
 						str1+='<div class="row">';
@@ -1936,11 +2046,11 @@ function getToursBasicOverviewCountDetails()
 				var str='';
 				var length = result
 				str+='<div class="table-responsive">'
-					str+='<table class="table table-bordered">';
+					str+='<table class="table table-bordered" >';
 					str+='<thead>';
 						str+='<tr>';
 			
-								str+='<th rowspan="4">Leaders Name</th>';
+								
 								
 								var maxLengthForSpan = 0;
 								if(result[i].subList3 != null && result[i].subList3.length > 0){
@@ -1949,24 +2059,29 @@ function getToursBasicOverviewCountDetails()
 											maxLengthForSpan = result[i].subList3[j].subList3.length;
 									}
 								}
+								if(maxLengthForSpan >=3){
+									str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
+								}else{
+									str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
+								}
 								
-								str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1">Complains</th>';
+								str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
 								
 								for(var k in result[i].subList3[0].subList3){
-									str+='<th colspan="2" rowspan="1">'+result[i].subList3[0].subList3[k].name+'</th>';
+									str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
 								}
 							
 							str+='</tr>';
 							str+='<tr>';
 								
-								str+='<th >over all</th>';
+								str+='<td >over all</td>';
 										for(var k in result[i].subList3[0].subList3){
-											str+='<th>'+result[i].subList3[0].subList3[k].name+'</th>';
+											str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
 											
 										}
 								for(var k in result[i].subList3[0].subList3){
-								str+='<th >Target</th>';
-								str+='<th >Toured</th>';
+								str+='<td >Target</td>';
+								str+='<td >Toured</td>';
 								}
 											
 								 
@@ -1974,9 +2089,10 @@ function getToursBasicOverviewCountDetails()
 							str+='<tr>';
 								str+='</thead>';
 								str+='<tbody>';
+								//str+='<td></td>';
 										for(var j in result[i].subList3){
 											str+='<tr>';
-												str+='<td>'+result[i].subList3[j].name+'</td>';
+												str+='<td >'+result[i].subList3[j].name+'</td>';
 												str+='<td>'+result[i].subList3[j].complaincePer+'</td>';	
 											for(var k in result[i].subList3[j].subList3){
 												
@@ -1994,7 +2110,38 @@ function getToursBasicOverviewCountDetails()
 					str+='</table>';
 				str+='</div>';
 				$("#toursPerformanceBlocks"+i).html(str);
-				
+					var stateSliderval;
+					var slider = new Slider('#ownDisConsSlider'+i+'', {
+				   formatter: function(value) {
+					   stateSliderval=value;
+					  // $("#stateSliderValue").text(value);
+					 return 'Current value: ' + value;
+				   }
+				});
+				var districtSliderVal;
+				var slider = new Slider('#DisSlider'+i+'', {
+				   formatter: function(value) {
+					  // $("#districtSliderValue").text(value);
+					   districtSliderVal=value;
+					 return 'Current value: ' + value;
+				   }
+				});
+				var constituencySliderVa1;
+					var slider = new Slider('#govtSlider'+i+'', {
+				   formatter: function(value) {
+					  // $("#constituencySliderValue").text(value);
+					   constituencySliderVa1=value;
+					 return 'Current value: ' + value;
+				   }
+				});
+				var mainSliderVa1;
+					var slider = new Slider('#mainSlider'+i+'', {
+				   formatter: function(value) {
+					  // $("#constituencySliderValue").text(value);
+					   mainSliderVa1=value;
+					 return 'Current value: ' + value;
+				   }
+				});
 			}
 			
 			
@@ -2071,3 +2218,16 @@ function getToursBasicOverviewCountDetails()
 		//$(".moreNewToursBlocksDetailed").toggle(); 
 		getDesignationWiseAverageTourPerformanceDtls();	
 	});
+
+	$(document).on("click",".showHideFiltersToursSec",function(){
+		var dropBlockId = $(this).attr("attr_id");
+		$("#toursSessionDropDown"+dropBlockId).toggle(); 
+		
+   });
+   $(document).on("click",".toursBlockCloseCls",function(){
+	var dropBlockId = $(this).attr("attr_id");
+	$("#toursSessionDropDown"+dropBlockId).toggle(); 
+	
+   });
+   
+   

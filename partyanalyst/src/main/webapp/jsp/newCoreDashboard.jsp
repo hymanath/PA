@@ -17,6 +17,7 @@
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel
 {
@@ -3548,6 +3549,7 @@
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
+<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).on('click','#alertSettingsId',function(){
 		$(".specialAlertDropDown").toggle();            
