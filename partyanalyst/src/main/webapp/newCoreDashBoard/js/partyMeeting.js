@@ -4482,9 +4482,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			
 			locationNameArray.push(result[i].locationName);
 			//invitieCountArray.push(result[i].invitieCount);
-			attendedCountArray.push(result[i].attendedCount);
+			attendedCountArray.push({"y":result[i].attendedCount,"id":result[i].locationId,"meetingId":result[i].meetingId,"sessionId":result[i].sessionId});
 			inviteAbsentCountArray.push(result[i].inviteAbsentCount);
-		}					
+		}	     				
 		
 						$(function () {
 							$('#districtWiseGraphSpecialMee').highcharts({
@@ -4557,7 +4557,20 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 											}
 										  
 										}
+									},
+									series: {
+										cursor: 'pointer',
+										point: {
+										events: {
+										click: function () {
+											var locationId = this.id;
+											var meetingId = this.meetingId;
+											var sessionId = this.sessionId;
+											getDistDtls(locationId,meetingId,sessionId);
+										}  
 									}
+								}
+							}
 								},
 								series: [{
 									name: 'Attended',
@@ -4641,7 +4654,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			 partyMeetingTypeIds:partyMeetingTypeArr,
 			 partyMeetingId:partyMeetingId,
 			 sessionId : sessionId,
-			 status : status
+			 status : status,
+			 districtId : 0  
 		}
 		$.ajax({
 			type : 'POST',
@@ -4697,13 +4711,13 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								if(result[i].status != null && result[i].status.length > 0){
 									str+='<td>'+result[i].status+'</td>';
 								}else{
-									str+='<td>-</td>';
+									str+='<td>-</td>';   
 								}
 								
 								if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
 									str+='<td>'+result[i].mobileNo+'</td>';
 								}else{
-									str+='<td>-</td>';
+									str+='<td>-</td>';  
 								}
 								if(result[i].isInvitee == "true"){
 									str+='<td>Invitee</td>'; 
@@ -4758,14 +4772,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 									}
 									for(var j in result[i].sessionList){
 										if(result[i].sessionList[j] == "intime"){
-											str+='<td class="text-success">Y</td>';
+											str+='<td class="text-success">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
 										}else if(result[i].sessionList[j] == "late"){
-											str+='<td class="text-danger">Y</td>';
-										}else if(result[i].sessionList[j] == "absent"){
+											str+='<td class="text-danger">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
+										}else if(result[i].sessionList[j] == "absent"){  
 											str+='<td>N</td>';  
-										}else{
-											str+='<td>'+result[i].sessionList[j]+'</td>';           
-										}
+										}else{  
+											str+='<td>'+result[i].sessionList[j]+'</td>';                
+										} 
 									}
 								str+='</tr>';
 						}
@@ -4784,6 +4798,122 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			$("#cmtMemberDtlsTableId").dataTable();
 		}
 	   
+	}
+	
+	function getDistDtls(locationId,partyMeetingId,sessionId){
+		$("#meetingMemDetailsId").modal("show");     
+		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
+		var partyMeetingTypeArr=[];	
+		$("#specialMeetingUlId li").each(function() {
+			if($(this).find("input").is(":checked")){
+				partyMeetingTypeArr.push($(this).find("input").attr("id"));
+			}
+		}); 
+		var state = globalState;  
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+			 partyMeetingMainTypeId : 3,
+			 state : state,
+			 startDateString : fromDateStr,
+			 endDateString : toDateStr,
+			 partyMeetingTypeIds:partyMeetingTypeArr,
+			 partyMeetingId:partyMeetingId,
+			 sessionId : sessionId,
+			 status : "",
+			 districtId : locationId  
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getMeetingMemberDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){  
+			$("#meetingMemDetailsBodyId").html('');
+			if(result != null && result.length > 0){
+				buildDistDtls(result);
+			}else{              
+			           
+			}  
+		});
+	}
+	function buildDistDtls(result){  
+		var str = '';
+		str+='<div class="row m_top10">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table border_top_apply" id="cmtMemberDtlsTableId">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>District Name</th>';
+						str+='<th>Leader Name</th>';
+						str+='<th>Designation</th>';
+						str+='<th>Contact Number</th>';
+						str+='<th>Invitation Status</th>';  
+						str+='<th>All Sessions</th>';
+						str+='<th>Morning Session</th>';
+						str+='<th>Afternoon Session</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						if(result[i].districtName != null && result[i].districtName.length > 0){
+							str+='<td>'+result[i].districtName+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+								
+						if(result[i].name != null && result[i].name.length > 0){
+							str+='<td>'+result[i].name+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+								
+						if(result[i].status != null && result[i].status.length > 0){
+							str+='<td>'+result[i].status+'</td>';
+						}else{
+							str+='<td>-</td>';   
+						}
+								
+						if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
+							str+='<td>'+result[i].mobileNo+'</td>';
+						}else{
+							str+='<td>-</td>';  
+						}
+						if(result[i].isInvitee == "true"){
+							str+='<td>Invitee</td>'; 
+						}else{
+							str+='<td class="text-danger">Non Invitee</td>';   
+						}
+								
+						for(var j in result[i].sessionList){
+							if(result[i].sessionList[j] == "intime"){
+								str+='<td class="text-success">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
+							}else if(result[i].sessionList[j] == "late"){
+								str+='<td class="text-danger">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
+							}else if(result[i].sessionList[j] == "absent"){  
+								str+='<td>N</td>';  
+							}else{  
+								str+='<td>'+result[i].sessionList[j]+'</td>';               
+							}  
+						}
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		$("#meetingMemDetailsBodyId").html(str);
+		$("#cmtMemberDtlsTableId").dataTable(); 
+				
 	}
 	
   
