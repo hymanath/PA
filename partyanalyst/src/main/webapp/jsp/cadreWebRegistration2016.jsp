@@ -524,6 +524,7 @@ textarea {
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
 									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
 									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
+									<input type="hidden" class="form-control" id="hiddenNewVoterId" name="cadreRegistrationVO.newVoterId"/>
                                 </div >
 								<div class="col-md-6 col-xs-12 col-sm-6" style="diplay:none;" id="membrShipDivId">
 									<label>Existing Membership Number</label>
@@ -1435,6 +1436,7 @@ textarea {
 <input type="hidden" id="hiddenMblNo"/>
 <input type="hidden"  id="hiddenCadreIdFrRewl"/>
 <input type="hidden" id="hiddenMemberShipNumber"/> 
+<input type="hidden" id="hiddenReltVtrId"/>
 
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
