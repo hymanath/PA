@@ -2536,51 +2536,59 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  }
 		  
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+			  
 			  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
+				  
 				  if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+					  
 					  for(Entry<Long,ToursBasicVO> entry:designationEntry.getValue().entrySet()){
+						  
 						  ToursBasicVO candiateVO = entry.getValue();
 						 		if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
-						 			ToursBasicVO overAllVO = new ToursBasicVO();
-						 			overAllVO.setId(0l);
-						 			overAllVO.setName("OverAll");
+						 		   Long overAllTargetDays = 0l;
+						 		   Long overAllComplaincDays = 0l;
 						 	 		for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
-						 	 			overAllVO.setTargetDays(overAllVO.getTargetDays()+categoryVO.getTargetDays());
-						 	 			overAllVO.setComplainceDays(overAllVO.getComplainceDays()+categoryVO.getComplainceDays());
+						 	 			overAllTargetDays = overAllTargetDays+categoryVO.getTargetDays();
+						 	 			overAllComplaincDays = overAllComplaincDays+categoryVO.getComplainceDays();
 						 	 			Long categoryId = categoryVO.getId();
 						 	 			if(categoryId == 1l){//Incharge District
-						 	 				candiateVO.setInchargeDistrictTargetCnt(categoryVO.getTargetDays());
-						 	 				candiateVO.setInchargeDistrictTrDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setInchargeDistrictTrDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setInchargeDistrictComplainceDays(categoryVO.getComplainceDays());
 						 	 			}else if(categoryId == 3l){//Incharge Constituency
-						 	 				candiateVO.setInchargeConstituencyTargetCnt(categoryVO.getTargetDays());
-						 	 				candiateVO.setInchargeConstituencyTrDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
 						 	 			}else if(categoryId == 01l){//ownDistrictConstituency
-						 	 				candiateVO.setOwnConDistTargetCnt(categoryVO.getTargetDays());
-						 	 				candiateVO.setOwnConDistTrDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setOwnConDistTrDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setOwnConDistComplainceDays(categoryVO.getComplainceDays());
 						 	 			}else if(categoryId == 2l){//govtWork
-						 	 				candiateVO.setGovtWorkCnt(categoryVO.getTargetDays());
-						 	 				candiateVO.setGovtWorkTargetDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
 						 	 			}
 							 		}
-						 	 		if(candiateVO.getSubList3() != null ){
-						 	 			candiateVO.getSubList3().add(0, overAllVO);	
-						 	 		}
-						 	 		candiateVO.setTargetDays(overAllVO.getTargetDays());
-							 		candiateVO.setComplainceDays(overAllVO.getComplainceDays());
+						 	 	
+						 	 		candiateVO.setTargetDays(overAllTargetDays);
+							 		candiateVO.setComplainceDays(overAllComplaincDays);
 						 		}
 						  }
 					  }
 				  }
 			  }
+		  
 		  //calculating percentage
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+			  
 			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+				  
 				  if(entry.getValue() != null && entry.getValue().size() > 0){
+					  
 					  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+						  
 						  candiateEntry.getValue().setComplaincePer(calculatePercantage(candiateEntry.getValue().getComplainceDays(),candiateEntry.getValue().getTargetDays()));
-						  candiateEntry.getValue().setInchargeDistrictTrDaystPer(calculatePercantage(candiateEntry.getValue().getInchargeDistrictTrDays(),candiateEntry.getValue().getInchargeDistrictTargetCnt()));
-						  candiateEntry.getValue().setInchargeConstituencyTrDaysPer(calculatePercantage(candiateEntry.getValue().getInchargeConstituencyTrDays(),candiateEntry.getValue().getInchargeConstituencyTargetCnt()));
-						  candiateEntry.getValue().setOwnConDistTrDaysPer(calculatePercantage(candiateEntry.getValue().getOwnConDistTrDays(),candiateEntry.getValue().getOwnConDistTargetCnt()));
+						  candiateEntry.getValue().setInchargeDistrictComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeDistrictComplainceDays(),candiateEntry.getValue().getInchargeDistrictTrDays()));
+						  candiateEntry.getValue().setInchargeConstituencyComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeConstituencyComplainceDays(),candiateEntry.getValue().getInchargeConstituencyTrDays()));
+						  candiateEntry.getValue().setOwnConDistComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnConDistComplainceDays(),candiateEntry.getValue().getOwnConDistComplainceDays()));
+						  candiateEntry.getValue().setGovtWorkComplaincePer(calculatePercantage(candiateEntry.getValue().getGovtWorkComplainceDays(),candiateEntry.getValue().getGovtWorkTrDays()));
+						  
 						  if(candiateEntry.getValue().getSubList3() != null && candiateEntry.getValue().getSubList3().size() > 0){
 							  for(ToursBasicVO categoryVO:candiateEntry.getValue().getSubList3()){
 								  categoryVO.setComplaincePer(calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays()));  
