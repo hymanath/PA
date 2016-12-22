@@ -85,6 +85,11 @@ public class ToursService implements IToursService {
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+    
+	public void setSelfAppraisalTourCategoryDAO(
+			ISelfAppraisalTourCategoryDAO selfAppraisalTourCategoryDAO) {
+		this.selfAppraisalTourCategoryDAO = selfAppraisalTourCategoryDAO;
+	}
 	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
 		LOG.info("Entered into saveTourDtls() of ToursService{}");
 		ResultStatus resultStatus = new ResultStatus();
