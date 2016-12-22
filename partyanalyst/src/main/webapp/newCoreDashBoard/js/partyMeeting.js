@@ -4028,12 +4028,13 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			  if(j == 0){
 			    attendedArr.push({name:'All Sessions',data:[sessionList[j].allSessionAttendedCnt],color:color1});	  
 			    lateAttendedArr.push({name:'All Sessions',data:[sessionList[j].allSessionLateAttendedCnt],color:color1});	  
-			    absentArr.push({name:'All Sessions',data:[sessionList[j].allSessionAbsentCnt],color:color1});	  
+			    absentArr.push({name:'All Sessions',data:[sessionList[j].allSessionAbsentCnt],color:color1});	
+			    sessionWiseArr.push({name:'All Sessions',data:[parseInt(sessionList[j].allSessionNonInviteeAttendedCnt)-parseInt(sessionList[j].allSessionAttendedCnt)],color:color1});				
 			  }
 			    attendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].invitteeAttendedCount],color:color});	  
 			    lateAttendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].lateAttendedCnt],color:color});	  
 			    absentArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].notAttendedCount],color:color});
-				sessionWiseArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].attendedCount],color:color})	
+				sessionWiseArr.push({name:''+sessionList[j].name+'',data:[parseInt(sessionList[j].attendedCount)-parseInt(sessionList[j].invitteeAttendedCount)],color:color});	
 			  
 		  }
 	  }
@@ -4136,7 +4137,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,	
-					categories: ['Attended']
+					categories: ['Invitees Attended']
 				},
 				yAxis: {
 					min: 0,
@@ -4209,7 +4210,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,	
-					categories: ['Late']
+					categories: ['Invitees Late']
 				},
 				yAxis: {
 					min: 0,
@@ -4283,7 +4284,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,	
-					categories: ['Absent']
+					categories: ['Invitees Absent']
 				},
 				yAxis: {
 					min: 0,
@@ -4356,7 +4357,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,	
-					categories: ['Attended']
+					categories: ['Non Invitees Attended']
 				},
 				yAxis: {
 					min: 0,
