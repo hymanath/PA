@@ -4705,16 +4705,17 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								}else{
 									str+='<td class="text-danger">Non Invitee</td>';   
 								}
+								
 								for(var j in result[i].sessionList){
 									if(result[i].sessionList[j] == "intime"){
-										str+='<td class="text-success">Y</td>';
+										str+='<td class="text-success">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
 									}else if(result[i].sessionList[j] == "late"){
-										str+='<td class="text-danger">Y</td>';
-									}else if(result[i].sessionList[j] == "absent"){
+										str+='<td class="text-danger">Y('+(result[i].attendedTimeList[parseInt(j)-1]).substring(0,5)+')</td>';
+									}else if(result[i].sessionList[j] == "absent"){  
 										str+='<td>N</td>';  
-									}else{
-										str+='<td>'+result[i].sessionList[j]+'</td>';           
-									}
+									}else{  
+										str+='<td>'+result[i].sessionList[j]+'</td>';             
+									}  
 								}
 							str+='</tr>';
 						}
