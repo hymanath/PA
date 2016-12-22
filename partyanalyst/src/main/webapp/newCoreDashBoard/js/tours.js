@@ -1587,7 +1587,7 @@ function getToursBasicOverviewCountDetails()
 	
 	
     var globalUserTypeWiseTourComplainceRslt;  
-	 //getDesignationWiseMembersDtls();
+	
 	function getDesignationWiseMembersDtls()
 	{  
  	     var globalUserTypeId = 2;
@@ -1878,7 +1878,7 @@ function getToursBasicOverviewCountDetails()
 	}
 	} 
 	
-	//getDesignationWiseAverageTourPerformanceDtls();
+	
 	function getDesignationWiseAverageTourPerformanceDtls()
 	{     var globalUserTypeId = 2;
 		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1901,7 +1901,173 @@ function getToursBasicOverviewCountDetails()
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			console.log(result);
+			buildDesignationWiseAverageTourPerformanceDtls(result);
 		});
 	}
 	
-	
+	function buildDesignationWiseAverageTourPerformanceDtls(result){
+		
+		if(result != null && result.length > 0){
+			var str1='';
+		  for(var i in result){
+			str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str1+='<div class="panel panel-default panelNew">';
+					str1+='<div class="panel-heading">';
+						str1+='<div class="row">';
+							str1+='<div class="col-md-8 col-xs-7 col-sm-7">';
+								str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
+							str1+='</div>';
+						str1+='</div>';
+						
+					str1+='</div>';
+					str1+='<div class="panel-body">';
+						str1+='<div class="row">';
+							str1+='<div id="toursPerformanceBlocks'+i+'"></div>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';
+		  }
+		  $("#toursPerformanceDivId").html(str1);
+		}
+		
+		if(result != null && result.length > 0){
+			for(var i in result){
+				var str='';
+				var length = result
+				str+='<div class="table-responsive">'
+					str+='<table class="table table-bordered">';
+					str+='<thead>';
+						str+='<tr>';
+			
+								str+='<th rowspan="4">Leaders Name</th>';
+								
+								var maxLengthForSpan = 0;
+								if(result[i].subList3 != null && result[i].subList3.length > 0){
+									for(var j in result[i].subList3){
+										if(result[i].subList3[j].subList3 != null && result[i].subList3[j].subList3.length > 0)
+											maxLengthForSpan = result[i].subList3[j].subList3.length;
+									}
+								}
+								
+								str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1">Complains</th>';
+								
+								for(var k in result[i].subList3[0].subList3){
+									str+='<th colspan="2" rowspan="1">'+result[i].subList3[0].subList3[k].name+'</th>';
+								}
+							
+							str+='</tr>';
+							str+='<tr>';
+								
+								str+='<th >over all</th>';
+										for(var k in result[i].subList3[0].subList3){
+											str+='<th>'+result[i].subList3[0].subList3[k].name+'</th>';
+											
+										}
+								for(var k in result[i].subList3[0].subList3){
+								str+='<th >Target</th>';
+								str+='<th >Toured</th>';
+								}
+											
+								 
+								
+							str+='<tr>';
+								str+='</thead>';
+								str+='<tbody>';
+										for(var j in result[i].subList3){
+											str+='<tr>';
+												str+='<td>'+result[i].subList3[j].name+'</td>';
+												str+='<td>'+result[i].subList3[j].complaincePer+'</td>';	
+											for(var k in result[i].subList3[j].subList3){
+												
+												str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'</td>';
+												str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+												str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+												
+												
+											}
+											str+='</tr>';
+										}
+									
+								str+='</tbody>';
+								
+					str+='</table>';
+				str+='</div>';
+				$("#toursPerformanceBlocks"+i).html(str);
+				
+			}
+			
+			
+			
+		}
+		
+
+		
+	}
+		
+	$(document).on("click",".NewTourExpand",function(){
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".NewToursBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".NewTourExpandCls").show();
+		
+		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			getDesignationWiseMembersDtls();
+			$(".NewToursHiddenBlock").show();			
+		}else{
+			$(".NewTourExpandCls").hide();
+			$(".moreNewToursBlocksIcon").show();
+			$(".NewToursHiddenBlock").hide();
+			$(".moreNewToursBlocksDetailed").hide(); 
+			
+		}
+		if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerCls").toggleClass("hide");
+			$(".moreBlocksIcon").removeClass("unExpandBlock");
+		}else if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForMeetings").toggleClass("hide");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
+		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForNews").toggleClass("hide");
+		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForEvents").toggleClass("hide");
+		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+			$(".dateRangePickerClsForAttendance").toggleClass('hide');
+			$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+			$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}
+	});
+	$(document).on("click",".moreNewToursBlocksIcon",function(){	
+		$(".moreNewToursBlocks,.moreNewToursBlocksDetailed").toggle(); 
+		//$(".moreNewToursBlocksDetailed").toggle(); 
+		getDesignationWiseAverageTourPerformanceDtls();	
+	});

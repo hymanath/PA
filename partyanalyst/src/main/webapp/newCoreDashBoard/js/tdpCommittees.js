@@ -1881,6 +1881,10 @@
 				$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
 				$(".dateRangePickerClsForAttendance").toggleClass('hide');
 				$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
+				$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			}
 			setTimeout(function(){
 				$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
