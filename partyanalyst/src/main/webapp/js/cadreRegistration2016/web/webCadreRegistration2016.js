@@ -186,7 +186,8 @@ var str = "";
 			$("#hiddenConstId").val(result.constituencyId);
 		 }
 		 $("#hiddenFamilyVoterId").val(familyVoterId);
-		 $("#hiddenVoterId").val(result.voterRelationId);
+		 $("#
+		 ").val(result.voterRelationId);
 		 $("#hiddenTdpCadreId").val(result.tdpCadreId);
 		 $("#tdpCadreId").val(result.tdpCadreId);
 		 if(result.tdpCadreId != null && result.imageBase64String != null){
