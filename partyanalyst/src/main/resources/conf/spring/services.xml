@@ -3874,6 +3874,11 @@
 	 <property name="constituencyDAO" ref="constituencyDAO"></property>
 	 <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	 <property name="transactionTemplate" ref="transactionTemplate"></property>
+	 
+	 <property name="tourTypeDAO" ref="tourTypeDAO"></property>
+	 <property name="selfAppraisalTourCategoryDAO" ref="selfAppraisalTourCategoryDAO"></property>
+	 
+	 
 	</bean>  
 	
 	
