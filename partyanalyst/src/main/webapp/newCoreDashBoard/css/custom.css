@@ -2027,3 +2027,14 @@ border-right:none !important;
 .highcharts-tooltip {
   z-index: 9998;
 }
+.chartLiMee {
+    height: 120px;
+    margin: auto;
+    width: 160px;
+}
+.chartLiMee1 {
+    height: 120px;
+    margin: auto;
+    width: 60px;
+}
+
