@@ -15120,7 +15120,20 @@
 		<result type="json" name="success"> 
    			<param name="root">partyMeetingDataVOList</param> 
 		</result>
-	</action>  
+	</action> 
+	
+	<action name="getAllTourTypesAction" class="toursAction" method="getAllTourTypes">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVoList</param> 
+		</result>
+	</action>
+	<action name="getAllTourCategorysAction" class="toursAction" method="getAllTourCategorys">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVoList</param> 
+		</result>
+	</action>
+	
+	 
 	<action name="getMeetingMemberDtlsAction" class="cadreRegistrationAction" method="getMeetingMemberDtls">
 		<result type="json" name="success"> 
    			<param name="root">idNameVOs</param> 

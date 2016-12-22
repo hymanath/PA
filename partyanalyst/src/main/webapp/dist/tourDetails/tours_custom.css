@@ -1,0 +1,90 @@
+*, select {
+    outline: 0 none !important;
+}
+body {
+    background: rgb(236, 240, 241);
+    color: rgb(74, 88, 99) !important;
+    font-family: "Roboto",sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+}
+h1, h2, h3, h4, h5, h6, p, ul, .table {
+    margin: 0 !important;
+}
+
+.tableTours thead th
+{
+	color:#ccc;
+	font-weight: 400;
+	text-transform: capitalize;
+	border-top:0px !important;
+	border:0px !important;
+}
+.tableTours tr:first-child td
+{
+	border-top:0px !important;
+	border:0px !important;
+}
+.tableTours tr td
+{
+	color:#777;
+	font-weight: 400;
+	text-transform: capitalize;	
+}
+.inputGCustom .form-control {
+	border-radius: 0px;
+}
+.inputGCustom .input-group-addon
+{
+	background-color: #fff;
+	border-radius: 0px;
+}
+
+.borderGreen {
+	border: 1px solid #769F48;
+}
+.panel-body.borderGreen
+{
+	position: relative;
+}
+.panel-footer.borderGreen {
+	background-color: #DEEAD6;
+}
+.closeIcon
+{
+	position: absolute;
+	background: #E3EEDC;
+	border-left: 1px solid #769F48;
+	border-bottom: 1px solid #769F48;
+	right: 00px;
+	padding: 4px;
+	cursor: pointer;
+}
+.text-capital
+{
+	text-transform: uppercase;
+}
+.m_top10 {
+	margin-top: 10px;
+}
+
+.pad_15 {
+	padding: 15px;
+}
+.pad_10
+{
+	padding: 10px;
+}
+.b_1 {
+	border:1px solid #777;
+}
+.profileUl li
+{
+	border: 1px solid #96BC78;
+	padding: 0px;
+}
+.profileUl li:hover
+{
+	box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.4);
+	transition: all 0.25s linear 0s;
+}

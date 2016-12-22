@@ -17,6 +17,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -44,7 +45,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private String successMsg;
 	   private List<List<ToursBasicVO>> listOfTourBasicVoList;
 	   private List<ToursBasicVO> listOfTourBasicVo;
+	   
+	   private List<IdNameVO> idNameVoList;
 	
+	   
+	   public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	   }
+	   public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+			this.idNameVoList = idNameVoList;
+	   }
 	   public JSONObject getjObj() {
 		   return jObj;
 	   }
@@ -440,4 +450,25 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	public String getUpdatedToursDetails(){
 		return Action.SUCCESS;
 	}
+	
+	//Apllication Needed Services
+	
+	public String getAllTourTypes(){
+		try{
+			idNameVoList = toursService.getAllTourTypes();
+		}catch(Exception e){
+			LOG.error("Exception raised at getAllTourTypes()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAllTourCategorys(){
+		try{
+			idNameVoList = toursService.getAllTourCategorys();
+		}catch(Exception e){
+			LOG.error("Exception raised at getAllTourCategorys()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
