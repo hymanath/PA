@@ -2930,7 +2930,7 @@
 		</div>	
 	 <!--Alerts End -->
 	  <!--Tours New Start -->
-	 <!--<div class="col-md-6 col-xs-12 col-sm-12 tourNewBlock">
+	 <!--<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -2941,23 +2941,42 @@
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
-							<span class="newTourExpandIcon pull-right">
+							<span class="NewTourExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 							</span>
 						</div>     
 					</div>
 				</div>
 				<div class="panel-body">
-					<div class="row">
-					 <div id="tourOverviewNewDivId"></div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
+						<div class="row">
+							<div id="tourOverviewNewDivId"></div>
+						</div>
 					</div>
-					<div class="row">
-						<h2 class="panel-title text-capital"><b>Tour Complaince</b></h2>
-					    <div id="buildgDesignationWiseToursTopFiveComplainceDivId"></div>
+					<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10" style="display:none;" >
+						<div class="row">
+							 <h2 class="panel-title text-capital"><b>Tour Complaince</b></h2>
+							 <div id="buildgDesignationWiseToursTopFiveComplainceDivId"></div>
+						</div>
+						
 					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 NewToursHiddenBlock" style="display: none;">
+						<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewToursBlocksIcon" title="Click here for more"></i>
+					</div>	
+					<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreNewToursBlocks" style="display:none;">
+						<ul class="list-inline pull-right activeUlCls">
+							<li class="active toursNewDetailedBlock">Detailed</li>
+						</ul>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+						<div id="toursPerformanceDivId"></div>
+					</div>
+							
 				</div>
 			</div>
-	 </div> -->
+			</div>
+	 </div>--> 
 	<!--Tours New End -->
 	</div>
 </div> 
