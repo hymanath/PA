@@ -27,6 +27,8 @@ public class ToursInputVO {
 	private String fileExtension;
 	private File file;
 	private Long oldFileStatus;
+	private Long tourCategoryId;
+	private Long tourTypeId;
 	
 	private Map<File,String> files = new HashMap<File,String>();
 	public Long getCandidateId() {
@@ -161,5 +163,18 @@ public class ToursInputVO {
 	public void setOldFileStatus(Long oldFileStatus) {
 		this.oldFileStatus = oldFileStatus;  
 	}
+	public Long getTourCategoryId() {
+		return tourCategoryId;
+	}
+	public void setTourCategoryId(Long tourCategoryId) {
+		this.tourCategoryId = tourCategoryId;
+	}
+	public Long getTourTypeId() {
+		return tourTypeId;
+	}
+	public void setTourTypeId(Long tourTypeId) {
+		this.tourTypeId = tourTypeId;
+	}
+	
 	
 };
