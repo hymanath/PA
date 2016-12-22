@@ -2020,13 +2020,14 @@ border-right:none !important;
     height: 10px;
     width: 10px;
 }
-
+/*
 .highcharts-container {
   position: inherit !important;
 }
 .highcharts-tooltip {
   z-index: 9998;
 }
+*/
 .chartLiMee {
     height: 120px;
     margin: auto;
@@ -2036,5 +2037,4 @@ border-right:none !important;
     height: 120px;
     margin: auto;
     width: 60px;
-}
-
+}  
