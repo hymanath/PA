@@ -1225,7 +1225,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				  " TC.tdp_cadre_id as cadreId, " +//2
 				  " TC.first_name as name, " +//3
 				  " min(time(A.attended_time)) as time, " +//4
-				  " PMS.session_type_id as sessionId");//5
+				  " PMS.session_type_id as sessionId, " +//5
+				  " date(A.attended_time) as date ");//6  
 		sb.append(" from ");
 		sb.append(" party_meeting_attendance PMA,attendance A,");
 		sb.append(" party_meeting PM,");
@@ -1257,7 +1258,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				.addScalar("cadreId", Hibernate.LONG)
 				.addScalar("name", Hibernate.STRING)
 				.addScalar("time", Hibernate.STRING)
-				.addScalar("sessionId", Hibernate.LONG);
+				.addScalar("sessionId", Hibernate.LONG)
+				.addScalar("date", Hibernate.STRING);
 		query.setDate("fromDate",inputVO.getStartDate());
 		query.setDate("toDate",inputVO.getEndDate());
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
