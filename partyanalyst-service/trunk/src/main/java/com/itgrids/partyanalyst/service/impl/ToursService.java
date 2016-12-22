@@ -21,7 +21,10 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalTourCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITourTypeDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
@@ -47,6 +50,13 @@ public class ToursService implements IToursService {
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	private TransactionTemplate transactionTemplate;
 	
+	private ITourTypeDAO tourTypeDAO;
+	private ISelfAppraisalTourCategoryDAO selfAppraisalTourCategoryDAO;
+	
+	
+	public void setTourTypeDAO(ITourTypeDAO tourTypeDAO) {
+		this.tourTypeDAO = tourTypeDAO;
+	}
 	public void setSelfAppraisalDesignationDAO( 
 			ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO) {
 		this.selfAppraisalDesignationDAO = selfAppraisalDesignationDAO;
@@ -676,4 +686,32 @@ public class ToursService implements IToursService {
     	}
     	return null;
     }
-};
+//    
+    public List<IdNameVO> getAllTourTypes(){
+    	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+    	try{    		
+    		List<Object[]> objectList = tourTypeDAO.getAllTourTypes();
+	    		if(objectList !=null && objectList.size()>0){
+	    			for (Object[] obj : objectList) 
+		    			finalList.add(new IdNameVO(obj[0] !=null ? (Long)obj[0]:null,obj[1] !=null ? obj[1].toString():null));
+	    		}    		
+    	}catch(Exception e){
+    		LOG.error("Error Occured at getAllTourTypes() in ToursService class",e);
+    	}
+    	return finalList;
+    }
+    
+    public List<IdNameVO> getAllTourCategorys(){
+    	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+    	try{    		
+    		List<Object[]> objectList = selfAppraisalTourCategoryDAO.getAllTourCategorys();
+	    		if(objectList !=null && objectList.size()>0){
+	    			for (Object[] obj : objectList) 
+		    			finalList.add(new IdNameVO(obj[0] !=null ? (Long)obj[0]:null,obj[1] !=null ? obj[1].toString():null));
+	    		}    		
+    	}catch(Exception e){
+    		LOG.error("Error Occured at getAllTourCategorys() in ToursService class",e);
+    	}
+    	return finalList;
+    }
+}

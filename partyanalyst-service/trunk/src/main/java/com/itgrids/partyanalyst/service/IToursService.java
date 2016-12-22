@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.io.File;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
 
@@ -22,4 +23,6 @@ public interface IToursService {
 	 public ToursBasicVO getDesignationDtls(Long desigId, String startDateStr, String endDateStr);
 	 public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr);
 	 public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
+	 public List<IdNameVO> getAllTourTypes();
+	 public List<IdNameVO> getAllTourCategorys();
 }
