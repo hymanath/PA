@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Update Tour Details</title>
 <link href="Assets/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="Assets/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/tourDetails/tours_custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
+<script src="js/Tours/toursDetails.js" type="text/javascript"></script>
+
 </head>
 <body>
 	<div class="container">
