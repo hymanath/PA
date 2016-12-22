@@ -99,6 +99,7 @@
                     	                <div class="col-md-12 col-xs-12 col-sm-12">
                          	             <div class="block">
 							            <div ><center ><img style="display: none;" src="images/icons/loading.gif" id="profileProcessingImgId"></center></div>
+										<h4 class="panel-title text-capital" style="display:none" id="selectedProfileId">selected profile</h4>
                                         <div id="selectedMemberDtslDivId"></div>
                                            </div>
                                        </div>
@@ -112,7 +113,7 @@
 								
 
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivCls" >
 								<h4 class="panel-title text-capital">update tour details</h4>
 								<div class="panel panel-default">
 									<div class="panel-body borderGreen">
@@ -162,21 +163,21 @@
 									<div class="panel-footer borderGreen text-right">
 										<button class="btn btn-success">+ ADD TOUR</button>
 									</div>
-									<!--<div class="row showDivCls" id="uploadFlDivId" style="display:none;">--> 
+									<div class="row showDivCls" id="uploadFlDivId" style="display:none;">
 							      <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
 								<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
 								<span id="errFileId" style="color:red;margin-left:470px;"></span>   
 							  </div>
-						      <!--</div>-->  
-							  <!--<div class="row showDivCls" style="display:none;">-->  
+						      </div>  
+							  <div class="row showDivCls" style="display:none;"> 
 							<div class="col-md-4 col-md-offset-4">
 								<span class="updateTourStatusCls"></span>
 								<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
 								<span id="successSpanId"></span>  
 							</div>   
 							  <div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
-						<!--</div>-->  
+						</div> 
 					</form>
 								</div>
 							</div>
@@ -208,6 +209,9 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');
+});
+$( document ).ready(function() {
+    $(".showDivCls").hide();
 });     
 </script>
 </body>

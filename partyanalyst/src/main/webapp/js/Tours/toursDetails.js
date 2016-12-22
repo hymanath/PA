@@ -67,7 +67,7 @@ function getCandidateList(designationId){
 	}
 	function buildSelectedProfileRslt(result){
 		var str='';
-		  str+='<h4 class="panel-title text-capital">selected profile</h4>';
+		//str+='<h4 class="panel-title text-capital">selected profile</h4>';
 			str+='<ul class="list-inline">';
 			str+='<li>';
 				str+='<div class="panel panel-default panelProfile">';
@@ -87,7 +87,7 @@ function getCandidateList(designationId){
 			str+='</li>';
             str+='</ul>';
 		$("#selectedMemberDtslDivId").html(str);
-		
+		$("#selectedProfileId").show();
 		var locationList = result.subList;
 	     if(locationList != null && locationList.length > 0){
 			 $("#inchargeSelectBoxId").removeAttr("name");
@@ -316,4 +316,11 @@ function getCandidateList(designationId){
 			} */
 				
 	}
+	$(document).on("click","#profileCheckboxId",function(){
+		if($(this).is(':checked')){
+			$(".showDivCls").show();
+		}else{
+			$(".showDivCls").hide();
+		}
+	});
 
