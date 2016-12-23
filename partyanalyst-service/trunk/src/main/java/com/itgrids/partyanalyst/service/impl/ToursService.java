@@ -888,7 +888,7 @@ public class ToursService implements IToursService {
 								//Address Saving								
 								Long addressId = saveUserAddressDetailsOfTour(innerTourVo,selfAppraisalCandidateDayTour);								
 								
-								selfAppraisalCandidateDayTour.setUserAddressId(addressId !=null ? addressId:null);
+								selfAppraisalCandidateDayTour.setAddressId(addressId !=null ? addressId:null);
 								selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId() !=null ? innerTourVo.getTourTypeId():null);
 								selfAppraisalCandidateDayTour.setComment(innerTourVo.getComment() !=null ? innerTourVo.getComment().toString():null);
 								selfAppraisalCandidateDayTour.setIsDeleted("N");
