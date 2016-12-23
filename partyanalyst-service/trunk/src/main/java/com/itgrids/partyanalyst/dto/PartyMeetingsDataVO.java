@@ -44,6 +44,8 @@ public class PartyMeetingsDataVO implements Serializable{
 	private String startTime;
 	private String endTime;
 	private String lateTime;
+	private Long group;
+	private Long partyMeetingId;
 	
 	private Long nonInviteeCount=0L;
 	private Double nonInviteePerc = 0.0d;
@@ -275,5 +277,16 @@ public class PartyMeetingsDataVO implements Serializable{
 			Double allSessionNonInviteeAttendedPer) {
 		this.allSessionNonInviteeAttendedPer = allSessionNonInviteeAttendedPer;
 	}
-         
+	public Long getPartyMeetingId() {
+		return partyMeetingId;
+	}
+	public void setPartyMeetingId(Long partyMeetingId) {
+		this.partyMeetingId = partyMeetingId;
+	}
+	public Long getGroup() {
+		return group;
+	}
+	public void setGroup(Long group) {
+		this.group = group;
+	} 
 }
