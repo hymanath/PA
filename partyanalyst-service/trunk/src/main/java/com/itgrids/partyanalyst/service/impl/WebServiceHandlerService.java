@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -131,6 +132,7 @@ import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
+import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAlertService;
@@ -4377,5 +4379,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return result;
 	  }
 	  
+	  public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password){
+		  PeshiAppLoginVO peshiAppLoginVO = new PeshiAppLoginVO();
+		  try{
+			  
+			  peshiAppLoginVO = loginService.getPeshiAppValidateLoginDetails(userName,password);
+			  
+		  }catch(Exception e){
+			  log.error("exception occured in  the getPeshiAppLoginDataUser  method in WebServiceHandlerService");
+		  }
+		 return peshiAppLoginVO;
+	  }
 }
 
