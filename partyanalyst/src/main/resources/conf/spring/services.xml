@@ -3877,6 +3877,11 @@
 	 
 	 <property name="tourTypeDAO" ref="tourTypeDAO"></property>
 	 <property name="selfAppraisalTourCategoryDAO" ref="selfAppraisalTourCategoryDAO"></property>
+	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
+	 <property name="stateDAO" ref="stateDAO"></property>
+	 <property name="districtDAO" ref="districtDAO"></property>
+	 <property name="tehsilDAO" ref="tehsilDAO"></property>
+	 <property name="hamletDAO" ref="hamletDAO"></property>
 	 
 	 
 	</bean>  

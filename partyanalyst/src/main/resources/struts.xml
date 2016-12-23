@@ -15149,5 +15149,10 @@
 			<param name="root">toursBasicVO</param>
 		</result>
 	</action>
+	<action name="getAllCandidateLocationsAction" class="toursAction" method="getAllCandidateLocations">
+		<result type="json" name="success"> 
+   			<param name="root">addressVOList</param> 
+		</result>
+	</action>
  </package>
 </struts>

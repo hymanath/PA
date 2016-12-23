@@ -17,6 +17,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -46,15 +47,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private List<List<ToursBasicVO>> listOfTourBasicVoList;
 	   private List<ToursBasicVO> listOfTourBasicVo;
 	   
-	   private List<IdNameVO> idNameVoList;
+	  
+	   private  List<AddressVO> addressVOList;
 	
 	   
-	   public List<IdNameVO> getIdNameVoList() {
-		return idNameVoList;
-	   }
-	   public void setIdNameVoList(List<IdNameVO> idNameVoList) {
-			this.idNameVoList = idNameVoList;
-	   }
+	   public List<AddressVO> getAddressVOList() {
+		return addressVOList;
+	     }
+	public void setAddressVOList(List<AddressVO> addressVOList) {
+		this.addressVOList = addressVOList;
+	}
+	
 	   public JSONObject getjObj() {
 		   return jObj;
 	   }
@@ -469,6 +472,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getAllCandidateLocations(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long tourCategoryId = jObj.getLong("tourCategoryId");
+			Long tourCandidateId = jObj.getLong("tourCandidateId");
+			addressVOList = toursService.getAllCandidateLocations(tourCategoryId,tourCandidateId);
+		}catch(Exception e){  
+			e.printStackTrace();    
+			LOG.error("Exception raised at getAllCondidateLocations()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
