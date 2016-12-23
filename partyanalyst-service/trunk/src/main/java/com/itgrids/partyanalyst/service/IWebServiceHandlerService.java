@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -182,4 +183,5 @@ public interface IWebServiceHandlerService {
     
     public String setArticleDetailsIntoAlert(ActionableVO VO);
     public String getAlertStatusOfArticle(Long articleId);
+    public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
 }
