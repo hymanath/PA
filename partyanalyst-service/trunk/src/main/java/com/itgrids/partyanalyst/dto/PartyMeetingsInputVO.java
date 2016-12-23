@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class PartyMeetingsInputVO implements Serializable{
 	private Date        endDate;
 	private Long 		distId;
 	private Long partyMeetingId;
+	private String category = "";
+	private List<Long> categoryIdList = new ArrayList<Long>();
 	public Long getPartyMeetingMainTypeId() {
 		return partyMeetingMainTypeId;
 	}
@@ -61,6 +64,16 @@ public class PartyMeetingsInputVO implements Serializable{
 	}
 	public void setPartyMeetingId(Long partyMeetingId) {
 		this.partyMeetingId = partyMeetingId;
-	} 
+	}
+	public List<Long> getCategoryIdList() {
+		return categoryIdList;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
 	
 }
