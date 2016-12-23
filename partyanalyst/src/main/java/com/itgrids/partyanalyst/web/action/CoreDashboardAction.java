@@ -3366,4 +3366,18 @@ public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSee
 }
 return Action.SUCCESS;
 }
+public String getIndividualPersonTourDetails(){
+	try {
+		LOG.info("Entered into getIndividualPersonTourDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long candiateId = jObj.getLong("candiateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		toursBasicVO = coreDashboardToursService.getIndividualPersonTourDetails(fromDate,toDate,candiateId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getIndividualPersonTourDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 }

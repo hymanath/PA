@@ -15144,5 +15144,10 @@
    			<param name="root">idNameVOs</param> 
 		</result>
 	</action>
+	<action name="getIndividualPersonTourDetailsAction" class="coreDashboardAction"  method="getIndividualPersonTourDetails">
+			<result type="json" name="success">
+			<param name="root">toursBasicVO</param>
+		</result>
+	</action>
  </package>
 </struts>

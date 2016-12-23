@@ -1591,10 +1591,10 @@ function getToursBasicOverviewCountDetails()
 	function getDesignationWiseMembersDtls()
 	{  
  	     var globalUserTypeId = 2;
-		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
-			$("#tourOverviewDivId").html(' ');
+			$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(' ');
 			 return;
 		}
 		var jsObj ={ 
@@ -1878,13 +1878,13 @@ function getToursBasicOverviewCountDetails()
 	}
 	} 
 	
-	
+	var globalDesignationPerforManceRlst;
 	function getDesignationWiseAverageTourPerformanceDtls()
 	{     var globalUserTypeId = 2;
-		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
-			$("#tourOverviewDivId").html(' ');
+			$("#toursPerformanceDivId").html(' ');
 			 return;
 		}
 		var jsObj ={ 
@@ -1900,11 +1900,10 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
-			buildDesignationWiseAverageTourPerformanceDtls(result);
+				buildDesignationWiseAverageTourPerformanceDtls(result);	
+				globalDesignationPerforManceRlst = result;
 		});
 	}
-	
 	function buildDesignationWiseAverageTourPerformanceDtls(result){
 		
 		if(result != null && result.length > 0){
@@ -1919,8 +1918,9 @@ function getToursBasicOverviewCountDetails()
 							str1+='</div>';
 							str1+='<div class="col-md-7 col-xs-12 col-sm-6">';
 								str1+='<ul class="list-inline pull-right activeUlCls">';
-                            	str1+='<li class="active " style="margin-right: 20px;">COMPLAINCE</li>';
-                                str1+='<li class="" style="margin-right: 20px;">NON-COMPLAINCE</li>';
+                            	str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">All</li>';
+                            	str1+='<li class="tourFilterCls" attr_result_type="complaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">COMPLAINCE</li>';
+                                str1+='<li class="tourFilterCls" attr_result_type="nonComplaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">NON-COMPLAINCE</li>';
 								str1+='<li class="showHideFiltersToursSec" attr_id="'+result[i].id+'">Show/Hide Filters</li>';
                             str1+='</ul>';
 							str1+='</div>';
@@ -1944,23 +1944,23 @@ function getToursBasicOverviewCountDetails()
 																str1+='<p>'+result[i].subList3[0].subList3[k].name+'</p>';
 															str1+='</div>';
 															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-																str1+='<div class="checkbox">';
+																str1+='<div class="radiobox">';
 																  str1+='<label>';
-																	str1+='<input type="checkbox" value="">';
+																	str1+='<input type="radio" value="">';
 																	str1+='Yes';
 																  str1+='</label>';
 																str1+='</div>';
 															str1+='</div>';
 															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-																str1+='<div class="checkbox">';
+																str1+='<div class="radiobox">';
 																  str1+='<label>';
-																	str1+='<input type="checkbox" value="">';
+																	str1+='<input type="radio" value="">';
 																	str1+='No';
 																  str1+='</label>';
 																str1+='</div>';
 															str1+='</div>';
 															str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
-																	str1+='<input id="ownDisConsSlider'+i+''+k+'" data-slider-id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+																	str1+='<input id="ownDisConsSlider'+i+''+k+'" data-slider-id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
 															str1+='</div>';
 														str1+='</div>';
 														str1+='<hr style ="margin-bottom:0px;" />';
@@ -1976,7 +1976,7 @@ function getToursBasicOverviewCountDetails()
 														str1+='</div>';
 												str1+='</div>';
 												str1+='<div class="col-md-9 col-xs-12 col-sm-3">';
-													str1+='<input id="mainSlider'+i+'" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+													str1+='<input id="mainSlider'+i+'" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
 												str1+='</div>';
 												str1+='</div>';
 												
@@ -2037,8 +2037,6 @@ function getToursBasicOverviewCountDetails()
 								str+='<td >Target</td>';
 								str+='<td >Toured</td>';
 								}
-											
-								 
 								
 							str+='<tr>';
 								str+='</thead>';
@@ -2047,10 +2045,14 @@ function getToursBasicOverviewCountDetails()
 										for(var j in result[i].subList3){
 											str+='<tr>';
 												str+='<td >'+result[i].subList3[j].name+'</td>';
-												str+='<td>'+result[i].subList3[j].complaincePer+'</td>';	
+												str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+
+												   for(var k in result[i].subList3[j].subList3){
+													   
+														str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+													}												
 											for(var k in result[i].subList3[j].subList3){
 												
-												str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'</td>';
 												str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
 												str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
 												
@@ -2070,7 +2072,7 @@ function getToursBasicOverviewCountDetails()
 						   formatter: function(value) {
 							   stateSliderval=value;
 							  // $("#stateSliderValue").text(value);
-							 return 'Current value: ' + value;
+							 return 'Current value: ' + value+"%";
 						   }
 						});
 					 }
@@ -2083,15 +2085,26 @@ function getToursBasicOverviewCountDetails()
 				   }
 				});
 			}
-			
-			
-			
 		}
-		
-
-		
 	}
-		
+	
+	getIndividualPersonTourDetails();
+	function getIndividualPersonTourDetails()
+	{     
+		var jsObj ={ 
+					 candiateId : 71,
+					 fromDate : "",
+					 toDate : ""
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	}
 	$(document).on("click",".NewTourExpand",function(){
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
