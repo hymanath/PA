@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -108,9 +109,17 @@ public class WebServiceHandler {
 	@Autowired
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
+	private PeshiAppLoginVO peshiAppLoginVO;
 	
 	
-	
+	public PeshiAppLoginVO getPeshiAppLoginVO() {
+		return peshiAppLoginVO;
+	}
+
+	public void setPeshiAppLoginVO(PeshiAppLoginVO peshiAppLoginVO) {
+		this.peshiAppLoginVO = peshiAppLoginVO;
+	}
+
 	public List<CadreAddressVO> getCadreAddressVOList() {
 		return cadreAddressVOList;
 	}
@@ -2132,6 +2141,23 @@ public class WebServiceHandler {
 			return webServiceHandlerService.getAlertStatusOfArticle(articleId);
 		}
 		
-		
+		@POST
+		@Path("/getPeshiAppValidateLoginDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public PeshiAppLoginVO peshiApploginDataUser(PeshiAppLoginVO vo)
+		{
+			try{
+				
+				peshiAppLoginVO = webServiceHandlerService.getPeshiAppValidateLoginDetails(vo.getUserName(),vo.getPassword());
+				return peshiAppLoginVO;
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in peshiApploginDataUser() Method,Exception is ",e);
+			    return null;
+			}
+			
+		}
 		
 }
