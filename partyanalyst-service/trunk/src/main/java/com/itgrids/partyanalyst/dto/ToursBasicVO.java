@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ToursBasicVO {
 
 	private Long id = 0l;
+	private String idStr;
 	private Long candDtlsId;
 	private String name;
 	private Long tdpCadreId;
@@ -80,6 +81,15 @@ public class ToursBasicVO {
 	private Long govtWorkTrDays=0l;
 	private Long govtWorkComplainceDays=0l;
 	private Double govtWorkComplaincePer = 0.0d;
+	private Long yetToTourCnt = 0l;
+	
+	private String tourDate;
+	private Long constituencyId;
+	private String constituencyName;
+	private Long tourCategoryId;
+	private String tourCategory;
+	private Long tourTypeId;
+	private String tourType;
 	
 	public ToursBasicVO() {
 		super();
@@ -492,5 +502,59 @@ public class ToursBasicVO {
 	public void setGovtWorkComplaincePer(Double govtWorkComplaincePer) {
 		this.govtWorkComplaincePer = govtWorkComplaincePer;
 	}
-    
+	public Long getYetToTourCnt() {
+		return yetToTourCnt;
+	}
+	public void setYetToTourCnt(Long yetToTourCnt) {
+		this.yetToTourCnt = yetToTourCnt;
+	}
+	public String getTourDate() {
+		return tourDate;
+	}
+	public void setTourDate(String tourDate) {
+		this.tourDate = tourDate;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getTourCategoryId() {
+		return tourCategoryId;
+	}
+	public void setTourCategoryId(Long tourCategoryId) {
+		this.tourCategoryId = tourCategoryId;
+	}
+	public String getTourCategory() {
+		return tourCategory;
+	}
+	public void setTourCategory(String tourCategory) {
+		this.tourCategory = tourCategory;
+	}
+	public Long getTourTypeId() {
+		return tourTypeId;
+	}
+	public void setTourTypeId(Long tourTypeId) {
+		this.tourTypeId = tourTypeId;
+	}
+	public String getTourType() {
+		return tourType;
+	}
+	public void setTourType(String tourType) {
+		this.tourType = tourType;
+	}
+	public String getIdStr() {
+		return idStr;
+	}
+	public void setIdStr(String idStr) {
+		this.idStr = idStr;
+	}
+          
 }

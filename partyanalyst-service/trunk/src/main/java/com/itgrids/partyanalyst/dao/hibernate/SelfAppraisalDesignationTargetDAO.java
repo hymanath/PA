@@ -115,7 +115,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            return query.list();
     }
-    public List<Object[]> getCandiateAndCategoryWiseTargetCnt(Date fromDate,Date toDate,String type){
+    public List<Object[]> getCandiateAndCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,Long selfAppraisalCandiateId){
             StringBuilder queryStr = new StringBuilder();
              queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 			 " model.selfAppraisalDesignation.designation," +
@@ -143,6 +143,9 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
             }else{
          	   queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
             }
+            if(selfAppraisalCandiateId != null && selfAppraisalCandiateId.longValue() > 0){
+            	queryStr.append(" and model2.selfAppraisalCandidateId=:selfAppraisalCandidateId");
+            }
 		      queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				      " model2.selfAppraisalCandidateId, ");
 		  if(type.equalsIgnoreCase("Category")){
@@ -156,6 +159,9 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            if(toDate != null){
         	   query.setParameter("toDate", toDate); 
+           }
+           if(selfAppraisalCandiateId != null && selfAppraisalCandiateId.longValue() > 0){
+        	  query.setParameter("selfAppraisalCandidateId", selfAppraisalCandiateId); 
            }
            return query.list();
     }
