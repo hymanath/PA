@@ -16,7 +16,7 @@ function getCandidateList(designationId){
 				}
 				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");  
 			}
-			$(".selectChosen").trigger("chosen:updated");
+			$("#memberSlctBxId").trigger("chosen:updated");
 		});
 	}
 	$(document).on("change","#designationSlctBxId",function(){
@@ -198,7 +198,7 @@ function getCandidateList(designationId){
 				 $("#designationSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");	
 				}
 			}
-			$(".selectChosen").trigger("chosen:updated");
+			$("#designationSlctBxId").trigger("chosen:updated");
 		});
 	}
 	getAllTourCategorys();
@@ -212,15 +212,16 @@ function getCandidateList(designationId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#tourCategoryId").empty();
-			$("#tourCategoryId").append("  <option value='0'>Select Category</option>");
+			$("#tourCategoryId0").empty();
+			$("#tourCategoryId0").append("  <option value='0'>Select Category</option>");
 			if(result != null && result.length > 0){
+				TourCategoryArray =result;
 				for(var i in result){
-					$("#tourCategoryId").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
+					$("#tourCategoryId0").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
 				}
-				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");  
 			}
-			$(".selectChosen").trigger("chosen:updated");
+			$("#tourCategoryId0").chosen();
+			$("#tourCategoryId0").trigger("chosen:updated");
 		});
 	}
 	getAllTourTypes()
@@ -234,15 +235,16 @@ function getCandidateList(designationId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#tourTypeId").empty();
-			$("#tourTypeId").append("  <option value='0'>Select TourTypes</option>");
+			$("#tourTypeId0").empty();
+			$("#tourTypeId0").append("  <option value='0'>Select TourTypes</option>");
 			if(result != null && result.length > 0){
+				TourTypesArray=result;
 				for(var i in result){
-					$("#tourTypeId").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
+					$("#tourTypeId0").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
 				}
-				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");  
 			}
-			$(".selectChosen").trigger("chosen:updated");
+			$("#tourTypeId0").chosen();
+			$("#tourTypeId0").trigger("chosen:updated");
 		});
 	}
 	function savingApplication(){
