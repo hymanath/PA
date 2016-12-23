@@ -3877,11 +3877,15 @@
 	 
 	 <property name="tourTypeDAO" ref="tourTypeDAO"></property>
 	 <property name="selfAppraisalTourCategoryDAO" ref="selfAppraisalTourCategoryDAO"></property>
-	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
+	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>	 	
+	 <property name="userAddressDAO" ref="userAddressDAO"></property>
 	 <property name="stateDAO" ref="stateDAO"></property>
 	 <property name="districtDAO" ref="districtDAO"></property>
 	 <property name="tehsilDAO" ref="tehsilDAO"></property>
-	 <property name="hamletDAO" ref="hamletDAO"></property>
+	 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
+	 <property name="panchayatDAO" ref="panchayatDAO"></property>
+	 <property name="selfAppraisalCandidateDocumentDAO" ref="selfAppraisalCandidateDocumentDAO"></property>
+	 <property name="selfAppraisalCandidateDayTourDAO" ref="selfAppraisalCandidateDayTourDAO"></property>
 	 
 	 
 	</bean>  

@@ -473,7 +473,8 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	}
 	public String getAllTourCategorys(){
 		try{
-			idNameVoList = toursService.getAllTourCategorys();
+			jObj = new JSONObject(getTask());
+			idNameVoList = toursService.getAllTourCategorys(jObj.getLong("candidateId"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getAllTourCategorys()  of ToursAction", e);
 		}
