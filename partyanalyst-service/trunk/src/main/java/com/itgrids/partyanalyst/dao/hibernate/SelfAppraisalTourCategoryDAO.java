@@ -15,11 +15,13 @@ public class SelfAppraisalTourCategoryDAO extends GenericDaoHibernate<SelfApprai
 		super(SelfAppraisalTourCategory.class);
 	}
 	
-	public List<Object[]> getAllTourCategorys(){
+	public List<Object[]> getAllTourCategorys(Long candidateId){
 		
-		Query query = getSession().createQuery(" SELECT model.selfAppraisalTourCategoryId,model.tourCategory " +
-				"  FROM SelfAppraisalTourCategory model  " +
-				"  WHERE model.isDeleted ='N' ");
+		Query query = getSession().createQuery(" SELECT model1.selfAppraisalTourCategory.selfAppraisalTourCategoryId,model1.selfAppraisalTourCategory.tourCategory " +
+				"  FROM SelfAppraisalCandidate model,SelfAppraisalDesignationTarget model1  " +
+				"  WHERE model.selfAppraisalDesignationId = model1.selfAppraisalDesignationId " + 
+				" and model.isDeleted ='N'" +
+				" and model.selfAppraisalCandidateId=:candidateId " );
 		
 		return query.list();
 	}

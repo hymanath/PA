@@ -226,4 +226,36 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			  }
 			  return query.list();
 	 }
+	 
+	 public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds){
+		 
+		 StringBuilder queryStr = new StringBuilder();
+		  queryStr.append( " select " +
+		    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
+		    		       " model.selfAppraisalTourCategory.selfAppraisalTourCategoryId, " +
+		    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +
+		    		       " sum(model.selfAppraisalCandidateDayTourId) " +
+
+		    		       " from SelfAppraisalCandidateDayTour model " +
+		    		       " where model.selfAppraisalCandidate.isActive='Y' " +
+		    		       " and model.isDeleted ='N' "); 
+		                if(fromDate != null && toDate != null ){
+		                	queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+		                }
+		                if(desigIds != null && desigIds.size()>0){
+		                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
+		                }
+		                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId," +
+		                		" model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");
+		                Query query = getSession().createQuery(queryStr.toString());
+		                if(fromDate != null && toDate != null ){
+		                	query.setDate("fromDate", fromDate);
+		                	query.setDate("toDate", toDate);
+		                }
+		                if(desigIds != null){  
+		     			   query.setParameterList("desigIds",desigIds); 
+		     		    }    
+		                return query.list();
+		 
+	 }
 }
