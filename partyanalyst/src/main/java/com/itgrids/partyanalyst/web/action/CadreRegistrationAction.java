@@ -3191,5 +3191,48 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+  	public String getPublicRepAndcommitteeInviteeDtls(){
+		
+		try{
+			
+			jobj = new JSONObject(getTask());
+			
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			List<Long> partyMeetingIds = new ArrayList<Long>();
+			JSONArray partyMeetingIdsArr=jobj.getJSONArray("partyMeetingIds");
+			if(partyMeetingIdsArr!=null &&  partyMeetingIdsArr.length()>0){
+				for( int i=0;i<partyMeetingIdsArr.length();i++){
+					partyMeetingIds.add(Long.valueOf(partyMeetingIdsArr.getString(i)));
+				}
+			}
+			
+			List<Long> categoryIds = new ArrayList<Long>();
+			JSONArray categoryIdArr=jobj.getJSONArray("categoryIds");
+			if(categoryIdArr!=null &&  categoryIdArr.length()>0){
+				for( int i=0;i<categoryIdArr.length();i++){
+					categoryIds.add(Long.valueOf(categoryIdArr.getString(i)));
+				}
+			}
+			String state = jobj.getString("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");
+			String category = jobj.getString("category");
+			String location = jobj.getString("location");
+			Long sessionId = jobj.getLong("sessionId");
+			idNameVOs = coreDashboardPartyMeetingService.getPublicRepAndcommitteeInviteeDtls(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,partyMeetingIds,category,categoryIds,location,sessionId);
+			
+	}catch(Exception e){
+		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+	}
 }
 
