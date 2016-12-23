@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -35,6 +36,7 @@ public interface ILoginService {
 	
 	public List<String> deActivateAllOtherSimultaneousSessions(Long userId);
 	public String getLocationNameByIdAndType(String accessType,String accessValue);
+	public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
 	
 
 	
