@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocationNew;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<SelfAppraisalCandidateLocationNew, Long> implements
@@ -121,4 +122,14 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	     }
 		   return query.list();  
 	   }
+       public List<UserAddress> getAllCandidateLocations(Long tourCategoryId,Long tourCandidateId){
+    	   StringBuilder str = new StringBuilder();
+   		str.append("select distinct model.userAddress from SelfAppraisalCandidateLocationNew model where model.selfAppraisalCandidateId = :tourCandidateId and  model.selfAppraisalTourCategoryId =:tourCategoryId");
+   		Query query = getSession().createQuery(str.toString());
+   		query.setParameter("tourCategoryId", tourCategoryId);
+   		query.setParameter("tourCandidateId", tourCandidateId);
+   		return query.list();
+    	      		 
+   		}
+      
 }
