@@ -17,13 +17,19 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalTourCategoryDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITourTypeDAO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
@@ -31,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -50,9 +57,13 @@ public class ToursService implements IToursService {
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	private TransactionTemplate transactionTemplate;
 	
-	private ITourTypeDAO tourTypeDAO;
-	private ISelfAppraisalTourCategoryDAO selfAppraisalTourCategoryDAO;
-	
+	private ITourTypeDAO tourTypeDAO; 
+	private ISelfAppraisalTourCategoryDAO selfAppraisalTourCategoryDAO; 
+	private ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO;  
+	private IStateDAO stateDAO; 
+	private IDistrictDAO districtDAO;
+	private ITehsilDAO tehsilDAO;  
+	private IHamletDAO hamletDAO;
 	
 	public void setTourTypeDAO(ITourTypeDAO tourTypeDAO) {
 		this.tourTypeDAO = tourTypeDAO;
@@ -89,6 +100,42 @@ public class ToursService implements IToursService {
 	public void setSelfAppraisalTourCategoryDAO(
 			ISelfAppraisalTourCategoryDAO selfAppraisalTourCategoryDAO) {
 		this.selfAppraisalTourCategoryDAO = selfAppraisalTourCategoryDAO;
+	}
+	
+	public ISelfAppraisalCandidateLocationNewDAO getSelfAppraisalCandidateLocationNewDAO() {
+		return selfAppraisalCandidateLocationNewDAO;
+	}
+	public void setSelfAppraisalCandidateLocationNewDAO(
+			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
+		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
+	}
+	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
 	}
 	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
 		LOG.info("Entered into saveTourDtls() of ToursService{}");
@@ -716,6 +763,40 @@ public class ToursService implements IToursService {
 	    		}    		
     	}catch(Exception e){
     		LOG.error("Error Occured at getAllTourCategorys() in ToursService class",e);
+    	}
+    	return finalList;
+    }
+    public List<AddressVO> getAllCandidateLocations(Long tourCategoryId,Long tourCandidateId){
+    	List<AddressVO> finalList = new ArrayList<AddressVO>();
+    	try{    		
+    		List<UserAddress> objectList = selfAppraisalCandidateLocationNewDAO.getAllCandidateLocations(tourCategoryId,tourCandidateId);
+	    		if(objectList !=null && objectList.size()>0){
+	    			for (UserAddress param : objectList){ 
+	    				AddressVO vo=new AddressVO();
+	    				vo.setStateId(param.getState()!= null && param.getState().getStateId() !=null && param.getState().getStateId()>0l?param.getState().getStateId():0l);	
+	    				vo.setConstituencyId(param.getConstituency()!= null && param.getConstituency().getConstituencyId() !=null && param.getConstituency().getConstituencyId()>0l?param.getConstituency().getConstituencyId():0l);
+	    				vo.setDistrictId(param.getDistrict()!= null && param.getDistrict().getDistrictId() !=null && param.getDistrict().getDistrictId()>0l?param.getDistrict().getDistrictId() :0l);
+	    				vo.setTehsilId(param.getTehsil()!= null && param.getTehsil().getTehsilId() !=null && param.getTehsil().getTehsilId()>0l?param.getTehsil().getTehsilId():0l);
+	    				vo.setHamletId(param.getHamlet()!= null && param.getHamlet().getHamletId() !=null && param.getHamlet().getHamletId()>0l?param.getHamlet().getHamletId():0l);
+	    				finalList.add(vo);
+	    				
+	    			}
+	    			if(finalList !=null && finalList.size()>0)
+	                {
+	                for (AddressVO addressVO : finalList) {
+	                  
+	                  addressVO.setStateName(stateDAO.get(addressVO.getStateId()).getStateName());
+	                  addressVO.setDistrictName(districtDAO.get(addressVO.getDistrictId()).getDistrictName());
+	                  addressVO.setConstituencyName(constituencyDAO.get(addressVO.getConstituencyId()).getName());
+	                  addressVO.setTehsilName(tehsilDAO.get(addressVO.getTehsilId()).getTehsilName());
+	                  addressVO.setHamletName(hamletDAO.get(addressVO.getHamletId()).getHamletName());
+	                
+	               }
+	                }
+	    				
+	    		}    		
+    	}catch(Exception e){
+    		LOG.error("Error Occured at getAllCandidateLocations() in ToursService class",e);
     	}
     	return finalList;
     }
