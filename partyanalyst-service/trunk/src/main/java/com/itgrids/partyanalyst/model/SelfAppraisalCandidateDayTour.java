@@ -231,6 +231,6 @@ public class SelfAppraisalCandidateDayTour {
 	public void setTourType(TourType tourType) {
 		this.tourType = tourType;
 	}
-
+	
 	
 }

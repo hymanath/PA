@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.SelfAppraisalTourCategory;
 
 public interface ISelfAppraisalTourCategoryDAO extends GenericDao<SelfAppraisalTourCategory, Long> {
 
-	public List<Object[]> getAllTourCategorys();
+	public List<Object[]> getAllTourCategorys(Long candidateId);
 }
