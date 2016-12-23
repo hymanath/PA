@@ -48,10 +48,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private List<ToursBasicVO> listOfTourBasicVo;
 	   
 	  
-	   private  List<AddressVO> addressVOList;
-	
+	   private  List<AddressVO> addressVOList; 
+	   private  List<IdNameVO> idNameVoList;
 	   
-	   public List<AddressVO> getAddressVOList() {
+	   
+	   public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
+	}
+	public List<AddressVO> getAddressVOList() {
 		return addressVOList;
 	     }
 	public void setAddressVOList(List<AddressVO> addressVOList) {
