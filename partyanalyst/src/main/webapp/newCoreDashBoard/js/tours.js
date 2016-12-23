@@ -1925,59 +1925,47 @@ function getToursBasicOverviewCountDetails()
                             str1+='</ul>';
 							str1+='</div>';
 						str1+='</div>';
-						 str1+='<div class="toursSessionDropDownCls" id="toursSessionDropDown'+result[i].id+'" style="right:13px;top:30px;display:none;z-index:999">';  
+						 str1+='<div class="toursSessionDropDownCls col-md-7 col-xs-12 col-sm-6" id="toursSessionDropDown'+result[i].id+'" style="right:13px;top:30px;display:none;z-index:999">';  
 										str1+='<i class="glyphicon glyphicon-remove pull-right toursBlockCloseCls" attr_id="'+result[i].id+'" style="cursor:pointer;"></i>';
 											str1+='<div role="tabpanel" class="tab-pane" id="">';
 												//str1+='<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>';
 												//str1+='<hr style ="margin-bottom:0px;" />';
 												str1+='<div class="checkbox">';
 												  str1+='<label>';
-													str1+='<input type="checkbox" value="">';
-													str1+='COMPLAINCE';
+													str1+='<input type="checkbox" value="" style="margin-top: 3px;">';
+													str1+='<h4 class="text-muted" style="font-size: 17px;">COMPLAINCE</h4>';
 												  str1+='</label>';
 												str1+='</div>';
-												str1+='<hr style ="margin-bottom:0px;" />';
+												//str1+='<hr style ="margin-bottom:0px;margin-top: 0px;" />';
 												
 													for(var k in result[i].subList3[0].subList3){
-														str1+='<div class="row">';
-															str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+														str1+='<div class="row" style="border-top:1px solid #d3d3d3;margin:0px;">';
+															str1+='<div class="col-md-3 col-xs-12 col-sm-3 m_top10">';
 																str1+='<p>'+result[i].subList3[0].subList3[k].name+'</p>';
 															str1+='</div>';
-															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-																str1+='<div class="radiobox">';
-																  str1+='<label>';
-																	str1+='<input type="radio" value="">';
-																	str1+='Yes';
-																  str1+='</label>';
-																str1+='</div>';
+															str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
+																	str1+='<input id="ownDisConsSlider'+i+''+k+'"  />';
+																	str1+='<span>0%</span><span class="col-xs-offset-8">100%</span>';
 															str1+='</div>';
-															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-																str1+='<div class="radiobox">';
-																  str1+='<label>';
-																	str1+='<input type="radio" value="">';
-																	str1+='No';
-																  str1+='</label>';
-																str1+='</div>';
-															str1+='</div>';
-															str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
-																	str1+='<input id="ownDisConsSlider'+i+''+k+'" data-slider-id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
-															str1+='</div>';
+															
 														str1+='</div>';
-														str1+='<hr style ="margin-bottom:0px;" />';
+														
 													}
 												
-												str1+='<div class="row">';
+												str1+='<div class="row" style="border-top:1px solid #d3d3d3;padding:10px;">';
+												str1+='<p class="underlineLineCss" style="text-align: center;">(OR)</p>';
 												str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
 													str1+='<div class="checkbox">';
 														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='COMPLAINCE';
+															str1+='<input type="checkbox" value="" style="margin-top: 3px;">';
+															str1+='<h4 class="text-muted" style="font-size: 17px;">COMPLAINCE</h4>';
 														  str1+='</label>';
 														str1+='</div>';
 												str1+='</div>';
-												str1+='<div class="col-md-9 col-xs-12 col-sm-3">';
+												str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
 													str1+='<input id="mainSlider'+i+'" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
 												str1+='</div>';
+												str1+='<span style="margin-left: 10px;">0%</span><span class="col-xs-offset-6">100%</span>';
 												str1+='</div>';
 												
 											str1+='<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button>'; 
@@ -2067,23 +2055,52 @@ function getToursBasicOverviewCountDetails()
 				str+='</div>';
 				$("#toursPerformanceBlocks"+i).html(str);
 					 var stateSliderval;
-						 for(var k in result[i].subList3[0].subList3){
-							var slider = new Slider('#ownDisConsSlider'+i+''+k+'', {
-						   formatter: function(value) {
-							   stateSliderval=value;
-							  // $("#stateSliderValue").text(value);
-							 return 'Current value: ' + value+"%";
-						   }
-						});
-					 }
+							for(var k in result[i].subList3[0].subList3){
+							 
+							 $('#ownDisConsSlider'+i+''+k+'').slider({
+								  // minimum value
+								  min: 0,
+								  // maximum value
+								  max: 100,
+							 	 // increment step
+								  step: 5,
+								  value: [0, 30],
+								  focus: true,
+								  selection: 'before',
+								  // callback
+								  formatter: function formatter(val) {
+									if (Array.isArray(val)) {
+										stateSliderval = val;
+									  return "Min Val: "+val[0] + " - Max Val: " + val[1];
+									} else {
+									  return val;
+									}
+								  },
+								});
+							}
+				
+				//alert(stateSliderval);
 				var mainSliderVa1;
-					var slider = new Slider('#mainSlider'+i+'', {
-				   formatter: function(value) {
-					  // $("#constituencySliderValue").text(value);
-					   mainSliderVa1=value;
-					 return 'Current value: ' + value;
-				   }
-				});
+					$('#mainSlider'+i+'').slider({
+						  // minimum value
+						  min: 0,
+						  // maximum value
+						  max: 100,
+						 // increment step
+						  step: 5,
+						  value: [0, 30],
+						  focus: true,
+						  // callback
+						  formatter: function formatter(val) {
+							if (Array.isArray(val)) {
+								mainSliderVa1 = val;
+							  return "Min Val: "+val[0] + " - Max Val: " + val[1];
+							} else {
+							  return val;
+							}
+						  },
+					});
+					//alert(mainSliderVa1);
 			}
 		}
 	}
