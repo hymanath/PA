@@ -1937,81 +1937,35 @@ function getToursBasicOverviewCountDetails()
 												  str1+='</label>';
 												str1+='</div>';
 												str1+='<hr style ="margin-bottom:0px;" />';
-												str1+='<div class="row">';
-													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
-														str1+='<p>Own Constituencie/District</p>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='Yes';
-														  str1+='</label>';
+												
+													for(var k in result[i].subList3[0].subList3){
+														str1+='<div class="row">';
+															str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
+																str1+='<p>'+result[i].subList3[0].subList3[k].name+'</p>';
+															str1+='</div>';
+															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+																str1+='<div class="checkbox">';
+																  str1+='<label>';
+																	str1+='<input type="checkbox" value="">';
+																	str1+='Yes';
+																  str1+='</label>';
+																str1+='</div>';
+															str1+='</div>';
+															str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
+																str1+='<div class="checkbox">';
+																  str1+='<label>';
+																	str1+='<input type="checkbox" value="">';
+																	str1+='No';
+																  str1+='</label>';
+																str1+='</div>';
+															str1+='</div>';
+															str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
+																	str1+='<input id="ownDisConsSlider'+i+''+k+'" data-slider-id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
+															str1+='</div>';
 														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='No';
-														  str1+='</label>';
-														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
-															str1+='<input id="ownDisConsSlider'+i+'" data-slider-id="ownDisConsSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
-													str1+='</div>';
-												str1+='</div>';
-												str1+='<hr style ="margin-bottom:0px;" />';
-												str1+='<div class="row">';
-													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
-														str1+='<p>Incharge District</p>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='Yes';
-														  str1+='</label>';
-														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='No';
-														  str1+='</label>';
-														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
-															str1+='<input id="DisSlider'+i+'" data-slider-id="DisSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
-													str1+='</div>';
-												str1+='</div>';
-												str1+='<hr style ="margin-bottom:0px;" />';
-												str1+='<div class="row">';
-													str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
-														str1+='<p>Govt Works</p>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='Yes';
-														  str1+='</label>';
-														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-2 col-xs-12 col-sm-3">';
-														str1+='<div class="checkbox">';
-														  str1+='<label>';
-															str1+='<input type="checkbox" value="">';
-															str1+='No';
-														  str1+='</label>';
-														str1+='</div>';
-													str1+='</div>';
-													str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
-															str1+='<input id="govtSlider'+i+'" data-slider-id="govtSlider'+i+'" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>';
-													str1+='</div>';
-												str1+='</div>';
-												str1+='<hr style ="margin-bottom:0px;" />';
+														str1+='<hr style ="margin-bottom:0px;" />';
+													}
+												
 												str1+='<div class="row">';
 												str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
 													str1+='<div class="checkbox">';
@@ -2110,30 +2064,16 @@ function getToursBasicOverviewCountDetails()
 					str+='</table>';
 				str+='</div>';
 				$("#toursPerformanceBlocks"+i).html(str);
-					var stateSliderval;
-					var slider = new Slider('#ownDisConsSlider'+i+'', {
-				   formatter: function(value) {
-					   stateSliderval=value;
-					  // $("#stateSliderValue").text(value);
-					 return 'Current value: ' + value;
-				   }
-				});
-				var districtSliderVal;
-				var slider = new Slider('#DisSlider'+i+'', {
-				   formatter: function(value) {
-					  // $("#districtSliderValue").text(value);
-					   districtSliderVal=value;
-					 return 'Current value: ' + value;
-				   }
-				});
-				var constituencySliderVa1;
-					var slider = new Slider('#govtSlider'+i+'', {
-				   formatter: function(value) {
-					  // $("#constituencySliderValue").text(value);
-					   constituencySliderVa1=value;
-					 return 'Current value: ' + value;
-				   }
-				});
+					 var stateSliderval;
+						 for(var k in result[i].subList3[0].subList3){
+							var slider = new Slider('#ownDisConsSlider'+i+''+k+'', {
+						   formatter: function(value) {
+							   stateSliderval=value;
+							  // $("#stateSliderValue").text(value);
+							 return 'Current value: ' + value;
+						   }
+						});
+					 }
 				var mainSliderVa1;
 					var slider = new Slider('#mainSlider'+i+'', {
 				   formatter: function(value) {
