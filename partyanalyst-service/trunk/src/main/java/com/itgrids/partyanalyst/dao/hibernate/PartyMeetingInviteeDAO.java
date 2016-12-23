@@ -909,7 +909,12 @@ public List<Object[]> getCommitteeWiseInvitedCadreCountForMeeting(PartyMeetingsI
 	if(inputVO.getPartyMeetingIds() != null && inputVO.getPartyMeetingIds().size() > 0l){
 		sb.append(" and pm.party_meeting_id in(:partyMeetingIds) ");
 	}
-	//sb.append(" group by tcl.tdp_committee_level_id,cadre.tdp_cadre_id ");
+	
+	if(inputVO.getCategory().equalsIgnoreCase("Committees")){
+		sb.append(" and tcl.tdp_committee_level_id in (:tdpCommitteeLevelIds) ");
+	}else if(inputVO.getCategory().equalsIgnoreCase("other")){
+		sb.append(" and tcl.tdp_committee_level_id not in (:tdpCommitteeLevelIds) ");
+	} 
 	
 	Query query = getSession().createSQLQuery(sb.toString())
 	.addScalar("tdpCommitteeLevelId",Hibernate.LONG)
@@ -920,7 +925,7 @@ public List<Object[]> getCommitteeWiseInvitedCadreCountForMeeting(PartyMeetingsI
 		query.setDate("startDate",inputVO.getStartDate());
 		query.setDate("endDate",inputVO.getEndDate());	 
 	}*/
-	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){  
 		query.setParameter("stateId",inputVO.getStateId());
 	}
 	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
@@ -930,7 +935,12 @@ public List<Object[]> getCommitteeWiseInvitedCadreCountForMeeting(PartyMeetingsI
 		query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
 	}
 	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-   return query.list();	
+	if(inputVO.getCategory().equalsIgnoreCase("Committees")){
+		query.setParameterList("tdpCommitteeLevelIds",inputVO.getCategoryIdList());
+	}else if(inputVO.getCategory().equalsIgnoreCase("other")){
+		query.setParameterList("tdpCommitteeLevelIds",inputVO.getCategoryIdList());
+	}  
+   return query.list();	  
 }
 public List<Object[]> getCommitteeWiseInvitteeAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO){
 	
@@ -1028,7 +1038,11 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" and pm.party_meeting_id in(:partyMeetingIds) ");
 	}
 	//sb.append(" group by prt.public_representative_type_id,cadre.tdp_cadre_id ");
-	
+	if(inputVO.getCategory().equalsIgnoreCase("Representative")){
+		sb.append(" and prt.public_representative_type_id in (:publicRepresentativeTypeIds) ");
+	}else if(inputVO.getCategory().equalsIgnoreCase("other")){
+		sb.append(" and prt.public_representative_type_id not in (:publicRepresentativeTypeIds) ");
+	} 
 	Query query = getSession().createSQLQuery(sb.toString())
 	.addScalar("representativeTypeId",Hibernate.LONG)
 	.addScalar("position",Hibernate.STRING)
@@ -1048,6 +1062,11 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		query.setParameterList("partyMeetingIds",inputVO.getPartyMeetingIds());
 	}
 	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+	if(inputVO.getCategory().equalsIgnoreCase("Representative")){
+		query.setParameterList("publicRepresentativeTypeIds",inputVO.getCategoryIdList());
+	}else if(inputVO.getCategory().equalsIgnoreCase("other")){
+		query.setParameterList("publicRepresentativeTypeIds",inputVO.getCategoryIdList());
+	}
    return query.list();
 }
     public List<Object[]> getPublicRepresentativeWiseInvitteeAttendedCadreCountForMeetings(PartyMeetingsInputVO inputVO){
