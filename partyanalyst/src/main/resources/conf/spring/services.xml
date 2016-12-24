@@ -2406,6 +2406,7 @@
 	   <property name="panchayatDAO" ref="panchayatDAO"/>
 	   <property name="fieldMonitoringService" ref="fieldMonitoringService"/> 
 	   <property name="alertService" ref="alertService"/>
+	   <property name="appointmentTimeSlotDAO" ref="appointmentTimeSlotDAO"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
