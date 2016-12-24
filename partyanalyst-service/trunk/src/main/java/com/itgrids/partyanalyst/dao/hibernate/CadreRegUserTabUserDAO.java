@@ -28,7 +28,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 			sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" );
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 		    sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
-			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+			sb.append(" and model.isDeleted = 'N'" +
+						//" and model.cadreSurveyUser.isDeleted = 'N'" +
 						" and model1.isDeleted = 'N'" );
 			//sb.append("and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(districtId != null && districtId.longValue() > 0l)
@@ -60,7 +61,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		  sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId ");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
-			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'");// and model.cadreSurveyUser.isEnabled = 'Y'");
+			sb.append(" and model.isDeleted = 'N'");//" and model.cadreSurveyUser.isDeleted = 'N'");// and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 				sb.append("and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
 		sb.append(" order by model.cadreSurveyUser.userName");
@@ -79,7 +80,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 								" from CadreRegUserTabUser model");
 		sb.append(",CadreSurveyUserAssignDetails model1");
 		sb.append(" where (model.cadreRegUser.userType = :searchType or model.cadreRegUser.userType = 'WM')" +
-								" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+								" and model.isDeleted = 'N'" +
+								//" and model.cadreSurveyUser.isDeleted = 'N'" +
 								" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 								" and model1.isDeleted = 'N'");
 		if(districtId != null && districtId.longValue() > 0l)
@@ -108,7 +110,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(",CadreSurveyUserAssignDetails model1");
 		sb.append(" where (model.cadreRegUser.userType = :searchType or model.cadreRegUser.userType = 'WM')" +
-				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
+				" and model.isDeleted = 'N'");// and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 								" and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
@@ -129,8 +131,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		 sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId");
 		 if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(	" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-								" and model.isDeleted = 'N' and model1.isDeleted = 'N'" +
-								" and model.cadreSurveyUser.isDeleted = 'N' " );
+								" and model.isDeleted = 'N' and model1.isDeleted = 'N'");
+								//" and model.cadreSurveyUser.isDeleted = 'N' " );
 								//sb.append("and model.cadreSurveyUser.isEnabled = 'Y' ");
 		 sb.append(" order by model1.constituency.district.districtName");
 		 
@@ -147,7 +149,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 										" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 										" and (model.cadreRegUser.userType = :searchType or model.cadreRegUser.userType = 'WM')" +
 										" and model.isDeleted = 'N' and model1.isDeleted = 'N'" +
-										" and model.cadreSurveyUser.isDeleted = 'N' order by model1.constituency.district.districtName");
+										//" and model.cadreSurveyUser.isDeleted = 'N'" +
+										" order by model1.constituency.district.districtName");
 		query.setParameter("searchType", searchType);
 		return query.list();
 	}
