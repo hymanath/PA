@@ -13,7 +13,7 @@ public class PeshiAppAppointmentVO implements Serializable{
 	private Long notCompletedCount = 0l;
 	private Long generalVisitorsCount = 0l;
 	private String relativeName;
-	private Long memberShipId;
+	private String memberShipId;
 	private String mobileNo;
 	private String image;
 	private Long appoinmentId;
@@ -22,11 +22,12 @@ public class PeshiAppAppointmentVO implements Serializable{
 	private String appDate;
 	private String appTime;
 	private String presentStatus;
+	private Long appointmentStatusId;
 	
 	private List<PeshiAppAppointmentVO> scheduledList;
-	private List<PeshiAppLoginVO> completedList;
-	private List<PeshiAppLoginVO> todayAppoinmentsList;
-	private List<PeshiAppLoginVO> notCompletedList;
+	private List<PeshiAppAppointmentVO> completedList;
+	private List<PeshiAppAppointmentVO> totalAppoinmentsList;
+	private List<PeshiAppAppointmentVO> notAttendedList;
 	
 	
 	
@@ -78,10 +79,10 @@ public class PeshiAppAppointmentVO implements Serializable{
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
 	}
-	public Long getMemberShipId() {
+	public String getMemberShipId() {
 		return memberShipId;
 	}
-	public void setMemberShipId(Long memberShipId) {
+	public void setMemberShipId(String memberShipId) {
 		this.memberShipId = memberShipId;
 	}
 	public String getMobileNo() {
@@ -138,22 +139,32 @@ public class PeshiAppAppointmentVO implements Serializable{
 	public void setScheduledList(List<PeshiAppAppointmentVO> scheduledList) {
 		this.scheduledList = scheduledList;
 	}
-	public List<PeshiAppLoginVO> getCompletedList() {
+	public List<PeshiAppAppointmentVO> getCompletedList() {
 		return completedList;
 	}
-	public void setCompletedList(List<PeshiAppLoginVO> completedList) {
+	public void setCompletedList(List<PeshiAppAppointmentVO> completedList) {
 		this.completedList = completedList;
 	}
-	public List<PeshiAppLoginVO> getTodayAppoinmentsList() {
-		return todayAppoinmentsList;
+	public void setNotAttendedList(List<PeshiAppAppointmentVO> notAttendedList) {
+		this.notAttendedList = notAttendedList;
 	}
-	public void setTodayAppoinmentsList(List<PeshiAppLoginVO> todayAppoinmentsList) {
-		this.todayAppoinmentsList = todayAppoinmentsList;
+	public List<PeshiAppAppointmentVO> getNotAttendedList() {
+		return notAttendedList;
 	}
-	public List<PeshiAppLoginVO> getNotCompletedList() {
-		return notCompletedList;
+	public void setNotCompletedList(List<PeshiAppAppointmentVO> notAttendedList) {
+		this.notAttendedList = notAttendedList;
 	}
-	public void setNotCompletedList(List<PeshiAppLoginVO> notCompletedList) {
-		this.notCompletedList = notCompletedList;
+	public Long getAppointmentStatusId() {
+		return appointmentStatusId;
 	}
+	public void setAppointmentStatusId(Long appointmentStatusId) {
+		this.appointmentStatusId = appointmentStatusId;
+	}
+	public List<PeshiAppAppointmentVO> getTotalAppoinmentsList() {
+		return totalAppoinmentsList;
+	}
+	public void setTotalAppoinmentsList(List<PeshiAppAppointmentVO> totalAppoinmentsList) {
+		this.totalAppoinmentsList = totalAppoinmentsList;
+	}
+	
 }
