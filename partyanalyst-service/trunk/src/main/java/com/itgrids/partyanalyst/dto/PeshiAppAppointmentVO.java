@@ -7,7 +7,7 @@ public class PeshiAppAppointmentVO implements Serializable{
 
 	private Long id;
 	private String name;
-	private Long todayAppoinmentsCount = 0l;
+	private Long totalAppoinmentsCount = 0l;
 	private Long secheduledCount = 0l;
 	private Long completedCount = 0l;
 	private Long notCompletedCount = 0l;
@@ -23,11 +23,13 @@ public class PeshiAppAppointmentVO implements Serializable{
 	private String appTime;
 	private String presentStatus;
 	
-	
 	private List<PeshiAppAppointmentVO> scheduledList;
 	private List<PeshiAppLoginVO> completedList;
 	private List<PeshiAppLoginVO> todayAppoinmentsList;
 	private List<PeshiAppLoginVO> notCompletedList;
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -40,11 +42,11 @@ public class PeshiAppAppointmentVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Long getTodayAppoinmentsCount() {
-		return todayAppoinmentsCount;
+	public Long getTotalAppoinmentsCount() {
+		return totalAppoinmentsCount;
 	}
-	public void setTodayAppoinmentsCount(Long todayAppoinmentsCount) {
-		this.todayAppoinmentsCount = todayAppoinmentsCount;
+	public void setTotalAppoinmentsCount(Long totalAppoinmentsCount) {
+		this.totalAppoinmentsCount = totalAppoinmentsCount;
 	}
 	public Long getSecheduledCount() {
 		return secheduledCount;
