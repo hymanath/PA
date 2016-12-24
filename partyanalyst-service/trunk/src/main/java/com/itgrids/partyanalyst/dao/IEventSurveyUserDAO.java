@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -12,4 +13,6 @@ public interface IEventSurveyUserDAO extends GenericDao<EventSurveyUser, Long>{
 	public List<EventSurveyUser> checkValidUserOrNot(String uname,String pwd);
 	
 	public Long checkUserBlockedOrNot(Long userId);
+	public List<Object[]> getPeshiAppForGrievance(Date fromDate,Date toDate,String memberShipId);
+	public List<Object[]> getFilePathUrlForComplaintIds(List<Long> complaintIds);
 }
