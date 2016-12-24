@@ -44,4 +44,44 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 		query.setParameter("appointmentId",appointmentId);
 		return (AppointmentTimeSlot)query.uniqueResult();
 	}
+	public List<Object[]> getAppointmentDetails(Date fromDate,Date toDate,String membershipId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.appointment.appointmentStatus.appointmentStatusId," +
+				" model.appointment.appointmentId,model.appointment.reason," +
+				" model.date,model1.appointmentCandidate.name," +
+				" model1.appointmentCandidate.membershipId," +
+				" model1.appointmentCandidate.mobileNo," +
+				" model1.appointmentCandidate.imageURL," +
+				" model.appointment.appointmentStatus.status" +
+				" from AppointmentTimeSlot model,AppointmentCandidateRelation model1" +
+				" where model.appointment.appointmentId = model1.appointment.appointmentId " +
+				" and model1.appointmentCandidate.membershipId = :membershipId" +
+				" and model.isDeleted = 'N' and model.appointment.isDeleted = 'N'");
+		/*sb.append("select a.appointment_status_id,a.appointment_id,a.reason,ats.date,ac.name" +
+				" from appointment_candidate ac,appointment_time_slot ats,appointment_candidate_relation acr,appointment a " +
+				" where ac.membership_id = :membershipId and acr.appointment_id = a.appointment_id" +
+				" and acr.appointment_candidate_id = ac.appointment_candidate_id and acr.appointment_id = ats.appointment_id" +
+				//"and date(ats.from_date) = '2016-06-14' and date(ats.to_date) = '2016-06-14'" +
+				" and ats.is_deleted = 'N' and a.is_deleted = 'N'");*/
+		if(fromDate != null && toDate != null){
+			sb.append(" and model.date between :fromDate and :toDate");
+			//sb.append(" and date(ats.from_date) = :fromDate and date(ats.to_date) = :toDate");
+		}
+		Query query = getSession().createQuery(sb.toString());
+			query.setParameter("membershipId", membershipId);
+		if(fromDate != null && toDate  != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
+	}
+	public List<Object[]> getAppointmentList(List<Long> appointmentIds){
+		Query query = getSession().createQuery("select model.appointment.appointmentId,model.appointmentCandidate.name," +
+				" model.appointmentCandidate.mobileNo,model.appointmentCandidate.membershipId,model.appointmentCandidate.imageURL" +
+				" from AppointmentCandidateRelation model" +
+				" where model.appointment.appointmentId in (:appointmentIds)" +
+				" and model.appointment.isDeleted = 'N'");
+		query.setParameterList("appointmentIds", appointmentIds);
+		return query.list();
+	}
 }
