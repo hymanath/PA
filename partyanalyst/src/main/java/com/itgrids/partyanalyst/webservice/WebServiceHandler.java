@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,8 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
+import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -110,8 +113,26 @@ public class WebServiceHandler {
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	private PeshiAppLoginVO peshiAppLoginVO;
+	private PeshiAppGrievanceVO peshiAppGrievanceVO;
+	private PeshiAppAppointmentVO peshiAppAppointmentVO;
 	
 	
+	public PeshiAppAppointmentVO getPeshiAppAppointmentVO() {
+		return peshiAppAppointmentVO;
+	}
+
+	public void setPeshiAppAppointmentVO(PeshiAppAppointmentVO peshiAppAppointmentVO) {
+		this.peshiAppAppointmentVO = peshiAppAppointmentVO;
+	}
+
+	public PeshiAppGrievanceVO getPeshiAppGrievanceVO() {
+		return peshiAppGrievanceVO;
+	}
+
+	public void setPeshiAppGrievanceVO(PeshiAppGrievanceVO peshiAppGrievanceVO) {
+		this.peshiAppGrievanceVO = peshiAppGrievanceVO;
+	}
+
 	public PeshiAppLoginVO getPeshiAppLoginVO() {
 		return peshiAppLoginVO;
 	}
@@ -2158,6 +2179,39 @@ public class WebServiceHandler {
 			    return null;
 			}
 			
+		}
+		
+		@POST
+		@Path("/peshi/getPeshiAppGrievanceDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public PeshiAppGrievanceVO peshiAppGrievanceDetails(PeshiAppGrievanceVO vo)
+		{
+			try{
+				
+				peshiAppGrievanceVO = webServiceHandlerService.getPeshiAppGrievanceDetails(vo.getFromDate(),vo.getToDate(),vo.getMembershipId());
+				return peshiAppGrievanceVO;
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in peshiAppGrievanceDetails() Method,Exception is ",e);
+			    return null;
+			}
+			
+		}
+		
+		@POST
+		@Path("/peshi/getPeshiAppAppointmentDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public PeshiAppAppointmentVO peshiAppAppointmentDetails(PeshiAppGrievanceVO vo){
+			try{
+				peshiAppAppointmentVO = webServiceHandlerService.getAppointmentDetails(vo.getFromDate(),vo.getToDate(),vo.getMembershipId(),vo.getCadreType());
+				return peshiAppAppointmentVO;
+			}catch(Exception e){
+				LOG.error("Exception Occured in peshiAppAppointmentDetails() Method,Exception is ",e);
+			    return null;
+			}
 		}
 		
 }
