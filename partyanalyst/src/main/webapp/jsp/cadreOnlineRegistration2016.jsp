@@ -227,7 +227,10 @@ textarea {
 			      </div>-->
 	 	       </div>	
         </div>
-        <div class="col-md-6 col-xs-12 col-sm-6">
+		<div class="mainBlock col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top30">
+			<h2>Online Membership registratons has been closed for 2016-2018 years</h2>
+		</div>
+       <!-- <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
              <div class="row">
                 	<div class="col-md-9 col-xs-9 col-xs-offset-3 col-sm-9 col-md-offset-3">
@@ -240,10 +243,10 @@ textarea {
                 	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital registerNew">new registration</button>
 						<!--<button class="btn btn-success btn-block btn-sm text-capital" onclick="clickFun()">Click</button>-->
-                    </div>
+                    <!--</div>
 					
                 </div>
-            </div>
+            </div>-->
 			<!--<div class="row" style="margin-top:20px;">
 				 <div class="container breadcrumb">
 					  <p> <b>Note:</b><br/>
@@ -258,7 +261,7 @@ textarea {
 					   <i>For any Technical Support, please contact <b>+91-7997950724</b> / email : tdpmembership2016@gmail.com </i></p>
 				</div>
 			</div> -->
-        </div>
+        <!--</div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock renewal">
             	<div class="row">
@@ -274,7 +277,7 @@ textarea {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 	
 	 <div class="row PaymentCls">
@@ -1264,7 +1267,7 @@ textarea {
 </div>
 
 
-	<div class="row" style="margin-top:20px;">
+	<!--<div class="row" style="margin-top:20px;">
 		 <div class="container breadcrumb">
 			  <p> <b>Note:</b><br/>
 					New and Renewal Membership charges are  &#x20B9; 100/-. This Enrollment is valid for 2 years (2016-2018).</p>
@@ -1277,7 +1280,7 @@ textarea {
 			  <p><br/>    
 			   <i>For any Technical Support, please contact <b>+91-7997950724</b> / email : tdpmembership2016@gmail.com </i></p>
 		</div>
-	</div>
+	</div>-->
 			
 	<div id="wrapper">
 		<div id="example" ></div>
