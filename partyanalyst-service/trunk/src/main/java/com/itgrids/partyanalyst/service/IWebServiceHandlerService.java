@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AccommodationVO;
@@ -33,6 +34,8 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
+import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -184,4 +187,6 @@ public interface IWebServiceHandlerService {
     public String setArticleDetailsIntoAlert(ActionableVO VO);
     public String getAlertStatusOfArticle(Long articleId);
     public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
+    public PeshiAppGrievanceVO getPeshiAppGrievanceDetails(String fromDateStr,String toDateStr,String membershipId);
+    public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType);
 }
