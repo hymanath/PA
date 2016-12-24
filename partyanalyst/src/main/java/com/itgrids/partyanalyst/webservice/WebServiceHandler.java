@@ -2142,7 +2142,7 @@ public class WebServiceHandler {
 		}
 		
 		@POST
-		@Path("/getPeshiAppValidateLoginDetails")
+		@Path("/peshi/getPeshiAppValidateLoginDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public PeshiAppLoginVO peshiApploginDataUser(PeshiAppLoginVO vo)
