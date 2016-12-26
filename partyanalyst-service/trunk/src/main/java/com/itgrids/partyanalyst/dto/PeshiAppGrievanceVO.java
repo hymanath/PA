@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PeshiAppGrievanceVO implements Serializable{
@@ -20,7 +21,7 @@ public class PeshiAppGrievanceVO implements Serializable{
 	private String membershipId;
 	private String cadreType;
 	private List<PeshiAppGrievanceVO> subList;
-	private List<String> filePthList;
+	private List<String> filePthList = new ArrayList<String>();
 	
 	
 	public List<String> getFilePthList() {

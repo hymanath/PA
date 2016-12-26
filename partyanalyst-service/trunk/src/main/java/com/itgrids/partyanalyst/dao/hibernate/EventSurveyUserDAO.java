@@ -49,7 +49,7 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 	}
 	public List<Object[]> getPeshiAppForGrievance(Date fromDate,Date toDate,String memberShipId){
 		StringBuilder sb =  new StringBuilder();
-		sb.append("select Complaint_id as complaintId,Subject as subject," +
+		sb.append("select distinct Complaint_id as complaintId,Subject as subject," +
 				" description as description,Raised_Date as raisedDate,updated_at as updated," +
 				" Completed_Status as completedStatus,type_of_issue as typeOfIssue," +
 				" scan_copy as scanCopy" +
@@ -59,16 +59,33 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 				" and Completed_Status is not null" +
 				" and membership_id =:memberShipId ");
 		if(fromDate != null && toDate != null){
-			sb.append(" and date(Raised_Date) between :fromDate and :toDate");
+			sb.append(" and (date(Raised_Date) between :fromDate and :toDate ) ");
 		}
 		Query query = getSession().createSQLQuery(sb.toString()).addScalar("complaintId", Hibernate.LONG)
+		.addScalar("subject", Hibernate.STRING)
+		.addScalar("description", Hibernate.STRING)
+		.addScalar("raisedDate", Hibernate.DATE)
+		.addScalar("updated", Hibernate.DATE)
+		.addScalar("completedStatus", Hibernate.STRING)
+		.addScalar("typeOfIssue", Hibernate.STRING)
+		.addScalar("scanCopy", Hibernate.STRING);
+		
+		/*getSession().createSQLQuery(" select Complaint_id as complaintId,Subject as subject, description as description,"
+				+" Raised_Date as raisedDate,updated_at as updated, Completed_Status as completedStatus,"
+				+" type_of_issue as typeOfIssue, scan_copy as scanCopy "
+				+" from complaint_master  where "
+				+" type_of_issue not in ('Insurance','Trust Education Support')  and "
+				+" Subject != '' and Subject is not null and delete_status is null and "
+				+" state_id_cmp in(1,2) and Completed_Status is not null and "
+				+" membership_id ='17264704'  and "
+				+" (date(Raised_Date) between '2016-12-21' and '2016-12-22' )").addScalar("complaintId", Hibernate.LONG)
 				.addScalar("subject", Hibernate.STRING)
 				.addScalar("description", Hibernate.STRING)
 				.addScalar("raisedDate", Hibernate.DATE)
 				.addScalar("updated", Hibernate.DATE)
 				.addScalar("completedStatus", Hibernate.STRING)
 				.addScalar("typeOfIssue", Hibernate.STRING)
-				.addScalar("scanCopy", Hibernate.STRING);
+				.addScalar("scanCopy", Hibernate.STRING).list();*/
 		query.setParameter("memberShipId", memberShipId);
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);

@@ -19,6 +19,7 @@ public interface IAppointmentTimeSlotDAO extends GenericDao<AppointmentTimeSlot,
 	public List<Object[]> getAppointmentConfirmDates(List<Long> appointmentIds);
 	public List<Object[]> getAppointmentConfirmDates(Date date,Long apptUserId,Long apptStatusId);
 	public AppointmentTimeSlot getAppointmentTimeSlotByAppointmentId(Long appointmentId);
-	public List<Object[]> getAppointmentDetails(Date fromDate,Date toDate,String membershipId);
+	public List<Object[]> getAppointmentDetails(Date fromDate,Date toDate,Long tdpCadreId);
 	public List<Object[]> getAppointmentList(List<Long> appointmentIds);
+	public List<Object[]> getLeaderAppointmentDetails(Date fromDate,Date toDate,Long tdpCadreId);
 }

@@ -4430,26 +4430,30 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  						vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[5]));
 		  						vo.setTypeOfIssue(commonMethodsUtilService.getStringValueForObject(objects[6]));
 		  						vo.setTotalGrivanceCount(count);
-		  						vo.getFilePthList().add(commonMethodsUtilService.getStringValueForObject(objects[7]));
+		  						if(objects[7] != null)
+		  							vo.getFilePthList().add(commonMethodsUtilService.getStringValueForObject(objects[7]));
 		  						complaintIdsList.add(vo.getComplaintId());
 		  						returnList.add(vo);
 		  					}
 		  				}
-		  				List<Object[]> filePathList = eventSurveyUserDAO.getFilePathUrlForComplaintIds(complaintIdsList);
-		  				if(filePathList != null && filePathList.size() > 0l){
-		  					for (Object[] objects : filePathList) {
-		  						Long complaintId = Long.valueOf(objects[0] != null ? objects[0].toString() :"0");
-		  						String filePath = objects[1] != null ? objects[1].toString():"";
-		  						List<String> filesList = filePathMap.get(complaintId);
-		  						if(filesList == null || filesList.isEmpty()){
-		  							filesList = new ArrayList<String>();
-		  							filesList.add(filePath);
-		  							filePathMap.put(complaintId,filesList);
-		  						}
-		  						else
-		  							filesList.add(filePath);
-							}
+		  				if(complaintIdsList != null && !complaintIdsList.isEmpty()){
+		  					List<Object[]> filePathList = eventSurveyUserDAO.getFilePathUrlForComplaintIds(complaintIdsList);
+			  				if(filePathList != null && filePathList.size() > 0l){
+			  					for (Object[] objects : filePathList) {
+			  						Long complaintId = Long.valueOf(objects[0] != null ? objects[0].toString() :"0");
+			  						String filePath = objects[1] != null ? objects[1].toString():"";
+			  						List<String> filesList = filePathMap.get(complaintId);
+			  						if(filesList == null || filesList.isEmpty()){
+			  							filesList = new ArrayList<String>();
+			  							filesList.add(filePath);
+			  							filePathMap.put(complaintId,filesList);
+			  						}
+			  						else
+			  							filesList.add(filePath);
+								}
+			  				}
 		  				}
+		  				
 		  				if(returnList != null && !returnList.isEmpty()){
 		  					for (PeshiAppGrievanceVO vo : returnList) {
 								vo.getFilePthList().addAll(filePathMap.get(vo.getComplaintId()));
@@ -4473,99 +4477,138 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				 toDate = sdf.parse(toDateStr);
 			 }
 			 List<Long> appointmnetIds = new ArrayList<Long>();
-			 List<PeshiAppAppointmentVO> returnList = new ArrayList<PeshiAppAppointmentVO>();
-			 List<Object[]> list = appointmentTimeSlotDAO.getAppointmentDetails(fromDate, toDate, membershipId);
-			 if(list != null && list.size()  > 0l){
-				 for (Object[] objects : list) {
-					PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
-					vo.setAppointmentStatusId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					vo.setAppoinmentId(commonMethodsUtilService.getLongValueForObject(objects[1]));
-					vo.setAppDescription(commonMethodsUtilService.getStringValueForObject(objects[2]));
-					vo.setAppDate(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					if(appointmnetIds == null || appointmnetIds.size() == 0){
-						returnVO.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));
-						returnVO.setMemberShipId(commonMethodsUtilService.getStringValueForObject(objects[5]));
-						returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
-						returnVO.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
-					}
-					vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
-					if(vo.getAppointmentStatusId() == 3l)
-						returnVO.getScheduledList().add(vo);
-					else if(vo.getAppointmentStatusId() == 4l)
-						returnVO.getCompletedList().add(vo);
-					else if(vo.getAppointmentStatusId() == 10l)
-						returnVO.getNotAttendedList().add(vo);
-					if(vo.getAppointmentStatusId() == 3l || vo.getAppointmentStatusId() == 4l || vo.getAppointmentStatusId() == 10l)	
-						returnVO.getTotalAppoinmentsList().add(vo);
-					
-					appointmnetIds.add(vo.getAppoinmentId());
-					returnList.add(vo);
-				}
-			 }
-			 Map<Long,List<PeshiAppAppointmentVO>> apntmentMembersMap = new HashMap<Long,List<PeshiAppAppointmentVO>>();
-			 List<Object[]> appntmentMembersList = appointmentTimeSlotDAO.getAppointmentList(appointmnetIds);
-			 if(appntmentMembersList != null && appntmentMembersList.size() > 0l){
-				 for (Object[] objects : appntmentMembersList) {
-					 Long apmnetId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
-					 String name = objects[1] != null ? objects[1].toString() : "";
-					 String mobileNo = objects[2] != null ? objects[2].toString() :"";
-					 String membershipNo = objects[3] != null ? objects[3].toString() : "";
-					 String image = objects[4] != null ? objects[4].toString() : "";
-					 List<PeshiAppAppointmentVO> memberList = apntmentMembersMap.get(apmnetId);
-					 if(memberList == null || memberList.isEmpty()){
-						 memberList = new ArrayList<PeshiAppAppointmentVO>();
-						 PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
-						 vo.setName(name);
-						 vo.setMobileNo(mobileNo);
-						 vo.setMemberShipId(membershipNo);
-						 vo.setImage(image);
-						 memberList.add(vo);
-						 apntmentMembersMap.put(apmnetId, memberList);
-					 }else{
-						 PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
-						 vo.setName(name);
-						 vo.setMobileNo(mobileNo);
-						 vo.setMemberShipId(membershipNo);
-						 vo.setImage(image);
-						 memberList.add(vo);
+			 Long tdpCadreId;
+			 
+			 List<Long> tdpCadreIds = tdpCadreDAO.getTdpCadreIdByMembershipId(membershipId);
+			 if(tdpCadreIds != null && !tdpCadreIds.isEmpty()){
+				 tdpCadreId = tdpCadreIds.get(0);
+				 if(cadreType != null && cadreType.trim().equalsIgnoreCase("leader")){
+					 List<Object[]> list = appointmentTimeSlotDAO.getLeaderAppointmentDetails(fromDate, toDate, tdpCadreId);
+					 if(list != null && !list.isEmpty()){
+						 for (Object[] objects : list) {
+							 PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
+							vo.setAppointmentStatusId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setAppoinmentId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+							vo.setAppDescription(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							vo.setAppDate(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							vo.setMemberShipId(commonMethodsUtilService.getStringValueForObject(objects[5]));
+							vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
+							vo.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							if(appointmnetIds == null || appointmnetIds.size() == 0){
+								returnVO.setId(commonMethodsUtilService.getLongValueForObject(objects[9]));
+								returnVO.setName(commonMethodsUtilService.getStringValueForObject(objects[10]));
+								returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[11]));
+							}
+							if(vo.getAppointmentStatusId() == 3l)
+								returnVO.getScheduledList().add(vo);
+							else if(vo.getAppointmentStatusId() == 4l)
+								returnVO.getCompletedList().add(vo);
+							else if(vo.getAppointmentStatusId() == 10l)
+								returnVO.getNotAttendedList().add(vo);
+							if(vo.getAppointmentStatusId() == 3l || vo.getAppointmentStatusId() == 4l || vo.getAppointmentStatusId() == 10l)	
+								returnVO.getTotalAppoinmentsList().add(vo);
+							
+							appointmnetIds.add(vo.getAppoinmentId());
+						}
 					 }
-				}
+				 }
+				 else if(cadreType != null && cadreType.trim().equalsIgnoreCase("cadre")){
+					 List<Object[]> list = appointmentTimeSlotDAO.getAppointmentDetails(fromDate, toDate, tdpCadreId);
+					 if(list != null && list.size()  > 0l){
+						 for (Object[] objects : list) {
+							PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
+							vo.setAppointmentStatusId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setAppoinmentId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+							vo.setAppDescription(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							vo.setAppDate(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							if(appointmnetIds == null || appointmnetIds.size() == 0){
+								returnVO.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+								returnVO.setMemberShipId(commonMethodsUtilService.getStringValueForObject(objects[5]));
+								returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
+								returnVO.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							}
+							vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							if(vo.getAppointmentStatusId() == 3l)
+								returnVO.getScheduledList().add(vo);
+							else if(vo.getAppointmentStatusId() == 4l)
+								returnVO.getCompletedList().add(vo);
+							else if(vo.getAppointmentStatusId() == 10l)
+								returnVO.getNotAttendedList().add(vo);
+							if(vo.getAppointmentStatusId() == 3l || vo.getAppointmentStatusId() == 4l || vo.getAppointmentStatusId() == 10l)	
+								returnVO.getTotalAppoinmentsList().add(vo);
+							
+							appointmnetIds.add(vo.getAppoinmentId());
+						}
+					 }
+				 }
 			 }
 			 
-			 if(returnList != null && !returnList.isEmpty()){
-				 for (PeshiAppAppointmentVO vo : returnList) {
-					if(vo.getTotalAppoinmentsList() != null && !vo.getTotalAppoinmentsList().isEmpty()){
-						for (PeshiAppAppointmentVO vo1 : vo.getTotalAppoinmentsList()) {
-							Long aptId = vo1.getAppoinmentId();
-							vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
-						}
+			 Map<Long,List<PeshiAppAppointmentVO>> apntmentMembersMap = new HashMap<Long,List<PeshiAppAppointmentVO>>();
+			 if(appointmnetIds != null && !appointmnetIds.isEmpty()){
+				 List<Object[]> appntmentMembersList = appointmentTimeSlotDAO.getAppointmentList(appointmnetIds);
+				 if(appntmentMembersList != null && appntmentMembersList.size() > 0l){
+					 for (Object[] objects : appntmentMembersList) {
+						 Long apmnetId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
+						 String name = objects[1] != null ? objects[1].toString() : "";
+						 String mobileNo = objects[2] != null ? objects[2].toString() :"";
+						 String membershipNo = objects[3] != null ? objects[3].toString() : "";
+						 String image = objects[4] != null ? objects[4].toString() : "";
+						 List<PeshiAppAppointmentVO> memberList = apntmentMembersMap.get(apmnetId);
+						 if(memberList == null || memberList.isEmpty()){
+							 memberList = new ArrayList<PeshiAppAppointmentVO>();
+							 PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
+							 vo.setName(name);
+							 vo.setMobileNo(mobileNo);
+							 vo.setMemberShipId(membershipNo);
+							 vo.setImage(image);
+							 memberList.add(vo);
+							 apntmentMembersMap.put(apmnetId, memberList);
+						 }else{
+							 PeshiAppAppointmentVO vo = new PeshiAppAppointmentVO();
+							 vo.setName(name);
+							 vo.setMobileNo(mobileNo);
+							 vo.setMemberShipId(membershipNo);
+							 vo.setImage(image);
+							 memberList.add(vo);
+						 }
 					}
-					if(vo.getScheduledList() != null && !vo.getScheduledList().isEmpty()){
-						for (PeshiAppAppointmentVO vo1 : vo.getScheduledList()) {
-							Long aptId = vo1.getAppoinmentId();
-							vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
-						}
-					}
-					if(vo.getCompletedList() != null && !vo.getCompletedList().isEmpty()){
-						for (PeshiAppAppointmentVO vo1 : vo.getCompletedList()) {
-							Long aptId = vo1.getAppoinmentId();
-							vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
-						}
-					}
-					if(vo.getNotAttendedList() != null && !vo.getNotAttendedList().isEmpty()){
-						for (PeshiAppAppointmentVO vo1 : vo.getNotAttendedList()) {
-							Long aptId = vo1.getAppoinmentId();
-							vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
-						}
+				 }
+			 }
+			 
+		 	if(returnVO != null){
+				if(returnVO.getTotalAppoinmentsList() != null && !returnVO.getTotalAppoinmentsList().isEmpty()){
+					for (PeshiAppAppointmentVO vo1 : returnVO.getTotalAppoinmentsList()) {
+						Long aptId = vo1.getAppoinmentId();
+						vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
 					}
 				}
-				 
-				 returnVO.setSecheduledCount(Long.valueOf(returnVO.getScheduledList().size()));
-				 returnVO.setCompletedCount(Long.valueOf(returnVO.getCompletedList().size()));
-				 returnVO.setNotCompletedCount(Long.valueOf(returnVO.getNotAttendedList().size()));
-				 returnVO.setTotalAppoinmentsCount(Long.valueOf(returnVO.getTotalAppoinmentsList().size()));
-				 returnVO.setGeneralVisitorsCount(0l);
-			 }
+				if(returnVO.getScheduledList() != null && !returnVO.getScheduledList().isEmpty()){
+					for (PeshiAppAppointmentVO vo1 : returnVO.getScheduledList()) {
+						Long aptId = vo1.getAppoinmentId();
+						vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
+					}
+				}
+				if(returnVO.getCompletedList() != null && !returnVO.getCompletedList().isEmpty()){
+					for (PeshiAppAppointmentVO vo1 : returnVO.getCompletedList()) {
+						Long aptId = vo1.getAppoinmentId();
+						vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
+					}
+				}
+				if(returnVO.getNotAttendedList() != null && !returnVO.getNotAttendedList().isEmpty()){
+					for (PeshiAppAppointmentVO vo1 : returnVO.getNotAttendedList()) {
+						Long aptId = vo1.getAppoinmentId();
+						vo1.setTotalAppoinmentsList(apntmentMembersMap.get(aptId));
+					}
+				}
+			}
+			 
+			 returnVO.setSecheduledCount(Long.valueOf(returnVO.getScheduledList().size()));
+			 returnVO.setCompletedCount(Long.valueOf(returnVO.getCompletedList().size()));
+			 returnVO.setNotCompletedCount(Long.valueOf(returnVO.getNotAttendedList().size()));
+			 returnVO.setTotalAppoinmentsCount(Long.valueOf(returnVO.getTotalAppoinmentsList().size()));
+			 returnVO.setGeneralVisitorsCount(0l);
 			 
 		 }catch(Exception e){
 			 log.error("exception occured in  the getAppointmentDetails  method in WebServiceHandlerService",e);

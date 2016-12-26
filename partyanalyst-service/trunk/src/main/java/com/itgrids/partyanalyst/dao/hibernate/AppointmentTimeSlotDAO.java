@@ -44,7 +44,7 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 		query.setParameter("appointmentId",appointmentId);
 		return (AppointmentTimeSlot)query.uniqueResult();
 	}
-	public List<Object[]> getAppointmentDetails(Date fromDate,Date toDate,String membershipId){
+	public List<Object[]> getAppointmentDetails(Date fromDate,Date toDate,Long tdpCadreId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.appointment.appointmentStatus.appointmentStatusId," +
 				" model.appointment.appointmentId,model.appointment.reason," +
@@ -55,7 +55,7 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 				" model.appointment.appointmentStatus.status" +
 				" from AppointmentTimeSlot model,AppointmentCandidateRelation model1" +
 				" where model.appointment.appointmentId = model1.appointment.appointmentId " +
-				" and model1.appointmentCandidate.membershipId = :membershipId" +
+				" and model1.appointmentCandidate.tdpCadreId = :tdpCadreId" +
 				" and model.isDeleted = 'N' and model.appointment.isDeleted = 'N'");
 		/*sb.append("select a.appointment_status_id,a.appointment_id,a.reason,ats.date,ac.name" +
 				" from appointment_candidate ac,appointment_time_slot ats,appointment_candidate_relation acr,appointment a " +
@@ -68,7 +68,7 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 			//sb.append(" and date(ats.from_date) = :fromDate and date(ats.to_date) = :toDate");
 		}
 		Query query = getSession().createQuery(sb.toString());
-			query.setParameter("membershipId", membershipId);
+			query.setParameter("tdpCadreId", tdpCadreId);
 		if(fromDate != null && toDate  != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
@@ -82,6 +82,36 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 				" where model.appointment.appointmentId in (:appointmentIds)" +
 				" and model.appointment.isDeleted = 'N'");
 		query.setParameterList("appointmentIds", appointmentIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getLeaderAppointmentDetails(Date fromDate,Date toDate,Long tdpCadreId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.appointment.appointmentStatus.appointmentStatusId," +
+				" model.appointment.appointmentId,model.appointment.reason," +
+				" model.date,model1.appointmentCandidate.name," +
+				" model1.appointmentCandidate.membershipId," +
+				" model1.appointmentCandidate.mobileNo," +
+				" model1.appointmentCandidate.imageURL," +
+				" model.appointment.appointmentStatus.status," +
+				" model.appointment.appointmentUser.appointmentUserId," +
+				" model.appointment.appointmentUser.name," +
+				" model.appointment.appointmentUser.mobile" +
+				" from AppointmentTimeSlot model,AppointmentCandidateRelation model1" +
+				" where model.appointment.appointmentId = model1.appointment.appointmentId " +
+				" and model.appointment.appointmentUser.tdpCadreId = :tdpCadreId" +
+				" and model.isDeleted = 'N' and model.appointment.isDeleted = 'N'");
+		if(fromDate != null && toDate != null)
+			sb.append(" and model.date between :fromDate and :toDate");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		if(fromDate != null && toDate  != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
 		return query.list();
 	}
 }
