@@ -307,7 +307,7 @@ function getUsers(constituencyId){
 		var userMobile = $(this).attr("attr_user_mobile");
 		var resultType="All"
 		var minValue = 0; 
-		var verificationStatus = "Total";
+		var verificationStatus = $('input[name=fltrCls]:checked').val();
 		$("input:radio").attr("checked", false);
 		//if(webUserId==0){
 			$("#userId").html("Tab UserID - "+tabUserId+"");	
