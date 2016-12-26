@@ -25,4 +25,9 @@ public interface IConstants {
 	public static final String STATIC_CONTENT_FOLDER ="C:/Program Files (x86)/Apache Software Foundation/Tomcat 6.0/webapps/CardPrint/";
 	
 	public static final String[] MONTH_NAMES = {"Jan", "Feb", "March", "April", "May", "June", "July", "August", "Sep", "Oct", "Nov", "Dec"};  
+	
+	public final Long MAX_PRINT_VENDOR_ID = 1L;
+	public final Long ZEBRA_PRINT_VENDOR_ID = 2L;
+	
+	public final int  noOfRecordsUpdate = 100;
 }
