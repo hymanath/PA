@@ -50,5 +50,17 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreCardPrintDAO" class="com.itgrids.cardprint.dao.impl.TdpCadreCardPrintDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="zebraPrintDetailsDAO" class="com.itgrids.cardprint.dao.impl.ZebraPrintDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="maxPrintDetailsDAO" class="com.itgrids.cardprint.dao.impl.MaxPrintDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 </beans>		
