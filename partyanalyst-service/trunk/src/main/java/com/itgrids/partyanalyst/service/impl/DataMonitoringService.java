@@ -910,7 +910,7 @@ public class DataMonitoringService implements IDataMonitoringService {
   				for(IdNameVO idNameVO : idNameVOs){
   					Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(idNameVO.getId());
   					if(idNameVO.getStatus().trim().equalsIgnoreCase("Rejected")){
-  						tdpCadreDataVerificationDAO.updateApprovedCadre(idNameVO.getCadreId(),null,dateUtilService.getCurrentDateAndTime());
+  						tdpCadreDataVerificationDAO.updateApprovedCadre(idNameVO.getCadreId(),null);
   						Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);
   					}else if(idNameVO.getStatus().trim().equalsIgnoreCase("noStatus")){
   						TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
