@@ -2,13 +2,19 @@ package com.itgrids.partyanalyst.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name ="appointment_user")
@@ -19,6 +25,8 @@ public class AppointmentUser extends BaseModel {
 	private String name;
 	private String mobile;
 	private String uniqueIdPrefix;
+	private Long tdpCadreId;
+	private TdpCadre tdpCadre;
   
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,5 +60,22 @@ public class AppointmentUser extends BaseModel {
 		this.uniqueIdPrefix = uniqueIdPrefix;
 	}
 	
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
 	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
 }

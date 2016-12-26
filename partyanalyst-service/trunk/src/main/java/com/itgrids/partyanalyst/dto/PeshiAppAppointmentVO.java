@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PeshiAppAppointmentVO implements Serializable{
@@ -24,10 +25,10 @@ public class PeshiAppAppointmentVO implements Serializable{
 	private String presentStatus;
 	private Long appointmentStatusId;
 	
-	private List<PeshiAppAppointmentVO> scheduledList;
-	private List<PeshiAppAppointmentVO> completedList;
-	private List<PeshiAppAppointmentVO> totalAppoinmentsList;
-	private List<PeshiAppAppointmentVO> notAttendedList;
+	private List<PeshiAppAppointmentVO> scheduledList = new ArrayList<PeshiAppAppointmentVO>();
+	private List<PeshiAppAppointmentVO> completedList = new ArrayList<PeshiAppAppointmentVO>();
+	private List<PeshiAppAppointmentVO> totalAppoinmentsList = new ArrayList<PeshiAppAppointmentVO>();
+	private List<PeshiAppAppointmentVO> notAttendedList = new ArrayList<PeshiAppAppointmentVO>();
 	
 	
 	
