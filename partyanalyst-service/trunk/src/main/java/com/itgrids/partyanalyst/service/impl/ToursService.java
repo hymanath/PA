@@ -5,6 +5,7 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ import com.itgrids.partyanalyst.dao.ITourTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
@@ -48,6 +52,7 @@ import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -80,8 +85,14 @@ public class ToursService implements IToursService {
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IPanchayatDAO panchayatDAO;
+	private ICadreCommitteeService cadreCommitteeService;
 	
 	
+	
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	public void setSelfAppraisalCandidateDocumentDAO(
 			ISelfAppraisalCandidateDocumentDAO selfAppraisalCandidateDocumentDAO) {
 		this.selfAppraisalCandidateDocumentDAO = selfAppraisalCandidateDocumentDAO;
@@ -1155,6 +1166,129 @@ public class ToursService implements IToursService {
     	}
     	return finalList;
     }
+	
+	public List<PMMinuteVO> getNewTourRetrivalDetails(Long candidateId,String tourDate,Long candidateDayTourId){
+		
+		List<PMMinuteVO> finalList = new ArrayList<PMMinuteVO>();
+		
+		try{
+			
+			SelfAppraisalCandidateDayTour dayTour = selfAppraisalCandidateDayTourDAO.get(candidateDayTourId);			
+			
+			if(dayTour !=null){
+				
+				PMMinuteVO vo = new PMMinuteVO();
+				
+				vo.setTourDate(dayTour.getTourDate() !=null ? dayTour.getTourDate().toString():null);
+				vo.setTdpCadreId(dayTour.getSelfAppraisalCandidate().getTdpCadreId());
+				vo.setTourCategoryId(dayTour.getSelfAppraisalTourCategoryId());
+				vo.setTourTypeId(dayTour.getTourTypeId() !=null ? dayTour.getTourTypeId():null);
+				vo.setLocationScopeId(dayTour.getLocationScopeId());
+				vo.setLocationValue(dayTour.getLocationValue());
+				vo.setUserAddressId(dayTour.getAddressId() !=null ? dayTour.getAddressId():null);
+				
+				if(vo.getTdpCadreId() !=null){
+					vo.setCategoryList(getAllTourCategorys(vo.getTdpCadreId()));
+				}
+				if(vo.getTourTypeId() !=null){
+					vo.setTourTypeList(getAllTourTypes());
+				}
+				
+				if(vo.getUserAddressId() != null && vo.getUserAddressId() > 0l){
+  				  List<Object[]> userDetailsList = userAddressDAO.getUserAddressDetailsByMinuteId(vo.getUserAddressId());
+  				  if(userDetailsList != null && userDetailsList.size() > 0){
+  					  for (Object[] objects2 : userDetailsList) {
+  						  vo.setStateId(commonMethodsUtilService.getLongValueForObject(objects2[0]));
+  						  if(objects2[0] != null && (Long)objects2[0] > 0l){
+  							  List<Object[]> objList = districtDAO.getDistrictsWithNewSplitted((Long)objects2[0]);
+  							  vo.setDistList(setValuesTOVOList(objList));
+  						  }
+  						  
+  						  vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
+  						  if(objects2[1] != null && (Long)objects2[1] > 0l){
+  							  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getConstituencyOfDistrict(vo.getStateId(),Arrays.asList(vo.getDistrictId()));
+  							  vo.setConstList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
+  							  
+  						  }
+  						  
+  						  vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
+  						  if(objects2[2] != null && (Long)objects2[2] > 0l){
+  							  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),"0",4l);
+  							  vo.setManTowDivList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
+  						  }
+  						  
+  						  vo.setTehsilId(objects2[3] != null && (Long)objects2[3] > 0l ? Long.parseLong("4"+objects2[3].toString()):0l);	    						  
+  						  vo.setLocalElectionBodyId(objects2[4] != null && (Long)objects2[4] > 0l ? Long.parseLong("5"+objects2[4].toString()):0l);
+  						  
+  						  if(vo.getLocalElectionBodyId() !=null && vo.getLocalElectionBodyId()>0 && objects2[5] !=null && (Long)objects2[5]>0){
+  							  vo.setWardId(objects2[5] != null && (Long)objects2[5] > 0l ? Long.parseLong("8"+objects2[5].toString()):0l);
+  						  }else{
+  							  vo.setDivisionId(objects2[5] != null && (Long)objects2[5] > 0l ? Long.parseLong("6"+objects2[5].toString()):0l);
+  						  }	    						  	    						 
+  						  vo.setPanchayatId(objects2[6] != null && (Long)objects2[6] > 0l ? Long.parseLong("7"+objects2[6].toString()):0l);
+  						  
+  						  if((objects2[3] !=null && (Long)objects2[3]>0l)){
+  							  
+  							  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getTehsilId().toString(),5l);	    							  
+  							  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  							  
+  						  }
+  						  if(objects2[4] != null && (Long)objects2[4] > 0l){
+  							  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getLocalElectionBodyId().toString(),5l);	    							  
+  							  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  						  }
+  						  if(vo.getDivisionId() !=null && vo.getDivisionId() >0l)
+  						  {
+  							  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getDivisionId().toString(),5l);	    							  
+  							  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  						  }
+  					  }
+  				  }
+  			  }
+				
+				
+				
+			
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<KeyValueVO> setValuesTOVOList(List<Object[]> objList){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects3 : objList) {
+					KeyValueVO kkvo = new KeyValueVO();
+					kkvo.setId(objects3[0] != null && (Long)objects3[0] > 0l ? (Long)objects3[0]:0l);
+					kkvo.setName(objects3[1]!=null && !objects3[1].toString().isEmpty() ? objects3[1].toString():"");
+					voList.add(kkvo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setValuesTOVOList", e);
+		}
+		return voList;
+	}
+	public List<KeyValueVO> setResultTOLocationWiseBoothDetailsVO(List<LocationWiseBoothDetailsVO> lwbdvoList){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			if(lwbdvoList != null && lwbdvoList.size() > 0){
+				  for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : lwbdvoList) {
+					KeyValueVO vo1 = new KeyValueVO();
+					vo1.setId(locationWiseBoothDetailsVO.getLocationId());
+					vo1.setName(locationWiseBoothDetailsVO.getLocationName());
+					voList.add(vo1);
+				  }
+			  }
+		} catch (Exception e) {
+			LOG.error("Exception raised at setResultTOLocationWiseBoothDetailsVO", e);
+		}
+		return voList;
+	}
     
     
 }
