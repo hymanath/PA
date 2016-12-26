@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "state", catalog = "party_analyst")
+@Table(name = "state")
 public class State implements java.io.Serializable {
 
 	private static final long serialVersionUID = 3262036959797739995L;
