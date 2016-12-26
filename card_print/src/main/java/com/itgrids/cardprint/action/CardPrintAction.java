@@ -138,4 +138,28 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String  updatePrintDetailsToTdpCadreCardPrint(){
+		try{
+			
+			HttpSession session = request.getSession();
+			UserVO user = (UserVO) session.getAttribute("USER");
+			if(user == null || user.getUserId() == null){
+			    resultStatus = new ResultStatus();
+				resultStatus.setResultCode(0);
+				resultStatus.setExceptionMsg("USER HAS LOGGED OUT.PLEASE SIGN IN..");
+				return Action.SUCCESS;
+			}
+			
+			jobj = new JSONObject(getTask());
+			Long constituencyId = jobj.getLong("constituencyId");
+			
+			resultStatus = cardPrintService.updatePrintDetailsToTdpCadreCardPrint(constituencyId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occurred At updatePrintDetailsToTdpCadreCardPrint() in CardPrintAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
 }
