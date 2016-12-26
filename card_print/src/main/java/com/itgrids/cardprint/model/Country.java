@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "country", catalog = "party_analyst")
+@Table(name = "country")
 public class Country implements java.io.Serializable {
 	
 	private static final long serialVersionUID = -1001384285493215728L;
