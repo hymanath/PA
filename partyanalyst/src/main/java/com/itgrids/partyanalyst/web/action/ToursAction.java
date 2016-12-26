@@ -19,10 +19,12 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
+import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.opensymphony.xwork2.Action;
@@ -50,9 +52,31 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	  
 	   private  List<AddressVO> addressVOList; 
 	   private  List<IdNameVO> idNameVoList;
+	   private PMMinuteVO pMMinuteVO;
+	   private List<ToursVO> toursVOList;
+	   private ToursVO toursVO;
 	   
 	   
-	   public List<IdNameVO> getIdNameVoList() {
+	
+	public ToursVO getToursVO() {
+		return toursVO;
+	}
+	public void setToursVO(ToursVO toursVO) {
+		this.toursVO = toursVO;
+	}
+	public List<ToursVO> getToursVOList() {
+		return toursVOList;
+	}
+	public void setToursVOList(List<ToursVO> toursVOList) {
+		this.toursVOList = toursVOList;
+	}
+	public PMMinuteVO getpMMinuteVO() {
+		return pMMinuteVO;
+	}
+	public void setpMMinuteVO(PMMinuteVO pMMinuteVO) {
+		this.pMMinuteVO = pMMinuteVO;
+	}
+	public List<IdNameVO> getIdNameVoList() {
 		return idNameVoList;
 	}
 	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
@@ -474,7 +498,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	public String getAllTourCategorys(){
 		try{
 			jObj = new JSONObject(getTask());
-			idNameVoList = toursService.getAllTourCategorys(jObj.getLong("candidateId"));
+			idNameVoList = toursService.getAllTourCategorys(jObj.getLong("cadreId"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getAllTourCategorys()  of ToursAction", e);
 		}
@@ -483,9 +507,9 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	public String getAllCandidateLocations(){  
 		try{
 			jObj = new JSONObject(getTask());
-			Long tourCategoryId = jObj.getLong("tourCategoryId");
-			Long tourCandidateId = jObj.getLong("tourCandidateId");
-			addressVOList = toursService.getAllCandidateLocations(tourCategoryId,tourCandidateId);
+			Long cadreId = jObj.getLong("cadreId");
+			Long categoryId = jObj.getLong("categoryId");
+			pMMinuteVO = toursService.getAllCandidateLocations(cadreId,categoryId);
 		}catch(Exception e){  
 			e.printStackTrace();    
 			LOG.error("Exception raised at getAllCondidateLocations()  of ToursAction", e);

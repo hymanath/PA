@@ -137,35 +137,66 @@
 												<div class="col-md-3 col-xs-12 col-sm-3">
 													<label>Tour Date</label>
 													<div class="input-group inputGCustom">
-														<input type="text" class="form-control" id="tourDateId0" name="toursInputVO.tourDateId">
+														<input type="text" class="form-control" id="tourDateId0" name="toursVOList[0].tourDateId">
 														<span class="input-group-addon">
 															<i class="glyphicon glyphicon-calendar"></i>
 														</span>
 													</div>
 												</div>
+												<div class="col-md-3 col-xs-12 col-sm-3">
+													<label>Tour Type</label>
+													<select class="form-control" id="tourTypeId0" name="toursVOList[0].tourTypeId">   <option value="0">Tour Type</option>
+													 </select>
+												</div>
 												<div class="col-md-4 col-xs-12 col-sm-4">
 													<label>Tour Category</label>
-													<select class="form-control" id="tourCategoryId0" name="toursInputVO.tourCategoryId">    
+													<select class="form-control tourCategoryCls" id="tourCategoryId0" attr_count="0" name="toursVOList[0].tourCategoryId">    
 													   <option value="0">Tour Category</option>
 													 </select>
 												</div>
 												<div class="col-md-2 col-xs-12 col-sm-2">
 													<label>Tour Location</label>
-													<select class="form-control" id="tourLocationId0" name="toursInputVO.tourLocationId">
-														<option>a</option>
+													<select class="form-control" id="tourLocationId0" name="toursVOList[0].tourLocationId">
+														<option value="0">Tour Location</option>
 													</select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-3">
-													<label>Tour Type</label>
-													<select class="form-control" id="tourTypeId0" name="toursInputVO.tourTypeId">    
-													   <option value="0">Tour Type</option>
-													 </select>
+											</div>
+											<div class="row">
+												<div class="col-md-2 col-xs-12 col-sm-2" id="stateDivId0" style="display:none;">
+													<label>State</label>
+													<select class="form-control" id="stateSelId0" name="toursVOList[0].stateId">
+														<option value="0">Select State</option>
+													</select>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2" id="districtDivId0" style="display:none;">
+													<label>District</label>
+													<select class="form-control" id="districtSelId0" name="toursVOList[0].districtId">
+														<option value="0">Select District</option>
+													</select>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2" id="constituencyDivId0" style="display:none;">
+													<label>Constituency</label>
+													<select class="form-control" id="constituencySelId0" name="toursVOList[0].constituencyId">
+														<option value="0">Select Constituency</option>
+													</select>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2" id="tehMunDivId0" style="display:none;">
+													<label>Tehsil / Municipality</label>
+													<select class="form-control" id="tehMunSelId0" name="toursVOList[0].localBodyId">
+														<option value="0">Select Tehsil / Municipality</option>
+													</select>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2" id="villWardDivId0" style="display:none;">
+													<label>Village / Ward</label>
+													<select class="form-control" id="villWardSelId0" name="toursVOList[0].panchayatWardId">
+														<option value="0">Select Village / Ward</option>
+													</select>
 												</div>
 											</div>
 											<div class="row m_top10">
 												<div class="col-md-12 col-xs-12 col-sm-12">
 													<label>Add Comment/Tour Description</label>
-													<textarea class="form-control" id="tourtextAreaId0" name="toursInputVO.tourtextAreaId"></textarea>
+													<textarea class="form-control" id="tourtextAreaId0" name="toursVOList[0].description"></textarea>
 												</div>
 											</div>
 										</div>
@@ -207,35 +238,67 @@
 				<div class="col-md-3 col-xs-12 col-sm-3">
 					<label>Tour Date</label>
 					<div class="input-group inputGCustom">
-						<input type="text" class="form-control tourDateCls" id="" name="toursInputVO.tourDateId">
+						<input type="text" class="form-control tourDateCls">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
 					</div>
 				</div>
+				<div class="col-md-3 col-xs-12 col-sm-3">
+					<label>Tour Type</label>
+					<select class="form-control tourTypeCls">    
+					   <option value="0">Tour Type</option>
+					 </select>
+				</div>
 				<div class="col-md-4 col-xs-12 col-sm-4">
 					<label>Tour Category</label>
-					<select class="form-control tourCategoryCls" id="" name="toursInputVO.tourCategoryId">    
+					<select class="form-control tourCategoryCls">    
 					   <option value="0">Tour Category</option>
 					 </select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-2">
 					<label>Tour Location</label>
-					<select class="form-control tourLocationCls" id="" name="toursInputVO.tourLocationId">
-						<option>a</option>
+					<select class="form-control tourLocationCls">
+						<option value="0">Tour Location</option>
 					</select>
 				</div>
-				<div class="col-md-3 col-xs-12 col-sm-3">
-					<label>Tour Type</label>
-					<select class="form-control tourTypeCls" id="" name="toursInputVO.tourTypeId">    
-					   <option value="0">Tour Type</option>
-					 </select>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-xs-12 col-sm-2 stateDivCls" style="display:none;">
+					<label>State</label>
+					<select class="form-control stateSelCls">
+						<option value="0">Select State</option>
+					</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-2 districtDivCls" style="display:none;">
+					<label>District</label>
+					<select class="form-control districtSelCls">
+						<option value="0">Select District</option>
+					</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-2 constituencyDivCls" style="display:none;">
+					<label>Constituency</label>
+					<select class="form-control constituencySelCls">
+						<option value="0">Select Constituency</option>
+					</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-2 tehMunDivCls" style="display:none;">
+					<label>Tehsil / Municipality</label>
+					<select class="form-control tehMunSelCls">
+						<option value="0">Select Tehsil / Municipality</option>
+					</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-2 villWardDivCls"  style="display:none;">
+					<label>Village / Ward</label>
+					<select class="form-control villWardSelCls">
+						<option value="0">Select Village / Ward</option>
+					</select>
 				</div>
 			</div>
 			<div class="row m_top10">
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<label>Add Comment/Tour Description</label>
-					<textarea class="form-control tourtextAreaCls" id="" name="toursInputVO.tourtextAreaId"></textarea>
+					<textarea class="form-control tourtextAreaCls"></textarea>
 				</div>
 			</div>
 		</div>
@@ -320,21 +383,43 @@ $( document ).ready(function() {
 			});
 			c.css("display","block");
 		c.find(".tourDateCls").attr("id","tourDateId"+newsTourCloneCount);
-		c.find(".tourDateCls").attr("name","toursInputVO.tourDateId");
+		c.find(".tourDateCls").attr("name","toursVOList["+newsTourCloneCount+"].tourDateId");
 		
 		c.find(".tourCategoryCls").attr("id","tourCategoryId"+newsTourCloneCount);
-		c.find(".tourCategoryCls").attr("name","toursInputVO.tourCategoryId");
+		c.find(".tourCategoryCls").attr("name","toursVOList["+newsTourCloneCount+"].tourCategoryId");
+		c.find(".tourCategoryCls").attr("attr_count",newsTourCloneCount);
 	
 		c.find(".tourLocationCls").attr("id","tourLocationId"+newsTourCloneCount);
-		c.find(".tourLocationCls").attr("name","toursInputVO.tourLocationId");
+		c.find(".tourLocationCls").attr("name","toursVOList["+newsTourCloneCount+"].tourLocationId");
 		
 		c.find(".tourTypeCls").attr("id","tourTypeId"+newsTourCloneCount);
-		c.find(".tourTypeCls").attr("name","toursInputVO.tourTypeId");
+		c.find(".tourTypeCls").attr("name","toursVOList["+newsTourCloneCount+"].tourTypeId");
 		
 		c.find(".tourtextAreaCls").attr("id","tourtextAreaId"+newsTourCloneCount);
 		
-		c.find(".tourtextAreaCls").attr("name","toursInputVO.tourtextAreaId");
+		c.find(".tourtextAreaCls").attr("name","toursVOList["+newsTourCloneCount+"].tourtextAreaId");
 		c.find(".newsTourRemoveBtnCls").attr("attr_div_id","newsTourCloneDivId"+newsTourCloneCount);
+		
+		c.find(".stateSelCls").attr("id","stateSelId"+newsTourCloneCount);
+		c.find(".stateSelCls").attr("name","toursVOList["+newsTourCloneCount+"].stateId");
+		c.find(".stateDivCls").attr("id","stateDivId"+newsTourCloneCount);
+		
+		c.find(".districtSelCls").attr("id","districtSelId"+newsTourCloneCount);
+		c.find(".districtSelCls").attr("name","toursVOList["+newsTourCloneCount+"].districtId");
+		c.find(".districtDivCls").attr("id","districtDivId"+newsTourCloneCount);
+		
+		c.find(".constituencySelCls").attr("id","constituencySelId"+newsTourCloneCount);
+		c.find(".constituencySelCls").attr("name","toursVOList["+newsTourCloneCount+"].constituencyId");
+		c.find(".constituencyDivCls").attr("id","constituencyDivId"+newsTourCloneCount);
+		
+		c.find(".tehMunSelCls").attr("id","tehMunSelId"+newsTourCloneCount);
+		c.find(".tehMunSelCls").attr("name","toursVOList["+newsTourCloneCount+"].localBodyId");
+		c.find(".tehMunDivCls").attr("id","tehMunDivId"+newsTourCloneCount);
+		
+		c.find(".villWardSelCls").attr("id","villWardSelId"+newsTourCloneCount);
+		c.find(".villWardSelCls").attr("name","toursVOList["+newsTourCloneCount+"].panchayatWardId");
+		c.find(".villWardDivCls").attr("id","villWardDivId"+newsTourCloneCount);
+		
 		$("#addNewTourBlock").append(c);
 			if(TourCategoryArray != null && TourCategoryArray.length>0){
 				for(var i in TourCategoryArray){
@@ -349,7 +434,6 @@ $( document ).ready(function() {
 				$('#tourTypeId'+newsTourCloneCount).chosen();
 			}
 		
-			$('#tourLocationId'+newsTourCloneCount).chosen();
 			$("#tourDateId"+newsTourCloneCount).daterangepicker({
 				singleDatePicker: true,
 				maxDate:moment(),
