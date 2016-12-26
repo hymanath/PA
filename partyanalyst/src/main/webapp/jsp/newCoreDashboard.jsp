@@ -2976,7 +2976,7 @@
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
 					</div>!-->
-					<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+					<!-- <div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
 					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
