@@ -25,10 +25,23 @@ public class PMMinuteVO implements Serializable{
 	private Long locationLevel;
 	private Long divisionId;
 	
+	//Tour
+	
+	private Long addressId;
+	private Long tourTypeId;
+	private Long tourCategoryId;
+	private Long tdpCadreId;
+	private Long locationScopeId;
+	private Long locationValue;
+	private String tourDate;
+	
 	private List<KeyValueVO> distList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> constList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> manTowDivList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> panWardList = new ArrayList<KeyValueVO>(0);
+	
+	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
 	
 	public Long getWardId() {
 		return wardId;
@@ -143,6 +156,60 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setPanWardList(List<KeyValueVO> panWardList) {
 		this.panWardList = panWardList;
+	}
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	public Long getTourTypeId() {
+		return tourTypeId;
+	}
+	public void setTourTypeId(Long tourTypeId) {
+		this.tourTypeId = tourTypeId;
+	}
+	public Long getTourCategoryId() {
+		return tourCategoryId;
+	}
+	public void setTourCategoryId(Long tourCategoryId) {
+		this.tourCategoryId = tourCategoryId;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+	public String getTourDate() {
+		return tourDate;
+	}
+	public void setTourDate(String tourDate) {
+		this.tourDate = tourDate;
+	}
+	public List<IdNameVO> getCategoryList() {
+		return categoryList;
+	}
+	public void setCategoryList(List<IdNameVO> categoryList) {
+		this.categoryList = categoryList;
+	}
+	public List<IdNameVO> getTourTypeList() {
+		return tourTypeList;
+	}
+	public void setTourTypeList(List<IdNameVO> tourTypeList) {
+		this.tourTypeList = tourTypeList;
 	}
 	
 	
