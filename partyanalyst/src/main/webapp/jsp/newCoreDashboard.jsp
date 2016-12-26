@@ -2957,7 +2957,13 @@
 					</div>
 					<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10" style="display:none;" >
 						<div class="row">
-							 <h2 class="panel-title text-capital"><b>Tour Complaince</b></h2>
+							 <h4><span class="headingColor text-capital">Tour Complaince</span></h4>
+							 	<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="tourComplainceCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+											<li class="tourComplainceCls " attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+										</ul>
+								</div> 
 							 <div id="buildgDesignationWiseToursTopFiveComplainceDivId"></div>
 						</div>
 						
@@ -2969,15 +2975,16 @@
 						<ul class="list-inline pull-right activeUlCls">
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
-					</div>
+					</div>!-->
 					<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
 							
 				</div>
 			</div>
 			</div>
-	 </div>--> 
+	 </div>-->
 	<!--Tours New End -->
 	</div>
 </div> 
@@ -3508,6 +3515,30 @@
 		</div>
 	</div>  
 </div>      
+<!-- Tour Details Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="tourDetailsModalId">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
+				<div class="col-md-4 pull-right designationSelectBoxCls">
+				<select  class="form-control" id="tourDesignationSelectBoxId"></select>		
+				</div>				
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+                       <div id="tourDetailsDivId"></div>
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>

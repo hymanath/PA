@@ -3320,12 +3320,37 @@ public String getDesignationWiseAverageTourPerformanceDtls(){
 	try {
 		LOG.info("Entered into getDesignationWiseMembersDtls()  of CoreDashboardAction");
 		jObj = new JSONObject(getTask());
+		
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
 		Long userTypeId = jObj.getLong("userTypeId");
-		toursDtlsList = coreDashboardToursService.getDesignationWiseAverageTourPerformanceDtls(stateId,fromDate,toDate,activityMemberId,userTypeId);
+		
+		//filter parameter
+		List<Long> desgnatnIdsLst = new ArrayList<Long>();
+		JSONArray designationIdsArr=jObj.getJSONArray("designationIds");
+		if(designationIdsArr!=null &&  designationIdsArr.length()>0){
+			for( int i=0;i<designationIdsArr.length();i++){
+				desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
+			}
+		}
+		String isFilterApply = jObj.getString("isFilterApply");
+		String filterType = jObj.getString("filterType");
+		Double  ownDistValue = jObj.getDouble("ownDistValue");
+		Double  ownCnsttuncyValue = jObj.getDouble("ownCnsttuncyValue");
+		Double  ichargeDistrictValue = jObj.getDouble("ichargeDistrictValue");
+		Double  incharegeConstituencyValue = jObj.getDouble("incharegeConstituencyValue");
+		Double  govtWorkValue = jObj.getDouble("govtWorkValue");
+		Double  complainceValue = jObj.getDouble("complainceValue");
+		
+		
+	
+		
+		toursDtlsList = coreDashboardToursService.getDesignationWiseAverageTourPerformanceDtls(
+																								stateId,fromDate,toDate,activityMemberId,
+																								userTypeId,desgnatnIdsLst,isFilterApply,filterType,
+																								ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDesignationWiseMembersDtls() method of CoreDashBoard", e);
 	}
@@ -3379,5 +3404,31 @@ public String getIndividualPersonTourDetails(){
 	}
 	return Action.SUCCESS;
 }
-
+public String getTourLeaderDtlsBasedOnSelectionType(){
+	try {
+		LOG.info("Entered into getTourLeaderDtlsBasedOnSelectionType()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		
+		//filter parameter
+		List<Long> desgnatnIdsLst = new ArrayList<Long>();
+		JSONArray designationIdsArr=jObj.getJSONArray("designationIds");
+		if(designationIdsArr!=null &&  designationIdsArr.length()>0){
+			for( int i=0;i<designationIdsArr.length();i++){
+				desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
+			}
+		}
+		String filterType = jObj.getString("filterType");
+		toursDtlsList = coreDashboardToursService.getTourLeaderDtlsBasedOnSelectionType(stateId,fromDate,toDate,activityMemberId,userTypeId,desgnatnIdsLst,filterType);
+																							
+	} catch (Exception e) {
+		LOG.error("Exception raised at getTourLeaderDtlsBasedOnSelectionType() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
