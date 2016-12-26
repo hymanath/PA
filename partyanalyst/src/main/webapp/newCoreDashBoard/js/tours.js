@@ -2001,7 +2001,7 @@ function getToursBasicOverviewCountDetails()
 			 return;
 		} 
 		var jsObj ={ 
-					 activityMemberId :globalActivityMemberId ,
+					 activityMemberId :44 ,
 					 stateId : globalStateIdForTour,
 					 fromDate :"" ,
 					 toDate : "",
@@ -2384,7 +2384,7 @@ function getToursBasicOverviewCountDetails()
 	
 	 $("#tourDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 	var jsObj ={ 
-					 activityMemberId : globalActivityMemberId,
+					 activityMemberId : 44,
 					 stateId : globalStateIdForTour,
 					 fromDate : "",
 					 toDate : "",
