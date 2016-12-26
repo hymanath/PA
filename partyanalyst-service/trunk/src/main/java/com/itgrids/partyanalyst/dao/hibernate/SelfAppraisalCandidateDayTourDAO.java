@@ -104,7 +104,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  }
 		  return query.list();
     }
-	 public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,Date fromDate,Date toDate){
+	 public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,Date fromDate,Date toDate,List<Long> designationIds){
 		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select  " +
 		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
@@ -146,19 +146,24 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   query.setDate("fromDate", fromDate);
 			   query.setDate("toDate", toDate);
 		   }
-		   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
-		    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
-	       }else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-	     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
-	       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
-	     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
-	       }else if(userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID){
-	     		query.setParameterList("designationIds",Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS));
-	      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-	     		query.setParameterList("designationIds",Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS));
-	      }else if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
-	     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
-	      }
+		   if(designationIds != null && designationIds.size() > 0){
+			   query.setParameterList("designationIds",designationIds);   
+		   }else{
+			   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+			    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
+		       }else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		       }else if(userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS));
+		      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS));
+		      }else if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
+		      }   
+		   }
+		
 		   return query.list();  
 	   }
 	 public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId){
