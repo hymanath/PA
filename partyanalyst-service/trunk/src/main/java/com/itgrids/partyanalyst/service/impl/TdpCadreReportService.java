@@ -2899,12 +2899,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					
 					if(zebraPrintDetails != null)
 					{
-						registrationVO.setImageBase64String(zebraPrintDetails.getImage());
+						//registrationVO.setImageBase64String(zebraPrintDetails.getImage());
 						
-						registrationVO.setVoterName(StringEscapeUtils.unescapeJava(zebraPrintDetails.getVoterName()));					
-						registrationVO.setConstituencyId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getConsiteuncyName())+" "+"( "+areaInTeluguFontMap.get("constituency")+" )");
+						//registrationVO.setVoterName(StringEscapeUtils.unescapeJava(zebraPrintDetails.getVoterName()));					
+						//registrationVO.setConstituencyId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getConsiteuncyName())+" "+"( "+areaInTeluguFontMap.get("constituency")+" )");
 						registrationVO.setAddress(StringEscapeUtils.unescapeJava(zebraPrintDetails.getDistrictName())+" "+"( "+areaInTeluguFontMap.get("district")+" )");
-						registrationVO.setPreviousEnrollmentNumber(zebraPrintDetails.getMemberShipNumber());
+						//registrationVO.setPreviousEnrollmentNumber(zebraPrintDetails.getMemberShipNumber());
 						
 						if(zebraPrintDetails.getConstituencyType().trim().equalsIgnoreCase("R"))
 						{
