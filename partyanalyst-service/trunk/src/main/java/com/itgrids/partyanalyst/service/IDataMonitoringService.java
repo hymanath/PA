@@ -25,4 +25,5 @@ public interface IDataMonitoringService {
 	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
 	public String getTabUserImages();
 	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType);
+	public ResultStatus changeImageByVoterImage(List<IdNameVO> idNameVOs);
 }
