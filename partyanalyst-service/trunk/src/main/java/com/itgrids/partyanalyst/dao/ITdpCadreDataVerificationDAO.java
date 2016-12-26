@@ -17,4 +17,5 @@ public interface ITdpCadreDataVerificationDAO extends GenericDao<TdpCadreDataVer
 	public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);
 	public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);
 	public  List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);
+	public Integer updateApprovedCadre(Long cadreId,String statusId,Date currentDate);
 }
