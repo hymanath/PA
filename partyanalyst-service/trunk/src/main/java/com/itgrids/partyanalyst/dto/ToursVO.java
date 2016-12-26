@@ -34,7 +34,7 @@ public class ToursVO {
 	private Long panchayatId;
 	private Long wardId;
 	
-	private Long panchayatNewId;
+	private Long panchayatWardId;
 	private Long localBodyId;
 	
 
@@ -216,12 +216,12 @@ public class ToursVO {
 		this.wardId = wardId;
 	}
 
-	public Long getPanchayatNewId() {
-		return panchayatNewId;
+	public Long getPanchayatWardId() {
+		return panchayatWardId;
 	}
 
-	public void setPanchayatNewId(Long panchayatNewId) {
-		this.panchayatNewId = panchayatNewId;
+	public void setPanchayatWardId(Long panchayatWardId) {
+		this.panchayatWardId = panchayatWardId;
 	}
 
 	public Long getLocalBodyId() {
