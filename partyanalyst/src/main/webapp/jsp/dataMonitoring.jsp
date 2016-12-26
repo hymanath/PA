@@ -50,6 +50,7 @@
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-6">
                     	<button class="btn btn-success  m_top25 text-capital pull-right" id="getRegStatusId" style="margin-right: 20px;">submit</button>
+						<img src="./images/icons/search.gif" id="populatingDtsDivImgId" style="margin-left:1070px; margin-top:6px;display:none;" />
 					</div>
 				</div>
 				<div class="row">
@@ -102,6 +103,12 @@
 	<!-- Hidden Variables -->
 	<input type="hidden" id="hdnCdrSrvyUserId"/>
 	<input type="hidden" id="hdnTabUserInfoId"/>
+	<!--<input type="hidden" id="hiddenDistrictId"/>
+	<input type="hidden" id="hiddenConstituencyId"/>
+	<input type="hidden" id="hiddenCadreId"/>
+	<input type="hidden" id="hiddenCadreSurveyUserId"/>
+	<input type="hidden" id="hiddenTabUserInfoId"/>
+	<input type="hidden" id="hiddenReasonId">-->
 </div>	  
         <div>
           <!-- Nav tabs -->
@@ -179,6 +186,7 @@
       </div>
       </div>
   </div>
+<  
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
