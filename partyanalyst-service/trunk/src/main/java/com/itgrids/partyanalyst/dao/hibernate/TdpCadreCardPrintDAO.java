@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
+import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.model.TdpCadreCardPrint;
 
 public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint, Long> implements ITdpCadreCardPrintDAO{
@@ -93,4 +94,26 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		
 		return query.list();
 	}
+	
+	public Integer updateAppntmntStatusById(PrintVO printVO) {
+		Query query = getSession().createQuery(
+		 " update TdpCadreCardPrint model " +
+		 " set    model.printTime= :printTime, model.serialNumber = :serialNumber,model.printStatus = :printStatus , model.printCode = :printCode , " +
+		 "        model.printDesc = :printDesc ,model.printerSerialNumber = :printerSerialNumber , model.boxNo = :boxNo , model.pcNo = :pcNo  " +
+		 " where  model.tdpCadreCardPrintId=:tdpCadreCardPrintId ");
+		
+		query.setParameter("tdpCadreCardPrintId", printVO.getTdpCadreCardPrintId());
+		
+		query.setTimestamp("printTime", printVO.getPrintTime());
+		query.setParameter("serialNumber",printVO.getSerialNumber());
+		query.setParameter("printStatus",printVO.getPrintStatus());
+		query.setParameter("printCode",printVO.getPrintCode());
+		query.setParameter("printDesc",printVO.getPrintDesc());
+		query.setParameter("printerSerialNumber",printVO.getPrinterSerialNumber());
+		query.setParameter("boxNo",printVO.getBoxNo());
+		query.setParameter("pcNo",printVO.getPcNo());
+		
+		return query.executeUpdate();
+	}
+	
  }
