@@ -1,5 +1,4 @@
 var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
-
 var customEndDateTours = moment().format('DD/MM/YYYY');
 	$("#tourDateRangePickerId").daterangepicker({
 		opens: 'left',
@@ -1408,10 +1407,10 @@ function getToursBasicOverviewCountDetails()
 	{    
 	  var globalUserTypeId = 2;
 
-		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#tourOverviewNewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
-			$("#tourOverviewDivId").html(' ');
+			$("#tourOverviewNewDivId").html(' ');
 			 return;
 		}
 		var jsObj ={ 
@@ -1434,9 +1433,11 @@ function getToursBasicOverviewCountDetails()
 			}
 		});
 	}
+	var globalDesignationSelectBoxString="";
 	function buildTourOverviewRslt(result){
 		var overViewRslt = result.overAllDetailsVO;
 		var designationWiseList = result.subList;
+	   var tursDesgntnIdsString;
 		var str='';
 		 if(overViewRslt != null){
 				   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1447,7 +1448,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 									    if(overViewRslt.noOfLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.noOfLeaderCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="all">'+overViewRslt.noOfLeaderCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1457,7 +1458,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 									   if(overViewRslt.submitedLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.submitedLeaderCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted" >'+overViewRslt.submitedLeaderCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1468,7 +1469,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 									    if(overViewRslt.notSubmitedLeaserCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.notSubmitedLeaserCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="notSubmitteed">'+overViewRslt.notSubmitedLeaserCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1479,7 +1480,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 									   if(overViewRslt.submitedLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.submitedLeaderCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted">'+overViewRslt.submitedLeaderCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1489,7 +1490,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 								 	  if(overViewRslt.complainceCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.complainceCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="Complaince">'+overViewRslt.complainceCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1499,7 +1500,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 									str+='<div class="pad_10">';
 										if(overViewRslt.nonComplainceCnt > 0){
-										  str+='<h3 class="tourOverViewCls">'+overViewRslt.nonComplainceCnt+'</h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="nonComplaince">'+overViewRslt.nonComplainceCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
@@ -1511,8 +1512,21 @@ function getToursBasicOverviewCountDetails()
 					str+='</div>';
 				str+='</div>';	
 		    }
+		
 		    if(designationWiseList != null && designationWiseList.length > 0){
 				for(var i in designationWiseList){
+				  var designationids;
+				   if(designationWiseList[i].id==4){
+					  designationids='4,5'; 
+				   }else{
+					designationids=designationWiseList[i].id;  
+				   }
+				     globalDesignationSelectBoxString+='<option value="'+designationWiseList[i].id+'">'+designationWiseList[i].name+'</option>';
+					if(i== 0){
+					 tursDesgntnIdsString = designationids;	
+					 }else{
+					  tursDesgntnIdsString = tursDesgntnIdsString+','+designationids;	
+					}
 				   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
 							str+='<div class="bg_ED m_top10">';
@@ -1527,12 +1541,32 @@ function getToursBasicOverviewCountDetails()
 													str+='<td class="text-muted f_14">Complaince</td>';
 													str+='<td class="text-muted f_14">Non-Complaince</td>';
 												str+='</tr>';
-												str+='<tr>';
-													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].noOfLeaderCnt+'</h4></td>';
-													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].notSubmitedLeaserCnt+'<small class="text-success">'+designationWiseList[i].notsubmitedCandidateTourPer+'%</small></h4></td>';
-													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].submitedLeaderCnt+'<small class="text-success">'+designationWiseList[i].submitedCandidateTourPer+'%</small></h4></td>';
-													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].complainceCnt+'</h4></td>';
-													str+='<td><h4 class="responsiveFont">'+designationWiseList[i].nonComplainceCnt+'</h4></td>';
+													str+='<tr>';
+													if(designationWiseList[i].noOfLeaderCnt > 0){
+													str+='<td><h4 attr_dsgntn_ids='+designationids+' attr_tour_filter_type="all" attr_designation_name="'+designationWiseList[i].name+'" style="cursor:pointer;color:rgb(51, 122, 183)"  class="responsiveFont tourOverViewCls">'+designationWiseList[i].noOfLeaderCnt+'</h4></td>';	
+													}else{
+													str+='<td><h4   class="responsiveFont">0</h4></td>';	
+													}
+													if(designationWiseList[i].notSubmitedLeaserCnt > 0){
+													str+='<td><h4 class="responsiveFont tourOverViewCls" attr_dsgntn_ids='+designationids+' attr_tour_filter_type="notSubmitteed" attr_designation_name="'+designationWiseList[i].name+'" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseList[i].notSubmitedLeaserCnt+'<small class="text-success">'+designationWiseList[i].notsubmitedCandidateTourPer+'%</small></h4></td>';
+													}else{
+													str+='<td><h4   class="responsiveFont">0</h4></td>';	
+													}
+													if(designationWiseList[i].submitedLeaderCnt > 0){
+													str+='<td><h4 class="responsiveFont tourOverViewCls" attr_dsgntn_ids='+designationids+' attr_tour_filter_type="submitted" attr_designation_name="'+designationWiseList[i].name+'" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseList[i].submitedLeaderCnt+'<small class="text-success">'+designationWiseList[i].submitedCandidateTourPer+'%</small></h4></td>';
+													}else{
+													str+='<td><h4   class="responsiveFont">0</h4></td>';	
+													}
+													if(designationWiseList[i].complainceCnt > 0){
+													str+='<td><h4 class="responsiveFont tourOverViewCls" attr_dsgntn_ids='+designationids+' attr_tour_filter_type="Complaince" attr_designation_name="'+designationWiseList[i].name+'" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseList[i].complainceCnt+'</h4></td>';
+													}else{
+													str+='<td><h4   class="responsiveFont">0</h4></td>';	
+													}
+													if(designationWiseList[i].nonComplainceCnt > 0){
+													str+='<td><h4 class="responsiveFont tourOverViewCls" attr_dsgntn_ids='+designationids+' attr_tour_filter_type="nonComplaince" attr_designation_name="'+designationWiseList[i].name+'" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseList[i].nonComplainceCnt+'</h4></td>';
+													}else{
+													str+='<td><h4   class="responsiveFont">0</h4></td>';	
+													}
 												str+='</tr>';
 											str+='</table>';
 										str+='</div>';
@@ -1572,8 +1606,9 @@ function getToursBasicOverviewCountDetails()
 						str+='</div>';	
 				}
 			}
-		    $("#tourOverviewNewDivId").html(str);       
-	}
+		    $("#tourOverviewNewDivId").html(str);  
+		   $(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
+		}
 	
 	
 	$(document).on("click",".tourComplainceCls",function(){
@@ -1591,7 +1626,7 @@ function getToursBasicOverviewCountDetails()
 	function getDesignationWiseMembersDtls()
 	{  
  	     var globalUserTypeId = 2;
-		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
 			$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(' ');
@@ -1878,21 +1913,109 @@ function getToursBasicOverviewCountDetails()
 	}
 	} 
 	
-	var globalDesignationPerforManceRlst;
-	function getDesignationWiseAverageTourPerformanceDtls()
-	{     var globalUserTypeId = 2;
-		$("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+	$(document).on("click",".tourFilterCls",function(){
+		var designationStr = $(this).attr("attr_designation_id");
+		var divId = $(this).attr("attr_div_id");
+		var filterType = $(this).attr("attr_result_type");
+		var isFilterApply = "Yes";
+		var desgnatnIdsLst = designationStr.split(",");
+		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,divId);
+	});
+	
+	$(document).on("click",".tourSearchBtnCls",function(){
+		  var designationStr = $(this).attr("attr_designation_id");
+		  var divId = $(this).attr("attr_div_id");
+		  var sliderName = $(this).attr("attr_slider_name");
+		  var mainSliderName = $(this).attr("attr_main_slider_name");
+		  var desgnatnIdsLst = designationStr.split(",");
+		  var sliderNameArr = sliderName.split(",");
+		  var isFilterApply="Yes";
+		  var filterType=" ";
+		  var ownDistValue = 0;
+		 var ownCnsttuncyValue = 0;
+		 var incharegeConstituencyValue = 0;
+		 var ichargeDistrictValue = 0;
+		 var govtWorkValue = 0;
+		 var complainceValue = 0; 
+		  if(sliderNameArr != null && sliderNameArr.length > 0){
+				 for(var i in sliderNameArr){
+					 
+					 var className = sliderNameArr[i]+''+designationStr+"cls";
+					 
+					 if(designationStr != null && designationStr.length > 1){
+						 
+						var secOrgIds = designationStr.split(",");
+						 className = sliderNameArr[i]+''+secOrgIds[0]+secOrgIds[1]+"cls";
+						
+					 }
+				   if(sliderNameArr[i]=="InchargeDistrict"){
+					   
+						var InchargeDistrictSliderValue = $("."+className).val();
+						ichargeDistrictValue = InchargeDistrictSliderValue;
+						
+					 }else if(sliderNameArr[i]=="OwnDistrict"){
+						 
+						var ownDistrictSliderValue = $("."+className).val();
+						ownDistValue = ownDistrictSliderValue;
+					 
+					 }else if(sliderNameArr[i]=="InchargeConstituency"){
+						 
+					var  InchargeConstituencySliderValue = $("."+className).val();
+						incharegeConstituencyValue = InchargeConstituencySliderValue;
+						
+					 }else if(sliderNameArr[i]=="OwnConstituency"){
+						 
+						var ownConstituencySliderValue = $("."+className).val();
+						  ownCnsttuncyValue = ownConstituencySliderValue;
+						  
+					 }else if(sliderNameArr[i]=="Govt"){
+						 
+						var govtSliderValue = $("."+className).val();
+						govtWorkValue = govtSliderValue;
+					
+					} 
+				 }
+			 }
+			 
+			         var mainSliderCls = mainSliderName+''+designationStr+"cls";
+					 if(designationStr != null && designationStr.length > 1){
+						var secOrgIds = designationStr.split(",");
+						 mainSliderCls = mainSliderName+''+secOrgIds[0]+secOrgIds[1]+"cls";
+					 }
+			           var mainSliderValue = $("."+mainSliderCls).val();
+					   complainceValue = mainSliderValue;
+						getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId);
+				       $(".toursSessionDropDownCls").hide();		
+    });
+	
+	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId){
+    	var globalUserTypeId = 2;
+		 if(isFilterApply=="No"){
+		   $("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 }else{
+		  $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 }
+	 	if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
 			$("#toursPerformanceDivId").html(' ');
 			 return;
-		}
+		} 
 		var jsObj ={ 
-					 activityMemberId : 44,
+					 activityMemberId :globalActivityMemberId ,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",
+					 fromDate :"" ,
 					 toDate : "",
-					 userTypeId : globalUserTypeId
+					 userTypeId : globalUserTypeId,
+					 designationIds : desgnatnIdsLst,
+					 isFilterApply :isFilterApply,
+					 filterType :filterType,
+					 ownDistValue :ownDistValue,
+					 ownCnsttuncyValue :ownCnsttuncyValue,
+					 ichargeDistrictValue :ichargeDistrictValue,
+					 incharegeConstituencyValue :incharegeConstituencyValue,
+					 govtWorkValue :govtWorkValue,
+					 complainceValue :complainceValue
+				
 				  }
 		$.ajax({
 			type : 'POST',
@@ -1900,8 +2023,11 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-				buildDesignationWiseAverageTourPerformanceDtls(result);	
-				globalDesignationPerforManceRlst = result;
+			   if(isFilterApply != null && isFilterApply=="No"){
+			    buildDesignationWiseAverageTourPerformanceDtls(result);		   
+			   }else if(isFilterApply != null && isFilterApply=="Yes"){
+				buildFilterWiseRslt(result,divId);   
+			   }
 		});
 	}
 	function buildDesignationWiseAverageTourPerformanceDtls(result){
@@ -1914,14 +2040,30 @@ function getToursBasicOverviewCountDetails()
 					str1+='<div class="panel-heading">';
 						str1+='<div class="row">';
 							str1+='<div class="col-md-5 col-xs-12 col-sm-6">';
-								str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
+							 if(result[i].id==4 || result[i].id==5){
+								  if(result[i].id==4){
+									  str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+' / SECRETARY</span></h4>';									  
+								  }
+								  if(result[i].id==5){
+									  str1+='<h4 class="panel-title"><span class="headingColor">ORGANIZING SECRETARY /'+result[i].name+'</span></h4>';									 
+								 }
+							   }else{ 
+									str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
+							  }
 							str1+='</div>';
 							str1+='<div class="col-md-7 col-xs-12 col-sm-6">';
 								str1+='<ul class="list-inline pull-right activeUlCls">';
-                            	str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">All</li>';
-                            	str1+='<li class="tourFilterCls" attr_result_type="complaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">COMPLAINCE</li>';
-                                str1+='<li class="tourFilterCls" attr_result_type="nonComplaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">NON-COMPLAINCE</li>';
-								str1+='<li class="showHideFiltersToursSec" attr_id="'+result[i].id+'">Show/Hide Filters</li>';
+								 if(result[i].id==4 || result[i].id==5){
+									str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">All</li>';
+									str1+='<li class="tourFilterCls" attr_result_type="complaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">COMPLAINCE</li>';
+									str1+='<li class="tourFilterCls" attr_result_type="nonComplaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">NON-COMPLAINCE</li>';
+									str1+='<li class="showHideFiltersToursSec" attr_id="'+result[i].id+'">Show/Hide Filters</li>';
+                         		 }else{
+								  	str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">All</li>';
+									str1+='<li class="tourFilterCls" attr_result_type="complaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">COMPLAINCE</li>';
+									str1+='<li class="tourFilterCls" attr_result_type="nonComplaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' style="margin-right: 20px;">NON-COMPLAINCE</li>';
+									str1+='<li class="showHideFiltersToursSec" attr_id="'+result[i].id+'">Show/Hide Filters</li>';
+                          	 }
                             str1+='</ul>';
 							str1+='</div>';
 						str1+='</div>';
@@ -1932,19 +2074,32 @@ function getToursBasicOverviewCountDetails()
 												//str1+='<hr style ="margin-bottom:0px;" />';
 												str1+='<div class="checkbox">';
 												  str1+='<label>';
-													str1+='<input type="checkbox" value="" style="margin-top: 3px;">';
+													str1+='<input type="checkbox" value="" checked style="margin-top: 3px;">';
 													str1+='<h4 class="text-muted" style="font-size: 17px;">COMPLAINCE</h4>';
 												  str1+='</label>';
 												str1+='</div>';
 												//str1+='<hr style ="margin-bottom:0px;margin-top: 0px;" />';
-												
+												    var sliderName='';
 													for(var k in result[i].subList3[0].subList3){
+														var sliderNameStrWithoutSpace='';
+														var strSliderName = result[i].subList3[0].subList3[k].name;
+														sliderNameStrWithoutSpace = strSliderName.replace(/\s+/g, '');
+														if(k == 0){
+															   sliderName = sliderNameStrWithoutSpace;	 
+														}else{
+															   sliderName = sliderName+ "," + sliderNameStrWithoutSpace;	 
+														}
 														str1+='<div class="row" style="border-top:1px solid #d3d3d3;margin:0px;">';
 															str1+='<div class="col-md-3 col-xs-12 col-sm-3 m_top10">';
 																str1+='<p>'+result[i].subList3[0].subList3[k].name+'</p>';
 															str1+='</div>';
 															str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
-																	str1+='<input id="ownDisConsSlider'+i+''+k+'"  />';
+																 if(result[i].id==4 || result[i].id==5){
+																	str1+='<input class="'+sliderNameStrWithoutSpace+'45'+'cls" id="ownDisConsSlider'+i+''+k+'"  type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1" />';	 
+																 }else{
+																	str1+='<input class="'+sliderNameStrWithoutSpace+''+result[i].id+''+'cls" id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"  />';	 
+																 }
+																
 																	str1+='<span>0%</span><span class="col-xs-offset-8">100%</span>';
 															str1+='</div>';
 															
@@ -1962,13 +2117,24 @@ function getToursBasicOverviewCountDetails()
 														  str1+='</label>';
 														str1+='</div>';
 												str1+='</div>';
+												 var mainSliderNameWithoutSpace='';
+												  var mainSliderName = result[i].name;
+												   mainSliderNameWithoutSpace = mainSliderName.replace(/\s+/g, '');
 												str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
-													str1+='<input id="mainSlider'+i+'" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
+												 if(result[i].id==4 || result[i].id==5){
+												    str1+='<input id="mainSlider'+i+'" class="'+mainSliderNameWithoutSpace+'45'+'cls" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';	 
+												 }else{
+												    str1+='<input id="mainSlider'+i+'" class="'+mainSliderNameWithoutSpace+''+result[i].id+''+'cls" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';	 
+												 }
 												str1+='</div>';
 												str1+='<span style="margin-left: 10px;">0%</span><span class="col-xs-offset-6">100%</span>';
 												str1+='</div>';
-												
-											str1+='<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button>'; 
+													 if(result[i].id==4 || result[i].id==5){
+													  str1+='<button type="button" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" attr_slider_name="'+sliderName+'" attr_main_slider_name='+mainSliderNameWithoutSpace+' class="btn btn-success tourSearchBtnCls btn-sm pull-right">Get Details</button>'; 	 
+													 }else{
+													  str1+='<button type="button" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' attr_slider_name="'+sliderName+'" attr_main_slider_name='+mainSliderNameWithoutSpace+' class="btn btn-success tourSearchBtnCls btn-sm pull-right">Get Details</button>'; 
+													 }
+											
 										   str1+='</div>';
 									   str1+='</div>';
 					str1+='</div>';
@@ -1992,8 +2158,6 @@ function getToursBasicOverviewCountDetails()
 					str+='<thead>';
 						str+='<tr>';
 			
-								
-								
 								var maxLengthForSpan = 0;
 								if(result[i].subList3 != null && result[i].subList3.length > 0){
 									for(var j in result[i].subList3){
@@ -2054,57 +2218,112 @@ function getToursBasicOverviewCountDetails()
 					str+='</table>';
 				str+='</div>';
 				$("#toursPerformanceBlocks"+i).html(str);
-					 var stateSliderval;
+					       var stateSliderval;
 							for(var k in result[i].subList3[0].subList3){
-							 
-							 $('#ownDisConsSlider'+i+''+k+'').slider({
-								  // minimum value
-								  min: 0,
-								  // maximum value
-								  max: 100,
-							 	 // increment step
-								  step: 5,
-								  value: [0, 30],
-								  focus: true,
-								  selection: 'before',
-								  // callback
-								  formatter: function formatter(val) {
-									if (Array.isArray(val)) {
-										stateSliderval = val;
-									  return "Min Val: "+val[0] + " - Max Val: " + val[1];
-									} else {
-									  return val;
-									}
-								  },
-								});
+									var slider = new Slider('#ownDisConsSlider'+i+''+k+'', {
+								   formatter: function(value) {
+								   stateSliderval=value;
+								  // $("#stateSliderValue").text(value);
+								 return 'Current value: ' + value;
+							     }
+							  });
 							}
 				
 				//alert(stateSliderval);
-				var mainSliderVa1;
-					$('#mainSlider'+i+'').slider({
-						  // minimum value
-						  min: 0,
-						  // maximum value
-						  max: 100,
-						 // increment step
-						  step: 5,
-						  value: [0, 30],
-						  focus: true,
-						  // callback
-						  formatter: function formatter(val) {
-							if (Array.isArray(val)) {
-								mainSliderVa1 = val;
-							  return "Min Val: "+val[0] + " - Max Val: " + val[1];
-							} else {
-							  return val;
-							}
-						  },
-					});
+				   var mainSliderVa1;
+				    var slider = new Slider('#mainSlider'+i+'', {
+				   formatter: function(value) {
+					  // $("#constituencySliderValue").text(value);
+					   mainSliderVa1=value;
+					 return 'Current value: ' + value;
+				   }
+				});
 					//alert(mainSliderVa1);
 			}
 		}
 	}
-	
+
+	function  buildFilterWiseRslt(result,divId){
+        $("#"+divId).html(' ');
+			if(result != null && result.length > 0){
+					for(var i in result){
+						if(result[i].subList3 == null || result[i].subList3.length == 0){
+						   $("#"+divId).html('NO DATA AVAILABLE');
+                            return;			
+						}
+						var str='';
+						var length = result
+						str+='<div class="table-responsive">'
+							str+='<table class="table table-bordered" >';
+							str+='<thead>';
+								str+='<tr>';
+					
+										var maxLengthForSpan = 0;
+										if(result[i].subList3 != null && result[i].subList3.length > 0){
+											for(var j in result[i].subList3){
+												if(result[i].subList3[j].subList3 != null && result[i].subList3[j].subList3.length > 0)
+													maxLengthForSpan = result[i].subList3[j].subList3.length;
+											}
+										}
+										if(maxLengthForSpan >=3){
+											str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
+										}else{
+											str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
+										}
+										
+										str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
+										
+										for(var k in result[i].subList3[0].subList3){
+											str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
+										}
+									
+									str+='</tr>';
+									str+='<tr>';
+										
+										str+='<td >over all</td>';
+												for(var k in result[i].subList3[0].subList3){
+													str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
+													
+												}
+										for(var k in result[i].subList3[0].subList3){
+										str+='<td >Target</td>';
+										str+='<td >Toured</td>';
+										}
+										
+									str+='<tr>';
+										str+='</thead>';
+										str+='<tbody>';
+										//str+='<td></td>';
+												for(var j in result[i].subList3){
+													str+='<tr>';
+														str+='<td >'+result[i].subList3[j].name+'</td>';
+														str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+
+														   for(var k in result[i].subList3[j].subList3){
+															   
+																str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+															}												
+													for(var k in result[i].subList3[j].subList3){
+														
+														str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+														str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+														
+														
+													}
+													str+='</tr>';
+												}
+											
+										str+='</tbody>';
+										
+							str+='</table>';
+						str+='</div>';
+						$("#"+divId).html(str);
+					}
+				}else{
+				$("#"+divId).html("NO DATA AVAILABLE.");	
+				}	
+		} 
+		
 	getIndividualPersonTourDetails();
 	function getIndividualPersonTourDetails()
 	{     
@@ -2122,6 +2341,175 @@ function getToursBasicOverviewCountDetails()
 			console.log(result);
 		});
 	}
+	   $(document).on("change","#tourDesignationSelectBoxId",function(){
+		  var designationId = $(this).val(); 
+		  var filterType = $(this).attr("attr_tour_filter_type");
+		   var designationIds=[];
+		    if(designationId == 4){
+				designationIds.push(4);
+				designationIds.push(5);
+			}else{
+			designationIds.push(designationId)	
+			}
+			console.log(designationId);
+			console.log(filterType);
+			getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType);
+	   });
+	  $(document).on("click",".tourOverViewCls",function(){
+			
+		var filterType = $(this).attr("attr_tour_filter_type");
+		var designationIdsStr = $(this).attr("attr_dsgntn_ids");
+		var designationName = $(this).attr("attr_designation_name");
+		 $("#tourDetailsModalId").modal("show");
+		 var designationIds=[];
+	    if(designationName.trim()=="Overall"){
+			
+			$(".designationSelectBoxCls").show();
+			$("#tourDesignationSelectBoxId").append(globalDesignationSelectBoxString);
+			var firstOption = $("#tourDesignationSelectBoxId option:first").val();
+			$("#tourDesignationSelectBoxId").val(firstOption);
+			designationIds.push(firstOption);
+			$("#tourDesignationSelectBoxId").attr("attr_tour_filter_type",filterType);
+		}else{
+		   $(".designationSelectBoxCls").hide();
+			if(designationIdsStr != null && designationIdsStr != undefined){
+			  designationIds=designationIdsStr.split(",");	
+			}		   
+		}
+		  getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType);
+	});
+
+	function getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType)
+	{    
+	
+	 $("#tourDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 	var jsObj ={ 
+					 activityMemberId : globalActivityMemberId,
+					 stateId : globalStateIdForTour,
+					 fromDate : "",
+					 toDate : "",
+					 userTypeId:globalUserTypeId,
+					 designationIds : designationIds,
+					 filterType :filterType
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTourLeaderDtlsBasedOnSelectionTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildTourMemberDetails(result);
+			}else{
+			 $("#tourDetailsDivId").html("NO DATA AVAILABLE.");	
+			}
+		});
+	}
+	
+	
+function buildTourMemberDetails(result){
+    
+    if(result != null && result.length > 0){
+      var str1='';
+      for(var i in result){
+      str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+        str1+='<div class="panel panel-default panelNew">';
+          str1+='<div class="panel-heading">';
+            str1+='<div class="row">';
+              str1+='<div class="col-md-8 col-xs-12 col-sm-6">';
+                str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'&nbsp&nbspTours Submitted Report</span></h4>';
+              str1+='</div>';
+          str1+='</div>';
+          str1+='<div class="panel-body">';
+            str1+='<div class="row">';
+              str1+='<div id="tourMemberDtls'+i+'"></div>';
+            str1+='</div>';
+          str1+='</div>';
+        str1+='</div>';
+      str1+='</div>';
+      }
+      $("#tourDetailsDivId").html(str1);
+    }
+    if(result != null && result.length > 0){
+      for(var i in result){
+	  if(result[i].subList3 == null || result[i].subList3.length == 0){
+	    $("#tourDetailsDivId").html('NO DATA AVAILABLE');
+		 return;			
+	  }
+        var str='';
+        var length = result
+        str+='<div class="table-responsive">'
+          str+='<table class="table table-bordered" id="tourDetailsDataTblid">';
+          str+='<thead>';
+            str+='<tr>';
+                var maxLengthForSpan = 0;
+                if(result[i].subList3 != null && result[i].subList3.length > 0){
+                  for(var j in result[i].subList3){
+                    if(result[i].subList3[j].subList3 != null && result[i].subList3[j].subList3.length > 0)
+                      maxLengthForSpan = result[i].subList3[j].subList3.length;
+                  }
+                }
+                if(maxLengthForSpan >=3){
+                  str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
+                }else{
+                  str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
+                }
+                
+                str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
+                
+                for(var k in result[i].subList3[0].subList3){
+                  str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
+                }
+              
+              str+='</tr>';
+              str+='<tr>';
+                
+                str+='<td >over all</td>';
+                    for(var k in result[i].subList3[0].subList3){
+                      str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
+                      
+                    }
+                for(var k in result[i].subList3[0].subList3){
+                str+='<td >Target</td>';
+                str+='<td >Toured</td>';
+                }
+              str+='<tr>';
+                str+='</thead>';
+                str+='<tbody>';
+                //str+='<td></td>';
+                    for(var j in result[i].subList3){
+                      str+='<tr>';
+                        str+='<td >'+result[i].subList3[j].name+'</td>';
+                        str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+
+							for(var k in result[i].subList3[j].subList3){
+                             
+                            str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+                          }                        
+                      for(var k in result[i].subList3[j].subList3){
+                        
+                        str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+                        str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+                        
+                        
+                      }
+                      str+='</tr>';
+                    }
+                  
+                str+='</tbody>';
+                
+          str+='</table>';
+        str+='</div>';
+        $("#tourMemberDtls"+i).html(str);
+	/* 	$("#tourDetailsDataTblid").dataTable({
+			"aaSorting": [[ 1, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
+		});    */           
+      }
+    }
+  }
+	
 	$(document).on("click",".NewTourExpand",function(){
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -2186,7 +2574,10 @@ function getToursBasicOverviewCountDetails()
 	$(document).on("click",".moreNewToursBlocksIcon",function(){	
 		$(".moreNewToursBlocks,.moreNewToursBlocksDetailed").toggle(); 
 		//$(".moreNewToursBlocksDetailed").toggle(); 
-		getDesignationWiseAverageTourPerformanceDtls();	
+		var isFilterApply = "No";
+		var filterType = "";
+		var desgnatnIdsLst = [];
+	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
 	});
 
 	$(document).on("click",".showHideFiltersToursSec",function(){
@@ -2199,5 +2590,6 @@ function getToursBasicOverviewCountDetails()
 	$("#toursSessionDropDown"+dropBlockId).toggle(); 
 	
    });
+   
    
    

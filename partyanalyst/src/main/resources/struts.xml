@@ -15164,5 +15164,10 @@
 			<param name="root">resultStatus</param>      
 		</result>
 	</action>
+	<action name="getTourLeaderDtlsBasedOnSelectionTypeAction" class="coreDashboardAction"  method="getTourLeaderDtlsBasedOnSelectionType">
+			<result type="json" name="success">
+			<param name="root">toursDtlsList</param>
+		</result>
+	</action>
  </package>
 </struts>
