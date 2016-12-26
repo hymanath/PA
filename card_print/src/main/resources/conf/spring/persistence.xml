@@ -41,6 +41,10 @@
 				<value>com.itgrids.cardprint.model.Country</value>
 				<value>com.itgrids.cardprint.model.District</value>
 				
+				<value>com.itgrids.cardprint.model.TdpCadreCardPrint</value>
+				<value>com.itgrids.cardprint.model.ZebraPrintDetails</value>
+				<value>com.itgrids.cardprint.model.MaxPrintDetails</value>
+				
 		 	</list>
 		</property>
 	</bean>
