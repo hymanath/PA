@@ -46,7 +46,11 @@
 		  <input type="button" class="buttonCls btn btn-success" value="submit" id="submitButtnId"><span id="successMsgId"></span></input>
 		</div>
 	</div>
-		
+	
+	<div class ="row" style="margin-top:10px;">
+	   <input type="button" class="buttonCls btn btn-success" value="updatePrintDetailsToTdpCadreCardPrint" onclick="updatePrintDetailsToTdpCadreCardPrint()"></input>	
+	</div>
+	
 	
 </div>
 
@@ -58,6 +62,17 @@
 getAllPrintStatusDetails();
 getAllAssemblyConstituencies();
 
+	function updatePrintDetailsToTdpCadreCardPrint(){
+		var jsObj = { constituencyId:120 }
+		$.ajax({
+			 type:'POST',
+			 url:'updatePrintDetailsToTdpCadreCardPrintAction.action',
+			 dataType: 'json',
+			 data: {task:JSON.stringify(jsObj)}
+		  }).done(function(result){
+			  alert("success");
+		  })
+	}
 function getAllAssemblyConstituencies(){
 	$.ajax({
 	     type:'GET',
