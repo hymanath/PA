@@ -27,7 +27,6 @@ public class PMMinuteVO implements Serializable{
 	
 	//Tour
 	
-	private Long addressId;
 	private Long tourTypeId;
 	private Long tourCategoryId;
 	private Long tdpCadreId;
@@ -156,12 +155,6 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setPanWardList(List<KeyValueVO> panWardList) {
 		this.panWardList = panWardList;
-	}
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
 	}
 	public Long getTourTypeId() {
 		return tourTypeId;
