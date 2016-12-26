@@ -3495,4 +3495,8 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="maxPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MaxPrintDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
