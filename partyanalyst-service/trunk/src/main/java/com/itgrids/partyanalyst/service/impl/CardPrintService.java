@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
@@ -19,7 +22,10 @@ import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
+import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.model.CardPrintVendor;
+import com.itgrids.partyanalyst.model.TdpCadreCardPrint;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -33,7 +39,7 @@ public class CardPrintService implements ICardPrintService{
 	private ITdpCadreCardPrintDAO tdpCadreCardPrintDAO;
 	private IPrintStatusDAO printStatusDAO;
 	private ICardPrintValidationDAO cardPrintValidationDAO;
-	
+	private TransactionTemplate transactionTemplate;
 	
 	
 	public ICardPrintValidationDAO getCardPrintValidationDAO() {
@@ -74,8 +80,9 @@ public class CardPrintService implements ICardPrintService{
 		this.constituencyPrintStatusDAO = constituencyPrintStatusDAO;
 	}
 	
-	
-	
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
 		try {
@@ -559,4 +566,97 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		}
 		return returnvo;
 	}
+	
+	
+	/////////
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  UPDATING PRINT DETAILS TO TdpCadreCardPrint from ZebraPrintDetails or from MaxPrintDetails by constituencyId.
+	  *  @since 21-DECEMBER-2016
+	  */
+	public PrintUpdateDetailsStatusVO updatePrintDetailsToTdpCadreCardPrint(final List<PrintVO> printList){
+		PrintUpdateDetailsStatusVO status = new PrintUpdateDetailsStatusVO();
+		try{
+			 
+			 if(printList != null && printList.size() > 0l){
+				
+				 status = (PrintUpdateDetailsStatusVO)transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus arg0) {
+						
+						PrintUpdateDetailsStatusVO rs = new PrintUpdateDetailsStatusVO();
+						
+							 int count = 0;
+							 long tempStartTime = System.currentTimeMillis();
+							 
+							 for(PrintVO printVO : printList){
+								 count++;
+								 
+								 Long tdpCadreCardPrintId = printVO.getTdpCadreCardPrintId();
+								 if(tdpCadreCardPrintId != null){
+									
+									//UPDATE DETAILS BASED ON query. 
+									Integer updateCount =  tdpCadreCardPrintDAO.updateAppntmntStatusById(printVO);
+									
+									/* 
+									   //UPDATE DETAILS BASED ON save() method. 
+									 TdpCadreCardPrint cardPrint = tdpCadreCardPrintDAO.get(tdpCadreCardPrintId);
+									 if(cardPrint != null){
+										 
+										 if(printVO.getPrintTime() != null && printVO.getPrintTime().toString().trim().length() > 0){
+											 cardPrint.setPrintTime(printVO.getPrintTime());
+										 }
+										 
+										 if(printVO.getSerialNumber() != null && !printVO.getSerialNumber().isEmpty()){
+											 cardPrint.setSerialNumber( printVO.getSerialNumber() );
+										 }
+										 
+										 if(printVO.getPrintStatus() != null && !printVO.getPrintStatus().isEmpty()){
+											 cardPrint.setPrintStatus( printVO.getPrintStatus() );
+										 }
+										 
+										 if(printVO.getPrintCode() != null && !printVO.getPrintCode().isEmpty()){
+											 cardPrint.setPrintCode( printVO.getPrintCode() );
+										 }
+										 
+										 if(printVO.getPrintDesc() != null && !printVO.getPrintDesc().isEmpty()){
+											 cardPrint.setPrintDesc( printVO.getPrintDesc());
+										 }
+										 
+										 if(printVO.getPrinterSerialNumber() != null && !printVO.getPrinterSerialNumber().isEmpty()){
+											 cardPrint.setPrinterSerialNumber( printVO.getPrinterSerialNumber());
+										 }
+										 
+										 if(printVO.getBoxNo() != null && !printVO.getBoxNo().isEmpty()){
+											 cardPrint.setBoxNo( printVO.getBoxNo() );
+										 }
+										 
+										 if(printVO.getPcNo() != null && !printVO.getPcNo().isEmpty()){
+											 cardPrint.setPcNo( printVO.getPcNo());
+										 }
+										 
+										 tdpCadreCardPrintDAO.save(cardPrint);
+									 }*/
+								 }
+							    
+							 }
+							 Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
+							 System.out.println(tempSeconds);
+							 
+						 rs.setMessage("success");
+						 rs.setResultCode(1);
+						 return rs;
+				    }
+		       });
+				
+	     }
+			 
+		}catch(Exception e){
+			 status.setMessage("failure");
+			 status.setResultCode(0);
+			LOG.error("exception Occurred at updatePrintDetailsToTdpCadreCardPrint() in CardPrintService class ", e); 
+		}
+		return status;
+	}
+	
+	
 }
