@@ -554,6 +554,17 @@ public List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtI
 	return query.list();
 	
 }
+public Integer updateApprovedCadre(Long cadreId,String statusId,Date currentDate){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" update TdpCadreDataVerification TC set TC.dataRejectReasonId = :statusId  and TC.verifiedTime = :currentDate" +
+			" where TC.tdpCadreId = :cadreId ");
+	Query query = getSession().createQuery(queryStr.toString());
+	query.setParameter("cadreId", cadreId);
+	query.setParameter("statusId", statusId);
+	query.setDate("currentDate", currentDate);
+	Integer c = query.executeUpdate();
+	return c;
+}
 
 
 }
