@@ -3003,8 +3003,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							 	 				candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
 							 	 				candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
 							 	 			}else if(categoryId.equalsIgnoreCase("4")){//own Constituency
-							 	 			   candiateVO.setOwnContituencyTrDays(categoryVO.getOwnContituencyTrDays());
-							 	 			   candiateVO.setOwnConstituencyComplainceDays(categoryVO.getOwnContituencyTrDays());
+							 	 			   candiateVO.setOwnContituencyTrDays(categoryVO.getTargetDays());
+							 	 			   candiateVO.setOwnConstituencyComplainceDays(categoryVO.getComplainceDays());
 							 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
 							 	 				candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
 							 	 				candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
