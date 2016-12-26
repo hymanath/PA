@@ -17,11 +17,14 @@ import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
+import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
+import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerServiceForCadre;
 
 @Path("/cadre")
@@ -30,15 +33,24 @@ public class WebServiceHandlerForCadre {
 	private final static Logger LOG = Logger.getLogger(WebServiceHandlerForCadre.class);
 	
 	private IWebServiceHandlerServiceForCadre webServiceHandlerServiceForCadre;
+	private ICardPrintService cardPrintService;
 	
-	
-	public void setWebServiceHandlerServiceForCadre( IWebServiceHandlerServiceForCadre webServiceHandlerServiceForCadre) {
+	public void setWebServiceHandlerServiceForCadre( IWebServiceHandlerServiceForCadre webServiceHandlerServiceForCadre){
 		this.webServiceHandlerServiceForCadre = webServiceHandlerServiceForCadre;
 	}
 
-
     //LOCATIONS RELATED
 	
+	public ICardPrintService getCardPrintService() {
+		return cardPrintService;
+	}
+
+
+	public void setCardPrintService(ICardPrintService cardPrintService) {
+		this.cardPrintService = cardPrintService;
+	}
+
+
 	@GET
 	@Path("/getStateWiseDistrict/{stateId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -182,6 +194,7 @@ public class WebServiceHandlerForCadre {
 	
 	
 	//PRINTING APP CALLS
+	
 	@GET
 	@Path("/validateCardPrintUserLogin/{username}/{password}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -223,6 +236,23 @@ public class WebServiceHandlerForCadre {
 			LOG.error("Exception raised in updateCardPrintValidStatus() in WebServiceHandlerForCadre class",e);
 		}
 		return rs;
+	}
+	
+	
+	//PRINT DETAILS UPDATION To TdpCadreCardPrint
+	@POST
+	@Path("/updatePrintDetailsToTdpCadreCardPrint")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PrintUpdateDetailsStatusVO  updatePrintDetailsToTdpCadreCardPrint(List<PrintVO> printList){
+		PrintUpdateDetailsStatusVO finalVO = null;
+		try{
+			
+			finalVO = cardPrintService.updatePrintDetailsToTdpCadreCardPrint(printList);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in updatePrintDetailsToTdpCadreCardPrint() in WebServiceHandlerForCadre class",e);
+		}
+		return finalVO;
 	}
 	
 }
