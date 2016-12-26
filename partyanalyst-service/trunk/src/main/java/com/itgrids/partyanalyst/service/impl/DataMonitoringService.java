@@ -901,4 +901,43 @@ public class DataMonitoringService implements IDataMonitoringService {
 			return "failure";
 		}
   	}
+	public ResultStatus changeImageByVoterImage(List<IdNameVO> idNameVOs){   
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  			
+  			DateUtilService dateUtilService = new DateUtilService();
+  			if(idNameVOs.size() > 0){  
+  				for(IdNameVO idNameVO : idNameVOs){
+  					Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(idNameVO.getId());
+  					if(idNameVO.getStatus().trim().equalsIgnoreCase("Rejected")){
+  						tdpCadreDataVerificationDAO.updateApprovedCadre(idNameVO.getCadreId(),null,dateUtilService.getCurrentDateAndTime());
+  						Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);
+  					}else if(idNameVO.getStatus().trim().equalsIgnoreCase("noStatus")){
+  						TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
+  						tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
+  	  					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
+  	  					//tdpCadreDataVerification.setDataRejectReasonId(idNameVO.getRejectedCount());
+  	  					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
+  	  					tdpCadreDataVerification.setConstituencyId(idNameVO.getConstitunecyId());
+  	  					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictId());
+  	  					tdpCadreDataVerification.setCadreSurveyUserId(idNameVO.getCadreUserId());
+  	  					tdpCadreDataVerification.setTabUserInfoId(idNameVO.getTabUserId());
+  	  					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
+  	  					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);  
+  					}
+  				}
+  				resultStatus.setResultCode(1);
+  	  			resultStatus.setMessage("Updated Successfully");
+  			}
+  			
+  			return resultStatus;  
+  		}catch(Exception e){
+  			e.printStackTrace();
+  			LOG.error("Exception raised in updateRejectDtls() of DataMonitoringService", e); 
+  			resultStatus.setResultCode(0);
+  			resultStatus.setMessage("Updation Failed");
+  			return resultStatus;  
+  		}
+  		
+  	}
 }
