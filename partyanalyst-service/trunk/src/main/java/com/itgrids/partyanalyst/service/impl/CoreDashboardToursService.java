@@ -2372,7 +2372,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				  }
 			  }
 		  }
-		  List<Object[]> rtrnMemberDtls = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues,userTypeId);
+		  List<Object[]> rtrnMemberDtls = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues,userTypeId,null);
 		  setCandidateDtls(rtrnMemberDtls,candiateDtlsMap,candiateTargetMap,candiateComplainceMap);
 		  
 		 if(candiateDtlsMap!=null && candiateDtlsMap.size()>0){
@@ -2470,7 +2470,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 LOG.error("Exception Occured in setCandidateDtls() in CoreDashboardToursService  : ",e);
 	 }
  }
- public List<ToursBasicVO> getDesignationWiseAverageTourPerformanceDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
+ public List<ToursBasicVO> getDesignationWiseAverageTourPerformanceDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String isFilterApply,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double complainceValue){
 	 
 	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 	 Map<Long,Map<Long,List<ToursBasicVO>>> candidateTargetMap = new HashMap<Long, Map<Long,List<ToursBasicVO>>>(0);
@@ -2514,52 +2514,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  setComplainceDtls(rtrnDaysToursObjLst,candidateTargetMap,"Category");
 		  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getLeaderComplainceCntCategoryWise(fromDate, toDate, "Govt",null);
 		  setComplainceDtls(rtrnGovtDaysToursObjLst,candidateTargetMap,"Govt");
-		  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, userTypeId,fromDate,toDate);
+		  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, userTypeId,fromDate,toDate,designationIds);
 		  setTourSubmitteedMemberDtls(rtrnMemberDtlsObjLst,memberDtlsMap,candidateTargetMap,designationIdAndNameMap);
 		
-		  //merge all Own Location Type Data
-		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
-			 
-			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
-				 
-				 if(entry.getValue() != null && entry.getValue().size() > 0){
-					 
-					  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
-						  
-						  List<ToursBasicVO> categoryList = candiateEntry.getValue().getSubList3();
-						  
-						  if(categoryList != null && categoryList.size() > 0){
-							  
-							  ToursBasicVO categoryVO = new ToursBasicVO();
-							  
-							  boolean isOwnTypeLocation = false;
-							  
-							  for(ToursBasicVO VO:categoryList){
-								  String[] categryArr= VO.getName().split(" ");
-								  if(categryArr != null && categryArr.length > 0){
-									  if(categryArr[0].toString().equalsIgnoreCase("Own")){
-										  categoryVO.setIdStr("_1"+VO.getIdStr());
-										  if(categoryVO.getName() == null){
-											  categoryVO.setName(categryArr[0]+" "+categryArr[1]);
-										  }else{
-											  categoryVO.setName(categoryVO.getName()+"/"+categryArr[1]);  
-										  }
-										  categoryVO.setTargetDays(categoryVO.getTargetDays()+VO.getTargetDays());
-										  categoryVO.setComplainceDays(categoryVO.getComplainceDays()+VO.getComplainceDays());
-										  categoryList.remove(VO);
-										  isOwnTypeLocation = true;
-									  }  
-								  }
-							  }
-							  if(isOwnTypeLocation){
-								  candiateEntry.getValue().getSubList3().add(0, categoryVO);  
-							  }
-						  } 
-					  }
-				  }
-			  }
-		  }
-		  
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			  
 			  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
@@ -2582,15 +2539,17 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 	 			}else if(categoryId.equalsIgnoreCase("3")){//Incharge Constituency
 						 	 				candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
 						 	 				candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
-						 	 			}else if(categoryId.equalsIgnoreCase("_1"+categoryId)){//ownDistrictConstituency
-						 	 				candiateVO.setOwnConDistTrDays(categoryVO.getTargetDays());
-						 	 				candiateVO.setOwnConDistComplainceDays(categoryVO.getComplainceDays());
-						 	 			}else if(categoryId.equalsIgnoreCase("2")){//govtWork
+						 	 			}else if(categoryId.equalsIgnoreCase("2")){//ownDistrict
+						 	 				candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
+						 	 				candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
+						 	 			}else if(categoryId.equalsIgnoreCase("4")){//own Constituency
+						 	 			   candiateVO.setOwnContituencyTrDays(categoryVO.getTargetDays());
+						 	 			   candiateVO.setOwnConstituencyComplainceDays(categoryVO.getComplainceDays());
+						 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
 						 	 				candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
 						 	 				candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
 						 	 			}
 							 		}
-						 	 	
 						 	 		candiateVO.setTargetDays(overAllTargetDays);
 							 		candiateVO.setComplainceDays(overAllComplaincDays);
 						 		}
@@ -2611,7 +2570,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						  candiateEntry.getValue().setComplaincePer(calculatePercantage(candiateEntry.getValue().getComplainceDays(),candiateEntry.getValue().getTargetDays()));
 						  candiateEntry.getValue().setInchargeDistrictComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeDistrictComplainceDays(),candiateEntry.getValue().getInchargeDistrictTrDays()));
 						  candiateEntry.getValue().setInchargeConstituencyComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeConstituencyComplainceDays(),candiateEntry.getValue().getInchargeConstituencyTrDays()));
-						  candiateEntry.getValue().setOwnConDistComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnConDistComplainceDays(),candiateEntry.getValue().getOwnConDistComplainceDays()));
+						  candiateEntry.getValue().setOwnDistrictComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnDistrictComplainceDays(),candiateEntry.getValue().getOwnDistrictTrDays()));
+						  candiateEntry.getValue().setOwnContituencyComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnConstituencyComplainceDays(), candiateEntry.getValue().getOwnContituencyTrDays()));
 						  candiateEntry.getValue().setGovtWorkComplaincePer(calculatePercantage(candiateEntry.getValue().getGovtWorkComplainceDays(),candiateEntry.getValue().getGovtWorkTrDays()));
 						  
 						  if(candiateEntry.getValue().getSubList3() != null && candiateEntry.getValue().getSubList3().size() > 0){
@@ -2626,7 +2586,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  }
 		  //merge secretary and organization secretary
 		  if(memberDtlsMap!=null && memberDtlsMap.size()>0){
-		        Map<Long,ToursBasicVO> orgSecAndSecMap = new LinkedHashMap<Long,ToursBasicVO>();
+		        Map<Long,ToursBasicVO> orgSecAndSecMap = new ConcurrentHashMap<Long,ToursBasicVO>();
 		        Map<Long,ToursBasicVO>  secreteriesMap = null;
 		        if(memberDtlsMap.containsKey(5l)){
 		          secreteriesMap = memberDtlsMap.get(5l);
@@ -2640,6 +2600,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		        if(orgSecAndSecMap!=null && orgSecAndSecMap.size()>0){
 		        	memberDtlsMap.put(4l, orgSecAndSecMap); 
 		        }
+		  }
+		  //filter data based on filter type criteria.if filter has applied.
+		  if(isFilterApply != null && isFilterApply.equalsIgnoreCase("Yes")){
+			  if(filterType != null && !filterType.equalsIgnoreCase("All")){
+				           filterRequiredData(memberDtlsMap,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue);  
+			  }
 		  }
 		  //pushing in final list
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
@@ -2715,7 +2681,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 Long candiateId = commonMethodsUtilService.getLongValueForObject(param[2]);
 				 Map<Long,ToursBasicVO> candiateMap = memberDtlsMap.get(designationId);
 				 	if(candiateMap == null ){
-				 		candiateMap = new HashMap<Long, ToursBasicVO>();
+				 		candiateMap = new ConcurrentHashMap<Long, ToursBasicVO>();
 				 		designationIdAndNameMap.put(designationId,commonMethodsUtilService.getStringValueForObject(param[1]));
 				 		memberDtlsMap.put(designationId, candiateMap);
 				 	}
@@ -2732,6 +2698,71 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 }
 	 }catch(Exception e){
 		 LOG.error("Exception Occured in setComplainceDtls() in CoreDashboardToursService  : ",e); 
+	 }
+ }
+ public void filterRequiredData(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double complainceValue){
+	 try{
+		 if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+			 for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+				 if(entry.getValue() != null && entry.getValue().size() > 0){
+					 for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+						  if(filterType.equalsIgnoreCase("complaince")){
+							  if(candiateEntry.getValue().getComplaincePer()<100d){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }else if(filterType.equalsIgnoreCase("nonComplaince")){
+							  if(candiateEntry.getValue().getComplaincePer()>=100d){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  } 
+						  }else if(complainceValue.doubleValue() > 0.0d){
+							  if(candiateEntry.getValue().getComplaincePer() < complainceValue){
+								  entry.getValue().remove(candiateEntry.getKey());   
+							  }
+						  }else if(ownDistValue > 0.0d && ichargeDistrictValue> 0.0d && govtWorkValue> 0.0d){
+								  if((candiateEntry.getValue().getOwnDistrictComplaincePer() < ownDistValue || candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue || candiateEntry.getValue().getGovtWorkComplaincePer() < govtWorkValue )){
+									  entry.getValue().remove(candiateEntry.getKey());  
+								  }
+						 }else if(ownDistValue> 0.0d && ichargeDistrictValue> 0.0d ){
+							  if((candiateEntry.getValue().getOwnDistrictComplaincePer()< ownDistValue || candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue)){
+								  entry.getValue().remove(candiateEntry.getKey()); 
+							  }
+						  }else if(ownDistValue > 0.0d  && govtWorkValue > 0.0d){
+							  if((candiateEntry.getValue().getOwnDistrictComplaincePer() < ownDistValue || candiateEntry.getValue().getGovtWorkComplaincePer()< govtWorkValue)){
+								  entry.getValue().remove(candiateEntry.getKey());	 
+								 }
+						  }else if(ichargeDistrictValue > 0.0d && govtWorkValue > 0.0d){
+							  if((candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue || candiateEntry.getValue().getGovtWorkComplaincePer()< govtWorkValue)){
+								 entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }else if(govtWorkValue > 0.0d ){
+							  if(candiateEntry.getValue().getGovtWorkComplaincePer() < govtWorkValue){
+								  entry.getValue().remove(candiateEntry.getKey()); 
+							  }
+						  }else if(ownDistValue >0.0d ){
+							  if(candiateEntry.getValue().getOwnDistrictComplaincePer() < ownDistValue){
+								  entry.getValue().remove(candiateEntry.getKey()); 
+							  }
+						  }else if(incharegeConstituencyValue > 0.0d){
+							  if(candiateEntry.getValue().getInchargeConstituencyComplaincePer() < incharegeConstituencyValue){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }else if(ownCnsttuncyValue > 0.0d){
+							  if(candiateEntry.getValue().getOwnContituencyComplaincePer() < ownCnsttuncyValue){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }else if(ichargeDistrictValue > 0.0d){
+							  if(candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }
+					 }
+				 }
+				 
+			 }
+		 }
+		 
+	 }catch(Exception e){
+		 LOG.error("Exception Occured in filterRequiredData() in CoreDashboardToursService  : ",e); 
 	 }
  }
  public ToursBasicVO getIndividualPersonTourDetails(String fromDateStr,String toDateStr,Long selfAppraisalCandidateId){
@@ -2886,4 +2917,209 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  LOG.error("Exception Occured in setDateWiseTourDtls() in CoreDashboardToursService  : ",e);
 	  }
   }
+ public List<ToursBasicVO> getTourLeaderDtlsBasedOnSelectionType(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String filterType){
+	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
+	 Map<Long,Map<Long,List<ToursBasicVO>>> candidateTargetMap = new HashMap<Long, Map<Long,List<ToursBasicVO>>>(0);
+	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+	 Map<Long,String> designationIdAndNameMap = new HashMap<Long, String>(0);
+	 
+	 Set<Long> locationValues = new HashSet<Long>(0);
+	 Long locationAccessLevelId = 0l;
+	 Date fromDate=null;
+	 Date toDate = null;
+	 try{
+		   List<Date>  datesList =getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
+		  fromDate=datesList.get(0);
+		  toDate=datesList.get(1);
+		   List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+		   }
+			 List<Object[]> rtrnTargetObjList = selfAppraisalDesignationTargetDAO.getCandiateAndCategoryWiseTargetCnt(fromDate, toDate,"Category",null);
+			  setCandiateWiseTarget(rtrnTargetObjList,candidateTargetMap);
+			  
+			  List<Object[]> rtrnGovtObjList = selfAppraisalDesignationTargetDAO.getCandiateAndCategoryWiseTargetCnt(fromDate, toDate,"Govt",null);
+			  if(rtrnGovtObjList != null && rtrnGovtObjList.size() > 0){
+				  for(Object[] param:rtrnGovtObjList){
+					  Map<Long,List<ToursBasicVO>> candidateMap = candidateTargetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//designationId
+					  	if(candidateMap != null && candidateMap.size() > 0){
+					  		List<ToursBasicVO> categoryList = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));//candiateId
+					  		 if(categoryList != null ){
+					  			 ToursBasicVO tourTypeVO = new ToursBasicVO();
+					  			   tourTypeVO.setIdStr("0"+commonMethodsUtilService.getStringValueForObject(param[3]));
+					  			   tourTypeVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					  			   tourTypeVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[5]));
+					  			   categoryList.add(tourTypeVO);
+					  		 }
+					  	}
+				  }
+			  }
+			  if(filterType != null && !filterType.equalsIgnoreCase("notSubmitteed")){
+				  List<Object[]> rtrnDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getLeaderComplainceCntCategoryWise(fromDate, toDate, "Category",null);
+				  setComplainceDtls(rtrnDaysToursObjLst,candidateTargetMap,"Category");
+				  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getLeaderComplainceCntCategoryWise(fromDate, toDate, "Govt",null);
+				  setComplainceDtls(rtrnGovtDaysToursObjLst,candidateTargetMap,"Govt");
+			
+			  }
+			  
+			  List<Object[]> rtrnMemberDtlsObjLst = null;
+			  if(filterType != null && filterType.equalsIgnoreCase("all")){
+				 rtrnMemberDtlsObjLst = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues,0l, designationIds);
+			  }else if(filterType != null && filterType.equalsIgnoreCase("notSubmitteed")){
+			   List<Object[]>  rtrnTotalLdrs = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l, designationIds);
+			   rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,fromDate,toDate,designationIds);
+			   rtrnMemberDtlsObjLst = getNotSubmittedLeadrs(rtrnTotalLdrs,rtrnMemberDtlsObjLst); 
+			  }else{
+			   rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,fromDate,toDate,designationIds);	  
+			  }
+			  setTourSubmitteedMemberDtls(rtrnMemberDtlsObjLst,memberDtlsMap,candidateTargetMap,designationIdAndNameMap);
+			
+			  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+				  
+				  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:memberDtlsMap.entrySet()){
+					  
+					  if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+						  
+						  for(Entry<Long,ToursBasicVO> entry:designationEntry.getValue().entrySet()){
+							  
+							  ToursBasicVO candiateVO = entry.getValue();
+							 		if(candiateVO.getSubList3() != null && candiateVO.getSubList3().size() > 0){
+							 		   Long overAllTargetDays = 0l;
+							 		   Long overAllComplaincDays = 0l;
+							 	 		for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
+							 	 			overAllTargetDays = overAllTargetDays+categoryVO.getTargetDays();
+							 	 			overAllComplaincDays = overAllComplaincDays+categoryVO.getComplainceDays();
+							 	 			String categoryId = categoryVO.getIdStr();
+							 	 			if(categoryId.equalsIgnoreCase("1")){//Incharge District
+							 	 				candiateVO.setInchargeDistrictTrDays(categoryVO.getTargetDays());
+							 	 				candiateVO.setInchargeDistrictComplainceDays(categoryVO.getComplainceDays());
+							 	 			}else if(categoryId.equalsIgnoreCase("3")){//Incharge Constituency
+							 	 				candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
+							 	 				candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
+							 	 			}else if(categoryId.equalsIgnoreCase("2")){//ownDistrict
+							 	 				candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
+							 	 				candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
+							 	 			}else if(categoryId.equalsIgnoreCase("4")){//own Constituency
+							 	 			   candiateVO.setOwnContituencyTrDays(categoryVO.getOwnContituencyTrDays());
+							 	 			   candiateVO.setOwnConstituencyComplainceDays(categoryVO.getOwnContituencyTrDays());
+							 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
+							 	 				candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
+							 	 				candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
+							 	 			}
+								 		}
+							 	 		candiateVO.setTargetDays(overAllTargetDays);
+								 		candiateVO.setComplainceDays(overAllComplaincDays);
+							 		}
+							  }
+						  }
+					  }
+				  }
+			  
+			  //calculating percentage
+			  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+				  
+				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+					  
+					  if(entry.getValue() != null && entry.getValue().size() > 0){
+						  
+						  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+							  
+							  candiateEntry.getValue().setComplaincePer(calculatePercantage(candiateEntry.getValue().getComplainceDays(),candiateEntry.getValue().getTargetDays()));
+							  candiateEntry.getValue().setInchargeDistrictComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeDistrictComplainceDays(),candiateEntry.getValue().getInchargeDistrictTrDays()));
+							  candiateEntry.getValue().setInchargeConstituencyComplaincePer(calculatePercantage(candiateEntry.getValue().getInchargeConstituencyComplainceDays(),candiateEntry.getValue().getInchargeConstituencyTrDays()));
+							  candiateEntry.getValue().setOwnDistrictComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnDistrictComplainceDays(),candiateEntry.getValue().getOwnDistrictTrDays()));
+							  candiateEntry.getValue().setOwnContituencyComplaincePer(calculatePercantage(candiateEntry.getValue().getOwnConstituencyComplainceDays(), candiateEntry.getValue().getOwnContituencyTrDays()));
+							  candiateEntry.getValue().setGovtWorkComplaincePer(calculatePercantage(candiateEntry.getValue().getGovtWorkComplainceDays(),candiateEntry.getValue().getGovtWorkTrDays()));
+							  
+							  if(candiateEntry.getValue().getSubList3() != null && candiateEntry.getValue().getSubList3().size() > 0){
+								  for(ToursBasicVO categoryVO:candiateEntry.getValue().getSubList3()){
+									  categoryVO.setComplaincePer(calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays()));  
+								  }
+							  }
+							  
+						  }
+					  }
+				  }
+			  }
+			  //merge secretary and organization secretary
+			  if(memberDtlsMap!=null && memberDtlsMap.size()>0){
+			        Map<Long,ToursBasicVO> orgSecAndSecMap = new ConcurrentHashMap<Long,ToursBasicVO>();
+			        Map<Long,ToursBasicVO>  secreteriesMap = null;
+			        if(memberDtlsMap.containsKey(5l)){
+			          secreteriesMap = memberDtlsMap.get(5l);
+			          orgSecAndSecMap.putAll(secreteriesMap);
+			          //remove secreteries from Map
+			          memberDtlsMap.remove(5l); 
+			        }
+			        if(memberDtlsMap.containsKey(4l)){
+			          orgSecAndSecMap.putAll(memberDtlsMap.get(4l));
+			        }
+			        if(orgSecAndSecMap!=null && orgSecAndSecMap.size()>0){
+			        	memberDtlsMap.put(4l, orgSecAndSecMap); 
+			        }
+			  }
+			  
+			  //Filter Complaince Leader
+			  if(filterType != null && filterType.equalsIgnoreCase("Complaince")){
+				  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+					  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+						  
+							 if(entry.getValue() != null && entry.getValue().size() > 0){
+								 
+								 for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+									 
+									  if(candiateEntry.getValue().getComplaincePer()<100d){
+										  
+										  entry.getValue().remove(candiateEntry.getKey());  
+									  }
+									 
+								 }
+				          }
+					}  
+				  }
+			 }
+			
+			  //pushing in final list
+			  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+					  ToursBasicVO designationVO = new ToursBasicVO();
+					  designationVO.setId(entry.getKey());
+					  designationVO.setName(designationIdAndNameMap.get(entry.getKey()));
+					  List<ToursBasicVO> memberList = new ArrayList<ToursBasicVO>(entry.getValue().values());
+					  Collections.sort(memberList, tourMemberComplaincePercDesc);
+					  designationVO.setSubList3(memberList);
+					  resultList.add(designationVO);
+				  }
+			  }
+			  memberDtlsMap.clear();
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getTourLeaderDtlsBasedOnSelectionType() in CoreDashboardToursService  : ",e);
+		 }
+	 return resultList;
+ }
+ public List<Object[]> getNotSubmittedLeadrs(List<Object[]> totalLeadrObjList,List<Object[]> subMittedLdrsObjLst){
+	 List<Object[]> notSubMittedMembersObjLst = new ArrayList<Object[]>();
+	 Set<Long> subMitteddCandiateList = new HashSet<Long>(0);
+	 try{
+		 if(subMittedLdrsObjLst != null && subMittedLdrsObjLst.size() > 0){
+			 for(Object[] param:subMittedLdrsObjLst){
+				 subMitteddCandiateList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+			 }
+		 }
+		 if(totalLeadrObjList != null && totalLeadrObjList.size() > 0){
+			 for(Object[] param:totalLeadrObjList){
+				 Long cadreId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				 if(!subMitteddCandiateList.contains(cadreId)){
+					 notSubMittedMembersObjLst.add(param); 
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception Occured in getNotSubmittedLeadrs() in CoreDashboardToursService  : ",e);	 
+	 }
+	 return notSubMittedMembersObjLst;
+ }
 }
