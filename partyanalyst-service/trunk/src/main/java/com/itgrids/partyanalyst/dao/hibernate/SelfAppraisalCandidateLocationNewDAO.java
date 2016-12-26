@@ -122,14 +122,24 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	     }
 		   return query.list();  
 	   }
-       public List<UserAddress> getAllCandidateLocations(Long tourCategoryId,Long tourCandidateId){
-    	   StringBuilder str = new StringBuilder();
-   		str.append("select distinct model.userAddress from SelfAppraisalCandidateLocationNew model where model.selfAppraisalCandidateId = :tourCandidateId and  model.selfAppraisalTourCategoryId =:tourCategoryId");
-   		Query query = getSession().createQuery(str.toString());
-   		query.setParameter("tourCategoryId", tourCategoryId);
-   		query.setParameter("tourCandidateId", tourCandidateId);
-   		return query.list();
+       
+       public Object[] getAllCandidateLocations(Long cadreId,Long categoryId){
+ 
+    	   	StringBuilder str = new StringBuilder();
+    	   
+   			str.append("select distinct model.addressId,model.locationScopeId,model.locationValue " +
+   				" from SelfAppraisalCandidateLocationNew model " +
+   				" where model.selfAppraisalCandidate.tdpCadreId = :cadreId " +
+   				" and  model.selfAppraisalTourCategoryId =:categoryId");
+   			
+   			Query query = getSession().createQuery(str.toString());
+   		
+   			query.setParameter("cadreId", cadreId);
+   			query.setParameter("categoryId", categoryId);
+   		
+   			return (Object[])query.uniqueResult();
     	      		 
-   		}
+       }
+       
       
 }

@@ -40,6 +40,44 @@ public class ToursVO {
 
 	private List<ToursVO> toursVoList = new ArrayList<ToursVO>(0);
 	private Map<File,String> files = new HashMap<File,String>();
+	
+	private String tourDateId;
+	private Long tourCategoryId;
+	private Long tourLocationId;
+	private String description;
+	
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getTourLocationId() {
+		return tourLocationId;
+	}
+
+	public void setTourLocationId(Long tourLocationId) {
+		this.tourLocationId = tourLocationId;
+	}
+
+	public Long getTourCategoryId() {
+		return tourCategoryId;
+	}
+
+	public void setTourCategoryId(Long tourCategoryId) {
+		this.tourCategoryId = tourCategoryId;
+	}
+
+	public String getTourDateId() {
+		return tourDateId;
+	}
+
+	public void setTourDateId(String tourDateId) {
+		this.tourDateId = tourDateId;
+	}
 
 	public Long getCandidateId() {
 		return candidateId;

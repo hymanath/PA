@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDayTourDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
@@ -46,6 +47,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDayTour;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
@@ -86,9 +88,15 @@ public class ToursService implements IToursService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IPanchayatDAO panchayatDAO;
 	private ICadreCommitteeService cadreCommitteeService;
+	public IRegionScopesDAO regionScopesDAO;
 	
 	
-	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
 	public void setCadreCommitteeService(
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
@@ -798,10 +806,10 @@ public class ToursService implements IToursService {
     	return finalList;
     }
     
-    public List<IdNameVO> getAllTourCategorys(Long candidateId){
+    public List<IdNameVO> getAllTourCategorys(Long cadreId){
     	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
     	try{    		
-    		List<Object[]> objectList = selfAppraisalTourCategoryDAO.getAllTourCategorys(candidateId);
+    		List<Object[]> objectList = selfAppraisalTourCategoryDAO.getAllTourCategorys(cadreId);
 	    		if(objectList !=null && objectList.size()>0){
 	    			for (Object[] obj : objectList) 
 		    			finalList.add(new IdNameVO(obj[0] !=null ? (Long)obj[0]:null,obj[1] !=null ? obj[1].toString():null));
@@ -1132,39 +1140,78 @@ public class ToursService implements IToursService {
 	 return "failure";
 	}
     
-	public List<AddressVO> getAllCandidateLocations(Long tourCategoryId,Long tourCandidateId){
-    	List<AddressVO> finalList = new ArrayList<AddressVO>();
+	public PMMinuteVO getAllCandidateLocations(Long cadreId,Long categoryId){
+    	PMMinuteVO vo = new PMMinuteVO();
     	try{    		
-    		List<UserAddress> objectList = selfAppraisalCandidateLocationNewDAO.getAllCandidateLocations(tourCategoryId,tourCandidateId);
-	    		if(objectList !=null && objectList.size()>0){
-	    			for (UserAddress param : objectList){ 
-	    				AddressVO vo=new AddressVO();
-	    				vo.setStateId(param.getState()!= null && param.getState().getStateId() !=null && param.getState().getStateId()>0l?param.getState().getStateId():0l);	
-	    				vo.setConstituencyId(param.getConstituency()!= null && param.getConstituency().getConstituencyId() !=null && param.getConstituency().getConstituencyId()>0l?param.getConstituency().getConstituencyId():0l);
-	    				vo.setDistrictId(param.getDistrict()!= null && param.getDistrict().getDistrictId() !=null && param.getDistrict().getDistrictId()>0l?param.getDistrict().getDistrictId() :0l);
-	    				vo.setTehsilId(param.getTehsil()!= null && param.getTehsil().getTehsilId() !=null && param.getTehsil().getTehsilId()>0l?param.getTehsil().getTehsilId():0l);
-	    				vo.setHamletId(param.getHamlet()!= null && param.getHamlet().getHamletId() !=null && param.getHamlet().getHamletId()>0l?param.getHamlet().getHamletId():0l);
-	    				finalList.add(vo);
-	    				
-	    			}
-	    			if(finalList !=null && finalList.size()>0)
-	                {
-	                for (AddressVO addressVO : finalList) {
-	                  
-	                  addressVO.setStateName(stateDAO.get(addressVO.getStateId()).getStateName());
-	                  addressVO.setDistrictName(districtDAO.get(addressVO.getDistrictId()).getDistrictName());
-	                  addressVO.setConstituencyName(constituencyDAO.get(addressVO.getConstituencyId()).getName());
-	                  addressVO.setTehsilName(tehsilDAO.get(addressVO.getTehsilId()).getTehsilName());
-	                  addressVO.setHamletName(hamletDAO.get(addressVO.getHamletId()).getHamletName());
-	                
-	               }
-	                }
-	    				
-	    		}    		
+    		Object[] obj = selfAppraisalCandidateLocationNewDAO.getAllCandidateLocations(cadreId,categoryId);
+    		
+    		if(obj != null && obj[0] != null && (Long)obj[0] > 0l){
+    			Long addressId = (Long)obj[0];
+  				  List<Object[]> userDetailsList = userAddressDAO.getUserAddressDetailsByMinuteId(addressId);
+  				  if(userDetailsList != null && userDetailsList.size() > 0){
+  					  Object[] objects2 = userDetailsList.get(0);
+  					  vo.setStateId(commonMethodsUtilService.getLongValueForObject(objects2[0]));
+  					  if(vo.getStateId() == 1l){
+  						  KeyValueVO vo1 = new KeyValueVO();
+  						  vo1.setId(1l);
+    					  vo1.setName("AndhraPradesh");
+    					  vo.getStatesList().add(vo1);
+  					  }
+  					  if(vo.getStateId() == 2l){
+  						  KeyValueVO vo2 = new KeyValueVO();
+  						  vo2.setId(36l);
+  						  vo2.setName("Telangana");
+  						  vo.getStatesList().add(vo2);
+  					  }
+ 
+  					  if(objects2[0] != null && (Long)objects2[0] > 0l){
+  						  List<Object[]> objList = districtDAO.getDistrictsWithNewSplitted((Long)objects2[0]);
+  						  vo.setDistList(setValuesTOVOList(objList));
+  					  }
+  						  
+  					  vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
+  					  if(objects2[1] != null && (Long)objects2[1] > 0l){
+  						  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getConstituencyOfDistrict(vo.getStateId(),Arrays.asList(vo.getDistrictId()));
+  						  vo.setConstList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
+  					  }
+  						  
+  					  vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
+  					  if(objects2[2] != null && (Long)objects2[2] > 0l){
+  						  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),"0",4l);
+  						  vo.setManTowDivList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
+  					  }
+  						  
+  					  vo.setTehsilId(objects2[3] != null && (Long)objects2[3] > 0l ? Long.parseLong("4"+objects2[3].toString()):0l);	    						  
+  					  vo.setLocalElectionBodyId(objects2[4] != null && (Long)objects2[4] > 0l ? Long.parseLong("5"+objects2[4].toString()):0l);
+  					  if(vo.getLocalElectionBodyId() !=null && vo.getLocalElectionBodyId()>0 && objects2[5] !=null && (Long)objects2[5]>0){
+  						  vo.setWardId(objects2[5] != null && (Long)objects2[5] > 0l ? Long.parseLong("8"+objects2[5].toString()):0l);
+  					  }else{
+  						  vo.setDivisionId(objects2[5] != null && (Long)objects2[5] > 0l ? Long.parseLong("6"+objects2[5].toString()):0l);
+  					  }	    						  	    						 
+  					
+  					  vo.setPanchayatId(objects2[6] != null && (Long)objects2[6] > 0l ? Long.parseLong("7"+objects2[6].toString()):0l);
+  					  if((objects2[3] !=null && (Long)objects2[3]>0l)){
+  						  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getTehsilId().toString(),5l);	    							  
+  						  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  					  }
+  					  if(objects2[4] != null && (Long)objects2[4] > 0l){
+  						  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getLocalElectionBodyId().toString(),5l);	    							  
+  						  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  					  }
+  					  if(vo.getDivisionId() !=null && vo.getDivisionId() >0l){
+  						  List<LocationWiseBoothDetailsVO> tehsiVoList =  cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),vo.getDivisionId().toString(),5l);	    							  
+  						  vo.setPanWardList(setResultTOLocationWiseBoothDetailsVO(tehsiVoList));
+  					  }
+  				  }
+    		}
+    		
+    		vo.setLocationLevel(obj[1] != null && (Long)obj[1] > 0l?(Long)obj[1]:0l);
+    		vo.setLocationValue(obj[2] != null && (Long)obj[2] > 0l?(Long)obj[2]:0l);
+    		
     	}catch(Exception e){
     		LOG.error("Error Occured at getAllCandidateLocations() in ToursService class",e);
     	}
-    	return finalList;
+    	return vo;
     }
 	
 	public List<PMMinuteVO> getNewTourRetrivalDetails(Long candidateId,String tourDate,Long candidateDayTourId){
