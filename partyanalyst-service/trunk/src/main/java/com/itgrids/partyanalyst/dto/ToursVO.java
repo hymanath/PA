@@ -34,6 +34,9 @@ public class ToursVO {
 	private Long panchayatId;
 	private Long wardId;
 	
+	private Long panchayatNewId;
+	private Long localBodyId;
+	
 
 	private List<ToursVO> toursVoList = new ArrayList<ToursVO>(0);
 	private Map<File,String> files = new HashMap<File,String>();
@@ -211,6 +214,22 @@ public class ToursVO {
 
 	public void setWardId(Long wardId) {
 		this.wardId = wardId;
+	}
+
+	public Long getPanchayatNewId() {
+		return panchayatNewId;
+	}
+
+	public void setPanchayatNewId(Long panchayatNewId) {
+		this.panchayatNewId = panchayatNewId;
+	}
+
+	public Long getLocalBodyId() {
+		return localBodyId;
+	}
+
+	public void setLocalBodyId(Long localBodyId) {
+		this.localBodyId = localBodyId;
 	} 
 	
 	
