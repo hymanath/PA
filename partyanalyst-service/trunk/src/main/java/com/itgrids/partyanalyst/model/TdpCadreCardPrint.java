@@ -20,7 +20,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "tdp_cadre_card_print")
+@Table(name = "tdp_cadre_card_print")//tdp_cadre_card_print20
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	
@@ -28,8 +28,11 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	private Long tdpCadreId;
 	private String memberShipId;
 	private String cadreName;
+	private String relativeName;
 	private String imagePath;
+	private String mobileNo;
 	
+	private String locationType;
 	private Long  districtId;
 	private String districtName;
 	private Long constituencyId;
@@ -44,7 +47,7 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	private String wardName;
 	private Long boothId;
 	private String boothName;
-	
+	private Long serialNoInBooth;
 	private String areaCovered;
 	private String houseNo;
 	
@@ -412,4 +415,37 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+	
+	@Column(name="relative_name")
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	
+	@Column(name="mobile_no")
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
+	@Column(name="location_type")
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	
+	@Column(name="serial_no_in_booth")
+	public Long getSerialNoInBooth() {
+		return serialNoInBooth;
+	}
+	public void setSerialNoInBooth(Long serialNoInBooth) {
+		this.serialNoInBooth = serialNoInBooth;
+	}
+	
 }
