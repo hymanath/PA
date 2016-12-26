@@ -1,3 +1,5 @@
+var regionScopesArr = [{"id":"2","name":"state"},{"id":"3","name":"District"},{"id":"4","name":"Constituency"},{"id":"5","name":"Mandal / Municipality"},{"id":"6","name":"Village / Ward"}];
+
 function getCandidateList(designationId){ 
 		var jsObj = {     
 			designationId : designationId
@@ -79,7 +81,7 @@ function getCandidateList(designationId){
 					str+='</div>';
 					str+='<div class="panel-footer">';
 						str+='<label class="checkbox-inline">';
-							str+='<input id="profileCheckboxId" type="checkbox"/>Select Profile';
+							str+='<input id="profileCheckboxId" attr_cadre_id="'+result.tdpCadreId+'" type="checkbox"/>Select Profile';
 						str+='</label>';
 					str+='</div>';
 					
@@ -201,10 +203,10 @@ function getCandidateList(designationId){
 			$("#designationSlctBxId").trigger("chosen:updated");
 		});
 	}
-	getAllTourCategorys();
-	function getAllTourCategorys(){ 
+	
+	function getAllTourCategorys(cadreId){ 
 		var jsObj = {     
-			
+			cadreId : cadreId
 		}
 		$.ajax({
 			type : 'POST',
@@ -321,8 +323,124 @@ function getCandidateList(designationId){
 	$(document).on("click","#profileCheckboxId",function(){
 		if($(this).is(':checked')){
 			$(".showDivCls").show();
+			getAllTourCategorys($(this).attr("attr_cadre_id"));
 		}else{
 			$(".showDivCls").hide();
 		}
 	});
-
+	
+	$(document).on("change",".tourCategoryCls",function(){
+		var jsObj = {     
+			cadreId :$("#profileCheckboxId").attr("attr_cadre_id"),
+			categoryId :$(this).val()
+		}
+		var count = $(this).attr("attr_count");
+		
+		$.ajax({
+		  type : 'POST',
+		  url : 'getAllCandidateLocationsAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				buildCandidateLocationResult(result,count);
+			}
+		});
+	});
+	
+	function buildCandidateLocationResult(result,count){
+		if(result.regionScopesList != null && result.regionScopesList.length > 0){
+			
+			if(regionScopesArr != null && regionScopesArr.length > 0){
+				$("#tourLocationId"+count).html("<option value='0'>Select Location</option>");
+				for(var i in regionScopesArr){
+					if(parseInt(regionScopesArr[i].id)>=result.locationLevel)
+						$("#tourLocationId"+count).append("<option value='"+regionScopesArr[i].id+"'>"+regionScopesArr[i].name+"</option>");
+				}
+			}
+			
+			if(result.locationLevel == 5 || result.locationLevel == 7)
+				$("#tourLocationId"+count).val(5);
+			else if(result.locationLevel == 6 || result.locationLevel == 8)
+				$("#tourLocationId"+count).val(6);
+			else
+				$("#tourLocationId"+count).val(result.locationLevel);
+			
+			if(result.locationLevel == 2){
+				$("#stateDivId"+count).show();
+			}else if(result.locationLevel == 3){
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+			}else if(result.locationLevel == 4){
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+			}else if(result.locationLevel == 5 || result.locationLevel == 7){
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+				$("#tehMunDivId"+count).show();
+			}else if(result.locationLevel == 6 || result.locationLevel == 8){
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+				$("#tehMunDivId"+count).show();
+				$("#villWardDivId"+count).show();
+			}
+			
+			if(result.statesList != null && result.statesList.length > 0){
+				$("#stateSelId"+count).html("<option value='0'>Select State</option>");
+				for(var i in result.statesList){
+					$("#stateSelId"+count).append("<option value='"+result.statesList[i].id+"'>"+result.statesList[i].name+"</option>");
+				}
+			}
+			
+			if(result.stateId != null && result.stateId > 0)
+				$("#stateSelId"+count).val(result.stateId);
+			
+			if(result.distList != null && result.distList.length > 0){
+				$("#districtSelId"+count).html("<option value='0'>Select District</option>");
+				for(var i in result.distList){
+					$("#districtSelId"+count).append("<option value='"+result.distList[i].id+"'>"+result.distList[i].name+"</option>");
+				}
+			}
+			
+			if(result.districtId != null && result.districtId > 0)
+				$("#districtSelId"+count).val(result.districtId);
+			
+			if(result.constList != null && result.constList.length > 0){
+				$("#constituencySelId"+count).html("Select Constituency");
+				for(var i in result.constList){
+					$("#constituencySelId"+count).append("<option value='"+result.constList[i].id+"'>"+result.constList[i].name+"</option>");
+				}
+			}
+			
+			if(result.constituencyId != null && result.constituencyId > 0)
+				$("#constituencySelId"+count).val(result.constituencyId);
+			
+			if(result.manTowDivList != null && result.manTowDivList.length > 0){
+				$("#tehMunSelId"+count).html("<option value='0'>Select Tehsil / Municipality</option>");
+				for(var i in result.manTowDivList){
+					$("#tehMunSelId"+count).append("<option value='"+result.manTowDivList[i].id+"'>"+result.manTowDivList[i].name+"</option>");
+				}
+			}
+			
+			if(result.locationLevel == 5)
+				$("#tehMunDivId"+count).val(result.tehsilId);
+			if(result.locationLevel == 7)
+				$("#tehMunDivId"+count).val(result.localElectionBodyId);
+			
+			if(result.panWardList != null && result.panWardList.length > 0){
+				$("#villWardSelId"+count).html("<option value='0'>Select Village / Ward</option>");
+				for(var i in result.panWardList){
+					$("#villWardSelId"+count).append("<option value='"+result.panWardList[i].id+"'>"+result.panWardList[i].name+"</option>");
+				}
+			}
+			
+			if(result.locationLevel == 6)
+				$("#villWardSelId"+count).val(result.panchayatId);
+			if(result.locationLevel == 8)
+				$("#villWardSelId"+count).val(result.wardId);
+			
+		}
+	}
