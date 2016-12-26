@@ -13,4 +13,6 @@ public interface ICardPrintService {
 	public List<BasicVO>  getAllAssemblyConstituencies();
 	
 	public ResultStatus saveConstituencyPrintStatus(final PrintStatusUpdateVO inputVO);
+	
+	public ResultStatus updatePrintDetailsToTdpCadreCardPrint(final Long constituencyId);
 }
