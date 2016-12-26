@@ -1078,6 +1078,8 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreCasteStateInfoTemp</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreGenderInfoTemp</value>
 	                  
+	                  <value>com.itgrids.partyanalyst.model.MaxPrintDetails</value>
+	                  
 	             </list>
 			
 		</property>
