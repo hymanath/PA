@@ -3921,6 +3921,7 @@
 		<property name="tdpCadreCardPrintDAO" ref="tdpCadreCardPrintDAO"/>
 		<property name="printStatusDAO" ref="printStatusDAO"/>
 		<property name="cardPrintValidationDAO" ref="cardPrintValidationDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
 	</bean>
 	
 </beans>			
