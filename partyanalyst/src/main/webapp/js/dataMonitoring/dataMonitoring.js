@@ -454,7 +454,7 @@ function getUsers(constituencyId){
 
 					     
 							str+='<tr>';
-								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><!--<td><button class="btn btn-xs btn-success" id="changeImageBtnId"  style="margin-left:-220px;margin-top:10px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'">Change Image</button></td><div id="msgId"></div>--></td>';
 								str+='<td colspan="3">';
 									str+='<input type="text" value="'+result[0][i].wish+'" class="form-control" disabled></input>';    
 										//str+='<option></option>';  
@@ -471,6 +471,7 @@ function getUsers(constituencyId){
 									str+='<img src="https://www.mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
+								
 								str+='<td>'+result[0][i].mobileNo+'</td>';
 								str+='<td>'+result[0][i].gender+'</td>';
 								str+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" class="localSelectOwnCls" type="checkbox"/></td>';  
@@ -481,7 +482,8 @@ function getUsers(constituencyId){
 								str+='<td>';  
 									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Approve</button>';
 									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Reject</button>';
-								str+='</td>';    
+									/*str+='<button class="btn btn-sm btn-success" id="changeImageBtnId" style="margin-left: 5px;" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'">Change Image</button><div id="msgId"></div>';*/
+								str+='</td>'; 
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
 										str+='<option value="0">Andhra Pradesh</option>';                
@@ -708,6 +710,19 @@ function getUsers(constituencyId){
 			$('.singleApproveCls').prop('disabled', false);
 			$('.singleRejectCls').prop('disabled', false);   
 		}
+		/*var cadreId = $(this).attr("attr_cadre_id");
+		var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+		var tabUserInfoId = $(this).attr("attr_tab_user_id");
+		var districtId = $(this).attr("attr_dist_id");
+		var constituencyId = $(this).attr("attr_const_id");
+		var reasonId = $(this).attr("attr_reason_id");
+		
+		$("#hiddenCadreId").val(cadreId);
+		$("#hiddenCadreSurveyUserId").val(cadreSurveyUserId);
+		$("#hiddenTabUserInfoId").val(tabUserInfoId);
+		$("#hiddenDistrictId").val(districtId);
+		$("#hiddenConstituencyId").val(constituencyId);
+		$("#hiddenReasonId").val(reasonId);*/
 	});
 	//by selecting single check box show and hide the chexk box. for family tab
 	$(document).on('click','.localSelectFamilyCls',function(){
@@ -1082,13 +1097,12 @@ function getUsers(constituencyId){
 
 	
 function getOverAllVerificationCount(){
+  $("#populatingDtsDivImgId").show();
+  $("#verifiactionDivId").hide();
 	if(!validations())
 		{
 			return;
 		}	
-	
-	  $("#verifiactionDivId").show();
-	  
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
 		var fromDate = dateArr[0].trim();
@@ -1128,6 +1142,8 @@ $(document).on("click","#getRegStatusId",function(){
 });
 	
 function getCadreVerificationDetails(){
+	$("#populatingDtsDivImgId").show();
+	$("#loggedInFieldUsersId").html("");
 	if(!validations())
 		{
 			return;
@@ -1156,6 +1172,7 @@ function getCadreVerificationDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
+			$("#populatingDtsDivImgId").hide();
 				buildTotalRegCdrVendorAndTabUserWise(result,fromDate,toDate);
 		});
 }	
@@ -1169,3 +1186,30 @@ function validations(){
 	}
 	return true;
 }
+$(document).on('click','#changeImageBtnId',function(){  
+			var cadreId = $(this).attr("attr_cadre_id");
+			var distId = $(this).attr("attr_dist_id"); 
+			var constId = $(this).attr("attr_const_id");
+			var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+			var tabUserInfoId = $(this).attr("attr_tab_user_id");
+			var status = $(this).attr("attr_status");
+		      
+				var jsObj = {
+					cadreId :cadreId,
+					districtId : distId,
+					constitunecyId : constId ,
+					cadreUserId : cadreSurveyUserId,
+					tabUserInfoId : tabUserInfoId,
+					status : status
+				}
+		
+		$.ajax({
+			type:'GET',      
+			url: 'changeImageByVoterImageAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result.message == "Updated Successfully")
+				$("#msgId").html('<span style="color:green">'+result.message+'</span>');
+		});
+});
