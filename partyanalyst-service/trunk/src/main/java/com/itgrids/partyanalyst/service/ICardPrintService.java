@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
+import com.itgrids.partyanalyst.dto.PrintVO;
 
 public interface ICardPrintService {
 	public List<CardPrintVO> getVendorNames();
@@ -12,4 +14,6 @@ public interface ICardPrintService {
 	public CardPrintVO getDistrictWiseStatusWiseConstituenciesCounts(Long vendorId,String fromDateStr,String toDateStr);
 	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId);
 	public CardPrintVO getVendorWiseStatusWiseConstituenciesDetails(Long stateId,String fromDateStr,String toDateStr);
+	
+	public PrintUpdateDetailsStatusVO updatePrintDetailsToTdpCadreCardPrint(final List<PrintVO> printList);
 }
