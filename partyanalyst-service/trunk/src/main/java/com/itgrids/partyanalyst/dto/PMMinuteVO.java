@@ -34,6 +34,7 @@ public class PMMinuteVO implements Serializable{
 	private Long locationValue;
 	private String tourDate;
 	
+	private List<KeyValueVO> statesList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> distList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> constList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> manTowDivList = new ArrayList<KeyValueVO>(0);
@@ -204,6 +205,11 @@ public class PMMinuteVO implements Serializable{
 	public void setTourTypeList(List<IdNameVO> tourTypeList) {
 		this.tourTypeList = tourTypeList;
 	}
-	
+	public List<KeyValueVO> getStatesList() {
+		return statesList;
+	}
+	public void setStatesList(List<KeyValueVO> statesList) {
+		this.statesList = statesList;
+	}
 	
 }

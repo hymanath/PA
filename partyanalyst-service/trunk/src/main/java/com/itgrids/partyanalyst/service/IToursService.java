@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
 
@@ -25,6 +26,6 @@ public interface IToursService {
 	 public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr);
 	 public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
 	 public List<IdNameVO> getAllTourTypes();
-	 public List<IdNameVO> getAllTourCategorys(Long candidateId);
-	 public List<AddressVO> getAllCandidateLocations(Long tourCategoryId,Long tourCandidateId);
+	 public List<IdNameVO> getAllTourCategorys(Long cadreId);
+	 public PMMinuteVO getAllCandidateLocations(Long cadreId,Long categoryId);
 }
