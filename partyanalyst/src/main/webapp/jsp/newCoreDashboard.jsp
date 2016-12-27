@@ -2930,8 +2930,8 @@
 			</div>
 		</div>	
 	 <!--Alerts End -->
-	  <!--Tours New Start -->
-	 <!--<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
+	  <!--Tours New Start
+	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -3505,12 +3505,11 @@
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<div class="modal" tabindex="-1" role="dialog" id="tourIndividualPerformanceDivId">
+<div class="modal" tabindex="-1" role="dialog" id="tourIndividualPerformanceDivId" style="z-index:9999;">
 		  <div class="modal-dialog modal-lg" style="width:85%">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span id="nameOfMemberHeadingId"></span>
 			  </div>
 			  <div class="modal-body">   
@@ -3522,7 +3521,7 @@
 				</div>
 			  </div>
 			  <div class="modal-footer">     
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
