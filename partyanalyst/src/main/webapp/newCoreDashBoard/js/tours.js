@@ -1531,7 +1531,7 @@ function getToursBasicOverviewCountDetails()
 							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
 							str+='<div class="dropup">';
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-								str+='<div class="dropdown-menu pull-right bg_ED" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
 									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Target Per month</i></p>';
 									str+='<table class="table">';	
 										str+='<tr>';
@@ -2240,8 +2240,8 @@ function getToursBasicOverviewCountDetails()
 				var str='';
 				var length = result
 				str+='<div class="table-responsive">'
-					str+='<table class="table table-bordered" >';
-					str+='<thead>';
+					str+='<table class="table table-bordered borderedWeight" >';
+					str+='<thead class="bg_D8">';
 						str+='<tr>';
 			
 								var maxLengthForSpan = 0;
@@ -2252,28 +2252,28 @@ function getToursBasicOverviewCountDetails()
 									}
 								}
 								if(maxLengthForSpan >=3){
-									str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
+									str+='<th rowspan="'+(maxLengthForSpan)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
 								}else{
-									str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
+									str+='<th rowspan="'+(maxLengthForSpan+1)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
 								}
 								
-								str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
+								str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">Complains</th>';
 								
 								for(var k in result[i].subList3[0].subList3){
-									str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
+									str+='<th colspan="2" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">'+result[i].subList3[0].subList3[k].name+'</th>';
 								}
 							
 							str+='</tr>';
 							str+='<tr>';
 								
-								str+='<td >over all</td>';
+								str+='<th class="text-capital text-center" style="vertical-align: middle;">over all</th>';
 										for(var k in result[i].subList3[0].subList3){
-											str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
+											str+='<th class="text-capital text-center" style="vertical-align: middle;">'+result[i].subList3[0].subList3[k].name+'</th>';
 											
 										}
 								for(var k in result[i].subList3[0].subList3){
-								str+='<td >Target</td>';
-								str+='<td >Toured</td>';
+								str+='<th class="text-capital text-center" style="vertical-align: middle;">Target</th>';
+								str+='<th class="text-capital text-center" style="vertical-align: middle;">Toured</th>';
 								}
 								
 							str+='<tr>';
