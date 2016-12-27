@@ -156,39 +156,39 @@
 												</div>
 												<div class="col-md-2 col-xs-12 col-sm-2">
 													<label>Tour Location</label>
-													<select class="form-control" id="tourLocationId0" name="toursVOList[0].tourLocationId">
+													<select class="form-control tourLocationCls" id="tourLocationId0"attr_TourCount="0" name="toursVOList[0].tourLocationId">
 														<option value="0">Tour Location</option>
 													</select>
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-md-2 col-xs-12 col-sm-2" id="stateDivId0" style="display:none;">
+												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="stateDivId0" style="display:none;">
 													<label>State</label>
-													<select class="form-control" id="stateSelId0" name="toursVOList[0].stateId">
+													<select class="form-control" id="stateSelId0" name="toursVOList[0].stateId" attr_count="0">
 														<option value="0">Select State</option>
 													</select>
 												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2" id="districtDivId0" style="display:none;">
+												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="districtDivId0" style="display:none;">
 													<label>District</label>
-													<select class="form-control" id="districtSelId0" name="toursVOList[0].districtId">
+													<select class="form-control" id="districtSelId0" name="toursVOList[0].districtId"  attr_count="0">
 														<option value="0">Select District</option>
 													</select>
 												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2" id="constituencyDivId0" style="display:none;">
+												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="constituencyDivId0" style="display:none;">
 													<label>Constituency</label>
-													<select class="form-control" id="constituencySelId0" name="toursVOList[0].constituencyId">
+													<select class="form-control constituencySelCls" id="constituencySelId0" name="toursVOList[0].constituencyId" attr_count="0">
 														<option value="0">Select Constituency</option>
 													</select>
 												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2" id="tehMunDivId0" style="display:none;">
-													<label>Tehsil / Municipality</label>
-													<select class="form-control" id="tehMunSelId0" name="toursVOList[0].localBodyId">
-														<option value="0">Select Tehsil / Municipality</option>
+												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="tehMunDivId0" style="display:none;">
+													<label>Mandal / Municipality</label>
+													<select class="form-control tehMunSelCls" id="tehMunSelId0" name="toursVOList[0].localBodyId" attr_count="0">
+														<option value="0">Select Mandal / Municipality</option>
 													</select>
 												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2" id="villWardDivId0" style="display:none;">
+												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="villWardDivId0" style="display:none;">
 													<label>Village / Ward</label>
-													<select class="form-control" id="villWardSelId0" name="toursVOList[0].panchayatWardId">
+													<select class="form-control villWardSelCls" id="villWardSelId0" name="toursVOList[0].panchayatWardId" attr_count="0">
 														<option value="0">Select Village / Ward</option>
 													</select>
 												</div>
@@ -283,9 +283,9 @@
 					</select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-2 tehMunDivCls" style="display:none;">
-					<label>Tehsil / Municipality</label>
+					<label>Mandal / Municipality</label>
 					<select class="form-control tehMunSelCls">
-						<option value="0">Select Tehsil / Municipality</option>
+						<option value="0">Select Mandal / Municipality</option>
 					</select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-2 villWardDivCls"  style="display:none;">
@@ -391,6 +391,7 @@ $( document ).ready(function() {
 	
 		c.find(".tourLocationCls").attr("id","tourLocationId"+newsTourCloneCount);
 		c.find(".tourLocationCls").attr("name","toursVOList["+newsTourCloneCount+"].tourLocationId");
+		c.find(".tourLocationCls").attr("attr_TourCount",newsTourCloneCount);
 		
 		c.find(".tourTypeCls").attr("id","tourTypeId"+newsTourCloneCount);
 		c.find(".tourTypeCls").attr("name","toursVOList["+newsTourCloneCount+"].tourTypeId");
@@ -403,22 +404,32 @@ $( document ).ready(function() {
 		c.find(".stateSelCls").attr("id","stateSelId"+newsTourCloneCount);
 		c.find(".stateSelCls").attr("name","toursVOList["+newsTourCloneCount+"].stateId");
 		c.find(".stateDivCls").attr("id","stateDivId"+newsTourCloneCount);
+		c.find(".stateDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 stateDivCls locationDivCls"+newsTourCloneCount);
+		c.find(".stateSelCls").attr("attr_count",newsTourCloneCount);
 		
 		c.find(".districtSelCls").attr("id","districtSelId"+newsTourCloneCount);
 		c.find(".districtSelCls").attr("name","toursVOList["+newsTourCloneCount+"].districtId");
 		c.find(".districtDivCls").attr("id","districtDivId"+newsTourCloneCount);
+		c.find(".districtDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 districtDivCls locationDivCls"+newsTourCloneCount);
+		c.find(".districtSelCls").attr("attr_count",newsTourCloneCount);
 		
 		c.find(".constituencySelCls").attr("id","constituencySelId"+newsTourCloneCount);
 		c.find(".constituencySelCls").attr("name","toursVOList["+newsTourCloneCount+"].constituencyId");
 		c.find(".constituencyDivCls").attr("id","constituencyDivId"+newsTourCloneCount);
+		c.find(".constituencyDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 constituencyDivCls locationDivCls"+newsTourCloneCount);
+		c.find(".constituencySelCls").attr("attr_count",newsTourCloneCount);
 		
 		c.find(".tehMunSelCls").attr("id","tehMunSelId"+newsTourCloneCount);
 		c.find(".tehMunSelCls").attr("name","toursVOList["+newsTourCloneCount+"].localBodyId");
 		c.find(".tehMunDivCls").attr("id","tehMunDivId"+newsTourCloneCount);
+		c.find(".tehMunDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 tehMunDivCls locationDivCls"+newsTourCloneCount);
+		c.find(".tehMunSelCls").attr("attr_count",newsTourCloneCount);
 		
 		c.find(".villWardSelCls").attr("id","villWardSelId"+newsTourCloneCount);
 		c.find(".villWardSelCls").attr("name","toursVOList["+newsTourCloneCount+"].panchayatWardId");
 		c.find(".villWardDivCls").attr("id","villWardDivId"+newsTourCloneCount);
+		c.find(".villWardDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 villWardDivCls locationDivCls"+newsTourCloneCount);
+		c.find(".villWardSelCls").attr("attr_count",newsTourCloneCount);
 		
 		$("#addNewTourBlock").append(c);
 			if(TourCategoryArray != null && TourCategoryArray.length>0){
