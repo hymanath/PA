@@ -307,8 +307,9 @@ function getUsers(constituencyId){
 		var userMobile = $(this).attr("attr_user_mobile");
 		var resultType="All"
 		var minValue = 0; 
-		var verificationStatus = $('input[name=fltrCls]:checked').val();
-		$("input:radio").attr("checked", false);
+		var verificationStatus = "Total";
+		$('input[name=fltrCls][value=Total]').prop('checked', 'checked');
+		//$("input:radio").attr("checked", false);
 		//if(webUserId==0){
 			$("#userId").html("Tab UserID - "+tabUserId+"");	
 			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");	
@@ -328,7 +329,8 @@ function getUsers(constituencyId){
 		getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType,verificationStatus);
 	});
 	
-	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
+	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,status){
+		var verificationStatus = $('input[name=fltrCls]:checked').val();
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
 		var fromDate = dateArr[0].trim();
@@ -379,6 +381,8 @@ function getUsers(constituencyId){
 				}else if(resultType=="Relative"){
 					$("#relativeDivId").html('No Data Available...');
 				}
+				$("#relativePaginationId").html(' ');
+				$("#selfPaginationId").html(' ');
 			}
 		});
 	}
@@ -388,6 +392,8 @@ function getUsers(constituencyId){
 		var radioVal = $(this).val();
 		var surveyUserId = $("#hdnCdrSrvyUserId").val();
 		var tabUserId = $("#hdnTabUserInfoId").val();
+		$("#relativePaginationId").html(' ');
+		$("#selfPaginationId").html(' ');
 		
 		getMembersDetails(surveyUserId,tabUserId,0,"","",0,"All",radioVal);
 	});
