@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -22,12 +24,14 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.DataRejectReason;
 import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class DataMonitoringService implements IDataMonitoringService {
@@ -940,4 +944,44 @@ public class DataMonitoringService implements IDataMonitoringService {
   		}
   		
   	}
+	
+	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
+	{
+		ResultStatus result = new ResultStatus();
+		try
+		{
+			List<Object[]> list = tdpCadreDAO.getCadreImagesByCadreId(tdpCadreId);
+			
+			if(list != null && list.size() > 0)
+			{
+				String cadreImage = list.get(0)[0].toString();
+				String voterImage = list.get(0)[1].toString();
+				
+				String backupFolderStr = dateUtilService.getDateInStringFormatByDate(new Date(),"yyyyMMdd");
+				String backupImg = cadreImage.replace(".jpg","");
+				backupImg = backupImg+"_"+UUID.randomUUID().toString()+".jpg";
+				
+				backupImg = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/backup/"+backupFolderStr+"/"+backupImg;
+				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+cadreImage;
+				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
+				
+				File cadreImageFile = new File(cadreImage);
+				File backupImgFile = new File(backupImg);
+				backupImgFile.mkdirs();
+				cadreImageFile.renameTo(backupImgFile);
+				
+				boolean flag = commonMethodsUtilService.fileCopy(voterImage,cadreImage);
+				if(flag)
+					result.setResultCode(ResultCodeMapper.SUCCESS);
+				else
+					result.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		}catch(Exception e)
+		{
+			LOG.error("Exception oocured in changeCadreImageByVoterImage Method",e);
+			result.setResultCode(ResultCodeMapper.FAILURE);
+			result.setExceptionEncountered(e);
+		}
+		return result;
+	}
 }

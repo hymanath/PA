@@ -9065,4 +9065,13 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 			return query.list();
 		}
-	}
+	   
+	   public List<Object[]> getCadreImagesByCadreId(Long tdpCadreId)
+	   {
+		   Query query = getSession().createQuery("SELECT model.image,model.voter.imagePath FROM TdpCadre model where " +
+		   		" model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' and model.image is not null and model.voter.imagePath is not null ");
+		   
+		   query.setParameter("tdpCadreId",tdpCadreId);
+		   return query.list();
+	   }
+}
