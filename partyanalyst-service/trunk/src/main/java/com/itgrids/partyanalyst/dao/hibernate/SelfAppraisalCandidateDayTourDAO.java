@@ -169,7 +169,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 	 public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId){
 		    StringBuilder queryStr = new StringBuilder();
 		    queryStr.append(" select " +
-		  					" model.tourDate," + //0
+		  					" date(model.tourDate)," + //0
 		  					" selfAppraisalTourCategory.selfAppraisalTourCategoryId," +//1
 		  					" selfAppraisalTourCategory.tourCategory," +//2
 		  					" tourType.tourTypeId," +//3
@@ -177,7 +177,8 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  					" district.districtId," +//5
 		  					" district.districtName," +//6
 		  					" constituency.constituencyId," +//7
-		  					" constituency.name " +//8
+		  					" constituency.name," +//8
+		  					" model.selfAppraisalCandidateDayTourId " +//9
 		  					" from SelfAppraisalCandidateDayTour model " +
 		  					" left join model.userAddress userAddress " +
 		  					" left join userAddress.district district " +
