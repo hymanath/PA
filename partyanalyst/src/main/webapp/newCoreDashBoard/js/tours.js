@@ -1529,6 +1529,28 @@ function getToursBasicOverviewCountDetails()
 					}
 				   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
+							str+='<div class="dropup">';
+							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+								str+='<div class="dropdown-menu pull-right bg_ED" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Target Per month</i></p>';
+									str+='<table class="table">';	
+										str+='<tr>';
+											str+='<td>Own District</td>';
+											str+='<td>02</td>';
+										str+='</tr>';
+										str+='<tr>';
+											str+='<td>Incharge District</td>';
+											str+='<td>32</td>';
+										str+='</tr>';
+										str+='<tr>';
+											str+='<td>Govt</td>';
+											str+='<td>90</td>';
+										str+='</tr>';
+									str+='</table>';
+								str+='</div>';
+							 
+							str+='</div>';
+							
 							str+='<div class="bg_ED m_top10">';
 								str+='<div class="row">';
 									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1812,7 +1834,7 @@ function getToursBasicOverviewCountDetails()
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
 			   }
-				str+='<div id="designationWiseComplainceTour'+i+'" style="width:100%;height:100px;"></div>';
+				str+='<div id="designationWiseComplainceTour'+i+'" style="height:180px;"></div>';
 				str+='</div>'
 			}
 		}
@@ -1826,7 +1848,7 @@ function getToursBasicOverviewCountDetails()
 					var length = result[i].length - 1;
 					for(var j = length; j >= 0; j--){
 						candidateNameArray.push(result[i][j].name);
-						  totalComplainceArr.push(result[i][j].complaincePer);
+						  totalComplainceArr.push({"y":result[i][j].complaincePer,"extra":result[i][j].id+"-"+result[i][j].name+"-"+result[i][j].designation});
 						countVar =countVar+1;
 						if (countVar === 5) {
 							break;
@@ -1850,6 +1872,9 @@ function getToursBasicOverviewCountDetails()
 					text: null
 				},
 				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					categories: candidateNameArray,
 					title: {
 						text: null
@@ -1857,6 +1882,8 @@ function getToursBasicOverviewCountDetails()
 				},
 				yAxis: {
 					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					title: {
 						text: null,
 						align: 'high'
@@ -1886,9 +1913,20 @@ function getToursBasicOverviewCountDetails()
 							}
 						  
 						}
-					}
+					},
+					series: {
+						cursor: 'pointer',
+							point: {
+								events: {
+								click: function () {
+									getIndividualPersonTourDetails(this.extra);
+								}
+							}
+						}
+					},
 				},
 				legend: {
+					enabled: false,
 					layout: 'vertical',
 					align: 'right',
 					verticalAlign: 'top',
