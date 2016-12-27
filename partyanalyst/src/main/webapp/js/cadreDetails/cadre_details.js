@@ -406,20 +406,31 @@ var globalidentityMembershipNo = ""	;
 					 var str2 ='';
 					if(result.enrollmentYears != null && result.enrollmentYears.trim().length > 0)
 					{
-					var years = result.enrollmentYears.split(",");
-					if(years.indexOf("2012") > -1)
-					str2+='<li class="yes">2012<span></span></li>&nbsp;';
-					else
-					str2+='<li class="no">2012<span></span></li>&nbsp;';
-					if(years.indexOf("2010") > -1)
-					str2+='<li class="yes">2010<span></span></li>&nbsp;';
-					else
-					str2+='<li class="no">2010<span></span></li>&nbsp;';
+						var years = result.enrollmentYears.split(",");	
+						
+						if(years.indexOf("2016") > -1)
+							str2+='<li class="yes">2016<span></span></li>&nbsp;';
+						else
+							str2+='<li class="no">2016<span></span></li>&nbsp;';
+						if(years.indexOf("2014") > -1)
+							str2+='<li class="yes">2014<span></span></li>&nbsp;';
+						else
+							str2+='<li class="no">2014<span></span></li>&nbsp;';
+						if(years.indexOf("2012") > -1)
+							str2+='<li class="yes">2012<span></span></li>&nbsp;';
+						else
+							str2+='<li class="no">2012<span></span></li>&nbsp;';
+						if(years.indexOf("2010") > -1)
+							str2+='<li class="yes">2010<span></span></li>&nbsp;';
+						else
+							str2+='<li class="no">2010<span></span></li>&nbsp;';
 					}
 					else
 					{
-					str2+='<li class="no">2012<span></span></li>&nbsp;';
-					str2+='<li class="no">2010<span></span></li>&nbsp;';
+						str2+='<li class="no">2016<span></span></li>&nbsp;';
+						str2+='<li class="no">2014<span></span></li>&nbsp;';
+						str2+='<li class="no">2012<span></span></li>&nbsp;';
+						str2+='<li class="no">2010<span></span></li>&nbsp;';
 					}
 
 					$("#enrollementDiv").html(str2);
