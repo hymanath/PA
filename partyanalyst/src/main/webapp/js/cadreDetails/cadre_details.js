@@ -180,7 +180,9 @@ function getParticipatedConstituencyId(cadreId){
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}
 						getCategoryWiseStatusCount();
-						getTotalMemberShipRegistrationsInCadreLocation();		
+						getTotalMemberShipRegistrationsInCadreLocation(3,11);	
+						
+						getTotalMemberShipRegistrationsInCadreLocation(4,22);							
 						//getCadreFamilyDetailsByCadreId();//swadhin
 						//getElectionPerformanceInCadreLocation();
 						getApprovedFinancialSupprotForCadre();
@@ -1347,9 +1349,14 @@ var globalidentityMembershipNo = ""	;
 				}
 			});
 		}
-	function getTotalMemberShipRegistrationsInCadreLocation(){
+	function getTotalMemberShipRegistrationsInCadreLocation(yearId,publicationId){
 		
-			$("#memberShipCountDiv").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
+	if(yearId == 3){
+		$("#memberShipCountDiv").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
+	}else{
+		$("#memberShipCountDiv1").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
+	}
+			
 			var pcId=0;
 			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
 			if(participatedConstituencyId != null && participatedConstituencyId > 0){
@@ -1362,58 +1369,61 @@ var globalidentityMembershipNo = ""	;
 			  $.ajax({
 					type : "POST",
 					url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-					data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType}
+					data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType,yearId:yearId,publicationId:publicationId}
 				  }).done(function(result){
 					if(result != null){
-						  buildTotalMemberShipRegInCadreLocation(result,pcType);
+						  buildTotalMemberShipRegInCadreLocation(result,pcType,yearId);
 					}
 				  else{
-					$("#memberShipCountDiv").html('No Data Available.');  
+					 if(yearId == 3)
+						$("#memberShipCountDiv").html('No Data Available.');
+					else
+						$("#memberShipCountDiv1").html('No Data Available.');
 				  }
 				});
 		}
-function buildTotalMemberShipRegInCadreLocation(result,pcType){
+function buildTotalMemberShipRegInCadreLocation(result,pcType,yearId){
 	var str = '';
 		str += '<ul class="performanceGraph">';
 	if(pcType !=null && pcType !="" && pcType !=undefined){
 		if(pcType == "Assembly"){
 			str += '<li>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName.toUpperCase()+')"></div>';
 			str += '</li>';
 		}
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+participatedParlName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+participatedParlName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName.toUpperCase()+')"></div>';
 		str += '</li>';
 	}
 	else{
 		if(globalVoterCardNo != ""){
-		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
-		str += '</li>';
+			str += '<li>';
+				str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
+			str += '</li>';
 		}else{
 			str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth (No Voter ID)"></div>';
-		str += '</li>';
+				str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth (No Voter ID)"></div>';
+			str += '</li>';
 		}
 		
 		if(result.cadreLocation =="Mandal")
 		{
 			str += '<li>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
 			str += '</li>';
 		 } 
 		 
 		str += '<li>';
 		//console.log(globalTehsName);
 		if(globalTehsName != null && globalTehsName.trim().length>0){
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
 		}
 		else  if(result.mandalNameStr != null && result.mandalNameStr.length>0){
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result.mandalNameStr.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result.mandalNameStr.toUpperCase()+')"></div>';
 			$("#mandalId").html(result.mandalNameStr.toUpperCase());
 		}
 	
@@ -1421,23 +1431,28 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls'+yearId+'" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		}
 		str += '</ul>';
-
-	 $("#memberShipCountDiv").html(str);
+	if(yearId == 3){
+		$("#memberShipCountDiv").html(str);
+		 
+	}else{
+		$("#memberShipCountDiv1").html(str);
+		 //$('.fulCircleCls').circliful();
+	}
+	$('.fulCircleCls'+yearId+'').circliful();
 	
-	 $('.fulCircleCls').circliful();
 	 var windowWidth = $(window).width(); 
 	 if( windowWidth > 768)
 	 {
@@ -1445,13 +1460,23 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		 var pixelWidth = (100 / graphCount) ;
 		 $(".performanceGraph li").css("width",pixelWidth+'%');
 	 }
-	 if(participatedConstituencyId != null && participatedConstituencyId > 0){
-		$("#cadreEnrolementParticepateStatusId").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
-		$('#cadreEnrolementParticepateStatusId').tooltip();
-	}else{
-		$("#cadreEnrolementParticepateStatusId").attr("data-original-title","OWN CONSTITUENCY");
-		$('#cadreEnrolementParticepateStatusId').tooltip();
-	}
+	 if(yearId == 3){
+			 if(participatedConstituencyId != null && participatedConstituencyId > 0){
+				$("#cadreEnrolementParticepateStatusId").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
+				$('#cadreEnrolementParticepateStatusId').tooltip();
+			}else{
+				$("#cadreEnrolementParticepateStatusId").attr("data-original-title","OWN CONSTITUENCY");
+				$('#cadreEnrolementParticepateStatusId').tooltip();
+			}
+	 }else{
+			 if(participatedConstituencyId != null && participatedConstituencyId > 0){
+				$("#cadreEnrolementParticepateStatusId1").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
+				$('#cadreEnrolementParticepateStatusId1').tooltip();
+			}else{
+				$("#cadreEnrolementParticepateStatusId1").attr("data-original-title","OWN CONSTITUENCY");
+				$('#cadreEnrolementParticepateStatusId1').tooltip();
+			} 
+	 }
 	
 	 	 
 }
@@ -6623,10 +6648,12 @@ function buildGrievanceAmountDetails(result){
 	$("#grievanceRequestsId").html(str);
 	if(participatedConstituencyId != null && participatedConstituencyId > 0){
 		$("#grievanceBenefitParticepationId").attr("data-original-title","PARTICIPATED CONSTITUENCY"); 
-		$('#cadreEnrolementParticepateStatusId').tooltip();		
+		$('#cadreEnrolementParticepateStatusId').tooltip();
+		$('#cadreEnrolementParticepateStatusId1').tooltip();			
 	}else{
 		$("#grievanceBenefitParticepationId").attr("data-original-title","OWN CONSTITUENCY");
 		$('#cadreEnrolementParticepateStatusId').tooltip();
+		$('#cadreEnrolementParticepateStatusId1').tooltip();	
 	}
 }
 

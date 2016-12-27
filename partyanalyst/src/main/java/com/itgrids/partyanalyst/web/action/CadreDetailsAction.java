@@ -729,7 +729,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 				pcType = request.getParameter("pcType");
 			}
 			
-			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")),pcId,pcType);
+			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")),pcId,pcType,new Long(request.getParameter("yearId")),new Long(request.getParameter("publicationId")));
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getTotalMemberShipRegistrationsInCadreLocation() method, Exception - ",e);
