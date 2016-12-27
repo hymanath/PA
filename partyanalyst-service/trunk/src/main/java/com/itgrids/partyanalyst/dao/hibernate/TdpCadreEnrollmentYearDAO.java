@@ -35,7 +35,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 	public List<Long> getPreviousElectionYearsOfCadre(Long tdpCadreId){
 		
 		Query query = getSession().createQuery("select model.enrollmentYear.year from TdpCadreEnrollmentYear model " +
-				" where model.tdpCadreId = :tdpCadreId and model.enrollmentYear.isActive = 'N'");
+				" where model.tdpCadreId = :tdpCadreId and model.isDeleted='N' and model.tdpCadre.isDeleted='N'  ");
 		
 		query.setParameter("tdpCadreId",tdpCadreId);
 		
