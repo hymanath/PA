@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IJobConstants;
+import com.itgrids.partyanalyst.utils.Util;
 
 public class LoginService implements ILoginService{
 	
@@ -1003,39 +1004,23 @@ public String getStateBasedOnLocation(String AccessType,String accessValue){
 	
 	public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password)
 	{
-		PeshiAppLoginVO appLoginVO =null;
-		//User user = null;
 		try{
-			/*List<User> userObj=userDAO.getModelByUserName(userName);
+			List<User> userObj=userDAO.getModelByUserName(userName);
 			if(userObj == null  || userObj.size() == 0){
 				return new PeshiAppLoginVO("FAILURE");
-			}*/
-				//user = userObj.get(0);
-				//EncryptedPassword	 
-				/*String secretKey = user.getHashKeyTxt();
-				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
-				String presentEncryptedPassword = encryptDecrypt.encryptText(password);
-				String usrNameEncrypted =encryptDecrypt.encryptText(userName);
-				String overAll = encryptDecrypt.encryptText(usrNameEncrypted+presentEncryptedPassword);*/
+			}
+				User user = userObj.get(0);
+				String md5Pwd=Util.MD5(Util.MD5(userName)+ Util.MD5(password));
 				
-				
-				/*if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
+				if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
 					String salt = userObj.get(0).getPasswordSalt();
 					String hash = userObj.get(0).getPasswordHash();
-					String password1 = userObj.get(0).getPasswdHashTxt();
-					//boolean validated= EncryptDecrypt.validatePassword(password, hash, salt);
 					PBKDF2 pb= new PBKDF2();
-					Boolean validated = pb.validatePWD(password1, hash, salt);
+					boolean validated = pb.validatePWD(md5Pwd, hash, salt);
 					if(validated){
-						user =userObj.get(0);
-						
-					}*/
-				if(userName.trim().equalsIgnoreCase("123456") && password.trim().equalsIgnoreCase("123456")){
-					PeshiAppLoginVO vo = new PeshiAppLoginVO();
-						return new PeshiAppLoginVO(999l,"123456","SUCCESS");
-					//}
+						return new PeshiAppLoginVO(user.getUserId(),user.getUserName(),"SUCCESS");
+					}
 				}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Rised in getPeshiAppValidateLoginDetails : ", e);
