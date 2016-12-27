@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
@@ -605,8 +606,11 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   idNameVO.setCadreUserId(cadreUserId);
 				   idNameVO.setTabUserId(tabUserInfoId);
 				   idNameVOs.add(idNameVO);
-			   
-			   resultStatus = dataMonitoringService.changeImageByVoterImage(idNameVOs);    
+				   
+			    ResultStatus statusMsg  = dataMonitoringService.changeCadreImageByVoterImage(cadreId);
+			    if(statusMsg.getResultCode() == ResultCodeMapper.SUCCESS)
+			    	resultStatus = dataMonitoringService.changeImageByVoterImage(idNameVOs);
+			    
 		   }catch(Exception e){
 			   e.printStackTrace();
 			   LOG.error("Exception raised at getDataRejectReason()  of DataMonitoringAction", e);
