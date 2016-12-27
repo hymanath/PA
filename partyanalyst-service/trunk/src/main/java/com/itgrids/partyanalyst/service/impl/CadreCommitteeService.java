@@ -19217,7 +19217,55 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 	return returnList;
 	
 }
-	
- 
- 
+ public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByConstituencyID(constituencyId);
+		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constituencyId);
+	        for(SelectOptionVO location:locations){
+	        	vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(Long.valueOf("4"+location.getId()));
+	        	vo.setLocationName(location.getName()+" Mandal");
+	        	locationsList.add(vo);
+	        }
+	        for(Object[] localBodi:localBodies){
+	        	Long localBdyId = (Long)localBodi[0];
+	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString());
+		        	locationsList.add(vo);
+	        	}
+	        }
+	        return locationsList;
+	}
+public List<LocationWiseBoothDetailsVO> getPanchayatList(Long tehsilId)
+{
+	List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+	LocationWiseBoothDetailsVO	vo = null;
+	try{
+		if(tehsilId.toString().substring(0,1).equalsIgnoreCase("4")){
+			List<Object[]> panchayatsList = panchayatDAO.getPanchayatList(Long.parseLong(tehsilId.toString().substring(1)));
+			for(Object[] panchayat:panchayatsList){
+				vo = new LocationWiseBoothDetailsVO();
+		 	vo.setLocationId(Long.valueOf("7"+(Long)panchayat[0]));
+		 	vo.setLocationName(panchayat[1].toString());
+		 	locationsList.add(vo);
+			}
+		}else if(tehsilId.toString().substring(0,1).equalsIgnoreCase("5")){
+			List<Object[]> wardList = constituencyDAO.getWardDetailsIdsForLocalBody(Long.parseLong(tehsilId.toString().substring(1)));
+			for(Object[] panchayat:wardList){
+				vo = new LocationWiseBoothDetailsVO();
+		 	vo.setLocationId(Long.valueOf("8"+(Long)panchayat[0]));
+		 	vo.setLocationName(panchayat[1].toString());
+		 	locationsList.add(vo);
+		}
+	}
+	}catch(Exception e)
+	{
+		e.printStackTrace();
+		LOG.error("Exception Occured in getPanchayatList() Method - Exception is : ",e);
+	}
+	return locationsList;
+}
 }

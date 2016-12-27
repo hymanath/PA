@@ -180,4 +180,6 @@ public interface ICadreCommitteeService {
 			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId,List<String> datesList);
 	 public List<LocationWiseBoothDetailsVO> getSubLevelForConstituency(Long stateId, List<Long> districtIds, List<Long> constituencyIds, Long locationLevelId);
 	 public List<CadreCommitteeVO> getFieldMonitoringMapReportDetails(Long constitunecyId,Long fieldUserId);
+	 public List<LocationWiseBoothDetailsVO> getPanchayatList(Long tehsilId);
+	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
 }

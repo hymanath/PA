@@ -2090,6 +2090,13 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  query.setParameterList("constituencyIds",constituenciesIds);
 	  return query.list();  
   }
+  public List<Object[]> getWardDetailsIdsForLocalBody(Long localElectionBodyId){
+		Query query=getSession().createSQLQuery("select distinct C.constituency_id as id,C.name as name from constituency C,local_election_body LEB where C.local_election_body_id =:localElectionBodyId " +
+				"  and C.local_election_body_id = LEB.local_election_body_id  ")
+		.addScalar("id",Hibernate.LONG).addScalar("name",Hibernate.STRING);		
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		return query.list();
+	}
 }
 
 
