@@ -1656,7 +1656,7 @@ function getToursBasicOverviewCountDetails()
 		if(result != null && result.length > 0){
 		  var str='';
 		  for(var i in result){
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
 				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
 				  if(result[i][0].designationId==4){
 				  if(result[i][0].complaincePer!=0){
@@ -1673,7 +1673,7 @@ function getToursBasicOverviewCountDetails()
 					str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
 				 }
 		      }
-			  str+='<div id="designationWiseComplainceTour'+i+'" style="height:80px;"></div>';
+			  str+='<div id="designationWiseComplainceTour'+i+'" style="height:180px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -1687,7 +1687,8 @@ function getToursBasicOverviewCountDetails()
 					for(var j in result[i]){
 						countVar =countVar+1;
 						candidateNameArray.push(result[i][j].name);
-						totalComplainceArr.push(result[i][j].complaincePer);
+						totalComplainceArr.push({"y":result[i][j].complaincePer,"extra":result[i][j].id+"-"+result[i][j].name+"-"+result[i][j].designation});
+						
 						if (countVar === 5) {
 							break;
 						}
@@ -1731,10 +1732,7 @@ function getToursBasicOverviewCountDetails()
 						text: null,
 						align: 'high'
 					},
-					labels: {
-						overflow: 'justify',
-						enabled: false,
-					}
+					
 				},
 				tooltip: {formatter: function(){
 					return '<b>Tour Complaince:'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
@@ -1755,9 +1753,20 @@ function getToursBasicOverviewCountDetails()
 							}
 						  
 						}
-					}
+					},
+					series: {
+						cursor: 'pointer',
+							point: {
+								events: {
+								click: function () {
+									getIndividualPersonTourDetails(this.extra);
+								}
+							}
+						}
+					},
 				},
 				legend: {
+					enabled: false,
 					layout: 'vertical',
 					align: 'right',
 					verticalAlign: 'top',
@@ -1767,9 +1776,6 @@ function getToursBasicOverviewCountDetails()
 					borderWidth: 1,
 					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
 					shadow: true
-				},
-				credits: {
-					enabled: false
 				},
 				
 				series: [{
@@ -2324,11 +2330,19 @@ function getToursBasicOverviewCountDetails()
 				}	
 		} 
 		
-	getIndividualPersonTourDetails();
-	function getIndividualPersonTourDetails()
-	{     
+	function getIndividualPersonTourDetails(value)
+	{ 
+		
+		var temp = value.split("-");
+		var candiateId = temp[0];
+		var topFivecandidateName = temp[1];
+		var topFivedesignationName = temp[2];
+	
+		$("#tourIndividualPerformanceDivId").modal("show");
+		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
-					 candiateId : 71,
+					 candiateId : candiateId,
 					 fromDate : "",
 					 toDate : ""
 				  }
@@ -2338,7 +2352,11 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			$("#tourIndividualDetailsBlock").html('');
+			$("#tourIndividualDetailsTableBlock").html('');
+			$("#nameOfMemberHeadingId").html('');
+			$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+topFivecandidateName+" - <small style='color:#4A5863'>"+topFivedesignationName+"</small> </h4>");
+			buildIndividualPersonTourDetails(result);
 		});
 	}
 	   $(document).on("change","#tourDesignationSelectBoxId",function(){
@@ -2578,6 +2596,7 @@ function buildTourMemberDetails(result){
 		var filterType = "";
 		var desgnatnIdsLst = [];
 	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
+		
 	});
 
 	$(document).on("click",".showHideFiltersToursSec",function(){
@@ -2592,4 +2611,272 @@ function buildTourMemberDetails(result){
    });
    
    
-   
+   function buildIndividualPersonTourDetails(result){
+	   var str='';
+	   $("#tourIndividualDetailsBlock").html('');
+	 	if(result !=null && result.subList != null && result.subList.length > 0){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="row">';
+					
+						str+='<div class="col-md-4 col-xs-12 col-md-12">';
+							str+='<h4>TOTAL COMPLAINCE OVERVIEW</h4>';
+							str+='<div id="overAllComplainsGraph" class="" style="height:150px" ></div>';
+						str+='</div>';
+						str+='<div class="col-md-8 col-xs-12 col-md-12">';
+							str+='<div class="row">';
+						for(var i in result.subList){
+							str+='<div class="col-md-4 col-xs-12 col-md-12">';
+							str+='<h4>'+result.subList[i].name+'</h4>';
+							str+='<div id="individualComplainsGraph'+i+'" class="" style="height:150px" ></div>';
+							str+='</div>';
+						
+						}
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					
+				
+			str+='</div>';
+		}
+		$("#tourIndividualDetailsBlock").html(str);
+		if(result !=null && result.subList != null && result.subList.length > 0){
+			
+			var mainArrNma=[];
+			var individualPerfArr=[];
+			var nameArr;
+			var jsonObj=[];	
+			mainArrNma.push("All")
+			jsonObj.push(result.complaincePer);
+			for(var i in result.subList){
+				jsonObj.push(result.subList[i].complaincePer);
+				mainArrNma.push(result.subList[i].name);
+				nameArr = result.subList[i].name;
+			}
+			console.log(jsonObj);
+			console.log(mainArrNma);
+			
+		 $(function () {
+			  $('#overAllComplainsGraph').highcharts({
+				colors: ['#80F6F8'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: mainArrNma,
+					title: {
+						text: null
+					},
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				 tooltip: {formatter: function(){
+					return '<b>'+this.x+' : '+ Highcharts.numberFormat(this.y, 2) +'%</b>';
+					
+				}      
+				},
+				plotOptions: {
+					column: {  
+						//stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%"; 
+								}
+							}
+						  
+						},
+					},
+					
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series:  [{
+					name: nameArr,
+					data: jsonObj
+				}]
+			});
+		});
+	
+	}
+	
+	if(result !=null && result.subList != null && result.subList.length > 0){
+			for(var i in result.subList){
+				var performanceArr =[];
+				performanceArr.push(result.subList[i].targetDays);
+				performanceArr.push(result.subList[i].complainceDays);
+				performanceArr.push(result.subList[i].yetToTourCnt);
+		if(performanceArr != 0 && performanceArr.length > 0){		
+		 $(function () {
+			  $('#individualComplainsGraph'+i+'').highcharts({
+				colors: ['#7F7037','#0066DC','#FA8283'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ["Target","Toured","Yet to Tour"],
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 5)+'...';
+							},
+							
+						}
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				 tooltip: {formatter: function(){
+					return '<b>'+this.x+' : '+ (this.y) +'</b>';
+					
+				}      
+				},
+				plotOptions: {
+					column: {  
+						//stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return '<span style="text-align:center">'+(this.y)+'</span>';
+								}
+							}
+						  
+						},
+					},
+					
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series:  [{
+					name: '',
+					data: performanceArr,
+					colorByPoint:true
+				}]
+			});
+		});
+		}else{
+			 $('#individualComplainsGraph'+i+'').html("No Data Availble");
+		}
+	}	
+	}
+		
+	if(result !=null && result.subList2 != null && result.subList2.length > 0){
+		var str1='';
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str1+='<div class="row">';
+					str1+='<table class="table table-bordered">';
+						str1+='<thead>';
+							str1+='<tr>';
+								str1+='<th class="text-capital">Month&Date</th>';
+								str1+='<th class="text-capital">Category</th>';
+								str1+='<th class="text-capital">District</th>';
+								str1+='<th class="text-capital">Constituency</th>';
+								str1+='<th class="text-capital">Type</th>';
+							str1+='</tr>';
+							str1+='<tbody>';
+								for(var i in result.subList2){
+									str1+='<tr>';
+										str1+='<td>'+result.subList2[i].tourDate+'</td>';
+										if(result.subList2[i].tourCategory == null || result.subList2[i].tourCategory == ""){
+											str1+='<td> - </td>';
+										}else{
+											str1+='<td>'+result.subList2[i].tourCategory+'</td>';
+										}
+										if(result.subList2[i].locationName == null || result.subList2[i].locationName == ""){
+											str1+='<td> - </td>';
+										}else{
+											str1+='<td>'+result.subList2[i].locationName+'</td>';
+										}
+										str1+='<td>Constituency Name</td>';
+										if(result.subList2[i].tourType == null || result.subList2[i].tourType == ""){
+											str1+='<td> - </td>';
+										}else{
+											str1+='<td>'+result.subList2[i].tourType+'</td>';
+										}
+									str1+='</tr>';
+								}
+							str1+='</tbody>';
+						str1+='</thead>';
+					str1+='</table>';	
+				str1+='</div>';
+			str1+='</div>';
+		$("#tourIndividualDetailsTableBlock").html(str1);
+		
+	}
+}

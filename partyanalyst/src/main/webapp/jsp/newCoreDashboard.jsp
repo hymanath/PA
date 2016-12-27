@@ -3505,6 +3505,29 @@
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal" tabindex="-1" role="dialog" id="tourIndividualPerformanceDivId">
+		  <div class="modal-dialog modal-lg" style="width:85%">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span id="nameOfMemberHeadingId"></span>
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="tourIndividualDetailsBlock"></div>
+						<div id="tourIndividualDetailsTableBlock" ></div>
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" id="myModalShowNew">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
