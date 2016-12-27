@@ -15169,5 +15169,15 @@
 			<param name="root">toursDtlsList</param>
 		</result>
 	</action>
+	<action name="getAllMunicipalitiesAction" class="toursAction"  method="getAllMunicipalities">
+			<result type="json" name="success">
+			<param name="root">locationsList</param>
+		</result>
+	</action>
+	<action name="getPanchayatWardDivisionDetailsNewAction" class="toursAction"  method="getPanchayatWardDivisionDetailsNew">
+			<result type="json" name="success">
+			<param name="root">locationsList</param>
+		</result>
+	</action>
  </package>
 </struts>
