@@ -2240,7 +2240,7 @@ function getToursBasicOverviewCountDetails()
 				var str='';
 				var length = result
 				str+='<div class="table-responsive">'
-					str+='<table class="table table-bordered borderedWeight" >';
+					str+='<table class="table table-bordered borderedWeight" id="dataTableApplyAveragePerf'+i+'">';
 					str+='<thead class="bg_D8">';
 						str+='<tr>';
 			
@@ -2251,12 +2251,13 @@ function getToursBasicOverviewCountDetails()
 											maxLengthForSpan = result[i].subList3[j].subList3.length;
 									}
 								}
-								if(maxLengthForSpan >=3){
+								str+='<th rowspan="2" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
+								/* if(maxLengthForSpan >=3){
 									str+='<th rowspan="'+(maxLengthForSpan)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
 								}else{
 									str+='<th rowspan="'+(maxLengthForSpan+1)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
 								}
-								
+								 */
 								str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">Complains</th>';
 								
 								for(var k in result[i].subList3[0].subList3){
@@ -2276,7 +2277,7 @@ function getToursBasicOverviewCountDetails()
 								str+='<th class="text-capital text-center" style="vertical-align: middle;">Toured</th>';
 								}
 								
-							str+='<tr>';
+							str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
 								//str+='<td></td>';
@@ -2325,6 +2326,11 @@ function getToursBasicOverviewCountDetails()
 				   }
 				});
 					//alert(mainSliderVa1);
+				$("#dataTableApplyAveragePerf"+i).dataTable({
+					"aaSorting": [],
+					"iDisplayLength" : 10	
+				 });
+				$('#dataTableApplyAveragePerf'+i).removeClass("dataTable");
 			}
 		}
 	}
@@ -2535,8 +2541,8 @@ function buildTourMemberDetails(result){
         var str='';
         var length = result
         str+='<div class="table-responsive">'
-          str+='<table class="table table-bordered" id="tourDetailsDataTblid">';
-          str+='<thead>';
+          str+='<table class="table table-bordered borderedWeight" id="tourDetailsDataTabelId">';
+          str+='<thead class="bg_D8">';
             str+='<tr>';
                 var maxLengthForSpan = 0;
                 if(result[i].subList3 != null && result[i].subList3.length > 0){
@@ -2545,31 +2551,32 @@ function buildTourMemberDetails(result){
                       maxLengthForSpan = result[i].subList3[j].subList3.length;
                   }
                 }
-                if(maxLengthForSpan >=3){
-                  str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
+				str+='<th rowspan="2" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
+                /* if(maxLengthForSpan >=3){
+                  str+='<th rowspan="'+(maxLengthForSpan)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
                 }else{
-                  str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
-                }
+                  str+='<th rowspan="'+(maxLengthForSpan+1)+'" class="text-capital text-center" style="vertical-align: middle;">Leaders Name</th>';
+                } */
                 
-                str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
+                str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">Complains</th>';
                 
                 for(var k in result[i].subList3[0].subList3){
-                  str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
+                  str+='<th colspan="2" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">'+result[i].subList3[0].subList3[k].name+'</th>';
                 }
               
               str+='</tr>';
               str+='<tr>';
                 
-                str+='<td >over all</td>';
+                str+='<th class="text-capital text-center" style="vertical-align: middle;">over all</th>';
                     for(var k in result[i].subList3[0].subList3){
-                      str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
+                      str+='<th class="text-capital text-center" style="vertical-align: middle;">'+result[i].subList3[0].subList3[k].name+'</th>';
                       
                     }
                 for(var k in result[i].subList3[0].subList3){
-                str+='<td >Target</td>';
-                str+='<td >Toured</td>';
+                str+='<th class="text-capital text-center" style="vertical-align: middle;">Target</th>';
+                str+='<th class="text-capital text-center" style="vertical-align: middle;">Toured</th>';
                 }
-              str+='<tr>';
+              str+='</tr>';
                 str+='</thead>';
                 str+='<tbody>';
                 //str+='<td></td>';
@@ -2597,12 +2604,12 @@ function buildTourMemberDetails(result){
           str+='</table>';
         str+='</div>';
         $("#tourMemberDtls"+i).html(str);
-	/* 	$("#tourDetailsDataTblid").dataTable({
-			"aaSorting": [[ 1, "desc" ]], 
-			"iDisplayLength" : 10,
-			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
-		});    */           
-      }
+	 	$("#tourDetailsDataTabelId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 10	
+		 });
+		$('#tourDetailsDataTabelId').removeClass("dataTable");
+		}
     }
   }
 	
@@ -2953,7 +2960,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 					str1+='<table class="table table-bordered">';
 						str1+='<thead>';
 							str1+='<tr>';
-								str1+='<th class="text-capital">Month&Date</th>';
+								str1+='<th class="text-capital">Date</th>';
 								str1+='<th class="text-capital">Category</th>';
 								str1+='<th class="text-capital">District Name</th>';
 								str1+='<th class="text-capital">Constituency Name</th>';
