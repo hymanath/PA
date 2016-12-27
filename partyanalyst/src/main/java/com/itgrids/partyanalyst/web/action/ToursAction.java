@@ -19,12 +19,14 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.opensymphony.xwork2.Action;
@@ -55,9 +57,23 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private PMMinuteVO pMMinuteVO;
 	   private List<ToursVO> toursVOList;
 	   private ToursVO toursVO;
-	   
-	   
+	   private ICadreCommitteeService cadreCommitteeService;
+	   private List<LocationWiseBoothDetailsVO> locationsList;
 	
+	   
+	public List<LocationWiseBoothDetailsVO> getLocationsList() {
+		return locationsList;
+	}
+	public void setLocationsList(List<LocationWiseBoothDetailsVO> locationsList) {
+		this.locationsList = locationsList;
+	}
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	public ToursVO getToursVO() {
 		return toursVO;
 	}
@@ -513,6 +529,30 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}catch(Exception e){  
 			e.printStackTrace();    
 			LOG.error("Exception raised at getAllCondidateLocations()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAllMunicipalities(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			locationsList = cadreCommitteeService.getMandalMunicCorpDetails(constituencyId);
+		}catch(Exception e){  
+			e.printStackTrace();    
+			LOG.error("Exception raised at getAllMunicipalities()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getPanchayatWardDivisionDetailsNew(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long tehsilId = jObj.getLong("tehsilId");
+			
+			locationsList = cadreCommitteeService.getPanchayatList(tehsilId);
+		}catch(Exception e){  
+			e.printStackTrace();    
+			LOG.error("Exception raised at getPanchayatWardDivisionDetailsNew()  of ToursAction", e);
 		}
 		return Action.SUCCESS;
 	}
