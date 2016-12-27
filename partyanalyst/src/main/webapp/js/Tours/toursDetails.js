@@ -349,8 +349,6 @@ function getCandidateList(designationId){
 	});
 	
 	function buildCandidateLocationResult(result,count){
-		if(result.regionScopesList != null && result.regionScopesList.length > 0){
-			
 			if(regionScopesArr != null && regionScopesArr.length > 0){
 				$("#tourLocationId"+count).html("<option value='0'>Select Location</option>");
 				for(var i in regionScopesArr){
@@ -409,7 +407,7 @@ function getCandidateList(designationId){
 				$("#districtSelId"+count).val(result.districtId);
 			
 			if(result.constList != null && result.constList.length > 0){
-				$("#constituencySelId"+count).html("Select Constituency");
+				$("#constituencySelId"+count).html("<option value='0'>Select Constituency</option>");
 				for(var i in result.constList){
 					$("#constituencySelId"+count).append("<option value='"+result.constList[i].id+"'>"+result.constList[i].name+"</option>");
 				}
@@ -442,5 +440,67 @@ function getCandidateList(designationId){
 			if(result.locationLevel == 8)
 				$("#villWardSelId"+count).val(result.wardId);
 			
-		}
 	}
+	$(document).on("change",".tourLocationCls",function(){
+			var count = $(this).attr("attr_TourCount");
+			$(".locationDivCls"+count).hide();
+			if($(this).val() == 2){//state
+				$("#stateDivId"+count).show();
+			}else if($(this).val()==3){//district
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+			}else if($(this).val()==4){//constituency
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+			}else if($(this).val()==5 || $(this).val() == 7){//Mandal
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+				$("#tehMunDivId"+count).show();
+			}else if($(this).val()==6 || $(this).val() == 8){//village
+				$("#stateDivId"+count).show();
+				$("#districtDivId"+count).show();
+				$("#constituencyDivId"+count).show();
+				$("#tehMunDivId"+count).show();
+				$("#villWardDivId"+count).show();
+			}
+	});
+	$(document).on("change",".constituencySelCls",function(){
+	var count = $(this).attr("attr_count");
+		var jsObj = {     
+			constituencyId :$(this).val()
+		}
+		$.ajax({
+		  type : 'POST',
+		  url : 'getAllMunicipalitiesAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#tehMunSelId"+count).html("<option value='0'>Select Mandal / Municipality</option>");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#tehMunSelId"+count).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>");  
+				}
+			}
+		});
+	});
+	$(document).on("change",".tehMunSelCls",function(){
+		var count = $(this).attr("attr_count");
+		var jsObj = {     
+			tehsilId :$(this).val()
+		}
+		$.ajax({
+		  type : 'POST',
+		  url : 'getPanchayatWardDivisionDetailsNewAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				$("#villWardSelId"+count).html("<option value='0'>Select Village / Ward</option>");
+				for(var i in result){
+					$("#villWardSelId"+count).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>");  
+				}
+			}
+		});
+	});
