@@ -26,4 +26,5 @@ public interface IDataMonitoringService {
 	public String getTabUserImages();
 	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType);
 	public ResultStatus changeImageByVoterImage(List<IdNameVO> idNameVOs);
+	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId);
 }

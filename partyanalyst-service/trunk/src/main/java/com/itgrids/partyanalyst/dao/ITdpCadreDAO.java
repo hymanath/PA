@@ -507,5 +507,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public List<Object[]> levelWiseTdpCadreDataByCasteState(String levelType,Long enrollmentYearId);
 	  public List<Object[]> levelWiseRenewalTdpCareDataByCasteState(String levelType);
+	  public List<Object[]> getCadreImagesByCadreId(Long tdpCadreId);
 	  
 } 
