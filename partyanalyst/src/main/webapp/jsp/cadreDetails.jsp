@@ -590,21 +590,51 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                     </div>  
                 </div>
                 <div class="panel panel-default">
-                	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS 
-							<span>
-								<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
-							</span>
-							<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
-							</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
+					<div class="panel-heading" id="cadreEnrolementParticepateStatsId">
+						<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;CADRE ENROLMENT STATS 
+							<span class="pull-right" id="cadreEnrolementParticepateStatsIdShowId"><i class="glyphicon glyphicon-chevron-up"></i>
+							</span><span class="pull-right" id="cadreEnrolementParticepateStatsIdHideId" style="display:none;">
 							<i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
-                    </div>
-                    <div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
-                    	<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+					</div>
+					<div class="panel-body" id="cadreEnrolementParticepateStatBodyId">
+					<div class="panel panel-default">
+							<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId1">
+								<h4 class="panel-title text-bold pointer">2016 CADRE ENROLMENT DETAILS
+									<span>
+										<i id="cadreEnrolementParticepateStatusId1" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
+									</span>
+									<span class="pull-right" id="cadreEnrolmentStatsShowId1"><i class="glyphicon glyphicon-chevron-up"></i>
+									</span><span class="pull-right" id="cadreEnrolmentStatsHideId1" style="display:none;">
+									<i class="glyphicon glyphicon-chevron-down"></i></span>
+								</h4>
+							</div>
+							<div class="panel-body" id="cadreEnrolmentStatsBodyId1" style="padding:0px 15px;">
+								<div class="row table-responsive" id="memberShipCountDiv1"><!--id="memberShipCountDiv"-->
+								</div>
+							</div>
 						</div>
-                    </div>
+						<div class="panel panel-default">
+							<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId">
+								<h4 class="panel-title text-bold pointer">2014 CADRE ENROLMENT DETAILS
+									<span>
+										<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
+									</span>
+									<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
+									</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
+									<i class="glyphicon glyphicon-chevron-down"></i></span>
+								</h4>
+							</div>
+							<div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
+								<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+								</div>
+							</div>
+						</div>
+						
+					</div>
 				</div>
+                
+				
 					<!--<div class="panel panel-default">
 					<div class="panel-heading" id="ivrSummaryHeaderId">
                     	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
@@ -1774,9 +1804,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 	<script>
 	google.load("visualization", "1", {packages:["corechart"]});
+	
+
 	$(document).on("click","#nominatedreportsId",function(){
 		$("#profileModelId").modal('show');
 	})
+	
 	$("#notesDescriptionId").jqte();
 	 
 	//var globalCadreId = '${cadreId}';
@@ -1926,6 +1959,18 @@ $(document).on("click","#meetingDatePicker",function(){
 });
 
 $("#familyMemberBodyId").collapse('hide');
+$("#cadreEnrolementParticepateStatBodyId").collapse('show');
+$(document).on("click","#cadreEnrolementParticepateStatsId",function(){
+	var isVisible = $( "#cadreEnrolementParticepateStatsIdShowId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreEnrolementParticepateStatsIdShowId" ).show();
+		 $( "#cadreEnrolementParticepateStatsIdShowId" ).hide();
+	}else{
+		$( "#cadreEnrolementParticepateStatsIdShowId" ).hide();
+		$( "#cadreEnrolementParticepateStatsIdShowId" ).show();
+	}
+	$("#cadreEnrolementParticepateStatBodyId").collapse('toggle');
+});
 $(document).on("click","#familyMemberHeadingId",function(){
 	var isVisible = $( "#familyMemberHideId" ).is( ":visible" );
 	if(isVisible==false){
@@ -1983,6 +2028,7 @@ $(document).on("click","#familyGrievanceDtlsHeaderId",function(){
 });
 
 $("#cadreEnrolmentStatsBodyId").collapse('show');
+$("#cadreEnrolmentStatsBodyId1").collapse('show');
 $(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
 	var isVisible = $( "#cadreEnrolmentStatsHideId" ).is( ":visible" );
 	if(isVisible==false){
@@ -1994,7 +2040,17 @@ $(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
 	}
 	$("#cadreEnrolmentStatsBodyId").collapse('toggle');
 });
-
+$(document).on("click","#cadreEnrolmentStatsHeaderId1",function(){
+	var isVisible = $( "#cadreEnrolmentStatsHideId1" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreEnrolmentStatsHideId1" ).show();
+		 $( "#cadreEnrolmentStatsShowId1" ).hide();
+	}else{
+		$( "#cadreEnrolmentStatsHideId1" ).hide();
+		$( "#cadreEnrolmentStatsShowId1" ).show();
+	}
+	$("#cadreEnrolmentStatsBodyId1").collapse('toggle');
+});
 $("#ivrSummaryBodyId").collapse('hide');
 $(document).on("click","#ivrSummaryHeaderId",function(){  
 	var isVisible = $( "#ivrSummaryHideId" ).is( ":visible" );
