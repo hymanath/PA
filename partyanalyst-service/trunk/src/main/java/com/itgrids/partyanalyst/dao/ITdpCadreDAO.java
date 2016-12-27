@@ -362,7 +362,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long memberTypeId);
 	  public List<Object[]> complaintDetailsOfCadre(String memberShipId);
 
-	  public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList);
+	  public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId);
 	  
 	  public String getMemberShipIdByCadreId(Long tdpCadreId);
 	  

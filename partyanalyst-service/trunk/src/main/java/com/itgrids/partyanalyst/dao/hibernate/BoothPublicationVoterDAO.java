@@ -8058,14 +8058,15 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 	
-	public Object[] getBoothDetailsByVoterId(String voterId){
+	public Object[] getBoothDetailsByVoterId(String voterId,Long publicationId){
 		
 		Long voterid=Long.parseLong(voterId);
 		
 		Query query = getSession().createQuery(" select model.booth.partNo,model.booth.boothId from BoothPublicationVoter model" +
-				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId=11");
+				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId=:publicationId");
 		
 		query.setParameter("voterId",voterid);
+		query.setParameter("publicationId",publicationId);
 		return  (Object[]) query.uniqueResult();
 		
 	}

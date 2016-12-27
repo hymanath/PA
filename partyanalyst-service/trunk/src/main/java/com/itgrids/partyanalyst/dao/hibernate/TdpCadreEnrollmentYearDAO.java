@@ -727,4 +727,55 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 		}
+	  
+	  public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId,Long yearId) {
+			StringBuilder queryString=new StringBuilder();
+			queryString.append( " select model.tdpCadre.tdpCadreId, " +//0
+								" state.stateId," +//1
+								" state.stateName," +//2
+								" district.districtId," +//3
+								" district.districtName,"+//4
+					            " constituency.constituencyId," +//5
+					            " constituency.name," +//6
+					            " tehsil.tehsilId," +//7
+					            " tehsil.tehsilName,"+//8
+								" ward.constituencyId," +//9
+								" ward.name," +//10
+								" panchayat.panchayatId," +//11
+								" panchayat.panchayatName,"+//12
+					            " localElectionBody.localElectionBodyId," +//13
+					            " localElectionBody.name ,"+ //14
+								" constituency.areaType ," +//15
+								" booth.boothId, " +//16
+								" booth.partNo, " +//17
+								" voter.voterId," +//18
+								" familyVoter.voterId, " +//19
+								" booth.publicationDate.publicationDateId, " +//20
+								" state.stateId, " +//21
+								" state.stateName " +//22
+								" from  TdpCadreEnrollmentYear  model " +
+								" left join model.tdpCadre.familyVoter familyVoter " +
+								" left join model.tdpCadre.voter voter " +
+								" left join model.tdpCadre.userAddress.state state" +
+								" left join model.tdpCadre.userAddress.district district" +
+								" left join model.tdpCadre.userAddress.constituency constituency" +
+								" left join model.tdpCadre.userAddress.tehsil tehsil" +
+								" left join model.tdpCadre.userAddress.ward ward" +
+								" left join model.tdpCadre.userAddress.panchayat panchayat" +
+								" left join model.tdpCadre.userAddress.localElectionBody localElectionBody " +
+								" left join model.tdpCadre.userAddress.booth booth " +
+								" left join model.tdpCadre.userAddress.state state " +
+								" where " +
+								" model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear and model.tdpCadre.tdpCadreId=:tdpCadreId" +
+								" and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = :yearId   " );
+								//" and model.enrollmentYear.isActive = 'Y' ");
+			
+				Query query=getSession().createQuery(queryString.toString());
+				
+				query.setParameter("tdpCadreId", tdpCadreId);
+				query.setParameter("yearId", yearId);
+				query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+			
+			return  query.list();
+		}
 }
