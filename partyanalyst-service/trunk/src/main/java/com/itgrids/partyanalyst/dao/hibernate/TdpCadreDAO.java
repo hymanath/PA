@@ -5590,37 +5590,38 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 
 
-		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList)
+		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append(" select count(model.tdpCadreId) from TdpCadre model where  " +
-					" model.enrollmentYear =:year and model.isDeleted = 'N'   ");
+			str.append(" select count(model.tdpCadreId) from TdpCadreEnrollmentYear model where  " +
+					" model.tdpCadre.enrollmentYear =:year and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = :yearId " +
+					" and model.tdpCadre.isDeleted = 'N' ");
 			
 			    if(locationtype.equalsIgnoreCase("Constituency"))
-				 str.append(" and model.userAddress.constituency.constituencyId =:locationId");
+				 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId");
 				
 				else if(locationtype.equalsIgnoreCase("Mandal"))
-					 str.append(" and model.userAddress.tehsil.tehsilId =:locationId and model.userAddress.localElectionBody is null ");
+					 str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId =:locationId and model.tdpCadre.userAddress.localElectionBody is null ");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Panchayat"))
-					 str.append(" and model.userAddress.panchayat.panchayatId =:locationId");
+					 str.append(" and model.tdpCadre.userAddress.panchayat.panchayatId =:locationId");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Booth"))
-					 str.append(" and model.userAddress.booth.boothId =:locationId ");
+					 str.append(" and model.tdpCadre.userAddress.booth.boothId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Muncipality"))
-				 str.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationId ");
+				 str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("District"))
-				 str.append(" and model.userAddress.district.districtId =:locationId ");
+				 str.append(" and model.tdpCadre.userAddress.district.districtId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Parliament"))
-				  str.append("  and model.userAddress.constituency.constituencyId in (:constituencyIdsList) ");
+				  str.append("  and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyIdsList) ");
 			    
 			  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
-				str.append(" and model.userAddress.constituency.constituencyId =:constituencyId "); 
+				str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId "); 
 			
 			Query query = getSession().createQuery(str.toString());
 			
@@ -5629,6 +5630,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			  query.setParameter("locationId", locationId);
 			
 			query.setParameter("year", year);
+			query.setParameter("yearId", yearId);
 			
 		   if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
 			query.setParameter("constituencyId", constituencyId);
