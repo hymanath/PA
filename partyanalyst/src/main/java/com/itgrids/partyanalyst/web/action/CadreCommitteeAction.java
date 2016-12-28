@@ -782,6 +782,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			String voterCardNo = jObj.getString("voterCardNo");
 			String gender = jObj.getString("gender");
 			boolean isRemoved = jObj.getBoolean("removedStatus");
+			Long enrollmentId = jObj.getLong("enrollmentId");
 			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
 			{
 				
@@ -793,7 +794,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
-							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
+							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
@@ -823,6 +824,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			String voterCardNo = jObj.getString("voterCardNo");
 			//String gender = jObj.getString("gender");
 			boolean isRemoved = jObj.getBoolean("removedStatus");
+			Long enrollmentId = jObj.getLong("enrollmentId");
 			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
 			{
 				
@@ -834,7 +836,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, "",memberShipCardNo, 
-							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved);
+							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved,enrollmentId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
