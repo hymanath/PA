@@ -952,8 +952,14 @@ public class ToursService implements IToursService {
 								Long addressId = saveUserAddressDetailsOfTour(innerTourVo,selfAppraisalCandidateDayTour);								
 								
 								selfAppraisalCandidateDayTour.setAddressId(addressId !=null ? addressId:null);
-								selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId() !=null ? innerTourVo.getTourTypeId():null);
-								selfAppraisalCandidateDayTour.setComment(innerTourVo.getDescription() !=null ? innerTourVo.getDescription().toString():null);
+								if(innerTourVo.getTourTypeId() !=null && innerTourVo.getTourTypeId()>0l){
+									selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId());
+								}
+								
+								if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+									selfAppraisalCandidateDayTour.setComment(innerTourVo.getDescription().toString());
+								}
+								
 								selfAppraisalCandidateDayTour.setIsDeleted("N");
 								
 								selfAppraisalCandidateDayTour.setInsertedBy(toursVo.getUserId());
@@ -1019,8 +1025,18 @@ public class ToursService implements IToursService {
 							Long addressId = saveUserAddressDetailsOfTour(innerTourVo,selfAppraisalCandidateDayTour);								
 							
 							selfAppraisalCandidateDayTour.setAddressId(addressId !=null ? addressId:null);
-							selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId() !=null ? innerTourVo.getTourTypeId():null);
-							selfAppraisalCandidateDayTour.setComment(innerTourVo.getDescription() !=null ? innerTourVo.getDescription().toString():null);
+							if(innerTourVo.getTourTypeId() !=null && innerTourVo.getTourTypeId()>0l){
+								selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId());
+							}else{
+								selfAppraisalCandidateDayTour.setTourTypeId(null);
+							}
+							
+							if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+								selfAppraisalCandidateDayTour.setComment(innerTourVo.getDescription().toString());
+							}else{
+								selfAppraisalCandidateDayTour.setComment(null);
+							}
+							
 							selfAppraisalCandidateDayTour.setIsDeleted("N");
 							
 							selfAppraisalCandidateDayTour.setUpdatedBy(toursVo.getUserId());
