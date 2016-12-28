@@ -18,13 +18,18 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
     	   super(SelfAppraisalCandidateLocationNew.class);
        }
        
-       public List<Object[]> getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId){
+       public List<Object[]> getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId,String type){
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		     		        " model.selfAppraisalCandidate.selfAppraisalDesignation.designation," +
-		     		        " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)" +
-		     		        " from SelfAppraisalCandidateLocationNew model " +
+		     		        " model.selfAppraisalCandidate.selfAppraisalDesignation.designation," );
+		            if(type.equalsIgnoreCase("Candiate")){
+		            	queryStr.append(" model.selfAppraisalCandidate.selfAppraisalCandidateId ");
+		            }else{
+		            	queryStr.append(" count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)");
+		            }
+		     		
+		     		queryStr.append(" from SelfAppraisalCandidateLocationNew model " +
 		     		        " where " +
 		     		        " model.selfAppraisalCandidate.isActive='Y' " +
 		     		        " and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive='Y' ");
@@ -45,6 +50,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		     	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
 		     	 
 		     	 queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		     	  if(type.equalsIgnoreCase("Candiate")){
+		     		  queryStr.append(",model.selfAppraisalCandidate.selfAppraisalCandidateId");
+		     	  }
 		     	  Query query = getSession().createQuery(queryStr.toString());
 		     		
 		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){

@@ -18,7 +18,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 	   public SelfAppraisalCandidateDayTourDAO(){
 		   super(SelfAppraisalCandidateDayTour.class);
 	   }
-	   public List<Object[]> getToursSubmittedLeaderCntDesignationBy(Date fromDate,Date toDate){
+	   public List<Object[]> getToursSubmittedLeaderCntDesignationBy(Date fromDate,Date toDate,Set<Long> candiateIds){
 				StringBuilder queryStr = new StringBuilder();
 				queryStr.append(" select " +
 				 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
@@ -29,12 +29,18 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   if(fromDate != null && toDate != null ){
 	                  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
 	           }
+			   if(candiateIds != null && candiateIds.size() > 0){
+				  queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)"); 
+			   }
  			  queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
  			  Query query = getSession().createQuery(queryStr.toString());
  			  if(fromDate!= null && toDate!=null){
 	 			   query.setDate("fromDate", fromDate);
 	 			   query.setDate("toDate", toDate);
  			  }
+ 			  if(candiateIds != null && candiateIds.size() > 0){
+				  query.setParameterList("candiateIds", candiateIds);
+			   }
  			  return query.list();
 	     }
 	   public List<Object[]> getLeaderComplainceCnt(Date fromDate,Date toDate){
@@ -60,7 +66,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  }
 		  return query.list();
       }
-	 public List<Object[]> getLeaderComplainceCntCategoryWise(Date fromDate,Date toDate,String type,Long selfAppraisalCandiateId){
+	 public List<Object[]> getLeaderComplainceCntCategoryWise(Date fromDate,Date toDate,String type,Long selfAppraisalCandiateId,Set<Long> candiateIds){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select " +
 			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
@@ -77,13 +83,15 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		   if(fromDate != null && toDate != null ){
                 queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
            }
-		   if(type.equalsIgnoreCase("Govt")){
+		 /*  if(type.equalsIgnoreCase("Govt")){
 			   queryStr.append(" and model.tourTypeId = 2 ");
-		   }
+		   }*/
 		   if(selfAppraisalCandiateId != null && selfAppraisalCandiateId.longValue() > 0){
 			 queryStr.append(" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");  
 		   }
-		   
+		   if(candiateIds != null && candiateIds.size() > 0){
+			   queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)");    
+		   }
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				   "  model.selfAppraisalCandidateId,");
 		    if(type.equalsIgnoreCase("Category")){
@@ -99,9 +107,11 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   query.setDate("toDate", toDate);
 		  }
 		  if(selfAppraisalCandiateId != null && selfAppraisalCandiateId.longValue() > 0){
-			  
 			query.setParameter("selfAppraisalCandidateId", selfAppraisalCandiateId);  
 		  }
+		  if(candiateIds != null && candiateIds.size() > 0){
+			  query.setParameterList("candiateIds", candiateIds);    
+		   }
 		  return query.list();
     }
 	 public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,Date fromDate,Date toDate,List<Long> designationIds){
@@ -215,9 +225,9 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   if(fromDate != null && toDate != null ){
 	                  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
 	           }
-			   if(type.equalsIgnoreCase("Govt")){
+			/*   if(type.equalsIgnoreCase("Govt")){
 				   queryStr.append(" and model.tourTypeId = 2 ");
-			   }
+			   }*/
 			   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
 		      if(type.equalsIgnoreCase("Govt")){
 				 queryStr.append(",model.tourTypeId");
