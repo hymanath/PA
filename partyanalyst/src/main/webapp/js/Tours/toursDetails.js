@@ -306,7 +306,7 @@ function getCandidateList(designationId){
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
 				uploadResult = o.responseText;
-				showSbmitStatus(uploadResult);
+				showSbmitStatusNew(uploadResult);
 			}
 		};
 		YAHOO.util.Connect.setForm('submitApplication',true);  
@@ -335,6 +335,15 @@ function getCandidateList(designationId){
 					$("#successSpanId").html("");          
 			} */
 				
+	}
+	function showSbmitStatusNew(uploadResult){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			$("#successSpanId").show();			
+			setTimeout(function () {
+				$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+				location.reload(true);
+			}, 500);
+		}
 	}
 	$(document).on("click","#profileCheckboxId",function(){
 		if($(this).is(':checked')){
