@@ -1394,19 +1394,144 @@ function getToursBasicOverviewCountDetails()
 	
 	
 	
-	/* New Tours Ajax Call Based on New Screen */
+/* New Tours Ajax Call Based on New Screen */
 	
-	$(document).on("click",".newTourExpandIcon",function(){
-		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".tourNewBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".tourNewBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	});
-	
-	//getToursBasicOverviewDtls();
-	function getToursBasicOverviewDtls()
-	{    
-	  var globalUserTypeId = 2;
 
+var customStartToursDate = moment().startOf('month').format('DD/MM/YYYY')
+var customEndToursDate = moment().format('DD/MM/YYYY');
+	$("#tourNewDateRangePickerId").daterangepicker({
+		opens: 'left',
+	     startDate: moment().subtract(1, 'month').startOf('month'),
+         endDate:moment().subtract(1, 'month').endOf('month'),  
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	});
+	function getDay(){
+		var date = new Date();
+		var dd = date.getDate(); 
+		return dd;
+	}
+	   var globalFormTourDate;
+	   var glovalToTourDate;
+	   var dates=$("#tourNewDateRangePickerId").val();
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			globalFormTourDate = datesArr[0]; 
+			glovalToTourDate = datesArr[1]; 
+		}
+      $("#toursNewHeadingId").html("Last Month( "+dates+" )");
+      $('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+	   var dates= $("#tourNewDateRangePickerId").val();
+	   $("#toursNewHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
+	   	if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			globalFormTourDate = datesArr[0]; 
+			glovalToTourDate = datesArr[1]; 
+		}
+		 getToursBasicOverviewDtls();
+		 getDesignationWiseMembersDtls();
+	 });
+	 
+	
+	$(document).on("click",".NewTourExpand",function(){
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".NewToursBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".NewTourExpandCls").show();
+		
+		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			getDesignationWiseMembersDtls();
+			$(".NewToursHiddenBlock").show();
+	        $(".hideShowNewToursDateRangeCls").show();			
+		}else{
+			$(".NewTourExpandCls").hide();
+			$(".moreNewToursBlocksIcon").show();
+			$(".NewToursHiddenBlock").hide();
+			$(".moreNewToursBlocksDetailed").hide(); 
+			$(".hideShowNewToursDateRangeCls").hide();
+		}
+		if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerCls").toggleClass("hide");
+			$(".moreBlocksIcon").removeClass("unExpandBlock");
+		}else if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForMeetings").toggleClass("hide");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
+		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForNews").toggleClass("hide");
+		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForEvents").toggleClass("hide");
+		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+			$(".dateRangePickerClsForAttendance").toggleClass('hide');
+			$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+			$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}
+	});
+	$(document).on("click",".moreNewToursBlocksIcon",function(){	
+		$(".moreNewToursBlocks,.moreNewToursBlocksDetailed").toggle(); 
+		//$(".moreNewToursBlocksDetailed").toggle(); 
+		var isFilterApply = "No";
+		var filterType = "";
+		var desgnatnIdsLst = [];
+	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
+		
+	});
+
+	$(document).on("click",".showHideFiltersToursSec",function(){
+		$(".sliderCategoryTypeCls").attr("checked",true);
+		var dropBlockId = $(this).attr("attr_id");
+		$("#toursSessionDropDown"+dropBlockId).toggle(); 
+		
+   });
+   $(document).on("click",".toursBlockCloseCls",function(){
+	var dropBlockId = $(this).attr("attr_id");
+	$("#toursSessionDropDown"+dropBlockId).toggle(); 
+	
+   });
+	
+	
+	var globalDesignationSelectBoxString="";
+	function getToursBasicOverviewDtls()
+	{    globalDesignationSelectBoxString="";
 		$("#tourOverviewNewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
@@ -1414,10 +1539,10 @@ function getToursBasicOverviewCountDetails()
 			 return;
 		}
 		var jsObj ={ 
-					 activityMemberId : 44,
+					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",
-					 toDate : "",
+					 fromDate : "",//globalFormTourDate
+					 toDate : "",//glovalToTourDate
 					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
@@ -1433,7 +1558,6 @@ function getToursBasicOverviewCountDetails()
 			}
 		});
 	}
-	var globalDesignationSelectBoxString="";
 	function buildTourOverviewRslt(result){
 		var overViewRslt = result.overAllDetailsVO;
 		var designationWiseList = result.subList;
@@ -1516,7 +1640,7 @@ function getToursBasicOverviewCountDetails()
 		    if(designationWiseList != null && designationWiseList.length > 0){
 				for(var i in designationWiseList){
 				  var designationids;
-				   if(designationWiseList[i].id==4){
+				   if(designationWiseList[i].id==4){//organization SECRETARY and SECRETARY
 					  designationids='4,5'; 
 				   }else{
 					designationids=designationWiseList[i].id;  
@@ -1533,22 +1657,22 @@ function getToursBasicOverviewCountDetails()
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
 									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Target Per month</i></p>';
-									str+='<table class="table">';	
-										str+='<tr>';
-											str+='<td>Own District</td>';
-											str+='<td>02</td>';
-										str+='</tr>';
-										str+='<tr>';
-											str+='<td>Incharge District</td>';
-											str+='<td>32</td>';
-										str+='</tr>';
-										str+='<tr>';
-											str+='<td>Govt</td>';
-											str+='<td>90</td>';
-										str+='</tr>';
+									str+='<table class="table">';
+									 var monthWiseTarget = designationWiseList[i].subList; 
+											 if(monthWiseTarget != null && monthWiseTarget.length > 0){
+												 for(var k in monthWiseTarget){
+												    str+='<tr>';
+													if(monthWiseTarget[k].name != null && monthWiseTarget[k].name.length > 0){
+													str+='<td style="border-top:none !important">'+monthWiseTarget[k].name+'</td>';	
+													}else{
+													str+='<td style="border-top:none !important"> - </td>';	
+													}
+													str+='<td>'+monthWiseTarget[k].targetDays+'</td>';
+												   str+='</tr>'; 
+												 }
+											 }
 									str+='</table>';
 								str+='</div>';
-							 
 							str+='</div>';
 							
 							str+='<div class="bg_ED m_top10">';
@@ -1642,22 +1766,20 @@ function getToursBasicOverviewCountDetails()
 		 }
     });
 	
-	
     var globalUserTypeWiseTourComplainceRslt;  
 	function getDesignationWiseMembersDtls()
 	{  
- 	     var globalUserTypeId = 2;
-		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+ 		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
 			$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(' ');
 			 return;
 		}
 		var jsObj ={ 
-					 activityMemberId : 44,
+					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",
-					 toDate : "",
+					 fromDate : "",//globalFormTourDate
+					 toDate : "",//glovalToTourDate
 					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
@@ -2066,8 +2188,7 @@ function getToursBasicOverviewCountDetails()
     });
 	
 	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId){
-    	var globalUserTypeId = 2;
-		 if(isFilterApply=="No"){
+    	 if(isFilterApply=="No"){
 		   $("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 }else{
 		  $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -2077,11 +2198,12 @@ function getToursBasicOverviewCountDetails()
 			$("#toursPerformanceDivId").html(' ');
 			 return;
 		} 
+		
 		var jsObj ={ 
-					 activityMemberId :44 ,
+					 activityMemberId :globalActivityMemberId ,
 					 stateId : globalStateIdForTour,
-					 fromDate :"" ,
-					 toDate : "",
+					 fromDate : "", //globalFormTourDate
+					 toDate : "",//glovalToTourDate
 					 userTypeId : globalUserTypeId,
 					 designationIds : desgnatnIdsLst,
 					 isFilterApply :isFilterApply,
@@ -2117,20 +2239,11 @@ function getToursBasicOverviewCountDetails()
 					str1+='<div class="panel-heading">';
 						str1+='<div class="row">';
 							str1+='<div class="col-md-5 col-xs-12 col-sm-6">';
-							 if(result[i].id==4 || result[i].id==5){
-								  if(result[i].id==4){
-									  str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+' / SECRETARY</span></h4>';									  
-								  }
-								  if(result[i].id==5){
-									  str1+='<h4 class="panel-title"><span class="headingColor">ORGANIZING SECRETARY /'+result[i].name+'</span></h4>';									 
-								 }
-							   }else{ 
 									str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
-							  }
 							str1+='</div>';
 							str1+='<div class="col-md-7 col-xs-12 col-sm-6">';
 								str1+='<ul class="list-inline pull-right activeUlCls">';
-								 if(result[i].id==4 || result[i].id==5){
+								 if(result[i].id==4){//organization SECRETARY and SECRETARY
 									str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">All</li>';
 									str1+='<li class="tourFilterCls" attr_result_type="complaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">COMPLAINCE</li>';
 									str1+='<li class="tourFilterCls" attr_result_type="nonComplaince" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">NON-COMPLAINCE</li>';
@@ -2152,7 +2265,7 @@ function getToursBasicOverviewCountDetails()
 												str1+='<div class="checkbox">';
 												  str1+='<label>';
 												
-												   if(result[i].id==4 || result[i].id==5){
+												   if(result[i].id==4){//organization SECRETARY and SECRETARY
 													str1+='<input type="checkbox" value="" attr_designation_id="4,5"  class="tourFilteCheckBoxCls sliderCategoryTypeCls" attr_slider_type="tourCategory" checked style="margin-top: 3px;">';   
 												   }else{
 												     str1+='<input type="checkbox" value="" attr_designation_id='+result[i].id+'  class="tourFilteCheckBoxCls sliderCategoryTypeCls" attr_slider_type="tourCategory" checked style="margin-top: 3px;">';	   
@@ -2177,7 +2290,7 @@ function getToursBasicOverviewCountDetails()
 																str1+='<p>'+result[i].subList3[0].subList3[k].name+'</p>';
 															str1+='</div>';
 															str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
-																 if(result[i].id==4 || result[i].id==5){
+																 if(result[i].id==4){//organization SECRETARY and SECRETARY
 																	str1+='<input class="'+sliderNameStrWithoutSpace+'45'+'cls" id="ownDisConsSlider'+i+''+k+'"  type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1" data-slider-enabled="true" />';	 
 																 }else{
 																	str1+='<input class="'+sliderNameStrWithoutSpace+''+result[i].id+''+'cls" id="ownDisConsSlider'+i+''+k+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1" data-slider-enabled="true" />';	 
@@ -2194,7 +2307,7 @@ function getToursBasicOverviewCountDetails()
 												str1+='<div class="col-md-3 col-xs-12 col-sm-3">';
 													str1+='<div class="checkbox">';
 														  str1+='<label>';
-														    if(result[i].id==4 || result[i].id==5){
+														    if(result[i].id==4){
 															str1+='<input type="checkbox" attr_slider_type="main" attr_designation_id="4,5" class="tourFilteCheckBoxCls mainSliderCls" value="" style="margin-top: 3px;">';		
 															}else{
 															str1+='<input type="checkbox" attr_slider_type="main" attr_designation_id="'+result[i].id+'" class="tourFilteCheckBoxCls mainSliderCls" value="" style="margin-top: 3px;">';	
@@ -2204,10 +2317,13 @@ function getToursBasicOverviewCountDetails()
 														str1+='</div>';
 												str1+='</div>';
 												 var mainSliderNameWithoutSpace='';
-												  var mainSliderName = result[i].name;
+												  var mainSliderName ='';
+												  if(result[i].name != null && result[i].name.length > 0){
+													  mainSliderName = result[i].name;
+												  }
 												   mainSliderNameWithoutSpace = mainSliderName.replace(/\s+/g, '');
 												str1+='<div class="col-md-9 col-xs-12 col-sm-3 m_top10">';
-												 if(result[i].id==4 || result[i].id==5){
+												 if(result[i].id==4){//organization SECRETARY and SECRETARY
 												    str1+='<input id="mainSlider'+i+'" class="'+mainSliderNameWithoutSpace+'45'+'cls" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1" data-slider-enabled="true"/>';	 
 												 }else{
 												    str1+='<input id="mainSlider'+i+'" class="'+mainSliderNameWithoutSpace+''+result[i].id+''+'cls" data-slider-id="mainSlider'+i+'" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1" data-slider-enabled="true"/>';	 
@@ -2215,7 +2331,7 @@ function getToursBasicOverviewCountDetails()
 												str1+='</div>';
 												str1+='<span style="margin-left: 10px;">0%</span><span class="col-xs-offset-6">100%</span>';
 												str1+='</div>';
-													 if(result[i].id==4 || result[i].id==5){
+													 if(result[i].id==4){//organization SECRETARY and SECRETARY
 													  str1+='<button type="button" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" attr_slider_name="'+sliderName+'" attr_main_slider_name='+mainSliderNameWithoutSpace+' class="btn btn-success tourSearchBtnCls btn-sm pull-right">Get Details</button>'; 	 
 													 }else{
 													  str1+='<button type="button" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id='+result[i].id+' attr_slider_name="'+sliderName+'" attr_main_slider_name='+mainSliderNameWithoutSpace+' class="btn btn-success tourSearchBtnCls btn-sm pull-right">Get Details</button>'; 
@@ -2233,6 +2349,8 @@ function getToursBasicOverviewCountDetails()
 			str1+='</div>';
 		  }
 		  $("#toursPerformanceDivId").html(str1);
+		}else{
+		 $("#toursPerformanceDivId").html("NO DATA AVAILABLE.");	
 		}
 		
 		if(result != null && result.length > 0){
@@ -2346,8 +2464,8 @@ function getToursBasicOverviewCountDetails()
 						var str='';
 						var length = result
 						str+='<div class="table-responsive">'
-							str+='<table class="table table-bordered" >';
-							str+='<thead>';
+							str+='<table class="table table-bordered borderedWeight" id="dataTable'+divId+'">';
+							str+='<thead class="bg_D8">';
 								str+='<tr>';
 					
 										var maxLengthForSpan = 0;
@@ -2357,32 +2475,33 @@ function getToursBasicOverviewCountDetails()
 													maxLengthForSpan = result[i].subList3[j].subList3.length;
 											}
 										}
-										if(maxLengthForSpan >=3){
+										str+='<th  class="text-capital text-center" style="vertical-align:middle;" rowspan="2" >Leaders Name</th>';
+										/* if(maxLengthForSpan >=3){
 											str+='<td rowspan="'+(maxLengthForSpan)+'" class="">Leaders Name</td>';
 										}else{
 											str+='<td rowspan="'+(maxLengthForSpan+1)+'" class="">Leaders Name</td>';
-										}
+										} */
 										
-										str+='<td colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</td>';
+										str+='<th class="text-capital text-center" style="vertical-align:middle;" colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="">Complains</th>';
 										
 										for(var k in result[i].subList3[0].subList3){
-											str+='<td colspan="2" rowspan="1" class="">'+result[i].subList3[0].subList3[k].name+'</td>';
+											str+='<th class="text-capital text-center" style="vertical-align:middle;" colspan="2" rowspan="1">'+result[i].subList3[0].subList3[k].name+'</th>';
 										}
 									
 									str+='</tr>';
 									str+='<tr>';
 										
-										str+='<td >over all</td>';
+										str+='<th class="text-capital text-center" style="vertical-align:middle;" >over all</th>';
 												for(var k in result[i].subList3[0].subList3){
-													str+='<td>'+result[i].subList3[0].subList3[k].name+'</td>';
+													str+='<th class="text-capital text-center" style="vertical-align:middle;">'+result[i].subList3[0].subList3[k].name+'</th>';
 													
 												}
 										for(var k in result[i].subList3[0].subList3){
-										str+='<td >Target</td>';
-										str+='<td >Toured</td>';
+										str+='<th class="text-capital text-center" style="vertical-align:middle;">Target</th>';
+										str+='<th class="text-capital text-center" style="vertical-align:middle;">Toured</th>';
 										}
 										
-									str+='<tr>';
+									str+='</tr>';
 										str+='</thead>';
 										str+='<tbody>';
 										//str+='<td></td>';
@@ -2414,23 +2533,28 @@ function getToursBasicOverviewCountDetails()
 				}else{
 				$("#"+divId).html("NO DATA AVAILABLE.");	
 				}	
+			  $("#dataTable"+divId).dataTable({
+				"aaSorting": [],
+				"iDisplayLength" : 10	
+			 });
+			 $("#dataTable"+divId).removeClass("dataTable"); 
 		} 
 		
 	function getIndividualPersonTourDetails(value)
-	{ 
-		
+	{                
 		var temp = value.split("-");
 		var candiateId = temp[0];
 		var topFivecandidateName = temp[1];
 		var topFivedesignationName = temp[2];
 	
 		$("#tourIndividualPerformanceDivId").modal("show");
+		$(".tourIndividualCls").attr("attr_type","direct");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
-					 fromDate : "",
-					 toDate : ""
+					 fromDate :"" ,//globalFormTourDate
+					 toDate : "" //glovalToTourDate
 				  }
 		$.ajax({
 			type : 'POST',
@@ -2467,10 +2591,16 @@ function getToursBasicOverviewCountDetails()
 	    if(designationName.trim()=="Overall"){
 			
 			$(".designationSelectBoxCls").show();
+			$("#tourDesignationSelectBoxId").html(" ");
 			$("#tourDesignationSelectBoxId").append(globalDesignationSelectBoxString);
 			var firstOption = $("#tourDesignationSelectBoxId option:first").val();
 			$("#tourDesignationSelectBoxId").val(firstOption);
-			designationIds.push(firstOption);
+			if(firstOption == 4){
+			  designationIds.push(4);
+			  designationIds.push(5);
+			}else{
+			  designationIds.push(firstOption);	
+			}
 			$("#tourDesignationSelectBoxId").attr("attr_tour_filter_type",filterType);
 		}else{
 		   $(".designationSelectBoxCls").hide();
@@ -2483,13 +2613,12 @@ function getToursBasicOverviewCountDetails()
 
 	function getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType)
 	{    
-	
 	 $("#tourDetailsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 	var jsObj ={ 
-					 activityMemberId : 44,
+					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",
-					 toDate : "",
+					 fromDate :"" ,//globalFormTourDate
+					 toDate : "",//glovalToTourDate
 					 userTypeId:globalUserTypeId,
 					 designationIds : designationIds,
 					 filterType :filterType
@@ -2508,7 +2637,6 @@ function getToursBasicOverviewCountDetails()
 		});
 	}
 	
-	
 function buildTourMemberDetails(result){
     
     if(result != null && result.length > 0){
@@ -2519,7 +2647,7 @@ function buildTourMemberDetails(result){
           str1+='<div class="panel-heading">';
             str1+='<div class="row">';
               str1+='<div class="col-md-8 col-xs-12 col-sm-6">';
-                str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'&nbsp&nbspTours Submitted Report</span></h4>';
+                str1+='<h4 class="panel-title"><span class="headingColor text-capital">'+result[i].name+'&nbsp&nbspTours Submitted Report</span></h4>';
               str1+='</div>';
           str1+='</div>';
           str1+='<div class="panel-body">';
@@ -2613,7 +2741,14 @@ function buildTourMemberDetails(result){
     }
   }
 	
-
+ $(document).on("click",".tourIndividualCls",function(){
+	 var selectLevel = $(this).attr("attr_type");
+	 if(selectLevel == "subLevel"){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 500);                     
+	 }
+	}); 
 
 $(document).on("click",".candiateCls",function(){
 	var candiateId = $(this).attr("attr_candiate_id");
@@ -2621,15 +2756,17 @@ $(document).on("click",".candiateCls",function(){
 	var candiateName = $(this).attr("attr_candiate_name");
    getCandiateWiseTourDetails(candiateId,designationName,candiateName);
 });
+
 function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	{ 
 		$("#tourIndividualPerformanceDivId").modal("show");
+		$(".tourIndividualCls").attr("attr_type","subLevel");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
-					 fromDate : "",
-					 toDate : ""
+					 fromDate :"" ,//globalFormTourDate
+					 toDate : ""//glovalToTourDate
 				  }
 		$.ajax({
 			type : 'POST',
@@ -2645,89 +2782,6 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		});
 	}
 	
-	$(document).on("click",".NewTourExpand",function(){
-		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".NewToursBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".NewTourExpandCls").show();
-		
-		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			getDesignationWiseMembersDtls();
-			$(".NewToursHiddenBlock").show();			
-		}else{
-			$(".NewTourExpandCls").hide();
-			$(".moreNewToursBlocksIcon").show();
-			$(".NewToursHiddenBlock").hide();
-			$(".moreNewToursBlocksDetailed").hide(); 
-			
-		}
-		if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
-			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerCls").toggleClass("hide");
-			$(".moreBlocksIcon").removeClass("unExpandBlock");
-		}else if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
-			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
-			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
-			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForMeetings").toggleClass("hide");
-			$(".moreMeetingsBlocks1").hide();
-			$(".moreMeetingsBlocksDetailed").hide();
-			$(".moreMeetingsBlocksComparision").hide();
-		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForNews").toggleClass("hide");
-		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
-			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForEvents").toggleClass("hide");
-		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
-			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
-			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
-			$(".dateRangePickerClsForAttendance").toggleClass('hide');
-			$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
-			$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}
-	});
-	$(document).on("click",".moreNewToursBlocksIcon",function(){	
-		$(".moreNewToursBlocks,.moreNewToursBlocksDetailed").toggle(); 
-		//$(".moreNewToursBlocksDetailed").toggle(); 
-		var isFilterApply = "No";
-		var filterType = "";
-		var desgnatnIdsLst = [];
-	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
-		
-	});
-
-	$(document).on("click",".showHideFiltersToursSec",function(){
-		var dropBlockId = $(this).attr("attr_id");
-		$("#toursSessionDropDown"+dropBlockId).toggle(); 
-		
-   });
-   $(document).on("click",".toursBlockCloseCls",function(){
-	var dropBlockId = $(this).attr("attr_id");
-	$("#toursSessionDropDown"+dropBlockId).toggle(); 
-	
-   });
-   
-   
    function buildIndividualPersonTourDetails(result){
 	   var str='';
 	   $("#tourIndividualDetailsBlock").html('');
@@ -2769,9 +2823,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 				mainArrNma.push(result.subList[i].name);
 				nameArr = result.subList[i].name;
 			}
-		/* 	console.log(jsonObj);
-			console.log(mainArrNma); */
-			
+		
 		 $(function () {
 			  $('#overAllComplainsGraph').highcharts({
 				colors: ['#80F6F8'],
@@ -2851,7 +2903,6 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 				}]
 			});
 		});
-	
 	}
 	
 	if(result !=null && result.subList != null && result.subList.length > 0){
