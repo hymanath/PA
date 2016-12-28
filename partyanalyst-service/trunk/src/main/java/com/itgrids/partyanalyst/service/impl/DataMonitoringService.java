@@ -1031,8 +1031,8 @@ public class DataMonitoringService implements IDataMonitoringService {
 				String newcadreImg = cadreImage.replace(".jpg","");
 				newcadreImg = newcadreImg+"2.jpg";
 				
-				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+newcadreImg;
-				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
+				cadreImage = "/mnt/tdp-img/cadre_images/2014/"+newcadreImg;
+				voterImage = "/mnt/tdp-img/voter_images/"+voterImage;
 				
 				LOG.fatal("cadreImage --> "+cadreImage);
 				LOG.fatal("voterImage --> "+voterImage);
