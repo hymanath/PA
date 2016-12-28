@@ -3323,20 +3323,26 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 }
 				 }
 				
+				 List<Object[]> list = new ArrayList<Object[]>(0);
+						 
 				if(voterIdCardNoList != null && voterIdCardNoList.size() > 0)
 				{
-					List<Object[]> list = tdpCadreDAO.getSurveyPaticipatedCountByVoterIdcardNoList(voterIdCardNoList);
-					if(list != null && list.size() > 0)
-					{
-						for(Object[] params: list)
+					try {
+						list = tdpCadreDAO.getSurveyPaticipatedCountByVoterIdcardNoList(voterIdCardNoList);
+						if(list != null && list.size() > 0)
 						{
-							if(params[1] != null)
+							for(Object[] params: list)
 							{
-								TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(resultList, params[1].toString());
-							    if(VO != null)
-							    	VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
+								if(params[1] != null)
+								{
+									TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(resultList, params[1].toString());
+								    if(VO != null)
+								    	VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
+								}
 							}
 						}
+					} catch (Exception e) {
+						LOG.error(" Exception Occured while retrieving survey details in getCadreFamilyDetails() in CadreDetailsService Class. ");
 					}
 					
 					//0.voterCardNo,1.cadreId,2.memberShipNo,3.image,4.isDeleted,5.delete ReasonId,6.reason
@@ -3444,9 +3450,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 						if(resultList != null && resultList.size()>0)
 						{
 							TdpCadreFamilyDetailsVO vo = resultList.get(0);
-							vo.setFamilySurveyCount(Long.valueOf(String.valueOf(list.size())));
-							vo.setPartyPositionsCount(Long.valueOf(String.valueOf(cadrePublicRepresentativList.size())));
-							vo.setPartyPositionsCount(Long.valueOf(String.valueOf(cadrePartyPositionMap.size())));
+							vo.setFamilySurveyCount(commonMethodsUtilService.isListOrSetValid(list) ? Long.valueOf(String.valueOf(list.size())):0L);
+							vo.setPartyPositionsCount(commonMethodsUtilService.isListOrSetValid(cadrePublicRepresentativList) ? Long.valueOf(String.valueOf(cadrePublicRepresentativList.size())):0L);
+							vo.setPartyPositionsCount(commonMethodsUtilService.isMapValid(cadrePartyPositionMap) ? Long.valueOf(String.valueOf(cadrePartyPositionMap.size())):0L);
 						}
 					}
 				}
