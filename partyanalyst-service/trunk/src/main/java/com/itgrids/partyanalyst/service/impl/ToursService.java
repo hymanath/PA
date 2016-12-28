@@ -975,8 +975,8 @@ public class ToursService implements IToursService {
 								saveApplicationDocuments(toursVo,documentMap);												
 					}
 					
-					transStatus.setExceptionMsg("success");
-					transStatus.setResultCode(0);
+					transStatus.setMessage("success");
+					transStatus.setResultCode(1);
 					
 					return transStatus;
 					
@@ -985,21 +985,21 @@ public class ToursService implements IToursService {
     		});
     		
     	}catch(Exception e){
-    		status.setExceptionMsg("failure");
-    		status.setResultCode(1);
+    		status.setMessage("failure");
+    		status.setResultCode(0);
     		LOG.error("Exception Occured in saveNewTourDetails() in ToursService class ", e);
     	}
     	return status;
     }
     
     public ResultStatus updateNewTourDetails( final ToursVO toursVo,final Map<File, String> documentMap){
-    	ResultStatus result = null;
+    	ResultStatus result = new ResultStatus();
     	try{    		
     		
     		result = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
     		
-					ResultStatus status=null;
+					ResultStatus status=new ResultStatus();
 					
     			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");						
 				DateUtilService dateUtilService = new DateUtilService();
@@ -1051,12 +1051,17 @@ public class ToursService implements IToursService {
 					}    			
     			}
 				
+				status.setMessage("success");
+				status.setResultCode(1);
+				
 				return status;
 				
 				}
     		});
     		
     	}catch(Exception e){
+    		result.setMessage("failure");
+    		result.setResultCode(0);
     		LOG.error("Exception Occured in updateNewTourDetails() in ToursService", e);
     	}
     	return result;

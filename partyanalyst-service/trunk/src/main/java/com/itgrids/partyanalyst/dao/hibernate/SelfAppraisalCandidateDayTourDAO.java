@@ -249,7 +249,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  queryStr.append( " select " +
 		    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
 		    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," + // Submitted Leaders Count
-		    		       " sum(model.selfAppraisalCandidateDayTourId) " + // Submitted  Tours Count
+		    		       " count(model.selfAppraisalCandidateDayTourId) " + // Submitted  Tours Count
 
 		    		       " from SelfAppraisalCandidateDayTour model " +
 		    		       " where model.selfAppraisalCandidate.isActive='Y' " +
