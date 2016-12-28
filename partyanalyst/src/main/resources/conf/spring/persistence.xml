@@ -1079,7 +1079,8 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreGenderInfoTemp</value>
 	                  
 	                  <value>com.itgrids.partyanalyst.model.MaxPrintDetails</value>
-	                  
+	                  <value>com.itgrids.partyanalyst.model.PashiAppUser</value>
+	                  <value>com.itgrids.partyanalyst.model.PashiAppManageUser</value>
 	             </list>
 			
 		</property>
