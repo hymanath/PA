@@ -945,7 +945,7 @@ public class DataMonitoringService implements IDataMonitoringService {
   		
   	}
 	
-	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
+	/*public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
 	{
 		ResultStatus result = new ResultStatus();
 		try
@@ -991,8 +991,8 @@ public class DataMonitoringService implements IDataMonitoringService {
 				boolean deleteFlag = cadreImageFile.delete();
 				LOG.fatal("Delete Status --> "+deleteFlag);
 				
-				/*boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
-				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);*/
+				boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
+				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);
 				
 				boolean flag = commonMethodsUtilService.fileCopy(voterImage,cadreImage);
 				
@@ -1000,6 +1000,53 @@ public class DataMonitoringService implements IDataMonitoringService {
 				
 				if(flag)
 					result.setResultCode(ResultCodeMapper.SUCCESS);
+				else
+					result.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		}catch(Exception e)
+		{
+			LOG.error("Exception oocured in changeCadreImageByVoterImage Method",e);
+			result.setResultCode(ResultCodeMapper.FAILURE);
+			result.setExceptionEncountered(e);
+		}
+		return result;
+	}*/
+	
+	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
+	{
+		ResultStatus result = new ResultStatus();
+		try
+		{
+			LOG.fatal("Entered into changeCadreImageByVoterImage");
+			
+			List<Object[]> list = tdpCadreDAO.getCadreImagesByCadreId(tdpCadreId);
+			
+			if(list != null && list.size() > 0)
+			{
+				String cadreImage = list.get(0)[0].toString();
+				String voterImage = list.get(0)[1].toString();
+				
+				LOG.fatal("cadre Image - "+cadreImage+"\tVoter Iamge"+voterImage);
+				
+				String newcadreImg = cadreImage.replace(".jpg","");
+				newcadreImg = newcadreImg+"2.jpg";
+				
+				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+newcadreImg;
+				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
+				
+				LOG.fatal("cadreImage --> "+cadreImage);
+				LOG.fatal("voterImage --> "+voterImage);
+				
+				boolean flag = commonMethodsUtilService.fileCopy(voterImage,cadreImage);
+				
+				LOG.fatal("File Copy Status --> "+flag);
+				
+				if(flag)
+				{
+					result.setResultCode(ResultCodeMapper.SUCCESS);
+					int records = tdpCadreDAO.updateTdpCadreImage(tdpCadreId,newcadreImg);
+					LOG.error("Updated Records --> "+records);
+				}
 				else
 					result.setResultCode(ResultCodeMapper.FAILURE);
 			}
