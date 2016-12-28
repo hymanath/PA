@@ -370,7 +370,8 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			voterCardNo:voterCardNo,
 			startIndex:startIndex,
 			maxIndex : 50, 
-			removedStatus:false,  
+			removedStatus:false,
+			enrollmentId : 3,  
 			task:"tdpCadreSearch"     
 		}
 	}else{
@@ -383,7 +384,8 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			voterCardNo:voterCardNo,
 			startIndex:startIndex,
 			maxIndex : 50,
-			removedStatus:false,  
+			removedStatus:false,
+			enrollmentId : 3,  
 			task:"tdpCadreSearch"     
 		}
 	}

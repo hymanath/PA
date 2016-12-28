@@ -182,6 +182,17 @@
 			  </span>
 			</div>
 			
+			<div class="col-md-8 col-md-offset-3 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" >
+			 <label style="margin-left: 33px;"></label></br>
+				<div class="form-inline btn btn-default" style="margin-left: 22px;">
+				<b>Enrollment Year </b>:
+					<div class="radio">
+						<label style=" margin-left: -20px;"><input type="radio"   value="3" style="margin-left:20px;" class="enrollmentCls" name="radio"  onclick="refreshExistingDetails();"> 2014 &nbsp;&nbsp;</label>
+						<label><input type="radio"   value="4" checked="true"  class="enrollmentCls" name="radio" onclick="refreshExistingDetails();" > 2016 &nbsp;&nbsp;</label>
+					</div>
+				</div>
+			</div>
+			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
 				<div class="form-inline btn btn-default">
 					<span class="allcls" style="display:none">
@@ -236,7 +247,7 @@
 						<div id="committeLocationIdErr"></div>
 					 </div>
 				</div>			
-			</div>-->
+			</div>-->	
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv" style="margin-top:10px;">	
 				<div class="row-fluid">      
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
@@ -742,7 +753,13 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			}
 			
 		}
-		
+		var enrollmentyearId=4;
+		 $(".enrollmentCls").each(function(){
+				if($(this).prop('checked')==true){
+					     enrollmentyearId = $(this).val();
+				}
+				
+			}); 
 		var removedStatus =false;
 		if($('#onlyCandidatesId').is(':checked')){
 			 removedStatus = true;
@@ -771,6 +788,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			startIndex:startIndex,
 			maxIndex : 50,
 			removedStatus:removedStatus,
+			enrollmentId : enrollmentyearId,
 			task:"tdpCadreSearch"
 		}
 		$.ajax({
