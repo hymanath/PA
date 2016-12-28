@@ -12,4 +12,5 @@ public interface ISelfAppraisalDesignationTargetDAO extends GenericDao<SelfAppra
     public List<Object[]> getTourCategoryWiseTargetCnt(Date fromDate,Date toDate,String type);
     public List<Object[]> getCandiateWiseTargetCnt(Date fromDate,Date toDate,String type);
     public List<Object[]> getCandiateAndCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,Long selfAppraisalCandidateId);
+    public List<Object[]> getTotalTargetOfDesignation(Date fromDate,Date toDate,List<Long> designationsList);
 }
