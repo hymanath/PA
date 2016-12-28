@@ -406,7 +406,7 @@ $( document ).ready(function() {
 		
 		c.find(".tourtextAreaCls").attr("id","tourtextAreaId"+newsTourCloneCount);
 		
-		c.find(".tourtextAreaCls").attr("name","toursVOList["+newsTourCloneCount+"].tourtextAreaId");
+		c.find(".tourtextAreaCls").attr("name","toursVOList["+newsTourCloneCount+"].description");
 		c.find(".newsTourRemoveBtnCls").attr("attr_div_id","newsTourCloneDivId"+newsTourCloneCount);
 		
 		c.find(".stateSelCls").attr("id","stateSelId"+newsTourCloneCount);
