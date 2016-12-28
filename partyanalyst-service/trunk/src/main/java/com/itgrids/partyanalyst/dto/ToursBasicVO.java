@@ -94,6 +94,15 @@ public class ToursBasicVO {
 	private Long tourTypeId;
 	private String tourType;
 	
+	private Long addressId;
+	
+	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> distList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> constList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> manTowDivList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> panWardList = new ArrayList<IdNameVO>(0);
+	
 	public ToursBasicVO() {
 		super();
 	}
@@ -580,5 +589,48 @@ public class ToursBasicVO {
 	public void setIdStr(String idStr) {
 		this.idStr = idStr;
 	}
+	public List<IdNameVO> getCategoryList() {
+		return categoryList;
+	}
+	public void setCategoryList(List<IdNameVO> categoryList) {
+		this.categoryList = categoryList;
+	}
+	public List<IdNameVO> getTourTypeList() {
+		return tourTypeList;
+	}
+	public void setTourTypeList(List<IdNameVO> tourTypeList) {
+		this.tourTypeList = tourTypeList;
+	}
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	public List<IdNameVO> getDistList() {
+		return distList;
+	}
+	public void setDistList(List<IdNameVO> distList) {
+		this.distList = distList;
+	}
+	public List<IdNameVO> getConstList() {
+		return constList;
+	}
+	public void setConstList(List<IdNameVO> constList) {
+		this.constList = constList;
+	}
+	public List<IdNameVO> getManTowDivList() {
+		return manTowDivList;
+	}
+	public void setManTowDivList(List<IdNameVO> manTowDivList) {
+		this.manTowDivList = manTowDivList;
+	}
+	public List<IdNameVO> getPanWardList() {
+		return panWardList;
+	}
+	public void setPanWardList(List<IdNameVO> panWardList) {
+		this.panWardList = panWardList;
+	}
           
+	
 }

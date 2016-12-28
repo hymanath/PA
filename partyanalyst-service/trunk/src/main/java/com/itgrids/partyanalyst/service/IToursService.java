@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
+import com.itgrids.partyanalyst.dto.ToursVO;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface IToursService {
 	 public List<IdNameVO> getAllTourTypes();
 	 public List<IdNameVO> getAllTourCategorys(Long cadreId);
 	 public PMMinuteVO getAllCandidateLocations(Long cadreId,Long categoryId);
+	 public ResultStatus saveNewTourDetails(final ToursVO toursVo,final Map<File, String> documentMap);
+	 public List<ToursBasicVO> getToursDetailsOverviewForNew(String fromDateStr,String toDateStr);
 }

@@ -33,15 +33,18 @@ public class PMMinuteVO implements Serializable{
 	private Long locationScopeId;
 	private Long locationValue;
 	private String tourDate;
+	private Long selfApraisalCandidateId;
 	
 	private List<KeyValueVO> statesList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> distList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> constList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> manTowDivList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> panWardList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> documentList = new ArrayList<KeyValueVO>(0);
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
+	
 	
 	public Long getWardId() {
 		return wardId;
@@ -210,6 +213,18 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setStatesList(List<KeyValueVO> statesList) {
 		this.statesList = statesList;
+	}
+	public Long getSelfApraisalCandidateId() {
+		return selfApraisalCandidateId;
+	}
+	public void setSelfApraisalCandidateId(Long selfApraisalCandidateId) {
+		this.selfApraisalCandidateId = selfApraisalCandidateId;
+	}
+	public List<KeyValueVO> getDocumentList() {
+		return documentList;
+	}
+	public void setDocumentList(List<KeyValueVO> documentList) {
+		this.documentList = documentList;
 	}
 	
 }

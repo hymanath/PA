@@ -165,4 +165,44 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            return query.list();
     }
+    
+    public List<Object[]> getTotalTargetOfDesignation(Date fromDate,Date toDate,List<Long> designationsList){
+    	
+    	StringBuilder str = new StringBuilder();
+    	
+    	str.append( " select model.selfAppraisalDesignationId,sum(model.targetDays) " +
+    			" from SelfAppraisalDesignationTarget model " +
+    			" where model.isActive='Y' " +
+    			" and model.selfAppraisalDesignation.isActive='Y' " );
+    	
+    	str.append(" and model.selfAppraisalTourCategoryId is not null ");
+    	
+    	/*if(fromDate !=null && toDate !=null){
+    		str.append(" and date(model.startTime)>=:fromDate and date(model.endTime)<=:toDate ");
+    	}  */  
+    	
+    	if(fromDate !=null && toDate !=null){
+    		str.append(" and date(model.startTime) between :fromDate and :toDate ");
+    	}  
+    	
+    	if(designationsList !=null && designationsList.size()>0){
+    		str.append(" and model.selfAppraisalDesignationId in (:designationsList) ");
+    	}
+    	
+    	str.append(" group by model.selfAppraisalDesignationId ");    	
+    	
+    	Query query = getSession().createQuery(str.toString());
+    	
+    	if(fromDate !=null && toDate !=null){
+    		query.setParameter("fromDate", fromDate);
+    		query.setParameter("toDate", toDate);
+    	}
+    	if(designationsList !=null && designationsList.size()>0){
+    		query.setParameterList("designationsList", designationsList);
+    	}
+    	
+    	return query.list();
+    	
+    	
+    }
 }
