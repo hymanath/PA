@@ -4407,7 +4407,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public PeshiAppGrievanceVO getPeshiAppGrievanceDetails(String fromDateStr,String toDateStr,String membershipId){
 		  	PeshiAppGrievanceVO returnVO = new PeshiAppGrievanceVO();
 		  		try{
-		  			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		  			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		  			Date fromDate = null;	
 		  			Date toDate = null;
 		  			if(fromDateStr != null && toDateStr != null){
@@ -4469,7 +4469,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType){
 		 PeshiAppAppointmentVO returnVO = new PeshiAppAppointmentVO();
 		 try{
-			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			 SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 			 Date fromDate = null;
 			 Date toDate = null;
 			 if(fromDateStr != null && toDateStr != null){

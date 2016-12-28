@@ -1011,4 +1011,19 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 		return result;
 	}
+	
+	public String updateRejectedImages(List<IdNameVO> idNameVOs){   
+  		try{
+  			if(idNameVOs.size() > 0){  
+  				for(IdNameVO idNameVO : idNameVOs){
+  					tdpCadreDataVerificationDAO.updateApprovedCadre(idNameVO.getCadreId(),null);
+  					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);
+  				}
+  			}
+  			return "success";  
+  		}catch(Exception e){
+  			LOG.error("Exception raised in updateRejectDtls() of DataMonitoringService", e); 
+  			return "failure";  
+  		}
+  	}
 }
