@@ -419,7 +419,7 @@ public class ToursService implements IToursService {
 		String month = "";
 		DateFormatSymbols dfs = new DateFormatSymbols();
 		String[] months = dfs.getMonths();
-		if (num >= 0 && num <= 11 ) {
+		if (num >= 1 && num <= 12 ) {
 			month = months[num-1];
 		}
 		return month;  
