@@ -42,6 +42,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private List<DataMonitoringOverviewVO> resultList;
 		  private ResultStatus resultStatus;
 		  private List<CadreRegUserVO> cadreRegUserList;
+		  private String returnStatus;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -142,8 +143,15 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		}
 		public void setCadreRegUserList(List<CadreRegUserVO> cadreRegUserList) {
 			this.cadreRegUserList = cadreRegUserList;
+		}		
+		public String getReturnStatus() {
+			return returnStatus;
+		}
+		public void setReturnStatus(String returnStatus) {
+			this.returnStatus = returnStatus;
 		}
 
+		
 		
 		//Business methods
 		public String execute(){
@@ -618,4 +626,48 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   return Action.SUCCESS;
 	   }
 	   
+	   public String updateRejectedImages(){    
+		   try{
+			   session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long userId = 0l;
+				if(regVO != null)
+					userId = regVO.getRegistrationID();
+				
+			   Long cadreId = 0l;
+			   String status = null;
+			   Long constitunecyId =0l;
+			   Long districtId =0l;
+			   Long cadreUserId =0l;
+			   Long tabUserInfoId = 0l;
+			   //Long userId = 0l;
+			   IdNameVO idNameVO = new IdNameVO();
+			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+			   jObj = new JSONObject(getTask());
+				   //idNameVO = new IdNameVO();
+				   cadreId = jObj.getLong("cadreId");
+				   status = jObj.getString("status");
+				   constitunecyId = jObj.getLong("constitunecyId");
+				   districtId = jObj.getLong("districtId");
+				   cadreUserId = jObj.getLong("cadreUserId");
+				   tabUserInfoId = jObj.getLong("tabUserInfoId");
+				   //userId = jObj.getLong("userId");
+				   idNameVO.setCadreId(cadreId);
+				   idNameVO.setStatus(status);
+				   idNameVO.setId(userId);
+				   idNameVO.setConstitunecyId(constitunecyId);
+				   idNameVO.setDistrictId(districtId);
+				   idNameVO.setCadreUserId(cadreUserId);
+				   idNameVO.setTabUserId(tabUserInfoId);
+				   idNameVOs.add(idNameVO);
+				   
+				   returnStatus = dataMonitoringService.updateRejectedImages(idNameVOs);
+			    
+		   }catch(Exception e){
+			   e.printStackTrace();
+			   LOG.error("Exception raised at updateRejectedImages()  of DataMonitoringAction", e);
+		   }
+		   return Action.SUCCESS;
+	   }
 }
