@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
+import com.itgrids.partyanalyst.dao.IPashiAppUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessIpAddressDAO;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PashiAppUserDAO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -50,6 +52,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
+import com.itgrids.partyanalyst.model.PashiAppUser;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
@@ -90,7 +93,16 @@ public class LoginService implements ILoginService{
 	private IAccessRestrictedSessionDAO accessRestrictedSessionDAO;
 	private IMailService mailService;
 	private TransactionTemplate transactionTemplate = null;
+	private IPashiAppUserDAO pashiAppUserDAO; 
 	
+	public IPashiAppUserDAO getPashiAppUserDAO() {
+		return pashiAppUserDAO;
+	}
+
+	public void setPashiAppUserDAO(IPashiAppUserDAO pashiAppUserDAO) {
+		this.pashiAppUserDAO = pashiAppUserDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1005,28 +1017,15 @@ public String getStateBasedOnLocation(String AccessType,String accessValue){
 	public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password)
 	{
 		try{
-			List<User> userObj=userDAO.getModelByUserName(userName);
-			if(userObj == null  || userObj.size() == 0){
-				return new PeshiAppLoginVO("FAILURE");
+			List<PashiAppUser> usersList =pashiAppUserDAO.checkUserPassword(userName, password);
+			if(usersList != null && usersList.size()>0){
+				PashiAppUser user = usersList.get(0);
+				return new PeshiAppLoginVO(user.getPashiAppUserId(),user.getUserName(),"SUCCESS");
 			}
-				User user = userObj.get(0);
-				String md5Pwd=Util.MD5(Util.MD5(userName)+ Util.MD5(password));
-				
-				if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
-					String salt = userObj.get(0).getPasswordSalt();
-					String hash = userObj.get(0).getPasswordHash();
-					PBKDF2 pb= new PBKDF2();
-					boolean validated = pb.validatePWD(md5Pwd, hash, salt);
-					if(validated){
-						return new PeshiAppLoginVO(user.getUserId(),user.getUserName(),"SUCCESS");
-					}
-				}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Rised in getPeshiAppValidateLoginDetails : ", e);
 		}
-		
 		 return new PeshiAppLoginVO("FAILURE");
-	
 	}
 }
