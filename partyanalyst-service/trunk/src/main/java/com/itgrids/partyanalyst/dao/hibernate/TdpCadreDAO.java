@@ -3578,38 +3578,42 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 	  
 	  
-	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved)
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
-			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
-			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
-			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
-			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo, model.dataSourceType , model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason");//20
-			queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
-			queryStr.append(" left join model.userAddress.tehsil tehsil ");
-			queryStr.append(" left join model.userAddress.constituency constituency ");
-			queryStr.append(" left join model.userAddress.localElectionBody localElectionBody ");
-			queryStr.append(" left join model.userAddress.localElectionBody.electionType electionType ");
-			queryStr.append(" left join model.userAddress.district district ");
-			queryStr.append(" left join model.occupation occupatn ");
-			queryStr.append(" left join model.voter voter ");
-			queryStr.append(" left join model.casteState.caste caste ");
-			queryStr.append(" left join model.familyVoter familyVoter ");
-			queryStr.append(" left join model.cadreDeleteReason cadreDeleteReason ");
+			queryStr.append(" select distinct model.tdpCadre.tdpCadreId, model.tdpCadre.firstname, model.tdpCadre.relativename,  ");
+			queryStr.append(" model.tdpCadre.gender ,model.tdpCadre.memberShipNo, model.tdpCadre.refNo , model.tdpCadre.mobileNo, model.tdpCadre.image, model.tdpCadre.cardNumber,model.tdpCadre.age,date(model.tdpCadre.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
+			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.tdpCadre.houseNo,  ");
+			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.tdpCadre.aadheerNo, model.tdpCadre.dataSourceType , model.tdpCadre.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason, model.enrollmentYearId");//20
+			queryStr.append(" from TdpCadreEnrollmentYear model left join model.tdpCadre.userAddress.panchayat panc ");
+			queryStr.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.tdpCadre.userAddress.constituency constituency ");
+			queryStr.append(" left join model.tdpCadre.userAddress.localElectionBody localElectionBody ");
+			queryStr.append(" left join model.tdpCadre.userAddress.localElectionBody.electionType electionType ");
+			queryStr.append(" left join model.tdpCadre.userAddress.district district ");
+			queryStr.append(" left join model.tdpCadre.occupation occupatn ");
+			queryStr.append(" left join model.tdpCadre.voter voter ");
+			queryStr.append(" left join model.tdpCadre.casteState.caste caste ");
+			queryStr.append(" left join model.tdpCadre.familyVoter familyVoter ");
+			queryStr.append(" left join model.tdpCadre.cadreDeleteReason cadreDeleteReason ");
 			
 			if(isRemoved){
-				queryStr.append(" where  model.isDeleted = 'MD'  and model.enrollmentYear = 2014  ");
+				queryStr.append(" where  model.tdpCadre.isDeleted = 'MD'  and model.tdpCadre.enrollmentYear = 2014  ");
 			}
 			
 			else{
-				queryStr.append(" where (model.isDeleted = 'N' or model.isDeleted = 'MD')  and model.enrollmentYear = 2014  ");
+				queryStr.append(" where (model.tdpCadre.isDeleted = 'N' or model.tdpCadre.isDeleted = 'MD')  and model.tdpCadre.enrollmentYear = 2014  ");
 			}
 				
-			
 			queryStr.append(" "+queryString+" ");
-			queryStr.append(" order by model.firstname ");
+			if(enrollmentId != null && enrollmentId.longValue() == 3l)
+			{
+				queryStr.append(" and  model.enrollmentYearId in(3,4) and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+			}else{
+			queryStr.append(" and  model.enrollmentYearId = 4 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+		}
 			
 			Query query = getSession().createQuery(queryStr.toString());
 			if((constituencyId != null && constituencyId != 0L) && (constituencyIds == null || constituencyIds.size() == 0))
@@ -3624,6 +3628,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			{
 				query.setParameter("casteStateId", casteStateId);
 			}
+				//query.setParameter("enrollmentId", enrollmentId);
+			
 			if(startIndex > 0)
 			query.setFirstResult(startIndex);
 			if(maxIndex > 0)

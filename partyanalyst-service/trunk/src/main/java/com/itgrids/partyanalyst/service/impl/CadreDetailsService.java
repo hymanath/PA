@@ -1006,7 +1006,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.volunteersCadreDetailsDAO = volunteersCadreDetailsDAO;
 	}
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
 		List<Long> ids = new ArrayList<Long>();
@@ -1021,15 +1021,15 @@ public class CadreDetailsService implements ICadreDetailsService{
     			if(locationLevel.longValue() == 2L) // State 
     			{
     				if(locationValue.longValue() == 1l)
-    				queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
+    				queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
     				else if(locationValue.longValue() == 2l || locationValue.longValue() == 36l)
-    					queryStr.append(" and model.userAddress.district.districtId between 1 and 10 ");	
+    					queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");	
     				else{
     					if(memberShipCardNo.endsWith("HIDE") || mobileNo.endsWith("HIDE")){
-    						queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
+    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
     						
     					}else{
-    						queryStr.append(" and model.userAddress.district.districtId between 1 and 23 ");
+    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 23 ");
     					}
     				}
     				locationValue = 0l;
@@ -1037,24 +1037,24 @@ public class CadreDetailsService implements ICadreDetailsService{
     			
     			else if(locationLevel.longValue() == 3L) //district
     			{
-    				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.district.districtId =:locationValue ");
     			}
     			
     			else if(locationLevel.longValue() == 4L)//constituency
     			{
-    				queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationValue ");
     			}
     			else if(locationLevel.longValue() == 5L)//tehsil
     			{
-    				queryStr.append(" and model.userAddress.tehsil.tehsilId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId =:locationValue ");
     			}
     			else if(locationLevel.longValue() == 6L)//panchayat
     			{
-    				queryStr.append(" and model.userAddress.panchayat.panchayatId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId =:locationValue ");
     			}
     			else if(locationLevel.longValue() == 7L)//localElectionBody
     			{
-    				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
     			}
     			else if(locationLevel.longValue() == 8L)//greater cities
     			{
@@ -1098,18 +1098,18 @@ public class CadreDetailsService implements ICadreDetailsService{
     						{
     							locationValue = localBodyId;
     							isGreater = true;
-    							queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
+    							queryStr.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
     						}
     					}
     				}
     				if(!isGreater)
     				{
-    					queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
+    					queryStr.append(" and model.tdpCadre.userAddress.ward.constituencyId =:locationValue ");
     				}
     			}
     			else if(locationLevel.longValue() == 9L)
     			{
-    				queryStr.append(" and model.userAddress.booth.boothId =:locationValue ");
+    				queryStr.append(" and model.tdpCadre.userAddress.booth.boothId =:locationValue ");
     			}
     			else if(locationLevel.longValue() == 10L) // MP
     			{
@@ -1119,7 +1119,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     				{
     					for(Object[] params : assemblyList)
     						ids.add((Long)params[0]);
-    					queryStr.append(" and model.userAddress.constituency.constituencyId in(:ids) ");
+    					queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:ids) ");
     				}
     				
     			}
@@ -1128,7 +1128,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
     		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and model.firstname like '%"+searchName+"%' ");
+				queryStr.append(" and model.tdpCadre.firstname like '%"+searchName+"%' ");
 			}
     		
 			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
@@ -1136,9 +1136,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(memberShipCardNo.endsWith("HIDE")){
 					String[] memberShipCardNoStrArr = memberShipCardNo.split("-");
 					memberShipCardNo = memberShipCardNoStrArr[0].trim();
-					queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
+					queryStr.append(" and (model.tdpCadre.memberShipNo = '"+memberShipCardNo.trim()+"') ");
 				}else{
-					queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
+					queryStr.append(" and (model.tdpCadre.memberShipNo = '"+memberShipCardNo.trim()+"') ");
 				}
 			}
 			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
@@ -1146,9 +1146,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(mobileNo.endsWith("HIDE")){
 					String[] mobileNoStrArr = mobileNo.split("-");
 					mobileNo = mobileNoStrArr[0].trim();
-					queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+					queryStr.append(" and (model.tdpCadre.mobileNo like '"+mobileNo.trim()+"') ");
 				}else{
-					queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+					queryStr.append(" and (model.tdpCadre.mobileNo like '"+mobileNo.trim()+"') ");
 				}
 			}
 			
@@ -1159,41 +1159,41 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(voterCardNo.endsWith("HIDE")){
 					String[] voterStrArr = voterCardNo.split("-");
 					String voterId = voterStrArr[0].trim();
-					queryStr.append(" and model.voter.voterIDCardNo like '%"+voterId+"%' ");
+					queryStr.append(" and model.tdpCadre.voter.voterIDCardNo like '"+voterId+"' ");
 				}else{
-					queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
+					queryStr.append(" and (model.tdpCadre.voter.voterIDCardNo like '"+voterCardNo.trim()+"' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '"+voterCardNo.trim()+"'))  ");
 				}
 			}
 			if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.refNo like '%"+trNumber.trim()+"%') ");
+				queryStr.append(" and (model.tdpCadre.refNo like '"+trNumber.trim()+"') ");
 			}
 			if(casteStateId != null && casteStateId.toString().trim().length()>0 && !casteStateId.toString().trim().equalsIgnoreCase("0") && !casteStateId.toString().equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and  model.casteState.casteStateId = :casteStateId ");
+				queryStr.append(" and  model.tdpCadre.casteState.casteStateId = :casteStateId ");
 			}
 			if(casteCategory != null && casteCategory.trim().length()>0 && !casteCategory.trim().equalsIgnoreCase("0") && !casteCategory.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and  model.casteState.casteCategoryGroup.casteCategoryGroupName like '%"+casteCategory+"%'");
+				queryStr.append(" and  model.tdpCadre.casteState.casteCategoryGroup.casteCategoryGroupName like '"+casteCategory+"'");
 			}			
 			if((fromAge != null && fromAge.longValue()!=0L ) && (toAge != null && toAge.longValue() !=0L))
 			{
-				queryStr.append(" and model.age >="+fromAge+" and model.age <= "+toAge+"");
+				queryStr.append(" and model.tdpCadre.age >="+fromAge+" and model.tdpCadre.age <= "+toAge+"");
 			}
 			if(gender != null && gender.trim().length()>0)
 			{
 				if(gender.trim().equalsIgnoreCase("Male") || gender.trim().equalsIgnoreCase("M"))
 				{
-					queryStr.append(" and (model.gender like 'Male' or model.gender like 'M')");
+					queryStr.append(" and (model.tdpCadre.gender like 'Male' or model.tdpCadre.gender like 'M')");
 				}
 				if(gender.trim().equalsIgnoreCase("Female") || gender.trim().equalsIgnoreCase("F"))
 				{
-					queryStr.append(" and (model.gender like 'Female' or model.gender like 'F')");
+					queryStr.append(" and (model.tdpCadre.gender like 'Female' or model.tdpCadre.gender like 'F')");
 				}
 			}
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
-				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved);
+				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved,enrollmentId);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 				
@@ -1204,6 +1204,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 						TdpCadreVO cadreVO = new TdpCadreVO();
 
+						TdpCadreVO vo = getMatchedVOById(returnLsit, (Long)cadre[0]);
+						if(vo != null){
+							Long yearId = cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L;
+							if(vo.getEnrollmentYearId().longValue()<yearId.longValue())
+								vo.setEnrollmentYearId(yearId);
+							continue;
+						}else
+							returnLsit.add(cadreVO);
+						
 						cadreIds.add(Long.valueOf(cadre[0] != null ? cadre[0].toString().trim():"0"));
 						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
@@ -1282,8 +1291,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 								cadreVO.setDeleteReason("");
 							}
 						}
-						
-						returnLsit.add(cadreVO);
+						cadreVO.setEnrollmentYearId(cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L);
 					}
 					
 					returnVO.setResponseStatus("SUCCESS");					
@@ -1291,7 +1299,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setTdpCadreDetailsList(returnLsit);
 					if(returnLsit != null && maxIndex != 0)
 					{
-					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved);
+					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved,enrollmentId);
 					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
 					}
 				}
@@ -1375,7 +1383,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public TdpCadreVO getMatchedVOById(List<TdpCadreVO> returnList,Long id)
 	{
 		try{
-			if(returnList == null || returnList.size() == 0)
+			if(returnList == null || returnList.size() == 0 || id == null )
 				return null;
 			for(TdpCadreVO vo : returnList)
 			{
@@ -1440,15 +1448,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 			{							
-				queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+				queryStr.append(" and (model.mobileNo like '"+mobileNo.trim()+"') ");
 			}
 			if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
+				queryStr.append(" and (model.voter.voterIDCardNo like '"+voterCardNo.trim()+"' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '"+voterCardNo.trim()+"'))  ");
 			}
 			if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.refNo like '%"+trNumber.trim()+"%') ");
+				queryStr.append(" and (model.refNo like '"+trNumber.trim()+"') ");
 			}
 			if(casteStateId != null && casteStateId.toString().trim().length()>0 && !casteStateId.toString().trim().equalsIgnoreCase("0") && !casteStateId.toString().equalsIgnoreCase("null"))
 			{
@@ -1456,7 +1464,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(casteCategory != null && casteCategory.trim().length()>0 && !casteCategory.trim().equalsIgnoreCase("0") && !casteCategory.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and  model.casteState.casteCategoryGroup.casteCategoryGroupName like '%"+casteCategory+"%'");
+				queryStr.append(" and  model.casteState.casteCategoryGroup.casteCategoryGroupName like '"+casteCategory+"'");
 			}			
 			if((fromAge != null && fromAge.longValue()!=0L ) && (toAge != null && toAge.longValue() !=0L))
 			{
