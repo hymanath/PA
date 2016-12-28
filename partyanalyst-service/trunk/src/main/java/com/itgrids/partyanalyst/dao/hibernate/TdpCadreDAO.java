@@ -9082,4 +9082,12 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameter("tdpCadreId",tdpCadreId);
 		   return query.list();
 	   }
+	   
+	   public Integer updateTdpCadreImage(Long tdpCadreId,String image)
+	   {
+		   Query query = getSession().createQuery("UPDATE TdpCadre model SET model.image = :image where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' ");
+		   query.setParameter("tdpCadreId",tdpCadreId);
+		   query.setParameter("image",image);
+		   return query.executeUpdate();
+	   }
 }
