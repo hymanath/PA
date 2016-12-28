@@ -131,7 +131,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivCls" >
 									<h4 class="panel-title text-capital">update tour details</h4>
 									<div class="panel panel-default">
-										<div class="panel-body borderGreen">
+										<div class="panel-body borderGreen outerDivCls" attr_count="0">
 											<!-- <i class="closeIcon glyphicon glyphicon-remove"></i> -->
 											<div class="row">
 												<div class="col-md-3 col-xs-12 col-sm-3">
@@ -387,9 +387,12 @@ $( document ).ready(function() {
 	$(document).on("click",".addAppendTourBlockCls",function(){
 		var c = $("#newsTourCloneMainDiv").clone(true);
 		 c.attr({
-				'id': 'newsTourCloneDivId'+newsTourCloneCount
+				'id': 'newsTourCloneDivId'+newsTourCloneCount,
+				'class' : 'outerDivCls',
+				'attr_count' : newsTourCloneCount
 			});
 			c.css("display","block");
+		
 		c.find(".tourDateCls").attr("id","tourDateId"+newsTourCloneCount);
 		c.find(".tourDateCls").attr("name","toursVOList["+newsTourCloneCount+"].tourDateId");
 		

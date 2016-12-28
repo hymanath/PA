@@ -302,6 +302,67 @@ function getCandidateList(designationId){
 		if(flag == false){
 			return;  
 		}
+		
+		var errStr='',flag1=true;
+		$(".outerDivCls").each(function(){
+			if(flag1){
+				var count = $(this).attr("attr_count");
+				if($("#tourTypeId"+count).val() == 0 || $("#tourTypeId"+count).val() == "undefined" || $("#tourTypeId"+count).val() === undefined){
+					errStr="Please Select Tour Type";flag1=false;
+				}else if($("#tourCategoryId"+count).val() == 0 || $("#tourCategoryId"+count).val() == "undefined" || $("#tourCategoryId"+count).val() === undefined){
+					errStr="Please Select Tour Category";flag1=false;
+				}else if($("#tourLocationId"+count).val() > 0){
+					var locLvl = $("#tourLocationId"+count).val();
+					if(locLvl == 2){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}
+					}else if(locLvl == 3){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						} 
+					}else if(locLvl == 4){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}
+					}else if(locLvl == 5){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}else if($("#tehMunSelId"+count).val() == 0){
+							errStr="Please Select Mandal / Municipality";flag1=false;
+						}
+					}else if(locLvl == 6){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}else if($("#tehMunSelId"+count).val() == 0){
+							errStr="Please Select Mandal / Municipality";flag1=false;
+						}else if($("#villWardSelId"+count).val()==0){
+							errStr="Please Select Village / Ward";flag1=false;
+						}
+					}
+				}
+			}
+		});
+		
+		if(!flag1){
+			alert(errStr);
+			return;
+		}
+	
 		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
@@ -374,23 +435,29 @@ function getCandidateList(designationId){
 	});
 	
 	function buildCandidateLocationResult(result,count){
-			if(regionScopesArr != null && regionScopesArr.length > 0){
-				$("#tourLocationId"+count).html("<option value='0'>Select Location</option>");
+		$("#tourLocationId"+count).html("<option value='0'>Select Location</option>");
+			if(regionScopesArr!=null && regionScopesArr.length>0 && result.locationLevel!=null && result.locationLevel>0){
 				for(var i in regionScopesArr){
 					if(parseInt(regionScopesArr[i].id)>=result.locationLevel)
 						$("#tourLocationId"+count).append("<option value='"+regionScopesArr[i].id+"'>"+regionScopesArr[i].name+"</option>");
 				}
 			}
 			
-			if(result.locationLevel == 5 || result.locationLevel == 7)
-				$("#tourLocationId"+count).val(5);
-			else if(result.locationLevel == 6 || result.locationLevel == 8)
-				$("#tourLocationId"+count).val(6);
-			else
-				$("#tourLocationId"+count).val(result.locationLevel);
+			if(result.locationLevel != null && result.locationLevel > 0){
+				if(result.locationLevel == 5 || result.locationLevel == 7)
+					$("#tourLocationId"+count).val(5);
+				else if(result.locationLevel == 6 || result.locationLevel == 8)
+					$("#tourLocationId"+count).val(6);
+				else
+					$("#tourLocationId"+count).val(result.locationLevel);
+			}else{
+				$("#tourLocationId"+count).val(0);
+			}
+			
 			
 			$("#tourLocationId"+count).attr("attr_candidate_loc_level",result.locationLevel);
 			
+			$(".locationDivCls"+count).hide();
 			if(result.locationLevel == 2){
 				$("#stateDivId"+count).show();
 			}else if(result.locationLevel == 3){
