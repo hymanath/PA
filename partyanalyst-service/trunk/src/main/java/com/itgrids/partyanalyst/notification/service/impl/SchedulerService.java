@@ -352,6 +352,9 @@ public class SchedulerService implements ISchedulerService{
 	public void saveDailyWmCorrectedMobileNUmbers(Date fromDate)
 	{
 		try {
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return;
+			
 			Calendar cal = Calendar.getInstance();
 	    	cal.getTime();
 	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
