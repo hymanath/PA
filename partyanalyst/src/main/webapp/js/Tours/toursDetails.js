@@ -364,6 +364,8 @@ function getCandidateList(designationId){
 			else
 				$("#tourLocationId"+count).val(result.locationLevel);
 			
+			$("#tourLocationId"+count).attr("attr_candidate_loc_level",result.locationLevel);
+			
 			if(result.locationLevel == 2){
 				$("#stateDivId"+count).show();
 			}else if(result.locationLevel == 3){
@@ -442,29 +444,45 @@ function getCandidateList(designationId){
 			
 	}
 	$(document).on("change",".tourLocationCls",function(){
-			var count = $(this).attr("attr_TourCount");
-			$(".locationDivCls"+count).hide();
-			if($(this).val() == 2){//state
-				$("#stateDivId"+count).show();
-			}else if($(this).val()==3){//district
-				$("#stateDivId"+count).show();
-				$("#districtDivId"+count).show();
-			}else if($(this).val()==4){//constituency
-				$("#stateDivId"+count).show();
-				$("#districtDivId"+count).show();
-				$("#constituencyDivId"+count).show();
-			}else if($(this).val()==5 || $(this).val() == 7){//Mandal
-				$("#stateDivId"+count).show();
-				$("#districtDivId"+count).show();
-				$("#constituencyDivId"+count).show();
-				$("#tehMunDivId"+count).show();
-			}else if($(this).val()==6 || $(this).val() == 8){//village
-				$("#stateDivId"+count).show();
-				$("#districtDivId"+count).show();
-				$("#constituencyDivId"+count).show();
-				$("#tehMunDivId"+count).show();
-				$("#villWardDivId"+count).show();
-			}
+		var count = $(this).attr("attr_TourCount");
+		var candiLocLevel = $(this).attr("attr_candidate_loc_level");
+			
+		$(".locationDivCls"+count).hide();
+		if($(this).val() == 2){//state
+			$("#stateDivId"+count).show();
+		}else if($(this).val()==3){//district
+			$("#stateDivId"+count).show();
+			$("#districtDivId"+count).show();
+		}else if($(this).val()==4){//constituency
+			$("#stateDivId"+count).show();
+			$("#districtDivId"+count).show();
+			$("#constituencyDivId"+count).show();
+		}else if($(this).val()==5 || $(this).val() == 7){//Mandal
+			$("#stateDivId"+count).show();
+			$("#districtDivId"+count).show();
+			$("#constituencyDivId"+count).show();
+			$("#tehMunDivId"+count).show();
+		}else if($(this).val()==6 || $(this).val() == 8){//village
+			$("#stateDivId"+count).show();
+			$("#districtDivId"+count).show();
+			$("#constituencyDivId"+count).show();
+			$("#tehMunDivId"+count).show();
+			$("#villWardDivId"+count).show();
+		}
+		
+		if(candiLocLevel == 2){
+			$("#districtSelId"+count).val(0);
+			$("#constituencySelId"+count).html("<option value='0'>Select Constituency</option>");
+			$("#tehMunSelId"+count).html("<option value='0'>Select Mandal / Municipality</option>");
+			$("#villWardSelId"+count).html("<option value='0'>Seelcy Village / Ward</option>");
+		}else if(candiLocLevel == 3){
+			$("#constituencySelId"+count).val(0);
+			$("#tehMunSelId"+count).html("<option value='0'>Select Mandal / Municipality</option>");
+			$("#villWardSelId"+count).html("<option value='0'>Seelcy Village / Ward</option>");
+		}else if(candiLocLevel == 4){
+			$("#tehMunSelId"+count).val(0);
+			$("#villWardSelId"+count).html("<option value='0'>Seelcy Village / Ward</option>");
+		}	
 	});
 	$(document).on("change",".constituencySelCls",function(){
 	var count = $(this).attr("attr_count");
