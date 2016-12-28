@@ -460,7 +460,9 @@ function getUsers(constituencyId){
 
 					     
 							str+='<tr>';
-								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><td><button class="btn btn-xs btn-info changeImageBtnId"  style="margin-left:-170px;margin-top:10px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'">Change Image</button></td></td>';
+								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><button class="btn btn-xs btn-info updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Update</button>';
+								str+='<button class="btn btn-xs btn-info changeImageBtnId"  style="margin-left: 10px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
+								str+='<span class="successMsgCls" id="successMsgId'+i+'"></span><span id="changeImgLoadingImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span></td>';
 								str+='<td colspan="3">';
 									str+='<input type="text" value="'+result[0][i].wish+'" class="form-control" disabled></input>';    
 										//str+='<option></option>';  
@@ -488,7 +490,8 @@ function getUsers(constituencyId){
 								str+='<td>';  
 									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Approve</button>';
 									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Reject</button>';
-									str+='<button class="btn btn-sm btn-info changeImageBtnId" style="margin-left: 5px;" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'">Change Image</button><div id="msgId"></div>';
+									str+='<button class="btn btn-sm btn-info changeImageBtnId" style="margin-left: 5px;" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
+									str+='<span class="successMsgCls" id="successMsgId'+i+'"></span><span id="changeImgLoadingImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span>';
 								str+='</td>'; 
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
@@ -1193,29 +1196,81 @@ function validations(){
 	return true;
 }
 $(document).on('click','.changeImageBtnId',function(){  
-			var cadreId = $(this).attr("attr_cadre_id");
-			var distId = $(this).attr("attr_dist_id"); 
-			var constId = $(this).attr("attr_const_id");
-			var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
-			var tabUserInfoId = $(this).attr("attr_tab_user_id");
-			var status = $(this).attr("attr_status");
-		      
-				var jsObj = {
-					cadreId :cadreId,
-					districtId : distId,
-					constitunecyId : constId ,
-					cadreUserId : cadreSurveyUserId,
-					tabUserInfoId : tabUserInfoId,
-					status : status
-				}
-		
-		$.ajax({
-			type:'GET',      
-			url: 'changeImageByVoterImageAction.action',      
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}  
-		}).done(function(result){
+	var cadreId = $(this).attr("attr_cadre_id");
+	var distId = $(this).attr("attr_dist_id"); 
+	var constId = $(this).attr("attr_const_id");
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var tabUserInfoId = $(this).attr("attr_tab_user_id");
+	var status = $(this).attr("attr_status");
+	var divId = $(this).attr("attr_divId");
+	var loadingImgId = $(this).attr("attr_loading_img_id");
+	$("#"+divId).html("");
+	$(".successMsgCls").html("");
+	$("#"+loadingImgId).show();
+	  
+	var jsObj = {
+		cadreId :cadreId,
+		districtId : distId,
+		constitunecyId : constId ,
+		cadreUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		status : status
+	}
+	
+	$.ajax({
+		type:'GET',      
+		url: 'changeImageByVoterImageAction.action',      
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
 			if(result.message == "Updated Successfully")
-				$("#msgId").html('<span style="color:green">'+result.message+'</span>');
-		});
+				$("#"+divId).html('<span style="color:green">'+result.message+'</span>');
+			else
+				$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		}
+		else
+			$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		$("#"+loadingImgId).hide();
+	});
+});
+
+$(document).on('click','.updateImageBtnId',function(){  
+	var cadreId = $(this).attr("attr_cadre_id");
+	var distId = $(this).attr("attr_dist_id"); 
+	var constId = $(this).attr("attr_const_id");
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var tabUserInfoId = $(this).attr("attr_tab_user_id");
+	var status = $(this).attr("attr_status");
+	var divId = $(this).attr("attr_divId");
+	var loadingImgId = $(this).attr("attr_loading_img_id");
+	$("#"+divId).html("");
+	$(".successMsgCls").html("");
+	$("#"+loadingImgId).show();
+	  
+	var jsObj = {
+		cadreId :cadreId,
+		districtId : distId,
+		constitunecyId : constId ,
+		cadreUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		status : status
+	}
+	
+	$.ajax({
+		type:'GET',      
+		url: 'updateRejectedImagesAction.action',      
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
+			if(result == "success")
+				$("#"+divId).html('<span style="color:green">Updated Successfully...</span>');
+			else
+				$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		}
+		else
+			$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		$("#"+loadingImgId).hide();
+	});
 });

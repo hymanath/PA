@@ -15179,6 +15179,11 @@
 			<param name="root">locationsList</param>
 		</result>
 	</action>
+	<action name="updateRejectedImagesAction" class="dataMonitoringAction"  method="updateRejectedImages">
+		<result type="json" name="success">
+			<param name="root">returnStatus</param>      
+		</result>
+	</action>
 	<action name="saveNewTourDetailsAction" class="toursAction" method="saveNewTourDetails">  
 		<result type="json" name="success">
    			<param name="root">successMsg</param>        
