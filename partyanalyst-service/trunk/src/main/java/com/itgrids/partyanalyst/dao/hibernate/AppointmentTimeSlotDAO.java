@@ -94,7 +94,7 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 				" model1.appointmentCandidate.mobileNo," +
 				" model1.appointmentCandidate.imageURL," +
 				" model.appointment.appointmentStatus.status," +
-				" model.appointment.appointmentUser.appointmentUserId," +
+				" model.appointment.appointmentUser.appointmenUserId," +
 				" model.appointment.appointmentUser.name," +
 				" model.appointment.appointmentUser.mobile" +
 				" from AppointmentTimeSlot model,AppointmentCandidateRelation model1" +
