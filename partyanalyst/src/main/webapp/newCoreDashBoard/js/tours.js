@@ -1541,8 +1541,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var jsObj ={ 
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",//globalFormTourDate
-					 toDate : "",//glovalToTourDate
+					 fromDate : globalFormTourDate,//globalFormTourDate
+					 toDate : glovalToTourDate,//glovalToTourDate
 					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
@@ -1778,8 +1778,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var jsObj ={ 
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "",//globalFormTourDate
-					 toDate : "",//glovalToTourDate
+					 fromDate : globalFormTourDate,
+					 toDate : glovalToTourDate,
 					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
@@ -2202,8 +2202,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var jsObj ={ 
 					 activityMemberId :globalActivityMemberId ,
 					 stateId : globalStateIdForTour,
-					 fromDate : "", //globalFormTourDate
-					 toDate : "",//glovalToTourDate
+					 fromDate : globalFormTourDate, 
+					 toDate : glovalToTourDate,
 					 userTypeId : globalUserTypeId,
 					 designationIds : desgnatnIdsLst,
 					 isFilterApply :isFilterApply,
@@ -2553,8 +2553,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
-					 fromDate :"" ,//globalFormTourDate
-					 toDate : "" //glovalToTourDate
+					 fromDate :globalFormTourDate ,
+					 toDate : glovalToTourDate 
 				  }
 		$.ajax({
 			type : 'POST',
@@ -2617,8 +2617,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 	 	var jsObj ={ 
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate :"" ,//globalFormTourDate
-					 toDate : "",//glovalToTourDate
+					 fromDate :globalFormTourDate ,
+					 toDate : glovalToTourDate,
 					 userTypeId:globalUserTypeId,
 					 designationIds : designationIds,
 					 filterType :filterType
@@ -2765,8 +2765,8 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
-					 fromDate :"" ,//globalFormTourDate
-					 toDate : ""//glovalToTourDate
+					 fromDate :globalFormTourDate ,
+					 toDate : glovalToTourDate
 				  }
 		$.ajax({
 			type : 'POST',
