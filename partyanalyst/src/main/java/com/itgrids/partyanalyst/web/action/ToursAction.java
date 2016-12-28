@@ -56,54 +56,55 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private  List<IdNameVO> idNameVoList;
 	   private PMMinuteVO pMMinuteVO;
 	   private List<ToursVO> toursVOList;
-	   private ToursVO toursVO;
+	   private ToursVO toursVO = new ToursVO();
 	   private ICadreCommitteeService cadreCommitteeService;
 	   private List<LocationWiseBoothDetailsVO> locationsList;
 	
 	   
-	public List<LocationWiseBoothDetailsVO> getLocationsList() {
-		return locationsList;
-	}
-	public void setLocationsList(List<LocationWiseBoothDetailsVO> locationsList) {
-		this.locationsList = locationsList;
-	}
-	public ICadreCommitteeService getCadreCommitteeService() {
-		return cadreCommitteeService;
-	}
-	public void setCadreCommitteeService(
-			ICadreCommitteeService cadreCommitteeService) {
-		this.cadreCommitteeService = cadreCommitteeService;
-	}
-	public ToursVO getToursVO() {
-		return toursVO;
-	}
-	public void setToursVO(ToursVO toursVO) {
-		this.toursVO = toursVO;
-	}
-	public List<ToursVO> getToursVOList() {
-		return toursVOList;
-	}
-	public void setToursVOList(List<ToursVO> toursVOList) {
-		this.toursVOList = toursVOList;
-	}
-	public PMMinuteVO getpMMinuteVO() {
-		return pMMinuteVO;
-	}
-	public void setpMMinuteVO(PMMinuteVO pMMinuteVO) {
-		this.pMMinuteVO = pMMinuteVO;
-	}
-	public List<IdNameVO> getIdNameVoList() {
-		return idNameVoList;
-	}
-	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
-		this.idNameVoList = idNameVoList;
-	}
-	public List<AddressVO> getAddressVOList() {
-		return addressVOList;
-	     }
-	public void setAddressVOList(List<AddressVO> addressVOList) {
-		this.addressVOList = addressVOList;
-	}
+	   public List<LocationWiseBoothDetailsVO> getLocationsList() {
+			return locationsList;
+		}
+		public void setLocationsList(List<LocationWiseBoothDetailsVO> locationsList) {
+			this.locationsList = locationsList;
+		}
+		public ICadreCommitteeService getCadreCommitteeService() {
+			return cadreCommitteeService;
+		}
+		public void setCadreCommitteeService(
+				ICadreCommitteeService cadreCommitteeService) {
+			this.cadreCommitteeService = cadreCommitteeService;
+		}
+	   public ToursVO getToursVO() {
+			return toursVO;
+		}
+		public void setToursVO(ToursVO toursVO) {
+			this.toursVO = toursVO;
+		}
+		public List<ToursVO> getToursVOList() {
+			return toursVOList;
+		}
+		public void setToursVOList(List<ToursVO> toursVOList) {
+			this.toursVOList = toursVOList;
+		}
+		public PMMinuteVO getpMMinuteVO() {
+			return pMMinuteVO;
+		}
+		public void setpMMinuteVO(PMMinuteVO pMMinuteVO) {
+			this.pMMinuteVO = pMMinuteVO;
+		}
+	   
+		public List<IdNameVO> getIdNameVoList() {
+			return idNameVoList;
+		}
+		public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+			this.idNameVoList = idNameVoList;
+		}
+		public List<AddressVO> getAddressVOList() {
+			return addressVOList;
+		     }
+		public void setAddressVOList(List<AddressVO> addressVOList) {
+			this.addressVOList = addressVOList;
+		}
 	
 	   public JSONObject getjObj() {
 		   return jObj;
@@ -326,6 +327,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
  	   }
  	   return Action.SUCCESS;
     }
+    public String getToursDetailsOverviewForNew(){
+  	   try{
+  		   jObj = new JSONObject(getTask());
+ 			   String fromDateStr = jObj.getString("fromDate");
+ 			   String toDate = jObj.getString("toDate");
+ 			   resultList = toursService.getToursDetailsOverviewForNew(fromDateStr,toDate);
+  	   }catch(Exception e){
+  		   LOG.error("Exception raised at getToursDetailsOverview()  of ToursAction", e);  
+  	   }
+  	   return Action.SUCCESS;
+     }
 	public String getDesignationDtls(){  
 		try{
 			jObj = new JSONObject(getTask());
@@ -554,6 +566,60 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			e.printStackTrace();    
 			LOG.error("Exception raised at getPanchayatWardDivisionDetailsNew()  of ToursAction", e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveNewTourDetails(){
+		try { 
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			  
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			String fileUrl = "" ;
+			List<String> filePaths = null;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+		   			
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				filePaths = new ArrayList<String>();
+				if(files != null && files.length > 0)
+					for(File f : files){
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+								mapfiles.put(f,ext);
+							}
+						}
+			}  
+			
+			if(toursVO !=null){
+				if(toursVOList !=null && toursVOList.size()>0){
+					toursVO.setToursVoList(toursVOList);
+				}
+				toursVO.setUserId(user.getRegistrationID());
+			}
+				
+		     
+			resultStatus = toursService.saveNewTourDetails(toursVO,mapfiles);
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					successMsg = resultStatus.getMessage();
+				}else if(resultStatus.getResultCode() == 1){
+					successMsg = resultStatus.getMessage();  
+				}
+			}
+        
+		 } catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 	

@@ -3889,6 +3889,7 @@
 	 <property name="selfAppraisalCandidateDayTourDAO" ref="selfAppraisalCandidateDayTourDAO"></property>
 	 <property name="cadreCommitteeService" ref="cadreCommitteeService"></property>
 	 <property name="regionScopesDAO" ref="regionScopesDAO"></property>
+	  <property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO"></property>
 	 
 	</bean>  
 	
