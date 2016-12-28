@@ -2051,13 +2051,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = new CadreCommitteeVO();
 		try {
 			List<Long> tdpCadreIdsNominatedIdsList = new ArrayList<Long>(0);
 			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, searchName,memberShipCardNo, 
-					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
+					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId);
 			List<CadreCommitteeVO> cadreCommitteeList = null;
 			if(tdpCadreVO != null)
 			{
