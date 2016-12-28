@@ -1,4 +1,4 @@
-var regionScopesArr = [{"id":"2","name":"state"},{"id":"3","name":"District"},{"id":"4","name":"Constituency"},{"id":"5","name":"Mandal / Municipality"},{"id":"6","name":"Village / Ward"}];
+var regionScopesArr = [{"id":"2","name":"State"},{"id":"3","name":"District"},{"id":"4","name":"Constituency"},{"id":"5","name":"Mandal / Municipality"},{"id":"6","name":"Village / Ward"}];
 
 function getCandidateList(designationId){ 
 		var jsObj = {     
@@ -68,6 +68,14 @@ function getCandidateList(designationId){
 		});
 	}
 	function buildSelectedProfileRslt(result){
+		
+		//CadreId For Allocating Saving Hidden Variable
+		
+		if(result.tdpCadreId !=null){
+			$("#globalHiddentdpCadreId").val(result.tdpCadreId); 
+		}
+		
+		
 		var str='';
 		//str+='<h4 class="panel-title text-capital">selected profile</h4>';
 			str+='<ul class="list-inline">';
@@ -278,10 +286,17 @@ function getCandidateList(designationId){
 		});
 		
 		var childEleCount = $(".jFiler-items-list").children().length;
-		if(childEleCount > 1){
+		/* if(childEleCount > 1){
 			$("#errFileId").html("Please Select Only One Document."); 
 			filerKit.reset();   
 			flag = false;         			
+		} */
+		
+		//allocating designationId To Hidden Variable
+		
+		var desigId=$("#designationSlctBxId option:selected").val();
+		if(desigId !=null){
+			$("#globalHiddenDesignationId").val(desigId);
 		}
 		
 		if(flag == false){
@@ -295,7 +310,8 @@ function getCandidateList(designationId){
 			}
 		};
 		YAHOO.util.Connect.setForm('submitApplication',true);  
-		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
+		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
+		YAHOO.util.Connect.asyncRequest('POST','saveNewTourDetailsAction.action',uploadHandler);
 	}
 	function showSbmitStatus(uploadResult){
 			$(".clearFieldCls").val(' ');

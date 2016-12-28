@@ -15179,5 +15179,15 @@
 			<param name="root">locationsList</param>
 		</result>
 	</action>
+	<action name="saveNewTourDetailsAction" class="toursAction" method="saveNewTourDetails">  
+		<result type="json" name="success">
+   			<param name="root">successMsg</param>        
+   		</result>
+	</action>
+	<action name="getToursDetailsOverviewForNewAction" class="toursAction"  method="getToursDetailsOverviewForNew">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -225,6 +225,12 @@
 						</div>
 					</div>
 				</div>
+				
+				<!-- Hidden Variables-->
+				<div>
+					<input type="hidden" id="globalHiddenDesignationId" value="" name="toursVO.designationId">
+					<input type="hidden" id="globalHiddentdpCadreId" value="" name="toursVO.candidateId">
+				</div>
 			</form>
 		</div>
 	</div>
@@ -302,8 +308,10 @@
 				</div>
 			</div>
 		</div>
+	</div>	
 	</div>
-	</div>
+	
+	
 	
 <script src="Assets/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -369,7 +377,7 @@ $( document ).ready(function() {
 			singleDatePicker: true,
 			maxDate:moment(),
 			locale: {
-				format:'YYYY-MM-DD' 
+				format:'DD/MM/YYYY' 
 			},
 		});	
 	}
@@ -449,7 +457,7 @@ $( document ).ready(function() {
 				singleDatePicker: true,
 				maxDate:moment(),
 				locale: {
-					format:'YYYY-MM-DD' 
+					format:'DD/MM/YYYY' 
 				},
 			});			
 		newsTourCloneCount=newsTourCloneCount+1;
