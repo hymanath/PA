@@ -1721,7 +1721,9 @@
 	
 	 <bean id="toursAction" class="com.itgrids.partyanalyst.web.action.ToursAction" singleton="false">
 		  <property name="toursService" ref="toursService" />
-		  <property name="coreDashboardToursService" ref="coreDashboardToursService" />    
+		  <property name="coreDashboardToursService" ref="coreDashboardToursService" /> 
+		  <property name="cadreCommitteeService" ref="cadreCommitteeService" />
+		     
 	</bean>
 	<bean id="privilegedUserCadreRegAction" class="com.itgrids.partyanalyst.web.action.PrivilegedUserCadreRegAction" singleton="false">
 		  <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService" />
