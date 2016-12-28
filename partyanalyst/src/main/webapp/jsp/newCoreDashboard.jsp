@@ -3742,7 +3742,7 @@
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
-		/*New implementation Default Call */
+		/*New Tour implementation Default Call */
 		//getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
