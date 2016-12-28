@@ -950,6 +950,8 @@ public class DataMonitoringService implements IDataMonitoringService {
 		ResultStatus result = new ResultStatus();
 		try
 		{
+			LOG.fatal("Entered into changeCadreImageByVoterImage");
+			
 			List<Object[]> list = tdpCadreDAO.getCadreImagesByCadreId(tdpCadreId);
 			
 			if(list != null && list.size() > 0)
@@ -957,7 +959,11 @@ public class DataMonitoringService implements IDataMonitoringService {
 				String cadreImage = list.get(0)[0].toString();
 				String voterImage = list.get(0)[1].toString();
 				
+				LOG.fatal("cadre Image - "+cadreImage+"\tVoter Iamge"+voterImage);
+				
 				String backupFolderStr = dateUtilService.getDateInStringFormatByDate(new Date(),"yyyyMMdd");
+				LOG.fatal("backupFolderStr - "+backupFolderStr);
+				
 				String backupImg = cadreImage.replace(".jpg","");
 				backupImg = backupImg+"_"+UUID.randomUUID().toString()+".jpg";
 				
@@ -965,12 +971,24 @@ public class DataMonitoringService implements IDataMonitoringService {
 				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+cadreImage;
 				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
 				
+				LOG.fatal("backupImg");
+				File backupFolder = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/backup/"+backupFolderStr);
+				boolean bckfdr = backupFolder.mkdir();
+				LOG.fatal(backupFolder.getAbsolutePath()+" --> "+bckfdr);
+				
 				File cadreImageFile = new File(cadreImage);
 				File backupImgFile = new File(backupImg);
-				backupImgFile.mkdirs();
-				cadreImageFile.renameTo(backupImgFile);
+				
+				boolean parentFileStatus = backupImgFile.mkdirs();
+				LOG.fatal("parentFileStatus --> "+parentFileStatus);
+				
+				boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
+				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);
 				
 				boolean flag = commonMethodsUtilService.fileCopy(voterImage,cadreImage);
+				
+				LOG.fatal("File Copy Status --> "+flag);
+				
 				if(flag)
 					result.setResultCode(ResultCodeMapper.SUCCESS);
 				else
