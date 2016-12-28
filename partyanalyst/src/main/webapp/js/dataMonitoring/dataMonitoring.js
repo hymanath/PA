@@ -460,7 +460,7 @@ function getUsers(constituencyId){
 
 					     
 							str+='<tr>';
-								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><button class="btn btn-xs btn-info updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Update</button>';
+								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Approve</button>';
 								str+='<button class="btn btn-xs btn-info changeImageBtnId"  style="margin-left: 10px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
 								str+='<span class="successMsgCls" id="successMsgId'+i+'"></span><span id="changeImgLoadingImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span></td>';
 								str+='<td colspan="3">';
@@ -1265,7 +1265,7 @@ $(document).on('click','.updateImageBtnId',function(){
 	}).done(function(result){
 		if(result != null){
 			if(result == "success")
-				$("#"+divId).html('<span style="color:green">Updated Successfully...</span>');
+				$("#"+divId).html('<span style="color:green">Approved Successfully...</span>');
 			else
 				$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
 		}
