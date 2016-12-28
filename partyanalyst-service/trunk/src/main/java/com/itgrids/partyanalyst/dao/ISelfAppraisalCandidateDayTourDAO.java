@@ -9,9 +9,9 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDayTour;
 
 public interface ISelfAppraisalCandidateDayTourDAO extends GenericDao<SelfAppraisalCandidateDayTour, Long> {
-	public List<Object[]> getToursSubmittedLeaderCntDesignationBy(Date fromDate,Date toDate);
+	public List<Object[]> getToursSubmittedLeaderCntDesignationBy(Date fromDate,Date toDate,Set<Long> candiateIds);
 	public List<Object[]> getLeaderComplainceCnt(Date fromDate,Date toDate);
-	public List<Object[]> getLeaderComplainceCntCategoryWise(Date fromDate,Date toDate,String type,Long selfAppraisalCandidateid);
+	public List<Object[]> getLeaderComplainceCntCategoryWise(Date fromDate,Date toDate,String type,Long selfAppraisalCandidateid,Set<Long> candiateIds);
 	public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,Date fromDate,Date toDate,List<Long> designationIds);
 	public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId);
 	public List<Object[]> getCategoryWiseTourSubmittedLeader(Date fromDate,Date toDate,String type);
