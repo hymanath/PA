@@ -28,10 +28,10 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
         	   queryStr.append(" and model.selfAppraisalTourCategoryId is null ");   
            }
            if(fromDate != null){
-        	   queryStr.append(" and date(model.startTime)>=:fromDate");
+        	   queryStr.append(" and date(model.startTime)<=:fromDate");
            }
            if(toDate != null){
-        	   queryStr.append(" and date(model.endTime)<=:toDate"); 
+        	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
            }
 		  queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -58,11 +58,12 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 			 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
 			 " and model.selfAppraisalDesignation.isActive='Y' ");
            if(fromDate != null){
-        	   queryStr.append(" and date(model.startTime)>=:fromDate");
+        	   queryStr.append(" and  date(model.startTime)<=:fromDate");
            }
            if(toDate != null){
-        	   queryStr.append(" and date(model.endTime)<=:toDate"); 
+        	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate) "); 
            }
+        
            if(type.equalsIgnoreCase("Category")){
         	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
            }else{
@@ -105,12 +106,17 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
              }else{
             	 queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
              }
-           if(fromDate != null){
-        	   queryStr.append(" and date(model.startTime)>=:fromDate");
-           }
-           if(toDate != null){
-        	   queryStr.append(" and date(model.endTime)<=:toDate"); 
-           }
+             //boolean isEntered=false;
+             if(fromDate != null){
+          	   queryStr.append(" and date(model.startTime)<=:fromDate");
+          	 //  isEntered=true;
+             }
+             if(toDate != null){
+          	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
+             }
+              /* if(isEntered)
+          	    queryStr.append(" )");*/
+             
 		    queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				  "  model2.selfAppraisalCandidateId");
 		    if(type.equalsIgnoreCase("Category")){
@@ -144,12 +150,13 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 			 " where model.selfAppraisalDesignation.selfAppraisalDesignationId=model2.selfAppraisalDesignation.selfAppraisalDesignationId" +
 			 " and model.isActive='Y' " +
 			 " and model.selfAppraisalDesignation.isActive='Y' ");
-           if(fromDate != null){
-        	   queryStr.append(" and date(model.startTime)>=:fromDate");
-           }
-           if(toDate != null){
-        	   queryStr.append(" and date(model.endTime)<=:toDate"); 
-           }
+		     if(fromDate != null){
+          	   queryStr.append(" and date(model.startTime)<=:fromDate");
+             }
+             if(toDate != null){
+          	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
+             }
+             
            if(type.equalsIgnoreCase("Category")){
          	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
             }else{
