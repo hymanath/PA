@@ -1058,20 +1058,20 @@ public class ToursService implements IToursService {
 					//LocationId and Location Value Setting
 					if(innerTourVo.getPanchayatWardId() !=null && innerTourVo.getPanchayatWardId()>0l){
 						
-						if(innerTourVo.getPanchayatWardId().toString().charAt(0)==7l){//panchayat
+						if(Long.parseLong(innerTourVo.getPanchayatWardId().toString().charAt(0)+"")==7l){//panchayat
 							selfAppraisalCandidateDayTour.setLocationScopeId(6l);
 							selfAppraisalCandidateDayTour.setLocationValue(Long.valueOf(innerTourVo.getPanchayatWardId().toString().substring(1)));							
-						}else if(innerTourVo.getPanchayatWardId().toString().charAt(0)==8l){ //ward
+						}else if(Long.parseLong(innerTourVo.getPanchayatWardId().toString().charAt(0)+"")==8l){ //ward
 							selfAppraisalCandidateDayTour.setLocationScopeId(8l);
 							selfAppraisalCandidateDayTour.setLocationValue(Long.valueOf(innerTourVo.getPanchayatWardId().toString().substring(1)));	
 						}
 						
 					}else if(innerTourVo.getLocalBodyId() !=null && innerTourVo.getLocalBodyId()>0l){
 						
-						if(innerTourVo.getLocalBodyId().toString().charAt(0)==4l){//Tehsil
+						if(Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==4l){//Tehsil
 							selfAppraisalCandidateDayTour.setLocationScopeId(5l);
 							selfAppraisalCandidateDayTour.setLocationValue(Long.valueOf(innerTourVo.getLocalBodyId().toString().substring(1)));							
-						}else if(innerTourVo.getLocalBodyId().toString().charAt(0)==5l || innerTourVo.getLocalBodyId().toString().charAt(0)==6l){//Municipality
+						}else if(Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==5l || Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==6l){//Municipality
 							selfAppraisalCandidateDayTour.setLocationScopeId(7l);
 							selfAppraisalCandidateDayTour.setLocationValue(Long.valueOf(innerTourVo.getLocalBodyId().toString().substring(1)));	
 						}
@@ -1103,18 +1103,18 @@ public class ToursService implements IToursService {
 					
 					
 					if(innerTourVo.getLocalBodyId() !=null && innerTourVo.getLocalBodyId()>0l){	
-						if(innerTourVo.getLocalBodyId().toString().charAt(0)==4l){//Tehsil
+						if(Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==4l){//Tehsil
 							UA.setTehsil(innerTourVo.getLocalBodyId() !=null ? tehsilDAO.get(Long.valueOf(innerTourVo.getLocalBodyId().toString().substring(1))):null);
-						}else if(innerTourVo.getLocalBodyId().toString().charAt(0)==5l || innerTourVo.getLocalBodyId().toString().charAt(0)==6l){
+						}else if(Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==5l || Long.parseLong(innerTourVo.getLocalBodyId().toString().charAt(0)+"")==6l){
 							UA.setLocalElectionBody(innerTourVo.getLocalBodyId() !=null ? 
 									localElectionBodyDAO.get(Long.valueOf(innerTourVo.getLocalBodyId().toString().substring(1))):null);	
 						}						
 					}
 					
 					if(innerTourVo.getPanchayatWardId() !=null && innerTourVo.getPanchayatWardId()>0l){						
-						if(innerTourVo.getPanchayatWardId().toString().charAt(0)==7l){//panchayat
+						if(Long.parseLong(innerTourVo.getPanchayatWardId().toString().charAt(0)+"")==7l){//panchayat
 							UA.setPanchayatId(innerTourVo.getPanchayatWardId() !=null ? Long.valueOf(innerTourVo.getPanchayatWardId().toString().substring(1)):null);
-						}else if(innerTourVo.getPanchayatWardId().toString().charAt(0)==8l){
+						}else if(Long.parseLong(innerTourVo.getPanchayatWardId().toString().charAt(0)+"")==8l){
 							UA.setWard(innerTourVo.getPanchayatWardId() !=null ? constituencyDAO.get(Long.valueOf(innerTourVo.getPanchayatWardId().toString().substring(1))):null);
 						}												
 					}
@@ -1179,8 +1179,8 @@ public class ToursService implements IToursService {
 					selfAppraisalCandidateDocument.setSelfAppraisalCandidateId(toursVO.getSelfAppraisalCandidateId());
 					
 					if(toursVO.getToursVoList() !=null && toursVO.getToursVoList().size()>0){
-						selfAppraisalCandidateDocument.setTourDate(toursVO.getToursVoList().get(0).getTourDate() !=null 
-								?  sdf.parse(toursVO.getToursVoList().get(0).getTourDate().toString()):null);
+						selfAppraisalCandidateDocument.setTourDate(toursVO.getToursVoList().get(0).getTourDateId() !=null 
+								?  sdf.parse(toursVO.getToursVoList().get(0).getTourDateId().toString()):null);
 					}
 					
 					
