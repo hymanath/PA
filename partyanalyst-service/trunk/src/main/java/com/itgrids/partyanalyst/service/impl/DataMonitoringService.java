@@ -971,7 +971,10 @@ public class DataMonitoringService implements IDataMonitoringService {
 				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+cadreImage;
 				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
 				
-				LOG.fatal("backupImg");
+				LOG.fatal("backupImg --> "+backupImg);
+				LOG.fatal("cadreImage --> "+cadreImage);
+				LOG.fatal("voterImage --> "+voterImage);
+				
 				File backupFolder = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/backup/"+backupFolderStr);
 				boolean bckfdr = backupFolder.mkdir();
 				LOG.fatal(backupFolder.getAbsolutePath()+" --> "+bckfdr);
@@ -982,8 +985,14 @@ public class DataMonitoringService implements IDataMonitoringService {
 				boolean parentFileStatus = backupImgFile.mkdirs();
 				LOG.fatal("parentFileStatus --> "+parentFileStatus);
 				
-				boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
-				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);
+				boolean Copyflag = commonMethodsUtilService.fileCopy(cadreImageFile.getAbsolutePath(),backupImgFile.getAbsolutePath());
+				LOG.fatal("Copy to backup --> "+Copyflag);
+				
+				boolean deleteFlag = cadreImageFile.delete();
+				LOG.fatal("Delete Status --> "+deleteFlag);
+				
+				/*boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
+				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);*/
 				
 				boolean flag = commonMethodsUtilService.fileCopy(voterImage,cadreImage);
 				
