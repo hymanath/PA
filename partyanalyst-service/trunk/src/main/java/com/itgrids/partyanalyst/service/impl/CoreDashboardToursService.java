@@ -2019,9 +2019,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 setCategroyWiseComplainceCandidateCnt(rtrnGovtWorkWiseComplainceOblLst,designationMap,"Govt");
 		
 		//Taking Static Designation Wise Target
-		 List<Object[]> rtrnMonthWiseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(null, null,"Category");
+		 List<Object[]> rtrnMonthWiseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Category");
 		 setCategroyWiseTarget(rtrnMonthWiseTargetLst,designationMonthTarget,"Category");
-		 List<Object[]> rtrnGovtMonthTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(null, null,"Govt");
+		 List<Object[]> rtrnGovtMonthTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Govt");
 		 setCategroyWiseTarget(rtrnGovtMonthTargetLst,designationMonthTarget,"Govt");  
 		 
 		 if(designationMap != null && designationMap.size() > 0){
@@ -2507,7 +2507,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					 candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					 candiateVO.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
-					 candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(candiateTargetMap.get(candiateVO.getDesignationId()).get(candiateVO.getId())));
+					 if(candiateTargetMap.get(candiateVO.getDesignationId()) != null && candiateTargetMap.get(candiateVO.getDesignationId()).size() > 0){
+						 candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(candiateTargetMap.get(candiateVO.getDesignationId()).get(candiateVO.getId())));
+					 }
 					 candidateMap.put(candiateVO.getId(), candiateVO);
 				 }
 				 candiateVO.getLocationSet().add(commonMethodsUtilService.getLongValueForObject(param[5]));//location value
