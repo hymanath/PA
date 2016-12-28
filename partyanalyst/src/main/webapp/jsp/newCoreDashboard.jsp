@@ -2930,7 +2930,7 @@
 			</div>
 		</div>	
 	 <!--Alerts End -->
-	  <!--Tours New Start
+	  <!--Tours New Start 
 	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2938,13 +2938,19 @@
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
-								TOURS <small class="text-muted"><span id="">  </span></small>
+								TOURS <small class="text-muted"><span id="toursNewHeadingId">  </span></small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
 							<span class="NewTourExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 							</span>
+							<span class="input-group pull-right hideShowNewToursDateRangeCls" style="width:200px;display:none;">
+									<input type="text" id="tourNewDateRangePickerId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
 						</div>     
 					</div>
 				</div>
@@ -2976,7 +2982,7 @@
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
 					</div>!-->
-					<!-- <div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+				<!--	<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
 					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
@@ -3509,7 +3515,7 @@
 		  <div class="modal-dialog modal-lg" style="width:85%">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button tourIndividualCls" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span id="nameOfMemberHeadingId"></span>
 			  </div>
 			  <div class="modal-body">   
@@ -3521,7 +3527,7 @@
 				</div>
 			  </div>
 			  <div class="modal-footer">     
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default tourIndividualCls" class="close" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -3736,6 +3742,8 @@
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
+		/*New implementation Default Call */
+		//getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
