@@ -1343,6 +1343,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						startIndex:startIndex,
 						maxIndex : 50,
 						removedStatus:removedStatus,
+						enrollmentId : 3,
 						task:"tdpCadreSearch"
 					}
 					$.ajax({

@@ -922,6 +922,7 @@ function getNominatedPostApplication(startIndex)
 			startIndex:startIndex,
 			maxIndex : 50,
 			removedStatus:removedStatus,
+			enrollmentId : 3,
 			task:"NominatedPostSearch"
 		}
 		$.ajax({
