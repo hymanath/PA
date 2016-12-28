@@ -27,8 +27,21 @@ public class IdAndNameVO {
 	private String endTime;
 	private Double per2016 = 0.00;
 	private String isCsd;
-	
+	private Long tdpcadreId;
+	private Long partyId;
+	private Long sessionNo;
+	private String partyName;
+	private String question;
 	public IdAndNameVO(){}
+	
+	public Long getSessionNo() {
+		return sessionNo;
+	}
+
+	public void setSessionNo(Long sessionNo) {
+		this.sessionNo = sessionNo;
+	}
+
 	public IdAndNameVO(Long id,String name){
 		this.id=id;
 		this.name =name;
@@ -155,5 +168,34 @@ public class IdAndNameVO {
 	public void setConstIdList(List<Long> constIdList) {
 		this.constIdList = constIdList;
 	}
+	public Long getTdpcadreId() {
+		return tdpcadreId;
+	}
+	public void setTdpcadreId(Long tdpcadreId) {
+		this.tdpcadreId = tdpcadreId;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+	
 	
 }
