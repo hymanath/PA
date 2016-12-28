@@ -306,8 +306,7 @@
 		<property name="velocityEngine" ref="velocityEngine" />
 		<property name="accessRestrictedSessionDAO" ref="accessRestrictedSessionDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
-
-		
+		<property name="pashiAppUserDAO" ref="pashiAppUserDAO" />	
 	  </bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >

@@ -3499,4 +3499,12 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="pashiAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PashiAppUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="pashiAppManageUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PashiAppManageUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
