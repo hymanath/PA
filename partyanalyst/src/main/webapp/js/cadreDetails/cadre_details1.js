@@ -1292,7 +1292,70 @@ function buildVolunteersDetails(result){
 			 url: 'getCadreAlertDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				console.log(result);
-			//buildVolunteersDetails(result);	
+				//console.log(result);
+			    buildAlertDetails(result);
 			});
 	}
+	//alertDetailsDiv
+	
+	function buildAlertDetails(result){
+		
+		var finalReslt = result.subList1;
+		var str ='';
+		
+		str+='<table class="table table-borderd table-condensed" id="alertTableTab" style="font-size: 10px;">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th></th>';
+		str+='<th> TOTAL ALERTS </th>';
+		if(finalReslt != null && finalReslt.length>0){
+			var categoryList = finalReslt[0];
+			var alertTypeList = categoryList.subList1;
+			if(alertTypeList != null && alertTypeList.length>0){
+				for(var i in alertTypeList){
+					str+='<th> '+alertTypeList[i].alertTypeName.toUpperCase()+' </th>';
+				}
+				var statusList = alertTypeList[0].subList1;
+				for(var i in statusList){
+					str+='<th> '+statusList[i].status.toUpperCase()+' </th>';
+				}
+				
+			}
+		}
+		str+='</tr>';		
+		str+='</thead>';		
+		str+='<tbody>';	
+		if(finalReslt != null && finalReslt.length>0){
+			for(var j in finalReslt){
+				str+='<tr>';
+				str+='<td> '+finalReslt[j].category.toUpperCase()+'</td>';
+				if(finalReslt[j].count != null)
+					str+='<td> '+finalReslt[j].count+' </td>';
+				else
+					str+='<td> 0  </td>';
+				
+				if(finalReslt[j].subList1 != null && finalReslt[j].subList1.length>0){
+					for(var k in finalReslt[j].subList1 ){
+						if(finalReslt[j].subList1[k].count != null)
+							str+='<td> '+finalReslt[j].subList1[k].count+'</td>';
+						else
+							str+='<td> 0  </td>';
+					}
+						var statusList = finalReslt[j].subList1[0].subList1;
+							for(var l in statusList){
+								if(statusList[l].count != null )
+									str+='<td> '+statusList[l].count+' </td>';
+								else
+									str+='<td> 0  </td>';
+							}
+					
+				}
+				str+='</tr>';
+			}
+		}
+		str+='</tbody>';
+		str+='</table>';
+		
+		$('#alertDetailsDiv').html(str);
+	}
+	
