@@ -2963,7 +2963,7 @@
 					</div>
 					<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10" style="display:none;" >
 						<div class="row">
-							 <h4><span class="headingColor text-capital">Tour Complaince</span></h4>
+							 <h4><span class="headingColor text-capital">TOUR COMPLAINCE</span></h4>
 							 	<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline hideCls">
 											<li class="tourComplainceCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
@@ -2982,15 +2982,15 @@
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
 					</div>!-->
-				<!--	<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
-					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance</h4><br><br>	
+					<!--<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
 							
 				</div>
 			</div>
 			</div>
-	 </div>-->
+	 </div> -->
 	<!--Tours New End -->
 	</div>
 </div> 
@@ -3742,7 +3742,7 @@
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
-		/*New Tour implementation Default Call */
+		/*New Tours implementation Default Call */
 		//getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
