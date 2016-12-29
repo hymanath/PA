@@ -2185,7 +2185,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			AlertVO alertVO = null;
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
-			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+		//	Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
 			//get all the alert category for  building the template
 			List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
 			
@@ -2193,7 +2193,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,Map<Long,String>> locationIdAndStatusIdAndSatatusMap = new LinkedHashMap<Long,Map<Long,String>>();
 			Map<Long,String> statusIdAndStatusNameMap = null;//new LinkedHashMap<Long,String>();
 			
-			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			//Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();
 			Map<Long,Map<Long,Long>> statusIdAndCategoryIdAndCountMap = null;//new HashMap<Long,Map<Long,Long>>();
 			Map<Long,Map<Long,Map<Long,Long>>> locationIdAndStatusIdAndCategoryIdAndCountMap = new LinkedHashMap<Long,Map<Long,Map<Long,Long>>>();
@@ -2771,7 +2771,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			Map<Long,AlertCoreDashBoardVO> alrtyTypeMap = new HashMap<Long, AlertCoreDashBoardVO>();
-			List<AlertCoreDashBoardVO> alrtyTypeList = new ArrayList<AlertCoreDashBoardVO>();
+			//List<AlertCoreDashBoardVO> alrtyTypeList = new ArrayList<AlertCoreDashBoardVO>();
 						
 			List<Object[]> alertObj = alertTypeDAO.getAlertType();
 			setAlertTypes(alertObj,alrtyTypeMap);
@@ -3103,7 +3103,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			  
-			DateUtilService dateUtilService = new DateUtilService();
+			//DateUtilService dateUtilService = new DateUtilService();
 			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues);
@@ -4211,5 +4211,147 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  }
 	  return result;
   }
+  
+  
+  /*
+   * auther : Srishailam Pittala
+   * Date : 29th Dec, 2016
+   * Description : to Get Cadre wise alert Details
+   * */
+  
+  public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId){
+	  AlertVO returnVo = new AlertVO();
+	  try {
+		Date fromDate = dateUtilService.getCurrentDateAndTime();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if(startDateStr != null && startDateStr.length() >0 && endDateStr != null && endDateStr.length() >0){
+			fromDate = format.parse(startDateStr);
+			toDate = format.parse(endDateStr);
+		}
+		
+		List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
+		 List<Object[]> list = alertTypeDAO.getAlertType();	
+		 List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			
+		//List<AlertVO> categoriesList = new ArrayList<AlertVO>();
+		 Map<Long,AlertVO> categoriesMap = new HashMap<Long, AlertVO>(0);
+		 
+		if(categoryList != null && categoryList.size() > 0){
+			for(Object[] param : categoryList){
+				AlertVO categoryVO = new AlertVO();
+				categoryVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				categoryVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+				
+				 List<AlertVO> alertTypeList = new ArrayList<AlertVO>();
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 AlertVO alertTypeVO = new AlertVO();
+						 alertTypeVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(params[0]));
+						 alertTypeVO.setAlertTypeName(commonMethodsUtilService.getStringValueForObject(params[1]));
+						 
+						 List<AlertVO> alertStatusVOList = new ArrayList<AlertVO>();
+						 if(statusList != null && statusList.size() > 0){
+								for(Object[] parm : statusList){
+									AlertVO alertStatusVO = new AlertVO();
+									alertStatusVO.setStatusId(commonMethodsUtilService.getLongValueForObject(parm[0]));
+									alertStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(parm[1]));
+									if(alertTypeId != null && alertTypeId.longValue() ==0L)
+										alertStatusVOList.add(alertStatusVO);
+									else if(alertTypeId != null && alertTypeId.longValue() == alertTypeId )
+										alertStatusVOList.add(alertStatusVO);
+								}
+							}
+						 alertTypeVO.setSubList1(alertStatusVOList);
+						 alertTypeList.add(alertTypeVO);  
+					 }
+				 }
+				 
+				 categoryVO.setSubList1(alertTypeList);
+				 categoriesMap.put(categoryVO.getCategoryId(), categoryVO); 
+				 
+			}
+		}
+		
+		List<Object[]> assignedList = null;
+		if(searchType != null && (searchType.equalsIgnoreCase("Assigned") || searchType.equalsIgnoreCase("All"))){
+			assignedList = alertAssignedDAO.getTdpCadreWiseAssignedAlertDetails(tdpCadreId,fromDate, toDate,alertTypeId);
+			if(commonMethodsUtilService.isListOrSetValid(assignedList)){
+				for (Object[] param : assignedList) {
+					Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					AlertVO categoryVO = categoriesMap.get(categoryId);
+					if(categoryVO != null){
+						 List<AlertVO> alertTypeList = categoryVO.getSubList1();
+						 if(commonMethodsUtilService.isListOrSetValid(alertTypeList)){
+							Long alertTypesId = commonMethodsUtilService.getLongValueForObject(param[1]);
+							 for (AlertVO alertTypeVO : alertTypeList) {
+								if(alertTypeVO.getAlertTypeId() != null && alertTypeVO.getAlertTypeId().longValue() == alertTypesId){
+									 List<AlertVO> alertStatusVOList =  alertTypeVO.getSubList1();
+									 if(commonMethodsUtilService.isListOrSetValid(alertStatusVOList)){
+										 Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+										 for (AlertVO statusVO : alertStatusVOList) {
+											 if(statusVO.getStatusId() != null && statusVO.getStatusId().longValue() == statusId){
+												 if(statusVO.getCount() != null)
+													 statusVO.setCount( statusVO.getCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+												 else
+													 statusVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+											 }
+										}
+									 }
+								}
+							}
+						 }
+					}
+				}
+			}
+		}
+		
+		if(searchType != null && (searchType.equalsIgnoreCase("Involved") || searchType.equalsIgnoreCase("All"))){
+			assignedList = alertCandidateDAO.getTdpCadreWiseInvoledAlertDetails(tdpCadreId,fromDate, toDate,alertTypeId);
+			if(commonMethodsUtilService.isListOrSetValid(assignedList)){
+				for (Object[] param : assignedList) {
+					Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					AlertVO categoryVO = categoriesMap.get(categoryId);
+					if(categoryVO != null){
+						 List<AlertVO> alertTypeList = categoryVO.getSubList1();
+						 if(commonMethodsUtilService.isListOrSetValid(alertTypeList)){
+							Long alertTypesId = commonMethodsUtilService.getLongValueForObject(param[1]);
+							 for (AlertVO alertTypeVO : alertTypeList) {
+								if(alertTypeVO.getAlertTypeId() != null && alertTypeVO.getAlertTypeId().longValue() == alertTypesId){
+									 List<AlertVO> alertStatusVOList =  alertTypeVO.getSubList1();
+									 if(commonMethodsUtilService.isListOrSetValid(alertStatusVOList)){
+										 Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+										 for (AlertVO statusVO : alertStatusVOList) {
+											 if(statusVO.getStatusId() != null && statusVO.getStatusId().longValue() == statusId){
+												 if(statusVO.getCount() != null)
+													 statusVO.setCount( statusVO.getCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+												 else
+													 statusVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+											 }
+										}
+									 }
+								}
+							}
+						 }
+					}
+				}
+			}
+		}
+		
+		if(commonMethodsUtilService.isMapValid(categoriesMap)){
+			 List<AlertVO> categoryWiseList = new ArrayList<AlertVO>(0);
+			 categoryWiseList.addAll(categoriesMap.values());
+			returnVo.setSubList1(categoryWiseList);
+		}
+	}catch (Exception e) {
+		LOG.error("Error occured at getAlertDetailsBySearch() in AlertService {}",e); 
+		e.printStackTrace();
+	}
+	 return returnVo;
+  }
+  
 }
 
