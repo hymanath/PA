@@ -35,6 +35,29 @@
 	
 
 	<style>
+	.enrolled-mem{
+		padding-left:0px;
+	}
+	.enrolled-mem li{
+		border: 1px solid #666;
+		border-radius: 3px;
+		display: inline-block;
+		padding: 3px;
+	}
+	.enrolled-mem li.yes{
+		background-color: #d7f0db;
+	}
+	.enrolled-mem li.yes span::after {
+		color: #666;
+		content: "\e013";
+		display: inline-block;
+		font-family: "Glyphicons Halflings";
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1;
+		position: relative;
+		top: 1px;
+	}
 	.remove-icon
 	{
 		position:relative;
@@ -940,6 +963,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					str+='<li>Panchayat: '+result[i].addressVO.panchayatName+'</li>';	
 					}
 				}
+				
 				if(result[i].deletedStatus == "MD"){
 					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
 				}
@@ -947,9 +971,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
+					str+='<br/><li>Enrolment Year : <b>'+result[i].year+'</b></li>';
 				str+='</ul>';
-				
-				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
 					
@@ -984,7 +1007,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
-					str+='<ul>';
+					str+='<ul style="padding-left:0px">';
 					str+='<li style="font-weight:bold;display: block;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</li>';	
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
