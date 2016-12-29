@@ -188,4 +188,44 @@ public class AlertCandidateDAO extends
 		
 		return query.executeUpdate();
 	}
+	
+	
+	/*
+	 * Author 	: 	Srishailam Pittala
+	 * Date 	:	29th Dec,2016
+	 * Description : to get tdpCadre Wise assigned alert details
+	 * */
+	
+	public List<Object[]> getTdpCadreWiseInvoledAlertDetails(Long tdpCadreId,Date fromDate, Date toDate,Long alertTypeId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.alertCategoryId,model.alertTypeId,model.alertStatusId,count(distinct model.alertId) from Alert model,AlertCandidate model1 " +
+				" where  model.alertId = model1.alertId and " +
+				" model.isDeleted ='N' and  " +
+				" model1.tdpCadreId = :tdpCadreId  ");
+		
+		if(alertTypeId != null && alertTypeId.longValue()>0L)
+			queryStr.append(" and model.alertTypeId =:alertTypeId");
+		
+		if(fromDate != null && toDate != null ){
+			queryStr.append(" and ( date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		queryStr.append("  group by model.alertCategoryId,model.alertTypeId,model.alertStatusId ");
+		queryStr.append("  order by model.alertCategoryId,model.alertTypeId,model.alertStatusId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
+		if(alertTypeId != null && alertTypeId.longValue()>0L)
+			query.setParameter("alertTypeId", alertTypeId);
+		if(fromDate != null && toDate != null ){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
+	
 }
