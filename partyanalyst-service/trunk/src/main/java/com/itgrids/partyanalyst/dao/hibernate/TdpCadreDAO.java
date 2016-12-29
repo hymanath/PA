@@ -3586,7 +3586,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" model.tdpCadre.gender ,model.tdpCadre.memberShipNo, model.tdpCadre.refNo , model.tdpCadre.mobileNo, model.tdpCadre.image, model.tdpCadre.cardNumber,model.tdpCadre.age,date(model.tdpCadre.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
 			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.tdpCadre.houseNo,  ");
 			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.tdpCadre.aadheerNo, model.tdpCadre.dataSourceType , model.tdpCadre.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason, model.enrollmentYearId");//20
+					" cadreDeleteReason.reason, model.enrollmentYearId,model.enrollmentYear.year ");//20
 			queryStr.append(" from TdpCadreEnrollmentYear model left join model.tdpCadre.userAddress.panchayat panc ");
 			queryStr.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 			queryStr.append(" left join model.tdpCadre.userAddress.constituency constituency ");

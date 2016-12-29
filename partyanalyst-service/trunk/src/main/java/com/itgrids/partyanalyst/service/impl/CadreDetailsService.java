@@ -1292,6 +1292,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 						cadreVO.setEnrollmentYearId(cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L);
+						cadreVO.setYear(cadre[34] != null ? cadre[34].toString():"");
 					}
 					
 					returnVO.setResponseStatus("SUCCESS");					

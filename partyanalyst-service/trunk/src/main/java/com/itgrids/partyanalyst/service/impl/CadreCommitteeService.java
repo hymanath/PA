@@ -2102,6 +2102,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setImportantLeaderCadreId(tdpCadre.getImportantLeaderCadreId());
 						committeeVO.setFromYear(tdpCadre.getFromYear());
 						committeeVO.setToYear(tdpCadre.getToYear());
+						committeeVO.setYear(tdpCadre.getYear());
 						
 						cadreCommitteeList.add(committeeVO);
 					}
