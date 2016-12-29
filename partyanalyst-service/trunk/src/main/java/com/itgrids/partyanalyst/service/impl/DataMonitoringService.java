@@ -945,7 +945,7 @@ public class DataMonitoringService implements IDataMonitoringService {
   		
   	}
 	
-	/*public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
+	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
 	{
 		ResultStatus result = new ResultStatus();
 		try
@@ -959,25 +959,18 @@ public class DataMonitoringService implements IDataMonitoringService {
 				String cadreImage = list.get(0)[0].toString();
 				String voterImage = list.get(0)[1].toString();
 				
-				LOG.fatal("cadre Image - "+cadreImage+"\tVoter Iamge"+voterImage);
-				
-				String backupFolderStr = dateUtilService.getDateInStringFormatByDate(new Date(),"yyyyMMdd");
-				LOG.fatal("backupFolderStr - "+backupFolderStr);
+				LOG.fatal("cadre Image - "+cadreImage+"\tVoter Iamge - "+voterImage);
 				
 				String backupImg = cadreImage.replace(".jpg","");
 				backupImg = backupImg+"_"+UUID.randomUUID().toString()+".jpg";
 				
-				backupImg = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/backup/"+backupFolderStr+"/"+backupImg;
-				cadreImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/"+cadreImage;
-				voterImage = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterImage;
+				backupImg = "/mnt/tdp-img/cadre_images/2014/backup/"+backupImg;
+				cadreImage = "/mnt/tdp-img/cadre_images/2014/"+cadreImage;
+				voterImage = "/mnt/tdp-img/voter_images/"+voterImage;
 				
 				LOG.fatal("backupImg --> "+backupImg);
 				LOG.fatal("cadreImage --> "+cadreImage);
 				LOG.fatal("voterImage --> "+voterImage);
-				
-				File backupFolder = new File(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_IMAGES+"/backup/"+backupFolderStr);
-				boolean bckfdr = backupFolder.mkdir();
-				LOG.fatal(backupFolder.getAbsolutePath()+" --> "+bckfdr);
 				
 				File cadreImageFile = new File(cadreImage);
 				File backupImgFile = new File(backupImg);
@@ -985,11 +978,11 @@ public class DataMonitoringService implements IDataMonitoringService {
 				boolean parentFileStatus = backupImgFile.mkdirs();
 				LOG.fatal("parentFileStatus --> "+parentFileStatus);
 				
-				boolean Copyflag = commonMethodsUtilService.fileCopy(cadreImageFile.getAbsolutePath(),backupImgFile.getAbsolutePath());
+				/*boolean Copyflag = commonMethodsUtilService.fileCopy(cadreImageFile.getAbsolutePath(),backupImgFile.getAbsolutePath());
 				LOG.fatal("Copy to backup --> "+Copyflag);
 				
 				boolean deleteFlag = cadreImageFile.delete();
-				LOG.fatal("Delete Status --> "+deleteFlag);
+				LOG.fatal("Delete Status --> "+deleteFlag);*/
 				
 				boolean fileMoveStatus = cadreImageFile.renameTo(backupImgFile);
 				LOG.fatal("fileMoveStatus --> "+fileMoveStatus);
@@ -1010,9 +1003,9 @@ public class DataMonitoringService implements IDataMonitoringService {
 			result.setExceptionEncountered(e);
 		}
 		return result;
-	}*/
+	}
 	
-	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
+	/*public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId)
 	{
 		ResultStatus result = new ResultStatus();
 		try
@@ -1057,7 +1050,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 			result.setExceptionEncountered(e);
 		}
 		return result;
-	}
+	}*/
 	
 	public String updateRejectedImages(List<IdNameVO> idNameVOs){   
   		try{
