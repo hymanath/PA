@@ -3507,4 +3507,8 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="cardPrintStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
