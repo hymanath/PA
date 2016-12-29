@@ -26,7 +26,6 @@
 <style>
 .chosen-container{width:100% !important}
 </style>
-
 <body>
 	<div class="container">
 		<div class="row">
@@ -324,9 +323,9 @@
 <script src="Assets/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/Tours/toursDetails.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="js/Tours/toursDetails.js" type="text/javascript"></script>
  <!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
@@ -357,8 +356,8 @@ $( document ).ready(function() {
 	function initializeMultiDateRanePicker(){
 		$("#toursDateRangePickerNew").daterangepicker({
 			opens: 'left',
-			 startDate: moment().startOf('month'),
-			 endDate: moment().endOf('month'),
+			 startDate: moment(),
+			 endDate: moment(),
 			locale: {
 			  format: 'DD/MM/YYYY'
 			},
@@ -373,9 +372,9 @@ $( document ).ready(function() {
 			   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
 			}
 		})
-		$('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
+		/* $('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
 			getToursDetailsOverview();
-		});
+		}); */
 	}
 	function getDay(){
 		var date = new Date();
