@@ -49,18 +49,21 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 	}
 	public List<Object[]> getPeshiAppForGrievance(Date fromDate,Date toDate,String memberShipId){
 		StringBuilder sb =  new StringBuilder();
-		sb.append("select distinct Complaint_id as complaintId,Subject as subject," +
-				" description as description,Raised_Date as raisedDate,updated_at as updated," +
-				" Completed_Status as completedStatus,type_of_issue as typeOfIssue," +
-				" scan_copy as scanCopy,membership_id as memberShipId," +
-				" mobile_no as mobileNo" +
-				" from complaint_master " +
-				" where type_of_issue not in ('Insurance','Trust Education Support') " +
-				" and Subject != '' and Subject is not null and delete_status is null and state_id_cmp in(1,2)" +
-				" and Completed_Status is not null" +
-				" and membership_id =:memberShipId ");
+		sb.append("select distinct cm.Complaint_id as complaintId,cm.Subject as subject," +
+				" cm.description as description,cm.Raised_Date as raisedDate,cm.updated_at as updated," +
+				" cm.Completed_Status as completedStatus,cm.type_of_issue as typeOfIssue," +
+				" cm.scan_copy as scanCopy,tc.membership_id as memberShipId," +
+				" tc.mobile_no as mobileNo,tc.first_name as name," +
+				" tc.image as image" +
+				" from complaint_master cm" +
+				" left join tdp_cadre tc on cm.membership_id = tc.membership_id" +
+				" where cm.type_of_issue not in ('Insurance','Trust Education Support') " +
+				" and cm.Subject != '' and cm.Subject is not null and cm.delete_status is null and cm.state_id_cmp in(1,2)" +
+				" and cm.Completed_Status is not null" +
+				" and cm.membership_id =:memberShipId" +
+				" and tc.is_deleted = 'N'");
 		if(fromDate != null && toDate != null){
-			sb.append(" and (date(Raised_Date) between :fromDate and :toDate ) ");
+			sb.append(" and (date(cm.Raised_Date) between :fromDate and :toDate ) ");
 		}
 		Query query = getSession().createSQLQuery(sb.toString()).addScalar("complaintId", Hibernate.LONG)
 		.addScalar("subject", Hibernate.STRING)
@@ -71,7 +74,9 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 		.addScalar("typeOfIssue", Hibernate.STRING)
 		.addScalar("scanCopy", Hibernate.STRING)
 		.addScalar("memberShipId", Hibernate.STRING)
-		.addScalar("mobileNo", Hibernate.STRING);
+		.addScalar("mobileNo", Hibernate.STRING)
+		.addScalar("name", Hibernate.STRING)
+		.addScalar("image", Hibernate.STRING);
 		
 		/*getSession().createSQLQuery(" select Complaint_id as complaintId,Subject as subject, description as description,"
 				+" Raised_Date as raisedDate,updated_at as updated, Completed_Status as completedStatus,"
