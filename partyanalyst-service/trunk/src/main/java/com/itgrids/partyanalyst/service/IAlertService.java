@@ -56,4 +56,5 @@ public interface IAlertService {
 	public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId);
     public String getAlertLastUpdatedTime();
     public String getAlertStatusOfArticle(Long articleId);
+    public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId);
    }
