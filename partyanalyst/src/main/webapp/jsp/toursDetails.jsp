@@ -318,7 +318,30 @@
 	</div>	
 	</div>
 	
-	
+	<!--editview modal start-->
+	<div class="modal fade" tabindex="-1" id="retrivalEditModalId" role="dialog">
+	  <div class="modal-dialog" role="document" style="width:80%">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Edit / View Tour Details</h4>
+		  </div>
+		  <div class="modal-body" id="retrivalEditModalBodyId">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div style="border:1px solid #ddd;padding:10px;">
+						<div id="retriveModalId"></div>
+					</div>
+				</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!--editview modal end-->
 	
 <script src="Assets/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -371,7 +394,7 @@ $( document ).ready(function() {
 			   'This Year': [moment().startOf('Year'), moment()],
 			   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
 			}
-		})
+		});
 		/* $('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
 			getToursDetailsOverview();
 		}); */

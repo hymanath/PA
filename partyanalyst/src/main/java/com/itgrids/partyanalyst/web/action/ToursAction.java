@@ -59,8 +59,15 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private ToursVO toursVO = new ToursVO();
 	   private ICadreCommitteeService cadreCommitteeService;
 	   private List<LocationWiseBoothDetailsVO> locationsList;
+	   private ToursBasicVO toursBasicVO;
 	
 	   
+	   public ToursBasicVO getToursBasicVO() {
+		   return toursBasicVO;
+	   }
+	   public void setToursBasicVO(ToursBasicVO toursBasicVO) {
+		   this.toursBasicVO = toursBasicVO;
+	   }
 	   public List<LocationWiseBoothDetailsVO> getLocationsList() {
 			return locationsList;
 		}
@@ -619,4 +626,26 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String getCandidateDetailedReport(){
+		try {
+			LOG.info("Entered into getCandidateDetailedReport()");
+			jObj = new JSONObject(getTask());
+			toursBasicVO = toursService.getCandidateDetailedReport(jObj.getLong("candiateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCandidateDetailedReport()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getNewTourRetrivalDetails(){
+		try {
+			LOG.info("Entered into getNewTourRetrivalDetails()");
+			jObj = new JSONObject(getTask());
+			pMMinuteVO = toursService.getNewTourRetrivalDetails(jObj.getLong("candidateDayTourId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getNewTourRetrivalDetails()", e);
+		}
+		return Action.SUCCESS;
+	}
+		
 }

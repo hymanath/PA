@@ -748,3 +748,185 @@ function getCandidateList(designationId){
 	function buildMemDtls(){
 		
 	}
+	
+	getCandidateDetailedReport();
+	function getCandidateDetailedReport(){
+		var jsObj ={ 
+			candiateId : 16,
+			fromDate : "16/12/2016" ,
+			toDate : "31/12/2016"
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getCandidateDetailedReportAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	
+	getNewTourRetrivalDetails();
+	function getNewTourRetrivalDetails(){
+		var jsObj ={ 
+			candidateDayTourId : 70
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getNewTourRetrivalDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				buildNewTourRetrivalDetails(result);
+				$("#retrivalEditModalId").modal("show");
+			}
+		});
+	}
+	function buildNewTourRetrivalDetails(result)
+	{
+		var str='';
+		var temp = result.tourDate.split(' ')[0].split("-");
+		var date = temp[2]+"/"+temp[1]+"/"+temp[0];
+		
+		str+='<div class="row">';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Date</label>';
+				str+='<div class="input-group">';
+					str+='<input type="text" class="form-control" id="retriveDateId"/>';
+					str+='<span class="input-group-addon">';
+						str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='</span>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Category</label>';
+				str+='<select id="retriveCategoryId">';
+					str+='<option value="0">Selecct Tour Category</option>';
+					if(result.categoryList != null && result.categoryList.length > 0){
+						for(var i in result.categoryList){
+							str+='<option>'+result.categoryList[i].name+'</option>';
+						}
+					}
+					
+				str+='</select>';
+			str+='</div>';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Type</label>';
+				str+='<select id="retriveTypeId">';
+					str+='<option value="0">Select Tour Type</option>';
+					if(result.tourTypeList != null && result.tourTypeList.length > 0){
+						for(var i in result.tourTypeList){
+							str+='<option>'+result.tourTypeList[i].name+'</option>';
+						}
+					}
+				str+='</select>';
+			str+='</div>';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Location</label>';
+				str+='<select id="retriveLocId">';
+					str+='<option value="0">Select Tour Location</option>';
+						if(regionScopesArr!=null && regionScopesArr.length>0 && result.locationScopeId!=null && result.locationScopeId>0){
+							for(var i in regionScopesArr){
+								if(regionScopesArr[i].id>=result.locationScopeId)
+									if(regionScopesArr[i].id == result.locationScopeId)
+										str+="<option value='"+regionScopesArr[i].id+"' selected>"+regionScopesArr[i].name+"</option>";
+									else
+										str+="<option value='"+regionScopesArr[i].id+"'>"+regionScopesArr[i].name+"</option>";
+							}
+						}
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="stateDivId" style="display:none;">';
+					str+='<label>State</label>';
+					str+='<select id="stateSelId" class="form-control">';
+						str+='<option value="0">Select State</option>';
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="districtDivId" style="display:none;">';
+					str+='<label>District</label>';
+					str+='<select id="districtSelId" class="form-control">';
+						str+='<option value="0">Select District</option>';
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="constituencyDivId" style="display:none;">';
+					str+='<label>Constituency</label>';
+					str+='<select class="form-control" id="constituenctSelId">';
+						str+='<option value="0">Select Constituency</option>';
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="manMunDivId" style="display:none;">';
+					str+='<label>Mandal / Municipality</label>';
+					str+='<select class="form-control" id="manMunSelId">';
+						str+='<option value="0">Select Mandal / Municipality</option>';
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="villWardDivId" style="display:none;">';
+					str+='<label>Village / Ward</label>';
+					str+='<select class="form-control" id="villWardSelId">';
+						str+='<option value="0">Select Villeage / Ward</option>';
+					str+='</select>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				str+='<label>Add Comments/ Tour Description</label>';
+				str+='<textarea class="form-control">'+result.name+'</textarea>';
+			str+='</div>';
+		str+='</div>';
+		$("#retriveModalId").html(str);
+		$("#retriveCategoryId").chosen();
+		$("#retriveLocId").chosen();
+		$("#retriveTypeId").chosen();
+		$("#retriveDateId").daterangepicker({
+			opens: 'right',
+			singleDatePicker: true,
+			startDate: date,
+			locale: {
+				format:'DD/MM/YYYY' 
+			},
+		});
+		
+		if(result.locationScopeId!=null && result.locationScopeId>0){
+			if(result.locationScopeId == 2){
+				$("#stateDivId").show();
+			}else if(result.locationScopeId == 3){
+				$("#stateDivId").show();
+				$("#districtDivId").show();
+			}else if(result.locationScopeId == 4){
+				$("#stateDivId").show();
+				$("#districtDivId").show();
+				$("#constituencyDivId").show();
+			}else if(result.locationScopeId == 5 || result.locationScopeId == 7){
+				$("#stateDivId").show();
+				$("#districtDivId").show();
+				$("#constituencyDivId").show();
+				$("#manMunDivId").show();
+			}else if(result.locationScopeId == 6 || result.locationScopeId == 8){
+				$("#stateDivId").show();
+				$("#districtDivId").show();
+				$("#constituencyDivId").show();
+				$("#manMunDivId").show();
+				$("#villWardDivId").show();
+			}
+		}
+	}
+	
+	$(document).on("change","#retriveLocId",function(){
+		$(".locationsDivCls").hide();
+		var val = $(this).val();
+		if(val == 2){
+			$("#stateDivId").show();
+		}else if(val == 3){
+			$("#stateDivId,#districtDivId").show();
+		}else if(val == 4){
+			$("#stateDivId,#districtDivId,#constituencyDivId").show();
+		}else if(val == 5 || val == 7){
+			$("#stateDivId,#districtDivId,#constituencyDivId,#manMunDivId").show();
+		}else if(val == 6 || val == 8){
+			$("#stateDivId,#districtDivId,#constituencyDivId,#manMunDivId,#villWardDivId").show();
+		}
+	});
