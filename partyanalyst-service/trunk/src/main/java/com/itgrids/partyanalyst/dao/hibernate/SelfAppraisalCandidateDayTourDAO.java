@@ -125,7 +125,6 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateDayTour SACT " +
 				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACT.selfAppraisalCandidate.selfAppraisalCandidateId and  " +
 				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
-				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) and " +
 				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " +
 				   		" SACL.userAddress.state.stateId = :stateId ");
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -138,6 +137,9 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
 		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		   }
+		   if(userTypeId != IConstants.STATE_USER_TYPE_ID || designationIds != null && designationIds.size() > 0){
+				  queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) "); 
 		   }
 		   if(fromDate != null && toDate != null ){
                queryStr.append(" and date(SACT.tourDate) between :fromDate and :toDate ");
@@ -159,9 +161,9 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		   if(designationIds != null && designationIds.size() > 0){
 			   query.setParameterList("designationIds",designationIds);   
 		   }else{
-			   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+			 /*  if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 			    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
-		       }else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		       }else*/ if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
 		       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
@@ -188,13 +190,20 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  					" district.districtName," +//6
 		  					" constituency.constituencyId," +//7
 		  					" constituency.name," +//8
-		  					" model.selfAppraisalCandidateDayTourId " +//9
+		  					" model.selfAppraisalCandidateDayTourId," +//9
+		  					" parliamentConstituency.constituencyId," +//10
+		  					" parliamentConstituency.name," +//11
+		  					" model.comment," +//12
+		  					" selfAppraisalDesignation.selfAppraisalDesignationId," +//13
+		  					" selfAppraisalDesignation.designation" +//14
 		  					" from SelfAppraisalCandidateDayTour model " +
 		  					" left join model.userAddress userAddress " +
 		  					" left join userAddress.district district " +
 		  					" left join userAddress.constituency constituency " +
 		  					" left join model.selfAppraisalTourCategory selfAppraisalTourCategory " +
-		  					" left join model.tourType tourType " +
+		  					" left join model.tourType tourType" +
+		  					" left join userAddress.parliamentConstituency parliamentConstituency" +
+		  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
 		  					" where  " +
 		  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId ");
 					      if(fromDate != null && toDate != null ){
