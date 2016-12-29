@@ -581,7 +581,9 @@ function getUsers(constituencyId){
 
 					
 							str2+='<tr>';
-								str2+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str2+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/>';
+								str2+='<button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" attr_status="'+result[0][i].status+'" attr_divId="successMsgRelId'+i+'" attr_loading_img_id="changeImgLoadingRelImgId'+i+'">Approve</button>';
+								str2+='<span class="successMsgCls" id="successMsgRelId'+i+'"></span><span id="changeImgLoadingRelImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span></td>';
 								str2+='<td colspan="3">';
 									str2+='<input type="text" value="'+result[1][i].wish+'" disabled></input>';
 										//str+='<option></option>';
