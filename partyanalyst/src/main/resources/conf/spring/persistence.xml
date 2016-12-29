@@ -1081,6 +1081,7 @@
 	                  <value>com.itgrids.partyanalyst.model.MaxPrintDetails</value>
 	                  <value>com.itgrids.partyanalyst.model.PashiAppUser</value>
 	                  <value>com.itgrids.partyanalyst.model.PashiAppManageUser</value>
+	                  <value>com.itgrids.partyanalyst.model.CardPrintStatus</value>
 	             </list>
 			
 		</property>
