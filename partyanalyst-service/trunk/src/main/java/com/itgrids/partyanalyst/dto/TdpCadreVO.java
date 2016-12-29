@@ -67,9 +67,15 @@ public class TdpCadreVO implements java.io.Serializable
 	private String status;
 	private String totalImagePathStr;
 	private String isCsd;
+	private String year;
 	
 	
-	
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
 	public String getIsCsd() {
 		return isCsd;
 	}

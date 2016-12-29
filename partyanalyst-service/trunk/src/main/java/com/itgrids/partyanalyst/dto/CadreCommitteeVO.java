@@ -84,8 +84,15 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long nominatedPostCandidateId=0L;
 	private String reportPath;
 	private String reportDate;
+	private String year;
 	
 	
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
 	public Long getNominatedPostCandidateId() {
 		return nominatedPostCandidateId;
 	}
