@@ -40,7 +40,7 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 	
 	public Long getTotalRegistered(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select sum(model.totalRecords)" +
+		/*sb.append("select sum(model.totalRecords)" +
 					" from TabUserEnrollmentInfo model" +
 					" where model.enrollmentYearId = 4");
 		if(fromDate != null && toDate != null)
@@ -65,15 +65,15 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 		else if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" group by model.constituency.constituencyId");
 		else if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" group by model.constituency.district.districtId");
+			sb.append(" group by model.constituency.district.districtId");*/
 		
-		/*sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
+		sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
 						" from TdpCadreEnrollmentYear model" +
 						" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 						" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		
-		if(fromDate != null && toDate != null)
-			sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+		/*if(fromDate != null && toDate != null)
+			sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");*/
 		
 		 if(stateId != null && stateId.longValue() == 1l){
 				sb.append("  and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
@@ -94,13 +94,13 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 		else if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" group by model.tdpCadre.userAddress.constituency.constituencyId");
 		else if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" group by model.tdpCadre.userAddress.constituency.district.districtId");*/
+			sb.append(" group by model.tdpCadre.userAddress.constituency.district.districtId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-		}
+		}*/
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -114,56 +114,53 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 	
 	public Long getVerifiedPassedCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 		StringBuilder sb =  new StringBuilder();
-		sb.append("select count(distinct model.tdpCadreId)" +
+		/*sb.append("select count(distinct model.tdpCadreId)" +
 				" from TdpCadreDataVerification model" +
 				" where");
 		if(fromDate != null && toDate != null)
 			sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 		
 		 if(stateId != null && stateId.longValue() == 1l){
-				sb.append("  and model.districtId between 11 and 23 ");
+				sb.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 			}else if(stateId != null && stateId.longValue() == 36l){
-				sb.append(" and model.districtId between 1 and 10 ");
+				sb.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 			}
 		if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" and model.districtId = :districtId");
+			sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model.constituencyId = :constituencyId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" and model.dataRejectReason.dataRejectReasonId is null");
+		sb.append(" and model.dataRejectReason.dataRejectReasonId is null");*/
 		
-		/*sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
-						" from TdpCadreEnrollmentYear model,TdpCadreDataVerification model1" +
-						" where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
-						" and model.tdpCadre.userAddress.constituency.district.districtId = model1.districtId" +
-						" and model.tdpCadre.userAddress.constituency.constituencyId = model1.constituencyId" +
-						" and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+		sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
+						" from TdpCadreEnrollmentYear model" +
+						" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 						" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		
-		if(fromDate != null && toDate != null)
-			sb.append(" and date(model1.verifiedTime) between :fromDate and :toDate");
+		/*if(fromDate != null && toDate != null)
+			sb.append(" and date(model1.verifiedTime) between :fromDate and :toDate");*/
 		
 		 if(stateId != null && stateId.longValue() == 1l){
-				sb.append("  and model1.districtId between 11 and 23 ");
+				sb.append("  and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
 			}else if(stateId != null && stateId.longValue() == 36l){
-				sb.append(" and model1.districtId between 1 and 10 ");
+				sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
 			}
 		if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" and model1.districtId = :districtId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model1.constituencyId = :constituencyId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" and model1.dataRejectReasonId is null");*/
+		sb.append(" and model.tdpCadre.cadreVerificationStatusId = 1");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-		}
+		}*/
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -177,56 +174,53 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 	
 	public Long getVerifiedRejectedCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 		StringBuilder sb =  new StringBuilder();
-		sb.append("select count(distinct model.tdpCadreId)" +
+		/*sb.append("select count(distinct model.tdpCadreId)" +
 				" from TdpCadreDataVerification model" +
 				" where");
 		if(fromDate != null && toDate != null)
 			sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 		
 		 if(stateId != null && stateId.longValue() == 1l){
-				sb.append("  and model.districtId between 11 and 23 ");
+				sb.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 			}else if(stateId != null && stateId.longValue() == 36l){
-				sb.append(" and model.districtId between 1 and 10 ");
+				sb.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 			}
 		if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" and model.districtId = :districtId");
+			sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model.constituencyId = :constituencyId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" and model.dataRejectReason.dataRejectReasonId is not null");
+		sb.append(" and model.dataRejectReason.dataRejectReasonId is not null");*/
 		
-		/*sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
-						" from TdpCadreEnrollmentYear model,TdpCadreDataVerification model1" +
-						" where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
-						" and model.tdpCadre.userAddress.constituency.district.districtId = model1.districtId" +
-						" and model.tdpCadre.userAddress.constituency.constituencyId = model1.constituencyId" +
-						" and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+		sb.append("select count(distinct model.tdpCadre.tdpCadreId)" +
+						" from TdpCadreEnrollmentYear model" +
+						" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 						" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		
-		if(fromDate != null && toDate != null)
-			sb.append(" and date(model1.verifiedTime) between :fromDate and :toDate");
+		//if(fromDate != null && toDate != null)
+			//sb.append(" and date(model1.verifiedTime) between :fromDate and :toDate");
 		
 		 if(stateId != null && stateId.longValue() == 1l){
-				sb.append("  and model1.districtId between 11 and 23 ");
+				sb.append("  and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
 			}else if(stateId != null && stateId.longValue() == 36l){
-				sb.append(" and model1.districtId between 1 and 10 ");
+				sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
 			}
 		if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" and model1.districtId = :districtId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model1.constituencyId = :constituencyId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" and model1.dataRejectReason.dataRejectReasonId is not null");*/
+		sb.append(" and model.tdpCadre.cadreVerificationStatusId = 2");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-		}
+		}*/
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -240,7 +234,7 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 	
 public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb = new StringBuilder();
-	sb.append("select model.cadreSurveyUserId," +
+	/*sb.append("select model.cadreSurveyUserId," +
 			" model.mobileNo," +
 			" model.username," +
 			" model.tabUserName," +
@@ -263,9 +257,9 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 		sb.append(" and model.constituency.constituencyId = :constituencyId");
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
-	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
+	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");*/
 	
-	/*sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
+	sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
 				" model.tdpCadre.updatedBy.mobileNo,model.tdpCadre.updatedBy.userName," +
 				" model.tdpCadre.tabUserInfo.name,count(distinct model.tdpCadre.tdpCadreId)," +
 				" model.tdpCadre.tabUserInfo.tabUserInfoId" +
@@ -273,8 +267,8 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 				" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 	
-		if(fromDate != null && toDate != null)
-			sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+		//if(fromDate != null && toDate != null)
+			//sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 		
 		if(stateId != null && stateId.longValue() == 1l){
 			sb.append("  and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
@@ -289,13 +283,13 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
+		sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
-	if(fromDate != null && toDate != null){
+	/*if(fromDate != null && toDate != null){
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
-	}
+	}*/
 	if(districtId != null && districtId.longValue() > 0l)
 		query.setParameter("districtId", districtId);
 	if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -308,7 +302,7 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 	
 public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb =  new StringBuilder();
-	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+	/*sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
 			" count(distinct model.tdpCadreId)," +
 			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
@@ -317,53 +311,50 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 	
 	 if(stateId != null && stateId.longValue() == 1l){
-			sb.append(" and model.districtId between 11 and 23 ");
+			sb.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and model.districtId between 1 and 10 ");
+			sb.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 		}
 	if(districtId != null && districtId.longValue() > 0l)
-		sb.append(" and model.districtId = :districtId");
+		sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
 	if(constituencyId != null && constituencyId.longValue() > 0l)
-		sb.append(" and model.constituencyId = :constituencyId");
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 	
 	//sb.append(" and model.dataRejectReason.dataRejectReasonId is null ");
-	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
+	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
 	
-	/*sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
+	sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
 					" count(distinct model.tdpCadre.tdpCadreId)," +
 					" model.tdpCadre.tabUserInfo.tabUserInfoId" +
-					" from TdpCadreEnrollmentYear model,TdpCadreDataVerification model1" +
-					" where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
-					" and model.tdpCadre.userAddress.constituency.district.districtId = model1.districtId" +
-					" and model.tdpCadre.userAddress.constituency.constituencyId = model1.constituencyId" +
-					" and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+					" from TdpCadreEnrollmentYear model" +
+					" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 					" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
-					" and model1.dataRejectReasonId is null");
+					" and model.tdpCadre.cadreVerificationStatusId = 1");
 	
-	if(fromDate != null && toDate != null)
-		sb.append(" date(model1.verifiedTime) between :fromDate and :toDate");
+	//if(fromDate != null && toDate != null)
+		//sb.append(" date(model1.verifiedTime) between :fromDate and :toDate");
 	
 	 if(stateId != null && stateId.longValue() == 1l){
-			sb.append(" and model1.districtId between 11 and 23 ");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and model1.districtId between 1 and 10 ");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
 		}
 	if(districtId != null && districtId.longValue() > 0l)
-		sb.append(" and model1.districtId = :districtId");
+		sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId = :districtId");
 	if(constituencyId != null && constituencyId.longValue() > 0l)
-		sb.append(" and model1.constituencyId = :constituencyId");
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 	
-	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
+	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
-	if(fromDate != null && toDate != null){
+	/*if(fromDate != null && toDate != null){
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
-	}
+	}*/
 	if(districtId != null && districtId.longValue() > 0l)
 		query.setParameter("districtId", districtId);
 	if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -416,7 +407,7 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 	}
 public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb =  new StringBuilder();
-	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+	/*sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
 			" count(distinct model.tdpCadreId)," +
 			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
@@ -425,53 +416,50 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 	
 	 if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and model.districtId between 11 and 23 ");
+			sb.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and model.districtId between 1 and 10 ");
+			sb.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 		}
 	if(districtId != null && districtId.longValue() > 0l)
-		sb.append(" and model.districtId = :districtId");
+		sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
 	if(constituencyId != null && constituencyId.longValue() > 0l)
-		sb.append(" and model.constituencyId = :constituencyId");
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 	
 	//sb.append(" and model.dataRejectReason.dataRejectReasonId is not null ");
-	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
+	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
 	
-	/*sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
+	sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
 			" count(distinct model.tdpCadre.tdpCadreId)," +
 			" model.tdpCadre.tabUserInfo.tabUserInfoId" +
-			" from TdpCadreEnrollmentYear model,TdpCadreDataVerification model1" +
-			" where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
-			" and model.tdpCadre.userAddress.constituency.district.districtId = model1.districtId" +
-			" and model.tdpCadre.userAddress.constituency.constituencyId = model1.constituencyId" +
-			" and model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+			" from TdpCadreEnrollmentYear model" +
+			" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 			" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
-			" and model1.dataRejectReasonId is not null");
+			" and model.tdpCadre.cadreVerificationStatusId = 2");
 
-		if(fromDate != null && toDate != null)
-			sb.append(" date(model1.verifiedTime) between :fromDate and :toDate");
+		//if(fromDate != null && toDate != null)
+			//sb.append(" date(model1.verifiedTime) between :fromDate and :toDate");
 		
 		if(stateId != null && stateId.longValue() == 1l){
-			sb.append(" and model1.districtId between 11 and 23 ");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and model1.districtId between 1 and 10 ");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
 		}
 		if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" and model1.districtId = :districtId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model1.constituencyId = :constituencyId");
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
+		sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
-	if(fromDate != null && toDate != null){
+	/*if(fromDate != null && toDate != null){
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
-	}
+	}*/
 	if(districtId != null && districtId.longValue() > 0l)
 		query.setParameter("districtId", districtId);
 	if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -484,7 +472,7 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 }
 public List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb = new StringBuilder();
-	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+	/*sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
 				" sum(model.totalRecords)," +
 				" model.tabUserInfo.tabUserInfoId " +
 				" from TabUserEnrollmentInfo model" +
@@ -512,17 +500,17 @@ public List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtI
 		sb.append(" group by model.constituency.constituencyId");
 	else if(districtId != null && districtId.longValue() > 0l)
 		sb.append(" group by model.constituency.district.districtId");*/
-	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
+	//sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
-	/*sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
+	sb.append("select model.tdpCadre.updatedBy.cadreSurveyUserId," +
 			" count(distinct model.tdpCadre.tdpCadreId)," +
 			" model.tdpCadre.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreEnrollmentYear model" +
 			" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
 			" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 
-	if(fromDate != null && toDate != null)
-		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+	//if(fromDate != null && toDate != null)
+		//sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 	
 	if(stateId != null && stateId.longValue() == 1l){
 		sb.append("  and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
@@ -537,13 +525,13 @@ public List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtI
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.tdpCadre.updatedBy.cadreSurveyUserId = :cadreSurveyUserId");
 	
-	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");*/
+	sb.append(" group by model.tdpCadre.tabUserInfo.tabUserInfoId,model.tdpCadre.updatedBy.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
-	if(fromDate != null && toDate != null){
+	/*if(fromDate != null && toDate != null){
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
-	}
+	}*/
 	if(districtId != null && districtId.longValue() > 0l)
 		query.setParameter("districtId", districtId);
 	if(constituencyId != null && constituencyId.longValue() > 0l)
