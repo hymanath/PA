@@ -4423,7 +4423,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  					for (Object[] objects : list) {
 		  						PeshiAppGrievanceVO vo = new PeshiAppGrievanceVO();
 		  						vo.setComplaintId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-		  						vo.setDescription(commonMethodsUtilService.getStringValueForObject(objects[1]));
+		  						vo.setSubject(commonMethodsUtilService.getStringValueForObject(objects[1]));
 		  						vo.setDescription(commonMethodsUtilService.getStringValueForObject(objects[2]));
 		  						vo.setRaisedDateTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
 		  						vo.setLastUpdatedDateTime(commonMethodsUtilService.getStringValueForObject(objects[4]));
@@ -4432,6 +4432,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  						vo.setTotalGrivanceCount(count);
 		  						if(objects[7] != null)
 		  							vo.getFilePthList().add(commonMethodsUtilService.getStringValueForObject(objects[7]));
+		  						vo.setMembershipId(commonMethodsUtilService.getStringValueForObject(objects[8]));
+		  						vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[9]));
 		  						complaintIdsList.add(vo.getComplaintId());
 		  						returnList.add(vo);
 		  					}
