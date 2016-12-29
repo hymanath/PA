@@ -39,7 +39,6 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITourTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -50,7 +49,6 @@ import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDayTour;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
@@ -1330,17 +1328,13 @@ public class ToursService implements IToursService {
     	return vo;
     }
 	
-	public List<PMMinuteVO> getNewTourRetrivalDetails(Long candidateDayTourId){
-		
-		List<PMMinuteVO> finalList = new ArrayList<PMMinuteVO>();
-		
+	public PMMinuteVO getNewTourRetrivalDetails(Long candidateDayTourId){
+		PMMinuteVO vo = new PMMinuteVO();
 		try{
 			
 			SelfAppraisalCandidateDayTour dayTour = selfAppraisalCandidateDayTourDAO.get(candidateDayTourId);			
 			
 			if(dayTour !=null){
-				
-				PMMinuteVO vo = new PMMinuteVO();
 				
 				vo.setTourDate(dayTour.getTourDate() !=null ? dayTour.getTourDate().toString():null);
 				vo.setTdpCadreId(dayTour.getSelfAppraisalCandidate().getTdpCadreId());
@@ -1428,7 +1422,7 @@ public class ToursService implements IToursService {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		return vo;
 	}
 	
 	public List<KeyValueVO> setValuesTOVOList(List<Object[]> objList){
@@ -1464,5 +1458,43 @@ public class ToursService implements IToursService {
 		return voList;
 	}
     
-    
+
+	public ToursBasicVO getCandidateDetailedReport(Long candidateId,String fromDateStr,String toDateStr){
+		ToursBasicVO resultVO = new ToursBasicVO();
+		 List<ToursBasicVO> dateWiseTourDtlsList = new ArrayList<ToursBasicVO>(0);
+		 try{
+			 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 	Date fromDate=null,toDate = null;
+			 	if(fromDateStr != null && toDateStr != null){
+			 		fromDate=sdf.parse(fromDateStr);
+			 		toDate=sdf.parse(toDateStr); 
+			 	} 
+			   
+			   List<Object[]> objList = selfAppraisalCandidateDayTourDAO.getDateWiseTourSubmittedDetails(fromDate, toDate, candidateId);
+
+				  if(objList != null && objList.size() > 0){
+					  for(Object[] param:objList){
+						  ToursBasicVO VO = new ToursBasicVO();
+						  if(param[0] != null){
+							  VO.setTourDate(sdf.format(param[0]));  
+						  }
+						  VO.setTourCategoryId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						  VO.setTourCategory(commonMethodsUtilService.getStringValueForObject(param[2]));
+						  VO.setTourTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
+						  VO.setTourType(commonMethodsUtilService.getStringValueForObject(param[4]));
+						  VO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						  VO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						  VO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+						  VO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						  VO.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
+						  dateWiseTourDtlsList.add(VO);
+					  }
+				  }
+			    resultVO.getSubList2().addAll(dateWiseTourDtlsList);
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCandidateDetailedReport() in CoreDashboardToursService  : ",e);	 
+		 }
+		 return resultVO;
+	}
+	
 }
