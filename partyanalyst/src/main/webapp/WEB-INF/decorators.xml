@@ -723,5 +723,6 @@
 		<pattern>/cardPrintDispatchAction*</pattern>
 		<pattern>/cardPrintDashboardAction*</pattern>
 		<pattern>/userWiseCadreDemographicReportAction*</pattern>
+		<pattern>/cardPrintingStatusAction*</pattern>
 	</decorator> 
 </decorators>
