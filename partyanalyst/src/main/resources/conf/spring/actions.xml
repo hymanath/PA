@@ -1598,7 +1598,8 @@
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 			<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 			<property name="trainingCampService" ref="trainingCampService" />
-			<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />			
+			<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />		
+			<property name="alertService" ref="alertService" />		
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
