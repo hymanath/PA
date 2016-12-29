@@ -4237,7 +4237,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 		//List<AlertVO> categoriesList = new ArrayList<AlertVO>();
 		 Map<Long,AlertVO> categoriesMap = new HashMap<Long, AlertVO>(0);
-		 
+		 Object[] totalArr = {"0","TOTAL ALERTS"};
+		 categoryList.add(totalArr);
 		if(categoryList != null && categoryList.size() > 0){
 			for(Object[] param : categoryList){
 				AlertVO categoryVO = new AlertVO();
@@ -4259,14 +4260,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									AlertVO alertStatusVO = new AlertVO();
 									alertStatusVO.setStatusId(commonMethodsUtilService.getLongValueForObject(parm[0]));
 									alertStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(parm[1]));
-									if(alertTypeId != null && alertTypeId.longValue() ==0L)
-										alertStatusVOList.add(alertStatusVO);
-									else if(alertTypeId != null && alertTypeId.longValue() == alertTypeId )
 										alertStatusVOList.add(alertStatusVO);
 								}
 							}
 						 alertTypeVO.setSubList1(alertStatusVOList);
-						 alertTypeList.add(alertTypeVO);  
+						 
+						 if(alertTypeId != null && alertTypeId.longValue() ==0L)
+							 alertTypeList.add(alertTypeVO);  
+						else if(alertTypeVO.getAlertTypeId() != null && alertTypeVO.getAlertTypeId().longValue() == alertTypeId )
+							 alertTypeList.add(alertTypeVO);  
 					 }
 				 }
 				 
@@ -4341,9 +4343,112 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		}
 		
+		Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
+		Map<Long,Long> alerttypeWiseMap = new HashMap<Long, Long>(0);
 		if(commonMethodsUtilService.isMapValid(categoriesMap)){
 			 List<AlertVO> categoryWiseList = new ArrayList<AlertVO>(0);
-			 categoryWiseList.addAll(categoriesMap.values());
+			 for (Long categoryId : categoriesMap.keySet()) {
+				 if(categoryId>0L){
+					 AlertVO categoryVO1 = categoriesMap.get(categoryId);
+					 if(categoryVO1 != null){
+						 List<AlertVO> alertTypeList = categoryVO1.getSubList1();
+						 if(commonMethodsUtilService.isListOrSetValid(alertTypeList)){
+							 for (AlertVO alertTypeVO : alertTypeList) {
+								 List<AlertVO> alertStatusVOList =  alertTypeVO.getSubList1();
+								 if(commonMethodsUtilService.isListOrSetValid(alertStatusVOList)){
+									 for (AlertVO statusVO : alertStatusVOList) {
+										 if(statusVO.getCount() != null){
+											 if(alertTypeVO.getCount() != null)
+												 alertTypeVO.setCount( alertTypeVO.getCount()+statusVO.getCount());
+											 else
+												 alertTypeVO.setCount(statusVO.getCount());
+										 }
+										 
+										 Long count =0L;
+										 if(statusWiseMap.get(statusVO.getStatusId()) != null){
+											 count = statusWiseMap.get(statusVO.getStatusId());
+										 }
+										 
+										 if(count>0L){
+											 count = count+statusVO.getCount();
+										 }else{
+											 if(statusVO.getCount() != null){
+												 count = statusVO.getCount();
+											 }else if(statusVO.getCount() == null){
+												 count =0L;
+											 }else{
+												 count = count+statusVO.getCount();
+											 }
+										 }
+										 
+										 statusWiseMap.put(statusVO.getStatusId(), count);
+									}
+								 }
+								 
+								 if(alertTypeVO.getCount() != null){
+									 if(categoryVO1.getCount() != null)
+										 categoryVO1.setCount( categoryVO1.getCount()+alertTypeVO.getCount());
+									 else
+										 categoryVO1.setCount(alertTypeVO.getCount());
+								 }
+								 
+								 Long count =0L;
+								 if(alerttypeWiseMap.get(alertTypeVO.getAlertTypeId()) != null){
+									 count = alerttypeWiseMap.get(alertTypeVO.getAlertTypeId());
+								 }
+								 
+								 if(count>0L){
+									 count = count+alertTypeVO.getCount();
+								 }
+								 else{
+									 if(alertTypeVO.getCount() != null){
+										 count = alertTypeVO.getCount();
+									 }else if(alertTypeVO.getCount() == null){
+										 count =0L;
+									 }else{
+										 count = count+alertTypeVO.getCount();
+									 }
+								 }
+								 
+								 
+								 alerttypeWiseMap.put(alertTypeVO.getAlertTypeId(), count);
+							}
+						 }
+						 
+						 categoryWiseList.add(categoryVO1); 
+					}
+				 }
+			}
+			 
+			 
+			 AlertVO categoryVO2 = categoriesMap.get(0L);
+			 if(categoryVO2 != null){
+				 List<AlertVO> alertTypeList = categoryVO2.getSubList1();
+				 if(commonMethodsUtilService.isListOrSetValid(alertTypeList)){
+					 for (AlertVO alertTypeVO : alertTypeList) {
+						 List<AlertVO> alertStatusVOList =  alertTypeVO.getSubList1();
+						 if(commonMethodsUtilService.isListOrSetValid(alertStatusVOList)){
+							 for (AlertVO statusVO : alertStatusVOList) {
+								 statusVO.setCount(statusWiseMap.get(statusVO.getStatusId()));
+							 }
+						 }
+						 
+						 alertTypeVO.setCount(alerttypeWiseMap.get(alertTypeVO.getAlertTypeId()));
+						 if(alertTypeVO.getCount() == null)
+							 alertTypeVO.setCount(0L);
+						 if(alertTypeVO.getCount() != null){
+							 if(categoryVO2.getCount() != null)
+								 categoryVO2.setCount( categoryVO2.getCount()+alertTypeVO.getCount());
+							 else
+								 categoryVO2.setCount(alertTypeVO.getCount());
+						 }
+						 
+					}
+				 }
+				 
+				 categoryWiseList.add(categoryVO2); 
+			}
+			 
 			returnVo.setSubList1(categoryWiseList);
 		}
 	}catch (Exception e) {
