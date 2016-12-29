@@ -2815,6 +2815,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 	ToursBasicVO candiateVO = new ToursBasicVO();
 				 	candiateVO.setId(candiateId);
 				 	candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				 	candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 	candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
 				 	if(candidateTargetMap.get(designationId) != null && candidateTargetMap.get(designationId).size() > 0){
 				 		if(candidateTargetMap.get(designationId).get(candiateId) != null && candidateTargetMap.get(designationId).get(candiateId).size() > 0){
 				 			candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(candidateTargetMap.get(designationId).get(candiateId)));	
