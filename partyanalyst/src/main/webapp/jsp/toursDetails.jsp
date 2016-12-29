@@ -47,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="panel-body">
+					<!--<div class="panel-body">
 						<div class="table-responsive">
 							<table class="table tableTours">
 								<thead>
@@ -76,7 +76,15 @@
 								</tr>
 							</table>
 						</div>
-					</div>
+					</div>-->
+				<div class="panel-body pad_0 border_0">
+                	<div class="row">
+                    	<div class="col-md-12 col-xs-12 col-sm-12">
+					  <div ><center ><img style="display: none;" src="images/icons/loading.gif" id="overAllLeaderDivProcessImgId"></center></div>
+						<div id="overAllLeaderDivId"></div>
+                        </div>
+                    </div>
+                </div>
 				</div>
 			</div>
 			
@@ -365,6 +373,9 @@ $( document ).ready(function() {
 			   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
 			}
 		})
+		$('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
+			getToursDetailsOverview();
+		});
 	}
 	function getDay(){
 		var date = new Date();
@@ -392,7 +403,6 @@ $( document ).ready(function() {
 				'attr_count' : newsTourCloneCount
 			});
 			c.css("display","block");
-		
 		c.find(".tourDateCls").attr("id","tourDateId"+newsTourCloneCount);
 		c.find(".tourDateCls").attr("name","toursVOList["+newsTourCloneCount+"].tourDateId");
 		

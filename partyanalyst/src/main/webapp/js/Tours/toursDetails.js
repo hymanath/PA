@@ -614,3 +614,130 @@ function getCandidateList(designationId){
 			}
 		});
 	});
+	
+	getToursDetailsOverview(); //default call 
+	function getToursDetailsOverview(){ 
+	$("#overAllLeaderDivId").html(' ');
+	$("#overAllLeaderDivProcessImgId").show();
+	  var dates=$("#toursDateRangePickerNew").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+	var jsObj = { 
+			 fromDate : "12/12/2015",
+			 toDate : "28/12/2016",
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getToursDetailsOverviewForNewAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#overAllLeaderDivProcessImgId").hide();
+		 if(result != null && result.length > 0){
+			 buildLeadersOverviewRslt(result);
+		 }else{
+			$("#overAllLeaderDivId").html('NO DATA AVAILABLE.'); 
+		 }
+		});
+	}
+	
+	function buildLeadersOverviewRslt(result){  
+	 var str='';
+	 str+='<table class="table table-condensed tableOverview">';
+		str+='<thead>';
+			str+='<th></th>';
+			str+='<th>Total Leaders</th>';
+			str+='<th>Submited Leaders</th>';
+			str+='<th>Not Submited Leaders</th>';
+			str+='<th>Complaince</th>';
+			str+='<th>Non-Complaince</th>';
+			/* str+='<th>Submited Tours</th>';
+			str+='<th>Average Tours</th>'; */
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+			str+='<td>'+result[i].designation+'</td>';
+			if(result[i].noOfLeaderCnt != null && result[i].noOfLeaderCnt > 0){
+				str+='<td>'+result[i].noOfLeaderCnt+'</td>';
+			}else{
+			str+='<td> - </td>';
+			}
+			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){
+				str+='<td><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_desig_name="'+result[i].designation+'" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].notSubmitedLeaserCnt != null && result[i].notSubmitedLeaserCnt > 0){
+				str+='<td>'+result[i].notSubmitedLeaserCnt+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
+				str+='<td>'+result[i].complainceCnt+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){				
+				var nonComplinceCount= result[i].submitedLeaderCnt - result[i].complainceCnt ;				
+				str+='<td>'+nonComplinceCount+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	  str+='</table>';
+	  $("#overAllLeaderDivId").html(str);
+	}
+	$(document).on("click",".getSubMitedLeadersDtlsCls",function(){
+		var desigName = $(this).attr("attr_desig_name");
+		$("#myModalLabel").html(desigName+" OVERVIEW");
+		$("#desigDtlsId").html("");
+		$("#memDtlsId").html(""); 
+		$("#desigDtlsProcessImgId").show();  
+		$("#memDtlsProcessImgId").show();   		
+		$("#myModal").modal("show");  
+		
+		var desigId = $(this).attr("attr_designation_id");
+		var dates=$("#toursDateRangePickerNew").val();    
+		
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		//getDesignationDtls(fromDateStr,toDateStr,desigId);
+		//getMemDtls(fromDateStr,toDateStr,desigId,desigName);
+		getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId);
+	});
+	
+	function getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId){
+		var jsObj = { 
+			 desigId : desigId,
+			 startDateStr : fromDateStr,
+			 endDateStr : toDateStr    
+			}
+		$.ajax({
+			type : 'POST',
+			//url : 'getMemDtlsAction.action',
+			url : 'getMemberDetailsByDesignationWise.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			//$("#memDtlsProcessImgId").hide();  
+			if(result != null){
+				buildMemDtls(result,desigName);               
+			}
+		});
+	}
+	function buildMemDtls(){
+		
+	}
