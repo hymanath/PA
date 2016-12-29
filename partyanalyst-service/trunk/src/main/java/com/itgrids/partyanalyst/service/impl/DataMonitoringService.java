@@ -975,10 +975,10 @@ public class DataMonitoringService implements IDataMonitoringService {
 				File cadreImageFile = new File(cadreImage);
 				File backupImgFile = new File(backupImg);
 				
-				boolean parentFileStatus = backupImgFile.mkdirs();
+				/* boolean parentFileStatus = backupImgFile.mkdirs();
 				LOG.fatal("parentFileStatus --> "+parentFileStatus);
 				
-				/*boolean Copyflag = commonMethodsUtilService.fileCopy(cadreImageFile.getAbsolutePath(),backupImgFile.getAbsolutePath());
+				boolean Copyflag = commonMethodsUtilService.fileCopy(cadreImageFile.getAbsolutePath(),backupImgFile.getAbsolutePath());
 				LOG.fatal("Copy to backup --> "+Copyflag);
 				
 				boolean deleteFlag = cadreImageFile.delete();
