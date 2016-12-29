@@ -24,8 +24,8 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         			" and year(model.tourDate)=:year  ");
         	
         	query.setParameter("candidateId", candidateId);
-        	query.setParameter("month", month);
-        	query.setParameter("year", year);
+        	query.setParameter("month", Integer.parseInt(month.toString()));
+        	query.setParameter("year", Integer.parseInt(year.toString()));
         	
         	return query.list();
         	
