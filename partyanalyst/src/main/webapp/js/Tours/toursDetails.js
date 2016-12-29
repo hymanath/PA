@@ -614,9 +614,16 @@ function getCandidateList(designationId){
 			}
 		});
 	});
-	
-	getToursDetailsOverview(); //default call 
-	function getToursDetailsOverview(){ 
+	var fromDate = moment().format('DD/MM/YYYY');
+	var toDate = moment().format('DD/MM/YYYY');
+	$('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
+		fromDate = picker.startDate.format('DD/MM/YYYY');
+		toDate = picker.endDate.format('DD/MM/YYYY');
+		//$(".trainingDate").html("( "+customStartDate+" )");
+		getToursDetailsOverview(fromDate,toDate); //default call 
+	});
+	getToursDetailsOverview(fromDate,toDate); //default call 
+	function getToursDetailsOverview(fromDate,toDate){ 
 	$("#overAllLeaderDivId").html(' ');
 	$("#overAllLeaderDivProcessImgId").show();
 	  var dates=$("#toursDateRangePickerNew").val();
@@ -627,9 +634,9 @@ function getCandidateList(designationId){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
-	var jsObj = { 
-			 fromDate : "12/12/2015",
-			 toDate : "28/12/2016",
+		var jsObj = { 
+			 fromDate : fromDate,
+			 toDate : toDate,
 			}
 		$.ajax({
 			type : 'POST',
