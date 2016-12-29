@@ -1530,7 +1530,13 @@ function getCadreFamilyDetailsByCadreId(){
 	 imagePath:imgPath
 	 };
 	 familyInfoArr.push(familyObj);
-	 	 str += '<li style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">';
+		if(result[i].isRenewal == "true")
+		{
+			str += '<li style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;background-color:#e1e3ea">';
+		}else{
+			str += '<li style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">';	
+		}
+	 	 
          str += '<div class="media">';
 		 var imgPath='';
 		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
