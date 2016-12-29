@@ -3017,15 +3017,15 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		var str1='';
 		str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str1+='<div class="row">';
-					str1+='<table class="table table-bordered">';
-						str1+='<thead>';
+					str1+='<table class="table table-bordered borderedWeight">';
+						str1+='<thead class="bg_D8">';
 							str1+='<tr>';
-								str1+='<th class="text-capital">Date</th>';
-								str1+='<th class="text-capital">Category</th>';
-								str1+='<th class="text-capital">District Name</th>';
-								str1+='<th class="text-capital">Constituency Name</th>';
-								str1+='<th class="text-capital">Type</th>';
-								str1+='<th class="text-capital">Comment</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Category</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">District Name</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Type</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
 							str1+='</tr>';
 							str1+='<tbody>';
 								for(var i in result.subList2){
