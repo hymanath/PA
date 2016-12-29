@@ -24,7 +24,7 @@ public class CadreImageCreatorForNewType {
 	
 	public static void main(String[] args)
 	{
-		createMissedImages("2016-08-01","2016-12-31");
+		createMissedImages("2016-01-01","2016-12-31");
 	}
 	
 	public static void createMissedImages(String startDate,String endDate)
