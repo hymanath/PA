@@ -15195,11 +15195,22 @@
 		</result>
 	</action>
 	
-	
 	<action name="getCadreAlertDetailsAction" class="cadreDetailsAction"  method="getCadreAlertDetails">
 			<result type="json" name="success">
 			<param name="root">alertVO</param>
 		</result>
+	</action>
+	
+	<action name="getCandidateDetailedReportAction" class="toursAction" method="getCandidateDetailedReport">  
+		<result type="json" name="success">
+   			<param name="root">toursBasicVO</param>        
+   		</result>
+	</action>
+	
+	<action name="getNewTourRetrivalDetailsAction" class="toursAction" method="getNewTourRetrivalDetails">  
+		<result type="json" name="success">
+   			<param name="root">pMMinuteVO</param>        
+   		</result>
 	</action>
 	
  </package>
