@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -109,8 +111,21 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private VoterCastInfoVO voterCastInfoVO ;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private List<SelectOptionVO> selectOptList;
+	private IAlertService alertService;
+	private AlertVO alertVO;
 	
-	
+	public AlertVO getAlertVO() {
+		return alertVO;
+	}
+	public void setAlertVO(AlertVO alertVO) {
+		this.alertVO = alertVO;
+	}
+	public IAlertService getAlertService() {
+		return alertService;
+	}
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
+	}
 	public List<SelectOptionVO> getSelectOptList() {
 		return selectOptList;
 	}
@@ -1794,4 +1809,33 @@ public String getVolunteerCadreDetilasInformation(){
 	}
 	return Action.SUCCESS;
 }
+
+
+
+/*
+ * auther : Srishailam Pittala
+ * Date : 29th Dec, 2016
+ * Description : to Get Cadre wise alert Details
+ * */
+
+	public String getCadreAlertDetails(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			Long stateId = jObj.getLong("stateId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			String searchType = jObj.getString("searchType");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			
+			 alertVO = alertService.getAlertDetailsBySearch(tdpCadreId,stateId,startDateStr,endDateStr,searchType,alertTypeId);
+			
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getCadreAlertDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+
 }
