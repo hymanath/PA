@@ -36,6 +36,18 @@
 
 <style type="text/css">
 
+.ulPost li .labelStatus 
+{
+	color:#fff;
+}
+.ulPost li
+{
+	list-style:none;
+}
+.ulPost
+{
+	padding-left:0px;
+}
 
 .partyMeetingsCollapseBody
 {
@@ -327,6 +339,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;<span class="text-success" id="isFamilyId"></span></p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+						<p class="m_0" id="nominatedDivId" style="display:none;">Nominated Post : &nbsp;&nbsp;<span id="appliedCountId" style="cursor:pointer;" onclick="getMoreApplicationDetails()"></span><span id="nominatedPstStatusId"></span></p>
 						<p class="m_0">Volunteers Count : <a class="pointer"><span id="volunteerId"></span></a></p>
 						<p class="m_0" id="debateMainDivId" style="display:none" >TV DEBATOR : DEBATES (<a class="pointer"><span id="debateCountId"></span></a>)</p>
 					</div>
@@ -1768,6 +1781,25 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div>
+		
+<div class="modal fade" id="nominatedModalDivId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">APPLIED NOMINATED POST DETAILS</h4>
+      </div>
+      <div class="modal-body" >
+	   <center><img id="viewDetilsId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/></center>
+	  <div id="nmtedMdlId" class="row"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>	
+	
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -3014,7 +3046,36 @@ $(document).on('click','.showPdfCls3',function(){
 	}
 	
 }); 
-
+function getCandidateAppliedPostsByCadre(value){
+	if(value == 1){
+		$("#viewDetilsId").show();
+	}
+		var jsObj={
+				globalCadreId :globalCadreId,
+				searchType:"Cadre",
+				nominateCandId:0
+		}
+		$.ajax({
+			type:"POST",
+			url :"getCandidateAppliedPostsByCadreAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		if(value == 0){
+		   if(result != null){
+			    nominatedPostBuilingDetails(result);
+		   } 
+		}else{
+			$("#viewDetilsId").hide();
+			buildCandidateAppliedPostByCadreDetails(result);
+		}
+   });	
+  }
+function getMoreApplicationDetails(){
+	$("#nmtedMdlId").html('');
+	$("#nominatedModalDivId").modal('show');
+	getCandidateAppliedPostsByCadre(1);
+}
 </script>
 </body>
 </html>
