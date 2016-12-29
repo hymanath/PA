@@ -194,6 +194,7 @@ function getParticipatedConstituencyId(cadreId){
 						getEventsOverviewFortdpCadre();
 						//getCandidateAndConstituencySurveyResult();
 						getActivityDetails();
+						getCandidateAppliedPostsByCadre(0);
 					}
 				});
 			}
@@ -2912,7 +2913,7 @@ function getCadreIdByMemberShipId(){
 				getPartyMeetingsOverViewForCadre();
 				getEventsOverviewFortdpCadre();
 				getActivityDetails();
-				
+				getCandidateAppliedPostsByCadre(0);
 			}
 			
 		}
@@ -7896,4 +7897,128 @@ function getNominatedPostReportFiles() {
 			
 			$("#partyMeetingsModalId").modal("show");  
 	}
+function buildCandidateAppliedPostByCadreDetails(result){
+	
+	 var str = '';
+	 if(result.subList.length > 0 || result.subList1.length > 0){
+		$("#nominatedPstStatusId").show();
+	 if(result.subList != null && result.subList.length > 0){
+		 str+='<div class="col-md-4 col-xs-10 col-sm-8 col-lg-12">';
+                     //str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);" id="appliedPostId">';
+                        	/*str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE <i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for all application" onclick="getApplicationDocuments('+cadreId+','+candiId+',0);"></i></h4>'; */
+                           str+='<div class="row">';
+                           // str+='<div class="col-md-4 col-xs-10 col-sm-8 col-lg-12">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                      /*  str+='<div class="panel-heading">';
+                                        str+='<h4 class="panel-title">Nominated Post</h4>';
+                                       str+='</div>'; */
+                                       str+='<div class="panel-body">';
+                                        	str+='<ul class="ulPost">';
+											for(var i in result.subList){
+                                            	str+='<li>';
+												if(result.subList[i].applStatusId == 1)
+                                                	str+='<p class="labelStatus " style="background:orange;width:90px;" > Pending </p>';
+												else if(result.subList[i].applStatusId == 2 || result.subList[i].applStatusId == 4)
+                                                	str+='<p class="labelStatus " style="background:red;width:90px;"> '+result.subList[i].status+' </p>';
+												else if(result.subList[i].applStatusId == 3)
+                                                	str+='<p class="labelStatus " style="background:lightblue;width:90px;" > '+result.subList[i].status+' </p>';
+												else
+                                                	str+='<p class="labelStatus " style="background:green;width:90px;">'+result.subList[i].status+' </p>';
+													
+													/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
+													if(result.subList[i].levelName != null){
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+													}
+													else{
+														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+													}
+											}
+                                           str+='</ul>';
+                                        str+='</div>';
+                                   str+='</div>';
+                                str+='</div>';
+								}
+							//nominated Party 
+							if(result.subList1 != null && result.subList1.length > 0){
+								
+								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                    	str+='<div class="panel-heading">';
+                                        	str+='<h4 class="panel-title">Party Post</h4>';
+                                        str+='</div>';
+                                        str+='<div class="panel-body">';
+                                        	str+='<ul class="ulPost">';
+											for(var i in result.subList1){
+                                                str+='<li>';
+                                                	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
+                                                	if(result.subList1[i].levelName != null){
+													str+=''+result.subList1[i].level+'-'+result.subList1[i].levelName+ '→Dept- ' + result.subList[i].cadreName+"→Board- "+result.subList1[i].subCaste+" →Position- "+result.subList1[i].voterName+" : "+result.subList1[i].status+"</li>";
+													}
+													else{
+														str+=''+result.subList1[i].level+'→' +result.subList1[i].subCaste+" → "+result.subList1[i].cadreName+" → "+result.subList1[i].voterName+" : "+result.subList1[i].status+"</li>";
+													}
+											}
+                                          str+='</ul>';
+                                       str+=' </div>';
+                                    str+='</div>';
+                               str+=' </div>';
+							} /* else{
+								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                    	str+='<div class="panel-heading">';
+                                        	str+='<h4 class="panel-title">Party Post</h4>';
+                                        str+='</div>';
+                                        str+='<div class="" style="padding: 10px;;text-transform: uppercase;">';
+                                        	str+='<h4 style="height:100%;width:100%" class="text-center">No Existing Applied Posts are Available...</h4>';
+                                       str+=' </div>';
+                                    str+='</div>';
+                               str+=' </div>';
+							}  */
+	 
+                           //str+='</div>';
+                       //str+='</div>';
+					   //str+='<p class="text-muted">Note: Do you want to apply for more posts select below options</p>';
+                   str+='</div>';
+				    $("#nmtedMdlId").html(str);
+				   }
+				   else{
+			          $("#nominatedPstStatusId").css("display","none");
+				   }
+}
+function nominatedPostBuilingDetails(result){
+	var str= '';
+	var count = result.subList.length;
+	 if(result.subList.length > 0 || result.subList1.length > 0){
+	 $("#nominatedDivId").show();
+	 $("#appliedCountId").html("Applied posts count:<a><b><span id=countId>"+count+"</span></b></a>");
+	 $("#countId").attr("data-original-title","Click here to view applied posts");   
+	 $('#countId').tooltip();
+	  if(result.subList != null && result.subList.length > 0){
+			str+='<div>';
+			   str+='<div class="panel-body">';
+					str+='<ul class="ulPost">';
+					for(var i in result.subList){
+						str+='<li>';
+						 if(result.subList[i].applStatusId == 6 || result.subList[i].applStatusId == 7){
+							str+='<p class="labelStatus " style="background:green;width:90px;"> '+result.subList[i].status+' </p>';
+							/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
+							if(result.subList[i].levelName != null){
+								str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+							}
+							else{
+								str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+							}
+						 }
+					}
+				   str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+		//str+='</div>';
+		$("#nominatedPstStatusId").html(str);
+		}
+	 }
+	 else{
+		$("#nominatedDivId").css("display","none");
+		}
+}
  
