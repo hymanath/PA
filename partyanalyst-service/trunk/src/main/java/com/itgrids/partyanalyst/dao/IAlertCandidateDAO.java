@@ -17,4 +17,5 @@ public interface IAlertCandidateDAO extends GenericDao<AlertCandidate, Long> {
 	public List<Object[]> getAlertNewsCandidateCount(List<Long> alertIds);
 	public List<Long> getAlertCandidatesForUpdate(Long alertId);
 	public int deleteAlertCandidatesForUpdate(List<Long> alertCandidateIds);
+	public List<Object[]> getTdpCadreWiseInvoledAlertDetails(Long tdpCadreId,Date fromDate, Date toDate,Long alertTypeId);
 }
