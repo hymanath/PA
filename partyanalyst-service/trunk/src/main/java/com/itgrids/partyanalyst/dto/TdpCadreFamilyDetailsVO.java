@@ -39,9 +39,15 @@ public class TdpCadreFamilyDetailsVO {
 	
 	private String deletedStatus;
 	private String deletedReason;
+	private String isRenewal;
 	
 	
-	
+	public String getIsRenewal() {
+		return isRenewal;
+	}
+	public void setIsRenewal(String isRenewal) {
+		this.isRenewal = isRenewal;
+	}
 	public String getDeletedStatus() {
 		return deletedStatus;
 	}

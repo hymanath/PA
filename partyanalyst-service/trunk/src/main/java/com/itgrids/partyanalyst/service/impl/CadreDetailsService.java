@@ -3426,6 +3426,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 								}
 							}
 						}
+						Map<Long,Long> isCadreEnrolledMap = new LinkedHashMap<Long, Long>(0);
+						List<Object[]> enrolledCadreIdsList = tdpCadreEnrollmentYearDAO.getEnrolledDetailsByTdpCadreId(tdpCadreIDsList);
+						
+						if (enrolledCadreIdsList != null && enrolledCadreIdsList.size() > 0){
+							for (Object[] objects : enrolledCadreIdsList) {
+								Long tdpcadreId = objects[0] != null?Long.parseLong(objects[0].toString()):0l;
+								Long yearId = objects[1] != null?Long.parseLong(objects[1].toString()):0l;
+								if(yearId ==  4l){
+									isCadreEnrolledMap.put(tdpcadreId, yearId);
+								}
+							}
+						}
 						
 						/*List<Object[]> cadrePartyPositionDetals =  tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList(tdpCadreIDsList);
 						if(cadrePartyPositionDetals != null && cadrePartyPositionDetals.size()>0)
@@ -3455,8 +3467,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 						*/
+						
 						if(resultList != null && resultList.size()>0)
 						{
+							for (TdpCadreFamilyDetailsVO vo : resultList) {
+								if(isCadreEnrolledMap.get(vo.getTdpCadreId()) != null && isCadreEnrolledMap.get(vo.getTdpCadreId()) == 4l)
+									vo.setIsRenewal("true");
+								else
+									vo.setIsRenewal("false");
+							}
 							TdpCadreFamilyDetailsVO vo = resultList.get(0);
 							vo.setFamilySurveyCount(commonMethodsUtilService.isListOrSetValid(list) ? Long.valueOf(String.valueOf(list.size())):0L);
 							vo.setPartyPositionsCount(commonMethodsUtilService.isListOrSetValid(cadrePublicRepresentativList) ? Long.valueOf(String.valueOf(cadrePublicRepresentativList.size())):0L);

@@ -778,4 +778,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return  query.list();
 		}
+	  @SuppressWarnings("unchecked")
+		public List<Object[]> getEnrolledDetailsByTdpCadreId(List<Long> tdpCadreList)
+		{
+			Query query=getSession().createQuery(" select model.tdpCadreId,model.enrollmentYearId from  TdpCadreEnrollmentYear model where" +
+					" model.tdpCadreId in (:tdpCadreList) and model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N'  ");
+		
+			query.setParameterList("tdpCadreList", tdpCadreList);
+			return query.list();
+			
+		}
 }
