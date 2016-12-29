@@ -1276,3 +1276,23 @@ function buildVolunteersDetails(result){
 			$("#volunteerDetailsModalBodyId").html(str);
 		}
 	}
+
+	function getCadreAlertDetails(){
+		var jsObj=
+			{
+				tdpCadreId :globalCadreId,
+				stateId :1, // AP
+				startDateStr :"2016-11-27",
+				endDateStr :"2016-12-27",
+				searchType :"Assigned",
+				alertTypeId :1,				
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getCadreAlertDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				console.log(result);
+			//buildVolunteersDetails(result);	
+			});
+	}
