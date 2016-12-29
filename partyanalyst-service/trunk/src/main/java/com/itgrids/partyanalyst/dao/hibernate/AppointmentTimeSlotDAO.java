@@ -95,12 +95,14 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 				" model1.appointmentCandidate.imageURL," +
 				" model.appointment.appointmentStatus.status," +
 				" model.appointment.appointmentUser.appointmenUserId," +
-				" model.appointment.appointmentUser.name," +
-				" model.appointment.appointmentUser.mobile" +
+				" model.appointment.appointmentUser.tdpCadre.firstname," +
+				" model.appointment.appointmentUser.tdpCadre.mobileNo," +
+				" model.appointment.appointmentUser.tdpCadre.image" +
 				" from AppointmentTimeSlot model,AppointmentCandidateRelation model1" +
 				" where model.appointment.appointmentId = model1.appointment.appointmentId " +
 				" and model.appointment.appointmentUser.tdpCadreId = :tdpCadreId" +
-				" and model.isDeleted = 'N' and model.appointment.isDeleted = 'N'");
+				" and model.isDeleted = 'N' and model.appointment.isDeleted = 'N'" +
+				" and model.appointment.appointmentUser.tdpCadre.isDeleted = 'N'");
 		if(fromDate != null && toDate != null)
 			sb.append(" and model.date between :fromDate and :toDate");
 		

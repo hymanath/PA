@@ -24,8 +24,22 @@ public class PeshiAppGrievanceVO implements Serializable{
 	private List<PeshiAppGrievanceVO> subList;
 	private List<String> filePthList = new ArrayList<String>();
 	private String subject;
+	private String name;
+	private String image;
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public String getSubject() {
 		return subject;
 	}
