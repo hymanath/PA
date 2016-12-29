@@ -47,8 +47,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 				    queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 				 }
-		     	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
-		     	 
+			     if(userTypeId != IConstants.STATE_TYPE_USER_ID){
+			    	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");	 
+			     }
 		     	 queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId ");
 		     	  if(type.equalsIgnoreCase("Candiate")){
 		     		  queryStr.append(",model.selfAppraisalCandidate.selfAppraisalCandidateId");
@@ -61,9 +62,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		 		if(stateId != null && stateId.longValue() > 0){
 		 			 query.setParameter("stateId", stateId);
 		 		}
-	 		   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+	 		  /* if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 	 		    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
-		     	}else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		     	}else*/ if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
 		     	}else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
@@ -89,7 +90,6 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				   		" SelfAppraisalCandidateLocationNew SACL " +
 				   		" where " +
 				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
-				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) and " +
 				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " +
 				   		" SACL.userAddress.state.stateId = :stateId ");
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -103,7 +103,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		   }
-		   
+		   if(userTypeId != IConstants.STATE_USER_TYPE_ID || designationIds != null && designationIds.size() > 0){
+			  queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) "); 
+		   }
 		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
 		   				  " SACL.locationScopeId");   
@@ -118,9 +120,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   if(designationIds != null && designationIds.size() > 0){
 			   query.setParameterList("designationIds",designationIds);   
 		   }else{
-			   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+			  /* if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 			    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
-		       }else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		       }*/ if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
 		       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
