@@ -15194,5 +15194,13 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
+	
+	
+	<action name="getCadreAlertDetailsAction" class="cadreDetailsAction"  method="getCadreAlertDetails">
+			<result type="json" name="success">
+			<param name="root">alertVO</param>
+		</result>
+	</action>
+	
  </package>
 </struts>
