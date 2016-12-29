@@ -2412,7 +2412,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								//str+='<td></td>';
 										for(var j in result[i].subList3){
 											str+='<tr>';
-												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';
+												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
 												str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 												   for(var k in result[i].subList3[j].subList3){
@@ -2518,7 +2518,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										//str+='<td></td>';
 												for(var j in result[i].subList3){
 													str+='<tr>';
-														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';
+														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
 														str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 														   for(var k in result[i].subList3[j].subList3){
@@ -2721,7 +2721,7 @@ function buildTourMemberDetails(result){
                 //str+='<td></td>';
                     for(var j in result[i].subList3){
                       str+='<tr>';
-                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';//santosh
+                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';//santosh
                         str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 							for(var k in result[i].subList3[j].subList3){
