@@ -4,6 +4,7 @@ import java.util.List;
 
 public class AlertVO {
 	private Long alertTypeId;
+	private String alertTypeName;
 	private Long severity;
 	private Long locationLevelId;
 	private Long locationValue;
@@ -36,6 +37,14 @@ public class AlertVO {
 	private List<AlertVO> subList1;
 	private List<AlertVO> subList2;
 	private String title;
+	
+	
+	public String getAlertTypeName() {
+		return alertTypeName;
+	}
+	public void setAlertTypeName(String alertTypeName) {
+		this.alertTypeName = alertTypeName;
+	}
 	public String getTitle() {
 		return title;
 	}
