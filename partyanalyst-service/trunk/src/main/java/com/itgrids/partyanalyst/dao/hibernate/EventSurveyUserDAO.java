@@ -52,7 +52,8 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 		sb.append("select distinct Complaint_id as complaintId,Subject as subject," +
 				" description as description,Raised_Date as raisedDate,updated_at as updated," +
 				" Completed_Status as completedStatus,type_of_issue as typeOfIssue," +
-				" scan_copy as scanCopy" +
+				" scan_copy as scanCopy,membership_id as memberShipId," +
+				" mobile_no as mobileNo" +
 				" from complaint_master " +
 				" where type_of_issue not in ('Insurance','Trust Education Support') " +
 				" and Subject != '' and Subject is not null and delete_status is null and state_id_cmp in(1,2)" +
@@ -68,7 +69,9 @@ public class EventSurveyUserDAO extends GenericDaoHibernate<EventSurveyUser, Lon
 		.addScalar("updated", Hibernate.DATE)
 		.addScalar("completedStatus", Hibernate.STRING)
 		.addScalar("typeOfIssue", Hibernate.STRING)
-		.addScalar("scanCopy", Hibernate.STRING);
+		.addScalar("scanCopy", Hibernate.STRING)
+		.addScalar("memberShipId", Hibernate.STRING)
+		.addScalar("mobileNo", Hibernate.STRING);
 		
 		/*getSession().createSQLQuery(" select Complaint_id as complaintId,Subject as subject, description as description,"
 				+" Raised_Date as raisedDate,updated_at as updated, Completed_Status as completedStatus,"

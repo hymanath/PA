@@ -20,10 +20,18 @@ public class PeshiAppGrievanceVO implements Serializable{
 	private String toDate;
 	private String membershipId;
 	private String cadreType;
+	private String mobileNo;
 	private List<PeshiAppGrievanceVO> subList;
 	private List<String> filePthList = new ArrayList<String>();
+	private String subject;
 	
 	
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 	public List<String> getFilePthList() {
 		return filePthList;
 	}
@@ -119,5 +127,11 @@ public class PeshiAppGrievanceVO implements Serializable{
 	}
 	public void setCadreType(String cadreType) {
 		this.cadreType = cadreType;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 }
