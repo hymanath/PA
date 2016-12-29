@@ -2412,7 +2412,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								//str+='<td></td>';
 										for(var j in result[i].subList3){
 											str+='<tr>';
-												str+='<td >'+result[i].subList3[j].name+'</td>';
+												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';
 												str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 												   for(var k in result[i].subList3[j].subList3){
@@ -2518,7 +2518,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										//str+='<td></td>';
 												for(var j in result[i].subList3){
 													str+='<tr>';
-														str+='<td >'+result[i].subList3[j].name+'</td>';
+														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';
 														str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 														   for(var k in result[i].subList3[j].subList3){
@@ -2721,7 +2721,7 @@ function buildTourMemberDetails(result){
                 //str+='<td></td>';
                     for(var j in result[i].subList3){
                       str+='<tr>';
-                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';//santosh
+                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].name+'">'+result[i].subList3[j].name+'</td>';//santosh
                         str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
 
 							for(var k in result[i].subList3[j].subList3){
@@ -2765,13 +2765,14 @@ $(document).on("click",".candiateCls",function(){
 	var candiateId = $(this).attr("attr_candiate_id");
 	var designationName = $(this).attr("attr_designation_name");
 	var candiateName = $(this).attr("attr_candiate_name");
+	var selectedLevel = $(this).attr("attr_type");
+	$(".tourIndividualCls").attr("attr_type",selectedLevel);
    getCandiateWiseTourDetails(candiateId,designationName,candiateName);
 });
 
 function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	{ 
 		$("#tourIndividualPerformanceDivId").modal("show");
-		$(".tourIndividualCls").attr("attr_type","subLevel");
 		$("#nameOfMemberHeadingId").html('');
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small> </h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -3011,6 +3012,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		}
 	}	
 	}
+	
 	if(result !=null && result.subList2 != null && result.subList2.length > 0){
 		var str1='';
 		str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -3051,7 +3053,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										}
 										if(result.subList2[i].comment != null && result.subList2[i].comment.length > 0){
 											if(result.subList2[i].comment.length > 15){
-											 str1+='<td style="cursor:pointer;" title="'+result.subList2[i].comment+'">'+result.subList2[i].comment.substring(0,15)+'...</td>';	
+											 str1+='<td style="cursor:pointer;" title="'+result.subList2[i].comment+'">'+result.subList2[i].comment.substring(0,30)+'...</td>';	
 											}else{
 											 str1+='<td>'+result.subList2[i].comment+'</td>';	
 											}
