@@ -646,8 +646,27 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						
 					</div>
 				</div>
-                
-				
+                <!--
+				 <div class="panel panel-default" id="" style="display:none;">
+                	<div class="panel-heading" id="">
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS
+							<!--<span>
+								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="Own Constituency" class="glyphicon glyphicon-info-sign reasonCls"></i>
+							</span>
+							<span class="pull-right" id="cadreElectionProfileShowId"><i class="glyphicon glyphicon-chevron-up"></i>
+							</span><span class="pull-right" id="cadreElectionProfileHideId" style="display:none;">
+							<i class="glyphicon glyphicon-chevron-down"></i></span>-->
+							
+						</h4>
+                    </div>
+                    <div class="panel-body" id="">
+                    	<div class="cadre-election" >
+						<div id="alertDetailsDiv"> </div>
+                        	
+                        </div>
+                    </div>
+                </div>
+						-->	
 					<!--<div class="panel panel-default">
 					<div class="panel-heading" id="ivrSummaryHeaderId">
                     	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
@@ -3046,6 +3065,7 @@ $(document).on('click','.showPdfCls3',function(){
 	}
 	
 }); 
+
 function getCandidateAppliedPostsByCadre(value){
 	if(value == 1){
 		$("#viewDetilsId").show();
@@ -3076,6 +3096,7 @@ function getMoreApplicationDetails(){
 	$("#nominatedModalDivId").modal('show');
 	getCandidateAppliedPostsByCadre(1);
 }
+//getCadreAlertDetails();
 </script>
 </body>
 </html>
