@@ -708,7 +708,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 								locationVO.setId((Long)obj[0]);
 								locationVO.setName(obj[1]!=null ? obj[1].toString() :"");
 								locationVO.setCount(obj[2] != null ? (Long)obj[2] : 0l);
-								setStatusListToVO(list , locationVO);
+								setStatusListToVO(statusList , locationVO);
 								
 								if(type.equalsIgnoreCase("district")){
 									if(locationId.longValue() >=1 && locationId.longValue() <= 10){
