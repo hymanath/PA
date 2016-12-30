@@ -2062,7 +2062,7 @@ public class ToursService implements IToursService {
 					    	  candiateVO = new ToursBasicVO(); 
 					    	  candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					    	  if(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
-					    		  candiateVO.setSubList3(new ArrayList<ToursBasicVO>(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))));  
+					    		   candiateVO.setSubList3(getCategoryList(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))));   
 					    	  }
 					    	  candiateMap.put(candiateVO.getId(), candiateVO);
 					      }
@@ -2093,7 +2093,23 @@ public class ToursService implements IToursService {
 			  LOG.error("Exception Occured in prepareCandiateWiseDtlsToTakeComplainceCandiate() in ToursService  : ",e);  
 		  }
 	  }
-	 
+	 public List<ToursBasicVO> getCategoryList(List<ToursBasicVO> list){
+		 List<ToursBasicVO> categoryList = new ArrayList<ToursBasicVO>();
+		 try{
+			 if(list != null && list.size() > 0){
+				 for(ToursBasicVO VO:list){
+					 ToursBasicVO categoryVO = new ToursBasicVO();
+					 categoryVO.setIdStr(VO.getIdStr());
+					 categoryVO.setName(VO.getName());
+					 categoryVO.setTargetDays(VO.getTargetDays());
+					 categoryList.add(categoryVO); 
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCategoryList() in ToursService  : ",e);	 
+		 }
+		 return categoryList;
+	 }
 	 public String deleteDocumentByDocument(List<Long> documentIds){
 		 try{
 			 
@@ -2107,5 +2123,4 @@ public class ToursService implements IToursService {
 		 }
 		 return null;
 	 }
-	
 }
