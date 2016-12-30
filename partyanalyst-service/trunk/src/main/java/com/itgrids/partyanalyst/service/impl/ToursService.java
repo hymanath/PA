@@ -1284,7 +1284,6 @@ public class ToursService implements IToursService {
   						  vo.getStatesList().add(vo2);
   					  }
  
-  					 
   					  if(objects2[1] != null && (Long)objects2[1] > 0l){
   						  vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
   						  District distObj = districtDAO.get((Long)objects2[1]);
@@ -1298,7 +1297,7 @@ public class ToursService implements IToursService {
   						  List<Object[]> objList = districtDAO.getDistrictsWithNewSplitted((Long)objects2[0]);
 						  vo.setDistList(setValuesTOVOList(objList));
   					  }
-  					 	  
+  					
   					  if(objects2[2] != null && (Long)objects2[2] > 0l){
   						 vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
   						 Constituency constObj = constituencyDAO.get((Long)objects2[2]);
@@ -1382,20 +1381,49 @@ public class ToursService implements IToursService {
   				  if(userDetailsList != null && userDetailsList.size() > 0){
   					  for (Object[] objects2 : userDetailsList) {
   						  vo.setStateId(commonMethodsUtilService.getLongValueForObject(objects2[0]));
-  						  if(objects2[0] != null && (Long)objects2[0] > 0l){
-  							  List<Object[]> objList = districtDAO.getDistrictsWithNewSplitted((Long)objects2[0]);
-  							  vo.setDistList(setValuesTOVOList(objList));
+  						  if(vo.getStateId() == 1l){
+    						  KeyValueVO vo1 = new KeyValueVO();
+    						  vo1.setId(1l);
+    						  vo1.setName("AndhraPradesh");
+    						  vo.getStatesList().add(vo1);
   						  }
-  						  
-  						  vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
-  						  if(objects2[1] != null && (Long)objects2[1] > 0l){
-  							  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getConstituencyOfDistrict(vo.getStateId(),Arrays.asList(vo.getDistrictId()));
-  							  vo.setConstList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
-  							  
-  						  }
-  						  
-  						  vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
-  						  if(objects2[2] != null && (Long)objects2[2] > 0l){
+    					  if(vo.getStateId() == 2l){
+    						  KeyValueVO vo2 = new KeyValueVO();
+    						  vo2.setId(36l);
+    						  vo2.setName("Telangana");
+    						  vo.getStatesList().add(vo2);
+    					  }
+    					  
+    					  if(objects2[1] != null && (Long)objects2[1] > 0l){
+      						  vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
+      						  District distObj = districtDAO.get((Long)objects2[1]);
+      						  if(distObj != null){
+      							  KeyValueVO distVO = new KeyValueVO();
+      							  distVO.setId(distObj.getDistrictId());
+      							  distVO.setName(distObj.getDistrictName());
+      							  vo.getDistList().add(distVO);
+      						  }
+      					  }else if(objects2[0] != null && (Long)objects2[0] > 0l){
+      						  List<Object[]> objList = districtDAO.getDistrictsWithNewSplitted((Long)objects2[0]);
+    						  vo.setDistList(setValuesTOVOList(objList));
+      					  }
+    					  
+    					  if(objects2[2] != null && (Long)objects2[2] > 0l){
+    	  					 vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
+    	  					 Constituency constObj = constituencyDAO.get((Long)objects2[2]);
+    	  					 if(constObj != null){
+    	  						 KeyValueVO constVO = new KeyValueVO();
+    	  						 constVO.setId(constObj.getConstituencyId());
+    	  						 constVO.setName(constObj.getName());
+    	  						 vo.getConstList().add(constVO);
+    	  					 }
+    	  				  }else if(vo.getDistrictId() != null && vo.getDistrictId() > 0l){
+    	  						  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getConstituencyOfDistrict(vo.getStateId(),Arrays.asList(vo.getDistrictId()));
+    	  						  vo.setConstList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
+    	  				  }
+    					  
+    					  
+    					  if(objects2[2] != null && (Long)objects2[2] > 0l){
   							  List<LocationWiseBoothDetailsVO> lwbdvoList = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(0l,Arrays.asList(vo.getDistrictId()),Arrays.asList(vo.getConstituencyId()),"0",4l);
   							  vo.setManTowDivList(setResultTOLocationWiseBoothDetailsVO(lwbdvoList));
   						  }
