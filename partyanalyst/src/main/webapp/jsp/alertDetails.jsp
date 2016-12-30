@@ -318,7 +318,7 @@ control.makeTransliteratable(['commentsId']);
 									</li>
 								</ul>
 							</div>  
-							<div class="col-md-8 col-xs-12 col-sm-6">
+							<div class="col-md-8 col-xs-12 col-sm-6 " >
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
 								
 								<div id="alertCommentsDivIdNew"></div>
@@ -345,7 +345,7 @@ control.makeTransliteratable(['commentsId']);
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
-										<div class="col-md-8 col-xs-12 col-sm-6">
+										<div class="col-md-8 col-xs-12 col-sm-6 assignedCandidatesCls">
 											<label>Alert Status</label>
 											<select class="dropkickClass" id="statusId">
 												<option value='0'>Select Status</option>
@@ -492,6 +492,18 @@ control.makeTransliteratable(['commentsId']);
 
 
 var alertId = '${alertId}';
+var status = '${status}';
+
+
+$(document).ready(function(){
+	if(status != null && status =='false'){
+		$('.assignModel').hide();
+		$('.assignedCandidatesCls').hide();
+	}else{
+		$('.assignModel').show();
+		$('.assignedCandidatesCls').show();
+	}
+});
 
 $(".dropkickClass").dropkick();
 function deleteAlertAssignedCandidates(tdpCadreId)
