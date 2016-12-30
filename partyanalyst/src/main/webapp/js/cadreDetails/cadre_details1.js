@@ -1278,6 +1278,7 @@ function buildVolunteersDetails(result){
 	}
 
 	function getCadreAlertDetails(){
+			$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		var jsObj=
 			{
 				tdpCadreId :globalCadreId,
@@ -1285,7 +1286,7 @@ function buildVolunteersDetails(result){
 				startDateStr :"2016-11-27",
 				endDateStr :"2016-12-27",
 				searchType :"Assigned",
-				alertTypeId :1,				
+				alertTypeId :1			
 			}
 			$.ajax({
 			type:'POST',
@@ -1329,22 +1330,22 @@ function buildVolunteersDetails(result){
 			for(var j in finalReslt){
 				str+='<tr>';
 				str+='<td> '+finalReslt[j].category.toUpperCase()+'</td>';
-				if(finalReslt[j].count != null)
-					str+='<td> '+finalReslt[j].count+' </td>';
+				if(finalReslt[j].count != null  && parseInt(finalReslt[j].count)>0 )
+					str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="0" status_id="0" ><u>'+finalReslt[j].count+' </u></a></td>';
 				else
 					str+='<td> 0  </td>';
 				
 				if(finalReslt[j].subList1 != null && finalReslt[j].subList1.length>0){
 					for(var k in finalReslt[j].subList1 ){
-						if(finalReslt[j].subList1[k].count != null)
-							str+='<td> '+finalReslt[j].subList1[k].count+'</td>';
+						if(finalReslt[j].subList1[k].count != null  && parseInt(finalReslt[j].subList1[k].count)>0 )
+							str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="0" ><u>'+finalReslt[j].subList1[k].count+'</u></a></td>';
 						else
 							str+='<td> 0  </td>';
 					}
 						var statusList = finalReslt[j].subList1[0].subList1;
 							for(var l in statusList){
-								if(statusList[l].count != null )
-									str+='<td> '+statusList[l].count+' </td>';
+								if(statusList[l].count != null && parseInt(statusList[l].count)>0 )
+									str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="'+statusList[l].statusId+'" > <u>'+statusList[l].count+'</u></a> </td>';
 								else
 									str+='<td> 0  </td>';
 							}
@@ -1359,3 +1360,72 @@ function buildVolunteersDetails(result){
 		$('#alertDetailsDiv').html(str);
 	}
 	
+	$(document).on("click",".cadreAlertCls",function(){
+		var categoryId = $(this).attr('attr_categoryId');
+		var alertTypeId = $(this).attr('altert_Type_Id');
+		var statusId = $(this).attr('status_id');
+		$('#alertsOverViewTAb').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		var jsObj=
+			{
+				tdpCadreId :globalCadreId,
+				stateId :1, // AP
+				startDateStr :"2016-11-27",
+				endDateStr :"2016-12-27",
+				searchType :"Assigned",
+				alertTypeId :alertTypeId,					
+				categoryId :categoryId,
+				statusId :statusId
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getCandidateAlertDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				//console.log(result);
+				buildAlertsDEtails(result);
+			});
+			
+	});
+
+	function buildAlertsDEtails(result){
+		var finalResult = result.subList1;
+		var str='';
+		if(finalResult != null && finalResult.length>0){
+			str+='<table class="table table-bordered table condensed" id="alertsTab">';
+			str+='<thead>';
+			str+='<tr>';
+			//str+='<th>DESCRIPTION </th>';
+			str+='<th>CREATED ON </th>';
+			str+='<th>LAST UPDATED ON </th>';
+			str+='<th> PRESENT STATUS </th>';
+			str+='<th> LOG DAYS </th>';
+			str+='<th> IMPACT LEVEL </th>';
+			str+='<th> DETAILS </th>';
+			
+			str+='</tr>';
+			str+='</thead>';
+			
+			str+='<tbody>';
+			for(var i in finalResult){
+				str+='<tr>';
+			//	str+='<td>'+finalResult[i].desc+'</td>';
+				str+='<td>'+finalResult[i].date1+'</td>';
+				str+='<td>'+finalResult[i].date2+'</td>';
+				str+='<td>'+finalResult[i].status+'</td>';
+				str+='<td> - </td>';
+				str+='<td>'+finalResult[i].locationName+'</td>';
+				str+='<td> <button class="btn btn-success btn-mini btn-xs alertsDetailsCls" attr_alert_id="'+finalResult[i].id+'"> Alert Details </button></td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+		}
+		$('#alertsOverViewTAb').html(str);
+		$('#alertsTab').dataTable({});
+	}
+	
+	$(document).on("click",".alertsDetailsCls",function(){
+		var attr_alert_id = $(this).attr('attr_alert_id');
+		window.open('alertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
+		
+	});
