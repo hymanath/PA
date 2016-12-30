@@ -170,6 +170,9 @@ public class TdpCadre {
 	private Long cadreVerificationStatusId;
 	private String isCsd;
 	
+	private Long cardPrintStatusId;
+	private CardPrintStatus cardPrintStatus;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -1223,5 +1226,26 @@ public class TdpCadre {
 	public void setIsCsd(String isCsd) {
 		this.isCsd = isCsd;
 	}
+	
+	@Column(name="card_print_status_id")
+	public Long getCardPrintStatusId() {
+		return cardPrintStatusId;
+	}
+	public void setCardPrintStatusId(Long cardPrintStatusId) {
+		this.cardPrintStatusId = cardPrintStatusId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "card_print_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CardPrintStatus getCardPrintStatus() {
+		return cardPrintStatus;
+	}
+	public void setCardPrintStatus(CardPrintStatus cardPrintStatus) {
+		this.cardPrintStatus = cardPrintStatus;
+	}
+	
+	
 	
 }
