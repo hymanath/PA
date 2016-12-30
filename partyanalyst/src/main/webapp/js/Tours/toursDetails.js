@@ -779,7 +779,7 @@ function getCandidateList(designationId){
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
 					}
-					str+='<td><button class="btn btn-success editBtn btn-xs">EDIT</button></td>'
+					str+='<td><button class="btn btn-success editBtn btn-xs" attr_candidateId="'+result[i].id+'">EDIT</button></td>'
 				str+='</tr>';
 			}
 
@@ -791,6 +791,7 @@ function getCandidateList(designationId){
 		
 	}
 	$(document).on("click",".editBtn",function(){
+		var candiateId = $(this).attr("attr_candidateId");
 		getCandidateDetailedReport(candiateId);
 	});
 	
@@ -809,24 +810,31 @@ function getCandidateList(designationId){
 		}).done(function(result){
 			$("#membersOverviewModalEdit").modal('show');
 			buildCandidateDetailedReport(result);
-			
 		});
 	}
 	function buildCandidateDetailedReport(result)
 	{
 		var str='';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered" id="membersOverviewTableId">';
 			str+='<thead>';
-				str+='<th>Month & Date</th>';
-				str+='<th>Category</th>';
-				str+='<th>District Name</th>';
-				str+='<th>Constituency Name</th>';
+				str+='<th class="bg_D8">Month & Date</th>';
+				str+='<th class="bg_D8">Category</th>';
+				str+='<th class="bg_D8">District Name</th>';
+				str+='<th class="bg_D8">Type</th>';
 			str+='</thead>';
-			str+='<tr>';
-				str+='<td></td>';
-			str+='</tr>';
+			for(var i in result.subList2)
+			{
+				str+='<tr>';
+					str+='<td>'+result.subList2[i].tourDate+'</td>';
+					str+='<td>'+result.subList2[i].tourCategory+'</td>';
+					str+='<td>'+result.subList2[i].locationName+'</td>';
+					str+='<td>'+result.subList2[i].tourType+'</td>';
+				str+='</tr>';
+			}
+			
 		str+='</table>';
 		$("#membersOverviewModalEditId").html(str);
+		$("#membersOverviewTableId").dataTable();
 	}
 
 	getNewTourRetrivalDetails();
