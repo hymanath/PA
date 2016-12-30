@@ -35,4 +35,5 @@ public interface IToursService {
 	 public PMMinuteVO getNewTourRetrivalDetails(Long candidateDayTourId);
 	 public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId);
 	 public List<ToursBasicVO> getTourBasicOverviewDtlsDesignationWise(String fromDateStr,String toDateStr,List<Long> designationIds);
+	 public String deleteDocumentByDocument(List<Long> documentIds);
 }
