@@ -60,13 +60,13 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		   		          " model.selfAppraisalDesignation.designation," +
 		   		          " count(distinct model.selfAppraisalCandidateId) " +
 		   		          " from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' ");
-		   if(desigIds != null){
+		   if(desigIds != null && desigIds.size() > 0){
 			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in  (:desigIds) ");  
 		   }
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId " +  
 		   				  " order by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
 		   Query query = getSession().createQuery(queryStr.toString());
-		   if(desigIds != null){
+		   if(desigIds != null && desigIds.size() > 0){
 			   query.setParameterList("desigIds",desigIds);
 		   }  
 		   return query.list();  

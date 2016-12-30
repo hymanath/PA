@@ -21,4 +21,5 @@ public interface ISelfAppraisalCandidateDayTourDAO extends GenericDao<SelfApprai
 	 public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId);
 	 public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds,Long candidateId);
 	 public List<Object[]> getCategoryWiseTourSubmittedLeaderDesignation(Date fromDate,Date toDate,String type,List<Long> designationIds);
+	 public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(Date fromDate,Date toDate,String type);
 }

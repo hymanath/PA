@@ -61,6 +61,7 @@ public class ToursBasicVO {
 	private Long complainceCnt=0l;
 	private Long complainceDays=0l;
 	private Double complaincePer = 0.0d;
+	private Double nonComplaincePer = 0.0d;
 	private Long nonComplainceCnt=0l;
 	private Set<Long> complaincandidateIdsSet;
 	private Set<Long> noNComplaincandidateIdsSet;
@@ -653,6 +654,12 @@ public class ToursBasicVO {
 	}
 	public void setTourTypeAchievedDays(Long tourTypeAchievedDays) {
 		this.tourTypeAchievedDays = tourTypeAchievedDays;
+	}
+	public Double getNonComplaincePer() {
+		return nonComplaincePer;
+	}
+	public void setNonComplaincePer(Double nonComplaincePer) {
+		this.nonComplaincePer = nonComplaincePer;
 	}
 	public Long getCount() {
 		return count;

@@ -442,4 +442,37 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  
 		  return query.list();
  }
+	 public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(Date fromDate,Date toDate,String type){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select " +
+			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+			 " model.selfAppraisalDesignation.designation," +
+			 " model.selfAppraisalCandidateId," );
+			if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" model.selfAppraisalTourCategoryId,");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" model.tourTypeId,");	
+			}
+			queryStr.append(" count(distinct model.tourDate) " +
+			 " from SelfAppraisalCandidateDayTour model where model.isDeleted='N' " +
+			 " and model.selfAppraisalDesignation.isActive='Y' ");
+		   if(fromDate != null && toDate != null ){
+             queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+        }
+		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		  				   "  model.selfAppraisalCandidateId,");
+		    if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" model.selfAppraisalTourCategoryId");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" model.tourTypeId");	
+			}
+		    queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		  				   "  model.selfAppraisalCandidateId ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+		  }
+		  return query.list();
+ }
 }
