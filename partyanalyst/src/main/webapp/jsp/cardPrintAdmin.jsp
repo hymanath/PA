@@ -16,16 +16,46 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+</head>
 <body>
-<div class="container">
-   <div class="row">
-	 <h4 class="textcenter">This is the Cards Print Admin</h4>
-   </div>
-</div> 
-</div>		
-</body>
+	<div class="container">
+	   <div class="row">
+	         <div class="col-md-12 col-xs-12 col-sm-6 col-lg-2 m_top10 offset 1" >
+	               <label>CONSTITUENCY:</label>
+	                   <select id="constiencyId"  class="chosenSelect">
+	                       <option value="0">Please Select Constituency</option>	
+	                   </select>
+	         </div>
+	   </div>
+	</div> 
+	
+
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script type ="text/javascript">
+
+$(document).ready(function(){
+	getConstituencyDetailsList();
+});
+function getConstituencyDetailsList(){
+	
+	var jsObj ={
+			
+	}
+	$.ajax({
+		type:"post",
+		url:"getConstituencyDetailsListAction.action",
+		dataType:"json",
+		data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+		if(result != null && result.length>0){
+			for(var i in result){
+				$("#constiencyId").append('<option valuue='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			
+		}
+	});
+}
 </script>
-</head>
+</body>
 </html>
