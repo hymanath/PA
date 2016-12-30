@@ -646,26 +646,52 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						
 					</div>
 				</div>
+                
 				 <div class="panel panel-default" id="" style="">
-                	<div class="panel-heading" id="">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS <button class="btn btn-success btn-mini btn-xs" onclick="getCadreAlertDetails();"> OK </button> 
-							<!--<span>
-								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="Own Constituency" class="glyphicon glyphicon-info-sign reasonCls"></i>
-							</span>
-							<span class="pull-right" id="cadreElectionProfileShowId"><i class="glyphicon glyphicon-chevron-up"></i>
-							</span><span class="pull-right" id="cadreElectionProfileHideId" style="display:none;">
-							<i class="glyphicon glyphicon-chevron-down"></i></span>-->
-							
-						</h4>
+                	<div class="panel-heading" id="alertHeaderId" style="padding:5px 15px;">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h4 style="display:inline-block;" class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS  </h4>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
+								<label class="radio-inline"><input type="radio" name="radioBtn" value="Assigned" checked/>Assigned</label>
+								<label class="radio-inline"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="padding-left:0px">
+								<label style="font-size:13px;">Alert Types :</label> 
+								<select class="form-control" id="typeId" style="font-size:13px;display:inline-block; width: 90px">
+									<option value="0">All</option>
+									<option value="1">Party</option>
+									<option value="2">Govt</option>
+									<option value="3">Others</option>
+								</select>
+							</div>
+							<div class="col-md-5 col-xs-12 col-sm-5" style="padding-left: 0px">
+								<div style="display:inline-block">
+									<div class="input-group pull-right" style="">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+										<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
+									</div>
+								</div>
+								<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>
+								<span class="pull-right" id="alertProfileShowId">
+									<i class="glyphicon glyphicon-chevron-up"></i>
+								</span>
+								<span class="pull-right" id="alertProfileHideId" style="display:none;">
+									<i class="glyphicon glyphicon-chevron-down"></i>
+								</span>
+							</div>
+						</div>
                     </div>
-                    <div class="panel-body" id="">
+                    <div class="panel-body" id="alertBodyId">
                     	<div class="cadre-election" >
 						<div id="alertDetailsDiv"> </div>
-						<div id="alertsOverViewTAb"> </div>
+						<!--<div id="alertsOverViewTAb"> </div>-->
                         	
                         </div>
                     </div>
                 </div>
+						
 				
 				
 					<!--<div class="panel panel-default">
@@ -1819,8 +1845,26 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     </div>
   </div>
 </div>	
-	
 
+<!-- Alert Modal -->
+<div class="modal fade" id="alertModalDivId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabelId"></h4>
+      </div>
+      <div class="modal-body" >
+	  <center><img id="alertImgId" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/></center>
+	  <div id="alertModalStrId"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -3097,7 +3141,20 @@ function getMoreApplicationDetails(){
 	$("#nominatedModalDivId").modal('show');
 	getCandidateAppliedPostsByCadre(1);
 }
-getCadreAlertDetails();
+//getCadreAlertDetails();
+$("#alertBodyId").collapse('show');
+$(document).on("click","#alertHeaderId",function(){
+	var isVisible = $( "#alertProfileHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#alertProfileHideId" ).show();
+		 $( "#alertProfileShowId" ).hide();
+	}else{
+		$( "#alertProfileHideId" ).hide();
+		$( "#alertProfileShowId" ).show();
+	}
+	$("#alertBodyId").collapse('toggle');
+});
+getCandidateAppliedPostsByCadre(0);
 </script>
 </body>
 </html>
