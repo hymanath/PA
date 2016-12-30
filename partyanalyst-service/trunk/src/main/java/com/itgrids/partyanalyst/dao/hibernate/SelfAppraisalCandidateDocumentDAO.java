@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -29,5 +31,36 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         	
         	return query.list();
         	
+        }
+        
+        public List<Object[]> getDocumentsOfCandidates(Date fromDate,Date toDate,Set<Long> candidateIds){
+        	
+        	StringBuilder str = new StringBuilder();
+        	
+        	str.append(" select model.selfAppraisalCandidateId,count(model.documentPath) " +
+        			" from SelfAppraisalCandidateDocument model " +
+        			" where model.isDeleted='N' " );
+        	
+        	if(candidateIds !=null && candidateIds.size()>0){
+        		str.append(" and model.selfAppraisalCandidateId in (:candidateIds) " ); 
+        	}
+        	
+        	if(fromDate !=null && toDate !=null){
+        		str.append(" and date(model.tourDate) between :fromDate and :toDate ");
+        	}
+        	
+        	str.append(" group by model.selfAppraisalCandidateId ");
+        	
+        	Query query = getSession().createQuery(str.toString());
+        	
+        	if(candidateIds !=null && candidateIds.size()>0){
+        		query.setParameterList("candidateIds", candidateIds);
+        	}
+        	if(fromDate !=null && toDate !=null){
+        		query.setDate("fromDate",fromDate);
+        		query.setDate("toDate",toDate);
+        	}
+        	
+        	return query.list();
         }
 }

@@ -1592,18 +1592,29 @@ public class ToursService implements IToursService {
 			  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedCandidates(fromDate, toDate, designationIds,candidateId);
 			  setTourSubmitteedMembers(rtrnMemberDtlsObjLst,submittedCandidatesMap,candidateTargetMap);
 			  
-			  if(submittedCandidatesMap !=null && submittedCandidatesMap.size()>0){
-				  resultList = new ArrayList<ToursBasicVO>(submittedCandidatesMap.values());
-			  }
-			  
-			 /* Set<Long> candidateIds = new HashSet<Long>(0);
+			  Set<Long> candidateIds = new HashSet<Long>(0);
 			  if(resultList !=null && resultList.size()>0){
 				  for (ToursBasicVO obj : resultList) {										 
 					  if(obj.getId() !=null)
 						  candidateIds.add(obj.getId());					  
 				  }
-			  }	*/	
+			  }		
 			
+			  List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsOfCandidates(fromDate,toDate,candidateIds);
+			  
+			  if(documentsList !=null && documentsList.size()>0){
+				  for (Object[] objects : documentsList) {					
+					  ToursBasicVO VO = submittedCandidatesMap.get((Long)objects[0]);
+					  if(VO !=null){
+						  VO.setCount(objects[1] !=null ? (Long)objects[1]:0l);
+					  }					  					  
+				}
+			  }
+			  
+			  if(submittedCandidatesMap !=null && submittedCandidatesMap.size()>0){
+				  resultList = new ArrayList<ToursBasicVO>(submittedCandidatesMap.values());
+			  }
+			  
 		}catch(Exception e){
 			LOG.error("Exception raised at getMemberDetailsByDesignationWise in ToursService Class ", e);
 		}

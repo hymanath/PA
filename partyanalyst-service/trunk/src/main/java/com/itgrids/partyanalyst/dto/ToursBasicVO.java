@@ -99,6 +99,7 @@ public class ToursBasicVO {
 	private Long tourTypeTargetDays=0l;
 	
 	private Long tourTypeAchievedDays=0l;
+	private Long count=0l;
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
@@ -652,6 +653,12 @@ public class ToursBasicVO {
 	}
 	public void setTourTypeAchievedDays(Long tourTypeAchievedDays) {
 		this.tourTypeAchievedDays = tourTypeAchievedDays;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
           
 	
