@@ -186,5 +186,10 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	public String getCardPrintingStatus(){
 		return Action.SUCCESS;
 	}
+	
+	public String cardPrintAdminStatus(){
+		return Action.SUCCESS;
+	}
+
 
 }
