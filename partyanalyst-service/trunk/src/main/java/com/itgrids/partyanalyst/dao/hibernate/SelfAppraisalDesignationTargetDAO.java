@@ -227,7 +227,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
     	    	
     }
     
-    public List<Object[]> getDesignationAndCategoryWiseCandidatesTarget(Date fromDate,Date toDate,String type,List<Long> designationIds){
+    public List<Object[]> getDesignationAndCategoryWiseCandidatesTarget(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId){
         StringBuilder queryStr = new StringBuilder();
          queryStr.append(" select " +
 		 " model2.selfAppraisalCandidateId,");
@@ -257,6 +257,11 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
         if(designationIds != null && designationIds.size() > 0){
         	queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds)");
         }
+        
+        if(candidateId !=null && candidateId>0l){
+        	queryStr.append(" and model2.selfAppraisalCandidateId =:candidateId ");
+        }
+        
 	      queryStr.append(" group by " +
 	  				      " model2.selfAppraisalCandidateId ");
 	  if(type.equalsIgnoreCase("Category")){
@@ -273,6 +278,9 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
        }
        if(designationIds != null && designationIds.size() > 0){
     	  query.setParameterList("designationIds", designationIds); 
+       }
+       if(candidateId !=null && candidateId>0l){
+    	   query.setParameter("candidateId", candidateId); 
        }
        return query.list();
 }
