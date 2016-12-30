@@ -2097,6 +2097,16 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		query.setParameter("localElectionBodyId", localElectionBodyId);
 		return query.list();
 	}
+  
+  
+  public List<Object[]> getConstituencyByStateDetails()
+	{
+		Query query = getSession().createQuery(" select distinct model.constituencyId,model.name from Constituency model " +
+				" where model.state.stateId = 1  and model.electionScope.electionType.electionTypeId =2 order by model.name ");
+		
+		
+		return query.list();
+	}
 }
 
 
