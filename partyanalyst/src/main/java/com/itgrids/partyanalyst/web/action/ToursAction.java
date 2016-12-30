@@ -625,7 +625,6 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		
 		return Action.SUCCESS;
 	}
-	
 	public String getCandidateDetailedReport(){
 		try {
 			LOG.info("Entered into getCandidateDetailedReport()");
@@ -647,5 +646,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
-		
+	public String getMemberDetailsByDesignationWise(){
+		try {
+			jObj = new JSONObject(getTask());
+			resultList = toursService.getMemberDetailsByDesignationWise(jObj.getString("startDateStr"),jObj.getString("endDateStr"),jObj.getLong("desigId"));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at getMemberDetailsByDesignationWise", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
