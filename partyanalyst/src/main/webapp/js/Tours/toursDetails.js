@@ -728,7 +728,8 @@ function getCandidateList(designationId){
 		var jsObj = { 
 			 desigId : desigId,
 			 startDateStr : fromDateStr,
-			 endDateStr : toDateStr    
+			 endDateStr : toDateStr,
+			 candidateId : 0			 
 			}
 		$.ajax({
 			type : 'POST',
