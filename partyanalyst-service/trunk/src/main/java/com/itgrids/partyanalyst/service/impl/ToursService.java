@@ -1521,7 +1521,7 @@ public class ToursService implements IToursService {
 	}
 	
 	//View For Submitted Leaders
-	public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId){
+	public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId){
 		
 		 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 		
@@ -1549,19 +1549,19 @@ public class ToursService implements IToursService {
 			  designationIds.add(designationId);
 			  
 			  //0.candidateId,1.categoryId,2.category,3.Target Days
-			  List<Object[]> categoryTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Category",designationIds);
+			  List<Object[]> categoryTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Category",designationIds,candidateId);
 			  setCandiateWiseTarget(categoryTargetObj,candidateTargetMap,"Category",monthSize);
-			  List<Object[]> tourTypeTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Govt",designationIds);
+			  List<Object[]> tourTypeTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Govt",designationIds,candidateId);
 			  setCandiateWiseTarget(tourTypeTargetObj,candidateTargetMap,"Govt",monthSize);
 			  
 			  //0.candidateId,1.categoryId,2.tourDates
-			  List<Object[]> rtrnDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getCandidateComplainceCntCategoryWise(fromDate, toDate, "Category",designationIds);
+			  List<Object[]> rtrnDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getCandidateComplainceCntCategoryWise(fromDate, toDate, "Category",designationIds,candidateId);
 			  setComplainceDtls(rtrnDaysToursObjLst,candidateTargetMap,"Category");
-			  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getCandidateComplainceCntCategoryWise(fromDate, toDate, "Govt",designationIds);
+			  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDayTourDAO.getCandidateComplainceCntCategoryWise(fromDate, toDate, "Govt",designationIds,candidateId);
 			  setComplainceDtls(rtrnGovtDaysToursObjLst,candidateTargetMap,"Govt");
 			  
 			  
-			  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedCandidates(fromDate, toDate, designationIds);
+			  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDayTourDAO.getTourSubmitteedCandidates(fromDate, toDate, designationIds,candidateId);
 			  setTourSubmitteedMembers(rtrnMemberDtlsObjLst,submittedCandidatesMap,candidateTargetMap);
 			  
 			  if(submittedCandidatesMap !=null && submittedCandidatesMap.size()>0){
@@ -1716,7 +1716,7 @@ public class ToursService implements IToursService {
 		  Map<Long,ToursBasicVO> designationMap = new HashMap<Long, ToursBasicVO>();
 
 		  try{
-			  Date fromDate=null;
+			  	 Date fromDate=null;
 				 Date toDate=null;
 				 
 				 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

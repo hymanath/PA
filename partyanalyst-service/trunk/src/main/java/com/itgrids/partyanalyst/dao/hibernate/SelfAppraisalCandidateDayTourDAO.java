@@ -314,7 +314,7 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		 
 	 }
 	 
-	 public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds){
+	 public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select " +
 			 " model.selfAppraisalCandidateId " );
@@ -334,6 +334,9 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		   if(designationIds !=null && designationIds.size()>0){
 			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) ");
 		   }
+		   if(candidateId !=null && candidateId>0l){
+	        	queryStr.append(" and model.selfAppraisalCandidateId =:candidateId ");
+	        }
 
 		   queryStr.append(" group by " +
 		  				   "  model.selfAppraisalCandidateId ");
@@ -353,11 +356,13 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 		  if(designationIds !=null && designationIds.size()>0){
 			  query.setParameterList("designationIds", designationIds);    
 		  }
-		  
+		  if(candidateId !=null && candidateId>0l){
+			  query.setParameter("candidateId",candidateId);
+		  }
 		  return query.list();
  }
 	 
-	 public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds){
+	 public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds,Long candidateId){
 		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select  " +
 		   				" distinct SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//0
@@ -374,6 +379,10 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
              queryStr.append(" and date(SACT.tourDate) between :fromDate and :toDate ");
 		   }
 		   
+		   if(candidateId !=null && candidateId>0l){
+	        	queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalCandidateId =:candidateId ");
+	        }
+		   
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
 
@@ -385,6 +394,10 @@ public class SelfAppraisalCandidateDayTourDAO extends GenericDaoHibernate<SelfAp
 			   query.setParameterList("designationIds",designationIds);   
 		   }
 		
+		   if(candidateId !=null && candidateId>0l){
+			   query.setParameter("candidateId",candidateId);
+		   }
+		   
 		   return query.list();  
 	   }
 	 
