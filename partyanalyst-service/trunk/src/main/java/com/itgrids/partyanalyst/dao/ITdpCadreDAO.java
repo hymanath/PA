@@ -510,4 +510,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getCadreImagesByCadreId(Long tdpCadreId);
 	  public Integer updateTdpCadreImage(Long tdpCadreId,String image);
 	  
+	  public List<Object[]> getDistrictWiseCardPrintStatusCounts(Long stateId);
+	  public List<Object[]> getConstituencyWiseCardPrintStatusCounts(Long stateId);
+	  
+	  public List<Object[]> getDistrictWiseCadreCounts(Long stateId);
+	  public List<Object[]> getConstituencyWiseCadreCounts(Long stateId);
 } 
