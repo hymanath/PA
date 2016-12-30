@@ -15238,5 +15238,10 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
+	<action name="deleteDocumentByDocumentAction" class="toursAction"  method="deleteDocumentByDocument">
+			<result type="json" name="success">
+			<param name="root">successMsg</param>
+		</result>
+	</action>
  </package>
 </struts>
