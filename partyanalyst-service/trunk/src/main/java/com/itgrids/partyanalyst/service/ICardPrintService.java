@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+
+import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
@@ -16,4 +18,6 @@ public interface ICardPrintService {
 	public CardPrintVO getVendorWiseStatusWiseConstituenciesDetails(Long stateId,String fromDateStr,String toDateStr);
 	
 	public PrintUpdateDetailsStatusVO updatePrintDetailsToTdpCadreCardPrint(final List<PrintVO> printList);
+	
+	public List<CardPrintStatusVO> cardPrinStatusByLocation(String type , Long stateId );
 }
