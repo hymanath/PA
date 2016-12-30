@@ -649,7 +649,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	public String getMemberDetailsByDesignationWise(){
 		try {
 			jObj = new JSONObject(getTask());
-			resultList = toursService.getMemberDetailsByDesignationWise(jObj.getString("startDateStr"),jObj.getString("endDateStr"),jObj.getLong("desigId"));
+			resultList = toursService.getMemberDetailsByDesignationWise(jObj.getString("startDateStr"),jObj.getString("endDateStr"),jObj.getLong("desigId"),jObj.getLong("candidateId"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
