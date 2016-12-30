@@ -15200,6 +15200,12 @@
 		</result>
 	</action>
 	
+	<action name="getCandidateAlertDetailsAction" class="cadreDetailsAction"  method="getCandidateAlertDetails">
+			<result type="json" name="success">
+			<param name="root">alertVO</param>
+		</result>
+	</action>
+	
 	<action name="getCandidateDetailedReportAction" class="toursAction" method="getCandidateDetailedReport">  
 		<result type="json" name="success">
    			<param name="root">toursBasicVO</param>        
@@ -15217,15 +15223,6 @@
 		<result name="input">/jsp/loginForm.jsp?src=cardPrintingStatusAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
-	<action name="getMemberDetailsByDesignationWiseAction" class="toursAction"  method="getMemberDetailsByDesignationWise">
-			<result type="json" name="success">
-			<param name="root">resultList</param>
-		</result>
-	</action>
-	<action name="cardPrintAdminAction" class="cardPrintAction" method="cardPrintAdminStatus">
-		<result name="success">/jsp/cardPrintAdmin.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
-		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
-	</action>
+	
  </package>
 </struts>
