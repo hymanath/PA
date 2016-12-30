@@ -80,15 +80,20 @@
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-10 col-xs-12 col-sm-9">
+						<div class="col-md-9 col-xs-12 col-sm-9">
 							<h3 class="panel-title m_top10 text-capital">distrcit wise printing status counts</h3>
 						</div>
-						<div class="col-md-2 col-xs-12 col-sm-3">
-							<select class="chosen" id="districtStateId">
-								<option value="0">All</option>
-								<option value="1">AP</option>
-								<option value="36">TS</option>
-							</select>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<div class="form-inline pull-right">
+							  <div class="form-group">
+								<label>Select State: </label>
+								<select class="form-control" id="districtStateId">
+									<option value="0">All</option>
+									<option value="1">AP</option>
+									<option value="36">TS</option>
+								</select>
+							  </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -104,11 +109,16 @@
 							<h3 class="panel-title m_top10 text-capital">constituency wise printing status counts</h3>
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-3">
-							<select class="chosen" id="constStateId">
-								<option value="0">All</option>
-								<option value="1">AP</option>
-								<option value="36">TS</option>
-							</select>
+							<div class="form-inline pull-right">
+							  <div class="form-group">
+								<label>Select State: </label>
+								<select class="form-control" id="constStateId">
+									<option value="0">All</option>
+									<option value="1">AP</option>
+									<option value="36">TS</option>
+								</select>
+							  </div>
+							</div>
 						</div>
 					</div>
 				</div>
