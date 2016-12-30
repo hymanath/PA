@@ -1842,9 +1842,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					}
 				}
 		if(result[i][0].complaincePer!=0){
-			var getWidth = $("#designationWiseComplainceTour"+i).parent().width()+'px';
-			$("#designationWiseComplainceTour"+i).width(getWidth);
-		    $(function () {
+			$(function () {
 			  $('#designationWiseComplainceTour'+i).highcharts({
 				colors: ['#0066DC'],
 				chart: {
