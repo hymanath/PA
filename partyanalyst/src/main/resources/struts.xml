@@ -15248,5 +15248,10 @@
 			<param name="root">successMsg</param>
 		</result>
 	</action>
+	<action name="getConstituencyDetailsListAction" class="cardPrintAction"  method="getEnrollmentDetailsByConstituency">
+			<result type="json" name="success">
+			<param name="root">vendorList</param>
+		</result>
+	</action>
  </package>
 </struts>

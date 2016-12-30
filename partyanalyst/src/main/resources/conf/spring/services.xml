@@ -3925,6 +3925,7 @@
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="cardPrintStatusDAO" ref="cardPrintStatusDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"></property>
 	</bean>
 	
 </beans>			

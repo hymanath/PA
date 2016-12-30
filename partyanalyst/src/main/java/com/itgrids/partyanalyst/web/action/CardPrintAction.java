@@ -211,4 +211,14 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	public String getEnrollmentDetailsByConstituency(){
+		try{
+			LOG.info("Entered into getEnrollmentDetailsByConstituency() in cardPrintAction");
+			jObj = new JSONObject(getTask());
+			vendorList = cardPrintService.getEnrollmentDetailsByConstituency();
+		}catch(Exception e){
+			LOG.error("Exception raised in getEnrollmentDetailsByConstituency() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
