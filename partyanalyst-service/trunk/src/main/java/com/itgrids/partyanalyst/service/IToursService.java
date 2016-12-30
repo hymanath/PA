@@ -31,7 +31,7 @@ public interface IToursService {
 	 public PMMinuteVO getAllCandidateLocations(Long cadreId,Long categoryId);
 	 public ResultStatus saveNewTourDetails(final ToursVO toursVo,final Map<File, String> documentMap);
 	 public List<ToursBasicVO> getToursDetailsOverviewForNew(String fromDateStr,String toDateStr);
-	 public ToursBasicVO getCandidateDetailedReport(Long candidateId,String fromDate,String toDate);
+	 public ToursBasicVO getCandidateDetailedReport(Long candidateId,Long designationId,String fromDate,String toDate);
 	 public PMMinuteVO getNewTourRetrivalDetails(Long candidateDayTourId);
 	 public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId);
 	 public List<ToursBasicVO> getTourBasicOverviewDtlsDesignationWise(String fromDateStr,String toDateStr,List<Long> designationIds);

@@ -1508,7 +1508,7 @@ public class ToursService implements IToursService {
 		return voList;
 	}
 	
-	public ToursBasicVO getCandidateDetailedReport(Long candidateId,String fromDateStr,String toDateStr){
+	public ToursBasicVO getCandidateDetailedReport(Long candidateId,Long designationId,String fromDateStr,String toDateStr){
 		ToursBasicVO resultVO = new ToursBasicVO();
 		 List<ToursBasicVO> dateWiseTourDtlsList = new ArrayList<ToursBasicVO>(0);
 		 try{
@@ -1519,6 +1519,8 @@ public class ToursService implements IToursService {
 			 		toDate=sdf.parse(toDateStr); 
 			 	} 
 			   
+			 	resultVO.getSubList().addAll(getMemberDetailsByDesignationWise(fromDateStr,toDateStr,designationId,candidateId));
+			 	
 			   List<Object[]> objList = selfAppraisalCandidateDayTourDAO.getDateWiseTourSubmittedDetails(fromDate, toDate, candidateId);
 
 				  if(objList != null && objList.size() > 0){
