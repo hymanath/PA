@@ -335,4 +335,52 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
        }
        return query.list();
     }
+    public List<Object[]> getCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,List<Long> desinationIds){
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		 " model.selfAppraisalDesignation.designation," );
+        if(type.equalsIgnoreCase("Category")){
+        	 queryStr.append(" model.selfAppraisalTourCategory.selfAppraisalTourCategoryId," +
+        			        " model.selfAppraisalTourCategory.tourCategory," );
+        }else{
+        	 queryStr.append(" model.tourType.tourTypeId," +
+        			         " model.tourType.tourType," );
+        }
+         queryStr.append(" sum(model.targetDays) " +
+		 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
+		 " and model.selfAppraisalDesignation.isActive='Y' ");
+       if(fromDate != null){
+    	   queryStr.append(" and  date(model.startTime)<=:fromDate");
+       }
+       if(toDate != null){
+    	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate) "); 
+       }
+       if(desinationIds != null && desinationIds.size() > 0){
+           queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds)");	
+        }
+       
+       if(type.equalsIgnoreCase("Category")){
+    	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
+       }else{
+    	   queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
+       }
+	    queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId,");  	 
+       if(type.equalsIgnoreCase("Category")){
+    	 queryStr.append("model.selfAppraisalTourCategory.selfAppraisalTourCategoryId ");   
+       }else{
+    	   queryStr.append("model.tourType.tourTypeId");   
+       }
+      
+	    Query query = getSession().createQuery(queryStr.toString());
+	   if(fromDate != null){
+    	   query.setParameter("fromDate", fromDate);
+       }
+       if(toDate != null){
+    	   query.setParameter("toDate", toDate); 
+       }
+       if(desinationIds != null && desinationIds.size() > 0){
+    	  query.setParameterList("designationIds", desinationIds); 
+       }
+       return query.list();
+}
 }

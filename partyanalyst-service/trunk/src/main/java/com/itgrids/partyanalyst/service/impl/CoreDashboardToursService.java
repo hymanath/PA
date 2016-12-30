@@ -2013,6 +2013,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Govt");
 		 setCategroyWiseTarget(rtrnobjGovtTargetLst,categoryWiseMap,"Govt",noOfMonth);
 	
+		//Taking Static Designation Wise Target
+		 setCategroyWiseTarget(rtrnobjCtgryWseTargetLst,designationMonthTarget,"Category",1);
+		 setCategroyWiseTarget(rtrnobjGovtTargetLst,designationMonthTarget,"Govt",1);  
+		 
 		  List<Object[]> rtrnCategoryWiseSubmittedLdrs = selfAppraisalCandidateDayTourDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "Category");
 		  setCategoryWiseTourSubmittedLeader(rtrnCategoryWiseSubmittedLdrs,categoryWiseMap,"Category");
 		  List<Object[]> rtrnGovtSubmittedLdrs = selfAppraisalCandidateDayTourDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "Govt");
@@ -2035,12 +2039,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,categoryWiseMap,"Govt");
 		 setCategroyWiseComplainceCandidateCnt(rtrnGovtWorkWiseComplainceOblLst,designationMap,"Govt");
 		
-		//Taking Static Designation Wise Target
-		 List<Object[]> rtrnMonthWiseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Category");
-		 setCategroyWiseTarget(rtrnMonthWiseTargetLst,designationMonthTarget,"Category",1);
-		 List<Object[]> rtrnGovtMonthTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Govt");
-		 setCategroyWiseTarget(rtrnGovtMonthTargetLst,designationMonthTarget,"Govt",1);  
-		 
 		 if(designationMap != null && designationMap.size() > 0){
 			 for(Entry<Long, ToursBasicVO> entry:designationMap.entrySet()){
 				 if(designationMonthTarget.get(entry.getKey()) != null && designationMonthTarget.get(entry.getKey()).size() > 0){
