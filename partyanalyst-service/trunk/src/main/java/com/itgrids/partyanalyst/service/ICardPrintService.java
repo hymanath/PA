@@ -20,4 +20,5 @@ public interface ICardPrintService {
 	public PrintUpdateDetailsStatusVO updatePrintDetailsToTdpCadreCardPrint(final List<PrintVO> printList);
 	
 	public List<CardPrintStatusVO> cardPrinStatusByLocation(String type , Long stateId );
+	public List<CardPrintVO> getEnrollmentDetailsByConstituency();
 }

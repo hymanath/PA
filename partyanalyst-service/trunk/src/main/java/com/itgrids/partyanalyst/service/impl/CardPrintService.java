@@ -18,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.ICardPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
@@ -44,6 +45,7 @@ public class CardPrintService implements ICardPrintService{
 	private TransactionTemplate transactionTemplate;
 	private ICardPrintStatusDAO cardPrintStatusDAO;
 	private ITdpCadreDAO tdpCadreDAO;
+	private IConstituencyDAO constituencyDAO;
 	
 	public ICardPrintValidationDAO getCardPrintValidationDAO() {
 		return cardPrintValidationDAO;
@@ -82,7 +84,6 @@ public class CardPrintService implements ICardPrintService{
 	public void setConstituencyPrintStatusDAO(IConstituencyPrintStatusDAO constituencyPrintStatusDAO) {
 		this.constituencyPrintStatusDAO = constituencyPrintStatusDAO;
 	}
-	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -93,6 +94,13 @@ public class CardPrintService implements ICardPrintService{
 	
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
+	}
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
 	}
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -669,7 +677,6 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		return status;
 	}
 	
-	
 	/**  
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  Get Card Print Status Based on District wise Or constituency wise.
@@ -792,4 +799,23 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		}
 	}
 	
+	public List<CardPrintVO> getEnrollmentDetailsByConstituency(){
+		List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+		try{
+			LOG.info("Enterd into cardPrintService of getEnrollmentDetailsByConstituency");
+			List<Object[]> objList = constituencyDAO.getConstituencyByStateDetails();
+			if(objList != null && !objList.isEmpty()){
+				CardPrintVO vos = null;
+				for(Object[] param : objList){
+					vos = new CardPrintVO();
+					vos.setId(param[0]!= null ?(Long)param[0]:0l);
+					vos.setName(param[1] != null ?param[1].toString():"");
+					returnList.add(vos);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured into cardPrintService of getEnrollmentDetailsByConstituency", e);
+		}
+		return returnList;
+	}
 }
