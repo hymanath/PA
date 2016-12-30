@@ -2013,7 +2013,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(fromDate, toDate,"Govt");
 		 setCategroyWiseTarget(rtrnobjGovtTargetLst,categoryWiseMap,"Govt",noOfMonth);
 	
-		//Taking Static Designation Wise Target
+		//Taking Month Wise Target For Designation 
 		 setCategroyWiseTarget(rtrnobjCtgryWseTargetLst,designationMonthTarget,"Category",1);
 		 setCategroyWiseTarget(rtrnobjGovtTargetLst,designationMonthTarget,"Govt",1);  
 		 
@@ -2078,13 +2078,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 												 candiateVO.setComplaincandidateIdsSet(new HashSet<Long>()); 
 											}
 											candiateVO.getComplaincandidateIdsSet().add(entry.getKey());
-										 }else{
-											 candiateVO.setNonComplainceCnt(candiateVO.getNonComplainceCnt()+1); 
-											if(candiateVO.getNoNComplaincandidateIdsSet() == null){
-												candiateVO.setNoNComplaincandidateIdsSet(new HashSet<Long>(0));
-											}
-											candiateVO.getNoNComplaincandidateIdsSet().add(entry.getKey());
-										 }     
+										 }
 								   }
 								
 							  }
@@ -2098,9 +2092,16 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			     ToursBasicVO overAllDtlsVO = new ToursBasicVO();
 				for(Entry<Long,ToursBasicVO> entry:designationMap.entrySet()){
 					    if(entry.getValue() != null){
+					       entry.getValue().setNonComplainceCnt(entry.getValue().getSubmitedLeaderCnt()-entry.getValue().getComplainceCnt());
 					       entry.getValue().setSubmitedCandidateTourPer(calculatePercantage(entry.getValue().getSubmitedLeaderCnt(),entry.getValue().getNoOfLeaderCnt()));
 					       entry.getValue().setNotsubmitedCandidateTourPer(calculatePercantage(entry.getValue().getNotSubmitedLeaserCnt(),entry.getValue().getNoOfLeaderCnt()));
 					       overAllDtlsVO.setNoOfLeaderCnt(overAllDtlsVO.getNoOfLeaderCnt()+entry.getValue().getNoOfLeaderCnt());
+					       if(entry.getValue().getSubList3() != null){
+					    	   for(ToursBasicVO VO:entry.getValue().getSubList3()){
+					    		   VO.setNonComplainceCnt(VO.getSubmitedLeaderCnt()-VO.getComplainceCnt());
+					    	   }
+					       }
+					       //OverAll Calculating
 				           overAllDtlsVO.setSubmitedLeaderCnt(overAllDtlsVO.getSubmitedLeaderCnt()+entry.getValue().getSubmitedLeaderCnt());
     					   overAllDtlsVO.setNotSubmitedLeaserCnt(overAllDtlsVO.getNotSubmitedLeaserCnt()+entry.getValue().getNotSubmitedLeaserCnt());
     					   overAllDtlsVO.setComplainceCnt(overAllDtlsVO.getComplainceCnt()+entry.getValue().getComplainceCnt());
@@ -2202,7 +2203,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				    	  candiateVO = new ToursBasicVO(); 
 				    	  candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 				    	  if(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
-				    		  candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))));  
+				    		  candiateVO.setSubList3(getCategoryList(categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))));  
 				    	  }
 				    	  candiateMap.put(candiateVO.getId(), candiateVO);
 				      }
@@ -2233,6 +2234,24 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  LOG.error("Exception Occured in prepareCandiateWiseDtlsToTakeComplainceCandiate() in CoreDashboardToursService  : ",e);  
 	  }
   }
+	 public List<ToursBasicVO> getCategoryList(List<ToursBasicVO> list){
+		 List<ToursBasicVO> categoryList = new ArrayList<ToursBasicVO>();
+		 try{
+			 if(list != null && list.size() > 0){
+				 for(ToursBasicVO VO:list){
+					 ToursBasicVO categoryVO = new ToursBasicVO();
+					 categoryVO.setIdStr(VO.getIdStr());
+					 categoryVO.setName(VO.getName());
+					 categoryVO.setTargetDays(VO.getTargetDays());
+					 categoryList.add(categoryVO); 
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getCategoryList() in ToursService  : ",e);	 
+		 }
+		 return categoryList;
+	 }
+	 
  public void setCategroyWiseTarget(List<Object[]> objLst,Map<Long,List<ToursBasicVO>> categoryWiseMap,String type,int noOfMonth){
 	 try{
 		 if(objLst != null && objLst.size() > 0){
@@ -2328,26 +2347,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 if(categoryVO != null){
 						 if(tourDaysCnt>=categoryVO.getTargetDays()){
 							 categoryVO.setComplainceCnt(categoryVO.getComplainceCnt()+1);
-							 categoryVO.setComplainceDays(tourDaysCnt);
-							 Double complaincePer = calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays());
-							 if(complaincePer > 100d){
-								 categoryVO.setComplaincePer(100d);
-							 }else{
-								 categoryVO.setComplaincePer(complaincePer);	 
-							 }
 							 if(categoryVO.getComplaincandidateIdsSet() == null){
 								 categoryVO.setComplaincandidateIdsSet(new HashSet<Long>()); 
 							 }
 							 categoryVO.getComplaincandidateIdsSet().add(candiateId);
-						 }else{
-							 categoryVO.setNonComplainceCnt(categoryVO.getNonComplainceCnt()+1); 
-							 categoryVO.setComplainceDays(tourDaysCnt);
-							 Double complaincePer = calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays());
-							 categoryVO.setComplaincePer(complaincePer);	 
-							if(categoryVO.getNoNComplaincandidateIdsSet() == null){
-								categoryVO.setNoNComplaincandidateIdsSet(new HashSet<Long>(0));
-							}
-							categoryVO.getNoNComplaincandidateIdsSet().add(candiateId);
 						 }
 					 }
 				 }
@@ -2528,7 +2531,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					 candiateVO.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
 					 if(candiateTargetMap.get(candiateVO.getDesignationId()) != null && candiateTargetMap.get(candiateVO.getDesignationId()).size() > 0){
-						 candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(candiateTargetMap.get(candiateVO.getDesignationId()).get(candiateVO.getId())));
+						 candiateVO.setSubList3(new ArrayList<ToursBasicVO>(candiateTargetMap.get(candiateVO.getDesignationId()).get(candiateVO.getId())));
 					 }
 					 candidateMap.put(candiateVO.getId(), candiateVO);
 				 }
@@ -2819,7 +2822,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 	candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
 				 	if(candidateTargetMap.get(designationId) != null && candidateTargetMap.get(designationId).size() > 0){
 				 		if(candidateTargetMap.get(designationId).get(candiateId) != null && candidateTargetMap.get(designationId).get(candiateId).size() > 0){
-				 			candiateVO.setSubList3(new CopyOnWriteArrayList<ToursBasicVO>(candidateTargetMap.get(designationId).get(candiateId)));	
+				 			candiateVO.setSubList3(new ArrayList<ToursBasicVO>(candidateTargetMap.get(designationId).get(candiateId)));	
 				 		}
 				 	}
 				 	candiateMap.put(candiateVO.getId(), candiateVO);
@@ -2920,8 +2923,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    	for(Entry<Long,List<ToursBasicVO>> entry:candidateCategoryMap.entrySet()){
 		    		 if(entry.getValue() != null && entry.getValue().size() > 0){
 		    			 for(ToursBasicVO VO:entry.getValue()){
-		   				  VO.setYetToTourCnt(VO.getTargetDays()-VO.getComplainceDays());
-							  Double percentage = calculatePercantage(VO.getComplainceDays(), VO.getTargetDays());
+		    				 if((VO.getComplainceDays()>VO.getTargetDays())){
+		    					 VO.setYetToTourCnt(0l);	 
+		    				 }else{
+		    					 VO.setYetToTourCnt(VO.getTargetDays()-VO.getComplainceDays());	 
+		    				 }
+		   				 	  Double percentage = calculatePercantage(VO.getComplainceDays(), VO.getTargetDays());
 							  if(percentage > 100d){
 								  VO.setComplaincePer(100d);   
 							  }else{
