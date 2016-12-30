@@ -8,7 +8,7 @@
 <link href="dist/tourDetails/tours_custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet">
 <!-- for file uploader -->
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
@@ -216,7 +216,7 @@
 									<div class="row showDivCls" id="uploadFlDivId" style="display:none;">
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-											<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+											<input type="file" id="update_TourFileId3" multiple="multiple"  name="files[]" class="m_top20"/>
 											<span id="errFileId" style="color:red;margin-left:470px;"></span>   
 										</div>
 									</div>  
@@ -330,6 +330,7 @@
 		  <div class="modal-body">
 			  <div class="row">
 			  	<div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="membersOvrvwId"></div>
 					<div id="membersOverviewId"></div>
 			  	</div>
 			  </div>
@@ -372,12 +373,34 @@
 		  <div class="modal-body" id="retrivalEditModalBodyId">
 			<div class="row">
 				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div style="border:1px solid #ddd;padding:10px;">
-						<div id="retriveModalId"></div>
-					</div>
-					<div style="border:1px solid #ddd;padding:10px;">
-						<div id="retriveModalDocumentDivId"></div>
-					</div>
+					<form name="submitUpdateApplication" method="post"> <!--balu11-->
+						<div style="border:1px solid #ddd;padding:10px;">
+							<div id="retriveModalId"></div>
+						</div>
+						<div style="border:1px solid #ddd;padding:10px;">
+							<div id="retriveModalDocumentDivId"></div>
+						</div>
+						<div class="row showDivUpdateCls" id="uploadFlDivId">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+											<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+											<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+										</div>
+						</div>
+						
+						<div class="row showDivUpdateCls" > 
+										<div class="col-md-4 col-md-offset-4">
+											<!--<span class="updateTourStatusCls"></span>-->
+											<button type="button" class="btn btn-success btn-block" onclick="updateApplication();" type="button">SUBMIT APPLICATION</button>
+											<span id="successUpdateSpanId"></span>  
+										</div>   
+										<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
+						</div> 
+						
+						<div>
+							<input type="hidden" id="globalUpdateDayTourId" value="" name="toursVO.tourId">
+						</div>
+					</form>
 				</div>
 			</div>
 		  </div>
