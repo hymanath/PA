@@ -194,7 +194,7 @@ function getCandidateList(designationId){
 	}
 	getDesigationList(); //default call 
 	function getDesigationList(){ 	
-		var jsObj = { }
+		var jsObj = {}
 		$.ajax({
 			type : 'POST',
 			url : 'getDesigationListAction.action',
@@ -775,6 +775,9 @@ function getCandidateList(designationId){
 			toDateStr = datesArr[1]; 
 		}
 		getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId);
+		var designationIds=[];
+		designationIds.push(desigId);
+		getDesignationWiseOverAllData(fromDateStr,toDateStr,designationIds);
 	});
 	
 	function getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId){
@@ -876,7 +879,7 @@ function getCandidateList(designationId){
 						for(var t in result.subList[0].subList3){
 							str+='<th>'+result.subList[0].subList3[t].name+'</th>';
 						}
-						str+='<th>Compliant Ratio</th>';
+						str+='<th>Compliance Ratio</th>';
 					str+='</thead>';
 					str+='<tbody>';
 						str+='<tr>';
@@ -887,7 +890,7 @@ function getCandidateList(designationId){
 								str+='<td>'+result.subList[0].subList3[t].complainceDays+'</td>';
 							}
 							if(targetDays != null && targetDays > 0){
-								str+='<td>'+((touredDays/targetDays)*100).toFixed(2)+'</td>';
+								str+='<td>'+((touredDays/targetDays)*100).toFixed(2)+' %</td>';
 							}
 						str+='</tr>';
 					str+='</tbody>';
@@ -919,8 +922,10 @@ function getCandidateList(designationId){
 
 	$(document).on("click",".editTourRecordBtnCls",function(){
 		
+		 var candidateDayTourId = $(this).attr("attr_id");
+		
 		var jsObj ={ 
-			candidateDayTourId : $(this).attr("attr_id")
+			candidateDayTourId : candidateDayTourId
 		}
 		
 		$.ajax({
@@ -930,13 +935,15 @@ function getCandidateList(designationId){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null){
-				buildNewTourRetrivalDetails(result);
+				buildNewTourRetrivalDetails(result,candidateDayTourId);
 				$("#retrivalEditModalId").modal("show");
 			}
 		});
 	});
-	function buildNewTourRetrivalDetails(result)
-	{
+	function buildNewTourRetrivalDetails(result,candidateDayTourId)
+	{		
+		$("#globalUpdateDayTourId").val(candidateDayTourId);
+		
 		var str='';
 		var temp = result.tourDate.split(' ')[0].split("-");
 		var date = temp[2]+"/"+temp[1]+"/"+temp[0];
@@ -945,38 +952,46 @@ function getCandidateList(designationId){
 			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 				str+='<label>Tour Date</label>';
 				str+='<div class="input-group">';
-					str+='<input type="text" class="form-control" id="retriveDateId"/>';
+					str+='<input type="text" class="form-control" id="retriveDateId" name="toursVOList[0].tourDateId"/>';
 					str+='<span class="input-group-addon">';
 						str+='<i class="glyphicon glyphicon-calendar"></i>';
 					str+='</span>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Type</label>';
+				str+='<select class="form-control" id="retriveTypeId" name="toursVOList[0].tourTypeId">';
+					str+='<option value="0">Select Tour Type</option>';
+					if(result.tourTypeList != null && result.tourTypeList.length > 0){
+						for(var i in result.tourTypeList){
+							if(result.tourTypeId == result.tourTypeList[i].id){
+								str+='<option value="'+result.tourTypeList[i].id+'" selected>'+result.tourTypeList[i].name+'</option>';
+							}else{
+								str+='<option value="'+result.tourTypeList[i].id+'">'+result.tourTypeList[i].name+'</option>';
+							}							
+						}
+					}
+				str+='</select>';
+			str+='</div>';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 				str+='<label>Tour Category</label>';
-				str+='<select id="retriveCategoryId">';
+				str+='<select id="retriveCategoryId" class="form-control" name="toursVOList[0].tourCategoryId">';
 					str+='<option value="0">Selecct Tour Category</option>';
 					if(result.categoryList != null && result.categoryList.length > 0){
-						for(var i in result.categoryList){
-							str+='<option>'+result.categoryList[i].name+'</option>';
+						for(var i in result.categoryList){							
+							if(result.tourCategoryId == result.categoryList[i].id){
+								str+='<option value="'+result.categoryList[i].id+'" selected>'+result.categoryList[i].name+'</option>';
+							}else{
+								str+='<option value="'+result.categoryList[i].id+'">'+result.categoryList[i].name+'</option>';
+							}
 						}
 					}
 					
 				str+='</select>';
 			str+='</div>';
 			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-				str+='<label>Tour Type</label>';
-				str+='<select id="retriveTypeId">';
-					str+='<option value="0">Select Tour Type</option>';
-					if(result.tourTypeList != null && result.tourTypeList.length > 0){
-						for(var i in result.tourTypeList){
-							str+='<option>'+result.tourTypeList[i].name+'</option>';
-						}
-					}
-				str+='</select>';
-			str+='</div>';
-			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 				str+='<label>Tour Location</label>';
-				str+='<select id="retriveLocId" attr_candiLocLevel="'+result.locationScopeId+'">';
+				str+='<select id="retriveLocId" attr_candiLocLevel="'+result.locationScopeId+'" name="toursVOList[0].tourLocationId">';
 					str+='<option value="0">Select Tour Location</option>';
 						if(regionScopesArr!=null && regionScopesArr.length>0 && result.locationScopeId!=null && result.locationScopeId>0){
 							for(var i in regionScopesArr){
@@ -989,35 +1004,34 @@ function getCandidateList(designationId){
 						}
 				str+='</select>';
 			str+='</div>';
-			
 			str+='<div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="stateDivId" style="display:none;">';
 					str+='<label>State</label>';
-					str+='<select id="stateSelId" class="form-control">';
+					str+='<select id="stateSelId" class="form-control" name="toursVOList[0].stateId">';
 						str+='<option value="0">Select State</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="districtDivId" style="display:none;">';
 					str+='<label>District</label>';
-					str+='<select id="districtSelId" class="form-control">';
+					str+='<select id="districtSelId" class="form-control" name="toursVOList[0].districtId">';
 						str+='<option value="0">Select District</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="constituencyDivId" style="display:none;">';
 					str+='<label>Constituency</label>';
-					str+='<select class="form-control" id="constituenctSelId">';
+					str+='<select class="form-control" id="constituenctSelId" name="toursVOList[0].constituencyId">';
 						str+='<option value="0">Select Constituency</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="manMunDivId" style="display:none;">';
 					str+='<label>Mandal / Municipality</label>';
-					str+='<select class="form-control" id="manMunSelId">';
+					str+='<select class="form-control" id="manMunSelId" name="toursVOList[0].localBodyId">';
 						str+='<option value="0">Select Mandal / Municipality</option>';
 					str+='</select>';
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-3 locationsDivCls" id="villWardDivId" style="display:none;">';
 					str+='<label>Village / Ward</label>';
-					str+='<select class="form-control" id="villWardSelId">';
+					str+='<select class="form-control" id="villWardSelId" name="toursVOList[0].panchayatWardId">';
 						str+='<option value="0">Select Villeage / Ward</option>';
 					str+='</select>';
 				str+='</div>';
@@ -1026,7 +1040,7 @@ function getCandidateList(designationId){
 				str+='<label>Add Comments/ Tour Description</label>';
 				if(result.name == null)
 					result.name = "";
-				str+='<textarea class="form-control">'+result.name+'</textarea>';
+				str+='<textarea class="form-control" name="toursVOList[0].description">'+result.name+'</textarea>';
 			str+='</div>';
 		str+='</div>';
 		$("#retriveModalId").html(str);
@@ -1041,7 +1055,6 @@ function getCandidateList(designationId){
 				format:'DD/MM/YYYY' 
 			},
 		});
-		
 		if(result.locationScopeId!=null && result.locationScopeId>0){
 			if(result.locationScopeId == 2){
 				$("#stateDivId").show();
@@ -1056,7 +1069,6 @@ function getCandidateList(designationId){
 			}
 			buildLocations(result);
 		}
-		
 		$("#retriveModalDocumentDivId").html("");
 		if(result.documentList != null && result.documentList.length > 0){
 			var strt = "";
@@ -1072,8 +1084,8 @@ function getCandidateList(designationId){
 					else 
 						strt+='<td class="fa fa-file-word-o"></td>';
 					strt+='<td>'+result.documentList[t].name+'</td>';
-					strt+='<td><button class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
-					strt+='<td><button class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
+					strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
+					strt+='<td><button type="button" class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
 				strt+='</tr>';
 			}
 			strt+='</tbody>';
@@ -1109,7 +1121,7 @@ function getCandidateList(designationId){
 			$("#villWardSelId").html("<option value='0'>Seelcy Village / Ward</option>");
 		}else if(candiLocLevel == 4){
 			$("#manMunSelId").val(0);
-			$("#villWardSelId"+count).html("<option value='0'>Seelcy Village / Ward</option>");
+			$("#villWardSelId").html("<option value='0'>Seelcy Village / Ward</option>");
 		}
 	});
 	
@@ -1164,20 +1176,20 @@ function getCandidateList(designationId){
 				$("#districtSelId").val(result.districtId);
 				$("#constituenctSelId").val(result.constituencyId);
 				if(result.locationScopeId == 5)
-					$("#tehMunDivId"+count).val(result.tehsilId);
+					$("#manMunSelId").val(result.tehsilId);
 				if(result.locationScopeId == 7)
-					$("#manMunSelId"+count).val(result.localElectionBodyId);
+					$("#manMunSelId").val(result.localElectionBodyId);
 			}else if((result.locationScopeId == 6 || result.locationScopeId == 8) && result.panchayatId != null && result.panchayatId > 0){
 				$("#stateSelId").val(result.stateId);
 				$("#districtSelId").val(result.districtId);
 				$("#constituenctSelId").val(result.constituencyId);
 				if(result.locationScopeId == 6){
-					$("#tehMunDivId"+count).val(result.tehsilId);
-					$("#villWardSelId"+count).val(result.panchayatId);
+					$("#manMunSelId").val(result.tehsilId);
+					$("#villWardSelId").val(result.panchayatId);
 				}	
 				if(result.locationScopeId == 8){
-					$("#manMunSelId"+count).val(result.localElectionBodyId);
-					$("#villWardSelId"+count).val(result.wardId);
+					$("#manMunSelId").val(result.localElectionBodyId);
+					$("#villWardSelId").val(result.wardId);
 				}
 			}
 		}
@@ -1225,3 +1237,149 @@ function getCandidateList(designationId){
 	$(document).on("click",".viewPdfCls",function(){
 		window.open("mytdp.com/tour_documents/"+$(this).attr("attr_doc_name"));
 	});
+	
+	function getDesignationWiseOverAllData(fromDate,toDate,designationIds){
+		var jsObj = { 
+			 fromDate : fromDate,
+			 toDate : toDate,
+			 designationIds :designationIds
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getTourBasicOverviewDtlsDesignationWiseAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildDesignationWiseOverAllData(result);
+			}
+		});
+	}
+	function buildDesignationWiseOverAllData(result)
+	{
+		var str='';
+		str+='<div style="padding:10px" class="bg_ED">';
+		str+='<table class="table bg_ED">';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td><p class="text-muted">Total Leaders</p><h4 class="panel-title">'+result[i].noOfLeaderCnt+'</h4></td>';
+					str+='<td><p class="text-muted">Submited</p><h4 class="panel-title">'+result[i].submitedLeaderCnt+'</h4></td>';
+					str+='<td><p class="text-muted">Not Submited</p><h4 class="panel-title">'+result[i].notSubmitedLeaserCnt+'</h4></td>';
+					str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title">'+result[i].complainceCnt+'</h4></td>';
+					str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title">'+result[i].nonComplainceCnt+'</h4></td>';
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+		str+='</div>';
+		$("#membersOvrvwId").html(str);
+	}
+	
+	function updateApplication(){
+
+		/*$(".textErrCls").html("");
+		$("#errFileId").html(""); */
+		var flag = true;
+		var filerKit = $("#update_TourFileId3").prop("jFiler");
+
+		/* $(".isActive").each(function(){
+			var value = $(this).val();
+			var bool = $.isNumeric(value);
+			if(bool == false){
+				var errId = $(this).attr("attr_err_id");
+				$("#"+errId).html("Please Enter Numbers.");
+				flag = false;
+				return false;      
+			}  
+		}); */
+		
+		var childEleCount = $(".jFiler-items-list").children().length;
+		
+		//allocating designationId To Hidden Variable
+		
+		
+		if(flag == false){
+			return;  
+		}
+		
+		var errStr='',flag1=true;
+		/* $(".outerDivCls").each(function(){
+			if(flag1){
+				var count = $(this).attr("attr_count");
+				if($("#tourTypeId"+count).val() == 0 || $("#tourTypeId"+count).val() == "undefined" || $("#tourTypeId"+count).val() === undefined){
+					errStr="Please Select Tour Type";flag1=false;
+				}else if($("#tourCategoryId"+count).val() == 0 || $("#tourCategoryId"+count).val() == "undefined" || $("#tourCategoryId"+count).val() === undefined){
+					errStr="Please Select Tour Category";flag1=false;
+				}else if($("#tourLocationId"+count).val() > 0){
+					var locLvl = $("#tourLocationId"+count).val();
+					if(locLvl == 2){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}
+					}else if(locLvl == 3){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						} 
+					}else if(locLvl == 4){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}
+					}else if(locLvl == 5){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}else if($("#tehMunSelId"+count).val() == 0){
+							errStr="Please Select Mandal / Municipality";flag1=false;
+						}
+					}else if(locLvl == 6){
+						if($("#stateSelId"+count).val() == 0){
+							errStr="Please Select State";flag1=false;
+						}else if($("#districtSelId"+count).val() == 0){
+							errStr="Please Select District";flag1=false;
+						}else if($("#constituencySelId"+count).val() == 0){
+							errStr="Please Select Constituency";flag1=false;
+						}else if($("#tehMunSelId"+count).val() == 0){
+							errStr="Please Select Mandal / Municipality";flag1=false;
+						}else if($("#villWardSelId"+count).val()==0){
+							errStr="Please Select Village / Ward";flag1=false;
+						}
+					}
+				}
+			}
+		}); */
+		
+		if(!flag1){
+			alert(errStr);
+			return;
+		}
+	
+		var uploadHandler = { 
+			upload: function(o) {
+				$("#savingAjaxImg").css("display","none");
+				uploadResult = o.responseText;
+				showSbmitStatusUpdateNew(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('submitUpdateApplication',true);  
+		YAHOO.util.Connect.asyncRequest('POST','saveNewTourDetailsAction.action',uploadHandler);
+	}
+	function showSbmitStatusUpdateNew(uploadResult){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			$("#successUpdateSpanId").show();			
+			setTimeout(function () {
+				$("#successUpdateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
+				//location.reload(true);
+				$("#retrivalEditModalId").hide();
+			}, 500);
+		}
+	}	
