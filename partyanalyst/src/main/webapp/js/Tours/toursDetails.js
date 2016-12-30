@@ -708,7 +708,7 @@ function getCandidateList(designationId){
 			str+='<tr>';
 			str+='<td>';
 			str+='<div class="dropup">';
-			str+=''+result[i].designation+'<span class="dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+			str+=''+result[i].designation+'<span class="dropdown-toggle" style="font-size: 16px; font-weight: 600; margin-left: 8px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
 					str+='<p><i style="font-size: 17px;">Tours Target Per month</i></p>';
 					str+='<table class="table">';
