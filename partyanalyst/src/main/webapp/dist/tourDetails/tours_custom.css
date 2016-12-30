@@ -144,3 +144,32 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 {
 	border:1px solid #ddd;
 }
+.arrow_box_bottom {
+	position: absolute;
+	background: #EDEEF0;
+	border: 1px solid #EDEEF0;
+	margin-bottom:20px !important;
+}
+.arrow_box_bottom:after, .arrow_box_bottom:before {
+	top: 100%;
+	right: 10px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_bottom:after {
+	border-color: rgba(237, 238, 240, 0);
+	border-top-color: #EDEEF0;
+	border-width: 10px;
+	margin-left: -10px;
+}
+.arrow_box_bottom:before {
+	border-color: rgba(237, 238, 240, 0);
+	border-top-color: #EDEEF0;
+	border-width: 11px;
+	margin-left: -11px;
+}
