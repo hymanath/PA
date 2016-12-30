@@ -4225,7 +4225,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		Date fromDate = dateUtilService.getCurrentDateAndTime();
 		Date toDate = dateUtilService.getCurrentDateAndTime();
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		if(startDateStr != null && startDateStr.length() >0 && endDateStr != null && endDateStr.length() >0){
 			fromDate = format.parse(startDateStr);
 			toDate = format.parse(endDateStr);
@@ -4471,7 +4471,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		Date fromDate = dateUtilService.getCurrentDateAndTime();
 		Date toDate = dateUtilService.getCurrentDateAndTime();
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		if(startDateStr != null && startDateStr.length() >0 && endDateStr != null && endDateStr.length() >0){
 			fromDate = format.parse(startDateStr);
 			toDate = format.parse(endDateStr);
