@@ -2093,3 +2093,24 @@ border-right:none !important;
 .borderedWeight thead tr th{
 border: 1px solid #c5c5c5 !important;
 }
+.slider-selection
+{
+	background-color: #495663 !important;
+    background-image: none !important;
+}
+.slider-track-high
+{
+	background-color:#cdcdcd;
+}
+.slider-handle.min-slider-handle.round
+{
+	background-color: #495865;
+    background-image: none !important;
+    border: 3px solid #cdcdcd;
+	margin-top:-6px;
+}
+
+.slider.slider-horizontal .slider-track
+{
+	height:6px !important;
+}
