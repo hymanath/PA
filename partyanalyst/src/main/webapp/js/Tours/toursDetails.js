@@ -706,7 +706,23 @@ function getCandidateList(designationId){
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-			str+='<td>'+result[i].designation+'</td>';
+			str+='<td>';
+			str+='<div class="dropup">';
+			str+=''+result[i].designation+'<span class="dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+					str+='<p><i style="font-size: 17px;">Tours Target Per month</i></p>';
+					str+='<table class="table">';
+					 for(var j in result[i].subList)
+					 {
+						 str+='<tr>';
+							str+='<td class="bg_ED">'+result[i].subList[j].name+'</td>';
+							str+='<td class="bg_ED">'+result[i].subList[j].targetDays+'</td>';
+						 str+='</tr>';
+					 }
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+			str+='</td>';
 			if(result[i].noOfLeaderCnt != null && result[i].noOfLeaderCnt > 0){
 				str+='<td>'+result[i].noOfLeaderCnt+'</td>';
 			}else{
@@ -723,13 +739,13 @@ function getCandidateList(designationId){
 				str+='<td> - </td>';
 			}
 			if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
-				str+='<td>'+result[i].complainceCnt+'</td>';
+				str+='<td>'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></td>';
 			}else{
 				str+='<td> - </td>';
 			}
 			if(result[i].nonComplainceCnt != null && result[i].nonComplainceCnt > 0){				
 				//var nonComplinceCount= result[i].submitedLeaderCnt - result[i].complainceCnt ;				
-				str+='<td>'+result[i].nonComplainceCnt+'</td>';
+				str+='<td>'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></td>';
 			}else{
 				str+='<td> - </td>';
 			}
