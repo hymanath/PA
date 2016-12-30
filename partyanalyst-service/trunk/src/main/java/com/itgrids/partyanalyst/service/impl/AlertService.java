@@ -4458,5 +4458,95 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 return returnVo;
   }
   
+  
+  /*
+   * auther : Srishailam Pittala
+   * Date : 29th Dec, 2016
+   * Description : to Get Cadre wise alert Details
+   * */
+  
+  public AlertVO getCandidateAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId,Long categoryId,Long statusId){
+	  AlertVO returnVo = new AlertVO();
+	  try {
+		Date fromDate = dateUtilService.getCurrentDateAndTime();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if(startDateStr != null && startDateStr.length() >0 && endDateStr != null && endDateStr.length() >0){
+			fromDate = format.parse(startDateStr);
+			toDate = format.parse(endDateStr);
+		}
+		
+		List<Object[]> assignedList = null;
+	
+		Map<Long,AlertVO> alertsMap = new HashMap<Long, AlertVO>(0);
+		
+		if(searchType != null && (searchType.equalsIgnoreCase("Assigned") || searchType.equalsIgnoreCase("All"))){
+			assignedList = alertAssignedDAO.getCandidateAlertDetailsBySearch(tdpCadreId,fromDate, toDate,alertTypeId,categoryId,statusId);
+			if(commonMethodsUtilService.isListOrSetValid(assignedList)){
+				for (Object[] param : assignedList) {
+					Long alertId= commonMethodsUtilService.getLongValueForObject(param[0]);
+					String description = commonMethodsUtilService.getStringValueForObject(param[1]);
+					String createdDate =commonMethodsUtilService.getStringValueForObject(param[2]);
+					String lastUpdatedDate=commonMethodsUtilService.getStringValueForObject(param[3]);
+					//Long statusId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					String status =commonMethodsUtilService.getStringValueForObject(param[5]);
+					Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
+					String impactLevelStr =commonMethodsUtilService.getStringValueForObject(param[7]);
+					
+					
+					AlertVO vo = new AlertVO();
+					vo.setId(alertId);
+					vo.setDesc(description);
+					vo.setDate1(createdDate);
+					vo.setDate2(lastUpdatedDate);
+					vo.setLocationName(impactLevelStr);
+					vo.setStatus(status);
+					
+					alertsMap.put(alertId, vo);
+				}
+			}
+		}
+		
+		if(searchType != null && (searchType.equalsIgnoreCase("Involved") || searchType.equalsIgnoreCase("All"))){
+			assignedList = alertCandidateDAO.getCandidateAlertDetailsBySearch(tdpCadreId,fromDate, toDate,alertTypeId,categoryId,statusId);
+			if(commonMethodsUtilService.isListOrSetValid(assignedList)){
+				for (Object[] param : assignedList) {
+					Long alertId= commonMethodsUtilService.getLongValueForObject(param[0]);
+					String description = commonMethodsUtilService.getStringValueForObject(param[1]);
+					String createdDate =commonMethodsUtilService.getStringValueForObject(param[2]);
+					String lastUpdatedDate=commonMethodsUtilService.getStringValueForObject(param[3]);
+					//Long statusId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					String status =commonMethodsUtilService.getStringValueForObject(param[5]);
+					Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
+					String impactLevelStr =commonMethodsUtilService.getStringValueForObject(param[7]);
+					
+					
+					AlertVO vo = new AlertVO();
+					vo.setId(alertId);
+					vo.setDesc(description);
+					vo.setDate1(createdDate);
+					vo.setDate2(lastUpdatedDate);
+					vo.setLocationName(impactLevelStr);
+					vo.setStatus(status);
+					
+					alertsMap.put(alertId, vo);
+				}
+			}
+		}
+		
+		if(commonMethodsUtilService.isMapValid(alertsMap)){
+			List<AlertVO> candidateAlertsList = new ArrayList<AlertVO>(0);
+			candidateAlertsList.addAll(alertsMap.values());
+			returnVo.setSubList1(candidateAlertsList);
+		}
+		
+	}catch (Exception e) {
+		LOG.error("Error occured at getCandidateAlertDetailsBySearch() in AlertService {}",e); 
+		e.printStackTrace();
+	}
+	 return returnVo;
+  }
+  
 }
 

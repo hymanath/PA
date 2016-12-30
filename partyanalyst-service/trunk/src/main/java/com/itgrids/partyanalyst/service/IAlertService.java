@@ -57,4 +57,5 @@ public interface IAlertService {
     public String getAlertLastUpdatedTime();
     public String getAlertStatusOfArticle(Long articleId);
     public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId);
+    public AlertVO getCandidateAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId,Long categoryId,Long statusId);
    }
