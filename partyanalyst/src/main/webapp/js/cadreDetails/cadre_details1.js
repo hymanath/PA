@@ -1279,15 +1279,21 @@ function buildVolunteersDetails(result){
 
 	function getCadreAlertDetails(){
 			$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
-		var jsObj=
-			{
-				tdpCadreId :globalCadreId,
-				stateId :1, // AP
-				startDateStr :"2016-11-27",
-				endDateStr :"2016-12-27",
-				searchType :"Assigned",
-				alertTypeId :1			
-			}
+		var dates = $("#alertsDatePicker").val();
+		var datesArr = dates.split("-");
+		var startDate = datesArr[0];
+		var endDate = datesArr[1];
+		var searchType = $("input[name='radioBtn']:checked").val();
+		var alertType = $("#typeId").val();
+			var jsObj=
+				{
+					tdpCadreId :globalCadreId,
+					stateId :1, // AP
+					startDateStr : startDate, //"2016-11-27",
+					endDateStr : endDate, //"2016-12-27",
+					searchType : searchType,//"Assigned",
+					alertTypeId : alertType, //1,				
+				}
 			$.ajax({
 			type:'POST',
 			 url: 'getCadreAlertDetailsAction.action',
@@ -1331,21 +1337,21 @@ function buildVolunteersDetails(result){
 				str+='<tr>';
 				str+='<td> '+finalReslt[j].category.toUpperCase()+'</td>';
 				if(finalReslt[j].count != null  && parseInt(finalReslt[j].count)>0 )
-					str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="0" status_id="0" ><u>'+finalReslt[j].count+' </u></a></td>';
+					str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="0" status_id="0" attr_category_type="'+finalReslt[j].category+'" ><u>'+finalReslt[j].count+'</u></a></td>';
 				else
 					str+='<td> 0  </td>';
 				
 				if(finalReslt[j].subList1 != null && finalReslt[j].subList1.length>0){
 					for(var k in finalReslt[j].subList1 ){
 						if(finalReslt[j].subList1[k].count != null  && parseInt(finalReslt[j].subList1[k].count)>0 )
-							str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="0" ><u>'+finalReslt[j].subList1[k].count+'</u></a></td>';
+							str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="0" attr_category_type="'+finalReslt[j].category+'" ><u>'+finalReslt[j].subList1[k].count+'</u></a></td>';
 						else
 							str+='<td> 0  </td>';
 					}
 						var statusList = finalReslt[j].subList1[0].subList1;
 							for(var l in statusList){
 								if(statusList[l].count != null && parseInt(statusList[l].count)>0 )
-									str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="'+statusList[l].statusId+'" > <u>'+statusList[l].count+'</u></a> </td>';
+									str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="'+statusList[l].statusId+'" attr_category_type="'+finalReslt[j].category+'" > <u>'+statusList[l].count+'</u></a> </td>';
 								else
 									str+='<td> 0  </td>';
 							}
@@ -1361,17 +1367,24 @@ function buildVolunteersDetails(result){
 	}
 	
 	$(document).on("click",".cadreAlertCls",function(){
+		$("#alertModalDivId").modal('show');
 		var categoryId = $(this).attr('attr_categoryId');
 		var alertTypeId = $(this).attr('altert_Type_Id');
+		var alertType = $(this).attr('attr_category_type');
 		var statusId = $(this).attr('status_id');
-		$('#alertsOverViewTAb').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		var dates = $("#alertsDatePicker").val();
+		var datesArr = dates.split("-");
+		var startDate = datesArr[0];
+		var endDate = datesArr[1];
+		var searchType = $("input[name='radioBtn']:checked").val();
+		$('#alertModalStrId').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		var jsObj=
 			{
 				tdpCadreId :globalCadreId,
 				stateId :1, // AP
-				startDateStr :"2016-11-27",
-				endDateStr :"2016-12-27",
-				searchType :"Assigned",
+				startDateStr : startDate, //"2016-11-27",
+				endDateStr : endDate, //"2016-12-27",
+				searchType : searchType ,//"Assigned",
 				alertTypeId :alertTypeId,					
 				categoryId :categoryId,
 				statusId :statusId
@@ -1382,13 +1395,14 @@ function buildVolunteersDetails(result){
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				//console.log(result);
-				buildAlertsDEtails(result);
+				buildAlertsDEtails(result,alertType);
 			});
 			
 	});
 
-	function buildAlertsDEtails(result){
+	function buildAlertsDEtails(result,alertType){
 		var finalResult = result.subList1;
+		$("#myModalLabelId").html("In Manual Alert " +alertType);
 		var str='';
 		if(finalResult != null && finalResult.length>0){
 			str+='<table class="table table-bordered table condensed" id="alertsTab">';
@@ -1420,7 +1434,7 @@ function buildVolunteersDetails(result){
 			str+='</tbody>';
 			str+='</table>';
 		}
-		$('#alertsOverViewTAb').html(str);
+		$('#alertModalStrId').html(str);
 		$('#alertsTab').dataTable({});
 	}
 	

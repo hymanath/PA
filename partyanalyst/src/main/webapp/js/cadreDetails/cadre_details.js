@@ -137,6 +137,55 @@ setcolorsForStatus();
   });
   $('#MeetingDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
   
+  //alert DatePicker
+  var Alertset = {
+	startDate: moment(),
+	endDate: moment(),
+	/* minDate: '01/01/2012',
+	maxDate: '12/31/2015', */
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last Year': [moment().subtract(1, 'year'),moment()]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'alertSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' - ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#alertsDatePicker').val(moment().startOf('month').format('MM/DD/YYYY') + ' - ' + moment().endOf('month').format('MM/DD/YYYY'));
+
+  $('#alertsDatePicker').daterangepicker(Alertset);
+
+  $('#alertsDatePicker').on('show.daterangepicker', function() { /*console.log("show event fired"); */});
+  $('#alertsDatePicker').on('hide.daterangepicker', function() { /*console.log("hide event fired"); */});
+  $('#alertsDatePicker').on('apply.daterangepicker', function(ev, picker) { 
+	 /* picker.startDate.format("MM/DD/YYYY"));
+	picker.endDate.format("MM/DD/YYYY")); */ 
+  });
+  $('#alertsDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
+  
   getLocationWisePartyMeetings();
 });
 
@@ -194,7 +243,7 @@ function getParticipatedConstituencyId(cadreId){
 						getEventsOverviewFortdpCadre();
 						//getCandidateAndConstituencySurveyResult();
 						getActivityDetails();
-						getCandidateAppliedPostsByCadre(0);
+						//getCandidateAppliedPostsByCadre(0);
 					}
 				});
 			}
@@ -2913,7 +2962,7 @@ function getCadreIdByMemberShipId(){
 				getPartyMeetingsOverViewForCadre();
 				getEventsOverviewFortdpCadre();
 				getActivityDetails();
-				getCandidateAppliedPostsByCadre(0);
+				//getCandidateAppliedPostsByCadre(0);
 			}
 			
 		}
