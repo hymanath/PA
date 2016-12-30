@@ -15,17 +15,19 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICardPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.model.CardPrintVendor;
-import com.itgrids.partyanalyst.model.TdpCadreCardPrint;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -40,7 +42,8 @@ public class CardPrintService implements ICardPrintService{
 	private IPrintStatusDAO printStatusDAO;
 	private ICardPrintValidationDAO cardPrintValidationDAO;
 	private TransactionTemplate transactionTemplate;
-	
+	private ICardPrintStatusDAO cardPrintStatusDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	public ICardPrintValidationDAO getCardPrintValidationDAO() {
 		return cardPrintValidationDAO;
@@ -82,6 +85,14 @@ public class CardPrintService implements ICardPrintService{
 	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	
+	public void setCardPrintStatusDAO(ICardPrintStatusDAO cardPrintStatusDAO) {
+		this.cardPrintStatusDAO = cardPrintStatusDAO;
+	}
+	
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -658,5 +669,127 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		return status;
 	}
 	
+	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Get Card Print Status Based on District wise Or constituency wise.
+	  *  @since 30-DECEMBER-2016
+	  */
+	public List<CardPrintStatusVO> cardPrinStatusByLocation(String type , Long stateId ){
+		List<CardPrintStatusVO> finalList = null;
+		try{
+			
+			List<Object[]> statusList = cardPrintStatusDAO.getAllCardPrintStatus();
+			Map<Long,CardPrintStatusVO> finalMap = new LinkedHashMap<Long, CardPrintStatusVO>(0);
+			
+			if(type != null && !type.isEmpty()){
+				
+				List<Object[]> list = null;
+				List<Object[]> totalCountsList = null;
+				
+				if(type.equalsIgnoreCase("district")){
+					
+				   list = tdpCadreDAO.getDistrictWiseCardPrintStatusCounts(stateId);
+				   totalCountsList = tdpCadreDAO.getDistrictWiseCadreCounts(stateId);
+				   
+				}else if(type.equalsIgnoreCase("constituency")){
+					
+					list = tdpCadreDAO.getConstituencyWiseCardPrintStatusCounts(stateId);	
+					totalCountsList = tdpCadreDAO.getConstituencyWiseCadreCounts(stateId);
+				}
+				
+				if(totalCountsList != null && totalCountsList.size() > 0){
+					for(Object[] obj : totalCountsList){
+						if(obj[0] != null){
+							Long locationId  = (Long)obj[0];
+							CardPrintStatusVO locationVO = finalMap.get(locationId);
+							if(locationVO == null){
+								locationVO = new CardPrintStatusVO();
+								locationVO.setId((Long)obj[0]);
+								locationVO.setName(obj[1]!=null ? obj[1].toString() :"");
+								locationVO.setCount(obj[2] != null ? (Long)obj[2] : 0l);
+								setStatusListToVO(list , locationVO);
+								
+								if(type.equalsIgnoreCase("district")){
+									if(locationId.longValue() >=1 && locationId.longValue() <= 10){
+										locationVO.setState("TS");
+									}else if(locationId.longValue() >=11 && locationId.longValue() <= 23){
+										locationVO.setState("AP");
+									}
+								}
+								if(type.equalsIgnoreCase("constituency")){
+									
+									locationVO.setSuperId(obj[3] != null ? (Long)obj[3] : 0l);
+									locationVO.setSuperName(obj[4]!=null ? obj[4].toString() :"");
+									
+									if(locationVO.getSuperId() >=1 && locationVO.getSuperId() <= 10){
+										locationVO.setState("TS");
+									}else if(locationVO.getSuperId() >=11 && locationVO.getSuperId() <= 23){
+										locationVO.setState("AP");
+									}
+								}
+								
+								finalMap.put(locationId, locationVO);
+							}
+							
+						}
+					}
+				}
+				
+				if(list != null && list.size() > 0){
+					for(Object[] obj : list){
+						if(obj[0] != null){
+							Long locationId  = (Long)obj[0];
+							CardPrintStatusVO locationVO = finalMap.get(locationId);
+							if(locationVO != null){
+								Map<Long,CardPrintStatusVO> subMap = locationVO.getSubMap();
+								if(subMap != null && obj[1] != null){
+									CardPrintStatusVO statusVO = subMap.get((Long)obj[1]);
+									if(statusVO != null){
+										statusVO.setCount(obj[2]!=null ? (Long)obj[2] :0l);
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				
+				if(finalMap != null && finalMap.size() > 0){
+					for (Map.Entry<Long,CardPrintStatusVO> locationEntry : finalMap.entrySet())
+					{
+						CardPrintStatusVO locationVO = locationEntry.getValue();
+						if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0){
+							locationVO.setSubList(new ArrayList<CardPrintStatusVO>(locationVO.getSubMap().values()));
+							locationVO.getSubMap().clear();
+						}
+					}
+					finalList = new ArrayList<CardPrintStatusVO>(finalMap.values());
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("exception Occurred at cardPrinStatusByLocation() in CardPrintService class ", e); 
+		}
+		return finalList;
+	}
+	
+	public void setStatusListToVO(List<Object[]> statusList , CardPrintStatusVO VO){
+		try{
+			 
+			if(statusList != null && statusList.size() > 0){
+				Map<Long , CardPrintStatusVO> map = new LinkedHashMap<Long , CardPrintStatusVO>(0);
+				for(Object[] obj : statusList){
+					CardPrintStatusVO statusVO = new CardPrintStatusVO();
+					statusVO.setId((Long)obj[0]);
+					statusVO.setName(obj[1]!=null ?obj[1].toString():"");
+					map.put(statusVO.getId() , statusVO);
+				}
+				VO.setSubMap(map);
+			}
+		}catch (Exception e){
+			LOG.error("exception Occurred at setStatusListToVO() in CardPrintService class ", e); 
+		}
+	}
 	
 }
