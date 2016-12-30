@@ -721,8 +721,6 @@ function getCandidateList(designationId){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
-		//getDesignationDtls(fromDateStr,toDateStr,desigId);
-		//getMemDtls(fromDateStr,toDateStr,desigId,desigName);
 		getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId);
 	});
 	
@@ -734,8 +732,7 @@ function getCandidateList(designationId){
 			}
 		$.ajax({
 			type : 'POST',
-			//url : 'getMemDtlsAction.action',
-			url : 'getMemberDetailsByDesignationWise.action',
+			url : 'getMemberDetailsByDesignationWiseAction.action',
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){

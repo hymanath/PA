@@ -15194,7 +15194,6 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
-	
 	<action name="getCadreAlertDetailsAction" class="cadreDetailsAction"  method="getCadreAlertDetails">
 			<result type="json" name="success">
 			<param name="root">alertVO</param>
@@ -15218,6 +15217,10 @@
 		<result name="input">/jsp/loginForm.jsp?src=cardPrintingStatusAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
-	
+	<action name="getMemberDetailsByDesignationWiseAction" class="toursAction"  method="getMemberDetailsByDesignationWise">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
  </package>
 </struts>
