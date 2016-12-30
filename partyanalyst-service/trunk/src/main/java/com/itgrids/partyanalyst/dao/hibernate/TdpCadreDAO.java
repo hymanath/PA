@@ -9115,10 +9115,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	   public List<Object[]> getDistrictWiseCadreCounts(Long stateId){
 		   
 		   StringBuilder sb = new StringBuilder();
-		   sb.append(" select model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName ," +//1
-		   		"             count(distinct model.tdpCadre.tdpCadreId )," +//2
-		   		"             model.tdpCadre.userAddress.state.stateId ,model.tdpCadre.userAddress.state.stateName  " +//4
-		   		     " from   TdpCadreEnrollmentYear model " +
+		   sb.append(" select model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName ,count(distinct model.tdpCadre.tdpCadreId )" +//2
+		   		    "  from   TdpCadreEnrollmentYear model " +
 		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
 		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
 		 
@@ -9158,10 +9156,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	   public List<Object[]> getConstituencyWiseCadreCounts(Long stateId){
 		   
 		   StringBuilder sb = new StringBuilder();
-		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.constituency.name ," +//1
-		   		     "        count(distinct model.tdpCadre.tdpCadreId )," +//2
+		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.constituency.name ,count(distinct model.tdpCadre.tdpCadreId )," +//2
 		   		     "        model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName," +//4
-		   		     "        model.tdpCadre.userAddress.state.stateId ,model.tdpCadre.userAddress.state.stateName " +//6
 		   		     " from   TdpCadreEnrollmentYear model " +
 		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
 		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
