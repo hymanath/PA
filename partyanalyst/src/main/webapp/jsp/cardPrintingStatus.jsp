@@ -151,7 +151,7 @@ function getDistrictWisePrintingStatusDetails(type){
 		type : "district"
 	}
 	$.ajax({
-		url:"cardPrinStatusByLocationAction.action",
+		url:"cardPrinStatusByDistrictAction.action",
 		data:"Post",
 		dataType:"JSON",
 		data:{task:JSON.stringify(jsObj)}
@@ -206,7 +206,7 @@ function getConstituencyWisePrintingStatusDetails(type){
 		type : "constituency"
 	}
 	$.ajax({
-		url:"cardPrinStatusByLocationAction.action",
+		url:"cardPrinStatusByConstituencyAction.action",
 		data:"Post",
 		dataType:"JSON",
 		data:{task:JSON.stringify(jsObj)}
