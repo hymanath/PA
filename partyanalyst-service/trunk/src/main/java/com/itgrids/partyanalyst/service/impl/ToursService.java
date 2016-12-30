@@ -10,9 +10,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -2089,5 +2091,19 @@ public class ToursService implements IToursService {
 			  LOG.error("Exception Occured in prepareCandiateWiseDtlsToTakeComplainceCandiate() in ToursService  : ",e);  
 		  }
 	  }
+	 
+	 public String deleteDocumentByDocument(List<Long> documentIds){
+		 try{
+			 
+			int count = selfAppraisalCandidateDocumentDAO.deleteDocumentByDocument(documentIds);
+			if(count !=0){
+				return "success";
+			} 
+			
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in deleteDocumentByDocument() in CoreDashboardToursService  : ",e);
+		 }
+		 return null;
+	 }
 	
 }
