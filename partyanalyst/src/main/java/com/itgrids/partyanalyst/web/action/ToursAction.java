@@ -629,7 +629,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		try {
 			LOG.info("Entered into getCandidateDetailedReport()");
 			jObj = new JSONObject(getTask());
-			toursBasicVO = toursService.getCandidateDetailedReport(jObj.getLong("candiateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+			toursBasicVO = toursService.getCandidateDetailedReport(jObj.getLong("candidateId"),jObj.getLong("designationId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCandidateDetailedReport()", e);
 		}
