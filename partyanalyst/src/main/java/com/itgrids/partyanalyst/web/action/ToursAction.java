@@ -657,6 +657,23 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
-	
+	 public String getTourBasicOverviewDtlsDesignationWise(){
+	  	   try{
+	  		   jObj = new JSONObject(getTask());
+	 			   String fromDateStr = jObj.getString("fromDate");
+	 			   String toDate = jObj.getString("toDate");
+	 				List<Long> desgnatnIdsLst = new ArrayList<Long>();
+	 				JSONArray designationIdsArr=jObj.getJSONArray("designationIds");
+	 				if(designationIdsArr!=null &&  designationIdsArr.length()>0){
+	 					for( int i=0;i<designationIdsArr.length();i++){
+	 						desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
+	 					}
+	 				}
+	 			   resultList = toursService.getTourBasicOverviewDtlsDesignationWise(fromDateStr,toDate,desgnatnIdsLst);
+	  	   }catch(Exception e){
+	  		   LOG.error("Exception raised at getTourBasicOverviewDtlsDesignationWise()  of ToursAction", e);  
+	  	   }
+	  	   return Action.SUCCESS;
+	 }
 	
 }

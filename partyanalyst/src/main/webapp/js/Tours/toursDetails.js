@@ -623,9 +623,11 @@ function getCandidateList(designationId){
 		fromDate = picker.startDate.format('DD/MM/YYYY');
 		toDate = picker.endDate.format('DD/MM/YYYY');
 		//$(".trainingDate").html("( "+customStartDate+" )");
-		getToursDetailsOverview(fromDate,toDate); //default call 
+		//getToursDetailsOverview(fromDate,toDate); //default call 
+		var designationIds = [];
+	    getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds);
 	});
-	getToursDetailsOverview(fromDate,toDate); //default call 
+	/* getToursDetailsOverview(fromDate,toDate); //default call 
 	function getToursDetailsOverview(fromDate,toDate){ 
 	$("#overAllLeaderDivId").html(' ');
 	$("#overAllLeaderDivProcessImgId").show();
@@ -644,6 +646,38 @@ function getCandidateList(designationId){
 		$.ajax({
 			type : 'POST',
 			url : 'getToursDetailsOverviewForNewAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#overAllLeaderDivProcessImgId").hide();
+		 if(result != null && result.length > 0){
+			 buildLeadersOverviewRslt(result);
+		 }else{
+			$("#overAllLeaderDivId").html('NO DATA AVAILABLE.'); 
+		 }
+		});
+	} */
+	var designationIds = [];
+	getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds); //default call 
+	function getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds){ 
+	$("#overAllLeaderDivId").html(' ');
+	$("#overAllLeaderDivProcessImgId").show();
+	  var dates=$("#toursDateRangePickerNew").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj = { 
+			 fromDate : fromDate,
+			 toDate : toDate,
+			 designationIds :designationIds
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getTourBasicOverviewDtlsDesignationWiseAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -693,9 +727,9 @@ function getCandidateList(designationId){
 			}else{
 				str+='<td> - </td>';
 			}
-			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){				
-				var nonComplinceCount= result[i].submitedLeaderCnt - result[i].complainceCnt ;				
-				str+='<td>'+nonComplinceCount+'</td>';
+			if(result[i].nonComplainceCnt != null && result[i].nonComplainceCnt > 0){				
+				//var nonComplinceCount= result[i].submitedLeaderCnt - result[i].complainceCnt ;				
+				str+='<td>'+result[i].nonComplainceCnt+'</td>';
 			}else{
 				str+='<td> - </td>';
 			}
