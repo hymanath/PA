@@ -64,7 +64,7 @@ public class ToursBasicVO {
 	private Long nonComplainceCnt=0l;
 	private Set<Long> complaincandidateIdsSet;
 	private Set<Long> noNComplaincandidateIdsSet;
-	private List<ToursBasicVO> subList3 = null;
+	private List<ToursBasicVO> subList3 = new ArrayList<ToursBasicVO>(0);
 	
 	private Long inchargeDistrictTrDays = 0l;
 	private Long inchargeConstituencyTrDays = 0l;
@@ -95,6 +95,10 @@ public class ToursBasicVO {
 	private String tourType;
 	
 	private Long addressId;
+	private Long categoryTargetDays=0l;
+	private Long tourTypeTargetDays=0l;
+	
+	private Long tourTypeAchievedDays=0l;
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
@@ -630,6 +634,24 @@ public class ToursBasicVO {
 	}
 	public void setPanWardList(List<IdNameVO> panWardList) {
 		this.panWardList = panWardList;
+	}
+	public Long getCategoryTargetDays() {
+		return categoryTargetDays;
+	}
+	public void setCategoryTargetDays(Long categoryTargetDays) {
+		this.categoryTargetDays = categoryTargetDays;
+	}
+	public Long getTourTypeTargetDays() {
+		return tourTypeTargetDays;
+	}
+	public void setTourTypeTargetDays(Long tourTypeTargetDays) {
+		this.tourTypeTargetDays = tourTypeTargetDays;
+	}
+	public Long getTourTypeAchievedDays() {
+		return tourTypeAchievedDays;
+	}
+	public void setTourTypeAchievedDays(Long tourTypeAchievedDays) {
+		this.tourTypeAchievedDays = tourTypeAchievedDays;
 	}
           
 	
