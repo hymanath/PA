@@ -15233,6 +15233,11 @@
 		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
+	<action name="cardPrinStatusByLocationAction" class="cardPrintAction"  method="cardPrinStatusByLocation">
+		<result type="json" name="success">
+			<param name="root">cardPrintStatusVOList</param>
+		</result>
+	</action>
 	<action name="getTourBasicOverviewDtlsDesignationWiseAction" class="toursAction"  method="getTourBasicOverviewDtlsDesignationWise">
 			<result type="json" name="success">
 			<param name="root">resultList</param>

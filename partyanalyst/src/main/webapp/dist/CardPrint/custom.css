@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table , table {
 }
 
 .m_top10 {
-	margin-top: 10px;
+	margin-top: 10px !important;
 }
 
 .bg_ff {

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
@@ -31,6 +32,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private List<CardPrintVO> vendorList;
 	private CardPrintVO cardPrintVO;
 	private List<CardPrintingDispatchVO> cardPrintingDispatchVOList;
+	private List<CardPrintStatusVO> cardPrintStatusVOList;
 	
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -42,7 +44,6 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	public void setSession(HttpSession session) {
 		this.session = session;
 	}
-	
 	
 	//setters and getters.
 	public List<CardPrintingDispatchVO> getCardPrintingDispatchVOList() {
@@ -82,6 +83,13 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public void setCardPrintVO(CardPrintVO cardPrintVO) {
 		this.cardPrintVO = cardPrintVO;
+	}
+	public List<CardPrintStatusVO> getCardPrintStatusVOList() {
+		return cardPrintStatusVOList;
+	}
+	public void setCardPrintStatusVOList(
+			List<CardPrintStatusVO> cardPrintStatusVOList) {
+		this.cardPrintStatusVOList = cardPrintStatusVOList;
 	}
 	
 	
@@ -191,5 +199,16 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		return Action.SUCCESS;
 	}
 
-
+	public String cardPrinStatusByLocation(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String type = jObj.getString("type");
+			
+			cardPrintStatusVOList = cardPrintService.cardPrinStatusByLocation(type, stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised in cardPrinStatusByLocation() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
