@@ -707,7 +707,7 @@ function getCandidateList(designationId){
 	}
 	$(document).on("click",".getSubMitedLeadersDtlsCls",function(){
 		var desigName = $(this).attr("attr_desig_name");
-		$("#myModalLabel").html(desigName+" OVERVIEW");
+		$("#membersOverviewModalLabel").html(desigName+" OVERVIEW");
 		$("#desigDtlsId").html("");
 		$("#memDtlsId").html(""); 
 		$("#desigDtlsProcessImgId").show();  
@@ -741,19 +741,62 @@ function getCandidateList(designationId){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			//$("#memDtlsProcessImgId").hide();  
+			$("#membersOverviewModal").modal('show');
 			if(result != null){
+				buildMemberDetailsByDesignationWise(result);
 				buildMemDtls(result,desigName);               
 			}
 		});
 	}
+	function buildMemberDetailsByDesignationWise(result)
+	{
+		var str='';
+		str+='<table class="table table-bordered tableModal" id="ministersOvwDataTableId">';
+			str+='<thead class="text-capital">';
+				str+='<tr>';
+					str+='<th rowspan="2" class="bg_D8">minister name</th>';
+					for(var j in result[0].subList3)
+					{
+						str+='<th colspan="2" class="bg_D8 text-center">'+result[0].subList3[j].name+'</th>';
+					}
+					str+='<th rowspan="2" class="bg_D8">Attachment</th>';
+				str+='</tr>';
+				str+='<tr>';
+					for(var i=0;i<result[0].subList3.length;i++)
+					{
+						str+='<th class="bg_ED text-center">target</th>';
+						str+='<th class="bg_ED text-center">toured</th>';
+					}
+				str+='</tr>';
+			str+='</thead>';
+			
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].name+'</td>'
+					for(var j in result[i].subList3)
+					{
+						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
+						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
+					}
+					str+='<td><button class="btn btn-success editBtn btn-xs">EDIT</button></td>'
+				str+='</tr>';
+			}
+
+		str+='</table>';
+		$("#membersOverviewId").html(str);
+		$("#ministersOvwDataTableId").dataTable();
+	}
 	function buildMemDtls(){
 		
 	}
+	$(document).on("click",".editBtn",function(){
+		getCandidateDetailedReport(candiateId);
+	});
 	
-	getCandidateDetailedReport();
-	function getCandidateDetailedReport(){
+	function getCandidateDetailedReport(candiateId){
 		var jsObj ={ 
-			candiateId : 16,
+			candiateId : candiateId,
 			fromDate : "16/12/2016" ,
 			toDate : "31/12/2016"
 		}
@@ -764,10 +807,28 @@ function getCandidateList(designationId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#membersOverviewModalEdit").modal('show');
+			buildCandidateDetailedReport(result);
 			
 		});
 	}
-	
+	function buildCandidateDetailedReport(result)
+	{
+		var str='';
+		str+='<table class="table table-bordered">';
+			str+='<thead>';
+				str+='<th>Month & Date</th>';
+				str+='<th>Category</th>';
+				str+='<th>District Name</th>';
+				str+='<th>Constituency Name</th>';
+			str+='</thead>';
+			str+='<tr>';
+				str+='<td></td>';
+			str+='</tr>';
+		str+='</table>';
+		$("#membersOverviewModalEditId").html(str);
+	}
+
 	getNewTourRetrivalDetails();
 	function getNewTourRetrivalDetails(){
 		var jsObj ={ 

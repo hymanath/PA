@@ -93,3 +93,54 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	cursor:pointer;
 	text-decoration:underline;
 }
+.bg_D8
+{
+	background-color:#DBDFE2;
+}
+.bg_ED
+{
+	background-color: #EDEEF0;
+}
+.tableModal thead
+{
+	background-color:#DBDFE2
+}
+.tableModal tr td
+{
+	padding:15px 8px !important;
+	cursor: pointer;
+}
+.tableModal tr:hover td
+{
+	background-color:#EDEEF0 !important;
+	border-top:1px solid #333 !important;
+	border-bottom:1px solid #333 !important;
+}
+.editBtn , .editBtn:hover , .editBtn:active , .editBtn:focus
+{
+	display:none;
+	background-color:#EBEEEC;
+	color:#449D44;
+}
+.tableModal tr:hover td .editBtn
+{
+	display:inline-block;
+}
+.tableModal tr:hover td:first-child
+{
+	border-left:1px solid #333 !important;
+}
+.tableModal tr:hover td:last-child
+{
+	border-right:1px solid #333 !important;
+}
+.tableModal tr td img
+{
+	height:30px;
+	width:30px;
+	display:inline-block !important;
+}
+.tableOverview
+{
+	border:1px solid #ddd;
+}

@@ -8,6 +8,7 @@
 <link href="dist/tourDetails/tours_custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css">
 <!-- for file uploader -->
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
@@ -317,7 +318,51 @@
 		</div>
 	</div>	
 	</div>
+	<!-- membersOverviewModal -->
 	
+	<div class="modal fade" id="membersOverviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:80%">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="membersOverviewModalLabel">Modal title</h4>
+		  </div>
+		  <div class="modal-body">
+			  <div class="row">
+			  	<div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="membersOverviewId"></div>
+			  	</div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<!--membersOverviewModal EDit-->
+	<div class="modal fade" id="membersOverviewModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:80%">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="membersOverviewModalLabel">Modal title</h4>
+		  </div>
+		  <div class="modal-body">
+			  <div class="row">
+			  	<div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="membersOverviewModalEditId"></div>
+			  	</div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
 	<!--editview modal start-->
 	<div class="modal fade" tabindex="-1" id="retrivalEditModalId" role="dialog">
 	  <div class="modal-dialog" role="document" style="width:80%">
