@@ -33,4 +33,5 @@ public interface IToursService {
 	 public List<ToursBasicVO> getToursDetailsOverviewForNew(String fromDateStr,String toDateStr);
 	 public ToursBasicVO getCandidateDetailedReport(Long candidateId,String fromDate,String toDate);
 	 public PMMinuteVO getNewTourRetrivalDetails(Long candidateDayTourId);
+	 public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId);
 }
