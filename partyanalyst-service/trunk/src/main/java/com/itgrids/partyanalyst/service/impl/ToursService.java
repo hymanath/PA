@@ -1027,7 +1027,7 @@ public class ToursService implements IToursService {
 				if(toursVo !=null && toursVo.getToursVoList() !=null && toursVo.getToursVoList().size()>0){
 					for (ToursVO innerTourVo : toursVo.getToursVoList()) {
 						
-						SelfAppraisalCandidateDayTour selfAppraisalCandidateDayTour = selfAppraisalCandidateDayTourDAO.get(innerTourVo.getTourId());
+						SelfAppraisalCandidateDayTour selfAppraisalCandidateDayTour = selfAppraisalCandidateDayTourDAO.get(toursVo.getTourId());
 						
 						if(selfAppraisalCandidateDayTour !=null){
 														
@@ -1357,7 +1357,7 @@ public class ToursService implements IToursService {
 			
 			if(dayTour !=null){
 				
-				vo.setTourDate(dayTour.getTourDate() !=null ? dayTour.getTourDate().toString():null);
+				vo.setTourDate(dayTour.getTourDate() !=null ? new SimpleDateFormat("yyyy-MM-dd").format(dayTour.getTourDate()):null);
 				vo.setTdpCadreId(dayTour.getSelfAppraisalCandidate().getTdpCadreId());
 				vo.setTourCategoryId(dayTour.getSelfAppraisalTourCategoryId());
 				vo.setTourTypeId(dayTour.getTourTypeId() !=null ? dayTour.getTourTypeId():null);
@@ -2085,7 +2085,7 @@ public class ToursService implements IToursService {
 									 categoryVO.setComplainceDays(tourDaysCnt);
 									 Double complaincePer = calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays());
 									 categoryVO.setComplaincePer(complaincePer);	 
-								}
+								}	
 				      }
 				    }
 				}
