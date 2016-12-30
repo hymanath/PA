@@ -15222,5 +15222,10 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
+	<action name="cardPrintAdminAction" class="cardPrintAction" method="cardPrintAdminStatus">
+		<result name="success">/jsp/cardPrintAdmin.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+	</action>
  </package>
 </struts>

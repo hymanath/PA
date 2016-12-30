@@ -724,5 +724,6 @@
 		<pattern>/cardPrintDashboardAction*</pattern>
 		<pattern>/userWiseCadreDemographicReportAction*</pattern>
 		<pattern>/cardPrintingStatusAction*</pattern>
+		<pattern>/cardPrintAdminAction*</pattern>
 	</decorator> 
 </decorators>
