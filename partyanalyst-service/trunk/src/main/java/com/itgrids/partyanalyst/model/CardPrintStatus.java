@@ -11,7 +11,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name = "print_status")
+@Table(name = "card_print_status")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CardPrintStatus extends BaseModel implements java.io.Serializable {
 	
@@ -20,7 +20,7 @@ public class CardPrintStatus extends BaseModel implements java.io.Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "print_status_id", unique = true, nullable = false)
+	@Column(name = "card_print_status_id", unique = true, nullable = false)
 	public Long getCardPrintStatusId() {
 		return cardPrintStatusId;
 	}
@@ -28,7 +28,7 @@ public class CardPrintStatus extends BaseModel implements java.io.Serializable {
 		this.cardPrintStatusId = cardPrintStatusId;
 	}
 	
-	@Column(name = "print_status")
+	@Column(name = "card_print_status")
 	public String getCardPrintStatus() {
 		return cardPrintStatus;
 	}
