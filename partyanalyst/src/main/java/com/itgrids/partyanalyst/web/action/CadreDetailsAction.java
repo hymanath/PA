@@ -1815,7 +1815,7 @@ public String getVolunteerCadreDetilasInformation(){
 /*
  * auther : Srishailam Pittala
  * Date : 29th Dec, 2016
- * Description : to Get Cadre wise alert Details
+ * Description : to Get Cadre wise all alert Details
  * */
 
 	public String getCadreAlertDetails(){
@@ -1831,6 +1831,36 @@ public String getVolunteerCadreDetilasInformation(){
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			
 			 alertVO = alertService.getAlertDetailsBySearch(tdpCadreId,stateId,startDateStr,endDateStr,searchType,alertTypeId);
+			
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getCadreAlertDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+
+	
+
+/*
+ * auther : Srishailam Pittala
+ * Date : 30th Dec, 2016
+ * Description : to Get Cadre selection wise alert Details
+ * */
+
+	public String getCandidateAlertDetails(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			Long stateId = jObj.getLong("stateId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			String searchType = jObj.getString("searchType");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long categoryId = jObj.getLong("categoryId");
+			Long statusId = jObj.getLong("statusId");
+			
+			 alertVO = alertService.getCandidateAlertDetailsBySearch(tdpCadreId,stateId,startDateStr,endDateStr,searchType,alertTypeId,categoryId,statusId);
 			
 		} catch (Exception e) {
 			 LOG.error("Exception occured in getCadreAlertDetails in CadreDetailsAction class  ",e);
