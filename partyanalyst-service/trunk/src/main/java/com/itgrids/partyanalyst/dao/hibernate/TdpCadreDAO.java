@@ -9090,4 +9090,94 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameter("image",image);
 		   return query.executeUpdate();
 	   }
+	   
+	   //
+	   public List<Object[]> getDistrictWiseCardPrintStatusCounts(Long stateId){
+		   
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" select model.tdpCadre.userAddress.district.districtId ,model.tdpCadre.cardPrintStatusId ,  count(distinct model.tdpCadre.tdpCadreId ) " +//2
+		   		     " from   TdpCadreEnrollmentYear model " +
+		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+		 
+		   if(stateId != null && stateId.longValue() == 1l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+		   }else if(stateId != null && stateId.longValue() == 36l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");   
+		   }
+		   sb.append(" group by  model.tdpCadre.userAddress.district.districtId, model.tdpCadre.cardPrintStatusId ");
+		  
+		   Query query = getSession().createQuery(sb.toString());
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   return query.list();
+	   }
+	   
+	   public List<Object[]> getDistrictWiseCadreCounts(Long stateId){
+		   
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" select model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName ," +//1
+		   		"             count(distinct model.tdpCadre.tdpCadreId )," +//2
+		   		"             model.tdpCadre.userAddress.state.stateId ,model.tdpCadre.userAddress.state.stateName  " +//4
+		   		     " from   TdpCadreEnrollmentYear model " +
+		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+		 
+		   if(stateId != null && stateId.longValue() == 1l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+		   }else if(stateId != null && stateId.longValue() == 36l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");   
+		   }
+		   sb.append(" group by  model.tdpCadre.userAddress.district.districtId" +
+		   		     " order by  model.tdpCadre.userAddress.district.districtName ");
+		  
+		   Query query = getSession().createQuery(sb.toString());
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   return query.list();
+	   }
+
+	   public List<Object[]> getConstituencyWiseCardPrintStatusCounts(Long stateId){
+		   
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId ,model.tdpCadre.cardPrintStatusId , count(distinct model.tdpCadre.tdpCadreId ) " +//2
+		   		     " from   TdpCadreEnrollmentYear model " +
+		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+		 
+		   if(stateId != null && stateId.longValue() == 1l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+		   }else if(stateId != null && stateId.longValue() == 36l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");   
+		   }
+		   sb.append(" group by  model.tdpCadre.userAddress.constituency.constituencyId, model.tdpCadre.cardPrintStatusId ");
+		  
+		   Query query = getSession().createQuery(sb.toString());
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   return query.list();
+	   }
+	   
+	   public List<Object[]> getConstituencyWiseCadreCounts(Long stateId){
+		   
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.constituency.name ," +//1
+		   		     "        count(distinct model.tdpCadre.tdpCadreId )," +//2
+		   		     "        model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName," +//4
+		   		     "        model.tdpCadre.userAddress.state.stateId ,model.tdpCadre.userAddress.state.stateName " +//6
+		   		     " from   TdpCadreEnrollmentYear model " +
+		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+		 
+		   if(stateId != null && stateId.longValue() == 1l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+		   }else if(stateId != null && stateId.longValue() == 36l){
+			   sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");   
+		   }
+		   sb.append(" group by  model.tdpCadre.userAddress.constituency.constituencyId " +
+		   		     " order by  model.tdpCadre.userAddress.district.districtName ,  model.tdpCadre.userAddress.constituency.name ");
+		  
+		   Query query = getSession().createQuery(sb.toString());
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   return query.list();
+	   }
+	   
+	   
 }
