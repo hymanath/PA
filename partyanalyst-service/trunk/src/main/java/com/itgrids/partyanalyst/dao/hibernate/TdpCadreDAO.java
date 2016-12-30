@@ -9136,7 +9136,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	   public List<Object[]> getConstituencyWiseCardPrintStatusCounts(Long stateId){
 		   
 		   StringBuilder sb = new StringBuilder();
-		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId ,model.tdpCadre.cardPrintStatusId , count(distinct model.tdpCadre.tdpCadreId ) " +//2
+		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId ,model.tdpCadre.cardPrintStatusId ," +
+		   			 " count(distinct model.tdpCadre.tdpCadreId ) " +//2
 		   		     " from   TdpCadreEnrollmentYear model " +
 		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
 		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
@@ -9157,7 +9158,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   
 		   StringBuilder sb = new StringBuilder();
 		   sb.append(" select model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.constituency.name ,count(distinct model.tdpCadre.tdpCadreId )," +//2
-		   		     "        model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName," +//4
+		   		     "        model.tdpCadre.userAddress.district.districtId , model.tdpCadre.userAddress.district.districtName " +//4
 		   		     " from   TdpCadreEnrollmentYear model " +
 		   		     " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
 		   		     "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
