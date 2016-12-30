@@ -675,5 +675,22 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	  	   }
 	  	   return Action.SUCCESS;
 	 }
+	 
+	 public String deleteDocumentByDocument(){
+		 try{
+	  		   jObj = new JSONObject(getTask());
+	 				List<Long> documentIdsLst = new ArrayList<Long>();
+	 				JSONArray documentIdsArr=jObj.getJSONArray("documents");
+	 				if(documentIdsArr!=null &&  documentIdsArr.length()>0){
+	 					for( int i=0;i<documentIdsArr.length();i++){
+	 						documentIdsLst.add(Long.valueOf(documentIdsArr.getString(i))); 
+	 					}
+	 				}
+	 				successMsg = toursService.deleteDocumentByDocument(documentIdsLst);
+	  	   }catch(Exception e){
+	  		   LOG.error("Exception raised at deleteDocumentByDocument()  of ToursAction", e);  
+	  	   }
+		 return Action.SUCCESS;
+	 }
 	
 }
