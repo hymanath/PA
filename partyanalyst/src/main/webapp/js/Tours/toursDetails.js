@@ -1393,7 +1393,7 @@ function getCandidateList(designationId){
 			setTimeout(function () {
 				$("#successUpdateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
 				filerKit.reset();
-				$("#retrivalEditModalId").hide();
+				$("#retrivalEditModalId").modal('hide');
 			}, 500);
 		}
 	}	
