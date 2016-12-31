@@ -212,9 +212,10 @@ function getCandidateList(designationId){
 		});
 	}
 	
-	function getAllTourCategorys(cadreId){ 
+	function getAllTourCategorys(cadreId,designationId){ 
 		var jsObj = {     
-			cadreId : cadreId
+			cadreId : cadreId,
+			designationId:designationId
 		}
 		$.ajax({
 			type : 'POST',
@@ -409,7 +410,8 @@ function getCandidateList(designationId){
 	$(document).on("click","#profileCheckboxId",function(){
 		if($(this).is(':checked')){
 			$(".showDivCls").show();
-			getAllTourCategorys($(this).attr("attr_cadre_id"));
+			var desigDtlsId = $("#designationSlctBxId").val();
+			getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
 		}else{
 			$(".showDivCls").hide();
 		}
