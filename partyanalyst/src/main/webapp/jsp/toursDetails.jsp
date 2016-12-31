@@ -429,7 +429,7 @@
 <script type="text/javascript">
 initializeFile2();   
 var windowUrl = window.location.href;
-var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');

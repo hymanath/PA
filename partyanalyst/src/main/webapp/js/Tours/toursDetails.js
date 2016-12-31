@@ -895,7 +895,8 @@ function getCandidateList(designationId){
 								str+='<td>'+result.subList[0].subList3[t].complainceDays+'</td>';
 							}
 							if(targetDays != null && targetDays > 0){
-								str+='<td>'+((touredDays/targetDays)*100).toFixed(2)+' %</td>';
+								var perc = ((touredDays/targetDays)*100).toFixed(2) > 100.00?100.00:((touredDays/targetDays)*100).toFixed(2);
+								str+='<td>'+perc+' %</td>';
 							}
 						str+='</tr>';
 					str+='</tbody>';
@@ -1081,7 +1082,7 @@ function getCandidateList(designationId){
 			strt+='<table class="table">';
 			strt+='<tbody>';
 			for(var t in result.documentList){
-				strt+='<tr style="border:1px solid #ddd;padding:10px;">';
+				strt+='<tr style="border:1px solid #ddd;padding:10px;" id="documentTrId'+result.documentList[t].id+'">';
 					var extension = result.documentList[t].name.split(".")[1];
 					if(extension == "jpg" || extension == "jpeg")
 						strt+='<td class="fa fa-file-photo-o"></td>';
@@ -1241,7 +1242,7 @@ function getCandidateList(designationId){
 	});
 	
 	$(document).on("click",".viewPdfCls",function(){
-		window.open("mytdp.com/tour_documents/"+$(this).attr("attr_doc_name"));
+		window.open(wurl+"/tour_documents/"+$(this).attr("attr_doc_name"));
 	});
 	
 	function getDesignationWiseOverAllData(fromDate,toDate,designationIds){
@@ -1392,3 +1393,22 @@ function getCandidateList(designationId){
 			}, 500);
 		}
 	}	
+	
+	$(document).on("click",".deletePdfCls",function(){
+		var id = $(this).attr("attr_id");
+		var arr=[id];
+		
+		var jsObj = {     
+			documents : arr
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'deleteDocumentByDocumentAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result == "success"){
+				$("#documentTrId"+id).remove();
+			}
+		});
+	});
