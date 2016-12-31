@@ -761,6 +761,8 @@ function getCandidateList(designationId){
 	  $("#overAllLeaderDivId").html(str);
 	}
 	$(document).on("click",".getSubMitedLeadersDtlsCls",function(){
+		$("#membersOverviewModal").modal('show');
+		
 		var desigName = $(this).attr("attr_desig_name");
 		$("#membersOverviewModalLabel").html(desigName+" OVERVIEW");
 		$("#desigDtlsId").html("");
@@ -786,6 +788,7 @@ function getCandidateList(designationId){
 	});
 	
 	function getMemberDetailsByDesignationWise(fromDateStr,toDateStr,desigId){
+		$("#membersOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { 
 			 desigId : desigId,
 			 startDateStr : fromDateStr,
@@ -799,7 +802,7 @@ function getCandidateList(designationId){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			//$("#memDtlsProcessImgId").hide();  
-			$("#membersOverviewModal").modal('show');
+			
 			if(result != null){
 				buildMemberDetailsByDesignationWise(result,desigId);
 			}
@@ -846,6 +849,7 @@ function getCandidateList(designationId){
 	}
 	
 	$(document).on("click",".editModalBtn",function(){
+		$("#membersOverviewModalEdit").modal('show');
 		var designationId = $(this).attr("attr_designation_id");
 		var dates=$("#toursDateRangePickerNew").val();    
 		var name = $(this).attr("attr_name");
@@ -855,7 +859,7 @@ function getCandidateList(designationId){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
-		
+		$("#membersOverviewModalEditId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
 			candidateId : $(this).attr("attr_candidateId"),
 			designationId : designationId,
@@ -869,7 +873,6 @@ function getCandidateList(designationId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#membersOverviewModalEdit").modal('show');
 			buildCandidateDetailedReport(result,name,fromDateStr,toDateStr);
 		});
 	});
@@ -927,8 +930,9 @@ function getCandidateList(designationId){
 	}
 
 	$(document).on("click",".editTourRecordBtnCls",function(){
-		
-		 var candidateDayTourId = $(this).attr("attr_id");
+		$("#retrivalEditModalId").modal("show");
+		$("#retriveModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var candidateDayTourId = $(this).attr("attr_id");
 		
 		var jsObj ={ 
 			candidateDayTourId : candidateDayTourId
@@ -942,7 +946,6 @@ function getCandidateList(designationId){
 		}).done(function(result){
 			if(result != null){
 				buildNewTourRetrivalDetails(result,candidateDayTourId);
-				$("#retrivalEditModalId").modal("show");
 				initializeFile();
 			}
 		});
@@ -1393,6 +1396,7 @@ function getCandidateList(designationId){
 	}
 	function showSbmitStatusUpdateNew(uploadResult){
 		if(uploadResult !=null && uploadResult.search("success") != -1){
+			$("#successUpdateSpanId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			$("#successUpdateSpanId").show();
 			$("#update_TourFileId").val('');			
 			var filerKit = $("#update_TourFileId").prop("jFiler");
