@@ -653,7 +653,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h4 style="display:inline-block;" class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS  </h4>
 							</div>
-							<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
+							<!--<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
 								<label class="radio-inline"><input type="radio" name="radioBtn" value="Assigned" checked/>Assigned</label>
 								<label class="radio-inline"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
 							</div>
@@ -673,22 +673,43 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 										<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
 									</div>
 								</div>
-								<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>
+								<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>-->
 								<span class="pull-right" id="alertProfileShowId">
 									<i class="glyphicon glyphicon-chevron-up"></i>
 								</span>
 								<span class="pull-right" id="alertProfileHideId" style="display:none;">
 									<i class="glyphicon glyphicon-chevron-down"></i>
 								</span>
-							</div>
 						</div>
                     </div>
                     <div class="panel-body" id="alertBodyId">
-                    	<div class="cadre-election" >
-						<div id="alertDetailsDiv"> </div>
-						<!--<div id="alertsOverViewTAb"> </div>-->
-                        	
-                        </div>
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
+									<label class="radio-inline"><input type="radio" name="radioBtn" value="Assigned" checked/>Assigned</label>
+									<label class="radio-inline"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="padding-left:0px">
+								<label style="font-size:13px;">Alert Types :</label> 
+								<select class="" id="typeId" style="font-size:13px;">
+									<option value="1">Party</option>
+									<option value="2">Govt</option>
+									<option value="3">Others</option>
+								</select>
+							</div>
+							<div style="display:inline-block">
+								<div class="input-group pull-right" style="">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+									<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
+								</div>
+							</div>
+							<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>
+							<div class="cadre-election" >
+								<div id="alertDetailsDiv"></div>
+								<!--<div id="alertsOverViewTAb"> </div>-->
+								<div id="alertErrMsgId"></div>
+								
+							</div>
+						</div>
                     </div>
                 </div>
 						
@@ -3141,8 +3162,8 @@ function getMoreApplicationDetails(){
 	$("#nominatedModalDivId").modal('show');
 	getCandidateAppliedPostsByCadre(1);
 }
-//getCadreAlertDetails();
-$("#alertBodyId").collapse('show');
+
+$("#alertBodyId").collapse('hide');
 $(document).on("click","#alertHeaderId",function(){
 	var isVisible = $( "#alertProfileHideId" ).is( ":visible" );
 	if(isVisible==false){
