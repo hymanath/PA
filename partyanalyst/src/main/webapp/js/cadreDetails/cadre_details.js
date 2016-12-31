@@ -174,7 +174,7 @@ setcolorsForStatus();
 		firstDay: 1
 	}
   };
-  $('#alertsDatePicker').val(moment().startOf('month').format('MM/DD/YYYY') + ' - ' + moment().endOf('month').format('MM/DD/YYYY'));
+  $('#alertsDatePicker').val(moment().subtract(1, 'year').format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 
   $('#alertsDatePicker').daterangepicker(Alertset);
 
@@ -608,7 +608,6 @@ var globalidentityMembershipNo = ""	;
 					//getGrievanceStatusDetails();
 					getStatusCountsForGrievanceDetails();
 					getApprovedAmountsForGrievance();
-					
 					var cadreDisId = $('#cadreDistrictId').val();
 					
 					if(cadreDisId != null && cadreDisId<=10)
