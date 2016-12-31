@@ -453,7 +453,11 @@ $(document).on("click",".submitedDataModal",function(){
 $( document ).ready(function() {
     $(".showDivCls").hide();
 });
- 
+if($(window).width() > 500)
+{
+	$(".table").wrap( "<div class='table-responsive'></div>" );
+}
+
  var TourCategoryArray =[];
  var TourTypesArray =[];
  defaultDateRangePickerForAppendBlock();
