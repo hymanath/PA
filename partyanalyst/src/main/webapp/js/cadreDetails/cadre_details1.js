@@ -1278,7 +1278,7 @@ function buildVolunteersDetails(result){
 	}
 
 	function getCadreAlertDetails(){
-			$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		var dates = $("#alertsDatePicker").val();
 		var datesArr = dates.split("-");
 		var startDate = datesArr[0];
@@ -1299,14 +1299,16 @@ function buildVolunteersDetails(result){
 			 url: 'getCadreAlertDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				//console.log(result);
-			    buildAlertDetails(result);
+				if(result != null && result.length > 0){
+					buildAlertDetails(result);
+				}
+				else
+					$("#alertErrMsgId").html("<span>NO DATA AVAILABLE.");
 			});
 	}
 	//alertDetailsDiv
 	
 	function buildAlertDetails(result){
-		
 		var finalReslt = result.subList1;
 		var str ='';
 		
@@ -1402,7 +1404,7 @@ function buildVolunteersDetails(result){
 
 	function buildAlertsDEtails(result,alertType){
 		var finalResult = result.subList1;
-		$("#myModalLabelId").html("In Manual Alert " +alertType);
+		$("#myModalLabelId").html("IN MANUAL ALERT " +alertType.toUpperCase());
 		var str='';
 		if(finalResult != null && finalResult.length>0){
 			str+='<table class="table table-bordered table condensed" id="alertsTab">';
