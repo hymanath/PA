@@ -65,7 +65,7 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         }
         public int deleteDocumentByDocument(List<Long> documents){
         	
-        	Query query = getSession().createQuery(" update set model.isDeleted= 'Y'  from SelfAppraisalCandidateDocument model " +
+        	Query query = getSession().createQuery(" update SelfAppraisalCandidateDocument model set model.isDeleted= 'Y'   " +
         			" where model.selfAppraisalCandidateDocumentId in (:documents) ");
         	
         	query.setParameterList("documents", documents);
