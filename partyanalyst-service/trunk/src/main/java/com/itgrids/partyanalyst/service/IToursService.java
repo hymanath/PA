@@ -27,7 +27,7 @@ public interface IToursService {
 	 public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr);
 	 public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
 	 public List<IdNameVO> getAllTourTypes();
-	 public List<IdNameVO> getAllTourCategorys(Long cadreId);
+	 public List<IdNameVO> getAllTourCategorys(Long cadreId,Long designationId);
 	 public PMMinuteVO getAllCandidateLocations(Long cadreId,Long categoryId);
 	 public ResultStatus saveNewTourDetails(final ToursVO toursVo,final Map<File, String> documentMap);
 	 public List<ToursBasicVO> getToursDetailsOverviewForNew(String fromDateStr,String toDateStr);

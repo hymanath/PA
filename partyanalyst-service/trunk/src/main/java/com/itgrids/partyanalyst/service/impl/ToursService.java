@@ -815,10 +815,10 @@ public class ToursService implements IToursService {
     	return finalList;
     }
     
-    public List<IdNameVO> getAllTourCategorys(Long cadreId){
+    public List<IdNameVO> getAllTourCategorys(Long cadreId,Long designationId){
     	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
     	try{    		
-    		List<Object[]> objectList = selfAppraisalTourCategoryDAO.getAllTourCategorys(cadreId);
+    		List<Object[]> objectList = selfAppraisalTourCategoryDAO.getAllTourCategorys(cadreId,designationId);
 	    		if(objectList !=null && objectList.size()>0){
 	    			for (Object[] obj : objectList) 
 		    			finalList.add(new IdNameVO(obj[0] !=null ? (Long)obj[0]:null,obj[1] !=null ? obj[1].toString():null));
@@ -1368,7 +1368,7 @@ public class ToursService implements IToursService {
 				vo.setName(dayTour.getComment());//description
 				
 				if(vo.getTdpCadreId() !=null){
-					vo.setCategoryList(getAllTourCategorys(vo.getTdpCadreId()));
+					vo.setCategoryList(getAllTourCategorys(vo.getTdpCadreId(),dayTour.getSelfAppraisalDesignationId()));
 				}
 				if(vo.getTourTypeId() !=null){
 					vo.setTourTypeList(getAllTourTypes());
