@@ -346,7 +346,7 @@
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<button type="button" class="close closeMembersOverviewModalEdit" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title" id="membersOverviewModalLabel1"></h4>
 		  </div>
 		  <div class="modal-body">
@@ -357,7 +357,7 @@
 			  </div>
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-default closeMembersOverviewModalEdit" data-dismiss="modal">Close</button>
 		  </div>
 		</div>
 	  </div>
@@ -367,7 +367,7 @@
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<button type="button" class="close closeRetrivalEditModalId" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title">Edit / View Tour Details</h4>
 		  </div>
 		  <div class="modal-body" id="retrivalEditModalBodyId">
@@ -381,20 +381,20 @@
 							<div id="retriveModalDocumentDivId"></div>
 						</div>
 						<div class="row showDivUpdateCls" id="uploadUpdateFlDivId">
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-											<input type="file" id="update_TourFileId" multiple="multiple"  name="files[]" class="m_top20"/>
-											<span id="errFileId" style="color:red;margin-left:470px;"></span>   
-										</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+								<input type="file" id="update_TourFileId" multiple="multiple"  name="files[]" class="m_top20"/>
+								<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+							</div>
 						</div>
 						
 						<div class="row showDivUpdateCls" > 
-										<div class="col-md-4 col-md-offset-4">
-											<!--<span class="updateTourStatusCls"></span>-->
-											<button type="button" class="btn btn-success btn-block" onclick="updateApplication();" type="button">SUBMIT APPLICATION</button>
-											<span id="successUpdateSpanId"></span>  
-										</div>   
-										<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
+							<div class="col-md-4 col-md-offset-4">
+								<!--<span class="updateTourStatusCls"></span>-->
+								<button type="button" class="btn btn-success btn-block" onclick="updateApplication();" type="button">SUBMIT APPLICATION</button>
+								<span id="successUpdateSpanId"></span>  
+							</div>   
+							<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
 						</div> 
 						
 						<div>
@@ -405,7 +405,7 @@
 			</div>
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-default closeRetrivalEditModalId" data-dismiss="modal">Close</button>
 		  </div>
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -427,6 +427,22 @@
 <!-- <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     -->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).on("click",".closeRetrivalEditModalId",function(){
+	$("#retrivalEditModalId").modal('hide');
+	setTimeout(function(){
+		$("body").addClass('modal-open');
+		$("#membersOverviewModalEdit").modal('show');
+	},500);
+});
+$(document).on("click",".closeMembersOverviewModalEdit",function(){
+	$("#membersOverviewModalEdit").modal('hide');
+	setTimeout(function(){
+		$("body").addClass('modal-open');
+		$("#membersOverviewModal").modal('show');
+	},500);
+});
+
+
 initializeFile2();   
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
