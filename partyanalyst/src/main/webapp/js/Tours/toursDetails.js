@@ -401,9 +401,12 @@ function getCandidateList(designationId){
 	function showSbmitStatusNew(uploadResult){
 		if(uploadResult !=null && uploadResult.search("success") != -1){
 			$("#successSpanId").show();			
+			$("#update_TourFileId2").val('');
+			var filerKit = $("#update_TourFileId2").prop("jFiler");
 			setTimeout(function () {
 				$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
-				location.reload(true);
+				filerKit.reset();
+				location.reload(true);				
 			}, 500);
 		}
 	}
@@ -939,6 +942,7 @@ function getCandidateList(designationId){
 			if(result != null){
 				buildNewTourRetrivalDetails(result,candidateDayTourId);
 				$("#retrivalEditModalId").modal("show");
+				initializeFile();
 			}
 		});
 	});
@@ -1282,8 +1286,8 @@ function getCandidateList(designationId){
 
 		/*$(".textErrCls").html("");
 		$("#errFileId").html(""); */
-		var flag = true;
-		var filerKit = $("#update_TourFileId3").prop("jFiler");
+		var flag = true;		
+		var filerKit = $("#update_TourFileId").prop("jFiler");
 
 		/* $(".isActive").each(function(){
 			var value = $(this).val();
@@ -1377,10 +1381,13 @@ function getCandidateList(designationId){
 	}
 	function showSbmitStatusUpdateNew(uploadResult){
 		if(uploadResult !=null && uploadResult.search("success") != -1){
-			$("#successUpdateSpanId").show();			
+			$("#successUpdateSpanId").show();
+			$("#update_TourFileId").val('');			
+			var filerKit = $("#update_TourFileId").prop("jFiler");
 			setTimeout(function () {
 				$("#successUpdateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
 				//location.reload(true);
+				filerKit.reset();
 				$("#retrivalEditModalId").hide();
 			}, 500);
 		}
