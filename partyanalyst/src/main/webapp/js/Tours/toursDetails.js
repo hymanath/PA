@@ -1273,8 +1273,19 @@ function getCandidateList(designationId){
 					str+='<td><p class="text-muted">Total Leaders</p><h4 class="panel-title">'+result[i].noOfLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Submited</p><h4 class="panel-title">'+result[i].submitedLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Not Submited</p><h4 class="panel-title">'+result[i].notSubmitedLeaserCnt+'</h4></td>';
-					str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title">'+result[i].complainceCnt+'</h4></td>';
-					str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title">'+result[i].nonComplainceCnt+'</h4></td>';
+					if(result[i].complainceCnt !=null && result[i].complainceCnt >0){
+						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title">'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></h4></td>';
+					}else{
+						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title"> - </h4></td>';
+					}
+					
+					if(result[i].nonComplainceCnt !=null && result[i].nonComplainceCnt>0){
+						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title">'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></h4></td>';						
+					}else{
+						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title"> - </h4></td>';
+					}
+					
+					
 				str+='</tr>';
 			}
 			
@@ -1397,6 +1408,11 @@ function getCandidateList(designationId){
 	$(document).on("click",".deletePdfCls",function(){
 		var id = $(this).attr("attr_id");
 		var arr=[id];
+		
+		var dt = confirm(" Are you sure want to delete Attatchment ? ")
+		if(dt == false){
+			return;
+		}
 		
 		var jsObj = {     
 			documents : arr
