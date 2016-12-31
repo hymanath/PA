@@ -946,7 +946,6 @@ function getCandidateList(designationId){
 		}).done(function(result){
 			if(result != null){
 				buildNewTourRetrivalDetails(result,candidateDayTourId);
-				initializeFile();
 			}
 		});
 	});
@@ -1102,6 +1101,15 @@ function getCandidateList(designationId){
 			strt +='</table>'; 
 		}
 		$("#retriveModalDocumentDivId").html(strt);
+		
+		var str1="";
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+			str1+='<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  ';
+			str1+='<input type="file" id="update_TourFileId" multiple="multiple"  name="files[]" class="m_top20"/>';
+			str1+='<span id="errFileId" style="color:red;margin-left:470px;"></span>  '; 
+		str1+='</div>';
+		$("#uploadUpdateFlDivId").html(str1);
+		initializeFile();
 	}
 	
 	$(document).on("change","#retriveLocId",function(){
@@ -1298,90 +1306,72 @@ function getCandidateList(designationId){
 	}
 	
 	function updateApplication(){
-
-		/*$(".textErrCls").html("");
-		$("#errFileId").html(""); */
-		var flag = true;		
 		var filerKit = $("#update_TourFileId").prop("jFiler");
-
-		/* $(".isActive").each(function(){
-			var value = $(this).val();
-			var bool = $.isNumeric(value);
-			if(bool == false){
-				var errId = $(this).attr("attr_err_id");
-				$("#"+errId).html("Please Enter Numbers.");
-				flag = false;
-				return false;      
-			}  
-		}); */
-		
 		var childEleCount = $(".jFiler-items-list").children().length;
-		
-		//allocating designationId To Hidden Variable
-		
-		
-		if(flag == false){
-			return;  
-		}
-		
-		var errStr='',flag1=true;
-		/* $(".outerDivCls").each(function(){
-			if(flag1){
-				var count = $(this).attr("attr_count");
-				if($("#tourTypeId"+count).val() == 0 || $("#tourTypeId"+count).val() == "undefined" || $("#tourTypeId"+count).val() === undefined){
-					errStr="Please Select Tour Type";flag1=false;
-				}else if($("#tourCategoryId"+count).val() == 0 || $("#tourCategoryId"+count).val() == "undefined" || $("#tourCategoryId"+count).val() === undefined){
-					errStr="Please Select Tour Category";flag1=false;
-				}else if($("#tourLocationId"+count).val() > 0){
-					var locLvl = $("#tourLocationId"+count).val();
-					if(locLvl == 2){
-						if($("#stateSelId"+count).val() == 0){
-							errStr="Please Select State";flag1=false;
-						}
-					}else if(locLvl == 3){
-						if($("#stateSelId"+count).val() == 0){
-							errStr="Please Select State";flag1=false;
-						}else if($("#districtSelId"+count).val() == 0){
-							errStr="Please Select District";flag1=false;
-						} 
-					}else if(locLvl == 4){
-						if($("#stateSelId"+count).val() == 0){
-							errStr="Please Select State";flag1=false;
-						}else if($("#districtSelId"+count).val() == 0){
-							errStr="Please Select District";flag1=false;
-						}else if($("#constituencySelId"+count).val() == 0){
-							errStr="Please Select Constituency";flag1=false;
-						}
-					}else if(locLvl == 5){
-						if($("#stateSelId"+count).val() == 0){
-							errStr="Please Select State";flag1=false;
-						}else if($("#districtSelId"+count).val() == 0){
-							errStr="Please Select District";flag1=false;
-						}else if($("#constituencySelId"+count).val() == 0){
-							errStr="Please Select Constituency";flag1=false;
-						}else if($("#tehMunSelId"+count).val() == 0){
-							errStr="Please Select Mandal / Municipality";flag1=false;
-						}
-					}else if(locLvl == 6){
-						if($("#stateSelId"+count).val() == 0){
-							errStr="Please Select State";flag1=false;
-						}else if($("#districtSelId"+count).val() == 0){
-							errStr="Please Select District";flag1=false;
-						}else if($("#constituencySelId"+count).val() == 0){
-							errStr="Please Select Constituency";flag1=false;
-						}else if($("#tehMunSelId"+count).val() == 0){
-							errStr="Please Select Mandal / Municipality";flag1=false;
-						}else if($("#villWardSelId"+count).val()==0){
-							errStr="Please Select Village / Ward";flag1=false;
-						}
-					}
+		if($("#retriveTypeId").val() == 0 || $("#retriveTypeId").val() == "undefined"){
+			alert("Please Select Tour Type");
+			return;
+		}else if($("#retriveCategoryId").val() == 0 || $("#retriveCategoryId").val() == "undefined"){
+			alert("Please Seelct Tour Category");
+			return;
+		}else if($("#retriveLocId").val() > 0){
+			var locLvl = $("#retriveLocId").val();
+			if(locLvl == 2){
+				if($("#stateSelId").val() == 0){
+					alert("Please Select State");
+					return;
+				}
+			}else if(locLvl == 3){
+				if($("#stateSelId").val() == 0){
+					alert("Please Select State");
+					return;
+				}else if($("#districtSelId").val() == 0){
+					alert("Please Select District");
+					return;
+				} 
+			}else if(locLvl == 4){
+				if($("#stateSelId").val() == 0){
+					alert("Please Select State");
+					return;
+				}else if($("#districtSelId").val() == 0){
+					alert("Please Select District");
+					return;
+				}else if($("#constituenctSelId").val() == 0){
+					alert("Please Select Constituency");
+					return;
+				}
+			}else if(locLvl == 5){
+				if($("#stateSelId").val() == 0){
+					alert("Please Select State");
+					return;
+				}else if($("#districtSelId").val() == 0){
+					alert("Please Select District");
+					return;
+				}else if($("#constituenctSelId").val() == 0){
+					alert("Please Select Constituency");
+					return;
+				}else if($("#manMunDivId").val() == 0){
+					alert("Please Select Mandal / Municipality");
+					return;
+				}
+			}else if(locLvl == 6){
+				if($("#stateSelId").val() == 0){
+					alert("Please Select State");
+					return;
+				}else if($("#districtSelId").val() == 0){
+					alert("Please Select District");
+					return;
+				}else if($("#constituenctSelId").val() == 0){
+					alert("Please Select Constituency");
+					return;
+				}else if($("#manMunDivId").val() == 0){
+					alert("Please Select Mandal / Municipality");
+					return;
+				}else if($("#villWardSelId").val()==0){
+					alert("Please Select Village / Ward");
+					return;
 				}
 			}
-		}); */
-		
-		if(!flag1){
-			alert(errStr);
-			return;
 		}
 	
 		var uploadHandler = { 
@@ -1402,7 +1392,6 @@ function getCandidateList(designationId){
 			var filerKit = $("#update_TourFileId").prop("jFiler");
 			setTimeout(function () {
 				$("#successUpdateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
-				//location.reload(true);
 				filerKit.reset();
 				$("#retrivalEditModalId").hide();
 			}, 500);
