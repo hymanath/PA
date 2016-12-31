@@ -380,13 +380,7 @@
 						<div style="border:1px solid #ddd;padding:10px;">
 							<div id="retriveModalDocumentDivId"></div>
 						</div>
-						<div class="row showDivUpdateCls" id="uploadUpdateFlDivId">
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-								<input type="file" id="update_TourFileId" multiple="multiple"  name="files[]" class="m_top20"/>
-								<span id="errFileId" style="color:red;margin-left:470px;"></span>   
-							</div>
-						</div>
+						<div class="row showDivUpdateCls" id="uploadUpdateFlDivId"></div>
 						
 						<div class="row showDivUpdateCls" > 
 							<div class="col-md-4 col-md-offset-4">
