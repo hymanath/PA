@@ -515,4 +515,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public List<Object[]> getDistrictWiseCadreCounts(Long stateId);
 	  public List<Object[]> getConstituencyWiseCadreCounts(Long stateId);
+	  
+	  public List<Object[]> getConstNotVerfiedCardPrintStatusCadre(Long constituencyId);
 } 
