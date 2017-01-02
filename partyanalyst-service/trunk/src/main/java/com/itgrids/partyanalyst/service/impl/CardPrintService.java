@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
@@ -817,5 +818,109 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 			LOG.error("Exception Occured into cardPrintService of getEnrollmentDetailsByConstituency", e);
 		}
 		return returnList;
+	}
+	
+	
+	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  get Constituency NotVerfied CardPrint Status Cadre and validate based on telugu names missed , special characters, images....
+	  *  @since 02-JANUUARY-2017
+	  */
+	
+	public CadreValidateVO getConstNotVerfiedCardPrintStatusCadreAndValidate(Long constituencyId){
+		
+		CadreValidateVO finalVO = new CadreValidateVO();
+		try{
+			
+			  List<Object[]> cadreList =   tdpCadreDAO.getConstNotVerfiedCardPrintStatusCadre(constituencyId);
+			  
+			  if( cadreList != null && cadreList.size() > 0){
+				  
+				  for(Object[] obj : cadreList){
+					
+					  //TELUGU NAMES MISSED SENARIO CHECKING.
+					  teluguNamesMissedScenarioChecking(obj , finalVO);
+					 
+				  }
+			  }
+			  
+		}catch(Exception e){
+			LOG.error("Exception Occured into getConstNotVerfiedCardPrintStatusCadreAndValidate() of CardPrintService class", e);
+		}
+		return finalVO;
+	}
+	
+	public void teluguNamesMissedScenarioChecking(Object[] obj , CadreValidateVO finalVO){
+		
+		try{
+			
+			 boolean teluguNameAvailable = false;
+			   
+			  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+				  
+				  if(obj[9] != null && obj[9].toString().trim().length() > 0){
+					  teluguNameAvailable = true;
+				  }
+			  }
+			  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
+				  
+				  if(obj[10] != null && obj[10].toString().trim().length() > 0){
+					  teluguNameAvailable = true;
+				  }
+			  }
+			  
+			  if(!teluguNameAvailable){
+				  
+				  CadreValidateVO cadreVO = new CadreValidateVO();
+				  cadreVO.setValidationMessage("missing telugu name");
+				  
+				  setTdpCadreDataToVO(obj , cadreVO);
+				  
+				  if(finalVO.getTeluguNamesMissedList() == null){
+					  finalVO.setTeluguNamesMissedList(new ArrayList<CadreValidateVO>(0));
+				  }
+				  finalVO.getTeluguNamesMissedList().add(cadreVO);
+			  }
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured into teluguNamesMissingChecking() of CardPrintService class", e);
+		}
+	}
+	
+	public void setTdpCadreDataToVO(Object[] obj , CadreValidateVO cadreVO){
+		 try{
+			 
+			 cadreVO.setTdpCadreId(obj[0] != null ? (Long)obj[0] : 0l);
+			  cadreVO.setMemberShipId(obj[1] != null ? obj[1].toString() : "");
+			  
+			  if(obj[2] != null){
+				  cadreVO.setVoterId((Long)obj[2]);
+			  }else if(obj[3] !=null){
+				  cadreVO.setFamilyVoterId((Long)obj[3]);
+			  }
+			  
+			  if(obj[4] != null){
+				  cadreVO.setFirstName(obj[4].toString().trim());
+			  }
+			  if(obj[5] != null && (Long)obj[5] > 0l){
+				  cadreVO.setAge((Long)obj[5]);
+			  }
+			  if(obj[6] != null){
+				  cadreVO.setGender(obj[6].toString());
+			  }
+			  cadreVO.setMobileNo(obj[7] != null ? obj[7].toString() : "");
+			  cadreVO.setImage(obj[8] != null ? obj[8].toString() : "");
+			  
+			  if(obj[9] != null && obj[9].toString().trim().length() > 0){
+				  cadreVO.setVoterName(obj[9].toString().trim());
+			  }
+			  if(obj[10] != null && obj[10].toString().trim().length() > 0){
+				  cadreVO.setCadreName(obj[10].toString().trim());
+			  }
+			  
+		}catch (Exception e){
+			LOG.error("Exception Occured into setTdpCadreDataToVO() of CardPrintService class", e);
+		}
 	}
 }
