@@ -23,6 +23,7 @@
 <script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
 <script type="text/javascript" src="js/yahoo/get-min.js"></script> 	  
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>  
+<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>  
 </head>
 <style>
 .chosen-container{width:100% !important}
@@ -136,12 +137,61 @@
 											</li>
 										</ul>
 								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivClsNew" >
+									<div class="row">
+										<div class="col-md-2 col-xs-12 col-sm-4">
+											<label>Select Month</label>
+											<div class="input-group inputGCustom">
+												<input type="text" class="form-control" id="tourMonthYear">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default">
+												<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
+													<div class="row">
+														<div class="col-md-4 col-xs-12 col-sm-3">
+															<label>Tour category</label>
+															<select class="form-control tourCategoryNew0">   
+																<option value="0">Tour Type</option>
+															</select>
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-3">
+															<label>Tour Type</label>
+															<select class="form-control tourTypeNew0">   
+																<option value="0">Tour Type</option>
+															</select>
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-2">
+															<label>Tour Days</label>
+															<input type="text" class="form-control tourDaysNew0"/>
+														</div>
+													</div>
+													<div class="row m_top10">
+														<div class="col-md-12 col-xs-12 col-sm-12">
+															<label>Add Comment/Tour Description</label>
+															<textarea class="form-control tourDescNew0"></textarea>
+														</div>
+													</div>
+												</div>
+												<div id="toursNewBlockClonedId"></div>
+												<div class="panel-footer borderGreen text-right">
+													<button type="button" class="btn btn-success tourCloneMainDivNewBtn">+ ADD TOUR</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add New Tours Block <i class="glyphicon glyphicon-plus-sign"></i></button>
+								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivCls" >
 									<h4 class="panel-title text-capital">update tour details</h4>
 									<div class="panel panel-default">
 										<div class="panel-body borderGreen outerDivCls" attr_count="0">
 											<!-- <i class="closeIcon glyphicon glyphicon-remove"></i> -->
 											<div class="row">
+												
 												<div class="col-md-3 col-xs-12 col-sm-3">
 													<label>Tour Date</label>
 													<div class="input-group inputGCustom">
@@ -210,7 +260,7 @@
 										</div>
 										<div id="addNewTourBlock"></div>
 										<div class="panel-footer borderGreen text-right">
-											<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>
+											<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>											
 										</div>
 									</div>
 									<div class="row showDivCls" id="uploadFlDivId" style="display:none;">
@@ -242,6 +292,38 @@
 			</form>
 		</div>
 	</div>
+	<!-- Tour BLock New Append Balu Start-->
+	<div id="tourCloneMainDivNew" style="display:none">
+		<div class="panel-body borderGreen">
+			<i class="closeIcon glyphicon glyphicon-remove newsTourRemoveBtnClsNew"></i>
+			<div class="row">
+				<div class="col-md-4 col-xs-12 col-sm-3">
+					<label>Tour category</label>
+					<select class="form-control tourCategoryNew">   
+						<option value="0">Tour Type</option>
+					</select>
+				</div>
+				<div class="col-md-4 col-xs-12 col-sm-3">
+					<label>Tour Type</label>
+					<select class="form-control tourTypeNew">   
+						<option value="0">Tour Type</option>
+					</select>
+				</div>
+				<div class="col-md-4 col-xs-12 col-sm-2">
+					<label>Tour Days</label>
+					<input type="text" class="form-control tourDaysNew"/>
+				</div>
+			</div>
+			<div class="row m_top10">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<label>Add Comment/Tour Description</label>
+					<textarea class="form-control tourDescNew"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Tour BLock New Append Balu End-->
+	
 	
 	<!--- new tour block append--->
 	<div id="newsTourCloneMainDiv" style="display:none;">
@@ -411,6 +493,7 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="js/Tours/toursDetails.js" type="text/javascript"></script>
  <!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
@@ -421,6 +504,37 @@
 <!-- <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     -->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
+/*New Code*/
+/*Month & Year Picker*/
+$("#tourMonthYear").datetimepicker({
+	format:'MM/YYYY'
+})
+
+var tourCloneMainDivCount=1;
+	$(document).on("click",".tourCloneMainDivNewBtn",function(){
+		var e = $("#tourCloneMainDivNew").clone(true);
+		 e.attr({
+				'id': 'newsTourCloneDivIdNew'+tourCloneMainDivCount,
+				'class' : 'outerDivClsNew',
+				'attr_countNew' : tourCloneMainDivCount
+			});
+			e.css("display","block");
+			
+		e.find(".tourCategoryNew").attr("id","tourDateId"+tourCloneMainDivCount);
+		e.find(".tourTypeNew").attr("id","tourCategoryId"+tourCloneMainDivCount);
+		e.find(".tourDaysNew").attr("id","tourLocationId"+tourCloneMainDivCount);
+		e.find(".tourDescNew").attr("id","tourTypeId"+tourCloneMainDivCount);
+		e.find(".newsTourRemoveBtnClsNew").attr("attr_div_id_New","newsTourCloneDivIdNew"+tourCloneMainDivCount);
+		$("#toursNewBlockClonedId").append(e);
+
+		tourCloneMainDivCount=tourCloneMainDivCount+1;
+	});	
+	$(document).on("click",".newsTourRemoveBtnClsNew",function(){
+		var divId = $(this).attr("attr_div_id_New");
+		$("#"+divId).remove();
+	}); 
+/*New Code End*/
+
 $(document).on("click",".closeRetrivalEditModalId",function(){
 	$("#retrivalEditModalId").modal('hide');
 	setTimeout(function(){
@@ -436,7 +550,6 @@ $(document).on("click",".closeMembersOverviewModalEdit",function(){
 	},500);
 });
 
-
 initializeFile2();   
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
@@ -445,8 +558,12 @@ $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');
 });
 $( document ).ready(function() {
-    $(".showDivCls").hide();
+    $(".showDivClsNew,.showDivCls").hide();
 });
+$(document).on("click",".addNewBlockBtnCls",function(){
+	$(".showDivCls").show();
+});
+
 if($(window).width() > 500)
 {
 	$(".table").wrap( "<div class='table-responsive'></div>" );
@@ -499,6 +616,10 @@ if($(window).width() > 500)
 	}
 	
 
+	
+	
+	
+	
  var newsTourCloneCount=1;
 	$(document).on("click",".addAppendTourBlockCls",function(){
 		var c = $("#newsTourCloneMainDiv").clone(true);
@@ -584,6 +705,8 @@ if($(window).width() > 500)
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
 	});    
+	   
+	
 </script>
 </body>
 </html>
