@@ -329,11 +329,13 @@ $(document).on("click",".casteGroupCls",function(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$('#departmentId').html('<option value="0">ALL</option>');
+			$('#corporationId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){
 				for(var i in result){
 					$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
 				$("#departmentId").trigger("chosen:updated");
+				$("#corporationId").trigger("chosen:updated");	  
 			}
 		});
 	}  
