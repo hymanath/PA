@@ -9176,5 +9176,39 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   return query.list();
 	   }
 	   
+	  
+	   public List<Object[]> getConstNotVerfiedCardPrintStatusCadre(Long constituencyId){
+		   
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" " +
+		   " SELECT TC.tdp_cadre_id as cadreId ,TC.membership_id as memId ,TC.voter_id as vid,TC.family_voterId as fvid," +//3
+		   "        TC.first_name as fname,TC.age as age,TC.gender as gender ,TC.mobile_no as mno ,TC.image as image ," +//8
+		   "        TRIM(CONCAT(TRIM(VA.firstname),' ',TRIM(VA.lastname))) AS voter_name,TRIM(TCN.telugu_name) AS cadre_name " +//10
+		   " FROM   tdp_cadre_enrollment_year EY,user_address UA,tdp_cadre TC" +
+		   "        LEFT OUTER JOIN voter_names VA ON TC.voter_id = VA.voter_id " +
+		   "        LEFT OUTER JOIN tdp_cadre_telugu_names TCN ON TC.tdp_cadre_id = TCN.tdp_cadre_id " +
+		   " WHERE  TC.tdp_cadre_id = EY.tdp_cadre_id AND" +
+		   "        EY.enrollment_year_id = :enrollmentYearId AND  " +
+		   "        EY.is_deleted = 'N' AND TC.enrollment_year = 2014 AND TC.is_deleted = 'N' AND " +
+		   "        TC.address_id = UA.user_address_id AND TC.card_print_status_id = 1 AND " +
+		   "        UA.constituency_id = :constituencyId ");
+		  
+		   Query query = getSession().createSQLQuery(sb.toString())
+			.addScalar("cadreId", Hibernate.LONG)
+			.addScalar("memId", Hibernate.STRING)
+			.addScalar("vid", Hibernate.LONG)
+			.addScalar("fvid", Hibernate.LONG)
+			.addScalar("fname", Hibernate.STRING)
+			.addScalar("age", Hibernate.LONG)
+			.addScalar("gender", Hibernate.STRING)
+			.addScalar("mno", Hibernate.STRING)
+			.addScalar("image", Hibernate.STRING)
+			.addScalar("voter_name", Hibernate.STRING)
+			.addScalar("cadre_name", Hibernate.STRING);
+				   
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   query.setParameter("constituencyId",constituencyId);
+		   return query.list();
+	   }
 	   
 }
