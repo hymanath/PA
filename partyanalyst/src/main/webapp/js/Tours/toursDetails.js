@@ -839,7 +839,7 @@ function getCandidateList(designationId){
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
 					}
-					str+='<td>'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'">EDIT</button></td>';
+					str+='<td style="position:relative">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;">EDIT</button></td>';
 				str+='</tr>';
 			}
 
