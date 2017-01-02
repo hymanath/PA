@@ -2395,9 +2395,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 }
 		   }
 		  int noOfMonth = getMonthsDifference(fromDate,toDate);	
-		  List<Object[]> rtrnTargetCntObjLst = selfAppraisalDesignationTargetDAO.getCandiateWiseTargetCnt(fromDate, toDate,"Category");	
+		//  List<Object[]> rtrnTargetCntObjLst = selfAppraisalDesignationTargetDAO.getCandiateWiseTargetCnt(fromDate, toDate,"Category");
+		  List<Object[]> rtrnTargetCntObjLst = selfAppraisalDesignationTargetDAO.getCandiateAndCategoryWiseTargetCnt(fromDate, toDate,"Category",null);	
 		  setCandidateTarget(rtrnTargetCntObjLst,candiateTargetMap,"Category",noOfMonth);
-		  List<Object[]> rtrnGovtObjLst = selfAppraisalDesignationTargetDAO.getCandiateWiseTargetCnt(fromDate, toDate,"Govt");	
+		  List<Object[]> rtrnGovtObjLst = selfAppraisalDesignationTargetDAO.getCandiateAndCategoryWiseTargetCnt(fromDate, toDate,"Govt",null);	
 		  setCandidateTarget(rtrnGovtObjLst,candiateTargetMap,"Govt",noOfMonth);
 		  
 		  List<Object[]> rtrnComplainceObjLst = selfAppraisalCandidateDayTourDAO.getLeaderComplainceCntCategoryWise(fromDate, toDate,"Category",null,null);
