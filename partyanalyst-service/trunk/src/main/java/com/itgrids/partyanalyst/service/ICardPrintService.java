@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
@@ -21,4 +22,6 @@ public interface ICardPrintService {
 	
 	public List<CardPrintStatusVO> cardPrinStatusByLocation(String type , Long stateId );
 	public List<CardPrintVO> getEnrollmentDetailsByConstituency();
+	
+	public CadreValidateVO getConstNotVerfiedCardPrintStatusCadreAndValidate(Long constituencyId);
 }
