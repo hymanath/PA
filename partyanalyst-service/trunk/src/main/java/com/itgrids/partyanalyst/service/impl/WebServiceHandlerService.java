@@ -4430,8 +4430,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  						vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[5]));
 		  						vo.setTypeOfIssue(commonMethodsUtilService.getStringValueForObject(objects[6]));
 		  						vo.setTotalGrivanceCount(count);
-		  						if(objects[7] != null)
-		  							vo.getFilePthList().add(commonMethodsUtilService.getStringValueForObject(objects[7]));
+		  						if(objects[7] != null){
+		  							String pathStr = commonMethodsUtilService.getStringValueForObject(objects[7]);
+		  							vo.getFilePthList().add("mytdp.com/Grievance/complaintScannedCopy/"+pathStr);
+		  						}
+		  							
 		  						vo.setMembershipId(commonMethodsUtilService.getStringValueForObject(objects[8]));
 		  						vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[9]));
 		  						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[10]));
@@ -4459,11 +4462,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  						List<String> filesList = filePathMap.get(complaintId);
 			  						if(filesList == null || filesList.isEmpty()){
 			  							filesList = new ArrayList<String>();
-			  							filesList.add(filePath);
+			  							filesList.add("mytdp.com/Grievance/complaintScannedCopy/"+filePath);
 			  							filePathMap.put(complaintId,filesList);
 			  						}
 			  						else
-			  							filesList.add(filePath);
+			  							filesList.add("mytdp.com/Grievance/complaintScannedCopy/"+filePath);
 								}
 			  				}
 		  				}
@@ -4510,7 +4513,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
 							vo.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
 							if(vo.getImage() != null && vo.getImage().trim().length() > 0)
-	  							vo.setImage("mytdp.com/images/cadre_images/"+vo.getImage());
+	  							vo.setImage("mytdp.com/"+vo.getImage());
 							vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
 							if(appointmnetIds == null || appointmnetIds.size() == 0){
 								returnVO.setId(commonMethodsUtilService.getLongValueForObject(objects[9]));
@@ -4548,7 +4551,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
 								returnVO.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
 								if(returnVO.getImage() != null && returnVO.getImage().trim().length() > 0l)
-									returnVO.setImage("mytdp.com/images/cadre_images/"+returnVO.getImage());
+									returnVO.setImage("mytdp.com/"+returnVO.getImage());
 							}
 							vo.setPresentStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
 							if(vo.getAppointmentStatusId() == 3l)
@@ -4585,7 +4588,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							 vo.setMemberShipId(membershipNo);
 							 vo.setImage(image);
 							 if(vo.getImage() != null && vo.getImage().trim().length() > 0l)
-								 vo.setImage("mytdp.com/images/cadre_images/"+vo.getImage());
+								 vo.setImage("mytdp.com/"+vo.getImage());
 							 memberList.add(vo);
 							 apntmentMembersMap.put(apmnetId, memberList);
 						 }else{
@@ -4595,7 +4598,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							 vo.setMemberShipId(membershipNo);
 							 vo.setImage(image);
 							 if(vo.getImage() != null && vo.getImage().trim().length() > 0l)
-								 vo.setImage("mytdp.com/images/cadre_images/"+vo.getImage());
+								 vo.setImage("mytdp.com/"+vo.getImage());
 							 memberList.add(vo);
 						 }
 					}
