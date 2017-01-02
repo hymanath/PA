@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -24,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
@@ -692,6 +694,27 @@ public class CommonMethodsUtilService {
 		         scanner.close();
 			} catch (Exception e) {
 				// TODO: handle exception
+			}
+		}
+		
+		public boolean isNameHaveSpecialChars(String name)
+		{
+			try{
+				List<Integer> ignoreList = Arrays.asList(IConstants.specialCharsUnicodeIgnoreList);
+				
+				for(char c : name.replace(" ","").trim().toCharArray())
+				{
+					String hex = StringEscapeUtils.escapeJava(new Character(c).toString()).replace("\\u","");
+					int value = Integer.parseInt(hex, 16);
+					if(ignoreList.contains(value));
+						
+					else if(!(value >= 3072 && value <= 3199))
+						return true;
+				}
+				return false;
+			}catch (Exception e) {
+				e.printStackTrace();
+				return true;
 			}
 		}
 }
