@@ -4443,8 +4443,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  							returnVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[9]));
 		  							returnVO.setName(commonMethodsUtilService.getStringValueForObject(objects[10]));
 		  							returnVO.setImage(commonMethodsUtilService.getStringValueForObject(objects[11]));
-			  						if(vo.getImage() != null && vo.getImage().trim().length() > 0)
-			  							returnVO.setImage("mytdp.com/images/cadre_images/"+vo.getImage());
+			  						if(returnVO.getImage() != null && returnVO.getImage().trim().length() > 0)
+			  							returnVO.setImage("mytdp.com/images/cadre_images/"+returnVO.getImage());
 		  						}
 		  						complaintIdsList.add(vo.getComplaintId());
 		  						returnList.add(vo);
