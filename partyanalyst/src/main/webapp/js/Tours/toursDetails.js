@@ -24,7 +24,7 @@ function getCandidateList(designationId){
 	$(document).on("change","#designationSlctBxId",function(){
 		var designationId = $(this).val();
 		$("#selectedMemberDtslDivId").html(' ');
-		$(".showDivCls").hide();
+		$(".showDivClsNew").hide();
 		 if(designationId != null && designationId > 0){
 			 getCandidateList(designationId);
 		 }
@@ -50,7 +50,7 @@ function getCandidateList(designationId){
 	function getCandiateSearchDetails(candidateId){
     $("#selectProfileId").show();		
 	$("#selectedMemberDtslDivId").html(' ');
-	$(".showDivCls").hide();
+	$(".showDivClsNew").hide();
 	var jsObj = { 
 			 candidateId : candidateId
 			}
@@ -412,11 +412,11 @@ function getCandidateList(designationId){
 	}
 	$(document).on("click","#profileCheckboxId",function(){
 		if($(this).is(':checked')){
-			$(".showDivCls").show();
+			$(".showDivClsNew").show();
 			var desigDtlsId = $("#designationSlctBxId").val();
 			getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
 		}else{
-			$(".showDivCls").hide();
+			$(".showDivClsNew").hide();
 		}
 	});
 	
@@ -1087,11 +1087,11 @@ function getCandidateList(designationId){
 				strt+='<tr style="border:1px solid #ddd;padding:10px;" id="documentTrId'+result.documentList[t].id+'">';
 					var extension = result.documentList[t].name.split(".")[1];
 					if(extension == "jpg" || extension == "jpeg")
-						strt+='<td class="fa fa-file-photo-o"></td>';
+						strt+='<td><i  class="fa fa-file-photo-o" style="font-size:20px"></i></td>';
 					else if(extension == "pdf")
-						strt+='<td class="fa fa-file-pdf-o"></td>';
+						strt+='<td><i class="fa fa-file-pdf-o" style="font-size:20px;color:red"></i></td>';
 					else 
-						strt+='<td class="fa fa-file-word-o"></td>';
+						strt+='<td><i class="fa fa-file-word-o" style="font-size:20px;color:blue"></i></td>';
 					strt+='<td>'+result.documentList[t].name+'</td>';
 					strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
 					strt+='<td><button type="button" class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
