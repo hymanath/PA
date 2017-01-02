@@ -67,5 +67,8 @@
 		        </result>
 		</action>
 		
+		<action name="adminCardPrintAction" class="cardPrintAction" method ="adminCardPrint">
+		    	<result name="success">jsp/adminPrintPage.jsp</result>
+		</action>
 	</package>
 </struts>        

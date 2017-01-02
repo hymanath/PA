@@ -162,4 +162,8 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String adminCardPrint(){
+		return Action.SUCCESS;
+	}
 }
