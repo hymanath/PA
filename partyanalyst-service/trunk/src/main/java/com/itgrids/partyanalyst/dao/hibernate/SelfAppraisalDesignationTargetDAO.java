@@ -106,16 +106,12 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
              }else{
             	 queryStr.append(" and model.selfAppraisalTourCategoryId is null "); 
              }
-             //boolean isEntered=false;
              if(fromDate != null){
           	   queryStr.append(" and date(model.startTime)<=:fromDate");
-          	 //  isEntered=true;
              }
              if(toDate != null){
           	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
              }
-              /* if(isEntered)
-          	    queryStr.append(" )");*/
              
 		    queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				  "  model2.selfAppraisalCandidateId");
