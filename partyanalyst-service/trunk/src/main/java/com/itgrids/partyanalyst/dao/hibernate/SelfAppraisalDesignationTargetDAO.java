@@ -84,7 +84,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            return query.list();
     }
-    public List<Object[]> getCandiateWiseTargetCnt(Date fromDate,Date toDate,String type){
+   /* public List<Object[]> getCandiateWiseTargetCnt(Date fromDate,Date toDate,String type){
              StringBuilder queryStr = new StringBuilder();
              queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 			 " model.selfAppraisalDesignation.designation," +
@@ -129,7 +129,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            return query.list();
     }
-    public List<Object[]> getCandiateAndCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,Long selfAppraisalCandiateId){
+    */public List<Object[]> getCandiateAndCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,Long selfAppraisalCandiateId){
             StringBuilder queryStr = new StringBuilder();
              queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 			 " model.selfAppraisalDesignation.designation," +
