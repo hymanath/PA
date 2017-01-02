@@ -36,7 +36,7 @@ $(document).ready(function(){
 	getPositionList();
 	getLocationLevelList();
 	getDepartmentList(2);   
-	getBoardList(0);
+	//getBoardList(0,2);
 	//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
     //getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	//getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
@@ -239,7 +239,8 @@ $(document).on("click",".casteGroupCls",function(){
 	});
 	$(document).on('change','#departmentId',function(){
 		var departmentId = $("#departmentId").val();  
-		getBoardList(departmentId);
+		var boardLevelId = $("#locationLevelId").val();
+		 getBoardList(departmentId,boardLevelId);
 	});
 	function getCastGroupList(){
 		var jsObj={}
@@ -336,9 +337,12 @@ $(document).on("click",".casteGroupCls",function(){
 			}
 		});
 	}  
-	function getBoardList(deptId){  
+	function getBoardList(deptId,boardLevelId){  
+	    var deptArr = [];
+		deptArr.push(deptId);
 		var jsObj={
-			deptId : deptId
+			deptId : deptArr,
+			boardLevelId : boardLevelId
 		}
 		$.ajax({
 			type:'GET',

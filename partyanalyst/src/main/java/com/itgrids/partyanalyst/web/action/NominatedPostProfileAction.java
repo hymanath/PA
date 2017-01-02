@@ -1251,7 +1251,7 @@ return Action.SUCCESS;
 			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedPostCandidateLocationWiseDetails(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId, locationLevelName);  
 			
 		}catch(Exception e){
-			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getNominatedCandidateGroupByDist method of NominatedPostProfileAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
