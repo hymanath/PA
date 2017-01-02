@@ -167,7 +167,7 @@
 		var str='';
 		if(result.overAllVO != null){
 		str+='<div class="pad_5 bg_ED">';
-			str+='<table class="table table-bordered alertOverviewTable bg_ED">';
+			str+='<table class="table alertOverviewTable bg_ED">';
 				str+='<tr>';
 					str+='<td>';
 						if(result.overAllVO.totalAlertCnt == 0){  
