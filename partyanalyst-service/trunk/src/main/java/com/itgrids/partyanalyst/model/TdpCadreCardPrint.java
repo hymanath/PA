@@ -20,7 +20,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "tdp_cadre_card_print")//tdp_cadre_card_print20
+@Table(name = "tdp_cadre_card_print20")//  tdp_cadre_card_print
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	
