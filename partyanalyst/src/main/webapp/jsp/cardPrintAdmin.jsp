@@ -8,32 +8,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cards Print Admin</title>
+<title>CARDS PRINTING ADMIN DASHBOARD</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/CardPrint/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/CardPrint/dropkick.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+
 </head>
 <body>
-	<div class="container">
-	   <div class="row">
-	         <div class="col-md-12 col-xs-12 col-sm-6 col-lg-2 m_top10 offset 1" >
-	               <label>CONSTITUENCY:</label>
-	                   <select id="constiencyId"  class="chosenSelect">
-	                       <option value="0">Please Select Constituency</option>	
-	                   </select>
-	         </div>
-	   </div>
-	</div> 
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="panel panel-default m_top10">
+				<div class="panel-heading">
+					<h4 class="panel-title">CARDS PRINTING ADMIN DASHBOARD</h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<label>CONSTITUENCY:</label>
+							<select id="constituencyId" class="chosenSelect">
+								<option value="0">Select Constituency</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
 	
 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+
 <script type ="text/javascript">
 
 $(document).ready(function(){
+	$(".chosenSelect").chosen();
 	getConstituencyDetailsList();
 });
 function getConstituencyDetailsList(){
