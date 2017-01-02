@@ -1295,7 +1295,6 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		query.setParameter("stateId", stateId);  
 		return query.list();
 	}
-	
 	public List<Object[]>  getNominatedCandidateGroupByLocationAndGender(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
 		StringBuilder strQuery = new StringBuilder();
 		if(locationLevelName.equalsIgnoreCase("state")){
@@ -1321,32 +1320,32 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				        " from " +
 				        " NominatedPostFinal model " +
 				        " where  model.isDeleted='N' and "+
-				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
+				        " model.nominatedPostMember.isDeleted='N' and "+
+						" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and" +
+						" model.nominatedPostApplication.isDeleted = 'N' ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+")  ");
 		}
 		else
 		{
-			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId  ");
 		}  
 		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId  ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
-			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId  ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
-			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId  ");
 		}
-		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
-		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-					   " model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' ");
+		strQuery.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId ");
+		strQuery.append(" and model.nominatedPostMember.address.state.stateId = :stateId ");
 		strQuery.append(" group by " );
 		
 		if(locationLevelName.equalsIgnoreCase("state")){
@@ -1435,30 +1434,30 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				        " from " +
 				        " NominatedPostFinal model " +
 				        " where model.isDeleted='N' and "+
-				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
+				        " model.nominatedPostMember.isDeleted='N' and "+
+						" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and" +
+						" model.nominatedPostApplication.isDeleted = 'N'  ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") ");
 		}else{
-			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId  ");
 		}  
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId  ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
-			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId  ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
-			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId  ");
 		}
 		
-		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
-		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' ");
+		strQuery.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId ");
+		strQuery.append(" and model.nominatedPostMember.address.state.stateId = :stateId ");
 		
 		strQuery.append(" group by " );
 		
