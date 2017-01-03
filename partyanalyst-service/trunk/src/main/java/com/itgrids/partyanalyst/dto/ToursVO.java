@@ -41,6 +41,7 @@ public class ToursVO {
 
 	private List<ToursVO> toursVoList = new ArrayList<ToursVO>(0);
 	private Map<File,String> files = new HashMap<File,String>();
+	private List<ToursVO> toursVoListNew = new ArrayList<ToursVO>(0);
 	
 	private String tourDateId;
 	private Long tourCategoryId;
@@ -277,6 +278,14 @@ public class ToursVO {
 
 	public void setSelfAppraisalCandidateId(Long selfAppraisalCandidateId) {
 		this.selfAppraisalCandidateId = selfAppraisalCandidateId;
+	}
+
+	public List<ToursVO> getToursVoListNew() {
+		return toursVoListNew;
+	}
+
+	public void setToursVoListNew(List<ToursVO> toursVoListNew) {
+		this.toursVoListNew = toursVoListNew;
 	}
 
 	

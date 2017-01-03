@@ -45,6 +45,8 @@ public class SelfAppraisalCandidateDetailsNew {
 	private User insertedUser;
 	private User updatedUser;
 	
+	private String isDeleted;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="self_appraisal_candidate_details_new_id", unique=true, nullable=false)
@@ -205,6 +207,13 @@ public class SelfAppraisalCandidateDetailsNew {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	
