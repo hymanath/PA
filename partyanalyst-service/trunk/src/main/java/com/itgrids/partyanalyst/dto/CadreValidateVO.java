@@ -25,10 +25,7 @@ public class CadreValidateVO implements Serializable{
 	private String voterName;
 	private String cadreName;
 	private String validationMessage;
-	
-	private Long   statusId;
-	private String statusName;
-	private Long   statusCount = 0l;
+
 	private List<CadreValidateVO> statusCountsList;
 	
 	private List<CadreValidateVO> teluguNamesMissedList;
@@ -103,7 +100,7 @@ public class CadreValidateVO implements Serializable{
 	public void setCadreName(String cadreName) {
 		this.cadreName = cadreName;
 	}
-	public List<CadreValidateVO> getTeluguNamesMissedList() {
+	public List<CadreValidateVO> getTeluguNamesMissedList(){
 		return teluguNamesMissedList;
 	}
 	public void setTeluguNamesMissedList(List<CadreValidateVO> teluguNamesMissedList) {
@@ -128,24 +125,7 @@ public class CadreValidateVO implements Serializable{
 		this.validationMessage = validationMessage;
 	}
 	
-	public Long getStatusId() {
-		return statusId;
-	}
-	public void setStatusId(Long statusId) {
-		this.statusId = statusId;
-	}
-	public String getStatusName() {
-		return statusName;
-	}
-	public void setStatusName(String statusName) {
-		this.statusName = statusName;
-	}
-	public Long getStatusCount() {
-		return statusCount;
-	}
-	public void setStatusCount(Long statusCount) {
-		this.statusCount = statusCount;
-	}
+	
 	public List<CadreValidateVO> getStatusCountsList() {
 		return statusCountsList;
 	}
