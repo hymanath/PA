@@ -50,6 +50,9 @@ public class SelfAppraisalCandidateDayTour {
 	private User insertedUser;
 	private User updatedUser;
 	
+	private Long selfAppraisalToursMonthId;
+	private SelfAppraisalToursMonth selfAppraisalToursMonth;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="self_appraisal_candidate_day_tour_id", unique=true, nullable=false)
@@ -231,6 +234,26 @@ public class SelfAppraisalCandidateDayTour {
 	public void setTourType(TourType tourType) {
 		this.tourType = tourType;
 	}
+	@Column(name="self_appraisal_tours_month_id")
+	public Long getSelfAppraisalToursMonthId() {
+		return selfAppraisalToursMonthId;
+	}
+	public void setSelfAppraisalToursMonthId(Long selfAppraisalToursMonthId) {
+		this.selfAppraisalToursMonthId = selfAppraisalToursMonthId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="self_appraisal_tours_month_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SelfAppraisalToursMonth getSelfAppraisalToursMonth() {
+		return selfAppraisalToursMonth;
+	}
+	public void setSelfAppraisalToursMonth(
+			SelfAppraisalToursMonth selfAppraisalToursMonth) {
+		this.selfAppraisalToursMonth = selfAppraisalToursMonth;
+	}
+	
 	
 	
 }
