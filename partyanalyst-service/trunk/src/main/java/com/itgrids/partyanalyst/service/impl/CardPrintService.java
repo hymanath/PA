@@ -890,7 +890,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				  finalVO.setNowVerifiedCount((long)cadreList.size());
 			  }
 			  
-			  /*//3.UPDATE CARD PRINT STATUS IN DB TABLE.
+			  //3.UPDATE CARD PRINT STATUS IN DB TABLE.
 			  if(successMap != null && successMap.size() > 0){
 				  List<Long> successList = new ArrayList<Long>(successMap.keySet());
 				  finalVO.setApprovedCount((long)successList.size());
@@ -913,7 +913,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					  return finalVO;
 				  }
 				  
-			  }*/
+			  }
 			  
 			  
 			  //4.GET CARD PRINT STATUS WISE COUNTS FOR GIVEN CONSTITUENCY.
