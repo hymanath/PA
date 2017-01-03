@@ -867,32 +867,30 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				  for(Object[] obj : cadreList){
 					  successMap.put((Long)obj[0],verifPassed);
 				  }
-				  
-				  for(Object[] obj : cadreList){
 					  
-					  ResultStatus missingTeluguNamesResultStatus = teluguNamesMissedScenarioChecking(obj , finalVO , successMap , failureMap);
-					  if(missingTeluguNamesResultStatus != null && missingTeluguNamesResultStatus.getResultCode() == 0){
-						  finalVO.setResultStatus(missingTeluguNamesResultStatus);
-						  return finalVO;
-					  }
-					  
-					  ResultStatus specialCharsResultStatus = specialCharactersExistInNameScenarioChecking(obj , finalVO , successMap , failureMap);
-					  if(specialCharsResultStatus != null && specialCharsResultStatus.getResultCode() == 0){
-						  finalVO.setResultStatus(specialCharsResultStatus);
-						  return finalVO;
-					  }
-					  
-					  ResultStatus imagesResultStatus = imagesExistingScenarioChecking(obj , finalVO , successMap , failureMap);
-					  if(imagesResultStatus != null && imagesResultStatus.getResultCode() == 0){
-						  finalVO.setResultStatus(imagesResultStatus);
-						  return finalVO;
-					  }
+				  ResultStatus missingTeluguNamesResultStatus = teluguNamesMissedScenarioChecking(cadreList , finalVO , successMap , failureMap);
+				  if(missingTeluguNamesResultStatus != null && missingTeluguNamesResultStatus.getResultCode() == 0){
+					  finalVO.setResultStatus(missingTeluguNamesResultStatus);
+					  return finalVO;
 				  }
+				  
+				  ResultStatus specialCharsResultStatus = specialCharactersExistInNameScenarioChecking(cadreList , finalVO , successMap , failureMap);
+				  if(specialCharsResultStatus != null && specialCharsResultStatus.getResultCode() == 0){
+					  finalVO.setResultStatus(specialCharsResultStatus);
+					  return finalVO;
+				  }
+				  
+				 /* ResultStatus imagesResultStatus = imagesExistingScenarioChecking(cadreList , finalVO , successMap , failureMap);
+				  if(imagesResultStatus != null && imagesResultStatus.getResultCode() == 0){
+					  finalVO.setResultStatus(imagesResultStatus);
+					  return finalVO;
+				  }*/
+				 
 				  
 				  finalVO.setNowVerifiedCount((long)cadreList.size());
 			  }
 			  
-			  //3.UPDATE CARD PRINT STATUS IN DB TABLE.
+			  /*//3.UPDATE CARD PRINT STATUS IN DB TABLE.
 			  if(successMap != null && successMap.size() > 0){
 				  List<Long> successList = new ArrayList<Long>(successMap.keySet());
 				  finalVO.setApprovedCount((long)successList.size());
@@ -915,7 +913,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					  return finalVO;
 				  }
 				  
-			  }
+			  }*/
 			  
 			  
 			  //4.GET CARD PRINT STATUS WISE COUNTS FOR GIVEN CONSTITUENCY.
@@ -940,45 +938,61 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 	}
 	
 	
-	public ResultStatus teluguNamesMissedScenarioChecking(Object[] obj , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap){
+	public ResultStatus teluguNamesMissedScenarioChecking(List<Object[]> cadreList , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap){
 		
 		ResultStatus rs = new ResultStatus();
 		
 		try{
-			
-			 boolean teluguNameAvailable = false;
-			   
-			  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+			  if(cadreList != null && cadreList.size() > 0){
 				  
-				  if(obj[9] != null && obj[9].toString().trim().length() > 0){
-					  teluguNameAvailable = true;
+				  for(Object[] obj :cadreList){
+					  
+						   
+						  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+							  
+							  if( !(obj[9] != null && obj[9].toString().trim().length() > 0) ){
+								  
+								//mark this cadre has failed in verification.
+								  if(successMap.containsKey((Long)obj[0])){
+									  successMap.remove((Long)obj[0]);
+								  }
+								  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+								  
+								  
+								  CadreValidateVO cadreVO = new CadreValidateVO();
+								  cadreVO.setValidationMessage("missing telugu name");
+								  setTdpCadreDataToVO(obj , cadreVO);
+								  
+								  if(finalVO.getTeluguNamesMissedList() == null){
+									  finalVO.setTeluguNamesMissedList(new ArrayList<CadreValidateVO>(0));
+								  }
+								  finalVO.getTeluguNamesMissedList().add(cadreVO);
+							  }
+						  }
+						  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
+							  
+							  if( !(obj[10] != null && obj[10].toString().trim().length() > 0)){
+								  
+								//mark this cadre has failed in verification.
+								  if(successMap.containsKey((Long)obj[0])){
+									  successMap.remove((Long)obj[0]);
+								  }
+								  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+								  
+								  
+								  CadreValidateVO cadreVO = new CadreValidateVO();
+								  cadreVO.setValidationMessage("missing telugu name");
+								  
+								  setTdpCadreDataToVO(obj , cadreVO);
+								  
+								  if(finalVO.getTeluguNamesMissedList() == null){
+									  finalVO.setTeluguNamesMissedList(new ArrayList<CadreValidateVO>(0));
+								  }
+								  finalVO.getTeluguNamesMissedList().add(cadreVO);
+							  }
+						  }  
+						 
 				  }
-			  }
-			  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
-				  
-				  if(obj[10] != null && obj[10].toString().trim().length() > 0){
-					  teluguNameAvailable = true;
-				  }
-			  }
-			  
-			  if(!teluguNameAvailable){
-				  
-				  //mark this cadre has failed in verification.
-				  if(successMap.containsKey((Long)obj[0])){
-					  successMap.remove((Long)obj[0]);
-				  }
-				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
-				  
-				  
-				  CadreValidateVO cadreVO = new CadreValidateVO();
-				  cadreVO.setValidationMessage("missing telugu name");
-				  
-				  setTdpCadreDataToVO(obj , cadreVO);
-				  
-				  if(finalVO.getTeluguNamesMissedList() == null){
-					  finalVO.setTeluguNamesMissedList(new ArrayList<CadreValidateVO>(0));
-				  }
-				  finalVO.getTeluguNamesMissedList().add(cadreVO);
 			  }
 			
 			  rs.setResultCode(1);
@@ -991,49 +1005,70 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		return rs;
 	}
 	
-	public ResultStatus specialCharactersExistInNameScenarioChecking(Object[] obj , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap ){
+	public ResultStatus specialCharactersExistInNameScenarioChecking(List<Object[]> cadreList , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap ){
 		
 		ResultStatus rs = new ResultStatus();
 		
 		try{
 			
-			 boolean specialCharacterExist = false;
-			   
-			  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+			if(cadreList != null && cadreList.size() > 0){
 				  
-				  if(obj[9] != null && obj[9].toString().trim().length() > 0){
+				  for(Object[] obj :cadreList){
+					   
+					  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+						  
+						  if(obj[9] != null && obj[9].toString().trim().length() > 0){
+							  
+							  if(commonMethodsUtilService.isNameHaveSpecialChars(obj[9].toString().trim())){
+								  
+								//mark this cadre has failed in verification.
+								  if(successMap.containsKey((Long)obj[0])){
+									  successMap.remove((Long)obj[0]);
+								  }
+								  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+								  
+								  CadreValidateVO cadreVO = new CadreValidateVO();
+								  cadreVO.setValidationMessage("special Character Exists");
+								  
+								  setTdpCadreDataToVO(obj , cadreVO);
+								  
+								  if(finalVO.getSpecialCharactersList() == null){
+									  finalVO.setSpecialCharactersList(new ArrayList<CadreValidateVO>(0));
+								  }
+								  finalVO.getSpecialCharactersList().add(cadreVO);
+							  }
+							  
+						  }
+					  }
+					  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
+						  
+						  if(obj[10] != null && obj[10].toString().trim().length() > 0){
+							  
+							  if(commonMethodsUtilService.isNameHaveSpecialChars(obj[10].toString().trim())){
+								  
+								//mark this cadre has failed in verification.
+								  if(successMap.containsKey((Long)obj[0])){
+									  successMap.remove((Long)obj[0]);
+								  }
+								  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+								  
+								  CadreValidateVO cadreVO = new CadreValidateVO();
+								  cadreVO.setValidationMessage("special Character Exists");
+								  
+								  setTdpCadreDataToVO(obj , cadreVO);
+								  
+								  if(finalVO.getSpecialCharactersList() == null){
+									  finalVO.setSpecialCharactersList(new ArrayList<CadreValidateVO>(0));
+								  }
+								  finalVO.getSpecialCharactersList().add(cadreVO);
+							  }
+						  }
+					  }
 					  
-					  specialCharacterExist = commonMethodsUtilService.isNameHaveSpecialChars(obj[9].toString().trim());
-					  
 				  }
-			  }
-			  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
-				  
-				  if(obj[10] != null && obj[10].toString().trim().length() > 0){
-					  specialCharacterExist = commonMethodsUtilService.isNameHaveSpecialChars(obj[10].toString().trim());
-				  }
-			  }
-			  
-			  if(specialCharacterExist){
-				  
-				  //mark this cadre has failed in verification.
-				  if(successMap.containsKey((Long)obj[0])){
-					  successMap.remove((Long)obj[0]);
-				  }
-				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
-				  
-				  CadreValidateVO cadreVO = new CadreValidateVO();
-				  cadreVO.setValidationMessage("special Character Exists");
-				  
-				  setTdpCadreDataToVO(obj , cadreVO);
-				  
-				  if(finalVO.getSpecialCharactersList() == null){
-					  finalVO.setSpecialCharactersList(new ArrayList<CadreValidateVO>(0));
-				  }
-				  finalVO.getSpecialCharactersList().add(cadreVO);
-			  }
-			  
-			  rs.setResultCode(1);
+			}
+			
+			rs.setResultCode(1);
 			  
 		}catch(Exception e){
 			 rs.setResultCode(0);
@@ -1044,39 +1079,40 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		return rs;
 	}
 
-	public ResultStatus imagesExistingScenarioChecking(Object[] obj , CadreValidateVO finalVO ,  Map<Long,Long> successMap , Map<Long,Long> failureMap ){
+	public ResultStatus imagesExistingScenarioChecking(List<Object[]> cadreList , CadreValidateVO finalVO ,  Map<Long,Long> successMap , Map<Long,Long> failureMap ){
 		
 		ResultStatus rs = new ResultStatus();
 		try{
 			
-			 boolean imageAvailable = false;
-			   
-			  if(obj[8] != null && obj[8].toString().trim().length() > 0){ 
-				  File cadreFile = new File("/mnt/tdp-img/cadre_images/2014/"+obj[8].toString().trim());
-				  if(cadreFile.exists()){
-					  imageAvailable = true;
+			if(cadreList != null && cadreList.size() > 0){
+				  
+				  for(Object[] obj :cadreList){
+					   
+					  if(obj[8] != null && obj[8].toString().trim().length() > 0){ 
+						  
+						  File cadreFile = new File("/mnt/tdp-img/cadre_images/2014/"+obj[8].toString().trim());
+						  if(!cadreFile.exists()){
+							  
+							  //mark this cadre has failed in verification.
+							  if(successMap.containsKey((Long)obj[0])){
+								  successMap.remove((Long)obj[0]);
+							  }
+							  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+							  
+							  CadreValidateVO cadreVO = new CadreValidateVO();
+							  cadreVO.setValidationMessage("missing image");
+							  
+							  setTdpCadreDataToVO(obj , cadreVO);
+							  
+							  if(finalVO.getImagesMissedList() == null){
+								  finalVO.setImagesMissedList(new ArrayList<CadreValidateVO>(0));
+							  }
+							  finalVO.getImagesMissedList().add(cadreVO);
+						  }
+					  }
 				  }
-			  }
-			  
-			  if(!imageAvailable){
-				  
-				  //mark this cadre has failed in verification.
-				  if(successMap.containsKey((Long)obj[0])){
-					  successMap.remove((Long)obj[0]);
-				  }
-				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
-				  
-				  CadreValidateVO cadreVO = new CadreValidateVO();
-				  cadreVO.setValidationMessage("missing image");
-				  
-				  setTdpCadreDataToVO(obj , cadreVO);
-				  
-				  if(finalVO.getImagesMissedList() == null){
-					  finalVO.setImagesMissedList(new ArrayList<CadreValidateVO>(0));
-				  }
-				  finalVO.getImagesMissedList().add(cadreVO);
-			  }
-			  rs.setResultCode(1);
+			}
+			rs.setResultCode(1);
 		}catch(Exception e){
 			 rs.setResultCode(0);
 			 rs.setExceptionMsg(" Exception Occurred In Checking Images Exist Or Not ");
@@ -1179,9 +1215,9 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				  for(Object[] obj : statusList){
 					  if(obj[0] != null){
 						  CadreValidateVO statusVO = new CadreValidateVO();
-						  statusVO.setStatusId((Long)obj[0]);
-						  statusVO.setStatusName(obj[1] != null ? obj[1].toString() : "");
-						  stausCountsMap.put(statusVO.getStatusId(), statusVO);
+						  statusVO.setTdpCadreId((Long)obj[0]);
+						  statusVO.setFirstName(obj[1] != null ? obj[1].toString() : "");
+						  stausCountsMap.put(statusVO.getTdpCadreId(), statusVO);
 					  }
 				  }
 			  }
@@ -1191,7 +1227,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					  if(obj[0] != null){
 						  CadreValidateVO statusVO =  stausCountsMap.get((Long)obj[0]);
 						  if(statusVO != null){
-							  statusVO.setStatusCount(obj[1] != null ? (Long)obj[1] : 0l);
+							  statusVO.setTotalCadreCount(obj[1] != null ? (Long)obj[1] : 0l);
 						  }
 					  }
 				  }
