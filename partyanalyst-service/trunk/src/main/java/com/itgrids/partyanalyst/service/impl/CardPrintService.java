@@ -880,11 +880,11 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					  return finalVO;
 				  }
 				  
-				 /* ResultStatus imagesResultStatus = imagesExistingScenarioChecking(cadreList , finalVO , successMap , failureMap);
+				  ResultStatus imagesResultStatus = imagesExistingScenarioChecking(cadreList , finalVO , successMap , failureMap);
 				  if(imagesResultStatus != null && imagesResultStatus.getResultCode() == 0){
 					  finalVO.setResultStatus(imagesResultStatus);
 					  return finalVO;
-				  }*/
+				  }
 				 
 				  
 				  finalVO.setNowVerifiedCount((long)cadreList.size());
