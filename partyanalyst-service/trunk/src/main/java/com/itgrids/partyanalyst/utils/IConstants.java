@@ -1245,4 +1245,10 @@ public interface IConstants {
 	public static final String ALERT_IMPACT_SCOPE_IDS="4,6,10,11";
 	
 	public static final Integer[] specialCharsUnicodeIgnoreList = {8204,8205};
+	
+	public static final Long CARD_PRINT_STATUS_NOT_VERIFIED= 1L ;
+	public static final Long CARD_PRINT_STATUS_VERIFICATION_PASSED= 2L ;
+	public static final Long CARD_PRINT_STATUS_VERIFICATION_FAILED= 3L ;
+	
+	public final int  noOfRecordsUpdate = 1000;
 }
