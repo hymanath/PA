@@ -32,15 +32,15 @@ public class SelfAppraisalCandidateDocument {
 	private Date tourDate;
 	private String documentPath;
 	private Date insertedTime;
+	private Long selfAppraisalToursMonthId;
 	
-	private Date updatedTime;
 	private Long insertedBy;
-	private Long updatedBy;
 	private String isDeleted;
 	
 	private SelfAppraisalCandidate selfAppraisalCandidate;
 	private User insertedUser;
 	private User updatedUser;
+	private SelfAppraisalToursMonth selfAppraisalToursMonth;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -80,13 +80,6 @@ public class SelfAppraisalCandidateDocument {
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	@Column(name="updated_time")
-	public Date getUpdatedTime() {
-		return updatedTime;
-	}
-	public void setUpdatedTime(Date updatedTime) {
-		this.updatedTime = updatedTime;
-	}
 	@Column(name="inserted_by")
 	public Long getInsertedBy() {
 		return insertedBy;
@@ -94,19 +87,30 @@ public class SelfAppraisalCandidateDocument {
 	public void setInsertedBy(Long insertedBy) {
 		this.insertedBy = insertedBy;
 	}
-	@Column(name="updated_by")
-	public Long getUpdatedBy() {
-		return updatedBy;
-	}
-	public void setUpdatedBy(Long updatedBy) {
-		this.updatedBy = updatedBy;
-	}
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@Column(name="self_appraisal_tours_month_id")
+	public Long getSelfAppraisalToursMonthId() {
+		return selfAppraisalToursMonthId;
+	}
+	public void setSelfAppraisalToursMonthId(Long selfAppraisalToursMonthId) {
+		this.selfAppraisalToursMonthId = selfAppraisalToursMonthId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="self_appraisal_tours_month_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SelfAppraisalToursMonth getSelfAppraisalToursMonth() {
+		return selfAppraisalToursMonth;
+	}
+	public void setSelfAppraisalToursMonth(
+			SelfAppraisalToursMonth selfAppraisalToursMonth) {
+		this.selfAppraisalToursMonth = selfAppraisalToursMonth;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="self_appraisal_candidate_id",insertable=false,updatable=false)
