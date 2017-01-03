@@ -3926,6 +3926,7 @@
 		<property name="cardPrintStatusDAO" ref="cardPrintStatusDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		<property name="constituencyDAO" ref="constituencyDAO"></property>
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	</bean>
 	
 </beans>			
