@@ -2,10 +2,12 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +31,12 @@ import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CardPrintVendor;
 import com.itgrids.partyanalyst.service.ICardPrintService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CardPrintService implements ICardPrintService{
 
@@ -47,6 +52,7 @@ public class CardPrintService implements ICardPrintService{
 	private ICardPrintStatusDAO cardPrintStatusDAO;
 	private ITdpCadreDAO tdpCadreDAO;
 	private IConstituencyDAO constituencyDAO;
+	private CommonMethodsUtilService commonMethodsUtilService;
 	
 	public ICardPrintValidationDAO getCardPrintValidationDAO() {
 		return cardPrintValidationDAO;
@@ -102,6 +108,11 @@ public class CardPrintService implements ICardPrintService{
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -833,25 +844,105 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		CadreValidateVO finalVO = new CadreValidateVO();
 		try{
 			
-			  List<Object[]> cadreList =   tdpCadreDAO.getConstNotVerfiedCardPrintStatusCadre(constituencyId);
-			  
-			  if( cadreList != null && cadreList.size() > 0){
-				  
-				  for(Object[] obj : cadreList){
-					
-					  //TELUGU NAMES MISSED SENARIO CHECKING.
-					  teluguNamesMissedScenarioChecking(obj , finalVO);
-					 
-				  }
+			  //1.GETTING SUMMARY
+			  Long totalCadreCount = tdpCadreDAO.getConstituencyCadreCount(constituencyId);
+			  if(totalCadreCount != null && totalCadreCount.longValue() > 0l){
+				  finalVO.setTotalCadreCount(totalCadreCount); 
+			  }
+			  Long beforeVerifiedCount = tdpCadreDAO.getConstituencyCardPrintVerifiedCount(constituencyId);
+			  if(beforeVerifiedCount != null && beforeVerifiedCount.longValue() > 0l){
+				  finalVO.setBeforeVerifiedCount(beforeVerifiedCount);
 			  }
 			  
+			  //2.VALIDATION PART
+			  Long verifPassed = IConstants.CARD_PRINT_STATUS_VERIFICATION_PASSED;
+			  Long verifFailed = IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED;
+			  Map<Long , Long> successMap = new HashMap<Long, Long>(0);
+			  Map<Long , Long> failureMap = new HashMap<Long, Long>(0);
+					  
+			  List<Object[]> cadreList =   tdpCadreDAO.getConstNotVerfiedCardPrintStatusCadre(constituencyId);
+			  if(cadreList != null && cadreList.size() > 0){
+				  
+				  //make all objects as passed first , later if fail mark them as fail.
+				  for(Object[] obj : cadreList){
+					  successMap.put((Long)obj[0],verifPassed);
+				  }
+				  
+				  for(Object[] obj : cadreList){
+					  
+					  ResultStatus missingTeluguNamesResultStatus = teluguNamesMissedScenarioChecking(obj , finalVO , successMap , failureMap);
+					  if(missingTeluguNamesResultStatus != null && missingTeluguNamesResultStatus.getResultCode() == 0){
+						  finalVO.setResultStatus(missingTeluguNamesResultStatus);
+						  return finalVO;
+					  }
+					  
+					  ResultStatus specialCharsResultStatus = specialCharactersExistInNameScenarioChecking(obj , finalVO , successMap , failureMap);
+					  if(specialCharsResultStatus != null && specialCharsResultStatus.getResultCode() == 0){
+						  finalVO.setResultStatus(specialCharsResultStatus);
+						  return finalVO;
+					  }
+					  
+					  ResultStatus imagesResultStatus = imagesExistingScenarioChecking(obj , finalVO , successMap , failureMap);
+					  if(imagesResultStatus != null && imagesResultStatus.getResultCode() == 0){
+						  finalVO.setResultStatus(imagesResultStatus);
+						  return finalVO;
+					  }
+				  }
+				  
+				  finalVO.setNowVerifiedCount((long)cadreList.size());
+			  }
+			  
+			  //3.UPDATE CARD PRINT STATUS IN DB TABLE.
+			  if(successMap != null && successMap.size() > 0){
+				  List<Long> successList = new ArrayList<Long>(successMap.keySet());
+				  finalVO.setApprovedCount((long)successList.size());
+				  
+				  ResultStatus verifPassedResultStatus = updateCardPrintStatusToTable( successList , verifPassed);
+				  if(verifPassedResultStatus != null && verifPassedResultStatus.getResultCode() == 0){
+					  finalVO.setResultStatus(verifPassedResultStatus);
+					  return finalVO;
+				  }
+				  
+			  }
+			  
+			  if(failureMap != null && failureMap.size() > 0){
+				  List<Long> failureList = new ArrayList<Long>(failureMap.keySet());
+				  finalVO.setRejectedCount((long)failureList.size());
+				  
+				  ResultStatus verifFailedResultStatus =  updateCardPrintStatusToTable( failureList , verifFailed);
+				  if(verifFailedResultStatus != null && verifFailedResultStatus.getResultCode() == 0){
+					  finalVO.setResultStatus(verifFailedResultStatus);
+					  return finalVO;
+				  }
+				  
+			  }
+			  
+			  
+			  //4.GET CARD PRINT STATUS WISE COUNTS FOR GIVEN CONSTITUENCY.
+			  List<CadreValidateVO> statusCountsList = getConstituencyCadreCardPrintStatusCounts(constituencyId);
+			  if(statusCountsList != null && statusCountsList.size() > 0){
+				  finalVO.setStatusCountsList(statusCountsList);
+			  }
+			  
+			  ResultStatus rs = new ResultStatus();
+			  rs.setResultCode(1);
+			  finalVO.setResultStatus(rs);
+			  
 		}catch(Exception e){
+			 ResultStatus rs = new ResultStatus();
+			 rs.setResultCode(0);
+			 rs.setExceptionMsg("Exception Occurred .. Pls Try Later..");
+			 finalVO.setResultStatus(rs);
+			  
 			LOG.error("Exception Occured into getConstNotVerfiedCardPrintStatusCadreAndValidate() of CardPrintService class", e);
 		}
 		return finalVO;
 	}
 	
-	public void teluguNamesMissedScenarioChecking(Object[] obj , CadreValidateVO finalVO){
+	
+	public ResultStatus teluguNamesMissedScenarioChecking(Object[] obj , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap){
+		
+		ResultStatus rs = new ResultStatus();
 		
 		try{
 			
@@ -872,6 +963,13 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 			  
 			  if(!teluguNameAvailable){
 				  
+				  //mark this cadre has failed in verification.
+				  if(successMap.containsKey((Long)obj[0])){
+					  successMap.remove((Long)obj[0]);
+				  }
+				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+				  
+				  
 				  CadreValidateVO cadreVO = new CadreValidateVO();
 				  cadreVO.setValidationMessage("missing telugu name");
 				  
@@ -883,11 +981,111 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				  finalVO.getTeluguNamesMissedList().add(cadreVO);
 			  }
 			
+			  rs.setResultCode(1);
+			  
 		}catch(Exception e){
-			LOG.error("Exception Occured into teluguNamesMissingChecking() of CardPrintService class", e);
+			 LOG.error("Exception Occured into teluguNamesMissingChecking() of CardPrintService class", e);
+			 rs.setResultCode(0);
+			 rs.setExceptionMsg(" Exception Occurred In Checking Missing Telugu Names.. ");
 		}
+		return rs;
 	}
 	
+	public ResultStatus specialCharactersExistInNameScenarioChecking(Object[] obj , CadreValidateVO finalVO , Map<Long,Long> successMap , Map<Long,Long> failureMap ){
+		
+		ResultStatus rs = new ResultStatus();
+		
+		try{
+			
+			 boolean specialCharacterExist = false;
+			   
+			  if(obj[2] != null && (Long)obj[2] > 0l){ // Enrolled With own voterId 
+				  
+				  if(obj[9] != null && obj[9].toString().trim().length() > 0){
+					  
+					  specialCharacterExist = commonMethodsUtilService.isNameHaveSpecialChars(obj[9].toString().trim());
+					  
+				  }
+			  }
+			  else if(obj[3] != null && (Long)obj[3] > 0l){// Enrolled With family voterId
+				  
+				  if(obj[10] != null && obj[10].toString().trim().length() > 0){
+					  specialCharacterExist = commonMethodsUtilService.isNameHaveSpecialChars(obj[10].toString().trim());
+				  }
+			  }
+			  
+			  if(specialCharacterExist){
+				  
+				  //mark this cadre has failed in verification.
+				  if(successMap.containsKey((Long)obj[0])){
+					  successMap.remove((Long)obj[0]);
+				  }
+				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+				  
+				  CadreValidateVO cadreVO = new CadreValidateVO();
+				  cadreVO.setValidationMessage("special Character Exists");
+				  
+				  setTdpCadreDataToVO(obj , cadreVO);
+				  
+				  if(finalVO.getSpecialCharactersList() == null){
+					  finalVO.setSpecialCharactersList(new ArrayList<CadreValidateVO>(0));
+				  }
+				  finalVO.getSpecialCharactersList().add(cadreVO);
+			  }
+			  
+			  rs.setResultCode(1);
+			  
+		}catch(Exception e){
+			 rs.setResultCode(0);
+			 rs.setExceptionMsg(" Exception Occurred In Checking Special Characters In Telugu Names ");
+			 
+			LOG.error("Exception Occured into specialCharactersExistInNameScenarioChecking() of CardPrintService class", e);
+		}
+		return rs;
+	}
+
+	public ResultStatus imagesExistingScenarioChecking(Object[] obj , CadreValidateVO finalVO ,  Map<Long,Long> successMap , Map<Long,Long> failureMap ){
+		
+		ResultStatus rs = new ResultStatus();
+		try{
+			
+			 boolean imageAvailable = false;
+			   
+			  if(obj[8] != null && obj[8].toString().trim().length() > 0){ 
+				  File cadreFile = new File("/mnt/tdp-img/cadre_images/2014/"+obj[8].toString().trim());
+				  if(cadreFile.exists()){
+					  imageAvailable = true;
+				  }
+			  }
+			  
+			  if(!imageAvailable){
+				  
+				  //mark this cadre has failed in verification.
+				  if(successMap.containsKey((Long)obj[0])){
+					  successMap.remove((Long)obj[0]);
+				  }
+				  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+				  
+				  CadreValidateVO cadreVO = new CadreValidateVO();
+				  cadreVO.setValidationMessage("missing image");
+				  
+				  setTdpCadreDataToVO(obj , cadreVO);
+				  
+				  if(finalVO.getImagesMissedList() == null){
+					  finalVO.setImagesMissedList(new ArrayList<CadreValidateVO>(0));
+				  }
+				  finalVO.getImagesMissedList().add(cadreVO);
+			  }
+			  rs.setResultCode(1);
+		}catch(Exception e){
+			 rs.setResultCode(0);
+			 rs.setExceptionMsg(" Exception Occurred In Checking Images Exist Or Not ");
+			 
+			LOG.error("Exception Occured into imagesExistingScenarioChecking() of CardPrintService class", e);
+		}
+		return rs;
+	}
+
 	public void setTdpCadreDataToVO(Object[] obj , CadreValidateVO cadreVO){
 		 try{
 			 
@@ -922,5 +1120,92 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		}catch (Exception e){
 			LOG.error("Exception Occured into setTdpCadreDataToVO() of CardPrintService class", e);
 		}
+	}
+	
+	public ResultStatus updateCardPrintStatusToTable( List<Long> dataList , Long cardPrintStatusId){
+			
+			ResultStatus rs = new ResultStatus();
+			
+			try{
+				  int noOfRecordsUpdate = IConstants.noOfRecordsUpdate;
+				  
+				  if(dataList != null && dataList.size() > 0){
+					  
+					  int totalCount =  dataList.size();
+					  
+					    if(totalCount <=  noOfRecordsUpdate)
+				        {	
+					    	int noOfRecords = tdpCadreDAO.updateCardPrintStatusByTdpCadreIds(dataList, cardPrintStatusId);
+					    	System.out.println(noOfRecords);
+					    }else
+					    {	
+					    	int quotient = (int) (totalCount / noOfRecordsUpdate);
+					    	int checkCount = quotient + 1;
+					    	
+					    	for(int i=0 ; i<checkCount ; i++){
+					    		
+					    		int fromIndex = i * noOfRecordsUpdate;
+					    		int toIndex = 0;
+					    		if(i == checkCount - 1){
+					    			toIndex = fromIndex + (totalCount % noOfRecordsUpdate );
+					    		}else{
+					    			toIndex = fromIndex + noOfRecordsUpdate;
+					    		}
+					    		
+					    		System.out.println(fromIndex + " - " +toIndex );
+					    		List<Long> sublist = dataList.subList(fromIndex, toIndex);
+					    		if(sublist != null && sublist.size() > 0){
+					    			int noOfRecords = tdpCadreDAO.updateCardPrintStatusByTdpCadreIds(sublist, cardPrintStatusId);
+					    			System.out.println(sublist);
+					    			System.out.println(noOfRecords);
+				    			}
+					    	}
+					    }
+				  }
+				 rs.setResultCode(1);
+			}catch(Exception e){
+				 rs.setResultCode(0);
+				 rs.setExceptionMsg(" Exception Occurred While Updating Card Print Status To Cadre ");
+				LOG.error("exception Occurred at updateCardPrintStatusToTable() in CardPrintService class ", e); 
+			}
+			return rs;
+		}
+
+	
+	public List<CadreValidateVO>  getConstituencyCadreCardPrintStatusCounts(Long constituencyId){
+		List<CadreValidateVO> finalList = null;
+		try{
+			
+			List<Object[]> statusList = cardPrintStatusDAO.getAllCardPrintStatus();
+			  Map<Long,CadreValidateVO> stausCountsMap = new LinkedHashMap<Long, CadreValidateVO>(0);
+			  if(statusList != null && statusList.size() > 0){
+				  for(Object[] obj : statusList){
+					  if(obj[0] != null){
+						  CadreValidateVO statusVO = new CadreValidateVO();
+						  statusVO.setStatusId((Long)obj[0]);
+						  statusVO.setStatusName(obj[1] != null ? obj[1].toString() : "");
+						  stausCountsMap.put(statusVO.getStatusId(), statusVO);
+					  }
+				  }
+			  }
+			  List<Object[]> statusCountsList = tdpCadreDAO.getConstituencyCadreCardPrintStatusCounts(constituencyId);
+			  if(statusCountsList != null && statusCountsList.size() > 0){
+				  for(Object[] obj : statusCountsList){
+					  if(obj[0] != null){
+						  CadreValidateVO statusVO =  stausCountsMap.get((Long)obj[0]);
+						  if(statusVO != null){
+							  statusVO.setStatusCount(obj[1] != null ? (Long)obj[1] : 0l);
+						  }
+					  }
+				  }
+			  }
+			  if(stausCountsMap != null && stausCountsMap.size() > 0){
+				  finalList = new ArrayList<CadreValidateVO>(stausCountsMap.values());
+			  }
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured into getConstituencyCadreCardPrintStatusCounts() of CardPrintService class", e);
+		}
+		return finalList;
 	}
 }
