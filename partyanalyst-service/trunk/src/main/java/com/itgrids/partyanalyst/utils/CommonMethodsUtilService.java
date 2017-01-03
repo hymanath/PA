@@ -702,6 +702,8 @@ public class CommonMethodsUtilService {
 			try{
 				List<Integer> ignoreList = Arrays.asList(IConstants.specialCharsUnicodeIgnoreList);
 				
+				name = name.replace(".","");
+				
 				for(char c : name.replace(" ","").trim().toCharArray())
 				{
 					String hex = StringEscapeUtils.escapeJava(new Character(c).toString()).replace("\\u","");
@@ -713,6 +715,7 @@ public class CommonMethodsUtilService {
 				}
 				return false;
 			}catch (Exception e) {
+				System.out.println(name);
 				e.printStackTrace();
 				return true;
 			}
