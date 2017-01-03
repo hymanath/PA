@@ -1136,7 +1136,6 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					    if(totalCount <=  noOfRecordsUpdate)
 				        {	
 					    	int noOfRecords = tdpCadreDAO.updateCardPrintStatusByTdpCadreIds(dataList, cardPrintStatusId);
-					    	System.out.println(noOfRecords);
 					    }else
 					    {	
 					    	int quotient = (int) (totalCount / noOfRecordsUpdate);
@@ -1156,8 +1155,6 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					    		List<Long> sublist = dataList.subList(fromIndex, toIndex);
 					    		if(sublist != null && sublist.size() > 0){
 					    			int noOfRecords = tdpCadreDAO.updateCardPrintStatusByTdpCadreIds(sublist, cardPrintStatusId);
-					    			System.out.println(sublist);
-					    			System.out.println(noOfRecords);
 				    			}
 					    	}
 					    }
