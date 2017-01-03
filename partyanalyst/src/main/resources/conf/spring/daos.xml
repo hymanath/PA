@@ -3511,4 +3511,15 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="selfAppraisalToursMonthDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalToursMonthDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="selfAppraisalCandidateDetailsLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDetailsLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="selfAppraisalCandidateDetailsNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDetailsNewDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
