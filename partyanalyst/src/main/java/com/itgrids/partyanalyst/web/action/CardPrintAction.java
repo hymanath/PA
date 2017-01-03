@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
@@ -33,6 +34,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private CardPrintVO cardPrintVO;
 	private List<CardPrintingDispatchVO> cardPrintingDispatchVOList;
 	private List<CardPrintStatusVO> cardPrintStatusVOList;
+	private CadreValidateVO cadreValidateVO;
 	
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -90,6 +92,12 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	public void setCardPrintStatusVOList(
 			List<CardPrintStatusVO> cardPrintStatusVOList) {
 		this.cardPrintStatusVOList = cardPrintStatusVOList;
+	}
+	public CadreValidateVO getCadreValidateVO() {
+		return cadreValidateVO;
+	}
+	public void setCadreValidateVO(CadreValidateVO cadreValidateVO) {
+		this.cadreValidateVO = cadreValidateVO;
 	}
 	
 	
@@ -218,6 +226,20 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			vendorList = cardPrintService.getEnrollmentDetailsByConstituency();
 		}catch(Exception e){
 			LOG.error("Exception raised in getEnrollmentDetailsByConstituency() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstNotVerfiedCardPrintStatusCadreAndValidate(){
+		try{
+			LOG.info("Entered into getConstNotVerfiedCardPrintStatusCadreAndValidate() in cardPrintAction");
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			cadreValidateVO = cardPrintService.getConstNotVerfiedCardPrintStatusCadreAndValidate(constituencyId);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getConstNotVerfiedCardPrintStatusCadreAndValidate() in CardPrintAction ",e);
 		}
 		return Action.SUCCESS;
 	}

@@ -15260,5 +15260,10 @@
 			<param name="root">vendorList</param>
 		</result>
 	</action>
+	<action name="getConstNotVerfiedCardPrintStatusCadreAndValidateAction" class="cardPrintAction"  method="getConstNotVerfiedCardPrintStatusCadreAndValidate">
+			<result type="json" name="success">
+			<param name="root">cadreValidateVO</param>
+		</result>
+	</action>
  </package>
 </struts>
