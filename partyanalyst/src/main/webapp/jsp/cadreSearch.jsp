@@ -1289,7 +1289,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	var isLoading = false;
 	function getPanchayayCadreDetailsBySearchCriteria(startIndex)
 		{
-		
+		$("#searchBy").val("");
 
 			if(!isLoading)
 			{
@@ -1348,6 +1348,12 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					
 					if(locationValue == null)
 						locationValue =0;
+					var enrollmentyearId=4;
+					$(".enrollmentCls").each(function(){
+					if($(this).prop('checked')==true){
+					     enrollmentyearId = $(this).val();
+					}
+					}); 
 					var jsObj =
 					{
 						locationLevel :locationLevel,
@@ -1366,7 +1372,8 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						startIndex:startIndex,
 						maxIndex : 50,
 						removedStatus:removedStatus,
-						enrollmentId : 3,
+						//enrollmentId : 3,
+						enrollmentId : enrollmentyearId,
 						task:"tdpCadreSearch"
 					}
 					$.ajax({
