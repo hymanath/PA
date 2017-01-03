@@ -117,6 +117,7 @@
 											<label>Insert Year</label>  
 											<select id="yearId" class="selectChosen" name="toursInputVO.year">
 											    <option value="0">Select Year</option>
+												<option value="2017">2017</option>
 												<option value="2016">2016</option>
 												<option value="2015">2015</option>     
 											</select>
