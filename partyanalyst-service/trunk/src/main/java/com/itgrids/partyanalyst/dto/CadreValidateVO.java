@@ -7,6 +7,12 @@ public class CadreValidateVO implements Serializable{
 	
 	private static final long serialVersionUID = -3127780706665858956L;
 	
+	private Long totalCadreCount = 0l;
+	private Long beforeVerifiedCount = 0l;
+	private Long nowVerifiedCount = 0l;
+	private Long approvedCount = 0l;
+	private Long rejectedCount = 0l;
+	
 	private Long   tdpCadreId;
 	private String memberShipId;
 	private Long   voterId;
@@ -18,12 +24,18 @@ public class CadreValidateVO implements Serializable{
 	private String image;
 	private String voterName;
 	private String cadreName;
-	
 	private String validationMessage;
+	
+	private Long   statusId;
+	private String statusName;
+	private Long   statusCount = 0l;
+	private List<CadreValidateVO> statusCountsList;
 	
 	private List<CadreValidateVO> teluguNamesMissedList;
 	private List<CadreValidateVO> specialCharactersList;
 	private List<CadreValidateVO> imagesMissedList;
+	
+	private ResultStatus resultStatus;
 	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
@@ -116,5 +128,65 @@ public class CadreValidateVO implements Serializable{
 		this.validationMessage = validationMessage;
 	}
 	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+	public Long getStatusCount() {
+		return statusCount;
+	}
+	public void setStatusCount(Long statusCount) {
+		this.statusCount = statusCount;
+	}
+	public List<CadreValidateVO> getStatusCountsList() {
+		return statusCountsList;
+	}
+	public void setStatusCountsList(List<CadreValidateVO> statusCountsList) {
+		this.statusCountsList = statusCountsList;
+	}
+	public Long getTotalCadreCount() {
+		return totalCadreCount;
+	}
+	public void setTotalCadreCount(Long totalCadreCount) {
+		this.totalCadreCount = totalCadreCount;
+	}
+	public Long getBeforeVerifiedCount() {
+		return beforeVerifiedCount;
+	}
+	public void setBeforeVerifiedCount(Long beforeVerifiedCount) {
+		this.beforeVerifiedCount = beforeVerifiedCount;
+	}
+	public Long getNowVerifiedCount() {
+		return nowVerifiedCount;
+	}
+	public void setNowVerifiedCount(Long nowVerifiedCount) {
+		this.nowVerifiedCount = nowVerifiedCount;
+	}
+	public Long getApprovedCount() {
+		return approvedCount;
+	}
+	public void setApprovedCount(Long approvedCount) {
+		this.approvedCount = approvedCount;
+	}
+	public Long getRejectedCount() {
+		return rejectedCount;
+	}
+	public void setRejectedCount(Long rejectedCount) {
+		this.rejectedCount = rejectedCount;
+	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	
 }
