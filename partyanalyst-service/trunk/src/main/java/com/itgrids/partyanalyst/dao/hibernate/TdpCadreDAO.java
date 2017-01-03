@@ -9181,7 +9181,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   
 		   StringBuilder sb = new StringBuilder();
 		   sb.append(" " +
-		   " SELECT TC.tdp_cadre_id as cadreId ,TC.membership_id as memId ,TC.voter_id as vid,TC.family_voterId as fvid," +//3
+		   " SELECT distinct TC.tdp_cadre_id as cadreId ,TC.membership_id as memId ,TC.voter_id as vid,TC.family_voterId as fvid," +//3
 		   "        TC.first_name as fname,TC.age as age,TC.gender as gender ,TC.mobile_no as mno ,TC.image as image ," +//8
 		   "        TRIM(CONCAT(TRIM(VA.firstname),' ',TRIM(VA.lastname))) AS voter_name,TRIM(TCN.telugu_name) AS cadre_name " +//10
 		   " FROM   tdp_cadre_enrollment_year EY,user_address UA,tdp_cadre TC" +
@@ -9190,7 +9190,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   " WHERE  TC.tdp_cadre_id = EY.tdp_cadre_id AND" +
 		   "        EY.enrollment_year_id = :enrollmentYearId AND  " +
 		   "        EY.is_deleted = 'N' AND TC.enrollment_year = 2014 AND TC.is_deleted = 'N' AND " +
-		   "        TC.address_id = UA.user_address_id AND TC.card_print_status_id = 1 AND " +
+		   "        TC.address_id = UA.user_address_id AND " +
+		   "        (TC.card_print_status_id = 1 OR TC.card_print_status_id is null ) AND " +
 		   "        UA.constituency_id = :constituencyId ");
 		  
 		   Query query = getSession().createSQLQuery(sb.toString())
@@ -9210,5 +9211,58 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameter("constituencyId",constituencyId);
 		   return query.list();
 	   }
+	   public Integer updateCardPrintStatusByTdpCadreIds(List<Long> tdpCadreIdList , Long cardPrintStatusId){
+		   
+			Query query = getSession().createQuery("update TdpCadre model set model.cardPrintStatusId = :cardPrintStatusId " +
+					" where model.tdpCadreId in (:tdpCadreIdList)  ");
+			query.setParameterList("tdpCadreIdList", tdpCadreIdList);
+			query.setParameter("cardPrintStatusId", cardPrintStatusId);
+			Integer count = query.executeUpdate();
+			return count;
+	  }
+	   public List<Object[]> getConstituencyCadreCardPrintStatusCounts(Long constituencyId){
+		  
+		   Query query = getSession().createQuery("" +
+		   " select   model.tdpCadre.cardPrintStatusId ,count(distinct model.tdpCadre.tdpCadreId) " +//1
+		   " from     TdpCadreEnrollmentYear model " +
+		   " where    model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   "          model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId and " +
+		   "          model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+		   " group by model.tdpCadre.cardPrintStatusId " +
+		   " order by model.tdpCadre.cardPrintStatusId ");
+		 
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   query.setParameter("constituencyId",constituencyId);
+		   return query.list();
+	   }
 	   
+	   public Long getConstituencyCadreCount(Long constituencyId){
+		   
+		   Query query = getSession().createQuery(" " +
+		   " select count(distinct model.tdpCadre.tdpCadreId) " +
+		   " from   TdpCadreEnrollmentYear model " +
+		   " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId and " +
+		   "        model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId ");
+		  
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   query.setParameter("constituencyId",constituencyId);
+		   return (Long)query.uniqueResult();
+	   }
+	   
+	   public Long getConstituencyCardPrintVerifiedCount(Long constituencyId){
+		   
+		   Query query = getSession().createQuery(" " +
+		   " select count(distinct model.tdpCadre.tdpCadreId) " +
+		   " from   TdpCadreEnrollmentYear model " +
+		   " where  model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+		   "        model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId and " +
+		   "        model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId and " +
+		   "        model.tdpCadre.cardPrintStatusId is not null and model.tdpCadre.cardPrintStatusId != :cardPrintStatusId ");
+		  
+		   query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		   query.setParameter("constituencyId",constituencyId);
+		   query.setParameter("cardPrintStatusId",IConstants.CARD_PRINT_STATUS_NOT_VERIFIED);
+		   return (Long)query.uniqueResult();
+	   }
 }
