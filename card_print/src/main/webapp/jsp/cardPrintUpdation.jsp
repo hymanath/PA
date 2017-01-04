@@ -47,9 +47,9 @@
 		</div>
 	</div>
 	
-	<div class ="row" style="margin-top:10px;">
+	<!-- <div class ="row" style="margin-top:10px;">
 	   <input type="button" class="buttonCls btn btn-success" value="updatePrintDetailsToTdpCadreCardPrint" onclick="updatePrintDetailsToTdpCadreCardPrint()"></input>	
-	</div>
+	</div> -->
 	
 	
 </div>
@@ -62,7 +62,7 @@
 getAllPrintStatusDetails();
 getAllAssemblyConstituencies();
 
-	function updatePrintDetailsToTdpCadreCardPrint(){
+	/*function updatePrintDetailsToTdpCadreCardPrint(){
 		var jsObj = { constituencyId:120 }
 		$.ajax({
 			 type:'POST',
@@ -72,7 +72,7 @@ getAllAssemblyConstituencies();
 		  }).done(function(result){
 			  alert("success");
 		  })
-	}
+	}*/
 function getAllAssemblyConstituencies(){
 	$.ajax({
 	     type:'GET',
