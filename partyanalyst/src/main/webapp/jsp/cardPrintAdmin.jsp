@@ -240,130 +240,132 @@ function buildConstituencyVerifiedSummary(result){
 	str4+='</div>';
 	$("#statusWiseSummaryDivId").html(str4);
 	
-	var str1 = '';
-	str1+='<h4 class="m_top10"><b>TELUGU NAMES MISSED CADRES</b></h4>';
-	if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
-		str1+='<div class="m_top10">';
-			str1+='<table class="table table-bordered" id="teluguNamesTableId">';
-				str1+='<thead>';
-					str1+='<th>Image</th>';
-					str1+='<th>Name</th>';
-					str1+='<th>Membership No</th>';
-					str1+='<th>Mobile No</th>';
-					str1+='<th>Gender</th>';
-					str1+='<th>Age</th>';
-				str1+='</thead>';
-				str1+='<tbody>';
-				if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
-					for(var i in result.teluguNamesMissedList){
-						str1+='<tr>';
-							str1+='<td><img src="mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].image+'"/></td>';
-							str1+='<td>'+result.teluguNamesMissedList[i].firstName+'</td>';
-							str1+='<td>'+result.teluguNamesMissedList[i].memberShipId+'</td>';
-							str1+='<td>'+result.teluguNamesMissedList[i].mobileNo+'</td>';
-							if(result.teluguNamesMissedList[i].gender != null && result.teluguNamesMissedList[i].gender == 'M')
-								str1+='<td> Male </td>';
-							else if(result.teluguNamesMissedList[i].gender != null && result.teluguNamesMissedList[i].gender == 'F')
-								str1+='<td> FeMale </td>';
-							else
-								str1+='<td>'+result.teluguNamesMissedList[i].gender+'</td>';
-							str1+='<td>'+result.teluguNamesMissedList[i].age+'</td>';
-						str1+='</tr>';
+	if(result.nowVerifiedCount != null && result.nowVerifiedCount > 0){
+		var str1 = '';
+		str1+='<h4 class="m_top10"><b>TELUGU NAMES MISSED CADRES</b></h4>';
+		if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
+			str1+='<div class="m_top10">';
+				str1+='<table class="table table-bordered" id="teluguNamesTableId">';
+					str1+='<thead>';
+						str1+='<th>Image</th>';
+						str1+='<th>Name</th>';
+						str1+='<th>Membership No</th>';
+						str1+='<th>Mobile No</th>';
+						str1+='<th>Gender</th>';
+						str1+='<th>Age</th>';
+					str1+='</thead>';
+					str1+='<tbody>';
+					if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
+						for(var i in result.teluguNamesMissedList){
+							str1+='<tr>';
+								str1+='<td><img src="mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].image+'"/></td>';
+								str1+='<td>'+result.teluguNamesMissedList[i].firstName+'</td>';
+								str1+='<td>'+result.teluguNamesMissedList[i].memberShipId+'</td>';
+								str1+='<td>'+result.teluguNamesMissedList[i].mobileNo+'</td>';
+								if(result.teluguNamesMissedList[i].gender != null && result.teluguNamesMissedList[i].gender == 'M')
+									str1+='<td> Male </td>';
+								else if(result.teluguNamesMissedList[i].gender != null && result.teluguNamesMissedList[i].gender == 'F')
+									str1+='<td> FeMale </td>';
+								else
+									str1+='<td>'+result.teluguNamesMissedList[i].gender+'</td>';
+								str1+='<td>'+result.teluguNamesMissedList[i].age+'</td>';
+							str1+='</tr>';
+						}
 					}
-				}
-				str1+='</tbody>';
-			str1+='</table>';
-		str1+='</div>';
-		$("#teluguNamesDivId").html(str1);
-		$("#teluguNamesTableId").dataTable();
-	}
-	else{
-		str1+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
-		$("#teluguNamesDivId").html(str1);
-	}
-	
-	var str2 = '';
-	str2+='<h4 class="m_top10"><b>IMAGE MISSED CADRES</b></h4>';
-	if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
-		str2+='<div class="m_top10">';
-			str2+='<table class="table table-bordered" id="imageTableId">';
-				str2+='<thead>';
-					str2+='<th>Image</th>';
-					str2+='<th>Name</th>';
-					str2+='<th>Membership No</th>';
-					str2+='<th>Mobile No</th>';
-					str2+='<th>Gender</th>';
-					str2+='<th>Age</th>';
-				str2+='</thead>';
-				str2+='<tbody>';
-				if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
-					for(var i in result.imagesMissedList){
-						str2+='<tr>';
-							str2+='<td><img src="mytdp.com/images/cadre_images/'+result.imagesMissedList[i].image+'"/></td>';
-							str2+='<td>'+result.imagesMissedList[i].firstName+'</td>';
-							str2+='<td>'+result.imagesMissedList[i].memberShipId+'</td>';
-							str2+='<td>'+result.imagesMissedList[i].mobileNo+'</td>';
-							if(result.imagesMissedList[i].gender != null && result.imagesMissedList[i].gender == 'M')
-								str2+='<td> Male </td>';
-							else if(result.imagesMissedList[i].gender != null && result.imagesMissedList[i].gender == 'F')
-								str2+='<td> FeMale </td>';
-							else
-								str2+='<td>'+result.imagesMissedList[i].gender+'</td>';
-							str2+='<td>'+result.imagesMissedList[i].age+'</td>';
-						str2+='</tr>';
+					str1+='</tbody>';
+				str1+='</table>';
+			str1+='</div>';
+			$("#teluguNamesDivId").html(str1);
+			$("#teluguNamesTableId").dataTable();
+		}
+		else{
+			str1+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
+			$("#teluguNamesDivId").html(str1);
+		}
+		
+		var str2 = '';
+		str2+='<h4 class="m_top10"><b>IMAGE MISSED CADRES</b></h4>';
+		if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
+			str2+='<div class="m_top10">';
+				str2+='<table class="table table-bordered" id="imageTableId">';
+					str2+='<thead>';
+						str2+='<th>Image</th>';
+						str2+='<th>Name</th>';
+						str2+='<th>Membership No</th>';
+						str2+='<th>Mobile No</th>';
+						str2+='<th>Gender</th>';
+						str2+='<th>Age</th>';
+					str2+='</thead>';
+					str2+='<tbody>';
+					if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
+						for(var i in result.imagesMissedList){
+							str2+='<tr>';
+								str2+='<td><img src="mytdp.com/images/cadre_images/'+result.imagesMissedList[i].image+'"/></td>';
+								str2+='<td>'+result.imagesMissedList[i].firstName+'</td>';
+								str2+='<td>'+result.imagesMissedList[i].memberShipId+'</td>';
+								str2+='<td>'+result.imagesMissedList[i].mobileNo+'</td>';
+								if(result.imagesMissedList[i].gender != null && result.imagesMissedList[i].gender == 'M')
+									str2+='<td> Male </td>';
+								else if(result.imagesMissedList[i].gender != null && result.imagesMissedList[i].gender == 'F')
+									str2+='<td> FeMale </td>';
+								else
+									str2+='<td>'+result.imagesMissedList[i].gender+'</td>';
+								str2+='<td>'+result.imagesMissedList[i].age+'</td>';
+							str2+='</tr>';
+						}
 					}
-				}
-				str2+='</tbody>';
-			str2+='</table>';
-		str2+='</div>';
-		$("#imageMissedDivId").html(str2);
-		$("#imageTableId").dataTable();
-	}
-	else{
-		str2+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
-		$("#imageMissedDivId").html(str2);
-	}
-	
-	var str3 = '';
-	str3+='<h4 class="m_top10"><b>SPECIAL CHARACTERS IN NAMES CADRES</b></h4>';
-	if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
-		str3+='<div class="m_top10">';
-			str3+='<table class="table table-bordered" id="specialCharTableId">';
-				str3+='<thead>';
-					str3+='<th>Image</th>';
-					str3+='<th>Name</th>';
-					str3+='<th>Membership No</th>';
-					str3+='<th>Mobile No</th>';
-					str3+='<th>Gender</th>';
-					str3+='<th>Age</th>';
-				str3+='</thead>';
-				str3+='<tbody>';
-				if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
-					for(var i in result.specialCharactersList){
-						str3+='<tr>';
-							str3+='<td><img src="mytdp.com/images/cadre_images/'+result.specialCharactersList[i].image+'"/></td>';
-							str3+='<td>'+result.specialCharactersList[i].firstName+'</td>';
-							str3+='<td>'+result.specialCharactersList[i].memberShipId+'</td>';
-							str3+='<td>'+result.specialCharactersList[i].mobileNo+'</td>';
-							if(result.specialCharactersList[i].gender != null && result.specialCharactersList[i].gender == 'M')
-								str3+='<td> Male </td>';
-							else if(result.specialCharactersList[i].gender != null && result.specialCharactersList[i].gender == 'F')
-								str3+='<td> FeMale </td>';
-							else
-								str3+='<td>'+result.specialCharactersList[i].gender+'</td>';
-							str3+='<td>'+result.specialCharactersList[i].age+'</td>';
-						str3+='</tr>';
+					str2+='</tbody>';
+				str2+='</table>';
+			str2+='</div>';
+			$("#imageMissedDivId").html(str2);
+			$("#imageTableId").dataTable();
+		}
+		else{
+			str2+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
+			$("#imageMissedDivId").html(str2);
+		}
+		
+		var str3 = '';
+		str3+='<h4 class="m_top10"><b>SPECIAL CHARACTERS IN NAMES CADRES</b></h4>';
+		if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
+			str3+='<div class="m_top10">';
+				str3+='<table class="table table-bordered" id="specialCharTableId">';
+					str3+='<thead>';
+						str3+='<th>Image</th>';
+						str3+='<th>Name</th>';
+						str3+='<th>Membership No</th>';
+						str3+='<th>Mobile No</th>';
+						str3+='<th>Gender</th>';
+						str3+='<th>Age</th>';
+					str3+='</thead>';
+					str3+='<tbody>';
+					if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
+						for(var i in result.specialCharactersList){
+							str3+='<tr>';
+								str3+='<td><img src="mytdp.com/images/cadre_images/'+result.specialCharactersList[i].image+'"/></td>';
+								str3+='<td>'+result.specialCharactersList[i].firstName+'</td>';
+								str3+='<td>'+result.specialCharactersList[i].memberShipId+'</td>';
+								str3+='<td>'+result.specialCharactersList[i].mobileNo+'</td>';
+								if(result.specialCharactersList[i].gender != null && result.specialCharactersList[i].gender == 'M')
+									str3+='<td> Male </td>';
+								else if(result.specialCharactersList[i].gender != null && result.specialCharactersList[i].gender == 'F')
+									str3+='<td> FeMale </td>';
+								else
+									str3+='<td>'+result.specialCharactersList[i].gender+'</td>';
+								str3+='<td>'+result.specialCharactersList[i].age+'</td>';
+							str3+='</tr>';
+						}
 					}
-				}
-				str3+='</tbody>';
-			str3+='</table>';
-		str3+='</div>';
-		$("#specialCharsDivId").html(str3);
-		$("#specialCharTableId").dataTable();
-	}
-	else{
-		str3+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
-		$("#specialCharsDivId").html(str3);
+					str3+='</tbody>';
+				str3+='</table>';
+			str3+='</div>';
+			$("#specialCharsDivId").html(str3);
+			$("#specialCharTableId").dataTable();
+		}
+		else{
+			str3+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
+			$("#specialCharsDivId").html(str3);
+		}
 	}
 }
 
