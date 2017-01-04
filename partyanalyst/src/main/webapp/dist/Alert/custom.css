@@ -208,9 +208,11 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	list-style:none;
 	border:1px solid #ddd;
-	margin-top:2px;
+	margin:0px 5px;
 	padding:5px;
 	position:relative;
+	display:inline-block;
+	width:32%;
 }
 .involvedMembersUl li .label
 {
