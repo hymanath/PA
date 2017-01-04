@@ -60,9 +60,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private ICadreCommitteeService cadreCommitteeService;
 	   private List<LocationWiseBoothDetailsVO> locationsList;
 	   private ToursBasicVO toursBasicVO;
-	
+	   private List<ToursVO> toursVOListNew;
 	   
-	   public ToursBasicVO getToursBasicVO() {
+	   
+	   public List<ToursVO> getToursVOListNew() {
+		return toursVOListNew;
+	}
+	public void setToursVOListNew(List<ToursVO> toursVOListNew) {
+		this.toursVOListNew = toursVOListNew;
+	}
+	public ToursBasicVO getToursBasicVO() {
 		   return toursBasicVO;
 	   }
 	   public void setToursBasicVO(ToursBasicVO toursBasicVO) {
@@ -609,6 +616,10 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				if(toursVOList !=null && toursVOList.size()>0){
 					toursVO.setToursVoList(toursVOList);
 				}
+				if(toursVOListNew !=null && toursVOListNew.size()>0){
+					toursVO.setToursVoListNew(toursVOListNew);
+				}
+				
 				toursVO.setUserId(user.getRegistrationID());
 			}
 				

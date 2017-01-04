@@ -144,7 +144,7 @@
 											<div class="col-md-2 col-xs-12 col-sm-4">
 												<label>Select Month</label>
 												<div class="input-group inputGCustom">
-													<input type="text" class="form-control" id="tourMonthYear">
+													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth">
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
@@ -156,25 +156,25 @@
 														<div class="row">
 															<div class="col-md-4 col-xs-12 col-sm-3">
 																<label>Tour category</label>
-																<select class="form-control tourCategoryNew0">   
-																	<option value="0">Tour Type</option>
+																<select class="form-control" id="tourCategoryNew0" name="toursVOListNew[0].tourCategoryId">   
+																	<option value="0">Tour Category</option>
 																</select>
 															</div>
 															<div class="col-md-4 col-xs-12 col-sm-3">
 																<label>Tour Type</label>
-																<select class="form-control tourTypeNew0">   
+																<select class="form-control" id="tourTypeNew0" name="toursVOListNew[0].tourTypeId">   
 																	<option value="0">Tour Type</option>
 																</select>
 															</div>
 															<div class="col-md-4 col-xs-12 col-sm-2">
 																<label>Tour Days</label>
-																<input type="text" class="form-control tourDaysNew0"/>
+																<input type="text" class="form-control" id="tourDaysNew0" name="toursVOListNew[0].tourDays"/>
 															</div>
 														</div>
 														<div class="row m_top10">
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Add Comment/Tour Description</label>
-																<textarea class="form-control tourDescNew0"></textarea>
+																<textarea class="form-control" id="tourDescNew0" name="toursVOListNew[0].description"></textarea>
 															</div>
 														</div>
 													</div>
@@ -234,25 +234,25 @@
 			<div class="row">
 				<div class="col-md-4 col-xs-12 col-sm-3">
 					<label>Tour category</label>
-					<select class="form-control tourCategoryNew">   
-						<option value="0">Tour Type</option>
+					<select class="form-control tourCategoryNewCls">   
+						<option value="0">Tour Category</option>
 					</select>
 				</div>
 				<div class="col-md-4 col-xs-12 col-sm-3">
 					<label>Tour Type</label>
-					<select class="form-control tourTypeNew">   
+					<select class="form-control tourTypeNewCls">   
 						<option value="0">Tour Type</option>
 					</select>
 				</div>
 				<div class="col-md-4 col-xs-12 col-sm-2">
 					<label>Tour Days</label>
-					<input type="text" class="form-control tourDaysNew"/>
+					<input type="text" class="form-control tourDaysNewCls"/>
 				</div>
 			</div>
 			<div class="row m_top10">
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<label>Add Comment/Tour Description</label>
-					<textarea class="form-control tourDescNew"></textarea>
+					<textarea class="form-control tourDescNewCls"></textarea>
 				</div>
 			</div>
 		</div>
@@ -442,10 +442,12 @@
 /*New Code*/
 /*Month & Year Picker*/
 $("#tourMonthYear").datetimepicker({
-	format:'MM/YYYY'
+	format:'MM-YYYY'
 })
 
-var tourCloneMainDivCount=0;
+var TourCategoryArray =[];
+var TourTypesArray =[];
+var tourCloneMainDivCount=1;
 	$(document).on("click",".tourCloneMainDivNewBtn",function(){
 		var e = $("#tourCloneMainDivNew").clone(true);
 		 e.attr({
@@ -455,13 +457,34 @@ var tourCloneMainDivCount=0;
 			});
 			e.css("display","block");
 			
-		e.find(".tourCategoryNew").attr("id","tourDateId"+tourCloneMainDivCount);
-		e.find(".tourTypeNew").attr("id","tourCategoryId"+tourCloneMainDivCount);
-		e.find(".tourDaysNew").attr("id","tourLocationId"+tourCloneMainDivCount);
-		e.find(".tourDescNew").attr("id","tourTypeId"+tourCloneMainDivCount);
+		e.find(".tourCategoryNewCls").attr("id","tourCategoryNew"+tourCloneMainDivCount);
+		e.find(".tourCategoryNewCls").attr("name","toursVOListNew["+tourCloneMainDivCount+"].tourCategoryId");
+		
+		e.find(".tourTypeNewCls").attr("id","tourTypeNew"+tourCloneMainDivCount);
+		e.find(".tourTypeNewCls").attr("name","toursVOListNew["+tourCloneMainDivCount+"].tourTypeId");
+		
+		e.find(".tourDaysNewCls").attr("id","tourDaysNew"+tourCloneMainDivCount);
+		e.find(".tourDaysNewCls").attr("name","toursVOListNew["+tourCloneMainDivCount+"].tourDays");
+		
+		e.find(".tourDescNewCls").attr("id","tourDescNew"+tourCloneMainDivCount);
+		e.find(".tourDescNewCls").attr("name","toursVOListNew["+tourCloneMainDivCount+"].description");
+		
 		e.find(".newsTourRemoveBtnClsNew").attr("attr_div_id_New","newsTourCloneDivIdNew"+tourCloneMainDivCount);
 		$("#toursNewBlockClonedId").append(e);
 
+		if(TourCategoryArray != null && TourCategoryArray.length>0){
+				for(var i in TourCategoryArray){
+					$('#tourCategoryNew'+tourCloneMainDivCount).append('<option value="'+TourCategoryArray[i].id+'">'+TourCategoryArray[i].name+'</option>');
+				}
+				$('#tourCategoryNew'+tourCloneMainDivCount).chosen();
+			}
+			if(TourTypesArray != null && TourTypesArray.length>0){
+				for(var i in TourTypesArray){
+					$('#tourTypeNew'+tourCloneMainDivCount).append('<option value="'+TourTypesArray[i].id+'">'+TourTypesArray[i].name+'</option>');
+				}
+				$('#tourTypeNew'+tourCloneMainDivCount).chosen();
+			}
+			
 		tourCloneMainDivCount=tourCloneMainDivCount+1;
 	});	
 	$(document).on("click",".newsTourRemoveBtnClsNew",function(){
@@ -498,8 +521,6 @@ if($(window).width() > 500)
 	$(".table").wrap( "<div class='table-responsive'></div>" );
 }
 
- var TourCategoryArray =[];
- var TourTypesArray =[];
  defaultDateRangePickerForAppendBlock();
  initializeMultiDateRanePicker();
  $("#designationSlctBxId").chosen();
@@ -549,7 +570,7 @@ if($(window).width() > 500)
 	
 	
 	
- var newsTourCloneCount=1;
+ var newsTourCloneCount=0;
 	$(document).on("click",".addAppendTourBlockCls",function(){
 		var c = $("#newsTourCloneMainDiv").clone(true);
 		 c.attr({
