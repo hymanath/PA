@@ -243,17 +243,25 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';
 					str+='<div class="row m_top10">';
-						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
-							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';  
-							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-info-sign compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'';  
+							str+='<i style="cursor:pointer;font-size:14px;margin-left:5px;" class="glyphicon glyphicon-info-sign compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i></h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_XsTop10 m_top10">';
 							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div id="totalOverAllRegistrationGraphTS" class="chartLiD" style="height:120px" ></div>'; 
+					if(emptyCheck(result.todayRenewalCount) != ' - ')
+					{
+						str+='<h5 class="text-capital">Today Renewal '+emptyCheck(result.todayRenewalCount)+'</h5>';
+					}
+					if(emptyCheck(result.todayNewCount) != ' - ')
+					{
+						str+='<h5 class="text-capital">Today New '+emptyCheck(result.todayNewCount)+'</h5>';
+					}
 				str+='</div>';
 			str+='</div>';
 			
@@ -493,18 +501,26 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';    
 					str+='<div class="row m_top10">';
-						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
-							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
-							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'';
+							str+='<i style="cursor:pointer;font-size:14px;margin-left:5px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i></h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
-							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
-							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_XsTop10 m_top10">';
+							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
+							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>'; 
+					if(emptyCheck(result.todayRenewalCount) != ' - ')
+					{
+						str+='<h5 class="text-capital">Today Renewal '+emptyCheck(result.todayRenewalCount)+'</h5>';
+					}
+					if(emptyCheck(result.todayNewCount) != ' - ')
+					{
+						str+='<h5 class="text-capital">Today New '+emptyCheck(result.todayNewCount)+'</h5>';
+					}
 				str+='</div>';
 				
 			str+='</div>';
