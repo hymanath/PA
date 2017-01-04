@@ -137,147 +137,82 @@
 											</li>
 										</ul>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivClsNew" >
-									<div class="row">
-										<div class="col-md-2 col-xs-12 col-sm-4">
-											<label>Select Month</label>
-											<div class="input-group inputGCustom">
-												<input type="text" class="form-control" id="tourMonthYear">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
+								
+								<div id="overallDivId" style="display:none;">
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
+										<div class="row">
+											<div class="col-md-2 col-xs-12 col-sm-4">
+												<label>Select Month</label>
+												<div class="input-group inputGCustom">
+													<input type="text" class="form-control" id="tourMonthYear">
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>
+												</div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div class="panel panel-default">
+													<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
+														<div class="row">
+															<div class="col-md-4 col-xs-12 col-sm-3">
+																<label>Tour category</label>
+																<select class="form-control tourCategoryNew0">   
+																	<option value="0">Tour Type</option>
+																</select>
+															</div>
+															<div class="col-md-4 col-xs-12 col-sm-3">
+																<label>Tour Type</label>
+																<select class="form-control tourTypeNew0">   
+																	<option value="0">Tour Type</option>
+																</select>
+															</div>
+															<div class="col-md-4 col-xs-12 col-sm-2">
+																<label>Tour Days</label>
+																<input type="text" class="form-control tourDaysNew0"/>
+															</div>
+														</div>
+														<div class="row m_top10">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label>Add Comment/Tour Description</label>
+																<textarea class="form-control tourDescNew0"></textarea>
+															</div>
+														</div>
+													</div>
+													<div id="toursNewBlockClonedId"></div>
+													<div class="panel-footer borderGreen text-right">
+														<button type="button" class="btn btn-success tourCloneMainDivNewBtn">+ ADD TOUR</button>
+													</div>
+												</div>
 											</div>
 										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add Day Wise Tours Block</button>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div style="display:none;" id="dateWiseBlockId"><!--san-->
+											
 											<div class="panel panel-default">
-												<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
-													<div class="row">
-														<div class="col-md-4 col-xs-12 col-sm-3">
-															<label>Tour category</label>
-															<select class="form-control tourCategoryNew0">   
-																<option value="0">Tour Type</option>
-															</select>
-														</div>
-														<div class="col-md-4 col-xs-12 col-sm-3">
-															<label>Tour Type</label>
-															<select class="form-control tourTypeNew0">   
-																<option value="0">Tour Type</option>
-															</select>
-														</div>
-														<div class="col-md-4 col-xs-12 col-sm-2">
-															<label>Tour Days</label>
-															<input type="text" class="form-control tourDaysNew0"/>
-														</div>
-													</div>
-													<div class="row m_top10">
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<label>Add Comment/Tour Description</label>
-															<textarea class="form-control tourDescNew0"></textarea>
-														</div>
-													</div>
-												</div>
-												<div id="toursNewBlockClonedId"></div>
+												<div id="addNewTourBlock"></div>
 												<div class="panel-footer borderGreen text-right">
-													<button type="button" class="btn btn-success tourCloneMainDivNewBtn">+ ADD TOUR</button>
+													<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>											
 												</div>
 											</div>
 										</div>
+										<div class="row" id="uploadFlDivId">
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+												<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+												<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+											</div>
+										</div>  
+										<div class="row" id="submitApplicationBtnId"> 
+											<div class="col-md-4 col-md-offset-4">
+												<span class="updateTourStatusCls"></span>
+												<button type="button" class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
+												<span id="successSpanId"></span>  
+											</div>   
+											<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
+										</div> 
 									</div>
-									<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add New Tours Block <i class="glyphicon glyphicon-plus-sign"></i></button>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10 showDivCls" >
-									<h4 class="panel-title text-capital">update tour details</h4>
-									<div class="panel panel-default">
-										<div class="panel-body borderGreen outerDivCls" attr_count="0">
-											<!-- <i class="closeIcon glyphicon glyphicon-remove"></i> -->
-											<div class="row">
-												
-												<div class="col-md-3 col-xs-12 col-sm-3">
-													<label>Tour Date</label>
-													<div class="input-group inputGCustom">
-														<input type="text" class="form-control" id="tourDateId0" name="toursVOList[0].tourDateId">
-														<span class="input-group-addon">
-															<i class="glyphicon glyphicon-calendar"></i>
-														</span>
-													</div>
-												</div>
-												<div class="col-md-3 col-xs-12 col-sm-3">
-													<label>Tour Type</label>
-													<select class="form-control" id="tourTypeId0" name="toursVOList[0].tourTypeId">   <option value="0">Tour Type</option>
-													 </select>
-												</div>
-												<div class="col-md-4 col-xs-12 col-sm-4">
-													<label>Tour Category</label>
-													<select class="form-control tourCategoryCls" id="tourCategoryId0" attr_count="0" name="toursVOList[0].tourCategoryId">    
-													   <option value="0">Tour Category</option>
-													 </select>
-												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2">
-													<label>Tour Location</label>
-													<select class="form-control tourLocationCls" id="tourLocationId0"attr_TourCount="0" name="toursVOList[0].tourLocationId">
-														<option value="0">Tour Location</option>
-													</select>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="stateDivId0" style="display:none;">
-													<label>State</label>
-													<select class="form-control" id="stateSelId0" name="toursVOList[0].stateId" attr_count="0">
-														<option value="0">Select State</option>
-													</select>
-												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="districtDivId0" style="display:none;">
-													<label>District</label>
-													<select class="form-control" id="districtSelId0" name="toursVOList[0].districtId"  attr_count="0">
-														<option value="0">Select District</option>
-													</select>
-												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="constituencyDivId0" style="display:none;">
-													<label>Constituency</label>
-													<select class="form-control constituencySelCls" id="constituencySelId0" name="toursVOList[0].constituencyId" attr_count="0">
-														<option value="0">Select Constituency</option>
-													</select>
-												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="tehMunDivId0" style="display:none;">
-													<label>Mandal / Municipality</label>
-													<select class="form-control tehMunSelCls" id="tehMunSelId0" name="toursVOList[0].localBodyId" attr_count="0">
-														<option value="0">Select Mandal / Municipality</option>
-													</select>
-												</div>
-												<div class="col-md-2 col-xs-12 col-sm-2 locationDivCls0" id="villWardDivId0" style="display:none;">
-													<label>Village / Ward</label>
-													<select class="form-control villWardSelCls" id="villWardSelId0" name="toursVOList[0].panchayatWardId" attr_count="0">
-														<option value="0">Select Village / Ward</option>
-													</select>
-												</div>
-											</div>
-											<div class="row m_top10">
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													<label>Add Comment/Tour Description</label>
-													<textarea class="form-control" id="tourtextAreaId0" name="toursVOList[0].description"></textarea>
-												</div>
-											</div>
-										</div>
-										<div id="addNewTourBlock"></div>
-										<div class="panel-footer borderGreen text-right">
-											<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>											
-										</div>
-									</div>
-									<div class="row showDivCls" id="uploadFlDivId" style="display:none;">
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-											<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
-											<span id="errFileId" style="color:red;margin-left:470px;"></span>   
-										</div>
-									</div>  
-									<div class="row showDivCls" style="display:none;"> 
-										<div class="col-md-4 col-md-offset-4">
-											<span class="updateTourStatusCls"></span>
-											<button type="button" class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
-											<span id="successSpanId"></span>  
-										</div>   
-										<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
-									</div> 
 								</div>
 							</div>
 						</div>
@@ -510,7 +445,7 @@ $("#tourMonthYear").datetimepicker({
 	format:'MM/YYYY'
 })
 
-var tourCloneMainDivCount=1;
+var tourCloneMainDivCount=0;
 	$(document).on("click",".tourCloneMainDivNewBtn",function(){
 		var e = $("#tourCloneMainDivNew").clone(true);
 		 e.attr({
@@ -556,12 +491,6 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');
-});
-$( document ).ready(function() {
-    $(".showDivClsNew,.showDivCls").hide();
-});
-$(document).on("click",".addNewBlockBtnCls",function(){
-	$(".showDivCls").show();
 });
 
 if($(window).width() > 500)
