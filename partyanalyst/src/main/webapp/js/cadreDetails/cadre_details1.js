@@ -1279,12 +1279,13 @@ function buildVolunteersDetails(result){
 
 	function getCadreAlertDetails(){
 		$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		$("#alertErrMsgId").html('');
 		var dates = $("#alertsDatePicker").val();
 		var datesArr = dates.split("-");
 		var startDate = datesArr[0];
 		var endDate = datesArr[1];
 		var searchType = $("input[name='radioBtn']:checked").val();
-		var alertType = $("#typeId").val();
+		var alertType = $("input[name='alertRadioBtn']:checked").val();
 			var jsObj=
 				{
 					tdpCadreId :globalCadreId,
@@ -1299,11 +1300,13 @@ function buildVolunteersDetails(result){
 			 url: 'getCadreAlertDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				if(result != null && result.length > 0){
+				if(result != null && result.subList1 != null && result.subList1.length > 0){
 					buildAlertDetails(result);
 				}
-				else
-					$("#alertErrMsgId").html("<span>NO DATA AVAILABLE.");
+				else{
+					$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>');
+					$("#alertErrMsgId").html("<span>NO DATA AVAILABLE.</span>");
+				}
 			});
 	}
 	//alertDetailsDiv
@@ -1311,7 +1314,6 @@ function buildVolunteersDetails(result){
 	function buildAlertDetails(result){
 		var finalReslt = result.subList1;
 		var str ='';
-		
 		str+='<table class="table table-borderd table-condensed" id="alertTableTab" style="font-size: 10px;">';
 		str+='<thead>';
 		str+='<tr>';
@@ -1431,6 +1433,7 @@ function buildVolunteersDetails(result){
 				str+='<td> - </td>';
 				str+='<td>'+finalResult[i].locationName+'</td>';
 				str+='<td> <button class="btn btn-success btn-mini btn-xs alertsDetailsCls" attr_alert_id="'+finalResult[i].id+'"> Alert Details </button></td>';
+				
 				str+='</tr>';
 			}
 			str+='</tbody>';
