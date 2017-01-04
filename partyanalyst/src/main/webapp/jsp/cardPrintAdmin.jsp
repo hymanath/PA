@@ -172,7 +172,10 @@ $(document).on("click","#validateBtnId",function(){
 			$("#detailsImgId").hide();
 			$("#overAllSummaryDivId").html('<h4 style="color:red">Exception Occured While Updating,Please Try Again</h4>');
 		}
-	});
+	}).fail(function(xhr, err){
+           $("#detailsImgId").hide(); 
+           $("#overAllSummaryDivId").html('<h4 style="color:red">Exception Occured While Updating,Please Try Again</h4>');
+      })
 });
 
 function buildConstituencyVerifiedSummary(result){
