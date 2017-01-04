@@ -39,7 +39,7 @@ public class SelfAppraisalCandidateDocument {
 	
 	private SelfAppraisalCandidate selfAppraisalCandidate;
 	private User insertedUser;
-	private User updatedUser;
+	/*private User updatedUser;*/
 	private SelfAppraisalToursMonth selfAppraisalToursMonth;
 	
 	@Id
@@ -133,7 +133,7 @@ public class SelfAppraisalCandidateDocument {
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
 	}
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+/*	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="updated_by",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -142,7 +142,7 @@ public class SelfAppraisalCandidateDocument {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
-	}
+	}*/
 	
 	
 }
