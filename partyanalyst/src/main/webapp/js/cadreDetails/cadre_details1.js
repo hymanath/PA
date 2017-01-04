@@ -1305,7 +1305,7 @@ function buildVolunteersDetails(result){
 				}
 				else{
 					$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>');
-					$("#alertErrMsgId").html("<span>NO DATA AVAILABLE.</span>");
+					$("#alertErrMsgId").html("<span>No data available.</span>");
 				}
 			});
 	}
