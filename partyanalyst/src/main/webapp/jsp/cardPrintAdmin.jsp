@@ -145,6 +145,7 @@ $(document).on("click","#validateBtnId",function(){
 	$("#teluguNamesDivId").html('');
 	$("#imageMissedDivId").html('');
 	$("#specialCharsDivId").html('');
+	$("#statusWiseSummaryDivId").html('');
 	
 	var constId = $("#constituencyId").val();
 	if(constId == 0){
