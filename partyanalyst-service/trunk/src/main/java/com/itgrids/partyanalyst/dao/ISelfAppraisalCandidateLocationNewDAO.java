@@ -12,5 +12,6 @@ public interface ISelfAppraisalCandidateLocationNewDAO extends GenericDao<SelfAp
  public List<Object[]> getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId,String type);
  public List<Object[]> getDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> designationIds);
  public Object[] getAllCandidateLocations(Long cadreId,Long categoryId);
+ public List<Object[]> getLocationValuesOfCandidate(Long candidateId,Long categoryId);
  
 }

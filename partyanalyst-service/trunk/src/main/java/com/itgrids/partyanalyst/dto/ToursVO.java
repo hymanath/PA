@@ -48,7 +48,20 @@ public class ToursVO {
 	private Long tourLocationId;
 	private String description;
 	
+	private String tourMonth;
+	private Long toursMonthId;
+	private Long detailsNewId;
+	private Long tourDays;
 	
+	
+	public String getTourMonth() {
+		return tourMonth;
+	}
+
+	public void setTourMonth(String tourMonth) {
+		this.tourMonth = tourMonth;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -286,6 +299,30 @@ public class ToursVO {
 
 	public void setToursVoListNew(List<ToursVO> toursVoListNew) {
 		this.toursVoListNew = toursVoListNew;
+	}
+
+	public Long getToursMonthId() {
+		return toursMonthId;
+	}
+
+	public void setToursMonthId(Long toursMonthId) {
+		this.toursMonthId = toursMonthId;
+	}
+
+	public Long getDetailsNewId() {
+		return detailsNewId;
+	}
+
+	public void setDetailsNewId(Long detailsNewId) {
+		this.detailsNewId = detailsNewId;
+	}
+
+	public Long getTourDays() {
+		return tourDays;
+	}
+
+	public void setTourDays(Long tourDays) {
+		this.tourDays = tourDays;
 	}
 
 	
