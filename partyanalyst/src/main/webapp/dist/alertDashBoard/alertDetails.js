@@ -373,9 +373,9 @@ function buildAlertCandidateData(result,categoryId)
 	   if(categoryId !=null && categoryId>1){
 		for(var i in result)
 		{
-			str+='<tr>'
-			str+='<li>';
-				str+='<div class="media">';
+			
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';						
 					if(result[i].image !=null && result[i].image.length>0){
 						str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
@@ -408,14 +408,14 @@ function buildAlertCandidateData(result,categoryId)
 					  
 				  str+='  </div>';
 				str+='</div>';
-		   str+=' </li>';
-	str+='</tr>';
+		   str+=' </div>';
+
 		}
 	}else{
 		for(var i in result)
 		{
-			str+='<li>';
-				str+='<div class="media">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
 				   str+=' </div>';
@@ -440,7 +440,7 @@ function buildAlertCandidateData(result,categoryId)
 					  
 				  str+='  </div>';
 				str+='</div>';
-		   str+=' </li>';
+		   str+=' </div>';
 		   
 
 		}
@@ -1037,12 +1037,6 @@ function alertComments(result)
 	var length = result.length;
 	length = length - 1;
 	var str = '';
-	if(status == 'false'){
-		$("#cadreAlertCommentsDivId").show();
-		$("#invledCandtDivId").hide();
-		
-		$("#cadreAlertCommentsDivIdNew").html(str);
-	}else{
 	str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
@@ -1137,7 +1131,7 @@ function alertComments(result)
 	}   */      
 	$("#alertCommentsDivIdNew").html(str)
 }
-}
+
 function getMonth(month){
 	if(month=="01"){
 		return "Jan"

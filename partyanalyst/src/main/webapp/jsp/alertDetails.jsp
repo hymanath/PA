@@ -188,12 +188,6 @@
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
-			
-	.list-inline {
-    list-style: outside none none;
-    margin-left: -5px;
-    padding-left: 0;
-}
 
 	</style>
  </head>     
@@ -310,33 +304,22 @@ control.makeTransliteratable(['commentsId']);
 							</table>
 						</div>
 						 <div class="row m_top10" id="invledCandtDivId">
-							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
+							<div class="col-md-12 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital">involved members in this alert
 								<span id="involvedCandidatesCnt"> - 0</span></h4>
-								<ul class="involvedMembersUl" id="alertCandidateDataId">
-									<li>
-										<div class="media">
-											<div class="media-left">
-												<img src="dist/img/thumb.jpg" alt="Profile Image" style="width:50px;"/>
-											</div>
-											<div class="media-body"></div>
-										</div>
-									</li>
-								</ul>
+								<div class="row" id="alertCandidateDataId"></div>
 							</div>  
-							<div class="col-md-8 col-xs-12 col-sm-6 " >
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
-								
 								<div id="alertCommentsDivIdNew"></div>
 								<!--<div  id="alertCommentsDiv"></div>-->
 							</div>
-						</div>
 						</div>
 						<div class="row m_top10" id="alertAssgnedCandDivId">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-6">
+										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div class="panel panel-default">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
@@ -347,7 +330,7 @@ control.makeTransliteratable(['commentsId']);
 													</h4>
 												</div>
 												<div class="panel-body">
-													<div  id="alertAssignedCandidateDataId"></div>
+													<div id="alertAssignedCandidateDataId" class="row"></div>
 												</div>
 											</div>
 										</div>
@@ -574,7 +557,8 @@ function buildAlertAssignedCandidateData(result)
 	{
 		for(var j in result[i].subList)  
 		{
-			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;height:100px;">';
 			str+='<div class="media-left">';
 			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
 			str+='</div>';
@@ -594,6 +578,7 @@ function buildAlertAssignedCandidateData(result)
 			//str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
 			str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
 			str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
+			 str+=' </div>';
 			 str+=' </div>';
 			 str+=' </div>';
 		}
