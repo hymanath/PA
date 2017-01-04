@@ -1138,12 +1138,13 @@ public class ToursService implements IToursService {
 				/*if(toursVo !=null && toursVo.getToursVoList() !=null && toursVo.getToursVoList().size()>0){
 					for (ToursVO innerTourVo : toursVo.getToursVoList()) {
 					
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						if(innerTourVo !=null){
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
 						
 						SelfAppraisalCandidateDayTour selfAppraisalCandidateDayTour = selfAppraisalCandidateDayTourDAO.get(toursVo.getTourId());
 						
 						if(selfAppraisalCandidateDayTour !=null){
-						if(innerTourVo !=null){						
+											
 							//selfAppraisalCandidateDayTour.setSelfAppraisalCandidateId(toursVo.getCandidateId());								
 							//selfAppraisalCandidateDayTour.setSelfAppraisalDesignationId(toursVo.getDesignationId());								
 							selfAppraisalCandidateDayTour.setSelfAppraisalTourCategoryId(innerTourVo.getTourCategoryId() !=null ? innerTourVo.getTourCategoryId():null);
