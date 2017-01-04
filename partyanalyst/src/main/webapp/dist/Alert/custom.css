@@ -208,18 +208,16 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	list-style:none;
 	border:1px solid #ddd;
-	margin:0px 5px;
+	margin-top:2px;
 	padding:5px;
 	position:relative;
-	display:inline-block;
-	width:32%;
 }
-.involvedMembersUl li .label
+#alertCandidateDataId .label
 {
 	border-radius:8px;
 	position:absolute;
-	right:5px;
-	top:5px;
+	right:17px;
+	top:3px;
 }
 .bg_ff
 {
