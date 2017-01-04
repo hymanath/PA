@@ -188,6 +188,12 @@
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
+			
+	.list-inline {
+    list-style: outside none none;
+    margin-left: -5px;
+    padding-left: 0;
+}
 
 	</style>
  </head>     
@@ -303,7 +309,7 @@ control.makeTransliteratable(['commentsId']);
 								</tr>
 							</table>
 						</div>
-						 <div class="row m_top10">
+						 <div class="row m_top10" id="invledCandtDivId">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital">involved members in this alert
 								<span id="involvedCandidatesCnt"> - 0</span></h4>
@@ -325,7 +331,8 @@ control.makeTransliteratable(['commentsId']);
 								<!--<div  id="alertCommentsDiv"></div>-->
 							</div>
 						</div>
-						<div class="row m_top10">
+						</div>
+						<div class="row m_top10" id="alertAssgnedCandDivId">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
@@ -387,6 +394,30 @@ control.makeTransliteratable(['commentsId']);
 			</div>
 		</div>
 	</div>
+<div class="container">
+	<div class="row m_top10">
+		<div class="col-md-12 col-xs-12 col-sm-12" id="alertcandteDivId" style="border-right:1px solid #ddd;display:none;">
+			<h4 class="panel-title text-capital">involved members in this alert
+			<span id="cadreInvolvedCandidatesCnt"> - 0</span></h4>
+			<div id="cadreAlertCandidateDataId">
+				
+			</div>
+		</div>  
+	</div>
+	<div class="cadreAlertCommentsDivId">
+		<div class="row">
+			<div class="col-md-8 col-xs-12 col-sm-6 " >
+				<h4 class="panel-title text-capital">alert status tracking comments</h4>
+				<div id="cadreAlertCommentsDivIdNew"></div>
+				<!--<div  id="alertCommentsDiv"></div>-->
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+	
 		
 <div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:85%;">
@@ -536,6 +567,9 @@ function buildAlertAssignedCandidateData(result)
 		return;
 	}
 	var str='';
+	if(status == 'false'){
+		$("#alertAssgnedCandDivId").hide();
+	}else{
 	for(var i in result)
 	{
 		for(var j in result[i].subList)  
@@ -590,6 +624,7 @@ function buildAlertAssignedCandidateData(result)
 		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
 	}*/
 	
+}
 }
 /*$(document).on("click",".assignCandidate",function(){
 	 var tdpCadreId = $(this).attr("attr_tdpCadreId");
