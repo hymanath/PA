@@ -648,11 +648,27 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				</div>
                 
 				 <div class="panel panel-default" id="" style="">
-                	<div class="panel-heading" id="alertHeaderId" style="padding:5px 15px;">
+                	<div class="panel-heading" id="alertHeaderId" style="padding:0px 15px">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h4 style="display:inline-block;" class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS  </h4>
+							<div class="col-md-7 col-xs-12 col-sm-8" style="margin-top:10px">
+								<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;ALERTS</h4>
 							</div>
+							<div class="col-md-5 col-xs-12 col-sm-4">
+								<span id="alertProfileShowId">
+									<i class="glyphicon glyphicon-chevron-up pull-right"  style="margin-top:10px;margin-left:5px"></i>
+								</span>
+								<span class="pull-right" id="alertProfileHideId" style="display:none;">
+									<i class="glyphicon glyphicon-chevron-down" style="margin-top:10px;margin-left:5px"></i>
+								</span>
+								<div style="display:inline-block" class="pull-right">
+									<div class="input-group pull-right">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+										<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
+									</div>
+								</div>
+							</div>
+									
+								
 							<!--<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
 								<label class="radio-inline"><input type="radio" name="radioBtn" value="Assigned" checked/>Assigned</label>
 								<label class="radio-inline"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
@@ -674,40 +690,41 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									</div>
 								</div>
 								<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>-->
-								<span class="pull-right" id="alertProfileShowId">
-									<i class="glyphicon glyphicon-chevron-up"></i>
-								</span>
-								<span class="pull-right" id="alertProfileHideId" style="display:none;">
-									<i class="glyphicon glyphicon-chevron-down"></i>
-								</span>
+								
 						</div>
                     </div>
                     <div class="panel-body" id="alertBodyId">
 						<div class="row">
-							<div class="col-md-4 col-xs-12 col-sm-4" style="margin-top: 10px;">
-									<label class="radio-inline"><input type="radio" name="radioBtn" value="Assigned" checked/>Assigned</label>
-									<label class="radio-inline"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								<!--  <label class="radio-inline"><input type="radio" name="alertRadioBtn" />All</label>-->
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="1" checked/>Party</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="2"/>Govt</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="3"/>Others</label>
 							</div>
-							<div class="col-md-3 col-xs-12 col-sm-3" style="padding-left:0px">
-								<label style="font-size:13px;">Alert Types :</label> 
-								<select class="" id="typeId" style="font-size:13px;">
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								<button class="btn btn-success btn-xs pull-right" style="margin-left:20px" onclick="getCadreAlertDetails();" > SUBMIT </button>
+								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
+								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" checked />Assigned</label>
+								<<!-- label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" />All</label>-->
+								<!--<label style="font-size:13px;">Alert Types :</label> 
+								<select class="form-control" id="typeId">
 									<option value="1">Party</option>
 									<option value="2">Govt</option>
 									<option value="3">Others</option>
-								</select>
+								</select>-->
 							</div>
-							<div style="display:inline-block">
-								<div class="input-group pull-right" style="">
-									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-									<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
+							
+							<!--<div class="col-md-1 col-xs-12 col-sm-1" style="padding-left:0px">
+								<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: 25px;margin-left:-10px;"> SUBMIT </button>
+							</div>-->
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="cadre-election" >
+									<div id="alertDetailsDiv"></div>
+									<!--<div id="alertsOverViewTAb"> </div>-->
+									<div id="alertErrMsgId"></div>
 								</div>
-							</div>
-							<button class="btn btn-success btn-sm" onclick="getCadreAlertDetails();" style="margin-top: -25px"> SUBMIT </button>
-							<div class="cadre-election" >
-								<div id="alertDetailsDiv"></div>
-								<!--<div id="alertsOverViewTAb"> </div>-->
-								<div id="alertErrMsgId"></div>
-								
 							</div>
 						</div>
                     </div>
@@ -1870,7 +1887,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 <!-- Alert Modal -->
 <div class="modal fade" id="alertModalDivId">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width:700px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabelId"></h4>
