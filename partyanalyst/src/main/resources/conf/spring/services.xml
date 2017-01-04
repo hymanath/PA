@@ -3914,8 +3914,8 @@
 	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO" />
 	 <property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO" />
 	 <property name="selfAppraisalCandidateDayTourDAO" ref="selfAppraisalCandidateDayTourDAO"></property>
-	 
-	 
+	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
+	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
 	</bean>
 	
 	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService">

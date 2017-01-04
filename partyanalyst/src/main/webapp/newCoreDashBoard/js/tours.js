@@ -3020,8 +3020,8 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 							str1+='<tr>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Category</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">District Name</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
+							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">District Name</th>';
+							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Type</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
 							str1+='</tr>';
@@ -3034,7 +3034,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										}else{
 											str1+='<td>'+result.subList2[i].tourCategory+'</td>';
 										}
-										if(result.subList2[i].locationName == null || result.subList2[i].locationName == ""){
+									/* 	if(result.subList2[i].locationName == null || result.subList2[i].locationName == ""){
 											str1+='<td> - </td>';
 										}else{
 											str1+='<td>'+result.subList2[i].locationName+'</td>';
@@ -3043,7 +3043,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										    str1+='<td>'+result.subList2[i].constituencyName+'</td>';	
 										}else{
 										    str1+='<td> - </td>';	
-										}
+										} */
 										if(result.subList2[i].tourType == null || result.subList2[i].tourType == ""){
 											str1+='<td> - </td>';
 										}else{
