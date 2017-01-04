@@ -16,10 +16,12 @@
 		<property name="dataSource">
 			<ref bean="dataSource"/>
 		</property>
+		
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<!--  <prop key="hibernate.format_sql">true</prop> -->
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 				<prop key="hibernate.connection.autoReconnect">true</prop>
@@ -1086,7 +1088,11 @@
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalToursMonth</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsNew</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsLocation</value>
-	                  
+	                  <value>com.itgrids.partyanalyst.model.SchemeBenefitType</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBenefitType</value>
+	                  <value>com.itgrids.partyanalyst.model.Schemephase</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemePhase</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBeneficiaryDetails</value>
 	                  
 	             </list>
 			
