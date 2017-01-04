@@ -1660,7 +1660,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 							str+='<div class="dropup">';
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Target Per month</i></p>';
+									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per month</i></p>';
 									str+='<table class="table">';
 									 var monthWiseTarget = designationWiseList[i].subList; 
 											 if(monthWiseTarget != null && monthWiseTarget.length > 0){
@@ -3019,10 +3019,12 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 						str1+='<thead class="bg_D8">';
 							str1+='<tr>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Category</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Category</th>';
 							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">District Name</th>';
 							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Type</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Type</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Days</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tocument</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
 							str1+='</tr>';
 							str1+='<tbody>';
@@ -3049,7 +3051,28 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										}else{
 											str1+='<td>'+result.subList2[i].tourType+'</td>';
 										}
-										if(result.subList2[i].comment != null && result.subList2[i].comment.length > 0){
+										if(result.subList2[i].count == null || result.subList2[i].count==0){
+											str1+='<td> - </td>';
+										}else{
+											str1+='<td>'+result.subList2[i].count+'</td>';
+										}
+									  if(result.subList2[i].filePath != null && result.subList2[i].filePath.length > 0){
+										var fullName = result.subList2[i].filePath;
+										var nameArr = fullName.split(".");
+										var type = nameArr[1];
+										if(type=="pdf" || type=="PDF"){
+											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></td>';
+										}else if(type=="xls" ||type=="xlsx"){  
+											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></td>';       
+										}else if(type=="doc" || type=="docx"){
+											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></td>';         
+										}else if(type != null){  
+											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></td>';         
+										}           
+										}else{    
+											str1+='<td> - </td>';  
+										} 
+									if(result.subList2[i].comment != null && result.subList2[i].comment.length > 0){
 											if(result.subList2[i].comment.length > 15){
 											 str1+='<td style="cursor:pointer;" title="'+result.subList2[i].comment+'">'+result.subList2[i].comment.substring(0,30)+'...</td>';	
 											}else{
