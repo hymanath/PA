@@ -312,7 +312,7 @@ function getCandidateList(designationId){
 					errStr="Please Select Tour Type";flag1=false;
 				}else if($("#tourCategoryId"+count).val() == 0 || $("#tourCategoryId"+count).val() == "undefined" || $("#tourCategoryId"+count).val() === undefined){
 					errStr="Please Select Tour Category";flag1=false;
-				}else if($("#tourLocationId"+count).val() > 0){
+				}/*else if($("#tourLocationId"+count).val() > 0){
 					var locLvl = $("#tourLocationId"+count).val();
 					if(locLvl == 2){
 						if($("#stateSelId"+count).val() == 0){
@@ -355,7 +355,7 @@ function getCandidateList(designationId){
 							errStr="Please Select Village / Ward";flag1=false;
 						}
 					}
-				}
+				}*/
 			}
 		});
 		
@@ -411,12 +411,13 @@ function getCandidateList(designationId){
 		}
 	}
 	$(document).on("click","#profileCheckboxId",function(){
+		$("#addNewTourBlock").html("");
 		if($(this).is(':checked')){
-			$(".showDivClsNew").show();
+			$("#overallDivId").show();
 			var desigDtlsId = $("#designationSlctBxId").val();
 			getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
 		}else{
-			$(".showDivClsNew").hide();
+			$("#overallDivId").hide();
 		}
 	});
 	
@@ -1420,4 +1421,18 @@ function getCandidateList(designationId){
 				$("#documentTrId"+id).remove();
 			}
 		});
+	});
+	
+	$(document).on("click",".addNewBlockBtnCls",function(){
+		$("#addNewTourBlock").html("");
+		if($("#dateWiseBlockId").is(':visible')){
+			$("#dateWiseBlockId").hide();
+			$(".addNewBlockBtnCls").text("Add Day Wise Tours Block");
+			$(".addNewBlockBtnCls").addClass("btn-success").removeClass("btn-danger");
+		}else{
+			$("#dateWiseBlockId").show();
+			$(".addAppendTourBlockCls").trigger("click");//add first block dynamically
+			$(".addNewBlockBtnCls").text("Remove Day Wise Tours Block");
+			$(".addNewBlockBtnCls").removeClass("btn-success").addClass("btn-danger");
+		}
 	});
