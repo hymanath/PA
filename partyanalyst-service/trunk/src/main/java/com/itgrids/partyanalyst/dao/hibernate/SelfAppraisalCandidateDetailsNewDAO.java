@@ -186,28 +186,32 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
  public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){
 	    StringBuilder queryStr = new StringBuilder();
 	    queryStr.append(" select " +
-	  					" model.selfAppraisalToursMonth.toursMonth," + //0
+	  					" model.selfAppraisalToursMonth.monthName," + //0
 	  					" selfAppraisalTourCategory.selfAppraisalTourCategoryId," +//1
 	  					" selfAppraisalTourCategory.tourCategory," +//2
 	  					" tourType.tourTypeId," +//3
 	  					" tourType.tourType," +//4
 	  					" model.remarks," +//5
 	  					" selfAppraisalDesignation.selfAppraisalDesignationId," +//6
-	  					" selfAppraisalDesignation.designation" +//7
+	  					" selfAppraisalDesignation.designation," +//7
+	  					" model.selfAppraisalToursMonth.year," +//8
+	  					" model.tourDays," +//9
+	  					" model.selfAppraisalToursMonth.selfAppraisalToursMonthId" +//10
 	  					" from SelfAppraisalCandidateDetailsNew model " +
 	  					" left join model.selfAppraisalTourCategory selfAppraisalTourCategory " +
 	  					" left join model.tourType tourType" +
 	  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
 	  					" where  " +
-	  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId ");
+	  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId");
 				    if(monthYearIds != null && monthYearIds.size() > 0 ){
 			            queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
-			       }
+			        }
+				    queryStr.append(" order by model.selfAppraisalToursMonth.monthNo desc ");
                    Query query = getSession().createQuery(queryStr.toString());
                    query.setParameter("selfAppraisalCandidateId", candidateId);
                    if(monthYearIds != null && monthYearIds.size() > 0 ){
-       				query.setParameterList("monthYearIds", monthYearIds);
-       		           }
+       				 query.setParameterList("monthYearIds", monthYearIds);
+       		        }
                return query.list();
 }
 }
