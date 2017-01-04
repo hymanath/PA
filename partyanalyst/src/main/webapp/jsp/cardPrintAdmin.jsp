@@ -79,13 +79,13 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
-					<h4 class="panel-title">CARDS PRINTING ADMIN DASHBOARD</h4>
+					<h4 class="panel-title">VALIDATE CONSTITUENCY CADRE DATA</h4>
 				</div>
 				<div class="panel-body">
 					<div id="errorDivId" style="color:red"></div>
 					<div class="row">
-						<div class="col-md-4 col-xs-12 col-sm-4" style="margin-left: 10px;">
-							<label>CONSTITUENCY:</label>
+						<div class="col-md-5 col-xs-12 col-sm-5" style="margin-left: 10px;">
+							<label> SELECT CONSTITUENCY: </label>
 							<select id="constituencyId" class="chosenSelect">
 								<option value="0">Select Constituency</option>
 							</select>
@@ -96,7 +96,8 @@
 					</div>
 					
 					<div id="detailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-					<div id="overAllSummaryDivId"></div>
+					<div class="m_top20" id="overAllSummaryDivId"></div>
+					<div class="m_top20" id="statusWiseSummaryDivId"></div>
 					<div style="padding: 5px;" id="teluguNamesDivId"></div>
 					<div style="padding: 5px;" id="specialCharsDivId"></div>
 					<div style="padding: 5px;" id="imageMissedDivId"></div>
@@ -185,11 +186,6 @@ function buildConstituencyVerifiedSummary(result){
 				str+='<th>Present Verified</th>';
 				str+='<th>Approved</th>';
 				str+='<th>Rejected</th>';
-				if(result.statusCountsList != null && result.statusCountsList.length > 0){
-					for(var i in result.statusCountsList){
-						str+='<th>'+result.statusCountsList[i].firstName+'</th>';
-					}
-				}
 			str+='</thead>';
 			str+='<tbody>';
 				str+='<tr>';
@@ -198,16 +194,41 @@ function buildConstituencyVerifiedSummary(result){
 					str+='<td>'+result.nowVerifiedCount+'</td>';
 					str+='<td>'+result.approvedCount+'</td>';
 					str+='<td>'+result.rejectedCount+'</td>';
-					if(result.statusCountsList != null && result.statusCountsList.length > 0){
-						for(var i in result.statusCountsList){
-							str+='<td>'+result.statusCountsList[i].totalCadreCount+'</td>';
-						}
-					}
 				str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
 	str+='</div>';
 	$("#overAllSummaryDivId").html(str);
+	
+	var str4 = '';
+	str4+='<h4 class="m_top20">STATUS WISE VERIFIED SUMMARY</h4>';
+	str4+='<div class="m_top10">';
+		str4+='<table class="table table-bordered">';
+			str4+='<thead>';
+				str4+='<th>Total Records</th>';
+				if(result.statusCountsList != null && result.statusCountsList.length > 0){
+					for(var i in result.statusCountsList){
+						if(result.statusCountsList[i].firstName == 'Verified')
+							str4+='<th> Verification Approved </th>';
+						else
+							str4+='<th>'+result.statusCountsList[i].firstName+'</th>';
+					}
+				}
+			str4+='</thead>';
+			str4+='<tbody>';
+				str4+='<tr>';
+					str4+='<td>'+result.totalCadreCount+'</td>';
+					
+					if(result.statusCountsList != null && result.statusCountsList.length > 0){
+						for(var i in result.statusCountsList){
+							str4+='<td>'+result.statusCountsList[i].totalCadreCount+'</td>';
+						}
+					}
+				str4+='</tr>';
+			str4+='</tbody>';
+		str4+='</table>';
+	str4+='</div>';
+	$("#statusWiseSummaryDivId").html(str4);
 	
 	var str1 = '';
 	str1+='<h4 class="m_top20">TELUGU NAMES MISSED MEMBERS DETAILS</h4>';
@@ -225,7 +246,7 @@ function buildConstituencyVerifiedSummary(result){
 			if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
 				for(var i in result.teluguNamesMissedList){
 					str1+='<tr>';
-						str1+='<td><img src="mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].firstName+'"/></td>';
+						str1+='<td><img src="mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].image+'"/></td>';
 						str1+='<td>'+result.teluguNamesMissedList[i].firstName+'</td>';
 						str1+='<td>'+result.teluguNamesMissedList[i].memberShipId+'</td>';
 						str1+='<td>'+result.teluguNamesMissedList[i].mobileNo+'</td>';
@@ -261,7 +282,7 @@ function buildConstituencyVerifiedSummary(result){
 			if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
 				for(var i in result.imagesMissedList){
 					str2+='<tr>';
-						str2+='<td><img src="mytdp.com/images/cadre_images/'+result.imagesMissedList[i].firstName+'"/></td>';
+						str2+='<td><img src="mytdp.com/images/cadre_images/'+result.imagesMissedList[i].image+'"/></td>';
 						str2+='<td>'+result.imagesMissedList[i].firstName+'</td>';
 						str2+='<td>'+result.imagesMissedList[i].memberShipId+'</td>';
 						str2+='<td>'+result.imagesMissedList[i].mobileNo+'</td>';
@@ -297,7 +318,7 @@ function buildConstituencyVerifiedSummary(result){
 			if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
 				for(var i in result.specialCharactersList){
 					str3+='<tr>';
-						str3+='<td><img src="mytdp.com/images/cadre_images/'+result.specialCharactersList[i].firstName+'"/></td>';
+						str3+='<td><img src="mytdp.com/images/cadre_images/'+result.specialCharactersList[i].image+'"/></td>';
 						str3+='<td>'+result.specialCharactersList[i].firstName+'</td>';
 						str3+='<td>'+result.specialCharactersList[i].memberShipId+'</td>';
 						str3+='<td>'+result.specialCharactersList[i].mobileNo+'</td>';
