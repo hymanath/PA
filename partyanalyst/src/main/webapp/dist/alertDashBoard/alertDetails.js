@@ -291,10 +291,89 @@ function buildAlertCandidateData(result,categoryId)
 		return;
 	}
 	var str='';
-	
+   if(status == 'false'){
+	$("#alertcandteDivId").show();
+	$("#invledCandtDivId").hide();
 	if(categoryId !=null && categoryId>1){
 		for(var i in result)
 		{
+			str+='<div class="row">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';						
+					if(result[i].image !=null && result[i].image.length>0){
+						str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+					}else{
+						str+=' <img src="dist/Appointment/img/thumb.jpg"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+					}					   					  
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
+					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
+						//str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
+					str+='  <p><b class="text-capital text-danger">Designation : </b>'+result[i].committeePosition+' </p>';
+					 // str+='  <p>'+result[i].mobileNo+'</p>';
+					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+					  if(result[i].impactId == 1)
+					  {
+						 str+=' <span class="label label-success">+ Ve</span>'; 
+					  }else if(result[i].impactId == 2){
+						  str+=' <span class="label label-danger">- Ve</span>';
+					  }else{
+						  str+=' <span class="label label-neutral">N</span>';
+					  }
+					  
+					  if(result[i].organization !=null){
+						  str+='<p><b class="text-capital text-danger">Organization</b> : '+result[i].organization+'</p>';
+					  }
+					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
+						  str+='<p><b class="text-capital text-danger">Membership No </b> : '+result[i].membershipNo+'</p>';
+					  }
+					  
+				  str+='  </div>';
+				str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		}
+	}else{
+		for(var i in result)
+		{
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
+					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
+						str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
+					  str+='  <p>'+result[i].mobileNo+'</p>';
+					  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+					  
+					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
+						  str+='<p><a>'+result[i].membershipNo+'</a></p>';
+					  }
+					  if(result[i].impactId == 1)
+					  {
+						 str+=' <span class="label label-success">+ Ve</span>'; 
+					  }else if(result[i].impactId == 2){
+						  str+=' <span class="label label-danger">- Ve</span>';
+					  }else{
+						  str+=' <span class="label label-neutral">N</span>';
+					  }
+					  
+				  str+='  </div>';
+				str+='</div>';
+		   str+=' </div>';
+		}
+	}
+	$("#cadreInvolvedCandidatesCnt").html('-' +result.length);	
+	$("#cadreAlertCandidateDataId").html(str);
+   }else{
+	   if(categoryId !=null && categoryId>1){
+		for(var i in result)
+		{
+			str+='<tr>'
 			str+='<li>';
 				str+='<div class="media">';
 					str+='<div class="media-left">';						
@@ -330,7 +409,7 @@ function buildAlertCandidateData(result,categoryId)
 				  str+='  </div>';
 				str+='</div>';
 		   str+=' </li>';
-
+	str+='</tr>';
 		}
 	}else{
 		for(var i in result)
@@ -362,12 +441,13 @@ function buildAlertCandidateData(result,categoryId)
 				  str+='  </div>';
 				str+='</div>';
 		   str+=' </li>';
+		   
 
 		}
 	}
-
 	$("#involvedCandidatesCnt").html('-' +result.length);	
 	$("#alertCandidateDataId").html(str);
+   }
 	if(result.length > 3)
 	{
 		$("#alertCandidateDataId").mCustomScrollbar({setHeight:'250px'});
@@ -957,6 +1037,12 @@ function alertComments(result)
 	var length = result.length;
 	length = length - 1;
 	var str = '';
+	if(status == 'false'){
+		$("#cadreAlertCommentsDivId").show();
+		$("#invledCandtDivId").hide();
+		
+		$("#cadreAlertCommentsDivIdNew").html(str);
+	}else{
 	str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
@@ -1051,7 +1137,7 @@ function alertComments(result)
 	}   */      
 	$("#alertCommentsDivIdNew").html(str)
 }
-
+}
 function getMonth(month){
 	if(month=="01"){
 		return "Jan"
