@@ -240,7 +240,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h4 class="text-capital m_top10"><span class="headingColor">TELANGANA</span></h4>';       
 			str+='</div>';
-			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
@@ -257,7 +257,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='</div>';
 			str+='</div>';
 			
-			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+			/*str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';  
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
@@ -275,7 +275,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					}      
 				str+='</div>';
 				
-			str+='</div>';
+			str+='</div>';*/
 			
 		str+='</div>';
 		
@@ -490,7 +490,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
 			str+='</div>';
-			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
@@ -509,7 +509,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				
 			str+='</div>';
 			
-			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+			/*str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_5 m_top10">';  
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
@@ -527,7 +527,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					}      
 				str+='</div>';
 				
-			str+='</div>';
+			str+='</div>';*/
 			
 		str+='</div>';
 		
