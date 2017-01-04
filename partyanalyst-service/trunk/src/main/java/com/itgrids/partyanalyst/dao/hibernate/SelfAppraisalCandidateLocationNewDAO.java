@@ -156,5 +156,21 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
     	      		 
        }
        
+       public List<Object[]> getLocationValuesOfCandidate(Long candidateId,Long categoryId){
+    	   StringBuilder str = new StringBuilder();
+    	   
+  			str.append("select distinct model.addressId,model.locationScopeId,model.locationValue " +
+  				" from SelfAppraisalCandidateLocationNew model " +
+  				" where model.selfAppraisalCandidateId = :candidateId " +
+  				" and  model.selfAppraisalTourCategoryId =:categoryId");
+  			
+  			Query query = getSession().createQuery(str.toString());
+  		
+  			query.setParameter("candidateId", candidateId);
+  			query.setParameter("categoryId", categoryId);
+  		
+  			return query.list();    	       	  
+       }
+       
       
 }
