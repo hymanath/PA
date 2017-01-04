@@ -290,6 +290,12 @@ function buildAlertCandidateData(result,categoryId)
 		$("#alertCandidateDataId").html('No Involved Members..');
 		return;
 	}
+	if(result == null || result.length == 0)
+	{
+		$("#cadreAlertCandidateDataId").html('No Involved Members..');
+		return;
+	}
+	
 	var str='';
    if(status == 'false'){
 	$("#alertcandteDivId").show();
@@ -297,9 +303,9 @@ function buildAlertCandidateData(result,categoryId)
 	if(categoryId !=null && categoryId>1){
 		for(var i in result)
 		{
-			str+='<div class="row">';
+			
 			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-				str+='<div class="media">';
+				str+='<div class="media" style="height:100px;border:1px solid #ddd">';
 					str+='<div class="media-left">';						
 					if(result[i].image !=null && result[i].image.length>0){
 						str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
@@ -333,13 +339,12 @@ function buildAlertCandidateData(result,categoryId)
 				  str+='  </div>';
 				str+='</div>';
 		str+='</div>';
-		str+='</div>';
 		}
 	}else{
 		for(var i in result)
 		{
 			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-				str+='<div class="media">';
+				str+='<div class="media" style="height:100px;border:1px solid #ddd">';
 					str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
 				   str+=' </div>';
@@ -369,6 +374,10 @@ function buildAlertCandidateData(result,categoryId)
 	}
 	$("#cadreInvolvedCandidatesCnt").html('-' +result.length);	
 	$("#cadreAlertCandidateDataId").html(str);
+	if(result.length > 3)
+	{
+		$("#cadreAlertCandidateDataId").mCustomScrollbar({setHeight:'250px'});
+	}
    }else{
 	   if(categoryId !=null && categoryId>1){
 		for(var i in result)
@@ -1037,6 +1046,102 @@ function alertComments(result)
 	var length = result.length;
 	length = length - 1;
 	var str = '';
+	if(status == 'false'){
+		$(".cadreAlertCommentsDivId").show();
+		str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom:0px;">';
+	for(var i in result)
+	{
+		statusId = result[i].statusId;
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+			if(length == i)  
+			{
+				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+			}else{
+				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
+			}
+			if(length != i){
+				str+='<h4 class="panel-title">'+result[i].status+'';
+						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';    
+				str+='</h4>';
+			}else{
+				str+='<h4 class="panel-title">'+result[i].status+'';
+					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';
+				str+='</h4>';
+			} 
+				str+='</a>';  
+			str+='</div>';
+			if(length == i)  
+			{
+				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+			}else{
+				str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+			}
+				str+='<div class="panel-body" style="padding:5px;">';
+					str+='<div class="row">';
+						for(var j in result[i].sublist2){
+							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+								var date = result[i].sublist2[j].date
+								var dateArr = date.split("-");
+								var year = dateArr[0];
+								var month = dateArr[1];
+								var day = dateArr[2];
+								str+='<table class="table tableCalendar">';
+									str+='<tr>';
+										str+='<td colspan="2">';
+											str+='<h3>'+day+'</h3>';
+										str+='</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>'+getMonth(month)+'</td>';        
+										str+='<td>'+year+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+								str+='<ul class="alertStatusTracking">';
+									str+='<li>';
+										str+='<div class="arrow_box_left">';
+										for(var k in result[i].sublist2[j].sublist)
+										{	
+											str+='<div>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+												for(var l in result[i].sublist2[j].sublist[k])
+												{
+													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+												}
+												str+='</p>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+												str+='<hr style="margin-top:20px;"/>';
+											str+='</div>';   
+										}
+										str+='</div>';    
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						}           
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	/* var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable to Resolve","6":"Action Not Required"};
+	statusId = statusId + 1;
+	for(var i = statusId ; i <= 6 ; i++){
+		str+='<div class="panel panel-default" style="cursor:no-drop;pointer-events: none;">';
+		str+='<div class="panel-heading" role="tab" id="headingThree" style="cursor:no-drop;pointer-events: none;background-color:rgba(162, 134, 192,0.4)">';
+		str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="cursor:no-drop;pointer-events: none;color:rgba(0,0,0,0.4)">';
+		str+='<h4 class="panel-title">'+statusArr[i]+'</h4>';
+		str+='</a>';     
+		str+='</div>';
+		str+='<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">';
+		str+='</div>';
+		str+='</div>';
+	}   */      
+	$("#cadreAlertCommentsDivIdNew").html(str);
+	}else{
 	str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
@@ -1130,6 +1235,7 @@ function alertComments(result)
 		str+='</div>';
 	}   */      
 	$("#alertCommentsDivIdNew").html(str)
+	}
 }
 
 function getMonth(month){
