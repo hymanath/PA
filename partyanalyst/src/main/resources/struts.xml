@@ -15265,6 +15265,16 @@
 			<param name="root">cadreValidateVO</param>
 		</result>
 	</action>
+	<action name="getLeaderDtlsInfoAction" class="cadreDetailsAction"  method="getLeaderDtlsInfo">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOsList</param>
+		</result>
+	</action>
+	<action name="getCandidateSubLocationDtlsAction" class="cadreDetailsAction"  method="getCandidateSubLocationDtls">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOs</param>
+		</result>
+	</action>
 	
 	<action name="cardPrintPostVerificationAction" class="cardPrintAction" method="cardPrintPostVerification">
 		<result name="success">/jsp/cardPrintPostVerification.jsp</result>
