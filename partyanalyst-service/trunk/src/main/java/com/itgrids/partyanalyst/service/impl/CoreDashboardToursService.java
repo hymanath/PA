@@ -2038,22 +2038,23 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		//Taking Month Wise Target For Designation 
 		 setCategroyWiseTarget(rtrnobjCtgryWseTargetLst,designationMonthTarget,"tourCategory",1);
 		 setCategroyWiseTarget(rtrnobjGovtTargetLst,designationMonthTarget,"tourType",1);  
-		 
-		  List<Object[]> rtrnCategoryWiseSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourCategory", monthyearIds);
-		  setCategoryWiseTourSubmittedLeader(rtrnCategoryWiseSubmittedLdrs,categoryWiseMap,"tourCategory");
-		  List<Object[]> rtrnGovtSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourType", monthyearIds);
-		  setCategoryWiseTourSubmittedLeader(rtrnGovtSubmittedLdrs,categoryWiseMap,"tourType");
-		  
-		  
+		 //Getting designation wise  all candidate 
 		 List<Object[]> rtrnDsgntnWseLderObjLst = selfAppraisalCandidateLocationNewDAO.getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, userTypeId,"overAll"); 
 		 setDesignationWiseLeaders(rtrnDsgntnWseLderObjLst,designationMap,categoryWiseMap);
 		 
 		 List<Object[]> rtrnDsgntnWseCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, userTypeId,"Candiate"); 
 		 setCandidateIds(rtrnDsgntnWseCandiateObjLst,candidateIdSet);
-		 
+		 //Getting designation wise  tour submitted candidate 
 		 List<Object[]> rtrnSubmittedLdrObjLst = selfAppraisalCandidateDetailsNewDAO.getToursSubmittedLeaderCntDesignationBy(monthyearIds, candidateIdSet);
 		 setTourSubmitteedLdrCnt(rtrnSubmittedLdrObjLst,designationMap);
-		
+		 
+		 //Getting category wise tour submitted leaders
+		 List<Object[]> rtrnCategoryWiseSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourCategory", monthyearIds,candidateIdSet);
+		 setCategoryWiseTourSubmittedLeader(rtrnCategoryWiseSubmittedLdrs,categoryWiseMap,"tourCategory");
+		 List<Object[]> rtrnGovtSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourType", monthyearIds,candidateIdSet);
+		 setCategoryWiseTourSubmittedLeader(rtrnGovtSubmittedLdrs,categoryWiseMap,"tourType");
+		  
+		 //Getting category wise tour Complaince days
 		 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourCategory",null,candidateIdSet);
 		 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,categoryWiseMap,"tourCategory");
 		 setCategroyWiseComplainceCandidateCnt(rtrnCategoryWiseComplainceOblLst,designationMap,"tourCategory");
@@ -2740,7 +2741,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  designationVO.setName(designationIdAndNameMap.get(entry.getKey()));  
 				  }
 				  List<ToursBasicVO> memberList = new ArrayList<ToursBasicVO>(entry.getValue().values());
-				//  Collections.sort(memberList, tourMemberComplaincePercDesc);
+				  Collections.sort(memberList, tourMemberComplaincePercDesc);
 				  designationVO.setSubList3(memberList);
 				  resultList.add(designationVO);
 			  }
@@ -2766,8 +2767,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   if(categoryList != null && categoryList.size() > 0){
 							   
 							   Double totalPer =0.0d;
+							   Long complainceDays=0l;
 							   for(ToursBasicVO VO:categoryList){
 								   totalPer = totalPer+VO.getComplaincePer(); 
+								   complainceDays = complainceDays +VO.getComplainceDays();
 							   }
 							   Integer totalCount =0;
 							   if(categoryList != null && categoryList.size() > 0){
@@ -2775,6 +2778,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							   }
 							   
 							   Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
+							   candiateEntry.getValue().setComplainceDays(complainceDays);
 							   if(percentage > 100d){
 								   candiateEntry.getValue().setComplaincePer(100d);
 							   }else{
