@@ -1376,8 +1376,8 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 								   sb.append(" , Panchayat Name Has Special Character");
 							   }
 						   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[12].toString().trim())){
-							   sb = builderExist( sb , (Long)obj[0]);
-							   sb.append(" , Ward Name Has Special Character");
+							   //sb = builderExist( sb , (Long)obj[0]);
+							   //sb.append(" , Ward Name Has Special Character");
 						   }
 					  }else{
 						  sb = builderExist( sb , (Long)obj[0]);
