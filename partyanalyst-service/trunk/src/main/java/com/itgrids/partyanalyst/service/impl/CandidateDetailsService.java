@@ -34,13 +34,15 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -58,6 +60,7 @@ import com.itgrids.partyanalyst.dao.ICustomPageDAO;
 import com.itgrids.partyanalyst.dao.ICustomPageTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
@@ -73,6 +76,7 @@ import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
@@ -87,13 +91,14 @@ import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
+import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
@@ -151,6 +156,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -215,9 +221,42 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IVoterDAO voterDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
+	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+	private IActivityMemberDAO activityMemberDAO;
 	
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
+	
+	public IActivityMemberDAO getActivityMemberDAO() {
+		return activityMemberDAO;
+	}
+
+	public void setActivityMemberDAO(IActivityMemberDAO activityMemberDAO) {
+		this.activityMemberDAO = activityMemberDAO;
+	}
+
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
+
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}
+
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
 		return delimitationConstituencyMandalDAO;
 	}
@@ -686,6 +725,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	public void setUserPartyRelationDAO(IUserPartyRelationDAO userPartyRelationDAO) {
 		this.userPartyRelationDAO = userPartyRelationDAO;
+	}
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
+
+	public IActivityMemberAccessTypeDAO getActivityMemberAccessTypeDAO() {
+		return activityMemberAccessTypeDAO;
+	}
+
+	public void setActivityMemberAccessTypeDAO(
+			IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO) {
+		this.activityMemberAccessTypeDAO = activityMemberAccessTypeDAO;
+	}
+	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
+		return tdpCadreLocationInfoDAO;
+	}
+
+	public void setTdpCadreLocationInfoDAO(
+			ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO) {
+		this.tdpCadreLocationInfoDAO = tdpCadreLocationInfoDAO;
 	}
 
 	public List<FileVO> getScopesForNewSearch()
@@ -5294,5 +5358,191 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		log.error("Exception Occured in getPartiesList(Long stateId) method, Exception - ",e);
 		return null;
 		}
+	}
+	/**
+	 * @author Swadhin K Lenka
+	 */	
+	public List<List<CadreCountsVO>> getLeaderDtlsInfo(Long cadreId){
+		try{
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			//create a map for activity member id and location values
+			Map<Long,List<Long>> memIdAndLocValueMap = new HashMap<Long,List<Long>>();
+			List<Long> locValueList = null;
+			String candidateName = "";
+			//create a map for activity member id and member level.
+			Map<Long,Long> memIdAndMemLvlIdMap = new HashMap<Long,Long>();
+			Set<Long> activityMemIdList = new HashSet<Long>();
+			/*
+			activity_member_id		activity_member_level_id	activity_location_value
+			1						3							11
+			1						3							12
+			1						3							15
+			*/
+			List<Object[]> memAndLocList = activityMemberAccessLevelDAO.getMemberIdMemberLvlAndLocationValueByTdpCadre(cadreId);
+			if(memAndLocList != null && memAndLocList.size() > 0){
+				candidateName = commonMethodsUtilService.getStringValueForObject(memAndLocList.get(0)[3]);
+				for(Object[] param : memAndLocList){
+					locValueList = memIdAndLocValueMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locValueList == null){
+						locValueList = new ArrayList<Long>();
+						memIdAndLocValueMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValueList);
+					}
+					locValueList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+					memIdAndMemLvlIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					activityMemIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			Map<Long,String> memIdAndDesigMap = new HashMap<Long,String>();
+			/*
+			 activity_member_id		user_type_id	type
+			 1						3				GENERAL SECRETARY
+			 */
+			List<Object[]> desigList = activityMemberAccessTypeDAO.getDesignation(new ArrayList<Long>(activityMemIdList));
+			if(desigList != null && desigList.size() > 0){
+				for(Object[] param : desigList){
+					memIdAndDesigMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}
+			}
+			
+			//Iterate activityMemIdList to generate final result
+			List<CadreCountsVO> cadreCountsVOs = null;
+			List<List<CadreCountsVO>> finalList = new ArrayList<List<CadreCountsVO>>();
+			Long memberLvl = 0L;
+			String designation = "";
+			List<Long> locationIds = new ArrayList<Long>();
+			if(activityMemIdList != null && activityMemIdList.size() > 0){
+				for(Long activityMemId : activityMemIdList){
+					cadreCountsVOs = new ArrayList<CadreCountsVO>();
+					locValueList = memIdAndLocValueMap.get(activityMemId);
+					memberLvl = memIdAndMemLvlIdMap.get(activityMemId);
+					designation = memIdAndDesigMap.get(activityMemId);
+					if(memberLvl.longValue() == 2L){//for state access
+						if(locValueList != null && locValueList.size() > 0){
+							for(Long locationId : locValueList){
+								//pass stateId and getDistIdList and create a list.
+								if(locationId.longValue() == 1L){
+									locationIds.addAll(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));
+								}else if(locationId.longValue() == 36L){
+									locationIds.addAll(Arrays.asList(IConstants.TS_NEW_DISTRICTS_IDS));
+								}
+							}
+							prepairResult(locationIds,3L,cadreCountsVOs,designation,candidateName,"dist");  
+						}
+					}else if(memberLvl.longValue() == 4L){//for parliament constituency access
+						if(locValueList != null && locValueList.size() > 0){
+							locationIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(locValueList);
+							prepairResult(locationIds,4L,cadreCountsVOs,designation,candidateName,"const");
+						}
+					}else{//for dist and assembly constituency access
+						if(memberLvl.longValue() == 5l){
+							prepairResult(locValueList,4L,cadreCountsVOs,designation,candidateName,"const");
+						}else{
+							prepairResult(locValueList,memberLvl,cadreCountsVOs,designation,candidateName,"dist");
+						}
+						
+					}
+					finalList.add(cadreCountsVOs);
+				}
+			}
+			
+			return finalList;
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception Occured in getLeaderDtlsInfo method, Exception - ",e);
+		}
+		return null;  
+	}
+	public void prepairResult(List<Long> locValueList,Long memberLvl,List<CadreCountsVO> cadreCountsVOs, String designation, String candidateName,String type){
+		try{
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			CadreCountsVO cadreCountsVO = null;
+			List<Object[]> list = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList,memberLvl);
+			if(list != null && list.size() > 0){
+				for(Object[] param : list){
+					cadreCountsVO = new CadreCountsVO();
+					cadreCountsVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					cadreCountsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					cadreCountsVO.setCandidataName(candidateName);
+					cadreCountsVO.setType(type);
+					cadreCountsVO.setPreviousCadreCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					cadreCountsVO.setCadreCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+					cadreCountsVO.setNewCadre(commonMethodsUtilService.getLongValueForObject(param[4]));
+					cadreCountsVO.setRenewalCadre(commonMethodsUtilService.getLongValueForObject(param[5]));
+					cadreCountsVO.setSuperlocationName(designation);//designation
+					cadreCountsVOs.add(cadreCountsVO);
+				}
+				//special case...
+				if(memberLvl.longValue() == 3L){
+					if(locValueList.contains(517L)){
+						List<Long> constIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+						List<Object[]> list2 = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(constIds,4L);
+						addOneMoreLocation(cadreCountsVOs,list2,"Visakhapatnam Rural",designation,517L);
+					}else if(locValueList.contains(518L)){
+						List<Long> constIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(518l);
+						List<Object[]> list2 = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(constIds,4L);
+						addOneMoreLocation(cadreCountsVOs,list2,"Mancherial",designation,518L);
+					}
+				}  
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception Occured in getLeaderDtlsInfo method, Exception - ",e);
+		}
+	}
+	public void addOneMoreLocation(List<CadreCountsVO> cadreCountsVOs,List<Object[]> list,String LocationName, String designation,Long locationId){
+		try{
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			if(list != null && list.size() > 0){
+				CadreCountsVO cadreCountsVO = new CadreCountsVO();
+				cadreCountsVO.setId(locationId);
+				cadreCountsVO.setName(LocationName);
+				cadreCountsVO.setSuperlocationName(designation);//designation
+				for(Object[] param : list){
+					cadreCountsVO.setPreviousCadreCount(cadreCountsVO.getPreviousCadreCount() + commonMethodsUtilService.getLongValueForObject(param[2]));
+					cadreCountsVO.setCadreCount(cadreCountsVO.getCadreCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
+					cadreCountsVO.setNewCadre(cadreCountsVO.getNewCadre() + commonMethodsUtilService.getLongValueForObject(param[4]));
+					cadreCountsVO.setRenewalCadre(cadreCountsVO.getRenewalCadre() + commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+				cadreCountsVOs.add(cadreCountsVO);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * @author Swadhin K Lenka
+	 */	
+	public List<CadreCountsVO> getCandidateSubLocationDtls(Long constituencyId){
+		try{
+			List<Long> locValueList = new ArrayList<Long>();
+			locValueList.add(constituencyId);
+			List<CadreCountsVO> cadreCountsVOs = new ArrayList<CadreCountsVO>();
+			prepairResult(locValueList,5L,cadreCountsVOs,"","","");
+			return cadreCountsVOs;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception Occured in getCandidateSubLocationDtls method, Exception - ",e);
+		}
+		return null;
+		
+	}
+	/**
+	 * @author Swadhin K Lenka
+	 */	
+	public String checkForLeader(Long cadreId){
+		try{
+			Long activityMemberId = activityMemberDAO.checkForLeader(cadreId);
+			if(activityMemberId != null){
+				return "leader";
+			}else{
+				return "nonLeader";
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception Occured in checkForLeader method, Exception - ",e);
+		}
+		return null;
 	}
 }
