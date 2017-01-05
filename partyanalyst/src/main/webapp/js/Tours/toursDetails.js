@@ -901,6 +901,13 @@ function getCandidateList(designationId){
 	});
 	function buildCandidateDetailedReport(result,name,fromDateStr,toDateStr)
 	{	$("#membersOverviewModalLabel1").html(name+" - ("+fromDateStr+" to "+toDateStr+")");
+	
+		//hidden variables For updation
+		if(result.subList2 !=null && result.subList2.length>0){
+			$("#globalUpdateHiddenDesignationId").val(result.subList2[0].designationId);
+			$("#globalUpdateHiddentdpCadreId").val(result.subList2[0].candDtlsId);
+		}
+		
 		var str='';
 		
 		if(result.subList != null && result.subList.length > 0){
@@ -1150,8 +1157,8 @@ function getCandidateList(designationId){
 	function buildNewTourRetrivalDetailsForNew(result,detailsNewId)
 	{		
 		$("#globalUpdateDayTourId").val(detailsNewId);
-		$("#globalUpdateHiddenDesignationId").val(result.designationId);
-		$("#globalUpdateHiddentdpCadreId").val(result.candDtlsId);
+		/* $("#globalUpdateHiddenDesignationId").val(result.designationId);
+		$("#globalUpdateHiddentdpCadreId").val(result.candDtlsId); */
 		
 		var str='';
 		/* var temp = result.tourDate.split(' ')[0].split("-");
@@ -1204,6 +1211,13 @@ function getCandidateList(designationId){
 			str+='<div class="col-md-3 col-xs-12 col-sm-2">';
 				str+='<label>Tour Days</label>';
 				str+='<input type="text" class="form-control" id="retrieveTourDaysId" name="toursVOListNew[0].tourDays" value='+result.count+' />';
+			str+='</div>';
+			
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				str+='<label>Add Comments/ Tour Description</label>';
+				if(result.name == null)
+					result.name = "";
+				str+='<textarea class="form-control" name="toursVOListNew[0].description">'+result.name+'</textarea>';
 			str+='</div>';
 			
 
