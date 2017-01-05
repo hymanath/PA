@@ -1374,13 +1374,13 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 		 
 		 List<Object[]> partyMeetingDetails = partyMeetingInviteeDAO.getInvitedPartyMeetingdtlsForPartyMeetingTypeIds(inputVO);
 		 Set<Long> partyMeetingIdsLsit = new HashSet<Long>(0);
-		 Map<Long,Set<Long>> partyMeetingInviteesMap = new HashMap<Long, Set<Long>>(0);
+		 Map<Long,List<Long>> partyMeetingInviteesMap = new HashMap<Long, List<Long>>(0);
 		 Map<Long,Set<PartyMeetingsDataVO>> partyMeetingTypesMap = new HashMap<Long, Set<PartyMeetingsDataVO>>(0);
 		 if(commonMethodsUtilService.isListOrSetValid(partyMeetingDetails)){
 			 for (Object[] param : partyMeetingDetails){
 				 Long partyMeetingId =commonMethodsUtilService.getLongValueForObject(param[1]);
 				 partyMeetingIdsLsit.add(partyMeetingId);
-				 partyMeetingInviteesMap.put(partyMeetingId,  new HashSet<Long>(0));
+				 partyMeetingInviteesMap.put(partyMeetingId,  new ArrayList<Long>(0));
 				 
 				 Set<PartyMeetingsDataVO> partyMeetingIdLsit = new HashSet<PartyMeetingsDataVO>(0);
 				 if(partyMeetingTypesMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
@@ -1411,7 +1411,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			 for (Object[] param : inviteesForPartyMeetingsDetls) {
 				 Long partyMeetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				 Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(param[1]);
-				 Set<Long> tdpCadreList = new HashSet<Long>(0);
+				 List<Long> tdpCadreList = new ArrayList<Long>(0);
 				 if(partyMeetingInviteesMap.get(partyMeetingId) != null){
 					 tdpCadreList = partyMeetingInviteesMap.get(partyMeetingId);
 				 }
@@ -1624,7 +1624,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							sessionVO.setLateTime(commonMethodsUtilService.getStringValueForObject(param[9]));
 						}
 						
-						Set<Long> inviteesIdsList = partyMeetingInviteesMap.get(partyMetingMainVO.getId());
+						List<Long> inviteesIdsList = partyMeetingInviteesMap.get(partyMetingMainVO.getId());
 						if(commonMethodsUtilService.isListOrSetValid(inviteesIdsList)){
 							totalInviteesCount = Long.valueOf(String.valueOf(inviteesIdsList.size()));
 						}
@@ -3954,7 +3954,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						idNameVO.setAttendedTimeList(attendedTimeList);
 						idNameVO.setAttendedDateList(attendedDateList);
 						idNameVO.setSessionLevel(sessionListStr);
-						
+												
 						
 					}
 				}
