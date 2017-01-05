@@ -15265,5 +15265,24 @@
 			<param name="root">cadreValidateVO</param>
 		</result>
 	</action>
+	
+	<action name="cardPrintPostVerificationAction" class="cardPrintAction" method="cardPrintPostVerification">
+		<result name="success">/jsp/cardPrintPostVerification.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+	</action>
+	
+	<action name="getPrintPushedConstituenciesAction" class="cardPrintAction"  method="getPrintPushedConstituencies">
+			<result type="json" name="success">
+			<param name="root">smallVOList</param>
+		</result>
+	</action>
+	
+	<action name="cadrePrintDataPostVerificationAction" class="cardPrintAction"  method="cadrePrintDataPostVerification">
+			<result type="json" name="success">
+			<param name="root">errorsList</param>
+		</result>
+	</action>
+	
  </package>
 </struts>
