@@ -39,8 +39,15 @@ public class AlertVO {
 	private String title;
 	private String date1;
 	private String date2;
+	private Long noOfDays = 0l;
 	
 	
+	public Long getNoOfDays() {
+		return noOfDays;
+	}
+	public void setNoOfDays(Long noOfDays) {
+		this.noOfDays = noOfDays;
+	}
 	public String getDate1() {
 		return date1;
 	}
