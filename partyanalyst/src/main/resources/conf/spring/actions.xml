@@ -1600,6 +1600,7 @@
 			<property name="trainingCampService" ref="trainingCampService" />
 			<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />		
 			<property name="alertService" ref="alertService" />		
+			<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
