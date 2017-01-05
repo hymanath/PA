@@ -4724,15 +4724,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						str+='<th>Invitation Status</th>';  
 						str+='<th>All Sessions</th>';
 						
-						if(partyMeetingId==445221)
-							str+='<th>Evening Session</th>';
-						else if(partyMeetingId==445222)
-							str+='<th>Morning Session</th>';
-						else{
-							str+='<th>Morning Session</th>';
-							str+='<th>Afternoon Session</th>';
-						}
-						
+						for(var k in result[0].sessionLevel){      
+							str+='<th>'+result[0].sessionLevel[k]+'</th>';
+						}        
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -4919,8 +4913,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						str+='<th>Contact Number</th>';
 						str+='<th>Invitation Status</th>';  
 						str+='<th>All Sessions</th>';
-						str+='<th>Morning Session</th>';
-						str+='<th>Afternoon Session</th>';
+						for(var k in result[0].sessionLevel){      
+							str+='<th>'+result[0].sessionLevel[k]+'</th>';
+						}
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
