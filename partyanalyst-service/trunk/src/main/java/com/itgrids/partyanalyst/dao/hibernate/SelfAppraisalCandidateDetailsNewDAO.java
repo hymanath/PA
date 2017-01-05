@@ -18,7 +18,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		super(SelfAppraisalCandidateDetailsNew.class);
 	}
 	
-	 public List<Object[]> getCategoryWiseTourSubmittedLeader(Date fromDate,Date toDate,String type,List<Long> monthYearIds){
+	 public List<Object[]> getCategoryWiseTourSubmittedLeader(Date fromDate,Date toDate,String type,List<Long> monthYearIds,Set<Long> candiateIds){
 		 
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select " +
@@ -36,9 +36,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
                 queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
            }
-		/*   if(type.equalsIgnoreCase("Govt")){
-			   queryStr.append(" and model.tourTypeId = 2 ");
-		   }*/
+		   if(candiateIds != null && candiateIds.size() > 0){
+				  queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)"); 
+			}
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
 	      if(type.equalsIgnoreCase("tourType")){
 			 queryStr.append(",model.tourTypeId");
@@ -50,6 +50,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		  	if(monthYearIds != null && monthYearIds.size() > 0 ){
 			  query.setParameterList("monthYearIds", monthYearIds);
 		    }
+		  if(candiateIds != null && candiateIds.size() > 0){
+			 query.setParameterList("candiateIds", candiateIds);
+		  }
 		  return query.list();
  }
 	  public List<Object[]> getToursSubmittedLeaderCntDesignationBy(List<Long> monthYearIds,Set<Long> candiateIds){
@@ -152,6 +155,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
           }
 		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		   				   " SACL.selfAppraisalCandidate.selfAppraisalCandidateId");   
+		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
 		   if(locationValueSet != null && locationValueSet.size() > 0){

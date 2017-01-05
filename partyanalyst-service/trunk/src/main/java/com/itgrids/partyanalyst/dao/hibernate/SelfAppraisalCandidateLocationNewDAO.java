@@ -54,6 +54,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		     	  if(type.equalsIgnoreCase("Candiate")){
 		     		  queryStr.append(",model.selfAppraisalCandidate.selfAppraisalCandidateId");
 		     	  }
+		     	  queryStr.append(" order by model.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		     	  Query query = getSession().createQuery(queryStr.toString());
 		     		
 		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
@@ -109,7 +110,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
 		   				  " SACL.locationScopeId");   
+		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		   Query query = getSession().createQuery(queryStr.toString());	
+		   
 		   
 		   if(locationValueSet != null && locationValueSet.size() > 0){
 			   query.setParameterList("userAccessLevelValues", locationValueSet);
