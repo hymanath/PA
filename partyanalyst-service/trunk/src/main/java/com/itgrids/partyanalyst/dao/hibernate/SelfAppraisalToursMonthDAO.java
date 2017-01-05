@@ -21,20 +21,24 @@ public class SelfAppraisalToursMonthDAO extends GenericDaoHibernate<SelfAppraisa
 	
 	public List<String> getMonthAndYear(Date fromDate,Date toDate){
 		 StringBuilder queryStr = new StringBuilder();
-		 queryStr.append(" select CONCAT(Month(aDate),'-',YEAR(aDate)) as monthYear from ( " +
-				 "  select @maxDate - interval (a.a + (10 * b.a) + (100 * c.a)) month as aDate from"+
-				 " (select 0 as a union all select 1 union all select 2 union all select 3"+
-				 " union all select 4 union all select 5 union all select 6 union all"+
-				 " select 7 union all select 8 union all select 9) a,"+
-				 " (select 0 as a union all select 1 union all select 2 union all select 3"+
-				 " union all select 4 union all select 5 union all select 6 union all"+
-				 " select 7 union all select 8 union all select 9) b,"+
-				 " (select 0 as a union all select 1 union all select 2 union all select 3"+
-				 " union all select 4 union all select 5 union all select 6 union all"+
-				 " select 7 union all select 8 union all select 9) c,"+
-				 " (select @minDate /*'*/:=/*'*/ :fromDate, @maxDate /*'*/:=/*'*/ :toDate) d) e"+
-				 " where aDate between @minDate and @maxDate"+
-				 " ORDER BY YEAR(aDate),Month(aDate);");
+		 
+		 queryStr.append(" select CONCAT(DATE_FORMAT(m1, '%m'),'-',year(m1)) as monthYear " +
+							"	from ( " +
+								"	select " +
+								"	(:fromDate - INTERVAL DAYOFMONTH(:fromDate)-1 DAY)  " +
+								"		+INTERVAL m MONTH as m1 " +
+								"	from ( " +
+									"	select @rownum /*'*/:=/*'*/ @rownum+1 as m from " +
+									"	(select 1 union select 2 union select 3 union select 4) t1, " +
+									" 	(select 1 union select 2 union select 3 union select 4) t2, " +
+									" 	(select 1 union select 2 union select 3 union select 4) t3,  " +
+									" 	(select 1 union select 2 union select 3 union select 4) t4, " +
+									" 	(select @rownum /*'*/:=/*'*/ -1) t0  " +
+									"  	) d1 " +
+								" ) d2 " +
+								"  where m1<=:toDate " +
+								" order by m1");
+		 
 		   Session session = getSession();
 	       SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
 	       sqlQuery.addScalar("monthYear",Hibernate.STRING);
