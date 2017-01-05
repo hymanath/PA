@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
@@ -207,7 +208,6 @@ public interface ICandidateDetailsService {
 	 
 	 public PdfGenerationVO generatePdfForAGallary(PdfGenerationVO pdfGenerationVO);
 	 
-	 
 	 public List<SelectOptionVO> getCandidateGallariesByCategory(Long categoryId , Long registrationId);
 	 
 	 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId,String selectedType);
@@ -215,5 +215,12 @@ public interface ICandidateDetailsService {
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
 	 
 	 public List<SelectOptionVO> getPartiesList();
+	 
 	 public List<SelectOptionVO> getPartiesListByStateId(Long stateId);
+	 
+	 public List<List<CadreCountsVO>> getLeaderDtlsInfo(Long cadreId);
+	 
+	 public List<CadreCountsVO> getCandidateSubLocationDtls(Long constituencyId);
+	 
+	 public String checkForLeader(Long cadreId);
 }
