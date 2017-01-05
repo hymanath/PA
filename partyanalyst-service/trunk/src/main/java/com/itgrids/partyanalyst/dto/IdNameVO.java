@@ -69,6 +69,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long postionId;
 	private String positionName;
 	private List<String> sessionList;
+	private List<String> sessionLevel;
 	
 	private String isInvitee;
 	private List<String> attendedTimeList;
@@ -547,4 +548,13 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setAttendedDateList(List<String> attendedDateList) {
 		this.attendedDateList = attendedDateList;
 	}
+
+	public List<String> getSessionLevel() {
+		return sessionLevel;
+	}
+
+	public void setSessionLevel(List<String> sessionLevel) {
+		this.sessionLevel = sessionLevel;
+	}
+	
 }
