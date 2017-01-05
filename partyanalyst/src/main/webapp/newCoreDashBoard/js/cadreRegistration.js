@@ -256,11 +256,11 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					str+='<div id="totalOverAllRegistrationGraphTS" class="chartLiD" style="height:120px" ></div>'; 
 					if(emptyCheck(result.todayRenewalCount) != ' - ')
 					{
-						str+='<h5 class="text-capital">Today Renewal '+emptyCheck(result.todayRenewalCount)+'</h5>';
+						str+='<h5 class="text-capital">Today Renewal : <span class="text-success">'+emptyCheck(result.todayRenewalCount)+'</span></h5>';
 					}
 					if(emptyCheck(result.todayNewCount) != ' - ')
 					{
-						str+='<h5 class="text-capital">Today New '+emptyCheck(result.todayNewCount)+'</h5>';
+						str+='<h5 class="text-capital">Today New : <span style="color:#F7A423">'+emptyCheck(result.todayNewCount)+'</span></h5>';
 					}
 				str+='</div>';
 			str+='</div>';
@@ -515,11 +515,11 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>'; 
 					if(emptyCheck(result.todayRenewalCount) != ' - ')
 					{
-						str+='<h5 class="text-capital">Today Renewal '+emptyCheck(result.todayRenewalCount)+'</h5>';
+						str+='<h5 class="text-capital">Today Renewal : <span class="text-success">'+emptyCheck(result.todayRenewalCount)+'</span></h5>';
 					}
 					if(emptyCheck(result.todayNewCount) != ' - ')
 					{
-						str+='<h5 class="text-capital">Today New '+emptyCheck(result.todayNewCount)+'</h5>';
+						str+='<h5 class="text-capital">Today New : <span style="color:#F7A423">'+emptyCheck(result.todayNewCount)+'</span></h5>';
 					}
 				str+='</div>';
 				
