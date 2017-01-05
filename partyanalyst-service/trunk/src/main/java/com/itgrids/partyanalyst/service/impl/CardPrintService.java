@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SmallVO;
 import com.itgrids.partyanalyst.model.CardPrintVendor;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -1241,4 +1242,173 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		}
 		return finalList;
 	}
+	
+	
+	public List<SmallVO> getPrintPushedConstituencies(){
+		List<SmallVO> smallVOList = new ArrayList<SmallVO>();
+		try{
+			
+			List<Object[]> data = tdpCadreCardPrintDAO.getPrintPushedConstituencies();
+			if(data != null && data.size() > 0){
+				for(Object[] obj : data){
+					if(obj[0] != null){
+						smallVOList.add( new SmallVO((Long)obj[0] , obj[1]!=null?obj[1].toString() :""));
+					}
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Occured into getPrintPushedConstituencies() of CardPrintService class", e);
+		}
+		return smallVOList;
+	}
+	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Constituency Wise post verification of cadre Data for printing.
+	  *  @since 05-JANUUARY-2017
+	  */
+	public List<String> postVerificationCadreData(Long constituencyId){
+		
+		List<String> finalList = new ArrayList<String>();
+		try{
+			   List<Object[]> dataList = tdpCadreCardPrintDAO.postVerificationCadreData(constituencyId);
+			   
+			   if(dataList != null && dataList.size() >0){
+				   
+				   for(Object[] obj : dataList){
+					   
+					   StringBuilder sb = null;
+					   
+					   
+					   //validate tdpCadreId
+					   if(obj[1] == null){
+						   sb = builderExist( sb , (Long)obj[0]);  
+						   sb.append(" , TdpCadreId Not Exist");
+					   }
+					   
+					   //validate MemberShipId
+					   if(obj[2] == null){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb = sb.append(" , MemberShipId Not Exist");
+					   }else if(obj[2].toString().trim().length() !=8){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , MemberShipId DoesNot Have 8 Chars");
+					   }
+					   
+					   //validate CadreName
+					   if(obj[3] == null || obj[3].toString().isEmpty()){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , CadreName Not Exist");
+					   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[3].toString().trim())){
+						       sb = builderExist( sb , (Long)obj[0]);
+							   sb.append(" , CadreName Has Special Character");
+					   }
+					   
+					   
+					   //validate image
+					   if(obj[4] == null || obj[4].toString().isEmpty()){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , Image is empty ");
+					   }else{
+						   File cadreFile = new File("/mnt/tdp-img/cadre_images/2014/"+obj[4].toString().trim());//OBJ CREATION...
+						   if(!cadreFile.exists()){
+							   sb = builderExist( sb , (Long)obj[0]);
+							   sb.append(" , Image Does Not Exist ");
+						   }
+					   }
+					   
+					   //Validate MobileNo
+					   if(obj[5] == null || obj[5].toString().isEmpty()){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" ,  MobileNo DoesNot Exist ");
+					   }else if(obj[5].toString().trim().length() !=10){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , MobileNo DoesNot Have 10 Digits");
+					   }
+					   
+					 //Validate locationType
+					  if(obj[6] == null || obj[6].toString().isEmpty()){
+						  sb = builderExist( sb , (Long)obj[0]);
+						  sb.append(" ,  LocatiopnType Not Exists ");
+					  }
+					  
+					 //Validate districtName
+					  if(obj[7] == null || obj[7].toString().isEmpty()){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , DistrictName Not Exists ");
+					   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[7].toString().trim())){
+						       sb =  builderExist( sb , (Long)obj[0]);
+							   sb.append(" , DistrictName Has Special Character");
+					   }
+					  
+					//Validate ConstituencyName
+					  if(obj[8] == null || obj[8].toString().isEmpty()){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , ConstituencyName Not Exists ");
+					  }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[8].toString().trim())){
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , ConstituencyName Has Special Character");
+					  }
+					  
+					  //validate Mandal / Muncpality Name.
+					  if( (obj[9] != null && !obj[9].toString().isEmpty()) || (obj[10] != null && !obj[10].toString().isEmpty()) ){
+						  
+						   if(obj[9] != null && !obj[9].toString().isEmpty()){
+							   if(commonMethodsUtilService.isNameHaveSpecialChars(obj[9].toString().trim())){
+								   sb = builderExist( sb , (Long)obj[0]);
+								   sb.append(" , Mandal Name Has Special Character");
+							   }
+						   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[10].toString().trim())){
+							   sb = builderExist( sb , (Long)obj[0]);
+							   sb.append(" , Muncipality Name Has Special Character");
+						   }
+					  }else{
+						   sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , Mandal/Muncipality Name Not Exists");
+					  }
+					  
+					//validate Panchayat / Ward Name
+					  if( (obj[11] != null && !obj[11].toString().isEmpty()) || (obj[12] != null && !obj[12].toString().isEmpty()) ){
+						  
+						   if(obj[11] != null && !obj[11].toString().isEmpty()){
+							   if(commonMethodsUtilService.isNameHaveSpecialChars(obj[11].toString().trim())){
+								   sb = builderExist( sb , (Long)obj[0]);
+								   sb.append(" , Panchayat Name Has Special Character");
+							   }
+						   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[12].toString().trim())){
+							   sb = builderExist( sb , (Long)obj[0]);
+							   sb.append(" , Ward Name Has Special Character");
+						   }
+					  }else{
+						  sb = builderExist( sb , (Long)obj[0]);
+						   sb.append(" , Panchayat/Ward Name Not Exists");
+					  }
+					  
+					//validate Panchayat / Ward Name
+					  if(obj[13] == null || obj[13].toString().isEmpty()){
+						  sb = builderExist( sb , (Long)obj[0]);
+						  sb.append(" ,  ConstituencyType Not Exists ");
+					  }
+					  
+					  if(sb != null){
+						  finalList.add(sb.toString());
+					  }
+				   }
+			   }
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured into postVerificationCadreData() of CardPrintService class", e);
+		}
+		return finalList;
+	}
+	
+	public StringBuilder builderExist(StringBuilder sb , Long tdpCadreCardPrintId){
+		 if(sb==null){
+			 sb = new StringBuilder();
+			 sb.append("Id - " +tdpCadreCardPrintId);
+		 }
+		 return sb;
+	}
+	
+	
 }
