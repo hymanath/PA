@@ -431,7 +431,12 @@ var globalidentityMembershipNo = ""	;
 					else 
 					 $("#positionId").html('N/A');
 					 $("#representativeId").html(result.representativeType);
-					 $("#volunteerId").html(result.volunteerCount);
+					 
+					 var x = parseInt(result.volunteerCount);
+					 if(x>0)
+						$("#volunteerId").html(result.volunteerCount);
+					else
+						$("#volunteerNullId").hide();
 					 //console.log(result.volunteerCount);
 					 $("#mobileNoId").html(result.mobileNo);
 					 $("#memberShipNoId").html(result.membershipNo);
@@ -8051,7 +8056,7 @@ function nominatedPostBuilingDetails(result){
 							str+='<p class="labelStatus " style="background:green;width:90px;"> '+result.subList[i].status+' </p>';
 							/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
 							if(result.subList[i].levelName != null){
-								str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+								str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'<br>↓<br/>  Dept-'+ result.subList[i].cadreName+"<br>↓<br/>  Board- "+result.subList[i].subCaste+" <br>↓<br/>  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 							}
 							else{
 								str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
