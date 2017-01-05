@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.SmallVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,7 +27,8 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private HttpSession	session;
 	private JSONObject jObj;
 	private String task;
-	
+	private List<SmallVO> smallVOList;
+	private List<String> errorsList;
 	
 	//Attributes
 	private ICardPrintService cardPrintService;
@@ -99,8 +101,19 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	public void setCadreValidateVO(CadreValidateVO cadreValidateVO) {
 		this.cadreValidateVO = cadreValidateVO;
 	}
+	public List<SmallVO> getSmallVOList() {
+		return smallVOList;
+	}
+	public void setSmallVOList(List<SmallVO> smallVOList) {
+		this.smallVOList = smallVOList;
+	}
 	
-	
+	public List<String> getErrorsList() {
+		return errorsList;
+	}
+	public void setErrorsList(List<String> errorsList) {
+		this.errorsList = errorsList;
+	}
 	public String execute(){
 		try{
 			//jObj = new JSONObject(getTask());
@@ -243,4 +256,29 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	////
+	public String cardPrintPostVerification(){
+		return Action.SUCCESS;
+	}
+	
+	public String getPrintPushedConstituencies(){
+		
+		try{
+			 smallVOList = cardPrintService.getPrintPushedConstituencies();
+		}catch(Exception e){
+			LOG.error("Exception raised in getPrintPushedConstituencies() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String cadrePrintDataPostVerification(){
+		try{
+			errorsList = cardPrintService.postVerificationCadreData(new JSONObject(getTask()).getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception raised in cadrePrintDataPostVerificationAction() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
