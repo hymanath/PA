@@ -3820,6 +3820,11 @@ function manageHeader(){
 	}
 }
 manageHeader();
+
+function refreshMeeting(){
+	getSpecialMeetingsByMeetingType();
+}
+
 </script> 
 </body>
 </html>

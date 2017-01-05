@@ -700,19 +700,21 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								
 						</div>
                     </div>
+					
                     <div class="panel-body" id="alertBodyId">
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<!--  <label class="radio-inline"><input type="radio" name="alertRadioBtn" />All</label>-->
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="1" checked/>Party</label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="2"/>Govt</label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="3"/>Others</label>
+								<label class=""> Alert Type : </label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="0" class="alerttsCls" checked/>All</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="1" class="alerttsCls" />Party</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="2" class="alerttsCls" />Govt</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="3" class="alerttsCls" />Others</label>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<button class="btn btn-success btn-xs pull-right" style="margin-left:20px" onclick="getCadreAlertDetails();" > SUBMIT </button>
 								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
-								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" checked />Assigned</label>
-								<<!-- label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" />All</label>-->
+								<label class="radio-inline pull-right" style="margin-right: 31px;"><input type="radio" name="radioBtn" value="Assigned" checked />Assigned</label>
+								<!-- label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" />All</label>-->
 								<!--<label style="font-size:13px;">Alert Types :</label> 
 								<select class="form-control" id="typeId">
 									<option value="1">Party</option>
