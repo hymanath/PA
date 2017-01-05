@@ -201,8 +201,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	  					" left join model.selfAppraisalTourCategory selfAppraisalTourCategory " +
 	  					" left join model.tourType tourType" +
 	  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
-	  					" where  " +
-	  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId");
+	  					" where model.isDeleted='N' " +
+	  					" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");
 				    if(monthYearIds != null && monthYearIds.size() > 0 ){
 			            queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 			        }
@@ -419,8 +419,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		  					" left join model.selfAppraisalTourCategory selfAppraisalTourCategory " +
 		  					" left join model.tourType tourType" +
 		  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
-		  					" where  " +
-		  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId ");
+		  					" where model.isDeleted='N' " +
+		  					" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId ");
 					     /* if(fromDate != null && toDate != null ){
 				               queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
 				          }*/
