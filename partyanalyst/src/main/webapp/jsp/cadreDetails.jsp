@@ -36,6 +36,11 @@
 
 <style type="text/css">
 
+.ulPost li
+{
+	border:1px solid green;
+	padding:0px 5px 5px 5px;
+}
 .ulPost li .labelStatus 
 {
 	color:#fff;
@@ -340,7 +345,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
 						<p class="m_0" id="nominatedDivId" style="display:none;">Nominated Post : &nbsp;&nbsp;<span id="appliedCountId" style="cursor:pointer;" onclick="getMoreApplicationDetails()"></span><span id="nominatedPstStatusId"></span></p>
+						<div id="volunteerNullId">
 						<p class="m_0">Volunteers Count : <a class="pointer"><span id="volunteerId"></span></a></p>
+						</div>
 						<p class="m_0" id="debateMainDivId" style="display:none" >TV DEBATOR : DEBATES (<a class="pointer"><span id="debateCountId"></span></a>)</p>
 					</div>
 				</div>
@@ -2276,18 +2283,7 @@ if(isVisible==false){
 	$("#identityBodyId").collapse('toggle');
 });
 
-$("#addressBodyId").collapse('hide');
-$(document).on("click","#addressHeaderId",function(){ 
-var isVisible = $( "#addressHideId" ).is( ":visible" );
-if(isVisible==false){
-		 $( "#addressHideId" ).show();
-		 $( "#addressShowId" ).hide();
-	}else{
-		$( "#addressHideId" ).hide();
-		$( "#addressShowId" ).show();
-	}
-	$("#addressBodyId").collapse('toggle');
-});
+
 $("#committeeMetingsBodyId").collapse('hide');
 $(document).on("click","#committeeMetingsHeaderId",function(){ 
 var isVisible = $( "#committeeMetingsHideId" ).is( ":visible" );
