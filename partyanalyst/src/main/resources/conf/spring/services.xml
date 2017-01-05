@@ -1797,9 +1797,9 @@
 		    <ref bean="pushGenderWiseTdpCadreCounts"/> 
 		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
 		    <ref bean="pushAgeWiseTdpCadreCounts"/> 
-		    <ref bean="pushAgeWiseTdpCadreCountsByLowLevel"/> 
+		   <!--  <ref bean="pushAgeWiseTdpCadreCountsByLowLevel"/> 
 		    <ref bean="pushGenderWiseTdpCadreCountsByLowLevel"/>
-		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/>
+		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/> -->
         </list>
     	</property>
 	</bean>
