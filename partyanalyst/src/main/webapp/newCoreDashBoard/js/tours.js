@@ -1408,13 +1408,13 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		},
 		ranges: {
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+		  // 'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
 	function getDay(){
@@ -1741,9 +1741,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 													}else{
 													str+='<td style="border-top:none !important"> - </td>';	
 													}
-													str+='<td class="bg_D8">'+categoryList[j].submitedLeaderCnt+'</td>';
-													str+='<td class="bg_D8">'+categoryList[j].complainceCnt+'</td>';
-													str+='<td class="bg_D8">'+categoryList[j].nonComplainceCnt+'</td>';
+													str+='<td class="bg_D8 text-center">'+categoryList[j].submitedLeaderCnt+'</td>';
+													str+='<td class="bg_D8 text-center">'+categoryList[j].complainceCnt+'</td>';
+													str+='<td class="bg_D8 text-center">'+categoryList[j].nonComplainceCnt+'</td>';
 												   str+='</tr>'; 
 												 }
 											 }
@@ -2086,6 +2086,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var filterType = $(this).attr("attr_result_type");
 		var isFilterApply = "Yes";
 		var desgnatnIdsLst = designationStr.split(",");
+		 $(".toursSessionDropDownCls").hide();	
 		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,divId);
 	});
 	
@@ -2192,7 +2193,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			   complainceValue = mainSliderValue;  
 		  }
 		  getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId);
-		  $(".toursSessionDropDownCls").hide();		
+		  $(".toursSessionDropDownCls").hide();	
     });
 	
 	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId){
@@ -2411,16 +2412,16 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										for(var j in result[i].subList3){
 											str+='<tr>';
 												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
-												str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+												str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 												   for(var k in result[i].subList3[j].subList3){
 													   
-														str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+														str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
 													}												
 											for(var k in result[i].subList3[j].subList3){
 												
-												str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
-												str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+												str+='<td class="text-center">'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+												str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
 												
 												
 											}
@@ -2517,16 +2518,16 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 												for(var j in result[i].subList3){
 													str+='<tr>';
 														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
-														str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+														str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 														   for(var k in result[i].subList3[j].subList3){
 															   
-																str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+																str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
 															}												
 													for(var k in result[i].subList3[j].subList3){
 														
-														str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
-														str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+														str+='<td class="text-center">'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+														str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
 														
 														
 													}
@@ -2720,16 +2721,16 @@ function buildTourMemberDetails(result){
                     for(var j in result[i].subList3){
                       str+='<tr>';
                         str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';//santosh
-                        str+='<td>'+result[i].subList3[j].complaincePer+'%</td>';
+                        str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 							for(var k in result[i].subList3[j].subList3){
                              
-                            str+='<td>'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
+                            str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complaincePer+'%</td>';
                           }                        
                       for(var k in result[i].subList3[j].subList3){
                         
-                        str+='<td>'+result[i].subList3[j].subList3[k].targetDays+'</td>';
-                        str+='<td>'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
+                        str+='<td class="text-center">'+result[i].subList3[j].subList3[k].targetDays+'</td>';
+                        str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complainceDays+'</td>';
                         
                         
                       }
@@ -3024,7 +3025,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Type</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Days</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tocument</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Document</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
 							str1+='</tr>';
 							str1+='<tbody>';
@@ -3054,7 +3055,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										if(result.subList2[i].count == null || result.subList2[i].count==0){
 											str1+='<td> - </td>';
 										}else{
-											str1+='<td>'+result.subList2[i].count+'</td>';
+											str1+='<td class="text-center">'+result.subList2[i].count+'</td>';
 										}
 									  if(result.subList2[i].filePath != null && result.subList2[i].filePath.length > 0){
 										var fullName = result.subList2[i].filePath;
@@ -3063,11 +3064,11 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										if(type=="pdf" || type=="PDF"){
 											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></td>';
 										}else if(type=="xls" ||type=="xlsx"){  
-											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></td>';       
+											str1+='<td id="showTourPdfId"  attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></td>';       
 										}else if(type=="doc" || type=="docx"){
-											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></td>';         
+											str1+='<td id="showTourPdfId"  attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></td>';         
 										}else if(type != null){  
-											str1+='<td id="showTourPdfId" attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></td>';         
+											str1+='<td id="showTourPdfId"  attr_filePath="'+result.subList2[i].filePath+'" style="cursor:pointer;"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></td>';         
 										}           
 										}else{    
 											str1+='<td> - </td>';  
@@ -3091,3 +3092,41 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		$("#tourIndividualDetailsTableBlock").html(str1);
 	}
 }
+
+$(document).on('click','#showTourPdfId',function(){
+		//$("#cdrModelId").modal("show");
+		var dbFilePath = $(this).attr("attr_filePath");         
+		var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		var extName = fileNameArr[1];
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#tourNewDocumentId").modal("hide");
+			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			
+			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}
+			if(extName.trim()=="jpg"){  
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}              
+			if(extName.trim()=="doc" || extName.trim()=="docx"){
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
+				str += '</iframe>';
+			}
+			if(extName.trim()=="xls" || extName.trim()=="xlsx"){      
+				window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			}            
+			$("#tourNewDocumentBodyId").html(str);
+			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}      
+	});
+	

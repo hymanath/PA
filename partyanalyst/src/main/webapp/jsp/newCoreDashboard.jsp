@@ -2930,7 +2930,7 @@
 			</div>
 		</div>	
 	 <!--Alerts End -->
-	  <!--Tours New Start 
+	  <!--Tours New Start  
 	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2982,7 +2982,7 @@
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
 					</div>!-->
-					<!--<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+				<!--<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
 					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
@@ -3414,7 +3414,7 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
-<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:9999;">
+<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:99999;">
 	<div class="modal-dialog" style="width:70%;">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -3743,7 +3743,7 @@
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
 		/*New Tours implementation Default Call */
-		//getToursBasicOverviewDtls();
+		 // getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
