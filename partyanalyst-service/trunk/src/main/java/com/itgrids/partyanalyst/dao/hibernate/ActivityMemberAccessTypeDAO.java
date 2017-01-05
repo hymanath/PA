@@ -45,4 +45,17 @@ public class ActivityMemberAccessTypeDAO extends GenericDaoHibernate<ActivityMem
 		query.setParameter("userId",userId);
 		return (Object[])query.uniqueResult();
 	}
+	public List<Object[]> getDesignation(List<Long> activityMemberIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select AMAT.activityMember.activityMemberId, " +
+						" AMAT.userType.userTypeId, " +
+						" AMAT.userType.type " +
+						" from ActivityMemberAccessType AMAT " +
+						" where " +
+						" AMAT.activityMember.activityMemberId in (:activityMemberIdList) and " +
+						" AMAT.isActive = 'Y' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("activityMemberIdList", activityMemberIdList);
+		return query.list();
+	}
 }
