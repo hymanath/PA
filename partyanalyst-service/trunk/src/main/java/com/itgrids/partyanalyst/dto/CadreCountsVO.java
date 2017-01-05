@@ -10,6 +10,8 @@ public class CadreCountsVO implements Serializable{
 	
 	private Long    id;
 	private String  name;
+	private String candidataName;
+	private String type;
 	
 	private Long   superLocationId;
 	private String superlocationName;
@@ -184,6 +186,19 @@ public class CadreCountsVO implements Serializable{
 	public void setAgeRange(String ageRange) {
 		this.ageRange = ageRange;
 	}
+	public String getCandidataName() {
+		return candidataName;
+	}
+	public void setCandidataName(String candidataName) {
+		this.candidataName = candidataName;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	
 	
 }

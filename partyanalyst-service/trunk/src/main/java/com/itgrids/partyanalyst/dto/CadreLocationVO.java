@@ -22,6 +22,7 @@ public class CadreLocationVO implements Serializable{
 	private Long    wardId;
 	private String  wardName;
 	private boolean isCandidate;
+	private String isLeader;
 	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
@@ -132,6 +133,11 @@ public class CadreLocationVO implements Serializable{
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
 	}
-	
+	public String getIsLeader() {
+		return isLeader;
+	}
+	public void setIsLeader(String isLeader) {
+		this.isLeader = isLeader;
+	}
 	
 }
