@@ -105,7 +105,7 @@
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>Select Name</label>
-									<select class="form-control" id="memberSlctBxId" name="toursInputVO.candidateId">    
+									<select class="form-control" id="memberSlctBxId" >    
 									<option value="0">Select Name</option>
 								</select>
 								</div>
@@ -409,7 +409,11 @@
 						</div> 
 						
 						<div>
-							<input type="hidden" id="globalUpdateDayTourId" value="" name="toursVO.tourId">
+						
+							<input type="hidden" id="globalUpdateDayTourId" value="" name="toursVO.detailsNewId">
+							<input type="hidden" id="globalUpdateHiddenDesignationId" value="" name="toursVO.designationId">
+							<input type="hidden" id="globalUpdateHiddentdpCadreId" value="" name="toursVO.candidateId">
+							
 						</div>
 					</form>
 				</div>

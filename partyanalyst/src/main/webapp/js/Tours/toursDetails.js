@@ -73,6 +73,7 @@ function getCandidateList(designationId){
 		
 		if(result.tdpCadreId !=null){
 			$("#globalHiddentdpCadreId").val(result.tdpCadreId); 
+			$("#globalUpdateHiddentdpCadreId").val(result.tdpCadreId); 
 		}
 		
 		
@@ -274,12 +275,10 @@ function getCandidateList(designationId){
 		});
 	}
 	function savingApplication(){
-		$("#errMnthId").html("");
-		$("#errYearId").html("");
+
 		$(".textErrCls").html("");
 		$("#errFileId").html("");
-		var flag = true;
-		var filerKit = $("#update_TourFileId2").prop("jFiler");
+		var flag = true;		
 		var monthValue = $("#monthSelectBoxId").val();
 		if(monthValue == 0){
 			$("#errMnthId").html("Please Select Month.");
@@ -301,25 +300,17 @@ function getCandidateList(designationId){
 			}  
 		});
 		
-		var childEleCount = $(".jFiler-items-list").children().length;
-		/* if(childEleCount > 1){
-			$("#errFileId").html("Please Select Only One Document."); 
-			filerKit.reset();   
-			flag = false;         			
-		} */
-		
 		//allocating designationId To Hidden Variable
 		
 		var desigId=$("#designationSlctBxId option:selected").val();
 		if(desigId !=null){
 			$("#globalHiddenDesignationId").val(desigId);
+			$("#globalUpdateHiddenDesignationId").val(desigId);
 		}
-		
 		if(flag == false){
 			return;  
 		}
-		
-		var errStr='',flag1=true;
+		var errStr='',flag1=true;docErr=true;
 		$(".outerDivCls").each(function(){
 			if(flag1){
 				var count = $(this).attr("attr_count");
@@ -370,12 +361,27 @@ function getCandidateList(designationId){
 							errStr="Please Select Village / Ward";flag1=false;
 						}
 					}
-				}*/
+				}*/else if($("#tourDaysNew"+count).val() == null || $("#tourDaysNew"+count).val() == undefined || $("#tourDaysNew"+count).val() == "undefined" || $("#tourDaysNew"+count).val().length == 0){
+					alert("Please Enter Tour Days ");
+					return;
+				}
 			}
 		});
 		
+		var childEleCount = $(".jFiler-items-list").children().length;
+		var filerKit = $("#update_TourFileId2").prop("jFiler");
+		
+		if(childEleCount > 1){
+			errStr = "Please Select Only One Document."; 
+			docErr=false; 			
+			flag1=false;      			
+		}
+		
 		if(!flag1){
 			alert(errStr);
+			if(!docErr){
+				filerKit.reset();  
+			}
 			return;
 		}
 	
@@ -456,6 +462,7 @@ function getCandidateList(designationId){
 	});
 	
 	function buildCandidateLocationResult(result,count){
+		
 		$("#tourLocationId"+count).html("<option value='0'>Select Location</option>");
 			if(regionScopesArr!=null && regionScopesArr.length>0 && result.locationLevel!=null && result.locationLevel>0){
 				for(var i in regionScopesArr){
@@ -958,10 +965,10 @@ function getCandidateList(designationId){
 	$(document).on("click",".editTourRecordBtnCls",function(){
 		$("#retrivalEditModalId").modal("show");
 		$("#retriveModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var candidateDayTourId = $(this).attr("attr_id");
+		var detailsNewId = $(this).attr("attr_id");//detailsNewId
 		
 		var jsObj ={ 
-			candidateDayTourId : candidateDayTourId
+			candidateDayTourId : detailsNewId
 		}
 		
 		$.ajax({
@@ -971,7 +978,8 @@ function getCandidateList(designationId){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null){
-				buildNewTourRetrivalDetails(result,candidateDayTourId);
+				//buildNewTourRetrivalDetails(result,candidateDayTourId);
+				buildNewTourRetrivalDetailsForNew(result,detailsNewId);
 			}
 		});
 	});
@@ -1026,6 +1034,7 @@ function getCandidateList(designationId){
 			str+='</div>';
 			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 				str+='<label>Tour Location</label>';
+				
 				str+='<select id="retriveLocId" attr_candiLocLevel="'+result.locationScopeId+'" name="toursVOList[0].tourLocationId">';
 					str+='<option value="0">Select Tour Location</option>';
 						if(regionScopesArr!=null && regionScopesArr.length>0 && result.locationScopeId!=null && result.locationScopeId>0){
@@ -1137,6 +1146,109 @@ function getCandidateList(designationId){
 		$("#uploadUpdateFlDivId").html(str1);
 		initializeFile();
 	}
+	
+	function buildNewTourRetrivalDetailsForNew(result,detailsNewId)
+	{		
+		$("#globalUpdateDayTourId").val(detailsNewId);
+		$("#globalUpdateHiddenDesignationId").val(result.designationId);
+		$("#globalUpdateHiddentdpCadreId").val(result.candDtlsId);
+		
+		var str='';
+		/* var temp = result.tourDate.split(' ')[0].split("-");
+		var date = temp[2]+"/"+temp[1]+"/"+temp[0]; */
+		
+		str+='<div class="row">';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Date</label>';
+				str+='<div class="input-group">';
+					str+='<input type="text" class="form-control" id="retriveDateId" name="toursVO.tourMonth" value='+result.tourDate+'/>';
+					str+='<span class="input-group-addon">';
+						str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='</span>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Category</label>';
+				str+='<select id="retriveCategoryId" class="form-control" name="toursVOListNew[0].tourCategoryId">';
+					str+='<option value="0">Selecct Tour Category</option>';
+					if(result.categoryList != null && result.categoryList.length > 0){
+						for(var i in result.categoryList){							
+							if(result.tourCategoryId == result.categoryList[i].id){
+								str+='<option value="'+result.categoryList[i].id+'" selected>'+result.categoryList[i].name+'</option>';
+							}else{
+								str+='<option value="'+result.categoryList[i].id+'">'+result.categoryList[i].name+'</option>';
+							}
+						}
+					}
+					
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+				str+='<label>Tour Type</label>';
+				str+='<select class="form-control" id="retriveTypeId" name="toursVOListNew[0].tourTypeId">';
+					str+='<option value="0">Select Tour Type</option>';
+					if(result.tourTypeList != null && result.tourTypeList.length > 0){
+						for(var i in result.tourTypeList){
+							if(result.tourTypeId == result.tourTypeList[i].id){
+								str+='<option value="'+result.tourTypeList[i].id+'" selected>'+result.tourTypeList[i].name+'</option>';
+							}else{
+								str+='<option value="'+result.tourTypeList[i].id+'">'+result.tourTypeList[i].name+'</option>';
+							}							
+						}
+					}
+				str+='</select>';
+			str+='</div>';
+			
+			str+='<div class="col-md-3 col-xs-12 col-sm-2">';
+				str+='<label>Tour Days</label>';
+				str+='<input type="text" class="form-control" id="retrieveTourDaysId" name="toursVOListNew[0].tourDays" value='+result.count+' />';
+			str+='</div>';
+			
+
+		$("#retriveModalId").html(str);
+		$("#retriveCategoryId").chosen();
+		$("#retriveTypeId").chosen();
+		$("#retriveDateId").datetimepicker({
+			format:'MM-YYYY'
+		});
+		
+		$("#retriveModalDocumentDivId").html("");
+		if(result.documentList != null && result.documentList.length > 0){
+			var strt = "";
+			strt+='<table class="table">';
+			strt+='<tbody>';
+			for(var t in result.documentList){
+				strt+='<tr style="border:1px solid #ddd;padding:10px;" id="documentTrId'+result.documentList[t].id+'">';
+					var extension = result.documentList[t].name.split(".")[1];
+					if(extension == "jpg" || extension == "jpeg")
+						strt+='<td><i  class="fa fa-file-photo-o" style="font-size:20px"></i></td>';
+					else if(extension == "pdf")
+						strt+='<td><i class="fa fa-file-pdf-o" style="font-size:20px;color:red"></i></td>';
+					else 
+						strt+='<td><i class="fa fa-file-word-o" style="font-size:20px;color:blue"></i></td>';
+					strt+='<td>'+result.documentList[t].name+'</td>';
+					strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
+					strt+='<td><button type="button" class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
+				strt+='</tr>';
+			}
+			strt+='</tbody>';
+			strt +='</table>'; 
+		}
+		$("#retriveModalDocumentDivId").html(strt);
+		
+		var str1="";
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+			str1+='<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  ';
+			str1+='<input type="file" id="update_TourFileId" multiple="multiple"  name="files[]" class="m_top20"/>';
+			str1+='<span id="errFileId" style="color:red;margin-left:470px;"></span>  '; 
+		str1+='</div>';
+		$("#uploadUpdateFlDivId").html(str1);
+		initializeFile();
+	}
+	
+	
 	
 	$(document).on("change","#retriveLocId",function(){
 		$(".locationsDivCls").hide();
@@ -1334,13 +1446,25 @@ function getCandidateList(designationId){
 	function updateApplication(){
 		var filerKit = $("#update_TourFileId").prop("jFiler");
 		var childEleCount = $(".jFiler-items-list").children().length;
-		if($("#retriveTypeId").val() == 0 || $("#retriveTypeId").val() == "undefined"){
-			alert("Please Select Tour Type");
+		
+		if($("#retriveDateId").val() == null || $("#retriveDateId").val().length == 0 || $("#retriveDateId").val() == undefined || $("#retriveDateId").val().length == undefined){
+			alert("Please Select Month ");
 			return;
-		}else if($("#retriveCategoryId").val() == 0 || $("#retriveCategoryId").val() == "undefined"){
+		}
+		
+		if($("#retriveCategoryId").val() == 0 || $("#retriveCategoryId").val() == "undefined"){
 			alert("Please Seelct Tour Category");
 			return;
-		}else if($("#retriveLocId").val() > 0){
+		}else if($("#retriveTypeId").val() == 0 || $("#retriveTypeId").val() == "undefined"){
+			alert("Please Select Tour Type");
+			return;
+		}else if($("#retrieveTourDaysId").val() == null || $("#retrieveTourDaysId").val() == undefined || $("#retrieveTourDaysId").val() == "undefined" || $("#retrieveTourDaysId").val().length == 0){
+			alert("Please Enter Tour Days ");
+			return;
+		}
+		
+		
+		/*else if($("#retriveLocId").val() > 0){
 			var locLvl = $("#retriveLocId").val();
 			if(locLvl == 2){
 				if($("#stateSelId").val() == 0){
@@ -1398,6 +1522,15 @@ function getCandidateList(designationId){
 					return;
 				}
 			}
+		} */
+		
+		var childEleCount = $(".jFiler-items-list").children().length;
+		var filerKit = $("#update_TourFileId2").prop("jFiler");
+		
+		if(childEleCount > 1){
+			alert( "Please Select Only One Document."); 
+			filerKit.reset();
+			return;    			
 		}
 	
 		var uploadHandler = { 
