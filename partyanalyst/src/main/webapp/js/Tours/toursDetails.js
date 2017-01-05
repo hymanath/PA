@@ -1282,7 +1282,6 @@ function getCandidateList(designationId){
 							var fullName = result.documentList[t].name;
 							var nameArr = fullName.split(".");
 							var type = nameArr[1];
-							alert(type);
 							if(type=="pdf" || type=="PDF"){
 								
 								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';
