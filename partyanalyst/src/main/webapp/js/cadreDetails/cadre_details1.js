@@ -1313,6 +1313,7 @@ function buildVolunteersDetails(result){
 	
 	function buildAlertDetails(result){
 		var finalReslt = result.subList1;
+		var alertTypeId = $("input[name='alertRadioBtn']:checked").val();
 		var str ='';
 		str+='<table class="table table-borderd table-condensed" id="alertTableTab" style="font-size: 10px;">';
 		str+='<thead>';
@@ -1341,7 +1342,7 @@ function buildVolunteersDetails(result){
 				str+='<tr>';
 				str+='<td> '+finalReslt[j].category.toUpperCase()+'</td>';
 				if(finalReslt[j].count != null  && parseInt(finalReslt[j].count)>0 )
-					str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="0" status_id="0" attr_category_type="'+finalReslt[j].category+'" ><u>'+finalReslt[j].count+'</u></a></td>';
+					str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+alertTypeId+'" status_id="0" attr_category_type="'+finalReslt[j].category+'" ><u>'+finalReslt[j].count+'</u></a></td>';
 				else
 					str+='<td> 0  </td>';
 				
@@ -1352,14 +1353,14 @@ function buildVolunteersDetails(result){
 						else
 							str+='<td> 0  </td>';
 					}
-						var statusList = finalReslt[j].subList1[0].subList1;
-							for(var l in statusList){
-								if(statusList[l].count != null && parseInt(statusList[l].count)>0 )
-									str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+finalReslt[j].subList1[k].alertTypeId+'" status_id="'+statusList[l].statusId+'" attr_category_type="'+finalReslt[j].category+'" > <u>'+statusList[l].count+'</u></a> </td>';
-								else
-									str+='<td> 0  </td>';
-							}
-					
+						
+						var statusList = finalReslt[j].subList2;
+						for(var l in statusList){
+							if(statusList[l].count != null && parseInt(statusList[l].count)>0 )
+								str+='<td style="font-weight:bold;"> <a href="javascript:{}" class="cadreAlertCls" attr_categoryId="'+finalReslt[j].categoryId+'" altert_Type_Id="'+alertTypeId+'" status_id="'+statusList[l].statusId+'" attr_category_type="'+finalReslt[j].category+'" > <u>'+statusList[l].count+'</u></a> </td>';
+							else
+								str+='<td> 0  </td>';
+						}
 				}
 				str+='</tr>';
 			}
@@ -1369,6 +1370,13 @@ function buildVolunteersDetails(result){
 		
 		$('#alertDetailsDiv').html(str);
 	}
+	
+	
+					
+					
+	$(document).on("click",".alerttsCls",function(){
+		$('#alertDetailsDiv').html('');
+	});
 	
 	$(document).on("click",".cadreAlertCls",function(){
 		$("#alertModalDivId").modal('show');
@@ -1413,8 +1421,8 @@ function buildVolunteersDetails(result){
 			str+='<thead>';
 			str+='<tr>';
 			//str+='<th>DESCRIPTION </th>';
-			str+='<th>CREATED ON </th>';
-			str+='<th>LAST UPDATED ON </th>';
+			str+='<th> CREATED ON </th>';
+			str+='<th> LAST UPDATED ON </th>';
 			str+='<th> PRESENT STATUS </th>';
 			str+='<th> LOG DAYS </th>';
 			str+='<th> IMPACT LEVEL </th>';
@@ -1430,7 +1438,7 @@ function buildVolunteersDetails(result){
 				str+='<td>'+finalResult[i].date1+'</td>';
 				str+='<td>'+finalResult[i].date2+'</td>';
 				str+='<td>'+finalResult[i].status+'</td>';
-				str+='<td> - </td>';
+				str+='<td>'+finalResult[i].noOfDays+' </td>';
 				str+='<td>'+finalResult[i].locationName+'</td>';
 				str+='<td> <button class="btn btn-success btn-mini btn-xs alertsDetailsCls" attr_alert_id="'+finalResult[i].id+'"> Alert Details </button></td>';
 				
