@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
+import com.itgrids.partyanalyst.dto.SmallVO;
 
 public interface ICardPrintService {
 	public List<CardPrintVO> getVendorNames();
@@ -24,4 +25,7 @@ public interface ICardPrintService {
 	public List<CardPrintVO> getEnrollmentDetailsByConstituency();
 	
 	public CadreValidateVO getConstNotVerfiedCardPrintStatusCadreAndValidate(Long constituencyId);
+	
+	public List<SmallVO> getPrintPushedConstituencies();
+	public List<String> postVerificationCadreData(Long constituencyId);
 }
