@@ -4237,6 +4237,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 		//List<AlertVO> categoriesList = new ArrayList<AlertVO>();
 		 Map<Long,AlertVO> categoriesMap = new HashMap<Long, AlertVO>(0);
+		 Map<Long,Map<Long,Long>> categoryStatusWiseCountMap = new HashMap<Long, Map<Long,Long>>(0);
 		 Object[] totalArr = {"0","TOTAL ALERTS"};
 		 categoryList.add(totalArr);
 		if(categoryList != null && categoryList.size() > 0){
@@ -4261,10 +4262,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									alertStatusVO.setStatusId(commonMethodsUtilService.getLongValueForObject(parm[0]));
 									alertStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(parm[1]));
 										alertStatusVOList.add(alertStatusVO);
+										
+										Map<Long,Long> statusMap = new HashMap<Long, Long>(0);
+										if(categoryStatusWiseCountMap.get(categoryVO.getCategoryId()) != null){
+											statusMap = categoryStatusWiseCountMap.get(categoryVO.getCategoryId());
+										}
+										statusMap.put(alertStatusVO.getStatusId(), 0L);
+										categoryStatusWiseCountMap.put(categoryVO.getCategoryId(), statusMap);
 								}
 							}
 						 alertTypeVO.setSubList1(alertStatusVOList);
-						 
+						 categoryVO.setSubList2(alertStatusVOList);
 						 if(alertTypeId != null && alertTypeId.longValue() ==0L)
 							 alertTypeList.add(alertTypeVO);  
 						else if(alertTypeVO.getAlertTypeId() != null && alertTypeVO.getAlertTypeId().longValue() == alertTypeId )
@@ -4300,6 +4308,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 													 statusVO.setCount( statusVO.getCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
 												 else
 													 statusVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+												 
+												 
+												 	Map<Long,Long> statusMap = new HashMap<Long, Long>(0);
+												 	Long overAllCount =0L;
+													if(categoryStatusWiseCountMap.get(categoryVO.getCategoryId()) != null){
+														statusMap = categoryStatusWiseCountMap.get(categoryVO.getCategoryId());
+														if(commonMethodsUtilService.isMapValid(statusMap)){
+															if(statusMap.get(statusVO.getStatusId()) != null){
+																overAllCount = statusMap.get(statusVO.getStatusId());
+															}
+														}
+													}
+													 overAllCount = overAllCount+commonMethodsUtilService.getLongValueForObject(param[3]);
+													statusMap.put(statusVO.getStatusId(), overAllCount);
+													categoryStatusWiseCountMap.put(categoryVO.getCategoryId(), statusMap);
+													
 											 }
 										}
 									 }
@@ -4310,6 +4334,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 		}
+		
 		
 		if(searchType != null && (searchType.equalsIgnoreCase("Involved") || searchType.equalsIgnoreCase("All"))){
 			assignedList = alertCandidateDAO.getTdpCadreWiseInvoledAlertDetails(tdpCadreId,fromDate, toDate,alertTypeId);
@@ -4332,6 +4357,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 													 statusVO.setCount( statusVO.getCount() + commonMethodsUtilService.getLongValueForObject(param[3]));
 												 else
 													 statusVO.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+												 
+												 Map<Long,Long> statusMap = new HashMap<Long, Long>(0);
+												 	Long overAllCount =0L;
+													if(categoryStatusWiseCountMap.get(categoryVO.getCategoryId()) != null){
+														statusMap = categoryStatusWiseCountMap.get(categoryVO.getCategoryId());
+														if(commonMethodsUtilService.isMapValid(statusMap)){
+															if(statusMap.get(statusVO.getStatusId()) != null){
+																overAllCount = statusMap.get(statusVO.getStatusId());
+															}
+														}
+													}
+													 overAllCount = overAllCount+commonMethodsUtilService.getLongValueForObject(param[3]);
+													statusMap.put(statusVO.getStatusId(), overAllCount);
+													categoryStatusWiseCountMap.put(categoryVO.getCategoryId(), statusMap);
+												 
 											 }
 										}
 									 }
@@ -4342,6 +4382,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 		}
+		
+		
 		
 		Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
 		Map<Long,Long> alerttypeWiseMap = new HashMap<Long, Long>(0);
@@ -4370,6 +4412,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 										 }
 										 
 										 if(count>0L){
+											 if(statusVO.getCount() != null && statusVO.getCount().longValue()>0L)
 											 count = count+statusVO.getCount();
 										 }else{
 											 if(statusVO.getCount() != null){
@@ -4398,7 +4441,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 }
 								 
 								 if(count>0L){
-									 count = count+alertTypeVO.getCount();
+									 if(alertTypeVO.getCount() != null && alertTypeVO.getCount().longValue()>0L)
+										 count = count+alertTypeVO.getCount();
 								 }
 								 else{
 									 if(alertTypeVO.getCount() != null){
@@ -4417,6 +4461,19 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 
 						 categoryWiseList.add(categoryVO1); 
 					}
+					 
+					 if(commonMethodsUtilService.isMapValid(categoryStatusWiseCountMap)){
+						 Map<Long,Long> statusMap =  categoryStatusWiseCountMap.get(categoryId);
+						 if(commonMethodsUtilService.isMapValid(statusMap)){
+								List<AlertVO> statussList = categoryVO1.getSubList2();
+								if(commonMethodsUtilService.isListOrSetValid(statussList)){
+									for (AlertVO alertVO : statussList) {
+										alertVO.setCount(statusMap.get(alertVO.getStatusId()));
+									}
+								}
+						}
+					 }
+					 
 				 }
 			}
 			 
@@ -4442,10 +4499,32 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 else
 								 categoryVO2.setCount(alertTypeVO.getCount());
 						 }
-						 
 					}
+					 
+					 List<AlertVO> alertStatussVOList =  categoryVO2.getSubList2();
+					 if(commonMethodsUtilService.isListOrSetValid(alertStatussVOList)){
+						 for (AlertVO statusVO : alertStatussVOList) {
+							 if(commonMethodsUtilService.isMapValid(categoryStatusWiseCountMap)){
+								 for (Long categoryId : categoriesMap.keySet()) {
+									 if(categoryId >0L){
+										 Map<Long,Long> statusMap =  categoryStatusWiseCountMap.get(categoryId);
+										 if(commonMethodsUtilService.isMapValid(statusMap)){
+											 Long count = statusMap.get(statusVO.getStateId());
+											 if(count == null)
+												 count =0L;
+											 if(statusVO.getCount() != null){
+												 statusVO.setCount(statusVO.getCount()+count);
+											 }else{
+												 statusVO.setCount(count);
+											 }
+										}
+									 }
+								}
+							 }
+							 statusVO.setCount(statusWiseMap.get(statusVO.getStatusId()));
+						 }
+					 }
 				 }
-				 
 				 categoryWiseList.add(categoryVO2); 
 			}
 			 
@@ -4491,7 +4570,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String lastUpdatedDate=commonMethodsUtilService.getStringValueForObject(param[3]);
 					//Long statusId=commonMethodsUtilService.getLongValueForObject(param[0]);
 					String status =commonMethodsUtilService.getStringValueForObject(param[5]);
-					Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
+					//Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
 					String impactLevelStr =commonMethodsUtilService.getStringValueForObject(param[7]);
 					
 					
@@ -4503,6 +4582,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					vo.setLocationName(impactLevelStr);
 					vo.setStatus(status);
 					
+					Long noOfDays = dateUtilService.noOfDayBetweenDates(vo.getDate1(), vo.getDate2());
+			          vo.setNoOfDays(noOfDays-1);
+			          
 					alertsMap.put(alertId, vo);
 				}
 			}
@@ -4518,7 +4600,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String lastUpdatedDate=commonMethodsUtilService.getStringValueForObject(param[3]);
 					//Long statusId=commonMethodsUtilService.getLongValueForObject(param[0]);
 					String status =commonMethodsUtilService.getStringValueForObject(param[5]);
-					Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
+					//Long impactLevelId=commonMethodsUtilService.getLongValueForObject(param[6]);
 					String impactLevelStr =commonMethodsUtilService.getStringValueForObject(param[7]);
 					
 					
@@ -4529,7 +4611,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					vo.setDate2(lastUpdatedDate);
 					vo.setLocationName(impactLevelStr);
 					vo.setStatus(status);
-					
+
+					Long noOfDays = dateUtilService.noOfDayBetweenDates(vo.getDate1(), vo.getDate2());
+			          vo.setNoOfDays(noOfDays-1);
+			          
 					alertsMap.put(alertId, vo);
 				}
 			}
