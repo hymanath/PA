@@ -2283,7 +2283,18 @@ if(isVisible==false){
 	$("#identityBodyId").collapse('toggle');
 });
 
-
+$("#addressBodyId").collapse('hide');
+$(document).on("click","#addressHeaderId",function(){ 
+var isVisible = $( "#addressHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#addressHideId" ).show();
+		 $( "#addressShowId" ).hide();
+	}else{
+		$( "#addressHideId" ).hide();
+		$( "#addressShowId" ).show();
+	}
+	$("#addressBodyId").collapse('toggle');
+});
 $("#committeeMetingsBodyId").collapse('hide');
 $(document).on("click","#committeeMetingsHeaderId",function(){ 
 var isVisible = $( "#committeeMetingsHideId" ).is( ":visible" );
