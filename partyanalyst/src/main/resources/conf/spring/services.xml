@@ -446,7 +446,12 @@
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO"/>
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
-		
+		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"/>
+		<property name="activityMemberAccessTypeDAO" ref="activityMemberAccessTypeDAO"/>
+		<property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO"/>
+		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"/>  
+		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO"/>
+		<property name="activityMemberDAO" ref="activityMemberDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
