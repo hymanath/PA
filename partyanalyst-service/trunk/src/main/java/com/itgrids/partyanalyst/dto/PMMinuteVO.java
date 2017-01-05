@@ -45,6 +45,7 @@ public class PMMinuteVO implements Serializable{
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
 	
+	private Long count=0l;
 	
 	public Long getWardId() {
 		return wardId;
@@ -225,6 +226,12 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setDocumentList(List<KeyValueVO> documentList) {
 		this.documentList = documentList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 }

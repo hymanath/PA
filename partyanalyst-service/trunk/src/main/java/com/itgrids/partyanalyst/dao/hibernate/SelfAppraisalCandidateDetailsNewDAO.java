@@ -214,4 +214,232 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
        		        }
                return query.list();
 }
+ 
+ public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds,List<Long> monthyearIds){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	  queryStr.append( " select " +
+	    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
+	    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId) " + // Submitted Leaders Count
+
+	    		       " from SelfAppraisalCandidateDetailsNew model " +
+	    		       " where model.selfAppraisalCandidate.isActive='Y' " +
+	    		       " and model.isDeleted ='N' "); 
+	               /* if(fromDate != null && toDate != null ){
+	                	queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+	                }*/
+	  				
+	  				if(monthyearIds !=null && monthyearIds.size()>0){
+	  					queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+	  				}
+	  				
+	                if(desigIds != null && desigIds.size()>0){
+	                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
+	                }
+	                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId " );
+	                
+	                Query query = getSession().createQuery(queryStr.toString());
+	               /* if(fromDate != null && toDate != null ){
+	                	query.setDate("fromDate", fromDate);
+	                	query.setDate("toDate", toDate);
+	                }*/
+	                if(desigIds != null && desigIds.size()>0){  
+	     			   query.setParameterList("desigIds",desigIds); 
+	     		    } 
+	                if(monthyearIds !=null && monthyearIds.size()>0){
+	                	query.setParameterList("monthyearIds",monthyearIds); 
+	                }
+	                return query.list();
+	 
+ }
+	 public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(Date fromDate,Date toDate,String type,List<Long> monthyearIds){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select " +
+			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+			 " model.selfAppraisalDesignation.designation," +
+			 " model.selfAppraisalCandidateId," );
+			if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" model.selfAppraisalTourCategoryId,");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" model.tourTypeId,");	
+			}
+			queryStr.append(" sum(model.tourDays) " +
+			 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
+			 " and model.selfAppraisalDesignation.isActive='Y' ");
+		   /*if(fromDate != null && toDate != null ){
+			   queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+		   }*/
+			
+			if(monthyearIds !=null && monthyearIds.size()>0){
+					queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+			}
+						
+		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		  				   "  model.selfAppraisalCandidateId,");
+		    if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" model.selfAppraisalTourCategoryId");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" model.tourTypeId");	
+			}
+		    queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		  				   "  model.selfAppraisalCandidateId ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		/*  if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+		  }*/
+		  if(monthyearIds !=null && monthyearIds.size()>0){
+			  query.setParameterList("monthyearIds", monthyearIds);
+		  }
+		  return query.list();
+	}
+	 
+	 public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId,List<Long> monthyearIds){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select " +
+			 " model.selfAppraisalCandidateId " );
+			if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" ,model.selfAppraisalTourCategoryId ");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" ,model.tourTypeId ");	
+			}
+			queryStr.append(" ,sum(model.tourDays) " +
+			 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
+			 " and model.selfAppraisalDesignation.isActive='Y' ");
+			
+		 /*  if(fromDate != null && toDate != null ){
+			   queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+		   }*/
+		   
+			if(monthyearIds !=null && monthyearIds.size()>0){
+				queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+			}
+			
+		   if(designationIds !=null && designationIds.size()>0){
+			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) ");
+		   }
+		   if(candidateId !=null && candidateId>0l){
+	        	queryStr.append(" and model.selfAppraisalCandidateId =:candidateId ");
+	        }
+
+		   queryStr.append(" group by " +
+		  				   "  model.selfAppraisalCandidateId ");
+		    if(type.equalsIgnoreCase("Category")){
+			 queryStr.append(" ,model.selfAppraisalTourCategoryId ");	
+			}else if(type.equalsIgnoreCase("Govt")){
+			 queryStr.append(" ,model.tourTypeId");	
+			}
+		    queryStr.append(" order by " +
+		  				   "  model.selfAppraisalCandidateId ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  /*if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+		  }*/
+		 
+		  if(designationIds !=null && designationIds.size()>0){
+			  query.setParameterList("designationIds", designationIds);    
+		  }
+		  if(candidateId !=null && candidateId>0l){
+			  query.setParameter("candidateId",candidateId);
+		  }
+		  if(monthyearIds !=null && monthyearIds.size()>0){
+			  query.setParameterList("monthyearIds", monthyearIds);
+		  }
+		  return query.list();
+	 }
+	 
+	 public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds,Long candidateId,List<Long> monthyearIds){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  " +
+		   				" distinct SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//0
+		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname " +//1
+		   		   		" from " +
+				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateDetailsNew SACDN " +
+				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACDN.selfAppraisalCandidate.selfAppraisalCandidateId   " +
+				   		" and SACL.selfAppraisalCandidate.isActive = 'Y'  " +  
+				   		" " +
+				   		" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y'  " +
+				   		" and SACDN.isDeleted='N' " );
+
+		   /*if(fromDate != null && toDate != null ){
+			   queryStr.append(" and date(SACT.tourDate) between :fromDate and :toDate ");
+		   }*/
+		   
+		   if(monthyearIds !=null && monthyearIds.size()>0){
+			   queryStr.append(" and SACDN.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+		   }
+		   
+		   if(candidateId !=null && candidateId>0l){
+	        	queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalCandidateId =:candidateId  ");
+	        }
+		   if(designationIds !=null && designationIds.size()>0){
+			   queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) ");
+		   }
+		   
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   
+
+		   /*if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+		   }*/
+		   
+		   if(monthyearIds !=null && monthyearIds.size()>0){
+			   query.setParameterList("monthyearIds", monthyearIds);
+		   }
+		   
+		   if(candidateId !=null && candidateId>0l){
+			   query.setParameter("candidateId",candidateId);
+		   }
+		   
+		   if(designationIds != null && designationIds.size() > 0){
+			   query.setParameterList("designationIds",designationIds);   
+		   }
+		   
+		   return query.list();  
+	   }
+	 
+	 public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId,List<Long> monthyearIds){
+		    StringBuilder queryStr = new StringBuilder();
+		    queryStr.append(" select " +
+		    				" model.selfAppraisalCandidateDetailsNewId," +//0
+		  					" selfAppraisalTourCategory.selfAppraisalTourCategoryId," +//1
+		  					" selfAppraisalTourCategory.tourCategory," +//2
+		  					" tourType.tourTypeId," +//3
+		  					" tourType.tourType," +//4		  					
+		  					" model.remarks," +//5
+		  					" selfAppraisalDesignation.selfAppraisalDesignationId," +//6
+		  					" selfAppraisalDesignation.designation," +//7
+		  					" model.selfAppraisalToursMonth.monthName," + //8
+		  					" model.selfAppraisalToursMonth.year, " +//9
+		  					" model.tourDays," +
+		  					" model.selfAppraisalCandidate.tdpCadreId " +
+		  					" from SelfAppraisalCandidateDetailsNew model " +
+		  					" left join model.selfAppraisalTourCategory selfAppraisalTourCategory " +
+		  					" left join model.tourType tourType" +
+		  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
+		  					" where  " +
+		  					" model.selfAppraisalCandidateId=:selfAppraisalCandidateId ");
+					     /* if(fromDate != null && toDate != null ){
+				               queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+				          }*/
+		    			
+			    		if(monthyearIds !=null && monthyearIds.size()>0){
+			    			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+			    		}
+		    
+	                      Query query = getSession().createQuery(queryStr.toString());
+	                      query.setParameter("selfAppraisalCandidateId", candidateId);
+	                      /*if(fromDate!= null && toDate!=null){
+	           			   query.setDate("fromDate", fromDate);
+	           			   query.setDate("toDate", toDate);
+	           		      }*/
+	                      
+	                      if(monthyearIds !=null && monthyearIds.size()>0){
+	                    	  query.setParameterList("monthyearIds", monthyearIds);
+	                      }
+	                      
+                   return query.list();
+	 }
 }
