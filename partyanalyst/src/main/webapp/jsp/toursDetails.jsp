@@ -427,6 +427,23 @@
 	</div><!-- /.modal -->
 	<!--editview modal end-->
 	
+	<!-- Document Model -->
+	<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:9999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Tour Document</h4>  
+			</div>
+			<div class="modal-body" id="tourNewDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+	</div><!--  /.modal -->
+	
 <script src="Assets/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
