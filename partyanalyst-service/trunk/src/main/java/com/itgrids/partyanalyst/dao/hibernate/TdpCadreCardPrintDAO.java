@@ -116,4 +116,25 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		return query.executeUpdate();
 	}
 	
+	public List<Object[]> postVerificationCadreData(Long constituencyId){
+		
+		Query query = getSession().createQuery("" +
+		" select model.tdpCadreCardPrintId , model.tdpCadreId ,model.memberShipId," +//2
+		"        model.cadreName , model.imagePath ,model.mobileNo , " +//5
+		"        model.locationType , model.districtName , model.constituencyName ," +//8
+		"        model.mandalName , model.muncipalityName , " +//10
+		"        model.panchayatName , model.wardName," +//12
+		"        model.constituencyType  " +//13
+		" from   TdpCadreCardPrint model " +
+		" where  model.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getPrintPushedConstituencies(){
+		Query query = getSession().createQuery("" +
+		" select distinct model.constituency.constituencyId , model.constituency.name " +
+		" from  TdpCadreCardPrint model ");
+		return query.list();
+	}
  }
