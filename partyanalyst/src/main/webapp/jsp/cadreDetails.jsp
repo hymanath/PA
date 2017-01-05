@@ -618,41 +618,43 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						</h4>
 					</div>
 					<div class="panel-body" id="cadreEnrolementParticepateStatBodyId">
-					<div class="panel panel-default">
-							<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId1">
-								<h4 class="panel-title text-bold pointer">2016 CADRE ENROLMENT DETAILS
-									<span>
-										<i id="cadreEnrolementParticepateStatusId1" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
-									</span>
-									<span class="pull-right" id="cadreEnrolmentStatsShowId1"><i class="glyphicon glyphicon-chevron-up"></i>
-									</span><span class="pull-right" id="cadreEnrolmentStatsHideId1" style="display:none;">
-									<i class="glyphicon glyphicon-chevron-down"></i></span>
-								</h4>
-							</div>
-							<div class="panel-body" id="cadreEnrolmentStatsBodyId1" style="padding:0px 15px;">
-								<div class="row table-responsive" id="memberShipCountDiv1"><!--id="memberShipCountDiv"-->
-								</div>
-							</div>
-						</div>
 						<div class="panel panel-default">
-							<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId">
-								<h4 class="panel-title text-bold pointer">2014 CADRE ENROLMENT DETAILS
-									<span>
-										<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
-									</span>
-									<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
-									</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
-									<i class="glyphicon glyphicon-chevron-down"></i></span>
-								</h4>
-							</div>
-							<div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
-								<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+								<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId1">
+									<h4 class="panel-title text-bold pointer">2016 CADRE ENROLMENT DETAILS
+										<span>
+											<i id="cadreEnrolementParticepateStatusId1" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
+										</span>
+										<span class="pull-right" id="cadreEnrolmentStatsShowId1"><i class="glyphicon glyphicon-chevron-up"></i>
+										</span><span class="pull-right" id="cadreEnrolmentStatsHideId1" style="display:none;">
+										<i class="glyphicon glyphicon-chevron-down"></i></span>
+									</h4>
+								</div>
+								<div class="panel-body" id="cadreEnrolmentStatsBodyId1" style="padding:0px 15px;">
+									<div class="row table-responsive" id="memberShipCountDiv1"><!--id="memberShipCountDiv"-->
+									</div>
 								</div>
 							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading bg_white" id="cadreEnrolmentStatsHeaderId">
+									<h4 class="panel-title text-bold pointer">2014 CADRE ENROLMENT DETAILS
+										<span>
+											<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
+										</span>
+										<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
+										</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
+										<i class="glyphicon glyphicon-chevron-down"></i></span>
+									</h4>
+								</div>
+								<div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
+									<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
+									</div>
+								</div>
+							</div>
+							<div class="pull-right">
+								<span style="cursor:pointer;display:none;" id="cdrRegDtlsId">Detailed</span>     
+							</div>
 						</div>
-						
 					</div>
-				</div>
                 
 				 <div class="panel panel-default" id="" style="">
                 	<div class="panel-heading" id="alertHeaderId" style="padding:0px 15px">
@@ -1956,7 +1958,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	$("#notesDescriptionId").jqte();
 	 
 	//var globalCadreId = '${cadreId}';
-	
+	var memberCadreId = '${cadreId}';       
 	var participatedConstituencyId=0;
 	var participatedConstituencyType="";
 	var participatedParliamentId = 0;
@@ -2004,8 +2006,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	var tdpCadreVillageName = '${cadreLocationVO.villageName}';
 	var tdpCadreElectionTypeId = '${cadreLocationVO.electionTypeId}';
 	var tdpCadreElectionType = '${cadreLocationVO.electionType}';
+	var isLeader = '${cadreLocationVO.isLeader}';
+	checkIsLeader(isLeader);
 	partyMeetingsDatePickerInstantiation();
-	
 	function callFunForMembership()
 	{
 		if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
