@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -113,6 +115,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<SelectOptionVO> selectOptList;
 	private IAlertService alertService;
 	private AlertVO alertVO;
+	private ICandidateDetailsService candidateDetailsService;
 	
 	public AlertVO getAlertVO() {
 		return alertVO;
@@ -162,9 +165,23 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private ResultStatus resultStatus;
 	private String status;
 	private IdNameVO idNameVO;
+	private List<List<CadreCountsVO>> cadreCountsVOsList;
+	private List<CadreCountsVO> cadreCountsVOs;
 	List<MahanaduEventVO> mahanaduEventVOList ;
 	
 	
+	public List<CadreCountsVO> getCadreCountsVOs() {
+		return cadreCountsVOs;
+	}
+	public void setCadreCountsVOs(List<CadreCountsVO> cadreCountsVOs) {
+		this.cadreCountsVOs = cadreCountsVOs;
+	}
+	public List<List<CadreCountsVO>> getCadreCountsVOsList() {
+		return cadreCountsVOsList;
+	}
+	public void setCadreCountsVOsList(List<List<CadreCountsVO>> cadreCountsVOsList) {
+		this.cadreCountsVOsList = cadreCountsVOsList;
+	}
 	public IdNameVO getIdNameVO() {
 		return idNameVO;
 	}
@@ -613,6 +630,14 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			List<CadreReportVO> cadreReportHealthVOList) {
 		this.cadreReportHealthVOList = cadreReportHealthVOList;
 	}
+	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
 	public String execute(){
 		
 		try{
@@ -630,6 +655,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			if(cadreId != null && cadreId.longValue()>0L){
 				basicVo = cadreDetailsService.getParticipatedConstituency(cadreId);
 				cadreLocationVO = cadreDetailsService.getCadreBasicLocationDetails(cadreId);
+				String isLeader = candidateDetailsService.checkForLeader(cadreId);
+				cadreLocationVO.setIsLeader(isLeader);
+				
 			}
 			
 			List<String> entitlements = null;
@@ -1864,6 +1892,26 @@ public String getVolunteerCadreDetilasInformation(){
 			
 		} catch (Exception e) {
 			 LOG.error("Exception occured in getCadreAlertDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	public String getLeaderDtlsInfo(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			cadreCountsVOsList = candidateDetailsService.getLeaderDtlsInfo(tdpCadreId);
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getLeaderDtlsInfo in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	public String getCandidateSubLocationDtls(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			cadreCountsVOs = candidateDetailsService.getCandidateSubLocationDtls(constituencyId);
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getLeaderDtlsInfo in CadreDetailsAction class  ",e);
 		}
 		return "success";
 	}
