@@ -731,7 +731,7 @@ function getCandidateList(designationId){
 			str+='<div class="dropup">';
 			str+=''+result[i].designation+'<span class="dropdown-toggle" style="font-size: 16px; font-weight: 600; margin-left: 8px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-					str+='<p><i style="font-size: 17px;">Tours Target Per month</i></p>';
+					str+='<p><i style="font-size: 17px;">Tour Target Days Per month</i></p>';
 					str+='<table class="table">';
 					 for(var j in result[i].subList)
 					 {
@@ -907,16 +907,25 @@ function getCandidateList(designationId){
 					str+='</thead>';
 					str+='<tbody>';
 						str+='<tr>';
-						var touredDays=0;targetDays=0;
+						var totalPerc=0.00;
 							for(var t in result.subList[0].subList3){
-								touredDays = touredDays+result.subList[0].subList3[t].complainceDays;
-								targetDays = targetDays+result.subList[0].subList3[t].targetDays;
-								str+='<td>'+result.subList[0].subList3[t].complainceDays+'</td>';
+								var touredDays = result.subList[0].subList3[t].complainceDays;
+								var targetDays = result.subList[0].subList3[t].targetDays;
+								str+='<td>'+result.subList[0].subList3[t].complainceDays+'</td>';															
+								if(targetDays != null && targetDays > 0){
+									var perc = ((touredDays/targetDays)*100).toFixed(2) > 100.00?100.00:((touredDays/targetDays)*100).toFixed(2);		
+									if(perc !=null && perc>0.0){
+										totalPerc = totalPerc + perc;
+									}
+									
+								}
 							}
-							if(targetDays != null && targetDays > 0){
-								var perc = ((touredDays/targetDays)*100).toFixed(2) > 100.00?100.00:((touredDays/targetDays)*100).toFixed(2);
-								str+='<td>'+perc+' %</td>';
+							if(totalPerc !=null && totalPerc>0.0){
+								str+='<td>'+totalPerc/result.subList[0].subList3.length+' %</td>';
+							}else{
+								str+='<td> - </td>';
 							}
+							
 						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
@@ -925,18 +934,19 @@ function getCandidateList(designationId){
 		
 		str+='<table class="table table-bordered tableModal" id="membersOverviewTableId">';
 			str+='<thead>';
-				str+='<th class="bg_D8">Month & Date</th>';
+				str+='<th class="bg_D8">Month & Year</th>';
 				str+='<th class="bg_D8">Category</th>';
-				str+='<th class="bg_D8">District Name</th>';
+				
 				str+='<th class="bg_D8">Type</th>';
+				str+='<th class="bg_D8">Toured Days</th>';
 			str+='</thead>';
 			for(var i in result.subList2)
 			{
 				str+='<tr>';
 					str+='<td>'+result.subList2[i].tourDate+'</td>';
-					str+='<td>'+result.subList2[i].tourCategory+'</td>';
-					str+='<td>'+result.subList2[i].locationName+'</td>';
-					str+='<td style="position:relative">'+result.subList2[i].tourType+'<button class="btn editBtn btn-success btn-xs editTourRecordBtnCls" style="position:absolute;right:20px;" attr_id="'+result.subList2[i].id+'">View/Edit</button></td>';
+					str+='<td>'+result.subList2[i].tourCategory+'</td>';					
+					str+='<td style="position:relative">'+result.subList2[i].tourType+'</td>';
+					str+='<td>'+result.subList2[i].count+'<button class="btn editBtn btn-success btn-xs editTourRecordBtnCls" style="position:absolute;right:20px;" attr_id="'+result.subList2[i].id+'">View/Edit</button></td>';
 				str+='</tr>';
 			}
 			
