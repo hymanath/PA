@@ -1066,4 +1066,36 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> get2014And2016CadreCountDtls(List<Long> locValueList,Long memberLvl){
+	    StringBuilder queryStr = new StringBuilder();
+	    
+	   queryStr.append(" select distinct ");
+	   if(memberLvl.longValue() == 3L){
+		   queryStr.append(" model1.district.districtId, " +//0
+   		           " model1.district.districtName, ");//1
+	   }else if(memberLvl.longValue() == 4L){
+		   queryStr.append(" model1.constituencyId, " +//0
+   		           " model1.name, ");//1
+	   }
+	   
+	   queryStr.append(" model.cadre2014, " +//2
+	   				   " model.cadre2016, " +//3
+	   				   " model.newCadre, " +//4
+	   				   " model.renewalCadre " +//5
+	   		           " from TdpCadreLocationInfo model,Constituency model1 " +
+	   		           " where ");
+	   if(memberLvl.longValue() == 3L){
+		   queryStr.append(" model1.district.districtId=model.locationValue and ");
+	   }else if(memberLvl.longValue() == 4L){
+		   queryStr.append(" model1.constituencyId=model.locationValue and ");
+	   }
+	   queryStr.append(" model.locationScopeId = :memberLvl and model.locationValue in (:locValueList) ");
+	   queryStr.append(" and model1.deformDate is null and model1.electionScope.electionScopeId=2 and model.type='Total' " +
+	   	 	           " and model.cadre2016 is not null and model.cadre2016 > 0 ");
+	   
+	   Query query = getSession().createQuery(queryStr.toString());
+	   query.setParameter("memberLvl", memberLvl);
+	   query.setParameterList("locValueList", locValueList);
+	   return query.list();
+	}
 }

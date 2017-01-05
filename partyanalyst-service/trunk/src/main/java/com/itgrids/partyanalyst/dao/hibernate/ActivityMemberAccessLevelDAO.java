@@ -30,10 +30,26 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 		return query.list();
 	}
 	  public List<Object[]> getLocationLevelAndValuesByActivityMembersId(Long activityMemberId){
-		    StringBuilder queryStr = new StringBuilder();
+		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append("select model.userLevel.userLevelId,model.activityLocationValue from ActivityMemberAccessLevel model where model.isActive = 'Y' and model.activityMember.activityMemberId=:activityMemberId ");
 		   Query query = getSession().createQuery(queryStr.toString());
 		   query.setParameter("activityMemberId", activityMemberId);
 		   return query.list();
+	  }
+	  public List<Object[]> getMemberIdMemberLvlAndLocationValueByTdpCadre(Long tdpCadreId){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" Select " +
+		  				  " AMAL.activityMember.activityMemberId, " +
+		  				  " AMAL.activityMemberLevelId, " +
+		  				  " AMAL.activityLocationValue, " +
+		  				  " AMAL.activityMember.tdpCadre.firstname " +
+		  				  " from ActivityMemberAccessLevel AMAL " +
+		  				  " where AMAL.activityMember.tdpCadreId = :tdpCadreId " +
+		  				  " and AMAL.isActive = 'Y' " +
+		  				  " order by AMAL.activityMember.activityMemberId");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("tdpCadreId", tdpCadreId);
+		  return query.list();
+		  
 	  }
 }

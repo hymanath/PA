@@ -50,5 +50,10 @@ public class ActivityMemberDAO extends GenericDaoHibernate<ActivityMember,Long> 
 		query.setParameter("userId",userId);
 		return (Long)query.uniqueResult();
 	}
+	public Long checkForLeader(Long caderId){
+		Query query = getSession().createQuery(" select model.activityMemberId from ActivityMember model where model.tdpCadreId = :caderId ");
+		query.setParameter("caderId",caderId);
+		return (Long)query.uniqueResult();
+	}
 	
 }
