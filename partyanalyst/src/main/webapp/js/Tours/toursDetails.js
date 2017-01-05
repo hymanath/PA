@@ -1147,7 +1147,28 @@ function getCandidateList(designationId){
 					else 
 						strt+='<td><i class="fa fa-file-word-o" style="font-size:20px;color:blue"></i></td>';
 					strt+='<td>'+result.documentList[t].name+'</td>';
-					strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
+					
+					if(result.documentList[t].name != null && result.documentList[t].name.length > 0){
+							var fullName = result.documentList[t].name;
+							var nameArr = fullName.split(".");
+							var type = nameArr[1];
+							if(type=="pdf" || type=="PDF"){
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:20px;"/></span></td>';
+							}else if(type=="xls" ||type=="xlsx"){  
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:20px;"/></span></td>';       
+							}else if(type=="doc" || type=="docx"){
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/word.jpg" class="media-object" alt="" style="width:20px;"/></span></td>';         
+							}else if(type != null){  
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:20px;"/></span></td>';         
+							}           
+					}else{    
+						strt+='<td> - </td>';  
+					}
+					
+					/* strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>'; */
+					
+					
+					
 					strt+='<td><button type="button" class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
 				strt+='</tr>';
 			}
@@ -1168,10 +1189,9 @@ function getCandidateList(designationId){
 	
 	function buildNewTourRetrivalDetailsForNew(result,detailsNewId)
 	{		
+		//latest
 		$("#globalUpdateDayTourId").val(detailsNewId);
-		/* $("#globalUpdateHiddenDesignationId").val(result.designationId);
-		$("#globalUpdateHiddentdpCadreId").val(result.candDtlsId); */
-		
+	
 		var str='';
 		/* var temp = result.tourDate.split(' ')[0].split("-");
 		var date = temp[2]+"/"+temp[1]+"/"+temp[0]; */
@@ -1255,7 +1275,32 @@ function getCandidateList(designationId){
 					else 
 						strt+='<td><i class="fa fa-file-word-o" style="font-size:20px;color:blue"></i></td>';
 					strt+='<td>'+result.documentList[t].name+'</td>';
-					strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>';
+					
+					
+					if(result.documentList[t].name != null && result.documentList[t].name.length > 0){
+						
+							var fullName = result.documentList[t].name;
+							var nameArr = fullName.split(".");
+							var type = nameArr[1];
+							alert(type);
+							if(type=="pdf" || type=="PDF"){
+								
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';
+							}else if(type=="xls" ||type=="xlsx"){  
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';       
+							}else if(type=="doc" || type=="docx"){
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';         
+							}else if(type != null){  
+							alert(result.documentList[t].name);
+								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></span></td>';         
+							}           
+					}else{    
+						strt+='<td> - </td>';  
+					}
+					
+					/* strt+='<td><button type="button" class="viewPdfCls btn btn-success btn-xs" style="background-color:#fff; color:#4CAE4C" attr_doc_name="'+result.documentList[t].name+'">View</button></td>'; */
+					
+					
 					strt+='<td><button type="button" class="deletePdfCls btn btn-danger btn-xs" style="background-color:#fff; color:#F24236" attr_id="'+result.documentList[t].id+'">Delete</button></td>';
 				strt+='</tr>';
 			}
@@ -1416,9 +1461,9 @@ function getCandidateList(designationId){
 		});
 	});
 	
-	$(document).on("click",".viewPdfCls",function(){
+	/* $(document).on("click",".viewPdfCls",function(){
 		window.open(wurl+"/tour_documents/"+$(this).attr("attr_doc_name"));
-	});
+	}); */
 	
 	function getDesignationWiseOverAllData(fromDate,toDate,designationIds){
 		var jsObj = { 
@@ -1619,4 +1664,41 @@ function getCandidateList(designationId){
 			$(".addNewBlockBtnCls").text("Remove Day Wise Tours Block");
 			$(".addNewBlockBtnCls").removeClass("btn-success").addClass("btn-danger");
 		}
+	});
+	
+	$(document).on('click','.viewPdfCls',function(){
+		//$("#cdrModelId").modal("show");
+		var dbFilePath = $(this).attr("attr_filePath");         
+		var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		var extName = fileNameArr[1];
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#tourNewDocumentId").modal("hide");
+			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			
+			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}
+			if(extName.trim()=="jpg"){  
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}              
+			if(extName.trim()=="doc" || extName.trim()=="docx"){
+				$("#tourNewDocumentId").modal("show");
+				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
+				str += '</iframe>';
+			}
+			if(extName.trim()=="xls" || extName.trim()=="xlsx"){      
+				window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			}            
+			$("#tourNewDocumentBodyId").html(str);
+			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}      
 	});
