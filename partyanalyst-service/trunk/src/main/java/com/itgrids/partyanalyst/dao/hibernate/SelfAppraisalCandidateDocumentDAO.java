@@ -16,24 +16,22 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         	super(SelfAppraisalCandidateDocument.class);
         }
         
-        public List<Object[]> getSelfAppraisalDocumentDetails(Long candidateId,Long year,Long month){
+        public List<Object[]> getSelfAppraisalDocumentDetails(Long candidateId,Long toursMonthId){
         	
         	Query query = getSession().createQuery(" select model.selfAppraisalCandidateDocumentId,model.documentPath " +
         			"  from SelfAppraisalCandidateDocument model " +
         			" where model.isDeleted='N' " +
         			" and model.selfAppraisalCandidateId=:candidateId " +
-        			" and month(model.tourDate)=:month " +
-        			" and year(model.tourDate)=:year  ");
+        			" and selfAppraisalToursMonthId=:toursMonthId " );
         	
         	query.setParameter("candidateId", candidateId);
-        	query.setParameter("month", Integer.parseInt(month.toString()));
-        	query.setParameter("year", Integer.parseInt(year.toString()));
+        	query.setParameter("toursMonthId", toursMonthId);
         	
         	return query.list();
         	
         }
         
-        public List<Object[]> getDocumentsOfCandidates(Date fromDate,Date toDate,Set<Long> candidateIds){
+        public List<Object[]> getDocumentsOfCandidates(Date fromDate,Date toDate,Set<Long> candidateIds,List<Long> monthyearIds){
         	
         	StringBuilder str = new StringBuilder();
         	
@@ -45,8 +43,12 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         		str.append(" and model.selfAppraisalCandidateId in (:candidateIds) " ); 
         	}
         	
-        	if(fromDate !=null && toDate !=null){
+        	/*if(fromDate !=null && toDate !=null){
         		str.append(" and date(model.tourDate) between :fromDate and :toDate ");
+        	}*/
+        	
+        	if(monthyearIds !=null && monthyearIds.size()>0){
+        		str.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
         	}
         	
         	str.append(" group by model.selfAppraisalCandidateId ");
@@ -56,9 +58,13 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         	if(candidateIds !=null && candidateIds.size()>0){
         		query.setParameterList("candidateIds", candidateIds);
         	}
-        	if(fromDate !=null && toDate !=null){
+        	/*if(fromDate !=null && toDate !=null){
         		query.setDate("fromDate",fromDate);
         		query.setDate("toDate",toDate);
+        	}*/
+        	
+        	if(monthyearIds !=null && monthyearIds.size()>0){
+        		query.setParameterList("monthyearIds", monthyearIds);
         	}
         	
         	return query.list();
