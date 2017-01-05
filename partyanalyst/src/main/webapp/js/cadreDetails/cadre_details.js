@@ -8072,6 +8072,29 @@ function nominatedPostBuilingDetails(result){
 	 }
 	 else{
 		$("#nominatedDivId").css("display","none");
-		}
+	}
 }
+function checkIsLeader(isLeader){
+	if(isLeader == "leader"){
+		$("#cdrRegDtlsId").show();
+	}
+}
+$(document).on("click","#cdrRegDtlsId",function(){      
+	var cadreId = memberCadreId;
+	var jsObj ={ 
+			 tdpCadreId : cadreId
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getLeaderDtlsInfoAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				console.log(result);    
+			}else{      
+			           
+			}                 
+		});
+});
  
