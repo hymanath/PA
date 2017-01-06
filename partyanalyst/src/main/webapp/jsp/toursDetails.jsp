@@ -518,14 +518,26 @@ $(document).on("click",".closeRetrivalEditModalId",function(){
 	$("#retrivalEditModalId").modal('hide');
 	setTimeout(function(){
 		$("body").addClass('modal-open');
-		$("#membersOverviewModalEdit").modal('show');
+		//$("#membersOverviewModalEdit").modal('show');
+		
+		$('#membersOverviewModalEdit').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+		
 	},500);
 });
 $(document).on("click",".closeMembersOverviewModalEdit",function(){
 	$("#membersOverviewModalEdit").modal('hide');
 	setTimeout(function(){
 		$("body").addClass('modal-open');
-		$("#membersOverviewModal").modal('show');
+		//$("#membersOverviewModal").modal('show');
+		$('#membersOverviewModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
 	},500);
 });
 
@@ -534,7 +546,13 @@ var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 $(document).on("click",".submitedDataModal",function(){
-	$("#myModal").modal('show');
+	//$("#myModal").modal('show');
+	$('#myModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+	
 });
 
 if($(window).width() > 500)
@@ -676,8 +694,7 @@ if($(window).width() > 500)
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
 	});    
-	   
-	
+
 </script>
 </body>
 </html>
