@@ -166,15 +166,11 @@ public class CardPrintService implements ICardPrintService{
 			        	Date currentTime = dateUtilService.getCurrentDateAndTime();
 			        	ResultStatus rs = new ResultStatus();
 			        	 
-			        	//Constituency Print Status saving
-			        	ConstituencyPrintStatus constituencyPrintStatus = new ConstituencyPrintStatus();
-			        	constituencyPrintStatus.setConstituencyId(inputVO.getConstituencyId());
-			        	
+			        	Long vendorId = null;
 			        	if(inputVO.getUserId() != null && inputVO.getUserId() > 0l){
 			        		List<Long> printVendorsList = userPrintVendorDAO.getPrintVendorIdByUserId(inputVO.getUserId());
 			        		if(printVendorsList != null && printVendorsList.size() > 0){
-			        			Long vendorId = printVendorsList.get(0);
-			        			constituencyPrintStatus.setPrintVendorId(vendorId);
+			        			 vendorId = printVendorsList.get(0);
 			        		}else{
 			        			rs.setResultCode(0);
 			        			rs.setExceptionMsg("Vendor Is Not Mapped to This User.");
@@ -182,9 +178,26 @@ public class CardPrintService implements ICardPrintService{
 			        		}
 			        	}
 			        	
+			        	//Find saving or updating..
+			        	List<Long> constituencyIds = constituencyPrintStatusDAO.getConstituencyPrintStatus(inputVO.getConstituencyId()); 
+			        	Long constituencyPrintStatusId = null;
+			        	if(constituencyIds != null && constituencyIds.size() > 0){
+			        		constituencyPrintStatusId = constituencyIds.get(0);
+			        	}
+			        	
+			        	ConstituencyPrintStatus constituencyPrintStatus = null;
+			        	if(constituencyPrintStatusId != null && constituencyPrintStatusId.longValue() > 0l){
+			        		constituencyPrintStatus = constituencyPrintStatusDAO.get(constituencyPrintStatusId);
+			        	}else{
+			        		constituencyPrintStatus = new ConstituencyPrintStatus();
+			        		constituencyPrintStatus.setConstituencyId(inputVO.getConstituencyId());
+			        	}
+			        	constituencyPrintStatus.setPrintVendorId(vendorId);
 			        	constituencyPrintStatus.setPrintStatusId(inputVO.getPrintStatusId());
 			        	if(inputVO.getRemarks() != null && !inputVO.getRemarks().isEmpty()){
 			        		constituencyPrintStatus.setRemarks(inputVO.getRemarks());
+			        	}else{
+			        		constituencyPrintStatus.setRemarks(null);
 			        	}
 			        	constituencyPrintStatus.setUpdatedBy(inputVO.getUserId());
 			        	constituencyPrintStatus.setUpdatedTime(currentTime);
