@@ -20,11 +20,6 @@
 		<div class="col-md-3 col-sm-6 col-xs-12">
 			  <label>Constituency</label><span class="text-danger">*</span>
 			  <select class="form-control"  id="constituencyId">
-			  <option value="0">Please Select Constituency</option>
-			  <option value="1">Nandigama</option>
-			  <option value="2">Jaggaya Peta</option>
-			  <option value="3">Vijayawada Central</option>
-			  <option value="4">Kavali</option>
 			  </select>
 		 </div>
 		 
