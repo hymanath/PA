@@ -5482,10 +5482,10 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 				//remove extra constituency from Visakhapatnam dist
 				
 				if(isVisakhapatnamExist.equalsIgnoreCase("true")){//Visakhapatnam
-					locValueList = constituencyDAO.getConstituenciesIds(13L);
+					List<Long> locValueList1 = constituencyDAO.getConstituenciesIds(13L);
 					List<Long> extraConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);  
-					locValueList.removeAll(extraConstIds);
-					List<Object[]> list2 = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList,4L);
+					locValueList1.removeAll(extraConstIds);
+					List<Object[]> list2 = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList1,4L);
 					addOneMoreLocation(cadreCountsVOs,list2,"Visakhapatnam",designation,13L);
 				}  
 				
