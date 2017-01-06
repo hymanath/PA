@@ -1098,4 +1098,64 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 	   query.setParameterList("locValueList", locValueList);
 	   return query.list();
 	}
+	
+	public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
+	{
+		StringBuilder str = new StringBuilder();
+		if(yearId != null && yearId.longValue() == 3l){
+			if(locationtype.equalsIgnoreCase("Parliament"))
+				str.append(" select sum(model.cadre2014) ");
+			else
+				str.append(" select model.cadre2014 ");	
+				
+		}else if(yearId != null && yearId.longValue() == 4l){
+			if(locationtype.equalsIgnoreCase("Parliament"))
+				str.append(" select sum(model.cadre2016) ");
+			else
+				str.append(" select model.cadre2016 ");
+		}
+		str.append(" from TdpCadreLocationInfo model where model.type='Total' " );
+		
+		    if(locationtype.equalsIgnoreCase("Constituency"))
+			 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 4 ");
+			
+			else if(locationtype.equalsIgnoreCase("Mandal"))
+				 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 5 ");
+			
+			
+			else if(locationtype.equalsIgnoreCase("Panchayat"))
+				 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 6 ");
+			
+			
+			else if(locationtype.equalsIgnoreCase("Booth"))
+				 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 9 ");
+		    
+			else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 7 ");
+		    
+			else if(locationtype.equalsIgnoreCase("District"))
+			 str.append(" and model.locationValue =:locationId  and model.locationScopeId = 3 ");
+		    
+			else if(locationtype.equalsIgnoreCase("Parliament"))
+			  str.append("  and model.locationValue in (:constituencyIdsList) ");
+		    
+		  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+			str.append(" and model.locationValue =:constituencyId  and model.locationScopeId = 4 "); 
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		if(!locationtype.equalsIgnoreCase("Parliament"))
+		  query.setParameter("locationId", locationId);
+		
+		
+	   if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+		query.setParameter("constituencyId", constituencyId);
+	   
+	   if(constituencyIdsList != null && locationtype.equalsIgnoreCase("Parliament"))
+		  query.setParameterList("constituencyIdsList", constituencyIdsList);  
+	   
+		return (Long) query.uniqueResult();		
+		
+	}
 }
