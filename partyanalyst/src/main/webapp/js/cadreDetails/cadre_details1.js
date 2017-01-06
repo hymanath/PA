@@ -1453,6 +1453,6 @@ function buildVolunteersDetails(result){
 	
 	$(document).on("click",".alertsDetailsCls",function(){
 		var attr_alert_id = $(this).attr('attr_alert_id');
-		window.open('alertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
+		window.open('cadreAlertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
 		
 	});
