@@ -188,5 +188,5 @@ public interface IWebServiceHandlerService {
     public String getAlertStatusOfArticle(Long articleId);
     public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
     public PeshiAppGrievanceVO getPeshiAppGrievanceDetails(String fromDateStr,String toDateStr,String membershipId);
-    public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType);
+    public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType,String voterId,String mobileNoStr);
 }
