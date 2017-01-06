@@ -8087,9 +8087,9 @@ $(document).on("click","#cdrRegDtlsId",function(){
 	  
 	var cadreId = memberCadreId;
 	var jsObj ={ 
-			 tdpCadreId : cadreId                            
-		};
-		$.ajax({
+			 tdpCadreId : cadreId                                
+		};   
+		$.ajax({  
 			type : 'POST',
 			url : 'getLeaderDtlsInfoAction.action',
 			dataType : 'json',
@@ -8102,32 +8102,40 @@ $(document).on("click","#cdrRegDtlsId",function(){
 			           
 			}                 
 		});
-});
+});  
 function buildLeadersCadreDtlsReport(result){
 	for(var i in result){
 		buildUniqueDesignationCadreReport(result[i],i,0,0);
-		$("#enrolementTitleId"+i).html("CADRE ENROLEMENTS DETAILED VIEW-<b>"+result[i][0].superlocationName+"</b>");  
+		$("#enrolementTitleId"+i).html("CADRE ENROLLEMENTS DETAILED VIEW-<b>"+result[i][0].candidataName+"["+result[i][0].superlocationName+"]</b>");  
 	}  
 }
-function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
+function buildUniqueDesignationCadreReport(result,i,idx1,idx2){  
 	if(result != null && result.length > 0){
+		var cadre2014 = 0;
+		var cadre2016 = 0;
+		var newCadre = 0;
+		var renewalCadre = 0;
 		var str = '';            
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
-			str+='<thead>';
+			str+='<thead style="background-color:#E9E9E9">';
 				if(i==100){
 					str+='<th>CONSTITUENCY</th>';
 				}else{
 					str+='<th>LOCATION</th>'; 
 				}
-				str+='<th>2014-16 ENROLMENT</th>';
-				str+='<th>2016-18 ENROLMENT</th>';
+				str+='<th>2014-16 ENROLLMENT</th>';
+				str+='<th>2016-18 ENROLLMENT</th>';
 				str+='<th>2016-18 NEW</th>';
 				str+='<th>2016-18 RENEWAL</th>';
-				str+='<th>2014-16 vs 2016-18 ENROLMENT %</th>';
+				str+='<th>2014-16 vs 2016-18 ENROLLMENT %</th>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var j in result){
+				cadre2014 = cadre2014 + result[j].previousCadreCount;
+				cadre2016 = cadre2016 + result[j].cadreCount;
+				newCadre = newCadre + result[j].newCadre;
+				renewalCadre = renewalCadre + result[j].renewalCadre;
 				str+='<tr>';
 					if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
 						str+='<td><span class="consituencyRowsCls" attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;"><u>'+result[j].name+'</u></span></td>';
@@ -8143,11 +8151,22 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 				str+='</tr>';
 				if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
 					str+='<tr class="consituencyRowsHide hide consituencyRows'+i+j+'">';
-						str+='<td colspan="6" class="consituencyRowsStr consituencyRowsStr'+i+j+'"></td>';  
+						str+='<td style="background-color:#F0E6DA;box-shadow:inset 0px 0px 5px 5px rgba(0,0,0,0.4);" colspan="6" class="consituencyRowsStr consituencyRowsStr'+i+j+'"></td>';  
 					str+='</tr>'; 
 				}
 				         
 			}
+			str+='<tr>';
+				str+='<td>TOTAL ENROLLMENT</td>';      
+				str+='<td>'+cadre2014+'</td>';
+				str+='<td>'+cadre2016+'</td>';
+				var newPercent = newCadre * (100/cadre2016);
+				str+='<td>'+newCadre+'('+newPercent.toFixed(2)+'%)</td>'; 
+				var renewalPercent = renewalCadre * (100/cadre2016);				
+				str+='<td>'+renewalCadre+'('+renewalPercent.toFixed(2)+'%)</td>';
+				var totalPercent = cadre2016 * (100/cadre2014);
+				str+='<td>'+totalPercent.toFixed(2)+'%</td>';      
+			str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
 		str+='</div>';    
@@ -8162,16 +8181,24 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 	}
 }
 
-$(document).on("click",".consituencyRowsCls",function(){    
+$(document).on("click",".consituencyRowsCls",function(){ 
+	 
+	var status = $(this).parent().parent().next('tr').hasClass("hide");
+	if(status == false){ 
+		$(".consituencyRowsHide").find(".consituencyRowsStr").html(' ');
+		$(".consituencyRowsHide").addClass('hide'); 
+		return;        
+	}
 	var rowClsName = $(this).attr("attr_rowId");
 	var distId = $(this).attr("attr_loc_id");
 	var idx1 = $(this).attr("attr_idx_1");
-	var idx2 = $(this).attr("attr_idx_2");
-	//$(".consituencyRowsHide").addClass('hide');
+	var idx2 = $(this).attr("attr_idx_2");   
+	
+	$(".consituencyRowsHide").addClass('hide');
 	$(".consituencyRowsHide").find(".consituencyRowsStr").html(' ');
 	$("tr."+rowClsName).removeClass('hide');
-	$("tr."+rowClsName).toggle();  
-	getConstituencyDtls(distId,idx1,idx2);
+	$(".consituencyRowsStr"+idx1+idx2).html('<center><img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;"></center>');
+	getConstituencyDtls(distId,idx1,idx2);  
 });
 function getConstituencyDtls(distId,idx1,idx2){
 	var jsObj ={ 
@@ -8183,6 +8210,7 @@ function getConstituencyDtls(distId,idx1,idx2){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$(".consituencyRowsStr"+idx1+idx2).html('');  
 			if(result != null && result.length > 0){  
 				buildUniqueDesignationCadreReport(result,100,idx1,idx2);    
 			}else{      
