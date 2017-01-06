@@ -81,6 +81,7 @@ body
             </div>
         </div>
 </section>
+<!--
  <footer>
  	<div class="container">
     	<div class="row">
@@ -91,7 +92,7 @@ body
         </div>
     </div>
  </footer>  	
-
+-->
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <!--<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
