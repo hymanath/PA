@@ -5573,8 +5573,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	 */	
 	public String checkForLeader(Long cadreId){
 		try{
-			Long activityMemberId = activityMemberDAO.checkForLeader(cadreId);
-			if(activityMemberId != null){
+			List<Long> activityMemberId = activityMemberDAO.checkForLeader(cadreId);
+			if(activityMemberId != null && activityMemberId.size() > 0){
 				return "leader";
 			}else{
 				return "nonLeader";
