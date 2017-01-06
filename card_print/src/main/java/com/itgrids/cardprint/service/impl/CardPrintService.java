@@ -210,7 +210,7 @@ public class CardPrintService implements ICardPrintService{
 		}catch(Exception e){
 			LOG.error("exception Occurred at saveConstituencyPrintStatus() in CardPrintService class ", e); 
 			status.setResultCode(0);
-			status.setExceptionMsg("failure");
+			status.setExceptionMsg("Exception Occurred.Try Later..");
 		}
 		return status;
 	}
