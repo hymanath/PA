@@ -33,7 +33,7 @@ body
             <div class="row">
                     <!-- <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">-->
                 <div class="col-md-12 col-xs-12 text-center col-sm-12 m_top10">
-                     <h3 class="m_0  text-bold header_text_color">PRINTING APPLICATION</h3>
+                     <h3 class="m_0  text-bold header_text_color">TDP MEMBERSHIP CARD PRINTING</h3>
                     <!--<h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3>-->
                     <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4>-->
                 </div>
