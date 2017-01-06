@@ -1139,8 +1139,8 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 			else if(locationtype.equalsIgnoreCase("Parliament"))
 			  str.append("  and model.locationValue in (:constituencyIdsList) ");
 		    
-		  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
-			str.append(" and model.locationValue =:constituencyId  and model.locationScopeId = 4 "); 
+		 // if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+			//str.append(" and model.locationValue =:constituencyId  and model.locationScopeId = 4 "); 
 		
 		Query query = getSession().createQuery(str.toString());
 		
@@ -1149,8 +1149,8 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		  query.setParameter("locationId", locationId);
 		
 		
-	   if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
-		query.setParameter("constituencyId", constituencyId);
+	  // if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+		//query.setParameter("constituencyId", constituencyId);
 	   
 	   if(constituencyIdsList != null && locationtype.equalsIgnoreCase("Parliament"))
 		  query.setParameterList("constituencyIdsList", constituencyIdsList);  
