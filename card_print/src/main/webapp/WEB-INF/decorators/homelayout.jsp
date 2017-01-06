@@ -34,12 +34,15 @@
                     <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4> -->
 					
 					<div class="dropdown pull-right">
-					  <button id="dLabel" class="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Menu
-						<span class="caret"></span>
+					
+					  <button id="dLabel" class="btn btn-danger  btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span style="font-size: 14px;">	MENU </span>&nbsp;&nbsp;
+						<i class="glyphicon glyphicon-align-justify" style="color:#fff"></i>
 					  </button>
-					  <ul class="dropdown-menu" aria-labelledby="dLabel" style="padding: 10px;">
-						<li><a tabindex="-1" href="logoutAction.action">Sign Out</a></li>
+					  <ul class="dropdown-menu line_heightapply" aria-labelledby="dLabel" style="padding: 10px;">
+					  <li class="m_top10"><a tabindex="-1" href="adminCardPrintAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;Admin Page</a></li>
+					   <li class="m_top10"><a tabindex="-1" href="cardPrintUpdationAction.action"><span class="glyphicon glyphicon-saved"></span>&nbsp;&nbsp;Updating Status</a></li>
+						<li class="m_top10"><a tabindex="-1" href="logoutAction.action"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Sign Out</a></li>
 					  </ul>
 					</div>
 
@@ -54,9 +57,7 @@
 
 <decorator:body/>
 
-<script>
 
-</script>
 </body>
 </html>
 
