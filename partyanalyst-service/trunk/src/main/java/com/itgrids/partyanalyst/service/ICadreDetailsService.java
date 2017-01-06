@@ -50,7 +50,7 @@ public interface ICadreDetailsService {
 	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
 	public List<CandidateDetailsVO>  getCandidateElectDetatails(Long cadreId);
 	
-	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId,Long pcId,String pcType,Long yearId,Long publicationId);
+	public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long cadreId,Long pcId,String pcType,Long yearId,Long publicationId,Long boothId);
 	
 	public List<RegisteredMembershipCountVO> getElectionPerformanceInCadreLocation(Long tdpCadreId,String voterCardNo);
 	

@@ -2491,7 +2491,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	
 	
 	
-  public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long tdpCadreId,Long pcId,String pcType,Long yearId,Long publicationId)
+  public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long tdpCadreId,Long pcId,String pcType,Long yearId,Long publicationId,Long boothId)
   {
 	 RegisteredMembershipCountVO countVO = new RegisteredMembershipCountVO();
 	  try{
@@ -2646,14 +2646,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					 if(userAddress1.getBoothId() != null && userAddress1.getBoothId() != null)
 					 {
-						if(boothId_2014 != null && boothId_2014.longValue()>0L){
+						if(boothId != null && boothId.longValue()>0L){
 							//if(countVO.getBoothCount() == null ) // only we are showing 11 publication booth cadre membership perc.
 								countVO.setBoothCount(0L);
 						//	if(countVO.getBoothTotVoters() == null )
 								countVO.setBoothTotVoters(0L);
 							
-							Long membershipCount = getMemberShipCount("Booth", boothId_2014, electionYear, constituencyId,null,yearId);
-							Long voterCount = getTotalAvailableVotersByLocationId(boothId_2014, "booth", null, constituencyId,null);
+							Long membershipCount = getMemberShipCount("Booth", boothId, electionYear, constituencyId,null,yearId);
+							Long voterCount = getTotalAvailableVotersByLocationId(boothId, "booth", null, constituencyId,null);
 							if(membershipCount != null && membershipCount.longValue()>0L)
 								countVO.setBoothCount(countVO.getBoothCount()+membershipCount);
 							if(voterCount != null && voterCount.longValue()>0L)
