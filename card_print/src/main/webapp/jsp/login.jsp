@@ -16,9 +16,9 @@
 <style type="text/css">
 body
 {
-	background:url(dist/img/login-box.png);
-	background-size:cover;
-	bottom:0;
+	background:#ffcc2d url(dist/img/TDP-BG.png) repeat scroll 0 0;
+	
+	
 }
 .img-login{
 	display: block;  margin-left: auto;margin-right: auto;margin-top:10px
@@ -45,22 +45,22 @@ body
         <div class="container">
             <div class="row">
                 
-                <div class="col-md-12 col-xs-12 col-sm-12" style="padding:15px">
+               <!-- <div class="col-md-12 col-xs-12 col-sm-12" style="padding:15px">
                 	<h4 class="m_0 text-bold text-center">WELCOME USER</h4>
                     <h4 class="m_0 text-center">PLEASE ENTER USERNAME AND PASSWORD</h4>
-                </div>
-                <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2">
-                	<div class="login-box">
+                </div> -->
+                <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2" style="margin-top:100px">
+                	<div class="login-box" style="height:300px">
                     	<div class="row">
                         	<div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-8 col-sm-offset-2">
-                                <label>USER NAME  <span id="userNameError" style="color:red"></span></label>
+                                <label class="m_top20">USER NAME  <span id="userNameError" style="color:red"></span></label>
                                 <div class="input-group input-g">
                                 	<span class="input-group-addon ">
 	                                    <img src="dist/img/username.png" alt="user">
                                     </span>
                                 	<input type="text" class="form-control" id="uname" placeholder="Username">
                                 </div>
-                                <label>PASSWORD  <span id="passwordError" style="color:red"></span></label>
+                                <label class="m_top20">PASSWORD  <span id="passwordError" style="color:red"></span></label>
                                 <div class="input-group input-g">
                                 	<span class="input-group-addon ">
 	                                    <img src="dist/img/password.png" alt="user">
@@ -69,9 +69,9 @@ body
                                 </div>
 	                        </div>
 							
-                            <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-8 col-sm-offset-2">
+                            <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-8 col-sm-offset-2 m_top20">
 							<div id="successDiv"></div>
-                            	<button onclick="checkUserLogin()" class="btn btn-success btn-upload btn-block m_top10">
+                            	<button onclick="checkUserLogin()" class="btn btn-success btn-upload btn-block m_top10" style="background:#449D44">
                                 	<img src="dist/img/login.png">LOGIN
 									<img src="images/ajax-loader.gif" style="padding-left:10px;display:none;" width="25" height="15" id="processingImg"/></button>
                             </div>
