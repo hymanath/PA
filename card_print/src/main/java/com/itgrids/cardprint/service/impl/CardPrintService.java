@@ -388,8 +388,8 @@ public class CardPrintService implements ICardPrintService{
 			    
 			Client client = Client.create(clientConfig);
 			
-			String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
-			 // String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
+			//String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
+			 String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
 	        WebResource resource = client.resource(UrlPath);
 	        PrintUpdateDetailsStatusVO reponse = resource.accept("application/json").type("application/json").post(PrintUpdateDetailsStatusVO.class, inputList);
 	        resulCode = reponse.getResultCode();
