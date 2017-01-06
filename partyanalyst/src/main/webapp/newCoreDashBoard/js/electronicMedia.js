@@ -41,6 +41,59 @@ $(document).on("click",".emnIconExpand",function(){
 		$(".dateRangePickerClsForEmn").addClass("hide");
 		$(".moreBlockEMN,.selectEmnCate,.newEmnHideCls").hide();
 	}
+	
+	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForEvents").toggleClass("hide");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+		$(".dateRangePickerClsForAttendance").toggleClass('hide');
+		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
+			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert").hide();
+			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
+				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}
 });
 $(document).on("click",".moreEmnBlocksIcon",function(){
 	
