@@ -796,7 +796,12 @@ function getCandidateList(designationId){
 	  $("#overAllLeaderDivId").html(str);
 	}
 	$(document).on("click",".getSubMitedLeadersDtlsCls",function(){
-		$("#membersOverviewModal").modal('show');
+		//$("#membersOverviewModal").modal('show');
+		$('#membersOverviewModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
 		
 		var desigName = $(this).attr("attr_desig_name");
 		$("#membersOverviewModalLabel").html(desigName+" OVERVIEW");
@@ -804,7 +809,13 @@ function getCandidateList(designationId){
 		$("#memDtlsId").html(""); 
 		$("#desigDtlsProcessImgId").show();  
 		$("#memDtlsProcessImgId").show();   		
-		$("#myModal").modal("show");  
+		//$("#myModal").modal("show");  
+		
+		$('#myModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
 		
 		var desigId = $(this).attr("attr_designation_id");
 		var dates=$("#toursDateRangePickerNew").val();    
@@ -884,7 +895,15 @@ function getCandidateList(designationId){
 	}
 	
 	$(document).on("click",".editModalBtn",function(){
-		$("#membersOverviewModalEdit").modal('show');
+		//$("#membersOverviewModalEdit").modal('show');
+		
+		$('#membersOverviewModalEdit').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+		
+		
 		var designationId = $(this).attr("attr_designation_id");
 		var dates=$("#toursDateRangePickerNew").val();    
 		var name = $(this).attr("attr_name");
@@ -982,7 +1001,12 @@ function getCandidateList(designationId){
 	}
 
 	$(document).on("click",".editTourRecordBtnCls",function(){
-		$("#retrivalEditModalId").modal("show");
+		//$("#retrivalEditModalId").modal("show");
+		$('#retrivalEditModalId').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
 		$("#retriveModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var detailsNewId = $(this).attr("attr_id");//detailsNewId
 		
@@ -1282,6 +1306,7 @@ function getCandidateList(designationId){
 							var fullName = result.documentList[t].name;
 							var nameArr = fullName.split(".");
 							var type = nameArr[1];
+							
 							if(type=="pdf" || type=="PDF"){
 								
 								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';
@@ -1290,7 +1315,6 @@ function getCandidateList(designationId){
 							}else if(type=="doc" || type=="docx"){
 								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></span></td>';         
 							}else if(type != null){  
-							alert(result.documentList[t].name);
 								strt+='<td id="showPdfId" attr_filePath="'+result.documentList[t].name+'" style="cursor:pointer;" class="viewPdfCls"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></span></td>';         
 							}           
 					}else{    
@@ -1679,17 +1703,38 @@ function getCandidateList(designationId){
 		}else{
 			
 			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
-				$("#tourNewDocumentId").modal("show");
+				//$("#tourNewDocumentId").modal("show");
+				
+				$('#tourNewDocumentId').modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				
+				
 				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
 				str += '</iframe>';
 			}
 			if(extName.trim()=="jpg"){  
-				$("#tourNewDocumentId").modal("show");
+				//$("#tourNewDocumentId").modal("show");
+				$('#tourNewDocumentId').modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				
 				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
 				str += '</iframe>';
 			}              
 			if(extName.trim()=="doc" || extName.trim()=="docx"){
-				$("#tourNewDocumentId").modal("show");
+				//$("#tourNewDocumentId").modal("show");
+				
+				$('#tourNewDocumentId').modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				
 				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
 				str += '</iframe>';
 			}
