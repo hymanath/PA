@@ -5372,6 +5372,11 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 			//create a map for activity member id and member level.
 			Map<Long,Long> memIdAndMemLvlIdMap = new HashMap<Long,Long>();
 			Set<Long> activityMemIdList = new HashSet<Long>();
+			
+			//create a map for activityMemberId and access level id
+			
+			Map<Long,Long> activityMemIdAndUserLvlIdMap = new HashMap<Long,Long>();
+			
 			/*
 			activity_member_id		activity_member_level_id	activity_location_value
 			1						3							11
@@ -5389,10 +5394,12 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 					}
 					locValueList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
 					memIdAndMemLvlIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					activityMemIdAndUserLvlIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[4]));
 					activityMemIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
 			}
 			Map<Long,String> memIdAndDesigMap = new HashMap<Long,String>();
+			Map<Long,Long> memIdAndUserTypeIdMap = new HashMap<Long,Long>();
 			/*
 			 activity_member_id		user_type_id	type
 			 1						3				GENERAL SECRETARY
@@ -5401,6 +5408,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 			if(desigList != null && desigList.size() > 0){
 				for(Object[] param : desigList){
 					memIdAndDesigMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+					memIdAndUserTypeIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
 				}
 			}
 			
@@ -5409,6 +5417,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 			List<List<CadreCountsVO>> finalList = new ArrayList<List<CadreCountsVO>>();
 			Long memberLvl = 0L;
 			String designation = "";
+			Long userTypeId = 0L;
+			Long userLvlId = 0L;
 			List<Long> locationIds = new ArrayList<Long>();
 			if(activityMemIdList != null && activityMemIdList.size() > 0){
 				for(Long activityMemId : activityMemIdList){
@@ -5416,6 +5426,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 					locValueList = memIdAndLocValueMap.get(activityMemId);
 					memberLvl = memIdAndMemLvlIdMap.get(activityMemId);
 					designation = memIdAndDesigMap.get(activityMemId);
+					userTypeId = memIdAndUserTypeIdMap.get(activityMemId);
+					userLvlId = activityMemIdAndUserLvlIdMap.get(activityMemId);
 					if(memberLvl.longValue() == 2L){//for state access
 						if(locValueList != null && locValueList.size() > 0){
 							for(Long locationId : locValueList){
@@ -5426,18 +5438,18 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									locationIds.addAll(Arrays.asList(IConstants.TS_NEW_DISTRICTS_IDS));
 								}
 							}
-							prepairResult(locationIds,3L,cadreCountsVOs,designation,candidateName,"dist");  
+							prepairResult(locationIds,3L,cadreCountsVOs,designation,candidateName,"dist",userTypeId,userLvlId);  
 						}
 					}else if(memberLvl.longValue() == 4L){//for parliament constituency access
 						if(locValueList != null && locValueList.size() > 0){
 							locationIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(locValueList);
-							prepairResult(locationIds,4L,cadreCountsVOs,designation,candidateName,"const");
+							prepairResult(locationIds,4L,cadreCountsVOs,designation,candidateName,"const",userTypeId,userLvlId);
 						}
 					}else{//for dist and assembly constituency access
 						if(memberLvl.longValue() == 5l){
-							prepairResult(locValueList,4L,cadreCountsVOs,designation,candidateName,"const");
+							prepairResult(locValueList,4L,cadreCountsVOs,designation,candidateName,"const",userTypeId,userLvlId);
 						}else{
-							prepairResult(locValueList,memberLvl,cadreCountsVOs,designation,candidateName,"dist");
+							prepairResult(locValueList,memberLvl,cadreCountsVOs,designation,candidateName,"dist",userTypeId,userLvlId);
 						}
 						
 					}
@@ -5452,7 +5464,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		}
 		return null;  
 	}
-	public void prepairResult(List<Long> locValueList,Long memberLvl,List<CadreCountsVO> cadreCountsVOs, String designation, String candidateName,String type){
+	public void prepairResult(List<Long> locValueList,Long memberLvl,List<CadreCountsVO> cadreCountsVOs, String designation, String candidateName,String type,Long userTypeId,Long userLvlId){
 		try{
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			CadreCountsVO cadreCountsVO = null;
@@ -5477,6 +5489,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 					cadreCountsVO.setNewCadre(commonMethodsUtilService.getLongValueForObject(param[4]));
 					cadreCountsVO.setRenewalCadre(commonMethodsUtilService.getLongValueForObject(param[5]));
 					cadreCountsVO.setSuperlocationName(designation);//designation
+					cadreCountsVO.setDesignationId(userTypeId);
+					cadreCountsVO.setAccessLvlId(userLvlId);
 					cadreCountsVOs.add(cadreCountsVO);
 				}
 				//remove extra constituency from Visakhapatnam dist
@@ -5544,7 +5558,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 				locValueList = constituencyDAO.getConstituenciesIds(distId);
 			}
 			List<CadreCountsVO> cadreCountsVOs = new ArrayList<CadreCountsVO>();
-			prepairResult(locValueList,4L,cadreCountsVOs,"","","");
+			prepairResult(locValueList,4L,cadreCountsVOs,"","","",0L,0L);
 			return cadreCountsVOs;
 			
 		}catch(Exception e){
