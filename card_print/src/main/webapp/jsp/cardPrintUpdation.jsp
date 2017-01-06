@@ -14,37 +14,48 @@
 <body>
 
 <div class="container" style="margin-top:20px;">
-    
-	<div class ="row" >
-	     <div id="errDivId" style="color:red; margin-left:13px;"></div>
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			  <label>Constituency</label><span class="text-danger">*</span>
-			  <select class="form-control"  id="constituencyId">
-			  </select>
-		 </div>
-		 
-		 <div class="col-md-3 col-sm-6 col-xs-12">
-			  <label>Print Status</label><span class="text-danger">*</span>
-			  <select class="form-control" id="printStatusId">
-			  </select>
-		 </div>
-		 
-	</div>
-	<div class ="row"> 
-		<div class="col-md-6 col-sm-12 col-xs-12">
-			<label>Remarks</label><span class="text-danger">*</span>
-			<textarea class="form-control" rows="3" id="remarksId"></textarea>
+<div class="col-md-8 col-xs-12 col-sm-12 col-md-offset-2">
+    <div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title">UPDATE CONSTITUENCY CARD PRINT STATUS</h3>
+	  </div>
+	  <div class="panel-body">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class ="row" >
+				 <div id="errDivId" style="color:red; margin-left:13px;"></div>
+				<div class="col-md-5 col-sm-6 col-xs-12">
+					  <label>Constituency</label><span class="text-danger">*</span>
+					  <select class="form-control"  id="constituencyId">
+					  </select>
+				 </div>
+				 
+				 <div class="col-md-5 col-sm-6 col-xs-12">
+					  <label>Print Status</label><span class="text-danger">*</span>
+					  <select class="form-control" id="printStatusId">
+					  </select>
+				 </div>
+				 
+			</div>
+			<div class ="row"> 
+				<div class="col-md-10 col-sm-12 col-xs-12">
+					<label>Remarks</label><span class="text-danger">*</span>
+					<textarea class="form-control" rows="3" id="remarksId"></textarea>
+				</div>
+			</div>
+			<div class ="row" style="margin-top:10px;">
+				 <div class="col-md-3 col-sm-6 col-xs-12">
+				  <input type="button" class="buttonCls btn btn-success" value="Update" id="submitButtnId"></input>
+				</div>
+				 <div class="col-md-8 col-sm-6 col-xs-12 m_top10">
+					<h4 id="successMsgId"></h4>
+				 </div>
+			</div>
 		</div>
+	  </div>
 	</div>
-	<div class ="row" style="margin-top:10px;">
-		 <div class="col-md-3 col-sm-6 col-xs-12">
-		  <input type="button" class="buttonCls btn btn-success" value="submit" id="submitButtnId"><span id="successMsgId"></span></input>
-		</div>
 	</div>
 	
-	<!-- <div class ="row" style="margin-top:10px;">
-	   <input type="button" class="buttonCls btn btn-success" value="updatePrintDetailsToTdpCadreCardPrint" onclick="updatePrintDetailsToTdpCadreCardPrint()"></input>	
-	</div> -->
+	
 	
 	
 </div>
@@ -56,18 +67,7 @@
 
 getAllPrintStatusDetails();
 getAllAssemblyConstituencies();
-
-	/*function updatePrintDetailsToTdpCadreCardPrint(){
-		var jsObj = { constituencyId:120 }
-		$.ajax({
-			 type:'POST',
-			 url:'updatePrintDetailsToTdpCadreCardPrintAction.action',
-			 dataType: 'json',
-			 data: {task:JSON.stringify(jsObj)}
-		  }).done(function(result){
-			  alert("success");
-		  })
-	}*/
+	
 function getAllAssemblyConstituencies(){
 	$.ajax({
 	     type:'GET',
@@ -101,6 +101,8 @@ function getAllPrintStatusDetails(){
 
 	$('#submitButtnId').click(function(){
 		
+		$("#successMsgId").html('');
+		
 		var constituencyId = $('#constituencyId').val();
 		var printStatusId = $('#printStatusId').val();
 		var remarks = $('#remarksId').val().trim();
@@ -130,34 +132,30 @@ function getAllPrintStatusDetails(){
 		}
 		
 		$.ajax({
-	     type:'GET',
+	     type:'POST',
          url:'saveConstituencyPrintStatusAction.action',
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
-		  
-		  $('#constituencyId').val(0);
-		  $('#printStatusId').val(0);
-		  $('#remarksId').val(' ');
-		    
-		  if(result != null){
-			if(result.exceptionMsg =='success'){
-			setTimeout(function () {
-			$("#successMsgId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
-			}, 500);  
-			 $("#successMsgId").show();
-		     $("#successMsgId").html("");
+		  if(result != null)
+		  {
+			
+			if(result.resultCode == 0){
+				$("#successMsgId").html("<span style='color:red'>"+result.exceptionMsg+"</span>");
 			}else{
-			setTimeout(function () {
-			$("#successMsgId").html("<center style='color: green; font-size: 16px;'>Failed</center>").fadeOut(3000);
-			}, 500);  
-			$("#successMsgId").show();
-			$("#successMsgId").html("");
+				  $("#successMsgId").html("<span style='color:green'>Constituency Details Updated Successfully.</span>").fadeOut(6000);
+				  clearFields();
 			}
 		  }
 	  })
 		
 	});
+	
+	function clearFields(){
+	  $('#constituencyId').val(0);
+	  $('#printStatusId').val(0);
+	  $('#remarksId').val(' ');
+	}
 </script>
 
 </body>
