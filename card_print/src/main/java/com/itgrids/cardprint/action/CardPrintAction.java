@@ -119,7 +119,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			if(user == null || user.getUserId() == null){
 			    resultStatus = new ResultStatus();
 				resultStatus.setResultCode(0);
-				resultStatus.setExceptionMsg("USER HAS LOGGED OUT.PLEASE SIGN IN..");
+				resultStatus.setExceptionMsg("USER HAS LOGGED OUT. PLEASE SIGN IN..");
 				return Action.SUCCESS;
 			}
 			
