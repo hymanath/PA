@@ -726,5 +726,6 @@
 		<pattern>/cardPrintingStatusAction*</pattern>
 		<pattern>/cardPrintAdminAction*</pattern>
 		<pattern>/cardPrintPostVerificationAction*</pattern>
+		<pattern>/cadreAlertDetailsAction*</pattern>
 	</decorator> 
 </decorators>
