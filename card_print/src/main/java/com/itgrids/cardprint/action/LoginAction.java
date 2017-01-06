@@ -166,6 +166,7 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 	public String logout(){
 		try{
 	       session = request.getSession();
+	       session.setAttribute("loginStatus", "out");
 	       session.removeAttribute("USER");
 	       session.invalidate();
 		   return Action.SUCCESS;
