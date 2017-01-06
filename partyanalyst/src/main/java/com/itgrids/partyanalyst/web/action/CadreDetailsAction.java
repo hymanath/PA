@@ -767,6 +767,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			Long pcId =null;
 			String pcType = null;
 			Long yearId =null;
+			Long boothId =null;
 			Long publicationId=null;
 			String pcidString=request.getParameter("pcId");
 			if(pcidString.trim().length()>0){
@@ -775,8 +776,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			}
 			 yearId = Long.parseLong(request.getParameter("yearId"));
 			 publicationId = Long.parseLong(request.getParameter("publicationId"));
+			 boothId = Long.parseLong(request.getParameter("boothId"));
 			
-			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")),pcId,pcType,yearId,publicationId);
+			membershipCountVO = cadreDetailsService.getTotalMemberShipRegistrationsInCadreLocation(new Long(request.getParameter("tdpCadreId")),pcId,pcType,yearId,publicationId,boothId);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getTotalMemberShipRegistrationsInCadreLocation() method, Exception - ",e);
