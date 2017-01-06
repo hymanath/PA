@@ -11,5 +11,5 @@ public interface IActivityMemberDAO extends GenericDao<ActivityMember,Long>{
 	public List<Object[]> getLoggedInUserBasicDetails(Long userId);
 	public List<Object[]> getActivityMemberDetails(Long activityMemberId);
 	public Long findActivityMemberIdByUserId(Long userId);
-	public Long checkForLeader(Long caderId);
+	public List<Long> checkForLeader(Long caderId);
 }
