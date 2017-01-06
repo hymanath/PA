@@ -2943,6 +2943,7 @@
 		 <property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO" />
 		 <property name="tdpCadreHealthReportDAO" ref="tdpCadreHealthReportDAO" />	
 		  <property name="volunteersCadreDetailsDAO" ref="volunteersCadreDetailsDAO" />
+		  <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
