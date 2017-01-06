@@ -12,6 +12,8 @@ public class CadreCountsVO implements Serializable{
 	private String  name;
 	private String candidataName;
 	private String type;
+	private Long designationId;
+	private Long accessLvlId;
 	
 	private Long   superLocationId;
 	private String superlocationName;
@@ -198,7 +200,17 @@ public class CadreCountsVO implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public Long getAccessLvlId() {
+		return accessLvlId;
+	}
+	public void setAccessLvlId(Long accessLvlId) {
+		this.accessLvlId = accessLvlId;
+	}
 	
 }
