@@ -303,23 +303,33 @@ control.makeTransliteratable(['commentsId']);
 								</tr>
 							</table>
 						</div>
-						 <div class="row m_top10" id="invledCandtDivId">
-							<div class="col-md-12 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
+						 <div class="row m_top10">
+							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital">involved members in this alert
 								<span id="involvedCandidatesCnt"> - 0</span></h4>
-								<div class="row" id="alertCandidateDataId"></div>
+								<ul class="involvedMembersUl" id="alertCandidateDataId">
+									<li>
+										<div class="media">
+											<div class="media-left">
+												<img src="dist/img/thumb.jpg" alt="Profile Image" style="width:50px;"/>
+											</div>
+											<div class="media-body"></div>
+										</div>
+									</li>
+								</ul>
 							</div>  
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
+							<div class="col-md-8 col-xs-12 col-sm-6">
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
+								
 								<div id="alertCommentsDivIdNew"></div>
 								<!--<div  id="alertCommentsDiv"></div>-->
 							</div>
 						</div>
-						<div class="row m_top10" id="alertAssgnedCandDivId">
+						<div class="row m_top10">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="col-md-4 col-xs-12 col-sm-6">
 											<div class="panel panel-default">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
@@ -330,12 +340,12 @@ control.makeTransliteratable(['commentsId']);
 													</h4>
 												</div>
 												<div class="panel-body">
-													<div id="alertAssignedCandidateDataId" class="row"></div>
+													<div  id="alertAssignedCandidateDataId"></div>
 												</div>
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
-										<div class="col-md-8 col-xs-12 col-sm-6 assignedCandidatesCls">
+										<div class="col-md-8 col-xs-12 col-sm-6">
 											<label>Alert Status</label>
 											<select class="dropkickClass" id="statusId">
 												<option value='0'>Select Status</option>
@@ -377,93 +387,6 @@ control.makeTransliteratable(['commentsId']);
 			</div>
 		</div>
 	</div>
-</div>
-<div class="container">
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div class="row m_top10">
-						<div class="col-md-12 col-xs-12 col-sm-12" id="alertcandteDivId" style="display:none;">
-							<h4 class="panel-title text-capital">involved members in this alert
-							<span id="cadreInvolvedCandidatesCnt"> - 0</span></h4>
-							<div id="cadreAlertCandidateDataId" class="row"></div>
-						</div>  
-					</div>
-					<div class="cadreAlertCommentsDivId">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12" >
-								<h4 class="panel-title text-capital">alert status tracking comments</h4>
-								<div id="cadreAlertCommentsDivIdNew"></div>
-								<!--<div  id="alertCommentsDiv"></div>-->
-							</div>
-						</div>
-					</div>
-					<div class="row" id="cadreAlertAssgnedCandDivId">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<div class="panel panel-default">
-											<div class="panel-heading bg_ff">
-												<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
-													<span id="cadreAssignCandidatesCnt">0</span>
-													<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
-													<input type="button" value="ASSIGN" class="btn btn-primary assignModel pull-right btn-xs">
-													</c:if>
-												</h4>
-											</div>
-											<div class="panel-body">
-												<div id="cadreAlertAssignedCandidateDataId" class="row"></div>
-											</div>
-										</div>
-									</div>
-									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
-									<div class="col-md-8 col-xs-12 col-sm-6 assignedCandidatesCls">
-										<label>Alert Status</label>
-										<select class="dropkickClass" id="statusId">
-											<option value='0'>Select Status</option>
-											<option value='1'>Pending</option>      
-											<option value='2'>Notified</option>  
-											<option value='3'>Action In Progess</option>  
-											<option value='4'>Completed</option>
-											<option value='5'>Unable to Resolve</option>
-											<option value='6'>Action Not Required</option>
-											<option value='7'>Duplicate</option>
-										</select>
-										
-										<label>Assigned Cadre</label>
-										 <select class="" id="assignedCadreId"  multiple>
-											 <option value="0">Select Assign Cadre</option>
-											 
-										 </select>
-										
-										<label>Comments</label>
-										<label class="radio-inline">
-											<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-										</label>
-										<label class="radio-inline">
-											<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-										</label>
-										<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-										<div id="errorId" class="m_top10"></div>
-										<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
-										<span id="updateAlertajaxImg" class="m_top10"></span>
-									</div>
-									</c:if>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-
-	
-
-</div>
 		
 <div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:85%;">
@@ -569,18 +492,6 @@ control.makeTransliteratable(['commentsId']);
 
 
 var alertId = '${alertId}';
-var status = '${status}';
-
-
-$(document).ready(function(){
-	if(status != null && status =='false'){
-		$('.assignModel').hide();
-		$('.assignedCandidatesCls').hide();
-	}else{
-		$('.assignModel').show();
-		$('.assignedCandidatesCls').show();
-	}
-});
 
 $(".dropkickClass").dropkick();
 function deleteAlertAssignedCandidates(tdpCadreId)
@@ -612,59 +523,12 @@ function buildAlertAssignedCandidateData(result)
 	 $("#assignCandidatesCnt").html('0');
 		return;
 	}
-	if(result == null || result.length == 0)
-	{
-	 $("#cadreAlertAssignedCandidateDataId").html('No Assigned Candidates..');
-	 $("#cadreAssignCandidatesCnt").html('0');
-		return;
-	}
 	var str='';
-	if(status == 'false'){
-		$("#alertAssgnedCandDivId").hide();
-		$("#cadreAlertAssignedCandidateDataId").show();
-		for(var i in result)
-		{
-		for(var j in result[i].subList)  
-		{
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;height:100px;">';
-			str+='<div class="media-left">';
-			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-			str+='</div>';
-			str+='<div class="media-body" style="position:relative;">';
-			str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">';
-			str+='<span id="deleteProcessing'+result[i].subList[j].id+'" style="display:none;"><img src="images/search.gif" /></span>';
-			
-			if(result[i].subList[j].comment == null || result[i].subList[j].comment.length<=0){
-				str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
-			}
-			
-			str+='</c:if>';  
-			str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
-			if(result[i].subList[j].committeePosition != null && result[i].subList[j].committeePosition.length > 0)
-			str+='<p class="text-capital"><b>'+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';  
-			//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
-			//str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
-			str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
-			str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
-			 str+=' </div>';
-			 str+=' </div>';
-			 str+=' </div>';
-		}
-		$("#cadreAssignCandidatesCnt").html(result[0].subList.length);
-	}
-	$("#cadreAlertAssignedCandidateDataId").html(str);
-	if(result[0].subList.length > 3)
-	{
-		$("#cadreAlertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
-	}
-	}else{
 	for(var i in result)
 	{
 		for(var j in result[i].subList)  
 		{
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;height:100px;">';
+			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
 			str+='<div class="media-left">';
 			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
 			str+='</div>';
@@ -684,7 +548,6 @@ function buildAlertAssignedCandidateData(result)
 			//str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
 			str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
 			str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
-			 str+=' </div>';
 			 str+=' </div>';
 			 str+=' </div>';
 		}
@@ -715,7 +578,6 @@ function buildAlertAssignedCandidateData(result)
 		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
 	}*/
 	
-}
 }
 /*$(document).on("click",".assignCandidate",function(){
 	 var tdpCadreId = $(this).attr("attr_tdpCadreId");
