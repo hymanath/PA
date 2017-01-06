@@ -2206,7 +2206,7 @@ public class WebServiceHandler {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public PeshiAppAppointmentVO peshiAppAppointmentDetails(PeshiAppGrievanceVO vo){
 			try{
-				peshiAppAppointmentVO = webServiceHandlerService.getAppointmentDetails(vo.getFromDate(),vo.getToDate(),vo.getMembershipId(),vo.getCadreType());
+				peshiAppAppointmentVO = webServiceHandlerService.getAppointmentDetails(vo.getFromDate(),vo.getToDate(),vo.getMembershipId(),vo.getCadreType(),vo.getVoterId(),vo.getMobileNo());
 				return peshiAppAppointmentVO;
 			}catch(Exception e){
 				LOG.error("Exception Occured in peshiAppAppointmentDetails() Method,Exception is ",e);
