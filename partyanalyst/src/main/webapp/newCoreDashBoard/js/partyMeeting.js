@@ -2173,7 +2173,12 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 		str+='<div class="row m_top10" style="margin-top:20px;">';
 			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 			str+='<div class="panel panel-default">';
-			 str+=' <div class="panel-heading" style="text-align:center;background-color:#fff;"> ATTENDENCE IN BOTH SESSIONS </div>';
+			 if(hasSession == "NO"){
+				 str+=' <div class="panel-heading" style="text-align:center;background-color:#fff;"> ATTENDENCE</div>';
+			 }else{
+				 str+=' <div class="panel-heading" style="text-align:center;background-color:#fff;"> ATTENDENCE IN ALL SESSIONS </div>';  
+			 }  
+			 
 			  str+='<div class="panel-body">';
 				str+='<table class="table border_top_noneCoh tablenthChild">';
 					str+='<tbody>';
@@ -2210,8 +2215,8 @@ function buildOverviewPartiMeetingOverviewResustlt(result,divId,mainTypeMeetingI
 					  str+='<div class="panel-body">';
 						str+='<table class="table border_top_noneCoh tablenthChild">';
 							str+='<tbody>';
-								str+='<tr>';
-									var sessionId = (parseInt(k)+1);
+								str+='<tr>';  
+									var sessionId = partyMeetingArr.subList1[k].id;  
 									
 									if(partyMeetingArr.subList1[k].attendedCount == 0 || partyMeetingArr.subList1[k].attendedCount == null){
 										str+='<td class="text-success" style="text-align:center" >Total&nbsp;Attended<br> 0 </td>';
@@ -4723,10 +4728,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						str+='<th>Contact Number</th>';
 						str+='<th>Invitation Status</th>';  
 						str+='<th>All Sessions</th>';
-						
-						for(var k in result[0].sessionLevel){      
-							str+='<th>'+result[0].sessionLevel[k]+'</th>';
-						}        
+						if(result[0].sessionLevel.length > 0){
+							for(var k in result[0].sessionLevel){      
+								str+='<th>'+result[0].sessionLevel[k]+'</th>';
+							}  
+						}else{
+							str+='<th>Attendance</th>';    
+						}
+						      
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -4913,8 +4922,12 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						str+='<th>Contact Number</th>';
 						str+='<th>Invitation Status</th>';  
 						str+='<th>All Sessions</th>';
-						for(var k in result[0].sessionLevel){      
-							str+='<th>'+result[0].sessionLevel[k]+'</th>';
+						if(result[0].sessionLevel.length > 0){
+							for(var k in result[0].sessionLevel){      
+								str+='<th>'+result[0].sessionLevel[k]+'</th>';
+							}
+						}else{
+							str+='<th>Attendance</th>';    
 						}
 					str+='</tr>';
 				str+='</thead>';
