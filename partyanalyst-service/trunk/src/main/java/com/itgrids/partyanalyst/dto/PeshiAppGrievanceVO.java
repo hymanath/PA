@@ -26,7 +26,8 @@ public class PeshiAppGrievanceVO implements Serializable{
 	private String subject;
 	private String name;
 	private String image;
-	
+	private String voterId;
+	//private String mobileNo;
 	
 	public String getName() {
 		return name;
@@ -141,6 +142,12 @@ public class PeshiAppGrievanceVO implements Serializable{
 	}
 	public void setCadreType(String cadreType) {
 		this.cadreType = cadreType;
+	}
+	public String getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
 	}
 	public String getMobileNo() {
 		return mobileNo;
