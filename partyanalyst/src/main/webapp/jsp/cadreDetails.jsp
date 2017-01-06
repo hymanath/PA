@@ -1781,17 +1781,16 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<div class="modal fade" tabindex="-1" id="leaderCadreId" role="dialog">  
 			<div class="modal-dialog" style="width:80%;">      
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header" style="background-color:#999;">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title" id="enrolementTitleId0">CADRE ENROLEMENTS DETAILED VIEW</h4>
 					</div>
 					<div class="modal-body" id="firstDesigId">
-						
 					</div>
-					<div class="modal-header">
-						<h4 class="modal-title" id="enrolementTitleId1"></h4>
-					</div>
-					<div class="modal-body" id="secondDesigId">
+					<div>
+						<h4 class="modal-title" id="enrolementTitleId1" style="margin-left: 15px;"></h4>
+					</div>        
+					<div class="modal-body" id="secondDesigId">  
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -3229,4 +3228,4 @@ $(document).on("click","#alertHeaderId",function(){
 getCandidateAppliedPostsByCadre(0);
 </script>
 </body>
-</html>
+</html>  
