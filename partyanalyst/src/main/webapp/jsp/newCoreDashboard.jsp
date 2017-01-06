@@ -206,15 +206,15 @@
 								</div>
 							   </div>
 							</div>
-						    <div>
-								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
-								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
+						    <div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6" id="totalTodayCadreRegistrationBlockDivAPId"></div>
+								<div class="col-md-6 col-xs-12 col-sm-6" id="totalTodayCadreRegistrationBlockDivTSId"></div>  
 							</div>  
 							
                             <div class="row">  
 							
-							   <div id="enumeratorsInfoDivId"></div>
-							   <div id="enumeratorsInfoDivTSId"></div>      
+							   <!--<div id="enumeratorsInfoDivId"></div>
+							   <div id="enumeratorsInfoDivTSId"></div>      -->
 							   <!-- 
 							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
