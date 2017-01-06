@@ -2323,7 +2323,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 
 										 str+='<tr>';
 											str+='<td colspan=6>';
-												str+='<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;">'+result[i].subList1[0].name+'</span>';
+												str+='<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;">'+result[i].subList1[k].name+'  </span>';
 												str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px;margin-right: 15px; margin-left: 15px;""><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
 												str+='<span class="text-capital">Total - Invitees : <b>'+result[i].subList1[k].invitedCount+'</b></span>';
 												str+='</td>';
