@@ -1908,8 +1908,8 @@ public String getVolunteerCadreDetilasInformation(){
 	public String getCandidateSubLocationDtls(){
 		try {
 			jObj = new JSONObject(getTask());
-			Long constituencyId = jObj.getLong("constituencyId");
-			cadreCountsVOs = candidateDetailsService.getCandidateSubLocationDtls(constituencyId);
+			Long distId = jObj.getLong("districtId");  
+			cadreCountsVOs = candidateDetailsService.getCandidateSubLocationDtls(distId);
 		} catch (Exception e) {
 			 LOG.error("Exception occured in getLeaderDtlsInfo in CadreDetailsAction class  ",e);
 		}
