@@ -17,7 +17,7 @@ public class SelfAppraisalTourCategoryDAO extends GenericDaoHibernate<SelfApprai
 	
 	public List<Object[]> getAllTourCategorys(Long cadreId,Long designationId){
 		
-		Query query = getSession().createQuery(" SELECT model1.selfAppraisalTourCategory.selfAppraisalTourCategoryId,model1.selfAppraisalTourCategory.tourCategory " +
+		Query query = getSession().createQuery(" SELECT distinct model1.selfAppraisalTourCategory.selfAppraisalTourCategoryId,model1.selfAppraisalTourCategory.tourCategory " +
 				"  FROM SelfAppraisalCandidate model,SelfAppraisalDesignationTarget model1  " +
 				"  WHERE model.selfAppraisalDesignationId = model1.selfAppraisalDesignationId " + 
 				" and model.isActive ='Y' and model1.isActive='Y' " +
