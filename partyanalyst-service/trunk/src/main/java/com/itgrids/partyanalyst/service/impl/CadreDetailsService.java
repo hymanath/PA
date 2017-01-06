@@ -3478,9 +3478,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 						if(resultList != null && resultList.size()>0)
 						{
 							for (TdpCadreFamilyDetailsVO vo : resultList) {
-								if(isCadreEnrolledMap.get(vo.getTdpCadreId()) != null && isCadreEnrolledMap.get(vo.getTdpCadreId()) == 4l)
+								if(isCadreEnrolledMap.get(vo.getTdpCadreId()) != null && isCadreEnrolledMap.get(vo.getTdpCadreId()) == 4l){
 									vo.setIsRenewal("true");
-								else
+								Long id = isCadreEnrolledMap.get(vo.getTdpCadreId());
+								vo.setEnrollmntId(id);
+								}else
 									vo.setIsRenewal("false");
 							}
 							TdpCadreFamilyDetailsVO vo = resultList.get(0);
