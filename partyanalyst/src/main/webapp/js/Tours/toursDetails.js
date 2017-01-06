@@ -14,7 +14,7 @@ function getCandidateList(designationId){
 			$("#memberSlctBxId").append("  <option value='0'>Select Name</option>");
 			if(result != null && result.length > 0){
 				for(var i in result){
-					$("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
+					$("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name.toUpperCase()+"</option>");  
 				}
 				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");  
 			}
@@ -25,18 +25,26 @@ function getCandidateList(designationId){
 		var designationId = $(this).val();
 		$("#selectedMemberDtslDivId").html(' ');
 		$(".showDivClsNew").hide();
-		 if(designationId != null && designationId > 0){
+		 if(designationId != null){
 			 getCandidateList(designationId);
 		 }
 	});
 	$(document).on("change","#memberSlctBxId",function(){
 		var candidateId = $(this).val();
-		 if(candidateId != null && candidateId > 0){
+		 if(candidateId != null){
 			//$(".otherMemberBlockCls").hide();
 			//$(".showDivCls").show();
 			//$(".hideProfileDivCls").show();
+			
 			$(".ownDivCls").hide();
 			$(".inchageDivCls").hide();
+			
+			if(candidateId==0){
+				$("#selectedMemberDtslDivId").html(' ');
+				return;
+			}
+			
+			
 			 getCandiateSearchDetails(candidateId);
 		 }else if(candidateId == -1){
 			//$(".otherMemberBlockCls").show();
@@ -78,7 +86,7 @@ function getCandidateList(designationId){
 		
 		
 		var str='';
-		//str+='<h4 class="panel-title text-capital">selected profile</h4>';
+		str+='<h4 class="panel-title text-capital">selected profile</h4>';
 			str+='<ul class="list-inline">';
 			str+='<li>';
 				str+='<div class="panel panel-default panelProfile">';
@@ -276,11 +284,11 @@ function getCandidateList(designationId){
 	}
 	function savingApplication(){
 
-		$(".textErrCls").html("");
-		$("#errFileId").html("");
+		/* $(".textErrCls").html("");
+		$("#errFileId").html(""); */
 		var flag = true;		
-		var monthValue = $("#monthSelectBoxId").val();
-		if(monthValue == 0){
+		/* var monthValue = $("#monthSelectBoxId").val(); */
+		/* if(monthValue == 0){
 			$("#errMnthId").html("Please Select Month.");
 			return;
 		}
@@ -298,7 +306,7 @@ function getCandidateList(designationId){
 				flag = false;
 				return false;      
 			}  
-		});
+		}); */
 		
 		//allocating designationId To Hidden Variable
 		
@@ -312,15 +320,23 @@ function getCandidateList(designationId){
 		}
 		var errStr='',flag1=true;docErr=true;
 		
+		if(!($("#profileCheckboxId").is(':checked'))){
+			errStr = "Please Select Candidate.";
+			flag1=false;					
+		}else if($("#tourMonthYear").val() == null || $("#tourMonthYear").val().length == 0 || $("#tourMonthYear").val() == undefined || $("#tourMonthYear").val().length == undefined){
+			errStr="Please Select Month";flag1=false;
+		}
+		
 		$(".outerDivClsNew").each(function(){
 			if(flag1){
 				var count = $(this).attr("attr_countNew");
+				alert($("#tourDaysNew"+count).val());
 				if($("#tourCategoryNew"+count).val() == 0 || $("#tourCategoryNew"+count).val() == "undefined" || $("#tourCategoryNew"+count).val() === undefined){
 					errStr="Please Select Tour Category";flag1=false;
 					
 				}else if($("#tourTypeNew"+count).val() == 0 || $("#tourTypeNew"+count).val() == "undefined" || $("#tourTypeNew"+count).val() === undefined){
 					errStr="Please Select Tour Type";flag1=false;
-				}else if($("#tourDaysNew"+count).val() == null || $("#tourDaysNew"+count).val() == undefined || $("#tourDaysNew"+count).val() == "undefined" || $("#tourDaysNew"+count).val().length == 0){
+				}else if($("#tourDaysNew"+count).val() == null || $("#tourDaysNew"+count).val() == undefined || $("#tourDaysNew"+count).val() == "undefined" || $("#tourDaysNew"+count).val().length == 0 || $("#tourDaysNew"+count).val() == 0){
 					errStr="Please Enter Tour Days";flag1=false;
 				}
 			}
@@ -388,6 +404,7 @@ function getCandidateList(designationId){
 			docErr=false; 			
 			flag1=false;      			
 		}
+		
 		
 		if(!flag1){
 			alert(errStr);
@@ -733,15 +750,13 @@ function getCandidateList(designationId){
 	function buildLeadersOverviewRslt(result){  
 	 var str='';
 	 str+='<table class="table table-condensed tableOverview">';
-		str+='<thead>';
+		str+='<thead class="text-center">';
 			str+='<th></th>';
-			str+='<th>Total Leaders</th>';
-			str+='<th>Submited Leaders</th>';
-			str+='<th>Not Submited Leaders</th>';
-			/* str+='<th>Complaince</th>';
-			str+='<th>Non-Complaince</th>'; */
-			/* str+='<th>Submited Tours</th>';
-			str+='<th>Average Tours</th>'; */
+			str+='<th class="text-center">Total Leaders</th>';
+			str+='<th class="text-center">Submited Leaders</th>';
+			str+='<th class="text-center">Not Submited Leaders</th>';
+			/* str+='<th class="text-center">Complaince</th>';
+			str+='<th class="text-center">Non-Complaince</th>'; */
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -764,29 +779,29 @@ function getCandidateList(designationId){
 			str+='</div>';
 			str+='</td>';
 			if(result[i].noOfLeaderCnt != null && result[i].noOfLeaderCnt > 0){
-				str+='<td>'+result[i].noOfLeaderCnt+'</td>';
+				str+='<td class="text-center">'+result[i].noOfLeaderCnt+'</td>';
 			}else{
-			str+='<td> - </td>';
+			str+='<td class="text-center"> - </td>';
 			}
 			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){
-				str+='<td><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_desig_name="'+result[i].designation+'" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
+				str+='<td class="text-center"><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_desig_name="'+result[i].designation+'" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
 			}else{
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			}
 			if(result[i].notSubmitedLeaserCnt != null && result[i].notSubmitedLeaserCnt > 0){
-				str+='<td>'+result[i].notSubmitedLeaserCnt+'</td>';
+				str+='<td class="text-center">'+result[i].notSubmitedLeaserCnt+'</td>';
 			}else{
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			}
 			/* if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
-				str+='<td>'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></td>';
+				str+='<td class="text-center">'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></td>';
 			}else{
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			}
 			if(result[i].nonComplainceCnt != null && result[i].nonComplainceCnt > 0){				
-				str+='<td>'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></td>';
+				str+='<td class="text-center">'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></td>';
 			}else{
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			} */
 			str+='</tr>';
 		}
@@ -1546,12 +1561,12 @@ function getCandidateList(designationId){
 		}
 		
 		if($("#retriveCategoryId").val() == 0 || $("#retriveCategoryId").val() == "undefined"){
-			alert("Please Seelct Tour Category");
+			alert("Please Select Tour Category");
 			return;
 		}else if($("#retriveTypeId").val() == 0 || $("#retriveTypeId").val() == "undefined"){
 			alert("Please Select Tour Type");
 			return;
-		}else if($("#retrieveTourDaysId").val() == null || $("#retrieveTourDaysId").val() == undefined || $("#retrieveTourDaysId").val() == "undefined" || $("#retrieveTourDaysId").val().length == 0){
+		}else if($("#retrieveTourDaysId").val() == null || $("#retrieveTourDaysId").val() == undefined || $("#retrieveTourDaysId").val() == "undefined" || $("#retrieveTourDaysId").val().length == 0 || $("#retrieveTourDaysId").val() == 0){
 			alert("Please Enter Tour Days ");
 			return;
 		}
