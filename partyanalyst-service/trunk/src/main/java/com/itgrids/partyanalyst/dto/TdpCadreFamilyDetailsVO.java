@@ -40,6 +40,7 @@ public class TdpCadreFamilyDetailsVO {
 	private String deletedStatus;
 	private String deletedReason;
 	private String isRenewal;
+	private Long enrollmntId;
 	
 	
 	public String getIsRenewal() {
@@ -246,6 +247,13 @@ public class TdpCadreFamilyDetailsVO {
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
 	}
+	public Long getEnrollmntId() {
+		return enrollmntId;
+	}
+	public void setEnrollmntId(Long enrollmntId) {
+		this.enrollmntId = enrollmntId;
+	}
+	
 	
 	
 	
