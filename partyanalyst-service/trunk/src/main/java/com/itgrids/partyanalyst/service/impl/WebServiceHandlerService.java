@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -4483,7 +4484,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  		}
 		  		return returnVO;
 	  }
-	 public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType){
+	 public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipIdStr,String cadreType,String voterId,String mobileNoStr){
 		 PeshiAppAppointmentVO returnVO = new PeshiAppAppointmentVO();
 		 try{
 			 SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
@@ -4495,6 +4496,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 }
 			 List<Long> appointmnetIds = new ArrayList<Long>();
 			 Long tdpCadreId;
+			 String membershipId = membershipIdStr;
+			 if(membershipId == null || membershipId.isEmpty() || membershipId.trim().equalsIgnoreCase("0")){
+				 if(voterId != null && !voterId.isEmpty()){
+					CadreCommitteeVO  cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(null,null,null,null,voterId,null,null,null,null,null,null,null,null,0,10,false,null);
+					 membershipId = cadreCommitteeVO.getMemberShipCardId();
+				 }else if(mobileNoStr != null && !mobileNoStr.isEmpty()){
+					 CadreCommitteeVO  cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(null,null,null,null,null,mobileNoStr,null,null,null,null,null,null,null,0,10,false,null);
+					 membershipId = cadreCommitteeVO.getMemberShipCardId();
+				 }
+			 }
 			 
 			 List<Long> tdpCadreIds = tdpCadreDAO.getTdpCadreIdByMembershipId(membershipId);
 			 if(tdpCadreIds != null && !tdpCadreIds.isEmpty()){
