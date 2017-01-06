@@ -15293,6 +15293,8 @@
 			<param name="root">errorsList</param>
 		</result>
 	</action>
-	
+	<action name="cadreAlertDetailsAction" class="createAlertAction" method="getCadreAlertDetails">
+		<result name="success">/jsp/cadreAlertDetails.jsp</result>
+	</action>
  </package>
 </struts>
