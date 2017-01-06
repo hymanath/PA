@@ -50,4 +50,5 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public Long getTotalCountInConstituencies(String type,List<Long> constIds);
 	public Long getOtherDistTotalCountInConstituencies(String type,List<Long> constIds,Long stateId);
 	public List<Object[]> get2014And2016CadreCountDtls(List<Long> locValueList,Long memberLvl);
+	public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId);
 }

@@ -25,14 +25,14 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private Long parConsTotVoters;
 	private Long parConsCount;
 	
-	private String boothPerc;
-	private String panchPerc;
-	private String mandalPerc;
-	private String constiPerc;
+	private String boothPerc = "0";
+	private String panchPerc = "0";
+	private String mandalPerc = "0";
+	private String constiPerc = "0";
 	private String munciPerc;
 	private String munPerc;
-	private String districtPerc;
-	private String parConsPerc;
+	private String districtPerc = "0";
+	private String parConsPerc = "0";
 	private String areaType;
 	private String cadreLocation;
 	private String reasonStr;

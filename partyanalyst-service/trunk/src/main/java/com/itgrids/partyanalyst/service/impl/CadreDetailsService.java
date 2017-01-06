@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.io.File;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -67,7 +66,6 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
-import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
@@ -86,6 +84,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHealthReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreNotesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
@@ -102,20 +101,17 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintScanCopyVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
@@ -155,7 +151,6 @@ import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreNotes;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
-import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -265,6 +260,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IVotersAnalysisService votersAnalysisService;
 	private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
 	private IVolunteersCadreDetailsDAO volunteersCadreDetailsDAO;
+	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
+	
+	
+	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
+		return tdpCadreLocationInfoDAO;
+	}
+	public void setTdpCadreLocationInfoDAO(
+			ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO) {
+		this.tdpCadreLocationInfoDAO = tdpCadreLocationInfoDAO;
+	}
 	public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
 		return voterCastBasicInfoDAO;
 	}
@@ -2806,7 +2811,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		Long count = 0l;
 		try{
-			count =  tdpCadreDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			//count =  tdpCadreDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
 			return (count != null?count:0l);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setMemberShipCount() method, Exception - ",e);
