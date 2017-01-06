@@ -93,7 +93,7 @@
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3 class="panel-title">Update Your Details</h3>
+							<h3 class="panel-title">Update Tour Details</h3>
 						</div>
 						<div class="panel-body">
 							<div class="row">
@@ -125,7 +125,7 @@
 														<div class="block">
 															<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="profileProcessingImgId"></center></div>
 															
-															<h4 class="panel-title text-capital" style="display:none" id="selectedProfileId">selected profile</h4>
+															<!--<h4 class="panel-title text-capital" style="display:none" id="selectedProfileId">selected profile</h4>-->
 															<div id="selectedMemberDtslDivId"></div>
 													   </div>
 												   </div>
