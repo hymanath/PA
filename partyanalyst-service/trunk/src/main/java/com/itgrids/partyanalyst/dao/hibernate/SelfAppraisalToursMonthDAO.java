@@ -68,5 +68,17 @@ public List<Long> getSelfAppraisalToursMonth(String toursMonth){
 		
 		return query.list();
 	}
+
+	public List<String> getSelfAppraisalMonthById(Long selfAppraisalToursMonthId){
+		
+		Query query = getSession().createQuery(" select model.toursMonth from " +
+				"  SelfAppraisalToursMonth model " +
+				" where model.selfAppraisalToursMonthId = :selfAppraisalToursMonthId ");
+		
+		query.setParameter("selfAppraisalToursMonthId", selfAppraisalToursMonthId);
+		
+		return query.list();
+	}
+
 	
 }

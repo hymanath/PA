@@ -446,4 +446,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                      
                    return query.list();
 	 }
+	 public void flushAndclearSession(){
+			getSession().flush();
+			getSession().clear();
+		}
 }

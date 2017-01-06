@@ -1214,6 +1214,11 @@ public class ToursService implements IToursService {
 							
 							SelfAppraisalCandidateDetailsNew selfAppraisalCandidateDetails = selfAppraisalCandidateDetailsNewDAO.save(selfAppraisalCandidateDetailsNew);
 							
+							//delete Old Location Details
+							
+							selfAppraisalCandidateDetailsLocationDAO.deleteSelfAppraisalCandidateDetailsLocations(toursVo.getDetailsNewId());
+							
+							
 							//Location Address Saving								
 							saveUserLocationsOfTour(toursVo.getSelfAppraisalCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId());									
 							
@@ -1228,6 +1233,8 @@ public class ToursService implements IToursService {
 				
 				status.setMessage("success");
 				status.setResultCode(1);
+				
+				selfAppraisalCandidateDetailsNewDAO.flushAndclearSession();
 				
 				return status;
 				
@@ -1618,7 +1625,16 @@ public class ToursService implements IToursService {
 			SelfAppraisalCandidateDetailsNew detailsNew = selfAppraisalCandidateDetailsNewDAO.get(detailsNewId);
 			
 			if(detailsNew !=null){
-				vo.setTourDate(detailsNew.getSelfAppraisalToursMonth() !=null && detailsNew.getSelfAppraisalToursMonth().getToursMonth() !=null ? detailsNew.getSelfAppraisalToursMonth().getToursMonth().toString():null);
+				
+				if(detailsNew.getSelfAppraisalToursMonthId() !=null && detailsNew.getSelfAppraisalToursMonthId() >0 ){
+					List<String> tourDateObj = selfAppraisalToursMonthDAO.getSelfAppraisalMonthById(detailsNew.getSelfAppraisalToursMonthId());
+					if(tourDateObj !=null && tourDateObj.size()>0){
+						vo.setTourDate(tourDateObj.get(0));
+					}
+						
+				}
+				
+				/*vo.setTourDate(detailsNew.getSelfAppraisalToursMonth() !=null && detailsNew.getSelfAppraisalToursMonth().getToursMonth() !=null ? detailsNew.getSelfAppraisalToursMonth().getToursMonth().toString():null);*/
 				vo.setTdpCadreId(detailsNew.getSelfAppraisalCandidate().getTdpCadreId());
 				vo.setTourCategoryId(detailsNew.getSelfAppraisalTourCategoryId());
 				vo.setTourTypeId(detailsNew.getTourTypeId() !=null ? detailsNew.getTourTypeId():null);
