@@ -31,11 +31,11 @@ body
 	<div class="headerpart1">
         <div class="container">
             <div class="row">
-                    <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">
+                    <!-- <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">-->
                 <div class="col-md-12 col-xs-12 text-center col-sm-12 m_top10">
-                    <h3 class="m_0  text-bold header_text_color">ANDHRA PRADESH STATE SOCIAL SECURITY BOARD</h3>
-                    <h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3>
-                    <h4 class="m_0 header_white">INSURANCE REGISTRATION</h4>
+                     <h3 class="m_0  text-bold header_text_color">PRINTING APPLICATION</h3>
+                    <!--<h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3>-->
+                    <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4>-->
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@ body
 <section>
         <div class="container">
             <div class="row">
-                <img src="dist/img/borderimage.png" class="img-responsive img-login" alt="border" >
+                
                 <div class="col-md-12 col-xs-12 col-sm-12" style="padding:15px">
                 	<h4 class="m_0 text-bold text-center">WELCOME USER</h4>
                     <h4 class="m_0 text-center">PLEASE ENTER USERNAME AND PASSWORD</h4>
