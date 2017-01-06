@@ -8079,10 +8079,15 @@ function checkIsLeader(isLeader){
 		$("#cdrRegDtlsId").show();
 	}
 }
-$(document).on("click","#cdrRegDtlsId",function(){      
+$(document).on("click","#cdrRegDtlsId",function(){  
+	$("#leaderCadreId").modal("show");
+	$("#firstDesigId").html('');    
+	$("#secondDesigId").html('');
+	$("#firstDesigId").html('<center><img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;"></center>');  
+	  
 	var cadreId = memberCadreId;
 	var jsObj ={ 
-			 tdpCadreId : cadreId
+			 tdpCadreId : cadreId                            
 		};
 		$.ajax({
 			type : 'POST',
@@ -8090,11 +8095,98 @@ $(document).on("click","#cdrRegDtlsId",function(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#firstDesigId").html('');          
 			if(result != null && result.length > 0){
-				console.log(result);    
+				buildLeadersCadreDtlsReport(result);
 			}else{      
 			           
 			}                 
 		});
 });
- 
+function buildLeadersCadreDtlsReport(result){
+	for(var i in result){
+		buildUniqueDesignationCadreReport(result[i],i,0,0);
+		$("#enrolementTitleId"+i).html("CADRE ENROLEMENTS DETAILED VIEW-<b>"+result[i][0].superlocationName+"</b>");  
+	}  
+}
+function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
+	if(result != null && result.length > 0){
+		var str = '';            
+		str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered tablePopup">';
+			str+='<thead>';
+				if(i==100){
+					str+='<th>CONSTITUENCY</th>';
+				}else{
+					str+='<th>LOCATION</th>'; 
+				}
+				str+='<th>2014-16 ENROLMENT</th>';
+				str+='<th>2016-18 ENROLMENT</th>';
+				str+='<th>2016-18 NEW</th>';
+				str+='<th>2016-18 RENEWAL</th>';
+				str+='<th>2014-16 vs 2016-18 ENROLMENT %</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var j in result){
+				str+='<tr>';
+					if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
+						str+='<td><span class="consituencyRowsCls" attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;"><u>'+result[j].name+'</u></span></td>';
+					}else{
+						str+='<td>'+result[j].name+'</td>';
+					}
+					str+='<td>'+result[j].previousCadreCount+'</td>';
+					str+='<td>'+result[j].cadreCount+'</td>';
+					str+='<td>'+result[j].newCadre+'</td>';
+					str+='<td>'+result[j].renewalCadre+'</td>';
+					var percent = result[j].cadreCount * (100/result[j].previousCadreCount);
+					str+='<td>'+percent.toFixed(2)+'%</td>';                     
+				str+='</tr>';
+				if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
+					str+='<tr class="consituencyRowsHide hide consituencyRows'+i+j+'">';
+						str+='<td colspan="6" class="consituencyRowsStr consituencyRowsStr'+i+j+'"></td>';  
+					str+='</tr>'; 
+				}
+				         
+			}
+			str+='</tbody>';
+		str+='</table>';
+		str+='</div>';    
+		if(i==0){
+			$("#firstDesigId").html(str);
+		}else if(i==1){                
+			$("#secondDesigId").html(str);
+		}             
+		if(i==100){       
+			$(".consituencyRowsStr"+idx1+idx2).html(str);    
+		}
+	}
+}
+
+$(document).on("click",".consituencyRowsCls",function(){    
+	var rowClsName = $(this).attr("attr_rowId");
+	var distId = $(this).attr("attr_loc_id");
+	var idx1 = $(this).attr("attr_idx_1");
+	var idx2 = $(this).attr("attr_idx_2");
+	//$(".consituencyRowsHide").addClass('hide');
+	$(".consituencyRowsHide").find(".consituencyRowsStr").html(' ');
+	$("tr."+rowClsName).removeClass('hide');
+	$("tr."+rowClsName).toggle();  
+	getConstituencyDtls(distId,idx1,idx2);
+});
+function getConstituencyDtls(distId,idx1,idx2){
+	var jsObj ={ 
+			 districtId : distId  
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getCandidateSubLocationDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){  
+				buildUniqueDesignationCadreReport(result,100,idx1,idx2);    
+			}else{      
+			           
+			}                 
+		});
+}
