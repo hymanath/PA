@@ -34,39 +34,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5">
-                    <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">
+                    <!-- <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO"> -->
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 text-center">
-                    <h3 class="m_0  text-bold header_text_color">ANDHRA PRADESH STATE SOCIAL SECURITY BOARD</h3>
-                    <h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3>
-                    <h4 class="m_0 header_white">INSURANCE REGISTRATION</h4>
+                    <h3 class="m_0  text-bold header_text_color">PRINTING APPLICATION</h3>
+                    <!--<h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3> -->
+                    <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4> -->
                 </div>
             </div>
         </div>
     </div>
-    <div class="headerpart2">
-    	<div class="container">
-			<img src="dist/img/AP_logo.png" class="img-responsive scroll-logo col-md-offset-1" alt="LOGO" style="margin-top:-20px;height:65px;width:60px;position:absolute;display:none" >
-        	<div class="row">
-            	<div class="col-md-2 col-md-offset-5 col-sm-2 col-sm-offset-5 col-xs-2 col-xs-offset-5">
-	            	<img src="dist/img/borderimage.png" class="img-responsive img-login border-image" alt="border">
-                </div>
-                <div class="col-md-10 col-md-offset-1  text-center col-xs-12 col-sm-10 col-sm-offset-1">
-                    <h4 class="m_0  text-bold color">
-						<span style="margin-left:14px" class="getHeaderName"></span><!-- Give HEADER Name IN CORRESPONDING JSP PAGES -->
-						<div style="margin-right:7px;" class="pull-right">
-							<i class="glyphicon glyphicon-align-justify" id="trigger"></i>
-						 </div>
-						 
-					</h4>
-					
-                </div>
-				<div class="col-md-1 col-md-offset-10">
-				
-				</div>
-            </div>
-        </div>
-    </div>
+    
 </header>
 
 <decorator:body/>
