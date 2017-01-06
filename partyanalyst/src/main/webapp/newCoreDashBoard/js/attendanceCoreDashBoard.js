@@ -53,7 +53,20 @@
 			$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
 			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert").hide();
+			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
+				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".emnIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".emnIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
+				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
+	
 	});
 	$(window).resize(function(){
 		if($(document).width() < 500)
