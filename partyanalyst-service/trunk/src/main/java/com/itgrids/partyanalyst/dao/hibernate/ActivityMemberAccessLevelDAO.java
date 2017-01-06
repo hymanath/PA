@@ -42,7 +42,8 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 		  				  " AMAL.activityMember.activityMemberId, " +
 		  				  " AMAL.activityMemberLevelId, " +
 		  				  " AMAL.activityLocationValue, " +
-		  				  " AMAL.activityMember.tdpCadre.firstname " +
+		  				  " AMAL.activityMember.memberName, " +
+		  				  " AMAL.userLevel.userLevelId " +
 		  				  " from ActivityMemberAccessLevel AMAL " +
 		  				  " where AMAL.activityMember.tdpCadreId = :tdpCadreId " +
 		  				  " and AMAL.isActive = 'Y' " +
