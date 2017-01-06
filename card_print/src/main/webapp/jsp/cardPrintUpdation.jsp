@@ -120,7 +120,7 @@ function getAllPrintStatusDetails(){
 		 $("#errDivId").html(' ');
 		 
 		 if(remarks == '' || remarks ==""){
-		  $("#errDivId").html('Please Write Some Description');
+		  $("#errDivId").html('Please Enter Remarks');
 		  return ;
 	    }	
 		 $("#errDivId").html(' ');
