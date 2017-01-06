@@ -5456,7 +5456,15 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		try{
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			CadreCountsVO cadreCountsVO = null;
-			List<Object[]> list = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList,memberLvl);
+			String isVisakhapatnamExist = "false";
+			if(locValueList.contains(13L)){//Visakhapatnam
+				locValueList.remove(13L);
+				isVisakhapatnamExist = "true";
+			}
+			List<Object[]> list = null;
+			if(locValueList.size() > 0){
+				list = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList,memberLvl);
+			}
 			if(list != null && list.size() > 0){
 				for(Object[] param : list){
 					cadreCountsVO = new CadreCountsVO();
@@ -5471,6 +5479,16 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 					cadreCountsVO.setSuperlocationName(designation);//designation
 					cadreCountsVOs.add(cadreCountsVO);
 				}
+				//remove extra constituency from Visakhapatnam dist
+				
+				if(isVisakhapatnamExist.equalsIgnoreCase("true")){//Visakhapatnam
+					locValueList = constituencyDAO.getConstituenciesIds(13L);
+					List<Long> extraConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);  
+					locValueList.removeAll(extraConstIds);
+					List<Object[]> list2 = tdpCadreLocationInfoDAO.get2014And2016CadreCountDtls(locValueList,4L);
+					addOneMoreLocation(cadreCountsVOs,list2,"Visakhapatnam",designation,13L);
+				}  
+				
 				//special case...
 				if(memberLvl.longValue() == 3L){
 					if(locValueList.contains(517L)){
@@ -5512,16 +5530,25 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	/**
 	 * @author Swadhin K Lenka
 	 */	
-	public List<CadreCountsVO> getCandidateSubLocationDtls(Long constituencyId){
+	public List<CadreCountsVO> getCandidateSubLocationDtls(Long distId){
 		try{
 			List<Long> locValueList = new ArrayList<Long>();
-			locValueList.add(constituencyId);
+			List<Long> extraConstIds = null;
+			if(distId.longValue() == 13L ){//Visakhapatnam
+				locValueList = constituencyDAO.getConstituenciesIds(distId);
+				extraConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+				locValueList.removeAll(extraConstIds);
+			}else if(distId.longValue() == 517L){//Visakhapatnam Rural
+				locValueList = districtConstituenciesDAO.getConstituenciesOfDistrictById(distId);
+			}else{
+				locValueList = constituencyDAO.getConstituenciesIds(distId);
+			}
 			List<CadreCountsVO> cadreCountsVOs = new ArrayList<CadreCountsVO>();
-			prepairResult(locValueList,5L,cadreCountsVOs,"","","");
+			prepairResult(locValueList,4L,cadreCountsVOs,"","","");
 			return cadreCountsVOs;
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			e.printStackTrace();  
 			log.error("Exception Occured in getCandidateSubLocationDtls method, Exception - ",e);
 		}
 		return null;
