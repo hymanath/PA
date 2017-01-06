@@ -11,18 +11,10 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-       <title class="getHeaderName"></title><!-- Give Title Name IN CORRESPONDING JSP PAGES  -->
+<title class="getHeaderName"></title><!-- Give Title Name IN CORRESPONDING JSP PAGES  -->
 <link href="dist/img/AP_logo.png" rel="icon" type="image/x-icon" />
-<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/css/animate.css" rel="stylesheet" type="text/css">
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet" type="text/css">
-<link href="dist/dropdown/style.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/Menu/component.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/Menu/normalize.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/Menu/icons.css" rel="stylesheet" type="text/css">
-
-<script type="text/javascript" src="dist/registration/Menu/modernizr.custom.js"></script>
 
 <decorator:head/>
  </head>
@@ -40,8 +32,21 @@
                     <h3 class="m_0  text-bold header_text_color">PRINTING APPLICATION</h3>
                     <!--<h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3> -->
                     <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4> -->
+					
+					<div class="dropdown pull-right">
+					  <button id="dLabel" class="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Menu
+						<span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="dLabel" style="padding: 10px;">
+						<li><a tabindex="-1" href="logoutAction.action">Sign Out</a></li>
+					  </ul>
+					</div>
+
+					
                 </div>
             </div>
+			
         </div>
     </div>
     
