@@ -738,8 +738,8 @@ function getCandidateList(designationId){
 			str+='<th>Total Leaders</th>';
 			str+='<th>Submited Leaders</th>';
 			str+='<th>Not Submited Leaders</th>';
-			str+='<th>Complaince</th>';
-			str+='<th>Non-Complaince</th>';
+			/* str+='<th>Complaince</th>';
+			str+='<th>Non-Complaince</th>'; */
 			/* str+='<th>Submited Tours</th>';
 			str+='<th>Average Tours</th>'; */
 		str+='</thead>';
@@ -778,17 +778,16 @@ function getCandidateList(designationId){
 			}else{
 				str+='<td> - </td>';
 			}
-			if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
+			/* if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
 				str+='<td>'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></td>';
 			}else{
 				str+='<td> - </td>';
 			}
 			if(result[i].nonComplainceCnt != null && result[i].nonComplainceCnt > 0){				
-				//var nonComplinceCount= result[i].submitedLeaderCnt - result[i].complainceCnt ;				
 				str+='<td>'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></td>';
 			}else{
 				str+='<td> - </td>';
-			}
+			} */
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -948,7 +947,7 @@ function getCandidateList(designationId){
 						for(var t in result.subList[0].subList3){
 							str+='<th>'+result.subList[0].subList3[t].name+'</th>';
 						}
-						str+='<th>Compliance Ratio</th>';
+						/* str+='<th>Compliance Ratio</th>'; */
 					str+='</thead>';
 					str+='<tbody>';
 						str+='<tr>';
@@ -965,11 +964,11 @@ function getCandidateList(designationId){
 									
 								}
 							}
-							if(totalPerc !=null && totalPerc>0.0){
+							/* if(totalPerc !=null && totalPerc>0.0){
 								str+='<td>'+totalPerc/result.subList[0].subList3.length+' %</td>';
 							}else{
 								str+='<td> - </td>';
-							}
+							} */
 							
 						str+='</tr>';
 					str+='</tbody>';
@@ -1516,7 +1515,7 @@ function getCandidateList(designationId){
 					str+='<td><p class="text-muted">Total Leaders</p><h4 class="panel-title">'+result[i].noOfLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Submited</p><h4 class="panel-title">'+result[i].submitedLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Not Submited</p><h4 class="panel-title">'+result[i].notSubmitedLeaserCnt+'</h4></td>';
-					if(result[i].complainceCnt !=null && result[i].complainceCnt >0){
+					/* if(result[i].complainceCnt !=null && result[i].complainceCnt >0){
 						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title">'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></h4></td>';
 					}else{
 						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title"> - </h4></td>';
@@ -1526,7 +1525,7 @@ function getCandidateList(designationId){
 						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title">'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></h4></td>';						
 					}else{
 						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title"> - </h4></td>';
-					}
+					} */
 					
 					
 				str+='</tr>';
