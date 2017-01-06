@@ -102,6 +102,7 @@ function getAllPrintStatusDetails(){
 	$('#submitButtnId').click(function(){
 		
 		$("#successMsgId").html('');
+		$("#successMsgId").show();
 		
 		var constituencyId = $('#constituencyId').val();
 		var printStatusId = $('#printStatusId').val();
@@ -137,15 +138,15 @@ function getAllPrintStatusDetails(){
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
-		  if(result != null)
-		  {
-			
+		  if(result != null){
 			if(result.resultCode == 0){
 				$("#successMsgId").html("<span style='color:red'>"+result.exceptionMsg+"</span>");
-			}else{
+			}else if(result.resultCode == 1){
 				  $("#successMsgId").html("<span style='color:green'>Constituency Details Updated Successfully.</span>").fadeOut(6000);
 				  clearFields();
 			}
+		  }else{
+			  $("#successMsgId").html("<span style='color:red'> Exception Occurred .. Try Later. </span>");
 		  }
 	  })
 		
