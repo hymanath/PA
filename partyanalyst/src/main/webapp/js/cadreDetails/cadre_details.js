@@ -229,9 +229,7 @@ function getParticipatedConstituencyId(cadreId){
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}
 						getCategoryWiseStatusCount();
-						getTotalMemberShipRegistrationsInCadreLocation(3,11);	
-						
-						getTotalMemberShipRegistrationsInCadreLocation(4,22);							
+												
 						//getCadreFamilyDetailsByCadreId();//swadhin
 						//getElectionPerformanceInCadreLocation();
 						getApprovedFinancialSupprotForCadre();
@@ -620,6 +618,8 @@ var globalidentityMembershipNo = ""	;
 					getTotalIVRDetailsByTdpCadreId(0);
 					getIVRSummaryByTdpCadreId();
 					getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),"DISTRICT","DISTRICT","cadreEvntdistrictAttnds","onload","");
+					getTotalMemberShipRegistrationsInCadreLocation(4,22);
+					getTotalMemberShipRegistrationsInCadreLocation(3,11);						
 					//getUpdatedCastePartyInfo();
 				}
 			});
@@ -1410,7 +1410,8 @@ var globalidentityMembershipNo = ""	;
 	}else{
 		$("#memberShipCountDiv1").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
 	}
-			
+	var boothId = "0";
+			boothId=$('#cadreBoothId').val();
 			var pcId=0;
 			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
 			if(participatedConstituencyId != null && participatedConstituencyId > 0){
@@ -1423,7 +1424,7 @@ var globalidentityMembershipNo = ""	;
 			  $.ajax({
 					type : "POST",
 					url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-					data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType,yearId:yearId,publicationId:publicationId}
+					data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType,yearId:yearId,publicationId:publicationId,boothId:boothId}
 				  }).done(function(result){
 					if(result != null){
 						  buildTotalMemberShipRegInCadreLocation(result,pcType,yearId);
