@@ -25,7 +25,8 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList);
 	
 	public List<Long> getConductedMeetings(List<Long> partyMeetingsList);
-	
+	public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList,Long mainTypeId);
+	public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList,Long mainTypeId);
 	public List<Object[]> getMontlyWiseMeetingsDetails(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate,List<String> searchDatesList);
 	public BigInteger getLocationWiseTotalMeetingsCount(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate);
 	public List<Long> getAttendedCadreIdsByPartyMeetingId(Long partyMeetingId);
@@ -35,10 +36,8 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getAttendedCadreCountForMeetingsByCommitteeWise(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getAttendedCadreCountForMeetingsByByPublicRepresentativeWise(PartyMeetingsInputVO inputVO);
 	public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO);
-	public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList);
 	public List<Object[]> getCommitteeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
-	public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList);
 	public List<Object[]> getWithoutSessionCommitteeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getWithioutPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 }
