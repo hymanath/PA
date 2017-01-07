@@ -15,7 +15,7 @@
 <link href="dist/img/AP_logo.png" rel="icon" type="image/x-icon" />
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet" type="text/css">
-
+<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <decorator:head/>
  </head>
 <body>
@@ -40,9 +40,19 @@
 						<i class="glyphicon glyphicon-align-justify" style="color:#fff"></i>
 					  </button>
 					  <ul class="dropdown-menu line_heightapply" aria-labelledby="dLabel" style="padding: 10px;">
-					  <li class="m_top10"><a tabindex="-1" href="adminCardPrintAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;Admin Page</a></li>
-					   <li class="m_top10"><a tabindex="-1" href="cardPrintUpdationAction.action"><span class="glyphicon glyphicon-saved"></span>&nbsp;&nbsp;Updating Status</a></li>
-						<li class="m_top10"><a tabindex="-1" href="logoutAction.action"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Sign Out</a></li>
+					   
+					   <c:if test="${sessionScope.USER != null}">
+					     
+						  <c:if test="${sessionScope.USER.userType != null && (sessionScope.USER.userType == 'Print Vendor' || sessionScope.USER.userType =='Admin')}">
+					        <li class="m_top10"><a tabindex="-1" href="cardPrintUpdationAction.action"><span class="glyphicon glyphicon-saved"></span>&nbsp;&nbsp;Updating Status</a></li>
+						 </c:if>
+						 
+						 <c:if test="${sessionScope.USER.userType != null && sessionScope.USER.userType =='Admin'}">
+						    <li class="m_top10"><a tabindex="-1" href="adminCardPrintAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;Admin Page</a></li>
+					     </c:if>
+						 
+					   </c:if>
+					   <li class="m_top10"><a tabindex="-1" href="logoutAction.action"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Sign Out</a></li>
 					  </ul>
 					</div>
 
