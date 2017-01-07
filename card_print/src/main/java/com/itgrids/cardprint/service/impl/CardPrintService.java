@@ -137,7 +137,18 @@ public class CardPrintService implements ICardPrintService{
 		}
 		return finalList;
 	}
-	
+	public List<BasicVO>  getConstituenciesByPrintVendor(Long printVendorId){
+		List<BasicVO> finalList = null;
+		try{
+			
+			List<Object[]> dataList = constituencyPrintStatusDAO.getConstituenciesByPrintVendor(printVendorId);
+			finalList = setBasicDataToVO(dataList);
+			
+		}catch(Exception e){
+			LOG.error("exception Occurred at getConstituenciesByPrintVendor() in CardPrintService class ", e); 
+		}
+		return finalList;
+	}
 	public List<BasicVO> setBasicDataToVO(List<Object[]> dataList){
 		List<BasicVO> finalList = null;
 		try{
@@ -233,12 +244,10 @@ public class CardPrintService implements ICardPrintService{
 	  *  UPDATING PRINT DETAILS TO TdpCadreCardPrint from ZebraPrintDetails or from MaxPrintDetails by constituencyId.
 	  *  @since 21-DECEMBER-2016
 	  */
-	public ResultStatus updatePrintDetailsToTdpCadreCardPrint(final Long constituencyId){
+	public ResultStatus updatePrintDetailsToTdpCadreCardPrint(final Long cardPrintVendorId , final Long constituencyId){
 		ResultStatus status = new ResultStatus();
-		try{
-			
-			 Long cardPrintVendorId = tdpCadreCardPrintDAO.getCardPrintVendorIdByConstituencyId(constituencyId);
-			 if(cardPrintVendorId != null && cardPrintVendorId > 0l){
+		try{ 
+			 if(cardPrintVendorId != null && cardPrintVendorId.longValue() > 0l){
 				 
 				 List<Object[]> data = null;
 				 if(cardPrintVendorId.longValue() == IConstants.MAX_PRINT_VENDOR_ID.longValue()){
