@@ -25,11 +25,9 @@
 	<div class="headerpart1">
         <div class="container">
             <div class="row">
-                <div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5">
-                    <!-- <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO"> -->
-                </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 text-center">
-                    <h3 class="m_0  text-bold header_text_color">TDP MEMBERSHIP CARD PRINTING</h3>
+
+                <div class="col-md-12 col-xs-12 col-sm-12 text-center m_top10">
+                    <h3 class="m_0  text-bold header_text_color" style="color:#885901">TDP MEMBERSHIP CARD PRINTING</h3>
                     <!--<h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3> -->
                     <!--<h4 class="m_0 header_white">INSURANCE REGISTRATION</h4> -->
 					
