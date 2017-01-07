@@ -70,7 +70,13 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
 			
 			public String execute()
 			{
-				session = request.getSession();
+				LOG.info("Entered into  cardPrintAdminAction of execute method");
+				try{
+					session = request.getSession();
+			}catch(Exception e)
+			{
+				LOG.error("Exception occured into cardPrintAdminAction");
+			}
 				return Action.SUCCESS;
 			}
 
