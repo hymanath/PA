@@ -105,5 +105,16 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
-			
+	public String getPrintStatusWiseRecordCountByLoggedUSer(){
+		try{ 
+			  jobj = new JSONObject(getTask());
+			  Long printVendorId  = jobj.getLong("printVendorId");
+			     
+			  printStatusList = cardPrintAdminService.getPrintStatusWiseRecordCountByLoggedUSer(printVendorId);
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getPrintStatusWiseRecordCountByLoggedUSer() in CardPrintAdminAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}		
 }
