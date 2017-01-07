@@ -8143,7 +8143,7 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 				renewalCadre = renewalCadre + result[j].renewalCadre;
 				str+='<tr>';
 					if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
-						str+='<td><span><b>'+result[j].name+'</b><i attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;padding:2px 3px;background-color:#ccc;border-radius:3px;" class="glyphicon glyphicon-plus consituencyRowsCls pull-right"></i></span></td>';
+						str+='<td><span><b>'+result[j].name+'</b><i attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;padding:3px 4px;background-color:#ccc;border-radius:3px;font-size:11px" class="glyphicon glyphicon-plus consituencyRowsCls pull-right"></i></span></td>';
 					}else{
 						str+='<td>'+result[j].name+'</td>';  
 					}               
