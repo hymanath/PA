@@ -112,7 +112,12 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			HttpSession session = request.getSession();
 			UserVO user = (UserVO) session.getAttribute("USER");
 			if(user == null || user.getUserId() == null){
-				return Action.INPUT;
+				return Action.ERROR;
+			}
+			//entitlements using userType
+			if(!(user.getUserType() != null && (user.getUserType().equalsIgnoreCase("Print Vendor") || user.getUserType().equalsIgnoreCase("Admin"))))
+			{
+				return "entitlementError";
 			}
 		}catch(Exception e){
 			LOG.error("Exception Occurred At getCardPrintUpdationDetails() in CardPrintAction class",e) ;
@@ -179,7 +184,12 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			HttpSession session = request.getSession();
 			UserVO user = (UserVO) session.getAttribute("USER");
 			if(user == null || user.getUserId() == null){
-				return Action.INPUT;
+				return Action.ERROR;
+			}
+			//entitlements using userType.
+			if(!(user.getUserType() != null && user.getUserType().equalsIgnoreCase("Admin")))
+			{
+				return "entitlementError";
 			}
 		}catch(Exception e){
 			LOG.error("Exception Occurred At adminCardPrint() in CardPrintAction class",e) ;
