@@ -1638,7 +1638,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var str='';
 		 if(overViewRslt != null){
 				   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4><span class="headingColor text-capital">Leaders</span></h4>';
+					str+='<h4><span class="headingColor text-capital">Overall&nbsp&nbsp Leaders</span></h4>';
 					str+='<div id="" class="m_top10">';
 						str+='<div class="pad_10 bg_ED">';
 							str+='<div class="row">';
@@ -2480,7 +2480,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								//str+='<td></td>';
 										for(var j in result[i].subList3){
 											str+='<tr>';
-												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
+												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
 												str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 												   for(var k in result[i].subList3[j].subList3){
@@ -2586,7 +2586,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										//str+='<td></td>';
 												for(var j in result[i].subList3){
 													str+='<tr>';
-														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
+														str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';
 														str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 														   for(var k in result[i].subList3[j].subList3){
@@ -2632,6 +2632,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+topFivecandidateName+" - <small style='color:#4A5863'>"+topFivedesignationName+"</small> </h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
 					 fromDate :globalFormTourDate ,
@@ -2645,6 +2646,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		}).done(function(result){
 			$("#tourIndividualDetailsBlock").html('');
 			$("#tourIndividualDetailsTableBlock").html('');
+			$("#monthWiseComplainceDivId").html('');
 			buildIndividualPersonTourDetails(result);
 		});
 	}
@@ -2789,7 +2791,7 @@ function buildTourMemberDetails(result){
                 //str+='<td></td>';
                     for(var j in result[i].subList3){
                       str+='<tr>';
-                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';//santosh
+                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'">'+result[i].subList3[j].name+'</td>';//santosh
                         str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 							for(var k in result[i].subList3[j].subList3){
@@ -2845,6 +2847,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small> </h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
 					 fromDate :globalFormTourDate ,
@@ -2858,6 +2861,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		}).done(function(result){
 			$("#tourIndividualDetailsBlock").html('');
 			$("#tourIndividualDetailsTableBlock").html('');
+			$("#monthWiseComplainceDivId").html(' ');
 			buildIndividualPersonTourDetails(result);
 		});
 	}
@@ -2987,11 +2991,11 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 				var performanceArr =[];
 				performanceArr.push(result.subList[i].targetDays);
 				performanceArr.push(result.subList[i].complainceDays);
-				performanceArr.push(result.subList[i].yetToTourCnt);
+				//performanceArr.push(result.subList[i].yetToTourCnt);
 		if(performanceArr != 0 && performanceArr.length > 0){		
 		 $(function () {
 			  $('#individualComplainsGraph'+i+'').highcharts({
-				colors: ['#7F7037','#80F6F8','#FA8283'],
+				colors: ['#7F7037','#80F6F8'],
 				chart: {
 					type: 'column'
 				},
@@ -3005,7 +3009,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
-					categories: ["Target","Toured","Yet to Tour"],
+					categories: ["Target","Toured"],
 					title: {
 						text: null
 					},
@@ -3081,20 +3085,95 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	}	
 	}
 	
+	//santosh
+	if(result !=null && result.monthList != null && result.monthList.length > 0){
+		  var str2='';
+		    str2+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str2+='<div class="row">';
+				str2+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str2+='<h4 class="text-capital">MONTH WISE COMPLIANCE OVERVIEW</h4>';
+					str2+='</div>';
+				for(var i in result.monthList){
+						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
+							str2+='<table class="table table-bordered">';
+							 var categoryList = result.monthList[i].subList;
+							 
+							 if(categoryList != null && categoryList.length > 0){
+									var moxCategoryLength = categoryList.length;
+									var categoryVO = result.monthList[i].subList[0];
+								str2+='<tr>';
+									str2+='<td rowspan='+(moxCategoryLength+1)+' style="font-size:22px;background-color:#EDECE7">'+result.monthList[i].name+'<br>'+result.monthList[i].year+'</td>';
+									str2+='<td style="background-color:#EDECE7">'+categoryVO.name+'<small>('+categoryVO.complainceDays+')</small>';
+									 str2+='<div class="dropup">';
+									str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+										str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+											str2+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 10px;">Tours Days Target Per month</i></p>';
+											str2+='<table class="table">';
+												str2+='<tr><td style="background-color:#EDECE7">'+categoryVO.name+' - '+categoryVO.targetDays+'</td></tr>';
+											str2+='</table>';
+										str2+='</div>';
+									str2+='</div>'; 
+									   if(categoryVO.complainceDays >= categoryVO.targetDays){
+											str2+='<i  style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger pull-right"></i></td>';;
+										   }else{
+											str2+='<i  style="background-color:#E35B69;" class="glyphicon glyphicon-remove text-danger pull-right"></i></td>';
+										   }
+										   
+								        if(result.monthList[i].isComplaince != null && result.monthList[i].isComplaince.trim()=="True"){
+										   str2+='<td style="background-color:#3DBC93;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-ok" style="font-size:28px;display:block"></i><small>Compliance</small></td>';
+										}else{
+										   str2+='<td style="background-color:#E35B69;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-remove" style="font-size:28px;display:block"></i><small>Non Compliance</small></td>';
+										} 	 
+								  str2+='</tr>';
+								
+									for(var k in categoryList){
+										if(k==0)
+										continue;
+										 str2+='<tr>';
+										if(categoryList[k].name == null || categoryList[k].name == ""){
+											str2+='<td style="background-color:#EDECE7;"> - </td>';
+										}else{
+										   str2+='<td style="background-color:#EDECE7">'+categoryList[k].name+'<small>('+categoryList[k].complainceDays+')</small>';
+											str2+='<div class="dropup">';
+											str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+												str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+													str2+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per month</i></p>';
+													str2+='<table class="table">';
+														str2+='<tr style="background-color:#EDECE7"><td>'+categoryList[k].name+' - '+categoryList[k].targetDays+'</td></tr>';
+													str2+='</table>';
+												str2+='</div>';
+											str2+='</div>'; 
+										   if(categoryList[k].complainceDays >= categoryList[k].targetDays){
+												str2+='<i style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger pull-right"></i>';
+										   }else{
+											 	str2+='<i style="color:#E35B69;" class="glyphicon glyphicon-remove text-danger pull-right"></i>';
+										   }
+										   str2+='</td>';
+										}
+									str2+='</tr>';
+								  }
+							 }
+							str2+='</table>';
+						str2+='</div>';
+				}
+				str2+='</div>';
+			str2+='</div>';
+		$("#monthWiseComplainceDivId").html(str2);
+	}
+	
 	if(result !=null && result.subList2 != null && result.subList2.length > 0){
 		var str1='';
-		str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str1+='<div class="row">';
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+		str1='<h4 class="text-capital">MONTH WISE COMPLIANCE COMMENTS & ATTACHMENTS</h4>';
+				str1+='<div class="row m_top20">';
 					str1+='<table class="table table-bordered borderedWeight">';
 						str1+='<thead class="bg_D8">';
 							str1+='<tr>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Category</th>';
-							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">District Name</th>';
-							//	str1+='<th class="text-capital text-center" style="vertical-align: middle;">Constituency Name</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Type</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Days</th>';
-								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Document</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">NO OF Days</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">ATTACHMENT</th>';
 								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
 							str1+='</tr>';
 							str1+='<tbody>';
@@ -3106,16 +3185,6 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										}else{
 											str1+='<td>'+result.subList2[i].tourCategory+'</td>';
 										}
-									/* 	if(result.subList2[i].locationName == null || result.subList2[i].locationName == ""){
-											str1+='<td> - </td>';
-										}else{
-											str1+='<td>'+result.subList2[i].locationName+'</td>';
-										}
-										if(result.subList2[i].constituencyName != null && result.subList2[i].constituencyName.length > 0){
-										    str1+='<td>'+result.subList2[i].constituencyName+'</td>';	
-										}else{
-										    str1+='<td> - </td>';	
-										} */
 										if(result.subList2[i].tourType == null || result.subList2[i].tourType == ""){
 											str1+='<td> - </td>';
 										}else{
