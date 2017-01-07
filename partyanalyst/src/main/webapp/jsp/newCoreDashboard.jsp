@@ -3702,10 +3702,10 @@
 
 	onLoadCalls();
 	
-	function onLoadCalls(){
+function onLoadCalls(){
 		
-		//getRescentArticleTime();		
-		//committeeBasicCall();
+		getRescentArticleTime();		
+		committeeBasicCall();
 		
 		//training program call
 		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
@@ -3718,34 +3718,34 @@
 		stateLevelCampDetails();
 		stateLevelCampDetailsRepresentativeWise(programIdArr);
 		getStateLevelCampCount(programIdArr); */   
-		//getTrainingCampBasicDetailsCntOverview();   
+		getTrainingCampBasicDetailsCntOverview();   
 		//getTrainingCampProgramOverviewDtls();   
 		//Meeting
-		//getPartyMeetingTypeByPartyMeetingMainType();
-		//getStateLevelMeetingsByMeetingType();
-		//getSpecialMeetingsByMeetingType();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		getSpecialMeetingsByMeetingType();
 		//events
-		//getEventBasicCntDtls();
+		getEventBasicCntDtls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		//getNewsBasicCounts();
-		//commonNewsBasicCalls();
-		//getAllNewsPapers();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		//getPartyWiseTotalDebateDetails();      
+		getPartyWiseTotalDebateDetails();      
         //cadreRegistration
-		//cadreRegistrationBasicCall(globalActivityMemberId);
+		cadreRegistrationBasicCall(globalActivityMemberId);
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
-       // getToursBasicOverviewCountDetails();     
-		//getDesigWiseMemberDtls();  
+        getToursBasicOverviewCountDetails();     
+		getDesigWiseMemberDtls();  
 		/*New Tours implementation Default Call */
 		 // getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
-	//	getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
-	//	getAllTvChannels();
-	//	getRescentNewsBulletinTime();
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+		getAllTvChannels();
+		getRescentNewsBulletinTime();
 		/* Alert Default Call */
 		getAlertOverviewDetails();  
 	}
