@@ -105,7 +105,16 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String  getConstituenciesByPrintVendor(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long printVendorId = jobj.getLong("printVendorId");
+			basicVOList = cardPrintService.getConstituenciesByPrintVendor(printVendorId);
+		}catch(Exception e){
+			LOG.error("exception Occurred at getConstituenciesByPrintVendor() in CardPrintAction class ", e); 
+		}
+		return Action.SUCCESS;
+	}
 	public String getCardPrintUpdationDetails(){
 		try{
 			
@@ -168,9 +177,10 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			}
 			
 			jobj = new JSONObject(getTask());
+			Long printVendorId  = jobj.getLong("printVendorId");
 			Long constituencyId = jobj.getLong("constituencyId");
 			
-			resultStatus = cardPrintService.updatePrintDetailsToTdpCadreCardPrint(constituencyId);
+			resultStatus = cardPrintService.updatePrintDetailsToTdpCadreCardPrint(printVendorId , constituencyId);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occurred At updatePrintDetailsToTdpCadreCardPrint() in CardPrintAction class",e) ;
@@ -187,10 +197,10 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 				return Action.ERROR;
 			}
 			//entitlements using userType.
-			if(!(user.getUserType() != null && user.getUserType().equalsIgnoreCase("Admin")))
-			{
+			if(!(user.getUserType() != null && user.getUserType().equalsIgnoreCase("Admin"))){
 				return "entitlementError";
 			}
+			basicVOList = cardPrintService.getAllVendors();
 		}catch(Exception e){
 			LOG.error("Exception Occurred At adminCardPrint() in CardPrintAction class",e) ;
 		}
