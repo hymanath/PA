@@ -2894,7 +2894,7 @@ function getTotalArticledetails(articleId){
 					str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 						str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
-						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:200px;border:1px solid #ddd" alt="Img Title"/>';
+						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;border:1px solid #ddd" alt="Img Title"/>';
 					str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 					str+='<h4 class="panel-title text-success">Description</h4>';
