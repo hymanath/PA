@@ -1,4 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="utf-8">
@@ -23,16 +25,33 @@
 				<div class="panel-body">
 					<div class="row">
 						<div id="errorMsgDivId" style="color:red"></div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
-							<label>CONSTITUENCY:<span style="color:red"> *</span></label>
-							<select id="constituencyId" class="form-control">
-								<option value="0">Select Constituency</option>
-							</select>
-						</div>
-						<div class="col-md-4 col-xs-12 col-sm-4">
-							<button class="buttonCls btn btn-success" onclick="updatePrintDetailsToTdpCadreCardPrint()" style="margin-top: 23px; margin-left: 20px;">SUBMIT</button>
-						</div>
-						<div id="successMsgDivId"></div>
+						
+						   <div class="col-md-4 col-xs-12 col-sm-4">
+								<label>SELECT VENDOR:<span style="color:red"> *</span></label>
+								<select id="vendorId" class="form-control">
+									<option value="0">Select Vendor</option>
+									 <c:if test="${basicVOList!= null && fn:length(basicVOList) gt 0}">  
+	                                       <c:forEach var="vendor" items="${basicVOList}"> 
+										     <option value="${vendor.id}">${vendor.name}</option>
+									        </c:forEach>   
+	                                 </c:if>
+								</select>
+						   </div>
+						   
+							<div class="col-md-4 col-xs-12 col-sm-4">
+								<label>SELECT CONSTITUENCY:<span style="color:red"> *</span></label>
+								<select id="constituencyId" class="form-control">
+									<option value="0">Select Constituency</option>
+								</select>
+							</div>
+							
+							<div class="col-md-4 col-xs-12 col-sm-4">
+								<button class="buttonCls btn btn-success" onclick="updatePrintDetailsToTdpCadreCardPrint()" style="margin-top: 23px; margin-left: 20px;">SUBMIT</button>
+								<img src="images/search.gif" style="padding-left:10px;display:none;" width="50" height="50" id="processingImg"/></button>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="successMsgDivId"></div>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -45,20 +64,30 @@
 
 <script type="text/javascript">
 
-getAllAssemblyConstituencies();
 
+
+  $('#vendorId').click(function(){
+	  getConstituenciesByPrintVendor();
+  });  
 	
-function getAllAssemblyConstituencies(){
-	
-	$("#constituencyId option").remove();
+function getConstituenciesByPrintVendor(){
+	 
+	 $("#constituencyId option").remove();
+	 $("#constituencyId").append('<option value="0"> Select Constituency</option>');
+	 
+	 var printVendorId = $("#vendorId").val();
+	 if(printVendorId == 0){
+		 return;
+	 }
+	 
+	var jsObj = {  printVendorId : printVendorId }
 	$.ajax({
 	     type:'GET',
-         url:'getAllAssemblyConstituenciesAction.action',
+         url:'getConstituenciesByPrintVendorAction.action',
          dataType: 'json',
-         data: {}
+         data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
 		  if(result != null){
-			  $("#constituencyId").append('<option value="0"> Select Constituency</option>');
 			  for(var i in result){
 				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			  }
@@ -70,12 +99,20 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 	$("#errorMsgDivId").html("");
 	$("#successMsgDivId").html("");
 	
+	var printVendorId = $("#vendorId").val();
 	var constituencyId = $("#constituencyId").val();
 	
+	if(printVendorId == 0){
+		$("#errorMsgDivId").html("Select Vendor");
+		return;
+	}
 	if(constituencyId == 0){
 		$("#errorMsgDivId").html("Select Constituency");
+		return;
 	}
+	$("#processingImg").show();
 	var jsObj = { 
+	    printVendorId  : printVendorId,
 		constituencyId : constituencyId
 	}
 	$.ajax({
@@ -84,7 +121,7 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 		 dataType: 'json',
 		 data: {task:JSON.stringify(jsObj)}
 	  }).done(function(result){
-		  
+		  $("#processingImg").hide();
 		 if(result != null){
 		    
 			if(result.resultCode != null && result.resultCode == 1 && result.id != null && result.id == 1){
