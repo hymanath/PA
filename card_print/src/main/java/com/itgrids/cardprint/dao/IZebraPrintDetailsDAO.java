@@ -9,4 +9,5 @@ import com.itgrids.cardprint.model.ZebraPrintDetails;
 public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Long> {
 	
 	public List<Object[]>  getPrintDetailsByConstituencyId(Long constituencyId);
+	public List<Object[]> getPrintStatusWiseRecordsCount();
 }
