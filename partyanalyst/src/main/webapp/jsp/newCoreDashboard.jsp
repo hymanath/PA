@@ -3529,6 +3529,7 @@
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="tourIndividualDetailsBlock"></div>
+						<div id="monthWiseComplainceDivId" class="m_top20"></div>
 						<div id="tourIndividualDetailsTableBlock" ></div>
 					</div>
 				</div>
