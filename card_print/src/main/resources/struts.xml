@@ -87,5 +87,11 @@
 	    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
+		<action name="getPrintStatusWiseConstitCountByLoggedUserAction" class="cardPrintAdminAction" method ="getPrintStatusWiseConstitCountByLoggedUser">
+		    	<result type="json" name="success">  
+			       <param name="root">printStatusList</param>
+		        </result>
+		</action>
+		
 	</package>
 </struts>        
