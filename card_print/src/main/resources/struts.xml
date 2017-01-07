@@ -41,7 +41,8 @@
 		</action>
 		<action name="cardPrintUpdationAction" class="cardPrintAction" method ="getCardPrintUpdationDetails">
 		    	<result name="success">jsp/cardPrintUpdation.jsp</result>
-		    	<result name="input" type="redirect">loginAction.action</result>
+		    	<result name="error" type="redirect">loginAction.action</result>
+		    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
 		<action name="getAllPrintStatusDetailsAction" class="cardPrintAction" method ="getAllPrintStatus">
@@ -70,7 +71,8 @@
 		
 		<action name="adminCardPrintAction" class="cardPrintAction" method ="adminCardPrint">
 		    	<result name="success">jsp/adminPrintPage.jsp</result>
-		    	<result name="input" type="redirect">loginAction.action</result>
+		    	<result name="error" type="redirect">loginAction.action</result>
+		    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
 	</package>
