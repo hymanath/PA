@@ -669,7 +669,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<span class="pull-right" id="alertProfileHideId" style="display:none;">
 									<i class="glyphicon glyphicon-chevron-down" style="margin-top:10px;margin-left:5px"></i>
 								</span>
-								<div style="display:inline-block" class="pull-right">
+								<div style="display:inline-block;width:200px" class="pull-right">
 									<div class="input-group pull-right">
 										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 										<input class="form-control" id="alertsDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
