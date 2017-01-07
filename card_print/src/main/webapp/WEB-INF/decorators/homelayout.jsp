@@ -46,7 +46,9 @@
 						  <c:if test="${sessionScope.USER.userType != null && (sessionScope.USER.userType == 'Print Vendor' || sessionScope.USER.userType =='Admin')}">
 					        <li class="m_top10"><a tabindex="-1" href="cardPrintUpdationAction.action"><span class="glyphicon glyphicon-saved"></span>&nbsp;&nbsp;Updating Status</a></li>
 						 </c:if>
-						 
+						 <c:if test="${sessionScope.USER.userType != null && (sessionScope.USER.userType == 'Print Vendor')}">
+					        <li class="m_top10"><a tabindex="-1" href="printUserDashboardAction.action"><span class="glyphicon glyphicon-saved"></span>&nbsp;&nbsp;Print User Dashboard</a></li>
+						 </c:if>
 						 <c:if test="${sessionScope.USER.userType != null && sessionScope.USER.userType =='Admin'}">
 						    <li class="m_top10"><a tabindex="-1" href="adminCardPrintAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;Admin Page</a></li>
 					     </c:if>
