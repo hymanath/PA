@@ -1,5 +1,7 @@
 package com.itgrids.cardprint.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.cardprint.dto.PrintStatusVO;
 import com.itgrids.cardprint.dto.UserVO;
 import com.itgrids.cardprint.service.ICardPrintAdminService;
 import com.opensymphony.xwork2.Action;
@@ -20,7 +23,9 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
 	  private HttpServletRequest request;
 	  private String task;
 	  private JSONObject jobj;
-	
+	  private List<PrintStatusVO> printStatusList;
+	  private Long cardPrintVendorId;
+	  
 	  //Attributes
 	  private ICardPrintAdminService cardPrintAdminService;
 	  
@@ -51,7 +56,23 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
 		this.cardPrintAdminService = cardPrintAdminService;
 	  }
       
-    //Request Handling Methods
+	    public List<PrintStatusVO> getPrintStatusList() {
+			return printStatusList;
+		}
+	
+		public void setPrintStatusList(List<PrintStatusVO> printStatusList) {
+			this.printStatusList = printStatusList;
+		}
+		
+	
+	     public Long getCardPrintVendorId() {
+			return cardPrintVendorId;
+		}
+
+		public void setCardPrintVendorId(Long cardPrintVendorId) {
+			this.cardPrintVendorId = cardPrintVendorId;
+		}
+		//Request Handling Methods
 	public String execute(){
           try{
   			
@@ -65,11 +86,24 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
   				return "entitlementError";
   			}
   			
+  			cardPrintVendorId = cardPrintAdminService.getPrintVendorIdByLoggedInUser(user.getUserId());
+  			
   		}catch(Exception e){
   			LOG.error("Exception Occurred At execute() in CardPrintAdminAction class",e) ;
   		}
   		return Action.SUCCESS;
   	}
-
+	public String getPrintStatusWiseConstitCountByLoggedUser(){
+		try{ 
+			  jobj = new JSONObject(getTask());
+			  Long printVendorId  = jobj.getLong("printVendorId");
+			     
+			  printStatusList = cardPrintAdminService.getPrintStatusWiseConstitCountByLoggedUser(printVendorId);
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getPrintStatusWiseConstitCountByLoggedUser() in CardPrintAdminAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
 			
 }
