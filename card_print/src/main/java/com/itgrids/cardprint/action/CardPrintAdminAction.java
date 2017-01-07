@@ -1,84 +1,75 @@
 package com.itgrids.cardprint.action;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.cardprint.dto.UserVO;
+import com.itgrids.cardprint.service.ICardPrintAdminService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CardPrintAdminAction extends ActionSupport implements ServletRequestAware {
 	
-	private static final Logger LOG = Logger.getLogger(CardPrintAdminAction.class);
-	private static final long serialVersionUID = 1L;
+	  private static final Logger LOG = Logger.getLogger(CardPrintAdminAction.class);
 	
-			private HttpServletRequest request;
-			private HttpServletResponse response;
-			private ServletContext context;
-			private HttpSession session;
-			private String task;
-			private JSONObject jobj;
-
-			public void setServletRequest(HttpServletRequest request) {
-				this.request = request;
+	  //Member Variables
+	  private HttpServletRequest request;
+	  private String task;
+	  private JSONObject jobj;
+	
+	  //Attributes
+	  private ICardPrintAdminService cardPrintAdminService;
+	  
+     //Implementation Methods
+ 	  public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+      }
 		
-			}
-			public void setServletResponse(HttpServletResponse response) {
-				this.response = response;
-				
-			}
-			public void setServletContext(ServletContext context) {
-				this.context = context;
-			}
+	  //setters and getters	
+	  public String getTask() {
+		return task;
+	  }
+	
+	  public void setTask(String task) {
+	     this.task = task;
+	  }
+	
+	  public JSONObject getJobj() {
+		 return jobj;
+	  }
+	
+      public void setJobj(JSONObject jobj) {
+		 this.jobj = jobj;
+	  }
 		
-			public HttpServletRequest getRequest() {
-				return request;
-			}
-		
-			public void setRequest(HttpServletRequest request) {
-				this.request = request;
-			}
-		
-			public String getTask() {
-				return task;
-			}
-		
-			public void setTask(String task) {
-				this.task = task;
-			}
-		
-			public JSONObject getJobj() {
-				return jobj;
-			}
-		
-			public void setJobj(JSONObject jobj) {
-				this.jobj = jobj;
-			}
-			
-			public HttpSession getSession() {
-				return session;
-			}
-
-			public void setSession(HttpSession session) {
-				this.session = session;
-			}
-			
-			public String execute()
-			{
-				LOG.info("Entered into  cardPrintAdminAction of execute method");
-				try{
-					session = request.getSession();
-			}catch(Exception e)
-			{
-				LOG.error("Exception occured into cardPrintAdminAction");
-			}
-				return Action.SUCCESS;
-			}
+      public void setCardPrintAdminService(
+			ICardPrintAdminService cardPrintAdminService) {
+		this.cardPrintAdminService = cardPrintAdminService;
+	  }
+      
+    //Request Handling Methods
+	public String execute(){
+          try{
+  			
+  			HttpSession session = request.getSession();
+  			UserVO user = (UserVO) session.getAttribute("USER");
+  			if(user == null || user.getUserId() == null){
+  				return Action.ERROR;
+  			}
+  			//entitlements using userType.
+  			if(!(user.getUserType() != null && user.getUserType().equalsIgnoreCase("Print Vendor"))){
+  				return "entitlementError";
+  			}
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception Occurred At execute() in CardPrintAdminAction class",e) ;
+  		}
+  		return Action.SUCCESS;
+  	}
 
 			
 }
