@@ -24,6 +24,9 @@
  	</bean>
  	
  	<bean name ="cardPrintAdminService" class ="com.itgrids.cardprint.service.impl.CardPrintAdminService">
+ 	   <property name="constituencyPrintStatusDAO" ref="constituencyPrintStatusDAO" />
+ 	   <property name="userPrintVendorDAO" ref="userPrintVendorDAO" />
+ 	   <property name="printStatusDAO" ref="printStatusDAO" />
  	</bean>
  	
  	<bean name="dateUtilService" class="com.itgrids.cardprint.util.DateUtilService">
