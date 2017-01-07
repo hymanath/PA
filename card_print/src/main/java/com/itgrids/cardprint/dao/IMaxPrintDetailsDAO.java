@@ -9,4 +9,5 @@ import com.itgrids.cardprint.model.MaxPrintDetails;
 public interface IMaxPrintDetailsDAO extends GenericDao<MaxPrintDetails, Long> {
 	
 	public List<Object[]>  getPrintDetailsByConstituencyId(Long constituencyId);
+	public List<Object[]> getPrintStatusWiseRecordsCount();
 }
