@@ -2008,7 +2008,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	  Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
 	  Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
 	  Set<Long> candidateIdSet = new HashSet<Long>();
-	  Map<Long,ToursBasicVO> designationMap = new HashMap<Long, ToursBasicVO>(0);
+	  Map<Long,ToursBasicVO> designationMap = new LinkedHashMap<Long, ToursBasicVO>(0);
 	  Set<Long> locationValues = new HashSet<Long>(0);
 	  Long locationAccessLevelId = 0l;
 	  Date fromDate=null;
@@ -2210,9 +2210,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(designationMap.values()));   
 				   designationMap.clear();  
 			   }
-			  if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
+			/*  if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
 				   Collections.sort(resultVO.getSubList(), toursLeaderSorting);
-			   }
+			   }*/
 	  }catch(Exception e){
 		  LOG.error("Exception Occured in getToursBasicOverviewDtls() in CoreDashboardToursService  : ",e); 
 	  }
@@ -2547,7 +2547,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 Set<Long> locationValues = new HashSet<Long>(0);
 	 Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
 	 Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
-	 Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+	 Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new LinkedHashMap<Long, Map<Long,ToursBasicVO>>(0);
 	 Long locationAccessLevelId = 0l;
 	 Date fromDate=null;
 	 Date toDate = null;
@@ -2718,7 +2718,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 	 Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
 	 Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
-	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new LinkedHashMap<Long, Map<Long,ToursBasicVO>>(0);
 	 Map<Long,String> designationIdAndNameMap = new HashMap<Long, String>(0);
 	 Set<Long> locationValues = new HashSet<Long>(0);
 	 Long locationAccessLevelId = 0l;
