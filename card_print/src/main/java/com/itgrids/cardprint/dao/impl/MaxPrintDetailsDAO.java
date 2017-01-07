@@ -23,5 +23,16 @@ public class MaxPrintDetailsDAO extends GenericDaoHibernate<MaxPrintDetails, Lon
 		query.setParameter("constituencyId",constituencyId );
 		return query.list();
 	}
+	
+	public List<Object[]> getPrintStatusWiseRecordsCount(){
+		
+		Query query = getSession().createQuery("" +
+		" select    model.printStatus , count(maxPrintDetailsId) " +
+		" from      MaxPrintDetails model " +
+		" group by  model.printStatus");
+		
+		return query.list();
+	}
+	
 }
 
