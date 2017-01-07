@@ -11185,4 +11185,18 @@ public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId){
 	}
 	return finalList;
 }
+
+public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo){
+	String memberShipNo = null;
+	try {
+		List<String> list = tdpCadreDAO.getMemberShipNumberByVoterNumberOrMobileNo(voterCardNo, mobileNo);
+		if(list != null && !list.isEmpty()){
+			memberShipNo = list.get(0);
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getMemberShipNumberByVoterNumberOrMobileNo() Method, Exception is - ",e);
+	}
+	return memberShipNo;
+}
 }

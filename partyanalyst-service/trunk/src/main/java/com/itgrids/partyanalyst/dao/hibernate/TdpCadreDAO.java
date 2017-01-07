@@ -9265,4 +9265,26 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameter("cardPrintStatusId",IConstants.CARD_PRINT_STATUS_NOT_VERIFIED);
 		   return (Long)query.uniqueResult();
 	   }
+	   
+	   public List<String> getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo){
+		   StringBuilder sb = new StringBuilder();
+		   sb.append("select distinct model.memberShipNo" +
+		   				" from TdpCadre model" +
+		   				" where model.isDeleted = 'N'" +
+		   				" and model.enrollmentYear = 2014");
+		   if(voterCardNo != null && voterCardNo.trim().length() > 0 && !voterCardNo.trim().equalsIgnoreCase("0")){
+			   sb.append(" and model.voter.voterIDCardNo = :voterCardNo");
+		   }
+		   if(mobileNo != null && mobileNo.trim().length() > 0 && !mobileNo.trim().equalsIgnoreCase("0")){
+			   sb.append(" and model.mobileNo = :mobileNo");
+		   }
+		   
+		   Query query = getSession().createQuery(sb.toString());
+		   if(voterCardNo != null && voterCardNo.trim().length() > 0 && !voterCardNo.trim().equalsIgnoreCase("0"))
+			   query.setParameter("voterCardNo", voterCardNo);
+		   if(mobileNo != null && mobileNo.trim().length() > 0 && !mobileNo.trim().equalsIgnoreCase("0"))
+			   query.setParameter("mobileNo", mobileNo);
+		   
+		   return query.list();
+	   }
 }

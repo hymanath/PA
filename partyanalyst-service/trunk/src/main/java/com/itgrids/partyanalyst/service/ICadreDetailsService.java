@@ -138,4 +138,6 @@ public interface ICadreDetailsService {
 	public List<VoterCastInfoVO> getCastNGenderWiseVotersCountByPublIdInALocFromIntermedTable(Long userId,Long reportLvlId,Long levelValue,Long publicationDateId,List<Long> assemblyIdsList);
 	public List<SelectOptionVO> getTotalBAsicCastInfoLst(Long userId,Long publicationDateId,List<Long> assemblyIdsList);
 	public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId);
+	
+	public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo);
 }
