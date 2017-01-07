@@ -30,7 +30,7 @@ public class ToursBasicVO {
     private String filePath;
 	private List<ToursBasicVO> subList = null;
 	private List<ToursBasicVO> subList2 = null;
-	
+	private List<ToursBasicVO> monthList = null;
 	private String designation;
 	private Long designationId;
 	private Long noOfLeaderCnt=0l;
@@ -101,6 +101,7 @@ public class ToursBasicVO {
 	
 	private Long tourTypeAchievedDays=0l;
 	private Long count=0l;
+	private String isComplaince;
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
@@ -307,6 +308,16 @@ public class ToursBasicVO {
 			return subList2;   
 		}
 	}
+	
+	public List<ToursBasicVO> getMonthList() {
+		if(monthList != null){
+			return monthList;
+		}else{
+			monthList = new ArrayList<ToursBasicVO>();
+			return monthList;
+		}
+	}
+	
 	public Set<Long> getLocationSet() {
 		return locationSet;
 	}
@@ -666,6 +677,12 @@ public class ToursBasicVO {
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public String getIsComplaince() {
+		return isComplaince;
+	}
+	public void setIsComplaince(String isComplaince) {
+		this.isComplaince = isComplaince;
 	}
           
 	

@@ -82,15 +82,16 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	  public List<Object[]> getLeaderComplainceCntCategoryWise(List<Long> monthYearIds,String type,Long selfAppraisalCandiateId,Set<Long> candiateIds){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select " +
-			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-			 " model.selfAppraisalDesignation.designation," +
-			 " model.selfAppraisalCandidateId," );
+			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+			 " model.selfAppraisalDesignation.designation," +//1
+			 " model.selfAppraisalCandidateId," );//2
 			if(type.equalsIgnoreCase("tourCategory")){
-			 queryStr.append(" model.selfAppraisalTourCategoryId,");	
+			 queryStr.append(" model.selfAppraisalTourCategoryId,");//3	
 			}else if(type.equalsIgnoreCase("tourType")){
-			 queryStr.append(" model.tourTypeId,");	
+			 queryStr.append(" model.tourTypeId,");//3	
 			}
-			queryStr.append(" sum(model.tourDays) " +
+			queryStr.append(" model.selfAppraisalToursMonthId," +//4
+			 " sum(model.tourDays) " +//5
 			 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
 			 " and model.selfAppraisalDesignation.isActive='Y' ");
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
@@ -109,8 +110,14 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 			}else if(type.equalsIgnoreCase("tourType")){
 			 queryStr.append(" model.tourTypeId");	
 			}
+		    queryStr.append(",model.selfAppraisalToursMonthId");
 		    queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				   "  model.selfAppraisalCandidateId ");
+		    if(type.equalsIgnoreCase("tourCategory")){
+				 queryStr.append(",model.selfAppraisalTourCategoryId");	
+			}else if(type.equalsIgnoreCase("tourType")){
+				 queryStr.append(",model.tourTypeId");	
+			}
 		  Query query = getSession().createQuery(queryStr.toString());
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
 			query.setParameterList("monthYearIds", monthYearIds);
