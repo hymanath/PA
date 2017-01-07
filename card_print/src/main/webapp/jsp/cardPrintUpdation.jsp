@@ -1,4 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="utf-8">
@@ -22,9 +24,32 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class ="row" >
 				 <div id="errDivId" style="color:red; margin-left:13px;"></div>
+					  
+					<c:if test="${sessionScope.USER != null && sessionScope.USER.userType != null && sessionScope.USER.userType == 'Admin'}">
+					   <div class="col-md-5 col-sm-6 col-xs-12">
+						   <label>select Vendor</label><span class="text-danger">*</span>
+							<select class="form-control"  id="vendorId">
+							  <option value="0">Select Vendor</option>
+								  <c:if test="${basicVOList!= null && fn:length(basicVOList) gt 0}">  
+									   <c:forEach var="vendor" items="${basicVOList}"> 
+										 <option value="${vendor.id}">${vendor.name}</option>
+										</c:forEach>   
+							       </c:if>
+							</select>
+					   </div>
+					</c:if>
+				 
 				<div class="col-md-5 col-sm-6 col-xs-12">
-					  <label>Constituency</label><span class="text-danger">*</span>
+					  <label>Select Constituency</label><span class="text-danger">*</span>
 					  <select class="form-control"  id="constituencyId">
+					    <option value="0">Select Constituency</option>
+						<c:if test="${sessionScope.USER != null && sessionScope.USER.userType != null && sessionScope.USER.userType == 'Print Vendor'}">
+							  <c:if test="${basicVO != null && basicVO.subList!= null && fn:length(basicVO.subList) gt 0}">  
+									   <c:forEach var="constituency" items="${basicVO.subList}"> 
+										 <option value="${constituency.id}">${constituency.name}</option>
+										</c:forEach>   
+								 </c:if>
+						</c:if>
 					  </select>
 				 </div>
 				 
@@ -54,34 +79,45 @@
 	</div>
 	</div>
 	
-	
-	
-	
 </div>
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-
-getAllPrintStatusDetails();
-getAllAssemblyConstituencies();
+  var userTypeId = '${sessionScope.USER.userTypeId}'; 
+  
+      getAllPrintStatusDetails();
+  
+	  $('#vendorId').change(function(){
+		  getConstituenciesByPrintVendor();
+	  });  
 	
-function getAllAssemblyConstituencies(){
-	$.ajax({
-	     type:'GET',
-         url:'getAllAssemblyConstituenciesAction.action',
-         dataType: 'json',
-         data: {}
-      }).done(function(result){
-		  if(result != null){
-			  $("#constituencyId").append('<option value="0"> Select Constituency</option>');
-			  for(var i in result){
-				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			  }
-		  }
-	  })
-}
+		function getConstituenciesByPrintVendor(){
+			 
+			 $("#constituencyId option").remove();
+			 $("#constituencyId").append('<option value="0"> Select Constituency</option>');
+			 
+			 var printVendorId = $("#vendorId").val();
+			 if(printVendorId == 0){
+				 return;
+			 }
+			 
+			var jsObj = {  printVendorId : printVendorId }
+			$.ajax({
+				 type:'GET',
+				 url:'getConstituenciesByPrintVendorAction.action',
+				 dataType: 'json',
+				 data: {task:JSON.stringify(jsObj)}
+			  }).done(function(result){
+				  if(result != null){
+					  for(var i in result){
+						  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					  }
+				  }
+			  });
+		}
+	
 function getAllPrintStatusDetails(){
 	$.ajax({
 	     type:'GET',
@@ -92,7 +128,20 @@ function getAllPrintStatusDetails(){
 		  if(result != null){
 			  $("#printStatusId").append('<option value="0"> Select Print Status</option>');
 			  for(var i in result){
-				  $("#printStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				  if(result[i].id !=1){
+					  
+					  var adminStatusArray = [6,7,9,10];
+					  if(userTypeId == 1){//Print Vendor
+						  if(jQuery.inArray(result[i].id, adminStatusArray) == -1){
+							  $("#printStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						  }
+					  }
+					  if(userTypeId == 2){//Admin
+						  if(jQuery.inArray(result[i].id, adminStatusArray) !== -1){
+							  $("#printStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						  }
+					  }
+				  }
 			  }
 		  }
 	  })
@@ -103,29 +152,40 @@ function getAllPrintStatusDetails(){
 		$("#successMsgId").html('');
 		$("#successMsgId").show();
 		
-		var constituencyId = $('#constituencyId').val();
-		var printStatusId = $('#printStatusId').val();
-		var remarks = $('#remarksId').val().trim();
+		var printVendorId = 0;
+		if(userTypeId == 1){//Print Vendor
+			printVendorId = '${basicVO.id}'; 
+		}else if(userTypeId == 2){ //Admin
+			printVendorId = $('#vendorId').val();
+			if(printVendorId == 0){
+				$("#errDivId").html('Please Select Vendor');
+				return;
+			}
+		}
 		
+		var constituencyId = $('#constituencyId').val();
 		if(constituencyId ==0){
 			$("#errDivId").html('Please Select Constituency');
 			return;
 		}
-		   $("#errDivId").html(' ');
-			
+		$("#errDivId").html(' ');
+		
+		var printStatusId = $('#printStatusId').val();
 		if(printStatusId ==0){
 			$("#errDivId").html('Please Select Print Status');
 			return;
 		 }	
 		 $("#errDivId").html(' ');
 		 
+		 var remarks = $('#remarksId').val().trim();
 		 if(remarks == '' || remarks ==""){
 		  $("#errDivId").html('Please Enter Remarks');
 		  return ;
 	    }	
-		 $("#errDivId").html(' ');
+		$("#errDivId").html(' ');
 		 
 		var jsObj = {
+			printVendorId : printVendorId ,
 			constituencyId:constituencyId,
 			printStatusId : printStatusId,
 			remarks : remarks
@@ -152,6 +212,9 @@ function getAllPrintStatusDetails(){
 	});
 	
 	function clearFields(){
+		if(userTypeId == 2){//Admin
+		  $('#vendorId').val(0);
+		}
 	  $('#constituencyId').val(0);
 	  $('#printStatusId').val(0);
 	  $('#remarksId').val(' ');
