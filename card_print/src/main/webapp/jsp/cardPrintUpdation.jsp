@@ -6,7 +6,6 @@
 <title>Card Print Updation</title>
 
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/css/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="js/sha512.js"></script>
