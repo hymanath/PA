@@ -8,10 +8,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.itgrids.cardprint.dao.IConstituencyPrintStatusDAO;
+import com.itgrids.cardprint.dao.IMaxPrintDetailsDAO;
 import com.itgrids.cardprint.dao.IPrintStatusDAO;
 import com.itgrids.cardprint.dao.IUserPrintVendorDAO;
+import com.itgrids.cardprint.dao.IZebraPrintDetailsDAO;
 import com.itgrids.cardprint.dto.PrintStatusVO;
 import com.itgrids.cardprint.service.ICardPrintAdminService;
+import com.itgrids.cardprint.util.IConstants;
 
 public class CardPrintAdminService implements ICardPrintAdminService {
 	
@@ -21,6 +24,9 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 	private IConstituencyPrintStatusDAO constituencyPrintStatusDAO;
 	private IUserPrintVendorDAO userPrintVendorDAO;
 	private IPrintStatusDAO printStatusDAO;
+	private IMaxPrintDetailsDAO maxPrintDetailsDAO;
+	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
+	
 	//setters
 	public void setConstituencyPrintStatusDAO(
 			IConstituencyPrintStatusDAO constituencyPrintStatusDAO) {
@@ -35,8 +41,15 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 		this.printStatusDAO = printStatusDAO;
 	}
 	
-	//business methods
+	public void setMaxPrintDetailsDAO(IMaxPrintDetailsDAO maxPrintDetailsDAO) {
+		this.maxPrintDetailsDAO = maxPrintDetailsDAO;
+	}
+
+	public void setZebraPrintDetailsDAO(IZebraPrintDetailsDAO zebraPrintDetailsDAO) {
+		this.zebraPrintDetailsDAO = zebraPrintDetailsDAO;
+	}
 	
+	//business methods
 	public Long getPrintVendorIdByLoggedInUser(Long userId){
 		Long cardPrintVendorId = null;
 		try{
@@ -91,6 +104,52 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 	}
 	
      /////////2
-	 
+	 public List<PrintStatusVO> getPrintStatusWiseRecordCountByLoggedUSer(Long cardPrintVendorId){
+		 List<PrintStatusVO> finalList = null;
+		 try{
+			 
+			 Map<String,PrintStatusVO>	finalMap = new LinkedHashMap<String, PrintStatusVO>(0);
+			 
+			 String statusString = "E-Verification Failed , Y-Printed , N-Not Printed ,F-Print Failed , D-Allocated  "  ;
+			 
+			 for(String status : statusString.split(",")){
+				 PrintStatusVO statusVO = new  PrintStatusVO();
+				 String[] names = status.split("-");
+				 statusVO.setStatus(names[0].trim());
+				 statusVO.setName(names[1].trim());
+				 finalMap.put(statusVO.getStatus(), statusVO);
+			 }
+			   
+			   
+			   List<Object[]> data = null;
+			   
+			   if(cardPrintVendorId.longValue() == IConstants.MAX_PRINT_VENDOR_ID.longValue()){
+					  
+					 data = maxPrintDetailsDAO.getPrintStatusWiseRecordsCount();
+					 
+				 }else if(cardPrintVendorId.longValue() == IConstants.ZEBRA_PRINT_VENDOR_ID.longValue()){
+					 
+					 data =  zebraPrintDetailsDAO.getPrintStatusWiseRecordsCount();
+				 }
+			   
+			   if(data != null && data.size() > 0){
+				   for(Object[] obj :data){
+					   if(obj[0]!=null){
+						   PrintStatusVO statusVO = finalMap.get(obj[0].toString());
+						   if(statusVO != null){
+							   statusVO.setCount(obj[1]!=null ? (Long)obj[1] :0l); 
+						   }
+					   }
+				   }
+			   }
+			   
+			   if(finalMap != null && finalMap.size() > 0){
+				   finalList = new ArrayList<PrintStatusVO>(finalMap.values());
+			   }
+		}catch (Exception e){
+			LOG.error("exception Occurred at getPrintStatusWiseRecordCountByLoggedUSer() in CardPrintAdminService class ", e); 
+		}
+		 return finalList;
+	 }
 	
 }
