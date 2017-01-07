@@ -75,6 +75,12 @@
 		    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
+		<action name="getConstituenciesByPrintVendorAction" class="cardPrintAction" method ="getConstituenciesByPrintVendor">
+		    	<result type="json" name="success">  
+			       <param name="root">basicVOList</param>
+		        </result>
+		</action>
+		
 		<action name="printUserDashboardAction" class="cardPrintAdminAction">
 		    	<result name="success">jsp/printUserDashboard.jsp</result>
 		</action>
