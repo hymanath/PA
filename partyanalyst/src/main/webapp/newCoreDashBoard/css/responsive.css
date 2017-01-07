@@ -273,6 +273,10 @@
 	}
 }
 @media only screen and (device-width: 1024px) {
+	#alertDtlsTabId tr td:first-child , #alertDtlsTabId thead th:first-child
+	{
+		width:150px !important;
+	}
 	.committesBlockUl li
 	{
 		width:47%;

@@ -134,28 +134,28 @@
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-8 col-sm-7 col-xs-7" style="padding-right:0px">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
 								Alerts <small class="text-muted"><span id="alertDateHeadingId">  </span></small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5">
-							<span class="notesIconEvents pull-right">
+						<div class="col-md-4 col-sm-5 col-xs-5" style="padding-left:0px">
+							<!--<span class="notesIconEvents pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-							</span>
+							</span>-->
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px; margin-right: 12px; margin-top: -7px;">
-								<input type="text" id="dateRangeIdForAlert" style="width:180px" class="form-control" />
+							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:210px; margin-right: 12px; margin-top: -7px;">
+								<input type="text" id="dateRangeIdForAlert" style="width:190px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>  
 						</div>     
 					</div>
-					<div class="notesDropDown notesArrow" >
+					<!--<div class="notesDropDown notesArrow " >
 						<h4 class="text-capital">notes
 							<span class="pull-right">
 								<i class="glyphicon glyphicon-list-alt"></i>
@@ -167,7 +167,7 @@
 						<label>Create Notes</label>
 						<textarea class="form-control notesAreaEvents"></textarea>
 						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-					</div>
+					</div>-->
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -178,7 +178,7 @@
 							<h4><span class="headingColor text-capital">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6 alertLocationDiv" style="display:none;">
+						<div class="col-md-6 col-xs-12 col-sm-12 alertLocationDiv m_top10" style="display:none;">
 							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId" class="row"></div>
 						</div>    
@@ -187,12 +187,12 @@
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<h4 class="panel-title"><span class="headingColor text-capital">State Impact Scope Level Alerts</span></h4>
 								</div>
-								<div class="panel-body">
+								<div class="panel-body" style="padding:15px 0px">
 									 <div class="row">
 										  <div class="col-md-12 col-xs-12 col-sm-12">
 										      <div id="processingImgDivId"></div>
 											  <div class="col-md-1 col-xs-12 col-sm-12" style="padding:0px;">
-											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
+											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;width:110px"></h4>
 												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
 											  </div>	
 											 <div class="col-md-4 col-xs-12 col-sm-12" style="padding:0px;">
@@ -218,7 +218,7 @@
 												<li class="active optionsCls" attr_id="1">Overview</li>
 												<li class="optionsCls" attr_id="2">Categories</li>  
 												<li class="optionsCls" attr_id="3">Status</li> 
-												<i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+												<li><i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>
 											</ul>
 										</div>
 								       <div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
@@ -275,7 +275,7 @@
 									<div class="row m_top20">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
-											<div id="groupAssignAlertDlsDivId" class="m_top10"></div>     
+											<div id="groupAssignAlertDlsDivId" class="row m_top20"></div>     
 										</div>
 									</div>
 								</div>
@@ -1295,7 +1295,7 @@
 								</span>
 							</div>
 						</div>
-					   <div class="notesDropDown notesArrow" >
+					   <div class="notesDropDown notesArrow " >
 							<h4 class="text-capital">notes
 								<span class="pull-right">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -3358,15 +3358,15 @@
 </div>
 <!-- Modal For Alert Start -->
 <div class="modal fade" id="alertModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document"> 
+  <div class="modal-dialog" role="document" style="width:90%"> 
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
        <div class="row">
-			<div class="col-md-5 col-xs-12 col-sm-4">
+			<div class="col-md-5 col-xs-12 col-sm-12">
 				<h4 class="text-capital" id="alertModalHeadingId"></h4>
 			</div>
-			<div class="col-md-7 col-xs-12 col-sm-4" id="commitLvlId" style="display:none;">        
+			<div class="col-md-7 col-xs-12 col-sm-12" id="commitLvlId" style="display:none;">        
 				<label class="radio-inline">
 					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId1" value="All" checked> All
 				</label>
@@ -3401,7 +3401,7 @@
 </div>
 <!-- End -->
 <div class="modal fade" tabindex="-1" id="tourDocumentId" role="dialog">
-	<div class="modal-dialog" style="width:70%;">
+	<div class="modal-dialog" style="width:95%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -3461,7 +3461,7 @@
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="cdrModelId"></div>
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertDestId"></div>
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
@@ -3535,12 +3535,9 @@
 </div><!-- /.modal -->
 
 <div class="modal fade" id="myModalShowNew">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg" role="document" style="width:90%">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close topModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<div id="myModalShowNewId"></div>                   
-			</div>    
+			<div id="myModalShowNewId"></div>
 		</div>
 	</div>  
 </div>      
@@ -3707,8 +3704,8 @@
 	
 	function onLoadCalls(){
 		
-		getRescentArticleTime();		
-		committeeBasicCall();
+		//getRescentArticleTime();		
+		//committeeBasicCall();
 		
 		//training program call
 		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
@@ -3721,34 +3718,34 @@
 		stateLevelCampDetails();
 		stateLevelCampDetailsRepresentativeWise(programIdArr);
 		getStateLevelCampCount(programIdArr); */   
-		getTrainingCampBasicDetailsCntOverview();   
+		//getTrainingCampBasicDetailsCntOverview();   
 		//getTrainingCampProgramOverviewDtls();   
 		//Meeting
-		getPartyMeetingTypeByPartyMeetingMainType();
-		getStateLevelMeetingsByMeetingType();
-		getSpecialMeetingsByMeetingType();
+		//getPartyMeetingTypeByPartyMeetingMainType();
+		//getStateLevelMeetingsByMeetingType();
+		//getSpecialMeetingsByMeetingType();
 		//events
-		getEventBasicCntDtls();
+		//getEventBasicCntDtls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		//getNewsBasicCounts();
-		commonNewsBasicCalls();
-		getAllNewsPapers();
+		//commonNewsBasicCalls();
+		//getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		getPartyWiseTotalDebateDetails();      
+		//getPartyWiseTotalDebateDetails();      
         //cadreRegistration
-		cadreRegistrationBasicCall(globalActivityMemberId);
+		//cadreRegistrationBasicCall(globalActivityMemberId);
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
-        getToursBasicOverviewCountDetails();     
-		getDesigWiseMemberDtls();  
+       // getToursBasicOverviewCountDetails();     
+		//getDesigWiseMemberDtls();  
 		/*New Tours implementation Default Call */
 		 // getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
-		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
-		getAllTvChannels();
-		getRescentNewsBulletinTime();
+	//	getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+	//	getAllTvChannels();
+	//	getRescentNewsBulletinTime();
 		/* Alert Default Call */
 		getAlertOverviewDetails();  
 	}
