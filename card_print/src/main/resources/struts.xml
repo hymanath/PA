@@ -82,7 +82,9 @@
 		</action>
 		
 		<action name="printUserDashboardAction" class="cardPrintAdminAction">
-		    	<result name="success">jsp/printUserDashboard.jsp</result>
+	    	<result name="success">jsp/printUserDashboard.jsp</result>
+	    	<result name="error" type="redirect">loginAction.action</result>
+	    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
 	</package>
