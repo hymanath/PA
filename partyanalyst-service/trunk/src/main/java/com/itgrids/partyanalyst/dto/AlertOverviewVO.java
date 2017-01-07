@@ -15,6 +15,7 @@ public class AlertOverviewVO {
 	private Long totalAlertCnt = 0l;
 	private Long partyAlertCnt = 0l;
 	private Long otherAlertCnt = 0l;
+	private Long govtAlertCnt =0l;
 	
 	private Long statusTypeId;
 	private String statusType;
@@ -23,6 +24,7 @@ public class AlertOverviewVO {
 	private Double statusCntPer = 0.0d;
 	private Double partyAlertCntPer = 0.0d;
 	private Double otherAlertCntPer = 0.0d;
+	private Double govtAlertCntPer = 0.0d;
 	
 	private AlertOverviewVO overAllVO;
 	private List<AlertOverviewVO> statusList;
@@ -41,6 +43,19 @@ public class AlertOverviewVO {
 	private Long actionNotRequiredCnt = 0l;
 	private Long duplicatesStatusCnt = 0l; 
 	
+	
+	public Long getGovtAlertCnt() {
+		return govtAlertCnt;
+	}
+	public void setGovtAlertCnt(Long govtAlertCnt) {
+		this.govtAlertCnt = govtAlertCnt;
+	}
+	public Double getGovtAlertCntPer() {
+		return govtAlertCntPer;
+	}
+	public void setGovtAlertCntPer(Double govtAlertCntPer) {
+		this.govtAlertCntPer = govtAlertCntPer;
+	}
 	public Long getDuplicatesStatusCnt() {
 		return duplicatesStatusCnt;
 	}
