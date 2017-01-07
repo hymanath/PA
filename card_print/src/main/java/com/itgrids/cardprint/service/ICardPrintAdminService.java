@@ -9,4 +9,5 @@ public interface ICardPrintAdminService {
 	public Long getPrintVendorIdByLoggedInUser(Long userId);
 	
 	public List<PrintStatusVO> getPrintStatusWiseConstitCountByLoggedUser(Long cardPrintVendorId);
+	public List<PrintStatusVO> getPrintStatusWiseRecordCountByLoggedUSer(Long cardPrintVendorId);
 }
