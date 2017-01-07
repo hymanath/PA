@@ -80,5 +80,20 @@ public List<Long> getSelfAppraisalToursMonth(String toursMonth){
 		return query.list();
 	}
 
-	
+public List<Long> getLatestMonthYearId(){
+	Query query = getSession().createQuery(" select model.selfAppraisalToursMonthId from SelfAppraisalToursMonth model order by model.year desc,monthNo desc limit 1 ");
+	return query.list();
+}
+public List<Object[]> getMonthAndYearDtls(List<String> monthYearList){
+	StringBuilder queryStr = new StringBuilder();
+	 queryStr.append(" select model.selfAppraisalToursMonthId,model.monthName,model.year from SelfAppraisalToursMonth model");
+	 if(monthYearList != null && monthYearList.size() > 0){
+		 queryStr.append(" where model.toursMonth in(:monthYearList) ");
+	 }
+	 Query query = getSession().createQuery(queryStr.toString());
+	 if(monthYearList != null && monthYearList.size() > 0){
+		 query.setParameterList("monthYearList", monthYearList);
+	 }
+	  return query.list();
+}
 }
