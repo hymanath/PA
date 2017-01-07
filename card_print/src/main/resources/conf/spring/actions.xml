@@ -14,5 +14,7 @@
 	  <bean id="cardPrintAction" class="com.itgrids.cardprint.action.CardPrintAction" singleton="false">
 	  	<property name="cardPrintService" ref="cardPrintService" />
 	  </bean>
+	   <bean id="cardPrintAdminAction" class="com.itgrids.cardprint.action.CardPrintAdminAction" singleton="false">
+	  </bean>
 	 
 </beans>

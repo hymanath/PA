@@ -75,5 +75,9 @@
 		    	<result name="entitlementError">jsp/entitlementError.jsp</result>
 		</action>
 		
+		<action name="printUserDashboardAction" class="cardPrintAdminAction">
+		    	<result name="success">jsp/printUserDashboard.jsp</result>
+		</action>
+		
 	</package>
 </struts>        

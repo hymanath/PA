@@ -10,6 +10,7 @@
 		<pattern>/exampleAction*</pattern>
 		<pattern>/cardPrintUpdationAction*</pattern>
 		<pattern>/adminCardPrintAction*</pattern>
+		<pattern>/printUserDashboardAction*</pattern>
 	</decorator>
 	
 </decorators>
