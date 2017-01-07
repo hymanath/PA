@@ -2935,12 +2935,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					   overViewVO.setPartyAlertCnt(alertCnt);
 				   }else if(statusId == 3l){//Other
 					   overViewVO.setOtherAlertCnt(alertCnt);
+				   }else if(statusId == 2l){
+					   overViewVO.setGovtAlertCnt(alertCnt);
 				   }
 			   }
 			   overViewVO.setTotalAlertCnt(totalAlertCnt);
 		   }
 		   overViewVO.setPartyAlertCntPer(calculatePercantage(overViewVO.getPartyAlertCnt(), totalAlertCnt));
 		   overViewVO.setOtherAlertCntPer(calculatePercantage(overViewVO.getOtherAlertCnt(), totalAlertCnt));
+		   overViewVO.setGovtAlertCntPer(calculatePercantage(overViewVO.getGovtAlertCnt(), totalAlertCnt));
 		   
 		   Map<Long,AlertOverviewVO> alertStatusMap = new HashMap<Long, AlertOverviewVO>(0);
 		   List<Object[]> rtrnAlrtStatusObjLst = alertStatusDAO.getAllStatus();
