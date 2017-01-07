@@ -27,6 +27,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private JSONObject jobj;
 	private List<BasicVO> basicVOList;
 	private ResultStatus resultStatus;
+	private BasicVO basicVO; 
 	
 	//Attributes
 	private ICardPrintService cardPrintService;
@@ -68,6 +69,13 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public BasicVO getBasicVO() {
+		return basicVO;
+	}
+	public void setBasicVO(BasicVO basicVO) {
+		this.basicVO = basicVO;
 	}
 	//Implementation Methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -127,6 +135,17 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			if(!(user.getUserType() != null && (user.getUserType().equalsIgnoreCase("Print Vendor") || user.getUserType().equalsIgnoreCase("Admin"))))
 			{
 				return "entitlementError";
+			}else{
+				
+				if(user.getUserType().equalsIgnoreCase("Print Vendor")){
+					
+					basicVO = cardPrintService.getVendorIdAndConstituenciesByLoggedInUser(user.getUserId());
+					
+				}else if(user.getUserType().equalsIgnoreCase("Admin")){
+					
+					basicVOList = cardPrintService.getAllVendors();
+				}
+				
 			}
 		}catch(Exception e){
 			LOG.error("Exception Occurred At getCardPrintUpdationDetails() in CardPrintAction class",e) ;
@@ -151,6 +170,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			
 			PrintStatusUpdateVO inputVO = new PrintStatusUpdateVO();
 			inputVO.setUserId(user.getUserId());
+			inputVO.setPrintVendorId(jobj.getLong("printVendorId"));
 			inputVO.setConstituencyId(jobj.getLong("constituencyId"));
 			inputVO.setPrintStatusId(jobj.getLong("printStatusId"));
 			inputVO.setRemarks(jobj.getString("remarks"));
