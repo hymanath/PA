@@ -10,4 +10,5 @@ public interface IConstituencyPrintStatusDAO extends GenericDao<ConstituencyPrin
 	
 	public List<Long> getConstituencyPrintStatus(Long constituencyId);
 	public List<Object[]> getConstituenciesByPrintVendor(Long printVendorId);
+	public List<Long> getConstituencyPrintStatusIds(Long printVendorId , Long constituencyId);
 }
