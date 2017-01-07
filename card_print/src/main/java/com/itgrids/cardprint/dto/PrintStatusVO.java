@@ -8,7 +8,10 @@ public class PrintStatusVO implements Serializable{
 	private String name;
 	private Long count = 0l;
 	
+	private String status;
+	
 	public PrintStatusVO(){}
+	
 	public PrintStatusVO(Long id , String name){
 		this.id = id;
 		this.name = name;
@@ -31,6 +34,14 @@ public class PrintStatusVO implements Serializable{
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	
