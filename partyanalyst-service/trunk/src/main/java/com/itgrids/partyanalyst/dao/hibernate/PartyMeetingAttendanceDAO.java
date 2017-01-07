@@ -873,7 +873,7 @@ public List<Object[]> getWithioutPublicRepresentativeWiseAttendedCadreCountForMe
 	}    
 	return query.list();
 	}
-public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList){
+public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList,Long mainTypeId){
 	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" SELECT "+	
 			" pmt.party_meeting_type_id,pm.party_meeting_id,pms.party_meeting_session_id,st.type,a.tdp_cadre_id ,a.attended_time,min(time(a.attended_time))," +
@@ -893,7 +893,7 @@ public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMe
 			" pma.party_meeting_id = pm.party_meeting_id and  "+
 			" a.attendance_id = pma.attendance_id and  "+
 			" pms.session_type_id = st.session_type_id   "+
-			" and pmmt.party_meeting_main_type_id = 3  ");
+			" and pmmt.party_meeting_main_type_id = :mainTypeId  ");
 	
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		queryStr.append(" and pm.party_meeting_id in (:partyMeetingIds) ");
@@ -907,11 +907,12 @@ public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMe
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		query.setParameterList("partyMeetingIds",partyMeetingIdsList);
 	}
+	query.setParameter("mainTypeId",mainTypeId);
 	
 	return query.list();
 }
 
-public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList){
+public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Long> partyMeetingIdsList,Long mainTypeId){
 	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" SELECT "+	
 			" pmt.party_meeting_type_id,pm.party_meeting_id,'0','',a.tdp_cadre_id ,a.attended_time,min(time(a.attended_time))," +
@@ -932,7 +933,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 			" pma.party_meeting_id = pm.party_meeting_id and  "+
 			" a.attendance_id = pma.attendance_id and  "+
 			//" pms.session_type_id = st.session_type_id   "+
-			"  pmmt.party_meeting_main_type_id = 3  ");
+			"  pmmt.party_meeting_main_type_id = :mainTypeId   ");
 	
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		queryStr.append(" and pm.party_meeting_id in (:partyMeetingIds) ");
@@ -946,7 +947,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		query.setParameterList("partyMeetingIds",partyMeetingIdsList);
 	}
-	
+	query.setParameter("mainTypeId",mainTypeId);
 	return query.list();
 }
 
