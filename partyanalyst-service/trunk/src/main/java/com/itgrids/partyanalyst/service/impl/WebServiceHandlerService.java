@@ -4498,13 +4498,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 Long tdpCadreId;
 			 String membershipId = membershipIdStr;
 			 if(membershipId == null || membershipId.isEmpty() || membershipId.trim().equalsIgnoreCase("0")){
-				 if(voterId != null && !voterId.isEmpty()){
+				 /*if(voterId != null && !voterId.isEmpty()){
 					CadreCommitteeVO  cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(null,null,null,null,voterId,null,null,null,null,null,null,null,null,0,10,false,null);
 					 membershipId = cadreCommitteeVO.getMemberShipCardId();
 				 }else if(mobileNoStr != null && !mobileNoStr.isEmpty()){
 					 CadreCommitteeVO  cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(null,null,null,null,null,mobileNoStr,null,null,null,null,null,null,null,0,10,false,null);
 					 membershipId = cadreCommitteeVO.getMemberShipCardId();
-				 }
+				 }*/
+				 membershipId = cadreDetailsService.getMemberShipNumberByVoterNumberOrMobileNo(voterId, mobileNoStr);
 			 }
 			 
 			 List<Long> tdpCadreIds = tdpCadreDAO.getTdpCadreIdByMembershipId(membershipId);
