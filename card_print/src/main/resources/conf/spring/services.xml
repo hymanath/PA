@@ -27,6 +27,8 @@
  	   <property name="constituencyPrintStatusDAO" ref="constituencyPrintStatusDAO" />
  	   <property name="userPrintVendorDAO" ref="userPrintVendorDAO" />
  	   <property name="printStatusDAO" ref="printStatusDAO" />
+ 	   <property name="maxPrintDetailsDAO" ref="maxPrintDetailsDAO" />
+  	   <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />
  	</bean>
  	
  	<bean name="dateUtilService" class="com.itgrids.cardprint.util.DateUtilService">
