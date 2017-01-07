@@ -18,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.usertype.UserType;
+
 
 @Entity
 @Table(name = "user")
@@ -36,6 +36,7 @@ public class User extends BaseModel implements Serializable{
 	private String hashKey;
 	private String usernameHashKey;
 	
+	private UserType userType;
 	
 	public User(){}
 
@@ -111,7 +112,16 @@ public class User extends BaseModel implements Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	
-	
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
 	
 }
