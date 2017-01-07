@@ -171,40 +171,40 @@ function getToursBasicOverviewCountDetails()
 		  str+'<div class="row">';
 		  if(overAllResult != null){
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
-			 str+='<h4>OVERALL</h4>';
+			 str+='<h4 class="panel-title">OVERALL</h4>';
 			 str+='<div class="table-responsive">';
 		      str+='<table class="table tableTraining bg_ED m_XsTop10">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
 				     if(overAllResult.noOfLeaderCnt > 0){
-						str+='<h4 id="overallTourLdrDsgntnId" attr_designation_name="OVERALL"  attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.noOfLeaderCnt+'</h4>';
+						str+='<h4 id="overallTourLdrDsgntnId" attr_designation_name="OVERALL"  attr_tour_submitted_type="All" class="overAllToursCls panel-title" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.noOfLeaderCnt+'</h4>';
 				     }else{
-					   str+='<h4>0</h4>';
+					   str+='<h4 class="panel-title">0</h4>';
 					 }
 					  str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
 				  str+='</td>';
 				  str+='<td>';
 				     if(overAllResult.submitedLeaderCnt > 0){
-						str+='<h4 id="submitedTourLdrDsgntnId" attr_designation_name="OVERALL" attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
+						str+='<h4 id="submitedTourLdrDsgntnId" attr_designation_name="OVERALL" attr_tour_submitted_type="Yes" class="overAllToursCls panel-title" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
 				      }else{
-						str+='<h4>0<span class="font-10 text-success">0.0%</span></h4>';
+						str+='<h4 class="panel-title">0<span class="font-10 text-success">0.0%</span></h4>';
 					 }
 					  str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';  
 				  str+='</td>';
 				  str+='<td>';
 				  if(overAllResult.notSubmitedLeaserCnt > 0){
-					str+='<h4 id="notSubmitedTourLdrDsgntnCntId" attr_tour_submitted_type="No" attr_designation_name="OVERALL" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
+					str+='<h4 id="notSubmitedTourLdrDsgntnCntId" attr_tour_submitted_type="No" attr_designation_name="OVERALL" class="overAllToursCls panel-title" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
 			        }else{
-					  str+='<h4>0<span class="font-10 text-danger">0.0%</span></h4>';
+					  str+='<h4 class="panel-title">0<span class="font-10 text-danger">0.0%</span></h4>';
 				  }
 					str+='<p class="text-muted text-capital">Not Submited<br>Leaders</p>';  
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h4>'+overAllResult.totalSubmittedToursCnt+'</h4>';
+					  str+='<h4 class="panel-title">'+overAllResult.totalSubmittedToursCnt+'</h4>';
 						str+='<p class="text-muted text-capital">Total<br>Tours</p>';
 				   str+='</td>';
 				    str+='<td>';
-						 str+='<h4>'+overAllResult.averageTours.toFixed(2)+'</h4>';
+						 str+='<h4 class="panel-title">'+overAllResult.averageTours.toFixed(2)+'</h4>';
 						str+='<p class="text-muted text-capital">Average<br>Tours</p>';  
 				str+='</td>';
 			  str+='</tr>';
@@ -229,16 +229,16 @@ function getToursBasicOverviewCountDetails()
 				  toursDesignationIdsString = toursDesignationIdsString+','+strIds;	
 				}
 			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
-				str+='<h4>'+designationWiseRlst[i].designation+'<i style="cursor: pointer; font-size: 16px; margin-left: 30px;" class="glyphicon glyphicon-info-sign tourDocCls" attr_desig_id="'+strIds+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Get Tour Details"></i></h4>';        
+				str+='<h4 class="panel-title">'+designationWiseRlst[i].designation+'<i style="cursor: pointer; font-size: 16px; margin-left: 30px;" class="glyphicon glyphicon-info-sign tourDocCls" attr_desig_id="'+strIds+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Get Tour Details"></i></h4>';        
 				  str+='<div class="table-responsive">';  
 				  str+='<table class="table tableTraining bg_ED m_XsTop10">';
 				  str+='<tbody><tr>';
 					  str+='<td>';
 					      str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
 					      if(designationWiseRlst[i].noOfLeaderCnt > 0){
-						    str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="All" attr_designation_name="'+designationWiseRlst[i].designation+'" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)" >'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
+						    str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="All" attr_designation_name="'+designationWiseRlst[i].designation+'" class="overAllToursCls panel-title" style="cursor:pointer;color:rgb(51, 122, 183)" >'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
 			 			  }else{
-						    str+='<h4>0</h4>';
+						    str+='<h4 class="panel-title">0</h4>';
 			  		      }
 					  str+='</td>';
 					  str+='<td>';
