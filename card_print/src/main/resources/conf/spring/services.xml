@@ -23,6 +23,9 @@
   	  <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />
  	</bean>
  	
+ 	<bean name ="cardPrintAdminService" class ="com.itgrids.cardprint.service.impl.CardPrintAdminService">
+ 	</bean>
+ 	
  	<bean name="dateUtilService" class="com.itgrids.cardprint.util.DateUtilService">
  	</bean>
  	
