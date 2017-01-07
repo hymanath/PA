@@ -93,5 +93,11 @@
 		        </result>
 		</action>
 		
+		<action name="getPrintStatusWiseRecordCountByLoggedUSerAction" class="cardPrintAdminAction" method ="getPrintStatusWiseRecordCountByLoggedUSer">
+		    	<result type="json" name="success">  
+			       <param name="root">printStatusList</param>
+		        </result>
+		</action>
+		
 	</package>
 </struts>        
