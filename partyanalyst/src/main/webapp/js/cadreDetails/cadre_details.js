@@ -8107,7 +8107,7 @@ $(document).on("click","#cdrRegDtlsId",function(){
 function buildLeadersCadreDtlsReport(result){
 	for(var i in result){
 		buildUniqueDesignationCadreReport(result[i],i,0,0);
-		$("#enrolementTitleId"+i).html("CADRE ENROLLEMENTS DETAILED VIEW-<b>"+result[i][0].candidataName+"["+result[i][0].superlocationName+"]</b>");  
+		$("#enrolementTitleId"+i).html("CADRE ENROLLEMENTS DETAILED VIEW-<b>"+result[i][0].candidataName+"-["+result[i][0].superlocationName+"]</b>");  
 	}  
 }
 function buildUniqueDesignationCadreReport(result,i,idx1,idx2){  
@@ -8139,9 +8139,9 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 				renewalCadre = renewalCadre + result[j].renewalCadre;
 				str+='<tr>';
 					if(result[0].accessLvlId == 2 || result[0].accessLvlId == 3){
-						str+='<td><span class="consituencyRowsCls" attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;"><u>'+result[j].name+'</u></span></td>';
+						str+='<td><span><b>'+result[j].name+'</b><i attr_idx_1="'+i+'" attr_idx_2="'+j+'" attr_loc_id="'+result[j].id+'" attr_rowId="consituencyRows'+i+j+'" style="cursor:pointer;" class="glyphicon glyphicon-plus consituencyRowsCls"></i></span></td>';
 					}else{
-						str+='<td>'+result[j].name+'</td>';
+						str+='<td>'+result[j].name+'</td>';  
 					}
 					str+='<td>'+result[j].previousCadreCount+'</td>';
 					str+='<td>'+result[j].cadreCount+'</td>';
@@ -8158,15 +8158,15 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 				         
 			}
 			str+='<tr>';
-				str+='<td>TOTAL ENROLLMENT</td>';      
-				str+='<td>'+cadre2014+'</td>';
-				str+='<td>'+cadre2016+'</td>';
+				str+='<td><b>TOTAL ENROLLMENT</b></td>';      
+				str+='<td><b>'+cadre2014+'</b></td>';
+				str+='<td><b>'+cadre2016+'</b></td>';
 				var newPercent = newCadre * (100/cadre2016);
-				str+='<td>'+newCadre+'('+newPercent.toFixed(2)+'%)</td>'; 
+				str+='<td><b>'+newCadre+'('+newPercent.toFixed(2)+'%)</b></td>'; 
 				var renewalPercent = renewalCadre * (100/cadre2016);				
-				str+='<td>'+renewalCadre+'('+renewalPercent.toFixed(2)+'%)</td>';
+				str+='<td><b>'+renewalCadre+'('+renewalPercent.toFixed(2)+'%)</b></td>';
 				var totalPercent = cadre2016 * (100/cadre2014);
-				str+='<td>'+totalPercent.toFixed(2)+'%</td>';      
+				str+='<td><b>'+totalPercent.toFixed(2)+'%</b></td>';      
 			str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
@@ -8182,9 +8182,17 @@ function buildUniqueDesignationCadreReport(result,i,idx1,idx2){
 	}
 }
 
-$(document).on("click",".consituencyRowsCls",function(){ 
-	 
-	var status = $(this).parent().parent().next('tr').hasClass("hide");
+$(document).on("click",".consituencyRowsCls",function(){
+	if($(this).hasClass("glyphicon-plus") == true){
+		$(".consituencyRowsCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");     
+	}
+	if($(this).hasClass("glyphicon-minus") == true){
+		$(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+	}else{
+		$(this).addClass("glyphicon-minus").removeClass("glyphicon-plus");
+	} 
+	
+	var status = $(this).parent().parent().parent().next('tr').hasClass("hide");
 	if(status == false){ 
 		$(".consituencyRowsHide").find(".consituencyRowsStr").html(' ');
 		$(".consituencyRowsHide").addClass('hide'); 
