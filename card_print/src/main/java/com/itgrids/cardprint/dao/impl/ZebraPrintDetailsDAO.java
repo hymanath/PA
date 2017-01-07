@@ -23,4 +23,14 @@ public class ZebraPrintDetailsDAO  extends GenericDaoHibernate<ZebraPrintDetails
 		query.setParameter("constituencyId",constituencyId );
 		return query.list();
 	}
+	
+	public List<Object[]> getPrintStatusWiseRecordsCount(){
+		
+		Query query = getSession().createQuery("" +
+		" select    model.printStatus , count(zebraPrintDetailsId) " +
+		" from      ZebraPrintDetails model " +
+		" group by  model.printStatus");
+		
+		return query.list();
+	}
 }
