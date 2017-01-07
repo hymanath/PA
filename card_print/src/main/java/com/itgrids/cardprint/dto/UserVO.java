@@ -15,6 +15,9 @@ public class UserVO implements Serializable{
 	private String mobileNo;
 	private String status;
 	
+	private Long userTypeId;
+	private String userType;
+	
 	public String getStatus() {
 		return status;
 	}
@@ -79,4 +82,21 @@ public class UserVO implements Serializable{
 		this.mobileNo = mobileNo;
 	}
 
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	
 }
