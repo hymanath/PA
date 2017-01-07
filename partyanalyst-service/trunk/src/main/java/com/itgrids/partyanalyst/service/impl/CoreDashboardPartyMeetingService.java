@@ -3436,7 +3436,24 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			
 			List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingIdForSession(inputVO);
 			List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingIdForSession(inputVO);
+			
+			/*List<Object[]> invitteAttendedList = partyMeetingInviteeDAO.getWithoutSessionDistrictWiseInvitteeAttendedCountForPartyMeetingIdForSession(inputVO);
+			if(commonMethodsUtilService.isListOrSetValid(invitteAttendedList)){
+				if(!commonMethodsUtilService.isListOrSetValid(invitteeAttendedList)){
+					invitteeAttendedList = new ArrayList<Object[]>(0);
+					invitteeAttendedList.addAll(invitteAttendedList);
+				}
+			}*/
+			
 			List<Object[]> attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingIdForSession(inputVO);
+			
+			/*List<Object[]> attenddList = partyMeetingInviteeDAO.getWithoutSessionDistrictWiseAttendedCountForPartyMeetingIdForSession(inputVO);
+			if(commonMethodsUtilService.isListOrSetValid(attenddList)){
+				if(!commonMethodsUtilService.isListOrSetValid(attendedList)){
+					attendedList = new ArrayList<Object[]>(0);
+					attendedList.addAll(attenddList);
+				}
+			}*/
 			
 			if(!commonMethodsUtilService.isListOrSetValid(invitteeAttendedList)){
 				 invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingIdForWithoutSession(inputVO);
