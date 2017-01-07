@@ -1133,7 +1133,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     top: -3px;
     width: 100px;
 }
-.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control , .toursDateRangePickerCls .form-control , .hideShowNewToursDateRangeCls .form-control{
+.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control , .toursDateRangePickerCls .form-control , .hideShowNewToursDateRangeCls .form-control , .dateRangePickerClsForAlert .form-control{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -1146,7 +1146,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 6px;
     width: 100px;
 }
-.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon , .toursDateRangePickerCls .input-group-addon , .hideShowNewToursDateRangeCls .input-group-addon{
+.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon , .toursDateRangePickerCls .input-group-addon , .hideShowNewToursDateRangeCls .input-group-addon , .dateRangePickerClsForAlert .input-group-addon{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -2116,4 +2116,8 @@ border: 1px solid #c5c5c5 !important;
 .panelNewEvents .panel-heading
 {
 	border-bottom:0px !important;
+}
+.alertSettingsUl , .distWiseSlickApply
+{
+	padding:0px;
 }

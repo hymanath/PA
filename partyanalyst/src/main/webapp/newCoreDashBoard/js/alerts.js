@@ -170,7 +170,7 @@
       });	
 	}
 	
-	function buildAlertOverviewDetails(result)
+  function buildAlertOverviewDetails(result)
 	{
 		var str='';
 		if(result.overAllVO != null){
@@ -179,25 +179,25 @@
 				str+='<tr>';
 					str+='<td>';
 						if(result.overAllVO.totalAlertCnt == 0){  
-							str+='<h3>'+result.overAllVO.totalAlertCnt+'</h3>';
+							str+='<h3><u style="color:#337ab7">'+result.overAllVO.totalAlertCnt+'</u></h3>';
 						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.overAllVO.totalAlertCnt+'">'+result.overAllVO.totalAlertCnt+'</h3>';
+							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.overAllVO.totalAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.totalAlertCnt+'</u></h3>';
 						}
 						str+='<p class="text-capital">TOTAL ALERTS</p>';
 					str+='</td>';
 					str+='<td>';
 						if(result.overAllVO.partyAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
+							str+='<h3><u style="color:#337ab7">'+result.overAllVO.partyAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
 						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="1" attr_count="'+result.overAllVO.partyAlertCnt+'">'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
+							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="1" attr_count="'+result.overAllVO.partyAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.partyAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
 						}
 						str+='<p class="text-capital">party</p>';
 					str+='</td>';
 					str+='<td>';
 						if(result.overAllVO.otherAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
+							str+='<h3><u style="color:#337ab7">'+result.overAllVO.otherAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
 						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="3" attr_count="'+result.overAllVO.otherAlertCnt+'">'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
+							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="3" attr_count="'+result.overAllVO.otherAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.otherAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
 						}
 						str+='<p class="text-capital">others</p>';
 					str+='</td>';
@@ -228,7 +228,7 @@
 		if(result.categoryList != null && result.categoryList.length > 0){
 		str+='<div class="row">';	
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		str+='<div class="table-responsive">';
+		
 		for(var i in result.categoryList)  
 		{
 			if(result.categoryList[i].statusCnt == 0){
@@ -236,16 +236,16 @@
 			}else{
 				str+='<h4 class="panel-title m_top10 alertDtlsCls text-capital" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusCnt+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 			}
-					
-			str+='<table class="table tablePrintMedia bg_ED">';
+			str+='<div class="table-responsive">';		
+			str+='<table class="table tablePrintMedia bg_ED m_top10">';
 				str+='<tbody>';
 					str+='<tr>';
 					for(var j in result.categoryList[i].statusList)
 					{
 						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
+							str+='<td class="bg_ED" style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
 						}else{
-							str+='<td style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
+							str+='<td class="bg_ED" style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
 						}             
 					}
 					str+='</tr>';
@@ -253,18 +253,19 @@
 					for(var j in result.categoryList[i].statusList)
 					{
 						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td><h4 class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
+							str+='<td class="bg_ED"><h4 class="responsiveFont"><u style="color:#337ab7">'+result.categoryList[i].statusList[j].statusCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
 						}else{
-							str+='<td><h4 class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
+							str+='<td class="bg_ED"><h4 class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"><u style="color:#337ab7">'+result.categoryList[i].statusList[j].statusCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
 						}             
 					}
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
+			str+='</div>';
 			}
 			str+='</div>';
 			str+='</div>';
-			str+='</div>';
+			
 		}
 		$("#alertOverview").html(str)
 			
@@ -585,11 +586,14 @@
 	});
 	$(document).on("click",".modalClose",function(){  
 		$(this).removeClass("modalClose");
-		$("body").addClass("modal-open");
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);
+		
 	});
 	$(document).on("click",".topModalClose",function(){
 		setTimeout(function(){
-		$('body').addClass("modal-open");
+			$('body').addClass("modal-open");
 		}, 1000);                     
 	});
 	
@@ -765,7 +769,7 @@
 		var str='';
 		if(result != null && result.length > 0){
 		  var str='';
-		  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		  str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		  for(var i in result){
 			  str+='<h5 class="text-capital m_top10 alertCategoryCls">'+result[i].name+'</h5>';      
 			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" style="height:145px;"></div>';
@@ -1418,7 +1422,7 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 		var length = result.length;
 		length = length - 1;
 		var str='';  
-		str+='<div class="col-md-12 col-xs-12 col-sm-3">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';  
 			for(var i in result)
 			{
@@ -1494,7 +1498,7 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 	}else{
 		var str = '';
 		var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed"};            
-		str+='<div class="col-md-12 col-xs-12 col-sm-3">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
 		for(var i = 1 ; i <= 4 ; i++){
 			if(alertStatus == statusArr[i]){
@@ -1575,10 +1579,10 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 			    
 				   for(var i in result){
 		              if(result[i].totalAlertCnt > 0){
-					  str+='<div class="col-md-3 col-xs-12 col-sm-12">';
+					  str+='<div class="col-md-4 col-xs-12 col-sm-12">';
 						
 						str+='<h4 class="alertAssignCls text-capital" attr_type='+result[i].name+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].name+" - "+result[i].totalAlertCnt+'</h4>';
-						str+='<div id="groupAssign'+i+'" style="height:300px;width:250px"></div>'; 
+						str+='<div id="groupAssign'+i+'" style="height:300px;"></div>'; 
 					  str+='</div>';
 			         }
 			      }
@@ -1774,7 +1778,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 		var str = '';            
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
-			str+='<thead>';
+			str+='<thead class="text-capitalize">';
 				if(groupAssignType == "Party Committee" && level == "bellow"){
 					str+='<th>Designation</th>';       
 				}else if(groupAssignType == "Public Representative" && level == "bellow"){
@@ -2275,6 +2279,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		});  
 	}
 	$(document).on("click",".pubRepDtlsCls",function(){
+		$("#tourDocumentId").find(".close").addClass("modalClose");
+		$("#tourDocumentId").find(".modal-footer .btn").addClass("modalClose");
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");
@@ -2848,26 +2854,28 @@ function getTotalArticledetails(articleId){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 				var result = results[0];
 				var str = '';
+					str+='<div class="modal-header">';
 					str+='<h4 class="modal-title" id="myModalLabel">';
-					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
-					str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
+					str+='<button type="button" class="close topModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+						str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div class="modal-body">';
 					str+='<div class="row">';
-					str+='<div class="col-md-12">';
-					str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;border:1px solid #ddd" alt="Img Title"/>';
+						str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
 					str+='</div>';
-					str+='<div class="col-md-12 m_top10">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 					str+='<h4 class="panel-title text-success">Description</h4>';
 					str+='<p class="m_0 f_14">'+result.description+'</p>';
 					str+='</div>';
-					str+='<div class="col-md-12">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					if( result.subList != null && result.subList.length > 0){
 						for(var i in result.subList){
 							/* Candidate*/
-							str+='<div class="row ">';
-							str+='<div class="col-md-6">';
+							str+='<div class="row m_top10">';
+							str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 							str+='<div class="panel panel-default panelArticleGroup">';
 							str+='<div class="panel-heading">';
 							str+='<h4 class="panel-title">FROM WHOM</h4>';
@@ -2946,7 +2954,7 @@ function getTotalArticledetails(articleId){
 							str+='</div>';//panel-body
 							str+='</div>';//panel
 							str+='</div>';//colmd6
-							str+='<div class="col-md-6">';
+							str+='<div class="col-md-6 col-xs-12  col-sm-12">';
 							str+='<div class="panel panel-default panelArticleGroup">';
 							str+='<div class="panel-heading">';
 							str+='<h4 class="panel-title">TO WHOM</h4>';
@@ -3039,7 +3047,7 @@ function getTotalArticledetails(articleId){
 								str+='</div>';//colmd12
 							str+='</div>';//row
 								/* Article Scope Location */
-								str+='<div class="col-md-12">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="panel panel-default panelArticleGroup">';
 										str+='<div class="panel-heading">';
 											str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
