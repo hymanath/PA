@@ -149,6 +149,34 @@ public class CardPrintService implements ICardPrintService{
 		}
 		return finalList;
 	}
+	
+	public BasicVO getVendorIdAndConstituenciesByLoggedInUser(Long userId){
+		
+		 BasicVO  basicVO  = new BasicVO();
+		try{
+			
+			  List<Long> list = userPrintVendorDAO.getPrintVendorIdByUserId(userId);
+			  Long cardPrintVendorId = null;
+			  if(list != null && list.size() > 0){
+				  cardPrintVendorId = list.get(0);
+			  }
+			  if(cardPrintVendorId != null && cardPrintVendorId > 0l){
+				  
+				  basicVO.setId(cardPrintVendorId);
+				  
+				  List<BasicVO> constituenciesList = getConstituenciesByPrintVendor(cardPrintVendorId);
+				  if(constituenciesList != null && constituenciesList.size() > 0){
+					  basicVO.setSubList(constituenciesList);
+				  }
+			  }
+			  
+		}catch (Exception e){
+			LOG.error("exception Occurred at getConstituenciesBasedonLoggedInUser() in CardPrintService class ", e);
+		}
+		return basicVO;
+	}
+	
+	
 	public List<BasicVO> setBasicDataToVO(List<Object[]> dataList){
 		List<BasicVO> finalList = null;
 		try{
@@ -167,6 +195,11 @@ public class CardPrintService implements ICardPrintService{
 		return finalList;
 	}
 	
+	 /**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Updating Card Print Status to Constituency.
+	  *  @since 07-JANUARY-2017
+	  */
 	public ResultStatus saveConstituencyPrintStatus(final PrintStatusUpdateVO inputVO){
 		
 		ResultStatus status = new ResultStatus();
@@ -176,34 +209,24 @@ public class CardPrintService implements ICardPrintService{
 			        	
 			        	Date currentTime = dateUtilService.getCurrentDateAndTime();
 			        	ResultStatus rs = new ResultStatus();
-			        	 
-			        	Long vendorId = null;
-			        	if(inputVO.getUserId() != null && inputVO.getUserId() > 0l){
-			        		List<Long> printVendorsList = userPrintVendorDAO.getPrintVendorIdByUserId(inputVO.getUserId());
-			        		if(printVendorsList != null && printVendorsList.size() > 0){
-			        			 vendorId = printVendorsList.get(0);
-			        		}else{
-			        			rs.setResultCode(0);
-			        			rs.setExceptionMsg("Vendor Is Not Mapped to This User.");
-			        			return rs;
-			        		}
-			        	}
 			        	
-			        	//Find saving or updating..
-			        	List<Long> constituencyIds = constituencyPrintStatusDAO.getConstituencyPrintStatus(inputVO.getConstituencyId()); 
+			        	//Check Data Is Allocated Or NOT FOR GIVEN CONSTITUENCY And VENDOR.
+			        	List<Long> constituencyPrintStatusIdsList = constituencyPrintStatusDAO.getConstituencyPrintStatusIds(inputVO.getPrintVendorId() , inputVO.getConstituencyId()); 
 			        	Long constituencyPrintStatusId = null;
-			        	if(constituencyIds != null && constituencyIds.size() > 0){
-			        		constituencyPrintStatusId = constituencyIds.get(0);
+			        	if(constituencyPrintStatusIdsList != null && constituencyPrintStatusIdsList.size() > 0){
+			        		constituencyPrintStatusId = constituencyPrintStatusIdsList.get(0);
 			        	}
 			        	
 			        	ConstituencyPrintStatus constituencyPrintStatus = null;
 			        	if(constituencyPrintStatusId != null && constituencyPrintStatusId.longValue() > 0l){
 			        		constituencyPrintStatus = constituencyPrintStatusDAO.get(constituencyPrintStatusId);
 			        	}else{
-			        		constituencyPrintStatus = new ConstituencyPrintStatus();
-			        		constituencyPrintStatus.setConstituencyId(inputVO.getConstituencyId());
+			        		rs.setResultCode(0);
+		        			rs.setExceptionMsg("Data Is Not Allocated For Given Constituency and Vendor..");
+		        			return rs;
 			        	}
-			        	constituencyPrintStatus.setPrintVendorId(vendorId);
+			        	
+			        	constituencyPrintStatus.setPrintVendorId(inputVO.getPrintVendorId());
 			        	constituencyPrintStatus.setPrintStatusId(inputVO.getPrintStatusId());
 			        	if(inputVO.getRemarks() != null && !inputVO.getRemarks().isEmpty()){
 			        		constituencyPrintStatus.setRemarks(inputVO.getRemarks());
