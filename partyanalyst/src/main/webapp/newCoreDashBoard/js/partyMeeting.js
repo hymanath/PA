@@ -1,10 +1,10 @@
-var customStartDateMeetings = moment().startOf('month').format('DD/MM/YYYY')
-var customEndDateMeetings = moment().format('DD/MM/YYYY');
+var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
+var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
-	     startDate: moment().startOf('month'),
-         endDate: moment().endOf('month'),
+		 startDate: moment().subtract(1, 'month').startOf('month'),
+         endDate: moment().subtract(1, 'month').endOf('month'),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -22,7 +22,7 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 	
 	var dates= $("#dateRangeIdForMeetings").val();
 	//$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
-	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
+	$("#dateMeetingHeadingId").html(" Last MONTH ( "+dates+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
