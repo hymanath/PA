@@ -35,9 +35,11 @@ public class SelfAppraisalDesignationTarget {
 	private Long selfAppraisalTourCategoryId;
 	private Long tourTypeId;
 	private String isActive;
-
+	private Long selfAppraisalToursMonthId;
+	
 	private SelfAppraisalDesignation selfAppraisalDesignation;
 	private SelfAppraisalTourCategory selfAppraisalTourCategory;
+	private SelfAppraisalToursMonth selfAppraisalToursMonth;
 	private TourType tourType;
 	
 	@Id
@@ -130,6 +132,26 @@ public class SelfAppraisalDesignationTarget {
 	public void setSelfAppraisalTourCategory(
 			SelfAppraisalTourCategory selfAppraisalTourCategory) {
 		this.selfAppraisalTourCategory = selfAppraisalTourCategory;
+	}
+	
+	@Column(name = "self_appraisal_tours_month_id")
+	public Long getSelfAppraisalToursMonthId() {
+		return selfAppraisalToursMonthId;
+	}
+	public void setSelfAppraisalToursMonthId(Long selfAppraisalToursMonthId) {
+		this.selfAppraisalToursMonthId = selfAppraisalToursMonthId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="self_appraisal_tours_month_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SelfAppraisalToursMonth getSelfAppraisalToursMonth() {
+		return selfAppraisalToursMonth;
+	}
+	public void setSelfAppraisalToursMonth(
+			SelfAppraisalToursMonth selfAppraisalToursMonth) {
+		this.selfAppraisalToursMonth = selfAppraisalToursMonth;
 	}
 	
 	
