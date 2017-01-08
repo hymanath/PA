@@ -105,5 +105,23 @@
 		        </result>
 		</action>
 		
+		<action name="getPrintStatusWiseConstitCountAction" class="cardPrintAdminAction" method ="getPrintStatusWiseConstitCount">
+		    	<result type="json" name="success">  
+			       <param name="root">printStatusList</param>
+		        </result>
+		</action>
+		
+		<action name="getPrintStatusWiseRecordCountAction" class="cardPrintAdminAction" method ="getPrintStatusWiseRecordCount">
+		    	<result type="json" name="success">  
+			       <param name="root">printStatusList</param>
+		        </result>
+		</action>
+		
+		<action name="constWisePrintStatusWiseRecordCountAction" class="cardPrintAdminAction" method ="constWisePrintStatusWiseRecordCount">
+		    	<result type="json" name="success">  
+			       <param name="root">printStatusList</param>
+		        </result>
+		</action>
+		
 	</package>
 </struts>        
