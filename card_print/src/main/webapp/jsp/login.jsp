@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Card Print Login</title>
-<link href="dist/img/AP_logo.png" rel="icon" type="image/x-icon" />
+<link rel="icon" type="image/png" href="https://mytdp.com/dist/img/logo.png">
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">-->
