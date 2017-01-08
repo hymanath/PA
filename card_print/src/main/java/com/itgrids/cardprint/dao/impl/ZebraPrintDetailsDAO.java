@@ -33,4 +33,16 @@ public class ZebraPrintDetailsDAO  extends GenericDaoHibernate<ZebraPrintDetails
 		
 		return query.list();
 	}
+	
+	 public List<Object[]> getConstWisePrintStatusWiseRecordsCount(){
+			
+			Query query = getSession().createQuery("" +
+			" select    model.constituency.constituencyId,model.constituency.name,model.district.districtId ,model.district.districtName" +
+			"           model.printStatus , count(zebraPrintDetailsId) " +
+			" from      ZebraPrintDetails model " +
+			" group by  model.constituency.constituencyId , model.printStatus " +
+			" order by  model.district.districtName , model.constituency.name ");
+			
+			return query.list();
+		}
 }
