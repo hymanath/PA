@@ -91,7 +91,7 @@
 	function buildPrintStatusWiseConstitCountByLoggedUser(result){
 		if(result !=null && result.length>0){
 			var str ='';
-					
+					var totalConstituencies =0;
 					str+='<h5><b>SUMMARAY</b></h5>';
 					str+='<div class="table-responsive m_top10" >';
 						str+='<table class="table table-bordered">';
@@ -103,6 +103,7 @@
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
+									totalConstituencies = totalConstituencies+result[i].count;
 									str+='<tr>';
 										str+='<td>'+result[i].name+'</td>';
 										if(result[i].count !=null && result[i].count>0){
@@ -113,6 +114,10 @@
 										
 									str+='</tr>';
 								}
+								str+='<tr style="background-color:#efefef">';
+									str+='<th><b>Total</b></th>';
+									str+='<th style="text-align:center;">'+totalConstituencies+'</th>';
+								str+='</tr>';
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';

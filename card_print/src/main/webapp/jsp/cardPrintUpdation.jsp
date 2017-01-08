@@ -15,7 +15,7 @@
 <body>
 
 <div class="container" style="margin-top:20px;">
-<div class="col-md-8 col-xs-12 col-sm-12 col-md-offset-2">
+<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-1">
     <div class="panel panel-default">
 	  <div class="panel-heading">
 		<h3 class="panel-title">UPDATE CONSTITUENCY CARD PRINT STATUS</h3>

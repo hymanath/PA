@@ -187,7 +187,8 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 	function buildPrintStatusWiseConstitCount(result){
 		if(result !=null && result.length>0){
 			var str ='';
-					
+					var totalMaxConstituencies =0;
+					var totalZebraConstituencies =0;
 					str+='<h5><b>SUMMARAY</b></h5>';
 					str+='<div class="table-responsive m_top10" >';
 						str+='<table class="table table-bordered">';
@@ -200,6 +201,8 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
+									totalMaxConstituencies =totalMaxConstituencies+result[i].maxCount;
+									totalZebraConstituencies = totalZebraConstituencies+result[i].zebraCount;
 									str+='<tr>';
 										str+='<td>'+result[i].name+'</td>';
 										if(result[i].maxCount !=null && result[i].maxCount>0){
@@ -215,6 +218,12 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 										
 									str+='</tr>';
 								}
+								str+='<tr style="background-color:#efefef">';
+									str+='<th><b>Total</b></th>';
+									str+='<th style="text-align:center;">'+totalMaxConstituencies+'</th>';
+									str+='<th style="text-align:center;">'+totalZebraConstituencies+'</th>';
+								str+='</tr>';
+								
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
