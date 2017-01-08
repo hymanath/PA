@@ -52,9 +52,9 @@
 							
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<button class="buttonCls btn btn-success" onclick="updatePrintDetailsToTdpCadreCardPrint()" style="margin-top: 23px; margin-left: 20px;">SUBMIT</button>
-								<img src="images/search.gif" style="padding-left:10px;display:none;" width="50" height="50" id="processingImg"/></button>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<span id="processingImg"></span>
 							<div id="successMsgDivId"></div>
 							</div>
 					</div>
@@ -139,7 +139,7 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 		$("#errorMsgDivId").html("Select Constituency");
 		return;
 	}
-	$("#processingImg").show();
+	$("#processingImg").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner "><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj = { 
 	    printVendorId  : printVendorId,
 		constituencyId : constituencyId
@@ -150,7 +150,7 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 		 dataType: 'json',
 		 data: {task:JSON.stringify(jsObj)}
 	  }).done(function(result){
-		  $("#processingImg").hide();
+		  $("#processingImg").html('');
 		 if(result != null){
 		    
 			if(result.resultCode != null && result.resultCode == 1 && result.id != null && result.id == 1){
