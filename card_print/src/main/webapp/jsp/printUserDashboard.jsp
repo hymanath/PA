@@ -24,7 +24,7 @@
 		<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">PRINT DASHBOARD</h3>
+					<h3 class="panel-title">CARD PRINT DASHBOARD</h3>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -38,9 +38,9 @@
 							
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-							<button type="button" class="btn btn-primary btn-sm ConstituencyWisePrintDtsCls"><h5>View Constituency Wise Report</h5></button>
+							<button type="button" class="btn btn-primary btn-sm ConstituencyWisePrintDtsCls" style="margin-left: 15px;"><h5>View Constituency Wise Report</h5></button>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<div id="ConstituencyWisePrintReportDiv"></div>
 						</div>
 					</div>
@@ -92,7 +92,7 @@
 		if(result !=null && result.length>0){
 			var str ='';
 					var totalConstituencies =0;
-					str+='<h5><b>SUMMARAY</b></h5>';
+					str+='<h5><b>SUMMARY</b></h5>';
 					str+='<div class="table-responsive m_top10" >';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
@@ -133,13 +133,13 @@
 		if(result !=null && result.length>0){
 			var str ='';
 					
-					str+='<h5><b>PRINT STATUS WISE RECORDS</b></h5>';
+					str+='<h5><b>PRINT STATUS WISE CADRE COUNTS</b></h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
 								str+='<tr>';
 								str+='<th>Print Status</th>';
-								str+='<th style="text-align:center;">Records(Cadre Count)</th>';
+								str+='<th style="text-align:center;">Cadre Count</th>';
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
@@ -190,7 +190,7 @@
 			if(result !=null && result.length>0){
 				var str='';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h5><b>CONSTITUENCY WISE REPORT</b></h5>';
+				str+='<h5><b>CONSTITUENCY WISE CADRE COUNTS</b></h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table table-bordered ConstituencyWiseDataTableId tableHeadingStyle">';
 							str+='<thead>';

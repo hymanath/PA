@@ -62,7 +62,7 @@
 			</div>
 				<div class="panel panel-default m_top10">
 					<div class="panel-heading">
-						<h4 class="panel-title">ADMIN PRINT DASHBOARD</h4>
+						<h4 class="panel-title">ADMIN CARD PRINT DASHBOARD</h4>
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -76,9 +76,9 @@
 								
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-								<button type="button" class="btn btn-primary btn-sm adminConstituencyWisePrintDtsCls"><h5>View Constituency Wise Report</h5></button>
+								<button type="button" class="btn btn-primary btn-sm adminConstituencyWisePrintDtsCls" style="margin-left: 15px;"><h5>View Constituency Wise Report</h5></button>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<div id="adminConstituencyWisePrintReportDiv"></div>
 							</div>
 						</div>
@@ -189,7 +189,7 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 			var str ='';
 					var totalMaxConstituencies =0;
 					var totalZebraConstituencies =0;
-					str+='<h5><b>SUMMARAY</b></h5>';
+					str+='<h5><b>SUMMARY</b></h5>';
 					str+='<div class="table-responsive m_top10" >';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
@@ -252,14 +252,14 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 		if(result !=null && result.length>0){
 			var str ='';
 					
-					str+='<h5><b>PRINT STATUS WISE RECORDS</b></h5>';
+					str+='<h5><b>PRINT STATUS WISE CADRE COUNTS</b></h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
 								str+='<tr>';
 								str+='<th>Print Status</th>';
-								str+='<th style="text-align:center;">Max Count</th>';
-								str+='<th style="text-align:center;">Zebra Count</th>';
+								str+='<th style="text-align:center;">Max Print<br/>(Cadre Count)</th>';
+								str+='<th style="text-align:center;">Zebra Print<br/>(Cadre Count)</th>';
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
@@ -314,7 +314,7 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 			if(result !=null && result.length>0){
 				var str='';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h5><b>CONSTITUENCY WISE REPORT</b></h5>';
+				str+='<h5><b>CONSTITUENCY WISE CADRE COUNTS</b></h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table table-bordered AdminConstituencyWiseDataTableId tableHeadingStyle">';
 							str+='<thead>';
