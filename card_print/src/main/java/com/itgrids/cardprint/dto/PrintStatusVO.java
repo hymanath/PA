@@ -1,15 +1,21 @@
 package com.itgrids.cardprint.dto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class PrintStatusVO implements Serializable{
 	
 	private Long id;
 	private String name;
 	private Long count = 0l;
-	
 	private String status;
+	private String districtName;
 	
+	private Map<String,PrintStatusVO> subMap;
+	private List<PrintStatusVO> subList;
+	
+	//constructors
 	public PrintStatusVO(){}
 	
 	public PrintStatusVO(Long id , String name){
@@ -43,7 +49,29 @@ public class PrintStatusVO implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public Map<String, PrintStatusVO> getSubMap() {
+		return subMap;
+	}
+
+	public void setSubMap(Map<String, PrintStatusVO> subMap) {
+		this.subMap = subMap;
+	}
+
+	public List<PrintStatusVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<PrintStatusVO> subList) {
+		this.subList = subList;
+	}
 	
 }
