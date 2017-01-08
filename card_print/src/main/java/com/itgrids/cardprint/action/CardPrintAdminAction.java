@@ -130,4 +130,32 @@ public class CardPrintAdminAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPrintStatusWiseConstitCount(){
+		try{     
+			  printStatusList = cardPrintAdminService.getPrintStatusWiseConstitCount();
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getPrintStatusWiseConstitCount() in CardPrintAdminAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
+	public String getPrintStatusWiseRecordCount(){
+		try{     
+			  printStatusList = cardPrintAdminService.getPrintStatusWiseRecordCount();
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getPrintStatusWiseRecordCount() in CardPrintAdminAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
+	public String constWisePrintStatusWiseRecordCount(){
+		try{     
+			  printStatusList = cardPrintAdminService.constWisePrintStatusWiseRecordCount();
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occurred At constWisePrintStatusWiseRecordCount() in CardPrintAdminAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
 }
