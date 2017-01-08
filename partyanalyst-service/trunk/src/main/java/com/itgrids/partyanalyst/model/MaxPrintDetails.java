@@ -19,7 +19,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "max_print_details20")//  max_print_details
+@Table(name = "max_print_details")//    max_print_details20
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MaxPrintDetails extends BaseModel implements java.io.Serializable {
 
