@@ -45,5 +45,7 @@ public class MaxPrintDetailsDAO extends GenericDaoHibernate<MaxPrintDetails, Lon
 		
 		return query.list();
 	}
+   
+   
 }
 
