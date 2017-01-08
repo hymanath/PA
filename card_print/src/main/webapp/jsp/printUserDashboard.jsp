@@ -29,6 +29,7 @@
    var printVendorId = '${cardPrintVendorId}'; 
    getPrintStatusWiseConstitCountByLoggedUser();
    getPrintStatusWiseRecordCountByLoggedUSer();
+   constWisePrintStatusWiseRecordCountByLoggedUSer();
    
    function getPrintStatusWiseConstitCountByLoggedUser(){
 	   
@@ -55,6 +56,20 @@
 				  alert("success1...");
 			  });
 		}
+		
+		function constWisePrintStatusWiseRecordCountByLoggedUSer(){
+			var jsObj = { printVendorId : printVendorId }
+			$.ajax({
+				 type:'POST',
+				 url:'constWisePrintStatusWiseRecordCountByLoggedUSerAction.action',
+				 dataType: 'json',
+				 data: {task:JSON.stringify(jsObj)}
+			  }).done(function(result){
+				  alert("const wise success...");
+			  });
+		}
+		
+		
 </script>
 
 </body>
