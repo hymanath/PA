@@ -10,4 +10,5 @@ public interface IMaxPrintDetailsDAO extends GenericDao<MaxPrintDetails, Long> {
 	
 	public List<Object[]>  getPrintDetailsByConstituencyId(Long constituencyId);
 	public List<Object[]> getPrintStatusWiseRecordsCount();
+	public List<Object[]> getConstWisePrintStatusWiseRecordsCount();
 }
