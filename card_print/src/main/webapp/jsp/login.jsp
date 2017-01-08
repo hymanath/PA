@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Card Print Login</title>
+<title>CARD PRINTING LOGIN</title>
 <link rel="icon" type="image/png" href="https://mytdp.com/dist/img/logo.png">
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
