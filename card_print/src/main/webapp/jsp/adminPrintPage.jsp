@@ -137,6 +137,45 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 		 
 	  })
 }
+
+   getPrintStatusWiseConstitCount();
+   getPrintStatusWiseRecordCount();
+   constWisePrintStatusWiseRecordCount();
+   
+   function getPrintStatusWiseConstitCount(){
+			
+			$.ajax({
+				 type:'POST',
+				 url:'getPrintStatusWiseConstitCountAction.action',
+				 dataType: 'json',
+				 data: {}
+			  }).done(function(result){
+				  alert("success...");
+			  });
+		}
+		
+	function getPrintStatusWiseRecordCount(){
+			
+			$.ajax({
+				 type:'POST',
+				 url:'getPrintStatusWiseRecordCountAction.action',
+				 dataType: 'json',
+				 data: {}
+			  }).done(function(result){
+				  alert("success1...");
+			  });
+		}
+		
+		function constWisePrintStatusWiseRecordCount(){
+			$.ajax({
+				 type:'POST',
+				 url:'constWisePrintStatusWiseRecordCountAction.action',
+				 dataType: 'json',
+				 data: {}
+			  }).done(function(result){
+				  alert("const wise success...");
+			  });
+		}
 	
 </script>
 
