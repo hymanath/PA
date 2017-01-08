@@ -11,8 +11,8 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title class="getHeaderName"></title><!-- Give Title Name IN CORRESPONDING JSP PAGES  -->
-<link href="dist/img/AP_logo.png" rel="icon" type="image/x-icon" />
+<title class="getHeaderName">CARD PRINTING</title><!-- Give Title Name IN CORRESPONDING JSP PAGES  -->
+<link rel="icon" type="image/png" href="https://mytdp.com/dist/img/logo.png">
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
