@@ -11,13 +11,18 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/css/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="dist/css/dataTables.css"/>
 <script src="js/sha512.js"></script>
+<style>
+.tableHeadingStyle thead tr th{font-size:12px !important;padding:6px !important;}
+.text_capital{text-transform:uppercase;}
+</style>
 </head>
 <body>
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
+		<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-1">
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
 					<h4 class="panel-title">CONSTITUENCY WISE PRINT DETAILS UPDATION</h4>
@@ -55,13 +60,37 @@
 					</div>
 				</div>
 			</div>
+				<div class="panel panel-default m_top10">
+					<div class="panel-heading">
+						<h4 class="panel-title">ADMIN PRINT DASHBOARD</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-md-6 col-xs-12 col-sm-12">
+									<div id="adminSummaryDetailsDiv"></div>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-12">
+									<div id="adminPrintStatusWiseRecordsDiv"></div>
+								</div>
+								
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<button type="button" class="btn btn-primary btn-sm adminConstituencyWisePrintDtsCls"><h5>View Constituency Wise Report</h5></button>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<div id="adminConstituencyWisePrintReportDiv"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 		</div>
 	</div>
 </div>
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="dist/js/dataTables.js"></script>
 <script type="text/javascript">
 
 
@@ -140,42 +169,192 @@ function updatePrintDetailsToTdpCadreCardPrint(){
 
    getPrintStatusWiseConstitCount();
    getPrintStatusWiseRecordCount();
-   constWisePrintStatusWiseRecordCount();
+ 
    
-   function getPrintStatusWiseConstitCount(){
-			
+	function getPrintStatusWiseConstitCount(){
+		$("#adminSummaryDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner "><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
 				 type:'POST',
 				 url:'getPrintStatusWiseConstitCountAction.action',
 				 dataType: 'json',
 				 data: {}
 			  }).done(function(result){
-				  alert("success...");
+				  $("#adminSummaryDetailsDiv").html('');
+				  buildPrintStatusWiseConstitCount(result);
 			  });
-		}
-		
-	function getPrintStatusWiseRecordCount(){
+	}
+	
+	function buildPrintStatusWiseConstitCount(result){
+		if(result !=null && result.length>0){
+			var str ='';
+					
+					str+='<h5><b>SUMMARAY</b></h5>';
+					str+='<div class="table-responsive m_top10" >';
+						str+='<table class="table table-bordered">';
+							str+='<thead>';
+								str+='<tr>';
+								str+='<th>Status</th>';
+								str+='<th style="text-align:center;">Max Print Constituencies</th>';
+								str+='<th style="text-align:center;">Zebra Print Constituencies</th>';
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+										str+='<td>'+result[i].name+'</td>';
+										if(result[i].maxCount !=null && result[i].maxCount>0){
+											str+='<td style="text-align:center;">'+result[i].maxCount+'</td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
+										}
+										if(result[i].zebraCount !=null && result[i].zebraCount>0){
+											str+='<td style="text-align:center;">'+result[i].zebraCount+'</td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
+										}
+										
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				
 			
+			$("#adminSummaryDetailsDiv").html(str);		
+		}else{
+			
+			$("#adminSummaryDetailsDiv").html("NO DATA AVAILABLE...");		
+		}
+	}	
+	function getPrintStatusWiseRecordCount(){
+		$("#adminPrintStatusWiseRecordsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner "><div class="dot1"></div><div class="dot2"></div></div></div>');	
 			$.ajax({
 				 type:'POST',
 				 url:'getPrintStatusWiseRecordCountAction.action',
 				 dataType: 'json',
 				 data: {}
 			  }).done(function(result){
-				  alert("success1...");
+				  $("#adminPrintStatusWiseRecordsDiv").html('');
+				  buildPrintStatusWiseRecordCount(result);
 			  });
+	}
+	
+	function buildPrintStatusWiseRecordCount(result){
+		if(result !=null && result.length>0){
+			var str ='';
+					
+					str+='<h5><b>PRINT STATUS WISE RECORDS</b></h5>';
+					str+='<div class="table-responsive m_top10">';
+						str+='<table class="table table-bordered">';
+							str+='<thead>';
+								str+='<tr>';
+								str+='<th>Print Status</th>';
+								str+='<th style="text-align:center;">Max Count</th>';
+								str+='<th style="text-align:center;">Zebra Count</th>';
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+										str+='<td>'+result[i].status+' - '+result[i].name+'</td>';
+										if(result[i].maxCount !=null && result[i].maxCount>0){
+											str+='<td style="text-align:center;">'+result[i].maxCount+'</td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
+										}
+										if(result[i].zebraCount !=null && result[i].zebraCount>0){
+											str+='<td style="text-align:center;">'+result[i].zebraCount+'</td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
+										}
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				
+			
+			$("#adminPrintStatusWiseRecordsDiv").html(str);		
+		}else{
+			
+			$("#adminPrintStatusWiseRecordsDiv").html("NO DATA AVAILABLE...");		
 		}
+	}
 		
-		function constWisePrintStatusWiseRecordCount(){
-			$.ajax({
-				 type:'POST',
-				 url:'constWisePrintStatusWiseRecordCountAction.action',
-				 dataType: 'json',
-				 data: {}
-			  }).done(function(result){
-				  alert("const wise success...");
-			  });
-		}
+	$(document).on("click",".adminConstituencyWisePrintDtsCls",function(){
+		   constWisePrintStatusWiseRecordCount();
+		  $('html, body').animate({
+			scrollTop: $('#adminConstituencyWisePrintReportDiv').offset().top
+		}, 2000);
+	});	
+	function constWisePrintStatusWiseRecordCount(){
+		$("#adminConstituencyWisePrintReportDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner "><div class="dot1"></div><div class="dot2"></div></div></div>');	
+		
+		$.ajax({
+			 type:'POST',
+			 url:'constWisePrintStatusWiseRecordCountAction.action',
+			 dataType: 'json',
+			 data: {}
+		  }).done(function(result){
+			  $("#adminConstituencyWisePrintReportDiv").html('');
+			buildconstWisePrintStatusWiseRecordCount(result);
+		  });
+	}
+	
+	function buildconstWisePrintStatusWiseRecordCount(result){
+			if(result !=null && result.length>0){
+				var str='';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h5><b>CONSTITUENCY WISE REPORT</b></h5>';
+					str+='<div class="table-responsive m_top10">';
+						str+='<table class="table table-bordered AdminConstituencyWiseDataTableId tableHeadingStyle">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th >Vendor</th>';
+									str+='<th>District</th>';
+									str+='<th>Constituency</th>';
+									str+='<th>E&nbsp;-&nbsp;Verification&nbsp;Failed</th>';
+									str+='<th>Y&nbsp;-&nbsp;Printed</th>';
+									str+='<th>N&nbsp;-&nbsp;Not&nbsp;Printed</th>';
+									str+='<th>F&nbsp;-&nbsp;Print&nbsp;Failed</th>';
+									str+='<th>D&nbsp;-&nbsp;Allocated</th>';
+									
+								str+='</tr>';
+								
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+											str+='<td>'+result[i].vendorName+'</td>';
+											str+='<td>'+result[i].districtName+'</td>';
+											str+='<td>'+result[i].name+'</td>';
+									if(result[i].subList !=null && result[i].subList.length>0){
+										for(var j in result[i].subList){
+											
+											//str+='<td>'+result[i].subList[j].status+ '-' +result[i].subList[j].name+'</td>';
+											if(result[i].subList[j].count !=null && result[i].subList[j].count>0){
+												str+='<td>'+result[i].subList[j].count+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+											
+											
+										}
+									}
+								str+='</tr>';									
+								}
+							str+='</tbody>';
+						str+='</table>';
+					str+='<div>';
+				str+='</div>';
+				
+				$("#adminConstituencyWisePrintReportDiv").html(str);
+				$('.AdminConstituencyWiseDataTableId').DataTable();
+				$('.AdminConstituencyWiseDataTableId').removeClass("dataTable");
+			}
+	}
+		
+		
 	
 </script>
 

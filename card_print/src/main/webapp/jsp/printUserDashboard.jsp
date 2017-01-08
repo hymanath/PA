@@ -13,13 +13,15 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="dist/css/dataTables.css"/>
 <script src="js/sha512.js"></script>
-
+<style>
+.tableHeadingStyle thead tr th{font-size:13px !important;padding:4px !important;}
+</style>
 </head>
 <body>
 
 <div class="container" style="margin-top:20px;">
 	<div class="row">
-		<div class="col-md-9 col-xs-12 col-sm-12 col-md-offset-1">
+		<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">PRINT DASHBOARD</h3>
@@ -90,7 +92,7 @@
 		if(result !=null && result.length>0){
 			var str ='';
 					
-					str+='<h4><b>SUMMARAY</b></h4>';
+					str+='<h5><b>SUMMARAY</b></h5>';
 					str+='<div class="table-responsive m_top10" >';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
@@ -126,7 +128,7 @@
 		if(result !=null && result.length>0){
 			var str ='';
 					
-					str+='<h4><b>PRINT STATUS WISE RECORDS</b></h4>';
+					str+='<h5><b>PRINT STATUS WISE RECORDS</b></h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table table-bordered">';
 							str+='<thead>';
@@ -174,7 +176,7 @@
 				 dataType: 'json',
 				 data: {task:JSON.stringify(jsObj)}
 			  }).done(function(result){
-				 // $("#ConstituencyWisePrintReportDiv").html('');
+				  $("#ConstituencyWisePrintReportDiv").html('');
 				 buildconstWisePrintStatusWiseRecordCountByLoggedUSer(result);
 			  });
 	}
@@ -183,33 +185,40 @@
 			if(result !=null && result.length>0){
 				var str='';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<div class="table-responsive">';
-						str+='<table class="table table-bordered ConstituencyWiseDataTableId">';
+				str+='<h5><b>CONSTITUENCY WISE REPORT</b></h5>';
+					str+='<div class="table-responsive m_top10">';
+						str+='<table class="table table-bordered ConstituencyWiseDataTableId tableHeadingStyle">';
 							str+='<thead>';
 								str+='<tr>';
 									str+='<th>District</th>';
 									str+='<th>Constituency</th>';
-									str+='<th>Status</th>';
-									str+='<th>Count</th>';
+									str+='<th>E&nbsp;-&nbsp;Verification&nbsp;Failed</th>';
+									str+='<th>Y&nbsp;-&nbsp;Printed</th>';
+									str+='<th>N&nbsp;-&nbsp;Not&nbsp;Printed</th>';
+									str+='<th>F&nbsp;-&nbsp;Print&nbsp;Failed</th>';
+									str+='<th>D&nbsp;-&nbsp;Allocated</th>';
+									
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
-									if(result[i].subList !=null && result[i].subList.length>0){
-										for(var j in result[i].subList){
-											str+='<tr>';
+									str+='<tr>';
 											str+='<td>'+result[i].districtName+'</td>';
 											str+='<td>'+result[i].name+'</td>';
-											str+='<td>'+result[i].subList[j].status+ '-' +result[i].subList[j].name+'</td>';
+									if(result[i].subList !=null && result[i].subList.length>0){
+										for(var j in result[i].subList){
+											
+											//str+='<td>'+result[i].subList[j].status+ '-' +result[i].subList[j].name+'</td>';
 											if(result[i].subList[j].count !=null && result[i].subList[j].count>0){
 												str+='<td>'+result[i].subList[j].count+'</td>';
 											}else{
 												str+='<td> - </td>';
 											}
 											
-											str+='</tr>';
+											
 										}
-									}	
+									}
+								str+='</tr>';									
 								}
 							str+='</tbody>';
 						str+='</table>';
