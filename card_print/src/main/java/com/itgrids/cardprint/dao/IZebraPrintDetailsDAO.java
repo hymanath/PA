@@ -10,4 +10,5 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	
 	public List<Object[]>  getPrintDetailsByConstituencyId(Long constituencyId);
 	public List<Object[]> getPrintStatusWiseRecordsCount();
+	public List<Object[]> getConstWisePrintStatusWiseRecordsCount();
 }
