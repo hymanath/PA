@@ -886,7 +886,29 @@
 									<a target="_blank" href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
 								</li>
 							</c:if>
-							
+							<!--- Card Printing DashBoard 2016 start -->
+						<li>
+							<a href="#"><i class="fa fa-archive  ico-white"></i><span>&nbsp;&nbsp;Card Printing DashBoard 2016</span></a>
+							 <h2><i class="fa fa-archive  ico-white line_heightDiv"></i>Card Printing DashBoard 2016</h2>
+							 <ul>
+								<li>
+									<a href="cardPrintAdminAction.action"><i class="fa fa-bookmark  ico-white"></i><span>&nbsp;&nbsp;Cadre Data Pre Verification</span></a>
+								</li>
+								<li>
+									<a href="cardPrintPostVerificationAction.action"><i class="fa fa-bookmark  ico-white"></i><span>&nbsp;&nbsp;Cadre Data Post Verification</span></a>
+								</li>
+								<li>
+									<a href="cardPrintingStatusAction.action"><i class="fa fa-bookmark  ico-white"></i><span>&nbsp;&nbsp;Location Wise Card Print Status</span></a>
+								</li>
+								<li>
+									<a href="cardPrintDispatchAction.action"><i class="fa fa-indent  ico-white"></i><span>&nbsp;&nbsp;Dispatch Status</span></a>
+								</li>
+								<li>
+									<a href="cardPrintDashboardAction.action"><i class="fa fa-dashboard  ico-white"></i><span>&nbsp;&nbsp;DashBoard</span></a>
+								</li>
+							 </ul>
+						</li>	
+						<!--- Card Printing DashBoard 2016 end -->						
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
