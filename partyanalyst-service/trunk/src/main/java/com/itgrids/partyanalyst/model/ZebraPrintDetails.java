@@ -21,7 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
-@Table(name = "zebra_print_details20")//  zebra_print_details
+@Table(name = "zebra_print_details")//    zebra_print_details20
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ZebraPrintDetails extends BaseModel implements java.io.Serializable {
 
