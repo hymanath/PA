@@ -341,13 +341,13 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 			   
 			  PrintStatusVO maxVO = new PrintStatusVO();
 			  maxVO.setId(IConstants.MAX_PRINT_VENDOR_ID);
-			  maxVO.setName("Max Print");
+			  maxVO.setVendorName("Max Print");
 			  maxVO.setStatus(statusString);
 			  setDetailsToVO(constituencyMap , maxList , maxVO);
 			  
 			  PrintStatusVO zebraVO = new PrintStatusVO();
 			  zebraVO.setId(IConstants.ZEBRA_PRINT_VENDOR_ID);
-			  zebraVO.setName("Zebra Print");
+			  zebraVO.setVendorName("Zebra Print");
 			  zebraVO.setStatus(statusString);
 			  setDetailsToVO(constituencyMap , zebraList , zebraVO);
 			  
