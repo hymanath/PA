@@ -151,5 +151,82 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 		}
 		 return finalList;
 	 }
-	
+	 
+	 //////3
+	 public List<PrintStatusVO> constWisePrintStatusWiseRecordCountByLoggedUSer(Long cardPrintVendorId){
+		  List<PrintStatusVO> finalList = null;
+		 try{
+			 
+			  String statusString = "E-Verification Failed , Y-Printed , N-Not Printed ,F-Print Failed , D-Allocated  " ;
+			  
+			  Map<Long ,PrintStatusVO>	constituencyMap = new LinkedHashMap<Long, PrintStatusVO>(0);
+			  
+			  List<Object[]> data = null;
+			  
+			   if(cardPrintVendorId.longValue() == IConstants.MAX_PRINT_VENDOR_ID.longValue()){
+					  
+				 data = maxPrintDetailsDAO.getConstWisePrintStatusWiseRecordsCount();
+				 
+			   }else if(cardPrintVendorId.longValue() == IConstants.ZEBRA_PRINT_VENDOR_ID.longValue()){
+				 
+			 	 data =  zebraPrintDetailsDAO.getConstWisePrintStatusWiseRecordsCount();
+			   }
+			     
+			   if(data != null && data.size() > 0){
+				   for(Object[] obj : data){
+					   if(obj[0]!=null){//constituencyId
+						   PrintStatusVO constituencyVO = constituencyMap.get((Long)obj[0]);
+						   if(constituencyVO == null){
+							   constituencyVO = new PrintStatusVO();
+							   constituencyVO.setId((Long)obj[0]);
+							   constituencyVO.setName(obj[1]!=null?obj[1].toString() :"");
+							   constituencyVO.setDistrictName(obj[3]!=null?obj[3].toString():"");
+							   //add status.
+							   addAllStatusVO(statusString , constituencyVO);
+							   constituencyMap.put((Long)obj[0], constituencyVO);
+						   }
+						   constituencyVO = constituencyMap.get((Long)obj[0]);
+						   if(obj[4]!=null){//status
+							   Map<String,PrintStatusVO> statusMap = constituencyVO.getSubMap();
+							   PrintStatusVO statusVO = statusMap.get(obj[4].toString());
+							   if(statusVO != null){
+								   statusVO.setCount(obj[5]!=null ? (Long)obj[5] : 0l);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   
+			   //conv
+			   if(constituencyMap != null && constituencyMap.size() > 0){
+				   
+				   for (Map.Entry<Long, PrintStatusVO> constEntry : constituencyMap.entrySet())
+				   {
+					   if(constEntry.getValue() != null && constEntry.getValue().getSubMap() != null && constEntry.getValue().getSubMap().size() > 0)
+					   {
+						   constEntry.getValue().setSubList(new ArrayList<PrintStatusVO>(constEntry.getValue().getSubMap().values()));
+						   constEntry.getValue().getSubMap().clear(); 
+					   }
+				   }
+				   finalList = new ArrayList<PrintStatusVO>(constituencyMap.values());
+			   }
+			   
+		}catch(Exception e) {
+			LOG.error("exception Occurred at constWisePrintStatusWiseRecordCountByLoggedUSer() in CardPrintAdminService class ", e);
+		}
+		 return finalList;
+	 }
+	 
+	 public void addAllStatusVO(String statusString,PrintStatusVO constituencyVO){
+		 
+		 Map<String,PrintStatusVO>	finalMap = new LinkedHashMap<String, PrintStatusVO>(0);
+		 for(String status : statusString.split(",")){
+			 PrintStatusVO statusVO = new  PrintStatusVO();
+			 String[] names = status.split("-");
+			 statusVO.setStatus(names[0].trim());
+			 statusVO.setName(names[1].trim());
+			 finalMap.put(statusVO.getStatus(), statusVO);
+		 }
+		 constituencyVO.setSubMap(finalMap);
+	 }
 }
