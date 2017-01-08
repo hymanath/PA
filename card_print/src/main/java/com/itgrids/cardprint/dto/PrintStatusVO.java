@@ -11,6 +11,9 @@ public class PrintStatusVO implements Serializable{
 	private Long count = 0l;
 	private String status;
 	private String districtName;
+	private String vendorName;
+	private Long maxCount = 0l;
+	private Long zebraCount = 0l;
 	
 	private Map<String,PrintStatusVO> subMap;
 	private List<PrintStatusVO> subList;
@@ -72,6 +75,30 @@ public class PrintStatusVO implements Serializable{
 
 	public void setSubList(List<PrintStatusVO> subList) {
 		this.subList = subList;
+	}
+
+	public Long getMaxCount() {
+		return maxCount;
+	}
+
+	public void setMaxCount(Long maxCount) {
+		this.maxCount = maxCount;
+	}
+
+	public Long getZebraCount() {
+		return zebraCount;
+	}
+
+	public void setZebraCount(Long zebraCount) {
+		this.zebraCount = zebraCount;
+	}
+
+	public String getVendorName() {
+		return vendorName;
+	}
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
 	}
 	
 }
