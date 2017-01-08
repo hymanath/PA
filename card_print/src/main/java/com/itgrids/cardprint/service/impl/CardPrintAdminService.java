@@ -229,4 +229,180 @@ public class CardPrintAdminService implements ICardPrintAdminService {
 		 }
 		 constituencyVO.setSubMap(finalMap);
 	 }
+	 
+	 
+	 /************  ADMIN REPORTS ***************************************/
+    
+	 //PRINT STATUS WISE , VENDOR WISE CONSTITUENCIES COUNT.
+	public List<PrintStatusVO> getPrintStatusWiseConstitCount(){
+		
+		List<PrintStatusVO> finalList = null;
+		
+		try{
+			  Map<Long , PrintStatusVO> finalMap = new LinkedHashMap<Long , PrintStatusVO>(0);
+			  List<Object[]> statusList = printStatusDAO.getAllPrintStatus();
+			  if(statusList != null && statusList.size() > 0){
+				  for(Object[] obj :statusList){
+					  if(obj[0]!= null){
+						  finalMap.put((Long)obj[0], new PrintStatusVO((Long)obj[0] , obj[1]!=null?obj[1].toString() :""));
+					  }
+				  }
+			  }
+			   
+			  List<Object[]> dataList = constituencyPrintStatusDAO.getVendorWisePrintStatusWiseConstituenciesCount();
+			  if(dataList != null && dataList.size() > 0)
+			  {
+				 for(Object[] obj : dataList){
+					 if(obj[0]!=null && obj[1]!=null){//statusId
+						 PrintStatusVO statusVO = finalMap.get((Long)obj[0]);
+						 if(statusVO != null){
+							 Long vendorId = (Long)obj[1];
+							 if(vendorId.longValue() == IConstants.MAX_PRINT_VENDOR_ID.longValue()){
+								 statusVO.setMaxCount(obj[2]!=null ? (Long)obj[2] : 0l);
+							 }else if(vendorId.longValue() == IConstants.ZEBRA_PRINT_VENDOR_ID.longValue()){
+								 statusVO.setZebraCount(obj[2]!=null ? (Long)obj[2] : 0l) ;
+							 }
+						 }
+					 }
+				 }
+			  }
+			  
+			
+			  if(finalMap != null && finalMap.size() > 0){
+				  finalList = new ArrayList<PrintStatusVO>(finalMap.values());
+			  }
+		}catch(Exception e){
+			LOG.error("exception Occurred at getPrintStatusWiseConstitCount() in CardPrintAdminService class ", e); 
+		}
+		return finalList;
+	}
+	
+	 //PRINT STATUS WISE , VENDOR WISE RECORDS COUNT.
+	 public List<PrintStatusVO> getPrintStatusWiseRecordCount(){
+		 List<PrintStatusVO> finalList = null;
+		 try{
+			 
+			 Map<String,PrintStatusVO>	finalMap = new LinkedHashMap<String, PrintStatusVO>(0);
+			 
+			 String statusString = "E-Verification Failed , Y-Printed , N-Not Printed ,F-Print Failed , D-Allocated  "  ;
+			 
+			 for(String status : statusString.split(",")){
+				 PrintStatusVO statusVO = new  PrintStatusVO();
+				 String[] names = status.split("-");
+				 statusVO.setStatus(names[0].trim());
+				 statusVO.setName(names[1].trim());
+				 finalMap.put(statusVO.getStatus(), statusVO);
+			 }
+			   
+			 List<Object[]> maxList   =  maxPrintDetailsDAO.getPrintStatusWiseRecordsCount();
+			 List<Object[]> zebraList =  zebraPrintDetailsDAO.getPrintStatusWiseRecordsCount();
+				
+			   
+			   if(maxList != null && maxList.size() > 0){
+				   for(Object[] obj :maxList){
+					   if(obj[0]!=null){//status
+						   PrintStatusVO statusVO = finalMap.get(obj[0].toString());
+						   if(statusVO != null){
+							   statusVO.setMaxCount(obj[1]!=null ? (Long)obj[1] :0l); 
+						   }
+					   }
+				   }
+			   }
+			   if(zebraList != null && zebraList.size() > 0){
+				   for(Object[] obj :zebraList){
+					   if(obj[0]!=null){//status
+						   PrintStatusVO statusVO = finalMap.get(obj[0].toString());
+						   if(statusVO != null){
+							   statusVO.setZebraCount(obj[1]!=null ? (Long)obj[1] :0l); 
+						   }
+					   }
+				   }
+			   }
+			   if(finalMap != null && finalMap.size() > 0){
+				   finalList = new ArrayList<PrintStatusVO>(finalMap.values());
+			   }
+		}catch (Exception e){
+			LOG.error("exception Occurred at getPrintStatusWiseRecordCount() in CardPrintAdminService class ", e); 
+		}
+		 return finalList;
+	 }
+	 
+	 //PRINT STATUS WISE , CONSTITUENCY WISE RECORDS COUNT.
+	 public List<PrintStatusVO> constWisePrintStatusWiseRecordCount(){
+		  List<PrintStatusVO> finalList = null;
+		 try{
+			 
+			  String statusString = "E-Verification Failed , Y-Printed , N-Not Printed ,F-Print Failed , D-Allocated  " ;
+			  
+			  Map<String ,PrintStatusVO> constituencyMap = new LinkedHashMap<String, PrintStatusVO>(0);
+					  
+			  List<Object[]> maxList  = maxPrintDetailsDAO.getConstWisePrintStatusWiseRecordsCount();
+			  List<Object[]> zebraList = zebraPrintDetailsDAO.getConstWisePrintStatusWiseRecordsCount();   
+			   
+			  PrintStatusVO maxVO = new PrintStatusVO();
+			  maxVO.setId(IConstants.MAX_PRINT_VENDOR_ID);
+			  maxVO.setName("Max Print");
+			  maxVO.setStatus(statusString);
+			  setDetailsToVO(constituencyMap , maxList , maxVO);
+			  
+			  PrintStatusVO zebraVO = new PrintStatusVO();
+			  zebraVO.setId(IConstants.ZEBRA_PRINT_VENDOR_ID);
+			  zebraVO.setName("Zebra Print");
+			  zebraVO.setStatus(statusString);
+			  setDetailsToVO(constituencyMap , zebraList , zebraVO);
+			  
+			   //conv
+			   if(constituencyMap != null && constituencyMap.size() > 0){
+				   
+				   for (Map.Entry<String, PrintStatusVO> constEntry : constituencyMap.entrySet())
+				   {
+					   if(constEntry.getValue() != null && constEntry.getValue().getSubMap() != null && constEntry.getValue().getSubMap().size() > 0)
+					   {
+						   constEntry.getValue().setSubList(new ArrayList<PrintStatusVO>(constEntry.getValue().getSubMap().values()));
+						   constEntry.getValue().getSubMap().clear(); 
+					   }
+				   }
+				   finalList = new ArrayList<PrintStatusVO>(constituencyMap.values());
+			   }
+			   
+		}catch(Exception e) {
+			LOG.error("exception Occurred at constWisePrintStatusWiseRecordCount() in CardPrintAdminService class ", e);
+		}
+		 return finalList;
+	 }
+	 public void setDetailsToVO( Map<String ,PrintStatusVO> constituencyMap ,  List<Object[]> list , PrintStatusVO vendorVO){
+		 try{
+			 
+			 if(list != null && list.size() > 0){
+				   for(Object[] obj : list){
+					   if(obj[0]!=null){//constituencyId
+						   String key = vendorVO.getId()+"-"+obj[0].toString();
+						   PrintStatusVO constituencyVO = constituencyMap.get(key);
+						   if(constituencyVO == null){
+							   constituencyVO = new PrintStatusVO();
+							   constituencyVO.setId((Long)obj[0]);
+							   constituencyVO.setName(obj[1]!=null?obj[1].toString() :"");
+							   constituencyVO.setDistrictName(obj[3]!=null?obj[3].toString():"");
+							   constituencyVO.setVendorName(vendorVO.getVendorName());
+							   //add status.
+							   addAllStatusVO(vendorVO.getStatus() , constituencyVO);
+							   constituencyMap.put(key, constituencyVO);
+						   }
+						   constituencyVO = constituencyMap.get(key);
+						   if(obj[4]!=null){//status
+							   Map<String,PrintStatusVO> statusMap = constituencyVO.getSubMap();
+							   PrintStatusVO statusVO = statusMap.get(obj[4].toString());
+							   if(statusVO != null){
+								   statusVO.setCount(obj[5]!=null ? (Long)obj[5] : 0l);
+							   }
+						   }
+					   }
+				   }
+			   }
+			 
+		 }catch(Exception e){
+			 LOG.error("exception Occurred at setDetailsToVO() in CardPrintAdminService class ", e);
+		 }
+	 }
+	
 }
