@@ -3535,6 +3535,18 @@
 	<bean id="govtSchemeBeneficiaryDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSchemeBeneficiaryDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="alertClarificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertClarificationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertClarificationDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertClarificationDocumentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertClarificationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertClarificationStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertClarificationCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertClarificationCommentsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="govtSchemesDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSchemesDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
