@@ -2016,6 +2016,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 
 							 alert.setCreatedTime(inputVO.getInsertedTime());
 							 alert.setAlertStatusId(inputVO.getStatusId());
+							 alert.setEditionTypeId(inputVO.getEditionType() != null && inputVO.getEditionType() > 0l ? inputVO.getEditionType() : null);
 							// alert.setCreatedBy(inputVO.getUserId());
 							 
 						 }				 
