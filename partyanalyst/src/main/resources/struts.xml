@@ -238,6 +238,11 @@
 			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
 			<result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>
 			<result type="redirect" name="userWiseCadreDemographicReports">userWiseCadreDemographicReportAction.action</result>
+			<result type="redirect" name="cardPrintingStatus">cardPrintingStatusAction.action</result>
+			<result type="redirect" name="cardPrintAdmin">cardPrintAdminAction.action</result>
+			<result type="redirect" name="cardPrintPostVerification">cardPrintPostVerificationAction.action</result>
+			<result type="redirect" name="cardPrintDispatch">cardPrintDispatchAction.action</result>
+			<result type="redirect" name="cardPrintDashboard">cardPrintDashboardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -14938,10 +14943,14 @@
 				</result>
 	</action>
 	<action name="cardPrintDispatchAction" class="cardPrintAction">
-			 <result name="success">/jsp/cardPrintDispatch.jsp</result>
+		 <result name="success">/jsp/cardPrintDispatch.jsp</result>
+		 <result name="input">/jsp/loginForm.jsp?src=cardPrintDispatch</result>
+	     <result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	<action name="cardPrintDashboardAction" class="cardPrintAction" method="cardPrintDashboard">
-			 <result name="success">/jsp/cardPrintDashboard.jsp</result>
+		 <result name="success">/jsp/cardPrintDashboard.jsp</result>
+		 <result name="input">/jsp/loginForm.jsp?src=cardPrintDashboard</result>
+	     <result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	<action name="getAssignGroupTypeAlertDtlsByImpactLevelWiseAction" class="createAlertAction" method="getAssignGroupTypeAlertDtlsByImpactLevelWise">
 		<result type="json" name="success">
@@ -15220,7 +15229,7 @@
 	
 	<action name="cardPrintingStatusAction" class="cardPrintAction" method="getCardPrintingStatus">
 		<result name="success">/jsp/cardPrintingStatus.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=cardPrintingStatusAction</result>
+		<result name="input">/jsp/loginForm.jsp?src=cardPrintingStatus</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	<action name="getMemberDetailsByDesignationWiseAction" class="toursAction"  method="getMemberDetailsByDesignationWise">
@@ -15230,7 +15239,7 @@
 	</action>
 	<action name="cardPrintAdminAction" class="cardPrintAction" method="cardPrintAdminStatus">
 		<result name="success">/jsp/cardPrintAdmin.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
+		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdmin</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	<action name="cardPrinStatusByDistrictAction" class="cardPrintAction"  method="cardPrinStatusByLocation">
@@ -15278,7 +15287,7 @@
 	
 	<action name="cardPrintPostVerificationAction" class="cardPrintAction" method="cardPrintPostVerification">
 		<result name="success">/jsp/cardPrintPostVerification.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=cardPrintAdminAction</result>
+		<result name="input">/jsp/loginForm.jsp?src=cardPrintPostVerification</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	
