@@ -29,5 +29,5 @@ public interface IConstants {
 	public final Long MAX_PRINT_VENDOR_ID = 1L;
 	public final Long ZEBRA_PRINT_VENDOR_ID = 2L;
 	
-	public final int  noOfRecordsUpdate = 100;
+	public final int  noOfRecordsUpdate = 1000;
 }
