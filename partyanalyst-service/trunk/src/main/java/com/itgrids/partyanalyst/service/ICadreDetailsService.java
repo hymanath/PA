@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
+import com.itgrids.partyanalyst.dto.BenefitVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
@@ -140,4 +141,9 @@ public interface ICadreDetailsService {
 	public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId);
 	
 	public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo);
+	public List<BenefitVO> getBenefitDetailsAlongFamily(List<Long> cadreIds);
+	public BenefitVO getOwnAndParticipatedConstituenciesBenefitDetails(Long constId,Long pConstId);
+	public List<BenefitVO> getLocalityBasedBenefitSchemesDetails(Long cadreId);
+	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId);
+	public List<BenefitVO> getAllConstBenefitDetailsForADist(Long distId);
 }

@@ -36,7 +36,7 @@ public class GovtSchemeBeneficiaryDetails extends BaseModel implements Serializa
 	private Long govtSchemeBenefitTypeId;
 	private String userAddressId;
 	private Long benefitedAmount;
-	private Time benefited_time;
+	private Time benefitedTime;
 	private String isDeleted;
 	
 	private TdpCadre tdpCadre;
@@ -44,6 +44,7 @@ public class GovtSchemeBeneficiaryDetails extends BaseModel implements Serializa
 	private GovtSchemePhase govtSchemePhase;
 	private GovtSchemeBenefitType govtSchemeBenefitType;
 	private UserAddress userAddress;
+	private GovtSchemes govtSchemes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -136,11 +137,11 @@ public class GovtSchemeBeneficiaryDetails extends BaseModel implements Serializa
 	}
 	
 	@Column(name = "benefited_time")
-	public Time getBenefited_time() {
-		return benefited_time;
+	public Time getBenefitedTime() {
+		return benefitedTime;
 	}
-	public void setBenefited_time(Time benefited_time) {
-		this.benefited_time = benefited_time;
+	public void setBenefitedTime(Time benefitedTime) {
+		this.benefitedTime = benefitedTime;
 	}
 	
 	@Column(name = "is_deleted")
@@ -204,6 +205,17 @@ public class GovtSchemeBeneficiaryDetails extends BaseModel implements Serializa
 	}
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="govt_schemes_id",insertable=false, updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtSchemes getGovtSchemes() {
+		return govtSchemes;
+	}
+	public void setGovtSchemes(GovtSchemes govtSchemes) {
+		this.govtSchemes = govtSchemes;
 	}
 	
 }
