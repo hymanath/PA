@@ -2755,7 +2755,7 @@
 		<!-- Attendance End-->
 		
 	 
-	  <!--Tours New Start
+	  <!--Tours New Start 
 	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2790,7 +2790,7 @@
 						<div class="row">
 							 <h4><span class="headingColor text-capital">TOUR COMPLAINCE</span></h4>
 							 	<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline hideCls">
+										<ul class="activeUlCls tourNewComplainceFilterCls list-inline hideCls">
 											<li class="tourComplainceCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
 											<li class="tourComplainceCls " attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
 										</ul>
@@ -2815,7 +2815,7 @@
 				</div>
 			</div>
 			</div>
-	 </div> -->
+	 </div>-->
 	<!--Tours New End -->
 	</div>
 	<div class="row">
@@ -3530,7 +3530,7 @@
 			  <div class="modal-body">   
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<select class="pull-right" id="dateRangeSliderYear">
+						<!--<select class="pull-right" id="dateRangeSliderYear">
 							<option>2016</option>
 							<option>2017</option>
 							<option>2018</option>
@@ -3542,10 +3542,11 @@
 							<option>2024</option>
 							<option>2025</option>
 						</select>
-						<div id="tourSlider" style="margin-top:30px"></div>
+						<div id="tourSlider" style="margin-top:30px"></div>-->
 						<div id="tourIndividualDetailsBlock"></div>
-						<div id="monthWiseComplainceDivId" class="m_top20"></div>
-						<div id="tourIndividualDetailsTableBlock" ></div>
+						<!--<button class="btn btn-success" id="subMitBtn" type="button"></button>-->
+						<div id="monthWiseComplainceDivId" class="row m_top20"></div>
+						<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
 					</div>
 				</div>
 			  </div>
