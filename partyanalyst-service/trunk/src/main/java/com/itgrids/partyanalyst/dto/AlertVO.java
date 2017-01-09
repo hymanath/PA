@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlertVO {
@@ -40,6 +41,10 @@ public class AlertVO {
 	private String date1;
 	private String date2;
 	private Long noOfDays = 0l;
+	private String comment;
+	private Long alertId;
+	private List<String> filePthList = new ArrayList<String>();
+	private String clarificationRequired;
 	
 	
 	public Long getNoOfDays() {
@@ -247,5 +252,29 @@ public class AlertVO {
 	}
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+	public List<String> getFilePthList() {
+		return filePthList;
+	}
+	public void setFilePthList(List<String> filePthList) {
+		this.filePthList = filePthList;
+	}
+	public String getClarificationRequired() {
+		return clarificationRequired;
+	}
+	public void setClarificationRequired(String clarificationRequired) {
+		this.clarificationRequired = clarificationRequired;
 	}
 }
