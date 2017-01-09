@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.PrintStatusUpdateVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -243,6 +244,7 @@ public class WebServiceHandlerForCadre {
 	@POST
 	@Path("/updatePrintDetailsToTdpCadreCardPrint")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public PrintUpdateDetailsStatusVO  updatePrintDetailsToTdpCadreCardPrint(List<PrintVO> printList){
 		PrintUpdateDetailsStatusVO finalVO = null;
 		try{
@@ -255,4 +257,25 @@ public class WebServiceHandlerForCadre {
 		return finalVO;
 	}
 	
+	@POST
+	@Path("/syncConstituencyPrintStatus")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PrintUpdateDetailsStatusVO syncConstituencyPrintStatus(PrintStatusUpdateVO inputVO){
+		PrintUpdateDetailsStatusVO finalVO = null;
+        try{
+			
+        	ResultStatus status = cardPrintService.saveConstituencyPrintStatus(inputVO);
+			if(status != null){
+				finalVO = new PrintUpdateDetailsStatusVO();
+				finalVO.setResultCode(status.getResultCode());
+				finalVO.setMessage(status.getExceptionMsg());
+			}
+		}catch(Exception e){
+			finalVO = new PrintUpdateDetailsStatusVO();
+			finalVO.setResultCode(0);
+			finalVO.setMessage("Exception Occurred At Server Side.Try Later..");
+			LOG.error("Exception raised in syncConstituencyPrintStatus() in WebServiceHandlerForCadre class",e);
+		}
+		return finalVO;
+	}
 }
