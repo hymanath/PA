@@ -2627,6 +2627,29 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var topFivedesignationName = temp[2];
 	
 		$("#tourIndividualPerformanceDivId").modal("show");
+		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+		
+		  $("#tourSlider").dateRangeSlider({
+			   bounds: {min: moment().startOf('year'), max: moment().endOf('year')},
+				defaultValues: {min: moment().subtract(1,'month'), max: moment().add(1,'month')},
+				scales: [{
+				  first: function(value){ return value; },
+				  end: function(value) {return value; },
+				  next: function(value){
+					var next = new Date(value);
+					return new Date(next.setMonth(value.getMonth() + 1));
+				  },
+				  label: function(value){
+					return months[value.getMonth()];
+				  },
+				  format: function(tickContainer, tickStart, tickEnd){
+					tickContainer.addClass("myCustomClass");
+				  }
+				}]
+			
+		  });
+		  /* bounds: {min: moment().subtract(1,'year').format("YYYY/MM/DD"), max: moment().add(1,'year').format("YYYY/MM/DD")},
+			defaultValues: {min: moment().subtract(3,'month').format("YYYY/MM/DD"), max: moment().subtract(1,'month').format("YYYY/MM/DD")} */
 		$(".tourIndividualCls").attr("attr_type","direct");
 		$("#nameOfMemberHeadingId").html('');
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+topFivecandidateName+" - <small style='color:#4A5863'>"+topFivedesignationName+"</small> </h4>");
@@ -3288,4 +3311,9 @@ $(document).on('click','#showTourPdfId',function(){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
-	
+$(document).on("click","#dateRangeSliderYear",function(){
+	var getYear = $(this).val();
+	$("#tourSlider").dateRangeSlider({
+		bounds: {min: new Date(getYear,0,1), max: new Date(getYear,12,1)}
+	});
+});
