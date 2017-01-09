@@ -3937,6 +3937,7 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		<property name="constituencyDAO" ref="constituencyDAO"></property>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="constituencyPrintStatusTrackDAO" ref="constituencyPrintStatusTrackDAO"></property>
 	</bean>
 	
 </beans>			
