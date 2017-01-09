@@ -1101,6 +1101,7 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertClarificationDocument</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertClarificationStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertClarificationComments</value>
+	                  <value>com.itgrids.partyanalyst.model.EditionType</value>
 	                  
 	             </list>
 			
