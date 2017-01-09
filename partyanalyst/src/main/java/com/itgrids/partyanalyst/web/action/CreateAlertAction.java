@@ -989,7 +989,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	{
 		try
 		{
-			
+			jObj = new JSONObject(getTask());
 			final HttpSession session = request.getSession();
 			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user == null || user.getRegistrationID() == null){
@@ -1019,7 +1019,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				   			}
 		   		}
 		     
-			resultStatus = alertService.saveAlertClarificationDetails(alertVO,mapfiles,user.getRegistrationID());
+			resultStatus = alertService.saveAlertClarificationDetails(user.getRegistrationID(),alertVO,mapfiles,jObj.getLong("alertId"));
 			if(resultStatus!=null){
 				if(resultStatus.getResultCode() == 0){
 					inputStream = new StringBufferInputStream(resultStatus.getMessage());
