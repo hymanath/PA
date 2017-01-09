@@ -33,4 +33,5 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getCadreDetailsBySearch(String searchType,Long searchValue,String locationType,Long locationVal,String gender,Long minAge,Long maxAge);
 	public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId,Long yearId);
 	public List<Object[]> getEnrolledDetailsByTdpCadreId(List<Long> tdpCadreList);
+	public List<Object[]> getLatestEnrollmentYearForCadreIds(List<Long> tdpCadreIds);
 }

@@ -788,4 +788,13 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			return query.list();
 			
 		}
+		
+		public List<Object[]> getLatestEnrollmentYearForCadreIds(List<Long> tdpCadreIds){
+			Query query = getSession().createQuery(" select model.tdpCadreId,model.enrollmentYear.year " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and model.tdpCadreId in (:tdpCadreIds) " +
+					" group by model.tdpCadreId order by model.enrollmentYearId desc ");
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
+			return query.list();
+		}
 }
