@@ -34,7 +34,7 @@ public class ConstituencyPrintStatus extends BaseModel implements java.io.Serial
 	private Constituency constituency;
 	private CardPrintVendor cardPrintVendor;
 	private PrintStatus printStatus;
-	private User user;
+	private User user;//THIS USER IS NOT THAT User in CardPrint App... SO Has to check.
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
