@@ -79,7 +79,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
-					<h4 class="panel-title"><b>VALIDATE CONSTITUENCY CADRE DATA</b></h4>
+					<h4 class="panel-title"><b>POST VALIDATING CONSTITUENCY CADRE DATA</b></h4>
 				</div>
 				<div class="panel-body">
 					<div id="errorDivId" style="color:red"></div>
@@ -153,7 +153,8 @@ $(document).on("click","#validateBtnId",function(){
 		$("#detailsImgId").hide();
 		buildcadrePrintDataPostVerification(result);
 	}).fail(function(xhr, err){
-          alert("fail");
+		  $("#detailsImgId").hide();
+          $("#postValidationFailCadreDetails").html('<span style="color:red;font-size:20px;">Exception Occurred. Try Later..</span>');
     })
 });
 
