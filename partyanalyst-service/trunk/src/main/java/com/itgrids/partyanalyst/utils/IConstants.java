@@ -1251,4 +1251,6 @@ public interface IConstants {
 	public static final Long CARD_PRINT_STATUS_VERIFICATION_FAILED= 3L ;
 	
 	public final int  noOfRecordsUpdate = 1000;
+	
+	public static final String ALERTS_ATTACHMENTS = "alerts_attachments";
 }
