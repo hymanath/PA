@@ -25,11 +25,12 @@ public class CardPrintValidationDAO extends GenericDaoHibernate<CardPrintValidat
 	}
 	
 	public List<Object[]> getErrorCardsCountsForBoxNos(List<String> boxNos){
-		Query query = getSession().createQuery("select model.boxNo," +
+		Query query = getSession().createQuery("select distinct model.boxNo," +
 								" count(model.cardPrintValidationId)" +
 								" from CardPrintValidation model" +
 								" where model.boxNo in (:boxNos)" +
-								" and model.printStatus = 'R'");
+								" and model.printStatus = 'R'" +
+								" group by model.boxNo");
 		query.setParameterList("boxNos", boxNos);
 		
 		return query.list();
