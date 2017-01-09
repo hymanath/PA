@@ -204,10 +204,10 @@ public class CardPrintService implements ICardPrintService{
 		
 		ResultStatus status = new ResultStatus();
 		try{
+			    final Date currentTime = dateUtilService.getCurrentDateAndTime();
 				status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 					public Object doInTransaction(TransactionStatus arg0) {
 			        	
-			        	Date currentTime = dateUtilService.getCurrentDateAndTime();
 			        	ResultStatus rs = new ResultStatus();
 			        	
 			        	//Check Data Is Allocated Or NOT FOR GIVEN CONSTITUENCY And VENDOR.
@@ -249,11 +249,28 @@ public class CardPrintService implements ICardPrintService{
 			        	constituencyPrintStatusTrack.setUpdatedTime(constituencyPrintStatus.getUpdatedTime());
 			        	constituencyPrintStatusTrackDAO.save(constituencyPrintStatusTrack);
 			        	
-			        	rs.setExceptionMsg("success");
+			        	rs.setMessage("Updating To Local DataBase Success..");
 						rs.setResultCode(1);
 						return rs;
 					}
 			   });
+				
+				//UPDATE TO LIVE TABLE.
+				if(status != null && status.getResultCode() == 1){
+					
+					inputVO.setCurrentDate(currentTime);
+					int resultCode = updateConstituencyPrintStatusToLiveTable(inputVO);
+						
+					if(resultCode == 0){
+						status.setId(0L);
+						status.setExceptionMsg("Updating To Live DataBase Failure..");
+					}else if(resultCode == 1){
+						status.setId(1L);
+						status.setExceptionMsg("Updating To Live DataBase Success..");
+					}
+					
+				}
+				
 		}catch(Exception e){
 			LOG.error("exception Occurred at saveConstituencyPrintStatus() in CardPrintService class ", e); 
 			status.setResultCode(0);
@@ -261,6 +278,28 @@ public class CardPrintService implements ICardPrintService{
 		}
 		return status;
 	}
+	public  int  updateConstituencyPrintStatusToLiveTable(PrintStatusUpdateVO inputVO){
+		int resulCode = 0;
+		try{
+			
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			    
+			Client client = Client.create(clientConfig);
+			
+			//String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/syncConstituencyPrintStatus";
+			String UrlPath = "http://www.mytdp.com/WebService/cadre/syncConstituencyPrintStatus";
+	        WebResource resource = client.resource(UrlPath);
+	        PrintUpdateDetailsStatusVO reponse = resource.accept("application/json").type("application/json").post(PrintUpdateDetailsStatusVO.class, inputVO);
+	        resulCode = reponse.getResultCode();
+	        
+		}catch(Exception e){
+			resulCode = 0;
+			LOG.error("exception Occurred at updateConstituencyPrintStatusToLiveTable() in CardPrintService class ", e); 
+		}
+		return resulCode;
+	}
+	
 	
 	 /**  
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
@@ -434,7 +473,7 @@ public class CardPrintService implements ICardPrintService{
 			Client client = Client.create(clientConfig);
 			
 			//String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
-			 String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
+			String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
 	        WebResource resource = client.resource(UrlPath);
 	        PrintUpdateDetailsStatusVO reponse = resource.accept("application/json").type("application/json").post(PrintUpdateDetailsStatusVO.class, inputList);
 	        resulCode = reponse.getResultCode();
