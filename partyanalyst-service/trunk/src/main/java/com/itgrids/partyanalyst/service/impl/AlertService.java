@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
+import com.itgrids.partyanalyst.dao.IAlertClarificationCommentsDAO;
+import com.itgrids.partyanalyst.dao.IAlertClarificationDAO;
+import com.itgrids.partyanalyst.dao.IAlertClarificationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -63,6 +67,9 @@ import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertCandidate;
+import com.itgrids.partyanalyst.model.AlertClarification;
+import com.itgrids.partyanalyst.model.AlertClarificationComments;
+import com.itgrids.partyanalyst.model.AlertClarificationDocument;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertStatus;
@@ -74,6 +81,7 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertService implements IAlertService{
@@ -109,6 +117,10 @@ private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 private IParliamentAssemblyDAO parliamentAssemblyDAO; 
 private IAlertImpactScopeDAO alertImpactScopeDAO;
+private IAlertClarificationDAO alertClarificationDAO;
+private IAlertClarificationCommentsDAO alertClarificationCommentsDAO;
+private ActivityService activityService;
+private IAlertClarificationDocumentDAO alertClarificationDocumentDAO;
 
 
 
@@ -304,6 +316,36 @@ public void setParliamentAssemblyDAO(
 }
 public void setAlertImpactScopeDAO(IAlertImpactScopeDAO alertImpactScopeDAO) {
 	this.alertImpactScopeDAO = alertImpactScopeDAO;
+}
+public IAlertClarificationDAO getAlertClarificationDAO() {
+	return alertClarificationDAO;
+}
+
+public void setAlertClarificationDAO(IAlertClarificationDAO alertClarificationDAO) {
+	this.alertClarificationDAO = alertClarificationDAO;
+}
+
+public IAlertClarificationCommentsDAO getAlertClarificationCommentsDAO() {
+	return alertClarificationCommentsDAO;
+}
+
+public void setAlertClarificationCommentsDAO(IAlertClarificationCommentsDAO alertClarificationCommentsDAO) {
+	this.alertClarificationCommentsDAO = alertClarificationCommentsDAO;
+}
+public ActivityService getActivityService() {
+	return activityService;
+}
+
+public void setActivityService(ActivityService activityService) {
+	this.activityService = activityService;
+}
+
+public IAlertClarificationDocumentDAO getAlertClarificationDocumentDAO() {
+	return alertClarificationDocumentDAO;
+}
+
+public void setAlertClarificationDocumentDAO(IAlertClarificationDocumentDAO alertClarificationDocumentDAO) {
+	this.alertClarificationDocumentDAO = alertClarificationDocumentDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -4584,10 +4626,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					vo.setDate2(lastUpdatedDate);
 					vo.setLocationName(impactLevelStr);
 					vo.setStatus(status);
-					
 					Long noOfDays = dateUtilService.noOfDayBetweenDates(vo.getDate1(), vo.getDate2());
-			          vo.setNoOfDays(noOfDays-1);
-			          
 					alertsMap.put(alertId, vo);
 				}
 			}
@@ -4617,7 +4656,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 					Long noOfDays = dateUtilService.noOfDayBetweenDates(vo.getDate1(), vo.getDate2());
 			          vo.setNoOfDays(noOfDays-1);
-			          
 					alertsMap.put(alertId, vo);
 				}
 			}
@@ -4634,6 +4672,156 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		e.printStackTrace();
 	}
 	 return returnVo;
+  }
+ /* public List<AlertVO> getAlertClarificationStatus(Long alertId){
+	  List<AlertVO> returnVO = new ArrayList<AlertVO>();
+	  try{
+		 List<Object[]> status = alertClarificationDAO.getAlertClarificationStatus(alertId);
+		 if(status != null && !status.isEmpty()){
+			for (Object[] object : status) {
+				AlertVO vo = new AlertVO();
+				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(object[0]));
+				vo.setStatus(commonMethodsUtilService.getStringValueForObject(object[1]));
+				returnVO.add(vo);
+			}
+		 }
+	  }catch(Exception e){
+		  LOG.error("Error occured at getAlertClarificationStatus() in AlertService {}",e); 
+	  }
+	  return returnVO;
+  }
+  */
+  public ResultStatus saveAlertClarificationDetails(final Long userId,final AlertVO alertVO,final Map<File,String> mapfiles,final Long alertId){
+	 final ResultStatus resultStatus = new ResultStatus();
+					try{
+						transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+							public void doInTransactionWithoutResult(TransactionStatus status) {
+							AlertClarification alertClarification = new AlertClarification();
+								alertClarification.setAlertId(alertId);
+								alertClarification.setAlertClarificationStatusId(alertVO.getStateId());
+								alertClarification.setIsDeleted("N");
+								alertClarification.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertClarification.setInsertedBy(userId);
+								alertClarification.setUpdatedBy(userId);
+								alertClarification.setClarificationRequired("Y");
+								alertClarification = alertClarificationDAO.save(alertClarification);
+							
+							AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
+								alertClarificationComments.setAlertClarificationId(alertClarification.getAlertClarificationId());
+								alertClarificationComments.setComments(alertVO.getComment());
+								alertClarificationComments.setIsDeleted("N");
+								alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertClarificationComments.setInsertedBy(userId);
+								alertClarificationComments.setUpdatedBy(userId);
+								alertClarificationComments.setClarificationRequired("Y");
+								alertClarificationCommentsDAO.save(alertClarificationComments);
+								
+							
+							 String folderName = folderCreationForAlertsAttachments();
+			                    StringBuilder pathBuilder = null; 
+				                    for (Map.Entry<File, String> entry : mapfiles.entrySet())
+				           		 {
+				                    	AlertClarificationDocument alertClarificationDocument = new AlertClarificationDocument();
+				                    	 pathBuilder = new StringBuilder();
+				                    	 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				                    	// String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				         				String destinationPath = folderName+"/"+randomNumber+"."+entry.getValue();
+				         				 pathBuilder.append(IConstants.ALERTS_ATTACHMENTS).append("/").append(randomNumber).append(".")
+				         				 .append(entry.getValue());
+				         				activityService = new ActivityService();
+				         				   String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destinationPath);
+				         				   LOG.error("Status : "+status);
+				         				   if(fileCpyStts.equalsIgnoreCase("success")){
+				         					  alertClarificationDocument.setClarificationDocumentPath(pathBuilder.toString());
+				         					   LOG.error("Success:"+pathBuilder.toString()+".jpg");
+				         				   }else if(fileCpyStts.equalsIgnoreCase("error")){
+				         					  resultStatus.setResultCode(1);
+				         					 resultStatus.setMessage("FAIL"); 
+				         					  LOG.error("Error:"+pathBuilder.toString()+".jpg");
+				         				   }
+				         				   alertClarificationDocument.setAlertId(alertId);
+				         				   alertClarificationDocument.setIsDeleted("N");
+				         				   alertClarificationDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				         				   alertClarificationDocument.setInsertedBy(userId);
+				         				   alertClarificationDocument.setClarificationRequired("Y");
+						                   alertClarificationDocumentDAO.save(alertClarificationDocument);  
+				           		 } 	
+				                    resultStatus.setResultCode(0);
+				                    resultStatus.setMessage("success");
+							}
+							
+							});
+							
+						}catch(Exception e){
+							resultStatus.setResultCode(1);
+							resultStatus.setMessage("fail");
+							LOG.error("Error occured at saveAlertClarificationDetails() in AlertService {}",e); 
+						}
+					return resultStatus;
+  				}
+  
+  public static String folderCreationForAlertsAttachments(){
+	  	 try {
+	  		 LOG.debug(" in FolderForNotCadre ");
+	  		
+	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"/images/"+IConstants.ALERTS_ATTACHMENTS);
+			 
+			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
+			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"/images/"+IConstants.ALERTS_ATTACHMENTS;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+	}
+  public AlertVO getAlertClarificationComments(Long alertId){
+	  AlertVO returnVO = new AlertVO();
+	  try{
+		  List<AlertVO> returnList = new ArrayList<AlertVO>();
+		  List<Object[]> cmntList = alertClarificationCommentsDAO.getClarificationComments(alertId);
+		  if(cmntList != null && !cmntList.isEmpty()){
+			  for (Object[] objects : cmntList) {
+				  AlertVO vo = new AlertVO();
+				  vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				  vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				  vo.setComment(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				  vo.setAlertId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				  vo.setClarificationRequired(commonMethodsUtilService.getStringValueForObject(objects[4]));
+				  returnList.add(vo);
+			}
+		  }
+		  Map<Long,List<String>> filePathMap = new LinkedHashMap<Long,List<String>>();
+		  List<Object[]> filePathList = alertClarificationDocumentDAO.getAlertAttachments(alertId);
+			if(filePathList != null && filePathList.size() > 0l){
+				for (Object[] objects : filePathList) {
+					Long alrtId = Long.valueOf(objects[0] != null ? objects[0].toString() :"0");
+					String filePath = objects[1] != null ? objects[1].toString():"";
+					List<String> filesList = filePathMap.get(alrtId);
+					if(filesList == null || filesList.isEmpty()){
+						filesList = new ArrayList<String>();
+						filesList.add(filePath);
+						filePathMap.put(alrtId,filesList);
+					}
+					else
+						filesList.add(filePath);
+				}
+			}
+			if(filePathMap != null){
+				returnVO.getFilePthList().addAll(filePathMap.get(alertId));
+				}
+			returnVO.setSubList1(returnList);
+		  
+	  }catch(Exception e){
+		  LOG.error("Error occured at getAlertClarificationComments() in AlertService {}",e); 
+	  }
+	  return returnVO;
   }
   
 }
