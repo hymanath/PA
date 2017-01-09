@@ -28,6 +28,33 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+		.disabledBlock
+		{
+			background-color:rgba(0,0,0,0.4);
+			z-index:99;
+			position:absolute;
+			right:0px;
+			left:0px;
+			top:0px;
+			bottom:0px;
+		}
+		.uploadedDocuments
+		{
+			padding:0px;
+		}
+		.uploadedDocuments li
+		{
+			padding-left:15px;
+			position:relative;
+			list-style:none;
+		}
+		.uploadedDocuments li:before
+		{
+			position:absolute;
+			left:0px;
+			content:'\e142';
+			font-family: 'Glyphicons Halflings';
+		}
 		.label-neutral{
 			background:orange;
 		}
@@ -329,7 +356,53 @@ control.makeTransliteratable(['commentsId']);
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-6">
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<h4 class="panel-title">ALERT CLARIFICATION REPORT</h4>
+													</div>
+													<div class="panel-body">
+														<div class="row">
+															<form action="">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label class="radio-inline">
+																	Is Clarification Required
+																</label>
+																<label class="radio-inline">
+																	<input type="radio"/> Yes
+																</label>
+																<label class="radio-inline">
+																	<input type="radio"/> No
+																</label>	
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label>Clarification Status</label>
+																<select class="form-control">
+																	<option>Progress/Completed</option>
+																</select>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label>Clarification Comments</label>
+																<textarea class="form-control"></textarea>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label>Upload Attachments</label>
+																<input type="file"/>
+																<ul class="uploadedDocuments">
+																	<li>01 Attachments.jpg</li>
+																</ul>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<button class="btn btn-success">UPDATE ALERT DETAILS</button>
+															</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
 											<div class="panel panel-default">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
@@ -345,38 +418,49 @@ control.makeTransliteratable(['commentsId']);
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
-										<div class="col-md-8 col-xs-12 col-sm-6">
-											<label>Alert Status</label>
-											<select class="dropkickClass" id="statusId">
-												<option value='0'>Select Status</option>
-												<option value='1'>Pending</option>      
-												<option value='2'>Notified</option>  
-												<option value='3'>Action In Progess</option>  
-												<option value='4'>Completed</option>
-												<option value='5'>Unable to Resolve</option>
-												<option value='6'>Action Not Required</option>
-												<option value='7'>Duplicate</option>
-											</select>
-											
-											<label>Assigned Cadre</label>
-											 <select class="" id="assignedCadreId"  multiple>
-												 <option value="0">Select Assign Cadre</option>
-												 
-											 </select>
-											
-											<label>Comments</label>
-											<label class="radio-inline">
-												<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-											</label>
-											<label class="radio-inline">
-												<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-											</label>
-											<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-											<div id="errorId" class="m_top10"></div>
-											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
-											<span id="updateAlertajaxImg" class="m_top10"></span>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title"></h4>
+												</div>
+												<div class="panel-body">
+													<label>Alert Status</label>
+													<select class="dropkickClass" id="statusId">
+														<option value='0'>Select Status</option>
+														<option value='1'>Pending</option>      
+														<option value='2'>Notified</option>  
+														<option value='3'>Action In Progess</option>  
+														<option value='4'>Completed</option>
+														<option value='5'>Unable to Resolve</option>
+														<option value='6'>Action Not Required</option>
+														<option value='7'>Duplicate</option>
+													</select>
+													
+													<label>Assigned Cadre</label>
+													 <select class="" id="assignedCadreId"  multiple>
+														 <option value="0">Select Assign Cadre</option>
+														 
+													 </select>
+													
+													<label>Comments</label>
+													<label class="radio-inline">
+														<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+													</label>
+													<label class="radio-inline">
+														<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+													</label>
+													<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
+													<div id="errorId" class="m_top10"></div>
+													<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
+													<span id="updateAlertajaxImg" class="m_top10"></span>
+												</div>
+											</div>
 										</div>
 										</c:if>
+									</div>
+									
+									<div class="row">
+										
 									</div>
 								</div>
 							</div>
