@@ -82,7 +82,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
-					<h4 class="panel-title">VALIDATE CONSTITUENCY CADRE DATA</h4>
+					<h4 class="panel-title">PRE VALIDATING CONSTITUENCY CADRE DATA</h4>
 				</div>
 				<div class="panel-body">
 					<div id="errorDivId" style="color:red"></div>
