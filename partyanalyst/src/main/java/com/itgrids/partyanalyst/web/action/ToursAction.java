@@ -623,7 +623,11 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				toursVO.setUserId(user.getRegistrationID());
 			}
 				
-		     
+			resultStatus = toursService.checkForExistingTourDetails(toursVO);
+			if(resultStatus.getResultCode() == 0){
+				successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
+				return Action.SUCCESS;
+			}
 			resultStatus = toursService.saveNewTourDetails(toursVO,mapfiles);
 			if(resultStatus!=null){
 					successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
