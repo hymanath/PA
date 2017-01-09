@@ -3536,4 +3536,7 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="govtSchemesDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSchemesDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

@@ -1088,12 +1088,15 @@
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalToursMonth</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsNew</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsLocation</value>
+	                  
+	                  	<!-- Benefits start -->
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemes</value>
 	                  <value>com.itgrids.partyanalyst.model.SchemeBenefitType</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBenefitType</value>
 	                  <value>com.itgrids.partyanalyst.model.Schemephase</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtSchemePhase</value>
-	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBeneficiaryDetails</value>
-	                  
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBeneficiaryDetails</value>	
+	                  	<!-- Benefits end -->
 	             </list>
 			
 		</property>
