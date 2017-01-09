@@ -11,13 +11,15 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel
 {
@@ -2753,7 +2755,7 @@
 		<!-- Attendance End-->
 		
 	 
-	  <!--Tours New Start  
+	  <!--Tours New Start
 	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2805,8 +2807,8 @@
 							<li class="active toursNewDetailedBlock">Detailed</li>
 						</ul>
 					</div>!-->
-				<!--<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
-					   <h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
+					<!--<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+						<h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
 						<div id="toursPerformanceDivId"></div>
 					</div>
 							
@@ -3528,6 +3530,19 @@
 			  <div class="modal-body">   
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<select class="pull-right" id="dateRangeSliderYear">
+							<option>2016</option>
+							<option>2017</option>
+							<option>2018</option>
+							<option>2019</option>
+							<option>2020</option>
+							<option>2021</option>
+							<option>2022</option>
+							<option>2023</option>
+							<option>2024</option>
+							<option>2025</option>
+						</select>
+						<div id="tourSlider" style="margin-top:30px"></div>
 						<div id="tourIndividualDetailsBlock"></div>
 						<div id="monthWiseComplainceDivId" class="m_top20"></div>
 						<div id="tourIndividualDetailsTableBlock" ></div>
@@ -3595,6 +3610,8 @@
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -3748,7 +3765,7 @@ function onLoadCalls(){
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
 		/*New Tours implementation Default Call */
-		 // getToursBasicOverviewDtls();
+		// getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
