@@ -3530,6 +3530,10 @@
 	<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
 	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
 	<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO"></property>
+	<property name="alertClarificationDAO" ref="alertClarificationDAO"></property>
+	<property name="alertClarificationCommentsDAO" ref="alertClarificationCommentsDAO"></property>
+	<property name="activityService" ref="activityService"></property>
+	<property name="alertClarificationDocumentDAO" ref="alertClarificationDocumentDAO"></property>
 	
 	</bean>
 	<!-- Debate End -->
