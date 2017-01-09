@@ -1,15 +1,20 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
@@ -970,4 +975,64 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getCadreAlertDetails(){
 		return Action.SUCCESS;
 	}
+	/*public String getAlertClarificationStatus(){
+		try{
+			jObj = new JSONObject(getTask());
+			alertVOs = alertService.getAlertClarificationStatus(jObj.getLong("alertId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getAlertClarificationStatus() method of CoreDashBoard", e);	
+		}
+		return Action.SUCCESS;
+	}*/
+	
+	public String saveAlertClarificationDetails()
+	{
+		try
+		{
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+		       String fileUrl = "" ;
+		       List<String> filePaths = null;
+		   		while(fileParams.hasMoreElements())
+		   		{
+		   			String key = fileParams.nextElement();
+		   			
+				   			File[] files = multiPartRequestWrapper.getFiles(key);
+				   			filePaths = new ArrayList<String>();
+				   			if(files != null && files.length > 0)
+				   			for(File f : files)
+				   			{
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   	            String ext = "";
+				   	            if(extension.length > 1){
+				   	            	ext = extension[extension.length-1];
+				   	            	mapfiles.put(f,ext);
+				   	            }
+				   	        
+				   			}
+		   		}
+		     
+			resultStatus = alertService.saveAlertClarificationDetails(alertVO,mapfiles,user.getRegistrationID());
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}else if(resultStatus.getResultCode() == 1){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}
+			}
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveAlertClarificationDetails() in CreateAlertAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);
