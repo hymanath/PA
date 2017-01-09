@@ -2867,9 +2867,10 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	}
 	
    function buildIndividualPersonTourDetails(result){
-	   var str='';
+	  
 	   $("#tourIndividualDetailsBlock").html('');
 	 	if(result !=null && result.subList != null && result.subList.length > 0){
+			 var str='';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<div class="row">';
 					
@@ -2891,8 +2892,9 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 					str+='</div>';
 					
 			str+='</div>';
+			$("#tourIndividualDetailsBlock").html(str);
 		}
-		$("#tourIndividualDetailsBlock").html(str);
+		
 		if(result !=null && result.subList != null && result.subList.length > 0){
 			
 			var mainArrNma=[];
@@ -3088,13 +3090,14 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	//santosh
 	if(result !=null && result.monthList != null && result.monthList.length > 0){
 		  var str2='';
-		    str2+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str2+='<div class="row">';
-				str2+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str2+='<h4 class="text-capital">MONTH WISE COMPLIANCE OVERVIEW</h4>';
-					str2+='</div>';
+		  
+		  	 str2+='<div class="col-md-12 col-xs-12 col-sm-12 " >';
+				str2+='<h4 class="text-capital">MONTH WISE COMPLIANCE OVERVIEW</h4>';
+					 str2+='<div class="slickApplyTourCls" >';	
 				for(var i in result.monthList){
-						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
+					
+						//str2+='<li>';
+						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 ">';
 							str2+='<table class="table table-bordered">';
 							 var categoryList = result.monthList[i].subList;
 							 
@@ -3103,26 +3106,29 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 									var categoryVO = result.monthList[i].subList[0];
 								str2+='<tr>';
 									str2+='<td rowspan='+(moxCategoryLength+1)+' style="font-size:22px;background-color:#EDECE7">'+result.monthList[i].name+'<br>'+result.monthList[i].year+'</td>';
-									str2+='<td style="background-color:#EDECE7">'+categoryVO.name+'<small>('+categoryVO.complainceDays+')</small>';
-									 str2+='<div class="dropup">';
-									str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-										str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+									str2+='<td style="background-color:#EDECE7"><p>'+categoryVO.name+'('+categoryVO.complainceDays+')';
+									 
+									 
+									  str2+='<div class="dropup">';
+									str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+										str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;z-index:999">';
 											str2+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 10px;">Tours Days Target Per month</i></p>';
 											str2+='<table class="table">';
 												str2+='<tr><td style="background-color:#EDECE7">'+categoryVO.name+' - '+categoryVO.targetDays+'</td></tr>';
 											str2+='</table>';
 										str2+='</div>';
-									str2+='</div>'; 
+									str2+='</div></p>';  
+									  
 									   if(categoryVO.complainceDays >= categoryVO.targetDays){
-											str2+='<i  style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger pull-right"></i></td>';;
+											str2+='<p style="text-align: center;"><i  style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger "></p></i>';
 										   }else{
-											str2+='<i  style="background-color:#E35B69;" class="glyphicon glyphicon-remove text-danger pull-right"></i></td>';
-										   }
-										   
+											str2+='<p style="text-align: center;"><i  style="background-color:#E35B69;" class="glyphicon glyphicon-remove text-danger"></i></p>';
+										   } 
+										  str2+='</td>';  
 								        if(result.monthList[i].isComplaince != null && result.monthList[i].isComplaince.trim()=="True"){
-										   str2+='<td style="background-color:#3DBC93;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-ok" style="font-size:28px;display:block"></i><small>Compliance</small></td>';
+										   str2+='<td style="background-color:#3DBC93;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-ok" style="font-size:55px;display:block;color:#068057;"></i><small style="color:#fff;">Compliance</small></td>';
 										}else{
-										   str2+='<td style="background-color:#E35B69;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-remove" style="font-size:28px;display:block"></i><small>Non Compliance</small></td>';
+										   str2+='<td style="background-color:#E35B69;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-remove" style="font-size:55px;display:block;color:#bf3646;"></i><small style="color:#fff;">Non Compliance</small></td>';
 										} 	 
 								  str2+='</tr>';
 								
@@ -3133,32 +3139,47 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 										if(categoryList[k].name == null || categoryList[k].name == ""){
 											str2+='<td style="background-color:#EDECE7;"> - </td>';
 										}else{
-										   str2+='<td style="background-color:#EDECE7">'+categoryList[k].name+'<small>('+categoryList[k].complainceDays+')</small>';
-											str2+='<div class="dropup">';
-											str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-												str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+										   str2+='<td style="background-color:#EDECE7"><p>'+categoryList[k].name+'('+categoryList[k].complainceDays+')';
+											
+											 str2+='<div class="dropup">';
+											str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+												str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu3" style="padding:10px;z-index:999">';
 													str2+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per month</i></p>';
 													str2+='<table class="table">';
 														str2+='<tr style="background-color:#EDECE7"><td>'+categoryList[k].name+' - '+categoryList[k].targetDays+'</td></tr>';
 													str2+='</table>';
 												str2+='</div>';
-											str2+='</div>'; 
+											str2+='</div></p>';  
+											
 										   if(categoryList[k].complainceDays >= categoryList[k].targetDays){
-												str2+='<i style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger pull-right"></i>';
+												str2+='<p style="text-align: center;"><i style="color:#3DBC93;" class="glyphicon glyphicon-ok text-danger"></i></p>';
 										   }else{
-											 	str2+='<i style="color:#E35B69;" class="glyphicon glyphicon-remove text-danger pull-right"></i>';
-										   }
+											 	str2+='<p style="text-align: center;"><i style="color:#E35B69;" class="glyphicon glyphicon-remove text-danger"></i></p>';
+										   } 
 										   str2+='</td>';
 										}
 									str2+='</tr>';
 								  }
 							 }
 							str2+='</table>';
-						str2+='</div>';
+							str2+='</div>';
+							//str2+='</li>';
+						
+						
 				}
 				str2+='</div>';
-			str2+='</div>';
+				str2+='</div>';
+			
+			
 		$("#monthWiseComplainceDivId").html(str2);
+		$('.slickApplyTourCls').slick({
+			//slide: 'li',
+		 	 slidesToShow: 3,
+			 slidesToScroll: 3,
+			  infinite: false,
+			 variableWidth: false
+			 
+		});
 	}
 	
 	if(result !=null && result.subList2 != null && result.subList2.length > 0){
