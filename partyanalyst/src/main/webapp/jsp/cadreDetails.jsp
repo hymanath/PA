@@ -35,6 +35,29 @@
 						<!-- End -->
 
 <style type="text/css">
+.closeIconBenefit
+{
+	position:absolute;
+	right:10px;
+	cursor:pointer;
+	top:10px;
+}
+.benefitCountCls
+{
+	cursor:pointer;
+}
+.constituencyDetailsDivId
+{
+	position:relative;
+	background-color:#F0E6DA;
+	box-shadow:inset 0px 0px 5px 3px rgba(0,0,0,0.4);
+	padding:10px !important; 
+}
+
+#benefitsCollapseHeadingId
+{
+	cursor:pointer;
+}
 .expandIcon
 {
 	background-color:#CCC;
@@ -1963,6 +1986,27 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
   </div>
 </div>	
 
+<div class="modal fade" id="benefitCountModal">
+  <div class="modal-dialog" role="document" style="width:80%">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#999999">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="benefitCountModalHeading">Heading</h4>
+      </div>
+      <div class="modal-body" >
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div id="benefitCountCorpBene"></div>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>	
+
 <!-- Alert Modal -->
 <div class="modal fade" id="alertModalDivId">
   <div class="modal-dialog" role="document">
@@ -3275,4 +3319,4 @@ $(document).on("click","#alertHeaderId",function(){
 getCandidateAppliedPostsByCadre(0);
 </script>
 </body>
-</html>  
+</html>
