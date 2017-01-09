@@ -2401,7 +2401,11 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 										   }
 										   
 									       Double percentage = calculatePercantageBasedOnDouble(totalPer,totalCount.doubleValue());
-									       categoryVO.setComplaincePer(percentage);
+									       if(percentage > 100){
+									    	   categoryVO.setComplaincePer(100d);
+									       }else{
+									    	   categoryVO.setComplaincePer(percentage);   
+									       }
 									       categoryVO.setTargetDays(targetDays);
 									       categoryVO.setComplainceDays(complainceDays);
 								 }
@@ -2757,6 +2761,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  //Calculating category percentage
 		  calculateCategoryWiseComplaince(memberDtlsMap);
 		  
+		  //Calculating OverAll percentage
+		  calculatteOverAllPercentage(memberDtlsMap);
+		  
 		  //This Block is for searching
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			  
@@ -2816,7 +2823,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   }
 						  Double ownDistrper = calculatePercantage(candiateEntry.getValue().getOwnDistrictComplainceDays(),candiateEntry.getValue().getOwnDistrictTrDays());
 						   if(ownDistrper > 100d){
-							   candiateEntry.getValue().setOwnDistrictComplaincePer(ownDistrper);  
+							   candiateEntry.getValue().setOwnDistrictComplaincePer(100d);  
 						   }else{
 							   candiateEntry.getValue().setOwnDistrictComplaincePer(ownDistrper);   
 						   }
@@ -2832,14 +2839,22 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   }else{
 							   candiateEntry.getValue().setGovtWorkComplaincePer(govtWorkper);   
 						   }
+						   if(candiateEntry.getValue().getSubList3() != null && candiateEntry.getValue().getSubList3().size() > 0){
+								  for(ToursBasicVO categoryVO:candiateEntry.getValue().getSubList3()){
+									  Double per = calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays());
+									  if(per>100d){
+										  categoryVO.setComplaincePer(100d);  
+									  }else{
+										  categoryVO.setComplaincePer(per);  
+									  }
+								  }
+						 }
 					  }
 				  }
 			  }
 		  }
 		  
-		  //Calculating OverAll percentage
-		  calculatteOverAllPercentage(memberDtlsMap);
-		  
+	
 		  //merge secretary and organization secretary
 		  if(memberDtlsMap!=null && memberDtlsMap.size()>0){
 		        Map<Long,ToursBasicVO> orgSecAndSecMap = new ConcurrentHashMap<Long,ToursBasicVO>();
