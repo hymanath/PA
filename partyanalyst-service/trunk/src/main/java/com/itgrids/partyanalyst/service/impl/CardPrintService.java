@@ -547,6 +547,10 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 						vo.setPanchayatName(obj[8] != null ? obj[8].toString():"");
 					}
 					vo.setNoOfCards(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					vo.setIsQAPassed("YES");
+					vo.setStatus("READY TO DISPATCH");
+					vo.setErrorCount(0l);
+					vo.setErrorPerc("0.00");
 					
 					boxNos.add(vo.getBoxNo());
 					returnList.add(vo);
@@ -1451,10 +1455,10 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 								   sb = builderExist( sb , (Long)obj[0]);
 								   sb.append(" , Panchayat Name Has Special Character");
 							   }
-						   }else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[12].toString().trim())){
-							   //sb = builderExist( sb , (Long)obj[0]);
-							   //sb.append(" , Ward Name Has Special Character");
-						   }
+						   }/*else if(commonMethodsUtilService.isNameHaveSpecialChars(obj[12].toString().trim())){
+							   sb = builderExist( sb , (Long)obj[0]);
+							   sb.append(" , Ward Name Has Special Character");
+						   }*/
 					  }else{
 						  sb = builderExist( sb , (Long)obj[0]);
 						   sb.append(" , Panchayat/Ward Name Not Exists");
