@@ -141,7 +141,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateDetailsNew SACD " +
 				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACD.selfAppraisalCandidate.selfAppraisalCandidateId and  " +
 				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
-				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " +
+				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and SACD.isDeleted='N' and " +
 				   		" SACL.userAddress.state.stateId = :stateId ");
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 			   queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
