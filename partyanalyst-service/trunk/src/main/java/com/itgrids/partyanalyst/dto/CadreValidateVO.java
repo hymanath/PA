@@ -31,6 +31,7 @@ public class CadreValidateVO implements Serializable{
 	private List<CadreValidateVO> teluguNamesMissedList;
 	private List<CadreValidateVO> specialCharactersList;
 	private List<CadreValidateVO> imagesMissedList;
+	private List<CadreValidateVO> imageVerificationStatusList;
 	
 	private ResultStatus resultStatus;
 	
@@ -167,6 +168,13 @@ public class CadreValidateVO implements Serializable{
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	public List<CadreValidateVO> getImageVerificationStatusList() {
+		return imageVerificationStatusList;
+	}
+	public void setImageVerificationStatusList(
+			List<CadreValidateVO> imageVerificationStatusList) {
+		this.imageVerificationStatusList = imageVerificationStatusList;
 	}
 	
 }
