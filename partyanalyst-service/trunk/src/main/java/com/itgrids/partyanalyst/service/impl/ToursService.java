@@ -2344,4 +2344,34 @@ public class ToursService implements IToursService {
 		 }
 		 return null;
 	 }
+	    public ResultStatus checkForExistingTourDetails(ToursVO toursVo){
+	    	ResultStatus status = new ResultStatus();
+	    	try{
+	    		Long toursMonthId=0l; 
+				if(toursVo.getTourMonth() !=null && !toursVo.getTourMonth().trim().isEmpty()){
+					List<Long> toursMonthIdsObj = selfAppraisalToursMonthDAO.getSelfAppraisalToursMonth(toursVo.getTourMonth());
+					
+					if(toursMonthIdsObj !=null && toursMonthIdsObj.size()>0){
+						toursMonthId = toursMonthIdsObj.get(0);
+					}
+				}
+	    		if(toursVo.getToursVoListNew() != null && toursVo.getToursVoListNew().size() > 0){
+	    			for(ToursVO param : toursVo.getToursVoListNew()){
+	    				Long candidateDtlsId = selfAppraisalCandidateDetailsNewDAO.checkForExistingTourDetails(param.getCandidateId(),param.getTourCategoryId(),param.getTourTypeId(),toursMonthId);
+	    				if(candidateDtlsId != null){
+	    					status.setMessage("duplicate");
+	    					status.setResultCode(0);
+	    					return status;
+	    				}else{
+	    					status.setMessage("success");
+	    					status.setResultCode(1);
+	    					return status;
+	    				}
+	    			}
+	    		}
+	    	}catch(Exception e){
+	    		LOG.error("Exception Occured in checkForExistingTourDetails() in ToursService class ", e);
+	    	}
+			return null;
+	    }
 }
