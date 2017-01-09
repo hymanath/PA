@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusTrackDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -29,11 +30,14 @@ import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.PrintStatusUpdateVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SmallVO;
 import com.itgrids.partyanalyst.model.CardPrintVendor;
+import com.itgrids.partyanalyst.model.ConstituencyPrintStatus;
+import com.itgrids.partyanalyst.model.ConstituencyPrintStatusTrack;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -54,6 +58,7 @@ public class CardPrintService implements ICardPrintService{
 	private ITdpCadreDAO tdpCadreDAO;
 	private IConstituencyDAO constituencyDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private IConstituencyPrintStatusTrackDAO constituencyPrintStatusTrackDAO;
 	
 	public ICardPrintValidationDAO getCardPrintValidationDAO() {
 		return cardPrintValidationDAO;
@@ -114,6 +119,11 @@ public class CardPrintService implements ICardPrintService{
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	
+	public void setConstituencyPrintStatusTrackDAO(
+			IConstituencyPrintStatusTrackDAO constituencyPrintStatusTrackDAO) {
+		this.constituencyPrintStatusTrackDAO = constituencyPrintStatusTrackDAO;
 	}
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -836,6 +846,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 	
 	/**  
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  PRE VALIDATING CONSTITUENCY DATA.
 	  *  get Constituency NotVerfied CardPrint Status Cadre and validate based on telugu names missed , special characters, images....
 	  *  @since 02-JANUUARY-2017
 	  */
@@ -887,6 +898,11 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					  return finalVO;
 				  }
 				 
+				  ResultStatus imageVerificationstatus = imageVerificationStatus(cadreList , finalVO , successMap , failureMap);
+				  if(imageVerificationstatus != null && imageVerificationstatus.getResultCode() == 0){
+					  finalVO.setResultStatus(imageVerificationstatus);
+					  return finalVO;
+				  }
 				  
 				  finalVO.setNowVerifiedCount((long)cadreList.size());
 			  }
@@ -1110,6 +1126,22 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 							  }
 							  finalVO.getImagesMissedList().add(cadreVO);
 						  }
+					  }else{
+							  //mark this cadre has failed in verification.
+							  if(successMap.containsKey((Long)obj[0])){
+								  successMap.remove((Long)obj[0]);
+							  }
+							  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+							  
+							  CadreValidateVO cadreVO = new CadreValidateVO();
+							  cadreVO.setValidationMessage("image has no path");
+							  
+							  setTdpCadreDataToVO(obj , cadreVO);
+							  
+							  if(finalVO.getImagesMissedList() == null){
+								  finalVO.setImagesMissedList(new ArrayList<CadreValidateVO>(0));
+							  }
+							  finalVO.getImagesMissedList().add(cadreVO);
 					  }
 				  }
 			}
@@ -1122,7 +1154,51 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		}
 		return rs;
 	}
-
+	
+	public ResultStatus imageVerificationStatus(List<Object[]> cadreList , CadreValidateVO finalVO ,  Map<Long,Long> successMap , Map<Long,Long> failureMap ){
+		
+		ResultStatus rs = new ResultStatus();
+		try{
+			
+			if(cadreList != null && cadreList.size() > 0){
+				  
+				  for(Object[] obj :cadreList){
+					   
+					  if(obj[11] == null || (obj[11] != null && (Long)obj[11] == 2)){ //Image Not Verified Or Image Rejected.
+							  
+							  //mark this cadre has failed in verification.
+							  if(successMap.containsKey((Long)obj[0])){
+								  successMap.remove((Long)obj[0]);
+							  }
+							  failureMap.put((Long)obj[0], IConstants.CARD_PRINT_STATUS_VERIFICATION_FAILED);
+							  
+							  CadreValidateVO cadreVO = new CadreValidateVO();
+							  
+							  if(obj[11] == null){
+								  cadreVO.setValidationMessage("Image Not Verified");  
+							  }else{
+								  cadreVO.setValidationMessage("Image Rejected");
+							  }
+							  
+							  setTdpCadreDataToVO(obj , cadreVO);
+							  
+							  if(finalVO.getImageVerificationStatusList() == null){
+								  finalVO.setImageVerificationStatusList(new ArrayList<CadreValidateVO>(0));
+							  }
+							  finalVO.getImageVerificationStatusList().add(cadreVO);
+						  
+					  }
+				  }
+			}
+			rs.setResultCode(1);
+		}catch(Exception e){
+			 rs.setResultCode(0);
+			 rs.setExceptionMsg(" Exception Occurred In Checking Images Verification Status ");
+			 
+			LOG.error("Exception Occured into imageVerificationStatus() of CardPrintService class", e);
+		}
+		return rs;
+	}
 	public void setTdpCadreDataToVO(Object[] obj , CadreValidateVO cadreVO){
 		 try{
 			 
@@ -1410,5 +1486,69 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		 return sb;
 	}
 	
-	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Updating Card Print Status to Constituency.
+	  *  @since 08-JANUARY-2017
+	  */
+	public ResultStatus saveConstituencyPrintStatus(final PrintStatusUpdateVO inputVO){
+		
+		ResultStatus status = new ResultStatus();
+		try{
+				status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus arg0) {
+			        	
+			        	ResultStatus rs = new ResultStatus();
+			        	
+			        	//Check Data Is Allocated Or NOT FOR GIVEN CONSTITUENCY And VENDOR.
+			        	List<Long> constituencyPrintStatusIdsList = constituencyPrintStatusDAO.getConstituencyPrintStatusIds(inputVO.getPrintVendorId() , inputVO.getConstituencyId()); 
+			        	Long constituencyPrintStatusId = null;
+			        	if(constituencyPrintStatusIdsList != null && constituencyPrintStatusIdsList.size() > 0){
+			        		constituencyPrintStatusId = constituencyPrintStatusIdsList.get(0);
+			        	}
+			        	
+			        	ConstituencyPrintStatus constituencyPrintStatus = null;
+			        	if(constituencyPrintStatusId != null && constituencyPrintStatusId.longValue() > 0l){
+			        		constituencyPrintStatus = constituencyPrintStatusDAO.get(constituencyPrintStatusId);
+			        	}else{
+			        		rs.setResultCode(0);
+		        			rs.setExceptionMsg("Data Is Not Allocated For Given Constituency and Vendor..");
+		        			return rs;
+			        	}
+			        	
+			        	constituencyPrintStatus.setPrintVendorId(inputVO.getPrintVendorId());
+			        	constituencyPrintStatus.setPrintStatusId(inputVO.getPrintStatusId());
+			        	if(inputVO.getRemarks() != null && !inputVO.getRemarks().isEmpty()){
+			        		constituencyPrintStatus.setRemarks(inputVO.getRemarks());
+			        	}else{
+			        		constituencyPrintStatus.setRemarks(null);
+			        	}
+			        	//constituencyPrintStatus.setUpdatedBy(inputVO.getUserId());//CHECK the user table..
+			        	constituencyPrintStatus.setUpdatedTime(inputVO.getCurrentDate());
+			        	
+			        	constituencyPrintStatus = constituencyPrintStatusDAO.save(constituencyPrintStatus);
+			        	
+			        	//Track Saving
+			        	ConstituencyPrintStatusTrack constituencyPrintStatusTrack = new ConstituencyPrintStatusTrack();
+			        	constituencyPrintStatusTrack.setConstituencyPrintStatusId(constituencyPrintStatus.getConstituencyPrintStatusId());
+			        	constituencyPrintStatusTrack.setConstituencyId(constituencyPrintStatus.getConstituencyId());
+			        	constituencyPrintStatusTrack.setPrintVendorId(constituencyPrintStatus.getPrintVendorId());
+			        	constituencyPrintStatusTrack.setPrintStatusId(constituencyPrintStatus.getPrintStatusId());
+			        	constituencyPrintStatusTrack.setRemarks(constituencyPrintStatus.getRemarks());
+			        	//constituencyPrintStatusTrack.setUpdatedBy(constituencyPrintStatus.getUpdatedBy());//CHECK the user table..
+			        	constituencyPrintStatusTrack.setUpdatedTime(constituencyPrintStatus.getUpdatedTime());
+			        	constituencyPrintStatusTrackDAO.save(constituencyPrintStatusTrack);
+			        	
+			        	rs.setExceptionMsg("success");
+						rs.setResultCode(1);
+						return rs;
+					}
+			   });
+		}catch(Exception e){
+			LOG.error("exception Occurred at saveConstituencyPrintStatus() in CardPrintService class ", e); 
+			status.setResultCode(0);
+			status.setExceptionMsg("Exception Occurred At Server Side.Try Later..");
+		}
+		return status;
+	}
 }
