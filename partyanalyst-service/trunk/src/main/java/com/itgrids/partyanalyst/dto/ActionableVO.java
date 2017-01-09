@@ -51,6 +51,7 @@ public class ActionableVO extends BaseModel implements Serializable{
 	private String newsCandidate;
 	private String organization;
 	private Set<String> designationList = new HashSet<String>(0);
+	private Long editionType;
 	
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -245,6 +246,12 @@ public class ActionableVO extends BaseModel implements Serializable{
 	}
 	public void setOrganization(String organization) {
 		this.organization = organization;
+	}
+	public Long getEditionType() {
+		return editionType;
+	}
+	public void setEditionType(Long editionType) {
+		this.editionType = editionType;
 	}
 	
 	

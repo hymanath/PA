@@ -57,6 +57,8 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertImpactScope alertImpactScope;
 	
 	private String imageUrl;
+	private Long editionTypeId;
+	private EditionType editionType;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -338,5 +340,27 @@ public class Alert extends BaseModel implements Serializable {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+
+	@Column(name = "edition_type_id")
+	public Long getEditionTypeId() {
+		return editionTypeId;
+	}
+
+	public void setEditionTypeId(Long editionTypeId) {
+		this.editionTypeId = editionTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "edition_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public EditionType getEditionType() {
+		return editionType;
+	}
+
+	public void setEditionType(EditionType editionType) {
+		this.editionType = editionType;
+	}
+	
 	
 }
