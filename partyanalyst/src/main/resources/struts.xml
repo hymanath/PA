@@ -15305,6 +15305,9 @@
 	<action name="cadreAlertDetailsAction" class="createAlertAction" method="getCadreAlertDetails">
 		<result name="success">/jsp/cadreAlertDetails.jsp</result>
 	</action>
+	<action name="alertClarificationDashboardAction" class="createAlertAction" method="alertClarificationDashboard">
+		<result name="success">/jsp/alertClarificationRequiredDashboard.jsp</result>
+	</action>
 	<action name="getBenefitDetailsAlongFamilyAction" class="cadreDetailsAction"  method="getBenefitDetailsAlongFamily">
 		<result type="json" name="success">
 			<param name="root">benefitVOList</param>

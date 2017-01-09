@@ -975,6 +975,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getCadreAlertDetails(){
 		return Action.SUCCESS;
 	}
+	
+	public String alertClarificationDashboard(){
+		return Action.SUCCESS;
+	}
 	/*public String getAlertClarificationStatus(){
 		try{
 			jObj = new JSONObject(getTask());
