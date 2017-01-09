@@ -1456,3 +1456,293 @@ function buildVolunteersDetails(result){
 		window.open('cadreAlertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
 		
 	});
+	
+	function benefitSchemesRelatedCalls(){
+		getBenefitDetailsAlongFamily();
+		getOwnAndParticipatedConstituenciesBenefitDetails();
+		getLocalityBasedBenefitSchemesDetails();
+	}
+	function getBenefitDetailsAlongFamily(){//globalCadreId
+		var jsObj={
+			tdpCadreId :6574091,
+			familyCadreIdsArray :familycadreIdsArrayGlobal
+		}
+		$.ajax({
+		type:'POST',
+		 url: 'getBenefitDetailsAlongFamilyAction.action',
+		 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				var str = '';
+				str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+				str+='<thead style="background-color:#ccc;">';
+				if(result[0].cadreDetailsVO != null && result[0].cadreDetailsVO.length > 0){
+					str+='<th>Total Amount</th>';
+					for(var i in result[0].cadreDetailsVO){
+						str+='<th>'+result[0].cadreDetailsVO[i].benefitName+'</th>';
+					}
+				}
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						if(result[0].cadreDetailsVO != null && result[0].cadreDetailsVO.length > 0){
+							str+='<td>'+result[0].cadreDetailsVO[0].userWisetotalAmount+'</td>';
+							for(var i in result[0].cadreDetailsVO){
+								if(result[0].cadreDetailsVO[i].status == "Y")
+									str+='<td><img src="img/yes.png" style="width: 18px;"> <sub>'+result[0].cadreDetailsVO[i].amount+'</sub></td>';
+								else
+									str+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[0].cadreDetailsVO[i].amount+'</sub></td>';
+							}
+						}
+					str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+				
+				$("#personalBenefitsDivId").html(str);
+			}else{
+				$("#personalBenefitsDivId").html("No Benefits Avalilable.");
+			}
+				
+			if(result != null && result.length > 1){
+				var str1 = '';
+				str1+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+				str1+='<thead>';
+					if(result[0].cadreDetailsVO != null && result[0].cadreDetailsVO.length > 0){
+						str1+='<th></th>';
+						str1+='<th>Total Amount</th>';
+						for(var t in result[0].cadreDetailsVO){
+							str1+='<th>'+result[0].cadreDetailsVO[t].benefitName+'</th>';
+						}
+					}
+				str1+='</thead>';
+				str1+='<tbody>';
+					var flag = false;
+					for(var t=1;t<result.length;t++){
+						if(result[t] != null){
+							flag = true;
+							str1+='<tr>';
+							if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
+								str1+='<td>'+result[t].cadreDetailsVO[0].cadreName+'</td>';
+								str1+='<td>'+result[t].cadreDetailsVO[0].userWisetotalAmount+'</td>';
+								for(var i in result[t].cadreDetailsVO){
+									if(result[t].cadreDetailsVO[i].status == "Y")
+										str1+='<td><img src="img/yes.png" style="width: 18px;"> <sub>'+result[t].cadreDetailsVO[i].amount+'</sub></td>';
+									else
+										str1+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[t].cadreDetailsVO[i].amount+'</sub></td>';
+										
+								}
+							}
+							str1+='</tr>';
+						}
+					}
+					if(flag){
+						str1+='<tr>';
+							str1+='<td>Total</td>';
+							str1+='<td>'+result[1].cadreDetailsVO[0].sumOfAll+'</td>';
+							for(var t in result[1].cadreDetailsVO){
+								str1+='<td>'+result[1].cadreDetailsVO[t].schemeWiseTotalCount+'</td>';
+							}
+						str1+='</tr>';
+					}
+				str1+='</tbody>';
+				str1+='</table>';
+				$("#familyBenefitsDivId").html(str1);
+			}else{
+				$("#familyBenefitsDivId").html("NO Family Member Got Benefits.");
+			}
+			
+			
+		});
+	}
+	
+	function getOwnAndParticipatedConstituenciesBenefitDetails(){
+		var constituencyId = $("#cadreConstituencyId").val()=="undefined"?0:$("#cadreConstituencyId").val();
+		var pConstituencyId = $("#cadrePConstituencyId").val()=="undefined"?0:$("#cadrePConstituencyId").val();
+		var jsObj={
+			constituencyId : 366,
+			pConstituencyId : pConstituencyId
+		}
+		$.ajax({
+		type:'POST',
+		 url: 'getOwnAndParticipatedConstituenciesBenefitDetailsAction.action',
+		 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null){
+				var str='';
+				if(result.cadreDetailsVO != null && result.cadreDetailsVO.length > 0){
+					str+='<div>';
+					str+='<h4>Own Constituency Benefits</h4>';
+					str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+					str+='<thead style="background-color:#ccc;">';
+						str+='<th>Constituency Name</th>';
+						for(var t in result.cadreDetailsVO){
+							str+='<th>'+result.cadreDetailsVO[t].benefitName+'</th>';
+						}
+					str+='</thead>';
+					str+='<tbody>';
+					str+='</tbody>';
+						str+='<tr>';
+							str+='<td>'+result.cadreDetailsVO[0].constituencyName+'</td>';
+							for(var t in result.cadreDetailsVO){
+								str+='<td>'+result.cadreDetailsVO[t].amount+'</td>';
+							}
+						str+='</tr>';
+					str+='</table>';
+					str+='</div>';
+				}
+				
+				if(result.familyDetailsVO != null && result.familyDetailsVO.length > 0){
+					str+='<div style="margin-top:20Px;">';
+					str+='<h4>Participated Constituency Benefits</h4>';
+					str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+					str+='<thead style="background-color:#ccc;">';
+						str+='<th>Constituency Name</th>';
+						for(var t in result.familyDetailsVO){
+							str+='<th>'+result.familyDetailsVO[t].benefitName+'</th>';
+						}
+					str+='</thead>';
+					str+='<tbody>';
+					str+='</tbody>';
+						str+='<tr>';
+							str+='<td>'+result.familyDetailsVO[0].constituencyName+'</td>';
+							for(var t in result.familyDetailsVO){
+								str+='<td>'+result.familyDetailsVO[t].amount+'</td>';
+							}
+						str+='</tr>';
+					str+='</table>';
+					str+='</div>';
+				}
+				$("#constituencyBenefitsDivId").html(str);
+			}
+		});
+	}
+	
+	function getLocalityBasedBenefitSchemesDetails(){
+		var jsObj={
+			tdpCadreId :6574091
+		}
+		$.ajax({
+		type:'POST',
+		 url: 'getLocalityBasedBenefitSchemesDetailsAction.action',
+		 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				var str='';
+				for(var t in result){
+					if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
+						str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+						str+='<thead>';
+							str+='<th>'+result[t].cadreDetailsVO[0].locationtype+'</th>';
+							if(result[t].cadreDetailsVO[0].cadreDetailsVO != null && result[t].cadreDetailsVO[0].cadreDetailsVO.length > 0){
+								for(var i in result[t].cadreDetailsVO[0].cadreDetailsVO){
+									str+='<th>'+result[t].cadreDetailsVO[0].cadreDetailsVO[i].benefitName+'</th>';
+								}
+							}
+						str+='</thead>';
+						str+='<tbody>';
+							if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
+								for(var i in result[t].cadreDetailsVO){
+									str+='<tr>';
+										str+='<td>'+result[t].cadreDetailsVO[i].locationName+'';
+										if(result[t].cadreDetailsVO[i].locationtype == "District"){
+											str+='<i class="glyphicon glyphicon-plus expandIcon distExpandBtnCls" attr_distId="'+result[t].cadreDetailsVO[i].locationId+'"></i>';
+										}
+										
+										str+='</td>';
+										if(result[t].cadreDetailsVO[i].cadreDetailsVO != null && result[t].cadreDetailsVO[i].cadreDetailsVO.length > 0){
+											for(var j in result[t].cadreDetailsVO[i].cadreDetailsVO){
+												str+='<td>'+result[t].cadreDetailsVO[i].cadreDetailsVO[j].amount+'</td>';
+											}
+										}
+									str+='</tr>';
+									str+='<tr><td colspan="13" class="constituencyDetailsDivId" style="display:none;" id="constituencyBenefitDetailsId'+result[t].cadreDetailsVO[i].locationId+'"></td></tr>';
+								}
+							}
+							str+='<tr>';
+								if(result[t].cadreDetailsVO[0] != null){
+									if(result[t].cadreDetailsVO[0].cadreDetailsVO != null && result[t].cadreDetailsVO[0].cadreDetailsVO.length > 0){
+										str+='<td>Total</td>';
+										for(var k in result[t].cadreDetailsVO[0].cadreDetailsVO){
+											str+='<td>'+result[t].cadreDetailsVO[0].cadreDetailsVO[k].schemeWiseTotalCount+'</td>';
+										}
+									}
+								}
+								str+='<td></td>';
+							str+='</tr>';
+						str+='</tbody>';
+						str+='</table>';
+					}
+				}
+				$("#localityBasedBenefitsDivId").html(str);
+			}
+		});
+	}
+	
+	$(document).on("click",".distExpandBtnCls",function(){
+		if($(this).hasClass("glyphicon-plus")){
+			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		}else{
+			$(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+		}
+		
+		var distId = $(this).attr("attr_distId");
+		$(".constituencyDetailsDivId").html("");
+		$(".constituencyDetailsDivId").hide();
+		$("#constituencyBenefitDetailsId"+distId).show();
+		var jsObj={
+			distId : distId
+		}
+		$.ajax({
+		type:'POST',
+		 url: 'getAllConstBenefitDetailsForADistAction.action',
+		 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				var strt='';
+				strt+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+				strt+='<thead>';
+					strt+='<th>Constituency</th>';
+					if(result[0].cadreDetailsVO != null && result[0].cadreDetailsVO.length > 0){
+						for(var t in result[0].cadreDetailsVO){
+							strt+='<th>'+result[0].cadreDetailsVO[t].benefitName+'</th>';
+						}
+					}
+				strt+='</thead>';
+				strt+='<tbody>';
+					for(var t in result){
+						if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
+							strt+='<td>'+result[t].locationName+'</td>';
+							for(var i in result[t].cadreDetailsVO){
+								strt+='<td class="benefitCountCls" attr_const_id="'+result[t].locationId+'" attr_benefit_id="'+result[t].cadreDetailsVO[i].benefitId+'">'+result[t].cadreDetailsVO[i].amount+'</td>';
+							}
+						}
+					}
+				strt+='</tbody>';
+				strt+='</table>';
+				
+				$("#constituencyBenefitDetailsId"+distId).html(strt);
+			}
+		});
+	});
+	
+	
+	$(document).on("click",".benefitCountCls",function(){
+		var jsObj={
+			locationLevelValue : $(this).attr("attr_const_id"),
+			benefitId : $(this).attr("attr_benefit_id")
+		}
+		$.ajax({
+		type:'POST',
+		 url: 'getBenefitSchemesMembersDetailsAction.action',
+		 data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			
+		});
+	});
+	
+	
+	$("#benefitsCollapseBodyId").collapse('hide')
+	$(document).on("click","#benefitsCollapseHeadingId",function(){
+		$("#benefitsCollapseBodyId").collapse('toggle');
+	});
+	

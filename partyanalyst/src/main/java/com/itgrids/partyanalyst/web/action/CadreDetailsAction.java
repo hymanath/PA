@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
+import com.itgrids.partyanalyst.dto.BenefitVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
@@ -116,7 +118,30 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private IAlertService alertService;
 	private AlertVO alertVO;
 	private ICandidateDetailsService candidateDetailsService;
+	private List<BenefitVO> benefitVOList;
+	private BenefitVO benefitVO;
+	private List<BenefitCandidateVO> benefitCandidateVOList;
 	
+	
+	public List<BenefitCandidateVO> getBenefitCandidateVOList() {
+		return benefitCandidateVOList;
+	}
+	public void setBenefitCandidateVOList(
+			List<BenefitCandidateVO> benefitCandidateVOList) {
+		this.benefitCandidateVOList = benefitCandidateVOList;
+	}
+	public BenefitVO getBenefitVO() {
+		return benefitVO;
+	}
+	public void setBenefitVO(BenefitVO benefitVO) {
+		this.benefitVO = benefitVO;
+	}
+	public List<BenefitVO> getBenefitVOList() {
+		return benefitVOList;
+	}
+	public void setBenefitVOList(List<BenefitVO> benefitVOList) {
+		this.benefitVOList = benefitVOList;
+	}
 	public AlertVO getAlertVO() {
 		return alertVO;
 	}
@@ -1918,4 +1943,66 @@ public String getVolunteerCadreDetilasInformation(){
 		return "success";
 	}
 
+	public String getBenefitDetailsAlongFamily(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			
+			List<Long> familyCadreIds = new ArrayList<Long>(0);
+			familyCadreIds.add(tdpCadreId);
+			JSONArray arr = jObj.getJSONArray("familyCadreIdsArray");
+			if(arr != null && arr.length() > 0){
+				for (int i = 0; i < arr.length(); i++) {
+					familyCadreIds.add((i+1),Long.parseLong(arr.getString(i)));
+				}
+			}
+			
+			benefitVOList = cadreDetailsService.getBenefitDetailsAlongFamily(familyCadreIds);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getBenefitDetailsAlongFamily in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	
+	public String getOwnAndParticipatedConstituenciesBenefitDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			benefitVO = cadreDetailsService.getOwnAndParticipatedConstituenciesBenefitDetails(jObj.getLong("constituencyId"),jObj.getLong("pConstituencyId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getOwnAndParticipatedConstituenciesBenefitDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	
+	public String getLocalityBasedBenefitSchemesDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			benefitVOList = cadreDetailsService.getLocalityBasedBenefitSchemesDetails(jObj.getLong("tdpCadreId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocalityBasedBenefitSchemesDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	
+	public String getBenefitSchemesMembersDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			benefitCandidateVOList = cadreDetailsService.getBenefitSchemesMembersDetails(jObj.getLong("locationLevelValue"),jObj.getLong("benefitId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getBenefitSchemesMembersDetails in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	
+	public String getAllConstBenefitDetailsForADist(){
+		try {
+			jObj = new JSONObject(getTask());
+			benefitVOList = cadreDetailsService.getAllConstBenefitDetailsForADist(jObj.getLong("distId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getAllConstBenefitDetailsForADist in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
 }

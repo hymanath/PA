@@ -15296,5 +15296,36 @@
 	<action name="cadreAlertDetailsAction" class="createAlertAction" method="getCadreAlertDetails">
 		<result name="success">/jsp/cadreAlertDetails.jsp</result>
 	</action>
+	<action name="getBenefitDetailsAlongFamilyAction" class="cadreDetailsAction"  method="getBenefitDetailsAlongFamily">
+		<result type="json" name="success">
+			<param name="root">benefitVOList</param>
+		</result>
+	</action>
+	
+	<action name="getOwnAndParticipatedConstituenciesBenefitDetailsAction" class="cadreDetailsAction"  method="getOwnAndParticipatedConstituenciesBenefitDetails">
+			<result type="json" name="success">
+			<param name="root">benefitVO</param>
+		</result>
+	</action>
+	
+	<action name="getLocalityBasedBenefitSchemesDetailsAction" class="cadreDetailsAction"  method="getLocalityBasedBenefitSchemesDetails">
+			<result type="json" name="success">
+			<param name="root">benefitVOList</param>
+		</result>
+	</action>
+	
+	<action name="getBenefitSchemesMembersDetailsAction" class="cadreDetailsAction"  method="getBenefitSchemesMembersDetails">
+			<result type="json" name="success">
+			<param name="root">benefitCandidateVOList</param>
+		</result>
+	</action>
+	
+	<action name="getAllConstBenefitDetailsForADistAction" class="cadreDetailsAction"  method="getAllConstBenefitDetailsForADist">
+		<result type="json" name="success">
+			<param name="root">benefitVOList</param>
+		</result>
+	</action>
+	
+	
  </package>
 </struts>

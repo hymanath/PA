@@ -35,7 +35,28 @@
 						<!-- End -->
 
 <style type="text/css">
-
+.expandIcon
+{
+	background-color:#CCC;
+	padding:3px 4px;
+	border-radius:3px;
+	font-size:11px;
+	cursor:pointer;
+}
+#familyBenefitsDivId table tr td:first-child ,#localityBasedBenefitsDivId table tr td:first-child
+{
+	font-size:12px;
+}
+#familyBenefitsDivId table tr:last-child td,#localityBasedBenefitsDivId table tr:last-child td
+{
+	background-color:#f9f9f9;
+}
+#familyBenefitsDivId table thead th,#localityBasedBenefitsDivId table thead th
+{
+	text-transform:uppercase;
+	font-size:12px;
+	background-color:#E9E9E9
+}
 .ulPost li
 {
 	border:1px solid green;
@@ -1338,6 +1359,32 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				</div>
 			</div>
 		</div>
+		<!--benefits start-->
+		<div class="row">
+			<div class="col-md-12 ">
+				<div class="panel panel-default">
+					<div class="panel-heading" id="benefitsCollapseHeadingId">
+						<h4 class="panel-title"> <img src="img/benefitsIcon.png" style="width: 18px;">&nbsp;&nbsp;&nbsp;
+							BENEFITS
+							<i class="glyphicon glyphicon-chevron-down pull-right"></i>
+						</h4>
+					</div>
+					<div class="panel-body in" id="benefitsCollapseBodyId">
+						<div>
+							<h4>Personal Benefits</h4>
+							<div id="personalBenefitsDivId"></div>
+						</div>	
+						<div>
+							<h4>Family Members Benefits</h4>
+							<div id="familyBenefitsDivId"></div>
+						</div>
+						<div id="constituencyBenefitsDivId"></div>
+						<div id="localityBasedBenefitsDivId"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--benefits end-->
     </div>
     <!-- model -->
 <div class="modal fade myModalForDeath">

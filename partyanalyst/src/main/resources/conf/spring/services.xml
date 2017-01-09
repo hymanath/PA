@@ -2942,7 +2942,9 @@
 		 <property name="votersAnalysisService" ref="votersAnalysisService" />
 		 <property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO" />
 		 <property name="tdpCadreHealthReportDAO" ref="tdpCadreHealthReportDAO" />	
-		  <property name="volunteersCadreDetailsDAO" ref="volunteersCadreDetailsDAO" />
+		 <property name="volunteersCadreDetailsDAO" ref="volunteersCadreDetailsDAO" />
+		 <property name="govtSchemesDAO" ref="govtSchemesDAO" />
+		 <property name="govtSchemeBeneficiaryDetailsDAO" ref="govtSchemeBeneficiaryDetailsDAO" />
 		  <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
 	</bean>
 	

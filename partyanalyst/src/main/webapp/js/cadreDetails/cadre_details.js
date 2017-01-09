@@ -1690,6 +1690,7 @@ function getCadreFamilyDetailsByCadreId(){
 	getMemberComplaints();
 	$('.membershipno-cls').tooltip();
 	getNtrTrustStudentDetailsInstitutionWise("family");
+	benefitSchemesRelatedCalls();
  }
  //Grievance  CANDIDATE//
  
