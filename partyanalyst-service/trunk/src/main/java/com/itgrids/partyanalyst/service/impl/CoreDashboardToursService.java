@@ -2778,20 +2778,26 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 	 		for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
 						 	 			String categoryId = categoryVO.getIdStr();
 						 	 			if(categoryId.equalsIgnoreCase("1")){//Incharge District
-						 	 				candiateVO.setInchargeDistrictTrDays(categoryVO.getTargetDays());
-						 	 				candiateVO.setInchargeDistrictComplainceDays(categoryVO.getComplainceDays());
+						 	 				//candiateVO.setInchargeDistrictTrDays(categoryVO.getTargetDays());
+						 	 				//candiateVO.setInchargeDistrictComplainceDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setInchargeDistrictComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("3")){//Incharge Constituency
-						 	 				candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
-						 	 				candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
+						 	 				//candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
+						 	 				//candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
+						 	 				
+						 	 				candiateVO.setInchargeConstituencyComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("2")){//ownDistrict
-						 	 				candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
-						 	 				candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
+						 	 				//candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
+						 	 				//candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setOwnDistrictComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("4")){//own Constituency
-						 	 			   candiateVO.setOwnContituencyTrDays(categoryVO.getTargetDays());
-						 	 			   candiateVO.setOwnConstituencyComplainceDays(categoryVO.getComplainceDays());
+						 	 			   //candiateVO.setOwnContituencyTrDays(categoryVO.getTargetDays());
+						 	 			   //candiateVO.setOwnConstituencyComplainceDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setOwnContituencyComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
-						 	 				candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
-						 	 				candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
+						 	 				//candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
+						 	 				//candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
+						 	 				candiateVO.setGovtWorkComplaincePer(categoryVO.getComplaincePer());
 						 	 			}
 							 		}
 						  		}
@@ -2800,7 +2806,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				  }
 			  }
 		  
-		  //calculating percentage
+		 /* //calculating percentage
 		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			  
 			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
@@ -2852,7 +2858,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  }
 				  }
 			  }
-		  }
+		  }*/
 		  
 	
 		  //merge secretary and organization secretary
@@ -3128,6 +3134,23 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				          }
 					}  
 				  }
+			 }else if(filterType != null && filterType.equalsIgnoreCase("nonComplaince")){
+				  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
+					  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
+						  
+							 if(entry.getValue() != null && entry.getValue().size() > 0){
+								 
+								 for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
+									 
+									  if(candiateEntry.getValue().getComplaincePer()>=100d){
+										  
+										  entry.getValue().remove(candiateEntry.getKey());  
+									  }
+									 
+								 }
+				          }
+					}  
+				  } 
 			 }
 			  //Preparing final list 
 			  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
@@ -3299,13 +3322,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    				 }else{
 		    					 VO.setYetToTourCnt(VO.getTargetDays()-VO.getComplainceDays());	 
 		    				 }
-		   				 	  Double percentage = calculatePercantage(VO.getComplainceDays(), VO.getTargetDays());
-							  if(percentage > 100d){
-								  VO.setComplaincePer(100d);   
-							  }else{
-								  VO.setComplaincePer(percentage);  
-							  }
-							  totalPer = totalPer+VO.getComplaincePer();
+		   					  totalPer = totalPer+VO.getComplaincePer();
 		    			 }
 		    			Integer totalCount = 0;
 		  			   if(entry.getValue() != null && entry.getValue().size() > 0){
