@@ -68,7 +68,10 @@
     -webkit-transform: scale(1.0);
   }
 }
-
+.imgWidth {
+  width: 50px;
+  height: 50px;
+}
 </style>
 
 </head>
@@ -103,7 +106,7 @@
 					<div class="m_top20" style="padding: 5px;" id="teluguNamesDivId"></div>
 					<div class="m_top20" style="padding: 5px;" id="specialCharsDivId"></div>
 					<div class="m_top20" style="padding: 5px;" id="imageMissedDivId"></div>
-					
+					<div class="m_top20" style="padding: 5px;" id="imageVerificationstatusDivId"></div>
 				</div>
 			</div>
 		</div>
@@ -145,6 +148,7 @@ $(document).on("click","#validateBtnId",function(){
 	$("#teluguNamesDivId").html('');
 	$("#imageMissedDivId").html('');
 	$("#specialCharsDivId").html('');
+	$("#imageVerificationstatusDivId").html('');
 	$("#statusWiseSummaryDivId").html('');
 	
 	var constId = $("#constituencyId").val();
@@ -258,7 +262,7 @@ function buildConstituencyVerifiedSummary(result){
 					if(result.teluguNamesMissedList != null && result.teluguNamesMissedList.length > 0){
 						for(var i in result.teluguNamesMissedList){
 							str1+='<tr>';
-								str1+='<td><img src="mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].image+'"/></td>';
+								str1+='<td><img class="imgWidth" src="http://mytdp.com/images/cadre_images/'+result.teluguNamesMissedList[i].image+'"/></td>';
 								str1+='<td>'+result.teluguNamesMissedList[i].firstName+'</td>';
 								str1+='<td>'+result.teluguNamesMissedList[i].memberShipId+'</td>';
 								str1+='<td>'+result.teluguNamesMissedList[i].mobileNo+'</td>';
@@ -300,7 +304,7 @@ function buildConstituencyVerifiedSummary(result){
 					if(result.imagesMissedList != null && result.imagesMissedList.length > 0){
 						for(var i in result.imagesMissedList){
 							str2+='<tr>';
-								str2+='<td><img src="mytdp.com/images/cadre_images/'+result.imagesMissedList[i].image+'"/></td>';
+								str2+='<td><img class="imgWidth" src="http://mytdp.com/images/cadre_images/'+result.imagesMissedList[i].image+'"/></td>';
 								str2+='<td>'+result.imagesMissedList[i].firstName+'</td>';
 								str2+='<td>'+result.imagesMissedList[i].memberShipId+'</td>';
 								str2+='<td>'+result.imagesMissedList[i].mobileNo+'</td>';
@@ -342,7 +346,7 @@ function buildConstituencyVerifiedSummary(result){
 					if(result.specialCharactersList != null && result.specialCharactersList.length > 0){
 						for(var i in result.specialCharactersList){
 							str3+='<tr>';
-								str3+='<td><img src="mytdp.com/images/cadre_images/'+result.specialCharactersList[i].image+'"/></td>';
+								str3+='<td><img class="imgWidth" src="http://mytdp.com/images/cadre_images/'+result.specialCharactersList[i].image+'"/></td>';
 								str3+='<td>'+result.specialCharactersList[i].firstName+'</td>';
 								str3+='<td>'+result.specialCharactersList[i].memberShipId+'</td>';
 								str3+='<td>'+result.specialCharactersList[i].mobileNo+'</td>';
@@ -366,6 +370,54 @@ function buildConstituencyVerifiedSummary(result){
 			str3+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
 			$("#specialCharsDivId").html(str3);
 		}
+		
+		
+		//image verification status block
+		var imageVerifStr = '';
+		imageVerifStr+='<h4 class="m_top10"><b>IMAGE VERIFICATION STATUS FAILED CADRES</b></h4>';
+		if(result.imageVerificationStatusList != null && result.imageVerificationStatusList.length > 0){
+			imageVerifStr+='<div class="m_top10">';
+				imageVerifStr+='<table class="table table-bordered" id="imageVerifStatusTableId">';
+					imageVerifStr+='<thead>';
+						imageVerifStr+='<th>Image</th>';
+						imageVerifStr+='<th>Name</th>';
+						imageVerifStr+='<th>Membership No</th>';
+						imageVerifStr+='<th>Mobile No</th>';
+						imageVerifStr+='<th>Gender</th>';
+						imageVerifStr+='<th>Age</th>';
+						imageVerifStr+='<th>Verification Status</th>';
+					imageVerifStr+='</thead>';
+					imageVerifStr+='<tbody>';
+					if(result.imageVerificationStatusList != null && result.imageVerificationStatusList.length > 0){
+						for(var i in result.imageVerificationStatusList){
+							imageVerifStr+='<tr>';
+								imageVerifStr+='<td><img class="imgWidth" src="http://mytdp.com/images/cadre_images/'+result.imageVerificationStatusList[i].image+'"/></td>';
+								imageVerifStr+='<td>'+result.imageVerificationStatusList[i].firstName+'</td>';
+								imageVerifStr+='<td>'+result.imageVerificationStatusList[i].memberShipId+'</td>';
+								imageVerifStr+='<td>'+result.imageVerificationStatusList[i].mobileNo+'</td>';
+								if(result.imageVerificationStatusList[i].gender != null && result.imageVerificationStatusList[i].gender == 'M')
+									imageVerifStr+='<td> Male </td>';
+								else if(result.imageVerificationStatusList[i].gender != null && result.imageVerificationStatusList[i].gender == 'F')
+									imageVerifStr+='<td> FeMale </td>';
+								else
+									imageVerifStr+='<td>'+result.imageVerificationStatusList[i].gender+'</td>';
+								imageVerifStr+='<td>'+result.imageVerificationStatusList[i].age+'</td>';
+								imageVerifStr+='<td>'+result.imageVerificationStatusList[i].validationMessage+'</td>';
+							imageVerifStr+='</tr>';
+						}
+					}
+					imageVerifStr+='</tbody>';
+				imageVerifStr+='</table>';
+			imageVerifStr+='</div>';
+			$("#imageVerificationstatusDivId").html(imageVerifStr);
+			$("#imageVerifStatusTableId").dataTable();
+		}
+		else{
+			imageVerifStr+='<h4 class="m_top10" style="color:red"> NO DATA AVAILABLE...</h4>';
+			$("#imageVerificationstatusDivId").html(imageVerifStr);
+		}
+		
+		
 	}
 }
 
