@@ -454,7 +454,38 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
                    return query.list();
 	 }
 	 public void flushAndclearSession(){
-			getSession().flush();
-			getSession().clear();
-		}
+		getSession().flush();
+		getSession().clear();
+	 }
+	 public Long checkForExistingTourDetails(Long candidateId, Long tourCategoryId, Long tourTypeId,Long toursMonthId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.selfAppraisalCandidateDetailsNewId from SelfAppraisalCandidateDetailsNew model where ");
+		 if(candidateId != null && candidateId.longValue() > 0L){
+			 queryStr.append(" model.selfAppraisalCandidateId = :candidateId ");
+		 }
+		 if(tourCategoryId != null && tourCategoryId.longValue() > 0L){
+			 queryStr.append(" and model.selfAppraisalTourCategoryId = :tourCategoryId ");
+		 }
+		 if(tourTypeId != null && tourTypeId.longValue() > 0L){
+			 queryStr.append(" and model.tourTypeId = :tourTypeId ");
+		 }
+		 if(toursMonthId != null && toursMonthId.longValue() > 0L){
+			 queryStr.append(" and model.toursMonthId = :toursMonthId ");
+		 }
+		 Query query = getSession().createQuery(queryStr.toString());
+		 
+		 if(candidateId != null && candidateId.longValue() > 0L){
+			 query.setParameter("candidateId", candidateId);
+		 }
+		 if(tourCategoryId != null && tourCategoryId.longValue() > 0L){
+			 query.setParameter("tourCategoryId", tourCategoryId);
+		 }
+		 if(tourTypeId != null && tourTypeId.longValue() > 0L){
+			 query.setParameter("tourTypeId", tourTypeId);
+		 }
+		 if(toursMonthId != null && toursMonthId.longValue() > 0L){
+			 query.setParameter("toursMonthId", toursMonthId);
+		 }
+		 return (Long) query.uniqueResult();
+	 }
 }
