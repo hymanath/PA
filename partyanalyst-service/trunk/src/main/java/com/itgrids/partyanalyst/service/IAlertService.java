@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
@@ -58,4 +60,8 @@ public interface IAlertService {
     public String getAlertStatusOfArticle(Long articleId);
     public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId);
     public AlertVO getCandidateAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId,Long categoryId,Long statusId);
+   // public List<AlertVO> getAlertClarificationStatus(Long alertId);
+    public AlertVO getAlertClarificationComments(Long alertId);
+    public ResultStatus saveAlertClarificationDetails(final Long userId,final AlertVO alertVO,final Map<File,String> mapfiles,final Long alertId);
+   
    }
