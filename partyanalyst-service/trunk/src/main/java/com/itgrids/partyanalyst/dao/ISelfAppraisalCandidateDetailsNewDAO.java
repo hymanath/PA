@@ -20,4 +20,5 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds,Long candidateId,List<Long> monthyearIds);
  public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId,List<Long> monthyearIds);
  public void flushAndclearSession();
+ public Long checkForExistingTourDetails(Long candidateId, Long tourCategoryId, Long tourTypeId,Long toursMonthId);
  }
