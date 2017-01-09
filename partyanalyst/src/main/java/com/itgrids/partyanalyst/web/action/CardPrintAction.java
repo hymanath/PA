@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SmallVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.opensymphony.xwork2.Action;
@@ -116,21 +117,27 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public String execute(){
 		try{
-			//jObj = new JSONObject(getTask());
+			//User SignIn Checking.
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return INPUT;
+			}
 			vendorList = cardPrintService.getVendorNames();
 			vendorList.add(0, new CardPrintVO(0l, "Select Vendor"));
-			
 		}catch(Exception e){
-			LOG.error("Exception raised in cardPrintDashboard() in CardPrintAction",e);
+			LOG.error("Exception raised in execute() in CardPrintAction",e);
 		}
 		return Action.SUCCESS;
 	}
 	public String cardPrintDashboard() {
-			try{
-			//jObj = new JSONObject(getTask());
+	    try{
+	    	//User SignIn Checking.
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return INPUT;
+			}
 			vendorList = cardPrintService.getVendorNames();
 			vendorList.add(0, new CardPrintVO(0l, "ALL"));
-			
 		}catch(Exception e){
 			LOG.error("Exception raised in cardPrintDashboard() in CardPrintAction",e);
 		}
@@ -213,13 +220,43 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	
 	public String getCardPrintingStatus(){
+		
+		//User SignIn Checking.
+		RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			return INPUT;
+		}
+		
+		/*//entitlements checking
+		List<String> entitlements = null;
+		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(!(entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD") || entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_ADMIN_DASHBOARD_ENTITLEMENT"))){
+				return Action.ERROR;    
+			}   
+		}*/
+		
+		return Action.SUCCESS;
+	}
+	public String cardPrintAdminStatus(){
+		
+		//User SignIn Checking.
+		RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			return INPUT;
+		}
 		return Action.SUCCESS;
 	}
 	
-	public String cardPrintAdminStatus(){
+	public String cardPrintPostVerification(){
+		//User SignIn Checking.
+		RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			return INPUT;
+		}
 		return Action.SUCCESS;
 	}
-
+	
 	public String cardPrinStatusByLocation(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -257,10 +294,6 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		return Action.SUCCESS;
 	}
 	
-	////
-	public String cardPrintPostVerification(){
-		return Action.SUCCESS;
-	}
 	
 	public String getPrintPushedConstituencies(){
 		
