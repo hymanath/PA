@@ -3610,7 +3610,7 @@
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
