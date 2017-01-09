@@ -1,15 +1,20 @@
 package com.itgrids.cardprint.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class PrintStatusUpdateVO implements Serializable{
 
+	/*
+	 * DONT ADD EXTRA ATTRIBUTES HERE , SINCE IT IS GOING TO EFFECT THE WEBSERVICE.
+	 * 
+	 */
 	private  Long constituencyId;
 	private  Long printVendorId;
 	private  Long printStatusId;
 	private  String remarks;
 	private  Long  userId;
-	
+	private  Date  currentDate;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -40,6 +45,12 @@ public class PrintStatusUpdateVO implements Serializable{
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public Date getCurrentDate() {
+		return currentDate;
+	}
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
 	}
 	
 }
