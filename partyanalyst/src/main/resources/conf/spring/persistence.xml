@@ -1095,8 +1095,13 @@
 	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBenefitType</value>
 	                  <value>com.itgrids.partyanalyst.model.Schemephase</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtSchemePhase</value>
-	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBeneficiaryDetails</value>	
-	                  	<!-- Benefits end -->
+	                  <value>com.itgrids.partyanalyst.model.GovtSchemeBeneficiaryDetails</value>
+	                  <!-- Benefits end -->
+	                  <value>com.itgrids.partyanalyst.model.AlertClarification</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertClarificationDocument</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertClarificationStatus</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertClarificationComments</value>
+	                  
 	             </list>
 			
 		</property>
