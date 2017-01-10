@@ -221,6 +221,29 @@
             transform: scale(1); } }
 
 	</style>
+	
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<!-- YUI Dependency files (End) -->
  </head>     
 
 <!-- language convertion-->
@@ -368,16 +391,15 @@ control.makeTransliteratable(['commentsId']);
 													</div>
 													<div class="panel-body">
 														<div class="row">
+															<form id="alertClarificationDocs" name="alertClarificationDocs">
 															<div class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
+																<label class="radio-inline">Is Clarification Required?</label>
 																<label class="radio-inline">
-																	Is Clarification Required
+																	<input type="radio" name="clarificationRadioName" value="Y"/> Yes
 																</label>
 																<label class="radio-inline">
-																	<input type="radio" name="radioBtn" value="1" id="clarifiReqId"/> Yes
-																</label>
-																<label class="radio-inline">
-																	<input type="radio" name="radioBtn" value="2" checked/> No
-																</label>	
+																	<input type="radio" name="clarificationRadioName" checked value="N"/> No
+																</label>  
 															</div>
 														<div class="col-md-12 col-xs-12 col-sm-12" id="clarfCommentsDivId"style="display:none;">
 															<label class="radio-inline">
@@ -386,25 +408,26 @@ control.makeTransliteratable(['commentsId']);
 														 <form action="">
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Clarification Status</label>
-																<select class="form-control">
+																<select class="form-control" id="clarificationStatusSelId" name="clarificationStatusId">
+																	<option value="0">Select Status</option>
 																	<option value="1">Progress</option>
 																	<option value="2">Completed</option>
 																</select>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Clarification Comments</label>
-																<textarea class="form-control"></textarea>
+																<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments""></textarea>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Upload Attachments</label>
-																<input type="file"/>
-																<ul class="uploadedDocuments">
-																	<li>01 Attachments.jpg</li>
-																</ul>
+																<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
+																<div id="extraUploadFileDiv"></div>
+																<button type="button" class="btn btn-success" id="addFile">Add</button>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12">
-																<button class="btn btn-success">UPDATE ALERT DETAILS</button>
+																<button type="button" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>
 															</div>
+															<input type="hidden" id="alertIdHidden" name="alertId"/>
 															</form>
 															</div>
 														</div>
@@ -586,7 +609,8 @@ control.makeTransliteratable(['commentsId']);
 		</div><!-- /.modal 
 		</div>-->
 
-<div class="modal fade" id="myModalShowNew"></div>				
+<div class="modal fade" id="myModalShowNew"></div>		
+<input type="file" class="btn btn-mini cloneFileCls" style="display:none;"/>		
 <script type="text/javascript">
 
 
@@ -683,6 +707,27 @@ function buildAlertAssignedCandidateData(result)
 	 getConfirmation(tdpCadreId);
 	// deleteAlertAssignedCandidates(tdpCadreId);
 });*/
+
+$("#updateAlertDetailsId").click(function(){
+		$("#alertIdHidden").val(alertId);
+		var files = [];
+		$("#alertClarificationDocs input[type=file]").each(function() {
+			if($(this).val().trim().length>0){alert($(this).val());
+				files.push($(this).val());
+			}
+		});
+		
+		
+		var uploadHandler = {
+				upload: function(o) {
+				    uploadResult = o.responseText;
+					//showingStatus(uploadResult,"MINUTE");
+				}
+			};
+
+		YAHOO.util.Connect.setForm('alertClarificationDocs',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadAlertsDocAction.action',uploadHandler);
+	});
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
