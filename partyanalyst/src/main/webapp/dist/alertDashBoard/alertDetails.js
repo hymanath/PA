@@ -1265,3 +1265,7 @@ function getMonth(month){
 		return "Dec"
 	}  
 }
+$(document).on("click","#clarifiReqId",function(){
+		$("#clarfCommentsDivId").show();
+		$("#clarReqDivId").hide();
+});
