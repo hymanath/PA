@@ -2518,8 +2518,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			for(var i in result){
 				var str='';
 				var length = result
-				if($(window).width < 500)
-				{
+				if($(window).width() < 500)
+				{  
 					str+='<div class="table-responsive">'
 				}
 					str+='<table class="table table-bordered borderedWeight" id="dataTableApplyAveragePerf'+i+'">';
@@ -2784,7 +2784,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 							str+='</table>';
 						  if($(window).width() < 500)
 							{
-								str+='</div">';
+								str+='</div>';
 							}
 						$("#"+divId).html(str);
 					}
@@ -3375,13 +3375,13 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	if(result !=null && result.monthList != null && result.monthList.length > 0){
 		  var str2='';
 		  
-		  	 str2+='<div class="col-md-12 col-xs-12 col-sm-12 " >';
+		  	 str2+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
 				str2+='<h4 class="text-capital">MONTH WISE COMPLIANCE OVERVIEW</h4>';
 					 str2+='<div class="slickApplyTourCls" >';	
 				for(var i in result.monthList){
 					
 						//str2+='<li>';
-						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 ">';
+						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 table-responsive">';
 							str2+='<table class="table table-bordered">';
 							 var categoryList = result.monthList[i].subList;
 							 
@@ -3465,7 +3465,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		var str1='';
 		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 		str1='<h4 class="text-capital">MONTH WISE COMPLIANCE COMMENTS & ATTACHMENTS</h4>';
-				str1+='<div class="m_top20">';
+				str1+='<div class="m_top20 table-responsive">';
 					str1+='<table class="table table-bordered borderedWeight">';
 						str1+='<thead class="bg_D8">';
 							str1+='<tr>';
