@@ -2121,3 +2121,52 @@ border: 1px solid #c5c5c5 !important;
 {
 	padding:0px;
 }
+
+
+.alertsArrow {
+	position: relative;
+	background: #EDEDED;
+	border: 1px solid #D5D5D5;
+}
+.alertsArrow:after, .alertsArrow:before {
+	top: 184%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.alertsArrow:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #D5D5D5;
+	border-width: 10px;
+	margin-left: -10px;
+}
+.alertsArrow:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #D5D5D5;
+	border-width: 11px;
+	margin-left: -11px;
+}
+.alertOverViewDetailsCls
+{
+	cursor:pointer;
+}
+.table tr td div.alertsArrow
+{
+	background-color:#D5D6D8
+}
+.table tr td div.alertsArrow:after, .table tr td div.alertsArrow:before {
+	top: 90%;
+}
+.table tr td div.alertsArrow:after {
+	border-width: 8px;
+	margin-left: -8px;
+}
+.table tr td div.alertsArrow:before {
+	border-width: 9px;
+	margin-left: -9px;
+}
