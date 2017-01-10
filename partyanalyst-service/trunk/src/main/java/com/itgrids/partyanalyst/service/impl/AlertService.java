@@ -4861,76 +4861,59 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  return returnVO;
   }
   */
-  public ResultStatus saveAlertClarificationDetails(final Long userId,final AlertVO alertVO,final Map<File,String> mapfiles,final Long alertId){
-	 final ResultStatus resultStatus = new ResultStatus();
-					try{
-						transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-							public void doInTransactionWithoutResult(TransactionStatus status) {
-							AlertClarification alertClarification = new AlertClarification();
-								alertClarification.setAlertId(alertId);
-								alertClarification.setAlertClarificationStatusId(alertVO.getStateId());
-								alertClarification.setIsDeleted("N");
-								alertClarification.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-								alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-								alertClarification.setInsertedBy(userId);
-								alertClarification.setUpdatedBy(userId);
-								alertClarification.setClarificationRequired("Y");
-								alertClarification = alertClarificationDAO.save(alertClarification);
-							
-							AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
-								alertClarificationComments.setAlertClarificationId(alertClarification.getAlertClarificationId());
-								alertClarificationComments.setComments(alertVO.getComment());
-								alertClarificationComments.setIsDeleted("N");
-								alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-								alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-								alertClarificationComments.setInsertedBy(userId);
-								alertClarificationComments.setUpdatedBy(userId);
-								alertClarificationComments.setClarificationRequired("Y");
-								alertClarificationCommentsDAO.save(alertClarificationComments);
-								
-							
-							 String folderName = folderCreationForAlertsAttachments();
-			                    StringBuilder pathBuilder = null; 
-				                    for (Map.Entry<File, String> entry : mapfiles.entrySet())
-				           		 {
-				                    	AlertClarificationDocument alertClarificationDocument = new AlertClarificationDocument();
-				                    	 pathBuilder = new StringBuilder();
-				                    	 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-				                    	// String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				         				String destinationPath = folderName+"/"+randomNumber+"."+entry.getValue();
-				         				 pathBuilder.append(IConstants.ALERTS_ATTACHMENTS).append("/").append(randomNumber).append(".")
-				         				 .append(entry.getValue());
-				         				activityService = new ActivityService();
-				         				   String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destinationPath);
-				         				   LOG.error("Status : "+status);
-				         				   if(fileCpyStts.equalsIgnoreCase("success")){
-				         					  alertClarificationDocument.setClarificationDocumentPath(pathBuilder.toString());
-				         					   LOG.error("Success:"+pathBuilder.toString()+".jpg");
-				         				   }else if(fileCpyStts.equalsIgnoreCase("error")){
-				         					  resultStatus.setResultCode(1);
-				         					 resultStatus.setMessage("FAIL"); 
-				         					  LOG.error("Error:"+pathBuilder.toString()+".jpg");
-				         				   }
-				         				   alertClarificationDocument.setAlertId(alertId);
-				         				   alertClarificationDocument.setIsDeleted("N");
-				         				   alertClarificationDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				         				   alertClarificationDocument.setInsertedBy(userId);
-				         				   alertClarificationDocument.setClarificationRequired("Y");
-						                   alertClarificationDocumentDAO.save(alertClarificationDocument);  
-				           		 } 	
-				                    resultStatus.setResultCode(0);
-				                    resultStatus.setMessage("success");
+	public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
+			  												final String clarificationRequired,final List<String> fileNamesList){
+		 final ResultStatus resultStatus = new ResultStatus();
+		 try{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						AlertClarification alertClarification = new AlertClarification();
+							alertClarification.setAlertId(alertId);
+							alertClarification.setAlertClarificationStatusId(clarificationStatusId);
+							alertClarification.setIsDeleted("N");
+							alertClarification.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							alertClarification.setInsertedBy(userId);
+							alertClarification.setUpdatedBy(userId);
+							alertClarification.setClarificationRequired(clarificationRequired);
+						alertClarification = alertClarificationDAO.save(alertClarification);
+									
+						AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
+							alertClarificationComments.setAlertClarification(alertClarification);
+							alertClarificationComments.setComments(clarificationComments);
+							alertClarificationComments.setIsDeleted("N");
+							alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							alertClarificationComments.setInsertedBy(userId);
+							alertClarificationComments.setUpdatedBy(userId);
+							alertClarificationComments.setClarificationRequired(clarificationRequired);
+						alertClarificationCommentsDAO.save(alertClarificationComments);
+										
+						if(fileNamesList != null && !fileNamesList.isEmpty()){
+							for (String string : fileNamesList) {
+								AlertClarificationDocument alertClarificationDocument = new AlertClarificationDocument();
+									alertClarificationDocument.setAlertId(alertId);
+									alertClarificationDocument.setClarificationDocumentPath(string);
+					        	    alertClarificationDocument.setIsDeleted("N");
+					        	    alertClarificationDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					        	    alertClarificationDocument.setInsertedBy(userId);
+					        	    alertClarificationDocument.setClarificationRequired(clarificationRequired);
+							    alertClarificationDocumentDAO.save(alertClarificationDocument);  
 							}
-							
-							});
-							
-						}catch(Exception e){
-							resultStatus.setResultCode(1);
-							resultStatus.setMessage("fail");
-							LOG.error("Error occured at saveAlertClarificationDetails() in AlertService {}",e); 
 						}
-					return resultStatus;
-  				}
+						         		
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage("success");
+				}
+			});
+		}catch(Exception e){
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("failure");
+			LOG.error("Error occured at saveAlertClarificationDetails() in AlertService",e); 
+		}
+		 
+		return resultStatus;
+  	}
   
   public static String folderCreationForAlertsAttachments(){
 	  	 try {
