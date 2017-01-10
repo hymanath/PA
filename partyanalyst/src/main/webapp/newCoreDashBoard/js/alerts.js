@@ -155,11 +155,13 @@
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		var alertType = 0;          
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
 			fromDate:fromDateStr,        
-			toDate :toDateStr    
+			toDate :toDateStr,
+			alertType : alertType  
 		};
 		$.ajax({
 			type : 'GET',
@@ -3130,4 +3132,37 @@ function getTotalArticledetails(articleId){
 	}
 	function setAlertLastUpdatedTime(lastUpdatedTime){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
+	}
+	
+	getAlertOverviewDetailsForEdition();    
+	function getAlertOverviewDetailsForEdition(){
+		
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var alertType = 1;    
+		var jsObj={  
+			activityMemberId : 44,      
+			stateId : globalStateId,           
+			fromDate:fromDateStr,        
+			toDate :toDateStr,
+			alertType : alertType      
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getAlertOverviewDetailsAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			if(result != null){
+			  buildAlertOverviewDetails(result);
+			}else{
+			  $("#alertOverview").html("NO DATA AVAILABLE.");	
+			}
+      });	
 	}
