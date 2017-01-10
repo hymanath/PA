@@ -1426,7 +1426,7 @@ function getToursBasicOverviewCountDetails()
 			setTimeout(function(){
 			$('body').addClass("modal-open");
 			}, 500);       
-		  $(".tourIndividualCls").attr("attr_type","direct");			
+		  $(".tourIndividualCls").attr("attr_type","subLevel");			
 		 }
     }
   }); 
@@ -1717,36 +1717,39 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										str+='<p class="text-muted text-capital">Not Submitted leaders</p>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
-									   if(overViewRslt.submitedLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted">'+overViewRslt.submitedLeaderCnt+'</h3>';	
-										}else{
-										  str+='<h3>0</h3>';	
-										}
-										str+='<p class="text-muted text-capital">Submitted leaders</p>';
+								if(overViewRslt.submitedLeaderCnt > 0){
+										str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+										str+='<div class="pad_10">';
+										   if(overViewRslt.submitedLeaderCnt > 0){
+											  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted">'+overViewRslt.submitedLeaderCnt+'</h3>';	
+											}else{
+											  str+='<h3>0</h3>';	
+											}
+											str+='<p class="text-muted text-capital">Submitted leaders</p>';
+										str+='</div>';
 									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
-								 	  if(overViewRslt.complainceCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="Complaince">'+overViewRslt.complainceCnt+'</h3>';	
-										}else{
-										  str+='<h3>0</h3>';	
-										}
-										str+='<p class="text-muted text-capital">Complaince</p>';
+									str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+										str+='<div class="pad_10">';
+										  if(overViewRslt.complainceCnt > 0){
+											  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="Complaince">'+overViewRslt.complainceCnt+'</h3>';	
+											}else{
+											  str+='<h3>0</h3>';	
+											}
+											str+='<p class="text-muted text-capital">Complaince</p>';
+										str+='</div>';
 									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
-										if(overViewRslt.nonComplainceCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="nonComplaince">'+overViewRslt.nonComplainceCnt+'</h3>';	
-										}else{
-										  str+='<h3>0</h3>';	
-										}
-										str+='<p class="text-muted text-capital">Non-Complaince</p>';
-									str+='</div>';
-								str+='</div>';
+									str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+										str+='<div class="pad_10">';
+											if(overViewRslt.nonComplainceCnt > 0){
+											  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="nonComplaince">'+overViewRslt.nonComplainceCnt+'</h3>';	
+											}else{
+											  str+='<h3>0</h3>';	
+											}
+											str+='<p class="text-muted text-capital">Non-Complaince</p>';
+										str+='</div>';
+									str+='</div>';	
+								}
+						
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -2800,6 +2803,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		
 	function getIndividualPersonTourDetails(value)
 	{          
+	   //select Slider Year
+		var selectedDate = globalFormTourDate.split("/");
+	    $("#dateRangeSliderYear").val(parseInt(selectedDate[2]));
 		
 		var temp = value.split("-");
 		var candiateId = temp[0];
@@ -2839,10 +2845,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				});
 				
 		
-	    var selectedDate = $("#toursNewHeadingId").html();
+	    //var selectedDate = $("#toursNewHeadingId").html();
+		//&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small>
 		$(".tourIndividualCls").attr("attr_type","direct");
 		$("#nameOfMemberHeadingId").html('');
-		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+topFivecandidateName+" - <small style='color:#4A5863'>"+topFivedesignationName+"</small>&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small></h4>");
+		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+topFivecandidateName+" - <small style='color:#4A5863'>"+topFivedesignationName+"</small></h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -3112,6 +3119,8 @@ $(document).on("click",".candiateCls",function(){
 	var candiateName = $(this).attr("attr_candiate_name");
 	var selectedLevel = $(this).attr("attr_type");
 	$(".tourIndividualCls").attr("attr_type",selectedLevel);
+	var selectedDate = globalFormTourDate.split("/");
+	$("#dateRangeSliderYear").val(parseInt(selectedDate[2]));
    getCandiateWiseTourDetails(candiateId,designationName,candiateName);
 });
 
@@ -3147,9 +3156,10 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 				}]
 			
 		});
-		var selectedDate = $("#toursNewHeadingId").html();
+		//var selectedDate = $("#toursNewHeadingId").html();
+		//&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small>
 		$("#nameOfMemberHeadingId").html('');
-		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small>&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small></h4>");
+		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small></h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -3199,7 +3209,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 			str+='</div>';
 			$("#tourIndividualDetailsBlock").html(str);
 		}else{
-			$("#tourIndividualDetailsBlock").html("No Data Availble");
+			$("#tourIndividualDetailsBlock").html("NO DATA AVAILABLE.");
 		}
 		
 		if(result !=null && result.subList != null && result.subList.length > 0){
@@ -3394,7 +3404,6 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	}	
 	}
 	
-	//santosh
 	if(result !=null && result.monthList != null && result.monthList.length > 0){
 		  var str2='';
 		  
@@ -3407,7 +3416,11 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 						if(i == 0 || i%3 == 0){
 							str2+='<div class="row">';
 						}
-						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 table-responsive">';
+					   if($(window).width() < 500)
+						{
+							str2+='<div class="table-responsive">';
+						}
+						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 							str2+='<table class="table table-bordered">';
 							 var categoryList = result.monthList[i].subList;
 							 
@@ -3469,10 +3482,13 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 							str2+='</table>';
 							str2+='</div>';
 							//str2+='</li>';
-							if(i == 2 || i%3 == 2){
+						   if(i == 2 || i%3 == 2){
 								str2+='</div>';
 							}
-						
+						 if($(window).width() < 500)
+						{
+							str2+='</div>';
+						}
 						
 				}
 				str2+='</div>';
@@ -3494,7 +3510,11 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		var str1='';
 		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 		str1='<h4 class="text-capital">MONTH WISE COMPLIANCE COMMENTS & ATTACHMENTS</h4>';
-				str1+='<div class="m_top20 table-responsive">';
+				str1+='<div class="m_top20">';
+					 if($(window).width() < 500)
+					{
+						str1+='<div class="table-responsive">';
+					}
 					str1+='<table class="table table-bordered borderedWeight">';
 						str1+='<thead class="bg_D8">';
 							str1+='<tr>';
@@ -3554,6 +3574,10 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 							str1+='</tbody>';
 						str1+='</thead>';
 					str1+='</table>';	
+					if($(window).width() < 500)
+					{
+						str1+='</div>';
+					}
 				str1+='</div>';
 			str1+='</div>';
 		$("#tourIndividualDetailsTableBlock").html(str1);
@@ -3633,13 +3657,16 @@ $(document).on("click","#subMitBtn",function(){
 	}
 	if(toDateDate != null && toDateDate.length > 0){
 		var toDateArr = toDateDate.split("-");
-		console.log(toDateArr);
 		toDateInRequiredFormat =toDateArr[2].trim()+"/"+toDateArr[1].trim()+"/"+toDateArr[0].trim();
 	}
 	getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
 }); 
 
 function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat){
+	
+	$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj ={ 
 					 candiateId : candiateId,
 					 fromDate :frmDateInRequiredFormat ,
