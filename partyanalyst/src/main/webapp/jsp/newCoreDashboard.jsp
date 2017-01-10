@@ -179,6 +179,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
 							<h4><span class="headingColor text-capital">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
+							<div id="alertOverviewDetails" class="m_top10"></div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-12 alertLocationDiv m_top10" style="display:none;">
 							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
