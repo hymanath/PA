@@ -886,6 +886,7 @@
 									<a target="_blank" href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
 								</li>
 							</c:if>
+							<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 							<!--- Card Printing DashBoard 2016 start -->
 						<li>
 							<a href="#"><i class="fa fa-archive  ico-white"></i><span>&nbsp;&nbsp;Card Printing DashBoard 2016</span></a>
@@ -908,6 +909,13 @@
 								</li>
 							 </ul>
 						</li>	
+						</c:if>
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
+								<li>
+									<a href="alertClarificationDashboardAction.action"><i class="fa fa-bell-o ico-white floatLeft"></i><span>&nbsp; Alert Clarification Dashboard </span></a>
+								</li>
+							</c:if>
+							
 						<!--- Card Printing DashBoard 2016 end -->						
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
