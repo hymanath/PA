@@ -695,9 +695,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String toDate = jObj.getString("toDate");
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long alertType = jObj.getLong("alertType");
-			alertOverviewVO = alertService.getAlertOverviewDetails(activityMemberId,stateId,fromDate,toDate,alertType);    
+			Long editionType = jObj.getLong("editionType");
+			alertOverviewVO = alertService.getAlertOverviewDetails(activityMemberId,stateId,fromDate,toDate,alertType,editionType);    
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getAlertOverviewDetails() of CreateAlertAction",e);
+			LOG.error("Exception occured in getAlertOverviewDetails() of CreateAlertAction",e);    
 		}
 		return Action.SUCCESS;  
 	}
