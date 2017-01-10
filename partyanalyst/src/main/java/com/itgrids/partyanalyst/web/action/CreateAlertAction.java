@@ -8,11 +8,13 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -59,8 +61,64 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private AlertOverviewVO alertOverviewVO;
 	private List<AlertOverviewVO> resultList;
 	
+	private List<File> imageForDisplay = new ArrayList<File>();
+	private List<String> imageForDisplayContentType = new ArrayList<String>();
+	private List<String> imageForDisplayFileName = new ArrayList<String>();
+	private Long clarificationStatusId;
+	private String clarificationComments;
+	private String clarificationRadioName;
 	
 	
+	
+	public String getClarificationRadioName() {
+		return clarificationRadioName;
+	}
+
+	public void setClarificationRadioName(String clarificationRadioName) {
+		this.clarificationRadioName = clarificationRadioName;
+	}
+
+	public String getClarificationComments() {
+		return clarificationComments;
+	}
+
+	public void setClarificationComments(String clarificationComments) {
+		this.clarificationComments = clarificationComments;
+	}
+
+	public Long getClarificationStatusId() {
+		return clarificationStatusId;
+	}
+
+	public void setClarificationStatusId(Long clarificationStatusId) {
+		this.clarificationStatusId = clarificationStatusId;
+	}
+
+	public List<File> getImageForDisplay() {
+		return imageForDisplay;
+	}
+
+	public void setImageForDisplay(List<File> imageForDisplay) {
+		this.imageForDisplay = imageForDisplay;
+	}
+
+	public List<String> getImageForDisplayContentType() {
+		return imageForDisplayContentType;
+	}
+
+	public void setImageForDisplayContentType(
+			List<String> imageForDisplayContentType) {
+		this.imageForDisplayContentType = imageForDisplayContentType;
+	}
+
+	public List<String> getImageForDisplayFileName() {
+		return imageForDisplayFileName;
+	}
+
+	public void setImageForDisplayFileName(List<String> imageForDisplayFileName) {
+		this.imageForDisplayFileName = imageForDisplayFileName;
+	}
+
 	public List<IdNameVO> getIdNameVOList() {
 		return idNameVOList;
 	}
@@ -1001,54 +1059,41 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}*/
 	
-	public String saveAlertClarificationDetails()
-	{
-		try
-		{
-			jObj = new JSONObject(getTask());
-			final HttpSession session = request.getSession();
-			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null || user.getRegistrationID() == null){
-				return ERROR;
-			}
-			Map<File,String> mapfiles = new HashMap<File,String>();
-			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
-		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
-		       String fileUrl = "" ;
-		       List<String> filePaths = null;
-		   		while(fileParams.hasMoreElements())
-		   		{
-		   			String key = fileParams.nextElement();
-		   			
-				   			File[] files = multiPartRequestWrapper.getFiles(key);
-				   			filePaths = new ArrayList<String>();
-				   			if(files != null && files.length > 0)
-				   			for(File f : files)
-				   			{
-				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
-				   	            String ext = "";
-				   	            if(extension.length > 1){
-				   	            	ext = extension[extension.length-1];
-				   	            	mapfiles.put(f,ext);
-				   	            }
-				   	        
-				   			}
-		   		}
-		     
-			resultStatus = alertService.saveAlertClarificationDetails(user.getRegistrationID(),alertVO,mapfiles,jObj.getLong("alertId"));
-			if(resultStatus!=null){
-				if(resultStatus.getResultCode() == 0){
-					inputStream = new StringBufferInputStream(resultStatus.getMessage());
-				}else if(resultStatus.getResultCode() == 1){
-					inputStream = new StringBufferInputStream(resultStatus.getMessage());
-				}
-			}
-			
-		}catch(Exception e)
-		{
-			LOG.error("Exception Occured in saveAlertClarificationDetails() in CreateAlertAction ",e);
+	public String uploadAlertsDoc(){
+		try{
+			 String imageName=null;
+			 
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			 
+			 if(regVO!=null){
+				 Long userId = regVO.getRegistrationID();
+				 
+				 List<String> fileNamesList = new ArrayList<String>(0);
+				 
+				 for(int i=0;i<imageForDisplay.size();i++){
+		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+			        	 
+			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+			          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
+			          
+			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/"+IConstants.TOUR_DOCUMENTS;
+			        	 
+			          File fileToCreate = new File(filePath,imageName);
+					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+					  
+					  inputStream = new StringBufferInputStream("success");
+		          }
+				 alertService.saveAlertClarificationDetails(userId,alertId,clarificationStatusId,clarificationComments,clarificationRadioName,fileNamesList);
+			 }else{
+				 inputStream = new StringBufferInputStream("login failed");
+			 }
+		      
+		}catch(Exception e){
+			inputStream = new StringBufferInputStream("failed");
+			LOG.error(e);
 		}
-		return Action.SUCCESS;
+		
+		return Action.SUCCESS;	         
 	}
 	
 }//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);
