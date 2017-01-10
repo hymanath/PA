@@ -2225,11 +2225,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		//$(".tourFilteCheckBoxCls").trigger("click");
 	});
 	
-	/* $(document).on("click",".tourFilteCheckBoxCls",function(){
-		//alert("hi");
+	 $(document).on("click",".tourFilteCheckBoxCls",function(){
 		$(".tourFilteCheckBoxCls").prop('checked', false);
 		$(this).prop('checked', true);
-		var sliderName = $(this).closest(".tab-pane").find(".tourSearchBtnCls").attr("attr_slider_name");
+		/* var sliderName = $(this).closest(".tab-pane").find(".tourSearchBtnCls").attr("attr_slider_name");
 		var mainSliderName = $(this).closest(".tab-pane").find(".tourSearchBtnCls").attr("attr_main_slider_name");
 		var designationStr = $(this).attr("attr_designation_id");
 		var sliderNameArr = sliderName.split(",");
@@ -2268,8 +2267,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					  $('.'+mainSliderCls).attr("data-slider-min",0);
 					  $('.'+mainSliderCls).attr("data-slider-max",0);
 			 }
-		} 
-	}); */
+		}  */
+	}); 
 	
 	$(document).on("click",".tourSearchBtnCls",function(){
 		  var designationStr = $(this).attr("attr_designation_id");
