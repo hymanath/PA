@@ -1401,8 +1401,18 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							<h4>Family Members Benefits</h4>
 							<div id="familyBenefitsDivId"></div>
 						</div>
-						<div id="constituencyBenefitsDivId"></div>
-						<div id="localityBasedBenefitsDivId"></div>
+						<div>
+							<h4>Own Constituency Benefits</h4>
+							<div id="constituencyBenefitsDivId"></div>
+						</div>
+						<div>
+							<h4>Participated Constituency Benefits</h4>
+							<div id="partConstituencyBenefitsDivId"></div>
+						</div>
+						<div>
+							<h4>Locality Benefits</h4>
+							<div id="localityBasedBenefitsDivId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
