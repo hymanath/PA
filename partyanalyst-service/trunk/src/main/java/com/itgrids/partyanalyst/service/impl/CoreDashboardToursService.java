@@ -2778,25 +2778,14 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 	 		for(ToursBasicVO categoryVO:candiateVO.getSubList3()){
 						 	 			String categoryId = categoryVO.getIdStr();
 						 	 			if(categoryId.equalsIgnoreCase("1")){//Incharge District
-						 	 				//candiateVO.setInchargeDistrictTrDays(categoryVO.getTargetDays());
-						 	 				//candiateVO.setInchargeDistrictComplainceDays(categoryVO.getComplainceDays());
 						 	 				candiateVO.setInchargeDistrictComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("3")){//Incharge Constituency
-						 	 				//candiateVO.setInchargeConstituencyTrDays(categoryVO.getTargetDays());
-						 	 				//candiateVO.setInchargeConstituencyComplainceDays(categoryVO.getComplainceDays());
-						 	 				
 						 	 				candiateVO.setInchargeConstituencyComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("2")){//ownDistrict
-						 	 				//candiateVO.setOwnDistrictTrDays(categoryVO.getTargetDays());
-						 	 				//candiateVO.setOwnDistrictComplainceDays(categoryVO.getComplainceDays());
 						 	 				candiateVO.setOwnDistrictComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("4")){//own Constituency
-						 	 			   //candiateVO.setOwnContituencyTrDays(categoryVO.getTargetDays());
-						 	 			   //candiateVO.setOwnConstituencyComplainceDays(categoryVO.getComplainceDays());
 						 	 				candiateVO.setOwnContituencyComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
-						 	 				//candiateVO.setGovtWorkTrDays(categoryVO.getTargetDays());
-						 	 				//candiateVO.setGovtWorkComplainceDays(categoryVO.getComplainceDays());
 						 	 				candiateVO.setGovtWorkComplaincePer(categoryVO.getComplaincePer());
 						 	 			}
 							 		}
@@ -2805,62 +2794,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  }
 				  }
 			  }
-		  
-		 /* //calculating percentage
-		  if(memberDtlsMap != null && memberDtlsMap.size() > 0){
-			  
-			  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
-				  
-				  if(entry.getValue() != null && entry.getValue().size() > 0){
-					  
-					  for(Entry<Long,ToursBasicVO> candiateEntry:entry.getValue().entrySet()){
-						  
-						  Double incharegDesper = calculatePercantage(candiateEntry.getValue().getInchargeDistrictComplainceDays(),candiateEntry.getValue().getInchargeDistrictTrDays());
-						  if(incharegDesper > 100d){
-							  candiateEntry.getValue().setInchargeDistrictComplaincePer(100d);  
-						  }else{
-							  candiateEntry.getValue().setInchargeDistrictComplaincePer(incharegDesper);  
-						  }
-						  Double inchareConsper = calculatePercantage(candiateEntry.getValue().getInchargeConstituencyComplainceDays(),candiateEntry.getValue().getInchargeConstituencyTrDays());
-						   if(inchareConsper > 100d){
-							   candiateEntry.getValue().setInchargeConstituencyComplaincePer(100d); 
-						   }else{
-							   candiateEntry.getValue().setInchargeConstituencyComplaincePer(inchareConsper);   
-						   }
-						  Double ownDistrper = calculatePercantage(candiateEntry.getValue().getOwnDistrictComplainceDays(),candiateEntry.getValue().getOwnDistrictTrDays());
-						   if(ownDistrper > 100d){
-							   candiateEntry.getValue().setOwnDistrictComplaincePer(100d);  
-						   }else{
-							   candiateEntry.getValue().setOwnDistrictComplaincePer(ownDistrper);   
-						   }
-						   Double ownConsPer = calculatePercantage(candiateEntry.getValue().getOwnConstituencyComplainceDays(), candiateEntry.getValue().getOwnContituencyTrDays());
-						    if(ownConsPer > 100d){
-						    	candiateEntry.getValue().setOwnContituencyComplaincePer(100d);  	
-						    }else{
-						    	candiateEntry.getValue().setOwnContituencyComplaincePer(ownConsPer);
-						    }
-						   Double govtWorkper = calculatePercantage(candiateEntry.getValue().getGovtWorkComplainceDays(),candiateEntry.getValue().getGovtWorkTrDays());
-						   if(govtWorkper > 100d){
-							   candiateEntry.getValue().setGovtWorkComplaincePer(100d);
-						   }else{
-							   candiateEntry.getValue().setGovtWorkComplaincePer(govtWorkper);   
-						   }
-						   if(candiateEntry.getValue().getSubList3() != null && candiateEntry.getValue().getSubList3().size() > 0){
-								  for(ToursBasicVO categoryVO:candiateEntry.getValue().getSubList3()){
-									  Double per = calculatePercantage(categoryVO.getComplainceDays(),categoryVO.getTargetDays());
-									  if(per>100d){
-										  categoryVO.setComplaincePer(100d);  
-									  }else{
-										  categoryVO.setComplaincePer(per);  
-									  }
-								  }
-						 }
-					  }
-				  }
-			  }
-		  }*/
-		  
-	
 		  //merge secretary and organization secretary
 		  if(memberDtlsMap!=null && memberDtlsMap.size()>0){
 		        Map<Long,ToursBasicVO> orgSecAndSecMap = new ConcurrentHashMap<Long,ToursBasicVO>();
