@@ -1264,8 +1264,23 @@ function getMonth(month){
 	}else if(month=="12"){  
 		return "Dec"
 	}  
-}
+}	
 $(document).on("click","#clarifiReqId",function(){
 		$("#clarfCommentsDivId").show();
 		$("#clarReqDivId").hide();
 });
+
+	var fileNum=0;
+	$(document).on("click","#addFile",function(){
+		fileNum = fileNum+1;
+		var c = $(".cloneFileCls").clone(true);
+		c.removeAttr("style");
+		c.attr("id","uploadFileId"+fileNum);
+		c.attr("name","imageForDisplay");
+		c.removeAttr("class").addClass("btn btn-mini");
+		$("#extraUploadFileDiv").append(c);
+	});
+	
+	$('input[name="clarificationRadioName"]').on('change', function(){
+        $(this).prop('checked', true);
+    });
