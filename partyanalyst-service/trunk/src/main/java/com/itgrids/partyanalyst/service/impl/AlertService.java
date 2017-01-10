@@ -2953,7 +2953,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
      * Santosh (non-Javadoc)
      * @see com.itgrids.partyanalyst.service.IAlertService#getAlertOverviewDetails(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
      */
-  public AlertOverviewVO getAlertOverviewDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,final Long alertType){
+  public AlertOverviewVO getAlertOverviewDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr, Long alertType,Long editionType){
 	  
 	   AlertOverviewVO resultVO = new AlertOverviewVO();
 	   Set<Long> locationValues = new HashSet<Long>(0);
@@ -2961,6 +2961,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   Date fromDate=null;
 	   Date toDate = null;
+	   List<Long> alertTypes = new ArrayList<Long>();
+	   alertTypes.add(alertType);
+	   List<Long> alertEditions = new ArrayList<Long>();
+	   alertEditions.add(editionType);
 	   try{
 		   if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 			   fromDate = sdf.parse(fromDateStr);
@@ -2973,7 +2977,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-		   List<Object[]> rtrnTtlAlrtObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnTtlAlrtObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",alertTypes,alertEditions);
 		   Long totalAlertCnt = 0l;
 		   AlertOverviewVO overViewVO = new AlertOverviewVO();
 		   if(rtrnTtlAlrtObjLst != null && !rtrnTtlAlrtObjLst.isEmpty() ){
@@ -3001,7 +3005,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   List<Object[]> alertTypeList = alertTypeDAO.getAlertType();
 		   prepareTempForAlertTypeAndEdition(editionTypeList,alertTypeList,alertTypeAndEditionDtlsVoMap);
 		   
-		   List<Object[]> rtrnTtlAlrtGrpByEditionObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "true",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnTtlAlrtGrpByEditionObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "true",alertTypes,alertEditions);
 		   
 		   if(rtrnTtlAlrtGrpByEditionObjLst != null && rtrnTtlAlrtGrpByEditionObjLst.size() > 0){
 			   for(Object[] param : rtrnTtlAlrtGrpByEditionObjLst){
@@ -3014,12 +3018,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						   alertTypeVO.setEditionCnt(alertcnt);
 					   }
 				   } 
-			   }
+			   }  
 		   }
 		   //2  
 		   Map<Long,AlertOverviewVO> alertStatusMap = new HashMap<Long, AlertOverviewVO>(0);
 		   List<Object[]> rtrnAlrtStatusObjLst = alertStatusDAO.getAllStatus();
-		   List<Object[]> rtrnAlrtSttsWsCntObjLst = alertDAO.getAlertCntByAlertStatusBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnAlrtSttsWsCntObjLst = alertDAO.getAlertCntByAlertStatusBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",alertTypes,alertEditions);
 		   prepareTemplateStatusWise(rtrnAlrtStatusObjLst,alertStatusMap);//Prepare Template 
 		   if(rtrnAlrtSttsWsCntObjLst != null && rtrnAlrtSttsWsCntObjLst.size() > 0){
 			   for(Object[] param:rtrnAlrtSttsWsCntObjLst){
@@ -3032,7 +3036,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   //modified code
 		   Map<Long,AlertOverviewVO> statusTypeAndEditionDtlsVoMap = new HashMap<Long,AlertOverviewVO>();
 		   prepareTempForAlertTypeAndEdition(editionTypeList,rtrnAlrtStatusObjLst,statusTypeAndEditionDtlsVoMap);
-		   List<Object[]> rtrnAlrtSttsAndEditionWsCntObjLst = alertDAO.getAlertCntByAlertStatusBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "true",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnAlrtSttsAndEditionWsCntObjLst = alertDAO.getAlertCntByAlertStatusBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "true",alertTypes,alertEditions);
 		   
 		   if(rtrnAlrtSttsAndEditionWsCntObjLst != null && rtrnAlrtSttsAndEditionWsCntObjLst.size() > 0){
 			   for(Object[] param : rtrnAlrtSttsAndEditionWsCntObjLst){
@@ -3056,9 +3060,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 		   prepareAlertCategoryTemplate(rtrnAlertCategoryObjLst,rtrnAlrtStatusObjLst,alertCategoryMap);//Prepare Template ddddd
 		   
-		   List<Object[]> rtrnAlrCtgryCntobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"false",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnAlrCtgryCntobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"false",alertTypes,alertEditions);
 		 
-		   if(rtrnAlrCtgryCntobjLst != null && !rtrnAlrCtgryCntobjLst.isEmpty() ){
+		   if(rtrnAlrCtgryCntobjLst != null && !rtrnAlrCtgryCntobjLst.isEmpty() ){  
 			  for(Object[] param:rtrnAlrCtgryCntobjLst)  {
 				  if(alertCategoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null ){
 					  alertCategoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setStatusCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -3066,10 +3070,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  }
 
 		   }
-		   List<Object[]> rtrnAlrtCtgryAndSttsWseCntObjLst = alertDAO.getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnAlrtCtgryAndSttsWseCntObjLst = alertDAO.getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,alertTypes,alertEditions);
 		 
 		   if(rtrnAlrtCtgryAndSttsWseCntObjLst != null && !rtrnAlrtCtgryAndSttsWseCntObjLst.isEmpty()){
-			   for(Object[] param:rtrnAlrtCtgryAndSttsWseCntObjLst){
+			   for(Object[] param:rtrnAlrtCtgryAndSttsWseCntObjLst){  
 				   Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				   Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
 				   Long alertcnt = commonMethodsUtilService.getLongValueForObject(param[4]);
@@ -3086,7 +3090,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   //modified code
 		   Map<Long,AlertOverviewVO> categoryTypeAndEditionDtlsVoMap = new HashMap<Long,AlertOverviewVO>();
 		   prepareTempForAlertTypeAndEdition(editionTypeList,rtrnAlertCategoryObjLst,categoryTypeAndEditionDtlsVoMap);
-		   List<Object[]> rtrnAlrCtgryCntAndEditionobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"true",new ArrayList<Long>(){{add(alertType);}});
+		   List<Object[]> rtrnAlrCtgryCntAndEditionobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"true",alertTypes,alertEditions);
 		   
 		   if(rtrnAlrCtgryCntAndEditionobjLst != null && rtrnAlrCtgryCntAndEditionobjLst.size() > 0){
 			   for(Object[] param : rtrnAlrCtgryCntAndEditionobjLst){
