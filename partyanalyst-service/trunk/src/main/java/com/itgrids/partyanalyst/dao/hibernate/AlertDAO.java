@@ -995,7 +995,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		} 
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
+	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType,List<Long> editionTypes){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select " +
 		  				  " model.alertType.alertTypeId, " +
@@ -1030,10 +1030,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
-	    if(nextLvlGroup.equalsIgnoreCase("true")){
-	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
-	    }
-	   
+	    
+    	if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+    		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
+    	}
 	    queryStr.append(" group by model.alertType.alertTypeId ");
 	    if(nextLvlGroup.equalsIgnoreCase("true")){
 	    	queryStr.append(" ,model.editionType.editionTypeId ");
@@ -1052,9 +1052,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertType != null && alertType.get(0).longValue() > 0L){
 			query.setParameterList("alertType", alertType);
 		}
+		if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+			query.setParameterList("editionTypes", editionTypes);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertStatusBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
+	public List<Object[]> getAlertCntByAlertStatusBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType,List<Long> editionTypes){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select " +
 		  				  " model.alertStatus.alertStatusId, " +
@@ -1088,9 +1091,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
-	    if(nextLvlGroup.equalsIgnoreCase("true")){
-	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
-	    }
+	    if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+    		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
+    	}
 	    queryStr.append(" group by model.alertStatus.alertStatusId ");
 	    if(nextLvlGroup.equalsIgnoreCase("true")){
 	    	queryStr.append(" ,model.editionType.editionTypeId ");
@@ -1109,9 +1112,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertType != null && alertType.get(0).longValue() > 0L){
 			query.setParameterList("alertType", alertType);
 		}
+		if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+			query.setParameterList("editionTypes", editionTypes);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
+	public List<Object[]> getAlertCntByAlertCategoryBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType,List<Long> editionTypes){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category,");
@@ -1145,9 +1151,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
-	    if(nextLvlGroup.equalsIgnoreCase("true")){
-	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
-	    }
+	    if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+    		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
+    	}
 	    queryStr.append(" group by model.alertCategory.alertCategoryId");
 	    if(nextLvlGroup.equalsIgnoreCase("true")){
 	    	queryStr.append(" ,model.editionType.editionTypeId ");
@@ -1166,9 +1172,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertType != null && alertType.get(0).longValue() > 0L){
 			query.setParameterList("alertType", alertType);
 		}
+		if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+			query.setParameterList("editionTypes", editionTypes);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType){
+	public List<Object[]> getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType,List<Long> editionTypes){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1200,6 +1209,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
+	    if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+    		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
+    	}
 	    queryStr.append(" group by model.alertCategory.alertCategoryId,model.alertStatus.alertStatusId ");
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
@@ -1215,7 +1227,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertType != null && alertType.get(0).longValue() > 0L){
 			query.setParameterList("alertType", alertType);
 		}
-		return query.list();
+		if(editionTypes != null && editionTypes.get(0).longValue() > 0){
+			query.setParameterList("editionTypes", editionTypes);
+		}
+		return query.list();  
 	}
 	public List<Object[]> getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
