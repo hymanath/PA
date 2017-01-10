@@ -2210,9 +2210,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(designationMap.values()));   
 				   designationMap.clear();  
 			   }
-			/*  if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
-				   Collections.sort(resultVO.getSubList(), toursLeaderSorting);
-			   }*/
 	  }catch(Exception e){
 		  LOG.error("Exception Occured in getToursBasicOverviewDtls() in CoreDashboardToursService  : ",e); 
 	  }
