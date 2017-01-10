@@ -47,7 +47,7 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 		this.alertClarificationCommentsId = alertClarificationCommentsId;
 	}
 
-	@Column(name="alert_clarification_id")
+	@Column(name="alert_clarification_id", insertable=false, updatable = false)
 	public Long getAlertClarificationId() {
 		return alertClarificationId;
 	}
@@ -104,7 +104,7 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="alert_clarification_id", insertable=false, updatable = false)
+	@JoinColumn(name="alert_clarification_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public AlertClarification getAlertClarification() {
