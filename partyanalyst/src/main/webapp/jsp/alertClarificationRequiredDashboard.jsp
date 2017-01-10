@@ -1078,7 +1078,10 @@ function buildAlertData(result,jsObj)
 			str+='<td>'+result[i].date+'</td>';
 			str+='<td>'+result[i].userType+'</td>';
 			str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
-			str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
+			if(result[i].statusId == 1)
+				str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i></td>';
+			else
+				str+='<td><i class="glyphicon glyphicon-eye-open" disabled></i></td>';	
 			
 			str+='</tr>';	
 		}
