@@ -1492,7 +1492,12 @@ function buildVolunteersDetails(result){
 								if(result[0].cadreDetailsVO[i].status == "Y")
 									str+='<td><img src="img/yes.png" style="width: 18px;"> <sub>'+result[0].cadreDetailsVO[i].amount+'</sub></td>';
 								else
-									str+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[0].cadreDetailsVO[i].amount+'</sub></td>';
+								{
+									if(result[0].cadreDetailsVO[i].amount == 0)
+										str+='<td><img src="img/no.png" style="width: 18px;"> </td>';
+									else
+										str+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[0].cadreDetailsVO[i].amount+'</sub></td>';
+								}
 							}
 						}
 					str+='</tr>';
@@ -1529,8 +1534,12 @@ function buildVolunteersDetails(result){
 									if(result[t].cadreDetailsVO[i].status == "Y")
 										str1+='<td><img src="img/yes.png" style="width: 18px;"> <sub>'+result[t].cadreDetailsVO[i].amount+'</sub></td>';
 									else
-										str1+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[t].cadreDetailsVO[i].amount+'</sub></td>';
-										
+									{
+										if(result[t].cadreDetailsVO[i].amount == 0)
+											str1+='<td><img src="img/no.png" style="width: 18px;"> </td>';
+										else
+											str1+='<td><img src="img/no.png" style="width: 18px;"> <sub>'+result[t].cadreDetailsVO[i].amount+'</sub></td>';
+									}	
 								}
 							}
 							str1+='</tr>';
@@ -1541,7 +1550,10 @@ function buildVolunteersDetails(result){
 							str1+='<td>Total</td>';
 							str1+='<td>'+result[1].cadreDetailsVO[0].sumOfAll+'</td>';
 							for(var t in result[1].cadreDetailsVO){
-								str1+='<td>'+result[1].cadreDetailsVO[t].schemeWiseTotalCount+'</td>';
+								if(result[1].cadreDetailsVO[t].schemeWiseTotalCount == 0)
+									str1+='<td> - </td>';
+								else
+									str1+='<td>'+result[1].cadreDetailsVO[t].schemeWiseTotalCount+'</td>';
 							}
 						str1+='</tr>';
 					}
@@ -1559,7 +1571,8 @@ function buildVolunteersDetails(result){
 	function getOwnAndParticipatedConstituenciesBenefitDetails(){
 		var constituencyId = $("#cadreConstituencyId").val()=="undefined"?0:$("#cadreConstituencyId").val();
 		var pConstituencyId = $("#cadrePConstituencyId").val()=="undefined"?0:$("#cadrePConstituencyId").val();
-		$("#constituencyBenefitsDivId").html('<img src="images/icons/loading.gif" width="50px" height="50px" style="margin:auto;display:block;">');
+		 $("#constituencyBenefitsDivId,#partConstituencyBenefitsDivId").html('<img src="images/icons/loading.gif" width="50px" height="50px" style="margin:auto;display:block;">'); 
+		 
 		
 		var jsObj={
 			constituencyId : constituencyId,
@@ -1571,10 +1584,9 @@ function buildVolunteersDetails(result){
 		 data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			if(result != null){
+				$("#errMsgId").html('');
 				var str='';
 				if(result.cadreDetailsVO != null && result.cadreDetailsVO.length > 0){
-					str+='<div>';
-					str+='<h4>Own Constituency Benefits</h4>';
 					str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
 					str+='<thead style="background-color:#ccc;">';
 						str+='<th>Constituency Name</th>';
@@ -1587,16 +1599,19 @@ function buildVolunteersDetails(result){
 						str+='<tr>';
 							str+='<td>'+result.cadreDetailsVO[0].constituencyName+'</td>';
 							for(var t in result.cadreDetailsVO){
-								str+='<td>'+result.cadreDetailsVO[t].amount+'</td>';
+								if(result.cadreDetailsVO[t].amount == 0)
+									str+='<td> - </td>';
+								else
+									str+='<td>'+result.cadreDetailsVO[t].amount+'</td>';
 							}
 						str+='</tr>';
 					str+='</table>';
-					str+='</div>';
+					$("#constituencyBenefitsDivId").html(str);
+				}else{
+					$("#constituencyBenefitsDivId").html("No Own Constituency Benefits Available")
 				}
 				
 				if(result.familyDetailsVO != null && result.familyDetailsVO.length > 0){
-					str+='<div style="margin-top:20Px;">';
-					str+='<h4>Participated Constituency Benefits</h4>';
 					str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
 					str+='<thead style="background-color:#ccc;">';
 						str+='<th>Constituency Name</th>';
@@ -1613,9 +1628,10 @@ function buildVolunteersDetails(result){
 							}
 						str+='</tr>';
 					str+='</table>';
-					str+='</div>';
+					$("#partConstituencyBenefitsDivId").html(str);
+				}else{
+					$("#partConstituencyBenefitsDivId").html("No Participated Constituency Benefits Available");
 				}
-				$("#constituencyBenefitsDivId").html(str);
 			}
 		});
 	}
@@ -1655,7 +1671,10 @@ function buildVolunteersDetails(result){
 										str+='</td>';
 										if(result[t].cadreDetailsVO[i].cadreDetailsVO != null && result[t].cadreDetailsVO[i].cadreDetailsVO.length > 0){
 											for(var j in result[t].cadreDetailsVO[i].cadreDetailsVO){
-												str+='<td>'+result[t].cadreDetailsVO[i].cadreDetailsVO[j].amount+'</td>';
+												if(result[t].cadreDetailsVO[i].cadreDetailsVO[j].amount == 0)
+													str+='<td> - </td>';
+												else
+													str+='<td>'+result[t].cadreDetailsVO[i].cadreDetailsVO[j].amount+'</td>';
 											}
 										}
 									str+='</tr>';
@@ -1667,7 +1686,11 @@ function buildVolunteersDetails(result){
 									if(result[t].cadreDetailsVO[0].cadreDetailsVO != null && result[t].cadreDetailsVO[0].cadreDetailsVO.length > 0){
 										str+='<td>Total</td>';
 										for(var k in result[t].cadreDetailsVO[0].cadreDetailsVO){
-											str+='<td>'+result[t].cadreDetailsVO[0].cadreDetailsVO[k].schemeWiseTotalCount+'</td>';
+											if(result[t].cadreDetailsVO[0].cadreDetailsVO[k].schemeWiseTotalCount == 0)
+												str+='<td> - </td>';
+											else
+												str+='<td>'+result[t].cadreDetailsVO[0].cadreDetailsVO[k].schemeWiseTotalCount+'</td>';
+										
 										}
 									}
 								}
@@ -1678,6 +1701,8 @@ function buildVolunteersDetails(result){
 					}
 				}
 				$("#localityBasedBenefitsDivId").html(str);
+			}else{
+				$("#localityBasedBenefitsDivId").html("No Locality Benefits Available");
 			}
 		});
 	}
@@ -1717,7 +1742,11 @@ function buildVolunteersDetails(result){
 							if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
 								strt+='<td>'+result[t].locationName+'</td>';
 								for(var i in result[t].cadreDetailsVO){
-									strt+='<td class="benefitCountCls" attr_benefit_name="'+result[t].cadreDetailsVO[i].benefitName+'" attr_const_id="'+result[t].locationId+'" attr_benefit_id="'+result[t].cadreDetailsVO[i].benefitId+'">'+result[t].cadreDetailsVO[i].amount+'</td>';
+									if(result[t].cadreDetailsVO[i].amount == 0)
+										strt+='<td> - </td>';
+									else
+										strt+='<td class="benefitCountCls" attr_benefit_name="'+result[t].cadreDetailsVO[i].benefitName+'" attr_const_id="'+result[t].locationId+'" attr_benefit_id="'+result[t].cadreDetailsVO[i].benefitId+'">'+result[t].cadreDetailsVO[i].amount+'</span></td>';
+								
 								}
 							}
 						}
