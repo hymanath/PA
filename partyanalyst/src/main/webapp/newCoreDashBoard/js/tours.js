@@ -2799,56 +2799,46 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		} 
 		
 	function getIndividualPersonTourDetails(value)
-	{                
+	{          
+		
 		var temp = value.split("-");
 		var candiateId = temp[0];
 		var topFivecandidateName = temp[1];
 		var topFivedesignationName = temp[2];
-	
-		$("#tourIndividualPerformanceDivId").modal("show");
-		/* var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+	     $("#subMitBtn").attr("attr_candidate_id",candiateId);
+		 
+		$("#tourIndividualPerformanceDivId").modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+		
+		 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 		var fromDate = globalFormTourDate.split("/")
 		var toDate = glovalToTourDate.split("/")
-		alert(toDate[2])
+				
 				$("#tourSlider").dateRangeSlider({
-					bounds: {min: moment().subtract(1,'year').startOf('year'), max: moment().add(1,'year').endOf('year')},
-					defaultValues: {min: new Date(fromDate[2],fromDate[1],fromDate[0]), max: new Date(toDate[2],toDate[1],toDate[0])},
-					scales: [{
-					  first: function(value){ return value; },
-					  end: function(value) {return value; },
-					  next: function(value){
-						var next = new Date(value);
-						return new Date(next.setMonth(value.getMonth() + 1));
-					  },
-					  label: function(value){
-						return months[value.getMonth()];
-					  },
-					  format: function(tickContainer, tickStart, tickEnd){
-						tickContainer.addClass("myCustomClass");
-					  }
-					 }]
+					    bounds: {min: new Date(fromDate[2], 0, 1), max: new Date(toDate[2], 11, 31)},
+						//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+						defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1],toDate[0])},
+						scales: [{
+						  first: function(value){ return value; },
+						  end: function(value) {return value; },
+						  next: function(value){
+							var next = new Date(value);
+							return new Date(next.setMonth(value.getMonth() + 1));
+						  },
+						  label: function(value){
+							return months[value.getMonth()];
+						  },
+						  format: function(tickContainer, tickStart, tickEnd){
+							tickContainer.addClass("myCustomClass");
+						  }
+						}]
+					
 				});
-		 $("#tourSlider").dateRangeSlider({
-		 	   bounds: {min: moment().startOf('year'), max: moment().endOf('year')},
-				defaultValues: {min: moment().subtract(1,'month'), max: moment().add(1,'month')},
-				scales: [{
-				  first: function(value){ return value; },
-				  end: function(value) {return value; },
-				  next: function(value){
-					var next = new Date(value);
-					return new Date(next.setMonth(value.getMonth() + 1));
-				  },
-				  label: function(value){
-					return months[value.getMonth()];
-				  },
-				  format: function(tickContainer, tickStart, tickEnd){
-					tickContainer.addClass("myCustomClass");
-				  }
-				}]
-			
-		  }); */
-		  /* bounds: {min: moment().subtract(1,'year').format("YYYY/MM/DD"), max: moment().add(1,'year').format("YYYY/MM/DD")},
-			defaultValues: {min: moment().subtract(3,'month').format("YYYY/MM/DD"), max: moment().subtract(1,'month').format("YYYY/MM/DD")} */
+				
+		
 	    var selectedDate = $("#toursNewHeadingId").html();
 		$(".tourIndividualCls").attr("attr_type","direct");
 		$("#nameOfMemberHeadingId").html('');
@@ -3106,6 +3096,7 @@ function buildTourMemberDetails(result){
   }
 	
  $(document).on("click",".tourIndividualCls",function(){
+	$("#tourSlider").dateRangeSlider("destroy");
 	 var selectLevel = $(this).attr("attr_type");
 	 if(selectLevel == "subLevel"){
 		setTimeout(function(){
@@ -3116,6 +3107,7 @@ function buildTourMemberDetails(result){
 
 $(document).on("click",".candiateCls",function(){
 	var candiateId = $(this).attr("attr_candiate_id");
+	 $("#subMitBtn").attr("attr_candidate_id",candiateId);
 	var designationName = $(this).attr("attr_designation_name");
 	var candiateName = $(this).attr("attr_candiate_name");
 	var selectedLevel = $(this).attr("attr_type");
@@ -3125,7 +3117,36 @@ $(document).on("click",".candiateCls",function(){
 
 function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	{ 
-		$("#tourIndividualPerformanceDivId").modal("show");
+		$("#tourIndividualPerformanceDivId").modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+		
+		 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+		var fromDate = globalFormTourDate.split("/")
+		var toDate = glovalToTourDate.split("/")
+				
+		$("#tourSlider").dateRangeSlider({
+				bounds: {min: new Date(fromDate[2], 0, 1), max: new Date(toDate[2], 11, 31)},
+				//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+				defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1],toDate[0])},
+				scales: [{
+				  first: function(value){ return value; },
+				  end: function(value) {return value; },
+				  next: function(value){
+					var next = new Date(value);
+					return new Date(next.setMonth(value.getMonth() + 1));
+				  },
+				  label: function(value){
+					return months[value.getMonth()];
+				  },
+				  format: function(tickContainer, tickStart, tickEnd){
+					tickContainer.addClass("myCustomClass");
+				  }
+				}]
+			
+		});
 		var selectedDate = $("#toursNewHeadingId").html();
 		$("#nameOfMemberHeadingId").html('');
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small>&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small></h4>");
@@ -3177,6 +3198,8 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 					
 			str+='</div>';
 			$("#tourIndividualDetailsBlock").html(str);
+		}else{
+			$("#tourIndividualDetailsBlock").html("No Data Availble");
 		}
 		
 		if(result !=null && result.subList != null && result.subList.length > 0){
@@ -3381,6 +3404,9 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 				for(var i in result.monthList){
 					
 						//str2+='<li>';
+						if(i == 0 || i%3 == 0){
+							str2+='<div class="row">';
+						}
 						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10 table-responsive">';
 							str2+='<table class="table table-bordered">';
 							 var categoryList = result.monthList[i].subList;
@@ -3443,6 +3469,9 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 							str2+='</table>';
 							str2+='</div>';
 							//str2+='</li>';
+							if(i == 2 || i%3 == 2){
+								str2+='</div>';
+							}
 						
 						
 				}
@@ -3567,14 +3596,64 @@ $(document).on('click','#showTourPdfId',function(){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
-/* $(document).on("click","#dateRangeSliderYear",function(){
+$(document).on("change","#dateRangeSliderYear",function(){
 	var getYear = $(this).val();
+	$("#tourSlider").dateRangeSlider("destroy");
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 	$("#tourSlider").dateRangeSlider({
-		bounds: {min: new Date(getYear,0,1), max: new Date(getYear,12,1)},
+		  bounds: {min: new Date(getYear, 0, 1), max: new Date(getYear, 11, 31)},
+		//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+		defaultValues: {min: new Date(getYear, 0,1), max: new Date(getYear,2,30)},
+		scales: [{
+		  first: function(value){ return value; },
+		  end: function(value) {return value; },
+		  next: function(value){
+			var next = new Date(value);
+			return new Date(next.setMonth(value.getMonth() + 1));
+		  },
+		  label: function(value){
+			return months[value.getMonth()];
+		  },
+		  format: function(tickContainer, tickStart, tickEnd){
+			tickContainer.addClass("myCustomClass");
+		  }
+		 }] 
 	});
 });
 
 $(document).on("click","#subMitBtn",function(){
-	alert($(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html());
-	alert($(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html());
-}); */
+	var candiateId = $(this).attr("attr_candidate_id");
+	var fromDateDate = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html(); 
+	var toDateDate = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html(); 
+	var frmDateInRequiredFormat;
+	var toDateInRequiredFormat;
+	if(fromDateDate != null && fromDateDate.length > 0){
+		var fromDateArr = fromDateDate.split("-");
+		frmDateInRequiredFormat =fromDateArr[2].trim()+"/"+fromDateArr[1].trim()+"/"+fromDateArr[0].trim();
+	}
+	if(toDateDate != null && toDateDate.length > 0){
+		var toDateArr = toDateDate.split("-");
+		console.log(toDateArr);
+		toDateInRequiredFormat =toDateArr[2].trim()+"/"+toDateArr[1].trim()+"/"+toDateArr[0].trim();
+	}
+	getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
+}); 
+
+function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat){
+	var jsObj ={ 
+					 candiateId : candiateId,
+					 fromDate :frmDateInRequiredFormat ,
+					 toDate : toDateInRequiredFormat
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#tourIndividualDetailsBlock").html('');
+			$("#tourIndividualDetailsTableBlock").html('');
+			$("#monthWiseComplainceDivId").html(' ');
+			buildIndividualPersonTourDetails(result);
+		});
+}
