@@ -3531,24 +3531,35 @@
 				<button type="button" class="close tourIndividualCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span id="nameOfMemberHeadingId"></span>
 			  </div>
-			  <div class="modal-body">   
+			  <div class="modal-body"> 
+				<div class="row">
+					<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+						<button class="btn btn-success pull-right" id="subMitBtn" type="button">SUBMIT</button>
+					</div>
+					<div class="col-md-2 col-xs-12 col-sm-4 pull-right"> 
+						<select class="pull-right form-control" id="dateRangeSliderYear">
+							<option value="0">Select Year</option>
+							<option value="2016">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+							<option value="2021">2021</option>
+							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>
+							<option value="2025">2025</option>
+						</select>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<!--<select class="pull-right" id="dateRangeSliderYear">
-							<option>2016</option>
-							<option>2017</option>
-							<option>2018</option>
-							<option>2019</option>
-							<option>2020</option>
-							<option>2021</option>
-							<option>2022</option>
-							<option>2023</option>
-							<option>2024</option>
-							<option>2025</option>
-						</select>
-						<div id="tourSlider" style="margin-top:30px"></div>-->
-						<div id="tourIndividualDetailsBlock"></div>
-						<!--<button class="btn btn-success" id="subMitBtn" type="button"></button>-->
+						<div id="tourSlider" style="margin-top:7px"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="tourIndividualDetailsBlock" class="m_top20"></div>
 						<div id="monthWiseComplainceDivId" class="row m_top20"></div>
 						<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
 					</div>
