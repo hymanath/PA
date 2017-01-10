@@ -242,7 +242,7 @@
 			<result type="redirect" name="cardPrintAdmin">cardPrintAdminAction.action</result>
 			<result type="redirect" name="cardPrintPostVerification">cardPrintPostVerificationAction.action</result>
 			<result type="redirect" name="cardPrintDispatch">cardPrintDispatchAction.action</result>
-			<result type="redirect" name="cardPrintDashboard">cardPrintDashboardAction.action</result>
+			<result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5704,6 +5704,7 @@
       <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
       <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
       <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
+      <result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -15291,6 +15292,12 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	
+		<action name="getCadretoursDetailsAction" class="cadreDetailsAction"  method="getCadretoursDetails">
+			<result type="json" name="success">
+			<param name="root">alertVO</param>
+		</result>
+	</action>
+	
 	<action name="getPrintPushedConstituenciesAction" class="cardPrintAction"  method="getPrintPushedConstituencies">
 			<result type="json" name="success">
 			<param name="root">smallVOList</param>
@@ -15307,6 +15314,8 @@
 	</action>
 	<action name="alertClarificationDashboardAction" class="createAlertAction" method="alertClarificationDashboard">
 		<result name="success">/jsp/alertClarificationRequiredDashboard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=alertClarificationDashboard</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	<action name="getBenefitDetailsAlongFamilyAction" class="cadreDetailsAction"  method="getBenefitDetailsAlongFamily">
 		<result type="json" name="success">
