@@ -781,7 +781,7 @@
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')
 				|| fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || 
 				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') ||
-				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT')}">
+				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
 									<li>
 										<a href="#"><i class="fa fa-bell-o ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
 										 <h2><i class="fa fa-bell-o ico-white line_heightDiv"></i> Alert</h2>
@@ -791,11 +791,16 @@
 										<a href="http://mytdp.com/createAlertAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
 										</li>
 										</c:if>
-										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT')}">
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT_USER_GROUP') || fn:contains(sessionScope.USER.entitlements, 'ALERT_MANAGE_USER_GROUP')}">
 										<li>
 										<a href="alertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
 										</li>
-										</c:if>  
+										</c:if> 
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
+											<li>
+											<a href="alertClarificationDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Clarification Dashboard</span></a>
+											</li>
+										</c:if> 										
 										</ul>
 									</li>
 									</c:if>	
