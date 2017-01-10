@@ -977,6 +977,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	
 	public String alertClarificationDashboard(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo.getEntitlements() != null &&
+				(regVo.getEntitlements().contains("ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT") || regVo.getEntitlements().contains("ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT")) ) 
+				return Action.SUCCESS;
+			else
+				return Action.ERROR;
+		} catch (Exception e) {
+			LOG.error("Exception occured in alertClarificationDashboard() of CreateAlertAction",e);  
+		}
 		return Action.SUCCESS;
 	}
 	/*public String getAlertClarificationStatus(){
