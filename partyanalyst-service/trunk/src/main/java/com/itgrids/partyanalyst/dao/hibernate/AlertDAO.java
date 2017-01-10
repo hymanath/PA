@@ -995,10 +995,24 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		} 
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
 		StringBuilder queryStr = new StringBuilder();
-		  queryStr.append(" select model.alertType.alertTypeId,model.alertType.alertType,count(distinct model.alertId) from Alert model where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  queryStr.append(" select " +
+		  				  " model.alertType.alertTypeId, " +
+		  				  " model.alertType.alertType, ");
+		  if(nextLvlGroup.equalsIgnoreCase("true")){
+			  queryStr.append(" model.editionType.editionTypeId, " +
+	  				  		  " model.editionType.editionType, ");
+		  }
+		  queryStr.append(" count(distinct model.alertId) " +
+		  				  " from " +
+		  				  " Alert model where model.isDeleted='N' ");
+		  if(alertType != null && alertType.get(0).longValue() > 0L){
+			  queryStr.append(" and model.alertType.alertTypeId in (:alertType) ");  
+		  }else{
+			  queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  }
+		  
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1016,7 +1030,14 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
+	    }
+	   
 	    queryStr.append(" group by model.alertType.alertTypeId ");
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" ,model.editionType.editionTypeId ");
+	    }
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
 	     query.setParameter("stateId", stateId);
@@ -1028,12 +1049,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
+		if(alertType != null && alertType.get(0).longValue() > 0L){
+			query.setParameterList("alertType", alertType);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertStatusBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> getAlertCntByAlertStatusBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
 		StringBuilder queryStr = new StringBuilder();
-		  queryStr.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(distinct model.alertId) from Alert model where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  queryStr.append(" select " +
+		  				  " model.alertStatus.alertStatusId, " +
+		  				  " model.alertStatus.alertStatus,");
+		  if(nextLvlGroup.equalsIgnoreCase("true")){
+			  queryStr.append(" model.editionType.editionTypeId, " +
+	  				  		  " model.editionType.editionType, ");
+		  }
+		  queryStr.append(" count(distinct model.alertId) " +
+		  				  " from Alert model where model.isDeleted='N' ");
+		  if(alertType != null && alertType.get(0).longValue() > 0L){
+			  queryStr.append(" and model.alertType.alertTypeId in (:alertType) ");
+		  }else{
+			  queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  }
+		  
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1051,7 +1088,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
+	    }
 	    queryStr.append(" group by model.alertStatus.alertStatusId ");
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" ,model.editionType.editionTypeId ");
+	    }
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
 	     query.setParameter("stateId", stateId);
@@ -1063,16 +1106,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
+		if(alertType != null && alertType.get(0).longValue() > 0L){
+			query.setParameterList("alertType", alertType);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> getAlertCntByAlertCategoryBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
-		  				  " model.alertCategory.category," +
-		  				  " count(distinct model.alertId) " +
+		  				  " model.alertCategory.category,");
+		  if(nextLvlGroup.equalsIgnoreCase("true")){
+			  queryStr.append(" model.editionType.editionTypeId, " +
+	  				  		  " model.editionType.editionType, ");
+		  }
+		  queryStr.append(" count(distinct model.alertId) " +
 		  				  " from Alert model " +
-		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  				  " where model.isDeleted='N' ");
+		  if(alertType != null && alertType.get(0).longValue() > 0L){
+			  queryStr.append(" and model.alertType.alertTypeId in (:alertType) ");
+		  }else{
+			  queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  }
+		  
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1090,7 +1145,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" and model.editionType.editionTypeId in ("+IConstants.ALERT_EDITION_TYPE_IDS+") ");
+	    }
 	    queryStr.append(" group by model.alertCategory.alertCategoryId");
+	    if(nextLvlGroup.equalsIgnoreCase("true")){
+	    	queryStr.append(" ,model.editionType.editionTypeId ");
+	    }
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
 	     query.setParameter("stateId", stateId);
@@ -1102,9 +1163,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
+		if(alertType != null && alertType.get(0).longValue() > 0L){
+			query.setParameterList("alertType", alertType);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1112,8 +1176,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " model.alertStatus.alertStatus," +
 		  				  " count(distinct model.alertId) " +
 		  				  " from Alert model " +
-		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  				  " where model.isDeleted='N' ");
+		  if(alertType != null && alertType.get(0).longValue() > 0L){
+			  queryStr.append(" and model.alertType.alertTypeId in (:alertType) ");
+		  }else{
+			  queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		  }
+		  queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1142,6 +1211,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(alertType != null && alertType.get(0).longValue() > 0L){
+			query.setParameterList("alertType", alertType);
 		}
 		return query.list();
 	}
