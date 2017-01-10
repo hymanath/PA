@@ -30,13 +30,17 @@
 	<style type="text/css">
 		.disabledBlock
 		{
-			background-color:rgba(0,0,0,0.4);
+			background-color:rgba(0,0,0,0.6);
 			z-index:99;
 			position:absolute;
 			right:0px;
 			left:0px;
 			top:0px;
 			bottom:0px;
+			color:#fff;
+			text-align:center;
+			padding:20px;
+			text-transform:uppercase;
 		}
 		.uploadedDocuments
 		{
@@ -364,22 +368,27 @@ control.makeTransliteratable(['commentsId']);
 													</div>
 													<div class="panel-body">
 														<div class="row">
-															<form action="">
-															<div class="col-md-12 col-xs-12 col-sm-12">
+															<div class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
 																<label class="radio-inline">
 																	Is Clarification Required
 																</label>
 																<label class="radio-inline">
-																	<input type="radio"/> Yes
+																	<input type="radio" name="radioBtn" value="1" id="clarifiReqId"/> Yes
 																</label>
 																<label class="radio-inline">
-																	<input type="radio"/> No
+																	<input type="radio" name="radioBtn" value="2" checked/> No
 																</label>	
 															</div>
+														<div class="col-md-12 col-xs-12 col-sm-12" id="clarfCommentsDivId"style="display:none;">
+															<label class="radio-inline">
+																	Is Clarification Required?
+																</label>
+														 <form action="">
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Clarification Status</label>
 																<select class="form-control">
-																	<option>Progress/Completed</option>
+																	<option value="1">Progress</option>
+																	<option value="2">Completed</option>
 																</select>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12">
@@ -397,6 +406,7 @@ control.makeTransliteratable(['commentsId']);
 																<button class="btn btn-success">UPDATE ALERT DETAILS</button>
 															</div>
 															</form>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -412,16 +422,21 @@ control.makeTransliteratable(['commentsId']);
 														</c:if>
 													</h4>
 												</div>
-												<div class="panel-body">
+												<div class="panel-body disabledBlock">
+													<p class="text-center">
+														<i class="fa fa-clock-o" style="font-size:45px;"></i>
+														<h4 class="panel-title"><b>Waiting for alert clarification</b></h4>
+													</p>
 													<div  id="alertAssignedCandidateDataId"></div>
 												</div>
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
 										<div class="col-md-4 col-xs-12 col-sm-4">
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													<h4 class="panel-title"></h4>
+											<div class="panel panel-default" style="position:relative;">
+												<div class="disabledBlock">
+													<h4 class="panel-title"><b>currently disabled this feature</b></h4>
+													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
 												</div>
 												<div class="panel-body">
 													<label>Alert Status</label>
