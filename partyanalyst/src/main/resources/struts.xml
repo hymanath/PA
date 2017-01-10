@@ -15347,6 +15347,11 @@
 		</result>
 	</action>
 	
+	<action name="uploadAlertsDocAction" class="createAlertAction" method="uploadAlertsDoc">
+	   <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+		</result>
+	</action>
 	
  </package>
 </struts>
