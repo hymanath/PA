@@ -3527,7 +3527,7 @@
 		  <div class="modal-dialog modal-lg" style="width:85%">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button tourIndividualCls" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close tourIndividualCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span id="nameOfMemberHeadingId"></span>
 			  </div>
 			  <div class="modal-body">   
@@ -3575,11 +3575,11 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
 				<div class="row">
-					<div class="col-md-6 col-xs-12 col-sm-6">
-						<h4 class="modal-title text-capital" id="">Leaders Detailed Report</h4>
+					<div class="col-md-9 col-xs-12 col-sm-9">
+						<h4 class="modal-title text-capital" id="tourLeadrDtlsHeadingId">Leaders Detailed Report</h4>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6 designationSelectBoxCls pull-right">
-						<label>Select Designation</label>
+						<label class="text-capital">Select Designation</label>
 						<select  class="form-control" id="tourDesignationSelectBoxId"></select>		
 					</div>
 				</div>
