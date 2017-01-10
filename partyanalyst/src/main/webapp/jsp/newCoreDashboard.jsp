@@ -288,6 +288,273 @@
 			</div>
 		</div>	
 	 <!--Alerts End -->
+	 <!-- DEBATES PROGRAM BLOCK -->
+			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
+				<div class="panel panel-default panelNewCustom panel2">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-7 debatesHead">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+									debates - <small class="text-muted debatesDate">today</small>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-5 debatesHead1">
+								<span class="settingsIcon pull-right">
+								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								 </span>
+								<span class="notesIconDebates pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
+								</span>
+								<span class="debatesIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+					   <div class="notesDropDown notesArrow " >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesDebatesId"></div>
+							<hr/>
+							<div id="debateUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaDebates"></textarea>
+							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
+						</div> 	
+					
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+								
+								
+								<div class="row">
+									<div id="partyWiseTotalDebateDetails"></div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<ul class="activeUlCls list-inline debateSpokesCls">
+											<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+									</div>
+									<div id="SpokesPersonWiseDebate"></div>
+									
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+									</div>	
+								</div>
+							</div>
+						</div>
+						<div class="row debatesMoreHiddenBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
+												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+											<!--</a>-->
+										</div>
+										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+											<div class="panel-body collapse in" id="collapseOneBodyId">
+												<div class="row">
+													<div id="scaleBasedPerformanceCohort"></div>
+												</div>
+											</div>
+										<!--</div>-->
+									</div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<div class="row">
+												<div id="roleBasedPerformanceCohort"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+										</a>
+									</div>
+									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+									  <div class="panel-body">
+										<div class="row">
+											<div id="candidateRolesBuildId"></div>
+										</div>
+										<div class="row m_top20">
+											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
+										</a>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
+							</div>
+							
+						  <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<h4><span class="headingColor">SMS Poll</span></h4>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<table class="table tableDebatesVs m_top10">
+												  <tbody>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+												 </tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- DEBATES PROGRAM BLOCK END-->
+		</div>
+		<div class="row">
 	 		<!--  NEWS BLOCK START-->
 			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -997,8 +1264,6 @@
 				</div>
 			</div>
 			<!-- NEWS BLOCK END-->
-		</div>
-		<div class="row">
 			<!-- Electronic Media Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
 			<div class="panel panel-default panelNewCustom">
@@ -1268,6 +1533,9 @@
 			</div>
 		</div>
 	<!-- Electronic Media End -->
+	</div>
+	<div class="row">
+		
 	<!-- TOURS START -->
 			<div class="col-md-6 col-xs-12 col-sm-12 toursBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1378,8 +1646,6 @@
 			</div>
 			<!-- TOURS END -->  
 	
-		</div>
-		<div class="row">
 			<!--Meetings Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1591,6 +1857,9 @@
 				</div>
 			</div>	
 			<!--Meetings End-->
+		</div>
+		<div class="row">
+		
 			<!--Cadre Registration -->
 		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">  
         	<div class="panel panel-default panelNewCustom">
@@ -1954,8 +2223,6 @@
             </div>
         </div>
 		<!--Cadre Registration ENd -->
-		</div>
-		<div class="row">
 			<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -2238,271 +2505,7 @@
             </div>
         </div>
 		<!-- Committees End-->
-			<!-- DEBATES PROGRAM BLOCK -->
-			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
-				<div class="panel panel-default panelNewCustom panel2">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-7 debatesHead">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-									debates - <small class="text-muted debatesDate">today</small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-5 debatesHead1">
-								<span class="settingsIcon pull-right">
-								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								 </span>
-								<span class="notesIconDebates pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
-								</span>
-								<span class="debatesIconExpand pull-right">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
-									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-					   <div class="notesDropDown notesArrow " >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesDebatesId"></div>
-							<hr/>
-							<div id="debateUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaDebates"></textarea>
-							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
-						</div> 	
-					
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
-								
-								
-								<div class="row">
-									<div id="partyWiseTotalDebateDetails"></div>
-								</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-										<ul class="activeUlCls list-inline debateSpokesCls">
-											<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-										</ul>
-									</div>
-									<div id="SpokesPersonWiseDebate"></div>
-									
-									<div class="col-xs-12 col-sm-12 col-md-12">
-										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
-									</div>	
-								</div>
-							</div>
-						</div>
-						<div class="row debatesMoreHiddenBlock">
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
-									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
-												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-											<!--</a>-->
-										</div>
-										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
-											<div class="panel-body collapse in" id="collapseOneBodyId">
-												<div class="row">
-													<div id="scaleBasedPerformanceCohort"></div>
-												</div>
-											</div>
-										<!--</div>-->
-									</div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingTwo">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									  <div class="panel-body">
-										<div class="row">
-												<div id="roleBasedPerformanceCohort"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFive">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-										</a>
-									</div>
-									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-									  <div class="panel-body">
-										<div class="row">
-											<div id="candidateRolesBuildId"></div>
-										</div>
-										<div class="row m_top20">
-											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingThree">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFour">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
-										</a>
-									</div>
-									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-							</div>
-							
-						  <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<h4><span class="headingColor">SMS Poll</span></h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<table class="table tableDebatesVs m_top10">
-												  <tbody>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-													<tr>
-														<td class="b_right1">
-															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-														</td>
-														<td>
-															<p class="text-capital">total questions</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">yes %</p>
-															<h4>100</h4>
-														</td>
-														<td>
-															<p class="text-capital">no % </p>
-															<h4>100</h4>
-														</td>
-													</tr>
-												 </tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>-->
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- DEBATES PROGRAM BLOCK END-->
+		
 			
 		</div>	
 		
