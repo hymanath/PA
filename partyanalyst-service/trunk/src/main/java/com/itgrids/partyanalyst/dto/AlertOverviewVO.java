@@ -21,6 +21,14 @@ public class AlertOverviewVO {
 	private String statusType;
 	private Long statusCnt = 0l;
 	
+	private Long alertTypeId;
+	private String alertType;
+	private Long alertCnt = 0L;
+	
+	private Long editionId;
+	private String edition;
+	private Long editionCnt = 0L;
+	
 	private Double statusCntPer = 0.0d;
 	private Double partyAlertCntPer = 0.0d;
 	private Double otherAlertCntPer = 0.0d;
@@ -31,6 +39,7 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> categoryList;
 	private List<AlertOverviewVO> subList;
 	private List<AlertOverviewVO> subList1;
+	private List<AlertOverviewVO> editionList;
 	private Set<Long> alertIdSet;
     private Long locationTypeId;
 	private String locationType;
@@ -41,7 +50,13 @@ public class AlertOverviewVO {
 	private Long completedCnt = 0l;
 	private Long unabletoResolveCnt = 0l;
 	private Long actionNotRequiredCnt = 0l;
-	private Long duplicatesStatusCnt = 0l; 
+	private Long duplicatesStatusCnt = 0l;
+	
+	private List<AlertOverviewVO> totalEditionList;
+	private List<AlertOverviewVO> totalPartyList;
+	private List<AlertOverviewVO> totalGovtList;  
+	private List<AlertOverviewVO> totalOtherList;
+	
 	
 	
 	public Long getGovtAlertCnt() {
@@ -215,6 +230,73 @@ public class AlertOverviewVO {
 			alertIdSet = new HashSet<Long>(0);
 		}
 		return alertIdSet;
+	}
+	public List<AlertOverviewVO> getTotalEditionList() {
+		return totalEditionList;
+	}
+	public void setTotalEditionList(List<AlertOverviewVO> totalEditionList) {
+		this.totalEditionList = totalEditionList;
+	}
+	public List<AlertOverviewVO> getTotalPartyList() {
+		return totalPartyList;
+	}
+	public void setTotalPartyList(List<AlertOverviewVO> totalPartyList) {
+		this.totalPartyList = totalPartyList;
+	}
+	public List<AlertOverviewVO> getTotalGovtList() {
+		return totalGovtList;
+	}
+	public void setTotalGovtList(List<AlertOverviewVO> totalGovtList) {
+		this.totalGovtList = totalGovtList;
+	}
+	public List<AlertOverviewVO> getTotalOtherList() {
+		return totalOtherList;
+	}
+	public void setTotalOtherList(List<AlertOverviewVO> totalOtherList) {
+		this.totalOtherList = totalOtherList;
+	}
+	public Long getAlertTypeId() {
+		return alertTypeId;
+	}
+	public void setAlertTypeId(Long alertTypeId) {
+		this.alertTypeId = alertTypeId;
+	}
+	public String getAlertType() {
+		return alertType;
+	}
+	public void setAlertType(String alertType) {
+		this.alertType = alertType;
+	}
+	public Long getAlertCnt() {
+		return alertCnt;
+	}
+	public void setAlertCnt(Long alertCnt) {
+		this.alertCnt = alertCnt;
+	}
+	public Long getEditionId() {
+		return editionId;
+	}
+	public void setEditionId(Long editionId) {
+		this.editionId = editionId;
+	}
+	
+	public String getEdition() {
+		return edition;
+	}
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+	public Long getEditionCnt() {
+		return editionCnt;
+	}
+	public void setEditionCnt(Long editionCnt) {
+		this.editionCnt = editionCnt;
+	}
+	public List<AlertOverviewVO> getEditionList() {
+		if(editionList == null){
+			editionList = new ArrayList<AlertOverviewVO>(0);
+		}
+		return editionList;
 	}
 	
 }                                                          
