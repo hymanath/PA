@@ -3502,39 +3502,39 @@
         <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
     </bean>
     <bean name="alertService" class="com.itgrids.partyanalyst.service.impl.AlertService">
-	<property name="transactionTemplate" ref="transactionTemplate"></property>
-	<property name="alertDAO" ref="alertDAO"></property>
-	<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
-	<property name="userAddressDAO" ref="userAddressDAO"></property>
-	<property name="stateDAO" ref="stateDAO" />
-	<property name="districtDAO" ref="districtDAO"></property>
-	<property name="tehsilDAO" ref="tehsilDAO"></property>
-	<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
-	<property name="constituencyDAO" ref="constituencyDAO"></property>
-	<property name="candidateDAO" ref="candidateDAO"></property>
-	<property name="alertUserDAO" ref="alertUserDAO"></property>
-	<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
-	<property name="alertStatusDAO" ref="alertStatusDAO"></property>
-	<property name="alertTrackingDAO" ref="alertTrackingDAO"></property>
-	<property name="alertCommentDAO" ref="alertCommentDAO"></property>
-	<property name="alertTypeDAO" ref="alertTypeDAO"></property>
-	<property name="alertSourceUserDAO" ref="alertSourceUserDAO"></property>
-	<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
-	<property name="memberTypeDAO" ref="memberTypeDAO"></property>
-	<property name="alertCommentAssigneeDAO" ref="alertCommentAssigneeDAO"></property>
-	<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
-	<property name="cadreCommitteeService" ref="cadreCommitteeService"></property>
-	<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
-	<property name="panchayatDAO" ref="panchayatDAO"></property>
-	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
-	<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
-	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
-	<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO"></property>
-	<property name="alertClarificationDAO" ref="alertClarificationDAO"></property>
-	<property name="alertClarificationCommentsDAO" ref="alertClarificationCommentsDAO"></property>
-	<property name="activityService" ref="activityService"></property>
-	<property name="alertClarificationDocumentDAO" ref="alertClarificationDocumentDAO"></property>
-	
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="alertDAO" ref="alertDAO"></property>
+		<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
+		<property name="userAddressDAO" ref="userAddressDAO"></property>
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO"></property>
+		<property name="tehsilDAO" ref="tehsilDAO"></property>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
+		<property name="constituencyDAO" ref="constituencyDAO"></property>
+		<property name="candidateDAO" ref="candidateDAO"></property>
+		<property name="alertUserDAO" ref="alertUserDAO"></property>
+		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+		<property name="alertStatusDAO" ref="alertStatusDAO"></property>
+		<property name="alertTrackingDAO" ref="alertTrackingDAO"></property>
+		<property name="alertCommentDAO" ref="alertCommentDAO"></property>
+		<property name="alertTypeDAO" ref="alertTypeDAO"></property>
+		<property name="alertSourceUserDAO" ref="alertSourceUserDAO"></property>
+		<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
+		<property name="memberTypeDAO" ref="memberTypeDAO"></property>
+		<property name="alertCommentAssigneeDAO" ref="alertCommentAssigneeDAO"></property>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
+		<property name="cadreCommitteeService" ref="cadreCommitteeService"></property>
+		<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
+		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO"></property>
+		<property name="alertClarificationDAO" ref="alertClarificationDAO"></property>
+		<property name="alertClarificationCommentsDAO" ref="alertClarificationCommentsDAO"></property>
+		<property name="activityService" ref="activityService"></property>
+		<property name="alertClarificationDocumentDAO" ref="alertClarificationDocumentDAO"></property>
+		<property name="editionTypeDAO" ref="editionTypeDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
