@@ -1104,6 +1104,9 @@
 	                  <value>com.itgrids.partyanalyst.model.EditionType</value>
 	                  <value>com.itgrids.partyanalyst.model.ClarificationRequired</value>
 	                  <value>com.itgrids.partyanalyst.model.TvNewsChannel</value>
+	                  <value>com.itgrids.partyanalyst.model.Editions</value>
+	                  <value>com.itgrids.partyanalyst.model.NewsPaper</value>
+	                  <value>com.itgrids.partyanalyst.model.PaperLanguage</value>
 	                  
 	             </list>
 			
