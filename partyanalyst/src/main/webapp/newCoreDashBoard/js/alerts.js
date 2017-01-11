@@ -3194,7 +3194,7 @@ function getTotalArticledetails(articleId){
 		}).done(function(result){
 			if(result != null){
 			  buildAlertOverviewDetailsAction(result);
-			  buildAlertOverviewDetails(result)
+			  buildAlertOverviewDetails(result,0)
 			}else{
 			  $("#alertOverview,#alertOverviewDetails").html("NO DATA AVAILABLE.");	
 			}
@@ -3207,36 +3207,45 @@ function getTotalArticledetails(articleId){
 		var totalDistCount = result.totalPartyList[1].editionCnt + result.totalGovtList[1].editionCnt + result.totalOtherList[1].editionCnt
 		str+='<table class="table table-bordered bg_ED text-center">';
 			str+='<tr>';
-				str+='<td colspan="2" class="alertsArrow alertOverViewDetailsCls"><div class="alertsArrow alertInnerArrow">'+((totalMainCount)+(totalDistCount))+'<p>TOTAL ALERTS</p></div></td>';
-				str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow">'+((result.totalPartyList[0].editionCnt)+(result.totalPartyList[1].editionCnt))+'<p>PARTY</p></div></td>';
-				str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow">'+((result.totalGovtList[0].editionCnt)+(result.totalGovtList[1].editionCnt))+'<p>GOVT</p></div></td>';
-				str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow">'+((result.totalOtherList[0].editionCnt)+(result.totalOtherList[1].editionCnt))+'<p>OTHERS</p></div></td>';
+				str+='<td colspan="2" class="alertsArrow alertOverViewDetailsCls"><div class="alertsArrow alertInnerArrow getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="0">'+result.overAllVO.totalAlertCnt+'<p>TOTAL ALERTS</p></div></td>';
+				if(!(result.overAllVO.partyAlertCnt == 0)){
+					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="1" attr_edition_type_id="0">'+result.overAllVO.partyAlertCnt+'<p>PARTY</p></div></td>';
+				}
+				if(!(result.overAllVO.govtAlertCnt == 0)){
+					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="2" attr_edition_type_id="0">'+result.overAllVO.govtAlertCnt+'<p>GOVT</p></div></td>';
+				}
+				if(!(result.overAllVO.otherAlertCnt == 0)){
+					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="3" attr_edition_type_id="0">'+result.overAllVO.otherAlertCnt+'<p>OTHERS</p></div></td>';
+				}
 			str+='</tr>';
 			str+='<tr>';
 				str+='<td><p style="font-size:13px;" class="text-muted">Main</p>';
-				str+='<p style="font-size:13px;">'+totalMainCount+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="1">'+totalMainCount+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">District</p>';
-				str+='<p style="font-size:13px;">'+totalDistCount+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="2">'+totalDistCount+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalPartyList[0].editionCnt+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalPartyList[1].editionCnt+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalGovtList[0].editionCnt+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalGovtList[1].editionCnt+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalOtherList[0].editionCnt+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
-				str+='<p style="font-size:13px;">'+result.totalOtherList[1].editionCnt+'</p></td>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></td>';
+				if(!(result.overAllVO.otherAlertCnt == 0)){
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></td>';
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></td>';
+				}
+				
 			str+='</tr>';
 		str+='</table>';
 		
-		$("#alertOverview").html(str);
+		$("#alertOverview").html(str);  
 	}
 	
 	
-	function buildAlertOverviewDetails(result)
+	function buildAlertOverviewDetails(result,alertEdition)
 	{
 		var str='';
 		str+='<div class="row m_top10">';
@@ -3257,16 +3266,18 @@ function getTotalArticledetails(articleId){
 												str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
 											str+='</td>';
 										str+='</tr>';
-										str+='<tr>';
-											str+='<td>';
-												str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[0].edition+'</p>';
-												str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[0].editionCnt+'</p>';
-											str+='</td>';
-											str+='<td>';
-												str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[1].edition+'</p>';
-												str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[1].editionCnt+'</p>';
-											str+='</td>';
-										str+='</tr>';
+										if(alertEdition == 0){
+											str+='<tr>';
+												str+='<td>';
+													str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[0].edition+'</p>';
+													str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[0].editionCnt+'</p>';
+												str+='</td>';
+												str+='<td>';
+													str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[1].edition+'</p>';
+													str+='<p class="text-capitalize text-muted">'+result.statusList[i].editionList[1].editionCnt+'</p>';
+												str+='</td>';
+											str+='</tr>';
+										}
 									str+='</table>';
 								str+='</div>';
 							str+='</div>';
@@ -3283,18 +3294,20 @@ function getTotalArticledetails(articleId){
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<h4 class="panel-title text-capital">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 							str+='</div>';
-							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<div class="pad_15 bg_ED m_top10">';
-									str+='<div class="row">';
-									for(var j in result.categoryList[i].editionList)
-									{
-										str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-											str+='<p class="panel-title">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
+							if(alertEdition == 0){
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<div class="pad_15 bg_ED m_top10">';
+										str+='<div class="row">';
+										for(var j in result.categoryList[i].editionList)
+										{
+											str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+												str+='<p class="panel-title">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
+											str+='</div>';
+										}
 										str+='</div>';
-									}
 									str+='</div>';
 								str+='</div>';
-							str+='</div>';
+							}
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="pad_5 bg_ED">';
 									str+='<table class="table">';
@@ -3311,7 +3324,7 @@ function getTotalArticledetails(articleId){
 										for(var j in result.categoryList[i].statusList)
 										{
 											str+='<td>';
-												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'</small></p>';
+												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 											str+='</td>';
 									
 										}
@@ -3330,5 +3343,39 @@ function getTotalArticledetails(articleId){
 		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
 		$(this).addClass("alertsArrow");
 		$(this).find(".alertInnerArrow").addClass("alertsArrow");
+	});
+	$(document).on("click",".getEditioDtls",function(){
+		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertTypeStr = $(this).attr("attr_alert_type_id");
+		var alertEdition = $(this).attr("attr_edition_type_id");  
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		      
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,      
+			stateId : globalStateId,           
+			fromDate:fromDateStr,        
+			toDate :toDateStr,
+			alertType : alertTypeStr,
+			editionType : alertEdition
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getAlertOverviewDetailsAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			if(result != null){
+			  buildAlertOverviewDetails(result,alertEdition)
+			}else{
+			  $("#alertOverviewDetails").html("NO DATA AVAILABLE.");	
+			}
+      });	
 	});
 	
