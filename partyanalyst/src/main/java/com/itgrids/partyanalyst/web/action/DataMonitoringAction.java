@@ -45,6 +45,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private List<CadreRegUserVO> cadreRegUserList;
 		  private String returnStatus;
 		  private List<BoothWiseDataMonitoringVO> boothDataMonitoringVOList;
+		  private BoothWiseDataMonitoringVO boothWiseDataMonitoringVO;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -159,9 +160,16 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				List<BoothWiseDataMonitoringVO> boothDataMonitoringVOList) {
 			this.boothDataMonitoringVOList = boothDataMonitoringVOList;
 		}
-		
-		
+		public BoothWiseDataMonitoringVO getBoothWiseDataMonitoringVO() {
+			return boothWiseDataMonitoringVO;
+		}
+		public void setBoothWiseDataMonitoringVO(
+				BoothWiseDataMonitoringVO boothWiseDataMonitoringVO) {
+			this.boothWiseDataMonitoringVO = boothWiseDataMonitoringVO;
+		}
 
+		
+		
 		//Business methods
 		public String execute(){
 			
@@ -732,6 +740,21 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   return Action.SUCCESS;
 	   }
 	   public String boothWiseDataMonitoring(){
+		   return Action.SUCCESS;
+	   }
+	   
+	   public String getOverAllDataVerificationDetails(){
+		   try {
+			   jObj = new JSONObject(getTask());
+			   
+			   Long districtId = jObj.getLong("districtId");
+			   Long constituencyId = jObj.getLong("constituencyId");
+			   
+			   boothWiseDataMonitoringVO = dataMonitoringService.getOverAllVerificationCountsForConstituency(districtId, constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllDataVerificationDetails()  of DataMonitoringAction", e);
+		}
 		   return Action.SUCCESS;
 	   }
 }
