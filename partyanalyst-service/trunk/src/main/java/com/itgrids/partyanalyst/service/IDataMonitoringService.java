@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.BoothWiseDataMonitoringVO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -29,6 +30,9 @@ public interface IDataMonitoringService {
 	public ResultStatus changeImageByVoterImage(List<IdNameVO> idNameVOs);
 	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId);
 	public String updateRejectedImages(List<IdNameVO> idNameVOs);
+	
+	public List<BoothWiseDataMonitoringVO> getBoothWiseDataVerificationDetails(Long districtId,Long constituencyId);
 	public List<IdAndNameVO> getDistrictList(Long stateId);
 	public List<IdAndNameVO> getConstitencysByDistricts(Long districtId,Long stateId);
+	public IdNameVO getBoothWiseRegisteredMemberDetails(Long boothId,Long constituencyId,String verificationStatus,String resultType);
 }
