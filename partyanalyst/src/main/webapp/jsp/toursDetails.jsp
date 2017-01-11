@@ -27,6 +27,9 @@
 </head>
 <style>
 .chosen-container{width:100% !important}
+.requiredFont{
+		color:red;
+	}
 </style>
 <body>
 	<div class="container">
@@ -98,13 +101,13 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-3 col-xs-12 col-sm-3">
-									<label>Designation Level</label>
+									<label>Designation Level:<font class="requiredFont">*</font></label>
 									<select  class="form-control" id="designationSlctBxId">
 									<option value="0">Select Designation Level</option>
 								</select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-3">
-									<label>Select Name</label>
+									<label>Select Name:<font class="requiredFont">*</font></label>
 									<select class="form-control" id="memberSlctBxId" >    
 									<option value="0">Select Name</option>
 								</select>
@@ -155,19 +158,19 @@
 													<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
 														<div class="row">
 															<div class="col-md-4 col-xs-12 col-sm-3">
-																<label>Tour category</label>
+																<label>Tour category:<font class="requiredFont">*</font></label>
 																<select class="form-control" id="tourCategoryNew0" name="toursVOListNew[0].tourCategoryId">   
 																	<option value="0">Tour Category</option>
 																</select>
 															</div>
 															<div class="col-md-4 col-xs-12 col-sm-3">
-																<label>Tour Type</label>
+																<label>Tour Type:<font class="requiredFont">*</font></label>
 																<select class="form-control" id="tourTypeNew0" name="toursVOListNew[0].tourTypeId">   
 																	<option value="0">Tour Type</option>
 																</select>
 															</div>
 															<div class="col-md-4 col-xs-12 col-sm-2">
-																<label>Tour Days</label>
+																<label>Tour Days:<font class="requiredFont">*</font></label>
 																<input type="text" class="form-control" id="tourDaysNew0" name="toursVOListNew[0].tourDays"/>
 															</div>
 														</div>
@@ -402,7 +405,7 @@
 						<div class="row showDivUpdateCls" > 
 							<div class="col-md-4 col-md-offset-4">
 								<!--<span class="updateTourStatusCls"></span>-->
-								<button type="button" class="btn btn-success btn-block" onclick="updateApplication();" type="button">SUBMIT APPLICATION</button>
+								<button type="button" class="btn btn-success btn-block" onclick="updateApplication();" type="button">UPDATE APPLICATION</button>
 								<span id="successUpdateSpanId"></span>  
 							</div>   
 							<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
