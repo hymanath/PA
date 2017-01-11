@@ -624,7 +624,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			}
 				
 			resultStatus = toursService.checkForExistingTourDetails(toursVO);
-			if(resultStatus.getResultCode() == 0){
+			if(resultStatus != null && resultStatus.getResultCode() == 0){
 				successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
 				return Action.SUCCESS;
 			}
@@ -707,5 +707,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	  	   }
 		 return Action.SUCCESS;
 	 }
+	 
+	 
+	public String getDesigationsListByCadreId(){
+		 LOG.error("entered into getDesigationsListByCadreId()  of ToursAction");  
+		try {
+			  jObj = new JSONObject(getTask());
+			  idNameVoList = toursService.getDesigationsListByCadreId(jObj.getLong("tdpCadreId"));
+		} catch (Exception e) {
+			   LOG.error("Exception raised at getDesigationsListByCadreId()  of ToursAction", e);  
+		}
+		return Action.SUCCESS;
+	}
 	
 }
