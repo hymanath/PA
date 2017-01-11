@@ -52,7 +52,6 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertClarificationVO;
@@ -1997,14 +1996,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							String rs = new String();
 								 Alert alert = null;
 								if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("updateStatus")){
-									updateAlertForNewsInUpdateStatus(inputVO,null);
+									updateAlertForNewsInUpdateStatus(inputVO,null);//only status change
 								}else if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("update")){
 									//updateAlertForNewsInUpdateStatus(inputVO);				
 									List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());				
 									alert = alertList.get(0);
-									updateAlertForNewsInUpdateStatus(inputVO,alert);				
+									updateAlertForNewsInUpdateStatus(inputVO,alert);//Updation				
 								}else{
-									updateAlertForNewsInUpdateStatus(inputVO,new Alert());
+									updateAlertForNewsInUpdateStatus(inputVO,new Alert());//like saving
 								}								
 							return "success";
 						}
@@ -2024,9 +2023,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		try {
 			
 			if(oldAlert == null){
-				int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
+				//int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
+				
+				String updateAlert = updateActionableItemsToActionNotRequired(inputVO);
+				
 			}
-			else{
+			else{				
+				//saveAlertForNewsInUpdateStatus(inputVO,oldAlert);				
+				
 				String result = (String) transactionTemplate.execute(new TransactionCallback() {
 					public Object doInTransaction(TransactionStatus status) {
 					//else{
@@ -2047,7 +2051,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 
 							 alert.setCreatedTime(inputVO.getInsertedTime());
 							 alert.setAlertStatusId(inputVO.getStatusId());
-							 alert.setEditionTypeId(inputVO.getEditionType() != null && inputVO.getEditionType() > 0l ? inputVO.getEditionType() : null);
+							 alert.setEditionTypeId(inputVO.getEditionTypeId() != null && inputVO.getEditionTypeId() > 0l ? inputVO.getEditionTypeId() : null);	
+							 alert.setEditionId(inputVO.getEditionId() !=null && inputVO.getEditionId()>0l ? inputVO.getEditionId():null);
 							// alert.setCreatedBy(inputVO.getUserId());
 							 
 						 }				 
@@ -2078,6 +2083,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert.setAlertCategoryTypeId(inputVO.getId());
 						 alert.setImpactScopeId(inputVO.getImpactScopeId());
 						 alert.setAlertSeverityId(2l);
+						 alert.setTvNewsChannelId(inputVO.getTvNewsChannelId() !=null && inputVO.getTvNewsChannelId() >0 ? inputVO.getTvNewsChannelId():null);
 						 
 						UserAddress UA = new UserAddress();
 							 
@@ -2181,6 +2187,218 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		} catch (Exception e) {
 			LOG.error("error in updateAlertForNewsInUpdateStatus() method",e);
 		}
+	}
+	
+	public String saveAlertForNewsInUpdateStatus(final ActionableVO inputVO,final Alert oldAlert){
+		
+		String finalResult = new String();
+		
+		try {
+			
+			finalResult = (String) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+				//else{
+									
+					Alert alert = null;
+					
+					if(oldAlert.getAlertId() !=null && oldAlert.getAlertId()>0){
+						alert = oldAlert;
+					}else{
+						alert = new Alert();
+					}
+					
+					 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
+						 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
+						 if(alertList !=null && alertList.size()>0){
+							 alert = alertList.get(0);
+						 }
+						 
+						 alert.setCreatedTime(inputVO.getInsertedTime());
+						 alert.setAlertStatusId(inputVO.getStatusId());
+						// alert.setCreatedBy(inputVO.getUserId());
+						 
+					 }				 
+					 alert.setAlertTypeId(inputVO.getAlertType());
+					 
+					 setImpactId(alert,inputVO);
+					 
+					 //alert.setImpactLevelId(inputVO.getRegionScopeId());
+					 
+					 if(alert.getImpactLevelId() !=  null &&alert.getImpactLevelId().longValue() ==3L && 
+					inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){ //only new district ids
+						if(inputVO.getDistrictId().longValue() == IConstants.CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID)
+							inputVO.setDistrictId(517L);
+						if(inputVO.getDistrictId().longValue() == IConstants.CNP_MANCHERIAL_DISTRICT_ID)
+							inputVO.setDistrictId(518L);
+						
+							inputVO.setRegionScopeValue(inputVO.getDistrictId());
+					 }
+					 
+					 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
+					 alert.setDescription(inputVO.getDesc());	
+					 alert.setTitle(inputVO.getTitle());
+					// alert.setUpdatedBy(inputVO.getUserId());
+					 alert.setAlertSourceId(3l);				 
+					 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					 alert.setAlertCategoryId(inputVO.getAlertCategory());
+					 alert.setIsDeleted("N");
+					 alert.setAlertCategoryTypeId(inputVO.getId());
+					 alert.setImpactScopeId(inputVO.getImpactScopeId());
+					 alert.setAlertSeverityId(2l);
+					 
+					UserAddress UA = new UserAddress();
+						 
+					UA.setState(inputVO.getStateId() !=null ? stateDAO.get(inputVO.getStateId()):null);
+					UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
+					UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
+					UA.setTehsil(inputVO.getMandalId() !=null ? tehsilDAO.get(inputVO.getMandalId()):null);
+					UA.setLocalElectionBody(inputVO.getMunicipalCorpGmcId() !=null ? localElectionBodyDAO.get(inputVO.getMunicipalCorpGmcId()):null);
+					UA.setWard(inputVO.getWardId() !=null ? constituencyDAO.get(inputVO.getWardId()):null);
+					UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
+					UA.setPanchayatId(inputVO.getPanchayatId() !=null ? inputVO.getPanchayatId():null);
+					 
+					UserAddress userAddressNew = null;
+					if(alert.getImpactLevelId() !=null && alert.getImpactLevelId() >0l){
+						userAddressNew = userAddressDAO.save(UA); 
+					}
+					
+					if(userAddressNew !=null){
+						alert.setAddressId(userAddressNew.getUserAddressId() !=null ?
+								userAddressNew.getUserAddressId().longValue():null);
+					}						
+					
+					alert.setImageUrl(inputVO.getImageUrl() !=null ? inputVO.getImageUrl():null);
+					
+					 alert = alertDAO.save(alert);
+					 
+					 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+					// alertTrackingVO.setAlertUserTypeId(alert.getAlertSourceId());
+					 alertTrackingVO.setAlertStatusId(alert.getAlertStatusId());
+					 alertTrackingVO.setAlertId(alert.getAlertId());
+					 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+					 saveAlertTrackingDetails(alertTrackingVO)	;
+					 
+					 
+					 //Deleting Candidates If Already there for Alert
+						List<Long> alertCandidateIds = alertCandidateDAO.getAlertCandidatesForUpdate(alert.getAlertId());
+						
+						if(alertCandidateIds !=null && alertCandidateIds.size()>0){
+							alertCandidateDAO.deleteAlertCandidatesForUpdate(alertCandidateIds);
+						}
+					 
+					 
+					 //Saving into Alert Candidate For Print and Electronic Media
+					 if(inputVO.getActionableVoList() != null && inputVO.getActionableVoList().size() > 0)
+					 {
+						 
+						//get TdpCadre Details by candidateId
+						 Set<Long> candidateIds = new HashSet<Long>();
+						 for(ActionableVO vo : inputVO.getActionableVoList()) {
+							 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
+								 candidateIds.add(vo.getCandidateId());
+							 }						
+						}
+						//paCandidateId,cadreId
+						List<Object[]> tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
+						 
+						 Map<Long,Long> tdpcadreMap = new HashMap<Long, Long>(0);
+						 if(tdpCadres !=null && tdpCadres.size()>0){
+							 for (Object[] obj : tdpCadres) {							
+								 tdpcadreMap.put((Long)obj[0], obj[1] !=null ? (Long)obj[1]:null);
+							}
+						 }
+						 
+						//Adding Involved candidates For alert
+						for(ActionableVO vo : inputVO.getActionableVoList())
+						 {
+							 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+							 {
+								 AlertCandidate alertCandidate = new AlertCandidate();
+								 alertCandidate.setAlertId(alert.getAlertId());
+								 alertCandidate.setAlertImpactId(vo.getBenefitId());
+								 alertCandidate.setCandidateId(vo.getCandidateId());//pacandidate
+								 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
+									 alertCandidate.setTdpCadreId(tdpcadreMap.get(vo.getCandidateId()));
+								 }
+								 
+								 alertCandidate.setNewsCandidateId(vo.getNewsCandidateId());
+								 alertCandidate.setNewsCandidate(vo.getNewsCandidate() !=null ? vo.getNewsCandidate():"");
+								 
+								 if(vo.getDesignationList() !=null && vo.getDesignationList().size()>0){
+									 for (String designation : vo.getDesignationList()) {
+										 if(alertCandidate.getDesignation() !=null && !alertCandidate.getDesignation().trim().isEmpty()){
+											 alertCandidate.setDesignation(alertCandidate.getDesignation()+","+designation);
+										 }else{
+											 alertCandidate.setDesignation(designation);
+										 }
+										
+									}										 
+								 }
+								 
+								 alertCandidate.setOrganization(vo.getOrganization());
+							
+								 alertCandidateDAO.save(alertCandidate);
+							 }						
+						 }														
+					 }
+				return "success";
+		      }
+			});
+			
+		} catch (Exception e) {
+			LOG.error("error in saveAlertForNewsInUpdateStatus() method",e);
+		}
+		return finalResult;
+	}
+	
+	public String updateActionableItemsToActionNotRequired(ActionableVO VO)//Long categoryTypeId,Long statusId)
+	{
+		String result=new String();
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			String currentDate = dateUtilService.getCurrentDateInStringFormatNew("yyyy-MM-dd");
+			
+			String categoryCreatedDate = null;
+			Long alertId=null;
+			if(VO.getId() !=null && VO.getId().longValue()>0){
+				//Date categoryCreatedDateObj  
+				List<Object[]> objList = alertDAO.getAlertCreatedDate(VO.getId());					
+				Date categoryCreatedDateObj=null;
+				if(objList !=null && objList.size()>0){
+					
+					alertId = objList.get(0)[0] !=null ?  (Long)objList.get(0)[0]:null;
+					categoryCreatedDateObj= objList.get(0)[1] !=null ?  (Date)objList.get(0)[1]:null;
+				}
+				
+				if(categoryCreatedDateObj !=null){
+					categoryCreatedDate =sdf.format(categoryCreatedDateObj);
+				}			
+			}
+			
+			int updateAlert=0;
+			if(categoryCreatedDate !=null && !categoryCreatedDate.trim().isEmpty() && categoryCreatedDate.trim().equalsIgnoreCase(currentDate)){							
+				updateAlert = alertDAO.updateAlertStatusOfNewsForDelete(alertId);//
+			}else{
+				updateAlert = alertDAO.updateAlertStatusOfNews(VO.getId(),VO.getStatusId());
+				if(updateAlert>0){
+					AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+					 alertTrackingVO.setAlertStatusId(VO.getStatusId());
+					 alertTrackingVO.setAlertId(alertId);
+					 alertTrackingVO.setAlertTrackingActionId(1l);
+					 
+					 //tracking saving method
+					 saveAlertTrackingDetails(alertTrackingVO)	;
+				}
+			}
+			if(updateAlert > 0){
+				result ="success";
+			}
+		} catch (Exception e) {
+			LOG.error("error in updateActionableItemsToActionNotRequired() method",e);
+		}
+		return result;
 	}
 	
 	public ActionableVO setImpactId(Alert alert,ActionableVO VO){
