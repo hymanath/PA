@@ -15390,5 +15390,11 @@
 		</result>
 	</action>
 	
+	<action name="getOverAllDataVerificationDetailsAction" class="dataMonitoringAction"  method="getOverAllDataVerificationDetails">
+			<result type="json" name="success">
+			<param name="root">boothWiseDataMonitoringVO</param>      
+		</result>
+	</action>
+	
  </package>
 </struts>

@@ -871,6 +871,9 @@
 													<a href="webMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Web Monitoring DashBoard</span></a>
 												</li>
 											</c:if>
+											<li>
+												<a href="boothWiseDataMonitoringAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Booth Wise Data Monitoring</span></a>
+											</li>
 										 </ul>
 									</li>
 									</c:if>

@@ -19,8 +19,9 @@
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block">
 				<div class="row">
+					<div id="errMsgDivId" style="color:red;"></div>
 					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>SELECT DISTRICT<span style="color:red">*</span>&nbsp;&nbsp;<span style="color:red;" id="errMsgDivId"></span></label>
+                    	<label>SELECT DISTRICT<span style="color:red">*</span>&nbsp;&nbsp;</label>
 						<select class="form-control" id="districtId" onchange="getConstituencies(this.value)">
 						    <option value="0">Select District</option>
                         </select>
@@ -35,10 +36,32 @@
                     	<button class="btn btn-success text-capital" id="submitBtnId">submit</button>
 					</div>
 				</div>
+				<div class="row m_top20">
+					<div id="verifiactionDivId" style="display:none;">	
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="block bg_F4 pad_20" style="margin-left:20px; margin-right:15px;margin-top:7px;" id="dataverificationId">
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">total registrations : <span id="totalRegisteredId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verified passed : <span id="verPassedId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verifed - junck/rejected : <span id="verRejectedId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verification pending : <span id="verfPendingId"></span></h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>
 				<div class="row">
 					<img src="./images/icons/search.gif" id="populatingDtsDivImgId" style="margin-left:1070px; margin-top:6px;display:none;" />
-					<div class="m_top20 table-responsive" id="resultDivId"></div>
-			</div>
+					<div class="m_top20 table-responsive col-md-12 col-xs-12 col-sm-6" id="resultDivId"></div>
+				</div>
 			</div>
         </div> 
     </div>
@@ -51,7 +74,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" id="mainModelCloseId" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4>BOOTH WISE REGISTRATION DETAILS</h4>
+        <h4><span id="modalHeadingId" style="color:red"></span></h4>
         <!--<p id="userDescriptionId"><i>Rahul - 9984845464</i></p>-->
       </div>
       <div class="modal-body">  
@@ -206,11 +229,47 @@ function getConstituencies(districtId){
 	});
 }
 
+function getOverAllCounts(districtId,constituencyId){
+	var jsObj = { 
+		districtId :districtId,
+		constituencyId : constituencyId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getOverAllDataVerificationDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
+			$("#totalRegisteredId").html(result.totalCount);
+			$("#verfPendingId").html(result.pendingCount);
+			$("#verPassedId").html(result.approvedCount);
+			$("#verRejectedId").html(result.rejectedCount);
+			
+			$("#verifiactionDivId").show();
+		}
+	});
+}
+
 $(document).on("click","#submitBtnId",function(){
-	getReasons();
+	$("#errMsgDivId").html("");
+	$("#verifiactionDivId").hide();
+	$("#resultDivId").html("");
 	
 	var districtId = $("#districtId").val();
 	var constituencyId = $("#constituencyId").val();
+	
+	if(districtId == 0){
+		$("#errMsgDivId").html("Select District");
+		return;
+	}
+	if(constituencyId == 0){
+		$("#errMsgDivId").html("Select Constituency");
+		return;
+	}
+	
+	getOverAllCounts(districtId,constituencyId);
+	getReasons();
 	$("#populatingDtsDivImgId").show();
 	
 	var jsObj = { 
@@ -236,7 +295,7 @@ $(document).on("click","#submitBtnId",function(){
 function buildBoothWiseResult(result){
 	var str='';
 	
-	str+='<h4 style="margin-top : 10px;">BOOTH WISE REGISTRATION DETAILS</h4>';
+	str+='<h4 style="margin-top : 10px;color:red;"><b>BOOTH WISE REGISTRATION DETAILS<b></h4>';
 	str+='<table class="table table-bordered" id="boothWiseTableId">';
 		str+='<thead>';
 			str+='<th>Part No</th>';
@@ -264,7 +323,7 @@ function buildBoothWiseResult(result){
 					str+='<td>'+result[i].approvedCount+'</td>';
 					str+='<td>'+result[i].rejectedCount+'</td>';
 					str+='<td>'+result[i].pendingCount+'</td>';
-					str+='<td><button class="btn btn-info verifyCls" attr_boothId="'+result[i].boothId+'">Verify Records</button></td>';
+					str+='<td><button class="btn btn-info verifyCls" attr_boothId="'+result[i].boothId+'" attr_partNo="'+result[i].partNo+'">Verify Records</button></td>';
 				str+='</tr>';
 			}
 		str+='</tbody>';
@@ -307,10 +366,12 @@ $(document).on("click",".verifyCls",function(){
 	
 	$('input[name=fltrCls][value=Total]').prop('checked', 'checked');
 	var boothId = $(this).attr("attr_boothId");
+	var partNo = $(this).attr("attr_partNo");
 	var constituencyId = $("#constituencyId").val(); 
 	var resultType="All"
 	var verificationStatus = "Total";
 	
+	$("#modalHeadingId").html("PART NO :"+partNo+" REGISTRATION DETAILS");
 	$("#hiddenBoothId").val(boothId);
 	
 	getBoothWiseCadreDetails(boothId,constituencyId,resultType,verificationStatus);
@@ -1116,6 +1177,46 @@ function getReasons(){
 		}     
 	});
 }
+
+$(document).on('click','.changeImageBtnId',function(){  
+	var cadreId = $(this).attr("attr_cadre_id");
+	var distId = $(this).attr("attr_dist_id"); 
+	var constId = $(this).attr("attr_const_id");
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var tabUserInfoId = $(this).attr("attr_tab_user_id");
+	var status = $(this).attr("attr_status");
+	var divId = $(this).attr("attr_divId");
+	var loadingImgId = $(this).attr("attr_loading_img_id");
+	$("#"+divId).html("");
+	$(".successMsgCls").html("");
+	$("#"+loadingImgId).show();
+	  
+	var jsObj = {
+		cadreId :cadreId,
+		districtId : distId,
+		constitunecyId : constId ,
+		cadreUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		status : status
+	}
+	
+	$.ajax({
+		type:'GET',      
+		url: 'changeImageByVoterImageAction.action',      
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
+			if(result.message == "Updated Successfully")
+				$("#"+divId).html('<span style="color:green">'+result.message+'</span>');
+			else
+				$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		}
+		else
+			$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		$("#"+loadingImgId).hide();
+	});
+});
 
 $(document).on('click','.updateImageBtnId',function(){  
 	var cadreId = $(this).attr("attr_cadre_id");
