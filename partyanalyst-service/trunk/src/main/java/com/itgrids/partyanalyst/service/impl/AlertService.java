@@ -3673,7 +3673,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
    * santosh (non-Javadoc)
    * @see com.itgrids.partyanalyst.service.IAlertService#getAlertCategoryDtlsLocationWise(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
    */
- public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr) {
+ public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,Long alertType, Long editionTypeId) {
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Map<Long,AlertOverviewVO> categoryMap = new ConcurrentHashMap<Long, AlertOverviewVO>(0);
 	 Set<Long> locationValues = new HashSet<Long>(0);
@@ -3681,6 +3681,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
      Date fromDate=null;
      Date toDate = null;
+     List<Long> alertTypeList = new ArrayList<Long>();
+     List<Long> editionList = new ArrayList<Long>();
+     if(alertType != null){
+    	 if(alertType.longValue() == 0L){
+    	 }else{
+    		 alertTypeList.add(alertType);
+    	 }
+     }
+     if(editionTypeId != null){
+    	 if(editionTypeId.longValue() == 0L){
+    	 }else if(editionTypeId.longValue() == 1L){
+    		 editionList.add(editionTypeId);
+    	 }else if(editionTypeId.longValue() == 2L){  
+    		 editionList.add(editionTypeId);
+    		 editionList.add(3L);
+    	 }
+     }
 	 try{
 		 if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 			   fromDate = sdf.parse(fromDateStr);
@@ -3696,9 +3713,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 			  List<Object[]> rtrnAlertImpactLevelObjLst = alertImpactScopeDAO.getAllAlertImpactLevel();
 			  prepareTemplate(rtrnAlertCategoryObjLst,rtrnAlertImpactLevelObjLst,categoryMap);////Prepare Template 
-			  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate);
-			  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap);
-			  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate);
+			  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList);
+			  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap); 
+			  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList);
 			  setStatusWiseAlertCnt(rtrnImpctLvlSttusWsCntObjLst,categoryMap);
 			  
 			  // merge mandal,muncipality,Village And Ward data 
@@ -3712,8 +3729,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  mergeRequiredData(mandalMuncipalityVO,MuncipalityVO,4l,"Mandal/Muncipality");
 					  AlertOverviewVO villageVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 7l);
 					  AlertOverviewVO wardVO = getImpactLevelMatchVO(entry.getValue().getSubList(),9l);
+					  AlertOverviewVO panchayatVo = getImpactLevelMatchVO(entry.getValue().getSubList(),6l);
 					  mergeRequiredData(villageWardVO,villageVO,5l,"Village/Ward");
 					  mergeRequiredData(villageWardVO,wardVO,5l,"Village/Ward");
+					  mergeRequiredData(villageWardVO,panchayatVo,5l,"Village/Ward");
 					  entry.getValue().getSubList().remove(mandalVO);//removeMandalData
 					  entry.getValue().getSubList().remove(MuncipalityVO);//removemuncipalityData
 					  entry.getValue().getSubList().add(mandalMuncipalityVO);//adding mandalMucipality Merge Data
@@ -4665,10 +4684,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		return null;
 	}
- /*
-  * Author:santohsh
-  */
-  public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId){
+
+  public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
 		LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertService{}");
 		try{  
 			Date fromDate = null;          
@@ -4678,7 +4695,25 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			
+			List<Long> alertTypeList = new ArrayList<Long>();
+			List<Long> editionTypeList = new ArrayList<Long>();
+			if(alertTypeId != null){
+				if(alertTypeId.longValue() == 0L){
+					
+				}else{
+					alertTypeList.add(alertTypeId);
+				}
+			}
+			if(editionId != null){
+				if(editionId.longValue() == 0L){
+					
+				}else if(editionId.longValue() == 1L){
+					editionTypeList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionTypeList.add(editionId);
+					editionTypeList.add(3L);
+				}
+			}
 			Long userAccessLevelId = null;
 			List<Long> userAccessLevelValues = new ArrayList<Long>();
 			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
@@ -4689,7 +4724,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}  
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtId,catId);
+			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtId,catId,alertTypeList,editionTypeList);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
 			}catch(Exception e){  
