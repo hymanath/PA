@@ -910,7 +910,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}  
 		return query.list();  
 	}
-	public List<Object[]> getAlertDtls(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long userAccessLevelId, List<Long> userAccessLevelValues){
+	public List<Object[]> getAlertDtls(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");     
 		queryStr.append(" model.alertId, " +//0
@@ -924,8 +924,20 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertImpactScope.impactScope, " +//8
 						" model.title, " +//9
 						" constituency.name, " +//10
-						" district.districtName");//11       
+						" district.districtName," +//11
+						" alertSource.alertSourceId, " +//12
+						" alertSource.source," +//13
+						" editionType.editionTypeId, " +//14
+						" editionType.editionType, " +//15
+						" edition.editionId, " +//16
+						" edition.editionAlias, " +//17
+						" tvNewsChannel.tvNewsChannelId, " +//18
+						" tvNewsChannel.channelName ");//19
 		queryStr.append(" from Alert model " +
+						" left join model.alertSource alertSource " +
+		        		" left join model.editionType editionType " +
+		        		" left join model.edition edition " +
+		        		" left join model.tvNewsChannel tvNewsChannel "+
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
 						" left join userAddress.district district  " +
@@ -965,6 +977,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertCategoryId != null && alertCategoryId.longValue() > 0L){
 			queryStr.append(" and alertCategory.alertCategoryId = (:alertCategoryId) ");
 		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and editionType.editionTypeId in (:editionList) ");
+		}
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
@@ -992,7 +1007,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-		} 
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);
+		}
 		return query.list();
 	}
 	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, String nextLvlGroup,List<Long> alertType,List<Long> editionTypes){
@@ -1782,6 +1800,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    }
 	    return query.list();  
 	  }
+	
 	public List<Object[]> getAlertDtlsForPubRep(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate, Long publicRepresentativeTypeId, Long cadreId, Long statusId){
 	    StringBuilder queryStr = new StringBuilder();      
 	    queryStr.append(" select distinct ");     
@@ -1796,11 +1815,23 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertImpactScope.impactScope, " +//8
 						" alert.title, " +//9
 						" constituency.name, " +//10
-						" district.districtName ");//11         
-	   			
+						" district.districtName, "+//11
+					 	 " alertSource.alertSourceId, " +//1
+						 " alertSource.source," +//2
+						 " editionType.editionTypeId, " +//3
+						 " editionType.editionType, " +//4
+						 " edition.editionId, " +//5
+						 " edition.editionAlias, " +//6
+						 " tvNewsChannel.tvNewsChannelId, " +//7
+						 " tvNewsChannel.channelName " );//8
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
+	                	 " left join alert.alertCategory alertCategory " +
+	    	   			 " left join alert.alertSource alertSource " +
+	    	   			 " left join alert.editionType editionType " +
+	    	   			 " left join alert.edition edition " +
+	    	   			 " left join alert.tvNewsChannel tvNewsChannel "+
 	                	" left join alert.alertStatus alertStatus " +
 	                	" left join alert.alertCategory alertCategory " +
 	                	" left join alert.alertImpactScope alertImpactScope " +
@@ -2023,10 +2054,22 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertImpactScope.impactScope, " +//8
 						" alert.title, " +//9
 						" constituency.name, " +//10
-						" district.districtName ");//11 
-		
+						" district.districtName, "+//11 
+						 " alertSource.alertSourceId, " +//12
+						 " alertSource.source," +//13
+						 " editionType.editionTypeId, " +//14
+						 " editionType.editionType, " +//15
+						 " edition.editionId, " +//16
+						 " edition.editionAlias, " +//17
+						 " tvNewsChannel.tvNewsChannelId, " +//18
+						 " tvNewsChannel.channelName ");//19
 		queryStr.append(" from AlertAssigned model " +   
 						" left join model.alert alert " +
+						 " left join alert.alertCategory alertCategory " +
+			   			 " left join alert.alertSource alertSource " +
+			   			 " left join alert.editionType editionType " +
+			   			 " left join alert.edition edition " +
+			   			 " left join alert.tvNewsChannel tvNewsChannel "+
 		            	" left join alert.alertStatus alertStatus " +
 		            	" left join alert.alertCategory alertCategory " +
 		            	" left join alert.alertImpactScope alertImpactScope " +
@@ -2047,7 +2090,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" and model1.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId " +
 	                	" and alert.isDeleted = 'N' and model.isDeleted='N' " +
 	                	" and alert.alertType.alertTypeId not in (2) " +  
-	                	" and alertStatus.alertStatusId not in (1) "); 
+	                	" and alertStatus.alertStatusId not in (1) ");
 		if(statusId != null && statusId.longValue() > 0l){  
 			queryStr.append(" and alertStatus.alertStatusId=:statusId ");  
 		}
@@ -2109,6 +2152,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 	    return query.list();
 	}
+	
 	public List<Object[]> getAlertDetailsByCadreWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long tdpCadreId,Long statusId,String resultType){
 		
 		StringBuilder queryStr = new StringBuilder();      
@@ -2124,11 +2168,23 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertImpactScope.impactScope, " +//8
 						" alert.title, " +//9
 						" constituency.name, " +//10
-						" district.districtName ");//11         
-	   			
+						" district.districtName, "+//11         
+					 	" alertSource.alertSourceId, " +//1
+						 " alertSource.source," +//2
+						 " editionType.editionTypeId, " +//3
+						 " editionType.editionType, " +//4
+						 " edition.editionId, " +//5
+						 " edition.editionAlias, " +//6
+						 " tvNewsChannel.tvNewsChannelId, " +//7
+						 " tvNewsChannel.channelName ");//8
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
+	                	 " left join alert.alertCategory alertCategory " +
+	    	   			 " left join alert.alertSource alertSource " +
+	    	   			 " left join alert.editionType editionType " +
+	    	   			 " left join alert.edition edition " +
+	    	   			 " left join alert.tvNewsChannel tvNewsChannel  "+
 	                	" left join alert.alertStatus alertStatus " +
 	                	" left join alert.alertCategory alertCategory " +
 	                	" left join alert.alertImpactScope alertImpactScope " +
@@ -2199,6 +2255,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    }
 	    return query.list();  
 	}
+	//abcd
 public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long districtId,Long catId){
 		
 		StringBuilder queryStr = new StringBuilder();      
@@ -2214,10 +2271,23 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" alertImpactScope.impactScope, " +//8
 						" model.title, " +//9
 						" constituency.name, " +//10
-						" district.districtName ");//11         
+						" district.districtName, "+//11  
+						" alertSource.alertSourceId, " +//1
+						 " alertSource.source," +//2
+						 " editionType.editionTypeId, " +//3
+						 " editionType.editionType, " +//4
+						 " edition.editionId, " +//5
+						 " edition.editionAlias, " +//6
+						 " tvNewsChannel.tvNewsChannelId, " +//7
+						 " tvNewsChannel.channelName " );//8
 	   			
 	    queryStr.append(" from " +
 	                	" Alert model " +
+	                	" left join model.alertCategory alertCategory " +
+	   	   			 	" left join model.alertSource alertSource " +
+	   	   			 	" left join model.editionType editionType " +
+	   	   			 	" left join model.edition edition " +
+	   	   			 	" left join model.tvNewsChannel tvNewsChannel "+
 	                	" left join model.alertStatus alertStatus " +
 	                	" left join model.alertCategory alertCategory " +
 	                	" left join model.alertImpactScope alertImpactScope " +
@@ -2319,7 +2389,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
    public Object[] getSourceDtlsByAlertId(Long alertId){
 	   StringBuilder sb = new StringBuilder();
 	   sb.append(" select " +
-	   			 " alertCategory.alertCategoryId, " +//0
+			   	 " alertCategory.alertCategoryId, " +//0
 	   			 " alertSource.alertSourceId, " +//1
 	   			 " alertSource.source," +//2
 	   			 " editionType.editionTypeId, " +//3
