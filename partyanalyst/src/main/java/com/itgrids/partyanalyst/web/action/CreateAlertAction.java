@@ -18,6 +18,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
+import com.itgrids.partyanalyst.model.AlertClarificationComments;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -64,6 +66,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String clarificationComments;
 	private String clarificationRadioName;
 	private AlertClarificationVO alertClarificationVO;
+	
 	
 	
 	

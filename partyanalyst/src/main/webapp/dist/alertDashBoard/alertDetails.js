@@ -7,7 +7,6 @@ getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
 getAlertAssignedCandidate(alertId);
-getClarificationDetails(alertId);
 $(document).on("click",".assignModel",function(){
 	clearAssignFields();
 	$("#ModalShow").modal('show');
@@ -67,8 +66,7 @@ function getAlertData()
 					  url: 'getAlertsDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					if(result != null)
-						buildAlertData(result);
+			      buildAlertData(result);
 				});
 }
 
@@ -1266,63 +1264,4 @@ function getMonth(month){
 	}else if(month=="12"){  
 		return "Dec"
 	}  
-}	
-$(document).on("click","#clarifiReqId",function(){
-		$("#clarfCommentsDivId").show();
-		$("#clarReqDivId").hide();
-});
-
-	var fileNum=0;
-	$(document).on("click","#addFile",function(){
-		$(this).closest(".panelHeights").removeAttr("style")
-		fileNum = fileNum+1;
-		var c = $(".cloneFileCls").clone(true);
-		c.removeAttr("style");
-		c.attr("id","uploadFileId"+fileNum);
-		c.attr("name","imageForDisplay");
-		c.removeAttr("class").addClass("btn btn-mini");
-		$("#extraUploadFileDiv").append(c);
-	});
-	
-	$('input[name="clarificationRadioName"]').on('change', function(){
-        $(this).prop('checked', true);
-    });
-	
-	function getClarificationDetails(alertId){
-		var jsObj={
-    		alertId:alertId
-    	}
-			
-		$.ajax({
-			type : 'GET',
-			url : 'getClarificationDetailsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			if(result != null){
-				$("input[name='clarificationRadioName'][value=" +result.clarificationRequired+"]").attr('checked', 'checked');
-				if(result.clarificationRequired == "Y"){
-					$("#clarfCommentsDivId").show();
-					$("#clarificationStatusSelId").val(result.clarificationStatusId);
-					if(result.clarificationComments != null && result.clarificationComments.length > 0){
-						var str='';
-						str+='<ul>';
-						for(var i in result.clarificationComments){
-							str+='<li attr_id="'+result.clarificationComments[i].id+'">'+result.clarificationComments[i].name+'</li>';
-						}
-						str+='</ul>';
-						$("#existingCommentsDivId").html(str);
-					}
-					if(result.documentsList != null && result.documentsList.length > 0){
-						var str='';
-						str+='<ul>';
-						for(var i in result.documentsList){
-							str+='<li attr_id="'+result.clarificationComments[i].id+'">'+result.clarificationComments[i].name+'</li>';
-						}
-						str+='</ul>';
-						$("#existingDocumentsDivId").html(str);
-					}
-				}
-			}
-		});
-	}
+}
