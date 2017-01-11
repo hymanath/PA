@@ -3531,6 +3531,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				  VO.setTourDate(VO.getTourDate()+"-"+commonMethodsUtilService.getStringValueForObject(param[8]));
 				  VO.setCount(commonMethodsUtilService.getLongValueForObject(param[9]));
 				  VO.setFilePath(monthWiseCandiateDocMap.get(monthYearId));
+				  VO.setId(monthYearId);
 				  dateWiseTourDtlsList.add(VO);
 			  }
 		  }
