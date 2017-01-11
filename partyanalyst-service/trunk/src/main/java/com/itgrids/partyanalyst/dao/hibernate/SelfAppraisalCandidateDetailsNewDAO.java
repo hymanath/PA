@@ -18,7 +18,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		super(SelfAppraisalCandidateDetailsNew.class);
 	}
 	
-	 public List<Object[]> getCategoryWiseTourSubmittedLeader(Date fromDate,Date toDate,String type,List<Long> monthYearIds,Set<Long> candiateIds){
+	 public List<Object[]> getCategoryWiseTourSubmittedLeader(String type,List<Long> monthYearIds,Set<Long> candiateIds){
 		 
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select " +
