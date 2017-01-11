@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -28,4 +29,6 @@ public interface IDataMonitoringService {
 	public ResultStatus changeImageByVoterImage(List<IdNameVO> idNameVOs);
 	public ResultStatus changeCadreImageByVoterImage(Long tdpCadreId);
 	public String updateRejectedImages(List<IdNameVO> idNameVOs);
+	public List<IdAndNameVO> getDistrictList(Long stateId);
+	public List<IdAndNameVO> getConstitencysByDistricts(Long districtId,Long stateId);
 }
