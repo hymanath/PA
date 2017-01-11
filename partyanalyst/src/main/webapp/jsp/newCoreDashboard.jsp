@@ -3475,6 +3475,12 @@
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertDestId"></div>
 					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="sourceHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="headingNameId"></div>
+					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
 						<div id="alertAttachTitId"></div>    
 					</div> 
