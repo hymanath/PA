@@ -1867,7 +1867,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 {
 	color:#333;
 	background-color:#A185BF;
-	text-transform: uppercase
+	text-transform: uppercase;
+	font-size:12px;
+	padding:12px;
+	border-radius:0px;
 }
 .alertCommentUl li.active a
 {
@@ -1881,28 +1884,29 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .assignedCandidatesUl
 {
-	border:1px solid #eee;
+	border:1px solid #d3d3d3;
 	padding: 5px 0px;
 }
 .assignedCandidatesUl li
 {
-	padding:5px;
-	padding-right: 20px;
+	padding:6px 20px 6px 10px;
 	border-right: 1px solid #ddd;
+	min-height:100px;
 }
+
 assignedCandidatesUl li:last-child
 {
 	border-right: 0px;
 }
 .assignedCandidatesUl1
 {
-	border:1px solid #eee;
+	border:1px solid #d3d3d3;
 	padding: 5px 0px;
+	min-height:90px;
 }
 .assignedCandidatesUl1 li  
 {
-	padding:5px;
-	padding-right: 20px;
+	padding:6px 20px 6px 10px;
 	border-right: 1px solid #ddd;
 }
 assignedCandidatesUl1 li:last-child
@@ -2130,7 +2134,7 @@ border: 1px solid #c5c5c5 !important;
 }
 .alertsArrow:after, .alertsArrow:before {
 	top: 184%;
-	left: 50%;
+	left: 43%;
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -2167,6 +2171,49 @@ border: 1px solid #c5c5c5 !important;
 	margin-left: -8px;
 }
 .table tr td div.alertsArrow:before {
+	border-width: 9px;
+	margin-left: -9px;
+}
+
+.alertsArrowLow {
+	position: relative;
+	background: #EDEDED;
+	border: 1px solid #D5D5D5;
+}
+.alertsArrowLow:before {
+	top: 184%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+
+.alertsArrowLow:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #D5D5D5;
+	
+	margin-left: -11px;
+}
+.alertOverViewDetailsLowCls
+{
+	cursor:pointer;
+}
+.table tr td div.alertsArrowLow
+{
+	background-color:#D5D6D8
+}
+.table tr td div.alertsArrowLow:after, .table tr td div.alertsArrowLow:before {
+	top: 90%;
+}
+.table tr td div.alertsArrowLow:after {
+	border-width: 8px;
+	margin-left: -8px;
+}
+.table tr td div.alertsArrowLow:before {
 	border-width: 9px;
 	margin-left: -9px;
 }
