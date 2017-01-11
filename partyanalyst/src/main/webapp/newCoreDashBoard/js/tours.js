@@ -2521,10 +2521,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			for(var i in result){
 				var str='';
 				var length = result
-				//if($(window).width() < 800)
-				//{  
+				if($(window).width() < 800)
+				{  
 					str+='<div class="table-responsive">'
-				//}
+				}
 					str+='<table class="table table-bordered borderedWeight" id="dataTableApplyAveragePerf'+i+'">';
 					str+='<thead class="bg_D8">';
 						str+='<tr>';
@@ -2628,10 +2628,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								str+='</tbody>';
 								
 					str+='</table>';
-				//if($(window).length < 800)
-				//{
+				if($(window).length < 800)
+				{
 					str+='</div>';
-				//}
+				}
 				
 				$("#toursPerformanceBlocks"+i).html(str);
 					       var stateSliderval;
@@ -2660,16 +2660,30 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					"iDisplayLength" : 10	
 				 });
 				$('#dataTableApplyAveragePerf'+i).removeClass("dataTable");
-				$(".scrollApplyDiv").each(function(){
+				if($(window).length < 800){
+					$(".scrollApplyDiv").each(function(){
 					var scrollengthDiv = $(this).find("tr").length;
-					if(scrollengthDiv >= 5){
-						$(".verticalScrollBar").mCustomScrollbar({setHeight:'240px'})
+					if(scrollengthDiv >= 3){
+						$(".verticalScrollBar").mCustomScrollbar({setHeight:'150px'})
 						
 					}else{
 						$(".verticalScrollBar").css("height","auto");
 					
 					}
-				});
+				}); 
+				}else{
+					$(".scrollApplyDiv").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 5){
+						$(".verticalScrollBar").mCustomScrollbar({setHeight:'250px'})
+						
+					}else{
+						$(".verticalScrollBar").css("height","auto");
+					
+					}
+				}); 
+				}
+				 
 			}
 		}
 	}
@@ -2684,10 +2698,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 						}
 						var str='';
 						var length = result
-							//if($(window).width() < 800)
-							//{
+							if($(window).width() < 800)
+							{
 								str+='<div class="table-responsive">';
-							//}
+							}
 							str+='<table class="table table-bordered borderedWeight" id="dataTable'+divId+'">';
 							str+='<thead class="bg_D8">';
 								str+='<tr>';
@@ -2795,10 +2809,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										str+='</tbody>';
 										
 							str+='</table>';
-						  //if($(window).width() < 800)
-							//{
+						  if($(window).width() < 800)
+							{
 								str+='</div>';
-							//}
+							}
 						$("#"+divId).html(str);
 					}
 				}else{
@@ -2809,7 +2823,19 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				"iDisplayLength" : 10	
 			 });
 			 $("#dataTable"+divId).removeClass("dataTable"); 
-			 $(".scrollApplyDiv1").each(function(){
+			 if($(window).length < 800){
+				 $(".scrollApplyDiv1").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 3){
+						$(".verticalScrollBar1").mCustomScrollbar({setHeight:'150px'})
+						
+					}else{
+						$(".verticalScrollBar1").css("height","auto");
+					
+					}
+				}); 
+			 }else{
+				 $(".scrollApplyDiv1").each(function(){
 					var scrollengthDiv = $(this).find("tr").length;
 					if(scrollengthDiv >= 5){
 						$(".verticalScrollBar1").mCustomScrollbar({setHeight:'250px'})
@@ -2818,7 +2844,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 						$(".verticalScrollBar1").css("height","auto");
 					
 					}
-				});
+				}); 
+			 }
+			 
 		} 
 		
 	function getIndividualPersonTourDetails(value)
@@ -2990,7 +3018,9 @@ function buildTourMemberDetails(result){
           str1+='</div>';
           str1+='<div class="panel-body">';
             str1+='<div class="row">';
+			  str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
               str1+='<div id="tourMemberDtls'+i+'"></div>';
+			   str1+='</div>';
             str1+='</div>';
           str1+='</div>';
         str1+='</div>';
@@ -3006,10 +3036,11 @@ function buildTourMemberDetails(result){
 	  }
         var str='';
         var length = result
-	    if($(window).width() < 500)
+	    if($(window).width() < 800)
 		{
 			str+='<div class="table-responsive">';
 		}
+		
           str+='<table class="table table-bordered borderedWeight" id="tourDetailsDataTabelId">';
           str+='<thead class="bg_D8">';
             str+='<tr>';
@@ -3110,9 +3141,9 @@ function buildTourMemberDetails(result){
                 str+='</tbody>';
                 
           str+='</table>';
-              if($(window).width() < 500)
+              if($(window).width() < 800)
 			{
-				str+='</div">';
+				str+='</div>';
 			 }
         $("#tourMemberDtls"+i).html(str);
 	 	$("#tourDetailsDataTabelId").dataTable({
@@ -3122,8 +3153,20 @@ function buildTourMemberDetails(result){
 		$('#tourDetailsDataTabelId').removeClass("dataTable");
 		
 		
-		
-		  $(".scrollApplyDiv2").each(function(){
+		if($(window).width() < 800)
+			{
+				$(".scrollApplyDiv2").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 3){
+						$(".verticalScrollBar2").mCustomScrollbar({setHeight:'150px'})
+						
+					}else{
+						$(".verticalScrollBar2").css("height","auto");
+					
+					}
+				}); 
+			}else{
+				$(".scrollApplyDiv2").each(function(){
 					var scrollengthDiv = $(this).find("tr").length;
 					if(scrollengthDiv >= 5){
 						$(".verticalScrollBar2").mCustomScrollbar({setHeight:'240px'})
@@ -3133,6 +3176,8 @@ function buildTourMemberDetails(result){
 					
 					}
 				}); 
+			}
+		  
 		}
     }
   }
