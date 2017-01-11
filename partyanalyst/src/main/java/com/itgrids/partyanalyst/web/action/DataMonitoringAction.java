@@ -670,4 +670,25 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   }
 		   return Action.SUCCESS;
 	   }
+	   public String getDistrictList(){
+		   try{
+			   jObj = new JSONObject(getTask());
+			   idAndNameVOList = dataMonitoringService.getDistrictList(jObj.getLong("stateId"));
+		   }catch(Exception e){
+			   LOG.error("Exception raised at getDistrictList()  of DataMonitoringAction", e); 
+		   }
+		   return Action.SUCCESS;
+	   }
+	   public String getConstituencyList(){
+		   try{
+			   jObj = new JSONObject(getTask());
+			   idAndNameVOList = dataMonitoringService.getConstitencysByDistricts(jObj.getLong("districtId"),jObj.getLong("stateId"));
+		   }catch(Exception e){
+			   LOG.error("Exception raised at getConstituencyList()  of DataMonitoringAction", e); 
+		   }
+		   return Action.SUCCESS;
+	   }
+	   public String boothWiseDataMonitoring(){
+		   return Action.SUCCESS;
+	   }
 }
