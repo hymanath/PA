@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
@@ -795,6 +796,116 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 					" where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and model.tdpCadreId in (:tdpCadreIds) " +
 					" group by model.tdpCadreId order by model.enrollmentYearId desc ");
 			query.setParameterList("tdpCadreIds", tdpCadreIds);
+			return query.list();
+		}
+		
+		public List<Object[]> getBoothWiseCadreRegistrationCounts(Long districtId,Long constituencyId){
+			   StringBuilder sb = new StringBuilder();
+			   
+			   sb.append("select model.tdpCadre.cadreVerificationStatusId," +	//0
+			   					" model.tdpCadre.userAddress.booth.boothId," +	//1
+			   					" model.tdpCadre.userAddress.booth.partNo," +	//2
+			   					" tehsil.tehsilId,tehsil.tehsilName," +			//3,4
+			   					" localElectionBody.localElectionBodyId,localElectionBody.name," +	//5,6
+			   					" panc.panchayatId,panc.panchayatName," +		//7,8
+			   					" count(distinct model.tdpCadre.tdpCadreId)" +	//9
+			   					" from TdpCadreEnrollmentYear model" +
+			   					" left join model.tdpCadre.userAddress.panchayat panc" +
+			   					" left join model.tdpCadre.userAddress.tehsil tehsil" +
+			   					" left join model.tdpCadre.userAddress.localElectionBody localElectionBody" +
+			   					" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+			   					" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
+			   if(districtId != null && districtId.longValue() > 0l)
+				   sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
+			   if(constituencyId != null && constituencyId.longValue() > 0l)
+				   sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
+			   
+			   sb.append(" group by model.tdpCadre.cadreVerificationStatusId,model.tdpCadre.userAddress.booth.boothId" +
+			   					" order by model.tdpCadre.cadreVerificationStatusId,model.tdpCadre.userAddress.booth.boothId");
+			   
+			   Query query = getSession().createQuery(sb.toString());
+			   if(districtId != null && districtId.longValue() > 0l)
+				   query.setParameter("districtId", districtId);
+			   if(constituencyId != null && constituencyId.longValue() > 0l)
+				   query.setParameter("constituencyId", constituencyId);
+			   
+			   return query.list();
+		   }
+		
+		public List<Object[]> getBoothWiseRegisteredMemberDetails(Long boothId,Long constituencyId,String status,String verificationStatus){
+			StringBuilder sb = new StringBuilder();
+			sb.append("select distinct TC.tdp_cadre_id as cadreId, " +  //0
+							" TC.first_name as name ," +	//1
+							" TC.mobile_no as mobile ," +	//2
+							" TC.gender as sex ," +//3
+							" TC.image as image ," +//4
+							" V.voter_id as voterId," +//5
+							" V.image_path as voterImage ," +//6
+							" CVS.cadre_verification_status_id as statusId," +//7
+							" CVS.status as status , "+//8
+							" DRR.data_reject_reason_id as reasonId," +//9
+							" DRR.reject_reason as reason," +//10 
+							" UA.constituency_id as constituencyId," +//11 
+							" UA.district_id as districtId," +//12 
+							" TC.updated_by as cadreSurveyUserId," +//13
+							" TC.tab_user_info_id as tabUserInfoId " +
+							" from tdp_cadre_enrollment_year TCEY,tdp_cadre TC" +
+							" left join tdp_cadre_data_verification TCDV on TC.tdp_cadre_id = TCDV.tdp_cadre_id" +
+							" left join data_reject_reason DRR on TCDV.data_reject_reason_id = DRR.data_reject_reason_id" +
+							" left join cadre_verification_status CVS on TC.cadre_verification_status_id = CVS.cadre_verification_status_id," +
+							" voter V,user_address UA" +
+							" where TCEY.tdp_cadre_id = TC.tdp_cadre_id" +
+							" and TC.address_id = UA.user_address_id" +
+							" and TCEY.is_deleted = 'N' and TCEY.enrollment_year_id = 4" +
+							" and TC.is_deleted = 'N' and TC.enrollment_year = 2014");
+			
+			if(status != null && status.equalsIgnoreCase("family"))
+				sb.append(" and TC.family_voterId = V.voter_id and TC.voter_id is null");
+			else
+				sb.append(" and TC.voter_id = V.voter_id and TC.voter_id is not null");
+				
+			if(constituencyId != null && constituencyId.longValue() > 0l)
+				sb.append(" and UA.constituency_id = :constituencyId");
+			if(boothId != null && boothId.longValue() > 0l)
+				sb.append(" and UA.booth_id = :boothId");
+			
+			if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved"))
+				sb.append(" and CVS.cadre_verification_status_id=1");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected"))
+				sb.append(" and CVS.cadre_verification_status_id=2");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending"))
+				sb.append(" and CVS.cadre_verification_status_id is null");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Verified"))
+				sb.append(" and CVS.cadre_verification_status_id is not null");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("ImageNotMatched"))
+				sb.append(" and DRR.data_reject_reason_id = 1");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("ImproperImage"))
+				sb.append(" and DRR.data_reject_reason_id = 2");
+			else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("NoImage"))
+				sb.append(" and DRR.data_reject_reason_id = 3");
+			
+			Query query = getSession().createSQLQuery(sb.toString())
+					.addScalar("cadreId", Hibernate.LONG)
+					.addScalar("name", Hibernate.STRING)
+					.addScalar("mobile", Hibernate.STRING)
+					.addScalar("sex", Hibernate.STRING)
+					.addScalar("image", Hibernate.STRING)
+					.addScalar("voterId", Hibernate.LONG)
+					.addScalar("voterImage", Hibernate.STRING)
+					.addScalar("statusId", Hibernate.LONG)
+					.addScalar("status", Hibernate.STRING)
+					.addScalar("reasonId", Hibernate.LONG)
+					.addScalar("reason", Hibernate.STRING)
+					.addScalar("constituencyId", Hibernate.LONG)
+					.addScalar("districtId", Hibernate.LONG)
+					.addScalar("cadreSurveyUserId", Hibernate.LONG)
+					.addScalar("tabUserInfoId", Hibernate.LONG);
+			
+			if(constituencyId != null && constituencyId.longValue() > 0l)
+				query.setParameter("constituencyId", constituencyId);
+			if(boothId != null && boothId.longValue() > 0l)
+				query.setParameter("boothId", boothId);
+			
 			return query.list();
 		}
 }
