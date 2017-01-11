@@ -19,7 +19,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
-@Table(name="party_meeting_status")
+//@Table(name="party_meeting_status")
+@Table(name="party_meeting_status1")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyMeetingStatus {
 	
