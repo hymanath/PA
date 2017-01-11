@@ -2031,6 +2031,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 //Get month year ids based on month year 
 		 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 		 
+		 if(monthyearIds != null && monthyearIds.size() == 0){//return when data is not there selfAppraisalToursMonth Table
+			return resultVO; 
+		 }
+		 
 		 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
 		 setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
 		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
@@ -2568,6 +2572,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   //Get month year ids based on month year 
 		  List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 		  
+		     if(monthyearIds != null && monthyearIds.size() == 0){ // return when data is not there selfAppraisalToursMonth Table
+				return resultList; 
+			 }
+		  
 		   List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
 		   setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
 		   List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
@@ -2740,6 +2748,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
 		   //Get month year ids based on month year 
 		  List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+		  
+		  if(monthyearIds != null && monthyearIds.size() == 0){ // return when data is not there selfAppraisalToursMonth Table
+				return resultList; 
+		  }
 		  
 		   List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
 		   setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
