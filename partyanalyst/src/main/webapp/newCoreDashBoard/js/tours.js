@@ -3046,6 +3046,7 @@ function buildTourMemberDetails(result){
           str1+='</div>';
         str1+='</div>';
       str1+='</div>';
+      str1+='</div>';
       }
       $("#tourDetailsDivId").html(str1);
     }
