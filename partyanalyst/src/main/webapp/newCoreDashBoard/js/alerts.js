@@ -495,7 +495,7 @@
 		var alertCount = $(this).attr("attr_count");  
 		getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount);
 		
-	});
+	});  
 	
 	function getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount){
 		$("#tourDocumentBodyId").html("");           
@@ -668,6 +668,8 @@
 		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><br><h5 class='text-capital'>"+result[0].title+"</h5>");
 		$("#cdrModelId").html("<h5 class='text-muted'>ALERT DESCRIPTION</h5>");
 		$("#alertDestId").html(result[0].desc);
+		$("#sourceHeadingId").html("<h5 class='text-muted m_top10'>ALERT SOURCE</h5>");
+		$("#headingNameId").html(result[0].alertSource);
 		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
 			$("#alertAttachTitId").html("<h5  class='text-muted'>ALERT ATTACHMENTS</h5>");
 			var imgStr = '';
@@ -3223,14 +3225,18 @@ function getTotalArticledetails(articleId){
 				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="1">'+totalMainCount+'</p></td>';
 				str+='<td><p style="font-size:13px;" class="text-muted">District</p>';
 				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="2">'+totalDistCount+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></td>';
+				if(!(result.overAllVO.partyAlertCnt == 0)){
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></td>';
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></td>';
+				}
+				if(!(result.overAllVO.govtAlertCnt == 0)){
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></td>';
+					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></td>';
+				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
 					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
 					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></td>';
@@ -3260,12 +3266,14 @@ function getTotalArticledetails(articleId){
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
 									str+='<table class="table table-bordered">';
+										
 										str+='<tr>';
 											str+='<td colspan="2">';
 												str+='<h4>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
 											str+='</td>';
 										str+='</tr>';
+									  
 										if(alertEdition == 0){
 											str+='<tr>';
 												str+='<td>';
@@ -3294,7 +3302,7 @@ function getTotalArticledetails(articleId){
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<h4 class="panel-title text-capital">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 							str+='</div>';
-							if(alertEdition == 0){
+							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="pad_15 bg_ED m_top10">';
 										str+='<div class="row">';
@@ -3307,14 +3315,15 @@ function getTotalArticledetails(articleId){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-							}
+							}  
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="pad_5 bg_ED">';
 									str+='<table class="table">';
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-									
+											if(result.categoryList[i].statusList[j].statusTypeId == 7)
+												continue;
 											str+='<td>';
 												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusType+'</p>';
 											str+='</td>';
@@ -3323,6 +3332,8 @@ function getTotalArticledetails(articleId){
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
+											if(result.categoryList[i].statusList[j].statusTypeId == 7)
+												continue;
 											str+='<td>';
 												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 											str+='</td>';
