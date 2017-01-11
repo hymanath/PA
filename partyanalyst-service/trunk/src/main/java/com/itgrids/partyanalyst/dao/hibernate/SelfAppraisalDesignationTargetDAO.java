@@ -152,7 +152,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
     	    	
     }
     
-    public List<Object[]> getDesignationAndCategoryWiseCandidatesTarget(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId){
+    public List<Object[]> getDesignationAndCategoryWiseCandidatesTarget(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId,List<Long> monthyearIds){
         StringBuilder queryStr = new StringBuilder();
          queryStr.append(" select " +
 		 " model2.selfAppraisalCandidateId,");
@@ -163,11 +163,19 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
         	 queryStr.append(" model.tourType.tourTypeId," +
         			         " model.tourType.tourType," );
         }
-		 queryStr.append(" sum(model.targetDays) " +
-		 " from SelfAppraisalDesignationTarget model,SelfAppraisalCandidate model2 " +
+		 queryStr.append(" sum(model.targetDays) " );
+		 if(monthyearIds !=null && monthyearIds.size()>0){
+			// queryStr.append(", model.selfAppraisalToursMonth.selfAppraisalToursMonthId ");
+		 }
+		 
+		 queryStr.append("  from SelfAppraisalDesignationTarget model,SelfAppraisalCandidate model2 " +
 		 " where model.selfAppraisalDesignation.selfAppraisalDesignationId=model2.selfAppraisalDesignation.selfAppraisalDesignationId" +
 		 " and model.isActive='Y' " +
 		 " and model.selfAppraisalDesignation.isActive='Y' ");
+		 
+		 if(monthyearIds !=null && monthyearIds.size()>0){
+				queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+		 }
 		 
 		 if(fromDate != null && toDate != null){
       	   queryStr.append(" and date(model.startTime)<=:fromDate");
@@ -194,6 +202,10 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
       }else{
          queryStr.append(",model.tourType.tourTypeId");   
        }
+	  if(monthyearIds !=null && monthyearIds.size()>0){
+			//queryStr.append(" ,model.selfAppraisalToursMonth.selfAppraisalToursMonthId ");
+	 }
+	  
 	   Query query = getSession().createQuery(queryStr.toString());
 	   if(fromDate != null){
     	   query.setParameter("fromDate", fromDate);
@@ -207,6 +219,10 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
        if(candidateId !=null && candidateId>0l){
     	   query.setParameter("candidateId", candidateId); 
        }
+       if(monthyearIds !=null && monthyearIds.size()>0){
+    	   query.setParameterList("monthyearIds", monthyearIds); 
+	 }
+       
        return query.list();
 }
     
@@ -260,6 +276,35 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
        }
        return query.list();
     }
+    
+
+    
+    /**
+	  * @author Srishailam Pittala
+	  * date: 7th Jan, 2017
+	  * desc: To get total Tours Details for a designations
+	  */
+    
+    public List<Object[]> getToursDetailsforDesignation(List<String> monthYearStrList, Long designationId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append("");
+    	queryStr.append(" select distinct selfAppraisalTourCategory.selfAppraisalTourCategoryId, selfAppraisalTourCategory.tourCategory ," +
+    			" selfAppraisalDesignationId, model.selfAppraisalDesignation.designation, sum(model.targetDays) from " +
+    			" SelfAppraisalDesignationTarget model  " +
+    			" left join model.selfAppraisalTourCategory selfAppraisalTourCategory  " +
+    			" where model.selfAppraisalDesignationId =:designationId ");
+    	if(monthYearStrList != null && monthYearStrList.size()>0)
+    		queryStr.append(" and model.selfAppraisalToursMonth.toursMonth in (:monthYearStrList) ");
+    	queryStr.append(" group by selfAppraisalTourCategory.selfAppraisalTourCategoryId,model.selfAppraisalDesignationId ");
+    	Query query = getSession().createQuery(queryStr.toString());
+
+    	query.setParameter("designationId", designationId);
+    	if(monthYearStrList != null && monthYearStrList.size()>0)
+    		query.setParameterList("monthYearStrList", monthYearStrList);
+    	return query.list();
+    }
+ 
+    
     public List<Object[]> getCategoryWiseTargetCnt(Date fromDate,Date toDate,String type,List<Long> desinationIds){
         StringBuilder queryStr = new StringBuilder();
         queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +

@@ -17,15 +17,21 @@ public class SelfAppraisalTourCategoryDAO extends GenericDaoHibernate<SelfApprai
 	
 	public List<Object[]> getAllTourCategorys(Long cadreId,Long designationId){
 		
-		Query query = getSession().createQuery(" SELECT distinct model1.selfAppraisalTourCategory.selfAppraisalTourCategoryId,model1.selfAppraisalTourCategory.tourCategory " +
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("SELECT distinct model1.selfAppraisalTourCategory.selfAppraisalTourCategoryId,model1.selfAppraisalTourCategory.tourCategory " +
 				"  FROM SelfAppraisalCandidate model,SelfAppraisalDesignationTarget model1  " +
 				"  WHERE model.selfAppraisalDesignationId = model1.selfAppraisalDesignationId " + 
 				" and model.isActive ='Y' and model1.isActive='Y' " +
-				" and model.tdpCadreId=:cadreId" +
-				" and model.selfAppraisalDesignationId = :designationId  " );
+				" and model.tdpCadreId=:cadreId ");
+		if(designationId != null && designationId.longValue()>0L)
+			queryStr.append(" and model.selfAppraisalDesignationId = :designationId ");
+		
+		Query query = getSession().createQuery(queryStr.toString()+" order by model1.selfAppraisalTourCategory.tourCategory " );
 		
 		query.setParameter("cadreId", cadreId);
-		query.setParameter("designationId", designationId);
+		
+		if(designationId != null && designationId.longValue()>0L)
+			query.setParameter("designationId", designationId);
 		
 		return query.list();
 	}
