@@ -471,7 +471,7 @@ function buildBoothWiseDetails(result,resultType){
 		if(resultType=="All" || resultType=="Relative"){
 			//var relativeTotalCount=0;
 			var str2 = '';
-			str2+='<table class="table">';
+			str2+='<table class="table" id="familyTableId">';
 				str2+='<thead class="text-capital">';
 					str2+='<th>captured photo</th>';
 					//str2+='<th>Relative Voter photo</th>';
@@ -597,7 +597,7 @@ function buildBoothWiseDetails(result,resultType){
 					str2+='</tbody>';
 					str2+='</table>';
 					$("#relativeDivId").html(str2);
-					$("#relativeDivId").dataTable();
+					$("#familyTableId").dataTable();
 					if(result.subList1 != null && result.subList1.length > 0){
 						for(var i in result.subList1){
 							if(result.subList1[i].status == "noStatus"){    
@@ -1116,6 +1116,46 @@ function getReasons(){
 		}     
 	});
 }
+
+$(document).on('click','.updateImageBtnId',function(){  
+	var cadreId = $(this).attr("attr_cadre_id");
+	var distId = $(this).attr("attr_dist_id"); 
+	var constId = $(this).attr("attr_const_id");
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var tabUserInfoId = $(this).attr("attr_tab_user_id");
+	var status = $(this).attr("attr_status");
+	var divId = $(this).attr("attr_divId");
+	var loadingImgId = $(this).attr("attr_loading_img_id");
+	$("#"+divId).html("");
+	$(".successMsgCls").html("");
+	$("#"+loadingImgId).show();
+	  
+	var jsObj = {
+		cadreId :cadreId,
+		districtId : distId,
+		constitunecyId : constId ,
+		cadreUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		status : status
+	}
+	
+	$.ajax({
+		type:'GET',      
+		url: 'updateRejectedImagesAction.action',      
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
+			if(result == "success")
+				$("#"+divId).html('<span style="color:green">Approved Successfully...</span>');
+			else
+				$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		}
+		else
+			$("#"+divId).html('<span style="color:red">Sorry,Exception Occured.Try Again...</span>');
+		$("#"+loadingImgId).hide();
+	});
+});
 </script>
 </body>
 </html>
