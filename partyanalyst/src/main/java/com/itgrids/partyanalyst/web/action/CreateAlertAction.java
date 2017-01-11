@@ -717,7 +717,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			Long activityMemberId = jObj.getLong("activityMemberId");
-			resultList = alertService.getAlertCategoryDtlsLocationWise(activityMemberId,stateId,fromDate,toDate);    
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			resultList = alertService.getAlertCategoryDtlsLocationWise(activityMemberId,stateId,fromDate,toDate,alertId,editionId);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAlertCategoryDtlsLocationWise() of CreateAlertAction",e);
 		}
@@ -968,8 +970,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			List<Long> scopeIdList = new ArrayList<Long>();
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
-			}   
-			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtId,catId);   
+			} 
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long editionId = jObj.getLong("editionId");
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtId,catId,alertTypeId,editionId);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
 		}
