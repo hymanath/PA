@@ -1251,4 +1251,28 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 		return returnList;
 	}
+	
+	public BoothWiseDataMonitoringVO getOverAllVerificationCountsForConstituency(Long districtId,Long constituencyId){
+		BoothWiseDataMonitoringVO returnvo = new BoothWiseDataMonitoringVO();
+		try {
+			List<Object[]> list = tdpCadreEnrollmentYearDAO.getOverAllCadreRegistrationCounts(districtId, constituencyId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(statusId != null && statusId.longValue() == 1l)
+						returnvo.setApprovedCount(count);
+					else if(statusId != null && statusId.longValue() == 2l)
+						returnvo.setRejectedCount(count);
+					else
+						returnvo.setPendingCount(count);
+					returnvo.setTotalCount(returnvo.getTotalCount() + count);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getOverAllVerificationCountsForConstituency() of DataMonitoringService", e);
+		}
+		return returnvo;
+	}
 }
