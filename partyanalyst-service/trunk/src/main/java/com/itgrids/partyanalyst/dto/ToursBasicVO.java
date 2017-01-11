@@ -103,6 +103,7 @@ public class ToursBasicVO {
 	private Long count=0l;
 	private String isComplaince;
 	private String voterCardNumber;
+	private Long orderNo;
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
@@ -690,6 +691,12 @@ public class ToursBasicVO {
 	}
 	public void setIsComplaince(String isComplaince) {
 		this.isComplaince = isComplaince;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
           
 	
