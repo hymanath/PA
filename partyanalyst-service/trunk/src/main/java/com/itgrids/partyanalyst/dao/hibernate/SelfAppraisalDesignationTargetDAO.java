@@ -177,11 +177,11 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 				queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
 		 }
 		 
-		 if(fromDate != null && toDate != null){
+	/*	 if(fromDate != null && toDate != null){
       	   queryStr.append(" and date(model.startTime)<=:fromDate");
       	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
          }
-         
+         */
        if(type.equalsIgnoreCase("Category")){
      	  queryStr.append(" and model.tourTypeId is null and model.selfAppraisalTourCategory.isDeleted='N' "); 
         }else{
@@ -207,12 +207,12 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 	 }
 	  
 	   Query query = getSession().createQuery(queryStr.toString());
-	   if(fromDate != null){
+	   /*if(fromDate != null){
     	   query.setParameter("fromDate", fromDate);
        }
        if(toDate != null){
     	   query.setParameter("toDate", toDate); 
-       }
+       }*/
        if(designationIds != null && designationIds.size() > 0){
     	  query.setParameterList("designationIds", designationIds); 
        }
