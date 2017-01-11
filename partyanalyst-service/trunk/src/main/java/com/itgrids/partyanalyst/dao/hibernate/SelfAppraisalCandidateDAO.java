@@ -123,4 +123,20 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	  return query.list();
 	  
   }
+  
+  /**
+	  * @author Srishailam Pittala
+	  * date: 7th Jan, 2017
+	  * desc: To get total designations for a cadre
+	  * input : Long tdpCadreId
+	  * return List<Obejct[]>
+	  */
+  public List<Object[]> getDesignationsList(Long tdpCadreId){
+		 Query query = getSession().createQuery(" select distinct  model.selfAppraisalDesignation.selfAppraisalDesignationId,model.selfAppraisalDesignation.designation from SelfAppraisalCandidate model " +
+		 		                                "  where model.tdpCadreId=:tdpCadreId and model.isActive='Y' order by model.selfAppraisalDesignation.designation  ");
+		 query.setParameter("tdpCadreId", tdpCadreId);
+		 return query.list();
+	 }
+  
+  
 }
