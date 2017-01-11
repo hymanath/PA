@@ -15352,7 +15352,19 @@
 		    <param name="inputName">inputStream</param>
 		</result>
 	</action>
-	
+	<action name="getDistrictListAction" class="dataMonitoringAction"  method="getDistrictList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getConstituencyListAction" class="dataMonitoringAction"  method="getConstituencyList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="boothWiseDataMonitoringAction" class="dataMonitoringAction" method="boothWiseDataMonitoring">
+		<result name="success">/jsp/boothWiseDataMonitoring.jsp</result>  
+	</action>
 	<action name="getClarificationDetailsAction" class="createAlertAction"  method="getClarificationDetails">
 		<result type="json" name="success">
 			<param name="root">alertClarificationVO</param>
