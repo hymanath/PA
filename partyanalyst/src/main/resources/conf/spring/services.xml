@@ -3535,6 +3535,7 @@
 		<property name="activityService" ref="activityService"></property>
 		<property name="alertClarificationDocumentDAO" ref="alertClarificationDocumentDAO"></property>
 		<property name="editionTypeDAO" ref="editionTypeDAO"></property>
+		<property name="clarificationRequiredDAO" ref="clarificationRequiredDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	

@@ -3554,4 +3554,12 @@
 	<bean id="editionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EditionTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="clarificationRequiredDAO" class="com.itgrids.partyanalyst.dao.hibernate.ClarificationRequiredDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tvNewsChannelDAO" class="com.itgrids.partyanalyst.dao.hibernate.TvNewsChannelDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

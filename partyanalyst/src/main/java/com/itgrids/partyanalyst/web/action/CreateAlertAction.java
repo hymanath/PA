@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
@@ -67,9 +63,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private Long clarificationStatusId;
 	private String clarificationComments;
 	private String clarificationRadioName;
+	private AlertClarificationVO alertClarificationVO;
 	
 	
 	
+	public AlertClarificationVO getAlertClarificationVO() {
+		return alertClarificationVO;
+	}
+
+	public void setAlertClarificationVO(AlertClarificationVO alertClarificationVO) {
+		this.alertClarificationVO = alertClarificationVO;
+	}
+
 	public String getClarificationRadioName() {
 		return clarificationRadioName;
 	}
@@ -1097,4 +1102,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;	         
 	}
 	
+	public String getClarificationDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			alertClarificationVO = alertService.getClarificationDetails(alertId);
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getClarificationDetails",e);
+		}
+		return Action.SUCCESS;
+	}
 }//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);

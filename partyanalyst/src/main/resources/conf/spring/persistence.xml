@@ -1102,6 +1102,8 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertClarificationStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertClarificationComments</value>
 	                  <value>com.itgrids.partyanalyst.model.EditionType</value>
+	                  <value>com.itgrids.partyanalyst.model.ClarificationRequired</value>
+	                  <value>com.itgrids.partyanalyst.model.TvNewsChannel</value>
 	                  
 	             </list>
 			
