@@ -15353,5 +15353,11 @@
 		</result>
 	</action>
 	
+	<action name="getClarificationDetailsAction" class="createAlertAction"  method="getClarificationDetails">
+		<result type="json" name="success">
+			<param name="root">alertClarificationVO</param>
+		</result>
+	</action>
+	
  </package>
 </struts>

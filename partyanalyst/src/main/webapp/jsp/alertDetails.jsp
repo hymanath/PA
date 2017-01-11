@@ -28,9 +28,14 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+		.disabledBlockWhite
+		{
+			background-color:rgba(255,255,255,0.8) !important;
+			color:#333 !important;
+		}
 		.disabledBlock
 		{
-			background-color:rgba(0,0,0,0.6);
+			background-color:rgba(0,0,0,0.8);
 			z-index:99;
 			position:absolute;
 			right:0px;
@@ -385,14 +390,14 @@ control.makeTransliteratable(['commentsId']);
 									<div class="row">
 										<div class="col-md-4 col-xs-12 col-sm-4">
 											
-												<div class="panel panel-default">
+												<div class="panel panel-default panelHeights">
 													<div class="panel-heading">
 														<h4 class="panel-title">ALERT CLARIFICATION REPORT</h4>
 													</div>
 													<div class="panel-body">
 														<div class="row">
 															<form id="alertClarificationDocs" name="alertClarificationDocs">
-															<div class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
+															<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
 																<label class="radio-inline">Is Clarification Required?</label>
 																<label class="radio-inline">
 																	<input type="radio" name="clarificationRadioName" value="Y"/> Yes
@@ -401,10 +406,8 @@ control.makeTransliteratable(['commentsId']);
 																	<input type="radio" name="clarificationRadioName" checked value="N"/> No
 																</label>  
 															</div>
-														<div class="col-md-12 col-xs-12 col-sm-12" id="clarfCommentsDivId"style="display:none;">
-															<label class="radio-inline">
-																	Is Clarification Required?
-																</label>
+														<div class="col-md-12 col-xs-12 col-sm-12 m_top10" id="clarfCommentsDivId"style="display:none;">
+															
 														 <form action="">
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Clarification Status</label>
@@ -414,29 +417,31 @@ control.makeTransliteratable(['commentsId']);
 																	<option value="2">Completed</option>
 																</select>
 															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12">
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<label>Clarification Comments</label>
-																<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments""></textarea>
+																<div id="existingCommentsDivId"></div>
+																<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments"></textarea>
 															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12">
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<label>Upload Attachments</label>
+																<div id="existingDocumentsDivId"></div>
 																<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
 																<div id="extraUploadFileDiv"></div>
-																<button type="button" class="btn btn-success" id="addFile">Add</button>
+																<button type="button" class="btn btn-primary btn-xs pull-right m_top20" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
 															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12">
-																<button type="button" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>
-															</div>
+															
 															<input type="hidden" id="alertIdHidden" name="alertId"/>
 															</form>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+																<button type="button" style="width:100%" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>
 															</div>
 														</div>
 													</div>
 												</div>
-											
 										</div>
 										<div class="col-md-4 col-xs-12 col-sm-4">
-											<div class="panel panel-default">
+											<div class="panel panel-default panelHeights" style="position:relative;">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
 														<span id="assignCandidatesCnt">0</span>
@@ -445,20 +450,22 @@ control.makeTransliteratable(['commentsId']);
 														</c:if>
 													</h4>
 												</div>
-												<div class="panel-body disabledBlock">
+												<div class="panel-body ">
+													<div class="disabledBlock disabledBlockWhite">
 													<p class="text-center">
-														<i class="fa fa-clock-o" style="font-size:45px;"></i>
-														<h4 class="panel-title"><b>Waiting for alert clarification</b></h4>
+														<img src="images/TIme.png"/>
+														<h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>
 													</p>
-													<div  id="alertAssignedCandidateDataId"></div>
+													</div>
 												</div>
+												<div  id="alertAssignedCandidateDataId"></div>
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
 										<div class="col-md-4 col-xs-12 col-sm-4">
-											<div class="panel panel-default" style="position:relative;">
+											<div class="panel panel-default panelHeights" style="position:relative;">
 												<div class="disabledBlock">
-													<h4 class="panel-title"><b>currently disabled this feature</b></h4>
+													<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>
 													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
 												</div>
 												<div class="panel-body">
@@ -728,6 +735,13 @@ $("#updateAlertDetailsId").click(function(){
 		YAHOO.util.Connect.setForm('alertClarificationDocs',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadAlertsDocAction.action',uploadHandler);
 	});
+
+var maxHeight = 0;
+
+$(".panelHeights").each(function(){
+   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+});
+$(".panelHeights").height(maxHeight);
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
