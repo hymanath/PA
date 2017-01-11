@@ -2922,13 +2922,27 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		  var designationId = $(this).val(); 
 		  var filterType = $(this).attr("attr_tour_filter_type");
 		   var designationIds=[];
-		    if(designationId == 4){
-				designationIds.push(4);
-				designationIds.push(5);
+		   if(designationId == 0){//ALL 
+			  $('#tourDesignationSelectBoxId option').each(function(){
+					var dsgntnId = $(this).val();
+					 if(dsgntnId == 4){
+						designationIds.push(4); 
+						designationIds.push(5); 
+					 }else{
+						if(dsgntnId != 0){
+						  designationIds.push(dsgntnId);		 		
+						} 
+					 }
+				}); 
 			}else{
-			designationIds.push(designationId)	
+				if(designationId == 4){
+					designationIds.push(4);			
+					designationIds.push(5);			
+				}else{
+				designationIds.push(designationId);			
+				}
 			}
-			getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType);
+		  getTourLeaderDtlsBasedOnSelectionType(designationIds,filterType);
 	   });
 	  $(document).on("click",".tourOverViewCls",function(){
 			
@@ -2940,7 +2954,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 	    if(designationName.trim()=="Overall"){
 			$(".designationSelectBoxCls").show();
 			$("#tourDesignationSelectBoxId").html(" ");
-		
+			
+		        $("#tourDesignationSelectBoxId").append('<option value="0">All</option>');
 				if(filterType=="Complaince"){
 				$("#tourDesignationSelectBoxId").append(globalDesignationComplainceSelectBoxString);				
 				}else if(filterType=="nonComplaince"){
@@ -2952,20 +2967,26 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				}else{
 				$("#tourDesignationSelectBoxId").append(globalDesignationSelectBoxString);		
 				}
-			
-			
-			
+				
 			var firstOption = $("#tourDesignationSelectBoxId option:first").val();
 			$("#tourDesignationSelectBoxId").val(firstOption);
-			if(firstOption == 4){
-			  designationIds.push(4);
-			  designationIds.push(5);
-			}else{
-			  designationIds.push(firstOption);	
+			
+			if(firstOption == 0){
+				 $('#tourDesignationSelectBoxId option').each(function(){
+					var dsgntnId = $(this).val();
+					 if(dsgntnId == 4){
+						designationIds.push(4); 
+						designationIds.push(5); 
+					 }else{
+						 if(dsgntnId != 0){
+							 designationIds.push(dsgntnId);	 
+						 }
+					 }
+				}); 
 			}
 			$("#tourDesignationSelectBoxId").attr("attr_tour_filter_type",filterType);
 		}else{
-		   $(".designationSelectBoxCls").hide();
+		    $(".designationSelectBoxCls").hide();
 			if(designationIdsStr != null && designationIdsStr != undefined){
 			  designationIds=designationIdsStr.split(",");	
 			}		   
@@ -3041,7 +3062,7 @@ function buildTourMemberDetails(result){
 			str+='<div class="table-responsive">';
 		}
 		
-          str+='<table class="table table-bordered borderedWeight" id="tourDetailsDataTabelId">';
+          str+='<table class="table table-bordered borderedWeight" id="tourDetailsDataTabelId'+i+'">';
           str+='<thead class="bg_D8">';
             str+='<tr>';
                 var maxLengthForSpan = 0;
@@ -3146,11 +3167,11 @@ function buildTourMemberDetails(result){
 				str+='</div>';
 			 }
         $("#tourMemberDtls"+i).html(str);
-	 	$("#tourDetailsDataTabelId").dataTable({
+	 	$("#tourDetailsDataTabelId"+i+"").dataTable({
 			"aaSorting": [],
 			"iDisplayLength" : 10	
 		 });
-		$('#tourDetailsDataTabelId').removeClass("dataTable");
+		$("#tourDetailsDataTabelId"+i+"").removeClass("dataTable");
 		
 		
 		if($(window).width() < 800)
