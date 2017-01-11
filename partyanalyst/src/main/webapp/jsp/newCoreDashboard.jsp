@@ -3005,7 +3005,9 @@
 			<!-- Training End-->
 			
 		</div>
-</div> 
+</div>
+<input type="hidden" id="alertTypeHiddenId"></input> 
+<input type="hidden" id="alertEditionTypeHiddenId"></input>   
 <!--model start -->
 <!-- Modal -->
 
