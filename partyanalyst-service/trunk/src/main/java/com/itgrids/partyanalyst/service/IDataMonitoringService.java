@@ -35,4 +35,5 @@ public interface IDataMonitoringService {
 	public List<IdAndNameVO> getDistrictList(Long stateId);
 	public List<IdAndNameVO> getConstitencysByDistricts(Long districtId,Long stateId);
 	public IdNameVO getBoothWiseRegisteredMemberDetails(Long boothId,Long constituencyId,String verificationStatus,String resultType);
+	public BoothWiseDataMonitoringVO getOverAllVerificationCountsForConstituency(Long districtId,Long constituencyId);
 }
