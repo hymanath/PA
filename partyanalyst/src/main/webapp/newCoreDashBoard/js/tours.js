@@ -1,4 +1,4 @@
-var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
+/*var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
 var customEndDateTours = moment().format('DD/MM/YYYY');
 	$("#tourDateRangePickerId").daterangepicker({
 		opens: 'left',
@@ -121,7 +121,7 @@ $(document).on("click",".tourExpand",function(){
 		$(".hideShowToursDateRangeCls").hide();	
 	}    
 }); */
-$(document).on("click",".moreToursBlocksIcon",function(){
+/*$(document).on("click",".moreToursBlocksIcon",function(){
 	$(".moreToursBlocks1,.moreToursBlocksDetailed").toggle(); 
 	   getDistrictWiseToursSubmitedDetails();		
 });
@@ -373,7 +373,7 @@ function getToursBasicOverviewCountDetails()
 									verticalAlign: 'top',
 									//y: -32,
 									floating: true, */
-									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									/*backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
 									borderColor: '#CCC',
 									borderWidth: 1,
 									shadow: false
@@ -807,8 +807,8 @@ function getToursBasicOverviewCountDetails()
 		$("#genSecTour"+i).html("No Data Available");
 		$("#genSecTour"+i).css("height","35px");	
 		} */
-		}
-	}else{
+	//	}
+	/*}else{
 	 $("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	} 
@@ -1061,7 +1061,7 @@ function getToursBasicOverviewCountDetails()
 		/* if($(window).width() < 768){
 			str+='<div class="table-responsive">';
 		} */ 
-		if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
+		/*if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
 				str+='<span class="remveSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 		 } 
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){         
@@ -1121,11 +1121,11 @@ function getToursBasicOverviewCountDetails()
 		/* if($(window).width() < 768){
 			str+='</div>';
 		} */
-		$("#"+childActivityMemberId).html(str);
+		//$("#"+childActivityMemberId).html(str);
 		//$("#tourLeaderDtlsId").dataTable();              
 		//getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation);
-	}
-	$(document).on("click",".remveSlcUsrType",function(){
+	//}
+	/*$(document).on("click",".remveSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
 		 $("#"+removeSelected).html(' ');
 		 $("#"+removeSelected).closest('.showHideTr').hide();
@@ -1406,30 +1406,6 @@ function getToursBasicOverviewCountDetails()
 			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 		}); 
 	}
-	 $(document).on("click",".closeShowPdfCls",function(){
-		setTimeout(function(){
-		$('body').addClass("modal-open");
-		}, 500);                     
-	}); 
-//Closing model when esc key has been pressed
-  $('body').keypress(function(e){
-    if(e.keyCode == 27){
-          var isModalOpened = $("#tourNewDocumentId").attr("isModalOpened");
-		   if(isModalOpened == "true"){
-			   setTimeout(function(){
-				 $('body').addClass("modal-open");
-			   }, 500);      
-			   $("#tourNewDocumentId").attr("isModalOpened","false");
-           }
-	    var selectLevel = $(".tourIndividualCls").attr("attr_type");
-		 if(selectLevel == "subLevel"){
-			setTimeout(function(){
-			$('body').addClass("modal-open");
-			}, 500);       
-		  $(".tourIndividualCls").attr("attr_type","subLevel");			
-		 }
-    }
-  }); 
 	$(document).on('click','#showPdfId',function(){
 		//$("#cdrModelId").modal("show");
 		var dbFilePath = $(this).attr("attr_filePath");         
@@ -1469,8 +1445,11 @@ function getToursBasicOverviewCountDetails()
 	
 	
 	
+	
+	
 /* New Tours Ajax Call Based on New Screen */
 	
+var globalStateIdForTour=1; //for 
 
 var customStartToursDate = moment().startOf('month').format('DD/MM/YYYY')
 var customEndToursDate = moment().format('DD/MM/YYYY');
@@ -1517,14 +1496,34 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		 $(".tourNewComplainceFilterCls li").removeClass("active");
 		 $(".tourNewComplainceFilterCls li:first-child").addClass("active");
 		 getToursBasicOverviewDtls();
-		// getDesignationWiseMembersDtls();
-	//	var isFilterApply = "No";
-		//var filterType = "";
-		//var desgnatnIdsLst = [];
-	  //f getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
 	 });
 	 
 	
+	 $(document).on("click",".closeShowPdfCls",function(){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 500);                     
+	}); 
+//Closing model when esc key has been pressed
+  $('body').keypress(function(e){
+    if(e.keyCode == 27){
+          var isModalOpened = $("#tourNewDocumentId").attr("isModalOpened");
+		   if(isModalOpened == "true"){
+			   setTimeout(function(){
+				 $('body').addClass("modal-open");
+			   }, 500);      
+			   $("#tourNewDocumentId").attr("isModalOpened","false");
+           }
+	    var selectLevel = $(".tourIndividualCls").attr("attr_type");
+		 if(selectLevel == "subLevel"){
+			setTimeout(function(){
+			$('body').addClass("modal-open");
+			}, 500);       
+		  $(".tourIndividualCls").attr("attr_type","subLevel");			
+		 }
+    }
+  }); 
+  
 	$(document).on("click",".NewTourExpand",function(){
 		$(this).attr("isExpand","true");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -1648,6 +1647,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		 globalDesignationNotSubmttedSlctBxStrng="";
 		 globalDesignationSubmttedSlctBxStrng="";
 		 isPageExpand();
+	
 		$("#tourOverviewNewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
