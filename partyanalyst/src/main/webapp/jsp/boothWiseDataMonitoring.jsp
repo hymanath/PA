@@ -51,8 +51,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" id="mainModelCloseId" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p id="userId">User ID - 12345</p>
-        <p id="userDescriptionId"><i>Rahul - 9984845464</i></p>
+        <h4>BOOTH WISE REGISTRATION DETAILS</h4>
+        <!--<p id="userDescriptionId"><i>Rahul - 9984845464</i></p>-->
       </div>
       <div class="modal-body">  
 <div>
@@ -372,8 +372,8 @@ function buildBoothWiseDetails(result,resultType){
 								str+='<td>';
 									str+='<img src="https://www.mytdp.com/voter_images/'+result.idnameList[i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
-								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Approve</button>';
-								str+='<button class="btn btn-xs btn-info changeImageBtnId"  style="margin-left: 10px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
+								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/><button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 0px; margin-top: 10px;" attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Approve</button>';
+								str+='<button class="btn btn-xs btn-info changeImageBtnId"  style="margin-left: 10px; margin-top: 10px;" attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
 								str+='<span class="successMsgCls" id="successMsgId'+i+'"></span><span id="changeImgLoadingImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span></td>';
 								str+='<td>';
 									str+='<input type="text" value="'+result.idnameList[i].wish+'" class="form-control" disabled></input>';
@@ -409,7 +409,7 @@ function buildBoothWiseDetails(result,resultType){
 								str+='<td>';  
 									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'">Approve</button>';
 									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'">Reject</button>';
-									str+='<button class="btn btn-sm btn-info changeImageBtnId" style="margin-left: 5px;" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
+									str+='<button class="btn btn-sm btn-info changeImageBtnId" style="margin-left: 10px; margin-top: 10px;" attr_cadre_id="'+result.idnameList[i].cadreId+'" attr_dist_id="'+result.idnameList[i].districtid+'" attr_const_id="'+result.idnameList[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.idnameList[i].cadreUserId+'" attr_tab_user_id="'+result.idnameList[i].tabUserId+'" attr_status="'+result.idnameList[i].status+'" attr_divId="successMsgId'+i+'" attr_loading_img_id="changeImgLoadingImgId'+i+'">Change Image</button>';
 									str+='<span class="successMsgCls" id="successMsgId'+i+'"></span><span id="changeImgLoadingImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span>';
 								str+='</td>'; 
 								str+='<td>';
@@ -527,7 +527,7 @@ function buildBoothWiseDetails(result,resultType){
 									str2+='<img src="https://www.mytdp.com/voter_images/'+result.subList1[i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';*/
 								str2+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/>';
-								str2+='<button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 141px; margin-top: -30px;" attr_position_id="'+i+'" attr_cadre_id="'+result.subList1[i].cadreId+'" attr_dist_id="'+result.subList1[i].districtid+'" attr_const_id="'+result.subList1[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.subList1[i].cadreUserId+'" attr_tab_user_id="'+result.subList1[i].tabUserId+'" attr_status="'+result.subList1[i].status+'" attr_divId="successMsgRelId'+i+'" attr_loading_img_id="changeImgLoadingRelImgId'+i+'">Approve</button>';
+								str2+='<button class="btn btn-xs btn-success updateImageBtnId"  style="margin-left: 0px; margin-top: 10px;" attr_position_id="'+i+'" attr_cadre_id="'+result.subList1[i].cadreId+'" attr_dist_id="'+result.subList1[i].districtid+'" attr_const_id="'+result.subList1[i].constitunecyId+'" attr_cadre_survey_user_id="'+result.subList1[i].cadreUserId+'" attr_tab_user_id="'+result.subList1[i].tabUserId+'" attr_status="'+result.subList1[i].status+'" attr_divId="successMsgRelId'+i+'" attr_loading_img_id="changeImgLoadingRelImgId'+i+'">Approve</button>';
 								str2+='<span class="successMsgCls" id="successMsgRelId'+i+'"></span><span id="changeImgLoadingRelImgId'+i+'" style="display:none;"><img src="./images/icons/search.gif"/></span></td>';
 								str2+='<td>';
 									str2+='<input type="text" value="'+result.subList1[i].wish+'" disabled></input>';
