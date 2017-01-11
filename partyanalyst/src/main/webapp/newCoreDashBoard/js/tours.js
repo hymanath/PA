@@ -2401,10 +2401,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				str1+='<div class="panel panel-default panelNew">';
 					str1+='<div class="panel-heading">';
 						str1+='<div class="row">';
-							str1+='<div class="col-md-5 col-xs-12 col-sm-6">';
+							str1+='<div class="col-md-5 col-xs-12 col-sm-3">';
 									str1+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
 							str1+='</div>';
-							str1+='<div class="col-md-7 col-xs-12 col-sm-6">';
+							str1+='<div class="col-md-7 col-xs-12 col-sm-9">';
 								str1+='<ul class="list-inline pull-right activeUlCls">';
 								 if(result[i].id==4){//organization SECRETARY and SECRETARY
 									str1+='<li class="active tourFilterCls" attr_result_type="all" attr_div_id="toursPerformanceBlocks'+i+'" attr_designation_id="4,5" style="margin-right: 20px;">All</li>';
@@ -2521,10 +2521,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			for(var i in result){
 				var str='';
 				var length = result
-				if($(window).width() < 500)
-				{  
+				//if($(window).width() < 800)
+				//{  
 					str+='<div class="table-responsive">'
-				}
+				//}
 					str+='<table class="table table-bordered borderedWeight" id="dataTableApplyAveragePerf'+i+'">';
 					str+='<thead class="bg_D8">';
 						str+='<tr>';
@@ -2581,9 +2581,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 												str+='<td class="text-center complainceDaysCls">'+result[i].subList3[j].subList3[k].complainceDays+'';
 												
 												str+='<div class="dropup">';
-													str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-														str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-															str+='<table class="table table-bordered">';
+													str+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer; font-size: 16px;margin-top: -21px;margin-right:-7px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+														str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+															str+='<table class="table table-bordered scrollApplyDiv">';
 															str+='<thead>';
 															str+='<th>Month</th>';
 															str+='<th>Target</th>';
@@ -2628,10 +2628,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								str+='</tbody>';
 								
 					str+='</table>';
-				if($(window).length < 500)
-				{
+				//if($(window).length < 800)
+				//{
 					str+='</div>';
-				}
+				//}
 				
 				$("#toursPerformanceBlocks"+i).html(str);
 					       var stateSliderval;
@@ -2660,6 +2660,16 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					"iDisplayLength" : 10	
 				 });
 				$('#dataTableApplyAveragePerf'+i).removeClass("dataTable");
+				$(".scrollApplyDiv").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 5){
+						$(".verticalScrollBar").mCustomScrollbar({setHeight:'240px'})
+						
+					}else{
+						$(".verticalScrollBar").css("height","auto");
+					
+					}
+				});
 			}
 		}
 	}
@@ -2674,10 +2684,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 						}
 						var str='';
 						var length = result
-							if($(window).width() < 500)
-							{
+							//if($(window).width() < 800)
+							//{
 								str+='<div class="table-responsive">';
-							}
+							//}
 							str+='<table class="table table-bordered borderedWeight" id="dataTable'+divId+'">';
 							str+='<thead class="bg_D8">';
 								str+='<tr>';
@@ -2735,9 +2745,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 														
 														
 														str+='<div class="dropup">';
-													    str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-														str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-															str+='<table class="table table-bordered">';
+													    str+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer; font-size: 16px;margin-top: -21px;margin-right:-7px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+														str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar1" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+															str+='<table class="table table-bordered scrollApplyDiv1">';
 															str+='<thead>';
 															str+='<th>Month</th>';
 															str+='<th>Target</th>';
@@ -2785,10 +2795,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 										str+='</tbody>';
 										
 							str+='</table>';
-						  if($(window).width() < 500)
-							{
+						  //if($(window).width() < 800)
+							//{
 								str+='</div>';
-							}
+							//}
 						$("#"+divId).html(str);
 					}
 				}else{
@@ -2799,6 +2809,16 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				"iDisplayLength" : 10	
 			 });
 			 $("#dataTable"+divId).removeClass("dataTable"); 
+			 $(".scrollApplyDiv1").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 5){
+						$(".verticalScrollBar1").mCustomScrollbar({setHeight:'250px'})
+						
+					}else{
+						$(".verticalScrollBar1").css("height","auto");
+					
+					}
+				});
 		} 
 		
 	function getIndividualPersonTourDetails(value)
@@ -2957,6 +2977,7 @@ function buildTourMemberDetails(result){
     
     if(result != null && result.length > 0){
       var str1='';
+	      
       for(var i in result){
       str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
         str1+='<div class="panel panel-default panelNew">';
@@ -2965,6 +2986,7 @@ function buildTourMemberDetails(result){
               str1+='<div class="col-md-8 col-xs-12 col-sm-6">';
                 str1+='<h4 class="panel-title"><span class="headingColor text-capital">'+result[i].name+'&nbsp&nbspTours Submitted Report</span></h4>';
               str1+='</div>';
+			 
           str1+='</div>';
           str1+='<div class="panel-body">';
             str1+='<div class="row">';
@@ -3041,9 +3063,9 @@ function buildTourMemberDetails(result){
                         str+='<td class="text-center">'+result[i].subList3[j].subList3[k].targetDays+'</td>';
                         str+='<td class="text-center">'+result[i].subList3[j].subList3[k].complainceDays+'';
 								str+='<div class="dropup">';
-								str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
-								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-									str+='<table class="table table-bordered">';
+								str+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer;font-size: 16px; margin-top: -21px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar2" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+									str+='<table class="table table-bordered scrollApplyDiv2">';
 									str+='<thead>';
 									str+='<th>Month</th>';
 									str+='<th>Target</th>';
@@ -3098,6 +3120,19 @@ function buildTourMemberDetails(result){
 			"iDisplayLength" : 10	
 		 });
 		$('#tourDetailsDataTabelId').removeClass("dataTable");
+		
+		
+		
+		  $(".scrollApplyDiv2").each(function(){
+					var scrollengthDiv = $(this).find("tr").length;
+					if(scrollengthDiv >= 5){
+						$(".verticalScrollBar2").mCustomScrollbar({setHeight:'240px'})
+						
+					}else{
+						$(".verticalScrollBar2").css("height","auto");
+					
+					}
+				}); 
 		}
     }
   }
