@@ -1793,10 +1793,10 @@ public class ToursService implements IToursService {
 	    		 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYearList);
 			  
 			  
-			  //0.candidateId,1.categoryId,2.category,3.Target Days
-			  List<Object[]> categoryTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Category",designationIds,candidateId);
+			  //0.candidateId,1.categoryId,2.category,3.Target Days 
+			  List<Object[]> categoryTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Category",designationIds,candidateId,monthyearIds);
 			  setCandiateWiseTarget(categoryTargetObj,candidateTargetMap,"Category",monthSize);
-			  List<Object[]> tourTypeTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Govt",designationIds,candidateId);
+			  List<Object[]> tourTypeTargetObj = selfAppraisalDesignationTargetDAO.getDesignationAndCategoryWiseCandidatesTarget(fromDate,toDate,"Govt",designationIds,candidateId,monthyearIds);
 			  setCandiateWiseTarget(tourTypeTargetObj,candidateTargetMap,"Govt",monthSize);
 			  
 			  
@@ -1862,7 +1862,54 @@ public class ToursService implements IToursService {
 	 
 	 public void setCandiateWiseTarget(List<Object[]> targetObj,Map<Long,List<ToursBasicVO>> candidateTargetMap,String type,int monthSize){
 		 try{
+			 Map<Long,Map<String,ToursBasicVO>> candidateCategoryMap = new HashMap<Long, Map<String,ToursBasicVO>>(0);
+
+			 if(targetObj !=null && targetObj.size()>0){
+				 for (Object[] obj: targetObj) {
+					
+					 Long candidateId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 String categoryIdStr = commonMethodsUtilService.getStringValueForObject(obj[1]);
+					 if(type !=null && type.trim().equalsIgnoreCase("Govt")){
+						 categoryIdStr="0"+categoryIdStr;
+					 }
+					 
+					 Map<String,ToursBasicVO> categoryListMap = new HashMap<String, ToursBasicVO>(0);
+					 ToursBasicVO categoryVO = new ToursBasicVO();
+					 
+					 if(candidateCategoryMap.get(candidateId) != null){
+						 categoryListMap = candidateCategoryMap.get(candidateId);
+					 }
+					 if(categoryListMap.get(categoryIdStr) != null){
+						 categoryVO= categoryListMap.get(categoryIdStr);
+					 }
+					 categoryVO.setIdStr(categoryIdStr);//category or Govt Id
+					 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//category or Govt Name
+					 if(categoryVO.getTargetDays() != null)
+						 categoryVO.setTargetDays(categoryVO.getTargetDays() + commonMethodsUtilService.getLongValueForObject(obj[3]));
+					 else 
+						 categoryVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(obj[3]));
+					 
+					 categoryListMap.put(categoryIdStr, categoryVO);
+					 candidateCategoryMap.put(candidateId, categoryListMap);
+				}
+			 }	
 			 
+			 if(commonMethodsUtilService.isMapValid(candidateCategoryMap)){
+				 for (Long candidateId : candidateCategoryMap.keySet()) {
+					 Map<String,ToursBasicVO> categoryListMap =  candidateCategoryMap.get(candidateId);
+					 if(commonMethodsUtilService.isMapValid(categoryListMap)){
+						 for (String id : categoryListMap.keySet()) {
+							 List<ToursBasicVO> categoryList = candidateTargetMap.get(id);
+							 if(categoryList == null)
+								 categoryList = new ArrayList<ToursBasicVO>(0);
+							 categoryList.add(categoryListMap.get(id));
+							 candidateTargetMap.put(candidateId, categoryList);
+						}
+					 }
+				}
+			 }
+			 
+			 /*
 			 if(targetObj !=null && targetObj.size()>0){
 				 for (Object[] obj: targetObj) {
 					
@@ -1885,7 +1932,7 @@ public class ToursService implements IToursService {
 					 categoryList.add(categoryVO);
 					 
 				}
-			 }			
+			 }	*/
 		 }catch(Exception e){
 			 LOG.error("Exception raised at setCandiateWiseTarget in ToursService Class ", e);
 		 }
@@ -2345,6 +2392,111 @@ public class ToursService implements IToursService {
 		 }
 		 return categoryList;
 	 }
+	 
+	 /**
+	  * @author Srishailam Pittala
+	  * date: 7th Jan, 2017
+	  * desc: To get total designations for a cadre
+	  */
+	 public List<IdNameVO> getDesigationsListByCadreId(Long tdpCadreId){
+			List<IdNameVO> resultList = new ArrayList<IdNameVO>();
+			try{
+				List<Object[]> rtrnDsgntnObjLst = selfAppraisalCandidateDAO.getDesignationsList(tdpCadreId);
+				 if(rtrnDsgntnObjLst != null && !rtrnDsgntnObjLst.isEmpty()){
+					 for(Object[] param:rtrnDsgntnObjLst){
+						 resultList.add(new IdNameVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));	 
+					 }
+				 }
+			}catch(Exception e){
+				LOG.error("Error Occured at getDesigationList() in ToursService class",e);	
+			}
+			return resultList;
+		}	
+	 
+	 
+	 /**
+	  * @author Srishailam Pittala
+	  * date: 7th Jan, 2017
+	  * desc: To get total Tours Details for a cadre
+	  */
+	 public ToursVO  getToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,String searchMonth){
+		 ToursVO returnVO = new ToursVO();
+		 try {
+			 List<IdNameVO> categoriesList = getAllTourCategorys(tdpCadreId,designationId);
+			 categoriesList.add(new IdNameVO(0L,"Govt Works"));
+			 
+			 //List<String> getMonthAndYear(Date fromDate,Date toDate)
+			 List<String> monthYearStrList = new ArrayList<String>(0);
+			 if(searchMonth != null && !searchMonth.isEmpty())
+				 monthYearStrList.add(searchMonth);
+			 
+			 List<Object[]> toursList = selfAppraisalDesignationTargetDAO.getToursDetailsforDesignation(monthYearStrList,designationId);
+			 Map<Long, Map<Long,Long>> toursTargetMap = new HashMap<Long,Map<Long, Long>>(0);
+			 if(commonMethodsUtilService.isListOrSetValid(toursList)){
+				 for (Object[] param : toursList) {
+					 Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 Long designatinId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 Map<Long,Long> designationTargetMap = new HashMap<Long, Long>(0);
+					 if(toursTargetMap.get(categoryId) != null)
+						 designationTargetMap = toursTargetMap.get(categoryId);
+					 designationTargetMap.put(designatinId, commonMethodsUtilService.getLongValueForObject(param[4]));
+					 toursTargetMap.put(categoryId, designationTargetMap);
+				}
+			 }
+			 
+			 List<Object[]> cadreTursList = selfAppraisalCandidateDetailsNewDAO.getToursDetailsforCadre(tdpCadreId,monthYearStrList,designationId);
+			 Map<Long, Map<Long,Long>> toursCompletedMap = new HashMap<Long,Map<Long, Long>>(0);
+			 if(commonMethodsUtilService.isListOrSetValid(cadreTursList)){
+				 for (Object[] param : cadreTursList) {
+					 Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 Long designatinId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 Map<Long,Long> designationTargetMap = new HashMap<Long, Long>(0);
+					 if(toursCompletedMap.get(categoryId) != null)
+						 designationTargetMap = toursCompletedMap.get(categoryId);
+					 Long count = 0L;
+					 if(designationTargetMap.get(designatinId) != null){
+						 count =  designationTargetMap.get(designatinId);
+					 }
+					 count = count+commonMethodsUtilService.getLongValueForObject(param[4]);
+					 designationTargetMap.put(designatinId, count);
+					 toursCompletedMap.put(categoryId, designationTargetMap);
+				}
+			 }
+			 
+			 if(commonMethodsUtilService.isListOrSetValid(categoriesList)){
+				 for (IdNameVO vo : categoriesList) {
+					 Map<Long,Long>  designationTargetMap = toursTargetMap.get(vo.getId());
+					 Map<Long,Long>  designationsTargetMap = toursCompletedMap.get(designationId);
+					 if(commonMethodsUtilService.isMapValid(designationTargetMap)){
+						Long targetCount =  designationTargetMap.get(designationId);
+							if(targetCount == null)
+								targetCount= 0L;
+							vo.setTotalCount(targetCount);
+							
+							Long compledToursCount =  designationsTargetMap.get(designationId);
+							vo.setCount(compledToursCount);
+					 }
+				}
+			 }
+			 
+			 returnVO.setSubList(categoriesList);
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getToursDetailsBySearch() in CoreDashboardToursService  : ",e);
+		}
+		 return returnVO;
+	 }
+	 
+	 public ToursVO  getCandidateToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,Long categoryId,String searchMonth){
+		 ToursVO returnVO = new ToursVO();
+		 try {
+			
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getCandidateToursDetailsBySearch() in CoreDashboardToursService  : ",e);
+		}
+		 return returnVO;
+	 }
+	 
+	 
 	 public String deleteDocumentByDocument(List<Long> documentIds){
 		 try{
 			 
@@ -2371,7 +2523,7 @@ public class ToursService implements IToursService {
 				}
 	    		if(toursVo.getToursVoListNew() != null && toursVo.getToursVoListNew().size() > 0){
 	    			for(ToursVO param : toursVo.getToursVoListNew()){
-	    				Long candidateDtlsId = selfAppraisalCandidateDetailsNewDAO.checkForExistingTourDetails(param.getCandidateId(),param.getTourCategoryId(),param.getTourTypeId(),toursMonthId);
+	    				Long candidateDtlsId = selfAppraisalCandidateDetailsNewDAO.checkForExistingTourDetails(toursVo.getCandidateId(),toursVo.getTourCategoryId(),param.getTourTypeId(),toursMonthId);
 	    				if(candidateDtlsId != null){
 	    					status.setMessage("duplicate");
 	    					status.setResultCode(0);
