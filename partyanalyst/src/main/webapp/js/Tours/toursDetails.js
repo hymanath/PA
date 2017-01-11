@@ -1,6 +1,7 @@
 var regionScopesArr = [{"id":"2","name":"State"},{"id":"3","name":"District"},{"id":"4","name":"Constituency"},{"id":"5","name":"Mandal / Municipality"},{"id":"6","name":"Village / Ward"}];
 
-function getCandidateList(designationId){ 
+function getCandidateList(designationId){
+	$("#overallDivId").hide();	
 		var jsObj = {     
 			designationId : designationId
 		}
@@ -59,6 +60,7 @@ function getCandidateList(designationId){
     $("#selectProfileId").show();		
 	$("#selectedMemberDtslDivId").html(' ');
 	$(".showDivClsNew").hide();
+	$("#overallDivId").hide();
 	var jsObj = { 
 			 candidateId : candidateId
 			}
@@ -86,14 +88,15 @@ function getCandidateList(designationId){
 		
 		
 		var str='';
-		str+='<h4 class="panel-title text-capital">selected profile</h4>';
-			str+='<ul class="list-inline">';
+		str+='<h4 class="panel-title text-capital ">selected profile</h4>';
+			str+='<ul class="list-inline m_top20" style="padding:5px;border:thin solid lightgray;border-radius:5px;width:1100px;">';
 			str+='<li>';
 				str+='<div class="panel panel-default panelProfile">';
 					str+='<div class="panel-body">';
 						str+='<img src="http://mytdp.com/images/cadre_images/'+result.image+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img>';
 						str+='<p>'+result.name+'</p>';
-						str+='<p>'+result.memberShipNo+'</p>';
+						str+='<p title="Voter Card No "> VID : '+result.voterCardNumber+'</p>';
+						str+='<p title="Membership No">MID : '+result.memberShipNo+'</p>';
 						str+='<p>'+result.mobileNo+'</p>';
 					str+='</div>';
 					str+='<div class="panel-footer">';
