@@ -1517,11 +1517,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		 $(".tourNewComplainceFilterCls li").removeClass("active");
 		 $(".tourNewComplainceFilterCls li:first-child").addClass("active");
 		 getToursBasicOverviewDtls();
-		 getDesignationWiseMembersDtls();
-		var isFilterApply = "No";
-		var filterType = "";
-		var desgnatnIdsLst = [];
-	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
+		// getDesignationWiseMembersDtls();
+	//	var isFilterApply = "No";
+		//var filterType = "";
+		//var desgnatnIdsLst = [];
+	  //f getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
 	 });
 	 
 	
@@ -2804,8 +2804,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 	function getIndividualPersonTourDetails(value)
 	{          
 	   //select Slider Year
-		var selectedDate = globalFormTourDate.split("/");
-	    $("#dateRangeSliderYear").val(parseInt(selectedDate[2]));
+		//var selectedDate = globalFormTourDate.split("/");
+	    $("#dateRangeSliderYear").val(0);
 		
 		var temp = value.split("-");
 		var candiateId = temp[0];
@@ -3119,8 +3119,8 @@ $(document).on("click",".candiateCls",function(){
 	var candiateName = $(this).attr("attr_candiate_name");
 	var selectedLevel = $(this).attr("attr_type");
 	$(".tourIndividualCls").attr("attr_type",selectedLevel);
-	var selectedDate = globalFormTourDate.split("/");
-	$("#dateRangeSliderYear").val(parseInt(selectedDate[2]));
+	//var selectedDate = globalFormTourDate.split("/");
+	$("#dateRangeSliderYear").val(0);
    getCandiateWiseTourDetails(candiateId,designationName,candiateName);
 });
 
