@@ -3826,6 +3826,8 @@
 	 <property name="cadreRegUserDAO" ref="cadreRegUserDAO"/>
 	 <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO"/>
 	 <property name="tabUserInfoDAO" ref="tabUserInfoDAO"/>    
+	 <property name="districtDAO" ref="districtDAO"/>
+	 <property name="constituencyDAO" ref="constituencyDAO"/>
 	</bean>
 	
 	<bean name="cadreRegistrationServiceNew" class="com.itgrids.partyanalyst.service.impl.CadreRegistrationServiceNew" >

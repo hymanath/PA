@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BoothWiseDataMonitoringVO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -43,6 +44,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private ResultStatus resultStatus;
 		  private List<CadreRegUserVO> cadreRegUserList;
 		  private String returnStatus;
+		  private List<BoothWiseDataMonitoringVO> boothDataMonitoringVOList;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -150,9 +152,16 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		public void setReturnStatus(String returnStatus) {
 			this.returnStatus = returnStatus;
 		}
+		public List<BoothWiseDataMonitoringVO> getBoothDataMonitoringVOList() {
+			return boothDataMonitoringVOList;
+		}
+		public void setBoothDataMonitoringVOList(
+				List<BoothWiseDataMonitoringVO> boothDataMonitoringVOList) {
+			this.boothDataMonitoringVOList = boothDataMonitoringVOList;
+		}
+		
+		
 
-		
-		
 		//Business methods
 		public String execute(){
 			
@@ -435,6 +444,25 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		    return Action.SUCCESS;
 		}  
 	   
+	   public String getBoothWiseRegisteredMemberDetails(){
+			
+			try {
+				jObj = new JSONObject(getTask());
+				
+				Long boothId = jObj.getLong("boothId");  
+				Long constituencyId = jObj.getLong("constituencyId"); 
+				String resultType = jObj.getString("resultType");
+				String verificationStatus = jObj.getString("verificationStatus");
+				
+				idNameVO = dataMonitoringService.getBoothWiseRegisteredMemberDetails(boothId, constituencyId, verificationStatus, resultType);
+				
+			} catch (Exception e) {  
+				LOG.error("Exception raised at getBoothWiseRegisteredMemberDetails()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}
+	   
 		public String getVerifiedDtls(){
 			
 			try {
@@ -668,6 +696,21 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 			   e.printStackTrace();
 			   LOG.error("Exception raised at updateRejectedImages()  of DataMonitoringAction", e);
 		   }
+		   return Action.SUCCESS;
+	   }
+	   
+	   public String getBoothWiseDataVerificationDetails(){
+		   try {
+			   jObj = new JSONObject(getTask());
+			   
+			   Long districtId = jObj.getLong("districtId");
+			   Long constituencyId = jObj.getLong("constituencyId");
+			   
+			   boothDataMonitoringVOList = dataMonitoringService.getBoothWiseDataVerificationDetails(districtId, constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBoothWiseDataVerificationDetails()  of DataMonitoringAction", e);
+		}
 		   return Action.SUCCESS;
 	   }
 	   public String getDistrictList(){
