@@ -102,6 +102,7 @@ public class ToursBasicVO {
 	private Long tourTypeAchievedDays=0l;
 	private Long count=0l;
 	private String isComplaince;
+	private String voterCardNumber;
 	
 	private List<IdNameVO> categoryList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> tourTypeList = new ArrayList<IdNameVO>(0);
@@ -674,6 +675,12 @@ public class ToursBasicVO {
 	}
 	public Long getCount() {
 		return count;
+	}
+	public String getVoterCardNumber() {
+		return voterCardNumber;
+	}
+	public void setVoterCardNumber(String voterCardNumber) {
+		this.voterCardNumber = voterCardNumber;
 	}
 	public void setCount(Long count) {
 		this.count = count;
