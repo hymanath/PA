@@ -57,4 +57,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	 public Long getAlertStatusOfArticle(Long articleId);
 	 public List<Object[]> getAlertCreatedDate(Long alertCategoryTypeId);
 	 public int updateAlertStatusOfNewsForDelete(Long alertCategoryTypeId);
+	 public Object[] getSourceDtlsByAlertId(Long alertId);
 }
