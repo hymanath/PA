@@ -37,4 +37,7 @@ public interface IToursService {
 	 public List<ToursBasicVO> getTourBasicOverviewDtlsDesignationWise(String fromDateStr,String toDateStr,List<Long> designationIds);
 	 public String deleteDocumentByDocument(List<Long> documentIds);
 	 public ResultStatus checkForExistingTourDetails(ToursVO toursVo);
+	 public List<IdNameVO> getDesigationsListByCadreId(Long tdpCadreId);
+	 public ToursVO  getToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,String searchMonth);
+	 public ToursVO  getCandidateToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,Long categoryId,String searchMonth);
 }
