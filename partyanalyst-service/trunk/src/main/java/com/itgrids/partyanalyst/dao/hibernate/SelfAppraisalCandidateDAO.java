@@ -37,7 +37,8 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		   		           " model.tdpCadre.voterId," +
 		   		           " model.tdpCadre.memberShipNo," +
 		   		           " model.tdpCadre.mobileNo," +
-		   		           " model.tdpCadre.image" +
+		   		           " model.tdpCadre.image," +
+		   		           " model.tdpCadre.cardNo" +
 		   		           " from SelfAppraisalCandidate model " +
 		   		           " where " +
 		   		           " model.isActive='Y' " +
