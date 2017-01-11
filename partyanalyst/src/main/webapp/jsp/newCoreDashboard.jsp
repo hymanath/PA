@@ -2759,7 +2759,7 @@
 		<!-- Attendance End-->
 		
 	 
-	  <!--Tours New Start 
+	  <!--Tours New Start
 	<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2819,7 +2819,7 @@
 				</div>
 			</div>
 			</div>
-	 </div>-->
+	 </div>
 	<!--Tours New End -->
 	</div>
 	<div class="row">
@@ -3532,12 +3532,9 @@
 				<span id="nameOfMemberHeadingId"></span>
 			  </div>
 			  <div class="modal-body"> 
-				<div class="row">
-					<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
-						<button class="btn btn-success pull-right" id="subMitBtn" type="button">SUBMIT</button>
-					</div>
-					<div class="col-md-2 col-xs-12 col-sm-4 pull-right"> 
-						<select class="pull-right form-control" id="dateRangeSliderYear">
+				<div class="row" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%; padding: 0px 0px 20px; border-radius: 6px; margin: 10px 0px 0px;">
+					<div class="col-md-2 col-xs-12 col-sm-4"> 
+						<select class="pull-right form-control" id="dateRangeSliderYear" style="margin-top: 46px;">
 							<option value="0">Select Year</option>
 							<option value="2016">2016</option>
 							<option value="2017">2017</option>
@@ -3551,12 +3548,19 @@
 							<option value="2025">2025</option>
 						</select>
 					</div>
+					<div class="col-md-9 col-xs-12 col-sm-12" style="margin-left: -20px;"> 
+						<div id="tourSlider" style="margin-top:7px"></div>
+					</div>
+					<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+						<button class="btn btn-success pull-right" id="subMitBtn" type="button" style="margin-top: 46px;">SUBMIT</button>
+					</div>
+				
 				</div>
-				<div class="row">
+				<!---<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="tourSlider" style="margin-top:7px"></div>
 					</div>
-				</div>
+				</div>--->
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="tourIndividualDetailsBlock" class="m_top20"></div>
@@ -3781,7 +3785,7 @@ function onLoadCalls(){
         getToursBasicOverviewCountDetails();     
 		getDesigWiseMemberDtls();  
 		/*New Tours implementation Default Call */
-		// getToursBasicOverviewDtls();
+		 //getToursBasicOverviewDtls();
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
