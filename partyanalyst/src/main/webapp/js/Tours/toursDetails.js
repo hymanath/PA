@@ -333,7 +333,7 @@ function getCandidateList(designationId){
 		$(".outerDivClsNew").each(function(){
 			if(flag1){
 				var count = $(this).attr("attr_countNew");
-				alert($("#tourDaysNew"+count).val());
+				//alert($("#tourDaysNew"+count).val());
 				if($("#tourCategoryNew"+count).val() == 0 || $("#tourCategoryNew"+count).val() == "undefined" || $("#tourCategoryNew"+count).val() === undefined){
 					errStr="Please Select Tour Category";flag1=false;
 					
