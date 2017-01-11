@@ -505,6 +505,7 @@ public class ToursService implements IToursService {
     		   resultVO.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(candiatObj[3]));
     		   resultVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(candiatObj[4]));
     		   resultVO.setImage(commonMethodsUtilService.getStringValueForObject(candiatObj[5]));
+    		   resultVO.setVoterCardNumber(commonMethodsUtilService.getStringValueForObject(candiatObj[6]));
     	  	}
     	   List<Object[]> rtrnCandiateLocationObjList = selfAppraisalCandidateLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);	
     	  	if(rtrnCandiateLocationObjList != null && !rtrnCandiateLocationObjList.isEmpty()){
