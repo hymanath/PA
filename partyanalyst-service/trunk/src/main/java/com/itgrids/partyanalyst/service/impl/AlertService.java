@@ -3206,6 +3206,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	   List<Long> alertTypes = new ArrayList<Long>();
 	   alertTypes.add(alertType);
 	   List<Long> alertEditions = new ArrayList<Long>();
+	   if(editionType.longValue() == 2L){
+		   alertEditions.add(editionType);
+		   alertEditions.add(3L);
+	   }else{
+		   alertEditions.add(editionType);
+	   }
 	   alertEditions.add(editionType);
 	   try{
 		   if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
@@ -3258,6 +3264,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					   AlertOverviewVO alertTypeVO = getMatchVOForEdition(alertTypeAndEditionDtlsVoMap.get(alertTypeId).getEditionList(),editionId);
 					   if(alertTypeVO != null ){
 						   alertTypeVO.setEditionCnt(alertcnt);
+						   alertTypeVO.setAlertTypeId(alertTypeId);  
 					   }
 				   } 
 			   }  
@@ -3354,6 +3361,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   //for party
 		   if(alertTypeAndEditionDtlsVoMap.get(1L) != null){
 			   resultVO.setTotalPartyList(alertTypeAndEditionDtlsVoMap.get(1L).getEditionList());
+			   
 		   }
 		   mergeTwoEdition(resultVO.getTotalPartyList());
 		   //for govt
