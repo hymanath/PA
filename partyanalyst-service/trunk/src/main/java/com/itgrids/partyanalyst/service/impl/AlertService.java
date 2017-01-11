@@ -697,11 +697,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
 			 String alertSource = "";
 			 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
-				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+				alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
 			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 2L){//print
-				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
+				 if(sourceDtls[6] != null){
+					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
+				 }else{
+					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+				 }
+				 
 			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 3L){//electronic 
-				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
+				 if(sourceDtls[8] != null){
+					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
+				 }else{
+					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+				 }
+				 
 			 }  
 			 if(list != null && list.size() > 0)
 			 {
@@ -3520,7 +3530,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertDtls(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
-	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId){
+	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId){
 		LOG.info("Entered in getAlertDtls() method of AlertService{}");
 		try{
 			Date fromDate = null;      
@@ -3530,7 +3540,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			
+			List<Long> editionList = new ArrayList<Long>();
+			if(editionId != null){
+				if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
+			}
 			//get access level id and access level value
 			Long userAccessLevelId = null;
 			List<Long> userAccessLevelValues = new ArrayList<Long>();
@@ -3545,7 +3563,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//DateUtilService dateUtilService = new DateUtilService();
 			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Object[]> alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues);
+			List<Object[]> alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			
 			return alertCoreDashBoardVOs;
@@ -4431,14 +4449,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		return null;
  	}
- public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){
+ public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){//abcd
 		try{
 			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date today = dateUtilService.getCurrentDateAndTime();
 			String td = myFormat.format(today);
 			Long dist = 0l;
 			Long statusId = 0L;
-			AlertCoreDashBoardVO alertCoreDashBoardVO = null;    
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;  
+			String alertSource = "";
 			if(alertList != null && alertList.size() > 0){  
 				for(Object[] param : alertList ){
 					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
@@ -4463,7 +4482,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}else{
 						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));    
 					}  
+					
+						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 1L){//manual
+							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
+							if(param[17] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[17]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+							 
+						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 3L){//electronic 
+							if(param[19] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[19]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+						}
+						alertCoreDashBoardVO.setSource(alertSource);
+					 
 					alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
+					
 				}  
 			}
 		}catch(Exception e){
