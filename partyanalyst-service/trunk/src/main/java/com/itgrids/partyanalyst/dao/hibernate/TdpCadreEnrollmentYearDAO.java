@@ -908,4 +908,29 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 		}
+		
+		public List<Object[]> getOverAllCadreRegistrationCounts(Long districtId,Long constituencyId){
+		   StringBuilder sb = new StringBuilder();
+		   
+		   sb.append("select model.tdpCadre.cadreVerificationStatusId," +	
+		   					" count(distinct model.tdpCadre.tdpCadreId)" +	
+		   					" from TdpCadreEnrollmentYear model" +
+		   					" where model.isDeleted = 'N' and model.enrollmentYear.enrollmentYearId = 4" +
+		   					" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
+		   if(districtId != null && districtId.longValue() > 0l)
+			   sb.append(" and model.tdpCadre.userAddress.district.districtId = :districtId");
+		   if(constituencyId != null && constituencyId.longValue() > 0l)
+			   sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId");
+		   
+		   sb.append(" group by model.tdpCadre.cadreVerificationStatusId" +
+		   					" order by model.tdpCadre.cadreVerificationStatusId");
+		   
+		   Query query = getSession().createQuery(sb.toString());
+		   if(districtId != null && districtId.longValue() > 0l)
+			   query.setParameter("districtId", districtId);
+		   if(constituencyId != null && constituencyId.longValue() > 0l)
+			   query.setParameter("constituencyId", constituencyId);
+		   
+		   return query.list();
+	   }
 }
