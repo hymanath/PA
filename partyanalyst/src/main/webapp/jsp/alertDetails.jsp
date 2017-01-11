@@ -28,42 +28,6 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
-		.disabledBlockWhite
-		{
-			background-color:rgba(255,255,255,0.8) !important;
-			color:#333 !important;
-		}
-		.disabledBlock
-		{
-			background-color:rgba(0,0,0,0.8);
-			z-index:99;
-			position:absolute;
-			right:0px;
-			left:0px;
-			top:0px;
-			bottom:0px;
-			color:#fff;
-			text-align:center;
-			padding:20px;
-			text-transform:uppercase;
-		}
-		.uploadedDocuments
-		{
-			padding:0px;
-		}
-		.uploadedDocuments li
-		{
-			padding-left:15px;
-			position:relative;
-			list-style:none;
-		}
-		.uploadedDocuments li:before
-		{
-			position:absolute;
-			left:0px;
-			content:'\e142';
-			font-family: 'Glyphicons Halflings';
-		}
 		.label-neutral{
 			background:orange;
 		}
@@ -226,29 +190,6 @@
             transform: scale(1); } }
 
 	</style>
-	
-	<!-- YUI Dependency files (Start) -->
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/json-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	
-	<!-- YUI Dependency files (End) -->
  </head>     
 
 <!-- language convertion-->
@@ -388,60 +329,8 @@ control.makeTransliteratable(['commentsId']);
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">
-											
-												<div class="panel panel-default panelHeights">
-													<div class="panel-heading">
-														<h4 class="panel-title">ALERT CLARIFICATION REPORT</h4>
-													</div>
-													<div class="panel-body">
-														<div class="row">
-															<form id="alertClarificationDocs" name="alertClarificationDocs">
-															<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
-																<label class="radio-inline">Is Clarification Required?</label>
-																<label class="radio-inline">
-																	<input type="radio" name="clarificationRadioName" value="Y"/> Yes
-																</label>
-																<label class="radio-inline">
-																	<input type="radio" name="clarificationRadioName" checked value="N"/> No
-																</label>  
-															</div>
-														<div class="col-md-12 col-xs-12 col-sm-12 m_top10" id="clarfCommentsDivId"style="display:none;">
-															
-														 <form action="">
-															<div class="col-md-12 col-xs-12 col-sm-12">
-																<label>Clarification Status</label>
-																<select class="form-control" id="clarificationStatusSelId" name="clarificationStatusId">
-																	<option value="0">Select Status</option>
-																	<option value="1">Progress</option>
-																	<option value="2">Completed</option>
-																</select>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<label>Clarification Comments</label>
-																<div id="existingCommentsDivId"></div>
-																<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments"></textarea>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<label>Upload Attachments</label>
-																<div id="existingDocumentsDivId"></div>
-																<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
-																<div id="extraUploadFileDiv"></div>
-																<button type="button" class="btn btn-primary btn-xs pull-right m_top20" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
-															</div>
-															
-															<input type="hidden" id="alertIdHidden" name="alertId"/>
-															</form>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-																<button type="button" style="width:100%" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>
-															</div>
-														</div>
-													</div>
-												</div>
-										</div>
-										<div class="col-md-4 col-xs-12 col-sm-4">
-											<div class="panel panel-default panelHeights" style="position:relative;">
+										<div class="col-md-4 col-xs-12 col-sm-6">
+											<div class="panel panel-default">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
 														<span id="assignCandidatesCnt">0</span>
@@ -450,62 +339,44 @@ control.makeTransliteratable(['commentsId']);
 														</c:if>
 													</h4>
 												</div>
-												<div class="panel-body ">
-													<div class="disabledBlock disabledBlockWhite">
-													<p class="text-center">
-														<img src="images/TIme.png"/>
-														<h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>
-													</p>
-													</div>
+												<div class="panel-body">
+													<div  id="alertAssignedCandidateDataId"></div>
 												</div>
-												<div  id="alertAssignedCandidateDataId"></div>
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">
-										<div class="col-md-4 col-xs-12 col-sm-4">
-											<div class="panel panel-default panelHeights" style="position:relative;">
-												<div class="disabledBlock">
-													<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>
-													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
-												</div>
-												<div class="panel-body">
-													<label>Alert Status</label>
-													<select class="dropkickClass" id="statusId">
-														<option value='0'>Select Status</option>
-														<option value='1'>Pending</option>      
-														<option value='2'>Notified</option>  
-														<option value='3'>Action In Progess</option>  
-														<option value='4'>Completed</option>
-														<option value='5'>Unable to Resolve</option>
-														<option value='6'>Action Not Required</option>
-														<option value='7'>Duplicate</option>
-													</select>
-													
-													<label>Assigned Cadre</label>
-													 <select class="" id="assignedCadreId"  multiple>
-														 <option value="0">Select Assign Cadre</option>
-														 
-													 </select>
-													
-													<label>Comments</label>
-													<label class="radio-inline">
-														<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-													</label>
-													<label class="radio-inline">
-														<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-													</label>
-													<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-													<div id="errorId" class="m_top10"></div>
-													<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
-													<span id="updateAlertajaxImg" class="m_top10"></span>
-												</div>
-											</div>
+										<div class="col-md-8 col-xs-12 col-sm-6">
+											<label>Alert Status</label>
+											<select class="dropkickClass" id="statusId">
+												<option value='0'>Select Status</option>
+												<option value='1'>Pending</option>      
+												<option value='2'>Notified</option>  
+												<option value='3'>Action In Progess</option>  
+												<option value='4'>Completed</option>
+												<option value='5'>Unable to Resolve</option>
+												<option value='6'>Action Not Required</option>
+												<option value='7'>Duplicate</option>
+											</select>
+											
+											<label>Assigned Cadre</label>
+											 <select class="" id="assignedCadreId"  multiple>
+												 <option value="0">Select Assign Cadre</option>
+												 
+											 </select>
+											
+											<label>Comments</label>
+											<label class="radio-inline">
+												<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+											</label>
+											<label class="radio-inline">
+												<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+											</label>
+											<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
+											<div id="errorId" class="m_top10"></div>
+											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
+											<span id="updateAlertajaxImg" class="m_top10"></span>
 										</div>
 										</c:if>
-									</div>
-									
-									<div class="row">
-										
 									</div>
 								</div>
 							</div>
@@ -616,8 +487,7 @@ control.makeTransliteratable(['commentsId']);
 		</div><!-- /.modal 
 		</div>-->
 
-<div class="modal fade" id="myModalShowNew"></div>		
-<input type="file" class="btn btn-mini cloneFileCls" style="display:none;"/>		
+<div class="modal fade" id="myModalShowNew"></div>				
 <script type="text/javascript">
 
 
@@ -714,34 +584,6 @@ function buildAlertAssignedCandidateData(result)
 	 getConfirmation(tdpCadreId);
 	// deleteAlertAssignedCandidates(tdpCadreId);
 });*/
-
-$("#updateAlertDetailsId").click(function(){
-		$("#alertIdHidden").val(alertId);
-		var files = [];
-		$("#alertClarificationDocs input[type=file]").each(function() {
-			if($(this).val().trim().length>0){alert($(this).val());
-				files.push($(this).val());
-			}
-		});
-		
-		
-		var uploadHandler = {
-				upload: function(o) {
-				    uploadResult = o.responseText;
-					//showingStatus(uploadResult,"MINUTE");
-				}
-			};
-
-		YAHOO.util.Connect.setForm('alertClarificationDocs',true);
-		YAHOO.util.Connect.asyncRequest('POST','uploadAlertsDocAction.action',uploadHandler);
-	});
-
-var maxHeight = 0;
-
-$(".panelHeights").each(function(){
-   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-});
-$(".panelHeights").height(maxHeight);
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
