@@ -1371,6 +1371,10 @@ public List<Object[]> getDistrictConstituenciesByState(Long districtId,Long stat
 	{
 		str.append(" and model.district.districtId between 1 and 10");
 	}
+	else
+	{
+		str.append(" and model.district.districtId between 1 and 23");
+	}
 	str.append(" order by model.name");
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("districtId", districtId);
