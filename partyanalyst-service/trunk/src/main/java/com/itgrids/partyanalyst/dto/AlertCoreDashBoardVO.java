@@ -27,6 +27,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long interval;
 	private String alertLevel;
 	private String location;
+	private String source;
 	
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -184,5 +185,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
 	
 }
