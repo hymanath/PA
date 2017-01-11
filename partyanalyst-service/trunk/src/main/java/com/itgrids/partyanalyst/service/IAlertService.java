@@ -62,7 +62,7 @@ public interface IAlertService {
     public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId);
     public AlertVO getCandidateAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId,Long categoryId,Long statusId);
    // public List<AlertVO> getAlertClarificationStatus(Long alertId);
-    public AlertVO getAlertClarificationComments(Long alertId);
+    //public AlertVO getAlertClarificationComments(Long alertId);
     public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
 				final String clarificationRadioName,final List<String> fileNamesList);
     public AlertClarificationVO getClarificationDetails(Long alertId);
