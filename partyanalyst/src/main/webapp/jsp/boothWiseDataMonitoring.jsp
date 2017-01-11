@@ -475,8 +475,8 @@ function buildBoothWiseDetails(result,resultType){
 				str2+='<thead class="text-capital">';
 					str2+='<th>captured photo</th>';
 					//str2+='<th>Relative Voter photo</th>';
-					str+='<th style="width: 230px;">Verification Status</th>';
-					str+='<th>Rejected Reason</th>';
+					str2+='<th style="width: 230px;">Verification Status</th>';
+					str2+='<th>Rejected Reason</th>';
 					str2+='<th>name</th>';
 					str2+='<th>mobile number</th>';
 					str2+='<th>gender</th>';
