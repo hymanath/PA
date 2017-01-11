@@ -1791,7 +1791,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 							str+='<div class="dropup">';
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
-									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per month</i></p>';
+									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per Month</i></p>';
 									str+='<table class="table">';
 									 var monthWiseTarget = designationWiseList[i].subList; 
 											 if(monthWiseTarget != null && monthWiseTarget.length > 0){
@@ -3540,7 +3540,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 									  str2+='<div class="dropup">';
 									str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 										str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;z-index:999;width:220px">';
-											str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per month</i></p>';
+											str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per Month</i></p>';
 											str2+='<table class="table">';
 												str2+='<tr><td style="background-color:#EDECE7">'+categoryVO.name+' - '+categoryVO.targetDays+'</td></tr>';
 											str2+='</table>';
@@ -3570,7 +3570,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 											 str2+='<div class="dropup">';
 											str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 												str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu3" style="padding:10px;z-index:999;width:220px !important;">';
-													str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per month</i></p>';
+													str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per Month</i></p>';
 													str2+='<table class="table">';
 														str2+='<tr style="background-color:#EDECE7"><td>'+categoryList[k].name+' - '+categoryList[k].targetDays+'</td></tr>';
 													str2+='</table>';
@@ -3684,6 +3684,99 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 			str1+='</div>';
 		$("#tourIndividualDetailsTableBlock").html(str1);
 	}
+	
+	
+	/* if(result !=null && result.subList3 != null && result.subList3.length > 0){
+		var str1='';
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+		str1='<h4 class="text-capital">MONTH WISE COMPLIANCE COMMENTS & ATTACHMENTS</h4>';
+				str1+='<div class="m_top20">';
+					 if($(window).width() < 500)
+					{
+						str1+='<div class="table-responsive">';
+					}
+					str1+='<table class="table table-bordered borderedWeight">';
+						str1+='<thead class="bg_D8">';
+							str1+='<tr>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Category</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Type</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">NO OF Days</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">ATTACHMENT</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
+							str1+='</tr>';
+							str1+='<tbody>';
+							  
+								for(var i in result.subList3){
+									str1+='<tr>';
+									var moxCategoryLength = 0;
+									if(result.subList3[i].subList != null && result.subList3[i].subList.length > 0){
+									   moxCategoryLength = result.subList3[i].subList.length;
+									}
+										str1+='<td rowspan='+(moxCategoryLength+1)+'>'+result.subList3[i].tourDate+'</td>';
+										
+										
+										if(result.subList3[i].subList != null && result.subList3[i].subList.length > 0){
+											var categoryList = result.subList3[i].subList;
+											for(var k in categoryList){
+													//str1+='<tr>';
+													if(categoryList[k].tourCategory == null || categoryList[k].tourCategory == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td>'+categoryList[k].tourCategory+'</td>';
+													}
+													if(categoryList[k].tourType == null || categoryList[k].tourType == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td>'+categoryList[k].tourType+'</td>';
+													}
+													if(categoryList[k].count == null || categoryList[k].count==0){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td class="text-center">'+categoryList[k].count+'</td>';
+													}
+											//str1+='</tr>';
+											}
+										}
+									
+									  if(result.subList3[i].filePath != null && result.subList3[i].filePath.length > 0){
+										var fullName = result.subList3[i].filePath;
+										var nameArr = fullName.split(".");
+										var type = nameArr[1];
+										if(type=="pdf" || type=="PDF"){
+											str1+='<td rowspan='+(moxCategoryLength+1)+' id="showTourPdfId" attr_filePath="'+result.subList3[i].filePath+'" style="cursor:pointer;"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></td>';
+										}else if(type=="xls" ||type=="xlsx"){  
+											str1+='<td rowspan='+(moxCategoryLength+1)+' id="showTourPdfId"  attr_filePath="'+result.subList3[i].filePath+'" style="cursor:pointer;"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></td>';       
+										}else if(type=="doc" || type=="docx"){
+											str1+='<td rowspan='+(moxCategoryLength+1)+' id="showTourPdfId"  attr_filePath="'+result.subList3[i].filePath+'" style="cursor:pointer;"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></td>';         
+										}else if(type != null){  
+											str1+='<td rowspan='+(moxCategoryLength+1)+' id="showTourPdfId"  attr_filePath="'+result.subList3[i].filePath+'" style="cursor:pointer;"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></td>';         
+										}           
+										}else{    
+											str1+='<td rowspan='+(moxCategoryLength+1)+'> - </td>';  
+										} 
+									if(result.subList3[i].comment != null && result.subList3[i].comment.length > 0){
+											if(result.subList3[i].comment.length > 15){
+											 str1+='<td rowspan='+(moxCategoryLength+1)+' style="cursor:pointer;" title="'+result.subList3[i].comment+'">'+result.subList3[i].comment.substring(0,30)+'...</td>';	
+											}else{
+											 str1+='<td rowspan='+(moxCategoryLength+1)+'>'+result.subList3[i].comment+'</td>';	
+											}
+										}else{
+										  str1+='<td rowspan='+(moxCategoryLength+1)+'> - </td>';	
+										}
+									str1+='</tr>';
+								}
+							str1+='</tbody>';
+						str1+='</thead>';
+					str1+='</table>';	
+					if($(window).width() < 500)
+					{
+						str1+='</div>';
+					}
+				str1+='</div>';
+			str1+='</div>';
+		$("#tourIndividualDetailsTableBlock1").html(str1); */
+	//}
 }
 $(document).on('click','#showTourPdfId',function(){
 		//$("#cdrModelId").modal("show");
