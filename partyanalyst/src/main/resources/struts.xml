@@ -15359,5 +15359,36 @@
 		</result>
 	</action>
 	
+	<action name="getDistrictListNewAction" class="dataMonitoringAction"  method="getDistrictList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getConstituencyListAction" class="dataMonitoringAction"  method="getConstituencyList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="boothWiseDataMonitoringAction" class="dataMonitoringAction" method="boothWiseDataMonitoring">
+		<result name="success">/jsp/boothWiseDataMonitoring.jsp</result>  
+	</action>
+	<action name="getClarificationDetailsAction" class="createAlertAction"  method="getClarificationDetails">
+		<result type="json" name="success">
+			<param name="root">alertClarificationVO</param>
+		</result>
+	</action>
+	
+	<action name="getBoothWiseDataVerificationDetailsAction" class="dataMonitoringAction"  method="getBoothWiseDataVerificationDetails">
+			<result type="json" name="success">
+			<param name="root">boothDataMonitoringVOList</param>      
+		</result>
+	</action>
+	
+	<action name="getBoothWiseRegisteredMemberDetailsAction" class="dataMonitoringAction"  method="getBoothWiseRegisteredMemberDetails">
+			<result type="json" name="success">
+			<param name="root">idNameVO</param>      
+		</result>
+	</action>
+	
  </package>
 </struts>
