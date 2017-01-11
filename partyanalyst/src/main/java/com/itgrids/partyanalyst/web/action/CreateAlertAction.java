@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
-import com.itgrids.partyanalyst.model.AlertClarificationComments;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -753,9 +752,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long alertCategoryId = jObj.getLong("alertCategoryId");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");  
-			Long activityMemberId = jObj.getLong("activityMemberId");   
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long editionIds = jObj.getLong("editionIds"); 
 			
-			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId);   
+			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
