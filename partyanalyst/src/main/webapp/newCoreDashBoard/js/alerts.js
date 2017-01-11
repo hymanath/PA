@@ -2913,7 +2913,7 @@ function getTotalArticledetails(articleId){
 					str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 						str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
-						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;border:1px solid #ddd" alt="Img Title"/>';
+						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;border:1px solid #ddd;width:100%" alt="Img Title"/>';
 					str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 					str+='<h4 class="panel-title text-success">Description</h4>';
@@ -3222,37 +3222,44 @@ function getTotalArticledetails(articleId){
 		var str='';
 		var totalMainCount = result.totalPartyList[0].editionCnt + result.totalGovtList[0].editionCnt + result.totalOtherList[0].editionCnt
 		var totalDistCount = result.totalPartyList[1].editionCnt + result.totalGovtList[1].editionCnt + result.totalOtherList[1].editionCnt
+		if($(window).width() < 800)
+		{
+			str+='<div class="table-responsive">';
+		}
+		
 		str+='<table class="table table-bordered bg_ED text-center">';
+		
+		str+='<tbody>';
 			str+='<tr>';
-				str+='<td colspan="2" class="alertsArrow alertOverViewDetailsCls"><div class="alertsArrow alertInnerArrow getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="0">'+result.overAllVO.totalAlertCnt+'<p>TOTAL ALERTS</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(0,0);" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" >'+result.overAllVO.totalAlertCnt+'<p>TOTAL ALERTS</p></div></td>';
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="1" attr_edition_type_id="0">'+result.overAllVO.partyAlertCnt+'<p>PARTY</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(1,0);" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.partyAlertCnt+'<p>PARTY</p></div></td>';
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="2" attr_edition_type_id="0">'+result.overAllVO.govtAlertCnt+'<p>GOVT</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(2,0);" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.govtAlertCnt+'<p>GOVT</p></div></td>';
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td colspan="2" class="alertOverViewDetailsCls"><div class="alertInnerArrow getEditioDtls" attr_alert_type_id="3" attr_edition_type_id="0">'+result.overAllVO.otherAlertCnt+'<p>OTHERS</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(3,0);" class="alertOverViewDetailsCls " attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.otherAlertCnt+'<p>OTHERS</p></div></td>';
 				}
 			str+='</tr>';
 			str+='<tr>';
-				str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="1">'+totalMainCount+'</p></div></td>';
-				str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="2">'+totalDistCount+'</p></div></td>';
+				str+='<td onclick ="getEditioDtls(0,1);" class="alertOverViewDetailsLowCls" attr_alert_type_id="0" attr_edition_type_id="1"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="" >'+totalMainCount+'</p></div></td>';
+				str+='<td onclick ="getEditioDtls(0,2);" class="alertOverViewDetailsLowCls " attr_alert_type_id="0" attr_edition_type_id="2"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="" >'+totalDistCount+'</p></div></td>';
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
+					str+='<td  class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
 					if(result.totalPartyList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalPartyList[0].alertTypeId+','+result.totalPartyList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></div></td>';
 					}
 					
 					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
 					if(result.totalPartyList[1].editionCnt == 0){  
 						str+='<p style="font-size:13px;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalPartyList[1].alertTypeId+','+result.totalPartyList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></div></td>';
 					}
 					
 				}
@@ -3261,14 +3268,14 @@ function getTotalArticledetails(articleId){
 					if(result.totalGovtList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalGovtList[0].alertTypeId+','+result.totalGovtList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></div></td>';
 					}
 					
 					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
 					if(result.totalGovtList[1].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalGovtList[1].alertTypeId+','+result.totalGovtList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></div></td>';
 					}
 					
 				}
@@ -3277,26 +3284,31 @@ function getTotalArticledetails(articleId){
 					if(result.totalOtherList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalOtherList[0].alertTypeId+','+result.totalOtherList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></div></td>';
 					}
 					
 					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
 					if(result.totalOtherList[1].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
 					}else{
-						str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalOtherList[1].alertTypeId+','+result.totalOtherList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></div></td>';
 					}
 				}
 				
 			str+='</tr>';
+				str+='</tbody>';
 		str+='</table>';
+		if($(window).width() < 800)
+		{
+		str+='</div>';
+		}
 		
 		$("#alertOverview").html(str);  
 	}
 	
 	
-	function buildAlertOverviewDetails(result,alertEdition,alertTypeId)
-	{
+	function buildAlertOverviewDetails(result,alertEdition,alertTypeId)  
+	{   
 		var str='';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -3318,6 +3330,10 @@ function getTotalArticledetails(articleId){
 						{
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
+								if($(window).width() < 800)
+									{
+										str+='<div class="table-responsive">';
+									}
 									str+='<table class="table table-bordered">';
 										
 										str+='<tr>';
@@ -3325,7 +3341,7 @@ function getTotalArticledetails(articleId){
 												if(result.statusList[i].statusCnt == 0){  
 													str+='<h4>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												}else{
-													str+='<h4 style="cursor:pointer;" class="alertDtlsCls" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'" >'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
+													str+='<h4 style="cursor:pointer;" class="alertDtlsCls" attr_edition_id="'+alertEdition+'" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'" >'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												}
 												
 												str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
@@ -3355,6 +3371,10 @@ function getTotalArticledetails(articleId){
 											str+='</tr>';
 										}
 									str+='</table>';
+									if($(window).width() < 800)
+									{
+										str+='</div>';
+									}
 								str+='</div>';
 							str+='</div>';
 							/* for(var j in result.statusList[i].editionList)
@@ -3368,7 +3388,7 @@ function getTotalArticledetails(articleId){
 					{
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-								str+='<h4 class="panel-title text-capital alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
+								str+='<h4 class="panel-title text-capital alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 							str+='</div>';
 							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -3391,6 +3411,10 @@ function getTotalArticledetails(articleId){
 							}  
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="pad_5 bg_ED">';
+									if($(window).width() < 800)
+									{
+										str+='<div class="table-responsive">';
+									}
 									str+='<table class="table">';
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
@@ -3411,7 +3435,7 @@ function getTotalArticledetails(articleId){
 												if(result.categoryList[i].statusList[j].statusCnt == 0){
 													str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 												}else{
-													str+='<p class="text-muted alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"  attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
+													str+='<p class="text-muted alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"  attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 												}  
 												
 											str+='</td>';
@@ -3419,6 +3443,10 @@ function getTotalArticledetails(articleId){
 										}
 										str+='</tr>';
 									str+='</table>';
+									if($(window).width() < 800)
+									{
+										str+='</div>';
+									}
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3440,10 +3468,11 @@ function getTotalArticledetails(articleId){
 		$(this).addClass("alertsArrowLow");
 		$(this).find(".alertInnerArrowLow").addClass("alertsArrowLow");
 	});
-	$(document).on("click",".getEditioDtls",function(){
+	function getEditioDtls(alertTypeStr,alertEdition){
+	//$(document).on("click",".getEditioDtls",function(){
 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var alertTypeStr = $(this).attr("attr_alert_type_id");
-		var alertEdition = $(this).attr("attr_edition_type_id");  
+		//var alertTypeStr = $(this).attr("attr_alert_type_id");
+		//var alertEdition = $(this).attr("attr_edition_type_id");  
 		var dates=$("#dateRangeIdForAlert").val();
 		var fromDateStr;
 		var toDateStr;
@@ -3473,5 +3502,5 @@ function getTotalArticledetails(articleId){
 			  $("#alertOverviewDetails").html("NO DATA AVAILABLE.");	
 			}
       });	
-	});
+	}
 	
