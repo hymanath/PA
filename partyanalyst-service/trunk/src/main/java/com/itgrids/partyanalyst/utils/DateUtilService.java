@@ -442,5 +442,15 @@ public class DateUtilService {
 	    }
 	    return dateStrList;
 	}
+	public String getCurrentDateInStringFormatNew(String format) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			return sdf.format(new Date());
+
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " + " check for log details");
+			return null;
+		}
+	}
 
 }
