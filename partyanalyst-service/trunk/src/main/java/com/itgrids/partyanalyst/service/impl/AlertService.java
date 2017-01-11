@@ -694,6 +694,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		List<Long> alertIds = new ArrayList<Long>();
 		try{
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
+			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
+			 String alertSource = "";
+			 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
+				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 2L){//print
+				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
+			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 3L){//electronic 
+				 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
+			 }  
 			 if(list != null && list.size() > 0)
 			 {
 				 
@@ -712,6 +721,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setId((Long)params[0]);
 					 alertVO.setTitle(params[25] != null ? params[25].toString() : "");
 					 alertVO.setDesc(params[1].toString());
+					 alertVO.setAlertSource(alertSource);
 					 alertVO.setDate(params[2] != null? params[2].toString():"");
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
 					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
