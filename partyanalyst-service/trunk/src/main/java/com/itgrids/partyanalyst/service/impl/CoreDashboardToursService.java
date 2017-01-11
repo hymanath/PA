@@ -2031,15 +2031,13 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 //Get month year ids based on month year 
 		 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
 		 
-		 if(monthyearIds != null && monthyearIds.size() == 0){//return when data is not there selfAppraisalToursMonth Table
-			return resultVO; 
+		 if(monthyearIds != null && monthyearIds.size() > 0){
+			 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
+			 setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+			 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
+			 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");	 
 		 }
 		 
-		 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
-		 setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
-		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
-	
 		//Taking Per Month Target  Designation wise 
 		 List<Long> latestMonthYearIds = selfAppraisalToursMonthDAO.getLatestMonthYearId();
 		 List<Long> monthYearsId = new ArrayList<Long>();
@@ -2060,20 +2058,24 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 List<Object[]> rtrnDsgntnWseCandiateObjLst = selfAppraisalCandidateLocationNewDAO.getNoOfLdrsCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, userTypeId,"Candiate"); 
 		 setCandidateIds(rtrnDsgntnWseCandiateObjLst,candidateIdSet);
 		 //Getting designation wise  tour submitted candidate 
-		 List<Object[]> rtrnSubmittedLdrObjLst = selfAppraisalCandidateDetailsNewDAO.getToursSubmittedLeaderCntDesignationBy(monthyearIds, candidateIdSet);
-		 setTourSubmitteedLdrCnt(rtrnSubmittedLdrObjLst,designationMap);
-		 
+		 if(monthyearIds != null && monthyearIds.size() > 0){
+			 List<Object[]> rtrnSubmittedLdrObjLst = selfAppraisalCandidateDetailsNewDAO.getToursSubmittedLeaderCntDesignationBy(monthyearIds, candidateIdSet);
+			 setTourSubmitteedLdrCnt(rtrnSubmittedLdrObjLst,designationMap);
+		 }
 		 //Getting category wise tour submitted leaders
-		 List<Object[]> rtrnCategoryWiseSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourCategory", monthyearIds,candidateIdSet);
-		 setCategoryWiseTourSubmittedLeader(rtrnCategoryWiseSubmittedLdrs,designationMap,"tourCategory");
-		 List<Object[]> rtrnGovtSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader(fromDate, toDate, "tourType", monthyearIds,candidateIdSet);
-		 setCategoryWiseTourSubmittedLeader(rtrnGovtSubmittedLdrs,designationMap,"tourType");
-		  
+		 if(monthyearIds != null && monthyearIds.size() > 0){
+			 List<Object[]> rtrnCategoryWiseSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader("tourCategory", monthyearIds,candidateIdSet);
+			 setCategoryWiseTourSubmittedLeader(rtrnCategoryWiseSubmittedLdrs,designationMap,"tourCategory");
+			 List<Object[]> rtrnGovtSubmittedLdrs = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseTourSubmittedLeader("tourType", monthyearIds,candidateIdSet);
+			 setCategoryWiseTourSubmittedLeader(rtrnGovtSubmittedLdrs,designationMap,"tourType");
+		 }
 		 //Getting category wise tour Complaince days
-		 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourCategory",null,candidateIdSet);
-		 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationMap,"tourCategory");
-		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourType",null,candidateIdSet);
-		 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationMap,"tourType");
+		 if(monthyearIds != null && monthyearIds.size() > 0){
+			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourCategory",null,candidateIdSet);
+			 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationMap,"tourCategory");
+			 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourType",null,candidateIdSet);
+			 prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationMap,"tourType");
+		 }
 		  calculateCategoryWiseComplaince(candiateDtlsMap);
 		 //Setting Static Target Month DesignationWise 
 		 if(designationMap != null && designationMap.size() > 0){
@@ -2352,7 +2354,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 	  }
 				 	ToursBasicVO monthVO = new ToursBasicVO();
 				 	monthVO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));//monthId
-				 	monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]));//monthName
+				 	String year = commonMethodsUtilService.getStringValueForObject(param[7]);
+				 	monthVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 3)+"-"+year.substring(year.length()-2));//monthName & Year
+				 	monthVO.setYear(commonMethodsUtilService.getLongValueForObject(param[7]));
 				 	monthVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
 				 	monthList.add(monthVO);
 			 }
@@ -2464,6 +2468,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							ToursBasicVO monthVO = new ToursBasicVO(); 
 							monthVO.setId(mntVO.getId());
 							monthVO.setName(mntVO.getName());
+							monthVO.setYear(mntVO.getYear());
 							monthVO.setTargetDays(mntVO.getTargetDays());
 						   categoryVO.getMonthList().add(monthVO);
 						 }
@@ -3009,30 +3014,36 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			   List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
 			   //Get month year ids based on month year 
 			  List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
-			  
-			   List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
-			   setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-			   List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
-			   setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+			   if(monthyearIds != null && monthyearIds.size() > 0){
+				   List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourCategory");
+				   setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+				   List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getTourCategoryWiseTargetCnt(monthyearIds,"tourType");
+				   setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+			   }
 			  
 			  List<Object[]> rtrnMemberDtlsObjLst = null;
 			  if(filterType != null && filterType.equalsIgnoreCase("all")){
 				 rtrnMemberDtlsObjLst = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues,0l, designationIds);
 			  }else if(filterType != null && filterType.equalsIgnoreCase("notSubmitteed")){
 			   List<Object[]>  rtrnTotalLdrs = selfAppraisalCandidateLocationNewDAO.getDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l, designationIds);
-			   rtrnMemberDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,monthyearIds,designationIds);
+				   if(monthyearIds != null && monthyearIds.size() > 0){
+					   rtrnMemberDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,monthyearIds,designationIds);
+				   }
 			   rtrnMemberDtlsObjLst = getNotSubmittedLeadrs(rtrnTotalLdrs,rtrnMemberDtlsObjLst); 
 			  }else{
-			   rtrnMemberDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,monthyearIds,designationIds);	  
+				  if(monthyearIds != null && monthyearIds.size() > 0){
+					  rtrnMemberDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(stateId, locationAccessLevelId, locationValues, 0l,monthyearIds,designationIds);	  
+				  }
 			  }
 			  setTourSubmitteedMemberDtls(rtrnMemberDtlsObjLst,memberDtlsMap,designationWiseTargetMap,categoryIdNameMap,designationIdAndNameMap);
 			  
 			  if(filterType != null && !filterType.equalsIgnoreCase("notSubmitteed")){
-				  List<Object[]> rtrnDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourCategory",null,null);
-				  setMonthWiseComplainceDetails(rtrnDaysToursObjLst,memberDtlsMap,"tourCategory");
-				  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourType",null,null);
-				  setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,memberDtlsMap,"tourType");
-			
+				  if(monthyearIds != null && monthyearIds.size() > 0){
+					  List<Object[]> rtrnDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourCategory",null,null);
+					  setMonthWiseComplainceDetails(rtrnDaysToursObjLst,memberDtlsMap,"tourCategory");
+					  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds, "tourType",null,null);
+					  setMonthWiseComplainceDetails(rtrnGovtDaysToursObjLst,memberDtlsMap,"tourType");
+				  }
 			  }
 			  
 			  //Calculating category complaince percentage

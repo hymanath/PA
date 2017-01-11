@@ -8,7 +8,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.SelfAppraisalDesignationTarget;
 
 public interface ISelfAppraisalDesignationTargetDAO extends GenericDao<SelfAppraisalDesignationTarget, Long> {
-	public List<Object[]> getDesignationWiseTargetCnt(Date fromDate,Date toDate,String type);
     public List<Object[]> getTourCategoryWiseTargetCnt(List<Long> monthYearIds,String type);
     public List<Object[]> getCandiateAndCategoryWiseTargetCnt(List<Long> monthYearIds,String type,Long selfAppraisalCandidateId);
     public List<Object[]> getTotalTargetOfDesignation(Date fromDate,Date toDate,List<Long> designationsList,String type);

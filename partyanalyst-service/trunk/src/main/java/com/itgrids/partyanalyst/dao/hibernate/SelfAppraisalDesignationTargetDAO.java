@@ -15,34 +15,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 	public SelfAppraisalDesignationTargetDAO(){
 		super(SelfAppraisalDesignationTarget.class);
 	}
-    public List<Object[]> getDesignationWiseTargetCnt(Date fromDate,Date toDate,String type){
-         StringBuilder queryStr = new StringBuilder();
-         queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-			 " model.selfAppraisalDesignation.designation," +
-			 " sum(model.targetDays) " +
-			 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
-			 " and model.selfAppraisalDesignation.isActive='Y' ");
-           if(type != null && type.equalsIgnoreCase("tourCategory")){
-        	 queryStr.append(" and model.tourTypeId is null ");  
-           }else{
-        	   queryStr.append(" and model.selfAppraisalTourCategoryId is null ");   
-           }
-           if(fromDate != null){
-        	   queryStr.append(" and date(model.startTime)<=:fromDate");
-           }
-           if(toDate != null){
-        	   queryStr.append(" and (model.endTime is null or date(model.endTime)>=:toDate)"); 
-           }
-		  queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
-    	 Query query = getSession().createQuery(queryStr.toString());
-    	   if(fromDate != null){
-        	   query.setParameter("fromDate", fromDate);
-           }
-           if(toDate != null){
-        	   query.setParameter("toDate", toDate); 
-           }
-           return query.list();
-    }
+   // tour coreDashboard DAO 
     public List<Object[]> getTourCategoryWiseTargetCnt(List<Long> monthYearsIds,String type){
             StringBuilder queryStr = new StringBuilder();
             queryStr.append(" select model.selfAppraisalDesignation.selfAppraisalDesignationId," +
@@ -56,7 +29,8 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
             }
              queryStr.append(" model.selfAppraisalToursMonth.selfAppraisalToursMonthId," +
              				" model.selfAppraisalToursMonth.monthName," +
-             				" sum(model.targetDays) " +
+             				" sum(model.targetDays)," +
+             				" model.selfAppraisalToursMonth.year " +
 			 " from SelfAppraisalDesignationTarget model where model.isActive='Y' " +
 			 " and model.selfAppraisalDesignation.isActive='Y' ");
            if(type.equalsIgnoreCase("tourCategory")){
@@ -135,7 +109,7 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
            }
            return query.list();
     }
-    
+    //tour application dao
     public List<Object[]> getTotalTargetOfDesignation(Date fromDate,Date toDate,List<Long> designationsList,String type){
     	
     	StringBuilder str = new StringBuilder();
