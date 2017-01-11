@@ -2316,5 +2316,28 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	   query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
 	    return query.executeUpdate();
    }
+   public Object[] getSourceDtlsByAlertId(Long alertId){
+	   StringBuilder sb = new StringBuilder();
+	   sb.append(" select " +
+	   			 " alertCategory.alertCategoryId, " +//0
+	   			 " alertSource.alertSourceId, " +//1
+	   			 " alertSource.source," +//2
+	   			 " editionType.editionTypeId, " +//3
+	   			 " editionType.editionType, " +//4
+	   			 " edition.editionId, " +//5
+	   			 " edition.editionAlias, " +//6
+	   			 " tvNewsChannel.tvNewsChannelId, " +//7
+	   			 " tvNewsChannel.channelName " +//8
+	   			 " from Alert model " +
+	   			 " left join model.alertCategory alertCategory " +
+	   			 " left join model.alertSource alertSource " +
+	   			 " left join model.editionType editionType " +
+	   			 " left join model.edition edition " +
+	   			 " left join model.tvNewsChannel tvNewsChannel  where " +
+	   			 " model.alertId = :alertId and model.isDeleted = 'N' ");
+	   Query query = getSession().createQuery(sb.toString());
+	   query.setParameter("alertId", alertId);
+	   return (Object[]) query.uniqueResult();  
+   }
 }
 
