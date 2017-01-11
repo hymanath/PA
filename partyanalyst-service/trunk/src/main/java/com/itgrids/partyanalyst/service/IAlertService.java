@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActionableVO;
+import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -64,5 +65,5 @@ public interface IAlertService {
     public AlertVO getAlertClarificationComments(Long alertId);
     public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
 				final String clarificationRadioName,final List<String> fileNamesList);
-   
+    public AlertClarificationVO getClarificationDetails(Long alertId);
    }

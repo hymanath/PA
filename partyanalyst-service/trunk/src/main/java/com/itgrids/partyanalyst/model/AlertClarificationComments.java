@@ -26,16 +26,15 @@ import org.hibernate.annotations.NotFoundAction;
 public class AlertClarificationComments extends BaseModel implements Serializable{
 	
 	private Long alertClarificationCommentsId;
-	private Long alertClarificationId;
+	private Long alertId;
 	private String comments;
 	private String isDeleted;
 	private Date insertedTime;
 	private Long insertedBy;
 	private Date updatedTime;
 	private Long updatedBy;
-	private String clarificationRequired;
 	
-	private AlertClarification alertClarification;
+	private Alert alert;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,18 +46,19 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 		this.alertClarificationCommentsId = alertClarificationCommentsId;
 	}
 
-	@Column(name="alert_clarification_id", insertable=false, updatable = false)
-	public Long getAlertClarificationId() {
-		return alertClarificationId;
+	@Column(name="alert_id")
+	public Long getAlertId() {
+		return alertId;
 	}
-	public void setAlertClarificationId(Long alertClarificationId) {
-		this.alertClarificationId = alertClarificationId;
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
 	}
 
 	@Column(name="comments")
 	public String getComments() {
 		return comments;
 	}
+	
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
@@ -102,24 +102,18 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 	public void setUpdatedBy(Long updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="alert_clarification_id")
+	@JoinColumn(name="alert_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AlertClarification getAlertClarification() {
-		return alertClarification;
+	public Alert getAlert() {
+		return alert;
 	}
-	public void setAlertClarification(AlertClarification alertClarification) {
-		this.alertClarification = alertClarification;
+	public void setAlert(Alert alert) {
+		this.alert = alert;
 	}
-	
-	@Column(name="clarification_required")
-	public String getClarificationRequired() {
-		return clarificationRequired;
-	}
-	public void setClarificationRequired(String clarificationRequired) {
-		this.clarificationRequired = clarificationRequired;
-	}
+
 
 }

@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +22,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import sun.beans.editors.IntEditor;
-
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
@@ -32,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertClarificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertClarificationDAO;
 import com.itgrids.partyanalyst.dao.IAlertClarificationDocumentDAO;
+import com.itgrids.partyanalyst.dao.IAlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -41,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
@@ -53,8 +52,10 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
+import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -64,6 +65,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -77,6 +79,7 @@ import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
+import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
@@ -84,7 +87,6 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertService implements IAlertService{
@@ -124,7 +126,29 @@ private IAlertClarificationDAO alertClarificationDAO;
 private IAlertClarificationCommentsDAO alertClarificationCommentsDAO;
 private ActivityService activityService;
 private IAlertClarificationDocumentDAO alertClarificationDocumentDAO;
-private IEditionTypeDAO editionTypeDAO;  
+private IEditionTypeDAO editionTypeDAO; 
+private IClarificationRequiredDAO clarificationRequiredDAO;
+private IAlertClarificationStatusDAO alertClarificationStatusDAO;
+
+
+
+public IAlertClarificationStatusDAO getAlertClarificationStatusDAO() {
+	return alertClarificationStatusDAO;
+}
+
+public void setAlertClarificationStatusDAO(
+		IAlertClarificationStatusDAO alertClarificationStatusDAO) {
+	this.alertClarificationStatusDAO = alertClarificationStatusDAO;
+}
+
+public IClarificationRequiredDAO getClarificationRequiredDAO() {
+	return clarificationRequiredDAO;
+}
+
+public void setClarificationRequiredDAO(
+		IClarificationRequiredDAO clarificationRequiredDAO) {
+	this.clarificationRequiredDAO = clarificationRequiredDAO;
+}
 
 public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
 	return tdpCadreCandidateDAO;
@@ -4866,11 +4890,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   }
   */
 	public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
-			  												final String clarificationRequired,final List<String> fileNamesList){
+			  												final String clarificationRequiredStr,final List<String> fileNamesList){
 		 final ResultStatus resultStatus = new ResultStatus();
 		 try{
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
+						
+						ClarificationRequired clarificationRequired = new ClarificationRequired();
+							clarificationRequired.setAlertId(alertId);
+							clarificationRequired.setIsRequired(clarificationRequiredStr);
+							clarificationRequired.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							clarificationRequired.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							clarificationRequired.setInsertedBy(userId);
+							clarificationRequired.setUpdatedBy(userId);
+						clarificationRequiredDAO.save(clarificationRequired);	
+						
 						AlertClarification alertClarification = new AlertClarification();
 							alertClarification.setAlertId(alertId);
 							alertClarification.setAlertClarificationStatusId(clarificationStatusId);
@@ -4879,18 +4913,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							alertClarification.setInsertedBy(userId);
 							alertClarification.setUpdatedBy(userId);
-							alertClarification.setClarificationRequired(clarificationRequired);
 						alertClarification = alertClarificationDAO.save(alertClarification);
 									
 						AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
-							alertClarificationComments.setAlertClarification(alertClarification);
+							alertClarificationComments.setAlertId(alertId);
 							alertClarificationComments.setComments(clarificationComments);
 							alertClarificationComments.setIsDeleted("N");
 							alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							alertClarificationComments.setInsertedBy(userId);
 							alertClarificationComments.setUpdatedBy(userId);
-							alertClarificationComments.setClarificationRequired(clarificationRequired);
 						alertClarificationCommentsDAO.save(alertClarificationComments);
 										
 						if(fileNamesList != null && !fileNamesList.isEmpty()){
@@ -4901,7 +4933,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					        	    alertClarificationDocument.setIsDeleted("N");
 					        	    alertClarificationDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					        	    alertClarificationDocument.setInsertedBy(userId);
-					        	    alertClarificationDocument.setClarificationRequired(clarificationRequired);
 							    alertClarificationDocumentDAO.save(alertClarificationDocument);  
 							}
 						}
@@ -4938,48 +4969,46 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			return "FAILED";
 		}
 	}
-  public AlertVO getAlertClarificationComments(Long alertId){
-	  AlertVO returnVO = new AlertVO();
-	  try{
-		  List<AlertVO> returnList = new ArrayList<AlertVO>();
-		  List<Object[]> cmntList = alertClarificationCommentsDAO.getClarificationComments(alertId);
-		  if(cmntList != null && !cmntList.isEmpty()){
-			  for (Object[] objects : cmntList) {
-				  AlertVO vo = new AlertVO();
-				  vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				  vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
-				  vo.setComment(commonMethodsUtilService.getStringValueForObject(objects[2]));
-				  vo.setAlertId(commonMethodsUtilService.getLongValueForObject(objects[3]));
-				  vo.setClarificationRequired(commonMethodsUtilService.getStringValueForObject(objects[4]));
-				  returnList.add(vo);
-			}
-		  }
-		  Map<Long,List<String>> filePathMap = new LinkedHashMap<Long,List<String>>();
-		  List<Object[]> filePathList = alertClarificationDocumentDAO.getAlertAttachments(alertId);
-			if(filePathList != null && filePathList.size() > 0l){
-				for (Object[] objects : filePathList) {
-					Long alrtId = Long.valueOf(objects[0] != null ? objects[0].toString() :"0");
-					String filePath = objects[1] != null ? objects[1].toString():"";
-					List<String> filesList = filePathMap.get(alrtId);
-					if(filesList == null || filesList.isEmpty()){
-						filesList = new ArrayList<String>();
-						filesList.add(filePath);
-						filePathMap.put(alrtId,filesList);
-					}
-					else
-						filesList.add(filePath);
-				}
-			}
-			if(filePathMap != null){
-				returnVO.getFilePthList().addAll(filePathMap.get(alertId));
-				}
-			returnVO.setSubList1(returnList);
-		  
-	  }catch(Exception e){
-		  LOG.error("Error occured at getAlertClarificationComments() in AlertService {}",e); 
-	  }
-	  return returnVO;
-  }
   
+  	public AlertClarificationVO getClarificationDetails(Long alertId){
+  		AlertClarificationVO vo = new AlertClarificationVO();
+  		try {
+  			
+			String isRequired = clarificationRequiredDAO.getDetails(alertId);
+			vo.setClarificationRequired(isRequired != null ? isRequired:"N");
+			
+			if(isRequired != null && isRequired.trim().equalsIgnoreCase("Y")){
+				List<Object[]> objList = alertClarificationDAO.getAlertClarificationStatus(alertId);
+				
+				if(objList != null && objList.size() > 0){
+					vo.setClarificationStatusId((Long)objList.get(0)[0]);
+				}
+				
+				List<Object[]> commentsObjList = alertClarificationCommentsDAO.getClarificationComments(alertId);
+				if(commentsObjList != null && commentsObjList.size() > 0){
+					for (Object[] objects : commentsObjList) {
+						KeyValueVO voIn = new KeyValueVO();
+							voIn.setId((Long)objects[0]);
+							voIn.setName(objects[0].toString().trim());
+						vo.getClarificationComments().add(voIn);
+					}
+				}
+				
+				List<Object[]> filePathList = alertClarificationDocumentDAO.getAlertAttachments(alertId);
+				if(filePathList != null && filePathList.size() > 0){
+					for (Object[] objects : filePathList) {
+						KeyValueVO voIn = new KeyValueVO();
+							voIn.setId((Long)objects[0]);
+							voIn.setName(objects[0].toString().trim());
+						vo.getDocumentsList().add(voIn);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured at getClarificationDetails() in AlertService",e); 
+		}
+  		return vo;
+  	}
 }
 

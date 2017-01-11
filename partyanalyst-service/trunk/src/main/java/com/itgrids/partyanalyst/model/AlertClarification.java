@@ -33,7 +33,6 @@ public class AlertClarification extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long insertedBy;
 	private Long updatedBy;
-	private String clarificationRequired;
 	
 	private Alert alert;
 	private AlertClarificationStatus alertClarificationStatus;
@@ -125,14 +124,5 @@ public class AlertClarification extends BaseModel implements Serializable{
 	public void setAlertClarificationStatus(AlertClarificationStatus alertClarificationStatus) {
 		this.alertClarificationStatus = alertClarificationStatus;
 	}
-	
-	@Column(name="clarification_required")
-	public String getClarificationRequired() {
-		return clarificationRequired;
-	}
-	public void setClarificationRequired(String clarificationRequired) {
-		this.clarificationRequired = clarificationRequired;
-	}
-
 	
 }
