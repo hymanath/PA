@@ -16,13 +16,17 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDataRejectReasonDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -47,6 +51,8 @@ public class DataMonitoringService implements IDataMonitoringService {
 	private ICadreRegUserDAO cadreRegUserDAO;
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	private ITabUserInfoDAO tabUserInfoDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
 	
 	
 	public ITabUserInfoDAO getTabUserInfoDAO() {
@@ -88,6 +94,12 @@ public class DataMonitoringService implements IDataMonitoringService {
 	}
 	public void setDataRejectReasonDAO(IDataRejectReasonDAO dataRejectReasonDAO) {
 		this.dataRejectReasonDAO = dataRejectReasonDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	/**
 	* @param  Stirng fromDateStr
@@ -1066,4 +1078,39 @@ public class DataMonitoringService implements IDataMonitoringService {
   			return "failure";  
   		}
   	}
+	public List<IdAndNameVO> getDistrictList(Long stateId){
+		 List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+			List<Object[]> districtList = districtDAO.getDistrictsWithNewSplitted(stateId);
+			if(districtList != null && districtList.size() > 0l){
+				for (Object[] objects : districtList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getDistrictList() of DataMonitoringService", e); 
+		}
+		return returnList;
+	}
+	public List<IdAndNameVO> getConstitencysByDistricts(Long districtId,Long stateId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+			List<Object[]> constiList = constituencyDAO.getDistrictConstituenciesByState(districtId, stateId);
+			if(constiList != null && constiList.size() > 0l){
+				for (Object[] objects : constiList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+					
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getConstitencysByDistricts() of DataMonitoringService", e); 
+		}
+		return returnList;
+	}
 }
