@@ -2991,7 +2991,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
  }
  public List<ToursBasicVO> getTourLeaderDtlsBasedOnSelectionType(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String filterType){
 	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
-	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+	 Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap = new LinkedHashMap<Long, Map<Long,ToursBasicVO>>(0);
 	 Map<Long,String> designationIdAndNameMap = new HashMap<Long, String>(0);
 	 Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
 	 Map<String,String> categoryIdNameMap = new HashMap<String, String>(0);
@@ -3267,9 +3267,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
             setCandidateDocument(rtrnObjList,monthWiseCandiateDocMap);
 		   }
 		   //Getting Tour Candidate Details Day Wise
+		   Map<Long,Map<Long,ToursBasicVO>> monthWiseTourDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+		   Map<Long,ToursBasicVO> monthMap = new HashMap<Long, ToursBasicVO>(0);
 		   if(monthyearIds.size() > 0){
 		   List<Object[]> rtrnDateWiseTourDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getMonthWiseTourSubmittedDetails(monthyearIds, selfAppraisalCandidateId);
 		   setMonthWiseTourDtls(rtrnDateWiseTourDtlsObjLst,dateWiseTourDtlsList,monthWiseCandiateDocMap);
+		   setMonthWiseTourDetails(rtrnDateWiseTourDtlsObjLst,monthWiseTourDtlsMap,monthMap);
 		   }
 		    Double totalPer =0.0d;
 		    if(candiateMap != null && candiateMap.size() > 0){
@@ -3305,6 +3308,26 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    resultVO.getSubList2().addAll(dateWiseTourDtlsList);
 		    if(monthWiseDtlsList != null && monthWiseDtlsList.size() > 0){
 		    	resultVO.getMonthList().addAll(monthWiseDtlsList);
+		    }
+		  
+		    if(monthWiseTourDtlsMap != null && monthWiseTourDtlsMap.size() > 0){
+		    	for(Entry<Long,Map<Long,ToursBasicVO>> entry:monthWiseTourDtlsMap.entrySet()){
+		    		if(entry.getValue() != null && entry.getValue().size() > 0){
+		    			 ToursBasicVO monthVO = new ToursBasicVO();
+		    			 monthVO.setId(entry.getKey());
+		    			 ToursBasicVO mnthVO = monthMap.get(monthVO.getId());
+		    			 if(mnthVO != null){
+		    				monthVO.setTourDate(mnthVO.getTourDate());	
+		    				monthVO.setComment(mnthVO.getComment());
+		    				monthVO.setFilePath(monthWiseCandiateDocMap.get(monthVO.getId()));
+		    			 }
+		    			 monthVO.getSubList().addAll(entry.getValue().values());
+		    			 if(resultVO.getSubList3() == null){
+		    				 resultVO.setSubList3(new ArrayList<ToursBasicVO>()); 
+		    			 }
+		    			 resultVO.getSubList3().add(monthVO);
+		    		}
+		    	}
 		    }
 		    
 	 }catch(Exception e){
@@ -3539,6 +3562,34 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  LOG.error("Exception Occured in setDateWiseTourDtls() in CoreDashboardToursService  : ",e);
 	  }
   }
+ public void setMonthWiseTourDetails(List<Object[]> objList,Map<Long,Map<Long,ToursBasicVO>> monthWiseTourDtlsMap,Map<Long,ToursBasicVO> monthMap){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 Long monthId = commonMethodsUtilService.getLongValueForObject(param[10]);
+				 Map<Long,ToursBasicVO> categoryMap = monthWiseTourDtlsMap.get(monthId);
+				   if(categoryMap == null){
+					   categoryMap = new HashMap<Long, ToursBasicVO>();
+					   monthWiseTourDtlsMap.put(monthId, categoryMap);
+					    ToursBasicVO monthVO = new ToursBasicVO();
+					    monthVO.setTourDate(param[0] != null ? param[0].toString():"");  
+					    monthVO.setComment(commonMethodsUtilService.getStringValueForObject(param[5]));
+					    monthVO.setTourDate(monthVO.getTourDate()+"-"+commonMethodsUtilService.getStringValueForObject(param[8]));	
+					    monthMap.put(monthId, monthVO);
+				   }
+				       ToursBasicVO categoryVO = new ToursBasicVO();
+					   categoryVO.setTourCategoryId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					   categoryVO.setTourCategory(commonMethodsUtilService.getStringValueForObject(param[2]));
+					   categoryVO.setTourTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					   categoryVO.setTourType(commonMethodsUtilService.getStringValueForObject(param[4]));
+					   categoryVO.setCount(commonMethodsUtilService.getLongValueForObject(param[9]));
+				      categoryMap.put(categoryVO.getTourCategoryId(), categoryVO);
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception Occured in setMonthWiseTourDetails() in CoreDashboardToursService  : ",e);	 
+	 }
+ }
  public void setCandidateDocument(List<Object[]> objList,Map<Long,String> monthWiseCandiateDocMap){
 	 try{
 		 if(objList != null && objList.size() > 0){
