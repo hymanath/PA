@@ -61,6 +61,9 @@ public class Alert extends BaseModel implements Serializable {
 	private EditionType editionType;
 	private Long tvNewsChannelId;
 	private TvNewsChannel tvNewsChannel;
+	private Long editionId;
+	private Editions edition;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -383,6 +386,27 @@ public class Alert extends BaseModel implements Serializable {
 
 	public void setTvNewsChannel(TvNewsChannel tvNewsChannel) {
 		this.tvNewsChannel = tvNewsChannel;
+	}
+
+	@Column(name = "edition_id")
+	public Long getEditionId() {
+		return editionId;
+	}
+
+	public void setEditionId(Long editionId) {
+		this.editionId = editionId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "edition_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Editions getEdition() {
+		return edition;
+	}
+
+	public void setEdition(Editions edition) {
+		this.edition = edition;
 	}
 	
 	
