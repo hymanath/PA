@@ -14,14 +14,10 @@ public class AlertClarificationCommentsDAO extends GenericDaoHibernate<AlertClar
 		super(AlertClarificationComments.class);
 	}
 	public List<Object[]> getClarificationComments(Long alertId){
-		Query query = getSession().createQuery("select model.alertClarification.alertClarificationStatus.alertClarificationStatusId," +
-				" model.alertClarification.alertClarificationStatus.status," +
-				" model.comments," +
-				" model.clarificationRequired" +
-				" model.alertClarification.alert.alertId" +
+		Query query = getSession().createQuery("select model.alertClarificationCommentsId,model.comments " +
 				" from AlertClarificationComments model" +
-				" where model.alertClarification.alert.alertId = :alertId" +
-				" and model.isDeleted = 'N' and model.alertClarification.isDeleted ='N'");
+				" where model.alert.alertId = :alertId" +
+				" and model.isDeleted = 'N' and model.alert.isDeleted ='N' ");
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}

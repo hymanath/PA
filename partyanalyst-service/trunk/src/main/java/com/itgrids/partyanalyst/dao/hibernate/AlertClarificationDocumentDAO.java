@@ -14,8 +14,7 @@ public class AlertClarificationDocumentDAO extends GenericDaoHibernate<AlertClar
 		super(AlertClarificationDocument.class);
 	}
    public List<Object[]> getAlertAttachments(Long alertId){
-	   Query query = getSession().createQuery("select model.alert.alertId," +
-	   		" model.clarificationDocumentPath" +
+	   Query query = getSession().createQuery("select model.clarificationDocumentPath " +
 	   		" from AlertClarificationDocument model " +
 	   		" where model.alert.alertId = :alertId" +
 	   		" and model.isDeleted = 'N' and model.alert.isDeleted = 'N'");

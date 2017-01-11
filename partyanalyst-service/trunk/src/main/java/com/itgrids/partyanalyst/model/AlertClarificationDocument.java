@@ -31,7 +31,6 @@ public class AlertClarificationDocument extends BaseModel implements Serializabl
 	private String isDeleted;
 	private Date insertedTime;
 	private Long insertedBy;
-	private String clarificationRequired;
 	
 	private Alert alert;
 
@@ -95,13 +94,6 @@ public class AlertClarificationDocument extends BaseModel implements Serializabl
 	public void setAlert(Alert alert) {
 		this.alert = alert;
 	}
-	
-	@Column(name="clarification_required")
-	public String getClarificationRequired() {
-		return clarificationRequired;
-	}
-	public void setClarificationRequired(String clarificationRequired) {
-		this.clarificationRequired = clarificationRequired;
-	}
+
 
 }
