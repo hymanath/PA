@@ -728,5 +728,6 @@
 		<pattern>/cardPrintPostVerificationAction*</pattern>
 		<pattern>/cadreAlertDetailsAction*</pattern>
 		<pattern>/alertClarificationDashboardAction*</pattern>
+		<pattern>/boothWiseDataMonitoringAction*</pattern>
 	</decorator> 
 </decorators>
