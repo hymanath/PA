@@ -52,7 +52,7 @@
 	  $(".alertFilterCls li").removeClass("active");
 	  $(".alertFilterCls li:first-child").addClass("active");
 	 getAlertOverviewDetails();
-	 getAlertCategoryDtlsLocationWise();
+	 getAlertCategoryDtlsLocationWise(0,0); 
 	 getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	 getTotalAlertGroupByDist(scopeIdsArr);
 	 getStateImpactLevelAlertDtlsCnt();
@@ -69,7 +69,7 @@
 			scopeIdsArr.push(9); 
 			scopeIdsArr.push(5); 
 			scopeIdsArr.push(8);  */
-		getAlertCategoryDtlsLocationWise();
+		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getTotalAlertGroupByDist(scopeIdsArr);
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 		getStateImpactLevelAlertDtlsCnt();
@@ -473,7 +473,7 @@
 									buildDistrictWiseAlert(districtId,totalAlertCnt);
 								}
 							}
-						}
+						}  
 				     },
 				},
 				tooltip: {
@@ -783,7 +783,8 @@
 				buildAlertStatusCommentsTrackingDetails(result,alertStatus);    
 		});
 	}
-	function getAlertCategoryDtlsLocationWise(){  
+	function getAlertCategoryDtlsLocationWise(alertId,editionId){ 
+		
 		$("#locationWiseAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 		 var fromDateStr;
@@ -793,13 +794,21 @@
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		if(editionId == undefined){
+			editionId = 0;
+		}
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
 			fromDate :fromDateStr,        
-			toDate :toDateStr   
+			toDate :toDateStr,
+			alertIds : alertId,
+			editionIds : editionId
 		};
-		$.ajax({
+		$.ajax({  
 			type : 'POST',
 			url : 'getAlertCategoryDtlsLocationWiseAction.action',
 			dataType : 'json',  
@@ -916,7 +925,7 @@
 										var locationId = this.id;
 										var totalAlertCnt = this.y;
 										var catId = this.catId;
-										buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId);
+										buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId);//swadhin
 									}  
 								}
 							}
@@ -956,7 +965,14 @@
 	}
 	//ssss
 	function buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId){
-		
+		var alertTypeIds = $("#alertTypeHiddenId").attr("attr_alert_id")
+		if(alertTypeIds == undefined){
+			alertTypeIds = 0;
+		}
+		var editionIds = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id")
+		if(editionIds == undefined){
+			editionIds = 0;
+		}
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
@@ -992,14 +1008,16 @@
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			districtId : 0,       
-			catId : catId
+			catId : catId,
+			alertTypeId : alertTypeIds,
+			editionId : editionIds
 		
 		}                  
 		$.ajax({   
 			type : 'POST',                
 			url : 'getDistrictAndStateImpactLevelWiseAlertDtlsAction.action',
 			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}     
+			data : {task:JSON.stringify(jsObj)}           
 		}).done(function(result){    
             if(result != null && result.length > 0){
 				buildAlertDtls(result);    
@@ -2824,7 +2842,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			districtId : districtId,
-			catId : 0
+			catId : 0,
+			alertTypeId : 0,
+			editionId : 0
 		
 		}                  
 		$.ajax({
@@ -2865,7 +2885,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			districtId : 0,
-			catId : 0
+			catId : 0,
+			alertTypeId : 0,     
+			editionId : 0
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -3316,13 +3338,37 @@ function getTotalArticledetails(articleId){
 					str+='<div class="row">';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							if(alertTypeId == 0){
-								str+='<i class="pull-right"> Showing : Total Alerts</i>';
+								if(alertEdition == 1){
+									str+='<i class="pull-right"> Showing : Total Main Edition Alerts</i>';
+								}else if(alertEdition == 2){
+									str+='<i class="pull-right"> Showing : Total District Edition Alerts</i>';
+								}else if(alertEdition == 0){
+									str+='<i class="pull-right"> Showing : Total Alerts</i>';
+								}
 							}else if(alertTypeId == 1){
-								str+='<i class="pull-right"> Showing : Party Alerts</i>';
+								if(alertEdition == 1){
+									str+='<i class="pull-right"> Showing : Party Main Edition Alerts</i>';
+								}else if(alertEdition == 2){
+									str+='<i class="pull-right"> Showing : Party District Edition Alerts</i>';
+								}else if(alertEdition == 0){
+									str+='<i class="pull-right"> Showing : Party Total Alerts</i>';
+								}
 							}else if(alertTypeId == 2){
-								str+='<i class="pull-right"> Showing : Govt Alerts</i>';
+								if(alertEdition == 1){
+									str+='<i class="pull-right"> Showing : Govt Main Edition Alerts</i>';
+								}else if(alertEdition == 2){
+									str+='<i class="pull-right"> Showing : Govt District Edition Alerts</i>';
+								}else if(alertEdition == 0){
+									str+='<i class="pull-right"> Showing : Govt Total Alerts</i>';
+								}
 							}else if(alertTypeId == 3){
-								str+='<i class="pull-right"> Showing : Others Alerts</i>';
+								if(alertEdition == 1){
+									str+='<i class="pull-right"> Showing : Others Main Edition Alerts</i>';
+								}else if(alertEdition == 2){
+									str+='<i class="pull-right"> Showing : Others District Edition Alerts</i>';
+								}else if(alertEdition == 0){
+									str+='<i class="pull-right"> Showing : Others Total Alerts</i>';
+								}
 							}  
 							
 						str+='</div>';
@@ -3469,7 +3515,12 @@ function getTotalArticledetails(articleId){
 		$(this).find(".alertInnerArrowLow").addClass("alertsArrowLow");
 	});
 	function getEditioDtls(alertTypeStr,alertEdition){
-	//$(document).on("click",".getEditioDtls",function(){
+		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
+		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
+		//$(document).on("click",".getEditioDtls",function(){
+		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
+		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
+		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//var alertTypeStr = $(this).attr("attr_alert_type_id");
 		//var alertEdition = $(this).attr("attr_edition_type_id");  
