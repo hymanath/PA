@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,7 +24,7 @@ import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
-import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
+import com.itgrids.partyanalyst.dto.BoothWiseDataMonitoringVO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -35,7 +36,6 @@ import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class DataMonitoringService implements IDataMonitoringService {
@@ -101,6 +101,14 @@ public class DataMonitoringService implements IDataMonitoringService {
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
+	
 	/**
 	* @param  Stirng fromDateStr
 	* @param  String toDateStr
@@ -475,6 +483,73 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
+	public IdNameVO getBoothWiseRegisteredMemberDetails(Long boothId,Long constituencyId,String verificationStatus,String resultType){
+		IdNameVO returnvo = new IdNameVO();
+		try {
+			List<IdNameVO> ownVoterDtls = new ArrayList<IdNameVO>();
+			List<IdNameVO> familyVoterDtls = new ArrayList<IdNameVO>();
+			
+			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Self")){
+				List<Object[]> ownList = tdpCadreEnrollmentYearDAO.getBoothWiseRegisteredMemberDetails(boothId, constituencyId, "own", verificationStatus);
+				if(ownList != null && !ownList.isEmpty()){
+					for (Object[] obj : ownList) {
+						IdNameVO idNameVO = new IdNameVO();
+						
+						idNameVO.setCadreId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						idNameVO.setMobileNo(obj[2] != null ? obj[2].toString() : "");
+						idNameVO.setGender(obj[3] != null ? obj[3].toString() : "");
+						idNameVO.setImage(obj[4] != null ? obj[4].toString() : "noImage");
+						idNameVO.setVoterImage(obj[6] != null ? obj[6].toString() : "noImage");  
+						idNameVO.setStatusId(Long.valueOf(obj[7] != null ? obj[7].toString() : "0"));
+						idNameVO.setStatus(obj[8] != null ? obj[8].toString() : "noStatus");
+						idNameVO.setId(Long.valueOf(obj[9] != null ? obj[9].toString() : "0"));//rejected reason id
+						idNameVO.setWish(obj[10] != null ? obj[10].toString() : "");//reason
+						idNameVO.setConstitunecyId(Long.valueOf(obj[11] != null ? obj[11].toString() : "0"));//constituencyId
+						idNameVO.setDistrictid(Long.valueOf(obj[12] != null ? obj[12].toString() : "0"));//districtId
+						idNameVO.setCadreUserId(Long.valueOf(obj[13] != null ? obj[13].toString() : "0"));//cadreSurveyUserId
+						idNameVO.setTabUserId(Long.valueOf(obj[14] != null ? obj[14].toString() : "0"));//tabUserInfoId
+						
+						ownVoterDtls.add(idNameVO);
+					}
+				}
+			}
+			
+			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Relative")){
+				List<Object[]> familyList = tdpCadreEnrollmentYearDAO.getBoothWiseRegisteredMemberDetails(boothId, constituencyId, "family", verificationStatus);
+				if(familyList != null && !familyList.isEmpty()){
+					for (Object[] obj : familyList) {
+						IdNameVO idNameVO = new IdNameVO();
+						
+						idNameVO.setCadreId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						idNameVO.setMobileNo(obj[2] != null ? obj[2].toString() : "");
+						idNameVO.setGender(obj[3] != null ? obj[3].toString() : "");
+						idNameVO.setImage(obj[4] != null ? obj[4].toString() : "noImage");
+						idNameVO.setVoterImage(obj[6] != null ? obj[6].toString() : "noImage");  
+						idNameVO.setStatusId(Long.valueOf(obj[7] != null ? obj[7].toString() : "0"));
+						idNameVO.setStatus(obj[8] != null ? obj[8].toString() : "noStatus");
+						idNameVO.setId(Long.valueOf(obj[9] != null ? obj[9].toString() : "0"));//rejected reason id
+						idNameVO.setWish(obj[10] != null ? obj[10].toString() : "");//reason
+						idNameVO.setConstitunecyId(Long.valueOf(obj[11] != null ? obj[11].toString() : "0"));//constituencyId
+						idNameVO.setDistrictid(Long.valueOf(obj[12] != null ? obj[12].toString() : "0"));//districtId
+						idNameVO.setCadreUserId(Long.valueOf(obj[13] != null ? obj[13].toString() : "0"));//cadreSurveyUserId
+						idNameVO.setTabUserId(Long.valueOf(obj[14] != null ? obj[14].toString() : "0"));//tabUserInfoId
+						
+						familyVoterDtls.add(idNameVO);
+					}
+				}
+			}
+			
+			returnvo.setIdnameList(ownVoterDtls);
+			returnvo.setSubList1(familyVoterDtls);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getBoothWiseRegisteredMemberDetails() of DataMonitoringService", e);
+		}
+		return returnvo;
+	}
+	
 	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus,String dataSourceType,Long stateId){
 		LOG.info("Entered into getVerifiedDtls() of DataMonitoringService");  
 		try{
@@ -797,12 +872,18 @@ public class DataMonitoringService implements IDataMonitoringService {
   				for(IdNameVO idNameVO : idNameVOs){
   					Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(idNameVO.getId());
   					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
-  					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
+  					if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+  						tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
+  					else
+  						tdpCadreDataVerification.setVerifiedBy(null);
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
   					tdpCadreDataVerification.setConstituencyId(idNameVO.getConstitunecyId());
   					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictId());
   					tdpCadreDataVerification.setCadreSurveyUserId(idNameVO.getCadreUserId());
-  					tdpCadreDataVerification.setTabUserInfoId(idNameVO.getTabUserId());
+  					if(idNameVO.getTabUserId() != null && idNameVO.getTabUserId() > 0l)
+  						tdpCadreDataVerification.setTabUserInfoId(idNameVO.getTabUserId());
+  					else
+  						tdpCadreDataVerification.setTabUserInfoId(null);
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);      
   				}
@@ -1078,10 +1159,67 @@ public class DataMonitoringService implements IDataMonitoringService {
   			return "failure";  
   		}
   	}
+	
+	public List<BoothWiseDataMonitoringVO> getBoothWiseDataVerificationDetails(Long districtId,Long constituencyId){
+		List<BoothWiseDataMonitoringVO> returnList = new ArrayList<BoothWiseDataMonitoringVO>();
+		try {
+			Map<Long,BoothWiseDataMonitoringVO> boothMap = new LinkedHashMap<Long, BoothWiseDataMonitoringVO>();
+			
+			List<Object[]> list = tdpCadreEnrollmentYearDAO.getBoothWiseCadreRegistrationCounts(districtId, constituencyId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long boothId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[9] != null ? obj[9].toString():"0");
+					
+					BoothWiseDataMonitoringVO vo = boothMap.get(boothId);
+					if(vo == null){
+						vo = new BoothWiseDataMonitoringVO();
+						
+						vo.setBoothId(boothId);
+						vo.setPartNo(obj[2] != null ? obj[2].toString():"");
+						//if(vo.getPartNo() != null && vo.getPartNo().trim().length() > 0)
+							//vo.setPartNo("Part No : "+vo.getPartNo());
+						vo.setMandalId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+						vo.setMandal(obj[4] != null ? obj[4].toString():"");
+						vo.setLebId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						vo.setLeb(obj[6] != null ? obj[6].toString():"");
+						vo.setPanchayatId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						vo.setPanchayat(obj[8] != null ? obj[8].toString():"");
+						if(statusId != null && statusId.longValue() == 1l)
+							vo.setApprovedCount(count);
+						else if(statusId != null && statusId.longValue() == 2l)
+							vo.setRejectedCount(count);
+						else
+							vo.setPendingCount(count);
+						vo.setTotalCount(vo.getTotalCount() + count);
+						
+						boothMap.put(boothId, vo);
+					}
+					else{
+						if(statusId != null && statusId.longValue() == 1l)
+							vo.setApprovedCount(count);
+						else if(statusId != null && statusId.longValue() == 2l)
+							vo.setRejectedCount(count);
+						else
+							vo.setPendingCount(count);
+						vo.setTotalCount(vo.getTotalCount() + count);
+					}
+				}
+			}
+			
+			if(boothMap != null)
+				returnList = new ArrayList<BoothWiseDataMonitoringVO>(boothMap.values());
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getBoothWiseDataVerificationDetails() of DataMonitoringService", e); 
+		}
+		return returnList;
+	}
 	public List<IdAndNameVO> getDistrictList(Long stateId){
 		 List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try{
-			List<Object[]> districtList = districtDAO.getDistrictsWithNewSplitted(stateId);
+			List<Object[]> districtList = districtDAO.getDistrictIdAndNameByStateForStateTypeId(stateId, 0l);
 			if(districtList != null && districtList.size() > 0l){
 				for (Object[] objects : districtList) {
 					IdAndNameVO vo = new IdAndNameVO();
