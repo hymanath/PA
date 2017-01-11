@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.gdata.data.introspection.Collection;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -2144,6 +2147,7 @@ public class ToursService implements IToursService {
 	    				  desigVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 	    				  desigVo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
 	    				  desigVo.setNoOfLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+	    				  desigVo.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[3]));
 	    				  desigVo.setNotSubmitedLeaserCnt(desigVo.getNoOfLeaderCnt());
 	    				  leadersDetailsMap.put(desigVo.getId(), desigVo);
 	    		 		}
@@ -2221,6 +2225,15 @@ public class ToursService implements IToursService {
 	    			resultList = new ArrayList<ToursBasicVO>(leadersDetailsMap.values());
 	    			leadersDetailsMap.clear();
 	    		}
+	    		
+	    		if(commonMethodsUtilService.isListOrSetValid(resultList)){
+	    			Collections.sort(resultList,new Comparator<ToursBasicVO>() {
+						public int compare(ToursBasicVO o1, ToursBasicVO o2) {
+							return o1.getOrderNo().compareTo(o2.getOrderNo());
+						}
+					});
+	    		}
+	    		
 	   	}catch(Exception e) {
 				LOG.error("Error Occured at getTourBasicOverviewDtlsDesignationWise() in ToursService class",e);	
 			}
