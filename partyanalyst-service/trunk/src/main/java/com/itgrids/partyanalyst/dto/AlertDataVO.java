@@ -43,6 +43,7 @@ public class AlertDataVO {
 	
 	private String comment;
 	private String membershipNo;
+	private String alertSource;
 	
 	public String getTitle() {
 		return title;
@@ -241,6 +242,12 @@ public class AlertDataVO {
 	}
 	public void setMembershipNo(String membershipNo) {
 		this.membershipNo = membershipNo;
+	}
+	public String getAlertSource() {
+		return alertSource;
+	}
+	public void setAlertSource(String alertSource) {
+		this.alertSource = alertSource;
 	}
 	
 	
