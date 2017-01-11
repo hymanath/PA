@@ -644,7 +644,7 @@
 				buildAlertAssignedCandidates(result);  
 			}else{
 				var str = '';
-				str+='<h5 class="text-muted text-capital">Assigned Candidates-<strong>0</strong></h5>';  
+				str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
 				$("#alertAssignedCandidates").html(str);    
 			}
 		});
@@ -665,7 +665,7 @@
 		});
 	}
 	function buildAlertData(result){
-		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><br><h5 class='text-capital'>"+result[0].title+"</h5>");
+		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><h5 class='text-capital m_top10' style='color:#000'>"+result[0].title+"</h5>");
 		$("#cdrModelId").html("<h5 class='text-muted'>ALERT DESCRIPTION</h5>");
 		$("#alertDestId").html(result[0].desc);
 		$("#sourceHeadingId").html("<h5 class='text-muted m_top10'>ALERT SOURCE</h5>");
@@ -688,13 +688,13 @@
 					}
 				}    
 			}
-			str+='<h5 class="text-muted text-capital">Involved Candidates-'+invCandCnt+'</h5>';           
+			str+='<h5 class="text-muted text-capital">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+invCandCnt+'</h5>';           
 			str+='<ul class="list-inline assignedCandidatesUl1">';     
 			for(var i in result){
 				for(var j in result[i].subList){   
 					if(result[i].subList[j].name != null && result[i].subList[j].name.length > 1){
 						str+='<li>';      
-							str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+							str+='<p style="color: rgb(0, 0, 0);"><b>'+result[i].subList[j].name+'</b></p>';
 							if(result[i].subList[j].mobileNo.length <= 1  || result[i].subList[j].mobileNo == null){
 							}else{
 								str+='<p><i> - </i>'+result[i].subList[j].mobileNo+'</p>';      
@@ -711,12 +711,12 @@
 			
 			$("#alertInvolvedCandidates").html(str);    
 		}else{
-			str+='<h5 class="text-muted text-capital">Involved Candidates-<strong>0</strong></h5>'; 
+			str+='<h5 class="text-muted text-capital">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>'; 
 			$("#alertInvolvedCandidates").html(str);        
 		}
 		$(".assignedCandidatesUl1").slick({          
 			 slide: 'li',
-			 slidesToShow: 5,
+			 slidesToShow: 4,
 			 slidesToScroll: 3,    
 			 infinite: false,
 			  responsive: [
@@ -1378,14 +1378,14 @@
 	{
 	var str='';
 	if(result[0].subList.length > 0){  
-		str+='<h5 class="text-muted text-capital">Assigned Candidates-'+result[0].subList.length+'</h5>';
+		str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+result[0].subList.length+'</h5>';
 		str+='<ul class="list-inline assignedCandidatesUl">';
 		for(var i in result)
 		{
 			for(var j in result[i].subList)
 			{
 				str+='<li>';
-					str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+					str+='<p style="color:#000"><b>'+result[i].subList[j].name+'</b></p>';
 					if(result[i].subList[j].committeePosition == null || result[i].subList[j].committeePosition.length <= 1){     
 					}else{
 						str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
@@ -1405,13 +1405,13 @@
 		
 		$("#alertAssignedCandidates").html(str);
 	}else{
-		str+='<h5 class="text-muted text-capital">Assigned Candidates-<strong>0</strong></h5>';  
+		str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
 		$("#alertAssignedCandidates").html(str);                    
 	}
 	
 	$(".assignedCandidatesUl").slick({
 		 slide: 'li',
-		 slidesToShow: 5,
+		 slidesToShow: 4,
 		 slidesToScroll: 3,
 		 infinite: false,
 		  responsive: [
@@ -1462,9 +1462,9 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 			{
 				
 				if(length != i){
-					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<span class="glyphicon glyphicon-ok"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
+					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok  pull-right" style="font-size: 22px;color: #777 !important;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
 				}else{
-					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<span class="glyphicon glyphicon-hourglass"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
 				}        
 				
 			}
@@ -1502,20 +1502,21 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
 								str+='<ul class="alertStatusTracking">';
 									str+='<li>';  
-										str+='<div class="arrow_box_left">';
+										str+='<div class="arrow_box_left" style="background: #f5f3f8 none repeat scroll 0 0 !important;">';
 										for(var k in result[i].sublist2[j].sublist)
 										{	
 											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE&nbsp;&nbsp;:&nbsp;</span>';
 												for(var l in result[i].sublist2[j].sublist[k])
 												{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+													str+='&nbsp;&nbsp;<span class="glyphicon glyphicon-user"></span> <span>'+result[i].sublist2[j].sublist[k][l].cadreName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 18px;">|</span>';
 												}
+												str+='&nbsp;&nbsp;&nbsp;&nbsp;- <small style="font-size:11px">'+result[i].sublist2[j].sublist[k][0].timeString+'</small>';
 												str+='</p>';  
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
-												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+												str+='<p class="m_top10">'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
-												str+='<hr style="margin-top:20px;"/>';
+												str+='<hr style="margin-top:20px;border-color:#a792d2 -moz-use-text-color -moz-use-text-color;"/>';
 											str+='</div>';   
 										}
 										str+='</div>';    
@@ -1531,10 +1532,10 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 		$("#alertCommentsDiv").html(str);
 	}else{
 		var str = '';
-		var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed"};            
+		var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable To Resolve","6":"Action Not Required","7":"Duplicate"};            
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
-		for(var i = 1 ; i <= 4 ; i++){
+		for(var i = 1 ; i <= 7 ; i++){
 			if(alertStatus == statusArr[i]){
 				str+='<li class="m_top10" role="presentation" style="pointer-events: none;"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+statusArr[i]+'<span class="glyphicon glyphicon-ok"></span><br/></a></li>';
 			}else{
@@ -3221,27 +3222,27 @@ function getTotalArticledetails(articleId){
 				}
 			str+='</tr>';
 			str+='<tr>';
-				str+='<td><p style="font-size:13px;" class="text-muted">Main</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="1">'+totalMainCount+'</p></td>';
-				str+='<td><p style="font-size:13px;" class="text-muted">District</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="2">'+totalDistCount+'</p></td>';
+				str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="1">'+totalMainCount+'</p></div></td>';
+				str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
+				str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="0" attr_edition_type_id="2">'+totalDistCount+'</p></div></td>';
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></td>';
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></div></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></div></td>';
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></td>';
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></div></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></div></td>';
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></td>';
-					str+='<td><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
-					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></div></td>';
+					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
+					str+='<p style="font-size:13px;cursor:pointer;" class="getEditioDtls" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></div></td>';
 				}
 				
 			str+='</tr>';
@@ -3351,9 +3352,16 @@ function getTotalArticledetails(articleId){
 		$("#alertOverviewDetails").html(str);
 	}
 	$(document).on("click",".alertOverViewDetailsCls",function(){
+		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
 		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
 		$(this).addClass("alertsArrow");
 		$(this).find(".alertInnerArrow").addClass("alertsArrow");
+	});
+	$(document).on("click",".alertOverViewDetailsLowCls",function(){
+		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
+		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
+		$(this).addClass("alertsArrowLow");
+		$(this).find(".alertInnerArrowLow").addClass("alertsArrowLow");
 	});
 	$(document).on("click",".getEditioDtls",function(){
 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
