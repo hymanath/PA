@@ -42,6 +42,7 @@ public class ToursVO {
 	private List<ToursVO> toursVoList = new ArrayList<ToursVO>(0);
 	private Map<File,String> files = new HashMap<File,String>();
 	private List<ToursVO> toursVoListNew = new ArrayList<ToursVO>(0);
+	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
 	
 	private String tourDateId;
 	private Long tourCategoryId;
@@ -53,7 +54,14 @@ public class ToursVO {
 	private Long detailsNewId;
 	private Long tourDays;
 	
-	
+	public List<IdNameVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<IdNameVO> subList) {
+		this.subList = subList;
+	}
+
 	public String getTourMonth() {
 		return tourMonth;
 	}
