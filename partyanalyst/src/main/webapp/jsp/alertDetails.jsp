@@ -679,6 +679,12 @@ function buildAlertAssignedCandidateData(result)
 	
 	$(document).on("click","#updateAlertDetailsId",function(){
 		
+		var comment = $('#clarificationCommentsId').val();
+		if(comment == null || comment.length ==0){
+			alert(" Please enter Clarification Comment... ");
+			return ;
+		}
+		
 		$("#alertIdHidden").val(alertId);
 		var files = [];
 		$("#alertClarificationDocs input[type=file]").each(function() {
