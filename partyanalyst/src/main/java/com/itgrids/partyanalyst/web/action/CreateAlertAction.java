@@ -1217,7 +1217,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
 			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
 			
-			alertService.getLocationLevelAlertClarificationData(regVo.getRegistrationID(),inputVO);
+			alertDataList = alertService.getLocationLevelAlertClarificationData(regVo.getRegistrationID(),inputVO);
 		} catch (Exception e) {
 			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
 		}
