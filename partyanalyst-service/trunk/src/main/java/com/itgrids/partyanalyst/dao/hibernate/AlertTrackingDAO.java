@@ -32,7 +32,7 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
-	public List<Object[]> getAlertTrackingDetailsList(Long alertId){
+	public List<Object[]> getAlertTrackingDetailsList(Long alertId,boolean hasTrue){
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" select distinct ALTT.alert_id as alert_id, ");
 		queryStr.append(" ALTT.alert_status_id as alert_status_id, ");
@@ -40,20 +40,32 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" time(ALTT.inserted_time) as inserted_time, ");
 		queryStr.append(" ALTC.alert_comment_id as alert_comment_id,");
 		queryStr.append(" ALTC.comments as comments,");
+		
+		if(hasTrue){
 		queryStr.append(" ALTCA.assign_tdp_cadre_id as assign_tdp_cadre_id,");
 		queryStr.append(" TC.first_name as first_name,");
+		}else{
+			queryStr.append(" 0 as assign_tdp_cadre_id,");
+			queryStr.append(" '' as first_name,");
+		}
+		
 		queryStr.append(" U.firstname as firstname, ");
-		queryStr.append(" ALTS.alert_status as alert_status ");
+		queryStr.append(" ALTS.alert_status as alert_status ,");
+		queryStr.append(" ALTS.status_order as status_order ");
 		queryStr.append(" from alert_tracking ALTT ");
 		queryStr.append(" left join alert_status ALTS on ALTT.alert_status_id = ALTS.alert_status_id ");
 		queryStr.append(" left join alert_comment ALTC on ALTC.alert_comment_id = ALTT.alert_comment_id and ALTC.is_deleted = 'N' ");
-		queryStr.append(" left join alert_comment_assignee ALTCA on ALTT.alert_comment_id = ALTCA.alert_comment_id ");
-		queryStr.append(" left join user U on ALTT.inserted_by = U.user_id, ");
-		queryStr.append(" tdp_cadre TC ");
+		if(hasTrue)
+			queryStr.append(" left join alert_comment_assignee ALTCA on ALTT.alert_comment_id = ALTCA.alert_comment_id ");
+		queryStr.append(" left join user U on ALTT.inserted_by = U.user_id ");
+		if(hasTrue)
+			queryStr.append(" ,tdp_cadre TC ");
 		queryStr.append(" where ");
-		queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id ");
-		queryStr.append(" and ALTT.alert_id = :alertId ");
-		queryStr.append(" order by ALTT.alert_status_id, date(ALTT.inserted_time) desc ,time(ALTT.inserted_time) desc ,ALTC.alert_comment_id ;");   
+		if(hasTrue)
+			queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id and ");
+			
+		queryStr.append(" ALTT.alert_id = :alertId ");
+		queryStr.append(" order by ALTS.status_order, date(ALTT.inserted_time) desc ,time(ALTT.inserted_time) desc ,ALTC.alert_comment_id ;");   
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString())  
 				.addScalar("alert_id", Hibernate.LONG)
 				.addScalar("alert_status_id", Hibernate.LONG) 
@@ -64,7 +76,8 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 				.addScalar("assign_tdp_cadre_id", Hibernate.LONG)
 				.addScalar("first_name", Hibernate.STRING)
 				.addScalar("firstname", Hibernate.STRING)
-				.addScalar("alert_status", Hibernate.STRING);
+				.addScalar("alert_status", Hibernate.STRING)
+				.addScalar("status_order", Hibernate.LONG);
 		query.setParameter("alertId", alertId); 
 		return query.list();
 	}

@@ -19,7 +19,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 	
 	public List<Object[]> getDetails(Long alertId){
 		
-		Query query = getSession().createQuery(" select model.isRequired,model.alertClarificationStatusId,model.alertClarificationStatus.status " +
+		Query query = getSession().createQuery(" select model.isRequired,model.alertClarificationStatusId,model.alertClarificationStatus.status,model.clarificationRequiredId " +
 				" from ClarificationRequired model " +
 				" where model.alertId = :alertId and model.isDeleted='N' and model.alert.isDeleted='N' ");
 		
@@ -28,12 +28,13 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		return query.list();
 	}
 	
-	public Integer updateStatusForOld(Long userId,Long alertId,Date date){
-		Query query = getSession().createQuery(" update ClarificationRequired model set model.isDeleted='Y', model.updatedBy=:updatedBy,model.updatedTime=:updatedTime " +
-				" where model.alertId=:alertId and model.isDeleted='N'");
+	public Integer updateStatusForOld(Long userId,Long alertId,Date date,String userType){
+		Query query = getSession().createQuery(" update ClarificationRequired model set model.isDeleted='Y', model.updatedBy=:updatedBy,model.updatedTime=:updatedTime, " +
+				" model.userType=:userType where model.alertId=:alertId and model.isDeleted='N'");
 		query.setParameter("updatedBy", userId);
 		query.setParameter("updatedTime", date);
 		query.setParameter("alertId", alertId);
+		query.setParameter("userType", userType);
 		return query.executeUpdate();
 	}
 	
