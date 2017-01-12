@@ -49,7 +49,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long electioinYearId;
 	private String electionType;
 	private String electionYear;
+	private String enrollmentYears;
 	
+	public String getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(String enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	private String imageURL;
 	List<CadreCommitteeVO> previousRoles = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();

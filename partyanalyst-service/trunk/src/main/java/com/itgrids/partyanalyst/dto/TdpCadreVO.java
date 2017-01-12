@@ -68,8 +68,21 @@ public class TdpCadreVO implements java.io.Serializable
 	private String totalImagePathStr;
 	private String isCsd;
 	private String year;
+	private String enrollmentYears;
+	private String enrollmentYearIdStr;
 	
-	
+	public String getEnrollmentYearIdStr() {
+		return enrollmentYearIdStr;
+	}
+	public void setEnrollmentYearIdStr(String enrollmentYearIdStr) {
+		this.enrollmentYearIdStr = enrollmentYearIdStr;
+	}
+	public String getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(String enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	public String getYear() {
 		return year;
 	}
