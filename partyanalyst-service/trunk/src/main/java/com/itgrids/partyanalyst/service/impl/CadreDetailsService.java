@@ -1032,8 +1032,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			IVolunteersCadreDetailsDAO volunteersCadreDetailsDAO) {
 		this.volunteersCadreDetailsDAO = volunteersCadreDetailsDAO;
 	}
-	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId)
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,
+			String memberShipCardNo,String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,
+			 Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
 		List<Long> ids = new ArrayList<Long>();
@@ -1223,6 +1224,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved,enrollmentId);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+				List<TdpCadreVO> finalResult = new ArrayList<TdpCadreVO>();
+				Map<Long, String> cadreEnrollmentYearsMap = new LinkedHashMap<Long, String>(0);
 				
 				if(cadreList != null && cadreList.size()>0)
 				{
@@ -1230,15 +1233,35 @@ public class CadreDetailsService implements ICadreDetailsService{
 					for (Object[] cadre : cadreList) 
 					{
 						TdpCadreVO cadreVO = new TdpCadreVO();
+						
+						Long tdpcadreId = cadre[0] != null?Long.parseLong(cadre[0].toString()):0l;
+						String year = cadre[34] != null?cadre[34].toString():"";
+						
+						String existingYear=cadreEnrollmentYearsMap.get(tdpcadreId);
+						if(existingYear!=null && existingYear.length()>0){
+							existingYear = year+", "+existingYear;  
+							cadreEnrollmentYearsMap.put(tdpcadreId, existingYear);
+							
+						}else{
+							cadreEnrollmentYearsMap.put(tdpcadreId, year);
+						}
+						
+						
+						
 
-						TdpCadreVO vo = getMatchedVOById(returnLsit, (Long)cadre[0]);
+						TdpCadreVO vo = getMatchedVOById(finalResult, (Long)cadre[0]);
 						if(vo != null){
 							Long yearId = cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L;
-							if(vo.getEnrollmentYearId().longValue()<yearId.longValue())
+							if(vo.getEnrollmentYearId().longValue()<yearId.longValue()){
 								vo.setEnrollmentYearId(yearId);
+							}
+							if(!vo.getEnrollmentYearIdStr().isEmpty())
+								vo.setEnrollmentYearIdStr(vo.getEnrollmentYearIdStr()+","+yearId);
+							else
+								vo.setEnrollmentYearIdStr(""+yearId);
 							continue;
 						}else
-							returnLsit.add(cadreVO);
+							finalResult.add(cadreVO);
 						
 						cadreIds.add(Long.valueOf(cadre[0] != null ? cadre[0].toString().trim():"0"));
 						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
@@ -1319,13 +1342,27 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 						cadreVO.setEnrollmentYearId(cadre[33] != null ? Long.valueOf(cadre[33].toString().trim()):0L);
-						cadreVO.setYear(cadre[34] != null ? cadre[34].toString():"");
+						cadreVO.setEnrollmentYearIdStr(cadre[33] != null ? cadre[33].toString().trim():"");
+						//cadreVO.setYear(cadre[34] != null ? cadre[34].toString():"");
+					}
+					
+					for (TdpCadreVO tdpCadreVO : finalResult) {
+						String year = cadreEnrollmentYearsMap.get(tdpCadreVO.getId());
+						if(year != null )
+							tdpCadreVO.setEnrollmentYears(year);
+						
+						if(enrollmentId != null && enrollmentId.longValue() > 0L && tdpCadreVO.getEnrollmentYearId() != null && 
+								tdpCadreVO.getEnrollmentYearIdStr().contains(enrollmentId.toString())){
+							returnLsit.add(tdpCadreVO);
+						}else if(enrollmentId == null || enrollmentId.longValue()==0L){
+							returnLsit.add(tdpCadreVO);
+						}
 					}
 					
 					returnVO.setResponseStatus("SUCCESS");					
 					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
 					returnVO.setTdpCadreDetailsList(returnLsit);
-					if(returnLsit != null && maxIndex != 0)
+					if(commonMethodsUtilService.isListOrSetValid(returnLsit) && maxIndex != 0)
 					{
 					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved,enrollmentId);
 					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
@@ -1877,17 +1914,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 			//Long maxEnrollmentYear=tdpCadreEnrollmentYearDAO.getMaxRecordFromEnrollmentYear(cadreId);
 			List<Long> enrollmentYears = tdpCadreEnrollmentYearDAO.getPreviousElectionYearsOfCadre(cadreId);
 			
-			String cadreEnrollmentYears = "";
+			String x = "";
 			if(enrollmentYears !=null && enrollmentYears.size() >0 ){
 				for (Long long1 : enrollmentYears) {
-					cadreEnrollmentYears += long1.toString()+",";
+					x += long1.toString()+",";
 				}
 			}
-			if(cadreEnrollmentYears !=null && !cadreEnrollmentYears.isEmpty()){
-				cadreEnrollmentYears = cadreEnrollmentYears.substring(0,cadreEnrollmentYears.length()-1);
+			if(x !=null && !x.isEmpty()){
+				x = x.substring(0,x.length()-1);
 			}
 			
-			cadreDetailsVO.setEnrollmentYears(cadreEnrollmentYears);
+			cadreDetailsVO.setEnrollmentYears(x);
 			
 			//adding whatsApp && fb Details 
 			
@@ -3468,6 +3505,23 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 						}
 						
+						Map<Long,String> isCadreEnrolledRenewelMap = new LinkedHashMap<Long, String>(0);
+						List<Object[]> enrolledRenewelList = tdpCadreEnrollmentYearDAO.getEnrolledCandidatesRenewelYearDetails(tdpCadreIDsList);
+						if (enrolledRenewelList != null && enrolledRenewelList.size() > 0){
+							for (Object[] objects : enrolledRenewelList) {
+								Long tdpcadreId = objects[0] != null?Long.parseLong(objects[0].toString()):0l;
+								String year = objects[1] != null?objects[1].toString():"";
+								
+								String existingYear = isCadreEnrolledRenewelMap.get(tdpcadreId);
+								if(existingYear != null && existingYear.length()>0){
+									existingYear = year+", "+existingYear;  
+									isCadreEnrolledRenewelMap.put(tdpcadreId, existingYear);
+								}else{
+									isCadreEnrolledRenewelMap.put(tdpcadreId, year);
+								}
+							}
+						}
+						
 						/*List<Object[]> cadrePartyPositionDetals =  tdpCommitteeMemberDAO.getMembersInfoByTdpCadreIdsList(tdpCadreIDsList);
 						if(cadrePartyPositionDetals != null && cadrePartyPositionDetals.size()>0)
 						{
@@ -3506,6 +3560,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 								vo.setEnrollmntId(id);
 								}else
 									vo.setIsRenewal("false");
+								
+								if(isCadreEnrolledRenewelMap.get(vo.getTdpCadreId()) !=null){
+									String enrollmentYear = isCadreEnrolledRenewelMap.get(vo.getTdpCadreId());
+									vo.setEnrollmentYear(enrollmentYear);									
+								}
 							}
 							TdpCadreFamilyDetailsVO vo = resultList.get(0);
 							vo.setFamilySurveyCount(commonMethodsUtilService.isListOrSetValid(list) ? Long.valueOf(String.valueOf(list.size())):0L);
