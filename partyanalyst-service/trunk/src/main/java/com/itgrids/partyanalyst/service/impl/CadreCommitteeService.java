@@ -2103,7 +2103,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setFromYear(tdpCadre.getFromYear());
 						committeeVO.setToYear(tdpCadre.getToYear());
 						committeeVO.setYear(tdpCadre.getYear());
-						
+						committeeVO.setEnrollmentYears(tdpCadre.getEnrollmentYears());
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)
