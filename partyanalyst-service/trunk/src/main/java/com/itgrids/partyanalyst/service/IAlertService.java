@@ -67,7 +67,7 @@ public interface IAlertService {
     public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
 				final String clarificationRadioName,final List<String> fileNamesList);
     public AlertClarificationVO getClarificationDetails(Long alertId);
-    public String saveClarificationRequiredStatus(Long userId,String status,Long alertId);
+    public String saveClarificationRequiredStatus(Long userId,String status,Long alertId,String remarks);
     public String removeAlertComment(Long commentId);
     public String removeAlertDocument(Long documentId);
     public List<AlertVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
