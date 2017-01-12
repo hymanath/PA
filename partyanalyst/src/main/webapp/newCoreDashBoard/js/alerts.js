@@ -65,6 +65,7 @@
 	
 	function defaultAlertCalls()
 	{
+		
 		var scopeIdsArr = [2,3,6,7,9,5,8];
 			/* scopeIdsArr.push(2);  
 			scopeIdsArr.push(3);  
@@ -1027,6 +1028,7 @@
 		}else if(locationId == 5){
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9);
+			scopeIdsArr.push(6);
 		}
 		
 		var jsObj = { 
@@ -1672,12 +1674,24 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		
+       	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
 			toDate : toDateStr,             
 			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : globalActivityMemberId                                 
+			activityMemberId : globalActivityMemberId,
+			alertTypeId : alertId,
+		    editionTypeId : editionId			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -1872,16 +1886,28 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 		fromDateStr = datesArr[0]; 
 		toDateStr = datesArr[1]; 
 	}
-  var jsObj = { 
-    stateId : globalStateId,             
-    fromDate : fromDateStr,      
-    toDate : toDateStr,  
-    scopeIdsArr : scopeIdsArr,                       
-    activityMemberId : globalActivityMemberId,
-    publicRepresentativeTypeId :publicRepresentativeTypeId,
-	groupAssignType : groupAssignType,
-	commitLvlIdArr : commitLvlIdArr  
-  }                  
+	
+	    var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+	
+	  var jsObj = { 
+		stateId : globalStateId,             
+		fromDate : fromDateStr,      
+		toDate : toDateStr,  
+		scopeIdsArr : scopeIdsArr,                       
+		activityMemberId : globalActivityMemberId,
+		publicRepresentativeTypeId :publicRepresentativeTypeId,
+		groupAssignType : groupAssignType,
+		commitLvlIdArr : commitLvlIdArr,
+		alertTypeId : alertId,
+		editionTypeId : editionId	
+	  }                  
   $.ajax({
     type : 'POST',        
     url : 'getTotalAlertGroupByPubRepThenStatusAction.action',
@@ -1976,13 +2002,27 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		
+		
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		
+		
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
 			toDate : toDateStr,             
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
-            resultType:groupAssignType			
+            resultType:groupAssignType,
+			alertTypeId : alertId,
+		    editionTypeId : editionId			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -2160,6 +2200,16 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+	
 		var jsObj = { 
 			stateId : globalStateId,               
 			fromDate : fromDateStr,        
@@ -2168,7 +2218,10 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			activityMemberId : globalActivityMemberId,
             commitTypeId : commitTypeId,
 			designationId : designationId,
-			commitLvlIdArr : commitLvlIdArr  
+			commitLvlIdArr : commitLvlIdArr,
+			alertTypeId : alertId,
+		    editionTypeId : editionId
+	    			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -2286,6 +2339,16 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		
+	   var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		
 		var jsObj = { 
 			stateId : globalStateId,               
 			fromDate : fromDateStr,        
@@ -2296,7 +2359,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			designationId : designationId,
 			commitLvlIdArr : commitLvlIdArr,
 			cadreId : cadreId,
-			statusId : statusId     
+			statusId : statusId,
+			alertTypeId : alertId,
+		    editionTypeId : editionId			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -2383,6 +2448,17 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			fromDateStr = datesArr[0]; 
 			toDateStr = datesArr[1]; 
 		}
+		
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+	
+		
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
@@ -2392,7 +2468,10 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			commitLvlIdArr : commitLvlIdArr,
 			designationId : commitTypeId,
 			groupAssignType : selectTypeId,      
-			position : "bellow"
+			position : "bellow",
+		    alertTypeId : alertId,
+		    editionTypeId : editionId
+			
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -2444,6 +2523,15 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				}
 			}
 		});
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+	  
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
@@ -2452,7 +2540,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			activityMemberId : globalActivityMemberId,
 			publicRepresentativeTypeId : publicRepresentativeTypeId,
 			cadreId : cadreId,
-			statusId : statusId
+			statusId : statusId,
+			alertTypeId : alertId,
+		    editionTypeId : editionId
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -2861,6 +2951,17 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				}
 			}
 		});
+		
+		  var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		
+		
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
@@ -2869,7 +2970,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			activityMemberId : globalActivityMemberId,
 			cadreId : cadreId,
 			statusId : statusId,
-			resultType : selectType
+			resultType : selectType,
+			alertTypeId : alertId,
+		    editionTypeId : editionId			
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -3661,8 +3764,10 @@ function getTotalArticledetails(articleId){
 		//$(document).on("click",".getEditioDtls",function(){
 		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
+		var scopeIdsArr = [2,3,6,7,9,5,8];
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getStateImpactLevelAlertDtlsCnt("other"); 
+		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//dist wise startDate
 		
