@@ -41,8 +41,8 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 	public List<Object[]> getStatusAndCategoryWiseAlertsCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId){
 		StringBuilder sb = new StringBuilder();
 		//0-alertClarificationStatusId,1-status,2-alertCategoryId,3-category,4-count
-		sb.append(" select model.alertClarificationStatus.alertClarificationStatusId,model.alertClarificationStatus.status," +
-				" model.status.alertCategory.alertCategoryId,model.status.alertCategory.category,count(model.alertId)  " +
+		sb.append(" select model.alertClarificationStatus.alertClarificationStatusId,model.alertClarificationStatus.status ," +
+				" model.alert.alertCategory.alertCategoryId,model.alert.alertCategory.category,count(model.alertId)  " +
 				" from ClarificationRequired model " +
 				" where model.isDeleted='N' and model.alert.isDeleted='N' ");
 		
@@ -55,7 +55,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		if(alertTypeId != null && alertTypeId > 0l)
 			sb.append(" and model.alert.alertTypeId=:alertTypeId ");
 		
-		sb.append(" group by model.alertClarificationStatus.alertClarificationStatusId,model.status.alertCategory.alertCategoryId ");
+		sb.append(" group by model.alertClarificationStatus.alertClarificationStatusId,model.alert.alertCategory.alertCategoryId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
