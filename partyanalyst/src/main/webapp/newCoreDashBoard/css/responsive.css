@@ -10,6 +10,10 @@
 	}
 }
 @media (min-width: 100px) and (max-width:500px) {
+	#alertOverviewDetails
+	{
+		margin-top:-20px !important;
+	}
 	.img-responsive
 	{
 		margin:auto;

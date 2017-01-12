@@ -929,6 +929,7 @@
 							stacking: 'normal',
 							dataLabels: {
 								enabled: true,
+								align: 'left',
 								 formatter: function() {
 									if (this.y === 0) {
 										return null;
