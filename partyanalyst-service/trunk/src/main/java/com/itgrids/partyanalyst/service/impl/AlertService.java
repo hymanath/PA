@@ -1103,11 +1103,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCommentVO>  alertCommentDtlsList = null;
 			AlertCommentVO alertCommentVO = null;
 			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
-			if(!commonMethodsUtilService.isListOrSetValid(list)){
+			//if(!commonMethodsUtilService.isListOrSetValid(list)){
 					List<Object[]> list1 = alertTrackingDAO.getAlertTrackingDetailsList(alertId,false);
-				if(commonMethodsUtilService.isListOrSetValid(list1))
-					list.addAll(list1);
-			}
+				if(commonMethodsUtilService.isListOrSetValid(list1)){
+					for (Object[] param : list1) {
+						Long statusId= commonMethodsUtilService.getLongValueForObject(param[10]);
+						if(statusId == 1L || statusId == 2L)
+							list.add(param);
+					}					
+				}
+			//}
 			SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm:ss");
 			SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
 			if(list != null && list.size() > 0){   
@@ -1207,7 +1212,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						finalList.remove(param);
 						finalList.add(param);  
 					}
-					//tempList.add(param);
+					tempList.add(param);
 				}
 				
 				if(commonMethodsUtilService.isListOrSetValid(tempList)){
