@@ -562,6 +562,7 @@
 		str+='<div class="table-responsive">';
 	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="alertDtlsTabId">';   
 		str+='<thead>';
+			str+='<tr>';
              str+='<th>Alert Source</th>';
              str+='<th>Title</th>';
              str+='<th>Created Date</th>';
@@ -570,6 +571,7 @@
 			 str+='<th>LAG Days</th>';
 			 str+='<th>Alert Level</th>';
 			 str+='<th>Location</th>';
+			 str+='</tr>';
 		 str+='</thead>';
 		 str+='<tbody>';
 		 for(var i in result){
@@ -1097,7 +1099,7 @@
 			str+='<ul class="distWiseSlickApply">';
 			for(var i in result){
 				str+='<li style="border-right:1px solid #ccc">';
-				str+='<h4 class="districtcls text-capital" attr_alert_count="'+result[i].count+'" attr_district_id='+result[i].statusId+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].status+" - "+result[i].count+'</h4>';
+				str+='<h5 class="districtcls text-capital" attr_alert_count="'+result[i].count+'" attr_district_id='+result[i].statusId+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].status+" - "+result[i].count+'</h5>';
 				str+='<div id="distwisegraph'+i+'"  style="height:200px;width:220px"></div>';
 				str+='</li>';
 				
@@ -1299,7 +1301,7 @@
 			str+='<ul class="distWiseSlickApply">';
 			for(var i in result){
 				str+='<li style="border-right:1px solid #ccc">';
-				str+='<h4 class="districtcls text-capital" attr_alert_count="'+result[i].count+'" attr_district_id='+result[i].statusId+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].status+" - "+result[i].count+'</h4>';
+				str+='<h5 class="districtcls text-capital" attr_alert_count="'+result[i].count+'" attr_district_id='+result[i].statusId+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].status+" - "+result[i].count+'</h5>';
 				str+='<div id="distwisegraph'+i+'"  style="height:300px;width:250px"></div>';
 				str+='</li>';
 			}
@@ -2578,9 +2580,10 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						enabled:false
 					}
 				},
-				legend: {
-					enabled: false
-				},	
+				tooltip: {
+					headerFormat: '<span style="font-size:11px">No Of<br/> Alerts</span><br>',
+					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.extra}</b>'
+				},
 				plotOptions: {
 					column: {
 						//stacking: 'normal',
@@ -2596,9 +2599,20 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						}
 					}
 				},
-				tooltip: {
-					headerFormat: '<span style="font-size:11px">No Of<br/> Alerts</span><br>',
-					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.extra}</b>'
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
 				},
 				series: [{    
 					name: 'No Of Alerts',
@@ -2658,16 +2672,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 									}
 								},
 								tooltip: {
-									formatter: function () {
-										var s = '<b>' + this.x + '</b>';
-
-										$.each(this.points, function () {
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+(this.y);
-										});
-
-										return s;
-									},
-									shared: true
+									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+									
 								},
 								legend: {
 														
@@ -2773,7 +2780,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 								return s;
 							},
 							shared: true
-						}, 
+						},
 						
 						legend: {   
 												
@@ -3337,67 +3344,75 @@ function getTotalArticledetails(articleId){
 		
 		str+='<tbody>';
 			str+='<tr>';
-				str+='<td colspan="2" onclick ="getEditioDtls(0,0);" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" >'+result.overAllVO.totalAlertCnt+'<p>TOTAL ALERTS</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" ><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'</h3><p>TOTAL ALERTS</p></div></td>';
+				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(1,0);" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.partyAlertCnt+'<p>PARTY</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'</h3><p>PARTY</p></div></td>';
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(2,0);" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.govtAlertCnt+'<p>GOVT</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'</h3><p>GOVT</p></div></td>';
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(3,0);" class="alertOverViewDetailsCls " attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " >'+result.overAllVO.otherAlertCnt+'<p>OTHERS</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(3,0);arrowPositionMove(overAllotherdArrowPostion);" id="overAllotherdArrowPostion"  class="alertOverViewDetailsCls " attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'</h3><p>OTHERS</p></div></td>';
 				}
 			str+='</tr>';
 			str+='<tr>';
-				str+='<td onclick ="getEditioDtls(0,1);" class="alertOverViewDetailsLowCls" attr_alert_type_id="0" attr_edition_type_id="1"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="" >'+totalMainCount+'</p></div></td>';
-				str+='<td onclick ="getEditioDtls(0,2);" class="alertOverViewDetailsLowCls " attr_alert_type_id="0" attr_edition_type_id="2"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
-				str+='<p style="font-size:13px;cursor:pointer;" class="" >'+totalDistCount+'</p></div></td>';
+				str+='<td onclick ="arrowPositionMove1(overAllArrowPostionLow);" id="overAllArrowPostionLow"  class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
+				
+				str+='<p style="font-size:13px;cursor:pointer;"  onclick ="getEditioDtls(0,1);" attr_alert_type_id="0" attr_edition_type_id="1"><span class="alertColorFont">'+totalMainCount+'</span></p></div></td>';
+				
+				str+='<td onclick ="arrowPositionMove1(overAllMainArrowPostionLow);" id="overAllMainArrowPostionLow" class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
+				
+				str+='<p style="font-size:13px;cursor:pointer;" onclick="getEditioDtls(0,2);" attr_alert_type_id="0" attr_edition_type_id="2"><span class="alertColorFont">'+totalDistCount+'</span></p></div></td>';
+				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td  class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
+					
+					
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyArrowPostion)" id="overAlltotalpartyArrowPostion" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'</p>';
 					if(result.totalPartyList[0].editionCnt == 0){
-						str+='<p style="font-size:13px;">0</p></div></td>';
+						str+='<p style="font-size:13px;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalPartyList[0].alertTypeId+','+result.totalPartyList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'">'+result.totalPartyList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalPartyList[0].alertTypeId+','+result.totalPartyList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[0].editionId+'"><span class="alertColorFont">'+result.totalPartyList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
+					
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyEdArrowPostion)" id="overAlltotalpartyEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'</p>';
 					if(result.totalPartyList[1].editionCnt == 0){  
-						str+='<p style="font-size:13px;">0</p></div></td>';
+						str+='<p style="font-size:13px;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalPartyList[1].alertTypeId+','+result.totalPartyList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'">'+result.totalPartyList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalPartyList[1].alertTypeId+','+result.totalPartyList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" attr_edition_type_id="'+result.totalPartyList[1].editionId+'"><span class="alertColorFont">'+result.totalPartyList[1].editionCnt+'</span></p></div></td>';
 					}
 					
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';    
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'</p>';    
 					if(result.totalGovtList[0].editionCnt == 0){
-						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
+						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalGovtList[0].alertTypeId+','+result.totalGovtList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'">'+result.totalGovtList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalGovtList[0].alertTypeId+','+result.totalGovtList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'"><span class="alertColorFont">'+result.totalGovtList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
+					str+='<td class="alertOverViewDetailsLowCls " onclick="arrowPositionMove1(overAlltotalgovtEd1ArrowPostion)" id="overAlltotalgovtEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'</p>';
 					if(result.totalGovtList[1].editionCnt == 0){
-						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
+						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalGovtList[1].alertTypeId+','+result.totalGovtList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'">'+result.totalGovtList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalGovtList[1].alertTypeId+','+result.totalGovtList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[1].editionId+'"><span class="alertColorFont">'+result.totalGovtList[1].editionCnt+'</span></p></div></td>';
 					}
 					
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'</p>';
 					if(result.totalOtherList[0].editionCnt == 0){
-						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
+						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalOtherList[0].alertTypeId+','+result.totalOtherList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'">'+result.totalOtherList[0].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalOtherList[0].alertTypeId+','+result.totalOtherList[0].editionId+');" style="font-size:13px;cursor:pointer;"  attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'"><span class="alertColorFont">'+result.totalOtherList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
+					str+='<td class="alertOverViewDetailsLowCls1" onclick="arrowPositionMove1(overAlltotalothersEd2ArrowPostion);" id="overAlltotalothersEd2ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'</p>';
 					if(result.totalOtherList[1].editionCnt == 0){
-						str+='<p style="font-size:13px;cursor:pointer;">0</p></div></td>';
+						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
-						str+='<p onclick ="getEditioDtls('+result.totalOtherList[1].alertTypeId+','+result.totalOtherList[1].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'">'+result.totalOtherList[1].editionCnt+'</p></div></td>';
+						str+='<p onclick ="getEditioDtls('+result.totalOtherList[1].alertTypeId+','+result.totalOtherList[1].editionId+');" style="font-size:13px;cursor:pointer;" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[1].editionId+'"><span class="alertColorFont">'+result.totalOtherList[1].editionCnt+'</span></p></div></td>';
 					}
 				}
 				
@@ -3471,7 +3486,7 @@ function getTotalArticledetails(articleId){
 												if(result.statusList[i].statusCnt == 0){  
 													str+='<h4>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												}else{
-													str+='<h4 style="cursor:pointer;" class="alertDtlsCls" attr_edition_id="'+alertEdition+'" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'" >'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
+													str+='<h4 style="cursor:pointer;" class="alertDtlsCls" attr_edition_id="'+alertEdition+'" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'" ><span class="alertColorFont">'+result.statusList[i].statusCnt+'</span>&nbsp;&nbsp;<small class="text-success">'+result.statusList[i].statusCntPer+'%</small></h4>';
 												}
 												
 												str+='<p>'+result.statusList[i].statusType+'&nbsp;&nbsp;</p>';
@@ -3485,7 +3500,7 @@ function getTotalArticledetails(articleId){
 													if(result.statusList[i].editionList[0].editionCnt == 0){
 														str+='<p class="text-capitalize text-muted">0</p>';
 													}else{
-														str+='<p class="text-capitalize text-muted alertDtlsCls"  style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].editionList[0].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.statusList[i].editionList[0].editionId+'">'+result.statusList[i].editionList[0].editionCnt+'</p>';
+														str+='<p class="text-capitalize text-muted alertDtlsCls"  style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].editionList[0].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.statusList[i].editionList[0].editionId+'"><span class="alertColorFont">'+result.statusList[i].editionList[0].editionCnt+'</span></p>';
 													}
 													
 												str+='</td>';
@@ -3494,7 +3509,7 @@ function getTotalArticledetails(articleId){
 													if(result.statusList[i].editionList[1].editionCnt == 0){
 														str+='<p class="text-capitalize text-muted">0</p>';
 													}else{
-														str+='<p class="text-capitalize text-muted alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].editionList[1].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.statusList[i].editionList[1].editionId+'">'+result.statusList[i].editionList[1].editionCnt+'</p>';
+														str+='<p class="text-capitalize text-muted alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_count="'+result.statusList[i].editionList[1].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.statusList[i].editionList[1].editionId+'"><span class="alertColorFont">'+result.statusList[i].editionList[1].editionCnt+'</span></p>';
 													}  
 													
 												str+='</td>'; 
@@ -3518,7 +3533,7 @@ function getTotalArticledetails(articleId){
 					{
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-								str+='<h4 class="panel-title text-capital alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
+								str+='<h4 class="panel-title text-capital alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].statusCnt+'" attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusType+' - <span class="alertColorFont">'+result.categoryList[i].statusCnt+'</span></h4>';
 							str+='</div>';
 							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -3530,7 +3545,7 @@ function getTotalArticledetails(articleId){
 												if(result.categoryList[i].editionList[j].editionCnt == 0){
 													str+='<p class="panel-title">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
 												}else{
-													str+='<p class="panel-title alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].editionList[j].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.categoryList[i].editionList[j].editionId+'">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
+													str+='<p class="panel-title alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].editionList[j].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.categoryList[i].editionList[j].editionId+'">'+result.categoryList[i].editionList[j].edition+' Edition - <span class="alertColorFont">'+result.categoryList[i].editionList[j].editionCnt+'</span></p>';
 												}
 												  
 											str+='</div>';  
@@ -3565,7 +3580,7 @@ function getTotalArticledetails(articleId){
 												if(result.categoryList[i].statusList[j].statusCnt == 0){
 													str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 												}else{
-													str+='<p class="text-muted alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"  attr_alert_type_id="'+alertTypeId+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
+													str+='<p class="text-muted alertDtlsCls" style="cursor:pointer;" attr_edition_id="'+alertEdition+'" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"  attr_alert_type_id="'+alertTypeId+'"><span class="alertColorFont">'+result.categoryList[i].statusList[j].statusCnt+'</span>&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
 												}  
 												
 											str+='</td>';
@@ -3586,18 +3601,22 @@ function getTotalArticledetails(articleId){
 		str+='</div>';
 		$("#alertOverviewDetails").html(str);
 	}
-	$(document).on("click",".alertOverViewDetailsCls",function(){
+	function arrowPositionMove(id){
+	//$(document).on("click",".alertOverViewDetailsCls",function(){
 		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
 		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
-		$(this).addClass("alertsArrow");
-		$(this).find(".alertInnerArrow").addClass("alertsArrow");
-	});
-	$(document).on("click",".alertOverViewDetailsLowCls",function(){
+		$(id).addClass("alertsArrow");
+		$(id).find(".alertInnerArrow").addClass("alertsArrow");
+	//});
+	}
+	function arrowPositionMove1(id1){
+	//$(document).on("click",".alertOverViewDetailsLowCls",function(){
 		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
 		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
-		$(this).addClass("alertsArrowLow");
-		$(this).find(".alertInnerArrowLow").addClass("alertsArrowLow");
-	});
+		$(id1).addClass("alertsArrowLow");
+		$(id1).find(".alertInnerArrowLow").addClass("alertsArrowLow");
+	//});
+	}
 	function getEditioDtls(alertTypeStr,alertEdition){
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
