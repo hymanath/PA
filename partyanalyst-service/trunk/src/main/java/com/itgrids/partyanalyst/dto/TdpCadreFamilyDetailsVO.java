@@ -41,8 +41,14 @@ public class TdpCadreFamilyDetailsVO {
 	private String deletedReason;
 	private String isRenewal;
 	private Long enrollmntId;
+	private String enrollmentYear;
 	
-	
+public String getEnrollmentYear() {
+		return enrollmentYear;
+	}
+	public void setEnrollmentYear(String enrollmentYear) {
+		this.enrollmentYear = enrollmentYear;
+	}
 	public String getIsRenewal() {
 		return isRenewal;
 	}
