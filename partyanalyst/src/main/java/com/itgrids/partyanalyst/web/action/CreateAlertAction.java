@@ -1097,14 +1097,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
 			          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
 			          
-			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/"+IConstants.TOUR_DOCUMENTS;
+			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
 			        	 
 			          File fileToCreate = new File(filePath,imageName);
 					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
 					  
 					  inputStream = new StringBufferInputStream("success");
 		          }
-				 alertService.saveAlertClarificationDetails(userId,alertId,clarificationStatusId,clarificationComments,clarificationRadioName,fileNamesList);
+				 resultStatus =alertService.saveAlertClarificationDetails(userId,alertId,clarificationStatusId,clarificationComments,clarificationRadioName,fileNamesList);
 			 }else{
 				 inputStream = new StringBufferInputStream("login failed");
 			 }
@@ -1121,9 +1121,86 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try {
 			jObj = new JSONObject(getTask());
 			
-			alertClarificationVO = alertService.getClarificationDetails(alertId);
+			alertClarificationVO = alertService.getClarificationDetails(jObj.getLong("alertId"));
 		} catch (Exception e) {
 			LOG.error("Excpetion raised at getClarificationDetails",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveClarificationRequiredStatus(){
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo != null)
+				status = alertService.saveClarificationRequiredStatus(regVo.getRegistrationID(),jObj.getString("statusStr"),jObj.getLong("alertId")); 
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at saveClarificationRequiredStatus",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String removeAlertComment(){
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo != null)
+				status = alertService.removeAlertComment(jObj.getLong("commentId"));
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at removeAlertComment",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String removeAlertDocument(){
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo != null)
+				status = alertService.removeAlertDocument(jObj.getLong("docId"));
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at removeAlertComment",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStatusAndCategoryWiseAlertsCount(){
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo != null)
+				alertVOs =  alertService.getStatusAndCategoryWiseAlertsCount(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("alertTypeId"));
+				
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getStatusAndCategoryWiseAlertsCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationLevelAlertClarificationData(){
+		try {
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			AlertInputVO inputVO = new AlertInputVO();
+			inputVO.setLevelId(jObj.getLong("levelId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate")); 
+			
+			inputVO.setLevelValue(jObj.getLong("levelValue"));
+			inputVO.setCategoryId(jObj.getLong("categoryId"));
+			inputVO.setAssignId(jObj.getLong("assignId"));
+			inputVO.setSearchTypeStr(jObj.getString("task"));
+			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
+			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
+			
+			alertService.getLocationLevelAlertClarificationData(regVo.getRegistrationID(),inputVO);
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
 		}
 		return Action.SUCCESS;
 	}

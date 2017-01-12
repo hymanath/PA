@@ -15396,5 +15396,34 @@
 		</result>
 	</action>
 	
+	<action name="saveClarificationRequiredStatusAction" class="createAlertAction"  method="saveClarificationRequiredStatus">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	
+	<action name="removeAlertCommentAction" class="createAlertAction"  method="removeAlertComment">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+		
+	<action name="removeAlertDocumentAction" class="createAlertAction"  method="removeAlertDocument">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	
+	<action name="getStatusAndCategoryWiseAlertsCountAction" class="createAlertAction"  method="getStatusAndCategoryWiseAlertsCount">
+		<result type="json" name="success">
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	
+	<action name="getLocationLevelAlertClarificationDataAction" class="createAlertAction"  method="getLocationLevelAlertClarificationData">
+		<result type="json" name="success">
+			<param name="root">alertVOs</param>
+		</result>
+	</action>	
  </package>
 </struts>
