@@ -306,7 +306,7 @@ function buildAlertCandidateData(result,categoryId)
 		for(var i in result)
 		{
 			
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
 				str+='<div class="media" style="height:100px;border:1px solid #ddd">';
 					str+='<div class="media-left">';						
 					if(result[i].image !=null && result[i].image.length>0){
@@ -345,7 +345,7 @@ function buildAlertCandidateData(result,categoryId)
 	}else{
 		for(var i in result)
 		{
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
 				str+='<div class="media" style="height:100px;border:1px solid #ddd">';
 					str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
@@ -385,7 +385,7 @@ function buildAlertCandidateData(result,categoryId)
 		for(var i in result)
 		{
 			
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
 				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';						
 					if(result[i].image !=null && result[i].image.length>0){
@@ -425,7 +425,7 @@ function buildAlertCandidateData(result,categoryId)
 	}else{
 		for(var i in result)
 		{
-			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
 				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
@@ -1326,7 +1326,8 @@ $(document).on("click","#clarifiReqId",function(){
 							str+='<img src="images/Green_radio_selected.png"/>';
 						str+='</div>';
 						str+='<div><h5>Clarification Status : <span style="color:green;">'+result.clarificationStatus+'</span></h5></div>';
-						
+						var  isOk=false;
+					if(result.clarificationComments != null && result.clarificationComments.length > 0){	
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<label>Clarification Comments</label>';
 							str+='<div id="existingCommentsDivId">';
@@ -1339,7 +1340,9 @@ $(document).on("click","#clarifiReqId",function(){
 								}
 							str+='</div>';
 						str+='</div>';
-						
+						isOk = true;
+					}
+					if(result.documentsList != null && result.documentsList.length > 0){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<label>Upload Attachments</label>';
 							str+='<div id="existingDocumentsDivId">';
@@ -1352,18 +1355,36 @@ $(document).on("click","#clarifiReqId",function(){
 								}
 							str+='</div>';
 						str+='</div>';
-						
-						$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+						isOk = true;
+					}
+					if(isOk){
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+						str+='<button class="btn btn-success btn-mini btn-xs radioClss" value="Y" attr_user="PC"> Comment </button>';
+						str+='<div id="remarksClls" style="margin-left: 20px;display:none;"> ';
+						str+='<br>Remarks : <br> <textarea id="markRemark" class="" style="width:300px;height: 100px" placeholder="Please enter type clarifications required...">  </textarea>';
+						str+='<button class="btn btn-success btn-mini btn-xs sbmtCls"  style="margin-top: 25px" > SUBMIT </button>';
+						str+='<div>';
+					
+						str+='</div>';
+					}	
+						//$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
 					}else{
-						str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
+						
+						str+='<div id="alertClarificationsDocs" name="alertClarificationsDocs">';
 							str+='<label class="radio-inline">Is Clarification Required?</label>';
 							str+='<label class="radio-inline">';
-								str+='<input type="radio" name="clarificationRadioName" class="radioClss" value="Y"/> Yes';
+								str+='<input type="radio" name="clarificationRadioName" class="radioClss" attr_user =""  value="Y"/> Yes';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-								str+='<input type="radio" name="clarificationRadioName" class="radioClss" checked value="N"/> No';
+								str+='<input type="radio" name="clarificationRadioName" class="radioClss" attr_user ="" checked value="N"/> No';
 							str+='</label>';
-						str+='</form>';
+							str+='<div id="remarksClls" style="margin-left: 20px;display:none;"> ';
+							str+='<br>Remarks : <br> <textarea id="markRemark" class="" style="width:300px;height: 100px" placeholder="Please enter type clarifications required...">  </textarea>';
+							str+='<button class="btn btn-success btn-mini btn-xs sbmtCls" style="margin-top: 25px"> SUBMIT </button>';
+							str+='<div>';
+							
+						str+='</div>';
+						$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
 					}
 				}else if(flag == "infoCellTeam"){
 					str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
@@ -1432,35 +1453,89 @@ $(document).on("click","#clarifiReqId",function(){
 			}
 		});
 	}
-	
 	$(document).on("click",".radioClss",function(){
-		$(this).prop('checked',true);
-		
-		var jsObj={
-			statusStr:$(this).val(),
-    		alertId:alertId
-    	}
-			
-		$.ajax({
-			type : 'GET',
-			url : 'saveClarificationRequiredStatusAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			var str='';
-			if(result != null && result == "success"){
-				str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
-					str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
-						str+='<label class="radio-inline">Is Clarification Required?</label>';
-						str+='<img src="images/Green_radio_selected.png"/>';
-					str+='</div>';
-					str+='<div><h5>Clarification Status : <span style="color:green;">Progress</span></h5></div>';
-				str+='</form>';
-			}else{
-				alert("Please Try Again.");
+		$('#markRemark').html('');
+		var value = $(this).attr('value');
+		var userType = $(this).attr('attr_user');
+		if(value =='Y'){
+			if(userType == 'PC'){
+				$("#disabledDivId").addAttr("class","");//activate the enable status for  divs
+				$("#disabledDivId").addClass("class","disabledBlock");//activate the enable status for  divs
+				$("#disabledDivId").addClass("class","disabledBlockWhite");//activate the enable status for  divs
+				$("#disabledDivsId").addClass("class","disabledBlock");//activate the enable status for  divs
 			}
-			$("#mainDivId").html(str);
+			$('#remarksClls').show();
+			$('#markRemark').html('');
+		}
+		else{
+			$('#remarksClls').hide();
+		}
+	});
+		
+	$(document).on("click",".sbmtCls",function(){
+		
+		var value = '';
+		
+		$('.radioClss').each(function(){
+			if($(this).is(':checked') )
+				value = $(this).attr('value');
 		});
+		
+		var isOk =false;
+		if(value =='Y'){
+			var comment = $('#markRemark').val();
+			if(comment == null || comment.length ==0){
+				alert("Please enter comment... ");
+				return;
+			}
+			
+			var ok=confirm("Are you sure want to mark this Alert as Clarification Required Alert? ");
+			if(ok){
+				$(this).prop('checked',true);
+				isOk =true;
+			}else{
+				$(this).prop('checked',false);
+			}
+		}
+		else if(value =='N'){
+			var ok=confirm("Are you sure want to mark this Alert as Clarification Not Required Alert? ");
+			if(ok){
+				$(this).prop('checked',true);
+				isOk =true;
+			}else{
+				$(this).prop('checked',false);
+			}
+		}else{
+			alert('Please select Clarification Required Status.');
+		}
+		
+		if(isOk){
+				var jsObj={
+					statusStr:value,
+					alertId:alertId,
+					remark:$('#markRemark').val()
+				};
+				$.ajax({
+				type : 'GET',
+				url : 'saveClarificationRequiredStatusAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}
+				}).done(function(result){
+					var str='';
+					if(result != null && result == "success"){
+						str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
+							str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
+								str+='<label class="radio-inline">Is Clarification Required?</label>';
+								str+='<img src="images/Green_radio_selected.png"/>';
+							str+='</div>';
+							str+='<div><h5>Clarification Status : <span style="color:green;">Progress</span></h5></div>';
+						str+='</form>';
+					}else{
+						alert("Please Try Again.");
+					}
+					$("#mainDivId").html(str);
+				});
+		}
 	});
 	
 	$(document).on("click",".commentRemove",function(){
