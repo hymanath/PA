@@ -1601,6 +1601,7 @@
 			<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />		
 			<property name="alertService" ref="alertService" />		
 			<property name="candidateDetailsService" ref="candidateDetailsService" />
+			<property name="toursService" ref="toursService" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
