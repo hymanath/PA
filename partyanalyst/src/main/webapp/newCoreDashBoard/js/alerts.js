@@ -560,7 +560,12 @@
 		$("#cadreExcelExpBtnId").show();
 		var str='';
 		str+='<div class="table-responsive">';
-	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="alertDtlsTabId">';   
+		if($(window).width() < 800)
+		{
+			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed alertDtlsTabStyle" id="alertDtlsTabId">';   
+		}else{
+			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed" id="alertDtlsTabId">'; 
+		}  
 		str+='<thead>';
 			str+='<tr>';
              str+='<th>Alert Source</th>';
