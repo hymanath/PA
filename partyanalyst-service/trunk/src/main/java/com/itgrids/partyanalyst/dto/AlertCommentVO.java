@@ -20,7 +20,15 @@ public class AlertCommentVO implements Serializable {
 	private List<List<AlertCommentVO>> sublist = new ArrayList<List<AlertCommentVO>>();
 	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>();
 	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>();
+	private Long orderNo;
 	
+	
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
 	public Long getCommentId() {
 		return commentId;
 	}
