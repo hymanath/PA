@@ -661,13 +661,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			String group = jObj.getString("group");
-			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long activityMemberId = jObj.getLong("activityMemberId");//aaaaa
 			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
 			List<Long> scopeIdList = new ArrayList<Long>();    
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}  
-			alertVOs = alertService.getTotalAlertGroupByLocationThenCategory(fromDate, toDate, stateId, scopeIdList, activityMemberId,group);    
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			alertVOs = alertService.getTotalAlertGroupByLocationThenCategory(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
@@ -686,8 +688,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			List<Long> scopeIdList = new ArrayList<Long>();
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
-			}  
-			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group);    
+			}
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
@@ -738,7 +742,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}  
-			alertCommentVOs = alertService.getTotalAlertGroupByDist(fromDate, toDate, stateId, scopeIdList, activityMemberId);   
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			alertCommentVOs = alertService.getTotalAlertGroupByDist(fromDate, toDate, stateId, scopeIdList, activityMemberId,alertId,editionId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
