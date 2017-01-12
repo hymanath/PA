@@ -3799,6 +3799,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  entry.getValue().getSubList().add(mandalMuncipalityVO);//adding mandalMucipality Merge Data
 					  entry.getValue().getSubList().remove(villageVO);//removeVillageData
 					  entry.getValue().getSubList().remove(wardVO);//removeWardData
+					  entry.getValue().getSubList().remove(panchayatVo);//removePanchaytData
 					  entry.getValue().getSubList().add(villageWardVO);//adding VillageWard Merge Data
 			      }
 			  }
