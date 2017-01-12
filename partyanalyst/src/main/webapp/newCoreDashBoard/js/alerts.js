@@ -680,7 +680,7 @@
 				buildAlertAssignedCandidates(result);  
 			}else{
 				var str = '';
-				str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
+				str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
 				$("#alertAssignedCandidates").html(str);    
 			}
 		});
@@ -702,16 +702,16 @@
 	}
 	function buildAlertData(result){
 		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><h5 class='text-capital m_top10' style='color:#000'>"+result[0].title+"</h5>");
-		$("#cdrModelId").html("<h5 class='text-muted'>ALERT DESCRIPTION</h5>");
-		$("#alertDestId").html(result[0].desc);
-		$("#sourceHeadingId").html("<h5 class='text-muted m_top10'>ALERT SOURCE</h5>");
-		$("#headingNameId").html(result[0].alertSource);
+		$("#cdrModelId").html("<h5 class='text-muted headingColorStyling'>ALERT DESCRIPTION</h5>");
+		$("#alertDestId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 6px;'>"+result[0].desc+"</p>");
+		$("#sourceHeadingId").html("<h5 class='text-muted headingColorStyling'>ALERT SOURCE</h5>");
+		$("#headingNameId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 10px;'>"+result[0].alertSource+"</p>");
 		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
-			$("#alertAttachTitId").html("<h5  class='text-muted'>ALERT ATTACHMENTS</h5>");
+			$("#alertAttachTitId").html("<h5  class='text-muted headingColorStyling'>ALERT ATTACHMENTS</h5>");
 			var imgStr = '';
-			imgStr+='<ul class="list-inline imageUrlUlCls">';
+			imgStr+='<ul class="list-inline imageUrlUlCls" style="border: 1px solid rgb(211, 211, 211); padding:5px;">';
 			imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 90px; height: 90px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
-			imgStr+='</ul> ';                          
+			imgStr+='</ul> '; 
 			$("#alertAttachImgId").html(imgStr);  
 		}
 		var str='';
@@ -724,7 +724,7 @@
 					}
 				}    
 			}
-			str+='<h5 class="text-muted text-capital">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+invCandCnt+'</h5>';           
+			str+='<h5 class="text-muted text-capital headingColorStyling">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+invCandCnt+'</h5>';           
 			str+='<ul class="list-inline assignedCandidatesUl1">';     
 			for(var i in result){
 				for(var j in result[i].subList){   
@@ -747,7 +747,7 @@
 			
 			$("#alertInvolvedCandidates").html(str);    
 		}else{
-			str+='<h5 class="text-muted text-capital">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>'; 
+			str+='<h5 class="text-muted text-capital headingColorStyling">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>'; 
 			$("#alertInvolvedCandidates").html(str);        
 		}
 		$(".assignedCandidatesUl1").slick({          
@@ -1458,7 +1458,7 @@
 	{
 	var str='';
 	if(result[0].subList.length > 0){  
-		str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+result[0].subList.length+'</h5>';
+		str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+result[0].subList.length+'</h5>';
 		str+='<ul class="list-inline assignedCandidatesUl">';
 		for(var i in result)
 		{
@@ -1485,7 +1485,7 @@
 		
 		$("#alertAssignedCandidates").html(str);
 	}else{
-		str+='<h5 class="text-muted text-capital">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
+		str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
 		$("#alertAssignedCandidates").html(str);                    
 	}
 	
@@ -1531,7 +1531,7 @@
 }
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
-	$("#alertStatusDiv").html("<h4 class='text-muted' style='font-size:15px;'>ALERT STATUS</h4>");          
+	$("#alertStatusDiv").html("<h4 class='text-muted headingColorStyling' style='font-size:15px;'>ALERT STATUS</h4>");          
 	if(result != null && result.length > 0){  
 		var length = result.length;
 		length = length - 1;
@@ -3542,7 +3542,7 @@ function getTotalArticledetails(articleId){
 										str+='<div class="row">';
 										for(var j in result.categoryList[i].editionList)
 										{
-											str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+											str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 												if(result.categoryList[i].editionList[j].editionCnt == 0){
 													str+='<p class="panel-title">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
 												}else{
