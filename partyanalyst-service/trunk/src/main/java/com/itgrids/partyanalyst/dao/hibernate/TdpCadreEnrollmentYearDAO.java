@@ -798,6 +798,16 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			query.setParameterList("tdpCadreIds", tdpCadreIds);
 			return query.list();
 		}
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> getEnrolledCandidatesRenewelYearDetails(List<Long> tdpCadreList)
+			{
+				Query query=getSession().createQuery(" select distinct model.tdpCadreId,model.enrollmentYear.year from  TdpCadreEnrollmentYear model where" +
+						" model.tdpCadreId in (:tdpCadreList) and model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N'  ");
+			
+				query.setParameterList("tdpCadreList", tdpCadreList);
+				return query.list();
+				
+			}
 		
 		public List<Object[]> getBoothWiseCadreRegistrationCounts(Long districtId,Long constituencyId){
 			   StringBuilder sb = new StringBuilder();
