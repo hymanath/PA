@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.ClarificationRequired;
 public interface IClarificationRequiredDAO extends GenericDao<ClarificationRequired,Long>{
 	
 	public List<Object[]> getDetails(Long alertId);
-	public Integer updateStatusForOld(Long userId,Long alertId,Date date);
+	public Integer updateStatusForOld(Long userId,Long alertId,Date date,String userType);
 	public List<Object[]> getStatusAndCategoryWiseAlertsCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId);
 	public List<Object[]> getLocationLevelAlertClarificationData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate);
 }
