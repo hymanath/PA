@@ -52,11 +52,13 @@
 	  $(".alertImpactCheckCls").prop('checked', true); //checked all scope level
 	  $(".alertFilterCls li").removeClass("active");
 	  $(".alertFilterCls li:first-child").addClass("active");
+	 $("#alertTypeHiddenId").attr("attr_alert_id",0);
+	 $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",0);        
 	 getAlertOverviewDetails();
 	 getAlertCategoryDtlsLocationWise(0,0); 
 	 getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	 getTotalAlertGroupByDist(scopeIdsArr,"date");  
-	 getStateImpactLevelAlertDtlsCnt();
+	 getStateImpactLevelAlertDtlsCnt("date");
 	 var dates= $("#dateRangeIdForAlert").val();
 	 $("#alertDateHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
 	});
@@ -73,7 +75,7 @@
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getTotalAlertGroupByDist(scopeIdsArr,"other");
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
-		getStateImpactLevelAlertDtlsCnt();
+		getStateImpactLevelAlertDtlsCnt("other");
 	}
 	$(document).on("click",".alertsIconExpand",function(){
 		$(".dateRangePickerClsForAlert").toggleClass("hide");
@@ -2454,7 +2456,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			}
 		});  
 	});  
-	 function getStateImpactLevelAlertDtlsCnt(){
+	 function getStateImpactLevelAlertDtlsCnt(location){
 		 $(".hideStateLevelAlertCls").show();
 		 $("#stateWiseHeadingId").html(' ');
 		 $("#categoryWiseHeadingId").html(' ');
@@ -2473,17 +2475,31 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			toDateStr = datesArr[1]; 
 		}
 		var scopeIdsArr = [];
-            scopeIdsArr.push(1);		
+            scopeIdsArr.push(1);
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		if(location == "date"){
+			alertId = 0;
+			editionId = 0;
+		}
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
 			fromDate:fromDateStr,        
 			toDate :toDateStr,
-			scopeIdsArr:scopeIdsArr			
+			scopeIdsArr:scopeIdsArr,
+			alertIds : alertId,
+			editionIds : editionId
 		};
 		$.ajax({
 			type : 'GET',
-			url : 'getStateImpactLevelAlertDtlsCntAction.action',
+			url : 'getStateImpactLevelAlertDtlsCntAction.action',  
 			dataType : 'json',  
 			data : {task :JSON.stringify(jsObj)}          
 		}).done(function(result){
@@ -2938,6 +2954,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		}
 		var scopeIdsArr = [];		
 		scopeIdsArr.push(1);
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionIds = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionIds == undefined){
+			editionIds = 0;
+		}
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
@@ -2946,8 +2970,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			activityMemberId : globalActivityMemberId,
 			districtId : 0,
 			catId : 0,
-			alertTypeId : 0,     
-			editionId : 0
+			alertTypeId : alertId,     
+			editionId : editionIds    
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -3581,6 +3605,7 @@ function getTotalArticledetails(articleId){
 		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
+		getStateImpactLevelAlertDtlsCnt("other"); 
 		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//dist wise startDate
 		
@@ -3626,7 +3651,7 @@ function getTotalArticledetails(articleId){
 		}
 		
 		//dist wise end
-		var dates=$("#dateRangeIdForAlert").val();
+		var dates=$("#dateRangeIdForAlert").val();        
 		var fromDateStr;
 		var toDateStr;
 		if(dates != null && dates!=undefined){
