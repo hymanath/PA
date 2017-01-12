@@ -10,6 +10,7 @@ public class AlertClarificationVO {
 	private Long clarificationStatusId=0l;
 	private List<KeyValueVO> clarificationComments = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> documentsList = new ArrayList<KeyValueVO>(0);
+	private String clarificationStatus;
 	
 	
 	public Long getAlertId() {
@@ -42,7 +43,12 @@ public class AlertClarificationVO {
 	public void setDocumentsList(List<KeyValueVO> documentsList) {
 		this.documentsList = documentsList;
 	}
-	
+	public String getClarificationStatus() {
+		return clarificationStatus;
+	}
+	public void setClarificationStatus(String clarificationStatus) {
+		this.clarificationStatus = clarificationStatus;
+	}
 	
 	
 }
