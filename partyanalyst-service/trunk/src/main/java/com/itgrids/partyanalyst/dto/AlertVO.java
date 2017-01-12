@@ -43,7 +43,7 @@ public class AlertVO {
 	private Long noOfDays = 0l;
 	private String comment;
 	private Long alertId;
-	private List<String> filePthList = new ArrayList<String>();
+	private List<String> filePthList = new ArrayList<String>(0);
 	private String clarificationRequired;
 	
 	
@@ -277,4 +277,5 @@ public class AlertVO {
 	public void setClarificationRequired(String clarificationRequired) {
 		this.clarificationRequired = clarificationRequired;
 	}
+	
 }

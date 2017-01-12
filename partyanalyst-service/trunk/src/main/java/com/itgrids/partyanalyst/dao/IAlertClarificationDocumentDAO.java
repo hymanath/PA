@@ -10,5 +10,5 @@ import com.itgrids.partyanalyst.model.AlertClarificationDocument;
 public interface IAlertClarificationDocumentDAO extends GenericDao<AlertClarificationDocument, Long>{
 	
 	 public List<Object[]> getAlertAttachments(Long alertId);
-
+	 public Integer updateDocumentStatus(Long documentId);
 }

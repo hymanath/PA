@@ -21,5 +21,11 @@ public class AlertClarificationCommentsDAO extends GenericDaoHibernate<AlertClar
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
-
+	
+	public Integer updateCommentStatus(Long commentId){
+		Query query = getSession().createQuery(" update AlertClarificationComments model " +
+				" set model.isDeleted='Y' where model.alertClarificationCommentsId = :commentId ");
+		query.setParameter("commentId",commentId);
+		 return query.executeUpdate();
+	}
 }
