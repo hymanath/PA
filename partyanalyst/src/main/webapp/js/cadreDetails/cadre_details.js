@@ -1658,7 +1658,37 @@ function getCadreFamilyDetailsByCadreId(){
          str += '<p class="m_0">Age : ';
 		 if(result[i].age != null)
 		   str +=''+result[i].age+'';
-	   else
+			str+='<ul class="enrolled-mem" id="">';
+			//$("#familyMembersDiv").html(result[i].enrollmentYear);
+			if(result[i].enrollmentYear != null && result[i].enrollmentYear.trim().length > 0)
+			{
+				var year = result[i].enrollmentYear.split(",");	
+			
+				if(year.indexOf("2016") > -1)
+					str+='<li class="yes">2016<span></span></li>&nbsp;';
+				//else
+					//str+='<li class="no">2016<span></span></li>&nbsp;';
+				if(year.indexOf("2014") > -1)
+					str+='<li class="yes">2014<span></span></li>&nbsp;';
+				//else
+				//	str+='<li class="no">2014<span></span></li>&nbsp;';
+				if(year.indexOf("2012") > -1)
+					str+='<li class="yes">2012<span></span></li>&nbsp;';
+				//else
+				//	str+='<li class="no">2012<span></span></li>&nbsp;';
+				if(year.indexOf("2010") > -1)
+					str+='<li class="yes">2010<span></span></li>&nbsp;';
+				//else
+				//	str+='<li class="no">2010<span></span></li>&nbsp;';
+			}
+			else
+			{
+				//str+='<li class="no">2016<span></span></li>&nbsp;';
+				//str+='<li class="no">2014<span></span></li>&nbsp;';
+				//str+='<li class="no">2012<span></span></li>&nbsp;';
+				//str+='<li class="no">2010<span></span></li>&nbsp;';
+			}
+   			str+='</ul>	';
 		 str += '';
 		if(result[i].publicRepresentativeStr != null)
 		{
