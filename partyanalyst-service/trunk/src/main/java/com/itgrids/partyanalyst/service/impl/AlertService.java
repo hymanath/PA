@@ -77,6 +77,7 @@ import com.itgrids.partyanalyst.model.AlertCategory;
 import com.itgrids.partyanalyst.model.AlertClarification;
 import com.itgrids.partyanalyst.model.AlertClarificationComments;
 import com.itgrids.partyanalyst.model.AlertClarificationDocument;
+import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertStatus;
@@ -396,7 +397,7 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 		 for (Object[] objects : candidate) {
 			BasicVO vo= new BasicVO();
 			 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
-			 vo.setName(objects[1].toString());//last name
+			 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());//last name
 			 list.add(vo);
 		}
 	 }
@@ -647,18 +648,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 for(Object[] params : list)
 					 {
 						 
-						 BasicVO levelVo =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString()) ;
+						 BasicVO levelVo =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString()) ;
 						 if(levelVo == null)
 						 {
 							 levelVo = new BasicVO();
 							 levelVo.setId((Long)params[1]);
-							 levelVo.setName(params[2].toString());
+							 levelVo.setName(commonMethodsUtilService.getStringValueForObject(params[2]).toString());
 							
 							 levelVo.setLocationsList(setAlertStatusList(statusList));
 							 returnList.add(levelVo);
 						 }
 						 levelVo.setCount(levelVo.getCount() + (Long)params[0]);
-						 BasicVO statusVO =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(levelVo.getLocationsList(), "id", params[3].toString()) ;
+						 BasicVO statusVO =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(levelVo.getLocationsList(), "id", commonMethodsUtilService.getStringValueForObject(params[3]).toString()) ;
 						 if(statusVO != null)
 						 {
 							 statusVO.setCount(statusVO.getCount() + (Long)params[0]);
@@ -725,7 +726,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 
 				 for(Object[] params : list)
 				 {
-					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[0].toString());
+					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id",commonMethodsUtilService.getStringValueForObject( params[0]).toString());
 					 if(alertVO == null)
 					 {
 						 alertVO = new AlertDataVO(); 
@@ -735,7 +736,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 }
 					 alertVO.setId((Long)params[0]);
 					 alertVO.setTitle(params[25] != null ? params[25].toString() : "");
-					 alertVO.setDesc(params[1].toString());
+					 alertVO.setDesc(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 					 alertVO.setAlertSource(alertSource);
 					 alertVO.setDate(params[2] != null? params[2].toString():"");
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
@@ -802,7 +803,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					if(candiateCnts !=null && candiateCnts.size()>0){
 						 for(Object[] params : candiateCnts)
 						 {
-							 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
+							 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 								 if(alertVO != null)
 								 {
 									 alertVO.setCount((Long)params[0]);
@@ -830,7 +831,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			{
 				for(Object[] params : list)
 				{
-					AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+					AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
 					if(alertVo == null)
 					{
 						alertVo = new AlertDataVO();
@@ -839,7 +840,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 					AlertDataVO candidateVO = null;
 					if(params[1] !=null){
-						candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+						candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 					}
 					
 					if(candidateVO == null)
@@ -941,7 +942,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					
 				 }
 				 alertVO.setId((Long)params[0]);
-				 alertVO.setDesc(params[1].toString());
+				 alertVO.setDesc(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 				 alertVO.setDate(params[2] != null? params[2].toString():"");
 				 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
 				 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
@@ -979,7 +980,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 List<Object[]> candiateCnts = alertCandidateDAO.getAlertCandidateCount(alertIds);
 				 for(Object[] params : candiateCnts)
 				 {
-					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
+					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 						 if(alertVO != null)
 						 {
 							 alertVO.setCount((Long)params[0]);
@@ -1170,7 +1171,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//for multiuser involvement
 			List<List<AlertCommentVO>> list2 = null;
 			//final vo 
-			List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>(0);  
+			List<AlertCommentVO> finalList = new CopyOnWriteArrayList<AlertCommentVO>();  
 			if(statusIdAndDateIdListMap.size() > 0){  
 				for(Entry<Long,Set<String>> entry : statusIdAndDateIdListMap.entrySet()){
 					commentVO = new AlertCommentVO();
@@ -1206,7 +1207,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						finalList.remove(param);
 						finalList.add(param);  
 					}
-					tempList.add(param);
+					//tempList.add(param);
 				}
 				
 				if(commonMethodsUtilService.isListOrSetValid(tempList)){
@@ -1326,7 +1327,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 {
 					 BasicVO vo = new BasicVO();
 					 vo.setId((Long)params[0]);
-					 vo.setName(params[1].toString());
+					 vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 					 returnList.add(vo);
 				 }
 				 
@@ -1349,7 +1350,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 {
 					 BasicVO vo = new BasicVO();
 					 vo.setId((Long)params[0]);
-					 vo.setName(params[1].toString());
+					 vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 					 returnList.add(vo);
 				 }
 				 
@@ -1388,14 +1389,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		{
 			for(Object[] params : list)
 			{
-				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
 				if(alertVo == null)
 				{
 					alertVo = new AlertDataVO();
 					alertVo.setId((Long)params[0]);
 					dataList.add(alertVo);
 				}
-				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 				if(candidateVO == null)
 				{
 					candidateVO = new AlertDataVO();
@@ -1531,14 +1532,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		{
 			for(Object[] params : list)
 			{
-				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
 				if(alertVo == null)
 				{
 					alertVo = new AlertDataVO();
 					alertVo.setId((Long)params[0]);
 					dataList.add(alertVo);
 				}
-				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 				if(candidateVO == null)
 				{
 					candidateVO = new AlertDataVO();
@@ -1589,7 +1590,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		{
 			for(Object[] params : list)
 			{
-				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
 				if(alertVo == null)
 				{
 					alertVo = new AlertDataVO();
@@ -1597,7 +1598,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					dataList.add(alertVo);
 					alertIds.add(alertVo.getId());
 				}
-				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
 				if(candidateVO == null)
 				{
 					candidateVO = new AlertDataVO();
@@ -1705,7 +1706,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 for (Object[] objects : list) {
 					 StatusTrackingVO vo= new StatusTrackingVO();
 					 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
-					 vo.setUname(objects[1].toString());//first name
+					 vo.setUname(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());//first name
 					 resultList.add(vo);
 				}
 			 }				
@@ -4032,7 +4033,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  			 {
  				 BasicVO vo = new BasicVO();
  				 vo.setId((Long)params[0]);
- 				 vo.setName(params[1].toString());
+ 				 vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
  				 returnList.add(vo);
  			 }
  			 
@@ -5568,7 +5569,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					for (Object[] objects : commentsObjList) {
 						KeyValueVO voIn = new KeyValueVO();
 							voIn.setId((Long)objects[0]);
-							voIn.setName(objects[1].toString().trim());
+							voIn.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						vo.getClarificationComments().add(voIn);
 					}
 				}
@@ -5578,7 +5579,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					for (Object[] objects : filePathList) {
 						KeyValueVO voIn = new KeyValueVO();
 							voIn.setId((Long)objects[0]);
-							voIn.setName(objects[1].toString().trim());
+							voIn.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						vo.getDocumentsList().add(voIn);
 					}
 				}
@@ -5644,6 +5645,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			cr.setIsDeleted(status.trim().equalsIgnoreCase("Y")?"N":"Y");
 			clarificationRequiredDAO.save(cr);
 			
+			
+			alertClarificationDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
+			AlertClarification alertClarification = new AlertClarification();
+				alertClarification.setAlertId(alertId);
+				alertClarification.setAlertClarificationStatusId(1L);
+				alertClarification.setIsDeleted("N");
+				alertClarification.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				alertClarification.setInsertedBy(userId);
+				alertClarification.setUpdatedBy(userId);
+			alertClarification = alertClarificationDAO.save(alertClarification);
+			
 			updateCommentAndTrackingDetails(userId,1L,alertId,remarks);
 			resultStatus = "success";
 			
@@ -5706,7 +5719,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					if(matchedStatusVO == null){
 						matchedStatusVO = new AlertVO();
 						matchedStatusVO.setStateId((Long)objects[0]);
-						matchedStatusVO.setStatus(objects[1].toString());
+						matchedStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());
 						matchedStatusVO.setIdNamesList(getResulttoList(acList));
 						voList.add(matchedStatusVO);
 					}
@@ -5718,7 +5731,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					if(matchedCategoryVO == null){
 						matchedCategoryVO = new IdNameVO();
 						matchedCategoryVO.setId((Long)objects[2]);
-						matchedCategoryVO.setName(objects[3].toString());
+						matchedCategoryVO.setName(commonMethodsUtilService.getStringValueForObject(objects[3]).toString());
 						matchedCategoryVO.setCount((Long)objects[4]);
 						matchedStatusVO.getIdNamesList().add(matchedCategoryVO);
 					}else{
@@ -5782,6 +5795,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   				 toDate = sdf.parse(inputVO.getToDate());
   				}
   				 List<Object[]> list = clarificationRequiredDAO.getLocationLevelAlertClarificationData(userTypeIds,inputVO,fromDate,toDate);
+  				 List<AlertClarificationStatus> list1 = alertClarificationStatusDAO.getAll();
+  				 if(commonMethodsUtilService.isListOrSetValid(list)){
+  					 for (Object[] param : list) {
+						Long id = commonMethodsUtilService.getLongValueForObject(param[9]);
+						for (AlertClarificationStatus status : list1) {
+							if(id != null && status.getAlertClarificationStatusId() != null && id.longValue() == status.getAlertClarificationStatusId())
+								param[9] = status.getStatus();
+						}
+					}
+  				 }
   				 setAlertLocationWiseData(list,returnList);
   			}
   			catch(Exception e)
