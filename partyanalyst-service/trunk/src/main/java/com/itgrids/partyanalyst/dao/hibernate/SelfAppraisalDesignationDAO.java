@@ -16,7 +16,7 @@ public class SelfAppraisalDesignationDAO extends GenericDaoHibernate<SelfApprais
 	@Override
 	public List<Object[]> getDesiganationList() {
 		  StringBuilder queryStr = new StringBuilder();
-		  queryStr.append(" select model.selfAppraisalDesignationId,model.designation from SelfAppraisalDesignation model where model.isActive='Y' ");
+		  queryStr.append(" select model.selfAppraisalDesignationId,model.designation from SelfAppraisalDesignation model where model.isActive='Y' order by  model.orderNo ");
 		  Query query = getSession().createQuery(queryStr.toString());
 		  return query.list();
 	}
