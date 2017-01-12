@@ -42,7 +42,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		StringBuilder sb = new StringBuilder();
 		//0-alertClarificationStatusId,1-status,2-alertCategoryId,3-category,4-count
 		sb.append(" select model.alertClarificationStatus.alertClarificationStatusId,model.alertClarificationStatus.status ," +
-				" model.alert.alertCategory.alertCategoryId,model.alert.alertCategory.category,count(model.alertId)  " +
+				" model.alert.alertCategory.alertCategoryId,model.alert.alertCategory.category,count(distinct model.alertId)  " +
 				" from ClarificationRequired model " +
 				" where model.isDeleted='N' and model.alert.isDeleted='N' ");
 		
@@ -78,17 +78,17 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
 				" alertType.alertType,alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
-				" clarificationStatus.alertClarificationStatusId,clarificationStatus.status ");
+				" cr.alertClarificationStatusId,cr.alertClarificationStatusId ");
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
 		str.append(" ,ward.constituencyId,ward.name,");
 		str.append(" alertCategory.alertCategoryId,alertCategory.category ");
 		str.append(" from ClarificationRequired cr " +
-				" left join cr.alert model " +
-				" left join model.alertSeverity alertSeverity" +
-				" left join model.alertSource  alertSource " +
-				" left join model.userAddress.panchayat panc ");
+				" 	 left join cr.alert model " +
+				" 	 left join model.alertSeverity alertSeverity" +
+				" 	 left join model.alertSource  alertSource " +
+				"	 left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
 		str.append(" left join model.userAddress.localElectionBody localElectionBody ");
@@ -98,8 +98,8 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
 		str.append(" left join model.alertType  alertType ");
-		str.append(" left join cr.alertClarificationStatus  clarificationStatus ");
-		str.append(" where model.isDeleted ='N' ");
+		//str.append(" left join cr.alertClarificationStatus  clarificationStatus ");
+		str.append(" where model.isDeleted ='N' and cr.isDeleted='N' ");
 		
 		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
 			str.append(" and model.impactScopeId=:impactScopeId");
@@ -149,7 +149,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		if(fromDate != null)
 			str.append(" and ( date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate ) ");
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
-			str.append(" and clarificationStatus.alertClarificationStatusId = :statusId");
+			str.append(" and cr.alertClarificationStatusId = :statusId");
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		
