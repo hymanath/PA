@@ -1902,7 +1902,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 				}else{
 					str+='<th>'+groupAssignType+'</th>';  
 				}  
-				str+='<th>total alerts</th>';
+				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
 						str+='<th>'+result[0].subList1[i].category+'</th>';
@@ -1998,7 +1998,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		 str+='<table class="table table-bordered tablePopup">';
 			 str+='<thead>';
 			   str+='<th>Candidate Name</th>';
-			   str+='<th>total alerts</th>';
+			   str+='<th>Total Alerts</th>';
 			   if(result[0].subList1 != null && result[0].subList1.length > 0){
 				   for(var i in result[0].subList1){
 					   str+='<th>'+result[0].subList1[i].statusType+'</th>';
@@ -2184,7 +2184,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		str+='<table class="table table-bordered tablePopup">';
 			str+='<thead>';
 				str+='<th>Candidate Name</th>';        
-				str+='<th>total alerts</th>';
+				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
 						str+='<th>'+result[0].subList1[i].category+'</th>';
@@ -2219,6 +2219,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#"+divId).html(str);  
 	}
 	$(document).on("click",".commettDtlsCls",function(){
+		$("#tourDocumentId").find(".close").addClass("modalClose");
+		$("#tourDocumentId").find(".modal-footer .btn").addClass("modalClose");
+		
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
@@ -3476,10 +3479,18 @@ function getTotalArticledetails(articleId){
 						{
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
-								if($(window).width() < 800)
+								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+									
+										str+='<div class="table-responsive">';
+									
+								}else{
+									if($(window).width() < 800)
+									
 									{
 										str+='<div class="table-responsive">';
 									}
+								}
+								
 									str+='<table class="table table-bordered">';
 										
 										str+='<tr>';
@@ -3517,10 +3528,17 @@ function getTotalArticledetails(articleId){
 											str+='</tr>';
 										}
 									str+='</table>';
-									if($(window).width() < 800)
-									{
-										str+='</div>';
+									if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+										
+											str+='</div>';
+										
+									}else{
+										if($(window).width() < 800)
+										{
+											str+='</div>';
+										}
 									}
+									
 								str+='</div>';
 							str+='</div>';
 							/* for(var j in result.statusList[i].editionList)
@@ -3557,10 +3575,17 @@ function getTotalArticledetails(articleId){
 							}  
 							str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="pad_5 bg_ED">';
+								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+									
+										str+='<div class="table-responsive">';
+									
+								}else{
 									if($(window).width() < 800)
 									{
 										str+='<div class="table-responsive">';
 									}
+								}
+									
 									str+='<table class="table">';
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
@@ -3589,10 +3614,17 @@ function getTotalArticledetails(articleId){
 										}
 										str+='</tr>';
 									str+='</table>';
-									if($(window).width() < 800)
-									{
-										str+='</div>';
+									if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+										
+											str+='</div>';
+										
+									}else{
+										if($(window).width() < 800)
+										{
+											str+='</div>';
+										}
 									}
+									
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
