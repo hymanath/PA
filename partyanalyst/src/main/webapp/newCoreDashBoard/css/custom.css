@@ -2133,8 +2133,8 @@ border: 1px solid #c5c5c5 !important;
 	border: 1px solid #D5D5D5;
 }
 .alertsArrow:after, .alertsArrow:before {
-	top: 184%;
-	left: 43%;
+	top: 170%;
+	left: 44%;
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -2198,7 +2198,7 @@ border: 1px solid #c5c5c5 !important;
 	
 	margin-left: -11px;
 }
-.alertOverViewDetailsLowCls
+.alertOverViewDetailsLowCls1
 {
 	cursor:pointer;
 }
@@ -2216,4 +2216,7 @@ border: 1px solid #c5c5c5 !important;
 .table tr td div.alertsArrowLow:before {
 	border-width: 9px;
 	margin-left: -9px;
+}
+.alertColorFont{
+color: rgb(51, 122, 183);
 }
