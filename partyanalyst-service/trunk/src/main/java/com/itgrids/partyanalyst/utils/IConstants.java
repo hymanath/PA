@@ -1254,4 +1254,5 @@ public interface IConstants {
 	public final int  noOfRecordsUpdate = 1000;
 	
 	public static final String ALERTS_ATTACHMENTS = "alerts_attachments";
+	public static final String ALERT_STATUS_ID="1,6,7";
 }
