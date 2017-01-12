@@ -27,6 +27,7 @@ public class ClarificationRequired extends BaseModel implements Serializable{
 	
 	private Long clarificationRequiredId;
 	private Long alertId;
+	private Long alertClarificationStatusId;
 	private String isRequired;
 	private Date insertedTime;
 	private Date updatedTime;
@@ -35,6 +36,7 @@ public class ClarificationRequired extends BaseModel implements Serializable{
 	private String isDeleted;
 	
 	private Alert alert;
+	private AlertClarificationStatus alertClarificationStatus;
 
 	
 	@Id
@@ -114,6 +116,27 @@ public class ClarificationRequired extends BaseModel implements Serializable{
 	public void setAlert(Alert alert) {
 		this.alert = alert;
 	}
+	
+	@Column(name="alert_clarification_status_id")
+	public Long getAlertClarificationStatusId() {
+		return alertClarificationStatusId;
+	}
+	public void setAlertClarificationStatusId(Long alertClarificationStatusId) {
+		this.alertClarificationStatusId = alertClarificationStatusId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_clarification_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertClarificationStatus getAlertClarificationStatus() {
+		return alertClarificationStatus;
+	}
+	public void setAlertClarificationStatus(
+			AlertClarificationStatus alertClarificationStatus) {
+		this.alertClarificationStatus = alertClarificationStatus;
+	}
+	
 		
 	
 	

@@ -66,11 +66,13 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertCandidate;
+import com.itgrids.partyanalyst.model.AlertCategory;
 import com.itgrids.partyanalyst.model.AlertClarification;
 import com.itgrids.partyanalyst.model.AlertClarificationComments;
 import com.itgrids.partyanalyst.model.AlertClarificationDocument;
@@ -5290,15 +5292,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						
-						ClarificationRequired clarificationRequired = new ClarificationRequired();
+						ClarificationRequired clarificationRequired = null;
+						
+						//model.isRequired,model.alertClarificationStatusId
+						
+						clarificationRequiredDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
+						clarificationRequired = new ClarificationRequired();
 							clarificationRequired.setAlertId(alertId);
-							clarificationRequired.setIsRequired(clarificationRequiredStr);
+							clarificationRequired.setIsRequired("Y");
+							clarificationRequired.setAlertClarificationStatusId(clarificationStatusId);
 							clarificationRequired.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							clarificationRequired.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							clarificationRequired.setInsertedBy(userId);
 							clarificationRequired.setUpdatedBy(userId);
-						clarificationRequiredDAO.save(clarificationRequired);	
+							clarificationRequired.setIsDeleted("N");
+						clarificationRequiredDAO.save(clarificationRequired);
 						
+						alertClarificationDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
 						AlertClarification alertClarification = new AlertClarification();
 							alertClarification.setAlertId(alertId);
 							alertClarification.setAlertClarificationStatusId(clarificationStatusId);
@@ -5368,10 +5378,20 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		AlertClarificationVO vo = new AlertClarificationVO();
   		try {
   			
-			String isRequired = clarificationRequiredDAO.getDetails(alertId);
-			vo.setClarificationRequired(isRequired != null ? isRequired:"N");
+			List<Object[]> objList1 = clarificationRequiredDAO.getDetails(alertId);
 			
-			if(isRequired != null && isRequired.trim().equalsIgnoreCase("Y")){
+			Object[] objArr = null;
+			if(objList1 != null && objList1.size() > 0)
+				objArr=objList1.get(objList1.size()-1);
+			
+			if(objArr != null){
+				vo.setClarificationRequired(objArr[0] != null && objArr[0].toString().trim().equalsIgnoreCase("Y") ? "Y":"N");
+				vo.setClarificationStatusId(objArr[1] != null && (Long)objArr[1] > 0l ? (Long)objArr[1] : 0l);
+				vo.setClarificationStatus(objArr[2] != null ? objArr[2].toString():"");
+			}
+			
+			
+			if(objArr != null && objArr[0].toString().trim().equalsIgnoreCase("Y")){
 				List<Object[]> objList = alertClarificationDAO.getAlertClarificationStatus(alertId);
 				
 				if(objList != null && objList.size() > 0){
@@ -5383,7 +5403,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					for (Object[] objects : commentsObjList) {
 						KeyValueVO voIn = new KeyValueVO();
 							voIn.setId((Long)objects[0]);
-							voIn.setName(objects[0].toString().trim());
+							voIn.setName(objects[1].toString().trim());
 						vo.getClarificationComments().add(voIn);
 					}
 				}
@@ -5393,7 +5413,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					for (Object[] objects : filePathList) {
 						KeyValueVO voIn = new KeyValueVO();
 							voIn.setId((Long)objects[0]);
-							voIn.setName(objects[0].toString().trim());
+							voIn.setName(objects[1].toString().trim());
 						vo.getDocumentsList().add(voIn);
 					}
 				}
@@ -5404,5 +5424,168 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return vo;
   	}
-}
+  	
+  	public String saveClarificationRequiredStatus(Long userId,String status,Long alertId){
+  		String resultStatus; 
+  		try {
+			ClarificationRequired cr = new ClarificationRequired();
+			
+			cr.setAlertId(alertId);
+			cr.setAlertClarificationStatusId(1l);
+			cr.setIsRequired(status);
+			cr.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			cr.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			cr.setInsertedBy(userId);
+			cr.setUpdatedBy(userId);cr.setIsDeleted("N");
+			
+			clarificationRequiredDAO.save(cr);
+			resultStatus = "success";
+		} catch (Exception e) {
+			resultStatus="failure";
+			LOG.error("Error occured at saveClarificationRequiredStatus() in AlertService",e); 
+		}
+  		return resultStatus;
+  	}
+  	
+  	public String removeAlertComment(Long commentId){
+  		String status=null;
+  		try {
+			Integer val = alertClarificationCommentsDAO.updateCommentStatus(commentId);
+			
+			if(val.longValue() == 1l)status = "success";
+			else status = "failure";
+			
+		} catch (Exception e) {
+			LOG.error("Error occured at removeAlertComment() in AlertService",e);
+		}
+  		return status;
+  	}
+  	
+  	public String removeAlertDocument(Long documentId){
+  		String status=null;
+  		try {
+			Integer val = alertClarificationDocumentDAO.updateDocumentStatus(documentId);
+			
+			if(val.longValue() == 1l)status = "success";
+			else status = "failure";
+			
+		} catch (Exception e) {
+			LOG.error("Error occured at removeAlertDocument() in AlertService",e);
+		}
+  		return status;
+  	}
+  	
+  	public List<AlertVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
+  		List<AlertVO> voList = new ArrayList<AlertVO>(0);
+  		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+  		try {
+			Date fromDate=null,toDate=null;
+			
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<AlertCategory> acList = alertCategoryDAO.getAll();
+			
+			//0-alertClarificationStatusId,1-status,2-alertCategoryId,3-category,4-count
+			List<Object[]> objList = clarificationRequiredDAO.getStatusAndCategoryWiseAlertsCount(stateId,fromDate,toDate,alertTypeId);
+			
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					AlertVO matchedStatusVO = getMatchedStatusVO(voList,(Long)objects[0]);
+					
+					if(matchedStatusVO == null){
+						matchedStatusVO = new AlertVO();
+						matchedStatusVO.setStateId((Long)objects[0]);
+						matchedStatusVO.setStatus(objects[1].toString());
+						matchedStatusVO.setIdNamesList(getResulttoList(acList));
+						voList.add(matchedStatusVO);
+					}
+					
+					matchedStatusVO = getMatchedStatusVO(voList,(Long)objects[0]);
+					
+					IdNameVO matchedCategoryVO = getMatchedCategoryVO(matchedStatusVO.getIdNamesList(),(Long)objects[2]);
+					
+					if(matchedCategoryVO == null){
+						matchedCategoryVO = new IdNameVO();
+						matchedCategoryVO.setId((Long)objects[2]);
+						matchedCategoryVO.setName(objects[3].toString());
+						matchedCategoryVO.setCount((Long)objects[4]);
+						matchedStatusVO.getIdNamesList().add(matchedCategoryVO);
+					}else{
+						matchedCategoryVO.setCount((Long)objects[4]);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured at getStatusAndCategoryWiseAlertsCount() in AlertService",e);
+		}
+  		return voList;
+  	}
+  	
+  	public List<IdNameVO> getResulttoList(List<AlertCategory> acList){
+  		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+  		if(acList != null && acList.size() > 0){
+  			for (AlertCategory ac : acList) {
+  				IdNameVO vo = new IdNameVO();
+  				vo.setId(ac.getAlertCategoryId());
+  				vo.setName(ac.getCategory());
+  				voList.add(vo);
+			}
+  		}
+  		return voList;
+  	}
+  	
+  	public AlertVO getMatchedStatusVO(List<AlertVO> voList,Long statusId){
+  		if(voList != null && voList.size() > 0){
+  			for (AlertVO alertVO : voList) {
+				if(alertVO.getStateId().equals(statusId))
+					return alertVO;
+			}
+  		}
+  		return null;
+  	}
+  	
+  	public IdNameVO getMatchedCategoryVO(List<IdNameVO> idNameVOList,Long categoryId){
+  		if(idNameVOList != null && idNameVOList.size() > 0){
+  			for (IdNameVO idNameVO : idNameVOList) {
+				if(idNameVO.getId().equals(categoryId))
+					return idNameVO;
+			}
+  		}
+  		return null;
+  	}
+  	
+  	public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO inputVO){
+  		List<AlertDataVO> voList = new ArrayList<AlertDataVO>(0);
+  		try {
 
+  			List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+  			 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+  			 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+  			
+  			try{
+  				Date fromDate = null;Date toDate=null;
+  				if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
+  				{
+  				 fromDate = sdf.parse(inputVO.getFromDate());
+  				 toDate = sdf.parse(inputVO.getToDate());
+  				}
+  				 List<Object[]> list = clarificationRequiredDAO.getLocationLevelAlertClarificationData(userTypeIds,inputVO,fromDate,toDate);
+  				 setAlertLocationWiseData(list,returnList);
+  			}
+  			catch(Exception e)
+  			{
+  				e.printStackTrace();
+  			}
+  			return returnList;
+  		
+		} catch (Exception e) {
+			LOG.error("Error occured at getLocationLevelAlertClarificationData() in AlertService",e);
+		}
+  		return voList;
+  	}
+}
