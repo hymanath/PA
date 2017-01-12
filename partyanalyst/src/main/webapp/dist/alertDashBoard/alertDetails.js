@@ -286,7 +286,7 @@ function getAlertCandidatesData(alertId)
 }*/
 function buildAlertCandidateData(result,categoryId)
 {
-	
+
 	if(result == null || result.length == 0)
 	{
 		$("#alertCandidateDataId").html('No Involved Members..');
@@ -374,6 +374,7 @@ function buildAlertCandidateData(result,categoryId)
 		   str+=' </div>';
 		}
 	}
+
 	$("#cadreInvolvedCandidatesCnt").html('-' +result.length);	
 	$("#cadreAlertCandidateDataId").html(str);
 	if(result.length > 3)
@@ -1334,7 +1335,8 @@ $(document).on("click","#clarifiReqId",function(){
 								if(result.clarificationComments != null && result.clarificationComments.length > 0){
 									str+='<ul class="">';
 										for(var i in result.clarificationComments){
-											str+='<li style="border:1px solid #ddd; background:#ddd; border-radius:3px; margin:3px;" id="comment'+result.clarificationComments[i].id+'" >'+result.clarificationComments[i].name+'&nbsp;&nbsp;</li>'
+											if(result.clarificationComments[i].name != null && result.clarificationComments[i].name.length>0)
+												str+='<li style="border:1px solid #ddd; background:#ddd; border-radius:3px; margin:3px;" id="comment'+result.clarificationComments[i].id+'" >'+result.clarificationComments[i].name+'&nbsp;&nbsp;</li>'
 										}
 									str+='</ul>';
 								}
@@ -1344,12 +1346,12 @@ $(document).on("click","#clarifiReqId",function(){
 					}
 					if(result.documentsList != null && result.documentsList.length > 0){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-							str+='<label>Upload Attachments</label>';
+							str+='<label>Uploaded Attachments</label>';
 							str+='<div id="existingDocumentsDivId">';
 								if(result.documentsList != null && result.documentsList.length > 0){
 									str+='<ul>';
 										for(var i in result.documentsList){
-											str+='<li id="document'+result.documentsList[i].id+'">'+result.documentsList[i].name+'</li>';
+											str+='<li id="document'+result.documentsList[i].id+'"><a href="/Reports/'+result.documentsList[i].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
 										}
 									str+='</ul>';
 								}
@@ -1357,17 +1359,35 @@ $(document).on("click","#clarifiReqId",function(){
 						str+='</div>';
 						isOk = true;
 					}
-					if(isOk){
+					if(isOk && result.clarificationStatusId == 2){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-						str+='<button class="btn btn-success btn-mini btn-xs radioClss" value="Y" attr_user="PC"> Comment </button>';
+						str+='<button class="btn btn-success btn-mini btn-xs radiosClss radioClss" value="Y" attr_user="PC" title="Please click here to mark as inprogress mode for more clarification details."> Comment </button>';
 						str+='<div id="remarksClls" style="margin-left: 20px;display:none;"> ';
 						str+='<br>Remarks : <br> <textarea id="markRemark" class="" style="width:300px;height: 100px" placeholder="Please enter type clarifications required...">  </textarea>';
 						str+='<button class="btn btn-success btn-mini btn-xs sbmtCls"  style="margin-top: 25px" > SUBMIT </button>';
+						str+='<button class="btn btn-warning btn-mini btn-xs rmcmntCls"  style="margin-top: 25px;margin-left:15px;" > REMOVE COMMENT </button>';
 						str+='<div>';
 					
 						str+='</div>';
 					}	
-						//$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+					if(result.clarificationStatusId ==2)
+						$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+					else if(result.clarificationStatusId == 1) {						
+						$("#disabledDivId,#disabledDivsId").addClass("disabledBlock");
+						$("#disabledDivId").addClass("disabledBlockWhite");
+						
+						var str2='';
+						str2+='<p class="text-center">';
+						str2+='<img src="images/TIme.png">';
+						str2+='</p><h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>';
+						str2+='<p></p>';
+						$("#disabledDivId").html(str2);
+						
+						var str1='';
+						str1+='<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>';
+						str1+='<h4 class="panel-title m_top10">waiting for alert clarification</h4>';
+						$("#disabledDivsId").html(str1);
+					}
 					}else{
 						
 						str+='<div id="alertClarificationsDocs" name="alertClarificationsDocs">';
@@ -1376,7 +1396,7 @@ $(document).on("click","#clarifiReqId",function(){
 								str+='<input type="radio" name="clarificationRadioName" class="radioClss" attr_user =""  value="Y"/> Yes';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-								str+='<input type="radio" name="clarificationRadioName" class="radioClss" attr_user ="" checked value="N"/> No';
+								str+='<input type="radio" name="clarificationRadioName" class="radioClss" attr_user =""  checked value="N"/> No';
 							str+='</label>';
 							str+='<div id="remarksClls" style="margin-left: 20px;display:none;"> ';
 							str+='<br>Remarks : <br> <textarea id="markRemark" class="" style="width:300px;height: 100px" placeholder="Please enter type clarifications required...">  </textarea>';
@@ -1384,9 +1404,27 @@ $(document).on("click","#clarifiReqId",function(){
 							str+='<div>';
 							
 						str+='</div>';
-						$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+						
+						
 					}
 				}else if(flag == "infoCellTeam"){
+					
+					
+					$("#disabledDivId,#disabledDivsId").addClass("disabledBlock");
+						$("#disabledDivId").addClass("disabledBlockWhite");
+						
+						var str2='';
+						str2+='<p class="text-center">';
+						str2+='<img src="images/TIme.png">';
+						str2+='</p><h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>';
+						str2+='<p></p>';
+						$("#disabledDivId").html(str2);
+						
+						var str1='';
+						str1+='<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>';
+						str1+='<h4 class="panel-title m_top10">waiting for alert clarification</h4>';
+						$("#disabledDivsId").html(str1);
+						
 					str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
 						str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
 							str+='<label class="radio-inline">Is Clarification Required?</label>';
@@ -1414,6 +1452,7 @@ $(document).on("click","#clarifiReqId",function(){
 								if(result.clarificationComments != null && result.clarificationComments.length > 0){
 									str+='<ul class="">';
 										for(var i in result.clarificationComments){
+												if(result.clarificationComments[i].name != null && result.clarificationComments[i].name.length>0)
 											str+='<li style="border:1px solid #ddd; background:#ddd; border-radius:3px; margin:3px;" id="comment'+result.clarificationComments[i].id+'" >'+result.clarificationComments[i].name+'&nbsp;&nbsp;</span><span class="glyphicon glyphicon-remove commentRemove pull-right"  attr_id="'+result.clarificationComments[i].id+'"></li>'
 										}
 									str+='</ul>';
@@ -1425,12 +1464,12 @@ $(document).on("click","#clarifiReqId",function(){
 							}
 						str+='</div>';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-							str+='<label>Upload Attachments</label>';
+							str+='<label>Uploaded Attachments</label>';
 							str+='<div id="existingDocumentsDivId">';
 								if(result.documentsList != null && result.documentsList.length > 0){
 									str+='<ul>';
 										for(var i in result.documentsList){
-											str+='<li id="document'+result.documentsList[i].id+'">'+result.documentsList[i].name+'<span class="glyphicon glyphicon-remove documentRemove" attr_id="'+result.documentsList[i].id+'"></span></li>';
+											str+='<li id="document'+result.documentsList[i].id+'"> <a href="/Reports/'+result.documentsList[i].name+'" target="_blank"> Document - '+(parseInt(i)+1)+'</a> <span class="glyphicon glyphicon-remove documentRemove" attr_id="'+result.documentsList[i].id+'"></span></li>';
 										}
 									str+='</ul>';
 								}
@@ -1453,33 +1492,81 @@ $(document).on("click","#clarifiReqId",function(){
 			}
 		});
 	}
+	$(document).on("click",".rmcmntCls",function(){
+		$('#remarksClls').hide();
+		$('.radiosClss').show();
+		$('#markRemark').html('');
+		
+		$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+	});
+	
 	$(document).on("click",".radioClss",function(){
 		$('#markRemark').html('');
 		var value = $(this).attr('value');
 		var userType = $(this).attr('attr_user');
 		if(value =='Y'){
-			if(userType == 'PC'){
-				$("#disabledDivId").addAttr("class","");//activate the enable status for  divs
-				$("#disabledDivId").addClass("class","disabledBlock");//activate the enable status for  divs
-				$("#disabledDivId").addClass("class","disabledBlockWhite");//activate the enable status for  divs
-				$("#disabledDivsId").addClass("class","disabledBlock");//activate the enable status for  divs
+			if(userType == 'PC'){//disabledDivId
+				$('.panelHeights').removeAttr('style');
+				$("#disabledDivId,#disabledDivsId").addClass("disabledBlock");
+				$("#disabledDivId").addClass("disabledBlockWhite");
+				
+				var str='';
+				str+='<p class="text-center">';
+				str+='<img src="images/TIme.png">';
+				str+='</p><h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>';
+				str+='<p></p>';
+				$("#disabledDivId").html(str);
+				
+				var str1='';
+				str1+='<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>';
+				str1+='<h4 class="panel-title m_top10">waiting for alert clarification</h4>';
+				$("#disabledDivsId").html(str1);
+			}else{
+				$('.panelHeights').removeAttr('style');
+				$("#disabledDivId,#disabledDivsId").addClass("disabledBlock");
+				$("#disabledDivId").addClass("disabledBlockWhite");
+				
+				var str='';
+				str+='<p class="text-center">';
+				str+='<img src="images/TIme.png">';
+				str+='</p><h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>';
+				str+='<p></p>';
+				$("#disabledDivId").html(str);
+				
+				var str1='';
+				str1+='<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>';
+				str1+='<h4 class="panel-title m_top10">waiting for alert clarification</h4>';
+				$("#disabledDivsId").html(str1);
 			}
 			$('#remarksClls').show();
+			$('.radiosClss').hide();
 			$('#markRemark').html('');
 		}
 		else{
-			$('#remarksClls').hide();
+			if(value =='N'){
+				$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+				$('#remarksClls').hide();
+			}
+			else if(userType == 'PC'){
+				$(".disabledBlock").html("").removeAttr("class");//activate the diables divs			
+				$('#remarksClls').hide();
+			}
 		}
 	});
 		
 	$(document).on("click",".sbmtCls",function(){
 		
 		var value = '';
-		
+		var userType ='';
 		$('.radioClss').each(function(){
-			if($(this).is(':checked') )
+			if($(this).is(':checked') ){
 				value = $(this).attr('value');
+			}
 		});
+		
+		$('.radiosClss').each(function(){
+				userType = $(this).attr('attr_user');
+		});		
 		
 		var isOk =false;
 		if(value =='Y'){
@@ -1505,10 +1592,19 @@ $(document).on("click","#clarifiReqId",function(){
 			}else{
 				$(this).prop('checked',false);
 			}
-		}else{
+		}else if(userType ==null || userType.length ==0){
 			alert('Please select Clarification Required Status.');
 		}
-		
+		if(userType=='PC'){
+			var comment = $('#markRemark').val();
+			if(comment == null || comment.length ==0){
+				alert("Please enter comment... ");
+				return;
+			}else{
+				isOk =true;
+				value='Y';
+			}
+		}
 		if(isOk){
 				var jsObj={
 					statusStr:value,
