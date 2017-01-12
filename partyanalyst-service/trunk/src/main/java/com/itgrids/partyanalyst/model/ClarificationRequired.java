@@ -34,6 +34,8 @@ public class ClarificationRequired extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Long updatedBy;
 	private String isDeleted;
+	private String comment;
+	private String userType;
 	
 	private Alert alert;
 	private AlertClarificationStatus alertClarificationStatus;
@@ -137,7 +139,20 @@ public class ClarificationRequired extends BaseModel implements Serializable{
 		this.alertClarificationStatus = alertClarificationStatus;
 	}
 	
-		
+	@Column(name="comment")
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	
+	@Column(name="user_type")
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 	
 }
