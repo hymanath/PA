@@ -207,14 +207,17 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +//2
 				" alertType.alertType,model.alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +//3-7
-				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");//8-9
+				" clarificationRequired.alertClarificationStatusId,clarificationRequired.alertClarificationStatus.status");//8-9
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");//10-17
 		str.append(" ,constituency.constituencyId,constituency.name");//18 -19 
 		str.append(" ,state.stateId,state.stateName");//20
 		str.append(" ,ward.constituencyId,ward.name, alertCategory.alertCategoryId,alertCategory.category ");//21 - 23
 		if(assignedCadreId != null && assignedCadreId > 0)
 		{
-			str.append(" from AlertAssigned model1,Alert model left join model.userAddress.panchayat panc ");
+			str.append(" from AlertAssigned model1, " +
+					"    ClarificationRequired clarificationRequired" +
+					"    left join  clarificationRequired.alert model " +
+					"    left join model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 			str.append(" left join model.userAddress.constituency constituency ");
 			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
@@ -231,7 +234,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		else			
 		{
-			str.append(" from Alert model left join model.userAddress.panchayat panc ");
+			str.append(" from ClarificationRequired clarificationRequired " +
+					"    left join clarificationRequired.alert model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 			str.append(" left join model.userAddress.constituency constituency ");
 			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
@@ -242,8 +246,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" left join model.alertSeverity alertSeverity");
 			str.append(" left join model.alertType alertType");
-			str.append(" left join model.alertStatus alertStatus ");
-			str.append(" where model.isDeleted ='N' ");	
+			//str.append(" left join model.alertStatus alertStatus ");
+			str.append(" where model.isDeleted ='N' and clarificationRequired.isDeleted='N' ");	
 		}
 		
 		if(inputVO.getId() != null && inputVO.getId().longValue()>0L){
@@ -254,7 +258,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null)
 			str.append(" and date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate");
 		if(inputVO.getStatusId() != null && inputVO.getStatusId() > 0)
-			str.append(" and model.alertStatus.alertStatusId = :statusId");
+			str.append(" and clarificationRequired.alertClarificationStatusId = :statusId");
 		
 		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
 			str.append(" and model.alertCategoryId = :alertCategoryId");
