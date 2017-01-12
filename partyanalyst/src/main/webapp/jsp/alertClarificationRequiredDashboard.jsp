@@ -695,7 +695,7 @@ function getAlertAssignedCandidate()
 	}
 	
 	function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
-		var alertTypeId = $("#alertTypeId").val();
+		var alertTypeId = $("#alertTypeId").val();alert(fromDate);
 		var jsObj = { 
 			stateId : stateId,     
 			fromDate : fromDate,
@@ -704,7 +704,7 @@ function getAlertAssignedCandidate()
 		}
 		$.ajax({
 			type : 'POST',      
-			url : 'getTotalAlertGroupByStatusThenCategoryAction.action',
+			url : 'getStatusAndCategoryWiseAlertsCountAction.action',
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){

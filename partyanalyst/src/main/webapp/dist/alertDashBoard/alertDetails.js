@@ -7,6 +7,7 @@ getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
 getAlertAssignedCandidate(alertId);
+getClarificationDetails(alertId);
 $(document).on("click",".assignModel",function(){
 	clearAssignFields();
 	$("#ModalShow").modal('show');
@@ -66,7 +67,8 @@ function getAlertData()
 					  url: 'getAlertsDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-			      buildAlertData(result);
+					if(result != null)
+						buildAlertData(result);
 				});
 }
 
@@ -1264,4 +1266,241 @@ function getMonth(month){
 	}else if(month=="12"){  
 		return "Dec"
 	}  
-}
+}	
+$(document).on("click","#clarifiReqId",function(){
+		$("#clarfCommentsDivId").show();
+		$("#clarReqDivId").hide();
+});
+
+	var fileNum=0;
+	$(document).on("click","#addFile",function(){
+		$(this).closest(".panelHeights").removeAttr("style")
+		fileNum = fileNum+1;
+		var c = $(".cloneFileCls").clone(true);
+		c.removeAttr("style");
+		c.attr("id","uploadFileId"+fileNum);
+		c.attr("name","imageForDisplay");
+		c.removeAttr("class").addClass("btn btn-mini");
+		$("#extraUploadFileDiv").append(c);
+	});
+	
+	
+	function getClarificationDetails(alertId){
+		var jsObj={
+    		alertId:alertId
+    	}
+			
+		$.ajax({
+			type : 'GET',
+			url : 'getClarificationDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				
+				var entitleArr = [];
+				
+				var strArr = entilementStr.split(",");
+				for(var i=0;i<strArr.length;i++){
+					if(i==0){
+						entitleArr.push(strArr[i].split("[")[1]);
+					}else if(i==(strArr.length-1))
+						entitleArr.push(strArr[i].split("]")[0]);
+					else
+						entitleArr.push(strArr[i]);
+				}
+				
+				var flag = "programCommitte";
+				
+				for(var i=0;i<entitleArr.length;i++){
+					if(entitleArr[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){
+						flag = "infoCellTeam";
+					}
+				}
+				
+				var str='';
+				if(flag == "programCommitte"){
+					if(result.clarificationRequired == "Y"){
+						str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
+							str+='<label class="radio-inline">Is Clarification Required?</label>';
+							str+='<img src="images/Green_radio_selected.png"/>';
+						str+='</div>';
+						str+='<div><h5>Clarification Status : <span style="color:green;">'+result.clarificationStatus+'</span></h5></div>';
+						
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<label>Clarification Comments</label>';
+							str+='<div id="existingCommentsDivId">';
+								if(result.clarificationComments != null && result.clarificationComments.length > 0){
+									str+='<ul class="">';
+										for(var i in result.clarificationComments){
+											str+='<li style="border:1px solid #ddd; background:#ddd; border-radius:3px; margin:3px;" id="comment'+result.clarificationComments[i].id+'" >'+result.clarificationComments[i].name+'&nbsp;&nbsp;</li>'
+										}
+									str+='</ul>';
+								}
+							str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<label>Upload Attachments</label>';
+							str+='<div id="existingDocumentsDivId">';
+								if(result.documentsList != null && result.documentsList.length > 0){
+									str+='<ul>';
+										for(var i in result.documentsList){
+											str+='<li id="document'+result.documentsList[i].id+'">'+result.documentsList[i].name+'</li>';
+										}
+									str+='</ul>';
+								}
+							str+='</div>';
+						str+='</div>';
+						
+						$(".disabledBlock").html("").removeAttr("class");//activate the diables divs
+					}else{
+						str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
+							str+='<label class="radio-inline">Is Clarification Required?</label>';
+							str+='<label class="radio-inline">';
+								str+='<input type="radio" name="clarificationRadioName" class="radioClss" value="Y"/> Yes';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+								str+='<input type="radio" name="clarificationRadioName" class="radioClss" checked value="N"/> No';
+							str+='</label>';
+						str+='</form>';
+					}
+				}else if(flag == "infoCellTeam"){
+					str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
+						str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
+							str+='<label class="radio-inline">Is Clarification Required?</label>';
+							str+='<img src="images/Green_radio_selected.png"/>';
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+							
+							if(result.clarificationStatusId != null && result.clarificationStatusId == 2){
+								str+='<label>Clarification Status : <span style="color:green;">Completed</span></label>';
+							}else{
+								str+='<label>Clarification Status</label>';
+								str+='<select class="form-control" id="clarificationStatusSelId" name="clarificationStatusId">';
+									str+='<option value="0">Select Status</option>';
+									if(result.clarificationStatusId != null && result.clarificationStatusId == 1){
+										str+='<option value="1" selected>Progress</option>';
+									}
+									str+='<option value="2">Completed</option>';
+								str+='</select>';
+							}
+							
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<label>Clarification Comments</label>';
+							str+='<div id="existingCommentsDivId">';
+								if(result.clarificationComments != null && result.clarificationComments.length > 0){
+									str+='<ul class="">';
+										for(var i in result.clarificationComments){
+											str+='<li style="border:1px solid #ddd; background:#ddd; border-radius:3px; margin:3px;" id="comment'+result.clarificationComments[i].id+'" >'+result.clarificationComments[i].name+'&nbsp;&nbsp;</span><span class="glyphicon glyphicon-remove commentRemove pull-right"  attr_id="'+result.clarificationComments[i].id+'"></li>'
+										}
+									str+='</ul>';
+								}
+								
+							str+='</div>';
+							if(result.clarificationStatusId==null || result.clarificationStatusId==1 || result.clarificationStatusId==0){
+								str+='<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments"></textarea>';
+							}
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<label>Upload Attachments</label>';
+							str+='<div id="existingDocumentsDivId">';
+								if(result.documentsList != null && result.documentsList.length > 0){
+									str+='<ul>';
+										for(var i in result.documentsList){
+											str+='<li id="document'+result.documentsList[i].id+'">'+result.documentsList[i].name+'<span class="glyphicon glyphicon-remove documentRemove" attr_id="'+result.documentsList[i].id+'"></span></li>';
+										}
+									str+='</ul>';
+								}
+							str+='</div>';
+							if(result.clarificationStatusId==null || result.clarificationStatusId==1 || result.clarificationStatusId==0){
+								str+='<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">';
+								str+='<div id="extraUploadFileDiv"></div>';
+								str+='<button type="button" class="btn btn-primary btn-xs pull-right m_top20" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>';
+							}	
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+							str+='<button type="button" style="width:100%" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>';
+						str+='</div>';
+						str+='<input type="hidden" id="alertIdHidden" name="alertId"/>';
+					str+='</form>';
+				}
+				
+				$("#mainDivId").html(str);
+				
+			}
+		});
+	}
+	
+	$(document).on("click",".radioClss",function(){
+		$(this).prop('checked',true);
+		
+		var jsObj={
+			statusStr:$(this).val(),
+    		alertId:alertId
+    	}
+			
+		$.ajax({
+			type : 'GET',
+			url : 'saveClarificationRequiredStatusAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			var str='';
+			if(result != null && result == "success"){
+				str+='<form id="alertClarificationDocs" name="alertClarificationDocs">';
+					str+='<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">';
+						str+='<label class="radio-inline">Is Clarification Required?</label>';
+						str+='<img src="images/Green_radio_selected.png"/>';
+					str+='</div>';
+					str+='<div><h5>Clarification Status : <span style="color:green;">Progress</span></h5></div>';
+				str+='</form>';
+			}else{
+				alert("Please Try Again.");
+			}
+			$("#mainDivId").html(str);
+		});
+	});
+	
+	$(document).on("click",".commentRemove",function(){
+		var commentId = $(this).attr("attr_id");
+		var jsObj={
+			commentId : commentId
+    	}
+			
+		$.ajax({
+			type : 'GET',
+			url : 'removeAlertCommentAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result == "success"){
+				alert("Comment Deleted Successfully.");
+				$("#comment"+commentId).remove();
+			}else{
+				alert("Please Try Again.");
+			}
+		});
+	});
+	
+	$(document).on("click",".documentRemove",function(){
+		var docId = $(this).attr("attr_id");
+		var jsObj={
+			docId : docId
+    	}
+			
+		$.ajax({
+			type : 'GET',
+			url : 'removeAlertDocumentAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result == "success"){
+				alert("Document Deleted Successfully.");
+				$("#document"+docId).remove();
+			}else{
+				alert("Please Try Again.");
+			}
+		});
+	});
