@@ -2220,3 +2220,13 @@ border: 1px solid #c5c5c5 !important;
 .alertColorFont{
 color: rgb(51, 122, 183);
 }
+
+.headingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff;
+    padding: 10px;
+    width: 215px;
+	line-height:10px;
+	height:29px;
+	
+}

@@ -195,7 +195,7 @@
 										  <div class="col-md-12 col-xs-12 col-sm-12">
 										      <div id="processingImgDivId"></div>
 											  <div class="col-md-1 col-xs-12 col-sm-12" style="padding:0px;">
-											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;width:110px"></h4>
+											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
 												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
 											  </div>	
 											 <div class="col-md-4 col-xs-12 col-sm-12" style="padding:0px;">
@@ -3474,28 +3474,28 @@
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="cdrModelId"></div>
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertDestId"></div>
-					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDestId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="sourceHeadingId"></div>
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="headingNameId"></div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="headingNameId" ></div>
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertAttachTitId"></div>    
 					</div> 
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="alertAttachImgId"></div>  
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertInvolvedCandidates"></div>        
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertAssignedCandidates"></div>  
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertStatusDiv" ></div>    
 					</div>
 					<div  class="col-md-12 col-xs-12 col-sm-12"> 
