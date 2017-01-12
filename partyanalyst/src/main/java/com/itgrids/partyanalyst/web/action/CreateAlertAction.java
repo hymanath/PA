@@ -1203,6 +1203,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getLocationLevelAlertClarificationData(){
 		try {
 			jObj = new JSONObject(getTask());
+			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			AlertInputVO inputVO = new AlertInputVO();
 			inputVO.setLevelId(jObj.getLong("levelId"));
