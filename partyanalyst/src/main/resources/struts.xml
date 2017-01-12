@@ -15422,7 +15422,7 @@
 	
 	<action name="getLocationLevelAlertClarificationDataAction" class="createAlertAction"  method="getLocationLevelAlertClarificationData">
 		<result type="json" name="success">
-			<param name="root">alertVOs</param>
+			<param name="root">alertDataList</param>
 		</result>
 	</action>	
  </package>
