@@ -1635,43 +1635,49 @@ $(document).on("click","#clarifiReqId",function(){
 	});
 	
 	$(document).on("click",".commentRemove",function(){
-		var commentId = $(this).attr("attr_id");
-		var jsObj={
-			commentId : commentId
-    	}
-			
-		$.ajax({
-			type : 'GET',
-			url : 'removeAlertCommentAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			if(result != null && result == "success"){
-				alert("Comment Deleted Successfully.");
-				$("#comment"+commentId).remove();
-			}else{
-				alert("Please Try Again.");
-			}
-		});
+		var ok = confirm("Are You Sure Want To Delete?");      
+		  if(ok){
+			  	var commentId = $(this).attr("attr_id");
+				var jsObj={
+					commentId : commentId
+		    	}
+					
+				$.ajax({
+					type : 'GET',
+					url : 'removeAlertCommentAction.action',
+					dataType : 'json',
+					data : {task:JSON.stringify(jsObj)}
+				}).done(function(result){
+					if(result != null && result == "success"){
+						alert("Comment Deleted Successfully.");
+						$("#comment"+commentId).remove();
+					}else{
+						alert("Please Try Again.");
+					}
+				}); 
+		    }
 	});
 	
 	$(document).on("click",".documentRemove",function(){
-		var docId = $(this).attr("attr_id");
-		var jsObj={
-			docId : docId
-    	}
-			
-		$.ajax({
-			type : 'GET',
-			url : 'removeAlertDocumentAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			if(result != null && result == "success"){
-				alert("Document Deleted Successfully.");
-				$("#document"+docId).remove();
-			}else{
-				alert("Please Try Again.");
-			}
-		});
+		var ok = confirm("Are You Sure Want To Delete?");      
+		  if(ok){
+			  	var docId = $(this).attr("attr_id");
+				var jsObj={
+					docId : docId
+		    	}
+					
+				$.ajax({
+					type : 'GET',
+					url : 'removeAlertDocumentAction.action',
+					dataType : 'json',
+					data : {task:JSON.stringify(jsObj)}
+				}).done(function(result){
+					if(result != null && result == "success"){
+						alert("Document Deleted Successfully.");
+						$("#document"+docId).remove();
+					}else{
+						alert("Please Try Again.");
+					}
+				});
+		  }
 	});
