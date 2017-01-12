@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,7 +68,6 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Alert;
@@ -698,23 +699,25 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
 			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
 			 String alertSource = "";
-			 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
-				alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
-			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 2L){//print
-				 if(sourceDtls[6] != null){
-					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
-				 }else{
-					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
-				 }
-				 
-			 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 3L){//electronic 
-				 if(sourceDtls[8] != null){
-					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
-				 }else{
-					 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
-				 }
-				 
-			 }  
+			 if(sourceDtls != null){
+				 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
+					alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+				 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 2L){//print
+					 if(sourceDtls[6] != null){
+						 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
+					 }else{
+						 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+					 }
+					 
+				 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 3L){//electronic 
+					 if(sourceDtls[8] != null){
+						 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
+					 }else{
+						 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+					 }
+					 
+				 }  
+			 }
 			 if(list != null && list.size() > 0)
 			 {
 				 
@@ -1098,9 +1101,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,List<AlertCommentVO>> commentIdAndCommentDtlsMap = new HashMap<Long,List<AlertCommentVO>>();
 			List<AlertCommentVO>  alertCommentDtlsList = null;
 			AlertCommentVO alertCommentVO = null;
-			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId);
-			
-			
+			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
+			if(!commonMethodsUtilService.isListOrSetValid(list)){
+					List<Object[]> list1 = alertTrackingDAO.getAlertTrackingDetailsList(alertId,false);
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					list.addAll(list1);
+			}
 			SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm:ss");
 			SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
 			if(list != null && list.size() > 0){   
@@ -1137,6 +1143,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
 						alertCommentDtlsList.add(alertCommentVO);
 					}else{
 						alertCommentVO = new AlertCommentVO();
@@ -1148,6 +1155,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
 						alertCommentDtlsList = new ArrayList<AlertCommentVO>();
 						alertCommentDtlsList.add(alertCommentVO);
 						commentIdAndCommentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), alertCommentDtlsList);
@@ -1162,7 +1170,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//for multiuser involvement
 			List<List<AlertCommentVO>> list2 = null;
 			//final vo 
-			List<AlertCommentVO> finalList = new CopyOnWriteArrayList<AlertCommentVO>();  
+			List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>(0);  
 			if(statusIdAndDateIdListMap.size() > 0){  
 				for(Entry<Long,Set<String>> entry : statusIdAndDateIdListMap.entrySet()){
 					commentVO = new AlertCommentVO();
@@ -1191,13 +1199,30 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			if(finalList != null && finalList.size() > 0){
+				List<AlertCommentVO> tempList = new ArrayList<AlertCommentVO>(0);
 				List<Long> statusIdList = alertTrackingDAO.lastUpdatedstatus(alertId);
 				for(AlertCommentVO param : finalList){  
 					if(param.getStatusId().longValue() == statusIdList.get(0)){
 						finalList.remove(param);
 						finalList.add(param);  
 					}
+					tempList.add(param);
 				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(tempList)){
+					Collections.sort(tempList,new Comparator<AlertCommentVO>() {
+						public int compare(AlertCommentVO o1, AlertCommentVO o2) {
+							if(o1.getOrderNo() != null && o1.getOrderNo()>0L && o2.getOrderNo() != null && o2.getOrderNo()>0L)
+								return o1.getOrderNo().compareTo(o2.getOrderNo());
+							else
+								return 0;
+						}
+					});
+					
+					finalList.clear();
+					finalList.addAll(tempList);
+				}
+				
 			}  
 			
 			return finalList;   		
@@ -5287,10 +5312,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  return returnVO;
   }
   */
+  
 	public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
 			  												final String clarificationRequiredStr,final List<String> fileNamesList){
 		 final ResultStatus resultStatus = new ResultStatus();
-		 try{
+		 try{ 
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						
@@ -5298,7 +5324,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						
 						//model.isRequired,model.alertClarificationStatusId
 						
-						clarificationRequiredDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
+						clarificationRequiredDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime(),"INFO CELL");
 						clarificationRequired = new ClarificationRequired();
 							clarificationRequired.setAlertId(alertId);
 							clarificationRequired.setIsRequired("Y");
@@ -5342,7 +5368,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							    alertClarificationDocumentDAO.save(alertClarificationDocument);  
 							}
 						}
-						         		
+					
+					updateCommentAndTrackingDetails(userId,clarificationStatusId,alertId,clarificationComments);
+						
 					resultStatus.setResultCode(0);
 					resultStatus.setMessage("success");
 				}
@@ -5427,21 +5455,63 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		return vo;
   	}
   	
-  	public String saveClarificationRequiredStatus(Long userId,String status,Long alertId){
+  	public String updateCommentAndTrackingDetails(final Long userId,final Long  statusId,final Long alertId,final String remarks ){
+  		String resultstatus = "failure";
+  		try {
+  			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+  		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+  		        	AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+	  					
+	  					alertTrackingVO.setAlertId(alertId);
+	  					alertTrackingVO.setAlertStatusId(8L);// default in verification Status by info cell and program committee memebers updation
+	  					alertTrackingVO.setUserId(userId);
+	  					alertTrackingVO.setAlertTrackingActionId(1L);// only status change no remark
+  		        	if(remarks != null && !remarks.isEmpty()){
+  		        		AlertComment alertComment = new AlertComment();
+  	  				    alertComment.setComments(remarks);
+  	  				    alertComment.setAlertId(alertId);
+  	  				    alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+  	  				    alertComment.setIsDeleted("N");
+  	  				    alertComment.setInsertedBy(userId);
+  	  				    alertComment = alertCommentDAO.save(alertComment);
+  	  				    
+  	  					
+  	  					alertTrackingVO.setAlertTrackingActionId(2L);// with remark
+  	  					alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+  		        	}
+  		        	saveAlertTrackingDetails(alertTrackingVO);
+  		        }	
+  		     });
+  			resultstatus = "success";
+		} catch (Exception e) {
+			LOG.error("Error occured at updateCommentAndTrackingDetails() in AlertService",e); 
+		}
+  		
+  		return resultstatus;
+  	}
+  	public String saveClarificationRequiredStatus(Long userId,String status,Long alertId,String remarks){
   		String resultStatus; 
   		try {
-			ClarificationRequired cr = new ClarificationRequired();
-			
+  			List<Object[]> list = clarificationRequiredDAO.getDetails(alertId);
+  					if(commonMethodsUtilService.isListOrSetValid(list))
+  						clarificationRequiredDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime(),"PROGRAM COMMITTE");
+  			
+  			ClarificationRequired cr = new ClarificationRequired();
 			cr.setAlertId(alertId);
-			cr.setAlertClarificationStatusId(1l);
+			if(remarks != null && !remarks.trim().isEmpty())
+				cr.setAlertClarificationStatusId(1l);
 			cr.setIsRequired(status);
+			cr.setComment(remarks);
 			cr.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			cr.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			cr.setInsertedBy(userId);
-			cr.setUpdatedBy(userId);cr.setIsDeleted("N");
-			
+			cr.setUpdatedBy(userId);
+			cr.setIsDeleted(status.trim().equalsIgnoreCase("Y")?"N":"Y");
 			clarificationRequiredDAO.save(cr);
+			
+			updateCommentAndTrackingDetails(userId,1L,alertId,remarks);
 			resultStatus = "success";
+			
 		} catch (Exception e) {
 			resultStatus="failure";
 			LOG.error("Error occured at saveClarificationRequiredStatus() in AlertService",e); 
