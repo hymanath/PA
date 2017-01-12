@@ -43,7 +43,7 @@
 							</div>
 							<div class="col-md-2 col-xs-12 col-sm-2">
 								  <span class="input-group pull-right " style="width:200px;">
-										<input type="text" id="toursDateRangePickerNew" style="width:180px" class="form-control" />
+										<input type="text" id="toursDateRangePickerNew" style="width:200px" class="form-control" />
 										<span class="input-group-addon">
 											<i class="glyphicon glyphicon-calendar"></i>
 										</span>
@@ -109,7 +109,7 @@
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>Select Name:<font class="requiredFont">*</font></label>
 									<select class="form-control" id="memberSlctBxId" >    
-									<option value="0">Select Name</option>
+									<option value="0">SELECT NAME</option>
 								</select>
 								</div>
 							
@@ -177,7 +177,7 @@
 														<div class="row m_top10">
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<label>Add Comment/Tour Description</label>
-																<textarea class="form-control" id="tourDescNew0" name="toursVOListNew[0].description"></textarea>
+																<textarea class="form-control tourDescNewCls" id="tourDescNew0" name="toursVOListNew[0].description"></textarea>
 															</div>
 														</div>
 													</div>

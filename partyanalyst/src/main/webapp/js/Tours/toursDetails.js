@@ -12,7 +12,7 @@ function getCandidateList(designationId){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#memberSlctBxId").empty();
-			$("#memberSlctBxId").append("  <option value='0'>Select Name</option>");
+			$("#memberSlctBxId").append("  <option value='0'>SELECT NAME</option>");
 			if(result != null && result.length > 0){
 				for(var i in result){
 					$("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name.toUpperCase()+"</option>");  
@@ -93,7 +93,7 @@ function getCandidateList(designationId){
 			str+='<li>';
 				str+='<div class="panel panel-default panelProfile">';
 					str+='<div class="panel-body">';
-						str+='<img src="http://mytdp.com/images/cadre_images/'+result.image+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img>';
+						str+='<img src="http://mytdp.com/images/cadre_images/'+result.image+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;margin-left: 25px;"></img>';
 						str+='<p>'+result.name+'</p>';
 						str+='<p title="Voter Card No "> VID : '+result.voterCardNumber+'</p>';
 						str+='<p title="Membership No">MID : '+result.memberShipNo+'</p>';
@@ -215,7 +215,7 @@ function getCandidateList(designationId){
 		}).done(function(result){
 			if(result != null && result.length > 0){
 				$("#designationSlctBxId").empty();
-				$("#designationSlctBxId").append("<option value='0'>Select Designation Level</option>");
+				$("#designationSlctBxId").append("<option value='0'>SELECT DESIGNATION LEVEL</option>");
 				for(var i in result){
 				 $("#designationSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");	
 				}
@@ -467,6 +467,9 @@ function getCandidateList(designationId){
 		$("#addNewTourBlock").html("");
 		if($(this).is(':checked')){
 			$("#overallDivId").show();
+			$("#toursNewBlockClonedId").html("");
+			$(".tourDescNewCls").val("");
+			$("#tourMonthYear").val("");
 			var desigDtlsId = $("#designationSlctBxId").val();
 			getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
 		}else{
@@ -684,6 +687,7 @@ function getCandidateList(designationId){
 		toDate = picker.endDate.format('DD/MM/YYYY');
 		//$(".trainingDate").html("( "+customStartDate+" )");
 		//getToursDetailsOverview(fromDate,toDate); //default call 
+		$("#toursNewBlockClonedId").html("");
 		var designationIds = [];
 	    getTourBasicOverviewDtlsDesignationWise(fromDate,toDate,designationIds);
 	});
@@ -902,7 +906,7 @@ function getCandidateList(designationId){
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
 					}
-					str+='<td style="position:relative">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;">EDIT</button></td>';
+					str+='<td style="position:relative" class="text-center">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;">EDIT</button></td>';
 				str+='</tr>';
 			}
 
