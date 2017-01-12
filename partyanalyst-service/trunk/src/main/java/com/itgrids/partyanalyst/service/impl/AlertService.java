@@ -2071,7 +2071,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 alert = alertList.get(0);
 							 }
 							 
-							 alert.setCreatedTime(inputVO.getInsertedTime());
+							 if(inputVO.getInsertedTime() != null)
+								 alert.setCreatedTime(inputVO.getInsertedTime());
 							 alert.setAlertStatusId(inputVO.getStatusId());
 							 alert.setEditionTypeId(inputVO.getEditionTypeId() != null && inputVO.getEditionTypeId() > 0l ? inputVO.getEditionTypeId() : null);	
 							 alert.setEditionId(inputVO.getEditionId() !=null && inputVO.getEditionId()>0l ? inputVO.getEditionId():null);
