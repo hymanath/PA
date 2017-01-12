@@ -397,47 +397,6 @@ control.makeTransliteratable(['commentsId']);
 													<div class="panel-body">
 														<div class="row">
 															<div id="mainDivId"></div>
-															
-														<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10" id="clarfCommentsDivId"style="display:none;">
-															<form id="alertClarificationDocs" name="alertClarificationDocs">
-																<div style="border:1px solid #ddd; border-radius:10px; background-color:#ddd; padding:3px;" class="col-md-12 col-xs-12 col-sm-12" id="clarReqDivId">
-																	<label class="radio-inline">Is Clarification Required?</label>
-																	<label class="radio-inline">
-																		<input type="radio" name="clarificationRadioName" value="Y"/> Yes
-																	</label>
-																	<label class="radio-inline">
-																		<input type="radio" name="clarificationRadioName" checked value="N"/> No
-																	</label>
-																	<div id="statusResult"></div>
-																</div>
-																
-																<div class="col-md-12 col-xs-12 col-sm-12">
-																	<label>Clarification Status</label>
-																	<select class="form-control" id="clarificationStatusSelId" name="clarificationStatusId">
-																		<option value="0">Select Status</option>
-																		<option value="1">Progress</option>
-																		<option value="2">Completed</option>
-																	</select>
-																</div>
-																<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																	<label>Clarification Comments</label>
-																	<div id="existingCommentsDivId"></div>
-																	<textarea class="form-control" id="clarificationCommentsId" name="clarificationComments"></textarea>
-																</div>
-																<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																	<label>Upload Attachments</label>
-																	<div id="existingDocumentsDivId"></div>
-																	<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
-																	<div id="extraUploadFileDiv"></div>
-																	<button type="button" class="btn btn-primary btn-xs pull-right m_top20" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
-																</div>
-																<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-																	<button type="button" style="width:100%" class="btn btn-success" id="updateAlertDetailsId">UPDATE ALERT DETAILS</button>
-																</div>
-																<input type="hidden" id="alertIdHidden" name="alertId"/>
-															</form>
-														</div>-->
-															
 														</div>
 													</div>
 												</div>
@@ -453,11 +412,11 @@ control.makeTransliteratable(['commentsId']);
 													</h4>
 												</div>
 												<div class="panel-body ">
-													<div class="disabledBlock disabledBlockWhite" id="disabledDivId">
-													<p class="text-center">
+													<div class=" " id="disabledDivId">
+													<!--<p class="text-center">
 														<img src="images/TIme.png"/>
 														<h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>
-													</p>
+													</p>-->
 													</div>
 												</div>
 												<div  id="alertAssignedCandidateDataId"></div>
@@ -466,7 +425,7 @@ control.makeTransliteratable(['commentsId']);
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
 										<div class="col-md-4 col-xs-12 col-sm-4">
 											<div class="panel panel-default panelHeights" style="position:relative;">
-												<div class="disabledBlock"  id="disabledDivsId" >
+												<div class=""  id="disabledDivsId" >
 													<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>
 													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
 												</div>
@@ -748,13 +707,14 @@ function buildAlertAssignedCandidateData(result)
 			alert("Please Try Again.");
 		}
 	}
- 
+ /*
 var maxHeight = 0;
 
 $(".panelHeights").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 });
-$(".panelHeights").height(maxHeight);				
+$(".panelHeights").height(maxHeight);	
+*/			
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
