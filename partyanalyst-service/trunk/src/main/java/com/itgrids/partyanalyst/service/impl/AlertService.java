@@ -4594,13 +4594,33 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   * Santosh (non-Javadoc)
   * @see com.itgrids.partyanalyst.service.IAlertService#getStateImpactLevelAlertDtlsCnt(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
   */
- public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds){
+ public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId){
 	 AlertOverviewVO resultVO = new AlertOverviewVO();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
      Date fromDate=null;
      Date toDate = null;
+ 	List<Long> alertTypeList = new ArrayList<Long>();
+	List<Long> editionList = new ArrayList<Long>();
+	if(alertTypeId != null){
+		if(alertTypeId.longValue() == 0L){
+			
+		}else{
+			alertTypeList.add(alertTypeId);
+		}
+	}
+	
+	if(editionId != null){
+		if(editionId.longValue() == 0L){
+			
+		}else if(editionId.longValue() == 1L){
+			editionList.add(editionId);
+		}else if(editionId.longValue() == 2L){
+			editionList.add(editionId);
+			editionList.add(3L);
+		}
+	}
 	 try{
 		   if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 			   fromDate = sdf.parse(fromDateStr);
@@ -4618,7 +4638,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 List<Object[]> rtrnStatusObjLst = alertStatusDAO.getAllStatus();
 			 prepareRquiredTemplate(rtrnStatusObjLst,resultVO.getStatusList());
 			 
-			 List<Object[]> rtrnObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "State");
+			 List<Object[]> rtrnObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "State",alertTypeList,editionList);
 			 if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 				 for(Object[] param:rtrnObjLst){
 					 AlertOverviewVO stateVO = new AlertOverviewVO();
@@ -4628,7 +4648,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 resultVO.getSubList().add(stateVO);
 				 }
 			 }
-			  List<Object[]> rtrnCtgryObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Category");
+			  List<Object[]> rtrnCtgryObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Category",alertTypeList,editionList);
 			 	if(rtrnCtgryObjLst != null && rtrnCtgryObjLst.size() > 0){
 			 		for(Object[] param:rtrnCtgryObjLst){
 			 			Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -4638,7 +4658,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 			}
 			 		}
 			 	}
-			  List<Object[]> rtrnStatusWiseCntObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Status");	
+			  List<Object[]> rtrnStatusWiseCntObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Status",alertTypeList,editionList);	
 			  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
 				  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
 				 		for(Object[] param:rtrnStatusWiseCntObjLst){
