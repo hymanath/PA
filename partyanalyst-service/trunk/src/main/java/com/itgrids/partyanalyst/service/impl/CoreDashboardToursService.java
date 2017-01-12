@@ -3267,7 +3267,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
             setCandidateDocument(rtrnObjList,monthWiseCandiateDocMap);
 		   }
 		   //Getting Tour Candidate Details Day Wise
-		   Map<Long,Map<Long,ToursBasicVO>> monthWiseTourDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>(0);
+		   Map<Long,Map<Long,ToursBasicVO>> monthWiseTourDtlsMap = new LinkedHashMap<Long, Map<Long,ToursBasicVO>>(0);
 		   Map<Long,ToursBasicVO> monthMap = new HashMap<Long, ToursBasicVO>(0);
 		   if(monthyearIds.size() > 0){
 		   List<Object[]> rtrnDateWiseTourDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getMonthWiseTourSubmittedDetails(monthyearIds, selfAppraisalCandidateId);
@@ -3577,13 +3577,18 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					    monthVO.setTourDate(monthVO.getTourDate()+"-"+commonMethodsUtilService.getStringValueForObject(param[8]));	
 					    monthMap.put(monthId, monthVO);
 				   }
-				       ToursBasicVO categoryVO = new ToursBasicVO();
-					   categoryVO.setTourCategoryId(commonMethodsUtilService.getLongValueForObject(param[1]));
-					   categoryVO.setTourCategory(commonMethodsUtilService.getStringValueForObject(param[2]));
-					   categoryVO.setTourTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
-					   categoryVO.setTourType(commonMethodsUtilService.getStringValueForObject(param[4]));
-					   categoryVO.setCount(commonMethodsUtilService.getLongValueForObject(param[9]));
-				      categoryMap.put(categoryVO.getTourCategoryId(), categoryVO);
+				    
+				       ToursBasicVO categoryVO = categoryMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+				        if(categoryVO == null){
+				        	   categoryVO = new ToursBasicVO();
+				        	   categoryVO.setTourCategoryId(commonMethodsUtilService.getLongValueForObject(param[1]));
+							   categoryVO.setTourCategory(commonMethodsUtilService.getStringValueForObject(param[2]));
+							   categoryVO.setTourTypeId(commonMethodsUtilService.getLongValueForObject(param[3]));
+							   categoryVO.setTourType(commonMethodsUtilService.getStringValueForObject(param[4]));	
+							   categoryMap.put(categoryVO.getTourCategoryId(), categoryVO);
+				        }
+					   categoryVO.setCount(categoryVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[9]));
+				   
 			 }
 		 }
 	 }catch(Exception e){
