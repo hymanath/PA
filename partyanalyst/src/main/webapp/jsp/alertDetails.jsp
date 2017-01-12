@@ -453,7 +453,7 @@ control.makeTransliteratable(['commentsId']);
 													</h4>
 												</div>
 												<div class="panel-body ">
-													<div class="disabledBlock disabledBlockWhite">
+													<div class="disabledBlock disabledBlockWhite" id="disabledDivId">
 													<p class="text-center">
 														<img src="images/TIme.png"/>
 														<h4 class="panel-title"><b>WAITING FOR CLARIFICATION REQUIRED [OR] NOT</b></h4>
@@ -466,7 +466,7 @@ control.makeTransliteratable(['commentsId']);
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
 										<div class="col-md-4 col-xs-12 col-sm-4">
 											<div class="panel panel-default panelHeights" style="position:relative;">
-												<div class="disabledBlock">
+												<div class="disabledBlock"  id="disabledDivsId" >
 													<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>
 													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
 												</div>
