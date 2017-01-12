@@ -47,9 +47,23 @@
 	.enrolled-mem li.yes{
 		background-color: #d7f0db;
 	}
+	.enrolled-mem li.no{
+		background-color: #e3c5c7;
+	}
 	.enrolled-mem li.yes span::after {
 		color: #666;
 		content: "\e013";
+		display: inline-block;
+		font-family: "Glyphicons Halflings";
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1;
+		position: relative;
+		top: 1px;
+	}
+	.enrolled-mem li.no span::after {
+		color: #666;
+		content: "\e014";
 		display: inline-block;
 		font-family: "Glyphicons Halflings";
 		font-style: normal;
@@ -212,6 +226,7 @@
 					<div class="radio">
 						<label style=" margin-left: -20px;"><input type="radio"   value="3" style="margin-left:20px;" class="enrollmentCls" name="radio"  onclick="refreshExistingDetails();"> 2014 &nbsp;&nbsp;</label>
 						<label><input type="radio"   value="4" checked="true"  class="enrollmentCls" name="radio" onclick="refreshExistingDetails();" > 2016 &nbsp;&nbsp;</label>
+						<label><input type="radio"   value="0" checked="true"  class="enrollmentCls" name="radio" onclick="refreshExistingDetails();" > Any Year &nbsp;&nbsp;</label>
 					</div>
 				</div>
 			</div>
@@ -971,7 +986,37 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
-					str+='<br/><li>Enrolment Year : <b>'+result[i].year+'</b></li>';
+					str+='<ul class="enrolled-mem" id="">';
+					//$("#familyMembersDiv").html(result[i].enrollmentYear);
+					if(result[i].enrollmentYears != null && result[i].enrollmentYears.trim().length > 0)
+					{
+						var years = result[i].enrollmentYears.split(", ");	
+
+						if(years.indexOf("2016") > -1)
+							str+='<li class="yes">2016<span></span></li>&nbsp;';
+						else
+							str+='<li class="no">2016<span></span></li>&nbsp;';
+						if(years.indexOf("2014") > -1)
+							str+='<li class="yes">2014<span></span></li>&nbsp;';
+						else
+							str+='<li class="no">2014<span></span></li>&nbsp;';
+						if(years.indexOf("2012") > -1)
+							str+='<li class="yes">2012<span></span></li>&nbsp;';
+						else
+							str+='<li class="no">2012<span></span></li>&nbsp;';
+						if(years.indexOf("2010") > -1)
+							str+='<li class="yes">2010<span></span></li>&nbsp;';
+						else
+							str+='<li class="no">2010<span></span></li>&nbsp;';
+					}
+					else
+					{
+						str+='<li class="no">2016<span></span></li>&nbsp;';
+						str+='<li class="no">2014<span></span></li>&nbsp;';
+						str+='<li class="no">2012<span></span></li>&nbsp;';
+						str+='<li class="no">2010<span></span></li>&nbsp;';
+					}
+		   			str+='</ul>	';	
 				str+='</ul>';
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
