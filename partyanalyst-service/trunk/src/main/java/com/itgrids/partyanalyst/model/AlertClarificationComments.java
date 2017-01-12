@@ -33,7 +33,7 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 	private Long insertedBy;
 	private Date updatedTime;
 	private Long updatedBy;
-	
+	private String userType;
 	private Alert alert;
 
 	@Id
@@ -114,6 +114,13 @@ public class AlertClarificationComments extends BaseModel implements Serializabl
 	public void setAlert(Alert alert) {
 		this.alert = alert;
 	}
-
+	
+	@Column(name="user_type")
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 
 }
