@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
@@ -56,6 +57,7 @@ import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IToursService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -118,6 +120,8 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private IAlertService alertService;
 	private AlertVO alertVO;
 	private ICandidateDetailsService candidateDetailsService;
+	private ToursVO toursVO;
+	private IToursService toursService;
 	private List<BenefitVO> benefitVOList;
 	private BenefitVO benefitVO;
 	private List<BenefitCandidateVO> benefitCandidateVOList;
@@ -141,6 +145,19 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setBenefitVOList(List<BenefitVO> benefitVOList) {
 		this.benefitVOList = benefitVOList;
+	}
+	
+	public IToursService getToursService() {
+		return toursService;
+	}
+	public void setToursService(IToursService toursService) {
+		this.toursService = toursService;
+	}
+	public ToursVO getToursVO() {
+		return toursVO;
+	}
+	public void setToursVO(ToursVO toursVO) {
+		this.toursVO = toursVO;
 	}
 	public AlertVO getAlertVO() {
 		return alertVO;
@@ -1932,6 +1949,64 @@ public String getVolunteerCadreDetilasInformation(){
 		}
 		return "success";
 	}
+	
+
+	/*
+	 * auther : Srishailam Pittala
+	 * Date : 7th Jan, 2017
+	 * Description : to Get Cadre wise all Tours Details
+	 * */
+
+		public String getCadretoursDetails(){
+			
+			try {
+				
+				jObj = new JSONObject(getTask());
+				Long tdpCadreId = jObj.getLong("tdpCadreId");
+				Long stateId = jObj.getLong("stateId");
+				String startDateStr = jObj.getString("startDateStr");
+				String endDateStr = jObj.getString("endDateStr");
+				String searchType = jObj.getString("searchType");
+				Long designationId = jObj.getLong("designationId");
+				String searchMonth = jObj.getString("searchMonth");
+				 toursVO = toursService.getToursDetailsBySearch(tdpCadreId,stateId,startDateStr,endDateStr,searchType,designationId,searchMonth);
+				
+			} catch (Exception e) {
+				 LOG.error("Exception occured in getCadretoursDetails in CadreDetailsAction class  ",e);
+			}
+			return "success";
+		}
+
+		
+
+	/*
+	 * auther : Srishailam Pittala
+	 * Date : 7th Jan, 2017
+	 * Description : to Get Cadre selection wise Tours Details
+	 * */
+
+		public String getCandidateToursDetails(){
+			
+			try {
+				
+				jObj = new JSONObject(getTask());
+				Long tdpCadreId = jObj.getLong("tdpCadreId");
+				Long stateId = jObj.getLong("stateId");
+				String startDateStr = jObj.getString("startDateStr");
+				String endDateStr = jObj.getString("endDateStr");
+				String searchType = jObj.getString("searchType");
+				Long designationId = jObj.getLong("designationId");
+				Long categoryId = jObj.getLong("categoryId");
+				String searchMonth = jObj.getString("searchMonth");
+				toursVO = toursService.getCandidateToursDetailsBySearch(tdpCadreId,stateId,startDateStr,endDateStr,searchType,designationId,categoryId,searchMonth);
+				
+			} catch (Exception e) {
+				 LOG.error("Exception occured in getCandidateToursDetails in CadreDetailsAction class  ",e);
+			}
+			return "success";
+		}
+		
+		
 	public String getCandidateSubLocationDtls(){
 		try {
 			jObj = new JSONObject(getTask());
