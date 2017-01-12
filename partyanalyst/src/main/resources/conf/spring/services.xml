@@ -3536,6 +3536,7 @@
 		<property name="alertClarificationDocumentDAO" ref="alertClarificationDocumentDAO"></property>
 		<property name="editionTypeDAO" ref="editionTypeDAO"></property>
 		<property name="clarificationRequiredDAO" ref="clarificationRequiredDAO"></property>
+		<property name="alertClarificationStatusDAO" ref="alertClarificationStatusDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
