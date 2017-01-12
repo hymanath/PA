@@ -695,12 +695,12 @@ function getAlertAssignedCandidate()
 	}
 	
 	function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
-		var alertTypeId = $("#alertTypeId").val();alert(fromDate);
+		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
 			stateId : stateId,     
 			fromDate : fromDate,
 			toDate : toDate,
-			alertyTypeId : alertTypeId
+			alertTypeId : alertTypeId
 		}
 		$.ajax({
 			type : 'POST',      
@@ -711,13 +711,15 @@ function getAlertAssignedCandidate()
 			$("#alertCatTabId").html('');  
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByStatusThenCategory(result);
+			}else{
+				$("#alertCatTabId").html("No Data Available.");  
 			}
 		});
 	}
 	var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 	function buildTotalAlertGroupByStatusThenCategory(result){
 		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
-		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
+		
 		var str = '';  
 		if($(window).width() < 500)
 		{
@@ -1004,7 +1006,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		      }
 			$.ajax({
 					  type:'GET',
-					  url: 'getLocationLevelAlertDataAction.action',
+					  url: 'getLocationLevelAlertClarificationDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 			       GlobalAlertData = result;
