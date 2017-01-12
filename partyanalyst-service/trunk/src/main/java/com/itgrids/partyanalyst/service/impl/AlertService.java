@@ -2734,7 +2734,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return null;
 	}*/
-	public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group){
+	public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenCategory() method of AlertService{}");
 		try{  
 			Date fromDate = null;  
@@ -2743,6 +2743,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertTypeList = new ArrayList<Long>();
+			List<Long> editionList = new ArrayList<Long>();
+			if(alertTypeId != null){
+				if(alertTypeId.longValue() == 0L){
+					
+				}else{
+					alertTypeList.add(alertTypeId);
+				}
+			}
+			
+			if(editionId != null){
+				if(editionId.longValue() == 0L){
+					
+				}else if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
 			}
 			AlertVO alertVO = null;
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
@@ -2769,7 +2789,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}  
 
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocation(fromDate, toDate, stateId, scopeIdList, "One",userAccessLevelId, userAccessLevelValues);
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocation(fromDate, toDate, stateId, scopeIdList, "One",userAccessLevelId, userAccessLevelValues,alertTypeList,editionList);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					if(param[0] != null){
@@ -2781,7 +2801,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndCategoryIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocation(fromDate, toDate, stateId, scopeIdList, "two",userAccessLevelId, userAccessLevelValues);    
+			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocation(fromDate, toDate, stateId, scopeIdList, "two",userAccessLevelId, userAccessLevelValues,alertTypeList,editionList);    
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
 				for(Object[] param : alertCountGrpByLocList){
 					if(param[0] != null){
@@ -2959,7 +2979,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return null;
 	}*/  
-	public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group){
+	public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
 			Date fromDate = null;        
@@ -2968,6 +2988,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertTypeList = new ArrayList<Long>();
+			List<Long> editionList = new ArrayList<Long>();
+			if(alertTypeId != null){
+				if(alertTypeId.longValue() == 0L){
+					
+				}else{
+					alertTypeList.add(alertTypeId);
+				}
+			}
+			
+			if(editionId != null){
+				if(editionId.longValue() == 0L){
+					
+				}else if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
 			}
 			AlertVO alertVO = null;    
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
@@ -2995,7 +3035,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			    
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
 			//Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "One", userAccessLevelId, userAccessLevelValues);
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "One", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					if(param[0] != null)
@@ -3006,7 +3046,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "two", userAccessLevelId, userAccessLevelValues);    
+			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, "two", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList);    
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
@@ -3475,7 +3515,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByDist(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long)
 	 */
-	public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
+	public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
 		LOG.info("Entered in getTotalAlertGroupByDist() method of AlertService{}");
 		try{
 			Date fromDate = null;           
@@ -3485,6 +3525,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			List<Long> alertTypeList = new ArrayList<Long>();
+			List<Long> editionList = new ArrayList<Long>();
+			if(alertTypeId != null){
+				if(alertTypeId.longValue() == 0L){
+					
+				}else{
+					alertTypeList.add(alertTypeId);
+				}
+			}
+			
+			if(editionId != null){
+				if(editionId.longValue() == 0L){
+					
+				}else if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
+			}
+			
 			//get access level id and access level value
 			Long userAccessLevelId = null;
 			List<Long> userAccessLevelValues = new ArrayList<Long>();
@@ -3507,7 +3568,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCommentVO> alertCountList = new ArrayList<AlertCommentVO>();
 			AlertCommentVO alertCommentVO = null;
 			//get total alert group by district
-			List<Object[]> alertList = alertDAO.getTotalAlertGroupByDist(fromDate,toDate,stateId,scopeIdList,userAccessLevelId,userAccessLevelValues);
+			List<Object[]> alertList = alertDAO.getTotalAlertGroupByDist(fromDate,toDate,stateId,scopeIdList,userAccessLevelId,userAccessLevelValues,alertTypeList,editionList);
 			if(alertList != null && alertList.size() > 0){
 				for(Object[] param : alertList){
 					if(param[0] != null){
