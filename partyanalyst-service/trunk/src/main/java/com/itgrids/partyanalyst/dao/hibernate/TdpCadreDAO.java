@@ -3604,17 +3604,18 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			
 			else{
-				queryStr.append(" where (model.tdpCadre.isDeleted = 'N' or model.tdpCadre.isDeleted = 'MD')  and model.tdpCadre.enrollmentYear = 2014  ");
+				queryStr.append(" where model.isDeleted ='N' and (model.tdpCadre.isDeleted = 'N' or model.tdpCadre.isDeleted = 'MD')  and model.tdpCadre.enrollmentYear = 2014  ");
 			}
 				
 			queryStr.append(" "+queryString+" ");
+			/*
 			if(enrollmentId != null && enrollmentId.longValue() == 3l)
 			{
 				queryStr.append(" and  model.enrollmentYearId in(3,4) and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
 			}else{
 			queryStr.append(" and  model.enrollmentYearId = 4 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
 		}
-			
+			*/
 			Query query = getSession().createQuery(queryStr.toString());
 			if((constituencyId != null && constituencyId != 0L) && (constituencyIds == null || constituencyIds.size() == 0))
 			{
