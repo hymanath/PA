@@ -246,10 +246,10 @@
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Clarification Status</label>
 										<select class="form-control chosen-select" id="alertStatusId" >
 											<option value="0" selected="selected">All</option>
-											<option value="1">Pending</option>
+											<option value="1">Progress</option>
 											<!--<option value="2">Notified</option>
 											<option value="3">Action In Progess</option>-->
-											<option value="4">Completed</option>
+											<option value="2">Completed</option>
 											<!--<option value="5">Unable to Resolve</option>
 											<option value="6">Action Not Required</option>
 											<option value="7">Duplicate</option>-->
@@ -728,12 +728,48 @@ function getAlertAssignedCandidate()
 		str+='<table class="table table-condensed b_1">';
 			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
 				str+='<th></th>';    
+				for(var i in result[0].idNamesList){
+					str+='<th class="text-capital text-center" >'+result[0].idNamesList[i].name+'</th>';
+				}  
+			str+='</thead>';
+			for(var i in result){
+				if(result[i].stateId == 1 || result[i].stateId == 2){
+					str+='<tr>';
+					var appClr = colorArr[result[i].status];
+					var appClrHd = colorArrHead[result[i].status];
+					var count = 0;
+					if(result[i].idNamesList != null && result[i].idNamesList.length>0){
+						for(var k in result[i].idNamesList)
+							count = count+parseInt(result[i].idNamesList[k].count);
+					}
+					
+					if(count != null && count > 0)
+						str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_category_id="0" attr_id="'+result[i].stateId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+count+'</a> </u></span></td>';
+					else  
+						str+='<td class="text-capitalize" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+count+' </span></td>';
+					if(result[i].idNamesList != null && result[i].idNamesList.length>0){
+						for(var j in result[i].idNamesList){
+							if(result[i].idNamesList[j].count != null && result[i].idNamesList[j].count>0)
+								str+='<td style="background-color:'+appClr+'" class="text-center"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_id="'+result[i].stateId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].idNamesList[j].id+'" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].idNamesList[j].count+' </a></u></td>';
+							else
+								str+='<td style="background-color:'+appClr+'" class="text-center"> 0  </td>';
+						}
+					}
+					str+='</tr>';
+				}
+			}
+		str+='</table>';
+		
+		/*
+		str+='<table class="table table-condensed b_1">';
+			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
+				str+='<th></th>';    
 				for(var i in result[0].subList1){
 					str+='<th class="text-capital text-center" >'+result[0].subList1[i].category+'</th>';
 				}  
 			str+='</thead>';
 			for(var i in result){
-				if(result[i].statusId == 1 || result[i].statusId == 4){
+				if(result[i].stateId == 1 || result[i].stateId == 8){
 					str+='<tr>';
 					var appClr = colorArr[result[i].status];
 					var appClrHd = colorArrHead[result[i].status];
@@ -752,6 +788,7 @@ function getAlertAssignedCandidate()
 				}				
 			}
 		str+='</table>';
+		*/
 		if($(window).width() < 500)
 		{
 			str+='</div>';
@@ -1070,7 +1107,7 @@ function buildAlertData(result,jsObj)
 	var j=0;
 	for(var i in result)
 	{
-		if(result[i].statusId == 1 || result[i].statusId == 4){
+		if(result[i].statusId == 1 || result[i].statusId == 2){
 			j++;
 			str+='<tr>';	
 			str+='<td>'+result[i].alertCategoryName+'</td>';
@@ -1094,6 +1131,17 @@ function buildAlertData(result,jsObj)
 	$("#locationLevelDataId").html(str);
 	$("#alertDataTableId").dataTable(); 
 }
+
+$(document).on("click",".alertModel",function(){
+var GlobalalertId = $(this).attr("attr-id");
+	/*$("#ModalShow").modal('show');
+	showPopUpAlertData(GlobalalertId);
+	 globalAlertName=$(this).attr("attr-des");
+	 	$("#descriptionTitleId").html(globalAlertName);
+	getAlertStatusCommentsTrackingDetails();*/
+	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
+window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+});
 
 $(document).on("click",".headerWiseDataCls",function(){
 	var levelId = $(this).attr("attr_levlId");
