@@ -1134,7 +1134,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			if(regVo != null)
-				status = alertService.saveClarificationRequiredStatus(regVo.getRegistrationID(),jObj.getString("statusStr"),jObj.getLong("alertId")); 
+				status = alertService.saveClarificationRequiredStatus(regVo.getRegistrationID(),jObj.getString("statusStr"),jObj.getLong("alertId"),jObj.getString("remark")); 
 		} catch (Exception e) {
 			LOG.error("Excpetion raised at saveClarificationRequiredStatus",e);
 		}
