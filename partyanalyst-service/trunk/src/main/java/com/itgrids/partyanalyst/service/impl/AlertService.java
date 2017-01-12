@@ -1103,12 +1103,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCommentVO>  alertCommentDtlsList = null;
 			AlertCommentVO alertCommentVO = null;
 			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
-			//if(!commonMethodsUtilService.isListOrSetValid(list)){
+			Map<Long,Long> statusOrderMap = new HashMap<Long, Long>(0);
+			boolean noList = false;
+			if(!commonMethodsUtilService.isListOrSetValid(list)){
+				list = new ArrayList<Object[]>(0);
+				noList = true;
+			}
+				
 					List<Object[]> list1 = alertTrackingDAO.getAlertTrackingDetailsList(alertId,false);
 				if(commonMethodsUtilService.isListOrSetValid(list1)){
 					for (Object[] param : list1) {
-						Long statusId= commonMethodsUtilService.getLongValueForObject(param[10]);
-						if(statusId == 1L || statusId == 2L)
+						Long statusId= commonMethodsUtilService.getLongValueForObject(param[1]);
+						if(noList){
+							if(statusId == 1L)//for no assigned member alerts pending status
+								list.add(param);
+						}
+						if(statusId == 8L)// verification status
 							list.add(param);
 					}					
 				}
@@ -1117,7 +1127,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
 			if(list != null && list.size() > 0){   
 				for(Object[] param : list){
-					
+					statusOrderMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[10]));
 					//for statusId and date list map
 					dateIdList = statusIdAndDateIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
 					if(dateIdList != null){
@@ -1182,6 +1192,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					commentVO = new AlertCommentVO();
 					commentVO.setStatusId(entry.getKey());
 					commentVO.setStatus(idAndNameMap.get(entry.getKey()));
+					commentVO.setOrderNo(statusOrderMap.get(commentVO.getStatusId()));
 					dateIdList = (LinkedHashSet)entry.getValue();    
 					if(dateIdList != null && dateIdList.size() > 0){
 						commentVOForDateList = new ArrayList<AlertCommentVO>();
