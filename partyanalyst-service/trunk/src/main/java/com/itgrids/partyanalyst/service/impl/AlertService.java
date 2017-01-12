@@ -2087,14 +2087,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 //if(alert.getImpactLevelId() !=  null && alert.getImpactLevelId().longValue() ==3L && inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){ //only new district ids
 						
 						 if(inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){
-							if(inputVO.getDistrictId().longValue() == IConstants.CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID)//334L
+							if(inputVO.getDistrictId().longValue() == IConstants.CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID){//334L
 								inputVO.setDistrictId(517L);
-							else if(inputVO.getDistrictId().longValue() == IConstants.CNP_MANCHERIAL_DISTRICT_ID)
-								inputVO.setDistrictId(518L);
-						 }
-						if(alert.getImpactLevelId() !=  null && alert.getImpactLevelId().longValue() ==2L && inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L)
 								inputVO.setRegionScopeValue(inputVO.getDistrictId());
-						 //}
+						 	}
+							else if(inputVO.getDistrictId().longValue() == IConstants.CNP_MANCHERIAL_DISTRICT_ID){
+								inputVO.setDistrictId(518L);
+								inputVO.setRegionScopeValue(inputVO.getDistrictId());
+							}
+						 }
 						 
 						 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
 						 alert.setDescription(inputVO.getDesc());	
