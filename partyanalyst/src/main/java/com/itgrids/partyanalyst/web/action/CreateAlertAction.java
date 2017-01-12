@@ -909,7 +909,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}  
-			alertOverviewVO = alertService.getStateImpactLevelAlertDtlsCnt(activityMemberId,stateId,fromDate,toDate,scopeIdList);   
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			alertOverviewVO = alertService.getStateImpactLevelAlertDtlsCnt(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertId,editionId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getStateImpactLevelAlertDtlsCnt() of CreateAlertAction",e);
 		}
