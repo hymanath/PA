@@ -918,11 +918,11 @@
 							 </ul>
 						</li>	
 						</c:if>
-						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
+						<!--<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
 								<li>
 									<a href="alertClarificationDashboardAction.action"><i class="fa fa-bell-o ico-white floatLeft"></i><span>&nbsp; Alert Clarification Dashboard </span></a>
 								</li>
-							</c:if>
+							</c:if>-->
 							
 						<!--- Card Printing DashBoard 2016 end -->						
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
