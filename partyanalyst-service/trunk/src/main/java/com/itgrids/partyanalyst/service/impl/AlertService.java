@@ -5662,6 +5662,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			clarificationRequiredDAO.save(cr);
 			
 			
+			AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
+			alertClarificationComments.setAlertId(alertId);
+			alertClarificationComments.setComments(remarks);
+			alertClarificationComments.setIsDeleted("N");
+			alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			alertClarificationComments.setInsertedBy(userId);
+			alertClarificationComments.setUpdatedBy(userId);
+			alertClarificationCommentsDAO.save(alertClarificationComments);
+		
 			alertClarificationDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
 			AlertClarification alertClarification = new AlertClarification();
 				alertClarification.setAlertId(alertId);
