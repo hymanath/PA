@@ -17,7 +17,7 @@ public class ZebraPrintDetailsDAO  extends GenericDaoHibernate<ZebraPrintDetails
 	public List<Object[]>  getPrintDetailsByConstituencyId(Long constituencyId){
 		Query query = getSession().createQuery("" +
 		" select  model.tdpCadreCardPrintId , model.printTime , model.serialNumber , model.printStatus , " +//3
-		"         model.printCode , model.printDesc , model.printerSerialNumber , model.boxNo , model.pcNo " +//8
+		"         model.printCode , model.printDesc , model.printerSerialNumber , model.boxNo , model.pcNo, model.outerBoxNo " +//9
 		" from   ZebraPrintDetails model " +
 		" where  model.constituencyId = :constituencyId");
 		query.setParameter("constituencyId",constituencyId );
