@@ -25,7 +25,7 @@
 		<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-1">
 			<div class="panel panel-default m_top10">
 				<div class="panel-heading">
-					<h4 class="panel-title">CONSTITUENCY WISE PRINT DETAILS UPDATION</h4>
+					<h4 class="panel-title">SYNCHING CONSTITUENCY PRINT DETAILS </h4>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -51,7 +51,7 @@
 							</div>
 							
 							<div class="col-md-4 col-xs-12 col-sm-4">
-								<button class="buttonCls btn btn-success" onclick="updatePrintDetailsToTdpCadreCardPrint()" style="margin-top: 23px; margin-left: 20px;">SUBMIT</button>
+								<button class="buttonCls btn btn-success" onclick="updatePrintDetailsToTdpCadreCardPrint()" style="margin-top: 23px; margin-left: 20px;">SYNC</button>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<span id="processingImg"></span>
