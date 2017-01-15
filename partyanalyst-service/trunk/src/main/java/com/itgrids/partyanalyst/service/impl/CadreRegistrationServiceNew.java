@@ -2800,6 +2800,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     				   tdpCadrePrintDetailsVO.setAreaCovered(obj[11] != null ? obj[11].toString() : "");
     				   tdpCadrePrintDetailsVO.setHouseNo(obj[12] != null ? obj[12].toString() : "");
     				   
+    				   tdpCadrePrintDetailsVO.setBoxNo(obj[13] != null ? obj[13].toString() : "");
+    				   tdpCadrePrintDetailsVO.setOuterBoxNo(obj[14] != null ? obj[14].toString() : "");
     			   }
     		   }
     		   
