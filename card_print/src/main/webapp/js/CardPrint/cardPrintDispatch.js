@@ -82,6 +82,7 @@ function getConstituenciesForDistrict(){
 }
 
 function getDispatchDetails(){
+	$('#summaryDivId').html("");
 	$("#dispatchingDiv").html("");
 	$("#errorDivId").html("");
 	var vendorId = $("#vendorId").val();
