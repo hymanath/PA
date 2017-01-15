@@ -21,7 +21,8 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		Query query = getSession().createQuery("" +
 		" select model.tdpCadreId , model.memberShipId , model.cadreName , model.imagePath," +//3
 		"        model.districtName , model.constituencyName , model.mandalName , model.panchayatName," +//7
-		"        model.muncipalityName,model.wardName,model.boothName,model.areaCovered,model.houseNo " +//12
+		"        model.muncipalityName,model.wardName,model.boothName,model.areaCovered,model.houseNo," +//12
+		"        model.boxNo , model.outerBoxNo " +//14
 		" from   TdpCadreCardPrint model " +
 		" where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 and " +
 		"        model.memberShipId = :memberShipId " );
@@ -95,11 +96,11 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		return query.list();
 	}
 	
-	public Integer updateAppntmntStatusById(PrintVO printVO) {
+	public Integer updateTdpCadreCardPrintDataById(PrintVO printVO) {
 		Query query = getSession().createQuery(
 		 " update TdpCadreCardPrint model " +
 		 " set    model.printTime= :printTime, model.serialNumber = :serialNumber,model.printStatus = :printStatus , model.printCode = :printCode , " +
-		 "        model.printDesc = :printDesc ,model.printerSerialNumber = :printerSerialNumber , model.boxNo = :boxNo , model.pcNo = :pcNo  " +
+		 "        model.printDesc = :printDesc ,model.printerSerialNumber = :printerSerialNumber , model.boxNo = :boxNo , model.pcNo = :pcNo , model.outerBoxNo = :outerBoxNo " +
 		 " where  model.tdpCadreCardPrintId=:tdpCadreCardPrintId ");
 		
 		query.setParameter("tdpCadreCardPrintId", printVO.getTdpCadreCardPrintId());
@@ -112,6 +113,7 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		query.setParameter("printerSerialNumber",printVO.getPrinterSerialNumber());
 		query.setParameter("boxNo",printVO.getBoxNo());
 		query.setParameter("pcNo",printVO.getPcNo());
+		query.setParameter("outerBoxNo",printVO.getOuterBoxNo());
 		
 		return query.executeUpdate();
 	}
@@ -136,5 +138,10 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		" select distinct model.constituency.constituencyId , model.constituency.name " +
 		" from  TdpCadreCardPrint model ");
 		return query.list();
+	}
+	
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
 	}
  }
