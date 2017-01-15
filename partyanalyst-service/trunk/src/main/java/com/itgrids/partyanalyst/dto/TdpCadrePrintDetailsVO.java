@@ -21,6 +21,9 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	private String areaCovered;
 	private String houseNo;
 	
+	private String boxNo;
+	private String outerBoxNo;
+	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
@@ -98,6 +101,18 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	}
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
+	}
+	public String getBoxNo() {
+		return boxNo;
+	}
+	public void setBoxNo(String boxNo) {
+		this.boxNo = boxNo;
+	}
+	public String getOuterBoxNo() {
+		return outerBoxNo;
+	}
+	public void setOuterBoxNo(String outerBoxNo) {
+		this.outerBoxNo = outerBoxNo;
 	}
 	
 	
