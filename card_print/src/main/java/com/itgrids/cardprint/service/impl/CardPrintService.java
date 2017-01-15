@@ -378,9 +378,19 @@ public class CardPrintService implements ICardPrintService{
 											 cardPrint.setPcNo( obj[8].toString());
 										 }
 										 
+										 if(obj[9] != null && !obj[9].toString().isEmpty()){
+											 cardPrint.setOuterBoxNo( obj[9].toString());
+										 }
+										 
 										 tdpCadreCardPrintDAO.save(cardPrint);
 									 }
 								 }
+								 
+								 if(count % 500 == 0){ 
+				    			       //flush a batch of inserts and release memory:
+									 tdpCadreCardPrintDAO.flushAndclearSession();
+				    			  }
+								 
 							 }
 						 }
 						 rs.setMessage("Updating To Local DataBase Success..");
@@ -535,6 +545,10 @@ public class CardPrintService implements ICardPrintService{
 						 
 						 if(obj[8] != null && !obj[8].toString().isEmpty()){
 							 VO.setPcNo( obj[8].toString());
+						 }
+						 
+						 if(obj[9] != null && !obj[9].toString().isEmpty()){
+							 VO.setOuterBoxNo( obj[9].toString());
 						 }
 						 
 						 list.add(VO);
