@@ -63,6 +63,7 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	private String printDesc;
 	private String printerSerialNumber;
 	private String boxNo;
+	private String outerBoxNo;
 	private String pcNo;
 	
 	private CardPrintVendor cardPrintVendor;
@@ -391,4 +392,11 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 		this.district = district;
 	}
 	
+	@Column(name="outer_box_no")
+	public String getOuterBoxNo() {
+		return outerBoxNo;
+	}
+	public void setOuterBoxNo(String outerBoxNo) {
+		this.outerBoxNo = outerBoxNo;
+	}
 }
