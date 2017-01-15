@@ -10,6 +10,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.cardprint.dto.BasicVO;
+import com.itgrids.cardprint.dto.CardPrintVO;
+import com.itgrids.cardprint.dto.CardPrintingDispatchVO;
 import com.itgrids.cardprint.dto.PrintStatusUpdateVO;
 import com.itgrids.cardprint.dto.ResultStatus;
 import com.itgrids.cardprint.dto.UserVO;
@@ -28,6 +30,8 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private List<BasicVO> basicVOList;
 	private ResultStatus resultStatus;
 	private BasicVO basicVO; 
+	private List<CardPrintVO> vendorList;
+	private List<CardPrintingDispatchVO> cardPrintingDispatchVOList;
 	
 	//Attributes
 	private ICardPrintService cardPrintService;
@@ -76,6 +80,21 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public void setBasicVO(BasicVO basicVO) {
 		this.basicVO = basicVO;
+	}
+	
+	public List<CardPrintVO> getVendorList() {
+		return vendorList;
+	}
+	public void setVendorList(List<CardPrintVO> vendorList) {
+		this.vendorList = vendorList;
+	}
+	
+	public List<CardPrintingDispatchVO> getCardPrintingDispatchVOList() {
+		return cardPrintingDispatchVOList;
+	}
+	public void setCardPrintingDispatchVOList(
+			List<CardPrintingDispatchVO> cardPrintingDispatchVOList) {
+		this.cardPrintingDispatchVOList = cardPrintingDispatchVOList;
 	}
 	//Implementation Methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -223,6 +242,62 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			basicVOList = cardPrintService.getAllVendors();
 		}catch(Exception e){
 			LOG.error("Exception Occurred At adminCardPrint() in CardPrintAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
+	
+	//QA Verification dashboard
+	public String qAverificationDashboard(){
+		try{
+			
+			HttpSession session = request.getSession();
+  			UserVO user = (UserVO) session.getAttribute("USER");
+  			if(user == null || user.getUserId() == null){
+  				return Action.ERROR;
+  			}
+  			
+		    //entitlements using userType.
+  		    if(!(user.getUserType() != null && user.getUserType().equalsIgnoreCase("Admin"))){
+  			  return "entitlementError";
+  		    }
+  		    
+  			basicVOList = cardPrintService.getAllVendors();
+  			basicVOList.add(0, new BasicVO(0l, "Select Vendor"));
+		}catch(Exception e){
+			LOG.error("Exception raised in qAverificationDashboard() in CardPrintAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictList(){
+		try{
+			jobj = new JSONObject(getTask());
+			vendorList = cardPrintService.getDstrListByVendor(jobj.getLong("vendorId"));
+		}catch(Exception e){
+			LOG.error("Exception raised in getDistrictList() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getConstencyList(){
+		try{
+			jobj = new JSONObject(getTask());
+			vendorList = cardPrintService.getConstListByVendor(jobj.getLong("vendorId"),jobj.getLong("districtId"));
+		}catch(Exception e){
+			LOG.error("Exception raised in getConstencyList() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPrintingDispatchDetails(){
+		try {
+			jobj = new JSONObject(getTask());
+			Long vendorId = jobj.getLong("vendorId");
+			Long districtId = jobj.getLong("districtId");
+			Long constituencyId = jobj.getLong("constituencyId");
+			
+			cardPrintingDispatchVOList = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
 		}
 		return Action.SUCCESS;
 	}
