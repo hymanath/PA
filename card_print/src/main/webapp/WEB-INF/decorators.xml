@@ -11,6 +11,7 @@
 		<pattern>/cardPrintUpdationAction*</pattern>
 		<pattern>/adminCardPrintAction*</pattern>
 		<pattern>/printUserDashboardAction*</pattern>
+		<pattern>/qAverificationDashboardAction*</pattern>
 	</decorator>
 	
 </decorators>
