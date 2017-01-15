@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CardPrintVO {
+public class CardPrintVO implements Serializable{
 
+	//DONT ADD EXTRA PARAMETERS HERE, BCOZ IT HAS DEPENDENCIES IN WEB SERVICES.
+	
 	private Long id;
 	private String name;
 	private Long count = 0l;

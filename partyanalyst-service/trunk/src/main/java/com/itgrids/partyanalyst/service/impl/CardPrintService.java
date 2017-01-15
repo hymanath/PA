@@ -526,6 +526,11 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
 		List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
 		try {
+			
+			Long totalCadre = 0l;
+			Long unPrintedCadre = 0l;
+			Long printedCadre = 0l;
+			
 			List<String> boxNos = new ArrayList<String>();
 			
 			List<Object[]> list = tdpCadreCardPrintDAO.getBoxWisePrintingDispatchDetails(vendorId, districtId, constituencyId);
@@ -533,7 +538,8 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				for (Object[] obj : list) {
 					CardPrintingDispatchVO vo = new CardPrintingDispatchVO();
 					
-					vo.setBoxNo(obj[0] != null ? obj[0].toString():"");
+					vo.setBoxNo(obj[0] != null ? obj[0].toString():null);
+					
 					vo.setMandalId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
 					vo.setMandalName(obj[2] != null ? obj[2].toString():"");
 					if(vo.getMandalId() == null || vo.getMandalId().longValue() == 0l){
@@ -547,49 +553,77 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 						vo.setPanchayatName(obj[8] != null ? obj[8].toString():"");
 					}
 					vo.setNoOfCards(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
-					vo.setIsQAPassed("YES");
-					vo.setStatus("READY TO DISPATCH");
-					vo.setErrorCount(0l);
-					vo.setErrorPerc("0.00");
 					
-					boxNos.add(vo.getBoxNo());
+					if(vo.getBoxNo() != null){
+						printedCadre = printedCadre +  vo.getNoOfCards();
+						boxNos.add(vo.getBoxNo());
+					}
+					
+					totalCadre = totalCadre + vo.getNoOfCards();
+							
 					returnList.add(vo);
 				}
 			}
+			unPrintedCadre = totalCadre - printedCadre;
+			if(returnList != null && returnList.size() > 0){
+				returnList.get(0).setTotalCadre(totalCadre);
+				returnList.get(0).setPrintedCadre(printedCadre);
+				returnList.get(0).setUnPrintedCadre(unPrintedCadre);
+			}
 			
 			if(boxNos != null && !boxNos.isEmpty()){
+				//validated cards.
 				List<Object[]> list1 = cardPrintValidationDAO.getValidatedCardsCountsForBoxNos(boxNos);
 				if(list1 != null && !list1.isEmpty()){
 					for (Object[] obj : list1) {
-						String boxNo = obj[0] != null ? obj[0].toString():"";
-						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-						CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
-						if(vo != null)
-							vo.setValidatedCardsCount(count);
-					}
-				}
-				
-				List<Object[]> list2 = cardPrintValidationDAO.getErrorCardsCountsForBoxNos(boxNos);
-				if(list2 != null && !list2.isEmpty()){
-					for (Object[] obj : list2) {
-						String boxNo = obj[0] != null ? obj[0].toString():"";
-						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-						CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
-						if(vo != null){
-							vo.setErrorCount(count);
-							vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
-							float fl_perc = Float.parseFloat(vo.getErrorPerc());
-							if(fl_perc < 50f){
-								vo.setIsQAPassed("YES");
-								vo.setStatus("READY TO DISPATCH");
-							}
-							else{
-								vo.setIsQAPassed("NO");
-								vo.setStatus("RE-PRINT REQUIRED");
+						if(obj[0] != null){
+							String boxNo = obj[0].toString();
+							Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+							CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
+							if(vo != null){
+								vo.setValidatedCardsCount(count);
 							}
 						}
 					}
 				}
+				
+				//Error Cards.
+				List<Object[]> list2 = cardPrintValidationDAO.getErrorCardsCountsForBoxNos(boxNos);
+				if(list2 != null && !list2.isEmpty())
+				{
+					for (Object[] obj : list2) 
+					{	
+						if(obj[0] != null)
+						{	
+							String boxNo =obj[0].toString();
+							
+							Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+							if(count > 0l)
+							{
+								CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
+								if(vo != null)
+								{
+									vo.setErrorCount(count);
+									
+									if(vo.getValidatedCardsCount() != null && vo.getValidatedCardsCount() > 0l)
+									{
+										vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+										float fl_perc = Float.parseFloat(vo.getErrorPerc());
+										if(fl_perc < 50f){
+											vo.setIsQAPassed("YES");
+											vo.setStatus("READY TO DISPATCH");
+										}
+										else{
+											vo.setIsQAPassed("NO");
+											vo.setStatus("RE-PRINT REQUIRED");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
  			}
 			
 		} catch (Exception e) {
@@ -603,8 +637,10 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		try {
 			if(boxNo != null && boxNo.trim().length() > 0l && list != null && !list.isEmpty()){
 				for (CardPrintingDispatchVO vo : list) {
-					if(vo.getBoxNo().trim().equalsIgnoreCase(boxNo.trim()))
+					if(vo.getBoxNo()!=null && vo.getBoxNo().trim().equalsIgnoreCase(boxNo.trim())){
 						return vo;
+					}
+						
 				}
 			}
 		} catch (Exception e) {
