@@ -45,6 +45,14 @@
 								<button class="btn btn-success btn-xs text-capital" style="padding: 6px 12px;" onclick="getDispatchDetails();"><b>submit</b></button>
 							</div>
 						</div>
+						
+						<div class="row  m_top20">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<div id="summaryDivId">
+							    </div>
+						    </div>
+						</div>
+						
 						<div class="row" id="boxWiseDivId" style="display:none;">
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 								<div id="dispatchingDiv"></div>
@@ -52,10 +60,12 @@
 								<button class="btn btn-success btn-lg text-capital" id="updateBtnId" style="display:none;">update & generate tracking agent</button>
 							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>
 		</div>
+		<!--
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default panelWhite">
@@ -78,6 +88,7 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
