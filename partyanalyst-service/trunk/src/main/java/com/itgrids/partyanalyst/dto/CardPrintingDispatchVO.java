@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
-public class CardPrintingDispatchVO {
+import java.io.Serializable;
 
+public class CardPrintingDispatchVO implements Serializable{
+	
+	//DONT ADD EXTRA PARAMETERS HERE, BCOZ IT HAS DEPENDENCIES IN WEB SERVICES.
+	
 	private Long id;
 	private String name;
 	
@@ -17,6 +21,9 @@ public class CardPrintingDispatchVO {
 	private String status;
 	private Long errorCount;
 	
+	private Long totalCadre;
+	private Long printedCadre;
+	private Long unPrintedCadre;
 	
 	public Long getErrorCount() {
 		return errorCount;
@@ -96,4 +103,23 @@ public class CardPrintingDispatchVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Long getTotalCadre() {
+		return totalCadre;
+	}
+	public void setTotalCadre(Long totalCadre) {
+		this.totalCadre = totalCadre;
+	}
+	public Long getPrintedCadre() {
+		return printedCadre;
+	}
+	public void setPrintedCadre(Long printedCadre) {
+		this.printedCadre = printedCadre;
+	}
+	public Long getUnPrintedCadre() {
+		return unPrintedCadre;
+	}
+	public void setUnPrintedCadre(Long unPrintedCadre) {
+		this.unPrintedCadre = unPrintedCadre;
+	}
+	
 }
