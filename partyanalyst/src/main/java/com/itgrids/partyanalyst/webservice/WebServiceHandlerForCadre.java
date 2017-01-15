@@ -12,8 +12,10 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
+import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -277,5 +279,46 @@ public class WebServiceHandlerForCadre {
 			LOG.error("Exception raised in syncConstituencyPrintStatus() in WebServiceHandlerForCadre class",e);
 		}
 		return finalVO;
+	}
+	
+	//QA Verification dashboard ws for local project start.
+	
+	@GET
+	@Path("/getDistrictList/{vendorId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CardPrintVO> getDistrictList(@PathParam("vendorId") Long vendorId){
+		List<CardPrintVO> distList = null;
+		try{
+			 distList = cardPrintService.getDstrListByVendor(vendorId);
+		}catch(Exception e){
+			LOG.error("Exception raised in getDistrictList() in CardPrintAction ",e);
+		}
+		return distList;
+	}
+	
+	@GET
+	@Path("/getConstencyList/{vendorId}/{districtId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CardPrintVO> getConstencyList(@PathParam("vendorId") Long vendorId , @PathParam("districtId") Long districtId){
+		List<CardPrintVO> constList = null;
+		try{
+			constList = cardPrintService.getConstListByVendor(vendorId,districtId);
+		}catch(Exception e){
+			LOG.error("Exception raised in getConstencyList() in CardPrintAction ",e);
+		}
+		return constList;
+	}
+	
+	@GET
+	@Path("/getPrintingDispatchDetails/{vendorId}/{districtId}/{constituencyId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(@PathParam("vendorId") Long vendorId , @PathParam("districtId") Long districtId , @PathParam("constituencyId") Long constituencyId){
+		List<CardPrintingDispatchVO> finalList = null;
+		try{
+			  finalList = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
+		}catch (Exception e) {
+			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
+		}
+		return finalList;
 	}
 }
