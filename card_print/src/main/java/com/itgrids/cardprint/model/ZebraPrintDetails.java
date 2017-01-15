@@ -60,6 +60,7 @@ public class ZebraPrintDetails extends BaseModel implements java.io.Serializable
 	private String printDesc;
 	private String printerSerialNumber;
 	private String boxNo;
+	private String outerBoxNo;
 	private String pcNo;
 	
 	private District district;
@@ -389,6 +390,12 @@ public class ZebraPrintDetails extends BaseModel implements java.io.Serializable
 	public void setTdpCadreCardPrint(TdpCadreCardPrint tdpCadreCardPrint) {
 		this.tdpCadreCardPrint = tdpCadreCardPrint;
 	}
-	
+	@Column(name="outer_box_no")
+	public String getOuterBoxNo() {
+		return outerBoxNo;
+	}
+	public void setOuterBoxNo(String outerBoxNo) {
+		this.outerBoxNo = outerBoxNo;
+	}
 	
 }
