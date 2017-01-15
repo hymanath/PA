@@ -9,6 +9,12 @@ public class BasicVO {
 	
 	private List<BasicVO> subList ;
 	
+	public BasicVO(){}
+	public BasicVO(Long id , String name){
+		this.id = id;
+		this.name = name;
+	}
+	
 	public Long getId() {
 		return id;
 	}
