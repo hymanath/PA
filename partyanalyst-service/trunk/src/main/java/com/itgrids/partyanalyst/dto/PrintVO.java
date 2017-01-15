@@ -14,7 +14,7 @@ public class PrintVO implements Serializable{
 	private String printerSerialNumber;
 	private String boxNo;
 	private String pcNo;
-	
+	private String outerBoxNo;
 	
 	public Long getTdpCadreCardPrintId() {
 		return tdpCadreCardPrintId;
@@ -69,6 +69,12 @@ public class PrintVO implements Serializable{
 	}
 	public void setPcNo(String pcNo) {
 		this.pcNo = pcNo;
+	}
+	public String getOuterBoxNo() {
+		return outerBoxNo;
+	}
+	public void setOuterBoxNo(String outerBoxNo) {
+		this.outerBoxNo = outerBoxNo;
 	}
 	
 }
