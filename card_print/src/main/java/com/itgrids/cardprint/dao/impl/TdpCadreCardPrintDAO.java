@@ -21,4 +21,9 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		query.setParameter("constituencyId",constituencyId );
 		return (Long)query.uniqueResult();
 	}
+	
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
+	}
 }
