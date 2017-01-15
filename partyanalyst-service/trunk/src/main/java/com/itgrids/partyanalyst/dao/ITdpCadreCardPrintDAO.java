@@ -14,7 +14,9 @@ public interface ITdpCadreCardPrintDAO extends GenericDao<TdpCadreCardPrint,Long
 	public List<Object[]> getStatusWisePrintingCardsCounts(Long stateId,Long vendorId,Date fromDate,Date toDate);
 	public List<Object[]> getBoxWisePrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId);
 	
-	public Integer updateAppntmntStatusById(PrintVO printVO);
+	public Integer updateTdpCadreCardPrintDataById(PrintVO printVO);
 	public List<Object[]> postVerificationCadreData(Long constituencyId);
 	public List<Object[]> getPrintPushedConstituencies();
+	
+	public void flushAndclearSession();
 }
