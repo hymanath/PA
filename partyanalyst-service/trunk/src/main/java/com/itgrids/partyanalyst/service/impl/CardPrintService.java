@@ -677,10 +677,10 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 								 if(tdpCadreCardPrintId != null){
 									
 									//UPDATE DETAILS BASED ON query. 
-									Integer updateCount =  tdpCadreCardPrintDAO.updateAppntmntStatusById(printVO);
+									Integer updateCount =  tdpCadreCardPrintDAO.updateTdpCadreCardPrintDataById(printVO);
 									
-									/* 
-									   //UPDATE DETAILS BASED ON save() method. 
+									 
+									/*   //UPDATE DETAILS BASED ON save() method. 
 									 TdpCadreCardPrint cardPrint = tdpCadreCardPrintDAO.get(tdpCadreCardPrintId);
 									 if(cardPrint != null){
 										 
@@ -715,11 +715,19 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 										 if(printVO.getPcNo() != null && !printVO.getPcNo().isEmpty()){
 											 cardPrint.setPcNo( printVO.getPcNo());
 										 }
-										 
+										 if(printVO.getOuterBoxNo() != null && !printVO.getOuterBoxNo().isEmpty()){
+											 cardPrint.setOuterBoxNo( printVO.getOuterBoxNo());
+										 }
 										 tdpCadreCardPrintDAO.save(cardPrint);
 									 }*/
+									 
 								 }
 							    
+								 if(count % 250 == 0){ 
+				    			       //flush a batch of inserts and release memory:
+									 tdpCadreCardPrintDAO.flushAndclearSession();
+				    			 }
+								 
 							 }
 							 Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
 							 System.out.println(tempSeconds);
