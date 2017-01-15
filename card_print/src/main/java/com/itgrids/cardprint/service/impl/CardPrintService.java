@@ -19,6 +19,8 @@ import com.itgrids.cardprint.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.cardprint.dao.IUserPrintVendorDAO;
 import com.itgrids.cardprint.dao.IZebraPrintDetailsDAO;
 import com.itgrids.cardprint.dto.BasicVO;
+import com.itgrids.cardprint.dto.CardPrintVO;
+import com.itgrids.cardprint.dto.CardPrintingDispatchVO;
 import com.itgrids.cardprint.dto.PrintStatusUpdateVO;
 import com.itgrids.cardprint.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.cardprint.dto.PrintVO;
@@ -30,6 +32,7 @@ import com.itgrids.cardprint.service.ICardPrintService;
 import com.itgrids.cardprint.util.DateUtilService;
 import com.itgrids.cardprint.util.IConstants;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -472,7 +475,7 @@ public class CardPrintService implements ICardPrintService{
 			    
 			Client client = Client.create(clientConfig);
 			
-			//String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
+			 //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
 			String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
 	        WebResource resource = client.resource(UrlPath);
 	        PrintUpdateDetailsStatusVO reponse = resource.accept("application/json").type("application/json").post(PrintUpdateDetailsStatusVO.class, inputList);
@@ -543,5 +546,64 @@ public class CardPrintService implements ICardPrintService{
 			LOG.error("exception Occurred at convertObjectArrayToList() in CardPrintService class ", e); 
 		}
 		return list;
+	}
+	
+	public List<CardPrintVO> getDstrListByVendor(Long vendorId){
+		
+		List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+		try{
+			
+			  ClientConfig clientConfig = new DefaultClientConfig();
+			  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			    
+			  Client client = Client.create(clientConfig);
+			
+			  //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/getDistrictList/"+vendorId;
+			  String UrlPath = "http://www.mytdp.com/WebService/cadre/getDistrictList/"+vendorId;
+	          WebResource resource = client.resource(UrlPath);
+	          returnList  = resource.accept("application/json").get(new GenericType<List<CardPrintVO>>(){});
+	          
+		}catch(Exception e){
+			LOG.error("Exception raised in getDstrListByVendor() in CardPrintService ",e);
+		}
+		return returnList;
+	}
+	
+	public List<CardPrintVO> getConstListByVendor(Long vendorId,Long districtId){
+		List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+		try{
+			  ClientConfig clientConfig = new DefaultClientConfig();
+			  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			    
+			  Client client = Client.create(clientConfig);
+			
+			  //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/getConstencyList/"+vendorId+"/"+districtId;
+			  String UrlPath = "http://www.mytdp.com/WebService/cadre/getConstencyList/"+vendorId+"/"+districtId;
+	          WebResource resource = client.resource(UrlPath);
+	          returnList  = resource.accept("application/json").get(new GenericType<List<CardPrintVO>>(){});
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getConstListByVendor() in CardPrintService ",e);
+		}
+		return returnList;
+	}
+	
+	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
+		List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
+		try{
+			 ClientConfig clientConfig = new DefaultClientConfig();
+			  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			    
+			  Client client = Client.create(clientConfig);
+			
+			  //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/getPrintingDispatchDetails/"+vendorId+"/"+districtId+"/"+constituencyId;
+			  String UrlPath = "http://www.mytdp.com/WebService/cadre/getPrintingDispatchDetails/"+vendorId+"/"+districtId+"/"+constituencyId;
+	          WebResource resource = client.resource(UrlPath);
+	          returnList  = resource.accept("application/json").get(new GenericType<List<CardPrintingDispatchVO>>(){});
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintService ",e);
+		}
+		return returnList;
 	}
 }
