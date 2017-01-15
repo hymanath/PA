@@ -49,7 +49,8 @@
 						 </c:if>
 						 <c:if test="${sessionScope.USER.userType != null && sessionScope.USER.userType =='Admin'}">
 						    <li class="m_top10"><a tabindex="-1" href="adminCardPrintAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;Admin Page</a></li>
-					     </c:if>
+					        <li class="m_top10"><a tabindex="-1" href="qAverificationDashboardAction.action"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp; QA Verification</a></li>
+						 </c:if>
 						 
 					   </c:if>
 					   <li class="m_top10"><a tabindex="-1" href="logoutAction.action"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Sign Out</a></li>
