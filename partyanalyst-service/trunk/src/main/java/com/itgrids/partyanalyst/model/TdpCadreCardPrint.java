@@ -61,6 +61,7 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	private String printDesc;
 	private String printerSerialNumber;
 	private String boxNo;
+	private String outerBoxNo;
 	private String pcNo;
 	
 	
@@ -446,6 +447,14 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	}
 	public void setSerialNoInBooth(Long serialNoInBooth) {
 		this.serialNoInBooth = serialNoInBooth;
+	}
+	
+	@Column(name="outer_box_no")
+	public String getOuterBoxNo() {
+		return outerBoxNo;
+	}
+	public void setOuterBoxNo(String outerBoxNo) {
+		this.outerBoxNo = outerBoxNo;
 	}
 	
 }
