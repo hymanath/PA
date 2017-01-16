@@ -11288,9 +11288,9 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 				List<GovtSchemes> govtSchemesList = govtSchemesDAO.getAll();//get all benefit schemes
 				
 				Map<Long,List<BenefitVO>> cadreMap = new HashMap<Long, List<BenefitVO>>(0);
-				/*for (Long cadreId : cadreIds) {
-					cadreMap.put(cadreId, getBenefitsSchemasSkeleton(govtSchemesList));
-				}*/
+				for (Long cadreId : cadreIds) {
+					cadreMap.put(cadreId, null);
+				}
 					
 				//0-cadreId,1-name,2-schemeId,3-scheneName,4-amount
 				List<Object[]> schemeDetails = govtSchemeBeneficiaryDetailsDAO.getBenefitsApprovedDetails(cadreIds);
@@ -11350,7 +11350,7 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 					}
 					
 					//set scheme wise total amount to main map
-					if(cadreMap.get(cadreIds.get(1)) != null){
+					if(cadreIds.size() > 1 && cadreIds.get(1) != null && cadreMap.get(cadreIds.get(1)) != null){
 						cadreMap.get(cadreIds.get(1)).get(0).setSumOfAll(overAllAmount);
 						for (BenefitVO benefitVO : cadreMap.get(cadreIds.get(1))) {
 							benefitVO.setSchemeWiseTotalCount(tempMap.get(benefitVO.getBenefitId()));
@@ -11359,10 +11359,22 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 					
 					
 					for (int i=0;i<cadreIds.size();i++) {
-						if(cadreMap.get(cadreIds.get(i)) != null){
-							BenefitVO vo = new BenefitVO();
-							vo.setCadreDetailsVO(cadreMap.get(cadreIds.get(i)));
-							finalVoList.add(vo);
+						if(i == 0){
+							if(cadreMap.get(cadreIds.get(0)) == null){
+								finalVoList.add(0,null);
+							}else{
+								if(cadreMap.get(cadreIds.get(i)) != null){
+									BenefitVO vo = new BenefitVO();
+									vo.setCadreDetailsVO(cadreMap.get(cadreIds.get(i)));
+									finalVoList.add(0,vo);
+								}
+							}
+						}else{
+							if(cadreMap.get(cadreIds.get(i)) != null){
+								BenefitVO vo = new BenefitVO();
+								vo.setCadreDetailsVO(cadreMap.get(cadreIds.get(i)));
+								finalVoList.add(vo);
+							}
 						}
 					}
 				}
