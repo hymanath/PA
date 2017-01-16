@@ -3761,58 +3761,58 @@ function getTotalArticledetails(articleId){
 	function getEditioDtls(alertTypeStr,alertEdition){
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
-		//$(document).on("click",".getEditioDtls",function(){
+	
 		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
-		var scopeIdsArr = [2,3,6,7,9,5,8];
-		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
-		getStateImpactLevelAlertDtlsCnt("other"); 
-		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
-		$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		//dist wise startDate
 		
-		var scopeIdsArr = [];
-		 $(".alertSettingsUl li").each(function() {
-		  if($(this).find("input").is(":checked")){
-			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-		     if(selectionType == "District"){
-				scopeIdsArr.push(2);
-			}else if(selectionType == "Constituency"){
-				scopeIdsArr.push(3);
-			}else if(selectionType == "mandalMuncipality"){
-				scopeIdsArr.push(5);  
-				scopeIdsArr.push(8);
-			}else if(selectionType == "VillageWard"){
-				scopeIdsArr.push(7);  
-				scopeIdsArr.push(9);	
-				scopeIdsArr.push(6);	
-			}else if(selectionType == "All"){
-				scopeIdsArr.push(2);
-				scopeIdsArr.push(3);
-				scopeIdsArr.push(5);
-				scopeIdsArr.push(6);
-				scopeIdsArr.push(7);
-				scopeIdsArr.push(8);
-				scopeIdsArr.push(9);  
-				
+		if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			var scopeIdsArr = [2,3,6,7,9,5,8];          
+			getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
+			getStateImpactLevelAlertDtlsCnt("other"); 
+			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
+			$("#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			
+			 scopeIdsArr = [];
+			 $(".alertSettingsUl li").each(function() {
+			  if($(this).find("input").is(":checked")){
+				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+				 if(selectionType == "District"){
+					scopeIdsArr.push(2);
+				}else if(selectionType == "Constituency"){
+					scopeIdsArr.push(3);
+				}else if(selectionType == "mandalMuncipality"){
+					scopeIdsArr.push(5);  
+					scopeIdsArr.push(8);
+				}else if(selectionType == "VillageWard"){
+					scopeIdsArr.push(7);  
+					scopeIdsArr.push(9);	
+					scopeIdsArr.push(6);	
+				}else if(selectionType == "All"){
+					scopeIdsArr.push(2);
+					scopeIdsArr.push(3);
+					scopeIdsArr.push(5);
+					scopeIdsArr.push(6);
+					scopeIdsArr.push(7);
+					scopeIdsArr.push(8);
+					scopeIdsArr.push(9);  
+					
+				}
+			  }
+		   });
+		  var locVal ='';
+			$( "li.optionsCls" ).each(function() {
+				if($( this ).hasClass( "active" )){
+					locVal = $(this).attr("attr_id");
+				}
+			});
+			if(locVal == "1"){  
+				getTotalAlertGroupByDist(scopeIdsArr,"other");      
+			}else if(locVal == "2"){
+				getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
+			}else{
+				getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 			}
-		  }
-	   });
-	  var locVal ='';
-		$( "li.optionsCls" ).each(function() {
-			if($( this ).hasClass( "active" )){
-				locVal = $(this).attr("attr_id");
-			}
-		});
-		if(locVal == "1"){  
-			getTotalAlertGroupByDist(scopeIdsArr,"other");      
-		}else if(locVal == "2"){
-			getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
-		}else{
-			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 		}
-		
-		//dist wise end
 		var dates=$("#dateRangeIdForAlert").val();        
 		var fromDateStr;
 		var toDateStr;
