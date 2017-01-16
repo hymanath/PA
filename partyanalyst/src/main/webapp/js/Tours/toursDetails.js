@@ -762,8 +762,8 @@ function getCandidateList(designationId){
 			str+='<th class="text-center">Total Leaders</th>';
 			str+='<th class="text-center">Submited Leaders</th>';
 			str+='<th class="text-center">Not Submited Leaders</th>';
-			/* str+='<th class="text-center">Complaince</th>';
-			str+='<th class="text-center">Non-Complaince</th>'; */
+			str+='<th class="text-center">Complaince</th>';
+			str+='<th class="text-center">Non-Complaince</th>'; 
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -800,7 +800,7 @@ function getCandidateList(designationId){
 			}else{
 				str+='<td class="text-center"> - </td>';
 			}
-			/* if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
+		   if(result[i].complainceCnt != null && result[i].complainceCnt > 0){
 				str+='<td class="text-center">'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></td>';
 			}else{
 				str+='<td class="text-center"> - </td>';
@@ -809,7 +809,7 @@ function getCandidateList(designationId){
 				str+='<td class="text-center">'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></td>';
 			}else{
 				str+='<td class="text-center"> - </td>';
-			} */
+			} 
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1510,6 +1510,7 @@ function getCandidateList(designationId){
 	}); */
 	
 	function getDesignationWiseOverAllData(fromDate,toDate,designationIds){
+		$("#membersOvrvwId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { 
 			 fromDate : fromDate,
 			 toDate : toDate,
@@ -1537,7 +1538,7 @@ function getCandidateList(designationId){
 					str+='<td><p class="text-muted">Total Leaders</p><h4 class="panel-title">'+result[i].noOfLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Submited</p><h4 class="panel-title">'+result[i].submitedLeaderCnt+'</h4></td>';
 					str+='<td><p class="text-muted">Not Submited</p><h4 class="panel-title">'+result[i].notSubmitedLeaserCnt+'</h4></td>';
-					/* if(result[i].complainceCnt !=null && result[i].complainceCnt >0){
+					 if(result[i].complainceCnt !=null && result[i].complainceCnt >0){
 						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title">'+result[i].complainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].complaincePer+'%</small></h4></td>';
 					}else{
 						str+='<td><p class="text-muted">Compliance</p><h4 class="panel-title"> - </h4></td>';
@@ -1547,7 +1548,7 @@ function getCandidateList(designationId){
 						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title">'+result[i].nonComplainceCnt+'&nbsp;&nbsp;&nbsp;<small>'+result[i].nonComplaincePer+'%</small></h4></td>';						
 					}else{
 						str+='<td><p class="text-muted">Non Compliance</p><h4 class="panel-title"> - </h4></td>';
-					} */
+					} 
 					
 					
 				str+='</tr>';
