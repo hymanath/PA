@@ -2,17 +2,17 @@ package com.itgrids.partyanalyst.dto;
 
 public class BenefitCandidateVO {
 	private Long id;
-	private String name;
-	private String relativeName;
+	private String name="";
+	private String relativeName="";
 	private Long cadreId;
-	private String memberShipNum;
-	private String aadharNum;
-	private String mobilenum;
+	private String memberShipNum="";
+	private String aadharNum="";
+	private String mobilenum="";
 	private Long manMunId;
-	private String manMumName;
-	private String year;
+	private String manMumName="";
+	private String year="";
 	private Long benefitId;
-	private String benefitName;
+	private String benefitName="";
 	private Long amount;
 	
 	
