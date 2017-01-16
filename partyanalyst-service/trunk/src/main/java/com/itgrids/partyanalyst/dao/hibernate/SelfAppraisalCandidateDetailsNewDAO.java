@@ -226,7 +226,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
                return query.list();
 }
  
- public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds,List<Long> monthyearIds){
+ public List<Object[]> getSubmittedToursLeadersDetails(List<Long> desigIds,List<Long> monthyearIds){
 	 
 	 StringBuilder queryStr = new StringBuilder();
 	  queryStr.append( " select " +
@@ -236,10 +236,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	    		       " from SelfAppraisalCandidateDetailsNew model " +
 	    		       " where model.selfAppraisalCandidate.isActive='Y' " +
 	    		       " and model.isDeleted ='N' "); 
-	               /* if(fromDate != null && toDate != null ){
-	                	queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
-	                }*/
-	  				
+	            	
 	  				if(monthyearIds !=null && monthyearIds.size()>0){
 	  					queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
 	  				}
@@ -250,10 +247,6 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId " );
 	                
 	                Query query = getSession().createQuery(queryStr.toString());
-	               /* if(fromDate != null && toDate != null ){
-	                	query.setDate("fromDate", fromDate);
-	                	query.setDate("toDate", toDate);
-	                }*/
 	                if(desigIds != null && desigIds.size()>0){  
 	     			   query.setParameterList("desigIds",desigIds); 
 	     		    } 
@@ -263,47 +256,52 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                return query.list();
 	 
  }
-	 public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(Date fromDate,Date toDate,String type,List<Long> monthyearIds){
-			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select " +
-			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-			 " model.selfAppraisalDesignation.designation," +
-			 " model.selfAppraisalCandidateId," );
-			if(type.equalsIgnoreCase("Category")){
-			 queryStr.append(" model.selfAppraisalTourCategoryId,");	
-			}else if(type.equalsIgnoreCase("Govt")){
-			 queryStr.append(" model.tourTypeId,");	
-			}
-			queryStr.append(" sum(model.tourDays) " +
-			 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
-			 " and model.selfAppraisalDesignation.isActive='Y' ");
-		   /*if(fromDate != null && toDate != null ){
-			   queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
-		   }*/
-			
-			if(monthyearIds !=null && monthyearIds.size()>0){
-					queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
-			}
-						
-		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		  				   "  model.selfAppraisalCandidateId,");
-		    if(type.equalsIgnoreCase("Category")){
-			 queryStr.append(" model.selfAppraisalTourCategoryId");	
-			}else if(type.equalsIgnoreCase("Govt")){
-			 queryStr.append(" model.tourTypeId");	
-			}
-		    queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		  				   "  model.selfAppraisalCandidateId ");
-		  Query query = getSession().createQuery(queryStr.toString());
-		/*  if(fromDate!= null && toDate!=null){
-			   query.setDate("fromDate", fromDate);
-			   query.setDate("toDate", toDate);
-		  }*/
-		  if(monthyearIds !=null && monthyearIds.size()>0){
-			  query.setParameterList("monthyearIds", monthyearIds);
-		  }
-		  return query.list();
-	}
+
+ public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthYearIds,List<Long> designationIds){
+	 StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+		 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+		 " model.selfAppraisalDesignation.designation," +//1
+		 " model.selfAppraisalCandidateId," );//2
+		if(type.equalsIgnoreCase("tourCategory")){
+		 queryStr.append(" model.selfAppraisalTourCategoryId,");//3	
+		}else if(type.equalsIgnoreCase("tourType")){
+		 queryStr.append(" model.tourTypeId,");//3	
+		}
+		queryStr.append(" model.selfAppraisalToursMonthId," +//4
+		 " sum(model.tourDays) " +//5
+		 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
+		 " and model.selfAppraisalDesignation.isActive='Y' ");
+	   if(monthYearIds != null && monthYearIds.size() > 0 ){
+         queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+    }
+	   if(designationIds != null && designationIds.size() > 0){
+		 queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds)");  
+	   }
+	   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+	  				   "  model.selfAppraisalCandidateId,");
+	    if(type.equalsIgnoreCase("tourCategory")){
+		 queryStr.append(" model.selfAppraisalTourCategoryId");	
+		}else if(type.equalsIgnoreCase("tourType")){
+		 queryStr.append(" model.tourTypeId");	
+		}
+	    queryStr.append(",model.selfAppraisalToursMonthId");
+	    queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+	  				   "  model.selfAppraisalCandidateId ");
+	    if(type.equalsIgnoreCase("tourCategory")){
+			 queryStr.append(",model.selfAppraisalTourCategoryId");	
+		}else if(type.equalsIgnoreCase("tourType")){
+			 queryStr.append(",model.tourTypeId");	
+		}
+	  Query query = getSession().createQuery(queryStr.toString());
+	   if(monthYearIds != null && monthYearIds.size() > 0 ){
+		query.setParameterList("monthYearIds", monthYearIds);
+	   }
+	   if(designationIds != null && designationIds.size() > 0){
+		query.setParameterList("designationIds", designationIds);  
+	  }
+	   return query.list();
+ }
 	 
 	 public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId,List<Long> monthyearIds){
 			StringBuilder queryStr = new StringBuilder();
