@@ -3573,7 +3573,6 @@
 						<div id="tourIndividualDetailsBlock" class="m_top20"></div>
 						<div id="monthWiseComplainceDivId" class="row m_top20"></div>
 						<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
-						<!--<div id="tourIndividualDetailsTableBlock1" class="m_top20"></div>-->
 					</div>
 				</div>
 			  </div>
