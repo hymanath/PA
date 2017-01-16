@@ -86,10 +86,11 @@ public List<Long> getLatestMonthYearId(){
 }
 public List<Object[]> getMonthAndYearDtls(List<String> monthYearList){
 	StringBuilder queryStr = new StringBuilder();
-	 queryStr.append(" select model.selfAppraisalToursMonthId,model.monthName,model.year from SelfAppraisalToursMonth model");
+	 queryStr.append(" select model.selfAppraisalToursMonthId,model.monthName,model.year from SelfAppraisalToursMonth model ");
 	 if(monthYearList != null && monthYearList.size() > 0){
 		 queryStr.append(" where model.toursMonth in(:monthYearList) ");
 	 }
+	 queryStr.append(" order by model.monthNo desc ");
 	 Query query = getSession().createQuery(queryStr.toString());
 	 if(monthYearList != null && monthYearList.size() > 0){
 		 query.setParameterList("monthYearList", monthYearList);
