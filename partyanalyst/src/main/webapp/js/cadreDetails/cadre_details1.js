@@ -1473,7 +1473,7 @@ function buildVolunteersDetails(result){
 		 url: 'getBenefitDetailsAlongFamilyAction.action',
 		 data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			if(result != null && result.length > 0){
+			if(result != null && result.length > 0 && result[0] != null){
 				var str = '';
 				str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
 				str+='<thead style="background-color:#ccc;">';
@@ -1513,11 +1513,11 @@ function buildVolunteersDetails(result){
 				var str1 = '';
 				str1+='<table class="table table-condensed" style="border:1px solid #ddd;">';
 				str1+='<thead>';
-					if(result[0].cadreDetailsVO != null && result[0].cadreDetailsVO.length > 0){
+					if(result[1].cadreDetailsVO != null && result[1].cadreDetailsVO.length > 0){
 						str1+='<th></th>';
 						str1+='<th>Total Amount</th>';
-						for(var t in result[0].cadreDetailsVO){
-							str1+='<th>'+result[0].cadreDetailsVO[t].benefitName+'</th>';
+						for(var t in result[1].cadreDetailsVO){
+							str1+='<th>'+result[1].cadreDetailsVO[t].benefitName+'</th>';
 						}
 					}
 				str1+='</thead>';
@@ -1561,7 +1561,7 @@ function buildVolunteersDetails(result){
 				str1+='</table>';
 				$("#familyBenefitsDivId").html(str1);
 			}else{
-				$("#familyBenefitsDivId").html("NO Family Member Got Benefits.");
+				$("#familyBenefitsDivId").html("No Family Member Got Benefits.");
 			}
 			
 			
@@ -1570,7 +1570,7 @@ function buildVolunteersDetails(result){
 	
 	function getOwnAndParticipatedConstituenciesBenefitDetails(){
 		var constituencyId = $("#cadreConstituencyId").val()=="undefined"?0:$("#cadreConstituencyId").val();
-		var pConstituencyId = $("#cadrePConstituencyId").val()=="undefined"?0:$("#cadrePConstituencyId").val();
+		var pConstituencyId = $("#cadreParticipatedConstituencyId").val()=="undefined" || $("#cadreParticipatedConstituencyId").val().trim()==""?0:$("#cadreParticipatedConstituencyId").val();
 		 $("#constituencyBenefitsDivId,#partConstituencyBenefitsDivId").html('<img src="images/icons/loading.gif" width="50px" height="50px" style="margin:auto;display:block;">'); 
 		 
 		
@@ -1611,24 +1611,25 @@ function buildVolunteersDetails(result){
 					$("#constituencyBenefitsDivId").html("No Own Constituency Benefits Available")
 				}
 				
+				var strt='';
 				if(result.familyDetailsVO != null && result.familyDetailsVO.length > 0){
-					str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
-					str+='<thead style="background-color:#ccc;">';
-						str+='<th>Constituency Name</th>';
+					strt+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+					strt+='<thead style="background-color:#ccc;">';
+						strt+='<th>Constituency Name</th>';
 						for(var t in result.familyDetailsVO){
-							str+='<th>'+result.familyDetailsVO[t].benefitName+'</th>';
+							strt+='<th>'+result.familyDetailsVO[t].benefitName+'</th>';
 						}
-					str+='</thead>';
-					str+='<tbody>';
-					str+='</tbody>';
-						str+='<tr>';
-							str+='<td>'+result.familyDetailsVO[0].constituencyName+'</td>';
+					strt+='</thead>';
+					strt+='<tbody>';
+					strt+='</tbody>';
+						strt+='<tr>';
+							strt+='<td>'+result.familyDetailsVO[0].constituencyName+'</td>';
 							for(var t in result.familyDetailsVO){
-								str+='<td>'+result.familyDetailsVO[t].amount+'</td>';
+								strt+='<td>'+result.familyDetailsVO[t].amount+'</td>';
 							}
-						str+='</tr>';
-					str+='</table>';
-					$("#partConstituencyBenefitsDivId").html(str);
+						strt+='</tr>';
+					strt+='</table>';
+					$("#partConstituencyBenefitsDivId").html(strt);
 				}else{
 					$("#partConstituencyBenefitsDivId").html("No Participated Constituency Benefits Available");
 				}
@@ -1739,6 +1740,7 @@ function buildVolunteersDetails(result){
 					strt+='</thead>';
 					strt+='<tbody>';
 						for(var t in result){
+							strt+='<tr>';
 							if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
 								strt+='<td>'+result[t].locationName+'</td>';
 								for(var i in result[t].cadreDetailsVO){
@@ -1749,11 +1751,14 @@ function buildVolunteersDetails(result){
 								
 								}
 							}
+							strt+='</tr>';
 						}
 					strt+='</tbody>';
 					strt+='</table>';
 					
 					$("#constituencyBenefitDetailsId"+distId).html(strt);
+				}else{
+					$("#constituencyBenefitDetailsId"+distId).html("No Data Available.");
 				}
 			});
 			
