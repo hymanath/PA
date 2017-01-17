@@ -3562,4 +3562,41 @@
 	<bean id="tvNewsChannelDAO" class="com.itgrids.partyanalyst.dao.hibernate.TvNewsChannelDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	
+	<bean id="actionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="actionTypeStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActionTypeStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="actionTypeRequiredDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActionTypeRequiredDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertActionTypeHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeHistoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertActionTypeDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeDocumentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertActionTypeCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeCommentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="AlertActionTypeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	
+	
 </beans>		
