@@ -24,7 +24,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IAlertActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
@@ -132,6 +134,8 @@ private IAlertClarificationDocumentDAO alertClarificationDocumentDAO;
 private IEditionTypeDAO editionTypeDAO; 
 private IClarificationRequiredDAO clarificationRequiredDAO;
 private IAlertClarificationStatusDAO alertClarificationStatusDAO;
+private IActionTypeStatusDAO actionTypeStatusDAO;
+private IAlertActionTypeDAO alertActionTypeDAO;
 
 
 
@@ -380,6 +384,14 @@ public void setAlertClarificationDocumentDAO(IAlertClarificationDocumentDAO aler
 
 public void setEditionTypeDAO(IEditionTypeDAO editionTypeDAO) {
 	this.editionTypeDAO = editionTypeDAO;
+}
+
+public void setActionTypeStatusDAO(IActionTypeStatusDAO actionTypeStatusDAO) {
+	this.actionTypeStatusDAO = actionTypeStatusDAO;
+}
+
+public void setAlertActionTypeDAO(IAlertActionTypeDAO alertActionTypeDAO) {
+	this.alertActionTypeDAO = alertActionTypeDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -3299,6 +3311,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured setAlertStatus() method of AlertService{}");
 		}
 	}
+	
     /*
      * Santosh (non-Javadoc)
      * @see com.itgrids.partyanalyst.service.IAlertService#getAlertOverviewDetails(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
@@ -3463,6 +3476,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			   }
 		   }
 		   
+		   /* Getting Alert Action Type Wise Data start */
+		   Map<Long,AlertOverviewVO> alertActionMap = new LinkedHashMap<Long, AlertOverviewVO>();
+		   List<Object[]> rtrnStatusObjList = actionTypeStatusDAO.getAlertActionTypeWiseStatus();
+		   prepareActionTypeTemplate(rtrnStatusObjList,alertActionMap);
+		   List<Object[]> rtrnAlerCntObjLst = alertActionTypeDAO.getAlertCountStatusWiseBasedOnActionType(locationAccessLevelId, locationValues, stateId, fromDate, toDate, alertTypes, alertEditions);
+		   setActionWiseAlertCnt(rtrnAlerCntObjLst,alertActionMap);
+		   if(alertActionMap != null && alertActionMap.size() > 0){
+			   resultVO.getActionTypeList().addAll(new ArrayList<AlertOverviewVO>(alertActionMap.values()));
+			   alertActionMap.clear();
+		   }
+		   /* End */
+		   
 		   
 		   // preparing final result(1)
 		   resultVO.setOverAllVO(overViewVO);  
@@ -3559,6 +3584,50 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertService{}",e);   
 	   }
    }
+  public void prepareActionTypeTemplate(List<Object[]> objList,Map<Long,AlertOverviewVO> alertActionMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  Long actionTypeId = commonMethodsUtilService.getLongValueForObject(param[0]);//actionTypeId
+				  AlertOverviewVO actionVO = alertActionMap.get(actionTypeId);
+				   if(actionVO == null){
+					   actionVO = new AlertOverviewVO(); 
+					   actionVO.setId(actionTypeId);
+					   actionVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					   actionVO.setSubList1(new ArrayList<AlertOverviewVO>());
+					   alertActionMap.put(actionTypeId, actionVO);
+				   }
+				   AlertOverviewVO statusVO = new AlertOverviewVO();
+				   statusVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				   statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[3]));
+				   actionVO.getSubList1().add(statusVO);
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Error occured prepareActionTypeTemplate() method of AlertService{}",e);  
+	  }
+  }
+  public void setActionWiseAlertCnt(List<Object[]> objList,Map<Long,AlertOverviewVO> actionMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  Long actionTypeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				  Long statusId = commonMethodsUtilService.getLongValueForObject(param[1]);
+				  Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[2]);
+				  AlertOverviewVO actionVO = actionMap.get(actionTypeId);
+				   if(actionVO != null){
+					   actionVO.setAlertCnt(actionVO.getAlertCnt()+alertCnt);//overAll Alert Action Type Wise
+					   AlertOverviewVO statusVO = getMatchVO(actionVO.getSubList1(), statusId);
+					   if(statusVO != null){
+						   statusVO.setAlertCnt(alertCnt);   
+					   }
+				   }
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Error occured setActionWiseAlertCnt() method of AlertService{}",e);  
+	  }
+  }
 	/* Swadhin Lenka
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByDist(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long)
@@ -3639,7 +3708,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertDtls(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
-	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId){
+	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType){
 		LOG.info("Entered in getAlertDtls() method of AlertService{}");
 		try{
 			Date fromDate = null;      
@@ -3670,9 +3739,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			  
 			//DateUtilService dateUtilService = new DateUtilService();
-			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Object[]> alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);
+			List<Object[]> alertList = null;
+			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){
+			  alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList);
+			}else{
+			 alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);	
+			}
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			
 			return alertCoreDashBoardVOs;

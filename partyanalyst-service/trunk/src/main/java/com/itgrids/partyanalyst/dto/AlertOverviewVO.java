@@ -56,6 +56,7 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> totalPartyList;
 	private List<AlertOverviewVO> totalGovtList;  
 	private List<AlertOverviewVO> totalOtherList;
+	private List<AlertOverviewVO> actionTypeList;
 	
 	
 	
@@ -298,5 +299,11 @@ public class AlertOverviewVO {
 		}
 		return editionList;
 	}
-	
+	public List<AlertOverviewVO> getActionTypeList() {
+		if(actionTypeList == null){
+			actionTypeList = new ArrayList<AlertOverviewVO>();
+		}
+		return actionTypeList;
+	}
+   	
 }                                                          

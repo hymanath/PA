@@ -10,5 +10,5 @@ public class ActionTypeRequiredDAO extends GenericDaoHibernate<ActionTypeRequire
 	public ActionTypeRequiredDAO(){
 		super(ActionTypeRequired.class);
 	}
-	
+
 }
