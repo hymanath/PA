@@ -602,8 +602,8 @@ public class CardPrintService implements ICardPrintService{
 		return returnList;
 	}
 	
-	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
-		List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
+	public CardPrintingDispatchVO getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
+		CardPrintingDispatchVO finalVO = new CardPrintingDispatchVO();
 		try{
 			 ClientConfig clientConfig = new DefaultClientConfig();
 			  clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -613,11 +613,11 @@ public class CardPrintService implements ICardPrintService{
 			  //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/getPrintingDispatchDetails/"+vendorId+"/"+districtId+"/"+constituencyId;
 			  String UrlPath = "http://www.mytdp.com/WebService/cadre/getPrintingDispatchDetails/"+vendorId+"/"+districtId+"/"+constituencyId;
 	          WebResource resource = client.resource(UrlPath);
-	          returnList  = resource.accept("application/json").get(new GenericType<List<CardPrintingDispatchVO>>(){});
+	          finalVO  = resource.accept("application/json").get(CardPrintingDispatchVO.class);
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintService ",e);
 		}
-		return returnList;
+		return finalVO;
 	}
 }
