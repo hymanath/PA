@@ -1,7 +1,4 @@
-onloads();
-function onloads(){
-	getDistrictList(0);
-}
+
 function getDistrictList(vendorId){
 	//getConstituencyList();
 	$("#districtListId").empty();
