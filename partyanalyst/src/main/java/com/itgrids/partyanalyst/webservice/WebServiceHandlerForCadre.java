@@ -196,7 +196,7 @@ public class WebServiceHandlerForCadre {
 	}
 	
 	
-	//PRINTING APP CALLS
+	//QA APP CALLS
 	
 	@GET
 	@Path("/validateCardPrintUserLogin/{username}/{password}")
@@ -242,7 +242,7 @@ public class WebServiceHandlerForCadre {
 	}
 	
 	
-	//PRINT DETAILS UPDATION To TdpCadreCardPrint
+	//PRINT DETAILS SYNCHING To TdpCadreCardPrint
 	@POST
 	@Path("/updatePrintDetailsToTdpCadreCardPrint")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -312,13 +312,15 @@ public class WebServiceHandlerForCadre {
 	@GET
 	@Path("/getPrintingDispatchDetails/{vendorId}/{districtId}/{constituencyId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(@PathParam("vendorId") Long vendorId , @PathParam("districtId") Long districtId , @PathParam("constituencyId") Long constituencyId){
-		List<CardPrintingDispatchVO> finalList = null;
+	public CardPrintingDispatchVO getPrintingDispatchDetails(@PathParam("vendorId") Long vendorId , @PathParam("districtId") Long districtId , @PathParam("constituencyId") Long constituencyId){
+		CardPrintingDispatchVO finaVO = null;
 		try{
-			  finalList = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
+			finaVO = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
 		}catch (Exception e) {
 			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
 		}
-		return finalList;
+		return finaVO;
 	}
+	
+	//QA Verification dashboard ws for local project end.
 }
