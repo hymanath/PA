@@ -38,6 +38,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private List<CardPrintingDispatchVO> cardPrintingDispatchVOList;
 	private List<CardPrintStatusVO> cardPrintStatusVOList;
 	private CadreValidateVO cadreValidateVO;
+	private CardPrintingDispatchVO cardPrintingDispatchVO;
 	
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -114,6 +115,14 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public void setErrorsList(List<String> errorsList) {
 		this.errorsList = errorsList;
+	}
+	
+	public CardPrintingDispatchVO getCardPrintingDispatchVO() {
+		return cardPrintingDispatchVO;
+	}
+	public void setCardPrintingDispatchVO(
+			CardPrintingDispatchVO cardPrintingDispatchVO) {
+		this.cardPrintingDispatchVO = cardPrintingDispatchVO;
 	}
 	public String execute(){
 		try{
@@ -198,7 +207,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			Long districtId = jObj.getLong("districtId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			
-			cardPrintingDispatchVOList = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
+			cardPrintingDispatchVO = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
 		}
