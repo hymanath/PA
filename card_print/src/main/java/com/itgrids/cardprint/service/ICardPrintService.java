@@ -19,5 +19,5 @@ public interface ICardPrintService {
 	public ResultStatus updatePrintDetailsToTdpCadreCardPrint(final Long cardPrintVendorId , final Long constituencyId);
 	public List<CardPrintVO> getDstrListByVendor(Long vendorId);
 	public List<CardPrintVO> getConstListByVendor(Long vendorId,Long districtId);
-	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId);
+	public CardPrintingDispatchVO getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId);
 }
