@@ -19,4 +19,5 @@ public interface ITdpCadreCardPrintDAO extends GenericDao<TdpCadreCardPrint,Long
 	public List<Object[]> getPrintPushedConstituencies();
 	
 	public void flushAndclearSession();
+	public Long getTotalCadreInConstituency(Long vendorId , Long constituencyId);
 }
