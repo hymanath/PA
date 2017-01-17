@@ -18,7 +18,8 @@ public class CardPrintValidationDAO extends GenericDaoHibernate<CardPrintValidat
 		Query query = getSession().createQuery("select model.boxNo," +
 								" count(model.cardPrintValidationId)" +
 								" from CardPrintValidation model" +
-								" where model.boxNo in (:boxNos)");
+								" where model.boxNo in (:boxNos)" +
+								" group by model.boxNo");
 		query.setParameterList("boxNos", boxNos);
 		
 		return query.list();
