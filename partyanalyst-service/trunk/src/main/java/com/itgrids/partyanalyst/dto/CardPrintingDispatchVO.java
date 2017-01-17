@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CardPrintingDispatchVO implements Serializable{
 	
@@ -17,13 +18,16 @@ public class CardPrintingDispatchVO implements Serializable{
 	private Long noOfCards;
 	private String isQAPassed;
 	private String errorPerc;
-	private Long validatedCardsCount;
+	private Long validatedCardsCount=0l;
 	private String status;
-	private Long errorCount;
+	private Long errorCount = 0l;
+	private Long approvedCount = 0l;
 	
-	private Long totalCadre;
-	private Long printedCadre;
-	private Long unPrintedCadre;
+	private Long totalCadre = 0l;
+	private Long printedCadre = 0l;
+	private Long unPrintedCadre = 0l;
+	
+	private List<CardPrintingDispatchVO> subList; 
 	
 	public Long getErrorCount() {
 		return errorCount;
@@ -121,5 +125,18 @@ public class CardPrintingDispatchVO implements Serializable{
 	public void setUnPrintedCadre(Long unPrintedCadre) {
 		this.unPrintedCadre = unPrintedCadre;
 	}
+	public Long getApprovedCount() {
+		return approvedCount;
+	}
+	public void setApprovedCount(Long approvedCount) {
+		this.approvedCount = approvedCount;
+	}
+	public List<CardPrintingDispatchVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<CardPrintingDispatchVO> subList) {
+		this.subList = subList;
+	}
+	
 	
 }
