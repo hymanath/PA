@@ -149,163 +149,6 @@
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
 		});
-  /*function getAlertOverviewDetails(){
-		$("#alertOverview").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
-		var alertTypeStr = 0;          
-		var jsObj={  
-			activityMemberId : globalActivityMemberId,      
-			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
-			alertType : alertTypeStr  
-		};
-		$.ajax({
-			type : 'GET',
-			url : 'getAlertOverviewDetailsAction.action',
-			dataType : 'json',  
-			data : {task :JSON.stringify(jsObj)}          
-		}).done(function(result){
-			if(result != null){
-			  buildAlertOverviewDetails(result);
-			}else{
-			  $("#alertOverview").html("NO DATA AVAILABLE.");	
-			}
-      });	
-	}
-	
-	function buildAlertOverviewDetails(result)
-	{
-		var str='';
-		if(result.overAllVO != null){
-		str+='<div class="pad_5 bg_ED">';
-			str+='<table class="table alertOverviewTable bg_ED">';
-				str+='<tr>';
-					str+='<td>';
-						if(result.overAllVO.totalAlertCnt == 0){  
-							str+='<h3>'+result.overAllVO.totalAlertCnt+'</h3>';
-						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.overAllVO.totalAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.totalAlertCnt+'</u></h3>';
-						}
-						str+='<p class="text-capital">TOTAL ALERTS</p>';
-					str+='</td>';
-					str+='<td>';
-						if(result.overAllVO.partyAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
-						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="1" attr_count="'+result.overAllVO.partyAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.partyAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
-						}
-						str+='<p class="text-capital">party</p>';
-					str+='</td>';
-					str+='<td>';
-						if(result.overAllVO.govtAlertCnt == 0){
-						  str+='<h3>'+result.overAllVO.govtAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.govtAlertCntPer+'%</small> </h3>';
-						}else{
-						  str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="2" attr_count="'+result.overAllVO.govtAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.govtAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.govtAlertCntPer+'%</small> </h3>';
-						}
-						str+='<p class="text-capital">Govt</p>';
-					str+='</td>';
-					
-					str+='<td>';
-						if(result.overAllVO.otherAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
-						}else{
-							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="3" attr_count="'+result.overAllVO.otherAlertCnt+'"><u style="color:#337ab7">'+result.overAllVO.otherAlertCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
-						}
-						str+='<p class="text-capital">others</p>';
-					str+='</td>';
-					
-				str+='</tr>';
-			str+='</table>';
-		str+='</div>';
-	}
-	if(result.statusList != null && result.statusList.length > 0){
-		  str+='<div class="row">';
-		  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		  str+='<h4 class="panel-title m_top10 text-capital">Status</h4>';
-			str+='<div class="table-responsive">';		
-			str+='<table class="table tablePrintMedia bg_ED m_top10">';
-				str+='<tbody>';
-					str+='<tr>';
-						for(var i in result.statusList)
-						{
-							//str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top10">';
-							  str+='<td class="bg_ED" style="border-bottom:0px !important;font-size:10px;">';
-									str+='<p class="text-muted text-capital responsiveFont" style="font-size:10px">'+result.statusList[i].statusType+'</p>';
-							str+='</td>';  
-						}
-					str+='</tr>';
-					str+='<tr>';
-						for(var i in result.statusList)
-						{
-							str+='<td class="bg_ED">';
-									if(result.statusList[i].statusCnt == 0){
-										str+='<h4 class="responsiveFont">'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'%</small></h3>';
-									}else{
-										str+='<h4 class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.statusList[i].statusCnt+'"><u style="color:#337ab7">'+result.statusList[i].statusCnt+'</u>&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'%</small></h3>';
-									}
-								str+='</td>';  
-							//str+='</div>';
-						}    
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-			str+='</div>';  
-			str+='</div>';  
-			str+='</div>';  
-		}
-		if(result.categoryList != null && result.categoryList.length > 0){
-		str+='<div class="row">';	
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-		
-		for(var i in result.categoryList)  
-		{
-			if(result.categoryList[i].statusCnt == 0){
-				str+='<h4 class="panel-title m_top10 text-capital">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'%</h4>';
-			}else{
-				str+='<h4 class="panel-title m_top10 alertDtlsCls text-capital" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusCnt+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
-			}
-			str+='<div class="table-responsive">';		
-			str+='<table class="table tablePrintMedia bg_ED m_top10">';
-				str+='<tbody>';
-					str+='<tr>';
-					for(var j in result.categoryList[i].statusList)
-					{
-						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td class="bg_ED" style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
-						}else{
-							str+='<td class="bg_ED" style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
-						}             
-					}
-					str+='</tr>';
-					str+='<tr>';
-					for(var j in result.categoryList[i].statusList)
-					{
-						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td class="bg_ED"><h4 class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
-						}else{
-							str+='<td class="bg_ED"><h4 class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'"><u style="color:#337ab7">'+result.categoryList[i].statusList[j].statusCnt+'</u>&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
-						}             
-					}
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-			str+='</div>';
-			}
-			str+='</div>';
-			str+='</div>';
-			
-		}
-		$("#alertOverview").html(str)
-			
-	}*/
 	$(document).on("click",".alertDtlsBtnCls",function(){
 		$(".specialAlertDropDown").toggle(); 
 		var scopeIdsArr = [];
@@ -544,7 +387,8 @@
 			fromDate : fromDateStr,                
 			toDate : toDateStr,                
 			activityMemberId : globalActivityMemberId,
-			editionIds : editionId  
+			editionIds : editionId,
+            isActionType : "false"			
 		}                          
 		$.ajax({
 			type : 'POST',      
@@ -3374,39 +3218,6 @@ function getTotalArticledetails(articleId){
 	}
 	function setAlertLastUpdatedTime(lastUpdatedTime){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
-	}
-	
-	//getAlertOverviewDetailsForEdition();    
-	function getAlertOverviewDetailsForEdition(){
-		
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
-		var alertType = 1;    
-		var jsObj={  
-			activityMemberId : 44,      
-			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
-			alertType : alertType      
-		};
-		$.ajax({
-			type : 'GET',
-			url : 'getAlertOverviewDetailsAction.action',
-			dataType : 'json',  
-			data : {task :JSON.stringify(jsObj)}          
-		}).done(function(result){
-			if(result != null){
-			  buildAlertOverviewDetails(result);
-			}else{
-			  $("#alertOverview").html("NO DATA AVAILABLE.");	
-			}
-      });	
 	}
 	function getAlertOverviewDetails(){
 		$("#alertOverview,#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');

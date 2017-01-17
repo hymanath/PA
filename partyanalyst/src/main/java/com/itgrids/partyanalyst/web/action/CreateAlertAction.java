@@ -762,8 +762,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String toDate = jObj.getString("toDate");  
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long editionIds = jObj.getLong("editionIds"); 
+			String isActionType = jObj.getString("isActionType");
 			
-			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds);   
+			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds,isActionType);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
