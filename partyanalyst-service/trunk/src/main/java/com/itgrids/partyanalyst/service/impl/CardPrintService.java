@@ -523,14 +523,20 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 	return returnList;
 }
 
-	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
-		List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
-		try {
+	public CardPrintingDispatchVO getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
+		
+		CardPrintingDispatchVO finalVO = new CardPrintingDispatchVO();
+		
+		try{
 			
-			Long totalCadre = 0l;
-			Long unPrintedCadre = 0l;
-			Long printedCadre = 0l;
+			Long totalCadre = tdpCadreCardPrintDAO.getTotalCadreInConstituency(vendorId , constituencyId);
+			if( totalCadre != null && totalCadre.longValue() > 0l){
+				finalVO.setTotalCadre(totalCadre);
+				finalVO.setUnPrintedCadre(totalCadre);
+			}
 			
+			
+			List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
 			List<String> boxNos = new ArrayList<String>();
 			
 			List<Object[]> list = tdpCadreCardPrintDAO.getBoxWisePrintingDispatchDetails(vendorId, districtId, constituencyId);
@@ -555,23 +561,19 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 					vo.setNoOfCards(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
 					
 					if(vo.getBoxNo() != null){
-						printedCadre = printedCadre +  vo.getNoOfCards();
+						finalVO.setPrintedCadre( finalVO.getPrintedCadre() + vo.getNoOfCards()); 
 						boxNos.add(vo.getBoxNo());
+						returnList.add(vo);
 					}
-					
-					totalCadre = totalCadre + vo.getNoOfCards();
-							
-					returnList.add(vo);
 				}
 			}
-			unPrintedCadre = totalCadre - printedCadre;
-			if(returnList != null && returnList.size() > 0){
-				returnList.get(0).setTotalCadre(totalCadre);
-				returnList.get(0).setPrintedCadre(printedCadre);
-				returnList.get(0).setUnPrintedCadre(unPrintedCadre);
-			}
+			
+			//calculate  unprinted cadre.
+			finalVO.setUnPrintedCadre( finalVO.getTotalCadre() - finalVO.getPrintedCadre() );
+			
 			
 			if(boxNos != null && !boxNos.isEmpty()){
+				
 				//validated cards.
 				List<Object[]> list1 = cardPrintValidationDAO.getValidatedCardsCountsForBoxNos(boxNos);
 				if(list1 != null && !list1.isEmpty()){
@@ -582,46 +584,52 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 							CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
 							if(vo != null){
 								vo.setValidatedCardsCount(count);
+								vo.setApprovedCount(vo.getValidatedCardsCount());
 							}
 						}
 					}
 				}
 				
-				//Error Cards.
+				//Error Cards .
 				List<Object[]> list2 = cardPrintValidationDAO.getErrorCardsCountsForBoxNos(boxNos);
-				if(list2 != null && !list2.isEmpty())
-				{
-					for (Object[] obj : list2) 
-					{	
-						if(obj[0] != null)
-						{	
+				if(list2 != null && !list2.isEmpty()){
+					for (Object[] obj : list2){
+						if(obj[0] != null){
 							String boxNo =obj[0].toString();
-							
 							Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-							if(count > 0l)
-							{
+							if(count > 0l){
 								CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
-								if(vo != null)
-								{
+								if(vo != null){
 									vo.setErrorCount(count);
-									
-									if(vo.getValidatedCardsCount() != null && vo.getValidatedCardsCount() > 0l)
-									{
-										vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
-										float fl_perc = Float.parseFloat(vo.getErrorPerc());
-										if(fl_perc < 50f){
-											vo.setIsQAPassed("YES");
-											vo.setStatus("READY TO DISPATCH");
-										}
-										else{
-											vo.setIsQAPassed("NO");
-											vo.setStatus("RE-PRINT REQUIRED");
-										}
-									}
+									vo.setApprovedCount( vo.getValidatedCardsCount() - vo.getErrorCount());
 								}
 							}
 						}
 					}
+				}
+				
+				
+				//finding error percantage.
+				if(returnList != null && returnList.size() > 0){
+					
+					for(CardPrintingDispatchVO vo : returnList){
+						
+						if(vo.getValidatedCardsCount() != null && vo.getValidatedCardsCount() > 0l)
+						{  
+							
+							vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+							float fl_perc = Float.parseFloat(vo.getErrorPerc());
+							if(fl_perc < 50f){
+								vo.setIsQAPassed("YES");
+								vo.setStatus("READY TO DISPATCH");
+							}
+							else{
+								vo.setIsQAPassed("NO");
+								vo.setStatus("RE-PRINT REQUIRED");
+							}
+						}
+					}
+					finalVO.setSubList(returnList);
 				}
 				
  			}
@@ -629,7 +637,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintService ",e);
 		}
-		return returnList;
+		return finalVO;
 	}
 	
 	public CardPrintingDispatchVO getMatchedVOByString(String boxNo,List<CardPrintingDispatchVO> list){
