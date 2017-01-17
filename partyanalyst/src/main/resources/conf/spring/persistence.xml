@@ -1108,7 +1108,18 @@
 	                  <value>com.itgrids.partyanalyst.model.NewsPaper</value>
 	                  <value>com.itgrids.partyanalyst.model.PaperLanguage</value>
 	                  
-	             </list>
+	                  <value>com.itgrids.partyanalyst.model.ActionType</value>
+	                  <value>com.itgrids.partyanalyst.model.ActionTypeStatus</value>
+	                  <value>com.itgrids.partyanalyst.model.ActionTypeRequired</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeHistory</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeDocument</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeComment</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertActionType</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeMember</value>
+	                  
+	                 
+	                  
+	              </list>
 			
 		</property>
 	</bean>
