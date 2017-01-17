@@ -23,6 +23,7 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	
 	private String boxNo;
 	private String outerBoxNo;
+	private Long cardPrintVendorId;
 	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
@@ -113,6 +114,12 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	}
 	public void setOuterBoxNo(String outerBoxNo) {
 		this.outerBoxNo = outerBoxNo;
+	}
+	public Long getCardPrintVendorId() {
+		return cardPrintVendorId;
+	}
+	public void setCardPrintVendorId(Long cardPrintVendorId) {
+		this.cardPrintVendorId = cardPrintVendorId;
 	}
 	
 	
