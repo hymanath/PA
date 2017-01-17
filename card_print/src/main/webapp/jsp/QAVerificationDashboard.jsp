@@ -13,6 +13,11 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/dropkick/dropkick.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style>
+.img{
+	margin-top: 28px; width: 20px; height: 19px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -25,16 +30,33 @@
 					<div class="panel-body">
 						<div class="text-capital" id="errorDivId" style="color:red"></div>
 						<div class="row">
+						
 							<div class="col-md-3 col-xs-12 col-sm-4">
-								<label>Select Vendor</label>
-								<s:select theme="simple" cssClass="select" name="vendorTypes" id="vendorId" list="basicVOList" listKey="id" listValue="name" onchange="getDistrictList(this.value)"/>
+							  <div class="row">
+							   <div class="col-md-9 col-xs-12 col-sm-4">
+									<label>Select Vendor</label>
+									<s:select theme="simple" cssClass="select" name="vendorTypes" id="vendorId" list="basicVOList" listKey="id" listValue="name" onchange="getDistrictList(this.value)"/>
+							   </div>
+							    <div class="col-md-3 col-xs-12 col-sm-4">
+								     <span id="distImgId"  style="display:none;"><img class="img" src="images/search.gif"/></span>
+								</div>
+							 </div>
 							</div>
+							
 							<div class="col-md-3 col-xs-12 col-sm-4">
-								<label>Select District</label>
-								<select class="select" id="districtListId" onchange="getConstituenciesForDistrict()">
-									<option value="0">Select District</option>
-								</select>
+								<div class="row">
+									<div class="col-md-9 col-xs-12 col-sm-4">
+										<label>Select District</label>
+										<select class="select" id="districtListId" onchange="getConstituenciesForDistrict()">
+											<option value="0">Select District</option>
+										</select>
+									</div>
+									 <div class="col-md-3 col-xs-12 col-sm-4">
+										<span id="constImgId"  style="display:none;"><img class="img" src="images/search.gif"/></span>
+									 </div>
+								</div>
 							</div>
+							
 							<div class="col-md-3 col-xs-12 col-sm-4">
 								<label>Select Constituency</label>
 								<select class="select" id="constencyListId">
@@ -44,6 +66,10 @@
 							<div class="col-md-3 col-xs-12 col-sm-4" style="margin-top: 30px;">
 								<button class="btn btn-success btn-xs text-capital" style="padding: 6px 12px;" onclick="getDispatchDetails();"><b>SUBMIT</b></button>
 							</div>
+						</div>
+						
+						<div class="row m_top10 text-center" >
+						   <span id="dispatchDivIdImg" style="display:none;" ><img style="width: 30px; height: 30px" src="images/search.gif"/></span>
 						</div>
 						
 						<div class="row  m_top20">
@@ -56,8 +82,6 @@
 						<div class="row" id="boxWiseDivId" style="display:none;">
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 								<div id="dispatchingDiv"></div>
-								<span id="dispatchDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-								<button class="btn btn-success btn-lg text-capital m_top10" id="updateBtnId" style="display:none;">UPDATE & GENERATE TRACKING AGENT</button>
 							</div>
 						</div>
 						
