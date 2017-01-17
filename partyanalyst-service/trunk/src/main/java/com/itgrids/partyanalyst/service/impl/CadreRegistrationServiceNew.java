@@ -2802,6 +2802,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     				   
     				   tdpCadrePrintDetailsVO.setBoxNo(obj[13] != null ? obj[13].toString() : "");
     				   tdpCadrePrintDetailsVO.setOuterBoxNo(obj[14] != null ? obj[14].toString() : "");
+    				   
+    				   tdpCadrePrintDetailsVO.setCardPrintVendorId(obj[15] != null ? (Long)obj[15] : 0l);
+    				   
     			   }
     		   }
     		   
@@ -2827,7 +2830,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    		
 			        		CardPrintValidation cardPrintValidation = new CardPrintValidation();
 			        		
-			        		cardPrintValidation.setCardPrintVendorId(inputVO.getCardPrintValidationUserId());
+			        		cardPrintValidation.setCardPrintVendorId(inputVO.getCardPrintVendorId());
 			        		cardPrintValidation.setTdpCadreId(inputVO.getTdpCadreId());
 			        		cardPrintValidation.setMemberShipId(inputVO.getMemberShipId());
 			        		cardPrintValidation.setPrintStatus(inputVO.getPrintStatus());
