@@ -2727,7 +2727,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 LOG.error("Exception Occured in setCandidateDtls() in CoreDashboardToursService  : ",e);
 	 }
  }
- public List<ToursBasicVO> getDesignationWiseAverageTourPerformanceDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String isFilterApply,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double complainceValue){
+ public List<ToursBasicVO> getDesignationWiseAverageTourPerformanceDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId,List<Long> designationIds,String isFilterApply,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double stateTourCategoryValue,Double complainceValue){
 	 
 	 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 	 Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
@@ -2801,6 +2801,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 	 				candiateVO.setOwnContituencyComplaincePer(categoryVO.getComplaincePer());
 						 	 			}else if(categoryId.equalsIgnoreCase("02")){//govtWork
 						 	 				candiateVO.setGovtWorkComplaincePer(categoryVO.getComplaincePer());
+						 	 			}else if(categoryId.equalsIgnoreCase("5")){//state tour category type
+						 	 				candiateVO.setStateTourCategoryComplaincePer(categoryVO.getComplaincePer());
 						 	 			}
 							 		}
 						  		}
@@ -2828,7 +2830,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		  //filter data based on filter type criteria.if filter has applied.
 		  if(isFilterApply != null && isFilterApply.equalsIgnoreCase("Yes")){
 			  if(filterType != null && !filterType.equalsIgnoreCase("All")){
-			    filterRequiredData(memberDtlsMap,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue);  
+			    filterRequiredData(memberDtlsMap,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,complainceValue);  
 			  }
 		  }
 		  //pushing in final list
@@ -2922,7 +2924,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 LOG.error("Exception Occured in setTourSubmitteedMemberDtls() in CoreDashboardToursService  : ",e); 
 	 }
  }
- public void filterRequiredData(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double complainceValue){
+ public void filterRequiredData(Map<Long,Map<Long,ToursBasicVO>> memberDtlsMap,String filterType,Double ownDistValue,Double ownCnsttuncyValue,Double ichargeDistrictValue,Double incharegeConstituencyValue,Double govtWorkValue,Double stateTourCategoryValue,Double complainceValue){
 	 try{
 		 if(memberDtlsMap != null && memberDtlsMap.size() > 0){
 			 for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDtlsMap.entrySet()){
@@ -2960,6 +2962,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							  if((candiateEntry.getValue().getOwnContituencyComplaincePer()< ownCnsttuncyValue || candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue)){
 								  entry.getValue().remove(candiateEntry.getKey()); 
 							  }
+						  }else if(stateTourCategoryValue > 0.0d && govtWorkValue > 0.0d){
+							  if((candiateEntry.getValue().getStateTourCategoryComplaincePer()< stateTourCategoryValue || candiateEntry.getValue().getGovtWorkComplaincePer() < govtWorkValue)){
+								  entry.getValue().remove(candiateEntry.getKey()); 
+							  }
 						  }else if(govtWorkValue > 0.0d ){
 							  if(candiateEntry.getValue().getGovtWorkComplaincePer() < govtWorkValue){
 								  entry.getValue().remove(candiateEntry.getKey()); 
@@ -2978,6 +2984,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							  }
 						  }else if(ichargeDistrictValue > 0.0d){
 							  if(candiateEntry.getValue().getInchargeDistrictComplaincePer() < ichargeDistrictValue){
+								  entry.getValue().remove(candiateEntry.getKey());  
+							  }
+						  }else if(stateTourCategoryValue > 0.0d){
+							  if(candiateEntry.getValue().getStateTourCategoryComplaincePer() < stateTourCategoryValue){
 								  entry.getValue().remove(candiateEntry.getKey());  
 							  }
 						  }
