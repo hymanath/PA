@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.CardsValidateVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -291,7 +292,7 @@ public class WebServiceHandlerForCadre {
 		try{
 			 distList = cardPrintService.getDstrListByVendor(vendorId);
 		}catch(Exception e){
-			LOG.error("Exception raised in getDistrictList() in CardPrintAction ",e);
+			LOG.error("Exception raised in getDistrictList() in WebServiceHandlerForCadre ",e);
 		}
 		return distList;
 	}
@@ -304,7 +305,7 @@ public class WebServiceHandlerForCadre {
 		try{
 			constList = cardPrintService.getConstListByVendor(vendorId,districtId);
 		}catch(Exception e){
-			LOG.error("Exception raised in getConstencyList() in CardPrintAction ",e);
+			LOG.error("Exception raised in getConstencyList() in WebServiceHandlerForCadre ",e);
 		}
 		return constList;
 	}
@@ -317,10 +318,55 @@ public class WebServiceHandlerForCadre {
 		try{
 			finaVO = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
 		}catch (Exception e) {
-			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
+			LOG.error("Exception raised in getPrintingDispatchDetails() in WebServiceHandlerForCadre ",e);
 		}
 		return finaVO;
 	}
 	
 	//QA Verification dashboard ws for local project end.
+	
+	//QA APP Android dashboard ws
+	@GET
+	@Path("/constWiseValidatedCadreByUser/{userId}/{fromDate}/{toDate}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CardsValidateVO constWiseValidatedCadreByUser(@PathParam("userId") Long userId, @PathParam("fromDate") String fromDate , @PathParam("toDate") String toDate ){
+		CardsValidateVO cardsValidateVO = new CardsValidateVO();
+		try{
+			
+			if(userId != null && userId.longValue() > 0l){
+				cardsValidateVO= cardPrintService.constWiseValidatedCadreByUser(userId , fromDate , toDate);
+			}else{
+				cardsValidateVO.setStatus("Failure");
+				cardsValidateVO.setMessage("userId does not exist");
+			}
+			 
+		}catch(Exception e){
+			cardsValidateVO.setStatus("Failure");
+			cardsValidateVO.setMessage("Exception Occurred..");
+			LOG.error("Exception raised in constWiseValidatedCadreByUser() in WebServiceHandlerForCadre ",e);
+		}
+		return cardsValidateVO;
+	}
+	
+	@GET
+	@Path("/boxWiseValidatedCadreByUser/{userId}/{fromDate}/{toDate}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CardsValidateVO boxWiseValidatedCadreByUser(@PathParam("userId") Long userId, @PathParam("fromDate") String fromDate , @PathParam("toDate") String toDate ){
+		CardsValidateVO cardsValidateVO = new CardsValidateVO();
+		try{
+				if(userId != null && userId.longValue() > 0l){
+					cardsValidateVO= cardPrintService.boxWiseValidatedCadreByUser(userId , fromDate , toDate);
+				}else{
+					cardsValidateVO.setStatus("Failure");
+					cardsValidateVO.setMessage("userId does not exist");
+				}
+		}catch(Exception e){
+			cardsValidateVO.setStatus("Failure");
+			cardsValidateVO.setMessage("Exception Occurred..");
+			LOG.error("Exception raised in boxWiseValidatedCadreByUser() in WebServiceHandlerForCadre ",e);
+		}
+		return cardsValidateVO;
+	}
+	
+	
 }
