@@ -56,6 +56,7 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	private String isConducted;
 	private Date conductedDate;
 	private String remarks;
+	private String isConductedByIvr;
 	
 	private String thirdPartyStatus;
 	
@@ -332,6 +333,14 @@ public class PartyMeeting extends BaseModel implements Serializable{
 
 	public void setThirdPartyStatus(String thirdPartyStatus) {
 		this.thirdPartyStatus = thirdPartyStatus;
+	}
+	@Column(name="is_conducted_by_ivr")
+	public String getIsConductedByIvr() {
+		return isConductedByIvr;
+	}
+
+	public void setIsConductedByIvr(String isConductedByIvr) {
+		this.isConductedByIvr = isConductedByIvr;
 	}
 	
 	
