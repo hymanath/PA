@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.CardsValidateVO;
 import com.itgrids.partyanalyst.dto.PrintStatusUpdateVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
@@ -32,4 +33,6 @@ public interface ICardPrintService {
 	public List<String> postVerificationCadreData(Long constituencyId);
 	
 	public ResultStatus saveConstituencyPrintStatus(final PrintStatusUpdateVO inputVO);
+	public CardsValidateVO constWiseValidatedCadreByUser(Long userId , String fromDateStr ,String  toDateStr);
+	public CardsValidateVO boxWiseValidatedCadreByUser(Long userId , String fromDateStr ,String  toDateStr);
 }
