@@ -1646,7 +1646,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" where  " +
 	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-	                	" and model.alert.isDeleted='N' " +
+	                	" and model.alert.isDeleted='N' and model.isDeleted='N' " +
 	    				" and model.alert.alertType.alertTypeId  in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
 	    				" and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
 	    if(stateId != null && stateId.longValue() > 0l){
@@ -1724,7 +1724,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" where  " +
 	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-	                	" and model.alert.isDeleted='N' " +
+	                	" and model.alert.isDeleted='N' and model.isDeleted='N' " +
 	    				" and model.alert.alertType.alertTypeId  in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
 	    				" and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
 	    if(publicRepresentativeTypeId != null){
