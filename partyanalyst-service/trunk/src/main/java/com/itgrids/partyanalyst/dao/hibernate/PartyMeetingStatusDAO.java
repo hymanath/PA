@@ -522,6 +522,18 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
         "         PM.is_active = 'Y' ");
     	return query.executeUpdate();
     }
+    
+    public int insertPartyofficeAndIvrStatus1(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  INSERT INTO party_meeting_status(party_meeting_id,party_office_status,ivr_status,third_party_status) " +
+        "         SELECT PM.party_meeting_id,PM.is_conducted,PM.is_conducted_by_ivr,PM.third_party_status " +
+        "         FROM   party_meeting PM " +
+        "         WHERE PM.start_date IS NOT NULL AND "+
+        "         PM.is_active = 'Y' ");
+    	return query.executeUpdate();
+    }
+    
     public int updatePartyMeetingStatus1(){
     	
     	Query query = getSession().createSQLQuery("" +
@@ -615,6 +627,20 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	"	     ivr_status IS NULL ");
    	return query.executeUpdate();
    }
+   
+   public int updatePartyMeetingStatus10(){
+	 	Query query = getSession().createSQLQuery("" +
+		" UPDATE party_meeting_status SET meeting_status = 'Y' "+ 
+		" WHERE  third_party_status IS NOT NULL AND third_party_status = 'Y' and meeting_status = 'M' ");
+		return query.executeUpdate();
+   }
+   public int updatePartyMeetingStatus11(){
+	 	Query query = getSession().createSQLQuery("" +
+		" UPDATE party_meeting_status SET meeting_status = 'N' "+ 
+		" WHERE  third_party_status IS NOT NULL AND third_party_status = 'N' and meeting_status = 'M' ");
+		return query.executeUpdate();
+  }
+   
    public int setInsertedDate(Date currentDateTime){
 	   Query query = getSession().createSQLQuery(" UPDATE party_meeting_status SET inserted_time =:currentDateTime WHERE inserted_time IS NULL ");
 	   query.setParameter("currentDateTime", currentDateTime);
