@@ -20,6 +20,7 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
 	public int deleteAllRecords();
 	public int setPrimaryKeyAutoIncrementToOne();
 	public int insertPartyofficeAndIvrStatus();
+	public int insertPartyofficeAndIvrStatus1();
 	public int updatePartyMeetingStatus1();
 	public int updatePartyMeetingStatus2();
 	public int updatePartyMeetingStatus3();
@@ -29,6 +30,8 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
 	public int updatePartyMeetingStatus7();
 	public int updatePartyMeetingStatus8();
 	public int updatePartyMeetingStatus9();
+	public int updatePartyMeetingStatus10();
+	public int updatePartyMeetingStatus11();
 	public int setInsertedDate(Date currentDateTime);
 	public Date getMeetingLastUpdatedTime();
    public List<Long> getPartyMeetingCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType);
