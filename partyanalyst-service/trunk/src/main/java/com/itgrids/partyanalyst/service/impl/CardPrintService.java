@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dto.CadreValidateVO;
 import com.itgrids.partyanalyst.dto.CardPrintStatusVO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.dto.CardsValidateVO;
 import com.itgrids.partyanalyst.dto.PrintStatusUpdateVO;
 import com.itgrids.partyanalyst.dto.PrintUpdateDetailsStatusVO;
 import com.itgrids.partyanalyst.dto.PrintVO;
@@ -619,7 +620,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 							
 							vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
 							float fl_perc = Float.parseFloat(vo.getErrorPerc());
-							if(fl_perc < 50f){
+							if(fl_perc <= 20f){
 								vo.setIsQAPassed("YES");
 								vo.setStatus("READY TO DISPATCH");
 							}
@@ -1606,5 +1607,260 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 			status.setExceptionMsg("Exception Occurred At Server Side.Try Later..");
 		}
 		return status;
+	}
+	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Constituency wise validated cards and their cards summary by CardPrintValidationUserId
+	  *  @since 18-JANUARY-2017
+	  */
+	public CardsValidateVO constWiseValidatedCadreByUser(Long userId , String fromDateStr ,String  toDateStr){
+		
+		  CardsValidateVO finalVO = new CardsValidateVO();
+		  
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			 Date fromDate = null;
+			 Date toDate = null;
+			 if(fromDateStr != null && !fromDateStr.trim().isEmpty()){
+				fromDate = sdf.parse(fromDateStr);
+			 }
+			 if(toDateStr != null && !toDateStr.trim().isEmpty()){
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 
+			 Map<Long,CardsValidateVO> finalMap = new LinkedHashMap<Long,CardsValidateVO>(0);
+			 
+			 //const wise No Of boxes validated, no of cards validated.
+			 List<Object[]> constList = cardPrintValidationDAO.constWiseBoxesCountAndValidatedCardsCount(userId, fromDate, toDate);
+			 if(constList != null && constList.size() > 0){
+				 for(Object[] obj : constList){
+					if(obj[0] != null){ //constId
+						CardsValidateVO constVO = new CardsValidateVO((Long)obj[0] , obj[1]!=null?obj[1].toString() :"");
+						constVO.setBoxesCount(obj[2]!=null?(Long)obj[2]:0l);
+						constVO.setValidatedCards(obj[3]!=null?(Long)obj[3]:0l);
+						finalMap.put(constVO.getId(), constVO);
+					}
+				 }
+			 }
+			 
+			 if(finalMap != null && finalMap.size() > 0){
+				
+				 List<Object[]> accRejCardsList = cardPrintValidationDAO.constWiseAcceptedAndRejectedCards(userId, fromDate, toDate);
+				 if(accRejCardsList != null && accRejCardsList.size() > 0){
+					 for(Object[] obj : accRejCardsList){
+						 if(obj[0]!=null && obj[1]!=null){
+							 CardsValidateVO constVO = finalMap.get((Long)obj[0]);
+							 if(constVO !=null){
+								 if(obj[1].toString().equalsIgnoreCase("V")){
+									 constVO.setAcceptedCards(obj[2]!=null ?(Long)obj[2]:0l);
+								 }else{
+									 constVO.setRejectedCards(obj[2]!=null ?(Long)obj[2]:0l);
+								 }
+							 }
+						 }
+					 }
+				 }
+				 
+				 //const wise , box wise validated cards.
+				 Map<Long,CardsValidateVO> accRejBoxesMap = getConstWiseAcceptedRejectedBoxesCount(userId, fromDate, toDate);
+				 if(accRejBoxesMap != null && accRejBoxesMap.size() > 0){
+					 for(Map.Entry<Long, CardsValidateVO> constEntry : accRejBoxesMap.entrySet()){
+						 if(constEntry.getValue() != null){
+							 CardsValidateVO finalConstVO = finalMap.get(constEntry.getKey());
+							 if(finalConstVO != null){
+								 finalConstVO.setAcceptedBoxes(constEntry.getValue().getAcceptedBoxes());
+								 finalConstVO.setRejectedBoxes(constEntry.getValue().getRejectedBoxes());
+							 }
+						 }
+					 }
+				 }
+				 
+				 finalVO.setSubList(new ArrayList<CardsValidateVO>(finalMap.values()));
+				 finalVO.setStatus("success");
+				 return finalVO;
+			 }else{
+					 finalVO.setStatus("success");
+					 finalVO.setMessage("NO DATA TO THIS USER..");
+					 return finalVO;
+			 }
+			 
+		}catch(Exception e){
+			 LOG.error("exception Occurred at constWiseValidatedCadreByUser() in CardPrintService class ", e); 
+			 finalVO.setStatus("Failure");
+			 finalVO.setMessage("Exception Occurred..");
+			 return finalVO;
+		}
+	}
+	
+	public Map<Long,CardsValidateVO> getConstWiseAcceptedRejectedBoxesCount(Long userId, Date fromDate,Date toDate) throws Exception{
+		Map<Long,CardsValidateVO> finalMap = new HashMap<Long, CardsValidateVO>(0);
+		try{
+			
+			//const wise box wise validated cards count.
+			List<Object[]> validatedCards = cardPrintValidationDAO.getConstWiseBoxWiseValidatedCardsCount(userId ,fromDate , toDate);
+			if(validatedCards != null && validatedCards.size() > 0){
+				for(Object[] obj : validatedCards ){
+					if(obj[0] != null){//constId
+						CardsValidateVO constVO = finalMap.get((Long)obj[0]);
+						if(constVO == null){
+							constVO = new CardsValidateVO();
+							constVO.setId((Long)obj[0]);
+							constVO.setSubMap(new HashMap<String, CardsValidateVO>(0));
+							finalMap.put(constVO.getId(), constVO);
+						}
+						constVO = finalMap.get((Long)obj[0]);
+						if(obj[1]!=null){//BoxNo
+							CardsValidateVO boxVO = constVO.getSubMap().get(obj[1].toString());
+							if(boxVO == null){
+								boxVO = new CardsValidateVO();
+								boxVO.setName(obj[1].toString());//boxNo
+								boxVO.setValidatedCards(obj[2]!=null?(Long)obj[2]:0l);
+								constVO.getSubMap().put(boxVO.getName(), boxVO);
+							}
+						}
+					}
+				}
+			}
+			
+			//const wise box wise status wise counts.
+			List<Object[]> statusWiseCards = cardPrintValidationDAO.getConstWiseBoxWiseStatusWiseCounts(userId ,fromDate , toDate);
+			if(statusWiseCards != null && statusWiseCards.size() > 0){
+				for(Object[] obj : statusWiseCards ){
+					if(obj[0] != null && obj[1]!=null && obj[2] != null){//constId && box no && print status
+						CardsValidateVO constVO = finalMap.get((Long)obj[0]);
+						if(constVO != null){
+							CardsValidateVO boxVO = constVO.getSubMap().get(obj[1].toString());
+							if(boxVO != null){
+								if(obj[2].toString().equalsIgnoreCase("V")){
+									boxVO.setAcceptedCards(obj[3]!=null?(Long)obj[3]:0l);
+								}else{
+									boxVO.setRejectedCards(obj[3]!=null?(Long)obj[3]:0l);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			
+			//finding error percantage.
+			if(finalMap != null && finalMap.size() > 0)
+			{
+				for(Map.Entry<Long, CardsValidateVO> constEntry : finalMap.entrySet())
+				{
+				    if(constEntry.getValue() != null && constEntry.getValue().getSubMap() != null && constEntry.getValue().getSubMap().size()>0)
+				    {
+				    	for(Map.Entry<String, CardsValidateVO> boxEntry : constEntry.getValue().getSubMap().entrySet())
+				    	{
+				    		if(boxEntry.getValue() != null && boxEntry.getValue().getValidatedCards() != null && boxEntry.getValue().getValidatedCards().longValue() > 0l){
+				    			
+				    			float errorPerc = Float.parseFloat((new BigDecimal((boxEntry.getValue().getRejectedCards() * 100.0)/boxEntry.getValue().getValidatedCards()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+				    			if(errorPerc <= 20f){
+				    				constEntry.getValue().setAcceptedBoxes( constEntry.getValue().getAcceptedBoxes() + 1);
+								}
+								else{
+									constEntry.getValue().setRejectedBoxes( constEntry.getValue().getRejectedBoxes() + 1);
+								}
+				    		}
+				    	}
+				    }
+				}
+			}
+		}catch(Exception e){
+			 LOG.error("exception Occurred at getConstWiseAcceptedRejectedBoxesCount() in CardPrintService class ", e); 
+			 throw e;
+		}
+		return finalMap;
+	}
+	
+	/**  
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  * Box Wise Validated cards and box status for the given user.
+	  *  @since 18-JANUARY-2017
+	  */
+	public CardsValidateVO boxWiseValidatedCadreByUser(Long userId , String fromDateStr ,String  toDateStr){
+		
+		  CardsValidateVO finalVO = new CardsValidateVO();
+		  
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			 Date fromDate = null;
+			 Date toDate = null;
+			 if(fromDateStr != null && !fromDateStr.trim().isEmpty()){
+				fromDate = sdf.parse(fromDateStr);
+			 }
+			 if(toDateStr != null && !toDateStr.trim().isEmpty()){
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 
+			 Map<String,CardsValidateVO> finalMap = new LinkedHashMap<String,CardsValidateVO>(0);
+			 
+			 List<Object[]> validatedCards = cardPrintValidationDAO.getBoxWiseValidatedCardsCountByUser(userId ,fromDate , toDate);
+			 if(validatedCards != null && validatedCards.size() > 0){
+				 for(Object[] obj : validatedCards){
+					 if(obj[0] != null){
+						 CardsValidateVO boxVO = new CardsValidateVO();
+						 boxVO.setBoxNo(obj[0].toString());
+						 boxVO.setValidatedCards(obj[1]!=null ? (Long)obj[1] : 0l);
+						 boxVO.setName(obj[2]!=null ?obj[2].toString() : "");
+						 finalMap.put(boxVO.getBoxNo(), boxVO);
+					 }
+				 }
+			 }
+			 
+			 if(finalMap != null && finalMap.size() > 0){
+				 
+				 List<Object[]> statusWiseCards = cardPrintValidationDAO.getBoxWiseStatusWiseCountsByUser(userId ,fromDate , toDate);
+				 if(statusWiseCards != null && statusWiseCards.size() > 0){
+					 for(Object[] obj :statusWiseCards){
+						 if(obj[0]!=null && obj[1]!=null){
+							 CardsValidateVO boxVO = finalMap.get(obj[0].toString());
+								if(boxVO != null){
+									if(obj[1].toString().equalsIgnoreCase("V")){
+										boxVO.setAcceptedCards(obj[2]!=null?(Long)obj[2]:0l);
+									}else{
+										boxVO.setRejectedCards(obj[2]!=null?(Long)obj[2]:0l);
+									}
+								}
+						 }
+					 }
+				 }
+				 
+				//finding error percantage.
+					if(finalMap != null && finalMap.size() > 0)
+					{
+						for(Map.Entry<String, CardsValidateVO> boxEntry : finalMap.entrySet())
+						{   	
+				    		if(boxEntry.getValue() != null && boxEntry.getValue().getValidatedCards() != null && boxEntry.getValue().getValidatedCards().longValue() > 0l){
+				    			
+				    			float errorPerc = Float.parseFloat((new BigDecimal((boxEntry.getValue().getRejectedCards() * 100.0)/boxEntry.getValue().getValidatedCards()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+				    			boxEntry.getValue().setRejectedPer(errorPerc);
+				    			boxEntry.getValue().setAcceptedPer(100 - errorPerc);
+				    			if(errorPerc <= 20f){
+				    				boxEntry.getValue().setStatus("Accept");
+								}
+								else{
+									boxEntry.getValue().setStatus("Reject");
+								}
+				    		}
+						}
+						finalVO.setSubList(new ArrayList<CardsValidateVO>(finalMap.values()));
+					}
+					 finalVO.setStatus("success");
+					 return finalVO;
+			 }else{
+				 finalVO.setStatus("success");
+				 finalVO.setMessage("NO DATA TO THIS USER..");
+				 return finalVO;
+			 }
+		}catch(Exception e){
+			 LOG.error("exception Occurred at boxWiseValidatedCadreByUser() in CardPrintService class ", e); 
+			 finalVO.setStatus("Failure");
+			 finalVO.setMessage("Exception Occurred..");
+			 return finalVO;
+		}
 	}
 }
