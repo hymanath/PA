@@ -10,6 +10,6 @@ import com.itgrids.partyanalyst.model.AlertActionType;
 
 public interface IAlertActionTypeDAO extends GenericDao<AlertActionType, Long> {
 	public List<Object[]> getAlertCountStatusWiseBasedOnActionType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType,List<Long> editionTypes);
-	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertActionStatusId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList);
+	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertActionStatusId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId);
 	
 }

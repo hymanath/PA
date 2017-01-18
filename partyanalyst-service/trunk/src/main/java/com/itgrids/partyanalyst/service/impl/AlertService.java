@@ -3708,7 +3708,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertDtls(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
-	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType){
+	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType,Long alertActionTypeId){
 		LOG.info("Entered in getAlertDtls() method of AlertService{}");
 		try{
 			Date fromDate = null;      
@@ -3741,8 +3741,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//DateUtilService dateUtilService = new DateUtilService();
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
-			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){
-			  alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList);
+			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){ //alertStatusId means alertActionTypeStatusId
+			  alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId);
 			}else{
 			 alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);	
 			}
