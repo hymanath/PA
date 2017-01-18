@@ -81,7 +81,8 @@ public List<Long> getSelfAppraisalToursMonth(String toursMonth){
 	}
 
 public List<Long> getLatestMonthYearId(){
-	Query query = getSession().createQuery(" select model.selfAppraisalToursMonthId from SelfAppraisalToursMonth model order by model.year desc,monthNo desc limit 1 ");
+	Query query = getSession().createQuery(" select distinct model.selfAppraisalToursMonth.selfAppraisalToursMonthId from SelfAppraisalDesignationTarget model where model.isActive='Y' order by model.selfAppraisalToursMonth.year desc,model.selfAppraisalToursMonth.monthNo desc ");
+	query.setMaxResults(2);
 	return query.list();
 }
 public List<Object[]> getMonthAndYearDtls(List<String> monthYearList){
