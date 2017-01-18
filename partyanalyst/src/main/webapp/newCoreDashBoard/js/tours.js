@@ -1467,7 +1467,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
-           'This Year': [moment().startOf('Year'), moment().endOf('Year')],
+           'This Year': [moment().startOf('Year'), moment()]//moment().endOf('Year')
 		  // 'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
