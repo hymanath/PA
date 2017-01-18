@@ -133,4 +133,5 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getVillagesForDistrictIdDetails(List<Long> districtId);
 	public List<SimpleVO> getMandalsForDistrictIdDetails(List<Long> list);
 	public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels);
+	public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString);
 }
