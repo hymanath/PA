@@ -2369,7 +2369,8 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		 		 
 		    	 //int count = partyMeetingStatusDAO.setPrimaryKeyAutoIncrementToOne();
 		    	 
-		 		 int insertedRecordsCount = partyMeetingStatusDAO.insertPartyofficeAndIvrStatus();
+		 		 //int insertedRecordsCount = partyMeetingStatusDAO.insertPartyofficeAndIvrStatus();
+		    	 int insertedRecordsCount = partyMeetingStatusDAO.insertPartyofficeAndIvrStatus1();
 		 		 
 		 		 int updatedCount1= partyMeetingStatusDAO.updatePartyMeetingStatus1();
 		 		 int updatedCount2= partyMeetingStatusDAO.updatePartyMeetingStatus2();
@@ -2381,6 +2382,10 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		 		 int updatedCount8= partyMeetingStatusDAO.updatePartyMeetingStatus8(); 
 		 		 int updatedCount9= partyMeetingStatusDAO.updatePartyMeetingStatus9();
 		 		 
+		 		 //update meeting status based on third party status 
+		 		 int updatedCount10 = partyMeetingStatusDAO.updatePartyMeetingStatus10();
+		 		 int updatedCount11 = partyMeetingStatusDAO.updatePartyMeetingStatus11();
+		 		
 		 		 Date currentDateTime = new DateUtilService().getCurrentDateAndTime();
 		 		 int insertedTime = partyMeetingStatusDAO.setInsertedDate(currentDateTime);
 		 		 
