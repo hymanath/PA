@@ -729,5 +729,6 @@
 		<pattern>/cadreAlertDetailsAction*</pattern>
 		<pattern>/alertClarificationDashboardAction*</pattern>
 		<pattern>/boothWiseDataMonitoringAction*</pattern>
+		<pattern>/finalizedPartyMeetingConductedAction*</pattern>
 	</decorator> 
 </decorators>
