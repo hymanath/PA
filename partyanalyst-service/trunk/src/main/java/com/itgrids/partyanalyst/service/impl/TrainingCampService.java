@@ -10963,4 +10963,294 @@ public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels){
 		return meetingTypes;
 	}
 
+public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString){
+	List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
+	try {
+		LOG.info("Entered into getFinalAllMeetings");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date startDate=sdf.parse(startDateString);
+		Date endDate=sdf.parse(endDateString);
+		
+		List<Long> mandalList=new ArrayList<Long>();
+		List<Long> townList=new ArrayList<Long>();
+		List<Long> divisonList=new ArrayList<Long>();
+		List<Long> villageList=new ArrayList<Long>();
+		List<Long> wardList=new ArrayList<Long>();
+		
+		List<Object[]> meetings = new ArrayList<Object[]>(0);
+		
+		if(locationLevel==4l){
+			
+			if( !(mandalTownDivisonIds.get(0) !=null &&  mandalTownDivisonIds.get(0).longValue() ==0l )){
+				for(int i=0;i<mandalTownDivisonIds.size();i++){
+					String manTowDiv = mandalTownDivisonIds.get(i).toString();
+					char temp = manTowDiv.charAt(0);
+					locationLevel=Long.parseLong(temp+"");
+					if(locationLevel==4l){
+						mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					if(locationLevel==5l){
+						townList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					if(locationLevel==6l){
+						divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+					}
+					
+				}
+			
+				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				
+				
+			}else{
+				
+				List<Object[]> meetingsMandal = partyMeetingDAO.getAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+						divisonList,villageList,wardList,startDate,endDate,0l);
+				List<Object[]> meetingsTowns = partyMeetingDAO.getAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+						divisonList,villageList,wardList,startDate,endDate,0l);
+				List<Object[]> meetingsDivs = partyMeetingDAO.getAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+						divisonList,villageList,wardList,startDate,endDate,0l);
+				
+				
+				meetings.addAll(meetingsMandal);
+				meetings.addAll(meetingsTowns);
+				meetings.addAll(meetingsDivs);
+			}
+		}
+		
+		else if(locationLevel==5l){
+			
+			if( !(villageWardIds.get(0) !=null &&  villageWardIds.get(0).longValue() ==0l )){
+			for(int i=0;i<villageWardIds.size();i++){
+				String vilwrdId = villageWardIds.get(i).toString();
+				char temp = vilwrdId.charAt(0);
+				locationLevel=Long.parseLong(temp+"");
+				
+				if(locationLevel==7l){
+					villageList.add(Long.parseLong(vilwrdId.substring(1)));
+				}
+				if(locationLevel==8l){
+					wardList.add(Long.parseLong(vilwrdId.substring(1)));
+				}
+			}
+			meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+					townList,divisonList,villageList,wardList,startDate,endDate,0l);
+			
+		 }else{
+			 
+			 
+			 if(mandalTownDivisonIds !=null && mandalTownDivisonIds.size()>0 && mandalTownDivisonIds.get(0).longValue() !=0l){
+				 
+				 for(int i=0;i<mandalTownDivisonIds.size();i++){
+					 String manTowDiv = mandalTownDivisonIds.get(i).toString();
+						char temp = manTowDiv.charAt(0);
+						Long firstChar=Long.parseLong(temp+"");
+						if(firstChar==4l){
+							mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						else if(firstChar==5l){
+							townList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						else if(firstChar==6l){
+							divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+				 }
+				 
+			 }
+			 List<Object[]> meetingsVillage = partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+						divisonList,villageList,wardList,startDate,endDate,0l);
+				List<Object[]> meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+						divisonList,villageList,wardList,startDate,endDate,0l);
+				
+				meetings.addAll(meetingsVillage);
+				meetings.addAll(meetingsWards);
+		 }
+		}else{
+			meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+					townList,divisonList,villageList,wardList,startDate,endDate,0l);
+		}
+		
+		
+		
+		
+		List<Long> level1List = new ArrayList<Long>();
+		List<Long> level2List = new ArrayList<Long>();
+		List<Long> level3List = new ArrayList<Long>();
+		List<Long> level4List = new ArrayList<Long>();
+		List<Long> level5List = new ArrayList<Long>();
+		List<Long> level6List = new ArrayList<Long>();
+		List<Long> level7List = new ArrayList<Long>();
+		List<Long> level8List = new ArrayList<Long>();
+					
+		Map<Long,String> level1Map = new HashMap<Long,String>();
+		Map<Long,String> level2Map = new HashMap<Long,String>();
+		Map<Long,String> level3Map = new HashMap<Long,String>();
+		Map<Long,String> level4Map = new HashMap<Long,String>();
+		Map<Long,String> level5Map = new HashMap<Long,String>();
+		Map<Long,String> level6Map = new HashMap<Long,String>();
+		Map<Long,String> level7Map = new HashMap<Long,String>();
+		Map<Long,String> level8Map = new HashMap<Long,String>();
+					
+		if(meetings!=null && meetings.size()>0){
+			for (Object[] objects : meetings) {
+				if(objects[2]!=null && (Long)objects[2]==1l){
+					level1List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==2l){
+					level2List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==3l){
+					level3List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==4l){
+					level4List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==5l){
+					level5List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==6l){
+					level6List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==7l){
+					level7List.add((Long)objects[4]);
+				}
+				else if(objects[2]!=null && (Long)objects[2]==8l){
+					level8List.add((Long)objects[4]);
+				}
+			}
+		}
+		
+		if(level1List!=null && level1List.size()>0){
+			List<Object[]> stateDetails = stateDAO.getStatesForList(level1List);
+			
+			if(stateDetails!=null && stateDetails.size()>0){
+				for (Object[] objects : stateDetails) {
+					level1Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level2List!=null && level2List.size()>0){
+			List<Object[]> distDetails = districtDAO.getDistrictDetailsByDistrictIds(level2List);
+			
+			if(distDetails!=null && distDetails.size()>0){
+				for (Object[] objects : distDetails) {
+					level2Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level3List!=null && level3List.size()>0){
+			List<Object[]> constDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(level3List);
+			
+			if(constDetails!=null && constDetails.size()>0){
+				for (Object[] objects : constDetails) {
+					level3Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level4List!=null && level4List.size()>0){
+			List<Object[]> mandalDetails = tehsilDAO.getTehsilNameByTehsilIdsList(level4List);
+			
+			if(mandalDetails!=null && mandalDetails.size()>0){
+				for (Object[] objects : mandalDetails) {
+					level4Map.put((Long)objects[0],objects[1].toString());
+				}
+			}
+		}
+		
+		if(level5List!=null && level5List.size()>0){
+			List<Object[]> townDetails = localElectionBodyDAO.findByLocalElecBodyIds(level5List);
+			if(townDetails!=null && townDetails.size()>0){
+				for (Object[] objects : townDetails) {
+					level5Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level6List!=null && level6List.size()>0){
+			List<Object[]> divisonDetails = wardDAO.getWardDetailsForList(level6List);
+			if(divisonDetails!=null && divisonDetails.size()>0){
+				for (Object[] objects : divisonDetails) {
+					level6Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level7List!=null && level7List.size()>0){
+			List<Object[]> villageDetails = panchayatDAO.getPanchayatsByPanchayatIdsList(level7List);
+			if(villageDetails!=null && villageDetails.size()>0){
+				for (Object[] objects : villageDetails) {
+					level7Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		if(level8List!=null && level8List.size()>0){
+			List<Object[]> wardDetails = wardDAO.getWardDetailsForList(level8List);
+			if(wardDetails!=null && wardDetails.size()>0){
+				for (Object[] objects : wardDetails) {
+					level8Map.put((Long)objects[0], objects[1].toString());
+				}
+			}
+		}
+		
+		List<Long> partyMeetingIdsList = new ArrayList<Long>();
+		if(meetings!=null && meetings.size()>0){
+			for (Object[] objects : meetings) {
+				partyMeetingIdsList.add((Long)objects[9]);
+			}
+		}
+		//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName,partymeetingid
+		if(meetings!=null && meetings.size()>0){
+			for (Object[] objects : meetings) {
+				CallStatusVO vo = new CallStatusVO();
+				vo.setMeetingTypeId(objects[0]!=null?(Long)objects[0]:0l);
+				vo.setMeetingType(objects[1]!=null?objects[1].toString():"");
+				
+				if(objects[2]!=null && (Long)objects[2]==1l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level1Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==2l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level2Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==3l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level3Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==4l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level4Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==5l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level5Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==6l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level6Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==7l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level7Map.get((Long)objects[4]));
+				}else if(objects[2]!=null && (Long)objects[2]==8l){
+					vo.setLocationId((Long)objects[4]);
+					vo.setLocation(level8Map.get((Long)objects[4]));
+				}
+				
+				vo.setLocationLevelId(locationLevel);
+				vo.setMeetingName(objects[8].toString());
+				vo.setPartyMeetingId((Long)objects[9]);
+				vo.setIsConducted(objects[12] !=null ? objects[12].toString():"");
+				vo.setConductedDate(objects[13] !=null ? objects[13].toString():"" );//conductedByIvr
+				vo.setThirdPartyStatus(objects[15] !=null ? objects[15].toString():"" );
+					allMeetings.add(vo);
+				
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in getFinalAllMeetings",e);
+	}
+	return allMeetings;
+}
+
 }
