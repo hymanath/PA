@@ -80,6 +80,7 @@ public class ToursBasicVO {
 	private Double inchargeConstituencyComplaincePer = 0.0d;
 	private Double ownContituencyComplaincePer = 0.0d;
 	private Double ownDistrictComplaincePer =0.0d;
+	private Double stateTourCategoryComplaincePer = 0.0d;
 	
 	private Long govtWorkTrDays=0l;
 	private Long govtWorkComplainceDays=0l;
@@ -697,6 +698,12 @@ public class ToursBasicVO {
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
-          
-	
+	public Double getStateTourCategoryComplaincePer() {
+		return stateTourCategoryComplaincePer;
+	}
+	public void setStateTourCategoryComplaincePer(
+			Double stateTourCategoryComplaincePer) {
+		this.stateTourCategoryComplaincePer = stateTourCategoryComplaincePer;
+	}
+   
 }
