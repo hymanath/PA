@@ -28,6 +28,7 @@ public class PartyMeetingStatus {
 	private Long partyMeetingId;
 	private String partyOfficeStatus;
 	private String ivrStatus;
+	private String thirdPartyStatus;
 	private String mettingStatus;
 	private Date insertedTime;
 	
@@ -92,5 +93,14 @@ public class PartyMeetingStatus {
 	public void setPartyMeeting(PartyMeeting partyMeeting) {
 		this.partyMeeting = partyMeeting;
 	}
+	
+	@Column(name="third_party_status")
+	public String getThirdPartyStatus() {
+		return thirdPartyStatus;
+	}
+	public void setThirdPartyStatus(String thirdPartyStatus) {
+		this.thirdPartyStatus = thirdPartyStatus;
+	}
+	
 	
 }
