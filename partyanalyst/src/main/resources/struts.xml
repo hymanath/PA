@@ -15426,6 +15426,14 @@
 		<result type="json" name="success">
 			<param name="root">alertDataList</param>
 		</result>
+	</action>
+	<action name="finalizedPartyMeetingConductedAction" class="cadreRegistrationAction" method="finalizedPartyMeetingConducted">
+		<result name="success">/jsp/finalizedPartyMeetingConductedDetails.jsp</result>  
+	</action>
+	<action name="getFinalAllMeetingsAction" class="trainingCampAction"  method="getFinalAllMeetings">
+		<result type="json" name="success">
+			<param name="root">retResult</param>
+		</result>
 	</action>	
  </package>
 </struts>
