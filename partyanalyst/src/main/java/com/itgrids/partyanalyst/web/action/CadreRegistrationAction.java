@@ -3234,5 +3234,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	return Action.SUCCESS;
 	}
+  	public String finalizedPartyMeetingConducted(){
+		return Action.SUCCESS;
+	}
 }
 
