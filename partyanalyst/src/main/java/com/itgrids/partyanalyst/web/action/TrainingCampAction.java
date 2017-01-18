@@ -2911,4 +2911,63 @@ public String getMeetingTypesNew(){
 public String getMomPartyMeetingDetails(){
 	return Action.SUCCESS;
 }
+public String getFinalAllMeetings(){
+	try {
+		LOG.info("entered into getAllMeetings");
+		jObj = new JSONObject(getTask());
+		
+		List<Long> stateIds = new ArrayList<Long>();
+		List<Long> distIds = new ArrayList<Long>();
+		List<Long> constIds = new ArrayList<Long>();
+		List<Long> manTowDivIds = new ArrayList<Long>();
+		List<Long> villWardIds = new ArrayList<Long>();
+		
+		JSONArray jsonArray = jObj.getJSONArray("sateId");
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Long sateId1 = Long.valueOf(jsonArray.get(i).toString());
+			stateIds.add(sateId1);
+		}
+		
+		JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+		for (int i = 0; i < jsonArray1.length(); i++) {
+			Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+			distIds.add(distId1);
+		}
+		
+		JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+		for (int i = 0; i < jsonArray2.length(); i++) {
+			Long constId1 = Long.valueOf(jsonArray2.get(i).toString());
+			constIds.add(constId1);
+		}
+		
+		JSONArray jsonArray3 = jObj.getJSONArray("mandalTownDivisonId");
+		for (int i = 0; i < jsonArray3.length(); i++) {
+			Long mtdId1 = Long.valueOf(jsonArray3.get(i).toString());
+			manTowDivIds.add(mtdId1);
+		}
+		
+		JSONArray jsonArray4 = jObj.getJSONArray("villageWardId");
+		for (int i = 0; i < jsonArray4.length(); i++) {
+			Long vwId1 = Long.valueOf(jsonArray4.get(i).toString());
+			villWardIds.add(vwId1);
+		}
+		
+		Long meetingType = jObj.getLong("meetingType");
+		Long locationLevel = jObj.getLong("locationLevel");
+		//Long stateId = jObj.getLong("sateId");
+		//Long districtId = jObj.getLong("districtId");
+		//Long constituencyId = jObj.getLong("constituencyId");
+		//Long mandalTownDivisonId = jObj.getLong("mandalTownDivisonId");
+		//Long villageWardId = jObj.getLong("villageWardId");
+		String startDate = jObj.getString("startDate");
+		String endDate = jObj.getString("endDate");
+		
+		retResult = trainingCampService.getFinalAllMeetings(meetingType,locationLevel,stateIds,distIds,constIds,manTowDivIds,villWardIds,startDate,endDate);
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised at getAllMeetings",e);
+	}
+	return Action.SUCCESS;
+}
+
 }
