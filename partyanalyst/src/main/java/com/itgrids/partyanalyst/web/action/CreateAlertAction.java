@@ -763,8 +763,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long editionIds = jObj.getLong("editionIds"); 
 			String isActionType = jObj.getString("isActionType");
+			Long alertActionTypeId = jObj.getLong("actionTypeId");
 			
-			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds,isActionType);   
+			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds,isActionType,alertActionTypeId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
@@ -1029,7 +1030,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long editionId = jObj.getLong("editionTypeId");
 			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,alertTypeId,editionId);   
 		}catch(Exception e) {      
-			LOG.error("Exception occured in getAlertDtlsForPubRep() of CreateAlertAction",e);  
+			LOG.error("Exception occured in getMemForPartyCommitDesg() of CreateAlertAction",e);  
 		}
 		return Action.SUCCESS;    
 	}

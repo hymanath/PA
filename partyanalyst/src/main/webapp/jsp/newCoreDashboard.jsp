@@ -3374,7 +3374,7 @@
   <div class="modal-dialog" role="document" style="width:90%"> 
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close alertModalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
        <div class="row">
 			<div class="col-md-5 col-xs-12 col-sm-12">
 				<h4 class="text-capital" id="alertModalHeadingId"></h4>
@@ -3407,7 +3407,7 @@
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default alertModalCloseCls" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

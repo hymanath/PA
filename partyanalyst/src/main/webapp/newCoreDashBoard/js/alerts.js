@@ -361,11 +361,23 @@
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId);  
+		getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,"No",0);  
+		
+	});  
+	 $(document).on("click",".alertActionCls",function(){
+		var alertStatusId = $(this).attr("attr_status_id");
+		var alertTypeId = $(this).attr("attr_alert_type_id");
+		var alertCount = $(this).attr("attr_count");
+		var editionId = $(this).attr("attr_edition_id");
+		var actionTypeId = $(this).attr("attr_action_type_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		getAlertDtls(alertStatusId,0, alertTypeId,alertCount,editionId,"Yes",actionTypeId);  
 		
 	});  
 	
-	function getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId){
+	function getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,isActionType,actionTypeId){
 		
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
@@ -388,7 +400,8 @@
 			toDate : toDateStr,                
 			activityMemberId : globalActivityMemberId,
 			editionIds : editionId,
-            isActionType : "false"			
+            isActionType : isActionType,
+            actionTypeId :actionTypeId			
 		}                          
 		$.ajax({
 			type : 'POST',      
@@ -1712,6 +1725,10 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 		  }
 	});
 	
+$(document).on("click",".alertModalCloseCls",function(){
+	 $(".commitLvlCls").prop('checked',false);
+	 $("#commitLvlId1").prop('checked',true);
+});	
 function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,publicRepresentativeTypeId,divId,commitLvlIdArr,level){
 	$("#commitLvlId").hide();  
 	if(groupAssignType == "Party Committee"){
@@ -1835,10 +1852,10 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 		
  function getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,divId){
 	  $("#commitLvlId").hide();
-	  $("#alertModalHeadingId").html(groupAssignType+" Alert Details")
+	  $("#alertModalHeadingId").html(groupAssignType+" Alert Details");
 	  $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  $("#alertModalId").modal("show");
-	  	var dates=$("#dateRangeIdForAlert").val();
+	  var dates=$("#dateRangeIdForAlert").val();
 		var fromDateStr;
 		var toDateStr;
 		if(dates != null && dates!=undefined){
@@ -3467,6 +3484,31 @@ function getTotalArticledetails(articleId){
 						}
 						
 					str+='</div>';
+					
+				 	/* Alert Action Wise Result Block */
+					/*if(result.actionTypeList != null && result.actionTypeList.length > 0){
+							for(var k in result.actionTypeList){
+								if(result.actionTypeList[k].alertCnt != null && result.actionTypeList[k].alertCnt > 0){
+									str+="<div class='row'>";
+										str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+											str+='<h4 class="panel-title text-capital alertActionCls" style="cursor:pointer;" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+alertEdition+'"  attr_action_type_id='+result.actionTypeList[k].id+'  attr_status_id="0" attr_count="'+result.actionTypeList[k].alertCnt+'">'+result.actionTypeList[k].name+' - <span class="alertColorFont">'+result.actionTypeList[k].alertCnt+'</span></h4>';
+										str+='</div>';
+										if(result.actionTypeList[k].subList1 != null && result.actionTypeList[k].subList1.length > 0){
+											for(var l in result.actionTypeList[k].subList1){
+												str+="<div class='col-md-6 col-xs-12 col-sm-6 pad_15 bg_ED m_top10'>";
+												   if(result.actionTypeList[k].subList1[l].alertCnt > 0){
+													str+="<p class='panel-title alertActionCls' style='cursor:pointer;' attr_alert_type_id="+alertTypeId+" attr_edition_id="+alertEdition+" attr_action_type_id="+result.actionTypeList[k].id+" attr_status_id="+result.actionTypeList[k].subList1[l].statusTypeId+" attr_count="+result.actionTypeList[k].subList1[l].alertCnt+">"+result.actionTypeList[k].subList1[l].statusType+" - <span class='alertColorFont'>"+result.actionTypeList[k].subList1[l].alertCnt+"</span></p>";   
+												   }else{
+													  str+="<p class='panel-title'>"+result.actionTypeList[k].subList1[l].statusType+" - <span class=''>"+result.actionTypeList[k].subList1[l].alertCnt+"</span></p>"; 
+												   }
+												str+="</div>";
+											}
+										}
+								str+='</div>';	
+								}
+							}
+					} */
+					
 					for(var i in result.categoryList)
 					{
 						str+='<div class="row">';
