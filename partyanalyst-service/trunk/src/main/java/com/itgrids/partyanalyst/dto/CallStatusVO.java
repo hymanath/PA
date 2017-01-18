@@ -21,6 +21,7 @@ private String isConducted;
 private String conductedDate;
 private String remarks;
 
+private String thirdPartyStatus;
 
 
 public Long getConstLocationNum() {
@@ -130,6 +131,12 @@ public String getRemarks() {
 }
 public void setRemarks(String remarks) {
 	this.remarks = remarks;
+}
+public String getThirdPartyStatus() {
+	return thirdPartyStatus;
+}
+public void setThirdPartyStatus(String thirdPartyStatus) {
+	this.thirdPartyStatus = thirdPartyStatus;
 }
 
 
