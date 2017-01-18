@@ -3343,14 +3343,14 @@ public String getDesignationWiseAverageTourPerformanceDtls(){
 		Double  incharegeConstituencyValue = jObj.getDouble("incharegeConstituencyValue");
 		Double  govtWorkValue = jObj.getDouble("govtWorkValue");
 		Double  complainceValue = jObj.getDouble("complainceValue");
+		Double stateTourCategoryValue = jObj.getDouble("stateTourCategoryValue");
 		
-		
-	
 		
 		toursDtlsList = coreDashboardToursService.getDesignationWiseAverageTourPerformanceDtls(
 																								stateId,fromDate,toDate,activityMemberId,
 																								userTypeId,desgnatnIdsLst,isFilterApply,filterType,
-																								ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue);
+																								ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,
+																								incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,complainceValue);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDesignationWiseMembersDtls() method of CoreDashBoard", e);
 	}

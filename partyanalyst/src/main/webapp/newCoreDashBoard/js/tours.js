@@ -1607,7 +1607,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var isFilterApply = "No";
 		var filterType = "";
 		var desgnatnIdsLst = [];
-	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
+	   getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,"");
 		
 	});
 
@@ -1629,7 +1629,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			var isFilterApply = "No";
 			var filterType = "";
 			var desgnatnIdsLst = [];
-		    getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,"");
+		    getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,"");
 		 }
 	}
 	
@@ -2224,7 +2224,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var isFilterApply = "Yes";
 		var desgnatnIdsLst = designationStr.split(",");
 		 $(".toursSessionDropDownCls").hide();	
-		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,divId);
+		getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,divId);
 		//$(".tourFilteCheckBoxCls").trigger("click");
 	});
 	
@@ -2287,6 +2287,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		 var incharegeConstituencyValue = 0;
 		 var ichargeDistrictValue = 0;
 		 var govtWorkValue = 0;
+		 var stateTourCategoryValue = 0;
 		 var complainceValue = 0; 
 		 var tourCategorySliderType = $(this).closest(".tab-pane").find('.sliderCategoryTypeCls:checkbox:checked').attr("attr_slider_type");
 		 var mainSlider = $(this).closest(".tab-pane").find('.mainSliderCls:checkbox:checked').attr("attr_slider_type");
@@ -2295,18 +2296,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			 return;
 		 }
 		 $(this).closest(".tab-pane").find(".errorCls").html(' ');
-		 
 		 if(tourCategorySliderType != undefined && tourCategorySliderType=="tourCategory"){
 			 if(sliderNameArr != null && sliderNameArr.length > 0){
 					 for(var i in sliderNameArr){
 						 
 						 var className = sliderNameArr[i]+''+designationStr+"cls";
-						 
-						 if(designationStr != null && designationStr.length > 1){
-							 
+						 if(desgnatnIdsLst != null && desgnatnIdsLst.length > 1){
 							var secOrgIds = designationStr.split(",");
 							 className = sliderNameArr[i]+''+secOrgIds[0]+secOrgIds[1]+"cls";
-							
 						 }
 					   if(sliderNameArr[i]=="InchargeDistrict"){
 						   
@@ -2329,28 +2326,31 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 							  ownCnsttuncyValue = ownConstituencySliderValue;
 							  
 						 }else if(sliderNameArr[i]=="Govt"){
-							 
 							var govtSliderValue = $("."+className).val();
 							govtWorkValue = govtSliderValue;
 						
-						} 
+						} else if(sliderNameArr[i]=="State"){
+							var stateTourCategorySliderValue = $("."+className).val();
+							stateTourCategoryValue = stateTourCategorySliderValue;
+							
+						}
 					 }
 				 }	 
 		 }
 	      if(mainSlider != null && mainSlider=="main"){
 			 var mainSlderCls = mainSliderName+''+designationStr+"cls";
-			  if(designationStr != null && designationStr.length > 1){
+			  if(desgnatnIdsLst != null && desgnatnIdsLst.length > 1){
 				var secOrgIds = designationStr.split(",");
 				 mainSlderCls = mainSliderName+''+secOrgIds[0]+secOrgIds[1]+"cls";
 			  }
 			   var mainSliderValue = $("."+mainSlderCls).val();
 			   complainceValue = mainSliderValue;  
 		  }
-		  getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId);
+		  getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,complainceValue,divId);
 		  $(".toursSessionDropDownCls").hide();	
     });
 	
-	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,complainceValue,divId){
+	function getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,ownDistValue,ownCnsttuncyValue,ichargeDistrictValue,incharegeConstituencyValue,govtWorkValue,stateTourCategoryValue,complainceValue,divId){
     	 if(isFilterApply=="No"){
 		   $("#toursPerformanceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 }else{
@@ -2376,6 +2376,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					 ichargeDistrictValue :ichargeDistrictValue,
 					 incharegeConstituencyValue :incharegeConstituencyValue,
 					 govtWorkValue :govtWorkValue,
+					 stateTourCategoryValue:stateTourCategoryValue,
 					 complainceValue :complainceValue
 				
 				  }
