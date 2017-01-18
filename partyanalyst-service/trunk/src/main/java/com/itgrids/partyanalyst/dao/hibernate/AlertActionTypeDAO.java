@@ -74,7 +74,7 @@ public class AlertActionTypeDAO extends GenericDaoHibernate<AlertActionType, Lon
 			}
 				return query.list();
 	   }
-	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertActionStatusId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList){
+	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertActionStatusId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");     
 		queryStr.append(" model.alertId, " +//0
@@ -136,7 +136,9 @@ public class AlertActionTypeDAO extends GenericDaoHibernate<AlertActionType, Lon
 		if(editionList != null && editionList.size() > 0){
 			queryStr.append(" and editionType.editionTypeId in (:editionList) ");
 		}
-		
+		if(actionTypeId != null && actionTypeId.longValue() > 0){
+			queryStr.append(" and model1.actionTypeId=:actionTypeId");
+		}
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -166,6 +168,9 @@ public class AlertActionTypeDAO extends GenericDaoHibernate<AlertActionType, Lon
 		}
 		if(editionList != null && editionList.size() > 0){
 			query.setParameterList("editionList", editionList);
+		}
+		if(actionTypeId != null && actionTypeId.longValue() > 0){
+			query.setParameter("actionTypeId", actionTypeId);
 		}
 		return query.list();
 	}
