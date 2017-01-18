@@ -584,7 +584,7 @@ if($(window).width() > 500)
 			   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
 			   'This Month': [moment().startOf('month'), moment().endOf('month')],
 			   'This Year': [moment().startOf('Year'), moment()],
-			   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+			   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
 			}
 		});
 		/* $('#toursDateRangePickerNew').on('apply.daterangepicker', function(ev, picker) {
