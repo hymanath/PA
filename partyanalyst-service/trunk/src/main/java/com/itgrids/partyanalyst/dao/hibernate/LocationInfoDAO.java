@@ -49,15 +49,51 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 	}
 	
 	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue){
-		Query query = getSession().createQuery("select model.count" +
-												" from LocationInfo model" +
-												" where model.levelId = :levelId" +
-												" and model.scopeId = :scopeId" +
-												" and model.scopeValue = :scopeValue");
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.count)" +
+					" from LocationInfo model" +
+					" where model.scopeId = :scopeId" +
+					" and model.scopeValue = :scopeValue");
+		if(levelId != null && levelId > 0l){
+			if(levelId == 1l)
+				sb.append(" and model.levelId in (6,8)");
+			else if(levelId == 2l)
+				sb.append(" and model.levelId in (5,7)");
+			else if(levelId == 3l)
+				sb.append(" and model.levelId in (3)");
+			else if(levelId == 4l)
+				sb.append(" and model.levelId in (2)");
+			else if(levelId == 5l)
+				sb.append(" and model.levelId in (4)");
+		}
+			
+		Query query = getSession().createQuery(sb.toString());
 		
-		query.setParameter("levelId", levelId);
 		query.setParameter("scopeId", scopeId);
 		query.setParameter("scopeValue", scopeValue);
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getDistrictWiseTotalCountsByLevelId(Long levelId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.count)" +
+					" from LocationInfo model" +
+					" where model.scopeId = 3");
+		if(levelId != null && levelId > 0l){
+			if(levelId == 1l)
+				sb.append(" and model.levelId in (6,8)");
+			else if(levelId == 2l)
+				sb.append(" and model.levelId in (5,7)");
+			else if(levelId == 3l)
+				sb.append(" and model.levelId in (3)");
+			else if(levelId == 4l)
+				sb.append(" and model.levelId in (2)");
+			else if(levelId == 5l)
+				sb.append(" and model.levelId in (1)");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		return query.list();
 	}
 }

@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
-import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -965,7 +964,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	public List<IdAndNameVO> getActivityDetails(String fromDateStr,String toDateStr){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date fromDate = null;
 			Date toDate = null;
 			if(fromDateStr != null && toDateStr != null){
@@ -1006,6 +1005,10 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setName(obj[2] != null ? obj[2].toString():"");						//ActivityLevel
 					vo.setPartyId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));	//ScopeId
 					vo.setSessionNo(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));	//ScopeValue
+					
+					vo.setMobileNumber("0.00");	
+					vo.setImagePathStr("0.00");
+					vo.setActualMobNumber("0.00");
 					
 					returnList.add(vo);
 					scopeIds.add(vo.getTdpcadreId());
@@ -1094,4 +1097,42 @@ public class CoreDashboardService implements ICoreDashboardService{
 			}
 	   	return returnvo;
 	   }
+	
+	public List<IdAndNameVO> getDistrictWiseActivitiesSummary(Long activityId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					
+					vo.setTdpcadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));	//ActivityScopeId
+					vo.setId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));			//ActivityLevelId
+					vo.setName(obj[2] != null ? obj[2].toString():"");						//ActivityLevel
+					vo.setPartyId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));	//ScopeId
+					vo.setSessionNo(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));	//ScopeValue
+					
+					returnList.add(vo);
+				}
+			}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO idAndNameVO : returnList) {
+					List<Object[]> distList = locationInfoDAO.getDistrictWiseTotalCountsByLevelId(activityId);
+					if(distList != null && !distList.isEmpty()){
+						for (Object[] obj : distList) {
+							IdAndNameVO vo = new IdAndNameVO();
+							
+							vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							vo.setApTotal(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDistrictWiseActivitiesSummary() of CoreDashboardService", e);
+		}
+		return returnList;
+	}
 }
