@@ -152,4 +152,10 @@ public class CardPrintValidationDAO extends GenericDaoHibernate<CardPrintValidat
 		
 		return query.list();
 	}
+	
+	public Long getCardPrintValidationIdByTdpCadreId(Long tdpCadreId){
+		Query query = getSession().createQuery(" select model.cardPrintValidationId from  CardPrintValidation model where model.tdpCadreId =:tdpCadreId" );
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return (Long)query.uniqueResult();
+	}
  }
