@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
+import com.itgrids.partyanalyst.dto.WebServiceOnlineCadreVO;
 
 public interface IWebServiceHandlerServiceForCadre {
 	
@@ -22,11 +23,13 @@ public interface IWebServiceHandlerServiceForCadre {
 	public List<IdAndNameVO> getAllBoothsForPanchayat(Long panchayatId);
 	public List<VoterSearchVO> getVotersBySearch(WebServiceCadreVO inputVO);
 	public NewCadreRegistrationVO getRegistrationPersonDetails(WebServiceCadreVO inputVO);
-	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO);
+	public List<TdpCadreVO> getTdpCadresBySearch(Long cadreSurveyUserId ,WebServiceCadreVO inputVO);
 	
 	public void saveCadreImage(ImageCadreVO inputVO);
 	
 	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password);
 	public TdpCadrePrintDetailsVO getTdpCadrePrintDetailsByMemberShipId(String memberShipId);
 	public ResultStatus updateCardPrintValidStatus(CardPrintValidationVO inputVO);
+	public List<TdpCadreVO> getOnlineTdpCadresBySearch(WebServiceOnlineCadreVO mainInputVO);
+	public List<VoterSearchVO> getOnlineVotersBySearch(WebServiceOnlineCadreVO mainInputVO);
 }
