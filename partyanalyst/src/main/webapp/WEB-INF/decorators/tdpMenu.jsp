@@ -823,6 +823,9 @@
 										<li>
 										<a href="nominatedPostMainDashboardAction.action"><i class="fa fa-pie-chart ico-white"></i><span>&nbsp;&nbsp;Nominated Posts Dashboard</span></a>
 										</li>
+										<li>
+										<a href="updateNominationPostCandidateDetailsAction.action"><i class="fa fa-file ico-white"></i><span>&nbsp;&nbsp;Upload Documnets</span></a>
+										</li>
 				                           </c:if>
 										 </ul>
 									</li>
