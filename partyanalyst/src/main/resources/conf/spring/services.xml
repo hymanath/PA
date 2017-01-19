@@ -3539,6 +3539,8 @@
 		<property name="alertClarificationStatusDAO" ref="alertClarificationStatusDAO"></property>
 		<property name="actionTypeStatusDAO" ref="actionTypeStatusDAO"></property>
 		<property name="alertActionTypeDAO" ref="alertActionTypeDAO"></property>
+		<property name="actionTypeDAO" ref="actionTypeDAO"></property>
+		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>
 		
 	</bean>
 	<!-- Debate End -->

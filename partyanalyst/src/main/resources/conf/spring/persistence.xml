@@ -1116,7 +1116,7 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeComment</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertActionType</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeMember</value>
-	                  
+	                  <value>com.itgrids.partyanalyst.model.AlertDocument</value>
 	                 
 	                  
 	              </list>

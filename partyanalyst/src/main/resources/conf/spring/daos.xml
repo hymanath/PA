@@ -3595,6 +3595,9 @@
 	<bean id="AlertActionTypeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertActionTypeMemberDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="alertDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDocumentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	
 	
