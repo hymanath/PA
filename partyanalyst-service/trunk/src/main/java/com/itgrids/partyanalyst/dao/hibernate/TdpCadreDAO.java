@@ -7411,7 +7411,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		return query.list();
 	}
 	
-	public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String mobileNo,String voterId){
+	public List<Object[]> getTdpCadreDetailsBySearch(List<Long> constituencyIds , String searchType,String memberShipNo,String mobileNo,String voterId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.tdpCadre.tdpCadreId," +		//0
 						" model.tdpCadre.memberShipNo," +	//1
@@ -7442,7 +7442,9 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 			sb.append(" and model.tdpCadre.mobileNo = :mobileNo");
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("voter") && voterId != null)
 			sb.append(" and (model1.voterIDCardNo = :voterId ) ");
-		
+		if(constituencyIds != null && constituencyIds.size()>0){
+			sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId in (:constituencyIds) ");
+		}
 		sb.append(" order by model.enrollmentYear.enrollmentYearId");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -7455,6 +7457,9 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 			query.setParameter("voterId", voterId);
 		
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		if(constituencyIds != null && constituencyIds.size()>0){
+			query.setParameterList("constituencyIds", constituencyIds);
+		}
 		
 		return query.list();
 	}
