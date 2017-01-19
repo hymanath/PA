@@ -3477,7 +3477,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   }
 		   
 		   /* Getting Alert Action Type Wise Data start */
-		   Map<Long,AlertOverviewVO> alertActionMap = new LinkedHashMap<Long, AlertOverviewVO>();
+		/*   Map<Long,AlertOverviewVO> alertActionMap = new LinkedHashMap<Long, AlertOverviewVO>();
 		   List<Object[]> rtrnStatusObjList = actionTypeStatusDAO.getAlertActionTypeWiseStatus();
 		   prepareActionTypeTemplate(rtrnStatusObjList,alertActionMap);
 		   List<Object[]> rtrnAlerCntObjLst = alertActionTypeDAO.getAlertCountStatusWiseBasedOnActionType(locationAccessLevelId, locationValues, stateId, fromDate, toDate, alertTypes, alertEditions);
@@ -3485,7 +3485,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   if(alertActionMap != null && alertActionMap.size() > 0){
 			   resultVO.getActionTypeList().addAll(new ArrayList<AlertOverviewVO>(alertActionMap.values()));
 			   alertActionMap.clear();
-		   }
+		   }*/
 		   /* End */
 		   
 		   
@@ -3742,7 +3742,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
 			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){ //alertStatusId means alertActionTypeStatusId
-			  alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId);
+			 // alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId);
 			}else{
 			 alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);	
 			}
