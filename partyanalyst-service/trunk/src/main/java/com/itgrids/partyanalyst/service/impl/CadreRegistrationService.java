@@ -13705,7 +13705,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		return returnList;
 	}
 	
-	public List<TdpCadreVO> getTdpCadresBySearch(String membershipNo,String mobileNo,String voterId){
+	public List<TdpCadreVO> getTdpCadresBySearch(Long cadreSurveyUserId,String membershipNo,String mobileNo,String voterId){
 		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>();
 		try {
 			String searchType = "";
@@ -13717,8 +13717,19 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				searchType = "mobile";
 			else if(voterId != null && !voterId.trim().equalsIgnoreCase("0") && voterId.trim().length() > 0)
 				searchType = "voter";
-			
-			List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearch(searchType, membershipNo, mobileNo, voterId);
+			List<Long> constituencyIdsList = null;
+			if(cadreSurveyUserId!= null && cadreSurveyUserId.longValue()>0L){
+				constituencyIdsList = cadreSurveyUserAssignDetailsDAO.getAssignedConstiteuncyListByUserId(cadreSurveyUserId);
+				if(!commonMethodsUtilService.isListOrSetValid(constituencyIdsList)){
+					TdpCadreVO tdpCadreVO = new TdpCadreVO();
+					tdpCadreVO.setStatus("noaccess");
+					returnList = new ArrayList<TdpCadreVO>(0);
+					returnList.add(tdpCadreVO);
+					return returnList;
+				}
+			}
+				
+			List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearch(constituencyIdsList, searchType, membershipNo, mobileNo, voterId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
