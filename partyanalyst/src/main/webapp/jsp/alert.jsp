@@ -17,6 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	<!-- JQuery files (Start) -->
+	
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 	<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
@@ -157,7 +158,7 @@
                         	<label>Information Source For Alert</label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
                             	<option value="0"> Select Alert Source </option>
-                            </select>
+                            </select>  
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Alert Severity</label><span class="text-danger">*</span>
@@ -283,7 +284,24 @@
 					
 					</c:if>
 					<!-- Assign End  -->
-					
+					<div class="row m_top10">
+                    	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+                        	<h4 class="text-success text-capital">Upload Document linking to this alert</h4>
+                        </div>
+						<div class="col-md-6 col-sm-12 col-xs-12 m_top10">    
+							<div class="fileBlockNew">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<div class="media-left">
+										<input type="file" id="uploadFileId0" name="imageForDisplay" class="btn btn-mini"/>
+										<div id="extraUploadFileDiv"></div>  
+									</div>
+									<button type="button" style="margin-right: 220px;"class="btn btn-primary btn-xs pull-right m_top20" id="addFile">
+										<i class="glyphicon glyphicon-plus"></i>
+									</button>
+								</div>   
+							</div>
+						</div>
+                    </div>  
 					
 					
 					<div class="row m_top10">
@@ -302,6 +320,8 @@
         </div>
     </div>
 </div>
+
+<input type="file" class="btn btn-mini cloneFileCls" style="display:none;"/>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:90%" role="document">
     <div class="modal-content">
@@ -432,7 +452,7 @@
 						</div>
 						</div>
 						</div>
-      </div>
+				</div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -455,9 +475,10 @@
   </div>
 </div>
 		<!-- language convertion-->
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
+<script type="text/javascript">
+ 
 $(document).on("click",".modalCloseAndShow",function(){
 	$("#myModalConformation").modal('hide');
 	$("#myModal").modal('show');
@@ -918,6 +939,7 @@ function createAlert()
 		$("#errorDiv1").html(" Please enter description ");
 			return;
 	  }
+	  
 $("#createAlertajaxImg").html('<img src="images/search.gif"/>');
 var uploadHandler = {
 				upload: function(o) {
@@ -942,7 +964,7 @@ var uploadHandler = {
 function clearFields()
 {
 	
-	
+	$("#extraUploadFileDiv").html("");
 	$("#apptmemberDetailsDiv").html("");
 	$(".membersBlock").html("");
 	$("#assignedMembers").html("");
@@ -1289,6 +1311,16 @@ function getAlertImpactScope(){
 				  
 				});
 		}
+	var fileNum=0;
+	$(document).on("click","#addFile",function(){
+		fileNum = fileNum+1;
+		var c = $(".cloneFileCls").clone(true);
+		c.removeAttr("style");
+		c.attr("id","uploadFileId"+fileNum);
+		c.attr("name","imageForDisplay");
+		c.removeAttr("class").addClass("btn btn-mini");
+		$("#extraUploadFileDiv").append(c);
+	});
 </script>
 </body>
 </html>
