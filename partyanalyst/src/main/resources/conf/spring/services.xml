@@ -3026,7 +3026,7 @@
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
 		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
 		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
-			<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />			 
+			<!-- <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />	 -->		 
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
