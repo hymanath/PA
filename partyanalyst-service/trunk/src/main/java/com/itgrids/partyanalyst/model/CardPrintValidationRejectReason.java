@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,8 @@ public class CardPrintValidationRejectReason extends BaseModel implements Serial
 	private Long cardPrintValidationRejectReasonId;
 	private Long cardPrintValidationId;
 	private Long printRejectReasonId;
+	private String isDeleted;
+	private Date  insertedTime;
 	
 	private CardPrintValidation carPrintValidation;
 	private PrintRejectReason printRejectReason;
@@ -84,7 +87,19 @@ public class CardPrintValidationRejectReason extends BaseModel implements Serial
 		this.printRejectReason = printRejectReason;
 	}
 	
-	
-	
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		
+		this.isDeleted = isDeleted;
+	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
 }
