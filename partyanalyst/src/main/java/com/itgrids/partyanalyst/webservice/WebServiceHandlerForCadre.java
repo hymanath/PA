@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
+import com.itgrids.partyanalyst.dto.WebServiceOnlineCadreVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerServiceForCadre;
 
@@ -145,6 +146,24 @@ public class WebServiceHandlerForCadre {
 	}
 	
 	
+	
+	//NEW RELATED
+	@POST
+	@Path("/getOnlineVotersBySearch")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<VoterSearchVO> getOnlineVotersBySearch(WebServiceOnlineCadreVO inputVO){      
+		try {
+			 List<VoterSearchVO> votersList =  webServiceHandlerServiceForCadre.getOnlineVotersBySearch(inputVO);
+             return votersList;
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVotersBySearch() in WebServiceHandlerForCadre class",e);
+		}
+		return null;
+	}
+	
+	
+	
 	@POST
 	@Path("/getRegistrationPersonDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -171,13 +190,31 @@ public class WebServiceHandlerForCadre {
 		List<TdpCadreVO> cadreList = null;
 		try {
 			 
-			  cadreList = webServiceHandlerServiceForCadre.getTdpCadresBySearch(inputVO);
+			  cadreList = webServiceHandlerServiceForCadre.getTdpCadresBySearch(null,inputVO);
               return cadreList;
 		} catch (Exception e) {
 			LOG.error("Exception raised in getTdpCadresBySearch() in WebServiceHandlerForCadre class",e);
 		}
 		return null;
 	}
+	
+
+	//RENEWAL RELATED
+	
+		@POST
+		@Path("/getOnlineTdpCadresBySearch")
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<TdpCadreVO> getOnlineTdpCadresBySearch(WebServiceOnlineCadreVO inputVO){ 
+			List<TdpCadreVO> cadreList = null;
+			try {
+				  cadreList = webServiceHandlerServiceForCadre.getOnlineTdpCadresBySearch(inputVO);
+	              return cadreList;
+			} catch (Exception e) {
+				LOG.error("Exception raised in getTdpCadresBySearch() in WebServiceHandlerForCadre class",e);
+			}
+			return null;
+		}
 	
 	
 	//CADRE IMAGE RELATED
