@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -21,7 +22,7 @@ import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 
 public interface IAlertService {
 	public List<BasicVO> getCandidatesByName(String candidateName);
-	public String createAlert(final AlertVO inputVO,final Long userId);
+	public String createAlert(final AlertVO inputVO,final Long userId, Map<File,String> mapfiles);
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String FromDate,String toDate);
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
 	public String updateAlertStatus(final Long userId,final AlertVO inputVo);
@@ -70,6 +71,6 @@ public interface IAlertService {
     public String saveClarificationRequiredStatus(Long userId,String status,Long alertId,String remarks);
     public String removeAlertComment(Long commentId);
     public String removeAlertDocument(Long documentId);
-    public List<AlertVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
+    public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
     public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO vo);
 }
