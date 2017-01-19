@@ -3025,7 +3025,8 @@
 		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
 		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
-		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />	  
+		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
+			<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />			 
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
@@ -3156,6 +3157,8 @@
 		<property name="hamletDAO" ref="hamletDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="smsSenderService" ref="smsSenderService" />
+		<property name="partyMeetingUpdationDetailsDAO" ref="PartyMeetingUpdationDetailsDAO" />
+		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
@@ -3956,6 +3959,11 @@
 		<property name="constituencyDAO" ref="constituencyDAO"></property>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 		<property name="constituencyPrintStatusTrackDAO" ref="constituencyPrintStatusTrackDAO"></property>
+	</bean>
+	<bean name="mpAndMlaAttendanceService" class="com.itgrids.partyanalyst.service.impl.MpAndMlaAttendanceService">
+		<property name="adminHouseMemberDAO" ref="adminHouseMemberDAO" />
+		<property name="adminHouseMemberQuestionDAO" ref="adminHouseMemberQuestionDAO" />
+		<property name="adminHouseMemberAttendanceDAO" ref="adminHouseMemberAttendanceDAO" />
 	</bean>
 	
 </beans>			
