@@ -682,4 +682,12 @@ public List<Object[]> getLocationWiseCadreSurveyUserIds(Long districtId,Long sta
 		
 	}
 	
+	public List<Long> getAssignedConstiteuncyListByUserId(Long cadreSurveyUserId){
+		Query query = getSession().createQuery("select distinct model.constituencyId from CadreSurveyUserAssignDetails model" +
+				"  where model.cadreSurveyUserId =:cadreSurveyUserId  and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted ='N' and " +
+				" model.cadreSurveyUser.isEnabled='Y' and model.cadreSurveyUser.isExcluded ='N' ");		
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		return query.list();
+	}
+	
 }
