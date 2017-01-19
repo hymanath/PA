@@ -7,11 +7,29 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.model.ActionTypeStatus;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.org.apache.bcel.internal.generic.ICONST;
 
 public class ActionTypeStatusDAO extends GenericDaoHibernate<ActionTypeStatus, Long> implements IActionTypeStatusDAO {
 
 	public ActionTypeStatusDAO(){
 		super(ActionTypeStatus.class);
+	}
+	public List<Object[]> getActionTypeList(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select " +
+				  " model.actionType.actionTypeId, " +//0
+				  " model.actionType.typeName, " +//1
+				  " model.actionTypeStatusId, " +//2
+				  " model.status " +//3
+				  " from ActionTypeStatus model " +
+				  " where model.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+") " +
+				  " group by " +
+				  " model.actionType.actionTypeId, model.actionTypeStatusId " +
+				  " order by " +
+				  " model.actionType.actionTypeId, model.actionTypeStatusId");
+		Query query = getSession().createQuery(sb.toString());
+		return query.list();
 	}
 	public List<Object[]> getAlertActionTypeWiseStatus(){
 	  StringBuilder queryStr = new StringBuilder();
