@@ -15434,8 +15434,7 @@
 		<result type="json" name="success">
 			<param name="root">retResult</param>
 		</result>
-	</action>	
-	
+	</action>
 	<action name="getActivityDetailsAction" class="coreDashboardAction" method="getActivityDetails">
 		<result type="json" name="success">
 				<param name="root">IdAndNameVOList</param>
@@ -15451,5 +15450,18 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>	
+	<action name="updateNominationPostCandidateDetailsAction" class="nominatedPostProfileAction" method="updateNominationPosts">
+		<result name="success">/jsp/updateNominationPostCandidateDetails.jsp</result>  
+	</action>
+	<action name="getUpdateNominationPostCadreSearchDetailsAction" class="cadreCommitteeAction" method="getUpdateSearchDetails">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeList</param>
+			</result>
+		</action>
+		<action name="fileSavingDetailsAction" class="nominatedPostProfileAction" method="fileSaving">
+	  <result type="stream" name="success">
+   			<param name="inputName">inputStream</param>
+   		</result>
+	  </action>
  </package>
 </struts>
