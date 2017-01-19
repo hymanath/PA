@@ -130,4 +130,35 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		return query.list();
 		
 	}
+	public List<Object[]>  updateCadresearch(String searchType,String searchValue)
+	{
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,voter.voterIDCardNo," +
+				"   model.imageurl,constiteuncy.constituencyId,constiteuncy.name,tdpCadre.tdpCadreId,tdpCadre.memberShipNo " +
+				"   FROM   NominationPostCandidate model " +
+				" left join model.voter voter" +
+				//" left join model.address address" +
+				" left join model.address.constituency constiteuncy " +
+				" left join model.tdpCadre tdpCadre " +
+			//	"   WHERE  model.tdpCadreId is null and model.isDeleted = 'N' ");
+				"   WHERE  model.isDeleted = 'N' ");
+		if(searchType.equalsIgnoreCase("1"))
+			sb.append(" AND model.tdpCadre.memberShipNo like '%"+searchValue.trim()+"%' ");
+		else if(searchType.equalsIgnoreCase("3"))
+			sb.append(" AND model.mobileNo = :searchValue ");
+		else if(searchType.equalsIgnoreCase("2"))
+			sb.append(" AND model.voter.voterIDCardNo = :searchValue ");
+		else if(searchType.equalsIgnoreCase("4"))
+			sb.append(" AND model.candidateName LIKE '%"+searchValue.trim()+"%' ");
+		
+		//sb.append(" AND model.tdpCadreId is null ");
+		//sb.append(" AND model.voterId is not null ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(!searchType.equalsIgnoreCase("4") && !searchType.equalsIgnoreCase("1"))
+		 query.setParameter("searchValue", searchValue);
+		return query.list();
+		
+	}
 }
