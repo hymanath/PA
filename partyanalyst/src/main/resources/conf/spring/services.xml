@@ -3879,6 +3879,7 @@
 	   <property name="tdpCadreAgeInfoTempDAO" ref="tdpCadreAgeInfoTempDAO" />
 	   <property name="tdpCadreGenderInfoTempDAO" ref="tdpCadreGenderInfoTempDAO" />
 	   <property name="tdpCadreCasteStateInfoTempDAO" ref="tdpCadreCasteStateInfoTempDAO" />
+	   <property name="cardPrintValidationTrackDAO" ref="cardPrintValidationTrackDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
