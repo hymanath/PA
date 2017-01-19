@@ -15435,5 +15435,16 @@
 			<param name="root">retResult</param>
 		</result>
 	</action>	
+	
+	<action name="getActivityDetailsAction" class="coreDashboardAction" method="getActivityDetails">
+		<result type="json" name="success">
+				<param name="root">IdAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getActivityOverAllSummaryAction" class="coreDashboardAction" method="getActivityOverAllSummary">
+		<result type="json" name="success">
+				<param name="root">IdAndNameVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

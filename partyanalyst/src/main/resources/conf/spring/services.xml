@@ -3602,6 +3602,9 @@
 	  <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
 	  <property name="districtDAO"  ref="districtDAO"></property>
 	  <property name="constituencyDAO"  ref="constituencyDAO"></property>
+	  <property name="activityScopeDAO"  ref="activityScopeDAO"></property>
+	  <property name="locationInfoDAO"  ref="locationInfoDAO"></property>
+	  <property name="activityLocationInfoDAO"  ref="activityLocationInfoDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
