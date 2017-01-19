@@ -943,4 +943,13 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		   
 		   return query.list();
 	   }
+		public Long getTdpCadreIdByMembership(String membershipNo){
+			   
+			   Query query = getSession().createQuery(" select distinct model.tdpCadreId from TdpCadreEnrollmentYear model where " +
+			   		" model.tdpCadre.memberShipNo =:membershipNo and model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' ");
+			   		//" and model.enrollmentYearId =2014 ");
+			  
+			   query.setParameter("membershipNo",membershipNo.toString());
+			   return (Long)query.uniqueResult();
+		   }
 }
