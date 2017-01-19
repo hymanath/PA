@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,20 +14,25 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -50,6 +56,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IActivityMemberRelationDAO activityMemberRelationDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IActivityScopeDAO activityScopeDAO;
+	private ILocationInfoDAO locationInfoDAO;
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	//setters
 	public void setDashboardUserAccessLevelDAO(
 			IDashboardUserAccessLevelDAO dashboardUserAccessLevelDAO) {
@@ -97,6 +106,25 @@ public class CoreDashboardService implements ICoreDashboardService{
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	public IActivityScopeDAO getActivityScopeDAO() {
+		return activityScopeDAO;
+	}
+	public void setActivityScopeDAO(IActivityScopeDAO activityScopeDAO) {
+		this.activityScopeDAO = activityScopeDAO;
+	}
+	public ILocationInfoDAO getLocationInfoDAO() {
+		return locationInfoDAO;
+	}
+	public void setLocationInfoDAO(ILocationInfoDAO locationInfoDAO) {
+		this.locationInfoDAO = locationInfoDAO;
+	}
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+	public void setActivityLocationInfoDAO(
+			IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
 	}
 	
 	//business methods.
@@ -933,4 +961,137 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return userTypesMap;
 	}
+	
+	public List<IdAndNameVO> getActivityDetails(String fromDateStr,String toDateStr){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> list = activityScopeDAO.getActivityDetails(fromDate, toDate);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("error occurred in getActivityDetails() of CoreDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	public List<IdAndNameVO> getActivityOverAllSummary(Long activityId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Long> scopeIds = new ArrayList<Long>();
+			
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					
+					vo.setTdpcadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));	//ActivityScopeId
+					vo.setId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));			//ActivityLevelId
+					vo.setName(obj[2] != null ? obj[2].toString():"");						//ActivityLevel
+					vo.setPartyId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));	//ScopeId
+					vo.setSessionNo(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));	//ScopeValue
+					
+					returnList.add(vo);
+					scopeIds.add(vo.getTdpcadreId());
+				}
+			}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO idAndNameVO : returnList) {
+					Long totalCount = locationInfoDAO.getTotalCountByScope(idAndNameVO.getId(), idAndNameVO.getPartyId(), idAndNameVO.getSessionNo());
+					idAndNameVO.setApTotal(totalCount);
+				}
+			}
+			
+			if(scopeIds != null && !scopeIds.isEmpty()){
+				List<Object[]> plannedList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds);
+				if(plannedList != null && !plannedList.isEmpty()){
+					for (Object[] obj : plannedList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setInviteeCount(count);			//PlannedCount
+							String percentage = "0.00";
+							if(count > 0)
+								percentage = (new BigDecimal((vo.getInviteeCount() * 100.0)/vo.getApTotal().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+							vo.setMobileNumber(percentage);		//PlannedPerc
+						}
+					}
+				}
+				
+				List<Object[]> ivrList = activityLocationInfoDAO.getIVRCountsForScopeIds(scopeIds);
+				if(ivrList != null && !ivrList.isEmpty()){
+					for (Object[] obj : ivrList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setAttenteeCount(count);			//IVRCount
+							String percentage = "0.00";
+							if(count > 0)
+								percentage = (new BigDecimal((vo.getAttenteeCount() * 100.0)/vo.getApTotal().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+							vo.setImagePathStr(percentage);		//IVRPerc
+						}
+					}
+				}
+				
+				List<Object[]> infocellList = activityLocationInfoDAO.getInfocellCountsForScopeIds(scopeIds);
+				if(infocellList != null && !infocellList.isEmpty()){
+					for (Object[] obj : infocellList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setInviteeAttendeeCnt(count);			//InfoCellCount
+							String percentage = "0.00";
+							if(count > 0)
+								percentage = (new BigDecimal((vo.getInviteeAttendeeCnt() * 100.0)/vo.getApTotal().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+							vo.setActualMobNumber(percentage);			//InfocellPerc
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("error occurred in getActivityOverAllSummary() of CoreDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	public IdAndNameVO getMatchedVOById(Long scopeId,List<IdAndNameVO> list){
+		IdAndNameVO returnvo = null;
+	   	try {
+				if(list != null && !list.isEmpty()){
+					for (IdAndNameVO vo : list) {
+						if(vo.getTdpcadreId().longValue() == scopeId.longValue()){				//ScopeId
+							return vo;
+						}
+					}
+				}
+				return null;
+			} catch (Exception e) {
+				LOG.error("Exception occurred at getMatchedVOById() of CoreDashboardService", e);
+			}
+	   	return returnvo;
+	   }
 }
