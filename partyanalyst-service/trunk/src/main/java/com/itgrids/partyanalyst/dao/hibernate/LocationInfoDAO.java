@@ -47,4 +47,17 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		
 		return query.list();
 	}
+	
+	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue){
+		Query query = getSession().createQuery("select model.count" +
+												" from LocationInfo model" +
+												" where model.levelId = :levelId" +
+												" and model.scopeId = :scopeId" +
+												" and model.scopeValue = :scopeValue");
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("scopeId", scopeId);
+		query.setParameter("scopeValue", scopeValue);
+		return (Long) query.uniqueResult();
+	}
 }

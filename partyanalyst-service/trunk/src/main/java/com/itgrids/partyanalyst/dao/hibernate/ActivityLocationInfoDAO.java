@@ -1433,4 +1433,37 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 	
 		
 	}
+	
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds){
+		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+												" count(model.activityLocationInfoId)" +
+												" from ActivityLocationInfo model" +
+												" where model.plannedDate is not null" +
+												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
+												" group by model.activityScope.activityScopeId");
+		query.setParameterList("activityScopeIds", activityScopeIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds){
+		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+												" count(model.activityLocationInfoId)" +
+												" from ActivityLocationInfo model" +
+												" where model.ivrStatus = 'Y'" +
+												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
+												" group by model.activityScope.activityScopeId");
+		query.setParameterList("activityScopeIds", activityScopeIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
+		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+												" count(model.activityLocationInfoId)" +
+												" from ActivityLocationInfo model" +
+												" where model.conductedDate is not null" +
+												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
+												" group by model.activityScope.activityScopeId");
+		query.setParameterList("activityScopeIds", activityScopeIds);
+		return query.list();
+	}
 }

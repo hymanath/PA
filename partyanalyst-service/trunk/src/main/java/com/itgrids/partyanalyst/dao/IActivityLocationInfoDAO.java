@@ -31,4 +31,8 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getConductedActivityDetailsbyScopeAndLocationID(Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long assemblyId,Long districtId,Long stateId,Long participatedAssemblyId);
 	public List<Object[]> getActivityDetailsByAddressDetails(AddressVO addressVO);	
 	public List<Object[]> getConductedActivityDetailsbyScopeAndLocationID(AddressVO addressVO,Long activityLevelId);
+	
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
 }
