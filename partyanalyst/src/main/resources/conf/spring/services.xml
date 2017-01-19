@@ -1603,7 +1603,7 @@
 	 <!-- scheduler for partyMeetingStatusUpdation in core dashboard -->
 	<bean name="partyMeetingStatusUpdation" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForPartyMeetingStatus" />
-    	<!-- <property name="cronExpression" value="0 0/30 * * * ?" /> -->
+    	<!-- <property name="cronExpression" value="0 0 0/1 * * ?" /> -->
     	<property name="cronExpression" value="0 30 22 * * ?" />
 	</bean>
 	<bean name="insertTriggerForPartyMeetingStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
