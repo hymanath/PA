@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
+import com.itgrids.partyanalyst.dto.WebServiceOnlineCadreVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
@@ -124,6 +125,26 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		return returnList;
 	}
 	
+	public List<VoterSearchVO> getOnlineVotersBySearch(WebServiceOnlineCadreVO mainInputVO){
+		
+		List<VoterSearchVO> returnList = null;
+		try{
+			WebServiceCadreVO inputVO  = new WebServiceCadreVO();
+			inputVO.setConstituencyId(mainInputVO.getConstituencyId());
+			inputVO.setMandalId(mainInputVO.getMandalId());
+			inputVO.setVillageId(mainInputVO.getVillageId());
+			inputVO.setBoothId(mainInputVO.getBoothId());
+			inputVO.setName(mainInputVO.getName());
+			inputVO.setHouseNo(mainInputVO.getHouseNo());
+			inputVO.setVoterNo(mainInputVO.getVoterNo());
+			
+			returnList = getVotersBySearch(inputVO);
+		}catch(Exception e) {
+			log.error("Entered into the getOnlineVotersBySearch() in WebServiceHandlerServiceForCadre ");
+		}
+		return returnList;
+	}
+
 	public List<VoterSearchVO> getVotersBySearch(WebServiceCadreVO inputVO){
 		
 		List<VoterSearchVO> returnList = null;
@@ -149,14 +170,31 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		return newCadreRegistrationVO;
 	}
 	
-	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO){
+	public List<TdpCadreVO> getOnlineTdpCadresBySearch(WebServiceOnlineCadreVO mainInputVO){
 		
 		List<TdpCadreVO> cadreList = null;
 		try{
-			cadreList = cadreRegistrationService.getTdpCadresBySearch(inputVO.getMemberShipNo(),inputVO.getMobileNo(), inputVO.getVoterNo());
+			
+			WebServiceCadreVO inputVO  = new WebServiceCadreVO();
+			inputVO.setMemberShipNo(mainInputVO.getMemberShipNo());
+			inputVO.setMobileNo(mainInputVO.getMobileNo());
+			inputVO.setVoterNo(mainInputVO.getVoterNo());
+			cadreList = getTdpCadresBySearch(mainInputVO.getCadreSurveyUserId(),inputVO);
 			
 		}catch(Exception e) {
-			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
+			log.error("Entered into the getOnlineTdpCadresBySearch() in WebServiceHandlerServiceForCadre ");
+		}
+		return cadreList;
+	}
+
+	public List<TdpCadreVO> getTdpCadresBySearch(Long cadreSurveyUserId , WebServiceCadreVO inputVO){
+		
+		List<TdpCadreVO> cadreList = null;
+		try{
+			cadreList = cadreRegistrationService.getTdpCadresBySearch(cadreSurveyUserId,inputVO.getMemberShipNo(),inputVO.getMobileNo(), inputVO.getVoterNo());
+			
+		}catch(Exception e) {
+			log.error("Entered into the getTdpCadresBySearch() in WebServiceHandlerServiceForCadre ");
 		}
 		return cadreList;
 	}
