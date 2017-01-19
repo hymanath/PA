@@ -182,4 +182,5 @@ public interface ICadreCommitteeService {
 	 public List<CadreCommitteeVO> getFieldMonitoringMapReportDetails(Long constitunecyId,Long fieldUserId);
 	 public List<LocationWiseBoothDetailsVO> getPanchayatList(Long tehsilId);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
+	 public List<CadreCommitteeVO> updateSearchTdpCadreDetailsBySearchCriteriaForCadreCommitte(String searchType,String searchValue);
 }
