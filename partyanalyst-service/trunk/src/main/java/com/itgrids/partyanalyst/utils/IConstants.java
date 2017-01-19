@@ -1255,4 +1255,5 @@ public interface IConstants {
 	
 	public static final String ALERTS_ATTACHMENTS = "alerts_attachments";
 	public static final String ALERT_STATUS_ID="1,6,7";
+	public static final String ALERT_ACTION_TYPE_ID = "1";
 }
