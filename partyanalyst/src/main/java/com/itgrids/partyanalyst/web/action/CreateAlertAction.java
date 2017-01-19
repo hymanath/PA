@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
@@ -26,6 +30,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -65,10 +70,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String clarificationComments;
 	private String clarificationRadioName;
 	private AlertClarificationVO alertClarificationVO;
+	private List<ClarificationDetailsCountVO> clarificationDetailsCountVOList;
 	
 	
 	
 	
+	public List<ClarificationDetailsCountVO> getClarificationDetailsCountVOList() {
+		return clarificationDetailsCountVOList;
+	}
+
+	public void setClarificationDetailsCountVOList(
+			List<ClarificationDetailsCountVO> clarificationDetailsCountVOList) {
+		this.clarificationDetailsCountVOList = clarificationDetailsCountVOList;
+	}
+
 	public AlertClarificationVO getAlertClarificationVO() {
 		return alertClarificationVO;
 	}
@@ -330,10 +345,28 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String createAlert()
 	{
 		try{
-		session = request.getSession();
-		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-		status = alertService.createAlert(alertVO,regVo.getRegistrationID());
-		inputStream = new StringBufferInputStream(status);
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+							mapfiles.put(f,ext);
+						}
+					}
+				}
+			}
+			status = alertService.createAlert(alertVO,regVo.getRegistrationID(),mapfiles);
+			inputStream = new StringBufferInputStream(status);
 			
 		}
 		catch (Exception e) {
@@ -1188,15 +1221,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
-	public String getStatusAndCategoryWiseAlertsCount(){
+	public String getStatusAndCategoryWiseAlertsCount(){//ClarificationDetailsCountVO
 		try {
 			jObj = new JSONObject(getTask());
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			if(regVo != null)
-				alertVOs =  alertService.getStatusAndCategoryWiseAlertsCount(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("alertTypeId"));
+				clarificationDetailsCountVOList =  alertService.getStatusAndCategoryWiseAlertsCount(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("alertTypeId"));
 				
-		} catch (Exception e) {
+		} catch (Exception e) {  
 			LOG.error("Excpetion raised at getStatusAndCategoryWiseAlertsCount",e);
 		}
 		return Action.SUCCESS;
