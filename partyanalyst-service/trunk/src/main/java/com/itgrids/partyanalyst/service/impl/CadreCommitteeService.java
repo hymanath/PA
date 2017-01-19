@@ -19269,4 +19269,32 @@ public List<LocationWiseBoothDetailsVO> getPanchayatList(Long tehsilId)
 	}
 	return locationsList;
 }
+
+//UpdateNominationPostcandidate
+public List<CadreCommitteeVO> updateSearchTdpCadreDetailsBySearchCriteriaForCadreCommitte(String searchType,String searchValue)
+{
+	List<CadreCommitteeVO> returnList = new ArrayList<CadreCommitteeVO>();
+	try {
+		List<Long> tdpCadreIdsNominatedIdsList = new ArrayList<Long>(0);
+		List<Object[]> nomPstCndList = nominationPostCandidateDAO.updateCadresearch(searchType,searchValue);
+		if(nomPstCndList != null && nomPstCndList.size() > 0){
+			for (Object[] objects : nomPstCndList) {
+				CadreCommitteeVO vo = new CadreCommitteeVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				vo.setCadreName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				vo.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(objects[3]));
+				vo.setImageURL(commonMethodsUtilService.getStringValueForObject(objects[4]));
+				vo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+				vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[7]));
+				vo.setMemberShipCardId(commonMethodsUtilService.getStringValueForObject(objects[8]));
+				returnList.add(vo);
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCadreCommitte", e);
+	}
+	return returnList;
+}
 }
