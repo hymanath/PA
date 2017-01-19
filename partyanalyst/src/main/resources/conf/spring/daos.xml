@@ -3494,11 +3494,40 @@
 	<bean id="tdpCadreGenderInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreGenderInfoTempDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="maxPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MaxPrintDetailsDAO">
+		<bean id="maxPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MaxPrintDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	 <!--  MP && MLA Attendance START-->
+	 <bean id="adminHouseDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseTermDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseTermDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseTermMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreGenderInfoTempDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseMemberAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseMemberAttendanceDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseMemberQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseMemberQuestionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseSessionDayDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseSessionDayDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="houseSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseSessionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="adminHouseSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdminHouseSessionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	  <!--  MP && MLA Attendance END-->
+	  
 	<bean id="pashiAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PashiAppUserDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -3613,7 +3642,9 @@
 	<bean id="verificationCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerificationCommentsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	
+	<bean id="PartyMeetingUpdationDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		
 	
 </beans>		
