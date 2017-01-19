@@ -260,46 +260,47 @@ h1,h2,h3,h4,h5,h6,p,ul,table
         </div>
     </div>
 </main>
-<div class="modal fade" id="editConductedBtnModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+<div class="modal fade" id="updateFinlizMtngBtnModal"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
-      <div class="modal-body" id="editConductedModalBody">
-		<!--<label>Change Status</label>-->
-		<!--<select class="form-control" id="isConductedUpdateId">
-			<option value="0">Select Status</option>
-			<option value="Y">Yes</option>
-			<option value="N">No</option>
-		</select>-->
-		<span id="errorId"></span>
-		<div class="input-group" style="display:none" id="dateUpdateId">
-			<input type="text" class="form-control" id="dateValueId" />
-			<span class="input-group-addon">
-				<i class="glyphicon glyphicon-calendar"></i>
-			</span>			
-		</div>
-		<textarea type="text" class="form-control" style="display:none" id="remarksUpdateId" ></textarea>
-		<input type="hidden" value="" id="hiddenMeetingId" />
-		<input type="hidden" value="" id="hiddenAttrId" />
-      </div>
-      <div class="modal-footer" style="padding:5px;">
-	  <button type="button" class="btn btn-success btn-xs" id="updateDetailsBtnId">SAVE</button>
-        <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">CLOSE</button>        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+	<div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modelTitle"></h4>
+        <h4 class="modal-title" id="statusTitleId">UPDATE STATUS DETAILS:</h4>
       </div>
-      <div class="modal-body" id="modelBody">
-      
+      <div class="modal-body" id="updateFinlizMtngBtnBody">
+		<div id="errorId" style="color:red;"></div>
+		<div class="input-group" id="updateDivId">
+			<div class="row">
+				<div class="col-md-6 col-xs-12 col-sm-6">
+					<label>Member Type</label> :<input type="text" class="form-control" id="memberTypeId" />
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6">	
+					<label>Membership No</label> :<input type="text" class="form-control" id="memebershipId" /><br>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6">	
+					<label>Name</label> :<input type="text" class="form-control" id="nameId" /><br>					
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6">	
+					<label>Mobile No</label> :<input type="text" class="form-control" id="mobileNoId" /><br>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6">	
+					<label>Remark</label> :<textarea type="text" class="form-control" id="remarkId" ></textarea><br>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6">	
+					<label>Status</label> :<select class="form-control" id="statusId">
+						<option value="0">Select</option>
+						<option value="Y">Yes</option>
+						<option value="N">No</option>
+					 </select>	
+				</div>
+			</div>
+			<input type="hidden" value="" id="hiddenFinalizeMeetingId" />			 
+		</div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	  <div id="statusDetailsDivId" style="color:green;"></div>
+      <div class="modal-footer" style="padding:5px;">
+	  <button type="button" class="btn btn-success" id="saveDetailsBtnId">SAVE</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>        
       </div>
     </div>
   </div>
@@ -846,36 +847,20 @@ function buildFinalMeeting(result){
 						}else{
 							str+='<td class="text-center">-</td>';
 						}
-						 if(result[i].conductedDate != null && result[i].conductedDate =="Y"){
+						
+						if(result[i].conductedDate != null && result[i].conductedDate =="Y"){
 							str+='<td>YES</td>';
 						}else if(result[i].conductedDate != null && result[i].conductedDate =="N"){
 							str+='<td>NO</td>';
 						}else{
 							str+='<td class="text-center">-</td>';
 						}
-					str+='<td>';
-						if(result[i].thirdPartyStatus !=null && result[i].thirdPartyStatus == "Y"){
-						str+='<select  style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0"></option>';
-							str+='<option value="Y" selected>Yes</option>';
-							str+='<option value="N">No</option>';
-						str+='</select>';
-					}else if(result[i].thirdPartyStatus !=null && result[i].thirdPartyStatus == "N"){
-						str+='<select style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0"></option>';
-							str+='<option value="Y">Yes</option>';
-							str+='<option value="N" selected>No</option>';
-						str+='</select>';
-					}else{
-						str+='<select style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0">select</option>';
-							str+='<option value="Y">Yes</option>';
-							str+='<option value="N">No</option>';
-						str+='</select>';
-					}
+						
+						str+='<td>';
+						str+='<button class="btn btn-success updateCls" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'">UPDATE</button>';
 					str+='</td>';
 					str+='</tr>';
-					}
+				}
 					}else{
 						str+='No Meetings Found';
 					}
@@ -886,7 +871,7 @@ function buildFinalMeeting(result){
 			"iDisplayLength": 10,
 				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "ALL"]]			
 			});
-	}
+}
 	function getStateDistrictAssemblySelection(forLocation){
 		var resultArr = [];
 		if(forLocation=="state"){
@@ -1530,198 +1515,6 @@ function getLevelWiseMeetingDetails(){
 			}
 		});
 }
-/* updateConductedDetails();
-function updateConductedDetails(){
-	var jsObj={
-		meetingId : 117140,
-		isConducted :'N',
-		remarks:"NoReason",	
-		conductedDate:""
-	}
-	$.ajax({
-		type: "POST",
-		url:"updateConductedDetailsAction.action",
-		data:{task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		
-	});	
-}
- */
-function updateConductedStatus(meetingId,status){
-	
-	var jsObj={
-		meetingId : meetingId,
-		isConducted :status
-	}
-	$.ajax({
-		type: "POST",
-		url:"updateConductedStatusAction.action",
-		data:{task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		getLevelWiseMeetingDetails();
-	});	
-}
-function updateConductedDate(dateValue){
-	
-	$("#errorId").html("");	
-	var meetingId = $("#hiddenMeetingId").val();
-	var attrId = $("#hiddenAttrId").val();
-	
-	/* if(dateValue ==null || dateValue =="undefined" || dateValue.length<=0){
-		$("#errorId").css("color", "red");
-		$("#errorId").html(" please select Date");
-		return;
-	} */
-	
-	var jsObj={
-		meetingId : meetingId,
-		conductedDate :dateValue
-	}
-	$.ajax({
-		type: "POST",
-		url:"updateConductedDateAction.action",
-		data:{task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result !=null && result == "success"){
-			$("#errorId").css("color", "green");
-			$("#errorId").html("Updated Successfully");
-			
-			if(dateValue !=null && dateValue.length>0){
-				$("#"+attrId).html(dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
-				$("#"+attrId).attr("attr_conductedDate",dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
-			}else{
-				$("#"+attrId).html("Enter Date");
-				$("#"+attrId).attr("attr_conductedDate","");
-			}
-			
-			 setTimeout(function(){ 
-					$("#editConductedBtnModal").modal('hide');
-			 }, 1000);
-		}else{
-			$("#errorId").css("color", "red");
-			$("#errorId").html("some problem occured while updating.");
-		}
-	});	
-}
-function updateConductedReason(remarks){
-	var meetingId = $("#hiddenMeetingId").val();
-	var attrId = $("#hiddenAttrId").val();
-	
-	/* if(remarks ==null || remarks =="undefined" || remarks.length<=0){
-		$("#errorId").css("color", "red");
-		$("#errorId").html(" please Enter Remarks");
-		return;
-	} */
-	
-	var jsObj={
-		meetingId : meetingId,
-		remarks :remarks
-	}
-	$.ajax({
-		type: "POST",
-		url:"updateConductedReasonAction.action",
-		data:{task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result !=null && result == "success"){
-			$("#errorId").css("color", "green");
-			$("#errorId").html("Updated Successfully");
-			
-			
-			if(remarks !=null && remarks.length>0){
-				$("#"+attrId).html(remarks);
-				$("#"+attrId).attr("attr_remarks",remarks);
-			}else{
-				$("#"+attrId).html("Enter Remarks");
-				$("#"+attrId).attr("attr_remarks","");
-			}
-			
-			 setTimeout(function(){ 
-					$("#editConductedBtnModal").modal('hide');
-			 }, 1000);
-		}else{
-			$("#errorId").css("color", "red");
-			$("#errorId").html("some problem occured while updating.");
-		}
-	});	
-}
-/* $(document).on("click",".editConductedBtn",function(){
-	
-	$("#isConductedUpdateId").show();
-	$("#dateUpdateId").hide();
-	$("#remarksUpdateId").hide();
-	
-	var isConducted = $(this).attr("attr_isConducted");
-	
-	$("#isConductedUpdateId").val(isConducted);
-		
-	$("#editConductedBtnModal").modal('show');
-}); */
-$(document).on("click",".editConductedDateBtn",function(){
-	
-	$("#isConductedUpdateId").hide();
-	$("#dateUpdateId").show();
-	$("#remarksUpdateId").hide();
-	
-	var conductedDate = $(this).attr("attr_conductedDate");
-	var meetingId = $(this).attr("attr_meetingId");
-	var id = $(this).attr("id");
-	
-	$("#hiddenMeetingId").val(meetingId);
-	$("#hiddenAttrId").val(id);
-	
-	var cndDate='';
-	if(conductedDate !=null && conductedDate.length>0){		
-		cndDate = conductedDate.split("-")[1]+"/"+conductedDate.split("-")[2]+"/"+conductedDate.split("-")[0];	
-		$("#dateValueId").val(cndDate);					
-	}else{
-		$("#dateValueId").val("");	
-	}
-	
-	$("#errorId").html("<b>Select Date</b>");
-	//$('errorId').removeAttr('style');
-	$("#editConductedBtnModal").modal('show');
-});
-$(document).on("click",".editRemarksBtn",function(){
-	$("#isConductedUpdateId").hide();
-	$("#dateUpdateId").hide();
-	$("#remarksUpdateId").show();
-	
-	var remarks = $(this).attr("attr_remarks");
-	var meetingId = $(this).attr("attr_meetingId");
-	var id = $(this).attr("id");
-		
-	$("#hiddenMeetingId").val(meetingId);
-	$("#hiddenAttrId").val(id);
-	
-	if(remarks !=null && remarks.length>0){
-		$("#remarksUpdateId").val(remarks);			
-	}else{
-		$("#remarksUpdateId").val("");
-	}
-	
-	$("#errorId").html('<b>Enter Remarks</b>');
-	//$('errorId').removeAttr('style');
-	$("#editConductedBtnModal").modal('show');
-});
-
-$(document).on("change",".updateConductedCls",function(){
-	
-	var idValue = $(this).attr("id");
-	var status = $("#"+idValue).val();
-	var meetingId = $(this).attr("attr_meetingId");
-	
-	updateConductedStatus(meetingId,status);
-});
-
-$(document).on("click","#updateDetailsBtnId",function(){
-	if($('#dateUpdateId').is(':visible')){
-		var  dateValue = $("#dateValueId").val();		
-		updateConductedDate(dateValue);
-	}else if($('#remarksUpdateId').is(':visible')){
-		var remarksVal = $("#remarksUpdateId").val();
-		updateConductedReason(remarksVal);
-	}	
-});
  function getMandalsForDistrictId(){
 	 $("#manTowDivId  option").remove();
 	var districtId = $("#districtId").val();
@@ -1786,8 +1579,7 @@ function getVillagesForDistrictId(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result !=null && result.length>0){
-				$("#villWardId").append("<option value='0'>ALL</option>");
+			if(result !=null && result.length>0){$("#villWardId").append("<option value='0'>ALL</option>");
 				for(var i in result){
 				   $("#villWardId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
 			   }
@@ -1829,6 +1621,71 @@ function getVillagesForDistrictId(){
 			}
 		});
  }
+$(document).on("click",".updateCls",function(){
+	$("#statusDetailsDivId").html("");
+	$("#updateFinlizMtngBtnModal").modal("show");
+		var meetingId = $(this).attr("attr_meeting_Loc_Id");
+		$("#hiddenFinalizeMeetingId").val(meetingId);
+});
+$(document).on("click","#saveDetailsBtnId",function(){
+	$('#errorId').html('');
+	var r=confirm("Are you sure you want to update the status.. ");
+	var errorStr = '';
+  if (r)	
+  {
+	var partyMeetingId = $("#hiddenFinalizeMeetingId").val();
+	var memberType = $("#memberTypeId").val();
+	var membershipId = $("#memebershipId").val();
+	var name = $("#nameId").val();
+	var mobileNo = $("#mobileNoId").val();
+	var remark = $("#remarkId").val();
+	var updateStatus = $("#statusId").val();
+	
+  if(memberType ==0) 
+	errorStr += "Member type is required<br>";
+  if(name ==0)
+	  errorStr += "Name is required<br>";
+  if(mobileNo != 10)
+	  errorStr += "Mobile No is required<br>";
+ if(remark ==0)
+	  errorStr += "Remark is required<br>";
+  if(updateStatus ==0)
+	  errorStr += "Status is required<br>";
+
+	 if(errorStr.length >0)
+  {
+	  $('#errorId').html(errorStr);
+	  return ;
+  }
+	var jsObj =	{
+		partyMeetingId:partyMeetingId,
+		memberType:memberType,
+		membershipId:membershipId,
+		name:name,
+		mobileNo:mobileNo,
+		remark:remark,
+		statusId:updateStatus,
+		updatedBy :"PC"
+	}
+		$.ajax({
+			type: "POST",
+			url:"saveFinalizedMeetingDetailsAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+				if(result.message == "SUCCESS"){
+					$("#statusDetailsDivId").html(" Saved successfully...");
+					$("#memberTypeId").val("");
+					$("#memebershipId").val("");
+					$("#nameId").val("");
+					$("#mobileNoId").val("");
+					$("#remarkId").val("");
+					$("#statusId").val("");
+				}else{
+					$("#statusDetailsDivId").html(" Error occured try again...");
+				}
+		});
+  }
+});
  function meetingLevelWiseHideShow(){
 	 if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
@@ -1897,6 +1754,5 @@ function getVillagesForDistrictId(){
 		
 }
 </script>
-
 </body>
 </html>
