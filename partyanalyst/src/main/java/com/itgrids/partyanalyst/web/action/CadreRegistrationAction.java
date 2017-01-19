@@ -2722,8 +2722,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		String memberShipNo = jobj.getString("memberShipNo");
 		String mobileNo = jobj.getString("mobileNo");
 		String voterNo = jobj.getString("voterNo");
+		//cadreList = cadreRegistrationService.getTdpCadresBySearch(memberShipNo, mobileNo, voterNo);
 		
-		cadreList = cadreRegistrationService.getTdpCadresBySearch(memberShipNo, mobileNo, voterNo);
+		// null--> the same call using for android web service call to search cadre people in user assigned constituencies only  
+		cadreList = cadreRegistrationService.getTdpCadresBySearch(null,memberShipNo, mobileNo, voterNo);
 	} catch (Exception e) {
 		LOG.error("Entered into getTdpCadresBySearch method in CadreRegistrationAction....");
 	}
