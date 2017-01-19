@@ -19,4 +19,6 @@ public interface ICardPrintValidationDAO extends GenericDao<CardPrintValidation,
 	
 	public List<Object[]> getBoxWiseValidatedCardsCountByUser(Long userId , Date fromDate , Date toDate);
 	public List<Object[]> getBoxWiseStatusWiseCountsByUser(Long userId , Date fromDate , Date toDate);
+	
+	public Long getCardPrintValidationIdByTdpCadreId(Long tdpCadreId);
 }
