@@ -730,5 +730,6 @@
 		<pattern>/alertClarificationDashboardAction*</pattern>
 		<pattern>/boothWiseDataMonitoringAction*</pattern>
 		<pattern>/finalizedPartyMeetingConductedAction*</pattern>
+		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
 	</decorator> 
 </decorators>
