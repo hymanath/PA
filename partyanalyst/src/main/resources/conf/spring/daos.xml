@@ -3645,6 +3645,9 @@
 	<bean id="PartyMeetingUpdationDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
+	
+	<bean id="cardPrintValidationTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintValidationTrackDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 	
 </beans>		
