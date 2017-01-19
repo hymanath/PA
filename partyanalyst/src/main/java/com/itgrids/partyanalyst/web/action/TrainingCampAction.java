@@ -2969,5 +2969,25 @@ public String getFinalAllMeetings(){
 	}
 	return Action.SUCCESS;
 }
-
+public String saveFinalizedMeetingDetails(){
+	try{
+		LOG.info("Entered into saveFinalizedMeetingDetails");
+		RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		Long partymeetingId = jObj.getLong("partyMeetingId");
+		String memberType = jObj.getString("memberType");
+		String membershipId = jObj.getString("membershipId");
+		String name = jObj.getString("name");
+		String mobileNo = jObj.getString("mobileNo");
+		String remark =jObj.getString("remark");
+		String statusId = jObj.getString("statusId");
+		String updateBy = jObj.getString("updatedBy");
+		Long userId = regVo.getRegistrationID();
+		resultStatus = trainingCampService.saveFinalizedMeetingDetails(partymeetingId,memberType,membershipId,name,mobileNo,remark,statusId,updateBy,userId);
+	}catch (Exception e) {
+		LOG.error("Exception raised into saveFinalizedMeetingDetails",e);
+	}
+	return Action.SUCCESS;
+}
 }
