@@ -2323,4 +2323,23 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getUpdateSearchDetails()
+	{
+		try {
+			
+			int startIndex = 0;
+			int maxIndex = 0;
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			String searchValue = jObj.getString("searchValue");
+			
+			
+			cadreCommitteeList = cadreCommitteeService.updateSearchTdpCadreDetailsBySearchCriteriaForCadreCommitte(searchType,searchValue);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
