@@ -3431,4 +3431,33 @@ public String getTourLeaderDtlsBasedOnSelectionType(){
 	}
 	return Action.SUCCESS;
 }
+
+public String getActivityDetails(){
+	try {
+		LOG.info("Entered into getActivityDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		
+		IdAndNameVOList = coreDashboardService.getActivityDetails(fromDate, toDate);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getActivityOverAllSummary(){
+	try {
+		LOG.info("Entered into getActivityOverAllSummary()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		
+		Long activityId = jObj.getLong("activityId");
+		
+		IdAndNameVOList = coreDashboardService.getActivityOverAllSummary(activityId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityOverAllSummary() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
