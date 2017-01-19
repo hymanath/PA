@@ -62,4 +62,6 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByGender();
 	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByCasteState();
 	
+	public ResultStatus updateCardPrintValidStatusNEW(final CardPrintValidationVO inputVO);
+	
 }
