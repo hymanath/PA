@@ -46,12 +46,14 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -115,6 +117,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails;
 import com.itgrids.partyanalyst.model.TrainingCamp;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
@@ -213,8 +216,19 @@ class TrainingCampService implements ITrainingCampService{
 	private IHamletDAO hamletDAO;
 	private ITdpCadreDAO tdpCadreDAO;
 	private ISmsSenderService smsSenderService;
+	private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	
-    public ISmsSenderService getSmsSenderService() {
+    public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
+
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+
+	public ISmsSenderService getSmsSenderService() {
 		return smsSenderService;
 	}
 
@@ -689,6 +703,15 @@ class TrainingCampService implements ITrainingCampService{
 		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
 	}
     
+	public IPartyMeetingUpdationDetailsDAO getPartyMeetingUpdationDetailsDAO() {
+		return partyMeetingUpdationDetailsDAO;
+	}
+
+	public void setPartyMeetingUpdationDetailsDAO(
+			IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO) {
+		this.partyMeetingUpdationDetailsDAO = partyMeetingUpdationDetailsDAO;
+	}
+
 	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
 		this.tdpCommitteeLevelDAO = tdpCommitteeLevelDAO;
 	}
@@ -967,8 +990,7 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return status;
 	}
-	
-	public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString,String agentType)
+		public TrainingCampScheduleVO getCallerWiseCallsDetails(List<Long> userIds,String searchTypeId,String startDateString,String endDateString,String agentType)
 	{
 		List<TrainingCampScheduleVO> finalList=null;
 		TrainingCampScheduleVO finalCallersVODetails=new TrainingCampScheduleVO();
@@ -10999,17 +11021,17 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 					
 				}
 			
-				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
 						townList,divisonList,villageList,wardList,startDate,endDate,0l);
 				
 				
 			}else{
 				
-				List<Object[]> meetingsMandal = partyMeetingDAO.getAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+				List<Object[]> meetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
 						divisonList,villageList,wardList,startDate,endDate,0l);
-				List<Object[]> meetingsTowns = partyMeetingDAO.getAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+				List<Object[]> meetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
 						divisonList,villageList,wardList,startDate,endDate,0l);
-				List<Object[]> meetingsDivs = partyMeetingDAO.getAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+				List<Object[]> meetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
 						divisonList,villageList,wardList,startDate,endDate,0l);
 				
 				
@@ -11034,7 +11056,7 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 					wardList.add(Long.parseLong(vilwrdId.substring(1)));
 				}
 			}
-			meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
 					townList,divisonList,villageList,wardList,startDate,endDate,0l);
 			
 		 }else{
@@ -11058,16 +11080,16 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				 }
 				 
 			 }
-			 List<Object[]> meetingsVillage = partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+			 List<Object[]> meetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
 						divisonList,villageList,wardList,startDate,endDate,0l);
-				List<Object[]> meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+				List<Object[]> meetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
 						divisonList,villageList,wardList,startDate,endDate,0l);
 				
 				meetings.addAll(meetingsVillage);
 				meetings.addAll(meetingsWards);
 		 }
 		}else{
-			meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
 					townList,divisonList,villageList,wardList,startDate,endDate,0l);
 		}
 		
@@ -11252,5 +11274,46 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 	}
 	return allMeetings;
 }
-
+public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
+		final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId){
+	ResultStatus status  = new ResultStatus();
+	try {
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				PartyMeeting partyMeeting = new PartyMeeting();
+				
+				PartyMeeting obj = (PartyMeeting) partyMeetingDAO.get(partyMeetingId);
+				
+				obj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				obj.setThirdPartyStatus(statusId);
+				
+				partyMeetingDAO.save(obj);
+				
+				Long tdpcadreId = tdpCadreEnrollmentYearDAO.getTdpCadreIdByMembership(membershipId);
+				
+				PartyMeetingUpdationDetails PMUD = new PartyMeetingUpdationDetails();
+					PMUD.setPartyMeetingId(partyMeetingId);
+					if(tdpcadreId != null && tdpcadreId.longValue() > 0l){
+						PMUD.setTdpCadreId(tdpcadreId);
+					}
+					PMUD.setName(name);
+					PMUD.setMobileNo(mobileNo);
+					PMUD.setComment(remark);
+					PMUD.setIsDeleted("false");
+					PMUD.setUpdatedBy(updateBy);
+					PMUD.setUserId(userId);
+					PMUD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					
+					partyMeetingUpdationDetailsDAO.save(PMUD);
+			}
+		});
+		status.setResultCode(0);
+		status.setMessage("SUCCESS");
+	} catch (Exception e) {
+		status.setResultCode(1);
+		status.setMessage("FAILURE");
+		LOG.error(" Exception occured in saveFinalizedMeetingDetails method in TrainingCampService class.",e);
+	}
+	return status;
+}
 }
