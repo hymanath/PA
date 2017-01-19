@@ -24,6 +24,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintValidationRejectReasonDAO;
+import com.itgrids.partyanalyst.dao.ICardPrintValidationTrackDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintValidationUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -68,6 +69,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
 import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.model.CardPrintValidation;
 import com.itgrids.partyanalyst.model.CardPrintValidationRejectReason;
+import com.itgrids.partyanalyst.model.CardPrintValidationTrack;
 import com.itgrids.partyanalyst.model.TdpCadreAgeInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreCasteStateInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreDataSourceTypeInfo;
@@ -127,6 +129,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     private ITdpCadreAgeInfoTempDAO tdpCadreAgeInfoTempDAO;
     private ITdpCadreGenderInfoTempDAO tdpCadreGenderInfoTempDAO;
     private ITdpCadreCasteStateInfoTempDAO tdpCadreCasteStateInfoTempDAO;
+    private ICardPrintValidationTrackDAO cardPrintValidationTrackDAO;
+    
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -291,6 +295,11 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreCasteStateInfoTempDAO(
 			ITdpCadreCasteStateInfoTempDAO tdpCadreCasteStateInfoTempDAO) {
 		this.tdpCadreCasteStateInfoTempDAO = tdpCadreCasteStateInfoTempDAO;
+	}
+	
+	public void setCardPrintValidationTrackDAO(
+			ICardPrintValidationTrackDAO cardPrintValidationTrackDAO) {
+		this.cardPrintValidationTrackDAO = cardPrintValidationTrackDAO;
 	}
 	//Business methods
 	/**
@@ -2866,6 +2875,128 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     	   return rs;
        }
        
+       public ResultStatus updateCardPrintValidStatusNEW(final CardPrintValidationVO inputVO){
+    	   
+    	   final ResultStatus rs = new ResultStatus();
+    	   try{
+    			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        	
+			        		Date currentTime = dateUtilService.getCurrentDateAndTime();
+				    		
+			        		if(inputVO.getTdpCadreId() != null && inputVO.getTdpCadreId().longValue() > 0){
+			        			
+			        			//FIND SAVE OR UPDATE.
+			        			Long cardPrintValidationId = cardPrintValidationDAO.getCardPrintValidationIdByTdpCadreId(inputVO.getTdpCadreId());
+			        			if(cardPrintValidationId != null && cardPrintValidationId.longValue() > 0l){
+			        				
+			        				//UPDATE
+			        				CardPrintValidation cardPrintValidation = cardPrintValidationDAO.get(cardPrintValidationId);
+			        				if(cardPrintValidation != null){
+			        					
+			        					//cardPrintValidation
+			        					cardPrintValidation.setCardPrintVendorId(inputVO.getCardPrintVendorId());
+						        		cardPrintValidation.setPrintStatus(inputVO.getPrintStatus());
+						        		cardPrintValidation.setRejectReason(inputVO.getRejectReason() != null && !inputVO.getRejectReason().trim().isEmpty() ? inputVO.getRejectReason().trim() : null);
+					        			cardPrintValidation.setCardPrintValidationUserId(inputVO.getCardPrintValidationUserId());
+						        		cardPrintValidation.setInsertedTime(currentTime);
+						        		cardPrintValidation.setBoxNo(inputVO.getBoxNo());
+						        		cardPrintValidation = cardPrintValidationDAO.save(cardPrintValidation);
+						        		
+						        		//tracking.
+						        		CardPrintValidationTrack track = new CardPrintValidationTrack();
+						        		track.setCardPrintValidationId(cardPrintValidation.getCardPrintValidationId());
+						        		track.setCardPrintVendorId(cardPrintValidation.getCardPrintVendorId());
+						        		track.setTdpCadreId(cardPrintValidation.getTdpCadreId());
+						        		track.setMemberShipId(cardPrintValidation.getMemberShipId());
+						        		track.setPrintStatus(cardPrintValidation.getPrintStatus());
+						        		track.setRejectReason(cardPrintValidation.getRejectReason());
+						        		track.setCardPrintValidationUserId(cardPrintValidation.getCardPrintValidationUserId());
+						        		track.setInsertedTime(cardPrintValidation.getInsertedTime());
+						        		track.setBoxNo(cardPrintValidation.getBoxNo());
+						        		cardPrintValidationTrackDAO.save(track);
+						        		
+						        		//reject reason
+						        		List<Long> cardPrintValidationRejectReasonIds = cardPrintValidationRejectReasonDAO.checkRejectReasonsByCardPrintValidationId(cardPrintValidationId);
+						        		if(cardPrintValidationRejectReasonIds != null && cardPrintValidationRejectReasonIds.size() > 0){
+						        			int updatedCount  = cardPrintValidationRejectReasonDAO.deleteCardPrintValidationRejectReasonIds(cardPrintValidationRejectReasonIds);	
+						        		}
+						        		if(inputVO.getRejectReasonIds() != null && inputVO.getRejectReasonIds().size() > 0){
+							        		   for(Long reasonId : inputVO.getRejectReasonIds()){
+							        			   CardPrintValidationRejectReason cardPrintValidationRejectReason = new CardPrintValidationRejectReason();
+							        			   cardPrintValidationRejectReason.setCardPrintValidationId(cardPrintValidation.getCardPrintValidationId());
+							        			   cardPrintValidationRejectReason.setPrintRejectReasonId(reasonId);
+							        			   cardPrintValidationRejectReason.setIsDeleted("N");
+							        			   cardPrintValidationRejectReason.setInsertedTime(cardPrintValidation.getInsertedTime());
+							        			   cardPrintValidationRejectReasonDAO.save(cardPrintValidationRejectReason);
+							        		   }
+							        	}
+			        				}
+			        				
+			        			}else{
+			        				
+				        				//SAVE
+				        				
+			        				    //cardPrintValidation
+				        				CardPrintValidation cardPrintValidation = new CardPrintValidation();
+						        		cardPrintValidation.setCardPrintVendorId(inputVO.getCardPrintVendorId());
+						        		cardPrintValidation.setTdpCadreId(inputVO.getTdpCadreId());
+						        		cardPrintValidation.setMemberShipId(inputVO.getMemberShipId());
+						        		cardPrintValidation.setPrintStatus(inputVO.getPrintStatus());
+						        		if(inputVO.getRejectReason() != null && inputVO.getRejectReason().trim().length() > 0){
+						        			cardPrintValidation.setRejectReason(inputVO.getRejectReason());
+						        		}
+						        		cardPrintValidation.setCardPrintValidationUserId(inputVO.getCardPrintValidationUserId());
+						        		cardPrintValidation.setInsertedTime(currentTime);
+						        		cardPrintValidation.setBoxNo(inputVO.getBoxNo());
+						        		cardPrintValidation = cardPrintValidationDAO.save(cardPrintValidation);
+				        				
+						        		//tracking.
+						        		CardPrintValidationTrack track = new CardPrintValidationTrack();
+						        		track.setCardPrintValidationId(cardPrintValidation.getCardPrintValidationId());
+						        		track.setCardPrintVendorId(cardPrintValidation.getCardPrintVendorId());
+						        		track.setTdpCadreId(cardPrintValidation.getTdpCadreId());
+						        		track.setMemberShipId(cardPrintValidation.getMemberShipId());
+						        		track.setPrintStatus(cardPrintValidation.getPrintStatus());
+						        		track.setRejectReason(cardPrintValidation.getRejectReason());
+						        		track.setCardPrintValidationUserId(cardPrintValidation.getCardPrintValidationUserId());
+						        		track.setInsertedTime(cardPrintValidation.getInsertedTime());
+						        		track.setBoxNo(cardPrintValidation.getBoxNo());
+						        		cardPrintValidationTrackDAO.save(track);
+						        		
+						        		//reject reason
+						        		if(inputVO.getRejectReasonIds() != null && inputVO.getRejectReasonIds().size() > 0){
+							        		   for(Long reasonId : inputVO.getRejectReasonIds()){
+							        			   CardPrintValidationRejectReason cardPrintValidationRejectReason = new CardPrintValidationRejectReason();
+							        			   cardPrintValidationRejectReason.setCardPrintValidationId(cardPrintValidation.getCardPrintValidationId());
+							        			   cardPrintValidationRejectReason.setPrintRejectReasonId(reasonId);
+							        			   cardPrintValidationRejectReason.setIsDeleted("N");
+							        			   cardPrintValidationRejectReason.setInsertedTime(cardPrintValidation.getInsertedTime());
+							        			   cardPrintValidationRejectReasonDAO.save(cardPrintValidationRejectReason);
+							        		   }
+							        	}
+			        			}
+			        			
+			        		}else{
+			        			rs.setResultCode(0);
+			        			rs.setMessage("Failure");
+			        			rs.setExceptionMsg("TdpCadreId does not Exist..");
+			        			return;
+			        		}
+			        		
+				          rs.setResultCode(1);
+				          rs.setMessage("Success");
+			         }
+			    });
+    		   
+		  }catch(Exception e){
+			  LOG.error("Exception occur in updateCardPrintValidStatus()  Of CadreRegistrationServiceNew class - ",e);
+			  rs.setResultCode(0);
+			  rs.setMessage("Failure");
+			  rs.setExceptionMsg("Exception Occurred..");
+		  }
+    	   return rs;
+       }
        
        //DEMOGRAPHIC ANALYSIS.
        /**
