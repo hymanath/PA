@@ -240,7 +240,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		   ResultStatus resultStatus = null;
 			try{
 				
-				  resultStatus = cadreRegistrationServiceNew.updateCardPrintValidStatus(inputVO);
+				  resultStatus = cadreRegistrationServiceNew.updateCardPrintValidStatusNEW(inputVO);
 				  
 			}catch(Exception e) {
 				log.error("Entered into the updateCardPrintValidStatus() in WebServiceHandlerServiceForCadre class");
