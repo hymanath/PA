@@ -3599,6 +3599,20 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="verificationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerificationStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="verificationConversationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerificationConversationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="verificationDocumentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerificationDocumentsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="verificationCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerificationCommentsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	
 	
