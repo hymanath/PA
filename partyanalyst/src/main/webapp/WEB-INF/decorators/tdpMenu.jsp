@@ -888,7 +888,11 @@
 								</li> 
 							<!--</c:if>-->
 							</c:if>
-							
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ADMIN_ENTITLEMENT')}">
+								<li>
+									<a href="finalizedPartyMeetingConductedAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Update Party Meetings</span></a>
+								</li>
+							</c:if>
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
 								<li>
 									<a target="_blank" href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
