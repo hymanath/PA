@@ -601,15 +601,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		   			
 				File[] files = multiPartRequestWrapper.getFiles(key);
 				filePaths = new ArrayList<String>();
-				if(files != null && files.length > 0)
+				if(files != null && files.length > 0){
 					for(File f : files){
 						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
 						String ext = "";
 						if(extension.length > 1){
 							ext = extension[extension.length-1];
-								mapfiles.put(f,ext);
-							}
+							mapfiles.put(f,ext);
 						}
+					}
+				}
 			}  
 			
 			if(toursVO !=null){
