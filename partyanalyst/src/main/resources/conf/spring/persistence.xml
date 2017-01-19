@@ -1079,11 +1079,13 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreAgeInfoTemp</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreCasteStateInfoTemp</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreGenderInfoTemp</value>
-	                  
+	                      
+	                  <value>com.itgrids.partyanalyst.model.MaxPrintDetails</value>
 	                  <value>com.itgrids.partyanalyst.model.MaxPrintDetails</value>
 	                  <value>com.itgrids.partyanalyst.model.PashiAppUser</value>
 	                  <value>com.itgrids.partyanalyst.model.PashiAppManageUser</value>
 	                  <value>com.itgrids.partyanalyst.model.CardPrintStatus</value>
+	                  
 	                  
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalToursMonth</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsNew</value>
@@ -1108,6 +1110,19 @@
 	                  <value>com.itgrids.partyanalyst.model.NewsPaper</value>
 	                  <value>com.itgrids.partyanalyst.model.PaperLanguage</value>
 	                  
+	                  
+	                  <!--  MP && MLA Attendance START-->
+	                  <value>com.itgrids.partyanalyst.model.AdminHouse</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseTerm</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseMember</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseTermMember</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseMemberAttendance</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseMemberQuestion</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseSession</value>
+	                  <value>com.itgrids.partyanalyst.model.HouseSession</value>
+	                  <value>com.itgrids.partyanalyst.model.AdminHouseSessionDay</value>
+	                  <!--  MP && MLA Attendance END -->
+	                  
 	                  <value>com.itgrids.partyanalyst.model.ActionType</value>
 	                  <value>com.itgrids.partyanalyst.model.ActionTypeStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.ActionTypeRequired</value>
@@ -1122,7 +1137,7 @@
 	                  <value>com.itgrids.partyanalyst.model.VerificationConversation</value>
 	                  <value>com.itgrids.partyanalyst.model.VerificationDocuments</value>
 	                  <value>com.itgrids.partyanalyst.model.VerificationComments</value>
-	                 
+	                   <value>com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails</value>
 	                  
 	              </list>
 			
