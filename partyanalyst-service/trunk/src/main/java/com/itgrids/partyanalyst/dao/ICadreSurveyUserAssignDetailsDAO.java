@@ -40,4 +40,5 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> locationIds,Long districtId,Date startDate,Date endDate);
 	public List<Object[]> getLocationWiseCadreSurveyUserIds(Long districtId,Long stateId,Date startDate,Date endDate);
 	public List<Object[]> getNewUserTrackingDetails(GISVisualizationParameterVO inputVO);
+	public List<Long> getAssignedConstiteuncyListByUserId(Long cadreSurveyUserId);
 }
