@@ -1509,7 +1509,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
 							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
-								str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;" class="eventYearExpandIcon"><i class="glyphicon glyphicon-fullscreen text-center"></i></span></h4>';
+								str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;" class="eventYearExpandIcon"><!--<i class="glyphicon glyphicon-fullscreen text-center"></i>--></span></h4>';
 							str+='</a>';
 						str+='</div>';
 						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
@@ -1570,10 +1570,10 @@ function buildActivityCounts(result,divId)
 							str+='<p class="text-muted text-capital">Infocell</p>';
 							str+='<h5>'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
-						str+='<td>';
+						/*str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
 							str+='<h5>1000 <small><span class="text-success">20000 images covered</span></small></h5>';
-						str+='</td>';
+						str+='</td>';*/
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
