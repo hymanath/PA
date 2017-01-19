@@ -134,4 +134,6 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getMandalsForDistrictIdDetails(List<Long> list);
 	public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels);
 	public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString);
+	public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
+			final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId);
 }
