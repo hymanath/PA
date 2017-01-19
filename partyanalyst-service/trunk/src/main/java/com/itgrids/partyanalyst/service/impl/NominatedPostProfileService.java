@@ -7679,4 +7679,20 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 		return returnList;
 	}
 
+	public ResultStatus savingNominatedPostDocumnets(final Long nominatedPostCandidateId,final Long tdpCadreId,final Long applicationId,final Map<File,String> mapfiles,final Long loggerUserId){
+		
+		final ResultStatus rs = new ResultStatus();
+		try{
+			saveApplicationDocuments(applicationId,nominatedPostCandidateId,mapfiles);
+			rs.setResultCode(0);
+			rs.setMessage("SUCCESS ");
+		return rs;
+		}catch(Exception e){
+			LOG.error("Exception Occured in savingNominatedPostDocumnets()", e);
+			rs.setResultCode(1);
+			rs.setMessage("FAIL");
+		}
+		return rs;
+	}
+	
 }
