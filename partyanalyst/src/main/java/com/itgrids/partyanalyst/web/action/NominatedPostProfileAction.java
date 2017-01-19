@@ -77,6 +77,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private CastePositionVO castePositionVO;
 	private GovtOrderVO govtOrderVO;
 	private List<NomintedPostMemberVO> nominatedPostMemberVOs; 
+	private Long nominationPostCandidateId;
+	private Long tdpCadreId;
+	private Long applicationId;
 	
 	
 	public GovtOrderVO getGovtOrderVO() {
@@ -289,6 +292,25 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setNominatedPostMemberVOs(
 			List<NomintedPostMemberVO> nominatedPostMemberVOs) {
 		this.nominatedPostMemberVOs = nominatedPostMemberVOs;
+	}
+	
+	public Long getNominationPostCandidateId() {
+		return nominationPostCandidateId;
+	}
+	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
+		this.nominationPostCandidateId = nominationPostCandidateId;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public Long getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(Long applicationId) {
+		this.applicationId = applicationId;
 	}
 	public String nominatedPosts()
 	{
@@ -1925,5 +1947,62 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	public String updateNominationPosts(){
+		return Action.SUCCESS;
+	}
 	
+	public String fileSaving(){
+		try{
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			//jObj = new JSONObject(getTask());
+			String nominPstCandId = request.getParameter("nominationPostCandidateId");
+			String cadreId = request.getParameter("tdpCadreId");
+			String aplicationId = request.getParameter("applicationId");
+			
+			Long postCandId = Long.parseLong(nominPstCandId);
+			Long tdpCadreId = Long.parseLong(cadreId);
+			Long applicId = Long.parseLong(aplicationId);
+			
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+		       String fileUrl = "" ;
+		       List<String> filePaths = null;
+		   		while(fileParams.hasMoreElements())
+		   		{
+		   			String key = fileParams.nextElement();
+		   			
+				   			File[] files = multiPartRequestWrapper.getFiles(key);
+				   			filePaths = new ArrayList<String>();
+				   			if(files != null && files.length > 0)
+				   			for(File f : files)
+				   			{
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   	            String ext = "";
+				   	            if(extension.length > 1){
+				   	            	ext = extension[extension.length-1];
+				   	            	mapfiles.put(f,ext);
+				   	            }
+				   	        
+				   			}
+		   		}
+		     
+			resultStatus = nominatedPostProfileService.savingNominatedPostDocumnets(postCandId,tdpCadreId,applicId,mapfiles,user.getRegistrationID());
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}else if(resultStatus.getResultCode() == 1){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Entered into fileSaving method of NominatedPostProfileAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
