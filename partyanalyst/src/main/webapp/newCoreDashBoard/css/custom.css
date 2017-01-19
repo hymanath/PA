@@ -2232,3 +2232,41 @@ color: rgb(51, 122, 183);
 }
 .alertDtlsTabStyle thead tr th {font-size:13px !important;padding:5px !important}
 .alertDtlsTabStyle tbody tr td {font-size:13px !important;padding:3px !important}
+
+/*EVENTS AND ACTIVITIES BLOCK NEW CSS */
+.panelBlockCollapse .panel-default
+{
+  border-top:0px;
+  border-left:0px;
+  border-right:0px;
+}
+.panelBlockCollapse .panel-heading
+{
+  background-color:#fff !important;
+}
+.panelBlockCollapse .panel-body
+{
+  border-top:0px !important;
+}
+.panelBlockCollapseIcon , .panelBlockCollapseIcon:active ,.panelBlockCollapseIcon:hover
+{
+  color:#666 !important
+}
+.panelBlockCollapseIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+  font-size:12px;
+  margin-top:0px;
+  font-weight:400 !important;
+  margin-left:-4px;
+  color:#333;
+  border:1px solid #333;
+  padding:4px 8px;
+}
+.panelBlockCollapseIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\002b";
+}
+.tablePaddingSyle tbody tr td{padding:5px !important}

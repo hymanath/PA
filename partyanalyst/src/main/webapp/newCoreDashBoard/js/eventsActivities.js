@@ -186,7 +186,8 @@ $(document).on("click",".eventsListExpandIcon",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}
 });
-
+var customStartDateActivities = moment().subtract(2,"year").format('DD/MM/YYYY');
+var customEndDateActivities = moment().format('DD/MM/YYYY');  
 $("#dateRangeIdForEvents").daterangepicker({
 	opens: 'left',
 	startDate: moment().subtract(1, 'month').startOf('month'),
@@ -205,8 +206,8 @@ $("#dateRangeIdForEvents").daterangepicker({
 	}
 })
 $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
-  customStartDate = picker.startDate.format('DD/MM/YYYY');
-  customEndDate = picker.endDate.format('DD/MM/YYYY');  
+  customStartDateActivities = picker.startDate.format('DD/MM/YYYY');
+  customEndDateActivities = picker.endDate.format('DD/MM/YYYY');  
 });
 
 function getEventBasicCntDtls(){
@@ -1477,3 +1478,108 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 });
 
 /*Notes Functionality End*/
+
+/* Activities Functionality Start */
+
+function getActivitiesDetails(){
+	$("#activityEventsListNew").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	var jsObj={
+		fromDate:customStartDateActivities,
+		toDate: customEndDateActivities
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getActivityDetailsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			buildActivityEventBasicCntDtlsNew(result);
+	});
+}
+function buildActivityEventBasicCntDtlsNew(result)
+{ 
+	var str='';
+    str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="">';
+				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';
+				for(var i in result)
+				{
+					str+='<div class="panel panel-default">';
+						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
+							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+								str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;" class="eventYearExpandIcon"><i class="glyphicon glyphicon-fullscreen text-center"></i></span></h4>';
+							str+='</a>';
+						str+='</div>';
+						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
+							str+='<div class="panel-body">';
+								str+='<div id="activityBodyId'+i+'"></div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+					
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>'; 
+	$("#activityEventsListNew").html(str);
+}
+
+$(document).on("click",".activitiesClass",function(){
+	var activityId = $(this).attr("attr_id");
+	var divId = $(this).attr("attr_divId");
+	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	var jsObj={
+		activityId:activityId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getActivityOverAllSummaryAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			buildActivityCounts(result,divId);
+	});
+});
+
+function buildActivityCounts(result,divId)
+{
+	var str=' ';
+	for(var i in result){
+		str+='<div class="m_top20">';
+			str+='<h5 class="text-capital">'+result[i].name+'</h5>';
+			str+='<table class="table bg_ED tablePaddingSyle">';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">total</p>';
+							str+='<h5>'+result[i].apTotal+'</h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Planned</p>';
+							str+='<h5>'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">IVR</p>';
+							str+='<h5>'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Infocell</p>';
+							str+='<h5>'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Images Covered</p>';
+							str+='<h5>1000 <small><span class="text-success">20000 images covered</span></small></h5>';
+						str+='</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	}
+	$("#"+divId).html(str);
+}
+
+/* Activities Functionality End */
