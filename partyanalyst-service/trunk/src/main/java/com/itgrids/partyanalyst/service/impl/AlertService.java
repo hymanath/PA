@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -24,6 +28,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertActionTypeDAO;
@@ -37,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IAlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
@@ -57,6 +63,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
+import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
@@ -67,6 +74,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
@@ -82,16 +90,19 @@ import com.itgrids.partyanalyst.model.AlertClarificationDocument;
 import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
+import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.MemberType;
+import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertService implements IAlertService{
@@ -136,8 +147,17 @@ private IClarificationRequiredDAO clarificationRequiredDAO;
 private IAlertClarificationStatusDAO alertClarificationStatusDAO;
 private IActionTypeStatusDAO actionTypeStatusDAO;
 private IAlertActionTypeDAO alertActionTypeDAO;
+private IActionTypeDAO actionTypeDAO;
+private IAlertDocumentDAO alertDocumentDAO;
 
 
+public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
+	this.alertDocumentDAO = alertDocumentDAO;
+}
+
+public void setActionTypeDAO(IActionTypeDAO actionTypeDAO) {
+	this.actionTypeDAO = actionTypeDAO;
+}
 
 public IAlertClarificationStatusDAO getAlertClarificationStatusDAO() {
 	return alertClarificationStatusDAO;
@@ -421,7 +441,7 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 	return list;
 }
 
-public String createAlert(final AlertVO inputVO,final Long userId)
+public String createAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
 	{
 	String resultStatus = (String) transactionTemplate
 			.execute(new TransactionCallback() {
@@ -457,7 +477,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setAddressId(userAddress.getUserAddressId());
 				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 				 alert = alertDAO.save(alert);
-				 
+				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
 				 
 				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
 				 {
@@ -537,7 +557,113 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 
 			});
 	return resultStatus;
+}
+public void saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
+	
+	try{
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		DateUtilService dt = new DateUtilService();
+		
+		String folderName = folderCreation();
+		AlertDocument alertDocument = null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		 int year = calendar.get(Calendar.YEAR);
+		 int month = calendar.get(Calendar.MONTH);
+		 //int day = calendar.get(Calendar.DAY_OF_MONTH);
+		 int temp = month+1;
+		 String monthText = getMonthForInt(temp);
+		
+		 StringBuilder pathBuilder = null;
+		 StringBuilder str ;
+		 
+		
+		 for (Map.Entry<File, String> entry : documentMap.entrySet())
+		 {
+			 pathBuilder = new StringBuilder();
+			 str = new StringBuilder();
+			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+			 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+			 .append(entry.getValue());
+			 str.append(randomNumber).append(".").append(entry.getValue());
+			String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+			 
+				if(fileCpyStts.equalsIgnoreCase("error")){
+					LOG.error(" Exception Raise in copying file in ToursService ");
+					throw new ArithmeticException();
+				}
+				
+				alertDocument = new AlertDocument();
+				alertDocument.setDocumentPath(pathBuilder.toString());				
+				alertDocument.setAlertId(alertId);
+				
+				
+				alertDocument.setInsertedTime(dt.getCurrentDateAndTime());
+				alertDocument.setIsDeleted("N");
+				alertDocument.setInsertedBy(userId);
+				alertDocument = alertDocumentDAO.save(alertDocument);
+				
+		 }
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in saveApplicationDocuments() in ToursService", e);
 	}
+	
+}
+public static String folderCreation()
+{
+	try {
+		LOG.debug(" in FolderForDocument ");
+  		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new DateUtilService().getCurrentDateAndTime());  
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		
+		String targetDirpath = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+IConstants.TOUR_DOCUMENTS+"/"+getMonthForInt(month+1)+year;
+		
+		File requriredDir = new File(targetDirpath);
+		
+		if(!requriredDir.exists())
+			requriredDir.mkdirs();
+		
+		return requriredDir.getAbsolutePath();
+		 
+	} catch (Exception e) {
+		LOG.error(" Failed to Create");  
+		return "FAILED";
+	}
+}
+public String copyFile(String sourcePath,String destinationPath){
+	 try{
+		File destFile = new File(destinationPath);
+		 if (!destFile.exists()) 
+			 destFile.createNewFile();
+		 File file = new File(sourcePath);
+		if(file.exists()){
+			FileUtils.copyFile(file,destFile);
+			LOG.error("Copy Success");
+			return "success";
+		}
+	  }catch(Exception e){
+		  LOG.error("Exception raised in copyFile in ToursService ", e);
+		  LOG.error("Copy Error");
+		  return "error";
+	  }
+	 return "failure";
+}
+public static String getMonthForInt(int num) {    
+	String month = "";
+	DateFormatSymbols dfs = new DateFormatSymbols();
+	String[] months = dfs.getMonths();
+	if (num >= 1 && num <= 12 ) {
+		month = months[num-1];
+	}
+	return month;  
+}
 
 public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTrackingVO)
 {
@@ -5794,9 +5920,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		return status;
   	}
   	
-  	public List<AlertVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
+  	public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
   		List<AlertVO> voList = new ArrayList<AlertVO>(0);
   		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+  		
   		try {
 			Date fromDate=null,toDate=null;
 			
@@ -5806,45 +5933,112 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			List<AlertCategory> acList = alertCategoryDAO.getAll();
-			
-			//0-alertClarificationStatusId,1-status,2-alertCategoryId,3-category,4-count
-			List<Object[]> objList = clarificationRequiredDAO.getStatusAndCategoryWiseAlertsCount(stateId,fromDate,toDate,alertTypeId);
-			
-			
-			if(objList != null && objList.size() > 0){
-				for (Object[] objects : objList) {
-					AlertVO matchedStatusVO = getMatchedStatusVO(voList,(Long)objects[0]);
-					
-					if(matchedStatusVO == null){
-						matchedStatusVO = new AlertVO();
-						matchedStatusVO.setStateId((Long)objects[0]);
-						matchedStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());
-						matchedStatusVO.setIdNamesList(getResulttoList(acList));
-						voList.add(matchedStatusVO);
+			Map<Long,List<ActionTypeStatusVO>> actionTypeIdAndActionTypeStatusVOMap = new HashMap<Long,List<ActionTypeStatusVO>>();
+			List<ActionTypeStatusVO> actionTypeStatusVOList = null;
+			ActionTypeStatusVO actionTypeStatusVO = null;
+			List<Object[]> alertActionTypeStatusList = actionTypeStatusDAO.getActionTypeList();
+			if(alertActionTypeStatusList != null && alertActionTypeStatusList.size() > 0){
+				for(Object[] param : alertActionTypeStatusList){
+					actionTypeStatusVOList = actionTypeIdAndActionTypeStatusVOMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(actionTypeStatusVOList == null){
+						actionTypeStatusVOList = new ArrayList<ActionTypeStatusVO>();
+						actionTypeIdAndActionTypeStatusVOMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), actionTypeStatusVOList);
 					}
-					
-					matchedStatusVO = getMatchedStatusVO(voList,(Long)objects[0]);
-					
-					IdNameVO matchedCategoryVO = getMatchedCategoryVO(matchedStatusVO.getIdNamesList(),(Long)objects[2]);
-					
-					if(matchedCategoryVO == null){
-						matchedCategoryVO = new IdNameVO();
-						matchedCategoryVO.setId((Long)objects[2]);
-						matchedCategoryVO.setName(commonMethodsUtilService.getStringValueForObject(objects[3]).toString());
-						matchedCategoryVO.setCount((Long)objects[4]);
-						matchedStatusVO.getIdNamesList().add(matchedCategoryVO);
-					}else{
-						matchedCategoryVO.setCount((Long)objects[4]);
+					actionTypeStatusVO = new ActionTypeStatusVO();
+					actionTypeStatusVO.setActionTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					actionTypeStatusVO.setTypeName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					actionTypeStatusVO.setActionTypeStatusId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					actionTypeStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[3]));
+					actionTypeStatusVOList.add(actionTypeStatusVO);
+				}
+			}  
+			
+			
+			//first build the template 
+			List<Object[]> actionTypeList = actionTypeDAO.getActionTypeList();
+			List<ClarificationDetailsCountVO> actionTypeDtlsList = new ArrayList<ClarificationDetailsCountVO>();
+			ClarificationDetailsCountVO clarificationDetailsCountVO = null;
+			if(actionTypeList != null && actionTypeList.size() > 0){
+				for(Object[] param : actionTypeList){
+					clarificationDetailsCountVO = new ClarificationDetailsCountVO();
+					clarificationDetailsCountVO.setActionTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					clarificationDetailsCountVO.setTypeName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					actionTypeDtlsList.add(clarificationDetailsCountVO);
+				}
+			}
+			
+			//build status list for all action type
+			if(actionTypeDtlsList != null && actionTypeDtlsList.size() > 0){
+				for(ClarificationDetailsCountVO param : actionTypeDtlsList){
+					actionTypeStatusVOList = actionTypeIdAndActionTypeStatusVOMap.get(param.getActionTypeId());
+					buildStatusList(param,actionTypeStatusVOList);
+				}
+			}
+			//build category list for status
+			List<ClarificationDetailsCountVO> actionTypeStatusList = null;
+			if(actionTypeDtlsList != null && actionTypeDtlsList.size() > 0){
+				for(ClarificationDetailsCountVO param : actionTypeDtlsList){
+					actionTypeStatusList = param.getStatusTypeList();
+					if(actionTypeStatusList != null && actionTypeStatusList.size() > 0){
+						for(ClarificationDetailsCountVO param1 : actionTypeStatusList){
+							buildCategoryList(param1,acList);
+						}
 					}
 				}
 			}
 			
+			List<Object[]> alertCntList = alertActionTypeDAO.getStatusWiseAlertCount(stateId, fromDate, toDate, alertTypeId);
+			  
+			List<ClarificationDetailsCountVO> actionTypeStatusListFinal = null;
+			List<ClarificationDetailsCountVO> categoryList = null;
+			ClarificationDetailsCountVO clarificationDtlsCountVO = null;
+			if(alertCntList != null && alertCntList.size() > 0){
+				for(Object[] param3 : alertCntList){
+					//update count for action type...
+					clarificationDtlsCountVO = getMatchedVOForActionType(actionTypeDtlsList,commonMethodsUtilService.getLongValueForObject(param3[0]));
+					clarificationDtlsCountVO.setCount(clarificationDtlsCountVO.getCount() + commonMethodsUtilService.getLongValueForObject(param3[6]));
+					//update count for action type status...
+					actionTypeStatusListFinal = clarificationDtlsCountVO.getStatusTypeList();
+					clarificationDtlsCountVO = getMatchedVOForActionTypeStatus(actionTypeStatusListFinal,commonMethodsUtilService.getLongValueForObject(param3[2]));
+					clarificationDtlsCountVO.setCount(clarificationDtlsCountVO.getCount() + commonMethodsUtilService.getLongValueForObject(param3[6]));
+					//update count for category 
+					categoryList = clarificationDtlsCountVO.getCategoryTypeList();
+					clarificationDtlsCountVO = getmatchedVOForCategory(categoryList,commonMethodsUtilService.getLongValueForObject(param3[4]));
+					clarificationDtlsCountVO.setCount(clarificationDtlsCountVO.getCount() + commonMethodsUtilService.getLongValueForObject(param3[6]));
+				}
+			}
+			return actionTypeDtlsList;
 		} catch (Exception e) {
 			LOG.error("Error occured at getStatusAndCategoryWiseAlertsCount() in AlertService",e);
 		}
-  		return voList;
+  		return null;
   	}
-  	
+  	public void buildStatusList(ClarificationDetailsCountVO param,List<ActionTypeStatusVO> actionTypeStatusVOList){
+  		List<ClarificationDetailsCountVO> statusTypeList = new ArrayList<ClarificationDetailsCountVO>();
+  		ClarificationDetailsCountVO clarificationDetailsCountVO = null;
+  		if(actionTypeStatusVOList != null && actionTypeStatusVOList.size() >0){
+  			for(ActionTypeStatusVO actionTypeStatusVO : actionTypeStatusVOList){
+  				clarificationDetailsCountVO = new ClarificationDetailsCountVO();
+  	  			clarificationDetailsCountVO.setActionTypeStatusId(actionTypeStatusVO.getActionTypeStatusId());
+  	  			clarificationDetailsCountVO.setStatus(actionTypeStatusVO.getStatus());
+  	  			statusTypeList.add(clarificationDetailsCountVO);
+  			}
+  			param.getStatusTypeList().addAll(statusTypeList);
+  		}
+  	}
+  	public void buildCategoryList(ClarificationDetailsCountVO param1,List<AlertCategory> acList){
+  		List<ClarificationDetailsCountVO> alertCategoryList = new ArrayList<ClarificationDetailsCountVO>();
+  		ClarificationDetailsCountVO clarificationDetailsCountVO = null;
+  		if(acList != null && acList.size() > 0){
+  			for(AlertCategory param : acList){
+  				clarificationDetailsCountVO = new ClarificationDetailsCountVO();
+  				clarificationDetailsCountVO.setAlertCategoryId(param.getAlertCategoryId());
+  				clarificationDetailsCountVO.setCategory(param.getCategory());
+  				alertCategoryList.add(clarificationDetailsCountVO);
+  			}
+  			param1.getCategoryTypeList().addAll(alertCategoryList);
+  		}
+  	}
   	public List<IdNameVO> getResulttoList(List<AlertCategory> acList){
   		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
   		if(acList != null && acList.size() > 0){
@@ -5857,7 +6051,36 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		}
   		return voList;
   	}
-  	
+  	public ClarificationDetailsCountVO getMatchedVOForActionType(List<ClarificationDetailsCountVO> actionTypeDtlsList,Long actionTypeId){
+  		if(actionTypeDtlsList != null && actionTypeDtlsList.size() > 0){
+  			for(ClarificationDetailsCountVO param : actionTypeDtlsList){
+  				if(param.getActionTypeId().equals(actionTypeId)){
+  					return param;
+  				}
+  			}
+  		}
+		return null;
+  	}
+  	public ClarificationDetailsCountVO getMatchedVOForActionTypeStatus(List<ClarificationDetailsCountVO> actionTypeStatusListFinal,Long actionTypeStatusId){
+  		if(actionTypeStatusListFinal != null && actionTypeStatusListFinal.size() > 0){
+  			for(ClarificationDetailsCountVO param : actionTypeStatusListFinal){
+  				if(param.getActionTypeStatusId().equals(actionTypeStatusId)){
+  					return param;
+  				}
+  			}
+  		}
+  		return null;
+  	}
+  	public ClarificationDetailsCountVO getmatchedVOForCategory(List<ClarificationDetailsCountVO> categoryList,Long categoryId){
+  		if(categoryList != null && categoryList.size() > 0){
+  			for(ClarificationDetailsCountVO param : categoryList){
+  				if(param.getAlertCategoryId().equals(categoryId)){
+  					return param;
+  				}
+  			}
+  		}
+  		return null;
+  	}
   	public AlertVO getMatchedStatusVO(List<AlertVO> voList,Long statusId){
   		if(voList != null && voList.size() > 0){
   			for (AlertVO alertVO : voList) {
