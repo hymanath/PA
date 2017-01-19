@@ -81,4 +81,5 @@ public interface INominatedPostProfileService {
 	 public List<IdAndNameVO> getAllCasteCategoryDetails();
 	 public List<IdAndNameVO> getEducationalQualifications();
 	 public List<IdNameVO> getDepartmentBoardPositions1(List<Long> deptIds,List<Long> boardIds,Long boardLevelId,List<Long> searchLevelValueIds,Long searchLevelId,Long nominatedPostCandId);
+	 public ResultStatus savingNominatedPostDocumnets(final Long nominatedPostCandidateId,final Long tdpCadreId,final Long applicationId,final Map<File,String> mapfiles,final Long loggerUserId);
 }
