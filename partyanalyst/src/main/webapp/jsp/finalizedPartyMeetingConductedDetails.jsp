@@ -139,7 +139,55 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 {
 	margin-top:10px;
 }
-
+textarea { resize:none; }
+.arrow_box_left {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    padding: 8px;
+    position: relative;
+}
+.arrow_box_left::after, .arrow_box_left::before {
+    border: medium solid transparent;
+    content: " ";
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 100%;
+    top: 15px;
+    width: 0;
+}
+.arrow_box_left::after {
+    border-color: rgba(221, 221, 221, 0) #fff rgba(221, 221, 221, 0) rgba(221, 221, 221, 0);
+    border-width: 10px;
+    margin-top: -10px;
+}
+.arrow_box_left::before {
+    border-color: rgba(221, 221, 221, 0) #ccc rgba(221, 221, 221, 0) rgba(221, 221, 221, 0);
+    border-width: 11px;
+    margin-top: -11px;
+}
+.apptStatusTracking {
+    border-left: 2px solid #ccc;
+    margin-left: 8px;
+    padding: 0;
+    position: relative;
+}
+.apptStatusTracking li {
+    list-style: outside none none;
+    margin-left: 22px;
+    margin-top: 3px;
+}
+.apptStatusTracking li::before {
+    background: #ccc none repeat scroll 0 0;
+    border-radius: 50%;
+    content: " ";
+    display: block;
+    height: 15px;
+    left: -9px;
+    margin-top: 9px;
+    position: absolute;
+    width: 15px;
+}
 </style>
 
 </head>
@@ -271,23 +319,24 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 		<div id="errorId" style="color:red;"></div>
 		<div class="input-group" id="updateDivId">
 			<div class="row">
-				<div class="col-md-6 col-xs-12 col-sm-6">
-					<label>Member Type</label> :<input type="text" class="form-control" id="memberTypeId" />
+				<div class="col-md-4 col-xs-12 col-sm-6">	
+					<label>Membership No<span class="text-danger"></span> :</label> <input type="text" class="form-control" id="memebershipId" /><br>
 				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6">	
-					<label>Membership No</label> :<input type="text" class="form-control" id="memebershipId" /><br>
+				<div class="col-md-4 col-xs-12 col-sm-6">	
+					<label>Name<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="nameId" /><br>					
 				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6">	
-					<label>Name</label> :<input type="text" class="form-control" id="nameId" /><br>					
+				<div class="col-md-4 col-xs-12 col-sm-6">	
+					<label>Mobile No<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="mobileNoId" />
 				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6">	
-					<label>Mobile No</label> :<input type="text" class="form-control" id="mobileNoId" /><br>
+			</div>
+			<div class="row m_top20">
+				<div class="col-md-12 col-xs-12 col-sm-6">	
+					<label>Remark<span class="text-danger">*</span> :</label>
+					<textarea type="text" class="form-control" id="remarkId" ></textarea>
 				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6">	
-					<label>Remark</label> :<textarea type="text" class="form-control" id="remarkId" ></textarea><br>
-				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6">	
-					<label>Status</label> :<select class="form-control" id="statusId">
+				<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+					<label>Conducted Status<span class="text-danger">*</span> :</label>
+					<select class="form-control" id="statusId">
 						<option value="0">Select</option>
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
@@ -305,6 +354,20 @@ h1,h2,h3,h4,h5,h6,p,ul,table
     </div>
   </div>
 </div>
+<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:60%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Comments</h4>
+      </div>
+      <div class="modal-body">
+        <div id="commentsBlock"></div>
+        <div id="commentsDivId"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
@@ -858,6 +921,9 @@ function buildFinalMeeting(result){
 						
 						str+='<td>';
 						str+='<button class="btn btn-success updateCls" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'">UPDATE</button>';
+						if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true" ){
+							str+=' <i class="glyphicon glyphicon-comment commentsCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:black;" id="commentsId" title="Click here to view comment details" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'" ></i>';
+						}
 					str+='</td>';
 					str+='</tr>';
 				}
@@ -1629,43 +1695,43 @@ $(document).on("click",".updateCls",function(){
 });
 $(document).on("click","#saveDetailsBtnId",function(){
 	$('#errorId').html('');
-	var r=confirm("Are you sure you want to update the status.. ");
-	var errorStr = '';
-  if (r)	
-  {
+		var errorStr = '';
 	var partyMeetingId = $("#hiddenFinalizeMeetingId").val();
-	var memberType = $("#memberTypeId").val();
 	var membershipId = $("#memebershipId").val();
 	var name = $("#nameId").val();
 	var mobileNo = $("#mobileNoId").val();
 	var remark = $("#remarkId").val();
 	var updateStatus = $("#statusId").val();
 	
-  if(memberType ==0) 
-	errorStr += "Member type is required<br>";
-  if(name ==0)
-	  errorStr += "Name is required<br>";
-  if(mobileNo != 10)
-	  errorStr += "Mobile No is required<br>";
- if(remark ==0)
-	  errorStr += "Remark is required<br>";
-  if(updateStatus ==0)
+	if(name ==0){
+	  	  errorStr += "Name is required<br>";
+	}
+	if(mobileNo.trim().length != 10 || mobileNo.trim().length > 10 ){
+	  	  errorStr += "Mobile No is required<br>";
+	}
+	if(remark ==0){
+	 	  errorStr += "Remark is required<br>";
+	}
+	if(updateStatus ==0){
 	  errorStr += "Status is required<br>";
-
+	}
 	 if(errorStr.length >0)
-  {
+	{
 	  $('#errorId').html(errorStr);
 	  return ;
-  }
+	}
+  var r=confirm("Are you sure you want to update the status.. ");
+  if (r)	
+  {
 	var jsObj =	{
 		partyMeetingId:partyMeetingId,
-		memberType:memberType,
+		memberType:"",
 		membershipId:membershipId,
 		name:name,
 		mobileNo:mobileNo,
 		remark:remark,
 		statusId:updateStatus,
-		updatedBy :"PC"
+		updatedBy :"IC"
 	}
 		$.ajax({
 			type: "POST",
@@ -1674,7 +1740,6 @@ $(document).on("click","#saveDetailsBtnId",function(){
 		}).done(function(result){
 				if(result.message == "SUCCESS"){
 					$("#statusDetailsDivId").html(" Saved successfully...");
-					$("#memberTypeId").val("");
 					$("#memebershipId").val("");
 					$("#nameId").val("");
 					$("#mobileNoId").val("");
@@ -1686,6 +1751,48 @@ $(document).on("click","#saveDetailsBtnId",function(){
 		});
   }
 });
+$(document).on("click",".commentsCls",function(){
+	$("#commentsModalId").modal('show');
+	var partymeetingId  = $(this).attr("attr_meeting_Loc_Id");
+	var jsObj = {
+		partyMeetingId :partymeetingId
+	}
+		$.ajax({
+			type: "POST",
+			url:"getCommentsMeetingDetailsAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+				buildCommentsMeetingDetailsAction(result);
+		});
+});
+function buildCommentsMeetingDetailsAction(result)
+{
+	var str='';
+	if(result !=null && result.length>0){
+	str+='<ul class="apptStatusTracking">';
+	for(var i in result){
+	if(result[i].memberShipNo != null && result[i].memberShipNo !=""){
+	str+='<li id="commentli'+i+'">';
+	str+='<div class="arrow_box_left">';
+	str+='<span class="m_0"><strong>CREATED BY:</strong> '+result[i].name+'  <strong>MOBILE NO:</strong>'+result[i].mobileNo+' MEMBERSHIP NO:<strong style="color:green">'+result[i].memberShipNo+'</strong> <strong> TIME:</strong> '+result[i].insertedtime+' </span>';
+	str+='<div class="m_0" id="remarksId'+i+'">'+result[i].remarks+'</div>';
+	str+='</div>';
+	str+='</li>';
+	}else{
+		str+='<li id="commentli'+i+'">';
+	str+='<div class="arrow_box_left">';
+	str+='<span class="m_0"><strong>CREATED BY:</strong> '+result[i].name+'  <strong>MOBILE NO:</strong>'+result[i].mobileNo+' <strong> TIME:</strong> '+result[i].insertedtime+' </span>';
+	str+='<div class="m_0" id="remarksId'+i+'">'+result[i].remarks+'</div>';
+	str+='</div>';
+	str+='</li>';
+	}
+	}
+	str+='</ul>';
+	$("#commentsBlock").html(str);
+	}else{
+	   $("#commentsBlock").html(" No comments available...");
+	}
+}
  function meetingLevelWiseHideShow(){
 	 if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
