@@ -3968,5 +3968,16 @@
 		<property name="adminHouseMemberAttendanceDAO" ref="adminHouseMemberAttendanceDAO" />
 	</bean>
 	
+	<bean name="alertsNewsPortalService" class="com.itgrids.partyanalyst.service.impl.AlertsNewsPortalService">
+		<property name="alertDAO" ref="alertDAO"></property>
+		<property name="alertStatusDAO" ref="alertStatusDAO"></property>
+		<property name="alertTypeDAO" ref="alertTypeDAO"></property>
+		<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
+		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO"></property>
+		<property name="editionTypeDAO" ref="editionTypeDAO"></property>
+		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"/>
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+	</bean>
+	
 </beans>			
 	
