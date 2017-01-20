@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingStatusTempDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISessionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
@@ -62,9 +63,9 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private TransactionTemplate transactionTemplate;
 	 private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	 private IDistrictDAO districtDAO;
-	 
 	 private ISessionTypeDAO sessionTypeDAO;
 	 private IPartyMeetingSessionDAO partyMeetingSessionDAO;
+	 private IPartyMeetingStatusTempDAO partyMeetingStatusTempDAO;
 	 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
@@ -123,6 +124,12 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			IPartyMeetingSessionDAO partyMeetingSessionDAO) {
 		this.partyMeetingSessionDAO = partyMeetingSessionDAO;
 	}
+	
+	public void setPartyMeetingStatusTempDAO(
+			IPartyMeetingStatusTempDAO partyMeetingStatusTempDAO) {
+		this.partyMeetingStatusTempDAO = partyMeetingStatusTempDAO;
+	}
+
 /**
  * @param  Long activityMemberId
  * @param String fromDateStr
@@ -2357,7 +2364,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
  *  This Service Method is used to push details to intermediate table 'party_meeting_status'. 
  *  @since 13-SEPTEMBER-2016
  */
- public ResultStatus insertDataInToPartyMeetingStatusTable(){
+ public ResultStatus insertDataInToPartyMeetingStatusTableOLD(){
 	 
 	 ResultStatus resultStatus = new ResultStatus();
 	 try{
@@ -2404,6 +2411,61 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	}
 	 return resultStatus;
  }
+ 
+ public ResultStatus insertDataInToPartyMeetingStatusTable(){
+	 
+	 ResultStatus resultStatus = new ResultStatus();
+	 try{
+		 
+		 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		      public void doInTransactionWithoutResult(TransactionStatus status) {
+		    	  
+		    	  //MOVE TO party_meeting_status_temp table
+		    	  int deletedRecordsFromTemp = partyMeetingStatusTempDAO.deleteAllRecordsFromTemp();
+		    	  //int tempcount = partyMeetingStatusTempDAO.setPrimaryKeyAutoIncrementToOneToTemp();
+		 		 
+		    	  int insertedRecordsCountToTemp = partyMeetingStatusTempDAO.insertPartyofficeAndIvrStatusToTemp();
+		 		 
+		 		  int updatedCount1= partyMeetingStatusTempDAO.updatePartyMeetingStatus1();
+		 		  int updatedCount2= partyMeetingStatusTempDAO.updatePartyMeetingStatus2();
+		 		  int updatedCount3= partyMeetingStatusTempDAO.updatePartyMeetingStatus3();
+		 		  int updatedCount4= partyMeetingStatusTempDAO.updatePartyMeetingStatus4();
+		 		  int updatedCount5= partyMeetingStatusTempDAO.updatePartyMeetingStatus5();
+		 		  int updatedCount6= partyMeetingStatusTempDAO.updatePartyMeetingStatus6();
+		 		  int updatedCount7= partyMeetingStatusTempDAO.updatePartyMeetingStatus7();
+		 		  int updatedCount8= partyMeetingStatusTempDAO.updatePartyMeetingStatus8(); 
+		 		  int updatedCount9= partyMeetingStatusTempDAO.updatePartyMeetingStatus9();
+		 		 
+		 		 //update meeting status based on third party status 
+		 		 int updatedCount10 = partyMeetingStatusTempDAO.updatePartyMeetingStatus10();
+		 		 int updatedCount11 = partyMeetingStatusTempDAO.updatePartyMeetingStatus11();
+		 		
+		 		 Date currentDateTime = new DateUtilService().getCurrentDateAndTime();
+		 		 int insertedTime = partyMeetingStatusTempDAO.setInsertedDate(currentDateTime);
+		 		 
+		 		 
+		 		 //MOVE FROM party_meeting_status_temp table to party_meeting_status table
+		 		 int deletedRecords = partyMeetingStatusDAO.deleteAllRecords();
+		 		 //int count = partyMeetingStatusDAO.setPrimaryKeyAutoIncrementToOne();
+		 		 int insertedRecordsCount = partyMeetingStatusTempDAO.insertDataToPartyMeetingStatusFromTemp();
+		 		 
+		 		
+		 	     Log.debug(""+ deletedRecordsFromTemp +" - " +insertedRecordsCount +" - " +updatedCount1 + " - " +updatedCount2 +" - "
+		 				   + updatedCount3 + " - " + updatedCount4 + " - " +updatedCount5 + " - " +updatedCount6 + " - " +updatedCount7
+		 				   + "-" +updatedCount8 + " - "+updatedCount9 + " - "+updatedCount10 +" -" + updatedCount11 + " - " + insertedTime + "-" + deletedRecords + "-" + insertedRecordsCount);
+			  }
+		 });
+		 resultStatus.setResultCode(0);
+		 resultStatus.setMessage("success");
+		 
+	}catch(Exception e){
+		resultStatus.setResultCode(1);
+		resultStatus.setMessage("failure");
+		LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
+	}
+	 return resultStatus;
+ }
+
  //getParyMeetingTypeDetailsDistrictWise
  /*
   * Author : Swadhin
