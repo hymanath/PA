@@ -6,6 +6,9 @@ import java.util.Map;
 
 public class CardsValidateVO implements Serializable{
 	
+	/* DONT ADD EXTRA PARAMETERS HERE ,
+	 *  BCOZ THIS CLASS HAS MULTIPLE DEPENDENCIES IN QA PRINT APP ANDROID DASHBOARD WEB SERVICE CALLS*/ 
+	
 	private static final long serialVersionUID = -7827216125611040067L;
 	
 	private Long id;
