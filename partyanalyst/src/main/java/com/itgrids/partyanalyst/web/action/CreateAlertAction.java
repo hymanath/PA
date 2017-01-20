@@ -430,9 +430,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			LocationVO inputVO = new LocationVO();
 			inputVO.setFromDate(jObj.getString("fromDate"));
-			inputVO.setToDate(jObj.getString("toDate"));
+			inputVO.setToDate(jObj.getString("toDate"));  
 			inputVO.setStateId(jObj.getLong("stateId"));
-			inputVO.setDistrictId(jObj.getLong("districtId"));
+			inputVO.setDistrictId(jObj.getLong("districtId"));  
 			inputVO.setConstituencyId(jObj.getLong("constituencyId"));
 			inputVO.setTehsilId(jObj.getLong("mandalId"));
 			inputVO.setVillageId(jObj.getLong("panchayatId"));
@@ -440,7 +440,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setId(jObj.getLong("alertTypeId"));
 			inputVO.setStatusId(jObj.getLong("statusId"));
 			inputVO.setCategoryId(jObj.getLong("categoryId"));
-			
+			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId")); 
 			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
 			
 		}
@@ -1260,4 +1260,25 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-}//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);
+	public String getAllAlertsWithoutFilter(){   
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			AlertInputVO inputVO = new AlertInputVO();
+			inputVO.setActionTypeId(jObj.getLong("actionTypeId"));
+			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId"));
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate"));
+			inputVO.setLevelValue(jObj.getLong("levelValue"));
+			inputVO.setCategoryId(jObj.getLong("categoryId"));
+			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
+			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
+			
+			alertDataList = alertService.getAllAlertsWithoutFilter(regVo.getRegistrationID(),inputVO);
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
+		}
+		return Action.SUCCESS;
+	}
+}
