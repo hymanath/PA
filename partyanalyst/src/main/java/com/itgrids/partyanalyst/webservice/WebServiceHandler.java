@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,8 @@ import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -2230,4 +2231,74 @@ public class WebServiceHandler {
 			}
 		}
 		
+		@GET
+		@Path("/getAlertOverviewDetails/{activityMemberId}/{stateId}/{fromDateStr}/{toDateStr}/{alertType}/{editionType}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public AlertOverviewVO getAlertOverviewDetails(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,@PathParam("fromDateStr") String fromDateStr,
+				@PathParam("toDateStr") String toDateStr,@PathParam("alertType") Long alertType,@PathParam("editionType") Long editionType)
+		{
+			try{			
+				return webServiceHandlerService.getAlertOverviewDetails(activityMemberId, stateId, fromDateStr, toDateStr, alertType, editionType);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertOverviewDetails() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAlertCategoryDtlsLocationWise/{activityMemberId}/{stateId}/{fromDateStr}/{toDateStr}/{alertType}/{editionType}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,@PathParam("fromDateStr") String fromDateStr,
+				@PathParam("toDateStr") String toDateStr,@PathParam("alertType") Long alertType,@PathParam("editionType") Long editionType)
+		{
+			try{			
+				return webServiceHandlerService.getAlertCategoryDtlsLocationWise(activityMemberId, stateId, fromDateStr, toDateStr, alertType, editionType);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertCategoryDtlsLocationWise() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getDistrictAndStateImpactLevelWiseAlertDtls/{fromDateStr}/{toDateStr}/{stateId}/{impactLevelIds}/{activityMemberId}/{districtId}/{catId}/{alertTypeId}/{editionId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("impactLevelIds") List<Long> impactLevelIds,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("districtId") Long districtId,@PathParam("catId") Long catId,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+		{
+			try{			
+				return webServiceHandlerService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIds, activityMemberId, districtId, catId, alertTypeId, editionId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getDistrictAndStateImpactLevelWiseAlertDtls() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAlertDtls/{fromDateStr}/{toDateStr}/{stateId}/{alertTypeId}/{alertStatusId}/{alertCategoryId}/{activityMemberId}/{editionId}/{isActionType}/{alertActionTypeId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCoreDashBoardVO> getAlertDtls(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,@PathParam("stateId") Long stateId,
+				@PathParam("alertTypeId") Long alertTypeId,@PathParam("alertStatusId") Long alertStatusId,@PathParam("alertCategoryId") Long alertCategoryId,
+				@PathParam("activityMemberId") Long activityMemberId,@PathParam("editionId") Long editionId,@PathParam("isActionType") String isActionType,
+				@PathParam("alertActionTypeId") Long alertActionTypeId)
+		{
+			try{			
+				return webServiceHandlerService.getAlertDtls(fromDateStr, toDateStr, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId, editionId, isActionType, alertActionTypeId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertDtls() Method, Exception is ",e);
+				return null;
+			}
+		}
 }
