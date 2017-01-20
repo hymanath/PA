@@ -9313,7 +9313,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   					if(memberShipNo != null && memberShipNo.trim().length() > 0l)
 		   						sb.append(" and model.memberShipNo = :memberShipNo");
 		   					if(voterId != null && voterId.trim().length() > 0l)
-		   						sb.append("and model.cardNo = :voterId");			
+		   						sb.append("and model.voter.voterIDCardNo = :voterId");			
 		   			Query query = getSession().createQuery(sb.toString());
 		   				if(memberShipNo != null && memberShipNo.trim().length() > 0l)
 		   					query.setParameter("memberShipNo", memberShipNo);
