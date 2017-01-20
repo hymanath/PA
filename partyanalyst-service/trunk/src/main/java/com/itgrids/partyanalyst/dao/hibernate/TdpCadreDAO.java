@@ -9296,4 +9296,22 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   
 		   return query.list();
 	   }
+	   
+	   public List<Object[]> getCadreDetailsByMembershipNo(String memberShipNo){
+		   Query query = getSession().createQuery("select model.tdpCadreId," +
+		   									" model.voterId," +
+		   									" model.cardNo," +
+		   									" model.memberShipNo," +
+		   									" model.firstname," +
+		   									" model.mobileNo," +
+		   									" model.userAddress.userAddressId," +
+		   									" model.image" +
+		   									" from TdpCadre model" +
+		   									" where model.memberShipNo = :memberShipNo" +
+		   									" and model.enrollmentYear = 2014" +
+		   									" and model.isDeleted = 'N'");
+		   query.setParameter("memberShipNo", memberShipNo);
+		   
+		   return query.list();
+	   }
 }
