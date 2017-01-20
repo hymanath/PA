@@ -3657,4 +3657,7 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	
+	<bean id="partyMeetingStatusTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingStatusTempDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 </beans>		
