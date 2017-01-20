@@ -2411,6 +2411,7 @@
 	   <property name="fieldMonitoringService" ref="fieldMonitoringService"/> 
 	   <property name="alertService" ref="alertService"/>
 	   <property name="appointmentTimeSlotDAO" ref="appointmentTimeSlotDAO"/>
+	   <property name="appointmentService" ref="appointmentService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
