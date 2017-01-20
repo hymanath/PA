@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
 import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
@@ -116,8 +117,17 @@ public class WebServiceHandler {
 	private PeshiAppLoginVO peshiAppLoginVO;
 	private PeshiAppGrievanceVO peshiAppGrievanceVO;
 	private PeshiAppAppointmentVO peshiAppAppointmentVO;
+	private PashiAppNoCadreVO pashiAppNoCadreVO;
 	
 	
+	public PashiAppNoCadreVO getPashiAppNoCadreVO() {
+		return pashiAppNoCadreVO;
+	}
+
+	public void setPashiAppNoCadreVO(PashiAppNoCadreVO pashiAppNoCadreVO) {
+		this.pashiAppNoCadreVO = pashiAppNoCadreVO;
+	}
+
 	public PeshiAppAppointmentVO getPeshiAppAppointmentVO() {
 		return peshiAppAppointmentVO;
 	}
@@ -2301,4 +2311,20 @@ public class WebServiceHandler {
 				return null;
 			}
 		}
+		@POST
+		@Path("/peshi/savingNewMembersForAppointment")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String savingNewMembersForAppointment(PashiAppNoCadreVO inputVO){
+			String result = null;
+			try{
+				result = webServiceHandlerService.savingNewMembersForAppointment(inputVO);
+				return result;
+			}catch(Exception e){
+				LOG.error("Exception Occured in savingNewMembersForAppointment() Method,Exception is ",e);
+			    return null;
+			}
+			
+		}
+		
 }
