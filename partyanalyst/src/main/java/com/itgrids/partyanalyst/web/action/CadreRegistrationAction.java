@@ -3237,6 +3237,25 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	return Action.SUCCESS;
 	}
   	public String finalizedPartyMeetingConducted(){
+  		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+  	    if(regVO==null){
+  	      return "input";
+  	    }
+  	    boolean noaccess = false;
+  	    List<String> entitlements = null;
+  	    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+  	      entitlements = regVO.getEntitlements();
+  	      if(!(entitlements.contains("PARTY_MEETING_THIRD_PARTY_UPDATION_ENTITLEMENT") || entitlements.contains("PARTY_MEETING_THIRD_PARTY_UPDATION_ADMIN_ENTITLEMENT"))){
+  	        noaccess = true ;
+  	      }
+  	        
+  	    if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+  	      noaccess = false;
+  	    }
+  	    if(noaccess){
+  	      return "error";
+  	    }
+  	  }
 		return Action.SUCCESS;
 	}
 }
