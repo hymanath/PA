@@ -73,4 +73,5 @@ public interface IAlertService {
     public String removeAlertDocument(Long documentId);
     public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
     public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO vo);
+    public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO);
 }
