@@ -8,6 +8,8 @@ import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -189,4 +191,9 @@ public interface IWebServiceHandlerService {
     public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
     public PeshiAppGrievanceVO getPeshiAppGrievanceDetails(String fromDateStr,String toDateStr,String membershipId);
     public PeshiAppAppointmentVO getAppointmentDetails(String fromDateStr,String toDateStr,String membershipId,String cadreType,String voterId,String mobileNoStr);
+    
+    public AlertOverviewVO getAlertOverviewDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr, Long alertType,Long editionType);
+    public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr, Long alertType,Long editionType);
+    public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId);
+    public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType,Long alertActionTypeId);
 }
