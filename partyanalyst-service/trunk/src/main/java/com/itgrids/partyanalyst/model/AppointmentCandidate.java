@@ -41,6 +41,7 @@ public class AppointmentCandidate extends BaseModel {
 	 private Date updatedTime;
 	 private String imageURL;
 	 private Long addressId;
+	 private Long peshiAppUserId;
 	 
 	 private AppointmentCandidateDesignation candidateDesignation;
 	 private UserAddress userAddress;
@@ -51,6 +52,7 @@ public class AppointmentCandidate extends BaseModel {
 	 
 	 private Long appointmentCandidateTypeId;
 	 private AppointmentCandidateType appointmentCandidateType;
+	 
 	 
 		
 	 @Id
@@ -249,5 +251,13 @@ public class AppointmentCandidate extends BaseModel {
 	}
 	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
+	}
+	
+	@Column(name = "peshi_app_user_id")
+	public Long getPeshiAppUserId() {
+		return peshiAppUserId;
+	}
+	public void setPeshiAppUserId(Long peshiAppUserId) {
+		this.peshiAppUserId = peshiAppUserId;
 	}
 }
