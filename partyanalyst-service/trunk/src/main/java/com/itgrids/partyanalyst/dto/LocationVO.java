@@ -35,8 +35,15 @@ public class LocationVO implements Serializable {
 	
 	private Long categoryId;
 	private String category;
+	private Long actionTypeStatusId;
 	
 	
+	public Long getActionTypeStatusId() {
+		return actionTypeStatusId;
+	}
+	public void setActionTypeStatusId(Long actionTypeStatusId) {
+		this.actionTypeStatusId = actionTypeStatusId;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}
