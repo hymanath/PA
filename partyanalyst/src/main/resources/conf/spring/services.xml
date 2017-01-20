@@ -3545,6 +3545,7 @@
 		<property name="alertActionTypeDAO" ref="alertActionTypeDAO"></property>
 		<property name="actionTypeDAO" ref="actionTypeDAO"></property>
 		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>
+		<property name="verificationStatusDAO" ref="verificationStatusDAO"></property>
 		
 	</bean>
 	<!-- Debate End -->
