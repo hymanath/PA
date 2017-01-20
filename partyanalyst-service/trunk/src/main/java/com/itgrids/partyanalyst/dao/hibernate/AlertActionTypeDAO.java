@@ -174,47 +174,5 @@ public class AlertActionTypeDAO extends GenericDaoHibernate<AlertActionType, Lon
 		}
 		return query.list();
 	}
-	public List<Object[]> getStatusWiseAlertCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select " +
-						" model1.actionType.actionTypeId, " +
-						" model1.actionType.typeName, " +
-						" model1.actionTypeStatus.actionTypeStatusId, " +
-						" model1.actionTypeStatus.status, " +
-						" model1.alert.alertCategory.alertCategoryId, " +
-						" model1.alert.alertCategory.category, " +
-						" count(distinct model1.alert.alertId) " +
-						" from AlertActionType model1, ActionTypeRequired model2 " +
-						" where " +
-						" model1.alert.alertId = model2.alert.alertId " +
-						" and model2.isRequired = 'Y' " +
-						" and model2.isDeleted = 'N' " +
-						" and model1.isDeleted = 'N' " +
-						" and model1.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+") ");
-		if(stateId != null && stateId.longValue() > 0){
-			queryStr.append(" and model1.alert.userAddress.state.stateId = :stateId ");
-		}
-		if(fromDate != null && toDate != null){ 
-			queryStr.append(" and (date(model1.alert.createdTime) between :fromDate and :toDate) ");
-		}
-		if(alertTypeId != null && alertTypeId.longValue() > 0 ){
-			queryStr.append(" and  model1.alert.alertType.alertTypeId = :alertTypeId ");
-		}
-		queryStr.append(" group by " +
-						" model1.actionType.actionTypeId, " +
-						" model1.actionTypeStatus.actionTypeStatusId, " +
-						" model1.alert.alertCategory.alertCategoryId ");
-		Query query = getSession().createQuery(queryStr.toString());
-		if(fromDate != null && toDate != null){  
-			query.setDate("fromDate", fromDate);
-			query.setDate("toDate", toDate);    
-		} 
-		if(alertTypeId != null && alertTypeId.longValue() > 0L){
-			query.setParameter("alertTypeId", alertTypeId);
-		}
-		if(stateId != null && stateId.longValue() > 0){
-			query.setParameter("stateId", stateId);
-		}
-		return query.list();
-	}
+	
 }

@@ -98,7 +98,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
 		str.append(" left join model.alertType  alertType ");
-		//str.append(" left join cr.alertClarificationStatus  clarificationStatus ");
+		
 		str.append(" where model.isDeleted ='N' and cr.isDeleted='N' ");
 		
 		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
@@ -165,8 +165,7 @@ public class ClarificationRequiredDAO extends GenericDaoHibernate<ClarificationR
 			query.setParameterList("sourceIds", sourceIds);
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
 			query.setParameter("statusId", inputVO.getStatusId());
-		/*if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L)
-			query.setParameter("levelId", inputVO.getLevelId());*/
+		
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
 		if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue()>0L)
