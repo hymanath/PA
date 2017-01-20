@@ -27,6 +27,7 @@ public class Position extends BaseModel implements Serializable{
 	
 	private Long positionId;
 	private String positionName;
+	private Long orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,6 +44,14 @@ public class Position extends BaseModel implements Serializable{
 	}
 	public void setPositionName(String positionName) {
 		this.positionName = positionName;
+	}
+	
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	
