@@ -10,9 +10,9 @@ public class AlertInputVO {
 	private Long assignId;
 	private String searchTypeStr;
 	private Long alertTypeId;
-	
 	private Long alertImpactScopeId;
-	
+	private Long actionTypeId;
+	private Long actionTypeStatusId;
 	public Long getAlertTypeId() {
 		return alertTypeId;
 	}
@@ -72,6 +72,18 @@ public class AlertInputVO {
 	}
 	public void setAlertImpactScopeId(Long alertImpactScopeId) {
 		this.alertImpactScopeId = alertImpactScopeId;
+	}
+	public Long getActionTypeId() {
+		return actionTypeId;
+	}
+	public void setActionTypeId(Long actionTypeId) {
+		this.actionTypeId = actionTypeId;
+	}
+	public Long getActionTypeStatusId() {
+		return actionTypeStatusId;
+	}
+	public void setActionTypeStatusId(Long actionTypeStatusId) {
+		this.actionTypeStatusId = actionTypeStatusId;
 	}
 	
 
