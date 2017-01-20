@@ -22,8 +22,57 @@ private String conductedDate;
 private String remarks;
 
 private String thirdPartyStatus;
+private String iscommentsAvailable="false";
+private String name;
+private String insertedtime;
+private String mobileNo;
+private Long tdpCadreId;
+private String memberShipNo;
+private String image;
 
 
+public Long getTdpCadreId() {
+	return tdpCadreId;
+}
+public void setTdpCadreId(Long tdpCadreId) {
+	this.tdpCadreId = tdpCadreId;
+}
+public String getMemberShipNo() {
+	return memberShipNo;
+}
+public void setMemberShipNo(String memberShipNo) {
+	this.memberShipNo = memberShipNo;
+}
+public String getImage() {
+	return image;
+}
+public void setImage(String image) {
+	this.image = image;
+}
+public String getMobileNo() {
+	return mobileNo;
+}
+public void setMobileNo(String mobileNo) {
+	this.mobileNo = mobileNo;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public String getInsertedtime() {
+	return insertedtime;
+}
+public void setInsertedtime(String insertedtime) {
+	this.insertedtime = insertedtime;
+}
+public String getIscommentsAvailable() {
+	return iscommentsAvailable;
+}
+public void setIscommentsAvailable(String iscommentsAvailable) {
+	this.iscommentsAvailable = iscommentsAvailable;
+}
 public Long getConstLocationNum() {
 	return constLocationNum;
 }
