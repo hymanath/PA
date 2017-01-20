@@ -40,6 +40,7 @@ public class AppointmentCandidate extends BaseModel {
 	 private Date insertedTime;
 	 private Date updatedTime;
 	 private String imageURL;
+	 private Long addressId;
 	 
 	 private AppointmentCandidateDesignation candidateDesignation;
 	 private UserAddress userAddress;
@@ -165,7 +166,7 @@ public class AppointmentCandidate extends BaseModel {
 		this.candidateDesignation = candidateDesignation;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="address_id")
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
@@ -242,5 +243,11 @@ public class AppointmentCandidate extends BaseModel {
 		this.appointmentCandidateTypeId = appointmentCandidateTypeId;
 	}
 	
-	
+	@Column(name = "address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
 }

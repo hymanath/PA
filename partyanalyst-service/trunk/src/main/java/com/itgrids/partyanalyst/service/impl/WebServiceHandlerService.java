@@ -96,6 +96,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
 import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.PeshiAppGrievanceVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
@@ -4655,4 +4656,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 }
 		 return returnVO;
 	 }
+	 
+	 public String savingNewMembersForAppointment(PashiAppNoCadreVO inputvo){
+		  String result = null;
+		  try{			  
+			  //result = alertService.getAlertStatusOfArticle(articleId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the savingNewMembersForAppointment  method in WebServiceHandlerService");
+		  }
+		  return result;
+	  }
 }

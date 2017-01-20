@@ -10,8 +10,22 @@ public class PashiAppNoCadreVO implements Serializable{
 	private String  voterCardNo;
 	private Long 	constituencyId;
 	private Long 	appointmentId;
+	private String membershipNo;
+	private Long userId;
 	
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	public String getName() {
 		return name;
 	}

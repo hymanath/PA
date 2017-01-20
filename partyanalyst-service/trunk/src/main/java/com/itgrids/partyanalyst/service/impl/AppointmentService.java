@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -8430,6 +8431,44 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 				LOG.error("Exception raised at getNewCadreSearchBySearchType() method of AppointmentService", e);
 			}
  			return returnList;
+ 		}
+ 		
+ 		public String savingNewMembersForAppointment(final PashiAppNoCadreVO inputvo){
+ 			String status = null;
+ 			try {
+ 				status = (String) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus arg0) {
+						
+						if(inputvo.getMembershipNo() != null && inputvo.getMembershipNo().trim().length() > 0){
+							//0.cadreId,1.voterId,2.voterCardNo,3.membershipNo,4.name,5.mobileNo,6.addressId,7.image
+							List<Object[]> list = tdpCadreDAO.getCadreDetailsByMembershipNo(inputvo.getMembershipNo());
+							if(list != null && !list.isEmpty()){
+								Object[] obj = list.get(0);
+								
+								AppointmentCandidate appointmentCandidate = new AppointmentCandidate();
+								
+								appointmentCandidate.setName(obj[4] != null ? obj[4].toString() : "");
+								appointmentCandidate.setDesignationId(43l);		//Cadre
+								appointmentCandidate.setMobileNo(obj[5] != null ? obj[5].toString():"");
+								appointmentCandidate.setLocationScopeId(4l);	//constituency
+								appointmentCandidate.setLocationValue(inputvo.getConstituencyId());
+								appointmentCandidate.setAddressId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+								appointmentCandidate.setVoterId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+								appointmentCandidate.setVoterIdCardNo(obj[2] != null ? obj[2].toString():"");
+								appointmentCandidate.setTdpCadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+								appointmentCandidate.setMembershipId(obj[5] != null ? obj[5].toString():"");
+								appointmentCandidate.setImageURL(obj[7] != null ? obj[7].toString():"");
+							}
+						}
+						
+						return "success";
+					}
+				});
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at savingNewMembersForAppointment() method of AppointmentService", e);
+			}
+ 			return status;
  		}
  }
 
