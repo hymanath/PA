@@ -522,5 +522,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getConstituencyCadreCount(Long constituencyId);
 	  public Long getConstituencyCardPrintVerifiedCount(Long constituencyId);
 	  public List<String> getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo);
-	  public List<Object[]> getCadreDetailsByMembershipNo(String memberShipNo);
+	  public List<Object[]> getCadreDetailsByMembershipNo(String memberShipNo,String voterId);
+	  public List<Object[]> updateSearchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId);
 } 
