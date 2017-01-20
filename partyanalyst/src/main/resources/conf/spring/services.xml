@@ -3157,7 +3157,7 @@
 		<property name="hamletDAO" ref="hamletDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="smsSenderService" ref="smsSenderService" />
-		<property name="partyMeetingUpdationDetailsDAO" ref="PartyMeetingUpdationDetailsDAO" />
+		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 	</bean>
 	
