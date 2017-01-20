@@ -1130,17 +1130,15 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertActionType</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertActionTypeMember</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDocument</value>
-	                  
 	                  <value>com.itgrids.partyanalyst.model.VerificationStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.VerificationConversation</value>
 	                  <value>com.itgrids.partyanalyst.model.VerificationDocuments</value>
 	                  <value>com.itgrids.partyanalyst.model.VerificationComments</value>
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails</value>
-	                  
 	                  <value>com.itgrids.partyanalyst.model.CardPrintValidationTrack</value>
-	                  
 	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserType</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserTypeUser</value>
+	                  <value>com.itgrids.partyanalyst.model.PartyMeetingStatusTemp</value>
 	              </list>
 			
 		</property>
