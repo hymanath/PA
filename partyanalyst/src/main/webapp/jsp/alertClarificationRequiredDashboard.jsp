@@ -720,7 +720,7 @@ function getAlertAssignedCandidate()
 				buildTotalAlertGroupByStatusThenCategory(result,alertTypeId);
 			}else{
 				$("#alertCatTabId").html("No Data Available.");
-				$("#locationLevelDataId").html('');  
+				$("#locationLevelDataId").html('No Data Available.');  
 			}
 		});
 	}
