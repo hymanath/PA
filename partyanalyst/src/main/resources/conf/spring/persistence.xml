@@ -1138,6 +1138,9 @@
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails</value>
 	                  
 	                  <value>com.itgrids.partyanalyst.model.CardPrintValidationTrack</value>
+	                  
+	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserType</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserTypeUser</value>
 	              </list>
 			
 		</property>
