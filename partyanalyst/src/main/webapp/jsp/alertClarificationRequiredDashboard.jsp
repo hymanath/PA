@@ -719,7 +719,8 @@ function getAlertAssignedCandidate()
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByStatusThenCategory(result,alertTypeId);
 			}else{
-				$("#alertCatTabId").html("No Data Available.");  
+				$("#alertCatTabId").html("No Data Available.");
+				$("#locationLevelDataId").html('');  
 			}
 		});
 	}
@@ -747,7 +748,7 @@ function getAlertAssignedCandidate()
 				if(result[i].statusTypeList[j].count > 0){  
 					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].statusTypeList[j].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="showDtlsForCountCls" attr_alert_type_id="'+alertTypeId+'" attr_position="second" attr_category_id="0" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].count+'</a> </u></span></td>';
 				}else{
-					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].statusTypeList[j].status+'</strong><span class="pull-right text-muted">0</span></td>';  
+					continue;   
 				}
 				
 				for(var k in result[i].statusTypeList[j].categoryTypeList){
