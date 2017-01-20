@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -95,7 +96,6 @@ import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.MemberType;
-import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -149,8 +149,12 @@ private IActionTypeStatusDAO actionTypeStatusDAO;
 private IAlertActionTypeDAO alertActionTypeDAO;
 private IActionTypeDAO actionTypeDAO;
 private IAlertDocumentDAO alertDocumentDAO;
+private IVerificationStatusDAO verificationStatusDAO;
 
 
+public void setVerificationStatusDAO(IVerificationStatusDAO verificationStatusDAO) {
+	this.verificationStatusDAO = verificationStatusDAO;
+}
 public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
 	this.alertDocumentDAO = alertDocumentDAO;
 }
@@ -1035,7 +1039,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
 		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
-		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+		 SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		
 		try{
 			Date fromDate = null;Date toDate=null;
@@ -1045,7 +1049,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
 			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId);
-			 setAlertLocationWiseData(list,returnList);
+			 setAlertLocationWiseData(list,returnList);  
 		}
 		catch(Exception e)
 		{
@@ -1070,7 +1074,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 
 					 alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
 					 
-					 if(alertVO.getAlertCategoryId() !=null && alertVO.getAlertCategoryId().longValue()>1l){
+					 if(alertVO.getAlertCategoryId() !=null && alertVO.getAlertCategoryId().longValue() > 1l){
 						 if(!alertIdsNews.contains((Long)params[0]));
 						 alertIdsNews.add((Long)params[0]);
 					 }else{
@@ -1109,7 +1113,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				
 				 String eleType = params[18] != null ? params[18].toString() : "";
 				 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
-				alertVO.setLocationVO(locationVO);
+				 alertVO.setLocationVO(locationVO);
 				 
 				
 			 }
@@ -5919,7 +5923,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return status;
   	}
-  	
+  	/*
+  	 * Author - Swadhin K Lenka
+  	 * Date - 20-01-2017
+  	 * (non-Javadoc)
+  	 * @see com.itgrids.partyanalyst.service.IAlertService#getStatusAndCategoryWiseAlertsCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Long)
+  	 */
   	public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
   		List<AlertVO> voList = new ArrayList<AlertVO>(0);
   		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -5985,13 +5994,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 					}
 				}
-			}
+			}  
 			
-			List<Object[]> alertCntList = alertActionTypeDAO.getStatusWiseAlertCount(stateId, fromDate, toDate, alertTypeId);
-			  
+			List<Object[]> alertCntList = verificationStatusDAO.getStatusWiseAlertCount(stateId, fromDate, toDate, alertTypeId);
+			
 			List<ClarificationDetailsCountVO> actionTypeStatusListFinal = null;
 			List<ClarificationDetailsCountVO> categoryList = null;
-			ClarificationDetailsCountVO clarificationDtlsCountVO = null;
+			ClarificationDetailsCountVO clarificationDtlsCountVO = null;  
 			if(alertCntList != null && alertCntList.size() > 0){
 				for(Object[] param3 : alertCntList){
 					//update count for action type...
@@ -6006,7 +6015,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					clarificationDtlsCountVO = getmatchedVOForCategory(categoryList,commonMethodsUtilService.getLongValueForObject(param3[4]));
 					clarificationDtlsCountVO.setCount(clarificationDtlsCountVO.getCount() + commonMethodsUtilService.getLongValueForObject(param3[6]));
 				}
+			}else{
+				actionTypeDtlsList.clear();     
 			}
+			
 			return actionTypeDtlsList;
 		} catch (Exception e) {
 			LOG.error("Error occured at getStatusAndCategoryWiseAlertsCount() in AlertService",e);
@@ -6127,6 +6139,35 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 					}
   				 }
+  				 setAlertLocationWiseData(list,returnList);
+  			}
+  			catch(Exception e)
+  			{
+  				e.printStackTrace();
+  			}
+  			return returnList;
+  		
+		} catch (Exception e) {
+			LOG.error("Error occured at getLocationLevelAlertClarificationData() in AlertService",e);
+		}
+  		return voList;
+  	}
+  	public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO){
+  		List<AlertDataVO> voList = new ArrayList<AlertDataVO>(0);
+  		try {
+
+  			List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+  			 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+  			 SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");  
+  			
+  			try{
+  				Date fromDate = null;Date toDate=null;
+  				if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
+  				{
+  				 fromDate = sdf.parse(inputVO.getFromDate());
+  				 toDate = sdf.parse(inputVO.getToDate());
+  				}
+  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate);
   				 setAlertLocationWiseData(list,returnList);
   			}
   			catch(Exception e)
