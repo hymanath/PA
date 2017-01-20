@@ -257,9 +257,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAlertService alertService;
     private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
     private IAlertsNewsPortalService alertsNewsPortalService;
+    private AppointmentService appointmentService;
+   
     
-    
-    
+	public AppointmentService getAppointmentService() {
+		return appointmentService;
+	}
+
+	public void setAppointmentService(AppointmentService appointmentService) {
+		this.appointmentService = appointmentService;
+	}
+
 	public IAlertsNewsPortalService getAlertsNewsPortalService() {
 		return alertsNewsPortalService;
 	}
@@ -4672,7 +4680,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public String savingNewMembersForAppointment(PashiAppNoCadreVO inputvo){
 		  String result = null;
 		  try{			  
-			  //result = alertService.getAlertStatusOfArticle(articleId);			  
+			  result = appointmentService.savingNewMembersForAppointment(inputvo);	
 		  }catch(Exception e){
 			  e.printStackTrace();
 				log.error("exception occured in  the savingNewMembersForAppointment  method in WebServiceHandlerService");
