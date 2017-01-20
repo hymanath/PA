@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertType;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertTypeDAO extends GenericDaoHibernate<AlertType, Long>
 		implements IAlertTypeDAO {
@@ -19,5 +20,13 @@ public class AlertTypeDAO extends GenericDaoHibernate<AlertType, Long>
 	{
 		Query query = getSession().createQuery("select model.alertTypeId,model.alertType from AlertType model");
 		return query.list();
-	}	
+	}
+	
+	public List<Object[]> getAlertTypeForOrganization()
+	{
+		Query query = getSession().createQuery("select model.alertTypeId,model.alertType from AlertType model where model.alertTypeId = :alertTypeId");
+		
+		query.setParameter("alertTypeId", IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID);
+		return query.list();
+	}
 }

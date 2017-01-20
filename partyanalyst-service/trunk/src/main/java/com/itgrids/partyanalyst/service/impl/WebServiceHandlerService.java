@@ -62,10 +62,11 @@ import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -138,10 +139,10 @@ import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
-import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -255,8 +256,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     
     private IAlertService alertService;
     private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
+    private IAlertsNewsPortalService alertsNewsPortalService;
     
     
+    
+	public IAlertsNewsPortalService getAlertsNewsPortalService() {
+		return alertsNewsPortalService;
+	}
+
+	public void setAlertsNewsPortalService(
+			IAlertsNewsPortalService alertsNewsPortalService) {
+		this.alertsNewsPortalService = alertsNewsPortalService;
+	}
+
 	public IAppointmentTimeSlotDAO getAppointmentTimeSlotDAO() {
 		return appointmentTimeSlotDAO;
 	}
@@ -4666,5 +4678,49 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				log.error("exception occured in  the savingNewMembersForAppointment  method in WebServiceHandlerService");
 		  }
 		  return result;
+	  }
+	 
+	 public AlertOverviewVO getAlertOverviewDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr, Long alertType,Long editionType){
+		 AlertOverviewVO returnvo = null;
+		  try{			  
+			  returnvo = alertsNewsPortalService.getAlertOverviewDetails(activityMemberId, stateId, fromDateStr, toDateStr, alertType, editionType);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertOverviewDetails  method in WebServiceHandlerService");
+		  }
+		  return returnvo;
+	  }
+	 
+	 public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr, Long alertType,Long editionType){
+		 List<AlertOverviewVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertCategoryDtlsLocationWise(activityMemberId, stateId, fromDateStr, toDateStr, alertType, editionType);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertCategoryDtlsLocationWise  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
+		 List<AlertCoreDashBoardVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIds, activityMemberId, districtId, catId, alertTypeId, editionId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getDistrictAndStateImpactLevelWiseAlertDtls  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType,Long alertActionTypeId){
+		 List<AlertCoreDashBoardVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertDtls(fromDateStr, toDateStr, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId, editionId, isActionType, alertActionTypeId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertDtls  method in WebServiceHandlerService");
+		  }
+		  return returnList;
 	  }
 }

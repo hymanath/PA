@@ -1193,7 +1193,7 @@ public interface IConstants {
    		    "getTotalNewRenewalCadreStateWiseTSAction","getStateDtls","getStateDtlsTS","getAttendanceOverViewForPartyOfficeAction" ,"getAttendanceOverViewForPartyOfficeWiseAction",
    		     "getStateLevelCampAttendedDetails" ,"getPartyMeetingsMainTypeOverViewDataAction","getPartyMeetingBasicCountDetailsAction","coreDashboardNewAction"};
 	
-	//public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
+	//public static final String CADRE_REGISTRATION_URL = "http://www.mytdp.in/";
 	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";
 	public static final String CADRE_REGISTRATION_URL = "http://localhost:65535/CadreReg-1.4.0.RELEASE/";      
 	
@@ -1256,4 +1256,6 @@ public interface IConstants {
 	public static final String ALERTS_ATTACHMENTS = "alerts_attachments";
 	public static final String ALERT_STATUS_ID="1,6,7";
 	public static final String ALERT_ACTION_TYPE_ID = "1";
+	
+	public static final Long GOVT_CORE_DASHBOARD_ALERT_TYPE_ID = 2L;
 }

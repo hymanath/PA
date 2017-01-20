@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertType;
 
 public interface IAlertTypeDAO extends GenericDao<AlertType, Long> {
+	
 	public List<Object[]> getAlertType();
-
+	public List<Object[]> getAlertTypeForOrganization();
 }
