@@ -2990,4 +2990,18 @@ public String saveFinalizedMeetingDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getCommentsMeetingDetails(){
+	try{
+		LOG.info("Entered into getCommentsMeetingDetails");
+		RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		Long partymeetingId = jObj.getLong("partyMeetingId");
+		Long userId = regVo.getRegistrationID();
+		retResult = trainingCampService.getCommentsMeetingDetails(partymeetingId);
+	}catch (Exception e) {
+		LOG.error("Exception raised into getCommentsMeetingDetails",e);
+	}
+	return Action.SUCCESS;
+}
 }
