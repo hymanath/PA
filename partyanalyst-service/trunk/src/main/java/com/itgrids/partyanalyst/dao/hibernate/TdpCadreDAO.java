@@ -9296,9 +9296,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   
 		   return query.list();
 	   }
-	   
-	   public List<Object[]> getCadreDetailsByMembershipNo(String memberShipNo){
-		   Query query = getSession().createQuery("select model.tdpCadreId," +
+	   public List<Object[]> getCadreDetailsByMembershipNo(String memberShipNo,String voterId){
+		   StringBuilder sb = new StringBuilder();
+		   					sb.append("select model.tdpCadreId," +
 		   									" model.voterId," +
 		   									" model.cardNo," +
 		   									" model.memberShipNo," +
@@ -9307,11 +9307,79 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   									" model.userAddress.userAddressId," +
 		   									" model.image" +
 		   									" from TdpCadre model" +
-		   									" where model.memberShipNo = :memberShipNo" +
-		   									" and model.enrollmentYear = 2014" +
+		   									//" where model.memberShipNo = :memberShipNo" +
+		   									" where model.enrollmentYear = 2014" +
 		   									" and model.isDeleted = 'N'");
-		   query.setParameter("memberShipNo", memberShipNo);
+		   					if(memberShipNo != null && memberShipNo.trim().length() > 0l)
+		   						sb.append(" and model.memberShipNo = :memberShipNo");
+		   					if(voterId != null && voterId.trim().length() > 0l)
+		   						sb.append("and model.cardNo = :voterId");			
+		   			Query query = getSession().createQuery(sb.toString());
+		   				if(memberShipNo != null && memberShipNo.trim().length() > 0l)
+		   					query.setParameter("memberShipNo", memberShipNo);
+		   				if(voterId != null && voterId.trim().length() > 0l)
+		   					query.setParameter("voterId", voterId);
 		   
 		   return query.list();
 	   }
+	   public List<Object[]> updateSearchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select distinct model.tdpCadreId, model.candidateName, model.relativename,  ");
+			queryStr.append(" model.gender ,model.tdpCadre.memberShipNo, model.tdpCadre.refNo , model.mobileNo, model.tdpCadre.image, model.tdpCadre.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
+			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
+			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.tdpCadre.aadheerNo, model.tdpCadre.dataSourceType , model.tdpCadre.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason, model.enrollmentYearId,model.enrollmentYear.year ");//20
+			queryStr.append(" from NominationPostCandidate model left join model.tdpCadre.userAddress.panchayat panc ");
+			queryStr.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.tdpCadre.userAddress.constituency constituency ");
+			queryStr.append(" left join model.tdpCadre.userAddress.localElectionBody localElectionBody ");
+			queryStr.append(" left join model.tdpCadre.userAddress.localElectionBody.electionType electionType ");
+			queryStr.append(" left join model.tdpCadre.userAddress.district district ");
+			queryStr.append(" left join model.tdpCadre.occupation occupatn ");
+			queryStr.append(" left join model.tdpCadre.voter voter ");
+			queryStr.append(" left join model.tdpCadre.casteState.caste caste ");
+			queryStr.append(" left join model.tdpCadre.familyVoter familyVoter ");
+			queryStr.append(" left join model.tdpCadre.cadreDeleteReason cadreDeleteReason ");
+			
+			if(isRemoved){
+				queryStr.append(" where  model.tdpCadre.isDeleted = 'MD'  and model.tdpCadre.enrollmentYear = 2014  ");
+			}
+			
+			else{
+				queryStr.append(" where model.isDeleted ='N' and (model.tdpCadre.isDeleted = 'N' or model.tdpCadre.isDeleted = 'MD')  and model.tdpCadre.enrollmentYear = 2014  ");
+			}
+				
+			queryStr.append(" "+queryString+" ");
+			/*
+			if(enrollmentId != null && enrollmentId.longValue() == 3l)
+			{
+				queryStr.append(" and  model.enrollmentYearId in(3,4) and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+			}else{
+			queryStr.append(" and  model.enrollmentYearId = 4 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+		}
+			*/
+			Query query = getSession().createQuery(queryStr.toString());
+			if((constituencyId != null && constituencyId != 0L) && (constituencyIds == null || constituencyIds.size() == 0))
+			{
+				query.setParameter("locationValue", constituencyId);
+			}
+			if(constituencyIds != null && constituencyIds.size() > 0) // mp
+			{
+				query.setParameterList("ids", constituencyIds);	
+			}
+			if(casteStateId != null && casteStateId != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}
+				//query.setParameter("enrollmentId", enrollmentId);
+			
+			if(startIndex > 0)
+			query.setFirstResult(startIndex);
+			if(maxIndex > 0)
+				query.setMaxResults(maxIndex);
+			
+			return query.list();
+}
 }
