@@ -132,9 +132,9 @@
         	  <div class="panel-body bg_ef">
               	<div class="row">
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 ">
-                    	<p class="text-success font_16" >SEARCH APPLICANT</p>
+                    	<p class="text-success font_16" >SEARCH CANDIDATE</p>
                     </div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10" style="display:none;">
                     	<label class="radio-inline">
                         	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" style="margin-top: 3px;"/><span>Cadre</span>
                         </label>
@@ -1012,8 +1012,7 @@
 			<div class="row">
 			
             <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
-				<label class="text-capitalize">file<span style="color:red;">*<span></label>
-				<input type="file" id="imageurlId" class="form-control clearClss" name="file" style="width:200%"/>
+				<input type="file" id="imageurlId" class="form-control clearClss" name="file" style="width:400%;height: 100%"/>
 				<input type="hidden" id="hiddenCandidateId" name="nominationPostCandidateId"/>
 				<input type="hidden" id="hiddenCadreId" name="tdpCadreId"/>
 				<input type="hidden" id="hiddenApplicId" name="applicationId"/>
@@ -1021,8 +1020,9 @@
 			</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="saveCadrefileDetails()">Upload File</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" onclick="saveCadrefileDetails()">UPLOAD</button>
+		<div id="errMsg"></div>
       </div>
 	</form>
   </div>
