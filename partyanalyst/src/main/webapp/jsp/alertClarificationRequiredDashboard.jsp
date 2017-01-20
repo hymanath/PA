@@ -1200,6 +1200,8 @@ $(document).on("click",".showDtlsForCountCls",function(){
 		fromDate = dateStr.split("-")[0];
 		toDate = dateStr.split("-")[1];
 	}
+	$("#alertCategoryId").val(alertCategoryId);
+	$("#alertCategoryId").trigger("chosen:updated");        
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
 	getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
 });
