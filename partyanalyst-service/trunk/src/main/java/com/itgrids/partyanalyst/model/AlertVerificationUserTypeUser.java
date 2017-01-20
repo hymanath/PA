@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,11 +22,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "alert_verification_user_type_user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AlertVerificationUserTypeUser extends BaseModel implements Serializable {
-	/*
-	 * alert_verification_user_type_user_id,
-	 * user_id,
-	 * alert_verification_user_type_id
-	 */
+	
          private Long alertVerificationUserTypeUserId;
          private Long userId;
          private Long alertVerificationUserTypeId;
@@ -57,7 +54,7 @@ public class AlertVerificationUserTypeUser extends BaseModel implements Serializ
 		public void setAlertVerificationUserTypeId(Long alertVerificationUserTypeId) {
 			this.alertVerificationUserTypeId = alertVerificationUserTypeId;
 		}
-		@ManyToOne(fetch = FetchType.LAZY )
+		@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 		@JoinColumn(name = "user_id" , insertable = false, updatable = false)
 		@LazyToOne(LazyToOneOption.NO_PROXY)
 		@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -67,7 +64,7 @@ public class AlertVerificationUserTypeUser extends BaseModel implements Serializ
 		public void setUser(User user) {
 			this.user = user;
 		}
-		@ManyToOne(fetch = FetchType.LAZY )
+		@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 		@JoinColumn(name = "alert_verification_user_type_id" , insertable = false, updatable = false)
 		@LazyToOne(LazyToOneOption.NO_PROXY)
 		@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
