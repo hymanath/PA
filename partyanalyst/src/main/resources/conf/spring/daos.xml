@@ -3650,4 +3650,11 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	
+	<bean id="alertVerificationUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertVerificationUserTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	<bean id="alertVerificationUserTypeUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertVerificationUserTypeUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
 </beans>		
