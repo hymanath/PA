@@ -12,6 +12,8 @@ public class PashiAppNoCadreVO implements Serializable{
 	private Long 	appointmentId;
 	private String membershipNo;
 	private Long userId;
+	private Long appointmentCandidateTypeId;
+	private Long designationId;
 	
 	
 	public Long getUserId() {
@@ -61,6 +63,18 @@ public class PashiAppNoCadreVO implements Serializable{
 	}
 	public void setAppointmentId(Long appointmentId) {
 		this.appointmentId = appointmentId;
+	}
+	public Long getAppointmentCandidateTypeId() {
+		return appointmentCandidateTypeId;
+	}
+	public void setAppointmentCandidateTypeId(Long appointmentCandidateTypeId) {
+		this.appointmentCandidateTypeId = appointmentCandidateTypeId;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
 	}
 	
 	
