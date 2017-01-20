@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -88,7 +89,7 @@ public class VerificationConversation extends BaseModel implements Serializable 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "alert_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -98,7 +99,7 @@ public class VerificationConversation extends BaseModel implements Serializable 
 	public void setAlert(Alert alert) {
 		this.alert = alert;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "inserted_by" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -108,7 +109,7 @@ public class VerificationConversation extends BaseModel implements Serializable 
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "updated_by" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
