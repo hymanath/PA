@@ -589,5 +589,26 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			 query.setParameter("appointmenUserId", aptUserId);
 		 query.setParameter("levelId",levelId);
 		 return query.list();
-		}	
+		}
+	public Long appointmntCandExist(String memberShipNo){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select model.appointmentCandidateId" +
+		  		" from AppointmentCandidate model" +
+		  		" where model.membershipId = :memberShipNo");
+		  Query query = getSession().createQuery(sb.toString());
+			query.setParameter("memberShipNo", memberShipNo);
+			return (Long) query.uniqueResult();	
+		
+	}
+	public Long appointmntCandExistForVtrId(String voterId){
+		StringBuilder sb = new StringBuilder();
+		  sb.append("select model.appointmentCandidateId" +
+		  		" from AppointmentCandidate model" +
+		  		" where model.voterIdCardNo = :voterId");
+		  Query query = getSession().createQuery(sb.toString());
+			query.setParameter("voterId", voterId);
+			return (Long) query.uniqueResult();	
+		
+	}
+	
 }
