@@ -15463,5 +15463,10 @@
    			<param name="inputName">inputStream</param>
    		</result>
 	  </action>
+	  <action name="getCommentsMeetingDetailsAction" class="trainingCampAction"  method="getCommentsMeetingDetails">
+		<result type="json" name="success">
+			<param name="root">retResult</param>
+		</result>
+	</action>	
  </package>
 </struts>
