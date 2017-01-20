@@ -218,7 +218,6 @@ class TrainingCampService implements ITrainingCampService{
 	private ISmsSenderService smsSenderService;
 	private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
-	
     public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
 		return tdpCadreEnrollmentYearDAO;
 	}
@@ -11225,6 +11224,7 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				partyMeetingIdsList.add((Long)objects[9]);
 			}
 		}
+		List<Long> patyMeetingsIdList = new ArrayList<Long>(0);
 		//meetingtypeId,meetingtype,meetinglevelid,level,locationvalue,startime,endtime,meetinfaddressId,meetingName,partymeetingid
 		if(meetings!=null && meetings.size()>0){
 			for (Object[] objects : meetings) {
@@ -11264,15 +11264,41 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				vo.setIsConducted(objects[12] !=null ? objects[12].toString():"");
 				vo.setConductedDate(objects[13] !=null ? objects[13].toString():"" );//conductedByIvr
 				vo.setThirdPartyStatus(objects[15] !=null ? objects[15].toString():"" );
-					allMeetings.add(vo);
-				
+				patyMeetingsIdList.add(vo.getPartyMeetingId());
+				allMeetings.add(vo);
 			}
+		}
+		
+		if(allMeetings != null && allMeetings.size() > 0){
+			List<Object[]> objList = partyMeetingUpdationDetailsDAO.getCommentsAvailableByPartyMeetingId(patyMeetingsIdList);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					CallStatusVO vo = getMatchedMeetingVO((Long)objects[0],allMeetings);
+					if(vo != null){
+						vo.setIscommentsAvailable("true");
+					}
+				}
+			}
+			
 		}
 		
 	} catch (Exception e) {
 		LOG.error("Exception raised in getFinalAllMeetings",e);
 	}
 	return allMeetings;
+}
+public CallStatusVO getMatchedMeetingVO(Long partymeetingid,List<CallStatusVO> resultList)
+{
+	if(resultList == null || resultList.size() == 0)
+		return null;
+	for(CallStatusVO vo : resultList)
+	{
+		if(vo.getPartyMeetingId().longValue() == partymeetingid.longValue())
+		{
+		return vo;	
+		}
+	}
+	return null;
 }
 public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
 		final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId){
@@ -11315,5 +11341,32 @@ public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final 
 		LOG.error(" Exception occured in saveFinalizedMeetingDetails method in TrainingCampService class.",e);
 	}
 	return status;
+}
+public List<CallStatusVO> getCommentsMeetingDetails(Long partyMeetingId){
+	
+	List<CallStatusVO> returnList = new ArrayList<CallStatusVO>();
+	try {
+		LOG.info("Entered into getCommentsMeetingDetails");
+		List<Object[]> commentsList = partyMeetingUpdationDetailsDAO.getCommentsDetailsByPartyMeetingId(partyMeetingId);
+		
+		if(commentsList!=null && commentsList.size()>0){
+			for (Object[] objects : commentsList) {
+				CallStatusVO vo = new CallStatusVO();
+				
+				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				vo.setRemarks(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				vo.setInsertedtime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+				vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
+				vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+				vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
+				vo.setImage(commonMethodsUtilService.getStringValueForObject(objects[7]));
+				returnList.add(vo);
+			}
+		}
+	}catch (Exception e) {
+		LOG.error("Exception raised in getCommentsMeetingDetails",e);
+	}
+	return returnList;
 }
 }
