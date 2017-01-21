@@ -48,6 +48,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private ActivityPerformLevel activityPerformLevel;
 	private User insertedUser;
 	private User updatedUser;
+	private UserAddress  address;
 	
 	/*private String insertType;*/
 	
@@ -243,6 +244,17 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	public void setPlannedEndDate(Date plannedEndDate) {
 		this.plannedEndDate = plannedEndDate;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getAddress() {
+		return address;
+	}
+	public void setAddress(UserAddress address) {
+		this.address = address;
 	}
 	
 	
