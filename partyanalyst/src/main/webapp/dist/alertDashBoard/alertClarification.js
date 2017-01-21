@@ -151,6 +151,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	  /* Show Hide Functionality Based on user login */
 	  function  userWiseAccessiblilityFunction(){
 		  var entitleArrs = [];
+		 // <c:if test="${sessionScope.USER.isAdmin != 'true'}">
 		  var strArrs = entilementStr.split(",");
 				for(var i=0;i<strArrs.length;i++){
 					if(i==0){
@@ -160,39 +161,47 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 					else
 						entitleArrs.push(strArrs[i]);
 				}
-		  
-		 for(var i=0;i<entitleArrs.length;i++){
-				if(entitleArrs[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){ // info cell user
-				
-					var statusId = $("#clarificationStatusId").val();
-					if(statusId > 0){
-						$(".hideUpdateBlockCls").show();
-						$("#verificationCreationHeadingId").hide();
-					    $("#alertStatusHeadingId").show();
-					    $(".verificationStatusCls").show();						
-					}else{
-						$("#verificationCreationHeadingId").hide();
-						$("#alertStatusHeadingId").hide();
-						$(".hideVarificationStatusCls").hide();
-			
+		  var isAdmin="true";
+		   for(var i=0;i<entitleArrs.length;i++){
+			   if(entitleArrs[i].trim()=="true"){
+                 isAdmin = "false";
+                }
+		   }
+		  if(isAdmin == "true"){
+				 for(var i=0;i<entitleArrs.length;i++){
+						if(entitleArrs[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){ // info cell user
+						
+							var statusId = $("#clarificationStatusId").val();
+							if(statusId > 0){
+								$(".hideUpdateBlockCls").show();
+								$("#verificationCreationHeadingId").hide();
+								$("#alertStatusHeadingId").show();
+								$(".verificationStatusCls").show();						
+							}else{
+								$("#verificationCreationHeadingId").hide();
+								$("#alertStatusHeadingId").hide();
+								$(".hideVarificationStatusCls").hide();
+					
+							}
+						}
 					}
-				}
-			}
 
-		  for(var i=0;i<entitleArrs.length;i++){
-			if(entitleArrs[i].trim()=="CREATE_ALERT_ENTITLEMENT"){ // program committee
-				var statusId = $("#clarificationStatusId").val();
-				$(".hideVarificationStatusCls").show();
-				if(statusId > 0){
-			    	$("#alertStatusHeadingId").show();	
-					$(".hideUpdateBlockCls").show();
-					$("#verificationCreationHeadingId").hide();
-				}else{
-				   $("#verificationCreationHeadingId").show();		
-				   $("#alertStatusHeadingId").hide();
-				}
-			}
-		}	  
+				  for(var i=0;i<entitleArrs.length;i++){
+					if(entitleArrs[i].trim()=="CREATE_ALERT_ENTITLEMENT"){ // program committee
+						var statusId = $("#clarificationStatusId").val();
+						$(".hideVarificationStatusCls").show();
+						if(statusId > 0){
+							$("#alertStatusHeadingId").show();	
+							$(".hideUpdateBlockCls").show();
+							$("#verificationCreationHeadingId").hide();
+						}else{
+						   $("#verificationCreationHeadingId").show();		
+						   $("#alertStatusHeadingId").hide();
+						}
+					}
+				}	  	  
+		  }
+		
 	  }
 	  
 	  $(document).on('click','#showAlertVerificationPdfId',function(){
@@ -200,36 +209,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		var dbFilePath = $(this).attr("attr_filePath");    
      	var str = ''; 
 		var fileNameArr = dbFilePath.split(".");
-		var extName = fileNameArr[1];
-		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
-			$("#alertDocumentModalId").modal("hide");
-			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-		}else{
-			
-			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
-				$("#alertDocumentModalId").modal("show");
-				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
-				str += '</iframe>';
-			}
-			if(extName.trim()=="jpg"){  
-				$("#alertDocumentModalId").modal("show");
-				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
-				str += '</iframe>';
-			}              
-			if(extName.trim()=="doc" || extName.trim()=="docx"){
-				$("#alertDocumentModalId").modal("show");
-				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
-				str += '</iframe>';
-			}
-			if(extName.trim()=="xls" || extName.trim()=="xlsx"){      
-				window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-			}            
-			$("#alertDocumentBodyId").html(str);
-			$("#alertDocumentModalId").attr("isModalOpened","true");
-			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-		}      
+		
+		window.open('../Reports/tour_documents/'+dbFilePath,'_blank');
 	});
 		
