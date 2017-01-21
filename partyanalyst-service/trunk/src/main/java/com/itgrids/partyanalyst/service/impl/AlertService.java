@@ -1071,7 +1071,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = sdf.parse(inputVO.getFromDate());
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,inputVO,fromDate,toDate);
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,inputVO,fromDate,toDate);//done
 			 setAlertLocationWiseData(list,returnList);
 		}
 		catch(Exception e)
@@ -1085,7 +1085,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
 		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
-		 SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");  
 		
 		try{
 			Date fromDate = null;Date toDate=null;
@@ -1094,7 +1094,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = sdf.parse(inputVO.getFromDate());
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId);
+			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId);//done
 			 setAlertLocationWiseData(list,returnList);  
 		}
 		catch(Exception e)
@@ -1110,6 +1110,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		List<Long> alertIdsNews = new ArrayList<Long>();
 		 if(list != null && list.size() > 0)
 		 {
+			 String alertSource = "";
 			 for(Object[] params : list)
 			 {
 				 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[0].toString());
@@ -1141,6 +1142,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
 				// alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
 				 alertVO.setAlertCategoryName(commonMethodsUtilService.getStringValueForObject(params[26]));
+				 
+			 	if(commonMethodsUtilService.getLongValueForObject(params[25]).longValue() == 1L){//manual
+					alertSource = commonMethodsUtilService.getStringValueForObject(params[4]);
+				}else if(commonMethodsUtilService.getLongValueForObject(params[25]).longValue() == 2L){//print
+					if(params[30] != null){
+						alertSource = commonMethodsUtilService.getStringValueForObject(params[30]);
+					}else{
+						alertSource = commonMethodsUtilService.getStringValueForObject(params[4]);
+					}
+					 
+				}else if(commonMethodsUtilService.getLongValueForObject(params[25]).longValue() == 3L){//electronic 
+					if(params[32] != null){
+						alertSource = commonMethodsUtilService.getStringValueForObject(params[32]);
+					}else{
+						alertSource = commonMethodsUtilService.getStringValueForObject(params[4]);
+					}
+				}
+			 	
+			 	alertVO.setAlertSource(alertSource);
+			 	alertVO.setTitle(commonMethodsUtilService.getStringValueForObject(params[33]));
 				 
 				 LocationVO locationVO = new LocationVO();
 				 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
@@ -4982,7 +5003,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}else{
 						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));    
 					}  
-					
+					//hiii
 						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 1L){//manual
 							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
 						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
@@ -5960,7 +5981,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   	 */
   	public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
   		List<AlertVO> voList = new ArrayList<AlertVO>(0);
-  		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+  		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
   		
   		try {
 			Date fromDate=null,toDate=null;
@@ -6188,7 +6209,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
   			List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
   			 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
-  			 SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");  
+  			 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");  
   			
   			try{
   				Date fromDate = null;Date toDate=null;
@@ -6197,7 +6218,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   				 fromDate = sdf.parse(inputVO.getFromDate());
   				 toDate = sdf.parse(inputVO.getToDate());
   				}
-  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate);
+  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate);//done
   				 setAlertLocationWiseData(list,returnList);
   			}
   			catch(Exception e)
