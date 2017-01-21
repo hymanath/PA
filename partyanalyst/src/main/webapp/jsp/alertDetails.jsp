@@ -32,6 +32,25 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+		.attachmentsBlock , .attachmentsUpload
+		{
+			padding:0px;
+		}
+		.attachmentsBlock li , .attachmentsUpload li
+		{
+			margin:5px 0px;
+			list-style:none;
+		}
+		.attachmentsUpload li
+		{
+			background-color:#D6E9F8;
+			border:1px solid #ddd;
+			padding:10px;
+		}
+		.m_top20
+		{
+			margin-top:20px !important;
+		}
 		.uploadedDocuments
 		{
 			padding:0px;
@@ -284,6 +303,7 @@
 									<p class="text-capital"><span class="text-muted ">Article  </span> :
 										<ul class="list-inline imageUrlUlCls" >
 										 
+										 
 										</ul>
 									</td>
 								</tr>
@@ -303,6 +323,64 @@
 								</tr>
 							</table>
 						</div>
+						<!--Clarification Block start -->
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')}">
+						 <div class="row m_top10">
+							 <div class="col-md-12 col-xs-12 col-sm-12 hideVarificationStatusCls">
+						        <div class="panel">
+									<div class="panel-body" style="background-color:#E5E5E5">
+										<h4 class="panel-title">
+											<span class="text-capital">Verification Required</span>
+											<span>(Clarification from info-cell)</span><span class="pull-right" id="alertStatusHeadingId"></span>
+											<div id="verificationCreationHeadingId">
+												<span class="pull-right">
+													<i class="glyphicon glyphicon-menu-down"></i>
+													<i class="glyphicon glyphicon-menu-up"></i>
+												</span>
+												<label class="checkbox-inline pull-right">
+													<input id="isClarificationNotRequiredChckBxId" checked type="checkbox"/>No
+												</label>
+												<label class="checkbox-inline pull-right">
+													<input id="isClarificationRequiredChckBxId" type="checkbox"/>Yes
+												</label>
+											</div>
+										</h4>
+										<hr style="border-top:1px solid #333;margin-top:10px;margin-bottom:10px;"/>
+										 <div class="hideCommentBlockCls">
+												<div id="converSationDtlsDivId"></div>
+										</div>
+									<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
+										<div class="hideUpdateBlockCls" style="display:none;">
+										   <h4 class="text-capitalize m_top20">Add Comments</h4>
+										   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
+											
+											<h4 class="text-capitalize m_top20">Add Attachments&nbsp&nbsp</h4>
+											<!-- <input id="uploadFileCheckBoxId" type="checkbox"/> -->
+											<div class="uploadAttachmentDivCls">
+												<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0">
+												<div id="extraClarificationUploadFileDiv"></div>
+												<button type="button" class="btn btn-primary btn-xs pull-right m_top20" id="addClarificationFile"><i class="glyphicon glyphicon-plus"></i></button>;
+											</div>
+											<div class="m_top20 row">
+												<div class="col-md-5 col-xs-12 col-sm-6">
+													<label class="verificationStatusCls" style="display:none;">Verficiation Status</label>
+													<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
+														<option value="1">Progress</option>
+														<option value="2">Completed</option>
+													</select>
+													<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">update verification status</button>
+												</div>
+									 		</div>
+									    </div>
+										<input type="text" hidden value="" id="alertIdForClarification" name="alertId"/>
+										<input type="text" hidden value="0" id="clarificationStatusId" name="clarificationStatusId"/>
+									 </form>
+									</div>
+								</div>
+						    </div>
+						 </div>
+					 </c:if>
+				<!-- End -->
 						 <div class="row m_top10">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital">involved members in this alert
@@ -522,15 +600,27 @@
 		  </div><!-- /.modal-dialog 
 		</div><!-- /.modal 
 		</div>-->
-
+<div class="modal fade" tabindex="-1" id="alertDocumentModalId" role="dialog" style="z-index:99999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Alert Document</h4>  
+			</div>
+			<div class="modal-body" id="alertDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div><!--  /.modal -->
 <div class="modal fade" id="myModalShowNew"></div>		
 <input type="file" class="btn btn-mini cloneFileCls" style="display:none;"/>
 <script type="text/javascript">
 
-
 var alertId = '${alertId}';
 var entilementStr = '${sessionScope.USER.entitlements}';
-
 $(".dropkickClass").dropkick();
 function deleteAlertAssignedCandidates(tdpCadreId)
 {
@@ -635,7 +725,7 @@ function buildAlertAssignedCandidateData(result)
 		YAHOO.util.Connect.setForm('alertDocs',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadAlertsDocAction.action',uploadHandler);
 	});
-
+	
 	function showStatus(myResult,alertId){
 		var result = (String)(myResult);
 		if(result.search('success') != -1){
@@ -657,6 +747,7 @@ $(".panelHeights").height(maxHeight);
 */			
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/alertClarification.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
