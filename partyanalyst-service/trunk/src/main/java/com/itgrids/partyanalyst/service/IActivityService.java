@@ -75,4 +75,5 @@ public interface IActivityService {
 	public List<ActivityResponseVO> getCallSuportType();
 	public List<ActivityResponseVO> getAllCallingPurpose();
 	public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long callStatusId,Long callSupportId,String description,Long cadreId,Long calledBy);
+	public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,String endDateStr);
 }
