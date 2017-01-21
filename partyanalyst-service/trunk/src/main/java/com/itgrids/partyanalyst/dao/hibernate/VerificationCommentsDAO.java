@@ -35,25 +35,6 @@ public class VerificationCommentsDAO extends GenericDaoHibernate<VerificationCom
 		   query.setParameter("alertId", alertId);
 		  return query.list();
 	}
-	/*public List<Object[]> getAletConversationDtls(Long alertId){
-		 StringBuilder queryStr = new StringBuilder();
-		 queryStr.append(" select model.verificationConversation.verificationConversationId, " +//0
-		 		" model.alertVerificationUserType.alertVerificationUserTypeId," +//1
-		 		" model.comments," +//2
-		 		" date(model.updatedTime)," +//3
-		 		" time(model.updatedTime)," +//4
-		 		" model.updatedUser.firstName," +//5
-		 		" model.updatedUser.lastName," +//6
-		 		" model1.documentPath " +//7
-		 		" from VerificationComments model,VerificationDocuments model1 " +
-		 		" where model.verificationConversation.verificationConversationId = model1.verificationConversation.verificationConversationId " +
-		 		" and model.verificationConversation.alert.alertId=:alertId " +
-		 		" and model.isDeleted='N' and model.verificationConversation.alert.isDeleted='N' and model1.isDeleted='N' order by model.updatedTime  ");
-		   Query query = getSession().createQuery(queryStr.toString());
-		   query.setParameter("alertId", alertId);
-		  return query.list();
-	}
-	*/
 	public List<Object[]> getAletConversationDtls(Long alertId){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select "+
