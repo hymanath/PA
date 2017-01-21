@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -124,6 +125,7 @@ import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.LocationService;
 import com.itgrids.partyanalyst.utils.ParagraphBorder;
 
@@ -178,8 +180,16 @@ public class AppointmentService implements IAppointmentService{
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
+	private ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
 	
 	
+	public ImageAndStringConverter getImageAndStringConverter() {
+		return imageAndStringConverter;
+	}
+	public void setImageAndStringConverter(
+			ImageAndStringConverter imageAndStringConverter) {
+		this.imageAndStringConverter = imageAndStringConverter;
+	}
 	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
 		return nominationPostCandidateDAO;
 	}
@@ -8478,15 +8488,41 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 									appointmentCandidate.setVoterIdCardNo(inputvo.getVoterCardNo());
 								else
 									appointmentCandidate.setVoterIdCardNo(obj[2] != null ? obj[2].toString():"");
-								appointmentCandidate.setTdpCadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-								if(inputvo.getMembershipNo() != null && inputvo.getMembershipNo().trim().length() > 0)
-									appointmentCandidate.setMembershipId(inputvo.getMembershipNo());
-								else
-									appointmentCandidate.setMembershipId(obj[3] != null ? obj[3].toString():"");
-								if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0)
-									appointmentCandidate.setImageURL("images/cadre_images/"+inputvo.getImageStr());
-								else
-									appointmentCandidate.setImageURL(obj[7] != null ? "images/cadre_images/"+obj[7].toString():"");
+								
+								if(inputvo.getMembershipNo() != null && inputvo.getMembershipNo().trim().length() > 0){
+									if(inputvo.getMembershipNo() != null && inputvo.getMembershipNo().trim().length() > 0)
+										appointmentCandidate.setMembershipId(inputvo.getMembershipNo());
+									else
+										appointmentCandidate.setMembershipId(obj[3] != null ? obj[3].toString():"");
+									
+									if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0){int number = 0;
+										 while(String.valueOf(number).length()<11){
+												number = new Random().nextInt();
+											};
+										
+										 String filePath = "images/"+IConstants.APPOINTMENT_IMAGES;
+										 CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+										 String dirPath= commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+filePath);
+										 
+										 String fileName = inputvo.getMembershipNo().trim()+"_"+String.valueOf(Math.abs(number)).substring(0,5)+".jpg";
+										 String finalPath =filePath+dirPath+"/"+fileName ;
+										 
+										//
+										inputvo.setImageStr(inputvo.getImageStr().replace("_", "/"));
+										inputvo.setImageStr(inputvo.getImageStr().replace("-", "+"));
+										
+										boolean status = imageAndStringConverter.convertBase64StringToImage(inputvo.getImageStr(),IConstants.STATIC_CONTENT_FOLDER_URL+finalPath);
+										appointmentCandidate.setImageURL(finalPath);
+									}
+									else
+										appointmentCandidate.setImageURL(obj[7] != null ? "images/cadre_images/"+obj[7].toString():"");
+									
+									appointmentCandidate.setTdpCadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+								}
+								
+								
+								
+								
 								appointmentCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setPeshiAppUserId(inputvo.getUserId());
@@ -8508,7 +8544,28 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 								appointmentCandidate.setLocationValue(inputvo.getConstituencyId());
 								appointmentCandidate.setVoterId(voterId);
 								appointmentCandidate.setVoterIdCardNo(inputvo.getVoterCardNo());
-								appointmentCandidate.setImageURL("images/cadre_images/"+inputvo.getImageStr());
+								if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0){
+									int number = 0;
+									 while(String.valueOf(number).length()<11){
+											number = new Random().nextInt();
+										};
+									
+									 String filePath = "images/"+IConstants.APPOINTMENT_IMAGES;
+									 CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+									 String dirPath= commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+filePath);
+									 String fileName = (inputvo.getVoterCardNo() != null?inputvo.getVoterCardNo().trim()+"_":"")+String.valueOf(Math.abs(number)).substring(0,5)+".jpg";
+									 String finalPath =filePath+dirPath+"/"+fileName ;
+									 
+									//
+									inputvo.setImageStr(inputvo.getImageStr().replace("_", "/"));
+									inputvo.setImageStr(inputvo.getImageStr().replace("-", "+"));
+									
+									boolean status = imageAndStringConverter.convertBase64StringToImage(inputvo.getImageStr(),IConstants.STATIC_CONTENT_FOLDER_URL+finalPath);
+									appointmentCandidate.setImageURL(finalPath);
+								}
+								else
+									appointmentCandidate.setImageURL("images/voter_images/"+inputvo.getConstituencyId()+"/"+inputvo.getImageStr());
+								
 								appointmentCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setPeshiAppUserId(inputvo.getUserId());
