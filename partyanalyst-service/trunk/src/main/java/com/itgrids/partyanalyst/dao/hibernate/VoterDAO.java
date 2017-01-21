@@ -507,7 +507,14 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 			
 			return query.list();
-		}	 
+		}	
+		public Long getVtrId(String voterCardNo){
+			Query query = getSession().createQuery("select model.voterId" +
+					" from Voter model " +
+					" where model.voterIDCardNo = :voterCardNo");
+			query.setParameter("voterCardNo", voterCardNo);
+			return (Long) query.uniqueResult();
+		}
 			
 			
 }
