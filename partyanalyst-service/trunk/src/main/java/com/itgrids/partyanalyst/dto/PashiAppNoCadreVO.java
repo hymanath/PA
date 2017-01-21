@@ -14,8 +14,7 @@ public class PashiAppNoCadreVO implements Serializable{
 	private Long userId;
 	private Long appointmentCandidateTypeId;
 	private Long designationId;
-	
-	
+
 	public Long getUserId() {
 		return userId;
 	}
