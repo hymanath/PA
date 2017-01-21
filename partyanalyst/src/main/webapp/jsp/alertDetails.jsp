@@ -408,73 +408,75 @@ control.makeTransliteratable(['commentsId']);
 							</table>
 						</div>
 						<!--Clarification Block start -->
-						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')}">
-						 <div class="row m_top10">
-							 <div class="col-md-12 col-xs-12 col-sm-12 hideVarificationStatusCls">
-						        <div class="panel">
-									<div class="panel-body" style="background-color:#E5E5E5">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-6 verificationHeadingCls">
-												<h4 class="panel-title"> 
-													<span class="text-capital"><b>Verification Required</b></span>
-													<span>(Clarification from info-cell)</span>
-												</h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="pull-right" id="alertStatusHeadingId"></span>
-												<div id="verificationCreationHeadingId">
-													<span class="pull-right">
-														<i class="glyphicon glyphicon-menu-down" id="menuDown"></i>
-														<i class="glyphicon glyphicon-menu-up" id="menuUp" style="display:none;"></i>
-													</span>
-													<label class="checkbox-inline pull-right">
-														<input id="isClarificationNotRequiredChckBxId" checked type="checkbox"/>No
-													</label>
-													<label class="checkbox-inline pull-right">
-														<input id="isClarificationRequiredChckBxId" type="checkbox"/>Yes
-													</label>
+						<c:if test="${sessionScope.USER.isAdmin != 'true'}">
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')}">
+							 <div class="row m_top10">
+								 <div class="col-md-12 col-xs-12 col-sm-12 hideVarificationStatusCls">
+									<div class="panel">
+										<div class="panel-body" style="background-color:#E5E5E5">
+											<div class="row">
+												<div class="col-md-6 col-xs-12 col-sm-6 verificationHeadingCls">
+													<h4 class="panel-title"> 
+														<span class="text-capital"><b>Verification Required</b></span>
+														<span>(Clarification from info-cell)</span>
+													</h4>
+												</div>
+												<div class="col-md-6 col-xs-12 col-sm-6">
+													<span class="pull-right" id="alertStatusHeadingId"></span>
+													<div id="verificationCreationHeadingId">
+														<span class="pull-right">
+															<i class="glyphicon glyphicon-menu-down" id="menuDown"></i>
+															<i class="glyphicon glyphicon-menu-up" id="menuUp" style="display:none;"></i>
+														</span>
+														<label class="checkbox-inline pull-right">
+															<input id="isClarificationNotRequiredChckBxId" checked type="checkbox"/>No
+														</label>
+														<label class="checkbox-inline pull-right">
+															<input id="isClarificationRequiredChckBxId" type="checkbox"/>Yes
+														</label>
+													</div>
 												</div>
 											</div>
+											<hr class="m_top10" style="border-top:1px solid rgba(0,0,0,0.6);"/>
+											<div class="hideCommentBlockCls">
+													<div id="converSationDtlsDivId"></div>
+											</div>
+										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
+											<div class="hideUpdateBlockCls" style="display:none;">
+											   <h4 class="text-capitalize m_top20 panelTitleFont">Add Comments</h4>
+											   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
+												
+												<h4 class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</h4>
+												<div class="m_top20 row">
+													<div class="uploadAttachmentDivCls col-md-6 col-xs-12 col-sm-6">
+														<ul class="attachmentsUpload"  id="">
+															<li>
+																<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0">
+															</li>
+														</ul>
+														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
+														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>;
+													</div>
+												</div>
+												<div class="m_top20 row">
+													<div class="col-md-5 col-xs-12 col-sm-6">
+														<label class="verificationStatusCls" style="display:none;">Verficiation Status</label>
+														<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
+															<option value="1">Progress</option>
+															<option value="2">Completed</option>
+														</select>
+														<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">update verification status</button>
+													</div>
+												</div>
+											</div>
+											<input type="text" hidden value="" id="alertIdForClarification" name="alertId"/>
+											<input type="text" hidden value="0" id="clarificationStatusId" name="clarificationStatusId"/>
+										 </form>
 										</div>
-										<hr class="m_top10" style="border-top:1px solid rgba(0,0,0,0.6);"/>
-										<div class="hideCommentBlockCls">
-												<div id="converSationDtlsDivId"></div>
-										</div>
-									<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
-										<div class="hideUpdateBlockCls" style="display:none;">
-										   <h4 class="text-capitalize m_top20 panelTitleFont">Add Comments</h4>
-										   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
-											
-											<h4 class="text-capitalize m_top20">Add Attachments&nbsp&nbsp</h4>
-											<div class="m_top20 row">
-												<div class="uploadAttachmentDivCls col-md-6 col-xs-12 col-sm-6">
-													<ul class="attachmentsUpload"  id="">
-														<li>
-															<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0">
-														</li>
-													</ul>
-													<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
-													<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>;
-												</div>
-											</div>
-											<div class="m_top20 row">
-												<div class="col-md-5 col-xs-12 col-sm-6">
-													<label class="verificationStatusCls" style="display:none;">Verficiation Status</label>
-													<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
-														<option value="1">Progress</option>
-														<option value="2">Completed</option>
-													</select>
-													<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">update verification status</button>
-												</div>
-									 		</div>
-									    </div>
-										<input type="text" hidden value="" id="alertIdForClarification" name="alertId"/>
-										<input type="text" hidden value="0" id="clarificationStatusId" name="clarificationStatusId"/>
-									 </form>
 									</div>
 								</div>
-						    </div>
-						 </div>
+							 </div>
+						 </c:if>
 					 </c:if>
 				<!-- End -->
 						 <div class="row m_top10">
