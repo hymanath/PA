@@ -85,8 +85,16 @@ public class RegistrationVO extends BaseDTO{
 	private String stateName;
 	
 	private String userAccessType;
+	private String task;
 	
-	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public String getStateName() {
 		return stateName;
 	}
