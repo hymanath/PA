@@ -2,8 +2,12 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	$("#isClarificationNotRequiredChckBxId").prop("checked",false);
 		if($(this).prop("checked") == true){
 			$(".hideUpdateBlockCls").show();
+			$("#menuUp").show();
+			$("#menuDown").hide();
 		}else if($(this).prop("checked") == false){
 			$(".hideUpdateBlockCls").hide();
+			$("#menuDown").show();
+			$("#menuUp").hide();
 		}
 });
     $(document).on("change","#verificationStatusSlctBxId",function(){
@@ -17,6 +21,8 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		$("#isClarificationRequiredChckBxId").prop("checked",false);
 		if($(this).prop("checked") == true){
 			$(".hideUpdateBlockCls").hide();
+			$("#menuDown").show();
+			$("#menuUp").hide();
 		}else if($(this).prop("checked") == false){
 		}
 
@@ -32,16 +38,19 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
    
 	var fileNo=0;
 	$(document).on("click","#addClarificationFile",function(){
-		$(this).closest(".panelHeights").removeAttr("style")
+		//$(this).closest(".panelHeights").removeAttr("style")
 		fileNo = fileNo+1;
-		var c = $(".cloneFileCls").clone(true);
-		c.removeAttr("style");
+		//var c = $(".cloneFileCls").clone(true);
+		//c.removeAttr("style");
 		//c.attr("id","uploadFileId"+fileNo);
-		c.attr("name","files");
-		c.removeAttr("class").addClass("btn btn-mini");
-		$("#extraClarificationUploadFileDiv").append(c);
+		//c.attr("name","files");
+		//c.removeAttr("class").addClass("btn btn-mini");
+		$("#extraClarificationUploadFileDiv").append('<li id="cloned'+fileNo+'"><input type="file" name="files" class="btn btn-mini cloneFileCls"/><span class="closeIcon" attr_id="'+fileNo+'">x</span></li>');
 	});
-	
+	$(document).on("click",".closeIcon",function(){
+		var id = $(this).attr("attr_id");
+		$("#cloned"+id).remove();
+	});
 	$(document).on("click","#updateVerificationStatusBtnId",function(){
 		$("#alertIdForClarification").val(alertId);
 		var commment = $(".commentCls").val();
@@ -66,10 +75,10 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		if(result.search('success') != -1){
 			getAletDelt();
 			alert("Alert Verification Updated Successfully.");
-			$(".commentCls").val(' ');
-			$("#uploadClarificationFileId0").val(' ');
-			$("#extraClarificationUploadFileDiv").html(' ');
-			// getAlertVerificationDetails();
+			$(".commentCls").val('');
+			$("#uploadClarificationFileId0").val('');
+			$("#extraClarificationUploadFileDiv").html('');
+			fileNo = 0;
 		}else{
 			alert("Please Try Again.");
 		}
@@ -79,6 +88,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	}
 	getAlertVerificationDetails();
 	function getAlertVerificationDetails(){
+		$(".hideVarificationStatusCls").show();
 		$("#converSationDtlsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj={
 			alertId:alertId
@@ -90,9 +100,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				 $("#converSationDtlsDivId").html(' ');
-				 if(result != null){
 				  buildAlertVerificationStatusRlst(result);
-				 }
 		  }); 
 	 }
 	 function buildAlertVerificationStatusRlst(result){
@@ -101,20 +109,20 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$("#verificationStatusSlctBxId").val(result.alertActionTypeStatusId);
 		 }else{
 			 $("#clarificationStatusId").attr("value",0); 
-		     return;			
+		   //  return;			
 		 }
-		 $("#alertStatusHeadingId").html("<h4>Status:<span style='green'>"+result.actionTypeStatus+"</span></h4>");
+		 $("#alertStatusHeadingId").html("Status:<span class='text-success'>"+result.actionTypeStatus+"</span>");
 		 userWiseAccessiblilityFunction();
 		   var str = '';
 		  if(result.conversationList != null && result.conversationList.length > 0){
 			  for(var i in result.conversationList){
-				 str+='<h4 class="text-capital">'+result.conversationList[i].heading+'</h4>';
+				 str+='<h4 class="text-capital panelTitleFont">'+result.conversationList[i].heading+'</h4>';
 				 if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
-				   str+='<p>'+result.conversationList[i].comments+'</p>';	 
+				   str+='<p style="color:rgba(0,0,0,0.6);font-size:13px;">'+result.conversationList[i].comments+'</p>';	 
 				 }
 		 	 var documentList = result.conversationList[i].documentList;
 			if(documentList != null && documentList.length > 0){
-					 str+='<h4 class="text-capital m_top20">Attachments</h4>';
+					 str+='<h5 class="text-capital m_top20 panelTitleFont">Attachments</h5>';
 			         str+='<ul class="attachmentsBlock">';
 				var order = 0;
 				for(var k in documentList){
@@ -129,12 +137,12 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 						  orderStr = order;	
 						}
 					    var attachment = orderStr+'&nbspAttachment.'+type;
-						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i>'+attachment+'</li>';
+						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></li>';
 				}
 			str+='</ul>';
 			}
 			 if(result.conversationList[i].name != null && result.conversationList[i].name.length > 0){
-			   str+='<p class="text-right">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';  	 
+			   str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';  	 
 			 }
 		  }
 	   $("#converSationDtlsDivId").html(str);
@@ -155,12 +163,18 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		  
 		 for(var i=0;i<entitleArrs.length;i++){
 				if(entitleArrs[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){ // info cell user
+				
 					var statusId = $("#clarificationStatusId").val();
 					if(statusId > 0){
 						$(".hideUpdateBlockCls").show();
 						$("#verificationCreationHeadingId").hide();
 					    $("#alertStatusHeadingId").show();
 					    $(".verificationStatusCls").show();						
+					}else{
+						$("#verificationCreationHeadingId").hide();
+						$("#alertStatusHeadingId").hide();
+						$(".hideVarificationStatusCls").hide();
+			
 					}
 				}
 			}
@@ -168,6 +182,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		  for(var i=0;i<entitleArrs.length;i++){
 			if(entitleArrs[i].trim()=="CREATE_ALERT_ENTITLEMENT"){ // program committee
 				var statusId = $("#clarificationStatusId").val();
+				$(".hideVarificationStatusCls").show();
 				if(statusId > 0){
 			    	$("#alertStatusHeadingId").show();	
 					$(".hideUpdateBlockCls").show();
