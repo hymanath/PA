@@ -12841,11 +12841,11 @@
 			</result>
 		</action>
 		
-		<action name="updateAlertStatusAction" class="createAlertAction" method="updateAlertStatus">
+		<!-- <action name="updateAlertStatusAction" class="createAlertAction" method="updateAlertStatus">
 			<result type="json" name="success">
 				<param name="root">status</param>
 		 </result>
-		 </action>
+		 </action>-->
 		 		 
 		<action name="getAlertStatusCommentsTrackingDetails" class="createAlertAction" method="getAlertStatusCommentsTrackingDetails">
 		<result type="json" name="success">
@@ -15471,6 +15471,17 @@
 	  <action name="getCommentsMeetingDetailsAction" class="trainingCampAction"  method="getCommentsMeetingDetails">
 		<result type="json" name="success">
 			<param name="root">retResult</param>
+		</result>
+	</action>
+	<action name="getDocumentsForAlertAction" class="createAlertAction" method="getDocumentsForAlert">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	
+	<action name="uploadAlertsStatusDocAction" class="createAlertAction" method="uploadAlertsStatusDoc">
+	   <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
 		</result>
 	</action>	
  </package>
