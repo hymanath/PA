@@ -36,8 +36,15 @@ public class LocationVO implements Serializable {
 	private Long categoryId;
 	private String category;
 	private Long actionTypeStatusId;
+	private String task;
 	
 	
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
 	public Long getActionTypeStatusId() {
 		return actionTypeStatusId;
 	}
