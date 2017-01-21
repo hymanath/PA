@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -87,13 +89,13 @@ import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertCategory;
 import com.itgrids.partyanalyst.model.AlertClarification;
 import com.itgrids.partyanalyst.model.AlertClarificationComments;
-import com.itgrids.partyanalyst.model.AlertClarificationDocument;
 import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
+import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -150,7 +152,21 @@ private IAlertActionTypeDAO alertActionTypeDAO;
 private IActionTypeDAO actionTypeDAO;
 private IAlertDocumentDAO alertDocumentDAO;
 private IVerificationStatusDAO verificationStatusDAO;
+private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
+private ITdpCadreDAO tdpCadreDAO;
 
+
+public ITdpCadreDAO getTdpCadreDAO() {
+	return tdpCadreDAO;
+}
+
+public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+	this.tdpCadreDAO = tdpCadreDAO;
+}
+
+public void setAlertTrackingDocumentsDAO(IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO) {
+	this.alertTrackingDocumentsDAO = alertTrackingDocumentsDAO;
+}
 
 public void setVerificationStatusDAO(IVerificationStatusDAO verificationStatusDAO) {
 	this.verificationStatusDAO = verificationStatusDAO;
@@ -562,14 +578,14 @@ public String createAlert(final AlertVO inputVO,final Long userId, final Map<Fil
 			});
 	return resultStatus;
 }
-public void saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
+public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
 	
 	try{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		DateUtilService dt = new DateUtilService();
 		
-		String folderName = folderCreation();
+		String folderName = IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
 		AlertDocument alertDocument = null;
 		
 		Calendar calendar = Calendar.getInstance();
@@ -590,7 +606,7 @@ public void saveAlertDocument(Long alertId,Long userId,final Map<File,String> do
 			 str = new StringBuilder();
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-			 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+			 pathBuilder.append("tour_documents/"+monthText).append("").append(year).append("/").append(randomNumber).append(".")
 			 .append(entry.getValue());
 			 str.append(randomNumber).append(".").append(entry.getValue());
 			String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
@@ -612,10 +628,10 @@ public void saveAlertDocument(Long alertId,Long userId,final Map<File,String> do
 				
 		 }
 	}catch(Exception e){
-		e.printStackTrace();
 		LOG.error("Exception Occured in saveApplicationDocuments() in ToursService", e);
+		return "faliure";
 	}
-	
+	return "success";
 }
 public static String folderCreation()
 {
@@ -671,7 +687,7 @@ public static String getMonthForInt(int num) {
 
 public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTrackingVO)
 {
-	ResultStatus rs = new ResultStatus();
+	final ResultStatus rs = new ResultStatus();
 	try {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 	        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
@@ -695,7 +711,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
 				}
 				
-				alertTrackingDAO.save(alertTracking);
+				alertTracking = alertTrackingDAO.save(alertTracking);
+				rs.setResultState(alertTracking.getAlertTrackingId());
 			 }
 		});
 		rs.setExceptionMsg("success");
@@ -1150,68 +1167,65 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		 }
 	}
 
-	public String updateAlertStatus(final Long userId,final AlertVO inputVo)
-	{
-		String resultStatus = (String) transactionTemplate
-				.execute(new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus status) {
-						String rs = new String();
-						try {
-			Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
-			Alert alert =	alertDAO.get(inputVo.getId());
-			alert.setUpdatedTime(currentDateAndTime);    
-			alert.setAlertStatusId(inputVo.getStatusId());
-			alert = alertDAO.save(alert);
-		    rs = "success";
-		    
-		    AlertComment alertComment = new AlertComment();
-		    if(inputVo.getDesc() != null && !inputVo.getDesc().isEmpty())
-		    	//alertComment.setComments(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(IConstants.TRAINING_CAMP_FEEDBACK_SMS_CONTENT)));
-		   alertComment.setComments(StringEscapeUtils.unescapeJava(inputVo.getDesc().toString()));
-		    alertComment.setAlertId(inputVo.getId());
-		    alertComment.setInsertedTime(currentDateAndTime);
-		   
-		    alertComment.setIsDeleted("N");
-		    alertComment.setInsertedBy(userId);
-		    alertComment = alertCommentDAO.save(alertComment);
-		    
-		    
-		    if(inputVo.getAssignList() != null && inputVo.getAssignList().size() > 0)
-		    {
-		    	for(IdNameVO vo : inputVo.getAssignList())
-		    	{
-		    		if(vo.getId() != null && vo.getId() > 0)
-		    		{
-			    		AlertCommentAssignee alertCommentAssignee = new AlertCommentAssignee();
-			    		alertCommentAssignee.setAlertCommentId(alertComment.getAlertCommentId());
-			    		alertCommentAssignee.setAssignTdpCadreId(vo.getId());
-			    		alertCommentAssigneeDAO.save(alertCommentAssignee);
+	public String updateAlertStatus(final Long userId,final AlertVO inputVo,final List<String> fileNames){
+		String resultStatus = (String) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+			String rs = new String();
+			try {
+					Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
+					Alert alert =	alertDAO.get(inputVo.getId());
+					alert.setUpdatedTime(currentDateAndTime);    
+					alert.setAlertStatusId(inputVo.getStatusId());
+					alert = alertDAO.save(alert);
+			    	rs = "success";
+			    
+			    	AlertComment alertComment = new AlertComment();
+			    	if(inputVo.getDesc() != null && !inputVo.getDesc().isEmpty())
+			    		alertComment.setComments(StringEscapeUtils.unescapeJava(inputVo.getDesc().toString()));
+			    	alertComment.setAlertId(inputVo.getId());
+			    	alertComment.setInsertedTime(currentDateAndTime);
+			    	alertComment.setIsDeleted("N");
+			    	alertComment.setInsertedBy(userId);
+			    	alertComment = alertCommentDAO.save(alertComment);
+			    
+			    
+			    	if(inputVo.getAssignList() != null && inputVo.getAssignList().size() > 0){
+			    		for(IdNameVO vo : inputVo.getAssignList()){
+			    			if(vo.getId() != null && vo.getId() > 0){
+			    				AlertCommentAssignee alertCommentAssignee = new AlertCommentAssignee();
+			    				alertCommentAssignee.setAlertCommentId(alertComment.getAlertCommentId());
+			    				alertCommentAssignee.setAssignTdpCadreId(vo.getId());
+			    				alertCommentAssigneeDAO.save(alertCommentAssignee);
+			    			}
+			    		}
+			    	}
+				   
+			    	AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+			    	alertTrackingVO.setUserId(userId);
+			    	alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+			    	alertTrackingVO.setAlertStatusId(inputVo.getStatusId());
+			    	alertTrackingVO.setAlertId(alert.getAlertId());
+			    	alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ADDED_COMMENT);
+			    	ResultStatus rs1 = saveAlertTrackingDetails(alertTrackingVO);	
+		    	
+		    		if(fileNames != null && fileNames.size() > 0){
+		    			for (String string : fileNames) {
+							AlertTrackingDocuments alertTrackingDocuments = new AlertTrackingDocuments();
+							alertTrackingDocuments.setAlertTrackingId(rs1.getResultState());
+							alertTrackingDocuments.setPath(string);
+							alertTrackingDocuments.setIsDeleted("N");
+							alertTrackingDocumentsDAO.save(alertTrackingDocuments);
+						}
 		    		}
-		    	}
-		    }
-			   
-		    
-		     AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
-			 alertTrackingVO.setUserId(userId);
-			 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
-			// alertTrackingVO.setAlertUserTypeId();
-			 alertTrackingVO.setAlertStatusId(inputVo.getStatusId());
-			 alertTrackingVO.setAlertId(alert.getAlertId());
-			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ADDED_COMMENT);
-			 saveAlertTrackingDetails(alertTrackingVO)	;	
-		
-						}
-						catch (Exception ex) {
-							 rs = "fail";
-							
-							return rs;
-						}
-							return rs;
-					}
-
-				});
+				}catch (Exception ex) {
+					rs = "fail";
+					return rs;
+				}
+			return rs;
+			}
+		});
 		return resultStatus;
-		}
+	}
 
 	// Alert Status Flow Tracking Details
 	/*public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId){
@@ -1245,6 +1259,29 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCommentVO>  alertCommentDtlsList = null;
 			AlertCommentVO alertCommentVO = null;
 			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
+			if(list != null && list.size() > 0){
+				List<Long> cadreIds = new ArrayList<Long>(0);
+				for (Object[] objects : list) {
+					if(objects[6] != null)
+						cadreIds.add((Long)objects[6]);
+				}
+				
+				if(cadreIds != null && cadreIds.size() > 0){
+					List<Object[]> objList = tdpCadreDAO.getCadreFormalDetails(cadreIds);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							List<Object[]> matchedObjList = gatMatchedObject((Long)objects[0],list);
+							if(matchedObjList != null && matchedObjList.size() > 0){
+								for (Object[] objects2 : matchedObjList) {
+									objects2[7]=objects[1].toString();
+								}
+							}
+						}
+					}
+					
+				}
+			}
+			
 			Map<Long,Long> statusOrderMap = new HashMap<Long, Long>(0);
 			boolean noList = false;
 			if(!commonMethodsUtilService.isListOrSetValid(list)){
@@ -2385,7 +2422,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 }
 									 
 									 alertCandidate.setOrganization(vo.getOrganization());
-								
+									 alertCandidate.setNewsOrganizationId(vo.getNewsOrganizationId() != null && vo.getNewsOrganizationId() > 0l ?vo.getNewsOrganizationId():null);
+									 alertCandidate.setIsDepartment(vo.getIsDepartment());
 									 alertCandidateDAO.save(alertCandidate);
 								 }						
 							 }														
@@ -2546,7 +2584,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 }
 								 
 								 alertCandidate.setOrganization(vo.getOrganization());
-							
+								 alertCandidate.setNewsOrganizationId(vo.getNewsOrganizationId());
+								 alertCandidate.setIsDepartment(vo.getIsDepartment());
 								 alertCandidateDAO.save(alertCandidate);
 							 }						
 						 }														
@@ -5668,63 +5707,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   }
   */
   
-	public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
-			  												final String clarificationRequiredStr,final List<String> fileNamesList){
+	public ResultStatus uploadAlertsDocs(final Long userId,final Long alertId,final List<String> fileNamesList){
 		 final ResultStatus resultStatus = new ResultStatus();
 		 try{ 
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
-						
-						ClarificationRequired clarificationRequired = null;
-						
-						//model.isRequired,model.alertClarificationStatusId
-						
-						clarificationRequiredDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime(),"INFO CELL");
-						clarificationRequired = new ClarificationRequired();
-							clarificationRequired.setAlertId(alertId);
-							clarificationRequired.setIsRequired("Y");
-							clarificationRequired.setAlertClarificationStatusId(clarificationStatusId);
-							clarificationRequired.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							clarificationRequired.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							clarificationRequired.setInsertedBy(userId);
-							clarificationRequired.setUpdatedBy(userId);
-							clarificationRequired.setIsDeleted("N");
-						clarificationRequiredDAO.save(clarificationRequired);
-						
-						alertClarificationDAO.updateStatusForOld(userId,alertId,dateUtilService.getCurrentDateAndTime());
-						AlertClarification alertClarification = new AlertClarification();
-							alertClarification.setAlertId(alertId);
-							alertClarification.setAlertClarificationStatusId(clarificationStatusId);
-							alertClarification.setIsDeleted("N");
-							alertClarification.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							alertClarification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							alertClarification.setInsertedBy(userId);
-							alertClarification.setUpdatedBy(userId);
-						alertClarification = alertClarificationDAO.save(alertClarification);
-									
-						AlertClarificationComments alertClarificationComments = new AlertClarificationComments();
-							alertClarificationComments.setAlertId(alertId);
-							alertClarificationComments.setComments(clarificationComments);
-							alertClarificationComments.setIsDeleted("N");
-							alertClarificationComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							alertClarificationComments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							alertClarificationComments.setInsertedBy(userId);
-							alertClarificationComments.setUpdatedBy(userId);
-						alertClarificationCommentsDAO.save(alertClarificationComments);
-										
 						if(fileNamesList != null && !fileNamesList.isEmpty()){
 							for (String string : fileNamesList) {
-								AlertClarificationDocument alertClarificationDocument = new AlertClarificationDocument();
-									alertClarificationDocument.setAlertId(alertId);
-									alertClarificationDocument.setClarificationDocumentPath(string);
-					        	    alertClarificationDocument.setIsDeleted("N");
-					        	    alertClarificationDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					        	    alertClarificationDocument.setInsertedBy(userId);
-							    alertClarificationDocumentDAO.save(alertClarificationDocument);  
+								AlertDocument alertDocument = new AlertDocument();
+								alertDocument.setAlertId(alertId);
+								alertDocument.setDocumentPath(string);
+								alertDocument.setIsDeleted("N");
+								alertDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								alertDocument.setInsertedBy(userId);
+								alertDocumentDAO.save(alertDocument);  
 							}
 						}
-					
-					updateCommentAndTrackingDetails(userId,clarificationStatusId,alertId,clarificationComments);
 						
 					resultStatus.setResultCode(0);
 					resultStatus.setMessage("success");
@@ -6152,6 +6150,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return voList;
   	}
+  	
   	public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO){
   		List<AlertDataVO> voList = new ArrayList<AlertDataVO>(0);
   		try {
@@ -6181,4 +6180,35 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return voList;
   	}
+  	
+  	public List<KeyValueVO> getDocumentsForAlert(Long alertId){
+  		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+  		try {
+			List<Object[]> objList = alertDocumentDAO.getDocumentsForAlert(alertId);
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured at getDocumentsForAlert() in AlertService",e);
+		}
+  		return voList;
+  	}
+  	
+  	public List<Object[]> gatMatchedObject(Long cadreId,List<Object[]> objList){
+  		List<Object[]> returnObj = new ArrayList<Object[]>(0);
+  		if(objList != null && objList.size() > 0){
+  			for (Object[] objects : objList) {
+				if(objects[6] != null && ((Long)objects[6]).equals(cadreId))
+					returnObj.add(objects);
+			}
+  		}
+  		return returnObj;
+  	}
+  	
 }

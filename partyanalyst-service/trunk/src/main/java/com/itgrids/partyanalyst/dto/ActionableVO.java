@@ -54,6 +54,8 @@ public class ActionableVO extends BaseModel implements Serializable{
 	private Long editionTypeId;
 	private Long tvNewsChannelId;
 	private Long editionId;
+	private Long newsOrganizationId;
+	private String isDepartment;
 	
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -266,6 +268,18 @@ public class ActionableVO extends BaseModel implements Serializable{
 	}
 	public void setEditionId(Long editionId) {
 		this.editionId = editionId;
+	}
+	public Long getNewsOrganizationId() {
+		return newsOrganizationId;
+	}
+	public void setNewsOrganizationId(Long newsOrganizationId) {
+		this.newsOrganizationId = newsOrganizationId;
+	}
+	public String getIsDepartment() {
+		return isDepartment;
+	}
+	public void setIsDepartment(String isDepartment) {
+		this.isDepartment = isDepartment;
 	}
 	
 	

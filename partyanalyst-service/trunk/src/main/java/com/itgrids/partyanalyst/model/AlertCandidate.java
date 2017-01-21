@@ -36,6 +36,8 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private String newsCandidate;
 	private String designation;
 	private String organization;
+	private Long newsOrganizationId;
+	private String isDepartment;
 	
 
 	@Id
@@ -149,6 +151,24 @@ public class AlertCandidate extends BaseModel implements Serializable {
 
 	public void setOrganization(String organization) {
 		this.organization = organization;
+	}
+
+	@Column(name = "news_organization_id")
+	public Long getNewsOrganizationId() {
+		return newsOrganizationId;
+	}
+
+	public void setNewsOrganizationId(Long newsOrganizationId) {
+		this.newsOrganizationId = newsOrganizationId;
+	}
+
+	@Column(name = "is_department")
+	public String getIsDepartment() {
+		return isDepartment;
+	}
+
+	public void setIsDepartment(String isDepartment) {
+		this.isDepartment = isDepartment;
 	}
 	
 	

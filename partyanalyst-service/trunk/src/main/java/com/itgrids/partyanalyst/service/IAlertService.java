@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -25,7 +26,7 @@ public interface IAlertService {
 	public String createAlert(final AlertVO inputVO,final Long userId, Map<File,String> mapfiles);
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String FromDate,String toDate);
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
-	public String updateAlertStatus(final Long userId,final AlertVO inputVo);
+	public String updateAlertStatus(final Long userId,final AlertVO inputVo,final List<String> fileNames);
 	public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public List<BasicVO> getAlertType();
 	public List<BasicVO> getAlertSourceForUser(Long userId);
@@ -65,8 +66,7 @@ public interface IAlertService {
     public AlertVO getCandidateAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId,Long categoryId,Long statusId);
    // public List<AlertVO> getAlertClarificationStatus(Long alertId);
     //public AlertVO getAlertClarificationComments(Long alertId);
-    public ResultStatus saveAlertClarificationDetails(final Long userId,final Long alertId,final Long clarificationStatusId,final String clarificationComments,
-				final String clarificationRadioName,final List<String> fileNamesList);
+    public ResultStatus uploadAlertsDocs(final Long userId,final Long alertId,final List<String> fileNamesList);
     public AlertClarificationVO getClarificationDetails(Long alertId);
     public String saveClarificationRequiredStatus(Long userId,String status,Long alertId,String remarks);
     public String removeAlertComment(Long commentId);
@@ -74,4 +74,6 @@ public interface IAlertService {
     public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
     public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO vo);
     public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO);
+    public List<KeyValueVO> getDocumentsForAlert(Long alertId);
+    public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);
 }
