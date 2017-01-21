@@ -429,6 +429,8 @@ function buildAlertData(result,jsObj)
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
 	//str+='<th>Desc</th>';
+	str+='<th>Alert Source </th>';
+	str+='<th>Title</th>';
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
 	str+='<th>Status</th>';
@@ -457,6 +459,8 @@ function buildAlertData(result,jsObj)
 	str+='<tr>';	
 	//str+='<td>'+j+'</td>';
 	//str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	str+='<td>'+result[i].alertSource+'</td>';
+	str+='<td>'+result[i].title+'</td>';
 	str+='<td>'+result[i].alertCategoryName+'</td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
@@ -811,6 +815,7 @@ function getAlertStatusCommentsTrackingDetails()
 				toDate:toDate,
 				assignedCadreId:assignedCadreId,
 				categoryId:alertCategoryId,
+				actionTypeStatusId : 0,            
 				task : ""
 		      }
 			$.ajax({
