@@ -16,4 +16,5 @@ public interface IConstituencyPrintStatusDAO extends GenericDao<ConstituencyPrin
 	public List<Object[]> getStatusWiseVendorWiseConstituencyDetails(Long stateId,Date fromDate,Date toDate);
 	
 	public List<Long> getConstituencyPrintStatusIds(Long printVendorId , Long constituencyId);
+	public String getPresentStatusForAConstituencyByVendor(Long vendorId , Long constituencyId);
 }
