@@ -48,6 +48,27 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		return query.list();
 	}
 	
+	
+	public List<Object[]> areaCountDetailsListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		if(searchAttributeVO.getScopeId() == 2L && stateId != null && stateId.longValue()>0L)
+			searchAttributeVO.setScopeValue(stateId);
+		
+		queryStr.append(" select distinct model.levelId, model.count,model.scopeValue from LocationInfo model where model.scopeId =:scopeId ");
+		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
+			queryStr.append(" and model.levelId in (:requiredAreasIds) ");
+		queryStr.append(" order by model.levelId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
+			query.setParameterList("requiredAreasIds", searchAttributeVO.getLocationTypeIdsList());
+		query.setParameter("scopeId", searchAttributeVO.getScopeId());
+		//query.setParameter("scopeValue", searchAttributeVO.getScopeValue());
+		
+		return query.list();
+	}
+	
 	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.count)" +

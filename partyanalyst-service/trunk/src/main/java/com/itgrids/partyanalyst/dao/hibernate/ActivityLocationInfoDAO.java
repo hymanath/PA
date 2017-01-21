@@ -1466,4 +1466,22 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
+		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+												" count(model.activityLocationInfoId)," +
+												"  model.address.district.districtId," +
+												"  model.address.district.districtName," +
+												"  model.activityScope.activity.activityName, " +
+												" model.activityScope.activityLevel.level " +
+												" from ActivityLocationInfo model " +
+												" where " +
+												" model.activityScope.activityId in (:activityIdsLst) " +
+												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
+												" group by model.activityScope.activityScopeId,model.address.district.districtId " +
+												" order by model.address.district.districtId ");
+		query.setParameterList("activityIdsLst", activityIdsLst);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.list();
+	}
 }
