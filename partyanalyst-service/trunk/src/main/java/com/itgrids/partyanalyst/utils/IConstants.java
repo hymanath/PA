@@ -1021,7 +1021,7 @@ public interface IConstants {
 	
 	public static final Long[] APPOINTMENT_STATUS_SCHEDULED_LIST={3L,4L,5L};
 	public static final Long[] APPOINTMENT_STATUS_WAITING_LIST={1L,2L,6L,7L,8L};
-	
+	public static final String APPOINTMENT_IMAGES = "appointment_images";
 	//SMS Module Constants
 	
 	public static final String SMS_MODULE_USER_GROUPS = "User Groups";
