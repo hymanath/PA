@@ -6341,7 +6341,49 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   			      verificationCommentsDAO.save(verificationComments);
   			     
   			      if(mapFiles != null && mapFiles.size() > 0){
-  			        saveAlertVerificationDocument(alertVerificationUserTypeId,verificationConversation.getVerificationConversationId(),userId,mapFiles);
+  			       // saveAlertVerificationDocument(alertVerificationUserTypeId,verificationConversation.getVerificationConversationId(),userId,mapFiles);
+  			    	String folderName = IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
+  			    	
+  		  			Calendar calendar = Calendar.getInstance();
+  		  			calendar.setTime(new Date());
+  		  			 int year = calendar.get(Calendar.YEAR);
+  		  			 int month = calendar.get(Calendar.MONTH);
+  		  			 int temp = month+1;
+  		  			 String monthText = getMonthForInt(temp);
+  		  			
+  		  			 StringBuilder pathBuilder = null;
+  		  			 VerificationDocuments verificationDocuments = null;
+  		  			 StringBuilder str ;
+  		  			 
+  		  			 for (Map.Entry<File, String> entry : mapFiles.entrySet())
+  		  			 {
+  		  				 pathBuilder = new StringBuilder();
+  		  				 str = new StringBuilder();
+  		  				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+  		  				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+  		  				 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+  		  				 .append(entry.getValue());
+  		  				 str.append(randomNumber).append(".").append(entry.getValue());
+  		  				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+  		  				 
+  		  					if(fileCpyStts.equalsIgnoreCase("error")){
+  		  						LOG.error(" Exception Raise in copying file in ToursService ");
+  		  						throw new ArithmeticException();
+  		  					}
+  		  					
+  		  				  	  verificationDocuments = new VerificationDocuments();
+  			  				  verificationDocuments.setDocumentPath(pathBuilder.toString());				
+  			  				  verificationDocuments.setVerificationConversationId(verificationConversation.getVerificationConversationId());
+  			  				  if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0){
+  			  					verificationDocuments.setAlertVerificationUserTypeId(alertVerificationUserTypeId);  
+  			  				  }
+  				  			  verificationDocuments.setInsertedBy(userId);
+  				  			  verificationDocuments.setUpdatedBy(userId);
+  				  			  verificationDocuments.setInsertedTime(date.getCurrentDateAndTime());
+  				  			  verificationDocuments.setUpdatedTime(date.getCurrentDateAndTime());
+  				  			  verificationDocuments.setIsDeleted("N");
+  				  			   verificationDocumentsDAO.save(verificationDocuments);
+  			  		 }
   		        }
   				  rs = "success";
   					}
@@ -6353,57 +6395,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   				}
   		});
   	return resultStatus;
-  	}
-  	public void saveAlertVerificationDocument(Long alertVerificationUserTypeId,Long verificationConversionStatusId,Long userId,final Map<File,String> documentMap){
-  		try{
-  			DateUtilService dateUtil = new DateUtilService();
-  			
-  			String folderName = folderCreation();
-  	
-  			Calendar calendar = Calendar.getInstance();
-  			calendar.setTime(new Date());
-  			 int year = calendar.get(Calendar.YEAR);
-  			 int month = calendar.get(Calendar.MONTH);
-  			 int temp = month+1;
-  			 String monthText = getMonthForInt(temp);
-  			
-  			 StringBuilder pathBuilder = null;
-  			 VerificationDocuments verificationDocuments = null;
-  			 StringBuilder str ;
-  			 
-  			 for (Map.Entry<File, String> entry : documentMap.entrySet())
-  			 {
-  				 pathBuilder = new StringBuilder();
-  				 str = new StringBuilder();
-  				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-  				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-  				 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
-  				 .append(entry.getValue());
-  				 str.append(randomNumber).append(".").append(entry.getValue());
-  				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
-  				 
-  					if(fileCpyStts.equalsIgnoreCase("error")){
-  						LOG.error(" Exception Raise in copying file in ToursService ");
-  						throw new ArithmeticException();
-  					}
-  					
-  				  	  verificationDocuments = new VerificationDocuments();
-	  				  verificationDocuments.setDocumentPath(pathBuilder.toString());				
-	  				  verificationDocuments.setVerificationConversationId(verificationConversionStatusId);
-	  				  if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0){
-	  					verificationDocuments.setAlertVerificationUserTypeId(alertVerificationUserTypeId);  
-	  				  }
-		  			  verificationDocuments.setInsertedBy(userId);
-		  			  verificationDocuments.setUpdatedBy(userId);
-		  			  verificationDocuments.setInsertedTime(dateUtil.getCurrentDateAndTime());
-		  			  verificationDocuments.setUpdatedTime(dateUtil.getCurrentDateAndTime());
-		  			  verificationDocuments.setIsDeleted("N");
-		  			   verificationDocumentsDAO.save(verificationDocuments);
-	  		 }
-  		}catch(Exception e){
-  			e.printStackTrace();
-  			LOG.error("Exception Occured in saveAlertVerificationDocument() in ToursService", e);
-  		}	
   	}
   public AlertVerificationVO getAlertVerificationDtls(Long alertId){
 	    AlertVerificationVO resultVO = new AlertVerificationVO();
