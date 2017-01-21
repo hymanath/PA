@@ -2385,7 +2385,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 }						
 							}
 							//paCandidateId,cadreId
-							List<Object[]> tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
+							 List<Object[]> tdpCadres = null;
+							 if(candidateIds != null && candidateIds.size() > 0)
+								 tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
 							 
 							 Map<Long,Long> tdpcadreMap = new HashMap<Long, Long>(0);
 							 if(tdpCadres !=null && tdpCadres.size()>0){
