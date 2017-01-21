@@ -25,8 +25,10 @@ import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -2327,4 +2329,93 @@ public class WebServiceHandler {
 			
 		}
 		
+		
+		@GET
+		@Path("/getStateImpactLevelAlertDtlsCnt/{activityMemberId}/{stateId}/{fromDateStr}/{toDateStr}/{impactLevelIds}/{alertTypeId}/{editionId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,@PathParam("fromDateStr") String fromDateStr,
+				@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") List<Long> impactLevelIds,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+		{
+			try{			
+				return webServiceHandlerService.getStateImpactLevelAlertDtlsCnt(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getStateImpactLevelAlertDtlsCnt() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getTotalAlertGroupByLocationThenCategory/{fromDateStr}/{toDateStr}/{stateId}/{scopeIdList}/{activityMemberId}/{group}/{alertTypeId}/{editionId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertVO> getTotalAlertGroupByLocationThenCategory(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("group") String group,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+		{
+			try{			
+				return webServiceHandlerService.getTotalAlertGroupByLocationThenCategory(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getTotalAlertGroupByLocationThenCategory() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getTotalAlertGroupByLocationThenStatus/{fromDateStr}/{toDateStr}/{stateId}/{scopeIdList}/{activityMemberId}/{group}/{alertTypeId}/{editionId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertVO> getTotalAlertGroupByLocationThenStatus(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("group") String group,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+		{
+			try{			
+				return webServiceHandlerService.getTotalAlertGroupByLocationThenStatus(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getTotalAlertGroupByLocationThenStatus() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAssignGroupTypeAlertDtlsByImpactLevelWise/{activityMemberId}/{stateId}/{fromDateStr}/{toDateStr}/{impactLevelIds}/{alertTypeId}/{editionTypeId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,
+				@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") List<Long> impactLevelIds,
+				@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionTypeId") Long editionTypeId)
+		{
+			try{			
+				return webServiceHandlerService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionTypeId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAssignGroupTypeAlertDtlsByImpactLevelWise() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getTotalAlertGroupByDist/{fromDateStr}/{toDateStr}/{stateId}/{scopeIdList}/{activityMemberId}/{alertTypeId}/{editionId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCommentVO> getTotalAlertGroupByDist(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+		{
+			try{			
+				return webServiceHandlerService.getTotalAlertGroupByDist(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, alertTypeId, editionId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getTotalAlertGroupByDist() Method, Exception is ",e);
+				return null;
+			}
+		}
 }
