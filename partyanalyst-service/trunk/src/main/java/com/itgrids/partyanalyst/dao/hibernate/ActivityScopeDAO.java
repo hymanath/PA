@@ -352,4 +352,27 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		query.setParameter("activityId", activityId);
 		return query.list();
 	}
+	public List<Object[]> getScopeNameByActivity(Long activityId,Date fromDate,Date endDate){
+		StringBuilder sb =  new StringBuilder();
+		sb.append("select distinct model.activityScopeId," +
+				" model.activityLevel.activityLevelId," +
+				" model.activityLevel.level," +
+				" model.activity.activityId," +
+				" model.activity.activityName " +
+				" where model.isDeleted = 'N'" +
+				" and model.activity.isActive = 'Y'" +
+				" and model.activity.activityId = :activityId");
+		if(fromDate != null && endDate != null)
+			sb.append(" and date(model.startDate) = :fromDate and date(model.endDate) = :endDate");
+		
+		Query query = getSession().createQuery(sb.toString());
+		 	query.setParameter("activityId", activityId);
+		 if(fromDate != null && endDate != null){
+			  query.setDate("fromDate", fromDate);
+			  query.setDate("endDate", endDate);
+		 }
+			 
+		 return query.list();
+	}
+	
 }
