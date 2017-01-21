@@ -572,6 +572,7 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 			//calculate  unprinted cadre.
 			finalVO.setUnPrintedCadre( finalVO.getTotalCadre() - finalVO.getPrintedCadre() );
 			
+			List<String> verifiedBoxes = new ArrayList<String>(0);
 			
 			if(boxNos != null && !boxNos.isEmpty()){
 				
@@ -587,6 +588,8 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 								vo.setValidatedCardsCount(count);
 								vo.setApprovedCount(vo.getValidatedCardsCount());
 							}
+							//verified boxes.
+							verifiedBoxes.add(boxNo);
 						}
 					}
 				}
@@ -623,10 +626,14 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 							if(fl_perc <= 20f){
 								vo.setIsQAPassed("YES");
 								vo.setStatus("READY TO DISPATCH");
+								
+								finalVO.setAcceptedBoxesCount( finalVO.getAcceptedBoxesCount() + 1);
 							}
 							else{
 								vo.setIsQAPassed("NO");
 								vo.setStatus("RE-PRINT REQUIRED");
+								
+								finalVO.setRejectedBoxesCount( finalVO.getRejectedBoxesCount() + 1);
 							}
 						}
 					}
@@ -634,6 +641,22 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 				}
 				
  			}
+			
+			//GET PRESENT PRINT STATUS FOT THE CONSTITUENCY FOR THIS VENDOR.
+			String constPrintStatus = constituencyPrintStatusDAO.getPresentStatusForAConstituencyByVendor(vendorId , constituencyId);
+			if(constPrintStatus != null && !constPrintStatus.trim().isEmpty()){
+				finalVO.setConstPrintStatus(constPrintStatus);
+			}
+			
+			//Boxes Summary
+			if(boxNos != null && boxNos.size()>0){
+				finalVO.setTotalBoxesCount((long) boxNos.size());
+				finalVO.setNotVerifiedBoxesCount( finalVO.getTotalBoxesCount() );
+				if(verifiedBoxes != null && verifiedBoxes.size() > 0){
+					finalVO.setVerifiedBoxesCount((long)verifiedBoxes.size());
+					finalVO.setNotVerifiedBoxesCount( finalVO.getTotalBoxesCount() - finalVO.getVerifiedBoxesCount());
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintService ",e);
