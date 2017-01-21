@@ -47,15 +47,45 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.alertId,model.description,date(model.createdTime)," +
-				" alertType.alertType,alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
-				" alertStatus.alertStatusId,alertStatus.alertStatus");
-		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
-		str.append(" ,constituency.constituencyId,constituency.name");
-		str.append(" ,state.stateId,state.stateName");
-		str.append(" ,ward.constituencyId,ward.name,");
-		str.append(" alertCategory.alertCategoryId,alertCategory.category ");
+		str.append("select " +
+				" model.alertId, " +//0
+				" model.description, " +//1
+				" date(model.createdTime)," +//2
+				" alertType.alertType, " +//3
+				" alertSource.source, " +//4
+				" alertSeverity.severity, " +//5
+				" model.regionScopes.regionScopesId, " +//6
+				" model.regionScopes.scope," +//7
+				" alertStatus.alertStatusId, " +//8
+				" alertStatus.alertStatus");//9
+		str.append(" ,tehsil.tehsilId, " +//10
+				  " tehsil.tehsilName , " +//11
+				  " panc.panchayatId, " +//12
+				  " panc.panchayatName," +//13
+				  " localElectionBody.localElectionBodyId," +//14
+				  " localElectionBody.name, " +//15
+				  " district.districtId, " +//16
+				  " district.districtName, " +//17
+				  " electionType.electionType ");//18
+		str.append(" ,constituency.constituencyId, " +//19
+				   " constituency.name");//20
+		str.append(" ,state.stateId," +//21
+				   " state.stateName");//22
+		str.append(" ,ward.constituencyId," +//23
+				   " ward.name,");//24
+		str.append(" alertCategory.alertCategoryId, " +//25
+				   " alertCategory.category, " +//26
+				   " editionType.editionTypeId, " +//27
+				   " editionType.editionType, " +//28
+				   " edition.editionId, " +//29
+				   " edition.editionAlias, " +//30
+				   " tvNewsChannel.tvNewsChannelId, " +//31
+				   " tvNewsChannel.channelName, " +//32
+				   " model.title ");//33 
 		str.append(" from Alert model " +
+				" 	 left join model.editionType editionType " +
+        		"  	 left join model.edition edition " +
+        		" 	 left join model.tvNewsChannel tvNewsChannel "+
 				" left join model.alertSeverity alertSeverity" +
 				" left join model.alertSource  alertSource " +
 				" left join model.userAddress.panchayat panc ");
@@ -201,7 +231,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
-	
+	//hiii
 	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId)
 	{
 		StringBuilder str = new StringBuilder();
@@ -210,13 +240,18 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				   " model.description, " +
 				   " date(model.createdTime)," +//2
 				   " alertType.alertType, " +
-				   " model.alertSource.source, " +
+				   " alertSource.source, " +//4
 				   " alertSeverity.severity, " +
 				   " model.regionScopes.regionScopesId, " +
-				   " model.regionScopes.scope," +//3-7
-				   " verificationStatus.actionTypeStatus.actionTypeStatusId, " +//8
-				   " verificationStatus.actionTypeStatus.status ");//9
-		str.append(" ,tehsil.tehsilId, " +
+				   " model.regionScopes.scope, "); //7
+		if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+			str.append(" verificationStatus.actionTypeStatus.actionTypeStatusId, " +//8
+					   " verificationStatus.actionTypeStatus.status ");//9
+		}else{
+			str.append(" alertStatus.alertStatusId, " +//8
+					   " alertStatus.alertStatus ");//9
+		}
+		str.append(" ,tehsil.tehsilId, " + 
 				   " tehsil.tehsilName , " +
 				   " panc.panchayatId, " +
 				   " panc.panchayatName," +
@@ -231,13 +266,24 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				   " state.stateName");//20
 		str.append(" ,ward.constituencyId, " +
 				   " ward.name, " +
-				   " alertCategory.alertCategoryId, " +
-				   " alertCategory.category ");//21 - 23
+				   " alertCategory.alertCategoryId, " +//25
+				   " alertCategory.category, " +//26
+				   " editionType.editionTypeId, " +//27
+				   " editionType.editionType, " +//28
+				   " edition.editionId, " +//29
+				   " edition.editionAlias, " +//30
+				   " tvNewsChannel.tvNewsChannelId, " +//31
+				   " tvNewsChannel.channelName, " +//32
+				   " model.title ");//33
 		if(assignedCadreId != null && assignedCadreId > 0)
 		{
 			str.append(" from AlertAssigned model1, " +
 					"    VerificationStatus verificationStatus " +
 					"    left join  verificationStatus.alert model " +
+					" 	 left join model.editionType editionType " +
+	        		"  	 left join model.edition edition " +
+	        		" 	 left join model.tvNewsChannel tvNewsChannel " +
+	        		"    left join model.alertSource alertSource "+
 					"    left join model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 			str.append(" left join model.userAddress.constituency constituency ");
@@ -256,7 +302,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		else			
 		{
 			str.append(" from VerificationStatus verificationStatus " +
-					"    left join verificationStatus.alert model left join model.userAddress.panchayat panc ");
+					"    left join verificationStatus.alert model " +
+					" 	 left join model.editionType editionType " +
+	        		"  	 left join model.edition edition " +
+	        		" 	 left join model.tvNewsChannel tvNewsChannel "+
+	        		"    left join model.alertSource alertSource "+
+					"    left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 			str.append(" left join model.userAddress.constituency constituency ");
 			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
@@ -267,7 +318,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" left join model.alertSeverity alertSeverity");
 			str.append(" left join model.alertType alertType");
-			//str.append(" left join model.alertStatus alertStatus ");
+			str.append(" left join model.alertStatus alertStatus ");
 			str.append(" where model.isDeleted ='N' and verificationStatus.isDeleted='N' ");	
 		}
 		
@@ -279,11 +330,16 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null){ 
 			str.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
+		if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+			if(inputVO.getActionTypeStatusId() != null && inputVO.getActionTypeStatusId().longValue() > 0L)
+				str.append(" and verificationStatus.actionTypeStatus.actionTypeStatusId = :actionTypeStatusId ");
+			
+			str.append(" and verificationStatus.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+")  ");
+		}
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L){
+			str.append(" and alertStatus.alertStatusId = :alertStatusId ");
+		}
 		
-		if(inputVO.getActionTypeStatusId() != null && inputVO.getActionTypeStatusId().longValue() > 0L)
-			str.append(" and verificationStatus.actionTypeStatus.actionTypeStatusId = :actionTypeStatusId ");
-		
-		str.append(" and verificationStatus.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+")  ");
 		
 		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
 			str.append(" and model.alertCategoryId = :alertCategoryId");
@@ -343,8 +399,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(inputVO.getActionTypeStatusId() != null && inputVO.getActionTypeStatusId().longValue() > 0L)
-			query.setParameter("actionTypeStatusId",inputVO.getActionTypeStatusId());
+		if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+			if(inputVO.getActionTypeStatusId() != null && inputVO.getActionTypeStatusId().longValue() > 0L)
+				query.setParameter("actionTypeStatusId",inputVO.getActionTypeStatusId());
+		}
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L){
+			query.setParameter("alertStatusId",inputVO.getStatusId());
+		}
 		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
 			query.setParameter("alertCategoryId",inputVO.getCategoryId());
 		}
