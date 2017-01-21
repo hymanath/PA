@@ -32,11 +32,17 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+/**
+ * @author Srujana
+ *
+ */
 public class CoreDashboardService implements ICoreDashboardService{
 	
 	private final static Logger LOG = Logger.getLogger(CoreDashboardService.class);
@@ -58,6 +64,16 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IActivityScopeDAO activityScopeDAO;
 	private ILocationInfoDAO locationInfoDAO;
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	
+	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
 	//setters
 	public void setDashboardUserAccessLevelDAO(
 			IDashboardUserAccessLevelDAO dashboardUserAccessLevelDAO) {
@@ -1135,4 +1151,183 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return returnList;
 	}
+	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			Map<Long,IdAndNameVO> districtsMap = new HashMap<Long, IdAndNameVO>(0);
+			List<Object[]> districtsList = districtDAO.getDistrictListBystateId(1L);
+			if(commonMethodsUtilService.isListOrSetValid(districtsList)){
+				for (Object[] param : districtsList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setPerc("0.00");
+					vo.setRemainingPerc("100.00");
+					vo.setCountOfActivityLocationInfo(0L);
+					districtsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
+				}
+			}
+			
+			List<Object[]> list1 = activityScopeDAO.getActivityLevelsByActivity(activityIdsLst.get(0));
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					IdAndNameVO vo = new IdAndNameVO();
+					
+					vo.setTdpcadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));	//ActivityScopeId
+					vo.setId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));			//ActivityLevelId
+					vo.setName(obj[2] != null ? obj[2].toString():"");						//ActivityLevel
+					vo.setPartyId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));	//ScopeId
+					vo.setSessionNo(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));	//ScopeValue
+					
+					vo.setMobileNumber("0.00");	
+					vo.setImagePathStr("0.00");
+					vo.setActualMobNumber("0.00");
+					
+					returnList.add(vo);
+				}
+			}
+			
+			Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long,Map<Long, Long>>();
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO idAndNameVO : returnList) {
+					SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
+					searchAttributeVO.setScopeValue(idAndNameVO.getSessionNo());
+					searchAttributeVO.setScopeId(3L);
+					
+					if(!commonMethodsUtilService.isListOrSetValid(searchAttributeVO.getLocationTypeIdsList()))
+						searchAttributeVO.setLocationTypeIdsList(new ArrayList<Long>(0));
+					
+					if(idAndNameVO.getId() != null){
+						if(idAndNameVO.getId().longValue() == 1L){
+							searchAttributeVO.getLocationTypeIdsList().add(6L);
+							searchAttributeVO.getLocationTypeIdsList().add(8L);
+						}
+						else if(idAndNameVO.getId().longValue() == 2L){
+							searchAttributeVO.getLocationTypeIdsList().add(5L);
+							searchAttributeVO.getLocationTypeIdsList().add(7L);
+						}
+						else if(idAndNameVO.getId().longValue() == 3L){
+							searchAttributeVO.getLocationTypeIdsList().add(3L);
+						}
+						else if(idAndNameVO.getId().longValue() == 4L)
+							searchAttributeVO.getLocationTypeIdsList().add(2L);
+						else if(idAndNameVO.getId().longValue() == 5L)
+							searchAttributeVO.getLocationTypeIdsList().add(4L);					
+					}
+					
+					List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
+					if(commonMethodsUtilService.isListOrSetValid(areasList)){
+						for (Object[] param : areasList) {
+							
+							Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
+							Long count = 0L;
+							if(totalScopeLocationsMap.get(idAndNameVO.getTdpcadreId()) != null){
+								totalLocationsMap = totalScopeLocationsMap.get(idAndNameVO.getTdpcadreId());
+								count=totalLocationsMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+							}
+							if(count == null)
+								count = 0L;
+							totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), count+commonMethodsUtilService.getLongValueForObject(param[1]));
+							totalScopeLocationsMap.put(idAndNameVO.getTdpcadreId(), totalLocationsMap);
+						}
+					}
+				}
+			}
+			
+			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+			Map<Long,List<IdAndNameVO>> scopesMap = new HashMap<Long, List<IdAndNameVO>>(0);
+			Map<Long,List<Long>> scopeDataAvailableLocationMap = new HashMap<Long,List<Long>>(0);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					
+					List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>(0);
+					if(scopesMap.get(vo.getId()) != null){
+						resultList = scopesMap.get(vo.getId());
+					}
+					
+					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[4]) +" - "+commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
+					vo.setCountOfActivityLocationInfo(Long.valueOf(obj[1] != null ? obj[1].toString():""));
+					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
+					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					vo.setPerc("0.00");
+					vo.setRemainingPerc("0.00");
+					
+					Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
+					if(totalScopeLocationsMap.get(vo.getId()) != null){
+						totalLocationsMap = totalScopeLocationsMap.get(vo.getId());
+					}
+					
+					Long totalCount = totalLocationsMap.get(vo.getLocationId());
+					if(totalCount != null && totalCount.longValue()>0L && 
+							 vo.getCountOfActivityLocationInfo() != null && vo.getCountOfActivityLocationInfo().longValue()>0L){
+						Double perc = (Double) (vo.getCountOfActivityLocationInfo() * 100.0/totalCount);
+						Float perc1 = Float.valueOf(perc.toString());
+						vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+						if(perc1 < 100){
+							Double RemaingPerc = (Double)(100.0-perc1);
+							Float RemaingPerc1 =Float.valueOf(RemaingPerc.toString());
+							vo.setRemainingPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(RemaingPerc1).toString());
+						}
+					}
+					resultList.add(vo);
+					List<Long> locationIdsList= new ArrayList<Long>(0);
+					if(scopeDataAvailableLocationMap.get(vo.getId()) != null){
+						locationIdsList = scopeDataAvailableLocationMap.get(vo.getId());
+					}
+					locationIdsList.add(vo.getLocationId());
+					scopeDataAvailableLocationMap.put(vo.getId(), locationIdsList);
+					
+					scopesMap.put(vo.getId(), resultList);
+				}
+			}
+			
+			returnList.clear();
+			if(commonMethodsUtilService.isMapValid(scopesMap)){
+				for (Long id : scopesMap.keySet()) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setDistList(scopesMap.get(id));
+					
+					if(scopesMap.get(id) == null || scopesMap.get(id).size()==0){ // all districts if data not available
+						vo.getDistList().addAll(districtsMap.values());
+					}
+					else{
+						List<Long> locationIdsList = scopeDataAvailableLocationMap.get(id);
+						for (Long locationId : districtsMap.keySet()) {
+							if(!locationIdsList.contains(locationId)){
+								vo.getDistList().add(districtsMap.get(locationId));
+							}
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(vo.getDistList())){
+						IdAndNameVO vo1 = vo.getDistList().get(0);
+						vo.setId(vo1.getId());
+						vo.setName(vo1.getName());
+					}
+					/*
+					Collections.sort(vo.getDistList(), new Comparator<IdAndNameVO>() {
+						public int compare(IdAndNameVO o1, IdAndNameVO o2) {
+							return o1.getLocationName().compareTo(o2.getLocationName());
+						}
+					});
+					*/
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("error occurred in activitiesDistrictWiseCohort() of CoreDashboardService class",e);
+		}
+		return returnList;
+	}
+
 }
