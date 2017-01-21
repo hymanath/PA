@@ -15463,8 +15463,7 @@
    			<param name="inputName">inputStream</param>
    		</result>
 	  </action>
-	
-	<action name="updateAlertVerficationStausAction" class="createAlertAction" method="updateAlertVerficationStaus">
+	  <action name="updateAlertVerficationStausAction" class="createAlertAction" method="updateAlertVerficationStaus">
 	   <result name="success" type="stream">			   
 		    <param name="inputName">inputStream</param>
 		</result>
@@ -15495,6 +15494,10 @@
 		    <param name="inputName">inputStream</param>
 		</result>
 	</action>	
-	
+	  <action name="activitiesDistrictWiseCohortAction" class="coreDashboardAction" method="activitiesDistrictWiseCohort">
+		<result type="json" name="success">
+				<param name="root">IdAndNameVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

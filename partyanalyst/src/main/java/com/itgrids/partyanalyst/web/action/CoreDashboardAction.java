@@ -3460,4 +3460,26 @@ public String getActivityOverAllSummary(){
 	}
 	return Action.SUCCESS;
 }
+public String activitiesDistrictWiseCohort(){
+	try {
+		LOG.info("Entered into activitiesDistrictWiseCohort()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		
+		List<Long> activityIdsLst = new ArrayList<Long>();
+		JSONArray activityIdsArr=jObj.getJSONArray("activityId");
+		if(activityIdsArr!=null &&  activityIdsArr.length()>0){
+			for( int i=0;i<activityIdsArr.length();i++){
+				activityIdsLst.add(Long.valueOf(activityIdsArr.getString(i))); 
+			}
+		}
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		
+		IdAndNameVOList = coreDashboardService.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+	} catch (Exception e) {
+		LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+	
+}
 }
