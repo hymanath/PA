@@ -87,10 +87,20 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		str.append(" ,ward.constituencyId, " +//23
 				   " ward.name,");//24
 		str.append(" alertCategory.alertCategoryId, " +//25
-				   " alertCategory.category ");//26
+				   " alertCategory.category, " + //26
+				   " editionType.editionTypeId, " +//27
+				   " editionType.editionType, " +//28
+				   " edition.editionId, " +//29
+				   " edition.editionAlias, " +//30
+				   " tvNewsChannel.tvNewsChannelId, " +//31
+				   " tvNewsChannel.channelName, " +//32
+				   " model.title ");//33
 		str.append(" from VerificationStatus vs " +
 				" 	 left join vs.alert model " +
-				" 	 left join model.alertSeverity alertSeverity" +
+				" 	 left join model.editionType editionType " +
+        		"  	 left join model.edition edition " +
+        		" 	 left join model.tvNewsChannel tvNewsChannel "+
+				" 	 left join model.alertSeverity alertSeverity " +
 				" 	 left join model.alertSource  alertSource " +
 				"	 left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
