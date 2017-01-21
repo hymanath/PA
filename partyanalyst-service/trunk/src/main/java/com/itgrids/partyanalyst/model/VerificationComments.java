@@ -28,6 +28,7 @@ public class VerificationComments extends BaseModel implements Serializable {
 	
 	private Long verificationCommentsId;
 	private Long verificationConversationId;
+	private Long alertVerificationUserTypeId;
 	private String comments;
 	private String isDeleted;
 	private Long insertedBy;
@@ -36,6 +37,7 @@ public class VerificationComments extends BaseModel implements Serializable {
 	private Date  updatedTime;
 	
 	private VerificationConversation verificationConversation;
+	private AlertVerificationUserType alertVerificationUserType;
 	private User insertedUser;
 	private User updatedUser;
 	
@@ -96,6 +98,24 @@ public class VerificationComments extends BaseModel implements Serializable {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@Column(name="alert_verification_user_type_id")
+	public Long getAlertVerificationUserTypeId() {
+		return alertVerificationUserTypeId;
+	}
+	public void setAlertVerificationUserTypeId(Long alertVerificationUserTypeId) {
+		this.alertVerificationUserTypeId = alertVerificationUserTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
+	@JoinColumn(name = "alert_verification_user_type_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertVerificationUserType getAlertVerificationUserType() {
+		return alertVerificationUserType;
+	}
+	public void setAlertVerificationUserType(
+			AlertVerificationUserType alertVerificationUserType) {
+		this.alertVerificationUserType = alertVerificationUserType;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "verification_conversation_id" , insertable = false, updatable = false)

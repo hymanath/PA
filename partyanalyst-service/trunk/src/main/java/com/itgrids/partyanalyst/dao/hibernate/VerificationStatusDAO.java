@@ -151,4 +151,26 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
 		return query.list();
 	}
+	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date,Long userTypeId){
+		Query query = getSession().createQuery(" update VerificationStatus model set model.isDeleted='Y', model.insertedBy=:insertedBy,model.insertedTime=:insertedTime, " +
+				" model.alertVerificationUserTypeId=:alertVerificationUserTypeId where model.alertId=:alertId and model.isDeleted='N'");
+		query.setParameter("insertedBy", userId);
+		query.setParameter("insertedTime", date);
+		query.setParameter("alertId", alertId);
+		query.setParameter("alertVerificationUserTypeId", userTypeId);
+		return query.executeUpdate();
+	}
+	public Object[] getAertStausIdAndName(Long alertId){
+		Query query = getSession().createQuery(" select model.actionTypeStatus.actionTypeStatusId,model.actionTypeStatus.status " +
+											   " from VerificationStatus model where model.alert.alertId=:alertId " +
+											   " and model.alert.isDeleted='N' and model.isDeleted='N' ");
+		query.setParameter("alertId", alertId);
+		return (Object[])query.uniqueResult();
+	}
+	public Long getAlertStatusId(Long alertId){
+		Query query = getSession().createQuery("select model.actionTypeStatus.actionTypeStatusId from VerificationStatus model where model.isDeleted='N' and model.alert.alertId=:alertId ");
+		query.setParameter("alertId", alertId);
+		return (Long)query.uniqueResult();
+	}
+
 }

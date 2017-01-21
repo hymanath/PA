@@ -8,7 +8,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.model.ActionTypeStatus;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.org.apache.bcel.internal.generic.ICONST;
 
 public class ActionTypeStatusDAO extends GenericDaoHibernate<ActionTypeStatus, Long> implements IActionTypeStatusDAO {
 

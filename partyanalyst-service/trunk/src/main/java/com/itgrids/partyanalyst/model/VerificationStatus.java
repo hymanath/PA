@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,6 +28,7 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	private Long verificationStatusId;
 	private Long alertId;
 	private Long actionTypeStatusId;
+	private Long alertVerificationUserTypeId;
 	private String isDeleted;
 	private Long insertedBy;
 	private Date insertedTime;
@@ -34,6 +36,7 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	private User insertedUser;
 	private Alert alert;
 	private  ActionTypeStatus  actionTypeStatus;
+	private AlertVerificationUserType alertVerificationUserType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -78,6 +81,24 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	@Column(name="alert_verification_user_type_id")
+	public Long getAlertVerificationUserTypeId() {
+		return alertVerificationUserTypeId;
+	}
+	public void setAlertVerificationUserTypeId(Long alertVerificationUserTypeId) {
+		this.alertVerificationUserTypeId = alertVerificationUserTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
+	@JoinColumn(name = "alert_verification_user_type_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertVerificationUserType getAlertVerificationUserType() {
+		return alertVerificationUserType;
+	}
+	public void setAlertVerificationUserType(
+			AlertVerificationUserType alertVerificationUserType) {
+		this.alertVerificationUserType = alertVerificationUserType;
 	}
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "inserted_by" , insertable = false, updatable = false)
