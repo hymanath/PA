@@ -151,4 +151,12 @@ public class ConstituencyPrintStatusDAO extends GenericDaoHibernate<Constituency
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	public String getPresentStatusForAConstituencyByVendor(Long vendorId , Long constituencyId){
+		Query query = getSession().createQuery("" +
+	    " select model.printStatus.printStatus from   ConstituencyPrintStatus model where model.printVendorId =:vendorId and model.constituencyId =:constituencyId ");
+		query.setParameter("vendorId", vendorId);
+		query.setParameter("constituencyId", constituencyId);
+		return (String)query.uniqueResult();
+	}
 }
