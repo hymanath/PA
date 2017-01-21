@@ -1466,6 +1466,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
+	
 	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 												" count(model.activityLocationInfoId)," +
@@ -1482,6 +1483,45 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		query.setParameterList("activityIdsLst", activityIdsLst);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
+		return query.list();
+	}
+	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,String type,String countType){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append("select ");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
+			queryStr.append(" model.address.constituency.constituencyId,model.address.constituency.name," );
+		else if(searchType != null && searchType.equalsIgnoreCase("village"))
+			queryStr.append("  model.address.panchayat.panchayatId, model.address.panchayat.panchayatName,");
+		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
+			queryStr.append("  model.address.ward.constituencyId,model.address.constituency.name, ");
+		
+		queryStr.append(" count(model.activityLocationInfoId) " +
+				" from ActivityLocationInfo model where " );
+		
+		if(countType != null && countType.equalsIgnoreCase("planned"))
+			queryStr.append("  model.plannedDate is not null " );
+		else if(countType != null && countType.equalsIgnoreCase("infocell"))
+			queryStr.append("  model.conductedDate is not null " );
+		else if(countType != null && countType.equalsIgnoreCase("ivr"))
+			queryStr.append("  model.ivrStatus = 'Y' " );
+		
+		
+		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId and model.address.district.districtId = :districtId ");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
+			queryStr.append(" group by model.address.constituency.constituencyId ");
+		else if(searchType != null && searchType.equalsIgnoreCase("village"))
+			queryStr.append(" group by model.address.panchayat.panchayatId ");
+		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
+			queryStr.append(" group by model.address.ward.constituencyId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("districtId",districtId );
+		query.setParameter("activityScopeId",activityScopeId );
+		
 		return query.list();
 	}
 }
