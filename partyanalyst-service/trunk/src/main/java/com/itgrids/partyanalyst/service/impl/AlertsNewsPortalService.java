@@ -114,7 +114,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		   AlertOverviewVO resultVO = new AlertOverviewVO();
 		   Set<Long> locationValues = new HashSet<Long>(0);
 		   Long locationAccessLevelId =0l;
-		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		   SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		   Date fromDate=null;
 		   Date toDate = null;
 		   List<Long> alertTypes = new ArrayList<Long>();
@@ -476,7 +476,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 Map<Long,AlertOverviewVO> categoryMap = new ConcurrentHashMap<Long, AlertOverviewVO>(0);
 		 Set<Long> locationValues = new HashSet<Long>(0);
 	     Long locationAccessLevelId =0l;
-	     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	     Date fromDate=null;
 	     Date toDate = null;
 	     List<Long> alertTypeList = new ArrayList<Long>();
@@ -739,7 +739,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			try{  
 				Date fromDate = null;          
 				Date toDate = null; 
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
@@ -849,7 +849,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			try{
 				Date fromDate = null;      
 				Date toDate = null;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
@@ -897,7 +897,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 AlertOverviewVO resultVO = new AlertOverviewVO();
 		 Set<Long> locationValues = new HashSet<Long>(0);
 	     Long locationAccessLevelId =0l;
-	     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	     Date fromDate=null;
 	     Date toDate = null;
 	 	List<Long> alertTypeList = new ArrayList<Long>();
@@ -1010,7 +1010,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			try{  
 				Date fromDate = null;  
 				Date toDate = null;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
@@ -1138,7 +1138,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			try{  
 				Date fromDate = null;        
 				Date toDate = null; 
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
@@ -1265,7 +1265,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 		 Set<Long> locationValues = new HashSet<Long>(0);
 	     Long locationAccessLevelId =0l;
-	     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	     Date fromDate=null;
 	     Date toDate = null;
 		 try{
@@ -1409,7 +1409,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			try{
 				Date fromDate = null;           
 				Date toDate = null;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
