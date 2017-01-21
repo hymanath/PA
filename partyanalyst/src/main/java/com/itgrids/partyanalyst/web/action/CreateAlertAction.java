@@ -74,6 +74,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private AlertClarificationVO alertClarificationVO;
 	private List<ClarificationDetailsCountVO> clarificationDetailsCountVOList;
 	private AlertVerificationVO alertVerificationVO;
+	private List<AlertVerificationVO> alertVerificationList;
 	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>(0);
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 
@@ -269,8 +270,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
 	}
+    public List<AlertVerificationVO> getAlertVerificationList() {
+		return alertVerificationList;
+	}
 
-	
+	public void setAlertVerificationList(
+			List<AlertVerificationVO> alertVerificationList) {
+		this.alertVerificationList = alertVerificationList;
+	}
+
 	public JSONObject getjObj() {
 		return jObj;
 	}
@@ -1417,4 +1425,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAlertVerificationStatus(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long actionTypeId = jObj.getLong("actionTypeId");
+			alertVerificationList = alertService.getAlertTypeActionStatus(actionTypeId);	
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getAlertVerificationStatus",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
 }
