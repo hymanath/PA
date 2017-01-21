@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
@@ -1329,5 +1330,89 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return returnList;
 	}
-
+	
+	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,String type ){
+		
+		List<EventDetailsVO> returnList = new ArrayList<EventDetailsVO>();
+		try{
+			
+			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,type,"planned");
+					setDataToVO(planedList,returnList,"planned");
+				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,type,"infocell");
+					setDataToVO(condtdcList,returnList,"infocell");
+				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,type,"ivr");
+					setDataToVO(ivrList,returnList,"ivr");
+			}else if(searchType != null && searchType.equalsIgnoreCase("village/ward")){
+				List<Object[]> villPlaList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"village",type,"planned");
+					setDataToVO(villPlaList,returnList,"planned");
+				List<Object[]> villCondctdList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"village",type,"infocell");
+					setDataToVO(villCondctdList,returnList,"infocell");
+				List<Object[]> villivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"village",type,"ivr");
+					setDataToVO(villivrList,returnList,"ivr");
+				
+				List<Object[]> wardPlandList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"ward",type,"planned");
+					setDataToVO(wardPlandList,returnList,"planned");
+				List<Object[]> wardCondctdList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"ward",type,"infocell");
+					setDataToVO(wardCondctdList,returnList,"infocell");
+				List<Object[]> wardivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,"ward",type,"ivr");
+					setDataToVO(wardivrList,returnList,"ivr");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occurred at getDistrictWiseActivityCounts() of CoreDashboardService", e);
+		}
+		
+		return returnList;
+		
+	}
+	
+	public void setDataToVO(List<Object[]> planedList,List<EventDetailsVO> returnList,String type){
+		
+		try{
+			
+		if(planedList != null && planedList.size() > 0){
+				for(Object[] obj : planedList){
+					EventDetailsVO vo = getMatchedVo((Long)obj[0],returnList);
+					
+					if(vo == null){
+						vo = new EventDetailsVO();
+						returnList.add(vo);
+					}
+					
+					vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
+					vo.setName(obj[1] != null ? obj[1].toString() : "");
+					
+					if(type != null && type.equalsIgnoreCase("planned"))
+						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+(Long)obj[2] : 0l);
+					if(type != null && type.equalsIgnoreCase("infocell"))
+						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[2] : 0l);
+					if(type != null && type.equalsIgnoreCase("ivr"))
+						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+(Long)obj[2] : 0l);
+					
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception occurred at setDataToVO() of CoreDashboardService", e);
+		}
+	}
+	
+	public EventDetailsVO getMatchedVo(Long id,List<EventDetailsVO> list){
+		EventDetailsVO returnvo = null;
+	   	try {
+				if(list != null && !list.isEmpty()){
+					for (EventDetailsVO vo : list) {
+						if(vo.getId().longValue() == id.longValue()){				
+							return vo;
+						}
+					}
+				}
+				return null;
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception occurred at getMatchedVo() of CoreDashboardService", e);
+			}
+	   	return returnvo;
+	   }
 }
