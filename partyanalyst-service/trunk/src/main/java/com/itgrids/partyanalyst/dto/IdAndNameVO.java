@@ -32,6 +32,29 @@ public class IdAndNameVO {
 	private Long sessionNo;
 	private String partyName;
 	private String question;
+	private Long countOfActivityLocationInfo;
+	private Long locationId;
+	private String locationName;
+	private String perc;
+	private String remainingPerc;
+	
+	
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public String getPerc() {
+		return perc;
+	}
+
+	public void setPerc(String perc) {
+		this.perc = perc;
+	}
+
 	public IdAndNameVO(){}
 	
 	public Long getSessionNo() {
@@ -196,6 +219,31 @@ public class IdAndNameVO {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+
+	public Long getCountOfActivityLocationInfo() {
+		return countOfActivityLocationInfo;
+	}
+
+	public void setCountOfActivityLocationInfo(Long countOfActivityLocationInfo) {
+		this.countOfActivityLocationInfo = countOfActivityLocationInfo;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getRemainingPerc() {
+		return remainingPerc;
+	}
+
+	public void setRemainingPerc(String remainingPerc) {
+		this.remainingPerc = remainingPerc;
+	}
+	
 	
 	
 }
