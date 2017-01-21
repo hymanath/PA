@@ -15463,6 +15463,17 @@
    			<param name="inputName">inputStream</param>
    		</result>
 	  </action>
+	
+	<action name="updateAlertVerficationStausAction" class="createAlertAction" method="updateAlertVerficationStaus">
+	   <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+		</result>
+	</action>
+	<action name="getAlertVerificationDetailsAction" class="createAlertAction" method="getAlertVerificationDetails">
+	  <result type="json" name="success">
+		    <param name="root">alertVerificationVO</param>
+		</result>
+	</action>
 	  <action name="getAllAlertsWithoutFilter" class="createAlertAction"  method="getAllAlertsWithoutFilter">
 		<result type="json" name="success">
 			<param name="root">alertDataList</param>
@@ -15484,5 +15495,6 @@
 		    <param name="inputName">inputStream</param>
 		</result>
 	</action>	
+	
  </package>
 </struts>

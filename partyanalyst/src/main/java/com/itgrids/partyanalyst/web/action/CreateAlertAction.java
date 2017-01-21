@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -72,9 +73,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String clarificationRadioName;
 	private AlertClarificationVO alertClarificationVO;
 	private List<ClarificationDetailsCountVO> clarificationDetailsCountVOList;
+	private AlertVerificationVO alertVerificationVO;
 	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>(0);
 	private List<Long> cadreIds=new ArrayList<Long>(0);
-	
+
 	
 	public List<Long> getCadreIds() {
 		return cadreIds;
@@ -324,9 +326,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setResultList(List<AlertOverviewVO> resultList) {
 		this.resultList = resultList;
 	}
+   public AlertVerificationVO getAlertVerificationVO() {
+		return alertVerificationVO;
+	}
 
-	public String execute()
-	{
+	public void setAlertVerificationVO(AlertVerificationVO alertVerificationVO) {
+		this.alertVerificationVO = alertVerificationVO;
+	}
+
+	public String execute()	{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.CREATE_ALERT_ENTITLEMENT) || 
@@ -1152,6 +1160,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}*/
 	
+	
+	
+	
 	public String uploadAlertsDoc(){
 		try{
 			session = request.getSession();
@@ -1356,6 +1367,52 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertDataList = alertService.getAllAlertsWithoutFilter(regVo.getRegistrationID(),inputVO);
 		} catch (Exception e) {
 			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String updateAlertVerficationStaus(){
+		try{
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			 if(regVO!=null){
+				 Long userId = regVO.getRegistrationID();
+				 Map<File,String> mapfiles = new HashMap<File,String>();
+					MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+					Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+					
+					while(fileParams.hasMoreElements()){
+						String key = fileParams.nextElement();
+						File[] files = multiPartRequestWrapper.getFiles(key);
+						if(files != null && files.length > 0){
+							int index = 0;
+							for(File f : files){
+								String[] extension  = multiPartRequestWrapper.getFileNames(key)[index].split("\\.");
+								String ext = "";
+								if(extension.length > 1){
+									ext = extension[extension.length-1];
+									mapfiles.put(f,ext);
+								}
+								index = index+1;
+							}
+						}
+					}
+					status = alertService.updateVerificationStatus(alertId,clarificationComments,clarificationStatusId,userId,mapfiles);
+					inputStream = new StringBufferInputStream(status);
+			 }else{
+				 inputStream = new StringBufferInputStream("login failed");
+			 }
+		}catch(Exception e){
+			inputStream = new StringBufferInputStream("failed");
+			LOG.error(e);
+		}
+		return Action.SUCCESS;	         
+	}
+	public String getAlertVerificationDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			alertVerificationVO = alertService.getAlertVerificationDtls(alertId);	
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getAlertVerificationDetails",e);	
 		}
 		return Action.SUCCESS;
 	}
