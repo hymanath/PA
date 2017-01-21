@@ -13,9 +13,23 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/dropkick/dropkick.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/css/dataTables.css" rel="stylesheet" type="text/css">
+
 <style>
 .img{
 	margin-top: 28px; width: 20px; height: 19px;
+}
+.text-capital{
+	text-transform : uppercase;
+}
+.border-line{
+	border-right: 2px solid rgb(0, 0, 0);
+}
+.tablePrinting thead th{ font-size:14px !important}
+
+#boxesSummaryTableId thead th , #boxesSummaryTableId tbody tr td{
+	 text-align: center;
+    vertical-align: middle;
 }
 </style>
 </head>
@@ -85,7 +99,54 @@
 							</div>
 						</div>
 						
+						<div class = "row" >
+						  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+						    <div id="boxesSummaryId"> </div>
+						  </div>
+						</div>
+						
+						<!-- QA STATUS UPDATION -->
+						<div class = "row" id="qaStatusUpdationDivId" style="display:none">
+						 <div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+							  <div class="panel-heading">
+								<h3 class="panel-title"> QA STATUS UPDATION </h3>
+							  </div>
+							  <div class="panel-body">
+							 
+							 <div>
+								  <div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Select Status</label><span class="text-danger">*</span>
+										<select class="form-control" id="statusId">
+											<option value="0">Select Status</option>
+											<option value="6" >QA Passed</option>
+											<option value="7">QA Failed</option>
+										</select>
+								  </div>
+								 <div class="col-md-9 text-capital" style="color:red;font-size:18px;" id="statusErrorId"></div>
+							  </div>
+								<div class="col-md-11 col-sm-12 col-xs-12">
+									<label>Remarks</label><span class="text-danger">*</span>
+									<textarea class="form-control" rows="3" id="remarksId"></textarea>
+								</div>
+								<div class="col-md-10 col-sm-6 col-xs-12 m_top10">
+								<input class="buttonCls btn btn-success" value="Update" type="button" onClick="qaStatusUpdation();">
+								<span class="col-md-offset-3" style="font-size:20px;" id="successMsgId"></span>
+								<!--<div class="row">
+									<div class="col-md-3 col-sm-6 col-xs-6">
+										<input class="buttonCls btn btn-success" value="Update" id="" type="button">
+									</div>
+									<div class="col-md-8 col-sm-6 col-xs-6">
+										<h3>Successfully Updated</h3>
+									</div>
+								</div>-->
+									
+								</div>
+							</div>
+						</div>
+						</div>
 					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -118,6 +179,7 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/dropkick/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script src="js/CardPrint/cardPrintDispatch.js" type="text/javascript"></script>
+<script src="dist/js/dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();
 if($(window).width() < 500)
