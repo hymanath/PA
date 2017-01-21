@@ -93,9 +93,11 @@ import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.OptionsCountVo;
+import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -5857,5 +5859,73 @@ public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long ca
 	}
 	return resultStatus;
 	
+}
+
+public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,String endDateStr){
+	ActivityVO finalVO = new ActivityVO();
+	try{
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date startDate = null;
+		Date endDate = null;
+		if(startDateStr != null && startDateStr.length() > 0 && endDateStr != null && endDateStr.length() > 0){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		List<Object[]> list =activityScopeDAO.getScopeNameByActivity(activityId, startDate, endDate) ;
+		List<Long> scopeIdList = new ArrayList<Long>();
+		if(list != null && list.size() > 0l){
+			for (Object[] objects : list) {
+				ActivityVO vo = new ActivityVO();
+				  vo.setActivityScopeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				  vo.setActivityLevelId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+				  vo.setActivityLevelName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				  finalVO.setId(commonMethodsUtilService.getLongValueForObject(objects[3]));//activityId
+				  finalVO.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));//ActivityName
+				  finalVO.getActivityVoList().add(vo);
+				  scopeIdList.add(vo.getActivityScopeId());
+			}
+		}
+		
+		Map<Long,List<ActivityVO>> quesOptsMap = new HashMap<Long,List<ActivityVO>>();
+		List<Object[]> questionOptList = activityQuestionnaireOptionDAO.getQuesAndOptionsByScopeIds(scopeIdList);
+		if(questionOptList != null && questionOptList.size() >0l ){
+			for (Object[] objects : questionOptList) {
+				Long scopeId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+				Long qustionId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+				String question = commonMethodsUtilService.getStringValueForObject(objects[2]);
+				Long optinId  = commonMethodsUtilService.getLongValueForObject(objects[3]);
+				String option = commonMethodsUtilService.getStringValueForObject(objects[4]);
+				List<ActivityVO> qustList = quesOptsMap.get(scopeId);
+				if(qustList == null || qustList.isEmpty()){
+					qustList = new ArrayList<ActivityVO>();
+					ActivityVO vo = new ActivityVO();
+						vo.setQuestionId(qustionId);
+						vo.setQuestion(question);
+						vo.setOptionId(optinId);
+						vo.setOption(option);
+					qustList.add(vo);
+					quesOptsMap.put(scopeId, qustList);
+				}else{
+					ActivityVO vo = new ActivityVO();
+						vo.setQuestionId(qustionId);
+						vo.setQuestion(question);
+						vo.setOptionId(optinId);
+						vo.setOption(option);
+					qustList.add(vo);
+				}
+			}
+		}
+		
+		if(finalVO.getActivityVoList() != null && !finalVO.getActivityVoList().isEmpty()){
+			for (ActivityVO vo : finalVO.getActivityVoList()) {
+				Long scopeId = vo.getActivityScopeId();
+				 vo.setActivityVoList(quesOptsMap.get(scopeId));
+			}
+		}
+	}catch(Exception e){
+		LOG.info("Entered into the getActivitiesDetails service method");
+	}
+	return finalVO;
 }
 }
