@@ -2412,6 +2412,7 @@
 	   <property name="alertService" ref="alertService"/>
 	   <property name="appointmentTimeSlotDAO" ref="appointmentTimeSlotDAO"/>
 	   <property name="appointmentService" ref="appointmentService"/>
+	   <property name="alertsNewsPortalService" ref="alertsNewsPortalService"/>   
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
