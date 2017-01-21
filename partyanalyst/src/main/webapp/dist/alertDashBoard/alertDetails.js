@@ -7,7 +7,8 @@ getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
 getAlertAssignedCandidate(alertId);
-getClarificationDetails(alertId);
+//getClarificationDetails(alertId);
+getDocumentsForAlert(alertId);
 $(document).on("click",".assignModel",function(){
 	clearAssignFields();
 	$("#ModalShow").modal('show');
@@ -542,7 +543,7 @@ function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
 
-function updateAlertStatus()
+/*function updateAlertStatus()
 {
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
@@ -597,11 +598,59 @@ function updateAlertStatus()
 					
 				});
 			
-}
-$(document).on("click",".updateAlertStatusCls",function(){
+}*/
+
+$(document).on("click","#uploadAlertStatusDocBtnId",function(){//san12
+
+	$('#errorId').html('');
+	var statusId=$("#statusId").val();
+	if(statusId==0){
+	 $('#errorId').html(' Please Select Status ').css("color","red"); 
+        return;	   
+	}else{
+		$("#alertStatusHiddenId").val(statusId);
+	}	
 	
-	updateAlertStatus();
+	var comments = $("#commentsId").val();
+	if(comments.length==0||comments==''){
+		  $('#errorId').html(' Please Enter Comment ').css("color","red");
+		  return; 
+	}else{
+		$("#alertCommentsHiddenId").val(comments);
+	}
+	
+	$("#alertHiddenIdStatus").val(alertId);
+	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');
+	
+	
+	var uploadHandler = {
+		upload: function(o) {
+		    uploadResult = o.responseText;
+			showAlertStatusDocsResult(uploadResult,'${alertId}');
+		}
+	};
+
+	YAHOO.util.Connect.setForm('alertStatusForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','uploadAlertsStatusDocAction.action',uploadHandler); 
 });
+
+function showAlertStatusDocsResult(myResult,alertId){
+	$("#updateAlertajaxImg").html('');
+		var result = (String)(myResult);
+		if(result.search('success') != -1){
+			alert("Updated Successfully.");
+			$("#commentsId,#uploadFileId0").val("");
+			$("#extraUploadFileDiv").html("");
+			getAlertStatusCommentsTrackingDetails();
+			getAlertAssignedCandidate(alertId);
+			fileNum=0;
+		}else{
+			alert("Please Try Again.");
+		}
+	}
+/*$(document).on("click",".updateAlertStatusCls",function(){
+	updateAlertStatus();
+});*/
 
 
 function getAlertAssignedCandidates(alertId)
@@ -1358,7 +1407,7 @@ $(document).on("click","#clarifiReqId",function(){
 	});
 	
 	
-	function getClarificationDetails(alertId){
+	/*function getClarificationDetails(alertId){
 		var jsObj={
     		alertId:alertId
     	}
@@ -1752,4 +1801,29 @@ $(document).on("click","#clarifiReqId",function(){
 					}
 				});
 		  }
-	});
+	});*/
+	
+	function getDocumentsForAlert(alertId){
+		var jsObj={
+			alertId : alertId
+		}  
+					
+		$.ajax({
+			type : 'GET',
+			url : 'getDocumentsForAlertAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#existingDocsTdId").html("");
+			if(result != null && result.length > 0){
+				var str='';
+				str+='<ul>';
+					for(var i in result){
+						str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
+					}
+				str+='</ul>';
+				$("#existingDocsTdId").html(str);
+				$("#existingDocsTrId").show();
+			}
+		});
+	}

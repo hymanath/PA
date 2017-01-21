@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -71,10 +72,26 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String clarificationRadioName;
 	private AlertClarificationVO alertClarificationVO;
 	private List<ClarificationDetailsCountVO> clarificationDetailsCountVOList;
+	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>(0);
+	private List<Long> cadreIds=new ArrayList<Long>(0);
 	
 	
-	
-	
+	public List<Long> getCadreIds() {
+		return cadreIds;
+	}
+
+	public void setCadreIds(List<Long> cadreIds) {
+		this.cadreIds = cadreIds;
+	}
+
+	public List<KeyValueVO> getKeyValueVOList() {
+		return keyValueVOList;
+	}
+
+	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
+		this.keyValueVOList = keyValueVOList;
+	}
+
 	public List<ClarificationDetailsCountVO> getClarificationDetailsCountVOList() {
 		return clarificationDetailsCountVOList;
 	}
@@ -483,7 +500,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	
 
-	public String updateAlertStatus()
+	/*public String updateAlertStatus()
 	{
 		try{
 			session = request.getSession();
@@ -513,7 +530,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception rised in UpdateAlertStatus",e);
 		}
 		return Action.SUCCESS;	
-	}
+	}*/
 	public String getAlertStatusCommentsTrackingDetails(){
 		try{
 			
@@ -1137,33 +1154,31 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	
 	public String uploadAlertsDoc(){
 		try{
-			 String imageName=null;
-			 
-			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			 
-			 if(regVO!=null){
-				 Long userId = regVO.getRegistrationID();
-				 
-				 List<String> fileNamesList = new ArrayList<String>(0);
-				 
-				 for(int i=0;i<imageForDisplay.size();i++){
-		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
-			        	 
-			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
-			          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
-			          
-			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
-			        	 
-			          File fileToCreate = new File(filePath,imageName);
-					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
-					  
-					  inputStream = new StringBufferInputStream("success");
-		          }
-				 resultStatus =alertService.saveAlertClarificationDetails(userId,alertId,clarificationStatusId,clarificationComments,clarificationRadioName,fileNamesList);
-			 }else{
-				 inputStream = new StringBufferInputStream("login failed");
-			 }
-		      
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+							mapfiles.put(f,ext);
+						}
+					}
+				}
+			}
+			status = alertService.saveAlertDocument(alertId,regVo.getRegistrationID(),mapfiles);
+			inputStream = new StringBufferInputStream(status);
+			
+		
+		
 		}catch(Exception e){
 			inputStream = new StringBufferInputStream("failed");
 			LOG.error(e);
@@ -1259,6 +1274,69 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getDocumentsForAlert(){
+		try {
+			jObj = new JSONObject(getTask());
+			keyValueVOList = alertService.getDocumentsForAlert(jObj.getLong("alertId"));
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getDocumentsForAlert",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String uploadAlertsStatusDoc(){
+		try {
+			String imageName=null;
+			 
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			 
+			 if(regVO!=null){
+				 Long userId = regVO.getRegistrationID();
+				 
+				 List<String> fileNamesList = new ArrayList<String>(0);
+				 
+				 for(int i=0;i<imageForDisplay.size();i++){
+		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+			        	 
+			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+			          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
+			          
+			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
+			        	 
+			          File fileToCreate = new File(filePath,imageName);
+					  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+					  
+					  inputStream = new StringBufferInputStream("success");
+		          }
+				 
+				 	AlertVO inputVO = new AlertVO();
+					inputVO.setId(alertId);
+					inputVO.setDesc(clarificationComments);
+					inputVO.setStatusId(clarificationStatusId);
+					
+					if(cadreIds != null && cadreIds.size() > 0){
+						for (Long long1 : cadreIds) {
+							IdNameVO vo = new IdNameVO();
+							vo.setId(long1);
+							inputVO.getAssignList().add(vo);
+						}
+					}
+					
+					session = request.getSession();
+					RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					status = alertService.updateAlertStatus(regVo.getRegistrationID(),inputVO,fileNamesList);
+					
+				 
+			 }else{
+				 inputStream = new StringBufferInputStream("login failed");
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception raised while uploading alert status documents", e);
+		}
+		return Action.SUCCESS;	
+		
 	}
 	public String getAllAlertsWithoutFilter(){   
 		try {

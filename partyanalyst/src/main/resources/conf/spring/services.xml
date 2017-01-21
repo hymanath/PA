@@ -3547,7 +3547,8 @@
 		<property name="actionTypeDAO" ref="actionTypeDAO"></property>
 		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>
 		<property name="verificationStatusDAO" ref="verificationStatusDAO"></property>
-		
+		<property name="alertTrackingDocumentsDAO" ref="alertTrackingDocumentsDAO"></property>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
