@@ -463,7 +463,6 @@ $(document).ready(function(){
         }
 			
 	});
-	//$("#dateRangePickerId").val(moment().subtract(29, 'days').format("MM/DD/YYYY")+'-'+moment().format("MM/DD/YYYY"))
 	$(".ranges").addClass("rangesNew")
 });
 	$('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
@@ -472,12 +471,8 @@ $(document).ready(function(){
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');     
 		currentFromDate = picker.startDate.format('DD/MM/YYYY');
-		currentToDate = picker.endDate.format('DD/MM/YYYY');     
-		//getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+		currentToDate = picker.endDate.format('DD/MM/YYYY'); 
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
-		//getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
-		//getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
-		//getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 
 		var levelId = 0;
 		var levelValue = 0;
@@ -499,8 +494,6 @@ $(document).ready(function(){
 		$("#errorId").html("");
 		$("#alertCategoryId").val(0).trigger("chosen:updated");
 		$("#alertStatusId").val(0).trigger("chosen:updated");
-		//getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
-		
 	});
 
 $(document).on("click","#createAlertBtn",function(){
@@ -512,13 +505,11 @@ $(document).on("click","#createAlertBtn",function(){
 	getAlertsource();
 	$("#apptmemberDetailsDiv").html("");
 });
-//$(".dropkickClass").dropkick();
+
 
 getAlertAssignedCandidate();
 function getAlertAssignedCandidate()
 {
-
-	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
 	$("#assignedCadreId option").remove();
 	var jsObj={
     			alertId:0,
@@ -530,7 +521,6 @@ function getAlertAssignedCandidate()
 	  dataType : 'json',
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-	  //buildAlertCommentsForTracking(result,"");
 	  var str='';
 	   str+='<option value="0">All</option>';
 		if(result != null && result.length > 0){
@@ -583,13 +573,13 @@ function getAlertAssignedCandidate()
 		$("#alertCategoryId").val(0).trigger("chosen:updated");
 		$("#alertStatusId").val(0).trigger("chosen:updated");//move  
 		getAllAlertsWithoutFilter(alertTypeId,categoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
-		//getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+		
 	}); 
 	$(document).on("click",".locationCls",function(){    
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 		var locationType=$("input:radio[name=location]:checked").val();
 		globalLocation = locationType;
-		//getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+		
 		
 	});
 	$(document).on("change","#alertTypeId",function(){     //move1 
@@ -621,7 +611,7 @@ function getAlertAssignedCandidate()
 		var actionTypeStatusId = 0;
 		var impactScopeId = 0;
 		getAllAlertsWithoutFilter(alertTypeId,categoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);		
-		//getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+		
 		
 		$("#alertCategoryId").val(0);
 		$("#alertStatusId").val(0);
@@ -633,11 +623,9 @@ function getAlertAssignedCandidate()
 	$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 	$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 	$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
-	//getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+	
 	getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate);
-	//getLocationLevelAlertData(0,0,0,currentFromDate,currentToDate,0,"totalBlock");	
-	//getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
-	//getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+	
 	function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
 		
 		var alertTypeId = $("#alertTypeId").val();
@@ -790,186 +778,6 @@ function getAlertAssignedCandidate()
 		getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
 	
 	}
-	/* var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
-	function buildTotalAlertGroupByStatusThenCategory(result){
-		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
-		
-		var str = '';  
-		if($(window).width() < 500)
-		{
-			str+='<div class="table-responsive">';
-		}
-		str+='<table class="table table-condensed b_1">';
-			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
-				str+='<th></th>';    
-				for(var i in result[0].idNamesList){
-					str+='<th class="text-capital text-center" >'+result[0].idNamesList[i].name+'</th>';
-				}  
-			str+='</thead>';
-			for(var i in result){
-				if(result[i].stateId == 1 || result[i].stateId == 2){
-					str+='<tr>';
-					var appClr = colorArr[result[i].status];
-					var appClrHd = colorArrHead[result[i].status];
-					var count = 0;
-					if(result[i].idNamesList != null && result[i].idNamesList.length>0){
-						for(var k in result[i].idNamesList)
-							count = count+parseInt(result[i].idNamesList[k].count);
-					}
-					
-					if(count != null && count > 0)
-						str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_category_id="0" attr_id="'+result[i].stateId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+count+'</a> </u></span></td>';
-					else  
-						str+='<td class="text-capitalize" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+count+' </span></td>';
-					if(result[i].idNamesList != null && result[i].idNamesList.length>0){
-						for(var j in result[i].idNamesList){
-							if(result[i].idNamesList[j].count != null && result[i].idNamesList[j].count>0)
-								str+='<td style="background-color:'+appClr+'" class="text-center"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_id="'+result[i].stateId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].idNamesList[j].id+'" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].idNamesList[j].count+' </a></u></td>';
-							else
-								str+='<td style="background-color:'+appClr+'" class="text-center"> 0  </td>';
-						}
-					}
-					str+='</tr>';
-				}
-			}
-		str+='</table>';
-		
-		if($(window).width() < 500)
-		{
-			str+='</div>';
-		}
-		$("#alertCatTabId").html(str);  
-	} */
-	 
-	function getAlertCountGroupByLocationThenStatus(stateId,fromDate,toDate){
-		var alertTypeId = $("#alertTypeId").val();
-		var jsObj = { 
-			stateId : stateId,     
-			fromDate : fromDate,
-			toDate : toDate,
-			alertyTypeId : alertTypeId
-		}
-		$.ajax({
-			type : 'POST',      
-			url : 'getAlertCountGroupByLocationThenStatusAction.action',
-			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){  
-			$("#locWiseAltCntId").html('');     
-			if(result != null && result.length > 0){
-				buildAlertCountGroupByLocationThenStatus(result);
-			}
-		});
-	}
-	function buildAlertCountGroupByLocationThenStatus(result){
-		var str = '';
-		if($(window).width() < 500)
-		{
-			str+='<div class="table-responsive">';
-		}
-		
-		str+='<table class="table tableAlert">';
-		str+='<thead>';
-		str+='<th>&nbsp;</th>';
-		for(var i in result[0].subList1){
-			str+='<th class="text-capital">'+result[0].subList1[i].category+'</th>'; 
-		}
-		str+='</thead>';
-		for(var i in result){
-			if(result[i].statusId==12){ //7(v)+9(m)=12 for village/mandal                     
-				continue;  
-			}            
-			str+='<tr>';   
-			if(result[i].count != null && result[i].count>0)
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
-			else
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
-			
-			for(var j in result[i].subList1){   
-				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
-					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
-				else				
-					str+='<td class="text-center">'+result[i].subList1[j].categoryCount+'</td>';
-			}
-			str+='</tr>';       
-		}
-		str+='</table>';
-		if($(window).width() < 500)
-		{
-			str+='</div>';
-		}
-		$("#locWiseAltCntId").html(str);  
-		
-	}
-	
-	function getTotalAlertGroupByStatusThenCategoryLocationWise(stateId,fromDate,toDate,globalLocation){
-		var alertTypeId = $("#alertTypeId").val();
-		var jsObj = { 
-			stateId : stateId,             
-			fromDate : fromDate,
-			toDate : toDate,
-			Location : globalLocation,
-			alertyTypeId : alertTypeId        
-		}                  
-		$.ajax({
-			type : 'POST',      
-			url : 'getTotalAlertGroupByStatusThenCategoryLocationWiseAction.action',
-			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){ 
-			$("#multiLocationId").html('');
-			if(result != null && result.length > 0){
-				buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation);     
-			}
-		});
-	}
-	function buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation){
-		var str = '';
-		var levelId=2;
-		
-		if(globalLocation == 'State')
-			levelId= 2;
-		else if(globalLocation == 'District')
-			levelId= 3;
-		else if(globalLocation == 'Constituency')
-			levelId= 4;
-		else if(globalLocation == 'Village')
-			levelId= 6;
-		
-		for(var i in result){
-			str+='<table class="table b_1">';
-				str+='<thead class="bg_ff">';
-					str+='<th>'+result[i].locationName+'</th>';
-					for(var l in result[0].subList2[0].subList1){
-						str+='<th class="text-center">'+result[0].subList2[0].subList1[l].category+'</th>';
-					}
-				str+='</thead>';
-				str+='<tbody class="bg_EA">';
-					for(var j in result[i].subList2){
-						str+='<tr>';  
-						var cnt = 0;
-						for(var k in result[i].subList2[j].subList1){
-							cnt = parseInt(cnt) + parseInt(result[i].subList2[j].subList1[k].categoryCount);
-						}
-						var appClr = colorArrHead[result[i].subList2[j].status];
-						if(cnt != null && cnt>0)
-							str+='<td class="text-capitalize" style="color:'+appClr+';width:200px !important;"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> <u><a class="belowLocationCls text-muted" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlValue="'+result[i].locationId+'" attr_levlid="'+levelId+'" attr_category_id="0" attr_search_location="locationInnerBlock">'+cnt+'</a></u></span></td>';
-						else
-							str+='<td class="text-capital text-muted" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> '+cnt+'</span></td>';
-						
-						for(var k in result[i].subList2[j].subList1){
-							if(result[i].subList2[j].subList1[k].categoryCount != null && result[i].subList2[j].subList1[k].categoryCount>0)
-								str+='<td class=" text-center"> <u><a class="belowLocationCls" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlid="'+levelId+'" attr_category_id="'+result[i].subList2[j].subList1[k].categoryId+'" attr_search_location="locationInnerBlock" attr_levlValue="'+result[i].locationId+'" > '+result[i].subList2[j].subList1[k].categoryCount+' </u></td>';
-							else
-								str+='<td class=" text-center">'+result[i].subList2[j].subList1[k].categoryCount+'</td>';
-						}
-						str+='</tr>';
-					}
-				str+='</tbody>';
-			str+='</table>';     
-		}
-		$("#multiLocationId").html(str);      
-	}
 	
 	
 	$("#alertTypeId").chosen();
@@ -1048,55 +856,6 @@ function assignCadreDetailsAllLevel(){
 	
 }    
 
-
-//Sravanth
-
-var GlobalAlertData;
-function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock)
-{
-	 $("#assignedCadreId").val(0).trigger('chosen:updated'); 
-	 $('html, body').animate({
-        scrollTop: $('#locationLevelDataId').offset().top
-    }, 2000);
-	
-	$("#locationLevelDataId").html('<img src="images/search.gif" />');
-	var assignId = $('#assignedCadreId').val();
-	var alertTpeId = $('#alertTypeId').val();
-	if(assignId== null || assignId.length==0)
-		assignId=0;
-	if(alertTpeId== null || alertTpeId.length==0)
-		alertTpeId=0;
-	
-    GlobalAlertData = [];
-	var impactScopeId=0;
-	if(locationBlock == "locationBlock"){
-		impactScopeId=levelId;
-		levelId=0;
-	}
-		var jsObj =
-		     {
-				alertTypeId:alertTpeId,
-				levelId  : levelId,
-				statusId :statusId,
-				fromDate :fromDate,
-				toDate   :toDate,
-				levelValue:levelValue,
-				categoryId:categoryId,
-				assignId:assignId,
-				impactScopeId:impactScopeId,
-				task : locationBlock
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getLocationLevelAlertClarificationDataAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-			       GlobalAlertData = result;
-					buildAlertData(result,jsObj);
-					//getDistrictsForReferPopup('');
-				});
-}
-
 function buildAlertData(result,jsObj)
 {
 	if(result == null || result.length == 0)
@@ -1104,36 +863,7 @@ function buildAlertData(result,jsObj)
 		$("#locationLevelDataId").html('No Data Available..');
 		return;
 	}
-		
-	var Level = "";
-	
-	if(jsObj.levelId == 2)
-	{
-		Level = "STATE";
-	}
-	else if(jsObj.levelId == 3)
-	{
-		Level = "DISTRICT";
-	}
-	else if(jsObj.levelId == 4)
-	{
-		Level = "CONSTITUENCY";
-	}
-	else if(jsObj.levelId == 5)
-	{
-		Level = "MANDAL";
-	}
-	else if(jsObj.levelId == 6)
-	{
-		Level = "VILLAGE";
-	}
-	else
-	{
-		Level = "";
-	}
 	var str='';
-	
-	
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
 	str+='<thead>';
@@ -1226,43 +956,6 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 					buildAlertData(result,jsObj);
 		});
 }
-$(document).on("click",".headerWiseDataCls",function(){
-	var levelId = $(this).attr("attr_levlId");
-	var levelValue = 0;
-	var locationBlock = $(this).attr("attr_search_Location");
-	$('.stateCls').each(function(){
-		if($(this).hasClass("active"))   
-			levelValue = $(this).attr("attr_state_id");
-	});
-	
-	var statusId=$(this).attr("attr_id");
-	var categoryId=$(this).attr("attr_category_id");
-	var fromDate='';
-	var toDate='';
-	var dateStr = $("#dateRangePickerId").val(); 
-	
-	if(dateStr !=null && dateStr.length>0){
-		fromDate = dateStr.split("-")[0];
-		toDate = dateStr.split("-")[1];
-	}
-	
-	$("#errorId").html("");
-	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
-	//swadhin
-	var postion = $(this).attr("attr_position");
-	var id = $(this).attr("attr_id");
-	if(postion == "first"){
-		initSelectBoxForFirstPos(id);
-	}
-	if(postion == "second"){
-		var category = $(this).attr("attr_category_id");
-		initSelectBoxForSecondPos(id,category);
-	}
-	if(postion == "third"){
-		initSelectBoxForFirstPos(id);
-	}
-});
 
 function initSelectBoxForFirstPos(statusId){         
 	$("#alertCategoryId").val(0);
@@ -1303,7 +996,6 @@ function getLocationFilterAlertData()
 {
 	$(".filterBlockDiv").hide();
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
-    GlobalAlertData = [];
 	var stateId = $("#stateId").val();
 	var districtId = $("#referdistrictId").val();
 	var constituencyId = $("#referconstituencyId").val();
@@ -1358,7 +1050,6 @@ function getLocationFilterAlertData()
 					  url: 'getLocationFilterAlertDataAction.action',//imp
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-			        GlobalAlertData = result;
 					buildAlertData(result,jsObj);
 				});
 }
