@@ -3987,6 +3987,7 @@
 		<property name="editionTypeDAO" ref="editionTypeDAO"></property>
 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"/>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
 	</bean>
 	
 </beans>			
