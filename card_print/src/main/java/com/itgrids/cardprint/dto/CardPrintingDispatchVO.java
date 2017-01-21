@@ -25,6 +25,15 @@ public class CardPrintingDispatchVO implements Serializable{
 	private Long printedCadre = 0l;
 	private Long unPrintedCadre = 0l;
 	
+	private String constPrintStatus;
+	
+	private Long totalBoxesCount = 0l;
+	private Long verifiedBoxesCount = 0l;
+	private Long notVerifiedBoxesCount = 0l;
+	
+	private Long acceptedBoxesCount = 0l;
+	private Long rejectedBoxesCount = 0l;
+	
 	private List<CardPrintingDispatchVO> subList; 
 	
 	public Long getErrorCount() {
@@ -134,6 +143,42 @@ public class CardPrintingDispatchVO implements Serializable{
 	}
 	public void setSubList(List<CardPrintingDispatchVO> subList) {
 		this.subList = subList;
+	}
+	public String getConstPrintStatus() {
+		return constPrintStatus;
+	}
+	public void setConstPrintStatus(String constPrintStatus) {
+		this.constPrintStatus = constPrintStatus;
+	}
+	public Long getTotalBoxesCount() {
+		return totalBoxesCount;
+	}
+	public void setTotalBoxesCount(Long totalBoxesCount) {
+		this.totalBoxesCount = totalBoxesCount;
+	}
+	public Long getVerifiedBoxesCount() {
+		return verifiedBoxesCount;
+	}
+	public void setVerifiedBoxesCount(Long verifiedBoxesCount) {
+		this.verifiedBoxesCount = verifiedBoxesCount;
+	}
+	public Long getNotVerifiedBoxesCount() {
+		return notVerifiedBoxesCount;
+	}
+	public void setNotVerifiedBoxesCount(Long notVerifiedBoxesCount) {
+		this.notVerifiedBoxesCount = notVerifiedBoxesCount;
+	}
+	public Long getAcceptedBoxesCount() {
+		return acceptedBoxesCount;
+	}
+	public void setAcceptedBoxesCount(Long acceptedBoxesCount) {
+		this.acceptedBoxesCount = acceptedBoxesCount;
+	}
+	public Long getRejectedBoxesCount() {
+		return rejectedBoxesCount;
+	}
+	public void setRejectedBoxesCount(Long rejectedBoxesCount) {
+		this.rejectedBoxesCount = rejectedBoxesCount;
 	}
 	
 }
