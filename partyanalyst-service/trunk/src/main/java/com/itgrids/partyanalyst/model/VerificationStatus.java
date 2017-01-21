@@ -100,7 +100,7 @@ public class VerificationStatus extends BaseModel implements Serializable {
 			AlertVerificationUserType alertVerificationUserType) {
 		this.alertVerificationUserType = alertVerificationUserType;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "inserted_by" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -110,7 +110,7 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "alert_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -120,7 +120,7 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	public void setAlert(Alert alert) {
 		this.alert = alert;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "action_type_status_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.ActionTypeStatus;
 
 public interface IActionTypeStatusDAO extends GenericDao<ActionTypeStatus, Long> {
 	public List<Object[]> getActionTypeList();
-	public List<Object[]> getAlertActionTypeWiseStatus();
+	public List<Object[]> getAlertActionTypeWiseStatus(Long actionTypeId);
 }

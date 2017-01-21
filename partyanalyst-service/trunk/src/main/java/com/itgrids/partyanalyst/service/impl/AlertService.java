@@ -31,7 +31,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
-import com.itgrids.partyanalyst.dao.IAlertActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
@@ -157,7 +156,6 @@ private IEditionTypeDAO editionTypeDAO;
 private IClarificationRequiredDAO clarificationRequiredDAO;
 private IAlertClarificationStatusDAO alertClarificationStatusDAO;
 private IActionTypeStatusDAO actionTypeStatusDAO;
-private IAlertActionTypeDAO alertActionTypeDAO;
 private IActionTypeDAO actionTypeDAO;
 private IAlertDocumentDAO alertDocumentDAO;
 private IVerificationStatusDAO verificationStatusDAO;
@@ -435,10 +433,6 @@ public void setEditionTypeDAO(IEditionTypeDAO editionTypeDAO) {
 
 public void setActionTypeStatusDAO(IActionTypeStatusDAO actionTypeStatusDAO) {
 	this.actionTypeStatusDAO = actionTypeStatusDAO;
-}
-
-public void setAlertActionTypeDAO(IAlertActionTypeDAO alertActionTypeDAO) {
-	this.alertActionTypeDAO = alertActionTypeDAO;
 }
 public void setVerificationStatusDAO(IVerificationStatusDAO verificationStatusDAO) {
 	this.verificationStatusDAO = verificationStatusDAO;
@@ -3696,17 +3690,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				   }
 			   }
 		   }
-		   
 		   /* Getting Alert Action Type Wise Data start */
-		/*   Map<Long,AlertOverviewVO> alertActionMap = new LinkedHashMap<Long, AlertOverviewVO>();
-		   List<Object[]> rtrnStatusObjList = actionTypeStatusDAO.getAlertActionTypeWiseStatus();
+	       Map<Long,AlertOverviewVO> alertActionMap = new LinkedHashMap<Long, AlertOverviewVO>();
+		   List<Object[]> rtrnStatusObjList = actionTypeStatusDAO.getAlertActionTypeWiseStatus(0l);
 		   prepareActionTypeTemplate(rtrnStatusObjList,alertActionMap);
-		   List<Object[]> rtrnAlerCntObjLst = alertActionTypeDAO.getAlertCountStatusWiseBasedOnActionType(locationAccessLevelId, locationValues, stateId, fromDate, toDate, alertTypes, alertEditions);
+		   List<Object[]> rtrnAlerCntObjLst = verificationStatusDAO.getAlertCountStatusWiseBasedOnActionType(locationAccessLevelId, locationValues, stateId, fromDate, toDate, alertTypes, alertEditions);
 		   setActionWiseAlertCnt(rtrnAlerCntObjLst,alertActionMap);
 		   if(alertActionMap != null && alertActionMap.size() > 0){
 			   resultVO.getActionTypeList().addAll(new ArrayList<AlertOverviewVO>(alertActionMap.values()));
 			   alertActionMap.clear();
-		   }*/
+		   }
 		   /* End */
 		   
 		   
@@ -3963,7 +3956,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
 			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){ //alertStatusId means alertActionTypeStatusId
-			 // alertList = alertActionTypeDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId);
+			  alertList = verificationStatusDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusId, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId);
 			}else{
 			 alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList);	
 			}
@@ -6341,7 +6334,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   			      verificationCommentsDAO.save(verificationComments);
   			     
   			      if(mapFiles != null && mapFiles.size() > 0){
-  			       // saveAlertVerificationDocument(alertVerificationUserTypeId,verificationConversation.getVerificationConversationId(),userId,mapFiles);
   			    	String folderName = IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
   			    	
   		  			Calendar calendar = Calendar.getInstance();
@@ -6448,7 +6440,24 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  }
 	  return resultVO;
   }
- 
+  public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId){
+	  List<AlertVerificationVO> actionTypeStatusList = new ArrayList<AlertVerificationVO>(0);
+	  try{
+		  List<Object[]> rtrnObjLst = actionTypeStatusDAO.getAlertActionTypeWiseStatus(actionTypeId);
+		  if(rtrnObjLst != null && rtrnObjLst.size() > 0l){
+			  for(Object[] param:rtrnObjLst){
+				  AlertVerificationVO statuVO = new AlertVerificationVO();
+				  statuVO.setAlertActionTypeStatusId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  statuVO.setActionTypeStatus(commonMethodsUtilService.getStringValueForObject(param[3]));
+				  actionTypeStatusList.add(statuVO);
+				  
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception Occured in getAlertTypeActionStatus() in ToursService", e);  
+	  }
+	  return actionTypeStatusList;
+  }
 	/* Alert Verification Service end */
 }
 

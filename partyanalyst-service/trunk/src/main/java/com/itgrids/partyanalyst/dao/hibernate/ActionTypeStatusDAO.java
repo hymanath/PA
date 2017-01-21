@@ -30,19 +30,25 @@ public class ActionTypeStatusDAO extends GenericDaoHibernate<ActionTypeStatus, L
 		Query query = getSession().createQuery(sb.toString());
 		return query.list();
 	}
-	public List<Object[]> getAlertActionTypeWiseStatus(){
+	public List<Object[]> getAlertActionTypeWiseStatus(Long actionTypeId){
 	  StringBuilder queryStr = new StringBuilder();
 	    queryStr.append(" select " +
 	   		" model.actionType.actionTypeId," +
 	   		" model.actionType.typeName," +
 	   		" model.actionTypeStatusId," +
 	   		" model.status " +
-	   		" from ActionTypeStatus model " +
-	   		" group by model.actionType.actionTypeId," +
-	   		" model.actionTypeStatusId " +
-	   		" order by " +
-	   		" model.actionType.actionTypeId ");
+	   		" from ActionTypeStatus model " );
+	    if(actionTypeId > 0l ){
+	    	queryStr.append(" where model.actionType.actionTypeId=:actionTypeId ");
+	    }
+        queryStr.append(" group by model.actionType.actionTypeId," +
+	   		            " model.actionTypeStatusId " +
+	   		            " order by " +
+	   		            " model.actionType.actionTypeId ");
 	    Query query = getSession().createQuery(queryStr.toString());
+	    if(actionTypeId > 0l){
+	     query.setParameter("actionTypeId", actionTypeId);
+	    }
 	     return query.list();
 	}
 }

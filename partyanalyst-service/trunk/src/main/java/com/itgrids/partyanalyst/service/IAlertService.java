@@ -78,4 +78,5 @@ public interface IAlertService {
     public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO);
     public List<KeyValueVO> getDocumentsForAlert(Long alertId);
     public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);
+    public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId);
 }
