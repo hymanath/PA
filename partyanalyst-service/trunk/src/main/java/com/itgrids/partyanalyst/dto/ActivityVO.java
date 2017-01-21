@@ -90,6 +90,8 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long attributeId;
 	private Long hasAttendenceCount =0L;
 	private Long hasConductedCount =0L;
+	private String activityLevelName;
+	private Long activityQuenaryId;
 	
 	
 	public Long getAttributeId() {
@@ -535,6 +537,18 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
+	}
+	public String getActivityLevelName() {
+		return activityLevelName;
+	}
+	public void setActivityLevelName(String activityLevelName) {
+		this.activityLevelName = activityLevelName;
+	}
+	public Long getActivityQuenaryId() {
+		return activityQuenaryId;
+	}
+	public void setActivityQuenaryId(Long activityQuenaryId) {
+		this.activityQuenaryId = activityQuenaryId;
 	}
 	
 }
