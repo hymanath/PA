@@ -35,4 +35,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate);
 }

@@ -14,4 +14,5 @@ public interface ILocationInfoDAO extends GenericDao<LocationInfo, Long>{
 	
 	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue);
 	public List<Object[]> getDistrictWiseTotalCountsByLevelId(Long levelId);
+	public List<Object[]> areaCountDetailsListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId);
 }
