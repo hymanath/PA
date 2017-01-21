@@ -22,7 +22,8 @@ public class AlertVO {
 	private Long panchayatId;
 	private Long wardId;
 	
-	private List<IdNameVO> idNamesList,assignList;
+	private List<IdNameVO> idNamesList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> assignList = new ArrayList<IdNameVO>(0);
 	
 	private Long tdpCadreId;
 	private Long id;

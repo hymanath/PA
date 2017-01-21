@@ -42,8 +42,8 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" ALTC.comments as comments,");
 		
 		if(hasTrue){
-		queryStr.append(" ALTCA.assign_tdp_cadre_id as assign_tdp_cadre_id,");
-		queryStr.append(" TC.first_name as first_name,");
+			queryStr.append(" ALTCA.assign_tdp_cadre_id as assign_tdp_cadre_id,");
+			queryStr.append(" 'Program Committee' as first_name,");
 		}else{
 			queryStr.append(" 0 as assign_tdp_cadre_id,");
 			queryStr.append(" '' as first_name,");
@@ -58,11 +58,11 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		if(hasTrue)
 			queryStr.append(" left join alert_comment_assignee ALTCA on ALTT.alert_comment_id = ALTCA.alert_comment_id ");
 		queryStr.append(" left join user U on ALTT.inserted_by = U.user_id ");
-		if(hasTrue)
-			queryStr.append(" ,tdp_cadre TC ");
+		//if(hasTrue)
+			//queryStr.append(" ,tdp_cadre TC ");
 		queryStr.append(" where ");
-		if(hasTrue)
-			queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id and ");
+		//if(hasTrue)
+			//queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id and ");
 			
 		queryStr.append(" ALTT.alert_id = :alertId ");
 		queryStr.append(" order by ALTS.status_order, date(ALTT.inserted_time) desc ,time(ALTT.inserted_time) desc ,ALTC.alert_comment_id ;");   
