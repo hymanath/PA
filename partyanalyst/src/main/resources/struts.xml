@@ -15493,11 +15493,16 @@
 	   <result name="success" type="stream">			   
 		    <param name="inputName">inputStream</param>
 		</result>
-	</action>	
-	  <action name="activitiesDistrictWiseCohortAction" class="coreDashboardAction" method="activitiesDistrictWiseCohort">
+	</action>
+	<action name="activitiesDistrictWiseCohortAction" class="coreDashboardAction" method="activitiesDistrictWiseCohort">
 		<result type="json" name="success">
 				<param name="root">IdAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getDistrictWiseActivityCountsAction" class="coreDashboardAction"  method="getDistrictWiseActivityCounts">
+		<result type="json" name="success">
+			<param name="root">eventDetailsVOList</param>
+		</result>
+	</action>	
  </package>
 </struts>

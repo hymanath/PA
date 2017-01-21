@@ -3482,4 +3482,21 @@ public String activitiesDistrictWiseCohort(){
 	return Action.SUCCESS;
 	
 }
+
+public String getDistrictWiseActivityCounts(){
+	try {
+		LOG.info("Entered into getActivityOverAllSummary()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		
+		Long districtId = jObj.getLong("districtId");
+		Long activityScopeId = jObj.getLong("activity_scope_id");
+		String searchType = jObj.getString("search_type");
+		String type = jObj.getString("type");
+		
+		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,type);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDistrictWiseActivityCounts() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
