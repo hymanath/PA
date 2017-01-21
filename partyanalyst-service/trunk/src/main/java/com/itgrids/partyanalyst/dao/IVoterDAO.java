@@ -110,4 +110,5 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List<Object[]> getVoterDetailsByVoterId(Long voterId,Long publicationDateId);
 	public List<Object[]> getOnlineCadreRegistrationVoterDetails(String VoterCardNumber);
 	public List<Object[]> getRegisteredCadresForVoterIds(List<Long> voterIds);
+	public Long getVtrId(String voterCardNo);
 }
