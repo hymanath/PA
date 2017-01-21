@@ -442,8 +442,8 @@ function createAlert(){
 $('[data-toggle="tooltip"]').tooltip()
 var globalStateId = 1;
 globalLocation = "state";  
-var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
-var currentToDate = moment().format("DD/MM/YYYY");  
+var currentFromDate = moment().subtract(29, 'days').format("MM/DD/YYYY");
+var currentToDate = moment().format("MM/DD/YYYY");  
 
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
@@ -459,7 +459,7 @@ $(document).ready(function(){
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
 		locale: {
-            format: 'DD/MM/YYYY'
+            format: 'MM/DD/YYYY'
         }
 			
 	});
@@ -470,8 +470,8 @@ $(document).ready(function(){
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');     
-		currentFromDate = picker.startDate.format('DD/MM/YYYY');
-		currentToDate = picker.endDate.format('DD/MM/YYYY'); 
+		currentFromDate = picker.startDate.format('MM/DD/YYYY');
+		currentToDate = picker.endDate.format('MM/DD/YYYY'); 
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 
 		var levelId = 0;
@@ -867,6 +867,8 @@ function buildAlertData(result,jsObj)
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
 	str+='<thead>';
+	str+='<th>Alert Source </th>';
+	str+='<th>Title</th>';
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
 	str+='<th>Status</th>';
@@ -885,6 +887,8 @@ function buildAlertData(result,jsObj)
 		if(result[i].statusId == 1 || result[i].statusId == 2){
 			j++;
 			str+='<tr>';	
+			str+='<td>'+result[i].alertSource+'</td>';
+			str+='<td>'+result[i].title+'</td>';
 			str+='<td>'+result[i].alertCategoryName+'</td>';
 			str+='<td>'+result[i].alertType+'</td>';
 			str+='<td>'+result[i].status+'</td>';
@@ -1023,7 +1027,7 @@ function getLocationFilterAlertData()
 		}
 		var alertTpeId = $('#alertTypeId').val();	
 		var alertCategoryId = $('#alertCategoryId').val();	
-		var statusId = $('#alertStatusId').val();	
+		var statusId = 0;	  
 		var actionTypeStatusId = $('#alertStatusId').val();
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
@@ -1043,7 +1047,7 @@ function getLocationFilterAlertData()
 				assignedCadreId:assignedCadreId,    
 				categoryId:alertCategoryId,
 				actionTypeStatusId:actionTypeStatusId,        
-				task : ""
+				task : "accessUser"
 		      }
 			$.ajax({
 					  type:'GET',
