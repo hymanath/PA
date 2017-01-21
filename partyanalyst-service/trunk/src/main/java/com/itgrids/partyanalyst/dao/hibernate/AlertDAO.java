@@ -3293,5 +3293,545 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();
 	}
+   
+   public List<Object[]> getStateImpactLevelAlertCntForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,String groupType,List<Long> alertTypeList, List<Long> editionList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append("select ");
+		  if(groupType != null && groupType.equalsIgnoreCase("State")){
+			  queryStr.append(" model.userAddress.state.stateId,model.userAddress.state.stateName,");
+		  }else if(groupType != null && groupType.equalsIgnoreCase("Category")){
+			  queryStr.append(" model.alertCategory.alertCategoryId,model.alertCategory.category,");
+		  }else if(groupType != null && groupType.equalsIgnoreCase("Status")){
+			  queryStr.append(" model.alertStatus.alertStatusId,model.alertStatus.alertStatus,"); 
+		  }
+		  queryStr.append(" count(distinct model.alertId)" +
+		  				  " from Alert model" +
+		  				  " where  " +
+		  				  " model.isDeleted='N' " +
+		  				  " and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		 if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
+		 }
+		 if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
+		 }
+		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+		 }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  queryStr.append(" and model.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		      queryStr.append(" and model.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		      queryStr.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}
+	    if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		}
+	      queryStr.append(" group by ");
+	     if(groupType != null && groupType.equalsIgnoreCase("state")){
+			  queryStr.append(" model.userAddress.state.stateId ");
+		  }else if(groupType != null && groupType.equalsIgnoreCase("Category")){
+			  queryStr.append(" model.alertCategory.alertCategoryId ");
+		  }else if(groupType != null && groupType.equalsIgnoreCase("Status")){
+			  queryStr.append(" model.alertStatus.alertStatusId "); 
+		  }
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);  
+		}
+		return query.list();
+	}
+   
+   public List<Object[]> getTotalAlertGroupByLocationForOrganization(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		
+		queryStr.append(" district.districtId, " +//0
+					" district.districtName, ");//1
+		
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertCategory.alertCategoryId," +//2
+							" model.alertCategory.category,");//3
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " + 
+						" where model.isDeleted ='N'  ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		else{
+			queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		}
+		if(step.equalsIgnoreCase("one")){
+			queryStr.append(" group by district.districtId order by district.districtId ");
+		}else{
+			queryStr.append(" group by district.districtId, model.alertCategory.alertCategoryId order by district.districtId, model.alertCategory.alertCategoryId ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);  
+		}
+		return query.list();       
+	}
+   
+   public List<Object[]> getTotalAlertGroupByLocationThenStatusForOrganization(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		queryStr.append(" district.districtId, " +//0
+					" district.districtName, ");//1
+		
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertStatus.alertStatusId," +//2  
+							" model.alertStatus.alertStatus,");//3
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " + 
+						" where model.isDeleted ='N'  ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		else{
+			queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		}
+		if(step.equalsIgnoreCase("one")){
+			queryStr.append(" group by district.districtId order by district.districtId ");
+		}else{
+			queryStr.append(" group by district.districtId, model.alertStatus.alertStatusId order by district.districtId, model.alertStatus.alertStatusId ");
+		}  
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}    
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);  
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);  
+		}
+		return query.list();   
+	}
+   
+   public List<Object[]> getPublicRepresentativeTypeAlertDtlsForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId " +
+		  				  " from AlertAssigned model,PublicRepresentative model1,TdpCadreCandidate model2 " +
+		  				  " where  " +
+		  				  " model2.candidate.candidateId=model1.candidate.candidateId " +
+		  				  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+")" +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
+		 if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+		 }
+		 if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+		 }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		      queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}
+       if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			queryStr.append(" and model.alert.editionType.editionTypeId in (:editionList) ");
+		}
+			
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			query.setParameterList("editionList", editionTypeList);  
+		}
+		return query.list();
+	}
+   
+   public List<Object[]> getPartyCommitteeTypeAlertDtlsForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId " +
+		  				  " from AlertAssigned model,TdpCommitteeMember model1 " +
+		  				  " where  " +
+		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") " +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
+		  if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+		  }
+		  if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+		 }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		      queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}
+       if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			queryStr.append(" and model.alert.editionType.editionTypeId in (:editionList) ");
+		}
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			query.setParameterList("editionList", editionTypeList);  
+		}
+		return query.list();
+	}
+   
+   public List<Object[]> getProgramCommitteeTypeAlertDtlsForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname " +
+		  				  " from AlertAssigned model,TdpMember model1 " +
+		  				  " where  " +
+		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' and model1.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") " +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
+		  if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+		  }
+		  if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+		 }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		      queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}
+	    if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			queryStr.append(" and model.alert.editionType.editionTypeId in (:editionList) ");
+		}
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			query.setParameterList("editionList", editionTypeList);  
+		}
+		return query.list();
+	}
+   
+   public List<Object[]> getAllAlertDtlsForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname " +
+		  				  " from AlertAssigned model" +
+		  				  " where  " +
+		  				  " model.alert.isDeleted='N' and model.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId  in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+")" +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_STATUS_ID+") ");
+		  if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+		  }
+		  if(fromDate !=null && toDate !=null){
+			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+		 }
+		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+		 }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		      queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}
+	    
+	    if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alert.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			queryStr.append(" and model.alert.editionType.editionTypeId in (:editionList) ");
+		}
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){
+	     query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			query.setParameterList("impactLevelIds", impactLevelIds); 
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionTypeList != null && editionTypeList.size() > 0){
+			query.setParameterList("editionList", editionTypeList);  
+		}
+		return query.list();
+	}
+   
+   public List<Object[]> getTotalAlertGroupByDistForOrganization(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		
+		queryStr.append(" district.districtId, " +//0
+						" district.districtName," +  //1
+						" model1.newsOrganizationId," +  //2
+						" model1.organization,");//3
+		
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model,AlertCandidate model1 " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " + 
+						" where model.isDeleted ='N' and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+")" +
+						" and model.alertId = model1.alert.alertId" +
+						" and model1.isDepartment = 'Y'");             
+		if(fromDate != null && toDate != null){ 
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		
+		if(scopeIdList != null && scopeIdList.size() > 0){   
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		}
+		queryStr.append(" group by district.districtId,model1.newsOrganizationId order by district.districtId,model1.newsOrganizationId ");
+		
+		Query query = getSession().createQuery(queryStr.toString()); 
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}    
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);  
+		}
+		if(alertTypeList != null && !alertTypeList.isEmpty() && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);  
+		}
+		return query.list();  
+	}
 }
 

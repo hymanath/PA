@@ -62,8 +62,10 @@ import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -4728,6 +4730,62 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }catch(Exception e){
 			  e.printStackTrace();
 				log.error("exception occured in  the getAlertDtls  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 
+	 public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId){
+		 AlertOverviewVO returnvo = null;
+		  try{			  
+			  returnvo = alertsNewsPortalService.getStateImpactLevelAlertDtlsCnt(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getStateImpactLevelAlertDtlsCnt  method in WebServiceHandlerService");
+		  }
+		  return returnvo;
+	  }
+	 
+	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
+		 List<AlertVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getTotalAlertGroupByLocationThenCategory(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getTotalAlertGroupByLocationThenCategory  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
+		 List<AlertVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getTotalAlertGroupByLocationThenStatus(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getTotalAlertGroupByLocationThenStatus  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,Long editionTypeId){
+		 List<AlertOverviewVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionTypeId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAssignGroupTypeAlertDtlsByImpactLevelWise  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
+		 List<AlertCommentVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getTotalAlertGroupByDist(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, alertTypeId, editionId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getTotalAlertGroupByDist  method in WebServiceHandlerService");
 		  }
 		  return returnList;
 	  }
