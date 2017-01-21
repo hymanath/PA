@@ -12,12 +12,12 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 
@@ -73,6 +73,8 @@ public interface IAlertService {
     public String removeAlertDocument(Long documentId);
     public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
     public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO vo);
+    public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId, final Map<File,String> mapFiles);
+    public AlertVerificationVO getAlertVerificationDtls(Long alertId);
     public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO);
     public List<KeyValueVO> getDocumentsForAlert(Long alertId);
     public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);

@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
+import com.itgrids.partyanalyst.dao.IAlertVerificationUserTypeUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -64,6 +65,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
+import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
+import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
@@ -76,6 +80,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -99,6 +104,10 @@ import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.VerificationComments;
+import com.itgrids.partyanalyst.model.VerificationConversation;
+import com.itgrids.partyanalyst.model.VerificationDocuments;
+import com.itgrids.partyanalyst.model.VerificationStatus;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -152,10 +161,12 @@ private IAlertActionTypeDAO alertActionTypeDAO;
 private IActionTypeDAO actionTypeDAO;
 private IAlertDocumentDAO alertDocumentDAO;
 private IVerificationStatusDAO verificationStatusDAO;
+private IVerificationConversationDAO verificationConversationDAO;
+private IVerificationDocumentsDAO verificationDocumentsDAO;
+private IVerificationCommentsDAO verificationCommentsDAO;
+private IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO;
 private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
-
-
 public ITdpCadreDAO getTdpCadreDAO() {
 	return tdpCadreDAO;
 }
@@ -166,10 +177,6 @@ public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 
 public void setAlertTrackingDocumentsDAO(IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO) {
 	this.alertTrackingDocumentsDAO = alertTrackingDocumentsDAO;
-}
-
-public void setVerificationStatusDAO(IVerificationStatusDAO verificationStatusDAO) {
-	this.verificationStatusDAO = verificationStatusDAO;
 }
 public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
 	this.alertDocumentDAO = alertDocumentDAO;
@@ -432,6 +439,28 @@ public void setActionTypeStatusDAO(IActionTypeStatusDAO actionTypeStatusDAO) {
 
 public void setAlertActionTypeDAO(IAlertActionTypeDAO alertActionTypeDAO) {
 	this.alertActionTypeDAO = alertActionTypeDAO;
+}
+public void setVerificationStatusDAO(IVerificationStatusDAO verificationStatusDAO) {
+	this.verificationStatusDAO = verificationStatusDAO;
+}
+
+public void setVerificationConversationDAO(
+		IVerificationConversationDAO verificationConversationDAO) {
+	this.verificationConversationDAO = verificationConversationDAO;
+}
+
+public void setVerificationDocumentsDAO(
+		IVerificationDocumentsDAO verificationDocumentsDAO) {
+	this.verificationDocumentsDAO = verificationDocumentsDAO;
+}
+
+public void setVerificationCommentsDAO(
+		IVerificationCommentsDAO verificationCommentsDAO) {
+	this.verificationCommentsDAO = verificationCommentsDAO;
+}
+public void setAlertVerificationUserTypeUserDAO(
+		IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO) {
+	this.alertVerificationUserTypeUserDAO = alertVerificationUserTypeUserDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -6213,4 +6242,201 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		return returnObj;
   	}
   	
+  	/* Alert Verification Service Start */
+  	public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId, final Map<File,String> mapFiles)
+  	{
+  	String resultStatus = (String) transactionTemplate
+  			.execute(new TransactionCallback() {
+  				public Object doInTransaction(TransactionStatus status) {
+  					String rs = new String();
+  					try {
+  						
+  				Long alertVerificationUserTypeId = alertVerificationUserTypeUserDAO.getAlertVerificationUserTypeId(userId);
+  				Long statusId = verificationStatusDAO.getAlertStatusId(alertId);
+  				
+  				DateUtilService date = new DateUtilService();
+  				boolean flag=false;
+				if( actionTypeStatusId == 0 || !actionTypeStatusId.equals(statusId)){
+					flag = true;	
+				}
+				
+			    if(alertVerificationUserTypeId == 1l && actionTypeStatusId.longValue() == 2l  && comments != null && comments.trim().length() > 0){ // 2l completed status id
+				 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime(), alertVerificationUserTypeId); // program committee is going to change status in progress.
+				  flag = true;
+	  		    }
+				if(actionTypeStatusId.longValue() > 0 && !actionTypeStatusId.equals(statusId)){
+					 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime(), alertVerificationUserTypeId);	
+				}
+			
+				if(flag){
+					 VerificationStatus verificationStatus = new VerificationStatus();
+	  				 
+	  				 if(alertId != null && alertId.longValue() > 0){
+	  					 verificationStatus.setAlertId(alertId);
+	  				 }
+	  				 if(actionTypeStatusId.longValue() == 0l){
+	  					 verificationStatus.setActionTypeStatusId(1l);//default progress status
+	  			     }else if(alertVerificationUserTypeId == 1l && actionTypeStatusId.longValue() ==2l && comments != null && comments.trim().length() > 0){ //2 completed
+	  			    	 verificationStatus.setActionTypeStatusId(1l); 
+	  				 }else {
+	  					verificationStatus.setActionTypeStatusId(actionTypeStatusId); 
+	  				 }
+	  				 if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0l){
+	  					verificationStatus.setAlertVerificationUserTypeId(alertVerificationUserTypeId);	 
+	  				 }
+	  				 verificationStatus.setInsertedBy(userId);
+	  				 verificationStatus.setInsertedTime(date.getCurrentDateAndTime());
+	  				 verificationStatus.setIsDeleted("N");
+	  				 verificationStatus = verificationStatusDAO.save(verificationStatus);	
+				}
+  				
+  				 
+				 VerificationConversation verificationConversation = new VerificationConversation();
+  				 if(alertId != null && alertId.longValue() > 0){
+  					 verificationConversation.setAlertId(alertId);
+  				 }
+  				 if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0l){
+  					verificationConversation.setAlertVerificationUserTypeId(alertVerificationUserTypeId);	 
+   				 }
+  				 verificationConversation.setInsertedBy(userId);
+  				 verificationConversation.setUpdatedBy(userId);
+  			     verificationConversation.setInsertedTime(date.getCurrentDateAndTime());
+  			     verificationConversation.setUpdatedTime(date.getCurrentDateAndTime());
+  			     verificationConversation.setIsDeleted("N");
+  			     verificationConversation = verificationConversationDAO.save(verificationConversation);	
+  			     
+  			      VerificationComments verificationComments = new VerificationComments();
+  			    
+  			      verificationComments.setVerificationConversationId(verificationConversation.getVerificationConversationId());
+  				  if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0l){
+  					verificationComments.setAlertVerificationUserTypeId(alertVerificationUserTypeId);	 
+   				  }
+  			      verificationComments.setComments(comments);
+  			      verificationComments.setInsertedBy(userId);
+  			      verificationComments.setUpdatedBy(userId);
+  			      verificationComments.setInsertedTime(date.getCurrentDateAndTime());
+  			      verificationComments.setUpdatedTime(date.getCurrentDateAndTime());
+  			      verificationComments.setIsDeleted("N");
+  			      verificationCommentsDAO.save(verificationComments);
+  			     
+  			      if(mapFiles != null && mapFiles.size() > 0){
+  			        saveAlertVerificationDocument(alertVerificationUserTypeId,verificationConversation.getVerificationConversationId(),userId,mapFiles);
+  		        }
+  				  rs = "success";
+  					}
+  					catch (Exception ex) {
+  						 rs = "fail";
+  						return rs;
+  					}
+  						return rs;
+  				}
+  		});
+  	return resultStatus;
+  	}
+  	public void saveAlertVerificationDocument(Long alertVerificationUserTypeId,Long verificationConversionStatusId,Long userId,final Map<File,String> documentMap){
+  		try{
+  			DateUtilService dateUtil = new DateUtilService();
+  			
+  			String folderName = folderCreation();
+  	
+  			Calendar calendar = Calendar.getInstance();
+  			calendar.setTime(new Date());
+  			 int year = calendar.get(Calendar.YEAR);
+  			 int month = calendar.get(Calendar.MONTH);
+  			 int temp = month+1;
+  			 String monthText = getMonthForInt(temp);
+  			
+  			 StringBuilder pathBuilder = null;
+  			 VerificationDocuments verificationDocuments = null;
+  			 StringBuilder str ;
+  			 
+  			 for (Map.Entry<File, String> entry : documentMap.entrySet())
+  			 {
+  				 pathBuilder = new StringBuilder();
+  				 str = new StringBuilder();
+  				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+  				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+  				 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+  				 .append(entry.getValue());
+  				 str.append(randomNumber).append(".").append(entry.getValue());
+  				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+  				 
+  					if(fileCpyStts.equalsIgnoreCase("error")){
+  						LOG.error(" Exception Raise in copying file in ToursService ");
+  						throw new ArithmeticException();
+  					}
+  					
+  				  	  verificationDocuments = new VerificationDocuments();
+	  				  verificationDocuments.setDocumentPath(pathBuilder.toString());				
+	  				  verificationDocuments.setVerificationConversationId(verificationConversionStatusId);
+	  				  if(alertVerificationUserTypeId != null && alertVerificationUserTypeId.longValue() > 0){
+	  					verificationDocuments.setAlertVerificationUserTypeId(alertVerificationUserTypeId);  
+	  				  }
+		  			  verificationDocuments.setInsertedBy(userId);
+		  			  verificationDocuments.setUpdatedBy(userId);
+		  			  verificationDocuments.setInsertedTime(dateUtil.getCurrentDateAndTime());
+		  			  verificationDocuments.setUpdatedTime(dateUtil.getCurrentDateAndTime());
+		  			  verificationDocuments.setIsDeleted("N");
+		  			   verificationDocumentsDAO.save(verificationDocuments);
+	  		 }
+  		}catch(Exception e){
+  			e.printStackTrace();
+  			LOG.error("Exception Occured in saveAlertVerificationDocument() in ToursService", e);
+  		}	
+  	}
+  public AlertVerificationVO getAlertVerificationDtls(Long alertId){
+	    AlertVerificationVO resultVO = new AlertVerificationVO();
+	 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+		Map<Long,AlertVerificationVO> alertCommentsMap = new LinkedHashMap<Long, AlertVerificationVO>(0);
+	  try{
+		  Object[] alertStatusObj = verificationStatusDAO.getAertStausIdAndName(alertId);
+		   if(alertStatusObj != null && alertStatusObj.length > 0){
+			   resultVO.setAlertActionTypeStatusId((Long)alertStatusObj[0]);
+			   resultVO.setActionTypeStatus(commonMethodsUtilService.getStringValueForObject(alertStatusObj[1]));
+		   }
+		
+		   List<Object[]> rtnrObjList = verificationCommentsDAO.getAletConversationDtls(alertId);
+		   
+		    if(rtnrObjList != null && rtnrObjList.size() > 0){
+		    	for(Object[] param:rtnrObjList){
+		    		Long conversationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+		    		AlertVerificationVO commentVO = alertCommentsMap.get(conversationId);
+		    		Long userTypeId = commonMethodsUtilService.getLongValueForObject(param[1]);
+		    		if(commentVO == null){
+		    			commentVO = new AlertVerificationVO();
+		    			if(userTypeId == 1l){
+		    				commentVO.setHeading("Program Committee Remarks");
+		    			}else if(userTypeId == 2l){
+		    				commentVO.setHeading("Info Cell Remarks");	
+		    			}
+		    			commentVO.setComments(commonMethodsUtilService.getStringValueForObject(param[2]));
+		    			if(param[3] != null){
+		    				commentVO.setUpdateTime(sdf.format(param[3]));	
+		    			}
+		    			if(param[4] != null){
+		    				commentVO.setTime(_12HourSDF.format(param[4]));	
+		    			}
+		    			commentVO.setName(commonMethodsUtilService.getStringValueForObject(param[5])+" "+commonMethodsUtilService.getStringValueForObject(param[6]));//first and last name
+		    			commentVO.setDocumentList(new ArrayList<String>());
+		    			alertCommentsMap.put(conversationId, commentVO);
+		    		}
+		    		 String filePath = commonMethodsUtilService.getStringValueForObject(param[7]);
+	    			 if(filePath.length() > 0){
+	    				 commentVO.getDocumentList().add(filePath);
+	    			 }
+		    		
+		    	}
+		    }
+		   if(alertCommentsMap != null && alertCommentsMap.size() > 0){
+			   resultVO.setConversationList(new ArrayList<AlertVerificationVO>(alertCommentsMap.values()));  
+		   }
+	  }catch(Exception e){
+		  LOG.error("Exception Occured in getAlertVerificationDtls() in ToursService", e);
+	  }
+	  return resultVO;
+  }
+ 
+	/* Alert Verification Service end */
 }
+
