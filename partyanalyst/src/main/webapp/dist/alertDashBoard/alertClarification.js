@@ -1,3 +1,25 @@
+     getAlertVerificationStatus();
+	function getAlertVerificationStatus(){
+		var jsObj={
+			actionTypeId:1
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAlertVerificationStatusAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				 if(result != null && result.length > 0){
+					 var str='';
+					 for(var i in result){
+					   str+='<option value="'+result[i].alertActionTypeStatusId+'">'+result[i].actionTypeStatus+'</option>';
+					 }
+					$("#verificationStatusSlctBxId").html(str);
+				 } 
+				 getAlertVerificationDetails();
+		  }); 
+	 }
+
 $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	$("#isClarificationNotRequiredChckBxId").prop("checked",false);
 		if($(this).prop("checked") == true){
@@ -86,9 +108,9 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	function getAletDelt(){
 		getAlertVerificationDetails();
 	}
-	getAlertVerificationDetails();
 	function getAlertVerificationDetails(){
 		$(".hideVarificationStatusCls").show();
+		 $(".notificationHeadingCls").hide();
 		$("#converSationDtlsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj={
 			alertId:alertId
@@ -109,7 +131,6 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$("#verificationStatusSlctBxId").val(result.alertActionTypeStatusId);
 		 }else{
 			 $("#clarificationStatusId").attr("value",0); 
-		   //  return;			
 		 }
 		 $("#alertStatusHeadingId").html("Status:<span class='text-success'>"+result.actionTypeStatus+"</span>");
 		 userWiseAccessiblilityFunction();
@@ -194,6 +215,9 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 							$("#alertStatusHeadingId").show();	
 							$(".hideUpdateBlockCls").show();
 							$("#verificationCreationHeadingId").hide();
+							if(statusId == 2){
+							 $(".notificationHeadingCls").show();	
+							}
 						}else{
 						   $("#verificationCreationHeadingId").show();		
 						   $("#alertStatusHeadingId").hide();
@@ -212,4 +236,5 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		
 		window.open('../Reports/tour_documents/'+dbFilePath,'_blank');
 	});
+		
 		

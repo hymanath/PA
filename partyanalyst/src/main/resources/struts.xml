@@ -15504,5 +15504,11 @@
 			<param name="root">eventDetailsVOList</param>
 		</result>
 	</action>	
+	<action name="getAlertVerificationStatusAction" class="createAlertAction" method="getAlertVerificationStatus">
+	  <result type="json" name="success">
+		    <param name="root">alertVerificationList</param>
+		</result>
+	</action>
+	
  </package>
 </struts>

@@ -462,11 +462,14 @@ control.makeTransliteratable(['commentsId']);
 													<div class="col-md-5 col-xs-12 col-sm-6">
 														<label class="verificationStatusCls" style="display:none;">Verficiation Status</label>
 														<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
-															<option value="1">Progress</option>
-															<option value="2">Completed</option>
+														<!--	<option value="1">Progress</option>-->
+														<!--     <option value="2">Completed</option>-->
 														</select>
 														<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">update verification status</button>
 													</div>
+													  <div class="col-md-12 col-xs-12 col-sm-12 notificationHeadingCls" style="display:none;">
+														  <h4>Note:Adding comment will reverse this status to progress</h4>
+													  </div>
 												</div>
 											</div>
 											<input type="text" hidden value="" id="alertIdForClarification" name="alertId"/>
