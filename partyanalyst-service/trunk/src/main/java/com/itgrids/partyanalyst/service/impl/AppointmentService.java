@@ -8461,17 +8461,32 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 								
 								AppointmentCandidate appointmentCandidate = new AppointmentCandidate();
 								
-								appointmentCandidate.setName(obj[4] != null ? obj[4].toString() : "");
-								appointmentCandidate.setDesignationId(inputvo.getDesignationId());		//Cadre
-								appointmentCandidate.setMobileNo(obj[5] != null ? obj[5].toString():"");
+								if(inputvo.getName() != null && inputvo.getName().length()>0)
+									appointmentCandidate.setName(inputvo.getName());
+								else
+									appointmentCandidate.setName(obj[4] != null ? obj[4].toString() :"");
+								appointmentCandidate.setDesignationId(inputvo.getDesignationId());	//Cadre
+								if(inputvo.getMobileNo() !=null && inputvo.getMobileNo().length() > 0)
+									appointmentCandidate.setMobileNo(inputvo.getMobileNo());
+								else
+									appointmentCandidate.setMobileNo(obj[5] != null ? obj[5].toString():"");
 								appointmentCandidate.setLocationScopeId(4l);	//constituency
 								appointmentCandidate.setLocationValue(inputvo.getConstituencyId());
 								appointmentCandidate.setAddressId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 								appointmentCandidate.setVoterId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-								appointmentCandidate.setVoterIdCardNo(inputvo.getVoterCardNo());
+								if(inputvo.getVoterCardNo() != null && inputvo.getVoterCardNo().trim().length() > 0)
+									appointmentCandidate.setVoterIdCardNo(inputvo.getVoterCardNo());
+								else
+									appointmentCandidate.setVoterIdCardNo(obj[2] != null ? obj[2].toString():"");
 								appointmentCandidate.setTdpCadreId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-								appointmentCandidate.setMembershipId(inputvo.getMembershipNo());
-								appointmentCandidate.setImageURL(obj[7] != null ? "images/cadre_images/"+obj[7].toString():"");
+								if(inputvo.getMembershipNo() != null && inputvo.getMembershipNo().trim().length() > 0)
+									appointmentCandidate.setMembershipId(inputvo.getMembershipNo());
+								else
+									appointmentCandidate.setMembershipId(obj[3] != null ? obj[3].toString():"");
+								if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0)
+									appointmentCandidate.setImageURL("images/cadre_images/"+inputvo.getImageStr());
+								else
+									appointmentCandidate.setImageURL(obj[7] != null ? "images/cadre_images/"+obj[7].toString():"");
 								appointmentCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								appointmentCandidate.setPeshiAppUserId(inputvo.getUserId());
@@ -8482,12 +8497,34 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 								
 								return stats;	
 							}
+							else{
+								Long voterId = voterDAO.getVtrId(inputvo.getVoterCardNo());
+								AppointmentCandidate appointmentCandidate = new AppointmentCandidate();
+								
+								appointmentCandidate.setName(inputvo.getName());
+								appointmentCandidate.setDesignationId(inputvo.getDesignationId());
+								appointmentCandidate.setMobileNo(inputvo.getMobileNo());
+								appointmentCandidate.setLocationScopeId(4l);	//constituency
+								appointmentCandidate.setLocationValue(inputvo.getConstituencyId());
+								appointmentCandidate.setVoterId(voterId);
+								appointmentCandidate.setVoterIdCardNo(inputvo.getVoterCardNo());
+								appointmentCandidate.setImageURL("images/cadre_images/"+inputvo.getImageStr());
+								appointmentCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								appointmentCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								appointmentCandidate.setPeshiAppUserId(inputvo.getUserId());
+								appointmentCandidate.setAppointmentCandidateTypeId(inputvo.getAppointmentCandidateTypeId());
+								appointmentCandidate = appointmentCandidateDAO.save(appointmentCandidate);
+								
+								String stats = savingAppointCandRelaDetails(inputvo.getAppointmentId(),appointmentCandidate.getAppointmentCandidateId());
+								
+								return stats;
+							}
  				}else{
  					String result = savingAppointCandRelaDetails(inputvo.getAppointmentId(),appointmtCadtId);
  					return result;
  				
  				}
- 					return "failure";
+ 					//return "failure";
  			   }
  					
  				});
