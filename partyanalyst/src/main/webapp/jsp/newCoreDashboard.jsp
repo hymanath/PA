@@ -3627,6 +3627,36 @@
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="myModelActivityId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:75%"> 
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModelActivityhead">DISTRICT</h4>
+      </div>
+       <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="pull-right" id="">  
+				
+			</div> 
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="table-responsive" id="activityId">  
+				  
+				</div>
+				<div id="processingImgId" style="display:none;"></div>    
+				<div id="processingImgAttendId"></div>    
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>

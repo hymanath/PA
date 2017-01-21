@@ -1581,5 +1581,45 @@ function buildActivityCounts(result,divId)
 	}
 	$("#"+divId).html(str);
 }
+function getDistrictWiseActivitiesCount(){
+	
+	 var jsObj ={ 
+	               districtId : 22,
+				   activity_scope_id : 1,
+				   search_type :"constituency",
+				   type : "conducted"
+				 }
+	  $.ajax({
+			type : 'POST',
+			url : 'getDistrictWiseActivityCountsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   buildDistrictWiseActivitiesCount(result);
+		});
+}
+//getDistrictWiseActivitiesCount();
 
+function buildDistrictWiseActivitiesCount(result){
+	$("#myModelActivityId").modal('show');
+	
+	var str = '';
+	 str +='<table class="table table-bordered">';
+	str +='<tr>';
+    str +='<th class="text-capital">Constituencies</th>';
+    str +='<th class="text-capital">Planned</th>';
+    str +='<th class="text-capital">Total ivr</th>';
+	str +='<th class="text-capital">infocell</th>';
+  str +='</tr>';
+  for(var i in result){
+  str +='<tr>';
+    str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+	str +='<td>'+result[i].inviteeCount+'</td>';
+	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
+	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
+  }
+str +='</table> ';
+
+$("#activityId").html(str);
+}
 /* Activities Functionality End */
