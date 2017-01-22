@@ -2437,8 +2437,21 @@ public class ToursService implements IToursService {
 			 if(searchMonth != null && !searchMonth.isEmpty())
 				 monthYearStrList.add(searchMonth);
 			 
-			 List<Object[]> toursList = selfAppraisalDesignationTargetDAO.getToursDetailsforDesignation(monthYearStrList,designationId);
+			 List<Object[]> toursList = selfAppraisalDesignationTargetDAO.getToursDetailsforDesignation(monthYearStrList,0L);
 			 Map<Long, Map<Long,Long>> toursTargetMap = new HashMap<Long,Map<Long, Long>>(0);
+			 if(commonMethodsUtilService.isListOrSetValid(toursList)){
+				 for (Object[] param : toursList) {
+					 Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 Long designatinId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 Map<Long,Long> designationTargetMap = new HashMap<Long, Long>(0);
+					 if(toursTargetMap.get(categoryId) != null)
+						 designationTargetMap = toursTargetMap.get(categoryId);
+					 designationTargetMap.put(designatinId, 0L);
+					 toursTargetMap.put(categoryId, designationTargetMap);
+				}
+			 }
+			 
+			toursList = selfAppraisalDesignationTargetDAO.getToursDetailsforDesignation(monthYearStrList,designationId);
 			 if(commonMethodsUtilService.isListOrSetValid(toursList)){
 				 for (Object[] param : toursList) {
 					 Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -2479,8 +2492,10 @@ public class ToursService implements IToursService {
 							if(targetCount == null)
 								targetCount= 0L;
 							vo.setTotalCount(targetCount);
+							Long compledToursCount =  0L;
+							if(commonMethodsUtilService.isMapValid(designationsTargetMap))
+								compledToursCount =  designationsTargetMap.get(designationId);
 							
-							Long compledToursCount =  designationsTargetMap.get(designationId);
 							vo.setCount(compledToursCount);
 					 }
 				}
