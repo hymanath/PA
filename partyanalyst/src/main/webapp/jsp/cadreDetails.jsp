@@ -699,7 +699,49 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							</div>
 						</div>
 					</div>
-                
+                <!--
+				<div class="panel panel-default" id="" style="">
+                	<div class="panel-heading" id="toursHeaderId" style="padding:0px 15px">
+						<div class="row">
+							<div class="col-md-7 col-xs-12 col-sm-8" style="margin-top:10px">
+								<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-plane"></i>&nbsp;&nbsp;&nbsp;TOURS 
+								<label class="">  
+								<select class="form-control" id="toursDesignId" style="font-size:13px;display:inline-block;">
+									<option value="1">General Secretory</option>
+								</select>
+								</label>
+								</h4>
+							</div>
+							<div class="col-md-5 col-xs-12 col-sm-4">
+								<span id="toursProfileShowId">
+									<i class="glyphicon glyphicon-chevron-up pull-right"  style="margin-top:10px;margin-left:5px"></i>
+								</span>
+								<span class="pull-right" id="toursProfileHideId" style="display:none;">
+									<i class="glyphicon glyphicon-chevron-down" style="margin-top:10px;margin-left:5px"></i>
+								</span>
+								<div style="display:inline-block;width:200px" class="pull-right">
+									<div class="input-group pull-right">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+										<input class="form-control" id="toursDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
+									</div>
+								</div>
+								
+							</div>
+							
+						</div>
+                    </div>
+					<div class="panel-body" id="">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="cadre-election" >
+									<div id="toursDetailsDiv"></div>
+									<div id="tourssErrMsgId"></div>
+								</div>
+							</div>
+						</div>
+                    </div>					
+                </div>
+				-->
 				 <div class="panel panel-default" id="" style="">
                 	<div class="panel-heading" id="alertHeaderId" style="padding:0px 15px">
 						<div class="row">
@@ -751,15 +793,15 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<label class=""> Alert Type : </label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="0" class="alerttsCls" checked/>All</label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="1" class="alerttsCls" />Party</label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="2" class="alerttsCls" />Govt</label>
-								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="3" class="alerttsCls" />Others</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="0" class="alerttsCls" onclick="getCadreAlertDetails();" checked/>All</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="1" class="alerttsCls" onclick="getCadreAlertDetails();" />Party</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="2" class="alerttsCls" onclick="getCadreAlertDetails();" />Govt</label>
+								<label class="radio-inline"><input type="radio" name="alertRadioBtn" value="3" class="alerttsCls" onclick="getCadreAlertDetails();" />Others</label>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<button class="btn btn-success btn-xs pull-right" style="margin-left:20px" onclick="getCadreAlertDetails();" > SUBMIT </button>
-								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Involved"/>Involved</label>
-								<label class="radio-inline pull-right" style="margin-right: 31px;"><input type="radio" name="radioBtn" value="Assigned" checked />Assigned</label>
+								<!--<button class="btn btn-success btn-xs pull-right" style="margin-left:20px" onclick="getCadreAlertDetails();" > SUBMIT </button>-->
+								<label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Involved" onclick="getCadreAlertDetails();"/>Involved</label>
+								<label class="radio-inline pull-right" style="margin-right: 31px;"><input type="radio" name="radioBtn" value="Assigned" onclick="getCadreAlertDetails();" checked />Assigned</label>
 								<!-- label class="radio-inline pull-right"><input type="radio" name="radioBtn" value="Assigned" />All</label>-->
 								<!--<label style="font-size:13px;">Alert Types :</label> 
 								<select class="form-control" id="typeId">
@@ -3327,6 +3369,7 @@ $(document).on("click","#alertHeaderId",function(){
 	$("#alertBodyId").collapse('toggle');
 });
 getCandidateAppliedPostsByCadre(0);
+buildToursDesignationslist();
 </script>
 </body>
 </html>
