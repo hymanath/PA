@@ -16,6 +16,10 @@
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
+	<!-- for file uploader -->
+	<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+	<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
+	<!-- for file uploader -->
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
@@ -71,25 +75,6 @@
 		.m_top20
 		{
 			margin-top:20px !important;
-		}
-		.disabledBlockWhite
-		{
-			background-color:rgba(255,255,255,0.8) !important;
-			color:#333 !important;
-		}
-		.disabledBlock
-		{
-			background-color:rgba(0,0,0,0.8);
-			z-index:99;
-			position:absolute;
-			right:0px;
-			left:0px;
-			top:0px;
-			bottom:0px;
-			color:#fff;
-			text-align:center;
-			padding:20px;
-			text-transform:uppercase;
 		}
 		.uploadedDocuments
 		{
@@ -294,66 +279,8 @@
 	
 	<!-- YUI Dependency files (End) -->
  </head>     
-
-<!-- language convertion-->
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-
-// Load the Google Transliterate API
-   google.load("elements", "1", {
-         packages: "transliteration"
-       });
-
-</script> 
-<script type="text/javascript">
-	var control;
-	var lang;
-   function onLoad() {
-	
-       lang = $("input[name=language]:checked").val();
-     var options = {
-         sourceLanguage:
-             google.elements.transliteration.LanguageCode.ENGLISH,
-         destinationLanguage:
-             [''+lang+''],
-         shortcutKey: 'alt+t',
-         transliterationEnabled: true
-     };
-
-     // Create an instance on TransliterationControl with the required
-     // options.
-     control =
-         new google.elements.transliteration.TransliterationControl(options);
-
-     // Enable transliteration in the textbox with id
-     // 'descrptionId'.
-
-	 	if ($('#commentsId').length){
-control.makeTransliteratable(['commentsId']);
- }
-   }
-   function languageChangeHandler() {
-  
-        var lang1 = $("input[name=language]:checked").val();
-		if(lang1 =="en")
-	   {
-		control.disableTransliteration();
-		}
-		else
-	   {
-		   control.enableTransliteration();
-           control.setLanguagePair(
-            google.elements.transliteration.LanguageCode.ENGLISH,
-            lang1);
-			}
-      }
- google.setOnLoadCallback(onLoad);
-</script> 
 <body style="position:relative;">
-
-
 <div class="container">
-
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
@@ -399,10 +326,23 @@ control.makeTransliteratable(['commentsId']);
 									
 									<td colspan="8">
 									<p class="text-capital"><span class="text-muted ">Article  </span> :
-										<ul class="list-inline imageUrlUlCls" >
-										 
-										 
-										</ul>
+										<ul class="list-inline imageUrlUlCls"></ul>
+									</td>
+								</tr>
+								<tr id="existingDocsTrId" style="display:none;">
+									<td id="existingDocsTdId" colspan="8"></td>
+								</tr>
+								<tr>
+									<td colspan="8">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<form id="alertDocs" name="alertDocs">
+												<h4 class="m_0 text-success font_weight" style="">UPLOAD SCAN COPY</h4>  
+												<input type="file" id="alertScanCopyId" multiple="multiple"  name="files[]" class="m_top20"/>
+												<span id="errFileId" style="color:red;margin-left:470px;"></span>
+												<input type="hidden" id="alertHiddenId" name="alertId">
+												<button type="button" style="width:100%" class="btn btn-success" id="uploadAlertDocBtnId">Upload</button>
+											</form>										
+										</div>
 									</td>
 								</tr>
 							</table>
@@ -443,11 +383,11 @@ control.makeTransliteratable(['commentsId']);
 											</div>
 										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
 											<div class="hideUpdateBlockCls" style="display:none;">
-											   <h4 class="text-capitalize m_top20 panelTitleFont">Add Comments</h4>
+											   <p style="font-weight:bold;font-size:16px;" class="text-capitalize m_top20 panelTitleFont">Add Comments</p>
 											   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
 												
-												<h4 class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</h4>
-												<div class="m_top20 row">
+												<p style="font-weight:bold;font-size:16px;" class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</p>
+												<div class="row">
 													<div class="uploadAttachmentDivCls col-md-6 col-xs-12 col-sm-6">
 														<ul class="attachmentsUpload"  id="">
 															<li>
@@ -455,7 +395,7 @@ control.makeTransliteratable(['commentsId']);
 															</li>
 														</ul>
 														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
-														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>;
+														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
 													</div>
 												</div>
 												<div class="m_top20 row">
@@ -508,8 +448,7 @@ control.makeTransliteratable(['commentsId']);
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">
-											
+										<!--<div class="col-md-4 col-xs-12 col-sm-4">
 												<div class="panel panel-default panelHeights">
 													<div class="panel-heading">
 														<h4 class="panel-title">ALERT CLARIFICATION REPORT</h4>
@@ -520,7 +459,7 @@ control.makeTransliteratable(['commentsId']);
 														</div>
 													</div>
 												</div>
-										</div>
+										</div>-->
 										<div class="col-md-4 col-xs-12 col-sm-4">
 											<div class="panel panel-default panelHeights" style="position:relative;">
 												<div class="panel-heading bg_ff">
@@ -543,42 +482,46 @@ control.makeTransliteratable(['commentsId']);
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
-										<div class="col-md-4 col-xs-12 col-sm-4">
+										<div class="col-md-8 col-xs-12 col-sm-8">
 											<div class="panel panel-default panelHeights" style="position:relative;">
-												<div class=""  id="disabledDivsId" >
-													<h4 class="panel-title" style="margin-top:40px"><b>currently disabled this feature</b></h4>
-													<h4 class="panel-title m_top10">waiting for alert clarification</h4>
-												</div>
 												<div class="panel-body">
-													<label>Alert Status</label>
-													<select class="dropkickClass" id="statusId">
-														<option value='0'>Select Status</option>
-														<option value='1'>Pending</option>      
-														<option value='2'>Notified</option>  
-														<option value='3'>Action In Progess</option>  
-														<option value='4'>Completed</option>
-														<option value='5'>Unable to Resolve</option>
-														<option value='6'>Action Not Required</option>
-														<option value='7'>Duplicate</option>
-													</select>
-													
-													<label>Assigned Cadre</label>
-													 <select class="" id="assignedCadreId"  multiple>
-														 <option value="0">Select Assign Cadre</option>
-														 
-													 </select>
-													
-													<label>Comments</label>
-													<label class="radio-inline">
-														<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-													</label>
-													<label class="radio-inline">
-														<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-													</label>
-													<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-													<div id="errorId" class="m_top10"></div>
-													<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
-													<span id="updateAlertajaxImg" class="m_top10"></span>
+													<form id="alertStatusForm" name="alertStatusForm">
+														<label>Alert Status</label>
+														<select class="dropkickClass" id="statusId">
+															<option value='0'>Select Status</option>
+															<option value='1'>Pending</option>      
+															<option value='2'>Notified</option>  
+															<option value='3'>Action In Progess</option>  
+															<option value='4'>Completed</option>
+															<option value='5'>Unable to Resolve</option>
+															<option value='6'>Action Not Required</option>
+															<option value='7'>Duplicate</option>
+														</select>
+														
+														<label>Assigned Cadre</label>
+															<select class="" id="assignedCadreId"  multiple name="cadreIds">
+																<option value="0">Select Assign Cadre</option>
+															</select>	
+														<label>Comments</label>
+														<label class="radio-inline">
+															<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+														</label>
+														<label class="radio-inline">
+															<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+														</label>
+														<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
+														<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
+														<div id="extraUploadFileDiv"></div>
+														<button type="button" class="btn btn-primary btn-xs pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
+														
+														<div id="errorId" class="m_top10"></div>
+														<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Upload</button>
+														<input type="hidden" id="alertHiddenIdStatus" name="alertId">
+														<input type="hidden" id="alertStatusHiddenId" name="clarificationStatusId">
+														<input type="hidden" id="alertCommentsHiddenId" name="clarificationComments">
+														<!--<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>-->
+														<span id="updateAlertajaxImg" class="m_top10"></span>
+													</form>
 												</div>
 											</div>
 										</div>
@@ -809,34 +752,30 @@ function buildAlertAssignedCandidateData(result)
 	// deleteAlertAssignedCandidates(tdpCadreId);
 });*/
 	
-	$(document).on("click","#updateAlertDetailsId",function(){
-		
-		var comment = $('#clarificationCommentsId').val();
-		if(comment == null || comment.length ==0){
-			alert(" Please enter Clarification Comment... ");
-			return ;
-		}
-		
-		$("#alertIdHidden").val(alertId);
-		var files = [];
-		$("#alertClarificationDocs input[type=file]").each(function() {
-			if($(this).val().trim().length>0){
-				files.push($(this).val());
-			}
-		});
-		
+	$(document).on("click","#uploadAlertDocBtnId",function(){
+		$("#alertHiddenId").val('${alertId}');
 		var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
-					showStatus(uploadResult);
+					showStatus(uploadResult,'${alertId}');
 				}
 			};
 
-		YAHOO.util.Connect.setForm('alertClarificationDocs',true);
+		YAHOO.util.Connect.setForm('alertDocs',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadAlertsDocAction.action',uploadHandler);
 	});
 	
-		
+	function showStatus(myResult,alertId){
+		var result = (String)(myResult);
+		if(result.search('success') != -1){
+			alert("Documents Uploaded Successfully.");
+			var filerKit = $("#alertScanCopyId").prop("jFiler");
+			filerKit.reset();
+			getDocumentsForAlert(alertId)
+		}else{
+			alert("Please Try Again.");
+		}
+	}	
    
  /*
 var maxHeight = 0;
@@ -850,6 +789,49 @@ $(".panelHeights").height(maxHeight);
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/alertClarification.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
+<script type="text/javascript" src="dragAndDropPhoto/js/alertScanCopy.js?v=1.0.5"></script> 
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript">
+ initializeFile();
+ 
+	google.load("elements", "1", {
+        packages: "transliteration"
+    });
+	var control;
+	var lang;
+	function onLoad() {
+	   lang = $("input[name=language]:checked").val();
+		var options = {
+			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+			destinationLanguage:[''+lang+''],
+			shortcutKey: 'alt+t',
+			transliterationEnabled: true
+		};
 
+		// Create an instance on TransliterationControl with the required
+		// options.
+		control = new google.elements.transliteration.TransliterationControl(options);
+
+		// Enable transliteration in the textbox with id
+		// 'descrptionId'.
+
+	 	if ($('#commentsId').length){
+			control.makeTransliteratable(['commentsId']);
+		}
+	}
+	
+	function languageChangeHandler() {
+        var lang1 = $("input[name=language]:checked").val();
+		if(lang1 =="en"){
+			control.disableTransliteration();
+		}else{
+			control.enableTransliteration();
+			control.setLanguagePair(google.elements.transliteration.LanguageCode.ENGLISH,lang1);
+		}
+    }
+ google.setOnLoadCallback(onLoad);
+ </script>
 </body>
 </html>
