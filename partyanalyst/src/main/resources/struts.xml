@@ -15302,7 +15302,13 @@
 	
 		<action name="getCadretoursDetailsAction" class="cadreDetailsAction"  method="getCadretoursDetails">
 			<result type="json" name="success">
-			<param name="root">alertVO</param>
+			<param name="root">toursVO</param>
+		</result>
+	</action>
+	
+		<action name="getCandidateToursDetailsAction" class="cadreDetailsAction"  method="getCandidateToursDetails">
+			<result type="json" name="success">
+			<param name="root">toursVO</param>
 		</result>
 	</action>
 	
