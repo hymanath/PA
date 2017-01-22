@@ -137,13 +137,13 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		   var str = '';
 		  if(result.conversationList != null && result.conversationList.length > 0){
 			  for(var i in result.conversationList){
-				 str+='<h4 class="text-capital panelTitleFont">'+result.conversationList[i].heading+'</h4>';
+				 str+='<p class="text-capital panelTitleFont m_top20" style="font-weight:bold;font-size:16px;">'+result.conversationList[i].heading+'</p>';
 				 if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
 				   str+='<p style="color:rgba(0,0,0,0.6);font-size:13px;">'+result.conversationList[i].comments+'</p>';	 
 				 }
 		 	 var documentList = result.conversationList[i].documentList;
 			if(documentList != null && documentList.length > 0){
-					 str+='<h5 class="text-capital m_top20 panelTitleFont">Attachments</h5>';
+					 str+='<p style="font-weight:bold;font-size:16px;" class="text-capital m_top10 panelTitleFont">Attachments</p>';
 			         str+='<ul class="attachmentsBlock">';
 				var order = 0;
 				for(var k in documentList){
@@ -166,6 +166,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			   str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';  	 
 			 }
 		  }
+		  str+='<hr class="m_top10" style="border-top: 1px solid #ccc;">';
 	   $("#converSationDtlsDivId").html(str);
 	 }
 	 }
@@ -234,7 +235,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
      	var str = ''; 
 		var fileNameArr = dbFilePath.split(".");
 		
-		window.open('../Reports/tour_documents/'+dbFilePath,'_blank');
+		window.open('/Reports/tour_documents/'+dbFilePath,'_blank');
 	});
 		
 		

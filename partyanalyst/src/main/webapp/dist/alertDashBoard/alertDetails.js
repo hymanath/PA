@@ -1331,6 +1331,14 @@ function alertComments(result)
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+													str+='<ul>';
+													for(var t in result[i].sublist2[j].sublist[k][0].docList){
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
+													}
+													str+='</ul>';
+												}
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
 												str+='<hr style="margin-top:20px;"/>';
 											str+='</div>';   
@@ -1817,6 +1825,7 @@ $(document).on("click","#clarifiReqId",function(){
 			$("#existingDocsTdId").html("");
 			if(result != null && result.length > 0){
 				var str='';
+				str+='<span class="text-muted ">DOCUMENTS : </span>';
 				str+='<ul>';
 					for(var i in result){
 						str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
