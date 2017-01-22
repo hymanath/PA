@@ -11341,7 +11341,8 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 					for (Entry<Long, List<BenefitVO>> entry : cadreMap.entrySet()) {
 						if(index == 1){
 							List<BenefitVO> voList  = entry.getValue();
-							overAllAmount = overAllAmount+voList.get(0).getUserWisetotalAmount();
+							if(overAllAmount != null && overAllAmount.longValue()>0L && commonMethodsUtilService.isListOrSetValid(voList))
+								overAllAmount = overAllAmount+voList.get(0).getUserWisetotalAmount();
 							for (BenefitVO benefitVO : voList) {
 								tempMap.put(benefitVO.getBenefitId(), tempMap.get(benefitVO.getBenefitId())+benefitVO.getAmount());
 							}
