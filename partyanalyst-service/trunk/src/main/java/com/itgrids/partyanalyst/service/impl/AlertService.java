@@ -165,6 +165,8 @@ private IVerificationCommentsDAO verificationCommentsDAO;
 private IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO;
 private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
+
+
 public ITdpCadreDAO getTdpCadreDAO() {
 	return tdpCadreDAO;
 }
@@ -1298,16 +1300,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 			Map<String,Set<Long>> dateIdAndCmtListMap = new HashMap<String,Set<Long>>();
 			Set<Long> commentIdList = null;
+			Map<Long,List<KeyValueVO>> alertTrackingDocumentsMap = new HashMap<Long, List<KeyValueVO>>();//alerttrackingid,docsList
 			
 			Map<Long,List<AlertCommentVO>> commentIdAndCommentDtlsMap = new HashMap<Long,List<AlertCommentVO>>();
 			List<AlertCommentVO>  alertCommentDtlsList = null;
 			AlertCommentVO alertCommentVO = null;
 			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
+			
 			if(list != null && list.size() > 0){
+				List<Long> alertTrackingIds = new ArrayList<Long>(0);
 				List<Long> cadreIds = new ArrayList<Long>(0);
 				for (Object[] objects : list) {
 					if(objects[6] != null)
 						cadreIds.add((Long)objects[6]);
+					if(objects[11] != null)
+						alertTrackingIds.add((Long)objects[11]);
 				}
 				
 				if(cadreIds != null && cadreIds.size() > 0){
@@ -1323,6 +1330,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 					}
 					
+				}
+				
+				//get alert tracking documents
+				if(alertTrackingIds != null && alertTrackingIds.size() > 0){
+					List<Object[]> docsObjList = alertTrackingDocumentsDAO.getDocumentsForAlertTracking(alertTrackingIds);
+					if(docsObjList != null && docsObjList.size() > 0){
+						//0-trackingid,1-docid,2-path
+						for (Object[] objects : docsObjList) {
+							List<KeyValueVO> voList = null;
+							if(alertTrackingDocumentsMap.get((Long)objects[0]) == null){
+								voList = new ArrayList<KeyValueVO>(0);
+								alertTrackingDocumentsMap.put((Long)objects[0], voList);
+							}
+							
+							KeyValueVO vo = new KeyValueVO();
+							vo.setId((Long)objects[1]);
+							vo.setName(objects[2] != null?objects[2].toString():"");
+							alertTrackingDocumentsMap.get((Long)objects[0]).add(vo);
+							
+						}
+					}
 				}
 			}
 			
@@ -1383,6 +1411,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
 						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
+						if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
+							alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
+						}
 						alertCommentDtlsList.add(alertCommentVO);
 					}else{
 						alertCommentVO = new AlertCommentVO();
@@ -1395,6 +1426,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
 						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
+						if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
+							alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
+						}
 						alertCommentDtlsList = new ArrayList<AlertCommentVO>();
 						alertCommentDtlsList.add(alertCommentVO);
 						commentIdAndCommentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), alertCommentDtlsList);

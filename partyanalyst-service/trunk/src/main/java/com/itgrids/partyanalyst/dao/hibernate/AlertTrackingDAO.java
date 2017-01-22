@@ -51,7 +51,8 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		
 		queryStr.append(" U.firstname as firstname, ");
 		queryStr.append(" ALTS.alert_status as alert_status ,");
-		queryStr.append(" ALTS.status_order as status_order ");
+		queryStr.append(" ALTS.status_order as status_order, ");
+		queryStr.append(" ALTT.alert_tracking_id as alert_tracking_id ");
 		queryStr.append(" from alert_tracking ALTT ");
 		queryStr.append(" left join alert_status ALTS on ALTT.alert_status_id = ALTS.alert_status_id ");
 		queryStr.append(" left join alert_comment ALTC on ALTC.alert_comment_id = ALTT.alert_comment_id and ALTC.is_deleted = 'N' ");
@@ -77,7 +78,8 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 				.addScalar("first_name", Hibernate.STRING)
 				.addScalar("firstname", Hibernate.STRING)
 				.addScalar("alert_status", Hibernate.STRING)
-				.addScalar("status_order", Hibernate.LONG);
+				.addScalar("status_order", Hibernate.LONG)
+				.addScalar("alert_tracking_id", Hibernate.LONG);
 		query.setParameter("alertId", alertId); 
 		return query.list();
 	}
