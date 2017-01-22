@@ -620,7 +620,8 @@ var globalidentityMembershipNo = ""	;
 					getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),"DISTRICT","DISTRICT","cadreEvntdistrictAttnds","onload","");
 					getTotalMemberShipRegistrationsInCadreLocation(4,22);
 					getTotalMemberShipRegistrationsInCadreLocation(3,11);
-					getCadreAlertDetails();					
+					getCadreAlertDetails();	
+					getCadreToursDetails();					
 					//getUpdatedCastePartyInfo();
 				}
 			});
