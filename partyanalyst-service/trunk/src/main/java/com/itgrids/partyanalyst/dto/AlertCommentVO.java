@@ -11,16 +11,17 @@ public class AlertCommentVO implements Serializable {
 	private Long commentId;
 	private String comment;
 	private String cadreName;
-	private List<String> nameList = new ArrayList<String>();
+	private List<String> nameList = new ArrayList<String>(0);
 	private String userName;
 	private String timeString;
 	private Long LocationId;
 	private String locaitonName;
 	private Long count;
-	private List<List<AlertCommentVO>> sublist = new ArrayList<List<AlertCommentVO>>();
-	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>();
-	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>();
+	private List<List<AlertCommentVO>> sublist = new ArrayList<List<AlertCommentVO>>(0);
+	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>(0);
+	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>(0);
 	private Long orderNo;
+	private List<KeyValueVO> docList = new ArrayList<KeyValueVO>(0);
 	
 	
 	public Long getOrderNo() {
@@ -118,5 +119,11 @@ public class AlertCommentVO implements Serializable {
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public List<KeyValueVO> getDocList() {
+		return docList;
+	}
+	public void setDocList(List<KeyValueVO> docList) {
+		this.docList = docList;
 	}
 }
