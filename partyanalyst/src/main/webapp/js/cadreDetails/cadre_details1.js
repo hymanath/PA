@@ -1277,6 +1277,104 @@ function buildVolunteersDetails(result){
 		}
 	}
 
+	function getCadreToursDetails(){
+		$('#toursDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		$("#tourErrMsgId").html('');
+		var designationId = $('#toursDesignId').val();
+		var searchMonth = $('#toursDatePicker').val();
+			var jsObj=
+				{
+					tdpCadreId :globalCadreId,
+					stateId :1, // AP
+					startDateStr : '', //"2016-11-27",
+					endDateStr : '', //"2016-12-27",
+					designationId : designationId,//"Assigned",
+					searchMonth : "06-2016", //1,	
+					searchType	:""
+				}
+			$.ajax({
+			type:'POST',
+			 url: 'getCadretoursDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null && result.subList != null && result.subList.length > 0){
+					buildToursDetails(result);
+				}
+				else{
+					$('#toursDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>');
+					$("#tourErrMsgId").html("<span>No data available.</span>");
+				}
+			});
+	}
+	function buildToursDetails(result){
+		
+		var str='';
+		if(result.subList != null && result.subList.length>0){
+			str+='<table class="table table-borderd table-condensed" id="alertTableTab" style="font-size: 10px;">';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th>  </th>';
+			str+='<th> TARGET  </th>';
+			str+='<th> SUBMITED </th>';
+			str+='<th> OVARALL COMPLAINCE </th>';
+			str+='</tr>';		
+			str+='</thead>';		
+			str+='<tbody>';	
+			var gtargetcount = 0;
+			var gsubmittedcount = 0;
+			for(var i in result.subList){
+				str+='<tr>';
+				str+='<td> '+result.subList[i].name.toUpperCase()+'</td>';
+				var targetcount = 0;
+				var submittedcount = 0;
+				var perc ="0.00";
+				if(result.subList[i].totalCount != null && result.subList[i].totalCount>0){				
+					str+='<td>'+result.subList[i].totalCount+'</td>';
+					targetcount=result.subList[i].totalCount;		
+				}
+				else
+					str+='<td> -  </td>';	
+				if(result.subList[i].count != null && result.subList[i].count>0){				
+					str+='<td>'+result.subList[i].count+'</td>';
+						submittedcount = result.subList[i].count;				}
+				else
+					str+='<td> - </td>';	
+				
+				if(parseInt(submittedcount) >0 && parseInt(targetcount) >0)
+					perc = parseInt(submittedcount)*100.0/ parseInt(targetcount);
+				console.log(perc);
+				str+='<td>'+parseFloat(perc).toFixed(2)+'</td>';				
+				str+='</tr>';
+				
+				gtargetcount = parseInt(gtargetcount)+parseInt(targetcount) ;
+				gsubmittedcount = parseInt(gsubmittedcount)+parseInt(submittedcount) ;
+			}
+			
+			str+='<tr>';
+				str+='<td>  TOTAL TOURS </td>';
+				var perc ="0.00";
+				if(gtargetcount != null && gtargetcount>0){				
+					str+='<td>'+gtargetcount+'</td>';		
+				}
+				else
+					str+='<td> -  </td>';	
+				if(gsubmittedcount != null && gsubmittedcount>0){				
+					str+='<td>'+gsubmittedcount+'</td>';
+				}
+				else
+					str+='<td> - </td>';	
+				
+				if(parseInt(gsubmittedcount) >0 && parseInt(gtargetcount) >0)
+					perc = parseInt(gsubmittedcount)*100.0/ parseInt(gtargetcount);
+				console.log(perc);
+				str+='<td>'+parseFloat(perc).toFixed(2)+'</td>';				
+				str+='</tr>';
+							
+			str+='</tbody>';	
+			str+='</table>';	
+			$('#toursDetailsDiv').html(str);
+		}
+	}
 	function getCadreAlertDetails(){
 		$('#alertDetailsDiv').html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		$("#alertErrMsgId").html('');
