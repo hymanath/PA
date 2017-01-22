@@ -235,16 +235,21 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("");
     	queryStr.append(" select distinct selfAppraisalTourCategory.selfAppraisalTourCategoryId, selfAppraisalTourCategory.tourCategory ," +
-    			" selfAppraisalDesignationId, model.selfAppraisalDesignation.designation, sum(model.targetDays) from " +
+    			" model.selfAppraisalDesignationId, model.selfAppraisalDesignation.designation, sum(model.targetDays) from " +
     			" SelfAppraisalDesignationTarget model  " +
     			" left join model.selfAppraisalTourCategory selfAppraisalTourCategory  " +
-    			" where model.selfAppraisalDesignationId =:designationId ");
-    	if(monthYearStrList != null && monthYearStrList.size()>0)
-    		queryStr.append(" and model.selfAppraisalToursMonth.toursMonth in (:monthYearStrList) ");
-    	queryStr.append(" group by selfAppraisalTourCategory.selfAppraisalTourCategoryId,model.selfAppraisalDesignationId ");
+    			"  ");
+    	if(designationId != null && designationId.longValue()>0L){
+    		queryStr.append(" where model.selfAppraisalDesignationId =:designationId and  ");
+    		if(monthYearStrList != null && monthYearStrList.size()>0)
+        		queryStr.append("  model.selfAppraisalToursMonth.toursMonth in (:monthYearStrList) ");
+    	}
+    	else if(monthYearStrList != null && monthYearStrList.size()>0)
+    		queryStr.append(" where  model.selfAppraisalToursMonth.toursMonth in (:monthYearStrList) ");
+    	queryStr.append(" group by selfAppraisalTourCategory.selfAppraisalTourCategoryId ");
     	Query query = getSession().createQuery(queryStr.toString());
-
-    	query.setParameter("designationId", designationId);
+    	if(designationId != null && designationId.longValue()>0L)
+    		query.setParameter("designationId", designationId);
     	if(monthYearStrList != null && monthYearStrList.size()>0)
     		query.setParameterList("monthYearStrList", monthYearStrList);
     	return query.list();

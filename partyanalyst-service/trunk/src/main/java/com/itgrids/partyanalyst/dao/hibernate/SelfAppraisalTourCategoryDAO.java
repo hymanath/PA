@@ -22,14 +22,16 @@ public class SelfAppraisalTourCategoryDAO extends GenericDaoHibernate<SelfApprai
 				"  FROM SelfAppraisalCandidate model,SelfAppraisalDesignationTarget model1  " +
 				"  WHERE model.selfAppraisalDesignationId = model1.selfAppraisalDesignationId " + 
 				" and model.isActive ='Y' and model1.isActive='Y' " +
-				" and model.tdpCadreId=:cadreId ");
+				" ");
+		if(cadreId != null && cadreId.longValue()>0L)
+			queryStr.append(" and model.tdpCadreId=:cadreId  ");
 		if(designationId != null && designationId.longValue()>0L)
 			queryStr.append(" and model.selfAppraisalDesignationId = :designationId ");
 		
 		Query query = getSession().createQuery(queryStr.toString()+" order by model1.selfAppraisalTourCategory.tourCategory " );
 		
-		query.setParameter("cadreId", cadreId);
-		
+		if(cadreId != null && cadreId.longValue()>0L)
+			query.setParameter("cadreId", cadreId);
 		if(designationId != null && designationId.longValue()>0L)
 			query.setParameter("designationId", designationId);
 		
