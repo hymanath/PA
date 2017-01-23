@@ -3640,6 +3640,10 @@
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModelActivityhead">DISTRICT</h4>
+		<div class="col-md-3 col-xs-12 col-sm-3">
+			<select class="form-control districtCls" id="districtId" >
+				<select>
+      </div>
       </div>
        <div class="modal-body">
         <div class="row">

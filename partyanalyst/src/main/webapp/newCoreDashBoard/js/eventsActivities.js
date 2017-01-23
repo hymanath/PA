@@ -1571,7 +1571,7 @@ function buildActivityCounts(result,divId)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Infocell</p>';
-							str+='<h5>'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
+							str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
@@ -1582,48 +1582,96 @@ function buildActivityCounts(result,divId)
 			str+='</table>';
 		str+='</div>';
 	}
+	
 	$("#"+divId).html(str);
 }
-function getDistrictWiseActivitiesCount(){
-	
-	 var jsObj ={ 
-	               districtId : 22,
-				   activity_scope_id : 1,
-				   search_type :"constituency",
-				   type : "conducted"
-				 }
+getDistricts();
+function getDistricts(){
+	var jsObj ={ 
+	               stateId : 1,
+				   stateTypeId : globalStateId
+				 };
 	  $.ajax({
 			type : 'POST',
-			url : 'getDistrictWiseActivityCountsAction.action',
+			url : 'getDistrictByStateIdAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		   buildDistrictWiseActivitiesCount(result);
+		   if( result != null && result.length>0){
+			   buildDistrictsForActivityCounts(result);
+		   }
 		});
 }
-//getDistrictWiseActivitiesCount();
+function buildDistrictsForActivityCounts(result){
+	$("#districtId").append("<option value='0'>All</option>");        
+      for(var i in result){
+        $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+      }
+}
+function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
+	$("#districtId").val(districtId);
+	//$("#districtId").append("<option value='0'>All</option>"); 
+	$("#activityId").html("");
+	var jsObj={
+		districtId : districtId,
+		activity_scope_id:activityScopeId,
+		search_type :"constituency",
+		stateId : globalStateId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getDistrictWiseActivityCountsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildDistrictWiseActivitiesCount(result,type);
+		}
+	});
+}
+$(document).on("change",".districtCls",function(){
 
-function buildDistrictWiseActivitiesCount(result){
-	$("#myModelActivityId").modal('show');
+	var districtId = $(this).val();
+	getDistrictWiseActivityCounts(globalActvtyScopeId,districtId,"change")
 	
+});
+var globalActvtyScopeId;
+$(document).on("click",".activityCountCls",function(){
+	var activityScopeId = $(this).attr("attr_actvty_scope_id");
+	globalActvtyScopeId = activityScopeId;
+	
+	getDistrictWiseActivityCounts(activityScopeId,0,"count")
+	
+});
+function buildDistrictWiseActivitiesCount(result,type){
+	
+	if(type == "count")
+		$("#myModelActivityId").modal('show');
+	$("#activityId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 	var str = '';
-	 str +='<table class="table table-bordered">';
+	 str +='<table class="table table-bordered table-condensed" id="activityTableId">';
 	str +='<tr>';
-    str +='<th class="text-capital">Constituencies</th>';
+    str +='<th class="text-capital">Constituency name</th>';
+	str +='<th class="text-capital">total</th>';
     str +='<th class="text-capital">Planned</th>';
-    str +='<th class="text-capital">Total ivr</th>';
-	str +='<th class="text-capital">infocell</th>';
+    str +='<th class="text-capital">infocell</th>';
+	str +='<th class="text-capital">ivr</th>';
+	str +='<th class="text-capital">images covered</th>';
+	str +='<th class="text-capital">Total images</th>';
   str +='</tr>';
   for(var i in result){
   str +='<tr>';
     str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+	str +='<td>'+result[i].attendedCount+'</td>';
 	str +='<td>'+result[i].inviteeCount+'</td>';
-	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
+	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
+	str +='<td>'+result[i].imagesCovered+'</td>';
+	str +='<td>'+result[i].totalImages+'</td>';
   }
 str +='</table> ';
 
 $("#activityId").html(str);
+//$("#activityTableId").dataTable({});
 }
 $(document).on("click",".activitesExpandIcon",function(){
         var activityId = $(this).attr("attr_id");
