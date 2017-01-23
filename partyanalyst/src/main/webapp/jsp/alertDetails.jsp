@@ -68,9 +68,9 @@
 		}
 		.attachmentsUpload li
 		{
-			background-color:#D6E9F8;
+			background-color:#fff;
 			border:1px solid #ddd;
-			padding:10px;
+			padding:5px;
 		}
 		.m_top20
 		{
@@ -253,7 +253,8 @@
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
-
+.uploadCssDiv {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;}
+.uploadCssDiv1 {padding: 3px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;}
 	</style>
 	
 	<!-- YUI Dependency files (Start) -->
@@ -293,33 +294,41 @@
 						<div class="table-responsive" >
 							<table class="table table-bordered tableCategory">
 								<tr>
-									<td>
-										<p class="text-capital"><span class="text-muted ">type</span> : <span  id="typeId"></span></p>
+									<td style="vertical-align: top;">
+										<p class="text-capital"><span class="text-muted "><b>Alert type</b></span></p>
+										<p><span  id="typeId"></span></p>
 									</td>
-									<td>
-										<p class="text-capital"><span class="text-muted ">created date</span> : <span  id="createdDate"></span></p>
+									<td style="vertical-align: top;">
+										<p class="text-capital"><span class="text-muted "><b>Alert created date</b></span></p>
+										<p><span  id="createdDate"></span></p>
 									</td>
-									<td>
-										<p class="text-capital"><span class="text-muted">status</span> : <span id="alertStatus"></span></p>
+									<td style="vertical-align: top;">
+										<p class="text-capital"><span class="text-muted"><b>Alert status</b></span></p>
+										<p><span id="alertStatus"></span></p>
 									</td>
-									<td id="severityTdId" style="display:none">
-										<p class="text-capital"><span class="text-muted">severity</span> : <span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
+									<td id="severityTdId" style="vertical-align: top;display:none;">
+										<p class="text-capital"><span class="text-muted"><b>severity</b></span></p>
+										<p><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
 									</td>
-									<td>
-										<p class="text-capital"><span class="text-muted ">impact level</span> : <span  id="levelId"></span></p>
+									<td style="vertical-align: top;">
+										<p class="text-capital"><span class="text-muted "><b>Alert impact level</b></span></p>
+										<p style="text-transform: lowercase;"><span  id="levelId"></span></p>
 									</td>
-									<td>
-										<p class="text-capital"><span class="text-muted ">location</span> : <span  id="LocationId"></span></p>
+									<td style="vertical-align: top;">
+										<p class="text-capital"><span class="text-muted "><b>Alert location</b></span></p>
+										<p><span  id="LocationId"></span></p>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="8">
-										<p class="text-capital"><span class="text-muted ">Title</span> : <span  id="titleId"></span></p>
+										<p class="text-capital"><span class="text-muted "><b>Title</b></span></p>
+										<p><span  id="titleId"></span></p>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="8">
-										<p class="text-capital"><span class="text-muted ">description</span> : <span  id="descriptionId"></span></p>
+										<p class="text-capital"><span class="text-muted "><b>description</b></span></p>
+										<p><span  id="descriptionId"></span></p>
 									</td>
 								</tr>
 								<tr style="display:none" id="imageUrlTrId">
@@ -353,16 +362,17 @@
 							 <div class="row m_top10">
 								 <div class="col-md-12 col-xs-12 col-sm-12 hideVarificationStatusCls">
 									<div class="panel">
-										<div class="panel-body" style="background-color:#E5E5E5">
+										<div class="panel-body" style="background-color:#E5E5E5;border: 2px solid #c3c3c3;border-radius: 7px;">
 											<div class="row">
 												<div class="col-md-6 col-xs-12 col-sm-6 verificationHeadingCls">
-													<h4 class="panel-title"> 
-														<span class="text-capital"><b>Verification Required</b></span>
-														<span>(Clarification from info-cell)</span>
-													</h4>
+													<h5 class="panel-title"> 
+														<b style="font-size:14px"><span class="text-capital" >Verification Required? </span>
+														<span >(Clarification from info-cell)</span></b>
+													</h5>
+													
 												</div>
 												<div class="col-md-6 col-xs-12 col-sm-6">
-													<span class="pull-right" id="alertStatusHeadingId"></span>
+													
 													<div id="verificationCreationHeadingId">
 														<span class="pull-right">
 															<i class="glyphicon glyphicon-menu-down" id="menuDown"></i>
@@ -375,6 +385,7 @@
 															<input id="isClarificationRequiredChckBxId" type="checkbox"/>Yes
 														</label>
 													</div>
+													<span class="pull-right text-capital" id="alertStatusHeadingId" style="font-weight:bold;font-size:14px"></span>
 												</div>
 											</div>
 											<hr class="m_top10" style="border-top:1px solid rgba(0,0,0,0.6);"/>
@@ -383,19 +394,27 @@
 											</div>
 										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
 											<div class="hideUpdateBlockCls" style="display:none;">
-											   <p style="font-weight:bold;font-size:16px;" class="text-capitalize m_top20 panelTitleFont">Add Comments</p>
+											   <p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Comments</p>
 											   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
-												
-												<p style="font-weight:bold;font-size:16px;" class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</p>
 												<div class="row">
-													<div class="uploadAttachmentDivCls col-md-6 col-xs-12 col-sm-6">
+													<div class="col-md-3 col-xs-12 col-sm-6">
+														<p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</p>
+													</div>
+													<div class="col-md-3 col-xs-12 col-sm-6">
+														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
+													</div>
+												</div>
+												
+												
+												<div class="row">
+													<div class="uploadAttachmentDivCls col-md-3 col-xs-12 col-sm-6">
 														<ul class="attachmentsUpload"  id="">
 															<li>
 																<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0">
 															</li>
 														</ul>
 														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
-														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
+														
 													</div>
 												</div>
 												<div class="m_top20 row">
@@ -405,10 +424,10 @@
 														<!--	<option value="1">Progress</option>-->
 														<!--     <option value="2">Completed</option>-->
 														</select>
-														<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">Update Verification Status</button>
+														<button class="btn btn-success m_top20 text-capital " type="button" id="updateVerificationStatusBtnId"><h4>update verification status</h4></button>
 													</div>
-													  <div class="col-md-12 col-xs-12 col-sm-12 notificationHeadingCls" style="display:none;">
-														  <h4>Note:Adding comment will reverse this status to progress</h4>
+													  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+														  <p style="font-size: 15px; font-weight: bold;">Note : Adding comment will reverse this status to progress</p>
 													  </div>
 												</div>
 											</div>
@@ -424,8 +443,8 @@
 				<!-- End -->
 						 <div class="row m_top10">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
-								<h4 class="panel-title text-capital">involved members in this alert
-								<span id="involvedCandidatesCnt"> - 0</span></h4>
+								<h4 class="panel-title text-capital"><b>involved members in this alert</b>
+								<span id="involvedCandidatesCnt" class="pull-right"> - 0</span></h4>
 								<ul class="involvedMembersUl" id="alertCandidateDataId">
 									<li>
 										<div class="media">
@@ -445,7 +464,7 @@
 							</div>
 						</div>
 						<div class="row m_top10">
-							<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
 										<!--<div class="col-md-4 col-xs-12 col-sm-4">
@@ -478,7 +497,7 @@
 													</p>-->
 													</div>
 												</div>
-												<div  id="alertAssignedCandidateDataId"></div>
+												<div style="text-align: center;" id="alertAssignedCandidateDataId"></div>
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
@@ -510,12 +529,18 @@
 															<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
 														</label>
 														<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-														<input type="file" class="btn btn-mini" name="imageForDisplay" id="uploadFileId0">
-														<div id="extraUploadFileDiv"></div>
-														<button type="button" class="btn btn-primary btn-xs pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
+														<div class="col-md-12 col-xs-12 col-sm-6"  >
+														<input type="file" class="btn btn-mini uploadCssDiv" name="imageForDisplay" id="uploadFileId0"  >
+														</div>
+														<div class="col-md-5 col-xs-12 col-sm-6"  >
+														<div id="extraUploadFileDiv" class=""></div>
+														</div>
+														<button type="button" class="btn btn-primary btn-sm pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
 														
 														<div id="errorId" class="m_top10"></div>
+														<div class="col-md-12 col-xs-12 col-sm-6">
 														<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Upload</button>
+														</div>
 														<input type="hidden" id="alertHiddenIdStatus" name="alertId">
 														<input type="hidden" id="alertStatusHiddenId" name="clarificationStatusId">
 														<input type="hidden" id="alertCommentsHiddenId" name="clarificationComments">
