@@ -2335,7 +2335,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,@PathParam("fromDateStr") String fromDateStr,
-				@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") List<Long> impactLevelIds,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
+				@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") String impactLevelIds,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
 		{
 			try{			
 				return webServiceHandlerService.getStateImpactLevelAlertDtlsCnt(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionId);			
@@ -2352,7 +2352,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertVO> getTotalAlertGroupByLocationThenCategory(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
-				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") String scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
 				@PathParam("group") String group,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
 		{
 			try{			
@@ -2370,7 +2370,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertVO> getTotalAlertGroupByLocationThenStatus(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
-				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") String scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
 				@PathParam("group") String group,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
 		{
 			try{			
@@ -2388,7 +2388,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(@PathParam("activityMemberId") Long activityMemberId,@PathParam("stateId") Long stateId,
-				@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") List<Long> impactLevelIds,
+				@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,@PathParam("impactLevelIds") String impactLevelIds,
 				@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionTypeId") Long editionTypeId)
 		{
 			try{			
@@ -2406,7 +2406,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertCommentVO> getTotalAlertGroupByDist(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
-				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") String scopeIdList,@PathParam("activityMemberId") Long activityMemberId,
 				@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
 		{
 			try{			
@@ -2424,7 +2424,7 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
-				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList)
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") String scopeIdList)
 		{
 			try{			
 				return webServiceHandlerService.getDepartmentWiseStatusWiseCounts(fromDateStr, toDateStr, stateId, scopeIdList);			
