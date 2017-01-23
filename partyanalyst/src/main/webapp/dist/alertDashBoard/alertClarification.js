@@ -120,7 +120,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$(".commentCls").val('');
 			$("#uploadClarificationFileId0").val('');
 			$("#extraClarificationUploadFileDiv").html('');
-			$(".ClearFileCls").hide();  
+		    $(".ClearFileCls").hide();  
 			fileNo = 0;
 		}else{
 			alert("Please Try Again.");
