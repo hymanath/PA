@@ -422,7 +422,7 @@
 														</select>
 														<button class="btn btn-success m_top20 text-capital " type="button" id="updateVerificationStatusBtnId"><h4>update verification status</h4></button>
 													</div>
-													  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+													  <div class="col-md-12 col-xs-12 col-sm-12 m_top10 notificationHeadingCls"  style="display:none;">
 														  <p style="font-size: 15px; font-weight: bold;">Note : Adding comment will reverse this status to progress</p>
 													  </div>
 												</div>
@@ -437,7 +437,7 @@
 						 </c:if>
 					 </c:if>
 				<!-- End -->
-						 <div class="row m_top10">
+						<div class="row m_top10 hideBlockCls" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital"><b>involved members in this alert</b>
 								<span id="involvedCandidatesCnt" class="pull-right"> - 0</span></h4>
@@ -459,7 +459,7 @@
 								<!--<div  id="alertCommentsDiv"></div>-->
 							</div>
 						</div>
-						<div class="row m_top10">
+						<div class="row m_top10 hideBlockCls" style="display:none;">
 							<div class="">
 								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
@@ -682,6 +682,28 @@
 var alertId = '${alertId}';
 var entilementStr = '${sessionScope.USER.entitlements}';
 $(".dropkickClass").dropkick();
+ 
+       /* Hiding involved and assigned block for info cell user */
+          var entitlementsArr = [];
+		  var strArr = entilementStr.split(",");
+				for(var i=0;i<strArr.length;i++){
+					if(i==0){
+						entitlementsArr.push(strArr[i].split("[")[1]);
+					}else if(i==(strArr.length-1))
+						entitlementsArr.push(strArr[i].split("]")[0]);
+					else
+						entitlementsArr.push(strArr[i]);
+				}
+		    var isInfoCellUser="false";
+		   for(var i=0;i<entitlementsArr.length;i++){
+			   if(entitlementsArr[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){
+                 isInfoCellUser = "true";
+                }
+		   }
+		  if(isInfoCellUser=="false"){
+			$(".hideBlockCls").show();  
+		  }
+		 /* end */ 
 function deleteAlertAssignedCandidates(tdpCadreId)
 {
 	$("#deleteProcessing"+tdpCadreId).show();
