@@ -25,6 +25,23 @@ public class EventDetailsVO {
 	private List<EventDetailsVO> constituencyList;
 	private List<EventDetailsVO> mandalTwnDivisionList;
 	private List<EventDetailsVO> villageWardList;
+	
+	private Long imagesCovered=0l;
+	private Long totalImages=0l;
+	
+	
+	public Long getImagesCovered() {
+		return imagesCovered;
+	}
+	public void setImagesCovered(Long imagesCovered) {
+		this.imagesCovered = imagesCovered;
+	}
+	public Long getTotalImages() {
+		return totalImages;
+	}
+	public void setTotalImages(Long totalImages) {
+		this.totalImages = totalImages;
+	}
 	public Long getId() {
 		return id;
 	}
