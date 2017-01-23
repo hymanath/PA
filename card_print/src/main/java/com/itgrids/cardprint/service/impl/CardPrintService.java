@@ -427,6 +427,8 @@ public class CardPrintService implements ICardPrintService{
 	
 	public ResultStatus updateToLiveTable( List<Object[]> dataList ){
 		
+		Date currentDate = dateUtilService.getCurrentDateAndTime();
+		
 		ResultStatus rs = new ResultStatus();
 		
 		try{
@@ -438,7 +440,7 @@ public class CardPrintService implements ICardPrintService{
 				  
 				    if(totalCount <=  noOfRecordsUpdate)
 			        {
-				    	List<PrintVO> printList = convertObjectArrayToList(dataList);
+				    	List<PrintVO> printList = convertObjectArrayToList(dataList,currentDate);
 				    	int resulCode = callWebServiceForPrintUpdation(printList);
 				    	rs.setResultCode(resulCode);
 				    	
@@ -460,7 +462,7 @@ public class CardPrintService implements ICardPrintService{
 				    		System.out.println(fromIndex + " - " +toIndex );
 				    		List<Object[]> sublist = dataList.subList(fromIndex, toIndex);
 				    		if(sublist != null && sublist.size() > 0){
-			    				List<PrintVO> printList = convertObjectArrayToList(sublist);
+			    				List<PrintVO> printList = convertObjectArrayToList(sublist,currentDate);
 			    				int resulCode = callWebServiceForPrintUpdation(printList);
 			    				rs.setResultCode(resulCode);
 			    				if(resulCode == 0){
@@ -486,7 +488,7 @@ public class CardPrintService implements ICardPrintService{
 			Client client = Client.create(clientConfig);
 			
 			 //String UrlPath = "http://localhost:8080/PartyAnalyst/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
-			String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
+			 String UrlPath = "http://www.mytdp.com/WebService/cadre/updatePrintDetailsToTdpCadreCardPrint";
 	        WebResource resource = client.resource(UrlPath);
 	        PrintUpdateDetailsStatusVO reponse = resource.accept("application/json").type("application/json").post(PrintUpdateDetailsStatusVO.class, inputList);
 	        resulCode = reponse.getResultCode();
@@ -498,7 +500,7 @@ public class CardPrintService implements ICardPrintService{
 		return resulCode;
 	}
 	
-	public List<PrintVO> convertObjectArrayToList(List<Object[]> dataList ){
+	public List<PrintVO> convertObjectArrayToList(List<Object[]> dataList ,Date currentDate){
 		
 
 		List<PrintVO> list = new ArrayList<PrintVO>(0);
@@ -550,6 +552,8 @@ public class CardPrintService implements ICardPrintService{
 						 if(obj[9] != null && !obj[9].toString().isEmpty()){
 							 VO.setOuterBoxNo( obj[9].toString());
 						 }
+						 
+						 VO.setUpdatedTime(currentDate);
 						 
 						 list.add(VO);
 					 }
