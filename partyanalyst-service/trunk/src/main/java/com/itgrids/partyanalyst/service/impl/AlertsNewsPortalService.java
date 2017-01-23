@@ -1521,31 +1521,30 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 					toDate = sdf.parse(toDateStr);
 				}
 				
+				List<Object[]> statusList = alertStatusDAO.getAllStatus();
+				
 				List<Object[]> list = alertCandidateDAO.getDeptWiseStatusWiseAlerts(fromDate, toDate, stateId);
 				if(list != null && !list.isEmpty()){
 					for (Object[] obj : list) {
 						Long deptId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 						AlertCommentVO vo = deptmap.get(deptId);
 						if(vo == null){
 							vo = new AlertCommentVO();
 							
 							vo.setStatusId(deptId);
 							vo.setStatus(obj[1] != null ? obj[1].toString():"");
-							AlertCommentVO stsvo = new AlertCommentVO();
-							stsvo.setStatusId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							vo.setSublist1(setStatusList(statusList));
+							AlertCommentVO stsvo = getMatchedVO(vo.getSublist1(), statusId);
 							stsvo.setStatus(obj[3] != null ? obj[3].toString():"");
 							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
 							
-							vo.getSublist1().add(stsvo);
 							deptmap.put(deptId, vo);
 						}
 						else{
-							AlertCommentVO stsvo = new AlertCommentVO();
-							stsvo.setStatusId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							AlertCommentVO stsvo = getMatchedVO(vo.getSublist1(), statusId);
 							stsvo.setStatus(obj[3] != null ? obj[3].toString():"");
 							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
-							
-							vo.getSublist1().add(stsvo);
 						}
 					}
 				}
@@ -1560,4 +1559,38 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		}
 		 return returnList;
 	 }
+	 
+	 public List<AlertCommentVO> setStatusList(List<Object[]> statusArr){
+		 List<AlertCommentVO> returnList = new ArrayList<AlertCommentVO>();
+		 try {
+			if(statusArr != null && !statusArr.isEmpty()){
+				for (Object[] obj : statusArr) {
+					AlertCommentVO vo = new AlertCommentVO();
+					vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setStatus(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured setStatusList() method of AlertsNewsPortalService{}");
+		}
+		 return returnList;
+	 }
+	 
+	 public AlertCommentVO getMatchedVO(List<AlertCommentVO> statusList,Long statusId){
+		   try{
+			   if(statusList == null || statusList.size() == 0)
+				   return null;
+			   for(AlertCommentVO vo:statusList){
+				   if(vo.getStatusId() == statusId){
+					   return vo;
+				   }
+			   }
+		   }catch(Exception e){
+			   LOG.error("Error occured getMatchedVO() method of AlertsNewsPortalService{}",e);  
+		   }
+		   return null;
+	   }
 }
