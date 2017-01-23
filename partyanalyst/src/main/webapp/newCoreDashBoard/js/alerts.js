@@ -3746,13 +3746,13 @@ function getTotalArticledetails(articleId){
 		if(result.conversationList != null && result.conversationList.length > 0){
 			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION</h4>");  
 			for(var i in result.conversationList){
-				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:16px;">'+result.conversationList[i].heading+'</p>';
+				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:12px;">'+result.conversationList[i].heading+'</p>';  
 				if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
 					str+='<p style="border: 1px solid rgb(211, 211, 211); padding: 6px;">'+result.conversationList[i].comments+'</p>';     
 				}
 				var documentList = result.conversationList[i].documentList;
 				if(documentList != null && documentList.length > 0){
-					str+='<p style="font-weight:bold;font-size:16px;" class="text-capital m_top10 panelTitleFont headingColorStyling">Attachments</p>';
+					str+='<p style="font-weight:bold;font-size:12px;" class="text-capital m_top10 panelTitleFont headingColorStyling">Attachments</p>';
 					str+='<ul class="attachmentsBlock">';
 					var order = 0;
 					for(var k in documentList){
