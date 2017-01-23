@@ -27,6 +27,10 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$("#menuUp").show();
 			$("#menuDown").hide();
 		}else if($(this).prop("checked") == false){
+			fileNo = 0;
+			$(".commentCls").val('');
+			$("#uploadClarificationFileId0").val('');
+			$("#extraClarificationUploadFileDiv").html('');
 			$(".hideUpdateBlockCls").hide();
 			$("#menuDown").show();
 			$("#menuUp").hide();
@@ -42,9 +46,13 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	$(document).on("click","#isClarificationNotRequiredChckBxId",function(){
 		$("#isClarificationRequiredChckBxId").prop("checked",false);
 		if($(this).prop("checked") == true){
+			fileNo = 0;
 			$(".hideUpdateBlockCls").hide();
 			$("#menuDown").show();
 			$("#menuUp").hide();
+			$(".commentCls").val('');
+			$("#uploadClarificationFileId0").val('');
+			$("#extraClarificationUploadFileDiv").html('');
 		}else if($(this).prop("checked") == false){
 		}
 
