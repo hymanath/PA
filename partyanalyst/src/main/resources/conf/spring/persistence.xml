@@ -1142,6 +1142,7 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserType</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertVerificationUserTypeUser</value>
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingStatusTemp</value>
+	                  <value>com.itgrids.partyanalyst.model.ActivityConductedInfo</value>
 	              </list>
 			
 		</property>
