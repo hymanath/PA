@@ -365,12 +365,13 @@
 			data: [107, 31, 635, 203, 2]
 		}]
 	});
-	$(function () {
+	/*$(function () {
+		//added in onloadMethod
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
-	});
+	});*/
 	function getAttendanceOverViewForPartyOffice(){
 		$("#officeAttendanceTdlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var fromDate = $("#dateRangeIdForAttendance").val();
