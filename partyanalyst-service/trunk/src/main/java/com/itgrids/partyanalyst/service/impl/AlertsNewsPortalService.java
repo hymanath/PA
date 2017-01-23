@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
@@ -47,8 +48,15 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 	private DateUtilService dateUtilService = new DateUtilService();
 	
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	private IAlertCandidateDAO alertCandidateDAO;
 	
 	
+	public IAlertCandidateDAO getAlertCandidateDAO() {
+		return alertCandidateDAO;
+	}
+	public void setAlertCandidateDAO(IAlertCandidateDAO alertCandidateDAO) {
+		this.alertCandidateDAO = alertCandidateDAO;
+	}
 	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
 		return parliamentAssemblyDAO;
 	}
@@ -333,7 +341,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }  
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured getAlertOverviewDetails() method of AlertService{}",e);
+			   LOG.error("Error occured getAlertOverviewDetails() method of AlertsNewsPortalService{}",e);
 		   }
 		   return resultVO;
 	   }
@@ -388,7 +396,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured getMatchVO() method of AlertService{}",e);  
+			   LOG.error("Error occured getMatchVO() method of AlertsNewsPortalService{}",e);  
 		   }
 		   return null;
 	}
@@ -404,7 +412,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			   }
 		   }   
 	   }catch(Exception e){
-		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertService{}",e);   
+		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertsNewsPortalService{}",e);   
 	   }
    }
 	 
@@ -420,7 +428,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured prepareAlertCategoryTemplate() method of AlertService{}",e);  
+			   LOG.error("Error occured prepareAlertCategoryTemplate() method of AlertsNewsPortalService{}",e);  
 		   }
 	   }
 	 
@@ -436,7 +444,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured getStatutList() method of AlertService{}",e); 
+			   LOG.error("Error occured getStatutList() method of AlertsNewsPortalService{}",e); 
 		   }
 		   return statusList;
 	   }
@@ -451,7 +459,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured getMatchVO() method of AlertService{}",e);  
+			   LOG.error("Error occured getMatchVO() method of AlertsNewsPortalService{}",e);  
 		   }
 		   return null;
 	   }
@@ -605,7 +613,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				  }
 				
 		 }catch(Exception e){
-			 LOG.error("Error occured getAlertCategoryDtlsLocationWise() method of AlertService{}",e); 
+			 LOG.error("Error occured getAlertCategoryDtlsLocationWise() method of AlertsNewsPortalService{}",e); 
 		 }
 		 return resultList;
 	 }
@@ -622,7 +630,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Error occured prepareTemplate() method of AlertService{}",e); 
+			 LOG.error("Error occured prepareTemplate() method of AlertsNewsPortalService{}",e); 
 		 }
 	 }
 	 
@@ -638,7 +646,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   }
 			   }
 		   }catch(Exception e){
-			   LOG.error("Error occured getImpactLevelList() method of AlertService{}",e); 
+			   LOG.error("Error occured getImpactLevelList() method of AlertsNewsPortalService{}",e); 
 		   }
 		   return locationList; 
 	 }
@@ -659,7 +667,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Error occured setAlertImpactLevelWiseAlertCnt() method of AlertService{}",e); 
+			 LOG.error("Error occured setAlertImpactLevelWiseAlertCnt() method of AlertsNewsPortalService{}",e); 
 		 }
 	 }
 	 
@@ -673,7 +681,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 		}
 		 	 }
 		 	}catch(Exception e){
-		 		 LOG.error("Error occured getImpactLevelMatchVO() method of AlertService{}",e);
+		 		 LOG.error("Error occured getImpactLevelMatchVO() method of AlertsNewsPortalService{}",e);
 		 	}	 
 		 return null;
 	 }
@@ -709,7 +717,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Error occured setStatusWiseAlertCnt() method of AlertService{}",e); 
+			 LOG.error("Error occured setStatusWiseAlertCnt() method of AlertsNewsPortalService{}",e); 
 		 }
 	 }
 	 
@@ -730,12 +738,12 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 resutlVO.setDuplicatesStatusCnt(resutlVO.getDuplicatesStatusCnt()+VO.getDuplicatesStatusCnt());
 		 }
 		 }catch(Exception e){
-			 LOG.error("Error occured mergeRequiredData() method of AlertService{}",e);
+			 LOG.error("Error occured mergeRequiredData() method of AlertsNewsPortalService{}",e);
 		 }
 	 }
 	 
 	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
-			LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertService{}");
+			LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;          
 				Date toDate = null; 
@@ -778,7 +786,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				return alertCoreDashBoardVOs;
 				}catch(Exception e){  
 					e.printStackTrace();
-					LOG.error("Error occured getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertService{}");
+					LOG.error("Error occured getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertsNewsPortalService{}");
 				}
 			return null;
 		}
@@ -845,7 +853,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		}
 	 
 	 public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId, Long editionId,String isActionType,Long alertActionTypeId){
-			LOG.info("Entered in getAlertDtls() method of AlertService{}");
+			LOG.info("Entered in getAlertDtls() method of AlertsNewsPortalService{}");
 			try{
 				Date fromDate = null;      
 				Date toDate = null;
@@ -887,7 +895,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				return alertCoreDashBoardVOs;
 			}catch(Exception e){
 				e.printStackTrace();  
-				LOG.error("Error occured getAlertDtls() method of AlertService{}");
+				LOG.error("Error occured getAlertDtls() method of AlertsNewsPortalService{}");
 			}
 			return null;        
 		}
@@ -970,7 +978,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 					 	} 
 				  }
 		 }catch(Exception e){
-			 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertService class ",e);  
+			 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertsNewsPortalService class ",e);  
 		 }
 		 return resultVO;
 	 }
@@ -986,7 +994,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertService class ",e);
+			 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertsNewsPortalService class ",e);
 		 }
 	 }
 	 
@@ -1000,13 +1008,13 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Exception occured  in getRequiredMatchVO() in AlertService class ",e); 
+			 LOG.error("Exception occured  in getRequiredMatchVO() in AlertsNewsPortalService class ",e); 
 		 }
 		 return null;
 		 }
 	 
 	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
-			LOG.info("Entered in getTotalAlertGroupByLocationThenCategory() method of AlertService{}");
+			LOG.info("Entered in getTotalAlertGroupByLocationThenCategory() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;  
 				Date toDate = null;
@@ -1128,13 +1136,13 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				return finalList; 
 			}catch(Exception e){
 				e.printStackTrace();
-				LOG.error("Error occured getTotalAlertGroupByLocationThenCategory() method of AlertService{}");
+				LOG.error("Error occured getTotalAlertGroupByLocationThenCategory() method of AlertsNewsPortalService{}");
 			}
 			return null;
 		}
 	 
 	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId){
-			LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
+			LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;        
 				Date toDate = null; 
@@ -1256,7 +1264,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				return finalList; 
 			}catch(Exception e){
 				e.printStackTrace();
-				LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
+				LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertsNewsPortalService{}");
 			}
 			return null;
 		}
@@ -1405,7 +1413,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 	 }
 	 
 	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
-			LOG.info("Entered in getTotalAlertGroupByDist() method of AlertService{}");
+			LOG.info("Entered in getTotalAlertGroupByDist() method of AlertsNewsPortalService{}");
 			try{
 				Date fromDate = null;           
 				Date toDate = null;
@@ -1495,8 +1503,61 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				return alertCountList;
 			}catch(Exception e){  
 				e.printStackTrace();
-				LOG.error("Error occured getTotalAlertGroupByDist() method of AlertService{}");
+				LOG.error("Error occured getTotalAlertGroupByDist() method of AlertsNewsPortalService{}");
 			}
 			return null;
 		}
+	 
+	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList){
+		 List<AlertCommentVO> returnList = new ArrayList<AlertCommentVO>();
+		 try {
+			 	Map<Long,AlertCommentVO> deptmap = new LinkedHashMap<Long, AlertCommentVO>();
+			 	Date fromDate = null;           
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				
+				List<Object[]> list = alertCandidateDAO.getDeptWiseStatusWiseAlerts(fromDate, toDate, stateId);
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						Long deptId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						AlertCommentVO vo = deptmap.get(deptId);
+						if(vo == null){
+							vo = new AlertCommentVO();
+							
+							vo.setStatusId(deptId);
+							vo.setStatus(obj[1] != null ? obj[1].toString():"");
+							AlertCommentVO stsvo = new AlertCommentVO();
+							stsvo.setStatusId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							stsvo.setStatus(obj[3] != null ? obj[3].toString():"");
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							
+							vo.getSublist1().add(stsvo);
+							deptmap.put(deptId, vo);
+						}
+						else{
+							AlertCommentVO stsvo = new AlertCommentVO();
+							stsvo.setStatusId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							stsvo.setStatus(obj[3] != null ? obj[3].toString():"");
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							
+							vo.getSublist1().add(stsvo);
+						}
+					}
+				}
+				
+				if(deptmap != null){
+					returnList = new ArrayList<AlertCommentVO>(deptmap.values());
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getDepartmentWiseStatusWiseCounts() method of AlertsNewsPortalService{}");
+		}
+		 return returnList;
+	 }
 }
