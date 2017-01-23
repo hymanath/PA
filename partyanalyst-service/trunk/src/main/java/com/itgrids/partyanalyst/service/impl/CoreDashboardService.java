@@ -14,6 +14,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
+import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
@@ -65,9 +67,17 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IActivityScopeDAO activityScopeDAO;
 	private ILocationInfoDAO locationInfoDAO;
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IActivityDocumentDAO activityDocumentDAO;
 	
 	
+	public IActivityDocumentDAO getActivityDocumentDAO() {
+		return activityDocumentDAO;
+	}
+	public void setActivityDocumentDAO(IActivityDocumentDAO activityDocumentDAO) {
+		this.activityDocumentDAO = activityDocumentDAO;
+	}
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -143,6 +153,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 		this.activityLocationInfoDAO = activityLocationInfoDAO;
 	}
 	
+	
+	public IActivityInfoDocumentDAO getActivityInfoDocumentDAO() {
+		return activityInfoDocumentDAO;
+	}
+	public void setActivityInfoDocumentDAO(
+			IActivityInfoDocumentDAO activityInfoDocumentDAO) {
+		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
+	}
 	//business methods.
 	public UserDataVO getUserBasicDetails(Long userId){
 		
@@ -984,12 +1002,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date fromDate = null;
 			Date toDate = null;
+			Long stateId = 1L;
 			if(fromDateStr != null && toDateStr != null){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> list = activityScopeDAO.getActivityDetails(fromDate, toDate);
+			List<Object[]> list = activityScopeDAO.getActivityDetails(fromDate, toDate,stateId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1011,8 +1030,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Long> scopeIds = new ArrayList<Long>();
-			
+			Long stateId = 1L;
 			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
+			Map<Long,List<Long>> scopeWiseActivitiesMap = new HashMap<Long, List<Long>>(0);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1026,6 +1046,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setMobileNumber("0.00");	
 					vo.setImagePathStr("0.00");
 					vo.setActualMobNumber("0.00");
+					
+					List<Long> activityScopeIdsList = new ArrayList<Long>(0);
+					if(scopeWiseActivitiesMap.get(vo.getId()) != null){
+						activityScopeIdsList =scopeWiseActivitiesMap.get(vo.getId());
+					}
+					activityScopeIdsList.add(vo.getTdpcadreId());
+					scopeWiseActivitiesMap.put(vo.getId(), activityScopeIdsList);
 					
 					returnList.add(vo);
 					scopeIds.add(vo.getTdpcadreId());
@@ -1092,6 +1119,61 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
+			if(commonMethodsUtilService.isMapValid(scopeWiseActivitiesMap)){
+				List<Long> districtIdsList = new ArrayList<Long>(0);
+				if(stateId!= null){
+					if(stateId.longValue() ==1L)
+						districtIdsList.addAll(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));
+					else if(stateId.longValue() ==2L || stateId.longValue() ==36L)
+						districtIdsList.addAll(Arrays.asList(IConstants.TS_NEW_DISTRICTS_IDS));
+					else{
+						districtIdsList.addAll(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));
+						districtIdsList.addAll(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));
+					}
+				}
+				
+				for (Long levelId : scopeWiseActivitiesMap.keySet()) {
+					List<Object[]> documentCountList  =  new ArrayList<Object[]>(0);
+					if(levelId != null && levelId.longValue()==1L){//village /ward
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","panchayat");
+						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","ward");
+						if(commonMethodsUtilService.isListOrSetValid(list1)){
+							documentCountList.addAll(list1);
+						}
+						if(commonMethodsUtilService.isListOrSetValid(list2)){
+							documentCountList.addAll(list2);
+						}
+					}
+					else if(levelId != null && levelId.longValue()==2L){//mandal/town/division
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","mandal");
+						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","town");
+						if(commonMethodsUtilService.isListOrSetValid(list1)){
+							documentCountList.addAll(list1);
+						}
+						if(commonMethodsUtilService.isListOrSetValid(list2)){
+							documentCountList.addAll(list2);
+						}
+					}
+					else if(levelId != null && levelId.longValue()==5L){//constituency
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","constituency");
+						if(commonMethodsUtilService.isListOrSetValid(list1)){
+							documentCountList.addAll(list1);
+						}
+					}
+			      if(commonMethodsUtilService.isListOrSetValid(documentCountList)){
+			    	  for(Object[] param : documentCountList){
+			    		Long imageCount = commonMethodsUtilService.getLongValueForObject(param[1]);
+			    		Long coveredCount = commonMethodsUtilService.getLongValueForObject(param[0]);
+			    		Long   activityScopeId  = commonMethodsUtilService.getLongValueForObject(param[2]);
+			    		IdAndNameVO vo = getMatchedVOById(activityScopeId, returnList);
+			    		if(vo != null){
+			    			vo.setImagesCovered(coveredCount);
+			    			vo.setTotalImages(imageCount);
+			    		}
+			    	  }
+			      }
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("error occurred in getActivityOverAllSummary() of CoreDashboardService class",e);
 		}

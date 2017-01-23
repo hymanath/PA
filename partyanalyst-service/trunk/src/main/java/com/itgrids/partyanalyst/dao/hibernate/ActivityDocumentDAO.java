@@ -15,7 +15,7 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 		
 	}
 	
-	public List<Object[]> getImagesCoveredAndTotalImagesForConstituencies(Long districtId,Long activityScopeId,String  searchType,String  type){
+	public List<Object[]> getImagesCoveredAndTotalImagesForConstituencies(List<Long> districtsList,List<Long> activityScopeIdsLis,String  searchType,String  type){
 		
 			
 			StringBuilder queryStr = new StringBuilder();
@@ -26,29 +26,33 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 				queryStr.append(" model.userAddress.constituency.constituencyId," );
 			
 			
-			if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("panchayat")){
+			if(type != null && type.equalsIgnoreCase("panchayat")){
 				queryStr.append(" count(distinct model.userAddress.panchayat.panchayatId), ");
-			}else if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("ward")){
+			}else if( type != null && type.equalsIgnoreCase("ward")){
 				queryStr.append("  count(distinct model.userAddress.ward.constituencyId), ");
-			}else if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("mandal")){
+			}else if( type != null && type.equalsIgnoreCase("mandal")){
 				queryStr.append("  count( distinct model.userAddress.tehsil.tehsilId), ");
-			}else if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("town")){
+			}else if( type != null && type.equalsIgnoreCase("town")){
 				queryStr.append("  count(distinct model.userAddress.localElectionBody.localElectionBodyId), ");
-			}else if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("constituency")){
+			}else if(type != null && type.equalsIgnoreCase("constituency")){
 				queryStr.append("  count(distinct model.userAddress.constituency.constituencyId), ");
 			}
-			
-			queryStr.append(" count(model1.activityDocumentId) " +
-					" from ActivityDocument model1,ActivityInfoDocument model where model1.activityDocumentId = model.activityDocument.activityDocumentId   " );
-			
-			
-			queryStr.append(" and model1.activityScope.activityScopeId =:activityScopeId  ");
-			
-			if(districtId != null && districtId.longValue() > 0l)
-				queryStr.append("  and model.userAddress.district.districtId = :districtId ");
+			queryStr.append(" count(model1.activityDocumentId) " );
+			queryStr.append(" ,model1.activityScope.activityScopeId ");
+			queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model where model.isDeleted='N'  and " +
+					" model1.activityDocumentId = model.activityDocument.activityDocumentId   " );
 			
 			
-			queryStr.append(" group by model.userAddress.constituency.constituencyId ");
+			queryStr.append(" and model1.activityScope.activityScopeId  in (:activityScopeIdsLis)  ");
+			
+			if(districtsList != null && districtsList.size() > 0l)
+				queryStr.append("  and model.userAddress.district.districtId in (:districtsList) ");
+			
+			queryStr.append(" group by model1.activityScope.activityScopeId ");
+			if(searchType != null && searchType.equalsIgnoreCase("constituency"))
+				queryStr.append(" , model.userAddress.constituency.constituencyId ");
+			
+			
 			/*if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("panchayat")){
 				queryStr.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.panchayat.panchayatId ");
 			}else if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("ward")){
@@ -63,10 +67,11 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			
 			Query query = getSession().createQuery(queryStr.toString());
 			
-			if(districtId != null && districtId.longValue() > 0l)
-			query.setParameter("districtId",districtId );
+			if(districtsList != null && districtsList.size() > 0l)
+				query.setParameterList("districtsList",districtsList );
 			
-			query.setParameter("activityScopeId",activityScopeId );
+			if(activityScopeIdsLis != null && activityScopeIdsLis.size()>0)
+				query.setParameterList("activityScopeIdsLis",activityScopeIdsLis );
 			
 			return query.list();
 		

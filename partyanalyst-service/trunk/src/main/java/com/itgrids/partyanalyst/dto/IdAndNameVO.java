@@ -37,8 +37,22 @@ public class IdAndNameVO {
 	private String locationName;
 	private String perc;
 	private String remainingPerc;
+	private Long imagesCovered=0l;
+	private Long totalImages=0l;
 	
 	
+	public Long getImagesCovered() {
+		return imagesCovered;
+	}
+	public void setImagesCovered(Long imagesCovered) {
+		this.imagesCovered = imagesCovered;
+	}
+	public Long getTotalImages() {
+		return totalImages;
+	}
+	public void setTotalImages(Long totalImages) {
+		this.totalImages = totalImages;
+	}
 	public String getLocationName() {
 		return locationName;
 	}
@@ -242,8 +256,6 @@ public class IdAndNameVO {
 
 	public void setRemainingPerc(String remainingPerc) {
 		this.remainingPerc = remainingPerc;
-	}
-	
-	
+	}	
 	
 }
