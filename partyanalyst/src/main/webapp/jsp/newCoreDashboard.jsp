@@ -2676,8 +2676,8 @@
 									</div>
 									<div class="panel-body">
 										<div id="eventsDistWiseCohort"></div>
+										 <div id="eventsDistWiseCohort1"></div>
 										<div id="eventsDistWiseCohort2"></div>
-										<div id="eventsDistWiseCohort1"></div>
 									</div>
 								</div>
 							</div>
