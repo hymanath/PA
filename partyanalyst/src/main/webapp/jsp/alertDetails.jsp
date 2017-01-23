@@ -394,7 +394,7 @@
 											</div>
 										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
 											<div class="hideUpdateBlockCls" style="display:none;">
-											   <p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Comments</p>
+											   <p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Comments&nbsp<span style="color:red;">*</span></p>
 											   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
 												<div class="row">
 													<div class="col-md-3 col-xs-12 col-sm-6">
