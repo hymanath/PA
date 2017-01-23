@@ -63,7 +63,7 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	private String boxNo;
 	private String outerBoxNo;
 	private String pcNo;
-	
+	private Date   updatedTime;
 	
 	private TdpCadre tdpCadre;
 	private CardPrintVendor cardPrintVendor;
@@ -455,6 +455,14 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	}
 	public void setOuterBoxNo(String outerBoxNo) {
 		this.outerBoxNo = outerBoxNo;
+	}
+	
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 	
 }
