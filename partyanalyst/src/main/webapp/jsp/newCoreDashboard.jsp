@@ -20,11 +20,13 @@
 <link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style type="text/css">
-.eventsheader , #statewiseoverviewPanel
+.eventsheader , #statewiseoverviewPanel,#locationsPopup
 {
 	display:none;
 }
+
 </style>
 </head>
 <body>  
@@ -130,7 +132,8 @@
 	</div>
 	<!-- Error Msg For Committee End --->
 <div class="container m_top20">
-		<div class="row">
+
+	<div class="row">
 		<!-- Alerts Start -->
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
@@ -2624,9 +2627,15 @@
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
 								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>
-									<div id="activityEventsListNew" class="m_top20"></div>		
+									<div id="activityEventsListNew" class="m_top20"></div>				
+				
+								<!--<div style="border : 1px solid #333; padding : 5px">-->
+									<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>
+									<div id="activityEventsListNew" class="m_top20"></div>
+								<!--</div>-->
 							</div>
 							<!--Acivites Block
+							
 							
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
 							<div style="border : 1px solid #333; padding : 5px">
@@ -2667,6 +2676,7 @@
 									</div>
 									<div class="panel-body">
 										<div id="eventsDistWiseCohort"></div>
+										<div id="eventsDistWiseCohort2"></div>
 										<div id="eventsDistWiseCohort1"></div>
 									</div>
 								</div>
@@ -3669,6 +3679,22 @@
     </div>
   </div>
 </div>
+
+<!-------start popup build------------>
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+       <div id="buildPoupupImage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--------End Popup build----------->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
@@ -3713,6 +3739,8 @@
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
+<script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 
 	//url Based Conditions
