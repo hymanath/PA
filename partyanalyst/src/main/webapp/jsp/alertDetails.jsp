@@ -401,7 +401,7 @@
 														<p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</p>
 													</div>
 													<div class="col-md-3 col-xs-12 col-sm-6">
-														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
+														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" title="Add Another File" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
 													</div>
 												</div>
 												
@@ -410,10 +410,11 @@
 													<div class="uploadAttachmentDivCls col-md-3 col-xs-12 col-sm-6">
 														<ul class="attachmentsUpload"  id="">
 															<li>
-																<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0">
+																<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0"><span class="ClearFileCls closeIcon" style="display:none;cursor:pointer;" attr_id="0">x</span>
 															</li>
 														</ul>
 														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
+														<!-- <button type="button" class="btn btn-primary btn-xs pull-left m_top20" title="Add Another File"  id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>-->
 														
 													</div>
 												</div>
