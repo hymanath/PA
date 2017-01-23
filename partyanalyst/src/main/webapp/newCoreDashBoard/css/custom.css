@@ -2270,11 +2270,12 @@ color: rgb(51, 122, 183);
     content:"\002b";
 }
 .tablePaddingSyle tbody tr td{padding:5px !important}
-.eventYearExpandIcon
+.activitesExpandIcon
 {
 	background-color: #fff; 
 	margin-left: 5px; 
 	border: 1px solid #333; 
 	padding: 2px; 
 	font-size: 12px;
+	cursor:pointer
 }

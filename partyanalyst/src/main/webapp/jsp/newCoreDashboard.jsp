@@ -2594,12 +2594,12 @@
 								<span class="eventsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
-								<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+								<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
-								</span>-->
+								</span>
 							</div>
 						</div>
 						<div class="notesDropDown notesArrow" >
@@ -2622,7 +2622,7 @@
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>
+								<div id="mainEventsList" class="m_top20"></div>		
 							</div>
 							<!--Acivites Block
 							
@@ -2665,6 +2665,7 @@
 									</div>
 									<div class="panel-body">
 										<div id="eventsDistWiseCohort"></div>
+										<div id="eventsDistWiseCohort1"></div>
 									</div>
 								</div>
 							</div>
@@ -3017,7 +3018,8 @@
 		</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
-<input type="hidden" id="alertEditionTypeHiddenId"></input>   
+<input type="hidden" id="alertEditionTypeHiddenId"></input>  
+<input type="hidden" id="hiddenActivityId"></input>  
 <!--model start -->
 <!-- Modal -->
 
