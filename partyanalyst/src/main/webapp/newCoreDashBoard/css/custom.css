@@ -2279,3 +2279,38 @@ color: rgb(51, 122, 183);
 	font-size: 12px;
 	cursor:pointer
 }
+
+.slick-training {
+    background: #fff none repeat scroll 0 0;
+    height: 30px;
+    margin-left: 50px;
+}
+.slider-nav {
+    background: #fff none repeat scroll 0 0;
+    padding: 0;
+}
+.slider-nav li {
+    border: 2px solid #663300;
+    margin-left: 3px;
+}
+.slider-nav li img {
+    height: 40px;
+}
+.slider-for {
+    padding: 0;
+}
+.slider-for li img {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.65);
+    display: block;
+    height: 350px;
+    margin: auto;
+    width: 100%;
+}
+.eventYearExpandIcon
+{
+  background-color: #fff; 
+  margin-left: 5px; 
+  border: 1px solid #333; 
+  padding: 2px; 
+  font-size: 12px;
+}
