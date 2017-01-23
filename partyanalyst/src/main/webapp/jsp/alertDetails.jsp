@@ -32,6 +32,31 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+	#alertStatusForm label
+	{
+		font-weight:600;
+	}
+	.jFiler-input-dragDrop
+	{
+		padding:5px;
+	}
+	.icon-jfi-folder
+	{
+		font-size: 30px
+	}
+	.jFiler-input-text h3
+	{
+		font-size:16px;
+	}
+	.jFiler-input-text span
+	{
+		margin-top:5px !important;
+		margin-bottom:5px !important;
+	}
+	.jFiler-input-choose-btn.blue
+	{
+		color:#fff !important;
+	}
 		.panelTitleFont
 		{
 			font-size:15px;
@@ -253,8 +278,8 @@
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
-.uploadCssDiv {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;}
-.uploadCssDiv1 {padding: 3px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;}
+.uploadCssDiv {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
+.uploadCssDiv1 {padding: 3px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
 	</style>
 	
 	<!-- YUI Dependency files (Start) -->
@@ -295,15 +320,15 @@
 							<table class="table table-bordered tableCategory">
 								<tr>
 									<td style="vertical-align: top;">
-										<p class="text-capital"><span class="text-muted "><b>Alert type</b></span></p>
+										<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;type</b></span></p>
 										<p><span  id="typeId"></span></p>
 									</td>
 									<td style="vertical-align: top;">
-										<p class="text-capital"><span class="text-muted "><b>Alert created date</b></span></p>
+										<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;created&nbsp;date</b></span></p>
 										<p><span  id="createdDate"></span></p>
 									</td>
 									<td style="vertical-align: top;">
-										<p class="text-capital"><span class="text-muted"><b>Alert status</b></span></p>
+										<p class="text-capital"><span class="text-muted"><b>Alert&nbsp;status</b></span></p>
 										<p><span id="alertStatus"></span></p>
 									</td>
 									<td id="severityTdId" style="vertical-align: top;display:none;">
@@ -311,11 +336,11 @@
 										<p><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
 									</td>
 									<td style="vertical-align: top;">
-										<p class="text-capital"><span class="text-muted "><b>Alert impact level</b></span></p>
+										<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;impact&nbsp;level</b></span></p>
 										<p style="text-transform: lowercase;"><span  id="levelId"></span></p>
 									</td>
 									<td style="vertical-align: top;">
-										<p class="text-capital"><span class="text-muted "><b>Alert location</b></span></p>
+										<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;location</b></span></p>
 										<p><span  id="LocationId"></span></p>
 									</td>
 								</tr>
@@ -347,8 +372,8 @@
 											<form id="alertDocs" name="alertDocs">
 												<h4 class="m_0 text-success font_weight" style="">UPLOAD SCAN COPY</h4>  
 												<input type="file" id="alertScanCopyId" multiple="multiple"  name="files[]" class="m_top20"/>
-												<span id="errFileId" style="color:red;margin-left:470px;"></span>
 												<input type="hidden" id="alertHiddenId" name="alertId">
+												<p id="errFileId" class="text-center text-danger"></p>
 												<center><button type="button" style="width:38%" class="btn btn-success" id="uploadAlertDocBtnId">Upload</button></center>
 											</form>										
 										</div>
@@ -390,7 +415,7 @@
 											</div>
 											<hr class="m_top10" style="border-top:1px solid rgba(0,0,0,0.6);"/>
 											<div class="hideCommentBlockCls">
-													<div id="converSationDtlsDivId"></div>
+												<div id="converSationDtlsDivId"></div>
 											</div>
 										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
 											<div class="hideUpdateBlockCls" style="display:none;">
@@ -405,7 +430,7 @@
 													</div>
 												</div>
 											  <div class="row">
-													<div class="uploadAttachmentDivCls col-md-3 col-xs-12 col-sm-6">
+													<div class="uploadAttachmentDivCls col-md-6 col-xs-12 col-sm-6">
 														<ul class="attachmentsUpload"  id="">
 															<li>
 																<input type="file" class="btn btn-mini" name="files" id="uploadClarificationFileId0"><span class="ClearFileCls closeIcon" style="display:none;cursor:pointer;" attr_id="0">x</span>
@@ -423,7 +448,7 @@
 														<button class="btn btn-success m_top20 text-capital " type="button" id="updateVerificationStatusBtnId"><h4>update verification status</h4></button>
 													</div>
 													  <div class="col-md-12 col-xs-12 col-sm-12 m_top10 notificationHeadingCls"  style="display:none;">
-														  <p style="font-size: 15px; font-weight: bold;">Note : Adding comment will reverse this status to progress</p>
+														  <p style="font-size: 15px; font-weight: bold;">Note : Adding comment will reverse this status to PROGRESS</p>
 													  </div>
 												</div>
 											</div>
@@ -440,7 +465,7 @@
 						<div class="row m_top10 hideBlockCls" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital"><b>involved members in this alert</b>
-								<span id="involvedCandidatesCnt" class="pull-right"> - 0</span></h4>
+								<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
 								<ul class="involvedMembersUl" id="alertCandidateDataId">
 									<li>
 										<div class="media">
@@ -501,47 +526,67 @@
 											<div class="panel panel-default panelHeights" style="position:relative;">
 												<div class="panel-body">
 													<form id="alertStatusForm" name="alertStatusForm">
-														<label>Alert Status</label>
-														<select class="dropkickClass" id="statusId">
-															<option value='0'>Select Status</option>
-															<option value='1'>Pending</option>      
-															<option value='2'>Notified</option>  
-															<option value='3'>Action In Progess</option>  
-															<option value='4'>Completed</option>
-															<option value='5'>Unable to Resolve</option>
-															<option value='6'>Action Not Required</option>
-															<option value='7'>Duplicate</option>
-														</select>
+														<div class="row">
+															<div class="col-md-6 col-xs-12 col-sm-6">
+																<label>Alert Status</label>
+																<select class="dropkickClass" id="statusId">
+																	<option value='0'>Select Status</option>
+																	<option value='1'>Pending</option>      
+																	<option value='2'>Notified</option>  
+																	<option value='3'>Action In Progess</option>  
+																	<option value='4'>Completed</option>
+																	<option value='5'>Unable to Resolve</option>
+																	<option value='6'>Action Not Required</option>
+																	<option value='7'>Duplicate</option>
+																</select>
+															</div>
+															<div class="col-md-6 col-xs-12 col-sm-6">
+																<label>Assigned Cadre</label>
+																<select class="" id="assignedCadreId"  multiple name="cadreIds">
+																	<option value="0">Select Assign Cadre</option>
+																</select>	
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<label>Comments</label>
+																<label class="radio-inline">
+																	<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+																</label>
+																<label class="radio-inline">
+																	<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+																</label>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
+															</div>
+															<div class="col-md-7 col-xs-12 col-sm-6">
+																<label>Add Attachments</label>
+																<input type="file" class="btn btn-mini uploadCssDiv btn-block" name="imageForDisplay" id="uploadFileId0"  />
+															</div>
+															<div class="col-md-7 col-xs-12 col-sm-6">
+																<div id="extraUploadFileDiv" class=""></div>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<button type="button" class="btn btn-primary btn-sm pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
+															</div>
+															<div id="errorId" class="m_top10"></div>
+															<div class="col-md-12 col-xs-12 col-sm-6">
+																<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Upload</button>
+															</div>
+															<input type="hidden" id="alertHiddenIdStatus" name="alertId">
+															<input type="hidden" id="alertStatusHiddenId" name="clarificationStatusId">
+															<input type="hidden" id="alertCommentsHiddenId" name="clarificationComments">
+															<!--<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>-->
+															<span id="updateAlertajaxImg" class="m_top10"></span>
+														</div>
 														
-														<label>Assigned Cadre</label>
-															<select class="" id="assignedCadreId"  multiple name="cadreIds">
-																<option value="0">Select Assign Cadre</option>
-															</select>	
-														<label>Comments</label>
-														<label class="radio-inline">
-															<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-														</label>
-														<label class="radio-inline">
-															<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-														</label>
-														<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
-														<div class="col-md-12 col-xs-12 col-sm-6"  >
-														<input type="file" class="btn btn-mini uploadCssDiv" name="imageForDisplay" id="uploadFileId0"  >
-														</div>
-														<div class="col-md-5 col-xs-12 col-sm-6"  >
-														<div id="extraUploadFileDiv" class=""></div>
-														</div>
-														<button type="button" class="btn btn-primary btn-sm pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
 														
-														<div id="errorId" class="m_top10"></div>
-														<div class="col-md-12 col-xs-12 col-sm-6">
-														<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Upload</button>
-														</div>
-														<input type="hidden" id="alertHiddenIdStatus" name="alertId">
-														<input type="hidden" id="alertStatusHiddenId" name="clarificationStatusId">
-														<input type="hidden" id="alertCommentsHiddenId" name="clarificationComments">
-														<!--<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>-->
-														<span id="updateAlertajaxImg" class="m_top10"></span>
+														
+														
+														
+														
+														
 													</form>
 												</div>
 											</div>

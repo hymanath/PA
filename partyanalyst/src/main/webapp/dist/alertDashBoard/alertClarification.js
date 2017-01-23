@@ -158,7 +158,13 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		   var str = '';
 		  if(result.conversationList != null && result.conversationList.length > 0){
 			  for(var i in result.conversationList){
-				 str+='<p class="text-capital  m_top20" style="font-weight:bold;font-size:15px;color: #3e3e3e;">'+result.conversationList[i].heading+'</p>';
+				  if(i == 0)
+				  {
+					str+='<p class="text-capital  m_top10" style="font-weight:bold;font-size:15px;color: #3e3e3e;">'+result.conversationList[i].heading+'</p>';  
+				  }else{
+					  str+='<p class="text-capital  m_top10" style="border-top:2px dashed #AEAEAE;padding-top:10px;font-weight:bold;font-size:15px;color: #3e3e3e;">'+result.conversationList[i].heading+'</p>';
+				  }
+				 
 				 if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
 				   str+='<p style="color:rgba(0,0,0,0.6);font-size:13px;">'+result.conversationList[i].comments+'</p>';	 
 				 }
