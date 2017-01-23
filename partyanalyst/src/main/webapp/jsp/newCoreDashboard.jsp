@@ -3524,7 +3524,13 @@
 					</div>
 					<div  class="col-md-12 col-xs-12 col-sm-12"> 
 						<div id="alertCommentsDiv"></div>  
-					</div>  
+					</div> 
+					<div  class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertVerificationDiv"></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertVerificationDtlsDiv"></div>  
+					</div>
 				</div>
 			  </div>
 			  <div class="modal-footer">     

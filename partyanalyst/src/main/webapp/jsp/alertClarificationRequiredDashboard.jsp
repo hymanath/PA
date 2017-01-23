@@ -890,7 +890,15 @@ function buildAlertData(result,jsObj)
 			str+='<td>'+result[i].alertSource+'</td>';
 			str+='<td>'+result[i].title+'</td>';
 			str+='<td>'+result[i].alertCategoryName+'</td>';
-			str+='<td>'+result[i].alertType+'</td>';
+			if(result[i].alertType == 1){
+				str+='<td>Party</td>';
+			}else if(result[i].alertType == 2){
+				str+='<td>Govt</td>';
+			}else if(result[i].alertType == 3){
+				str+='<td>Other</td>';
+			}else{
+				str+='<td>'+result[i].alertType+'</td>';
+			}
 			str+='<td>'+result[i].status+'</td>';
 			str+='<td>'+result[i].count+'</td>';
 			str+='<td>'+result[i].date+'</td>';
