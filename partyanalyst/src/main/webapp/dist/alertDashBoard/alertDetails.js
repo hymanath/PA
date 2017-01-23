@@ -448,7 +448,7 @@ function buildAlertCandidateData(result,categoryId)
 		}
 	}
 
-	$("#cadreInvolvedCandidatesCnt").html('-' +result.length);	
+	$("#cadreInvolvedCandidatesCnt").html(result.length);	
 	$("#cadreAlertCandidateDataId").html(str);
 	if(result.length > 3)
 	{
@@ -530,7 +530,7 @@ function buildAlertCandidateData(result,categoryId)
 
 		}
 	}
-	$("#involvedCandidatesCnt").html('-' +result.length);	
+	$("#involvedCandidatesCnt").html(result.length);	
 	$("#alertCandidateDataId").html(str);
    }
 	if(result.length > 3)
@@ -1410,7 +1410,7 @@ $(document).on("click","#clarifiReqId",function(){
 		c.removeAttr("style");
 		c.attr("id","uploadFileId"+fileNum);
 		c.attr("name","imageForDisplay");
-		c.removeAttr("class").addClass("btn btn-mini");
+		c.removeAttr("class").addClass("btn btn-mini btn-block");
 		c.addClass("uploadCssDiv");
 		$("#extraUploadFileDiv").append(c);
 		$("#extraUploadFileDiv").append('<span id="cloneLast'+fileNum+'" class="glyphicon glyphicon-remove pull-right closeIconlast" style="margin-top: -33px;cursor:pointer;" attr_id ="'+fileNum+'"></span>');
