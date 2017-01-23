@@ -750,9 +750,9 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-   //public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-  //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
-   // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
     
     
     //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
@@ -1208,7 +1208,7 @@ public interface IConstants {
 	
 	//cadre image saving .
 	//public static final String STATIC_CONTENT_FOLDER_PATH = "/app/static_content";
-	public static final String STATIC_CONTENT_FOLDER_PATH = "D:\\static_content";
+	public static final String STATIC_CONTENT_FOLDER_PATH = "D:/static_content";
 	public static final String CADRE_DATA_SOURCE_TYPE_TAB = "TAB";
 	public static final String CADRE_DATA_SOURCE_TYPE_WEB = "WEB";
 	public static final String CADRE_DATA_SOURCE_TYPE_ONLINE = "ONLINE";
