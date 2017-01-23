@@ -2230,6 +2230,15 @@ color: rgb(51, 122, 183);
 	height:29px;
 	
 }
+.verifyHeadingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff;
+    padding: 10px;
+    width: 215px;
+	line-height:10px;
+	height:29px;
+	
+}
 .alertDtlsTabStyle thead tr th {font-size:13px !important;padding:5px !important}
 .alertDtlsTabStyle tbody tr td {font-size:13px !important;padding:3px !important}
 
