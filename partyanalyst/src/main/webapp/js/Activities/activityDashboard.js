@@ -1624,17 +1624,30 @@ var globalImages;
 function getEventDocuments(divId,Obj)
 {
 	//$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
-	 var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
+	 //var dates=$('.searchDateCls ').val();
+	 // var dateArray=dates.split("/");
+	 // var fromDateStr=dateArray[0];
+	 // var toDateStr=dateArray[1];
 	 var activityId = $("#ActivityList").val();
-	  if(dateArray.length == 1)
+	  /* if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
 				toDateStr=" ";
-			}
+			} */
 		var jObj = {
+		activityId:12,
+		locationScope:"district",
+		locationValue:23,		
+		day:1,
+		fromDateStr:"01-01-2016",
+		toDateStr:"01-01-2017",
+		locationName:Obj.locationName,
+		startIndex:0,
+		maxIndex:0,
+		callFrom:"BD",
+		task:"daywise"
+		};
+		/* var jObj = {
 		activityId:Obj.activityScopeId,
 		locationScope:Obj.searchType,
 		locationValue:Obj.locationId,		
@@ -1646,7 +1659,7 @@ function getEventDocuments(divId,Obj)
 		maxIndex:0,
 		callFrom:Obj.callFrom,
 		task:"daywise"
-		};
+		}; */
 		$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
@@ -1875,24 +1888,24 @@ buildLocationsForPopup(globallocationScope,globallocationValue,globalActivitySco
 function getLocationsForPopupcli(locationScope,locationValue,divId,subLevel)
 {
 	
-	  var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
+	  //var dates=$('.searchDateCls ').val();
+	  //var dateArray=dates.split("/");
+	 // var fromDateStr=dateArray[0];
+	 // var toDateStr=dateArray[1];
 	 var activityScopeId = $("#ActivityList").val();
-	 if(dateArray.length == 1)
+	/*  if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
 				toDateStr=" ";
-			}
+			} */
 	  var locationScope =locationScope;
 	 var locationValue =locationValue;
 		var jObj = {
 		activityId:activityScopeId,
 		locationScope:locationScope,
 		locationValue:locationValue,	
-		fromDateStr:fromDateStr,
-		toDateStr:toDateStr,
+		fromDateStr:"01-01-2016",
+		toDateStr:"01-01-2017",
 		task:""
 		};
 		$.ajax({
@@ -1972,7 +1985,8 @@ function buildLocationsForPopup(locationScope,locationValue,ActivityScope)
 					   str+='<div class="panel panel-default panel-custommodal m_0">';
 						  str+='<div class="panel-heading panel-headingModal popupLevel" role="tab" id="headinglevel'+locationValue+'Modal" attr='+locationValue+'>';
 						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapselevel'+locationValue+'Modal" aria-expanded="true" aria-controls="collapselevel'+globallocationValue+'Modal">';
-							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">'+globallocationName+'('+globalTotalImages+')';
+							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">Anantapur District(157)';
+							// str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">Anantapur District('+globalTotalImages+')';
 							 str+='</h4>';
 						   str+='</a>';
 						 str+='</div>';
@@ -2115,15 +2129,29 @@ function getEventDocumentsForPopup(searchType,locationId,day,num,path)
 	
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
+/* 	  var dateArray=dates.split("/");
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
 	  if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
 				toDateStr=" ";
-			}
+			} */
 		var jObj = {
+		activityId:12,
+		locationScope:"district",
+		locationValue:23,		
+		day:day,
+		fromDateStr:"01-01-2016",
+		toDateStr:"01-01-2017",
+		type:"popup",
+		startIndex:num,
+		maxIndex:10,
+		callFrom:"BD",
+		//locationName:obj.locationName,
+		 task:"popupdaywise"
+		};
+		/* var jObj = {
 		activityId:globalActivityScope,
 		locationScope:searchType,
 		locationValue:locationId,		
@@ -2136,7 +2164,7 @@ function getEventDocumentsForPopup(searchType,locationId,day,num,path)
 		callFrom:"BD",
 		//locationName:obj.locationName,
 		 task:"popupdaywise"
-		};
+		}; */
 		$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
@@ -2174,7 +2202,7 @@ function buildDayWiseImagesForPopup1(result,jObj,path)
 		{	 
 			for(var j in result[i].subList)
 			{
-				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
+				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"/></li>';	
 			}
 		}
 				str+='</ul>';
@@ -2238,7 +2266,6 @@ function buildDayWiseImagesForPopup1(result,jObj,path)
 
 function buildDayWiseImagesForPopup(result,path,day)
 {
-	
 /*	var str ='';
 	if(result != null)
 	{
@@ -2316,21 +2343,30 @@ function getAvailableDates(locationScope,locationValue,day,path)
 	{
 		
 	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
-	  var dates=$('.searchDateCls ').val();
-	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
+	  var dates = $('.searchDateCls').val();
+	 // alert(dates);
+	  //var dateArray = dates.split("/");
+	  var fromDateStr='01-01-2016';
+	  var toDateStr='01-01-2017';
 	  var activityScopeId = $("#ActivityList").val();
-	 if(dateArray.length == 1)
+	/*  if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
 				toDateStr=" ";
-			}
+			} */
 	
-		var jObj = {
+		/* var jObj = {
 		activityId:activityScopeId,
 		locationScope:locationScope,
 		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		task:""
+		}; */
+		var jObj = {
+		activityId:12,
+		locationScope:"district",
+		locationValue:22,	
 		fromDateStr:fromDateStr,
 		toDateStr:toDateStr,
 		task:""
