@@ -1485,7 +1485,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		query.setParameter("endDate", endDate);
 		return query.list();
 	}
-	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,String type,String countType){
+	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId,String countType){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -1509,7 +1509,19 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			queryStr.append("  model.ivrStatus = 'Y' " );
 		
 		
-		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId and model.address.district.districtId = :districtId ");
+		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId  ");
+		
+		if(districtId != null && districtId.longValue() > 0l){
+			queryStr.append("  and model.address.district.districtId = :districtId ");
+		}else{
+			if(stateId != null && stateId.longValue() == 1l){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId != null && stateId.longValue() == 2l){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId != null && stateId.longValue() == 0l){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+			}
+		}
 		
 		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
 			queryStr.append(" group by model.address.constituency.constituencyId ");
@@ -1518,7 +1530,10 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
 			queryStr.append(" group by model.address.ward.constituencyId ");
 		
+		queryStr.append(" order by model.address.constituency.name  ");
 		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(districtId != null && districtId.longValue() > 0l)
 		query.setParameter("districtId",districtId );
 		query.setParameter("activityScopeId",activityScopeId );
 		

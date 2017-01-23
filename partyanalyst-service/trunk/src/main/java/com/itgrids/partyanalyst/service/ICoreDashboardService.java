@@ -21,5 +21,5 @@ public interface ICoreDashboardService {
 	public List<IdAndNameVO> getActivityDetails(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getActivityOverAllSummary(Long activityId);
 	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr);
-	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,String type );
+	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId );
 }
