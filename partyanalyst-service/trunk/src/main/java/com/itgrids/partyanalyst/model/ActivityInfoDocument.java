@@ -43,6 +43,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private String insertType;
 	private Long activityLocationInfoId;
 	private ActivityLocationInfo activityLocationInfo;
+	private Long activityAddressId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_info_document_id", unique = true, nullable = false)
@@ -141,7 +142,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 		this.day = day;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_address_id")
+	@JoinColumn(name="activity_address_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
@@ -184,6 +185,13 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	public void setActivityLocationInfo(ActivityLocationInfo activityLocationInfo) {
 		this.activityLocationInfo = activityLocationInfo;
+	}
+	@Column(name = "activity_address_id")
+	public Long getActivityAddressId() {
+		return activityAddressId;
+	}
+	public void setActivityAddressId(Long activityAddressId) {
+		this.activityAddressId = activityAddressId;
 	}
 	
 	

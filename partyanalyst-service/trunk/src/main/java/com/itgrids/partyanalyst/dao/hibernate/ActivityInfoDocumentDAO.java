@@ -735,5 +735,19 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 		
 	}
+/*public List<Object[]> activityInfoDocumentCount(List<Long> scopeIds){
+		
+		Query query=getSession().createQuery(" " +
+				  " select  model.activityDocument.activityScope.activityScopeId,count(model.activityInfoDocumentId) " +
+				  " from   ActivityInfoDocument model,UserAddress UA" +
+				  " where   model.activityDocument.activityScope.activityScopeId in (:scopeIds) and model.isDeleted ='N' " +
+				  " and model.activityAddressId = UA.userAddressId " +
+				  " group by model.activityDocument.activityScope.activityScopeId ");
+		
+		query.setParameterList("scopeIds",scopeIds);
+		
+		return query.list();
+	}*/
+
 
 }
