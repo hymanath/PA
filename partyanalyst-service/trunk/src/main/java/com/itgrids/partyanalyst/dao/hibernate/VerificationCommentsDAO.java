@@ -59,7 +59,7 @@ public class VerificationCommentsDAO extends GenericDaoHibernate<VerificationCom
 	      sqlQuery.addScalar("alerVerififationUserTypeId",Hibernate.LONG); 
 	      sqlQuery.addScalar("comments",Hibernate.STRING); 
 	      sqlQuery.addScalar("updateTime",Hibernate.DATE); 
-	      sqlQuery.addScalar("time",Hibernate.DATE);
+	      sqlQuery.addScalar("time",Hibernate.STRING);
 	      sqlQuery.addScalar("firstName",Hibernate.STRING);
 	      sqlQuery.addScalar("lastName",Hibernate.STRING);
 	      sqlQuery.addScalar("documentPath",Hibernate.STRING);
