@@ -155,16 +155,16 @@ function buildAlertData(result)
 		if(result[i].category !=null)
 			$("#headingSpanId").html(''+result[i].category+'');
 		
-			$("#typeId").html(''+result[i].alertType+'');
-			$("#severityId").html(''+result[i].severity+'');
+			$("#typeId").html('<b>'+result[i].alertType+'</b>');
+			$("#severityId").html('<b>'+result[i].severity+'</b>');
 			if(severityTdId ==1){
 				$("#severityTdId").show();
 			}else{
 				$("#severityTdId").hide();
 			}
-			$(".severityIdColorCls").addClass(''+result[i].severity+'');
-			$("#createdDate").html(''+result[i].date+'');
-			$("#levelId").html(''+result[i].regionScope+'');
+			$(".severityIdColorCls").addClass('<b>'+result[i].severity+'</b>');
+			$("#createdDate").html('<b>'+result[i].date+'</b>');
+			$("#levelId").html('<b>'+result[i].regionScope+'</b>');
 			var location ='';
 			/* if(result[i].regionScope == "STATE")
 			{
@@ -205,26 +205,26 @@ function buildAlertData(result)
 			}	 */
 			
 			if(result[i].locationVO.stateId !=null){
-				location +='<p>S:'+result[i].locationVO.state+' </p>';
+				location +='<b>'+result[i].locationVO.state+' , ';
 			}
 			if(result[i].locationVO.districtId !=null){
-				location +='<p>D:'+result[i].locationVO.districtName+' </p>';
+				location +=''+result[i].locationVO.districtName+' District, ';
 			}
 			if(result[i].locationVO.constituencyId !=null){
-				location +='<p>C:'+result[i].locationVO.constituencyName+' </p>';
+				location +=''+result[i].locationVO.constituencyName+' Constituency, ';
 			}
 			
 			if(result[i].locationVO.localEleBodyName !=null && result[i].locationVO.localEleBodyName.length>0){
-				location +='<p>M:'+result[i].locationVO.localEleBodyName+' </p>';
+				location +=''+result[i].locationVO.localEleBodyName+' Municipality, ';
 			}
 			if(result[i].locationVO.tehsilName !=null && result[i].locationVO.tehsilName.length>0){
-				location +='<p>T:'+result[i].locationVO.tehsilName+' </p>';
+				location +=''+result[i].locationVO.tehsilName+' Mandal, ';
 			}
 			if(result[i].locationVO.wardName !=null && result[i].locationVO.wardName.length>0){
-				location +='<p>W:'+result[i].locationVO.wardName+' </p>';
+				location +=''+result[i].locationVO.wardName+' Ward, ';
 			}
 			if(result[i].locationVO.villageName !=null && result[i].locationVO.villageName.length>0){
-				location +='<p>P:'+result[i].locationVO.villageName+' </p>';
+				location +=''+result[i].locationVO.villageName+' Panchayat </b>';
 			}
 			
 			
@@ -232,9 +232,9 @@ function buildAlertData(result)
 			$("#LocationId").html(''+location+'');
 			$("#statusId").val(''+result[i].statusId+'');
 			  $("#statusId").dropkick('refresh')
-			$("#descriptionId").html(''+result[i].desc+'');
-			$("#titleId").html(''+result[i].title+'');
-			$("#alertStatus").html(''+result[i].status+'');
+			$("#descriptionId").html('<b>'+result[i].desc+'</b>');
+			$("#titleId").html('<b>'+result[i].title+'</b>');
+			$("#alertStatus").html('<b>'+result[i].status+'</b>');
 			
 			if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
 				$(".imageUrlUlCls").html("<li class='articleDetailsCls' attr_articleId="+result[i].alertCategoryTypeId+" style='cursor:pointer'><img src='http://mytdp.com/NewsReaderImages/"+result[i].imageUrl+"' style='width: 150px; height: 150px;'></img></li>");
@@ -459,7 +459,7 @@ function buildAlertCandidateData(result,categoryId)
 		for(var i in result)
 		{
 			
-			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10" style="padding: 3px;">';
 				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';						
 					if(result[i].image !=null && result[i].image.length>0){
@@ -477,11 +477,11 @@ function buildAlertCandidateData(result,categoryId)
 					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
 					  if(result[i].impactId == 1)
 					  {
-						 str+=' <span class="label label-success">+ Ve</span>'; 
+						 str+=' <span class="label label-success" style="margin-top: 7px;">+ Ve</span>'; 
 					  }else if(result[i].impactId == 2){
-						  str+=' <span class="label label-danger">- Ve</span>';
+						  str+=' <span class="label label-danger" style="margin-top: 7px;">- Ve</span>';
 					  }else{
-						  str+=' <span class="label label-neutral">N</span>';
+						  str+=' <span class="label label-neutral" style="margin-top: 7px;">N</span>';
 					  }
 					  
 					  if(result[i].organization !=null){
@@ -499,7 +499,7 @@ function buildAlertCandidateData(result,categoryId)
 	}else{
 		for(var i in result)
 		{
-			str+='<div class="col-md-12 col-xs-12 col-sm-4">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10" style="padding: 3px;">';
 				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
 					str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
@@ -516,11 +516,11 @@ function buildAlertCandidateData(result,categoryId)
 					  }
 					  if(result[i].impactId == 1)
 					  {
-						 str+=' <span class="label label-success">+ Ve</span>'; 
+						 str+=' <span class="label label-success" style="margin-top: 7px;">+ Ve</span>'; 
 					  }else if(result[i].impactId == 2){
-						  str+=' <span class="label label-danger">- Ve</span>';
+						  str+=' <span class="label label-danger" style="margin-top: 7px;">- Ve</span>';
 					  }else{
-						  str+=' <span class="label label-neutral">N</span>';
+						  str+=' <span class="label label-neutral" style="margin-top: 7px;">N</span>';
 					  }
 					  
 				  str+='  </div>';
@@ -1411,9 +1411,16 @@ $(document).on("click","#clarifiReqId",function(){
 		c.attr("id","uploadFileId"+fileNum);
 		c.attr("name","imageForDisplay");
 		c.removeAttr("class").addClass("btn btn-mini");
+		c.addClass("uploadCssDiv");
 		$("#extraUploadFileDiv").append(c);
+		$("#extraUploadFileDiv").append('<span id="cloneLast'+fileNum+'" class="glyphicon glyphicon-remove pull-right closeIconlast" style="margin-top: -33px;cursor:pointer;" attr_id ="'+fileNum+'"></span>');
 	});
 	
+	$(document).on("click",".closeIconlast",function(){
+		var id = $(this).attr("attr_id");
+		$("#uploadFileId"+id).remove();
+		$("#cloneLast"+id).remove();
+	});
 	
 	/*function getClarificationDetails(alertId){
 		var jsObj={
@@ -1825,10 +1832,23 @@ $(document).on("click","#clarifiReqId",function(){
 			$("#existingDocsTdId").html("");
 			if(result != null && result.length > 0){
 				var str='';
-				str+='<span class="text-muted ">DOCUMENTS : </span>';
-				str+='<ul>';
+				str+='<p class="text-muted "><b>DOCUMENTS</b></p>';
+				str+='<ul class="list-inline">';
+				var orderNumber = 0;
 					for(var i in result){
-						str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
+						orderNumber = orderNumber+1;
+						var fullName = result[i].name;
+						var nameArr = fullName.split(".");
+						var type = nameArr[1];	
+						var orderNoStr='';
+							if(i<9){
+								orderNoStr ="0"+orderNumber;
+							}else{
+							  orderNoStr = orderNumber;	
+							}
+					    var attachment = orderNoStr+'&nbspAttachment.'+type;
+					
+						str+='<li id="document'+result[i].id+'" ><a href="/Reports/'+result[i].name+'" target="_blank" style="color:#000"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></a></li>, ';
 					}
 				str+='</ul>';
 				$("#existingDocsTdId").html(str);

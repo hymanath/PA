@@ -140,19 +140,19 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		 }else{
 			 $("#clarificationStatusId").attr("value",0); 
 		 }
-		 $("#alertStatusHeadingId").html("Status:<span class='text-success'>"+result.actionTypeStatus+"</span>");
+		 $("#alertStatusHeadingId").html("STATUS : <span style='color:#2C9C74'>"+result.actionTypeStatus+" <i class='glyphicon glyphicon-ok'></i></span>");
 		 userWiseAccessiblilityFunction();
 		   var str = '';
 		  if(result.conversationList != null && result.conversationList.length > 0){
 			  for(var i in result.conversationList){
-				 str+='<p class="text-capital panelTitleFont m_top20" style="font-weight:bold;font-size:16px;">'+result.conversationList[i].heading+'</p>';
+				 str+='<p class="text-capital  m_top20" style="font-weight:bold;font-size:15px;color: #3e3e3e;">'+result.conversationList[i].heading+'</p>';
 				 if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
 				   str+='<p style="color:rgba(0,0,0,0.6);font-size:13px;">'+result.conversationList[i].comments+'</p>';	 
 				 }
 		 	 var documentList = result.conversationList[i].documentList;
 			if(documentList != null && documentList.length > 0){
-					 str+='<p style="font-weight:bold;font-size:16px;" class="text-capital m_top10 panelTitleFont">Attachments</p>';
-			         str+='<ul class="attachmentsBlock">';
+					 str+='<p style="font-size:14px;" class="m_top10"><span style="font-size:15px;font-weight:bold;">Attachments</span> <small>(Click on link to view attachments)</small></p>';
+			         str+='<ul class="attachmentsBlock list-inline">';
 				var order = 0;
 				for(var k in documentList){
 					order = order+1;
@@ -166,12 +166,12 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 						  orderStr = order;	
 						}
 					    var attachment = orderStr+'&nbspAttachment.'+type;
-						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></li>';
+						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></li>, ';
 				}
 			str+='</ul>';
 			}
 			 if(result.conversationList[i].name != null && result.conversationList[i].name.length > 0){
-			   str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';  	 
+			   str+='<p class="text-right" style="color:#9F88BA;font-size:12px;font-weight: bold;">Created By : <span class="text-capital">'+result.conversationList[i].name+'</span>( '+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+' )</p>';  	 
 			 }
 		  }
 		  str+='<hr class="m_top10" style="border-top: 1px solid #ccc;">';
