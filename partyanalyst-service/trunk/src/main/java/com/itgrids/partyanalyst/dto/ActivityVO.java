@@ -92,7 +92,7 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long hasConductedCount =0L;
 	private String activityLevelName;
 	private Long activityQuenaryId;
-	
+	private String remainingPerc;
 	
 	public Long getAttributeId() {
 		return attributeId;
@@ -549,6 +549,12 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setActivityQuenaryId(Long activityQuenaryId) {
 		this.activityQuenaryId = activityQuenaryId;
+	}
+	public String getRemainingPerc() {
+		return remainingPerc;
+	}
+	public void setRemainingPerc(String remainingPerc) {
+		this.remainingPerc = remainingPerc;
 	}
 	
 }
