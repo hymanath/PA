@@ -1166,11 +1166,13 @@ $(document).on("click",".linkedArticlesClickId",function(){
 	});
 function alertComments(result)
 {
+	var docName = '';
+	var extName = [];
 	var statusId = 0;
 	var length = result.length;
 	length = length - 1;
 	var str = '';
-	if(status == 'false'){
+	if(status == 'false'){  
 		$(".cadreAlertCommentsDivId").show();
 		str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom:0px;">';
 	for(var i in result)
@@ -1335,7 +1337,9 @@ function alertComments(result)
 													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
 													str+='<ul>';
 													for(var t in result[i].sublist2[j].sublist[k][0].docList){
-														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Document - '+(parseInt(i)+1)+'</a></li>';
+														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+														extName = docName.split(".");
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Document.'+extName+'</a></li>';
 													}
 													str+='</ul>';
 												}
@@ -1838,7 +1842,7 @@ $(document).on("click","#clarifiReqId",function(){
 					for(var i in result){
 						orderNumber = orderNumber+1;
 						var fullName = result[i].name;
-						var nameArr = fullName.split(".");
+						var nameArr = fullName.split(".");  
 						var type = nameArr[1];	
 						var orderNoStr='';
 							if(i<9){
