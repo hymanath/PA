@@ -340,7 +340,7 @@
 												<input type="file" id="alertScanCopyId" multiple="multiple"  name="files[]" class="m_top20"/>
 												<span id="errFileId" style="color:red;margin-left:470px;"></span>
 												<input type="hidden" id="alertHiddenId" name="alertId">
-												<button type="button" style="width:100%" class="btn btn-success" id="uploadAlertDocBtnId">Upload</button>
+												<center><button type="button" style="width:38%" class="btn btn-success" id="uploadAlertDocBtnId">Upload</button></center>
 											</form>										
 										</div>
 									</td>
@@ -400,12 +400,12 @@
 												</div>
 												<div class="m_top20 row">
 													<div class="col-md-5 col-xs-12 col-sm-6">
-														<label class="verificationStatusCls" style="display:none;">Verficiation Status</label>
+														<label class="verificationStatusCls" style="display:none;">Verification Status</label>
 														<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
 														<!--	<option value="1">Progress</option>-->
 														<!--     <option value="2">Completed</option>-->
 														</select>
-														<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">update verification status</button>
+														<button class="btn btn-success m_top20" type="button" id="updateVerificationStatusBtnId">Update Verification Status</button>
 													</div>
 													  <div class="col-md-12 col-xs-12 col-sm-12 notificationHeadingCls" style="display:none;">
 														  <h4>Note:Adding comment will reverse this status to progress</h4>
