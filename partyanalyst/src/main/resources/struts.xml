@@ -15515,6 +15515,10 @@
 		    <param name="root">alertVerificationList</param>
 		</result>
 	</action>
-	
+	<action name="getActivitiesQuesDetailsAction" class="activityAction" method="getQustionList">
+	  <result type="json" name="success">
+			<param name="root">activityVO</param>
+		</result>
+	</action>
  </package>
 </struts>
