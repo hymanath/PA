@@ -2622,7 +2622,9 @@
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>		
+								<div id="mainEventsList" class="m_top20"></div>
+								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>
+									<div id="activityEventsListNew" class="m_top20"></div>		
 							</div>
 							<!--Acivites Block
 							
