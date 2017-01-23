@@ -221,7 +221,8 @@ public List<Object[]> getQuesAndOptionsByScopeIds(List<Long> scopeIdsList){
 			" model.activityQuestionnaire.activityQuestion.activityQuestionId," +
 			" model.activityQuestionnaire.activityQuestion.question," +
 			" model.activityOption.activityOptionId," +
-			" model.activityOption.option " +
+			" model.activityOption.option , " +
+			" model.activityQuestionnaire.activityQuestionnaireId" +
 			" from ActivityQuestionnaireOption model" +
 			" where model.activityQuestionnaire.activityScope.activityScopeId in (:scopeIdsList)");
 	query.setParameterList("scopeIdsList", scopeIdsList);
