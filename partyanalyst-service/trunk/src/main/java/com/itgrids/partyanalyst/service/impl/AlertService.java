@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -611,7 +612,7 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 		DateUtilService dt = new DateUtilService();
 		
 		String folderName = IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
-		AlertDocument alertDocument = null;
+		AlertDocument alertDocument = null;  
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
@@ -631,10 +632,10 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 			 str = new StringBuilder();
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-			 pathBuilder.append("tour_documents/"+monthText).append("").append(year).append("/").append(randomNumber).append(".")
+			 pathBuilder.append("tour_documents").append("/").append(randomNumber).append(".")
 			 .append(entry.getValue());
 			 str.append(randomNumber).append(".").append(entry.getValue());
-			String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+			 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
 			 
 				if(fileCpyStts.equalsIgnoreCase("error")){
 					LOG.error(" Exception Raise in copying file in ToursService ");
@@ -1316,7 +1317,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					if(objects[11] != null)
 						alertTrackingIds.add((Long)objects[11]);
 				}
-				
+				 
 				if(cadreIds != null && cadreIds.size() > 0){
 					List<Object[]> objList = tdpCadreDAO.getCadreFormalDetails(cadreIds);
 					if(objList != null && objList.size() > 0){
@@ -6479,6 +6480,90 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  }
 	  return resultVO;
   }
+  /*public List<AlertCommentVO> getVerificationDetails(Long alertId){
+	  try{
+		  Map<Long,String> userTypeIdAndUserTypeMap = new LinkedHashMap<Long,String>();
+		  Map<Long,TreeSet<Long>> userTypeIdAndConversationIdListMap = new LinkedHashMap<Long,TreeSet<Long>>();
+		  Map<Long,Set<String>> conversationIdAndDocumentSetMap = new LinkedHashMap<Long,Set<String>>();
+		  Map<Long,String> conversationIdAndCommentMap = new LinkedHashMap<Long,String>();
+		  
+		  TreeSet<Long> conversationIdList = null;
+		  Set<String> documentList = null;
+		  List<Long> conversationList = null;
+		  AlertCommentVO alertCommentVO = null;
+		  List<String> docList = null;
+		  List<String> cmtList = null;
+		  List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>();
+		  List<Object[]> verificationDetailsList = alertDAO.getVerificationDetails(alertId);
+		  if( verificationDetailsList != null && verificationDetailsList.size() > 0){
+			  for(Object[] param : verificationDetailsList){
+				  userTypeIdAndUserTypeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				  
+				  conversationIdList = userTypeIdAndConversationIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  if(conversationIdList == null){
+					  conversationIdList = new TreeSet<Long>();  
+					  
+					  userTypeIdAndConversationIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), conversationIdList);
+				  }
+				  conversationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  
+				  if(commonMethodsUtilService.getStringValueForObject(param[4]) != null){
+					  documentList = conversationIdAndDocumentSetMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					  if(documentList == null){
+						  documentList = new HashSet<String>();
+						  conversationIdAndDocumentSetMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), documentList);
+					  }
+					  documentList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
+				  }
+				  
+				  if(commonMethodsUtilService.getStringValueForObject(param[6]) != null){
+					  conversationIdAndCommentMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[6]));
+				  }
+				  
+			  }
+			  if(userTypeIdAndUserTypeMap != null && userTypeIdAndUserTypeMap.size() > 0){
+				  for(Entry<Long,String> entry : userTypeIdAndUserTypeMap.entrySet()){
+					  alertCommentVO = new AlertCommentVO();
+					  alertCommentVO.setDeptId(entry.getKey());
+					  alertCommentVO.setDeptName(entry.getValue());
+					  if(userTypeIdAndConversationIdListMap.get(entry.getKey()) != null){
+						  conversationList = new ArrayList<Long>(userTypeIdAndConversationIdListMap.get(entry.getKey()));
+					  }
+					  if(conversationList != null && conversationList.size() > 0){
+						  docList = new ArrayList<String>();
+						  for(Long conversationId : conversationList){
+							  if(conversationIdAndDocumentSetMap.get(conversationId) != null){
+								  docList.addAll(new ArrayList<String>(conversationIdAndDocumentSetMap.get(conversationId)));
+							  }
+						  }
+					  }
+					  if(docList != null){
+						  alertCommentVO.setDocList(docList);
+					  }
+					  
+					  if(conversationList != null && conversationList.size() > 0){
+						  cmtList = new ArrayList<String>();
+						  for(Long conversationId : conversationList){
+							  if(conversationIdAndCommentMap.get(conversationId) != null){
+								  cmtList.add(conversationIdAndCommentMap.get(conversationId));
+							  }
+						  }
+					  }
+					  if(cmtList != null){
+						  alertCommentVO.setCmtList(cmtList);
+					  }
+					  finalList.add(alertCommentVO);
+				  }
+			  }
+		  }
+		  return finalList;
+		  
+	  }catch(Exception e){
+		  LOG.error("Exception Occured in getAlertVerificationDtls() in ToursService", e);
+	  }
+	  return null;
+  }*/
+	
   public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId){
 	  List<AlertVerificationVO> actionTypeStatusList = new ArrayList<AlertVerificationVO>(0);
 	  try{
