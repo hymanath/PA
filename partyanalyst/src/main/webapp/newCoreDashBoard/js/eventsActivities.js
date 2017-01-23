@@ -1612,6 +1612,14 @@ function buildDistrictsForActivityCounts(result){
       }
 }
 function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
+	if(activityScopeId == 0){
+		var t = type.split("-");
+		activityScopeId = parseInt(t[0]);
+		districtId = parseInt(t[1]);
+		type="all";
+		globalActvtyScopeId = activityScopeId;
+	}
+	
 	$("#districtId").val(districtId);
 	//$("#districtId").append("<option value='0'>All</option>"); 
 	$("#activityId").html("");
@@ -1649,9 +1657,12 @@ function buildDistrictWiseActivitiesCount(result,type){
 	
 	if(type == "count")
 		$("#myModelActivityId").modal('show');
+	else if(type == "all")
+		$("#myModelActivityId").modal('show');
 	$("#activityId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 	var str = '';
-	 str +='<table class="table table-bordered table-condensed" id="activityTableId">';
+	 str +='<table class="table table-bordered table-condensed " id="activityTableId">';
+	 str+='<thead>';
 	str +='<tr>';
     str +='<th class="text-capital">Constituency name</th>';
 	str +='<th class="text-capital">total</th>';
@@ -1661,6 +1672,8 @@ function buildDistrictWiseActivitiesCount(result,type){
 	str +='<th class="text-capital">images covered</th>';
 	str +='<th class="text-capital">Total images</th>';
   str +='</tr>';
+  str+='</thead>';
+  str+='<tbody>';
   for(var i in result){
   str +='<tr>';
     str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
@@ -1670,11 +1683,14 @@ function buildDistrictWiseActivitiesCount(result,type){
 	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
 	str +='<td>'+result[i].totalImages+'</td>';
+	  str +='</tr>';
   }
+  str+='</tbody>';
 str +='</table> ';
-
+//console.log(str)
 $("#activityId").html(str);
 //$("#activityTableId").dataTable({});
+   $('#activityTableId').dataTable();
 }
 $(document).on("click",".activitesExpandIcon",function(){
         var activityId = $(this).attr("attr_id");
@@ -1829,8 +1845,11 @@ function districtWiseCohort(activityId){
 			
 			for(var j in result[i].distList){
 				candidateNames.push(result[i].distList[j].locationName)
-				conductedCounts.push(parseFloat(result[i].distList[j].perc))
-				nonConductedCounts.push(parseFloat(result[i].distList[j].remainingPerc))
+				//conductedCounts.push(parseFloat(result[i].distList[j].perc))
+				//nonConductedCounts.push(parseFloat(result[i].distList[j].remainingPerc))
+				
+				conductedCounts.push({"y":parseFloat(result[i].distList[j].perc),"extra":result[i].id+"-"+result[i].distList[j].locationId});
+				nonConductedCounts.push({"y":parseFloat(result[i].distList[j].remainingPerc),"extra":result[i].id+"-"+result[i].distList[j].locationId});
 			}
 			
 			$(function () {
@@ -1889,9 +1908,20 @@ function districtWiseCohort(activityId){
 								}
 							  
 							}
-						}
+						},
+						series: {
+						cursor: 'pointer',
+						point: {
+							events: {
+								click: function () {
+									getDistrictWiseActivityCounts(0,0,this.extra)
+								}
+							}
+						}  
+				     },
+				 
 					},
-
+					
 					 tooltip: {
 						 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
 						/* formatter: function () {
