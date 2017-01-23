@@ -1514,7 +1514,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			 	Map<Long,AlertCommentVO> deptmap = new LinkedHashMap<Long, AlertCommentVO>();
 			 	Date fromDate = null;           
 				Date toDate = null;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
