@@ -404,9 +404,7 @@
 														<button type="button" class="btn btn-primary btn-xs pull-left m_top20" id="addClarificationFile" title="Add Another File" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>
 													</div>
 												</div>
-												
-												
-												<div class="row">
+											  <div class="row">
 													<div class="uploadAttachmentDivCls col-md-3 col-xs-12 col-sm-6">
 														<ul class="attachmentsUpload"  id="">
 															<li>
@@ -415,15 +413,12 @@
 														</ul>
 														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
 														<!-- <button type="button" class="btn btn-primary btn-xs pull-left m_top20" title="Add Another File"  id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>-->
-														
 													</div>
 												</div>
 												<div class="m_top20 row">
 													<div class="col-md-5 col-xs-12 col-sm-6">
 														<label class="verificationStatusCls" style="display:none;">Verification Status</label>
 														<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
-														<!--	<option value="1">Progress</option>-->
-														<!--     <option value="2">Completed</option>-->
 														</select>
 														<button class="btn btn-success m_top20 text-capital " type="button" id="updateVerificationStatusBtnId"><h4>update verification status</h4></button>
 													</div>
