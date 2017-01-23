@@ -21,6 +21,10 @@ public class AlertCommentVO implements Serializable {
 	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>(0);
 	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>(0);
 	private Long orderNo;
+	private Long deptId;
+	private String deptName;
+	private List<String> documentList = new ArrayList<String>();
+	private List<String> cmtList = new ArrayList<String>();
 	private List<KeyValueVO> docList = new ArrayList<KeyValueVO>(0);
 	
 	
@@ -120,10 +124,35 @@ public class AlertCommentVO implements Serializable {
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public List<String> getCmtList() {  
+		return cmtList;
+	}
+	public void setCmtList(List<String> cmtList) {
+		this.cmtList = cmtList;
+	}
+	public List<String> getDocumentList() {
+		return documentList;
+	}
+	public void setDocumentList(List<String> documentList) {
+		this.documentList = documentList;
+	}
 	public List<KeyValueVO> getDocList() {
 		return docList;
 	}
 	public void setDocList(List<KeyValueVO> docList) {
 		this.docList = docList;
 	}
+	
 }
