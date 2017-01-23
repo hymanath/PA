@@ -32,8 +32,12 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	private String isDeleted;
 	private Long insertedBy;
 	private Date insertedTime;
+	private Date updatedTime;
+	private Long updatedBy;
+	
 	
 	private User insertedUser;
+	private User updatedUser;
 	private Alert alert;
 	private  ActionTypeStatus  actionTypeStatus;
 	private AlertVerificationUserType alertVerificationUserType;
@@ -88,6 +92,30 @@ public class VerificationStatus extends BaseModel implements Serializable {
 	}
 	public void setAlertVerificationUserTypeId(Long alertVerificationUserTypeId) {
 		this.alertVerificationUserTypeId = alertVerificationUserTypeId;
+	}
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	@Column(name="updated_by")
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
+	@JoinColumn(name = "updated_by" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedUser() {
+		return updatedUser;
+	}
+	public void setUpdatedUser(User updatedUser) {
+		this.updatedUser = updatedUser;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
 	@JoinColumn(name = "alert_verification_user_type_id" , insertable = false, updatable = false)

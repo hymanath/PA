@@ -31,7 +31,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 						" count(distinct model1.alert.alertId) " +
 						" from VerificationStatus model1 " +
 						" where " +
-						" model1.isDeleted = 'N' " +
+						" model1.isDeleted = 'N' and model1.alert.isDeleted = 'N' " +
 						" and model1.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+") ");
 		if(stateId != null && stateId.longValue() > 0){
 			queryStr.append(" and model1.alert.userAddress.state.stateId = :stateId ");
@@ -162,13 +162,12 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
 		return query.list();
 	}
-	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date,Long userTypeId){
-		Query query = getSession().createQuery(" update VerificationStatus model set model.isDeleted='Y', model.insertedBy=:insertedBy,model.insertedTime=:insertedTime, " +
-				" model.alertVerificationUserTypeId=:alertVerificationUserTypeId where model.alertId=:alertId and model.isDeleted='N'");
-		query.setParameter("insertedBy", userId);
-		query.setParameter("insertedTime", date);
+	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date){
+		Query query = getSession().createQuery(" update VerificationStatus model set model.isDeleted='Y', model.updatedBy=:updatedBy,model.updatedTime=:updatedTime " +
+				"  where model.alertId=:alertId and model.isDeleted='N'");
+		query.setParameter("updatedBy", userId);
+		query.setParameter("updatedTime", date);
 		query.setParameter("alertId", alertId);
-		query.setParameter("alertVerificationUserTypeId", userTypeId);
 		return query.executeUpdate();
 	}
 	public Object[] getAertStausIdAndName(Long alertId){

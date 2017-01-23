@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.model.VerificationStatus;
 
 public interface IVerificationStatusDAO extends GenericDao<VerificationStatus, Long> {
-	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date,Long userTypeId);
+	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date);
 	public Object[] getAertStausIdAndName(Long alertId);
 	public Long getAlertStatusId(Long alertId);
 	public List<Object[]> getStatusWiseAlertCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId);

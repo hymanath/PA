@@ -6309,11 +6309,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 				
 			    if(alertVerificationUserTypeId == 1l && actionTypeStatusId.longValue() == 2l  && comments != null && comments.trim().length() > 0){ // 2l completed status id
-				 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime(), alertVerificationUserTypeId); // program committee is going to change status in progress.
+				 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime()); // program committee is going to change status in progress.
 				  flag = true;
 	  		    }
 				if(actionTypeStatusId.longValue() > 0 && !actionTypeStatusId.equals(statusId)){
-					 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime(), alertVerificationUserTypeId);	
+					 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime());	
 				}
 			
 				if(flag){
@@ -6334,6 +6334,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  				 }
 	  				 verificationStatus.setInsertedBy(userId);
 	  				 verificationStatus.setInsertedTime(date.getCurrentDateAndTime());
+	  				 verificationStatus.setUpdatedBy(userId);
+	  				 verificationStatus.setUpdatedTime(date.getCurrentDateAndTime());
 	  				 verificationStatus.setIsDeleted("N");
 	  				 verificationStatus = verificationStatusDAO.save(verificationStatus);	
 				}
