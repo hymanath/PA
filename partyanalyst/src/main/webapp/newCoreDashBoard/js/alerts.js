@@ -1398,6 +1398,8 @@
 }
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
+	var docName = '';
+	var extName = [];
 	$("#alertStatusDiv").html("<h4 class='text-muted headingColorStyling' style='font-size:15px;'>ALERT STATUS</h4>");          
 	if(result != null && result.length > 0){  
 		var length = result.length;
@@ -1457,11 +1459,21 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 												for(var l in result[i].sublist2[j].sublist[k])
 												{
 													str+='&nbsp;&nbsp;<span class="glyphicon glyphicon-user"></span> <span>'+result[i].sublist2[j].sublist[k][l].cadreName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 18px;">|</span>';
-												}
-												str+='&nbsp;&nbsp;&nbsp;&nbsp;- <small style="font-size:11px">'+result[i].sublist2[j].sublist[k][0].timeString+'</small>';
+												}   
+												str+='&nbsp;&nbsp;&nbsp;&nbsp; <small style="font-size:11px">'+result[i].sublist2[j].sublist[k][0].timeString+'</small>';
 												str+='</p>';  
-												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 												str+='<p class="m_top10">'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+													str+='<ul>';
+													for(var t in result[i].sublist2[j].sublist[k][0].docList){
+														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+														extName = docName.split(".");
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Attachment.'+extName[1]+'</a></li>';
+													}
+													str+='</ul>';    
+												}
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
 												str+='<hr style="margin-top:20px;border-color:#a792d2 -moz-use-text-color -moz-use-text-color;"/>';
 											str+='</div>';   
