@@ -1173,4 +1173,14 @@ public String getCommentDetails(){
 	}
 	 return Action.SUCCESS;
  }
+ public String getQustionList(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 activityVO = activityService.getActivitiesQuesDetails(jObj.getLong("activityId"),jObj.getLong("activityScopeId"),jObj.getString("fromDateStr"),jObj.getString("endDateStr"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getQustionList()", e);
+	 }
+	 return Action.SUCCESS;
+ }
 }
