@@ -3491,9 +3491,9 @@ public String getDistrictWiseActivityCounts(){
 		Long districtId = jObj.getLong("districtId");
 		Long activityScopeId = jObj.getLong("activity_scope_id");
 		String searchType = jObj.getString("search_type");
-		String type = jObj.getString("type");
+		Long stateId = jObj.getLong("stateId");
 		
-		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,type);
+		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDistrictWiseActivityCounts() method of CoreDashBoard", e);
 	}
