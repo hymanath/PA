@@ -900,8 +900,26 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			return null;        
 		}
 	 
+	 public List<Long> splitAndAssignValuesToList(String stringObj,List<Long> values){
+			try{
+				if(stringObj !=null && !stringObj.trim().isEmpty()){
+					String s[] = stringObj.split(",");
+					if(s != null && s.length > 0){
+						for(int i=0;i<s.length;i++){
+							if(s[i] != null && !s[i].isEmpty())
+								values.add(Long.parseLong(s[i]));
+						}
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return values;
+		}
 	 
-	 public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId){
+	 
+	 public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,String impactLevelIdsStr,Long alertTypeId, Long editionId){
 		 AlertOverviewVO resultVO = new AlertOverviewVO();
 		 Set<Long> locationValues = new HashSet<Long>(0);
 	     Long locationAccessLevelId =0l;
@@ -944,6 +962,9 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				 prepareRquiredTemplate(rtrnCategoryObjLst,resultVO.getCategoryList());
 				 List<Object[]> rtrnStatusObjLst = alertStatusDAO.getAllStatus();
 				 prepareRquiredTemplate(rtrnStatusObjLst,resultVO.getStatusList());
+				 
+				 List<Long> impactLevelIds = new ArrayList<Long>();
+				 impactLevelIds = splitAndAssignValuesToList(impactLevelIdsStr,impactLevelIds);
 				 
 				 List<Object[]> rtrnObjLst = alertDAO.getStateImpactLevelAlertCntForOrganization(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "State",alertTypeList,editionList);
 				 if(rtrnObjLst != null && rtrnObjLst.size() > 0){
@@ -1013,7 +1034,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 return null;
 		 }
 	 
-	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
+	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,String scopeIdListStr, Long activityMemberId, String group,Long alertTypeId, Long editionId){
 			LOG.info("Entered in getTotalAlertGroupByLocationThenCategory() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;  
@@ -1043,6 +1064,10 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 						editionList.add(3L);
 					}
 				}
+				
+				List<Long> scopeIdList = new ArrayList<Long>();
+				scopeIdList = splitAndAssignValuesToList(scopeIdListStr,scopeIdList);
+				
 				AlertVO alertVO = null;
 				List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
 				Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>();
@@ -1141,7 +1166,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			return null;
 		}
 	 
-	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId){
+	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,String scopeIdListStr, Long activityMemberId, String group,Long alertTypeId,Long editionId){
 			LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;        
@@ -1171,6 +1196,11 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 						editionList.add(3L);
 					}
 				}
+				
+				
+				List<Long> scopeIdList = new ArrayList<Long>();
+				scopeIdList = splitAndAssignValuesToList(scopeIdListStr,scopeIdList);
+				
 				AlertVO alertVO = null;    
 				List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
 				Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>();
@@ -1269,7 +1299,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			return null;
 		}
 	 
-	 public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,Long editionTypeId){
+	 public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,String impactLevelIdsStr,Long alertTypeId,Long editionTypeId){
 		 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 		 Set<Long> locationValues = new HashSet<Long>(0);
 	     Long locationAccessLevelId =0l;
@@ -1281,6 +1311,10 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				   fromDate = sdf.parse(fromDateStr);
 				   toDate = sdf.parse(toDateStr);
 				 } 
+			    
+			    List<Long> impactLevelIds = new ArrayList<Long>();
+			    impactLevelIds = splitAndAssignValuesToList(impactLevelIdsStr,impactLevelIds);
+			    
 			      List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersIdForOrganization(activityMemberId);
 				 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
 					 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
@@ -1412,7 +1446,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 }
 	 }
 	 
-	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
+	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,String scopeIdListStr, Long activityMemberId,Long alertTypeId, Long editionId){
 			LOG.info("Entered in getTotalAlertGroupByDist() method of AlertsNewsPortalService{}");
 			try{
 				Date fromDate = null;           
@@ -1442,6 +1476,9 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 						editionList.add(3L);
 					}
 				}
+				
+				List<Long> scopeIdList = new ArrayList<Long>();
+				scopeIdList = splitAndAssignValuesToList(scopeIdListStr,scopeIdList);
 				
 				//get access level id and access level value
 				Long userAccessLevelId = null;
@@ -1508,7 +1545,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			return null;
 		}
 	 
-	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList){
+	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr,String toDateStr,Long stateId,String scopeIdListStr){
 		 List<AlertCommentVO> returnList = new ArrayList<AlertCommentVO>();
 		 try {
 			 	Map<Long,AlertCommentVO> deptmap = new LinkedHashMap<Long, AlertCommentVO>();
@@ -1520,6 +1557,9 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 					fromDate = sdf.parse(fromDateStr);
 					toDate = sdf.parse(toDateStr);
 				}
+				
+				List<Long> scopeIdList = new ArrayList<Long>();
+				scopeIdList = splitAndAssignValuesToList(scopeIdListStr,scopeIdList);
 				
 				List<Object[]> statusList = alertStatusDAO.getAllStatus();
 				
@@ -1584,7 +1624,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 			   if(statusList == null || statusList.size() == 0)
 				   return null;
 			   for(AlertCommentVO vo:statusList){
-				   if(vo.getStatusId() == statusId){
+				   if(vo.getStatusId().equals(statusId)){
 					   return vo;
 				   }
 			   }

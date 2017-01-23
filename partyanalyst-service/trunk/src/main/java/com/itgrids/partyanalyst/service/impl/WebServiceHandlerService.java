@@ -4735,7 +4735,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  }
 	 
 	 
-	 public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId){
+	 public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,String impactLevelIds,Long alertTypeId, Long editionId){
 		 AlertOverviewVO returnvo = null;
 		  try{			  
 			  returnvo = alertsNewsPortalService.getStateImpactLevelAlertDtlsCnt(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionId);			  
@@ -4746,7 +4746,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnvo;
 	  }
 	 
-	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
+	 public List<AlertVO> getTotalAlertGroupByLocationThenCategory(String fromDateStr, String toDateStr, Long stateId,String scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
 		 List<AlertVO> returnList = null;
 		  try{			  
 			  returnList = alertsNewsPortalService.getTotalAlertGroupByLocationThenCategory(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			  
@@ -4757,7 +4757,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnList;
 	  }
 	 
-	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
+	 public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,String scopeIdList, Long activityMemberId, String group,Long alertTypeId, Long editionId){
 		 List<AlertVO> returnList = null;
 		  try{			  
 			  returnList = alertsNewsPortalService.getTotalAlertGroupByLocationThenStatus(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, group, alertTypeId, editionId);			  
@@ -4768,7 +4768,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnList;
 	  }
 	 
-	 public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,Long editionTypeId){
+	 public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,String impactLevelIds,Long alertTypeId,Long editionTypeId){
 		 List<AlertOverviewVO> returnList = null;
 		  try{			  
 			  returnList = alertsNewsPortalService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId, stateId, fromDateStr, toDateStr, impactLevelIds, alertTypeId, editionTypeId);			  
@@ -4779,7 +4779,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnList;
 	  }
 	 
-	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
+	 public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,String scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId){
 		 List<AlertCommentVO> returnList = null;
 		  try{			  
 			  returnList = alertsNewsPortalService.getTotalAlertGroupByDist(fromDateStr, toDateStr, stateId, scopeIdList, activityMemberId, alertTypeId, editionId);			  
@@ -4790,7 +4790,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnList;
 	  }
 	 
-	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList){
+	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr, String toDateStr, Long stateId,String scopeIdList){
 		 List<AlertCommentVO> returnList = null;
 		  try{			  
 			  returnList = alertsNewsPortalService.getDepartmentWiseStatusWiseCounts(fromDateStr, toDateStr, stateId, scopeIdList);			  
