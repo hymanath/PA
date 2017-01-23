@@ -965,6 +965,7 @@ function clearFields()
 {
 	
 	$("#extraUploadFileDiv").html("");
+	$("#uploadFileId0").val("");
 	$("#apptmemberDetailsDiv").html("");
 	$(".membersBlock").html("");
 	$("#assignedMembers").html("");
