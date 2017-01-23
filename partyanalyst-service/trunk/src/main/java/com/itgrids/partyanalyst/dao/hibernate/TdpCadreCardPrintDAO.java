@@ -100,7 +100,8 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		Query query = getSession().createQuery(
 		 " update TdpCadreCardPrint model " +
 		 " set    model.printTime= :printTime, model.serialNumber = :serialNumber,model.printStatus = :printStatus , model.printCode = :printCode , " +
-		 "        model.printDesc = :printDesc ,model.printerSerialNumber = :printerSerialNumber , model.boxNo = :boxNo , model.pcNo = :pcNo , model.outerBoxNo = :outerBoxNo " +
+		 "        model.printDesc = :printDesc ,model.printerSerialNumber = :printerSerialNumber , model.boxNo = :boxNo , model.pcNo = :pcNo , model.outerBoxNo = :outerBoxNo," +
+		 "        model.updatedTime =:updatedTime  " +
 		 " where  model.tdpCadreCardPrintId=:tdpCadreCardPrintId ");
 		
 		query.setParameter("tdpCadreCardPrintId", printVO.getTdpCadreCardPrintId());
@@ -114,6 +115,7 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		query.setParameter("boxNo",printVO.getBoxNo());
 		query.setParameter("pcNo",printVO.getPcNo());
 		query.setParameter("outerBoxNo",printVO.getOuterBoxNo());
+		query.setTimestamp("updatedTime", printVO.getUpdatedTime());
 		
 		return query.executeUpdate();
 	}
