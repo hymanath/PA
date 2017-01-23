@@ -5861,7 +5861,7 @@ public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long ca
 	
 }
 
-public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,String endDateStr){
+public ActivityVO getActivitiesQuesDetails(Long activityId,Long activityScopeId,String startDateStr,String endDateStr){
 	ActivityVO finalVO = new ActivityVO();
 	try{
 		
@@ -5872,7 +5872,7 @@ public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,Strin
 			startDate = sdf.parse(startDateStr);
 			endDate = sdf.parse(endDateStr);
 		}
-		List<Object[]> list =activityScopeDAO.getScopeNameByActivity(activityId, startDate, endDate) ;
+		List<Object[]> list =activityScopeDAO.getScopeNameByActivity(activityId,activityScopeId, startDate, endDate) ;
 		List<Long> scopeIdList = new ArrayList<Long>();
 		if(list != null && list.size() > 0l){
 			for (Object[] objects : list) {
@@ -5880,8 +5880,12 @@ public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,Strin
 				  vo.setActivityScopeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				  vo.setActivityLevelId(commonMethodsUtilService.getLongValueForObject(objects[1]));
 				  vo.setActivityLevelName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				  vo.setPercentage("0.00");
+				  vo.setRemainingPerc("100.00");
 				  finalVO.setId(commonMethodsUtilService.getLongValueForObject(objects[3]));//activityId
 				  finalVO.setName(commonMethodsUtilService.getStringValueForObject(objects[4]));//ActivityName
+				  finalVO.setPercentage("0.00");
+				  finalVO.setRemainingPerc("100.00");
 				  finalVO.getActivityVoList().add(vo);
 				  scopeIdList.add(vo.getActivityScopeId());
 			}
@@ -5896,23 +5900,54 @@ public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,Strin
 				String question = commonMethodsUtilService.getStringValueForObject(objects[2]);
 				Long optinId  = commonMethodsUtilService.getLongValueForObject(objects[3]);
 				String option = commonMethodsUtilService.getStringValueForObject(objects[4]);
+				Long qustionarieId = commonMethodsUtilService.getLongValueForObject(objects[1]);
 				List<ActivityVO> qustList = quesOptsMap.get(scopeId);
 				if(qustList == null || qustList.isEmpty()){
 					qustList = new ArrayList<ActivityVO>();
 					ActivityVO vo = new ActivityVO();
 						vo.setQuestionId(qustionId);
 						vo.setQuestion(question);
-						vo.setOptionId(optinId);
-						vo.setOption(option);
+						vo.setActivityQuenaryId(qustionarieId);
+						vo.setPercentage("0.00");
+						vo.setRemainingPerc("100.00"); 
+						
+						ActivityVO optionVO = new ActivityVO(); 
+						optionVO.setOptionId(optinId);
+						optionVO.setOption(option);
+						optionVO.setPercentage("0.00");
+						optionVO.setRemainingPerc("100.00"); 
+						
+						vo.getOptionsList().add(optionVO);
 					qustList.add(vo);
 					quesOptsMap.put(scopeId, qustList);
 				}else{
-					ActivityVO vo = new ActivityVO();
-						vo.setQuestionId(qustionId);
-						vo.setQuestion(question);
-						vo.setOptionId(optinId);
-						vo.setOption(option);
-					qustList.add(vo);
+					ActivityVO vo = getMatchQuesActivityVO(qustList,qustionId);
+					if(vo != null){
+						ActivityVO optionVO = new ActivityVO(); 
+						optionVO.setOptionId(optinId);
+						optionVO.setOption(option);
+						vo.getOptionsList().add(optionVO);
+						optionVO.setPercentage("0.00");
+						optionVO.setRemainingPerc("100.00");
+						//qustList.add(vo);
+					}else{
+						//qustList = new ArrayList<ActivityVO>();
+						ActivityVO vo1 = new ActivityVO();
+							vo1.setQuestionId(qustionId);
+							vo1.setQuestion(question);
+							vo1.setActivityQuenaryId(qustionarieId);
+							vo1.setPercentage("0.00");
+							vo1.setRemainingPerc("100.00"); 
+							
+							ActivityVO optionVO = new ActivityVO(); 
+							optionVO.setOptionId(optinId);
+							optionVO.setOption(option);
+							optionVO.setPercentage("0.00");
+							optionVO.setRemainingPerc("100.00");
+							
+							vo1.getOptionsList().add(optionVO);
+						qustList.add(vo1);
+					}
 				}
 			}
 		}
@@ -5923,9 +5958,51 @@ public ActivityVO getActivitiesDetails(Long activityId,String startDateStr,Strin
 				 vo.setActivityVoList(quesOptsMap.get(scopeId));
 			}
 		}
+		
+		Map<Long,Map<Long,Long>> quesPerMap = new HashMap<Long, Map<Long,Long>>();
+		//Map<Long,Long> optPercMap = new HashMap<Long, Long>();
+		List<Object[]>  quesPrscList = activityQuestionAnswerDAO.getQuestionsPerc(activityId,activityScopeId);
+		if(quesPrscList != null && quesPrscList.size() > 0l){
+			for (Object[] objects : quesPrscList) {
+				Long scopeId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+				Long questionarieId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+				Long optionId = commonMethodsUtilService.getLongValueForObject(objects[2]);
+				Long count = commonMethodsUtilService.getLongValueForObject(objects[3]);
+				Map<Long,Long> optionMap = quesPerMap.get(questionarieId);
+				//Map<Long,Long> optisMap = new HashMap<Long, Long>();
+				if(optionMap == null){
+					optionMap = new LinkedHashMap<Long, Long>();
+					optionMap.put(optionId, count);
+					quesPerMap.put(questionarieId,optionMap);
+				}else{
+					Long optCount = optionMap.get(optionId);
+					if(optCount == null){
+						optionMap.put(optionId, count);
+					}
+				}
+			}
+		}
+		
+		
 	}catch(Exception e){
 		LOG.info("Entered into the getActivitiesDetails service method");
 	}
 	return finalVO;
+}
+public ActivityVO getMatchQuesActivityVO(List<ActivityVO> questionList,Long queId)
+{
+	ActivityVO returnVO = null;
+	try {
+		if(questionList != null && questionList.size()>0)
+		{
+			for (ActivityVO activityVO : questionList) {
+				if(activityVO.getQuestionId() == queId)
+					return activityVO;
+			}
+		}
+	} catch (Exception e) {
+		 LOG.error("Exception Occured in getMatchQuesActivityVO() method, Exception - ",e);
+	}
+	return returnVO;
 }
 }
