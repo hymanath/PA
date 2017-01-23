@@ -31,6 +31,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$(".commentCls").val('');
 			$("#uploadClarificationFileId0").val('');
 			$("#extraClarificationUploadFileDiv").html('');
+			$(".ClearFileCls").hide();  
 			$(".hideUpdateBlockCls").hide();
 			$("#menuDown").show();
 			$("#menuUp").hide();
@@ -52,6 +53,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$("#menuUp").hide();
 			$(".commentCls").val('');
 			$("#uploadClarificationFileId0").val('');
+			$(".ClearFileCls").hide();  
 			$("#extraClarificationUploadFileDiv").html('');
 		}else if($(this).prop("checked") == false){
 		}
@@ -81,6 +83,16 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		var id = $(this).attr("attr_id");
 		$("#cloned"+id).remove();
 	});
+	$(document).on("change","#uploadClarificationFileId0",function(){
+		var fileSize = $(this).val();
+		 if(fileSize != null && fileSize != undefined && fileSize.trim().length > 0){
+			 $(".ClearFileCls").show();
+		 }
+	});
+	$(document).on("click",".ClearFileCls",function(){
+		$("#uploadClarificationFileId0").val('');
+		$(".ClearFileCls").hide();  
+	});
 	$(document).on("click","#updateVerificationStatusBtnId",function(){
 		$("#alertIdForClarification").val(alertId);
 		var commment = $(".commentCls").val();
@@ -108,6 +120,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$(".commentCls").val('');
 			$("#uploadClarificationFileId0").val('');
 			$("#extraClarificationUploadFileDiv").html('');
+			$(".ClearFileCls").hide();  
 			fileNo = 0;
 		}else{
 			alert("Please Try Again.");
