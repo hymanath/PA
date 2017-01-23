@@ -4,6 +4,7 @@
   $(document).on("click",".eventsIconExpand",function(){
 	$(".dateRangePickerClsForEvents").toggleClass("hide");
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".eventYearExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -1498,7 +1499,7 @@ function getActivitiesDetails(){
 	});
 }
 function buildActivityEventBasicCntDtlsNew(result)
-{ 
+{
 	var str='';
     str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1508,9 +1509,10 @@ function buildActivityEventBasicCntDtlsNew(result)
 				{
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
+							str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'';
+							str+='<span class="activitesExpandIcon" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i></span>';
 							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
-								str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;" class="eventYearExpandIcon"><!--<i class="glyphicon glyphicon-fullscreen text-center"></i>--></span></h4>';
-							str+='</a>';
+							str+='</a></h4>';
 						str+='</div>';
 						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
 							str+='<div class="panel-body">';
@@ -1519,16 +1521,17 @@ function buildActivityEventBasicCntDtlsNew(result)
 						str+='</div>';
 					str+='</div>';
 				}
-					
+				
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	str+='</div>'; 
+	str+='</div>';
 	$("#activityEventsListNew").html(str);
 }
 
 $(document).on("click",".activitiesClass",function(){
 	var activityId = $(this).attr("attr_id");
+	$("#hiddenActivityId").val(activityId);
 	var divId = $(this).attr("attr_divId");
 	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
@@ -1570,10 +1573,10 @@ function buildActivityCounts(result,divId)
 							str+='<p class="text-muted text-capital">Infocell</p>';
 							str+='<h5>'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
-						/*str+='<td>';
+						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
-							str+='<h5>1000 <small><span class="text-success">20000 images covered</span></small></h5>';
-						str+='</td>';*/
+							str+='<h5>'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
+						str+='</td>';
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
@@ -1621,5 +1624,254 @@ function buildDistrictWiseActivitiesCount(result){
 str +='</table> ';
 
 $("#activityId").html(str);
+}
+$(document).on("click",".activitesExpandIcon",function(){
+        var activityId = $(this).attr("attr_id");
+	      $("#hiddenActivityId").val(activityId);	
+	if($(this).find("i").hasClass("glyphicon-fullscreen"))
+	{
+		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			//block opened
+			//alert("block open")	
+		}else{
+			//block closed
+			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		//alert("open"); 
+		$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+		$(".dateRangePickerClsForEvents").removeClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		var eventIdsString = $(this).attr("attr_event_idsString");
+		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		if($(".detailedBlockEvents").is(":visible"))
+		{
+			//alert("already opened");
+			var activityId = $("#hiddenActivityId").val();
+			districtWiseCohort(activityId);
+		}
+			
+	}else{
+		//alert("close")
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").hide();
+		$(".dateRangePickerClsForEvents").addClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	}
+});
+/* $(document).on("click",".activitesExpandIcon",function(){
+	$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+	$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	$(".dateRangePickerClsForEvents").removeClass("hide");
+	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	//$("#hiddenActivityId").val(activityId);
+	var eventIdsString = $(this).attr("attr_event_idsString");
+	//$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+	
+	if(!$(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+	{
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+	
+	if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+	{
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	}else{
+		
+		$(".stateLevelMeetingBlock").show();
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+	}
+	
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}
+}); */
+$(document).on("click",".acitivitiesMoreExpand",function(){
+	$(this).removeClass("acitivitiesMoreExpand");
+	$(".moreEventsBlocks").toggle();
+	var activityId = $("#hiddenActivityId").val();
+		  $(".moreEventsBlocks").toggle();
+			districtWiseCohort(activityId);
+			$(".detailedBlockEvents,.activeUlCls").show();
+	        $(".detailedEvent").addClass("active")	
+	        $(".comparisonEvent").removeClass("active")
+	
+});
+function districtWiseCohort(activityId){
+	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+    //var eventIds = attrEventIdsString.split(",");
+	var jsObj ={ 
+		 //activityId : [26], 
+		 activityId : [activityId],
+	   fromDate : customStartDateActivities,
+	   toDate : customEndDateActivities
+		 
+	  }
+	$.ajax({
+		type : 'POST',
+		url : 'activitiesDistrictWiseCohortAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildDistrictWiseCohort(result);
+	});
+}
+ function buildDistrictWiseCohort(result)
+{
+	var str='';
+	for(var i in result)
+	{
+		str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+		str+='<div id="eventsGraph1'+i+'" style="height:120px"></div>';
+	}
+	$("#eventsDistWiseCohort1").html(str)
+	if(result != null && result.length > 0){
+		for(var i in result){
+			
+			var conductedCounts = [];
+			var nonConductedCounts = [];
+			var candidateNames = [];
+			var countVar =0;
+			
+			
+			for(var j in result[i].distList){
+				candidateNames.push(result[i].distList[j].locationName)
+				conductedCounts.push(parseFloat(result[i].distList[j].perc))
+				nonConductedCounts.push(parseFloat(result[i].distList[j].remainingPerc))
+			}
+			
+			$(function () {
+				 $("#eventsGraph1"+i).highcharts({
+					colors: ['#64C664','#D33E39'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: ''
+					},
+					subtitle: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: candidateNames,
+						type: 'category',
+						labels: {
+									formatter: function() {
+										return this.value.toString().substring(0, 10)+'...';
+									},
+									
+								}
+						
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled:false
+						}
+					},
+					legend: {
+						enabled: false
+					},
+					
+							
+					plotOptions: {
+						column: {
+							stacking: 'percent',
+							dataLabels: {
+								enabled: true,
+								 formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.percentage,1) + '%';
+									}
+								}
+							  
+							}
+						}
+					},
+
+					 tooltip: {
+						 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+						/* formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+									(this.y);
+							});
+
+							return s;
+						}, */
+						shared: true
+					},
+
+					series: [{
+						name: 'Conducted',
+						data: conductedCounts,
+						
+					},{
+						name: 'Not Conducted',
+						data: nonConductedCounts,
+						
+					}],
+				 
+				});
+			});
+		}
+	}else{
+		$("#eventsDistWiseCohort1").html("No Data Available");
+	}
 }
 /* Activities Functionality End */
