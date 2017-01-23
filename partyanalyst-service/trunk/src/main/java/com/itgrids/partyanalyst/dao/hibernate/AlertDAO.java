@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -277,10 +278,14 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				   " model.title ");//33
 		if(assignedCadreId != null && assignedCadreId > 0)
 		{
-			str.append(" from AlertAssigned model1, " +
-					"    VerificationStatus verificationStatus " +
-					"    left join  verificationStatus.alert model " +
-					" 	 left join model.editionType editionType " +
+			if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+				str.append(" from VerificationStatus verificationStatus, AlertAssigned alertAssigned " +
+						   " left join alertAssigned.alert  model ");
+			}else{
+				str.append(" from AlertAssigned model1 " +
+						   " left join model1.alert model ");
+			}
+			str.append(" left join model.editionType editionType " +
 	        		"  	 left join model.edition edition " +
 	        		" 	 left join model.tvNewsChannel tvNewsChannel " +
 	        		"    left join model.alertSource alertSource "+
@@ -297,13 +302,22 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.alertSeverity alertSeverity");
 			str.append(" left join model.alertType alertType");
 			str.append(" left join model.alertStatus alertStatus ");
-			str.append(" where model.isDeleted ='N' and model1.alertId = model.alertId and model1.tdpCadreId =:assignedCadreId");
+			if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+				str.append(" where model.isDeleted ='N' and alertAssigned.isDeleted='N' and verificationStatus.alert.alertId = alertAssigned.alert.alertId and alertAssigned.tdpCadre.tdpCadreId =:assignedCadreId ");
+			}else{
+				str.append(" where model.isDeleted ='N' and model1.isDeleted='N'  and model1.tdpCadre.tdpCadreId =:assignedCadreId ");
+			}
+			
 		}
 		else			
 		{
-			str.append(" from VerificationStatus verificationStatus " +
-					"    left join verificationStatus.alert model " +
-					" 	 left join model.editionType editionType " +
+			if(inputVO.getTask().equalsIgnoreCase("accessUser")){
+				str.append(" from VerificationStatus verificationStatus " +
+						   " left join verificationStatus.alert model");
+			}else{
+				str.append(" from Alert model ");
+			}
+			str.append(" 	 left join model.editionType editionType " +
 	        		"  	 left join model.edition edition " +
 	        		" 	 left join model.tvNewsChannel tvNewsChannel "+
 	        		"    left join model.alertSource alertSource "+
@@ -319,7 +333,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.alertSeverity alertSeverity");
 			str.append(" left join model.alertType alertType");
 			str.append(" left join model.alertStatus alertStatus ");
-			str.append(" where model.isDeleted ='N' and verificationStatus.isDeleted='N' ");	
+			str.append(" where model.isDeleted ='N' ");
+			
+				
 		}
 		
 		if(inputVO.getId() != null && inputVO.getId().longValue()>0L){
@@ -333,8 +349,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(inputVO.getTask().equalsIgnoreCase("accessUser")){
 			if(inputVO.getActionTypeStatusId() != null && inputVO.getActionTypeStatusId().longValue() > 0L)
 				str.append(" and verificationStatus.actionTypeStatus.actionTypeStatusId = :actionTypeStatusId ");
-			
+				
 			str.append(" and verificationStatus.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+")  ");
+			str.append("and verificationStatus.isDeleted='N' ");
 		}
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L){
 			str.append(" and alertStatus.alertStatusId = :alertStatusId ");
@@ -342,7 +359,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		
 		
 		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
-			str.append(" and model.alertCategoryId = :alertCategoryId");
+			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		}
 		
 		//Location Filter
@@ -423,6 +440,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(assignedCadreId != null && assignedCadreId > 0)
 			query.setParameter("assignedCadreId", assignedCadreId);
+		
 		if(inputVO.getTehsilId() != null && inputVO.getTehsilId() > 0)
 		{
 			query.setParameter("tehsilId", inputVO.getTehsilId());
@@ -3293,6 +3311,38 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();
 	}
+   public List<Object[]> getVerificationDetails(Long alertId){
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select distinct ");
+	   queryStr.append(" AVUT.alert_verification_user_type_id as alertVerificationUserTypeId , ");
+	   queryStr.append(" AVUT.user_type as userType , ");
+	   queryStr.append(" VC.verification_conversation_id as verificationConversationId, ");
+	   queryStr.append(" VD.verification_documents_id as verificationDocumentsId, ");
+	   queryStr.append(" VD.document_path as documentPath, ");
+	   queryStr.append(" VERC.verification_comments_id as verificationCommentsId, ");
+	   queryStr.append(" VERC.comments as comments, ");
+	   queryStr.append(" VC.alert_id as alertId");
+	   queryStr.append(" from verification_conversation VC ");
+	   queryStr.append(" left outer join verification_documents VD on VC.verification_conversation_id = VD.verification_conversation_id and VD.is_deleted = 'N' ");
+	   queryStr.append(" left outer join verification_comments VERC on VC.verification_conversation_id = VERC.verification_conversation_id and VERC.is_deleted = 'N', ");
+	   queryStr.append(" alert A, alert_verification_user_type AVUT ");
+	   queryStr.append(" where  ");
+	   queryStr.append(" VC.alert_id = A.alert_id ");
+	   queryStr.append(" and VC.is_deleted = 'N' ");
+	   queryStr.append(" and VC.alert_verification_user_type_id = AVUT.alert_verification_user_type_id ");
+	   queryStr.append(" and A.alert_id = :alertId ");
+	   queryStr.append(" order by AVUT.alert_verification_user_type_id,VC.verification_conversation_id,VD.verification_documents_id; ");
+	   Query query = getSession().createSQLQuery(queryStr.toString())
+			   .addScalar("alertVerificationUserTypeId",Hibernate.LONG)
+			   .addScalar("userType", Hibernate.STRING)
+			   .addScalar("verificationConversationId", Hibernate.LONG)
+			   .addScalar("verificationDocumentsId", Hibernate.LONG)
+			   .addScalar("documentPath",Hibernate.STRING)
+			   .addScalar("verificationCommentsId", Hibernate.LONG)
+			   .addScalar("comments", Hibernate.STRING)
+			   .addScalar("alertId", Hibernate.LONG);
+	   return query.list();
+   }
    
    public List<Object[]> getStateImpactLevelAlertCntForOrganization(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,String groupType,List<Long> alertTypeList, List<Long> editionList){
 		StringBuilder queryStr = new StringBuilder();
@@ -3834,4 +3884,3 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();  
 	}
 }
-
