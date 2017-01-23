@@ -2418,4 +2418,21 @@ public class WebServiceHandler {
 				return null;
 			}
 		}
+		
+		@GET
+		@Path("/getDepartmentWiseStatusWiseCounts/{fromDateStr}/{toDateStr}/{stateId}/{scopeIdList}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("scopeIdList") List<Long> scopeIdList)
+		{
+			try{			
+				return webServiceHandlerService.getDepartmentWiseStatusWiseCounts(fromDateStr, toDateStr, stateId, scopeIdList);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getDepartmentWiseStatusWiseCounts() Method, Exception is ",e);
+				return null;
+			}
+		}
 }

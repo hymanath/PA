@@ -3986,6 +3986,7 @@
 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"/>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 		<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+		<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
 	</bean>
 	
 </beans>			
