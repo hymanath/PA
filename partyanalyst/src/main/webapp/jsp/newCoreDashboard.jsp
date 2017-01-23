@@ -1709,7 +1709,7 @@
 						</div>
 				 </div>
 			<!-- TOURS END -->  
-	
+		
 			<!--Meetings Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1920,8 +1920,10 @@
 					</div>
 				</div>
 			</div>	
+		
 			<!--Meetings End-->
-		</div>
+			</div>	
+		
 		<div class="row">
 		
 			<!--Cadre Registration -->
@@ -2622,12 +2624,14 @@
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
 							</div>
+							<!--Acivites Block
+							
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
-							<!--<div style="border : 1px solid #333; padding : 5px">-->
+							<div style="border : 1px solid #333; padding : 5px">
 								<h4><span class="headingColor text-capital">activities</span></h4>
 								<div id="activityEventsListNew" class="m_top20"></div>
-							<!--</div>-->
-							</div>
+							<!--</div>
+							</div>-->
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
 								<h4><span class="headingColor text-capital">events </span></h4>
 								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
@@ -3702,6 +3706,14 @@
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+	//url Based Conditions
+	  var windowUrl = window.location.href;
+	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
+	  var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
+  
+  
+  
 	$(document).on('click','#alertSettingsId',function(){
 		$(".specialAlertDropDown").toggle();            
 	});      
@@ -3788,10 +3800,15 @@
 	});
 	getLoggedInUserStructure();
 
-	onLoadCalls();
+	onLoadCalls()
 	
-function onLoadCalls(){
+	function onLoadCalls(){
+		//news please dont remove
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		
+		if(ignoreLoginsUrl == -1)
+	  {
+		//ALL BLOCKS
 		getRescentArticleTime();		
 		committeeBasicCall();
 		
@@ -3838,6 +3855,28 @@ function onLoadCalls(){
 		getAlertOverviewDetails();  
 		/* Activities Default Call */
 		getActivitiesDetails();
+		getAttendanceOverViewForPartyOffice();
+		getAttendanceOverViewForPartyOfficeWise();
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+		$("#attendanceId").html('TODAY ('+datStr+')');
+	  }else {
+		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
+		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		getRescentArticleTime();
+		getToursBasicOverviewDtls();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		
+	  }
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
@@ -3914,7 +3953,7 @@ manageHeader();
 function refreshMeeting(){
 	getSpecialMeetingsByMeetingType();
 }
-
+ 
 </script> 
 </body>
 </html>
