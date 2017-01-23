@@ -6427,6 +6427,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	    AlertVerificationVO resultVO = new AlertVerificationVO();
 	 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 		SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
 		Map<Long,AlertVerificationVO> alertCommentsMap = new LinkedHashMap<Long, AlertVerificationVO>(0);
 	  try{
 		  Object[] alertStatusObj = verificationStatusDAO.getAertStausIdAndName(alertId);
@@ -6453,8 +6454,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		    			if(param[3] != null){
 		    				commentVO.setUpdateTime(sdf.format(param[3]));	
 		    			}
-		    			if(param[4] != null){
-		    				commentVO.setTime(_12HourSDF.format(param[4]));	
+		    			if(param[4] != null){ 
+		    				Date timeInDateFormat = sdf1.parse(param[4].toString());
+		    				commentVO.setTime(_12HourSDF.format(timeInDateFormat));	
 		    			}
 		    			commentVO.setName(commonMethodsUtilService.getStringValueForObject(param[5])+" "+commonMethodsUtilService.getStringValueForObject(param[6]));//first and last name
 		    			commentVO.setDocumentList(new ArrayList<String>());
