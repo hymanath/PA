@@ -275,5 +275,41 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		return query.list();
 	}
 
-	
+	public List<Object[]> getDeptWiseStatusWiseAlerts(Date fromDate,Date toDate,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.newsOrganizationId," +
+						" model.organization," +
+						" model.alert.alertStatus.alertStatusId," +
+						" model.alert.alertStatus.alertStatus," +
+						" count(distinct model.alert.alertId)" +
+						" from AlertCandidate model" +
+						" left join model.alert.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" where model.alert.isDeleted = 'N'" +
+						" and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+")" +
+						" and model.isDepartment = 'Y'");
+		if(fromDate != null && toDate != null){ 
+			sb.append(" and (date(model.alert.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				sb.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				sb.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				sb.append(" and state.stateId in (1,36) ");
+			}
+		}
+		sb.append(" group by model.alert.alertStatus.alertStatusId,model.newsOrganizationId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);   
+		}
+		
+		return query.list();
+	}
 }

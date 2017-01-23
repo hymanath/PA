@@ -4789,4 +4789,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }
 		  return returnList;
 	  }
+	 
+	 public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList){
+		 List<AlertCommentVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getDepartmentWiseStatusWiseCounts(fromDateStr, toDateStr, stateId, scopeIdList);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getDepartmentWiseStatusWiseCounts  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
 }

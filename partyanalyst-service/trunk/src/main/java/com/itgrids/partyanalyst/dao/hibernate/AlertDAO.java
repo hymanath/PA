@@ -3770,7 +3770,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" model1.organization,");//3
 		
 		queryStr.append(" count(distinct model.alertId) " +  //4  
-						" from Alert model,AlertCandidate model1 " +
+						" from AlertCandidate model1,Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
 						" left join userAddress.district district  " +
