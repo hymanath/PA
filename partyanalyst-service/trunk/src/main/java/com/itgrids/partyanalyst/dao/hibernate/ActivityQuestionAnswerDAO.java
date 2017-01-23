@@ -1114,4 +1114,36 @@ public List<Object[]> getActivityQuesAndOptionsByDayWise(Long day){
 		     
 		    
 	}
+public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
+	StringBuilder queryStr = new  StringBuilder();
+		queryStr.append("SELECT  ");
+		queryStr.append("ali.activity_scope_id,aqa.activity_questionnaire_id,aqa.activity_option_id,count(distinct aqa.activity_location_info_id)"); 
+		//queryStr.append("aqa.activity_location_info_id ") ;
+		queryStr.append("from  ");
+		queryStr.append("activity a, ");
+		queryStr.append("activity_scope a1, ");
+		queryStr.append("activity_location_info ali, ");
+		queryStr.append("activity_question_answer aqa ");
+		queryStr.append("where  ");
+		queryStr.append("a.activity_id = a1.activity_id and ");
+		queryStr.append("a.is_active='Y' and "); 
+		queryStr.append("a1.is_deleted ='N' and  ");
+		queryStr.append("a1.activity_scope_id = ali.activity_scope_id and  ");
+		queryStr.append("aqa.activity_location_info_id = ali.activity_location_info_id  and  ");
+		queryStr.append("ali.ivr_status = 'Y'  ");
+		if(activityId != null && activityId.longValue() > 0l)
+			queryStr.append(" and a.activity_id = :activityId ");
+		else if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			queryStr.append("and a1.activity_scope_id = : activityScopeId");
+		queryStr.append("group by ali.activity_scope_id,aqa.activity_questionnaire_id,aqa.activity_option_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		if(activityId != null && activityId.longValue() > 0l)
+		  query.setParameter("activityId", activityId);
+		else if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			query.setParameter("activityScopeId", activityScopeId);
+		
+		return query.list();
+	
+}
 }
