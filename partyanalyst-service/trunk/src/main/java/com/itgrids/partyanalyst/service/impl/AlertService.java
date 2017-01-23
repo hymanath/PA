@@ -6387,7 +6387,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		  				 str = new StringBuilder();
   		  				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
   		  				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-  		  				 pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+  		  				// pathBuilder.append(monthText).append("").append(year).append("/").append(randomNumber).append(".")
+  		  				  pathBuilder.append(randomNumber).append(".")
   		  				 .append(entry.getValue());
   		  				 str.append(randomNumber).append(".").append(entry.getValue());
   		  				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
