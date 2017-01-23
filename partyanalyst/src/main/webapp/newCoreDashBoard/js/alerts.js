@@ -508,12 +508,15 @@
 		$("#alertAssignedCandidates").html("");
 		$("#alertCommentsDiv").html("");
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
+		$("#alertVerificationDiv").html("");
+		$("#alertVerificationDtlsDiv").html("");
 		$("#cdrModelDivId").modal("show");
 		var alertId = $(this).attr("attr_alert_id");
 		var alertStatus = $(this).attr("attr_alert_status");
 		getAlertData(alertId);
 		getAlertAssignedCandidates(alertId);    
 		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
+		getVerificationDtls(alertId);
 	});
 	$(document).on("click",".modalClose",function(){  
 		$(this).removeClass("modalClose");
@@ -3486,28 +3489,39 @@ function getTotalArticledetails(articleId){
 					str+='</div>';
 					
 				 	/* Alert Action Wise Result Block */
-					/*if(result.actionTypeList != null && result.actionTypeList.length > 0){
+				    if(result.actionTypeList != null && result.actionTypeList.length > 0){
 							for(var k in result.actionTypeList){
 								if(result.actionTypeList[k].alertCnt != null && result.actionTypeList[k].alertCnt > 0){
 									str+="<div class='row'>";
 										str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-											str+='<h4 class="panel-title text-capital alertActionCls" style="cursor:pointer;" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+alertEdition+'"  attr_action_type_id='+result.actionTypeList[k].id+'  attr_status_id="0" attr_count="'+result.actionTypeList[k].alertCnt+'">'+result.actionTypeList[k].name+' - <span class="alertColorFont">'+result.actionTypeList[k].alertCnt+'</span></h4>';
+										str+="<div class='pad_15 bg_ED'>";
+											str+='<h4 class="panel-title text-capital alertActionCls" style="cursor:pointer;" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+alertEdition+'"  attr_action_type_id='+result.actionTypeList[k].id+'  attr_status_id="0" attr_count="'+result.actionTypeList[k].alertCnt+'"><b>'+result.actionTypeList[k].name+' - <span class="alertColorFont">'+result.actionTypeList[k].alertCnt+'</span></b></h4>';
+										str+='</div>';
 										str+='</div>';
 										if(result.actionTypeList[k].subList1 != null && result.actionTypeList[k].subList1.length > 0){
 											for(var l in result.actionTypeList[k].subList1){
-												str+="<div class='col-md-6 col-xs-12 col-sm-6 pad_15 bg_ED m_top10'>";
+												if(l==0)
+												{
+													str+="<div class='col-md-6 col-xs-12 col-sm-6' style='padding-right:0px;padding-top:1px'>";
+												}else{
+													str+="<div class='col-md-6 col-xs-12 col-sm-6' style='padding-left:1px;padding-top:1px'>";
+												}
+												
+													str+="<div class='pad_15 bg_ED'>";
 												   if(result.actionTypeList[k].subList1[l].alertCnt > 0){
-													str+="<p class='panel-title alertActionCls' style='cursor:pointer;' attr_alert_type_id="+alertTypeId+" attr_edition_id="+alertEdition+" attr_action_type_id="+result.actionTypeList[k].id+" attr_status_id="+result.actionTypeList[k].subList1[l].statusTypeId+" attr_count="+result.actionTypeList[k].subList1[l].alertCnt+">"+result.actionTypeList[k].subList1[l].statusType+" - <span class='alertColorFont'>"+result.actionTypeList[k].subList1[l].alertCnt+"</span></p>";   
+													var percent = parseFloat(((result.actionTypeList[k].subList1[l].alertCnt)*100)/result.actionTypeList[k].alertCnt).toFixed(2);
+													str+="<p class='text-capitalize text-muted alertActionCls' style='cursor:pointer;' attr_alert_type_id="+alertTypeId+" attr_edition_id="+alertEdition+" attr_action_type_id="+result.actionTypeList[k].id+" attr_status_id="+result.actionTypeList[k].subList1[l].statusTypeId+" attr_count="+result.actionTypeList[k].subList1[l].alertCnt+">"+result.actionTypeList[k].subList1[l].statusType+"</p><p> <span class='alertColorFont'>"+result.actionTypeList[k].subList1[l].alertCnt+"</span> <small class='text-success' style='margin-left: 15px;'>"+percent+"%</small></p>";   
 												   }else{
-													  str+="<p class='panel-title'>"+result.actionTypeList[k].subList1[l].statusType+" - <span class=''>"+result.actionTypeList[k].subList1[l].alertCnt+"</span></p>"; 
+													  str+="<p class='text-capitalize text-muted'>"+result.actionTypeList[k].subList1[l].statusType+"</p><p><span class=''>"+result.actionTypeList[k].subList1[l].alertCnt+"</span> <small class='text-success' style='margin-left: 15px;'>0%</small></p>"; 
 												   }
+													str+="</div>";
 												str+="</div>";
 											}
 										}
 								str+='</div>';	
 								}
 							}
-					} */
+					} 
 					
 					for(var i in result.categoryList)
 					{
@@ -3517,20 +3531,21 @@ function getTotalArticledetails(articleId){
 							str+='</div>';
 							if(alertEdition == 0 && result.categoryList[i].statusTypeId == 2){//printmedia      
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<div class="pad_15 bg_ED m_top10">';
+									
 										str+='<div class="row">';
 										for(var j in result.categoryList[i].editionList)
 										{
 											str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+												str+='<div class="pad_15 bg_ED">';
 												if(result.categoryList[i].editionList[j].editionCnt == 0){
 													str+='<p class="panel-title">'+result.categoryList[i].editionList[j].edition+' Edition - '+result.categoryList[i].editionList[j].editionCnt+'</p>';
 												}else{
 													str+='<p class="panel-title alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_count="'+result.categoryList[i].editionList[j].editionCnt+'" attr_alert_type_id="'+alertTypeId+'" attr_edition_id="'+result.categoryList[i].editionList[j].editionId+'">'+result.categoryList[i].editionList[j].edition+' Edition - <span class="alertColorFont">'+result.categoryList[i].editionList[j].editionCnt+'</span></p>';
 												}
-												  
+												 str+='</div>';
 											str+='</div>';  
 										}
-										str+='</div>';
+										
 									str+='</div>';
 								str+='</div>';
 							}  
@@ -3696,4 +3711,60 @@ function getTotalArticledetails(articleId){
 			}
       });	
 	}
+	function getVerificationDtls(alertId){
+		var jsObj={
+			alertId:alertId
+		}
+        $.ajax({
+        type : 'POST',
+        url : 'getAlertVerificationDetailsAction.action',
+        dataType : 'json',
+        data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#converSationDtlsDivId").html(' ');
+			buildAlertVerificationStatusRlst(result);
+		});
+	}
+	
+	function buildAlertVerificationStatusRlst(result){
+		
+		//$("#alertStatusHeadingId").html("Status:<span class='text-success'>"+result.actionTypeStatus+"</span>");
+		//userWiseAccessiblilityFunction();
+		var str = '';
+		if(result.conversationList != null && result.conversationList.length > 0){
+			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION</h4>");  
+			for(var i in result.conversationList){
+				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:16px;">'+result.conversationList[i].heading+'</p>';
+				if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
+					str+='<p style="border: 1px solid rgb(211, 211, 211); padding: 6px;">'+result.conversationList[i].comments+'</p>';     
+				}
+				var documentList = result.conversationList[i].documentList;
+				if(documentList != null && documentList.length > 0){
+					str+='<p style="font-weight:bold;font-size:16px;" class="text-capital m_top10 panelTitleFont headingColorStyling">Attachments</p>';
+					str+='<ul class="attachmentsBlock">';
+					var order = 0;
+					for(var k in documentList){
+						order = order+1;
+						var fullName = documentList[k];
+						var nameArr = fullName.split(".");
+						var type = nameArr[1];  
+						var orderStr='';
+						if(k<9){
+							orderStr ="0"+order;
+						}else{
+							orderStr = order;  
+						}
+						var attachment = orderStr+'&nbspAttachment.'+type;
+						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></li>';
+					}
+					str+='</ul>';
+				}
+				if(result.conversationList[i].name != null && result.conversationList[i].name.length > 0){
+					str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';     
+				}
+			}
+			str+='<hr class="m_top10" style="border-top: 1px solid #ccc;">';
+			$("#alertVerificationDtlsDiv").html(str);
+		}
+   }
 	
