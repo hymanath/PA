@@ -31,4 +31,9 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getLocationValue(Long activityScopeId);
 	public List<Object[]> getDayWiseImagesCount(EventDocumentVO inputVO,Date startDate,Date endDate);
 	//public List<Object[]> activityInfoDocumentCount(List<Long> scopeIds);
+	public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId);
+	public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId);
+	public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId);
+	public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId);
+	public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId);
 }
