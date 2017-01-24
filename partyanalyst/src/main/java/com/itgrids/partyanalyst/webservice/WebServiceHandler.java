@@ -27,8 +27,10 @@ import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -2432,6 +2434,71 @@ public class WebServiceHandler {
 			catch(Exception e)
 			{
 				LOG.error("Exception Occured in getDepartmentWiseStatusWiseCounts() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		
+		@GET
+		@Path("/getAlertsData/{alertId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertDataVO> getAlertsData(@PathParam("alertId") Long alertId)
+		{
+			try{			
+				return webServiceHandlerService.getAlertsData(alertId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertsData() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAlertAssignedCandidates/{alertId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertDataVO> getAlertAssignedCandidates(@PathParam("alertId") Long alertId)
+		{
+			try{			
+				return webServiceHandlerService.getAlertAssignedCandidates(alertId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertAssignedCandidates() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAlertStatusCommentsTrackingDetails/{alertId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(@PathParam("alertId") Long alertId)
+		{
+			try{			
+				return webServiceHandlerService.getAlertStatusCommentsTrackingDetails(alertId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertStatusCommentsTrackingDetails() Method, Exception is ",e);
+				return null;
+			}
+		}
+		
+		@GET
+		@Path("/getAlertVerificationDtls/{alertId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public AlertVerificationVO getAlertVerificationDtls(@PathParam("alertId") Long alertId)
+		{
+			try{			
+				return webServiceHandlerService.getAlertVerificationDtls(alertId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getAlertVerificationDtls() Method, Exception is ",e);
 				return null;
 			}
 		}
