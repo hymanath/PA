@@ -93,6 +93,9 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String activityLevelName;
 	private Long activityQuenaryId;
 	private String remainingPerc;
+	private String muncipalityName;
+	private Long muncipalityCount = 0l;
+	private Long panchayatId;
 	
 	public Long getAttributeId() {
 		return attributeId;
@@ -555,6 +558,24 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setRemainingPerc(String remainingPerc) {
 		this.remainingPerc = remainingPerc;
+	}
+	public String getMuncipalityName() {
+		return muncipalityName;
+	}
+	public void setMuncipalityName(String muncipalityName) {
+		this.muncipalityName = muncipalityName;
+	}
+	public Long getMuncipalityCount() {
+		return muncipalityCount;
+	}
+	public void setMuncipalityCount(Long muncipalityCount) {
+		this.muncipalityCount = muncipalityCount;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
 	}
 	
 }
