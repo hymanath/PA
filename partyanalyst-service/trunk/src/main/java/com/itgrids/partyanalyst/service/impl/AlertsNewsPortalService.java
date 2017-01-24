@@ -830,7 +830,7 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 }
 	 }
 	 
-	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
+	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,String impactLevelIdStr, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
 			LOG.info("Entered in getDistrictAndStateImpactLevelWiseAlertDtls() method of AlertsNewsPortalService{}");
 			try{  
 				Date fromDate = null;          
@@ -859,6 +859,9 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 						editionTypeList.add(3L);
 					}
 				}
+				
+				List<Long> impactLevelIds = new ArrayList<Long>();
+				impactLevelIds = splitAndAssignValuesToList(impactLevelIdStr,impactLevelIds);
 				Long userAccessLevelId = null;
 				List<Long> userAccessLevelValues = new ArrayList<Long>();
 				List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersIdForOrganization(activityMemberId);  

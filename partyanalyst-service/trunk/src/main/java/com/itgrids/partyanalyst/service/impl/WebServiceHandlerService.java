@@ -4714,10 +4714,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnList;
 	  }
 	 
-	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
+	 public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,String impactLevelIdStr, Long activityMemberId,Long districtId,Long catId, Long alertTypeId, Long editionId){
 		 List<AlertCoreDashBoardVO> returnList = null;
 		  try{			  
-			  returnList = alertsNewsPortalService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIds, activityMemberId, districtId, catId, alertTypeId, editionId);			  
+			  returnList = alertsNewsPortalService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIdStr, activityMemberId, districtId, catId, alertTypeId, editionId);			  
 		  }catch(Exception e){
 			  e.printStackTrace();
 				log.error("exception occured in  the getDistrictAndStateImpactLevelWiseAlertDtls  method in WebServiceHandlerService");
