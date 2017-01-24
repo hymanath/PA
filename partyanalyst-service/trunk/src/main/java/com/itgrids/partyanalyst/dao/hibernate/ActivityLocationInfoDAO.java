@@ -1435,13 +1435,24 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		
 	}
 	
-	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds){
-		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
-												" count(model.activityLocationInfoId)" +
-												" from ActivityLocationInfo model" +
-												" where model.plannedDate is not null" +
-												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
-												" group by model.activityScope.activityScopeId");
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.activityScope.activityScopeId,count(model.activityLocationInfoId)" +
+				" from ActivityLocationInfo model where" +
+				"  model.activityScope.activityScopeId in (:activityScopeIds)");
+		if(type != null){
+			if(type.equalsIgnoreCase("yes"))
+				queryStr.append(" and model.plannedDate is not null and model.ivrStatus ='Y' ");  
+			else if(type.equalsIgnoreCase("no"))
+				queryStr.append(" and model.plannedDate is null and ( model.ivrStatus is null or model.ivrStatus='N' )");
+			else if(type.equalsIgnoreCase("maybe"))
+				queryStr.append(" and ((model.plannedDate is null and  (model.ivrStatus='Y')) or " +
+						"  (model.plannedDate is not null and ( model.ivrStatus is null or model.ivrStatus='N' ))) ");			
+		}else{
+			queryStr.append(" and model.plannedDate is not null");
+		}
+		queryStr.append(" group by model.activityScope.activityScopeId");
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
@@ -1459,7 +1470,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 	
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
-												" count(model.activityLocationInfoId)" +
+												" count(model.activityLocationInfoId), sum(model.attendedCount)" +
 												" from ActivityLocationInfo model" +
 												" where model.conductedDate is not null" +
 												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
@@ -1506,7 +1517,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
-		queryStr.append(" count(model.activityLocationInfoId) " +
+		queryStr.append(" count(model.activityLocationInfoId) , sum(model.attendedCount) " +
 				" from ActivityLocationInfo model where " );
 		
 		if(countType != null && countType.equalsIgnoreCase("planned"))

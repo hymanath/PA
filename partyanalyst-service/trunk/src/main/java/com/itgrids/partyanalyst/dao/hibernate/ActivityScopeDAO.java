@@ -345,16 +345,25 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getActivityLevelsByActivity(Long activityId){
-		Query query = getSession().createQuery("select distinct model.activityScopeId," +
-												" model.activityLevel.activityLevelId," +
-												" model.activityLevel.level," +
-												" model.scopeId,model.scopeValue,model.activity.activityName " +
-												" from ActivityScope model" +
-												" where model.isDeleted = 'N' " +
-												" and model.activity.isActive = 'Y'" +
-												" and model.activity.activityId = :activityId");
-		query.setParameter("activityId", activityId);
+	public List<Object[]> getActivityLevelsByActivity(List<Long> activityIdsList,Date fromDate , Date toDate){
+		StringBuilder sb =  new StringBuilder();
+		sb.append("select distinct model.activityScopeId," +
+				" model.activityLevel.activityLevelId," +
+				" model.activityLevel.level," +
+				" model.scopeId,model.scopeValue,model.activity.activityName " +
+				" from ActivityScope model" +
+				" where model.isDeleted = 'N' " +
+				" and model.activity.isActive = 'Y'" +
+				" and model.activity.activityId in (:activityIdsList) ");
+		if(fromDate != null && toDate != null)
+				sb.append(" and ((date(model.startDate) between :fromDate and :toDate) or (date(model.endDate) between :fromDate and :toDate))");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("activityIdsList", activityIdsList);
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+			
 		return query.list();
 	}
 	public List<Object[]> getScopeNameByActivity(Long activityId,Long activityScopeId,Date fromDate,Date endDate){
