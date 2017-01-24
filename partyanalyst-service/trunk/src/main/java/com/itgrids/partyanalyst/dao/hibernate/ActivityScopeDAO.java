@@ -349,7 +349,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		Query query = getSession().createQuery("select distinct model.activityScopeId," +
 												" model.activityLevel.activityLevelId," +
 												" model.activityLevel.level," +
-												" model.scopeId,model.scopeValue" +
+												" model.scopeId,model.scopeValue,model.activity.activityName " +
 												" from ActivityScope model" +
 												" where model.isDeleted = 'N' " +
 												" and model.activity.isActive = 'Y'" +
