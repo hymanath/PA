@@ -1691,6 +1691,28 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		 return returnList;
 	 }
 	 
+	 public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId){
+		 List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+		 try {
+			 	Date fromDate = null;           
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				
+				List<Object[]> alertList = alertCandidateDAO.getDeptWiseStatusWiseAlertDetails(fromDate, toDate, stateId, deptId, statusId);
+				setAlertDtls(returnList, alertList);
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getDepartmentWiseStatusWiseCounts() method of AlertsNewsPortalService{}");
+		}
+		 return returnList;
+	 }
+	 
 	 public List<AlertCommentVO> setStatusList(List<Object[]> statusArr){
 		 List<AlertCommentVO> returnList = new ArrayList<AlertCommentVO>();
 		 try {

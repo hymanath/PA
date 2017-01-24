@@ -28,4 +28,5 @@ public interface IAlertsNewsPortalService {
 	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
 	public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public AlertVerificationVO getAlertVerificationDtls(Long alertId);
+	public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId);
 }
