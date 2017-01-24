@@ -24,7 +24,10 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			
 			if(searchType != null && searchType.equalsIgnoreCase("constituency"))
 				queryStr.append(" model.userAddress.constituency.constituencyId," );
-			
+			else if(searchType != null && searchType.equalsIgnoreCase("district"))
+				queryStr.append(" model.userAddress.district.districtId," );
+			if(searchType != null && searchType.equalsIgnoreCase("state"))
+				queryStr.append(" model.userAddress.state.stateId," );
 			
 			if(type != null && type.equalsIgnoreCase("panchayat")){
 				queryStr.append(" count(distinct model.userAddress.panchayat.panchayatId), ");
@@ -36,7 +39,10 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 				queryStr.append("  count(distinct model.userAddress.localElectionBody.localElectionBodyId), ");
 			}else if(type != null && type.equalsIgnoreCase("constituency")){
 				queryStr.append("  count(distinct model.userAddress.constituency.constituencyId), ");
-			}
+			}else if(type != null && type.equalsIgnoreCase("district"))
+				queryStr.append(" count(distinct model.userAddress.district.districtId)," );
+			if(type != null && type.equalsIgnoreCase("state"))
+				queryStr.append(" count(distinct model.userAddress.state.stateId)," );
 			queryStr.append(" count(model1.activityDocumentId) " );
 			queryStr.append(" ,model1.activityScope.activityScopeId ");
 			queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model where model.isDeleted='N'  and " +
@@ -46,12 +52,16 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			queryStr.append(" and model1.activityScope.activityScopeId  in (:activityScopeIdsLis)  ");
 			
 			if(districtsList != null && districtsList.size() > 0l)
-				queryStr.append("  and model.userAddress.district.districtId in (:districtsList) ");
+				if(districtsList.get(0).longValue()>0L)
+					queryStr.append("  and model.userAddress.district.districtId in (:districtsList) ");
 			
 			queryStr.append(" group by model1.activityScope.activityScopeId ");
 			if(searchType != null && searchType.equalsIgnoreCase("constituency"))
 				queryStr.append(" , model.userAddress.constituency.constituencyId ");
-			
+			else if(searchType != null && searchType.equalsIgnoreCase("district"))
+				queryStr.append(", model.userAddress.district.districtId " );
+			if(searchType != null && searchType.equalsIgnoreCase("state"))
+				queryStr.append(", model.userAddress.state.stateId " );
 			
 			/*if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("panchayat")){
 				queryStr.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.panchayat.panchayatId ");
@@ -68,7 +78,8 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			Query query = getSession().createQuery(queryStr.toString());
 			
 			if(districtsList != null && districtsList.size() > 0l)
-				query.setParameterList("districtsList",districtsList );
+				if(districtsList.get(0).longValue()>0L)
+					query.setParameterList("districtsList",districtsList );
 			
 			if(activityScopeIdsLis != null && activityScopeIdsLis.size()>0)
 				query.setParameterList("activityScopeIdsLis",activityScopeIdsLis );

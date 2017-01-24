@@ -351,7 +351,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 												" model.activityLevel.level," +
 												" model.scopeId,model.scopeValue" +
 												" from ActivityScope model" +
-												" where model.isDeleted = 'N'" +
+												" where model.isDeleted = 'N' " +
 												" and model.activity.isActive = 'Y'" +
 												" and model.activity.activityId = :activityId");
 		query.setParameter("activityId", activityId);
@@ -363,7 +363,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 				" model.activityLevel.activityLevelId," +
 				" model.activityLevel.level," +
 				" model.activity.activityId," +
-				" model.activity.activityName " +
+				" model.activity.activityName, model.scopeId " +
 				" from ActivityScope model " +
 				" where model.isDeleted = 'N'" +
 				" and model.activity.isActive = 'Y'" );
