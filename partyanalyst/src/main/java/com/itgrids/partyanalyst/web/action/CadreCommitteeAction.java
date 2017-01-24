@@ -1948,13 +1948,6 @@ public String getSummaryDetails(){
 	 
 	public String getMandalDetailsByConstituency(){
 		try{
-			HttpSession session = request.getSession();
-			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-			
-			if(user == null)
-			{
-				return Action.ERROR;
-			}
 			jObj = new JSONObject(getTask());
 			locations=cadreCommitteeService.getMandalsByConstituency(jObj.getLong("constituencyId"));
 		}catch(Exception e){
