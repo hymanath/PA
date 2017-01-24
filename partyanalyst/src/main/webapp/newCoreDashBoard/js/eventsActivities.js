@@ -1,6 +1,6 @@
  var globalStateId=1; //default AP
  var globalUserWiseEventMemberRslt;
- /* EVENT FUNCTIONALITY END*/  
+ /* EVENT FUNCTIONALITY START*/  
   $(document).on("click",".eventsIconExpand",function(){
 	$(".dateRangePickerClsForEvents").toggleClass("hide");
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -113,16 +113,27 @@ $(document).on("click",".comparisonEvent",function(){
 });
 
 $(document).on("click",".eventStrngPrCls",function(){
+	var selectedType = $(this).attr("attr_selected_type");
 	var memberType=$(this).attr("attr_value");
+	if(selectedType != null && selectedType!= undefined && selectedType=="Event"){
 	 if(memberType != null && memberType == "strong"){ 
 		buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(globalUserWiseEventMemberRslt); 
 	 }else if(memberType == "poor"){
 	  buildUserTypeWisePoorInviteeAttendedEventMemDtlsCnt(globalUserWiseEventMemberRslt);
-	 }
+	 }	
+	}else if(selectedType != null && selectedType!= undefined && selectedType=="Activity"){
+	 if(memberType != null && memberType == "strong"){ 
+		buildUserTypeWiseTopFiveActivityConductedRlst(globalUserWiseConductedRslt); 
+	 }else if(memberType == "poor"){
+	  buildUserTypeWisePoorFiveActivityConductedRlst(globalUserWiseConductedRslt);
+	 }	
+	}
 });
 
 $(document).on("click",".eventsListExpandIcon",function(){
 	var eventIdsString = $(this).attr("attr_event_idsString");
+	var eventName = $(this).attr("attr_event_name");
+	$(".eventAndActivityCls").html(eventName);
 	$(".moreEventsBlocksIcon").attr("attr_type","event");
 	$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
 	$(".detailedEvent").attr("attr_type","event");
@@ -314,7 +325,7 @@ function buildEventBasicCntDtls()
 	     str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab"">';
 					str+='<h4 class="panel-title">Mahanadu 2016';
-						str+='<span attr_event_idsString="30" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+						str+='<span attr_event_idsString="30" class="eventsListExpandIcon eventCls" attr_event_name="Mahanadu 2016" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div class="panel-body pad_5">';
@@ -352,7 +363,7 @@ function buildEventBasicCntDtls()
 				
 				str+='<div class="panel-heading" role="tab"">';
 					str+='<h4 class="panel-title">Mahanadu 2015';
-						str+='<span attr_event_idsString="7" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+						str+='<span attr_event_idsString="7" class="eventsListExpandIcon eventCls" attr_event_name="Mahanadu 2015" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div class="panel-body pad_5">';
@@ -395,6 +406,7 @@ function buildEventBasicCntDtls()
 
 function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString){
 	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$(".eventStrngPrCls").attr("attr_selected_type","Event");
 	var eventIds= eventIdsString.split(",");
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
@@ -1501,17 +1513,23 @@ function getActivitiesDetails(){
 function buildActivityEventBasicCntDtlsNew(result)
 {
 	var str='';
+	var activityIdsString='';
     str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<div class="">';
 				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';
 				for(var i in result)
 				{
+				  if(i== 0){
+					activityIdsString = result[i].id;	
+					}else{
+					 activityIdsString = activityIdsString+','+result[i].id;	
+					}
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
 							str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'';
-							str+='<span class="activitesExpandIcon" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i>';
-							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+							str+='<span class="activitesExpandIcon activityCls"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i>';
+							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
 							str+='</a></span></h4>';
 						str+='</div>';
 						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
@@ -1527,10 +1545,13 @@ function buildActivityEventBasicCntDtlsNew(result)
 		str+='</div>';
 	str+='</div>';
 	$("#activityEventsListNew").html(str);
+	$(".overAllActivityCls").attr("attr_id",activityIdsString);
+	$(".overAllActivityCls").attr("attr_level_id",0);
 }
 
 $(document).on("click",".activitiesClass",function(){
 	var activityId = $(this).attr("attr_id");
+	var activityName = $(this).attr("attr_activity_name");
 	$("#hiddenActivityId").val(activityId);
 	var divId = $(this).attr("attr_divId");
 	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1544,16 +1565,16 @@ $(document).on("click",".activitiesClass",function(){
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0)
-			buildActivityCounts(result,divId);
+			buildActivityCounts(result,divId,activityName,activityId);
 	});
 });
 
-function buildActivityCounts(result,divId)
+function buildActivityCounts(result,divId,activityName,activityId)
 {
 	var str=' ';
 	for(var i in result){
 		str+='<div class="m_top20">';
-			str+='<h5 class="text-capital">'+result[i].name+'</h5>';
+			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon activityCls" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
 			str+='<table class="table bg_ED tablePaddingSyle">';
 				str+='<tbody>';
 					str+='<tr>';
@@ -2554,3 +2575,321 @@ function buildPanchayatList(result,mandalId)
 	 str+='</ul>';
 	$("#panchayatBlock"+mandalId).html(str);
 }
+
+$(document).on("click",".activityCls",function(){
+	var activityLevelIds=[];
+	var activityId = $(this).attr("attr_id");
+	var activityName = $(this).attr("attr_activity_name");
+	var activityLevelId = $(this).attr("attr_level_id");
+	 if(activityLevelId != null && activityLevelId > 0){
+		activityLevelIds.push(activityLevelId); 
+	 }
+	 getUserTypeActivityConductedCnt(activityId,activityLevelIds);
+	 activityName = activityName.replace("'","");
+	 activityName = activityName.replace("\'","");
+	 $(".eventAndActivityCls").html(activityName);
+});
+var globalUserWiseConductedRslt;
+function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
+	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$(".eventStrngPrCls").attr("attr_selected_type","Activity");
+	   var activityIds= activityIdsString.split(",");
+	var jsObj ={ 
+				 activityMemberId : globalActivityMemberId,
+				 stateId : globalStateId,
+				 activityIds:activityIds,
+				 activityLevelIds:activityLevelIds,
+				 userTypeId : globalUserTypeId,
+				 fromDateStr:"",//01-01-2015
+				 toDateStr:""//31-01-2017
+			  }
+	$.ajax({
+		type : 'POST',
+		url : 'getUserTypeActivityConductedCntAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		 $("#UserTypeWiseEventMemberDtslDivId").html(' ');
+		 globalUserWiseConductedRslt = result;
+		 buildUserTypeWiseTopFiveActivityConductedRlst(result);
+	});
+}
+    
+function buildUserTypeWiseTopFiveActivityConductedRlst(result){
+		var str='';
+		if(result != null && result.length > 0){
+		  var str='';
+		  for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+				 if(result[i][0].userTypeId==4 || result[i][0].userTypeId==11){
+				  if(result[i][0].userTypeId==4){
+				  if(result[i][0].completedPerc!=0){
+					  str+='<h5 class="text-capital">'+result[i][0].userType+' / SECRETARY</h5>';      
+				  }
+				  }
+				  if(result[i][0].userTypeId==11){
+				   if(result[i][0].completedPerc!=0){
+					 str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].userType+'</h5>';      
+				   }
+			     }
+			   }else{ 
+				 if(result[i][0].completedPerc!=0){
+					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
+				 }
+		      }
+			  str+='<div id="activityConductedGraph'+i+'" style="height:130px;"></div>';
+			str+='</div>'
+		  }
+		}
+		$("#UserTypeWiseEventMemberDtslDivId").html(str);
+	   if(result != null && result.length > 0){
+			for(var i in result){
+				var candidateNameArray = [];
+				var activityConcuctedPereArr = [];
+				var countVar =0;
+			  if(result[i] !=null && result[i].length>0){
+					for(var j in result[i]){
+						countVar =countVar+1;
+						candidateNameArray.push(result[i][j].name);
+						activityConcuctedPereArr.push({"y":result[i][j].completedPerc});
+						
+						if (countVar === 5) {
+							break;
+						}
+					}
+				}
+		if(result[i][0].completedPerc!=0){
+			$(function () {
+			  $('#activityConductedGraph'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: candidateNameArray,
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					
+				},
+				tooltip: {formatter: function(){
+					return '<b>Activity Conducted:'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+                    'Name: '+ this.x;   
+				}      
+				},
+				plotOptions: {
+					column: {  
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%"; 
+								}
+							}
+						  
+						}
+					},
+					series: {
+						cursor: 'pointer',
+							point: {
+								events: {
+								click: function () {
+									getIndividualPersonTourDetails(this.extra);
+								}
+							}
+						}
+					},
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				
+				series: [{
+					name: 'Activity conducted',
+					data: activityConcuctedPereArr
+				}]
+			});
+		});
+		}else{
+		$("#activityConductedGraph"+i).html("No Data Available");
+		$("#activityConductedGraph"+i).css("height","35px");
+		$("#activityConductedGraph"+i).hide();
+		} 
+	}
+	}else{
+    $("#UserTypeWiseEventMemberDtslDivId").html('NO DATA AVAILABLE.');
+	}
+}
+function buildUserTypeWisePoorFiveActivityConductedRlst(result){
+		
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].userTypeId==4 || result[i][0].userTypeId==11){
+				  if(result[i][0].userTypeId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].userType+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].userTypeId==11){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].userType+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
+			   }
+				str+='<div id="activityConductedGraph'+i+'" style="height:180px;"></div>';
+				str+='</div>'
+			}
+		}
+		$("#UserTypeWiseEventMemberDtslDivId").html(str);
+	  if(result != null && result.length > 0){
+		for(var i in result){
+				var candidateNameArray = [];
+				var activityConcuctedPereArr = [];
+				var countVar = 0;
+				if(result[i] != null && result[i].length > 0){
+					var length = result[i].length - 1;
+					for(var j = length; j >= 0; j--){
+						candidateNameArray.push(result[i][j].name);
+						  activityConcuctedPereArr.push({"y":result[i][j].completedPerc});
+						countVar =countVar+1;
+						if (countVar === 5) {
+							break;
+						}
+					}	
+				}
+			var getWidth = $("#activityConductedGraph"+i).parent().width()+'px';
+				$("#activityConductedGraph"+i).width(getWidth);
+				$(function () {
+			   $('#activityConductedGraph'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: candidateNameArray,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {formatter: function(){
+					return '<b>Activity Conducted:'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+                    'Name: '+ this.x; 
+				}      
+				},
+
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2)+"%";
+								}
+							}
+						  
+						}
+					},
+					series: {
+						cursor: 'pointer',
+							point: {
+								events: {
+								click: function () {
+									getIndividualPersonTourDetails(this.extra);
+								}
+							}
+						}
+					},
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{
+					name: 'Activity Conducted',
+					data: activityConcuctedPereArr
+				}]
+			});
+		});
+		//}
+		/* }else{
+		$("#genSecTour"+i).html("No Data Available");
+		$("#genSecTour"+i).css("height","35px");	
+		} */
+		}
+	}else{
+	 $("#UserTypeWiseEventMemberDtslDivId").html('NO DATA AVAILABLE.');
+	}
+	} 

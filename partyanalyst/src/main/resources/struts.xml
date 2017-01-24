@@ -15540,5 +15540,10 @@
 			<param name="root">activityVOList</param>
 		</result>
 	</action>
+	<action name="getUserTypeActivityConductedCntAction" class="coreDashboardAction" method="getUserTypeActivityConductedCnt">
+		<result type="json" name="success"> 
+   			<param name="root">userTypeVOList</param> 
+   		</result>
+	</action> 
  </package>
 </struts>
