@@ -1578,7 +1578,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			 }
 		 
 		    queryStr.append(" count(distinct model.activityLocationInfoId) " +
-				            " from ActivityLocationInfo model where model.conductedDate is not null and model.activityScope.activity.isActive='Y' ");
+				            " from ActivityLocationInfo model where (model.conductedDate is not null or model.ivrStatus='Y') ");
 		   
 		   if(fromDate != null && toDate != null){
 			 queryStr.append(" and ((date(model.activityScope.startDate) between :fromDate and :toDate) or (date(model.activityScope.endDate) between :fromDate and :toDate))");	
