@@ -41,6 +41,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private ActivityLevel activityLevel;
 	private Long			maxFilesCount;
 	private Long noOfTimes;
+	private Long orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -169,4 +170,14 @@ public class ActivityScope extends BaseModel implements Serializable{
 	public void setNoOfTimes(Long noOfTimes) {
 		this.noOfTimes = noOfTimes;
 	}
+	
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	
+	
 }
