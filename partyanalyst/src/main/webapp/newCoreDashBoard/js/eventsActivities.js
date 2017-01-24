@@ -1622,6 +1622,7 @@ function buildDistrictsForActivityCounts(result){
       for(var i in result){
         $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
       }
+	   $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
 }
 function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
 	if(activityScopeId == 0){
@@ -1691,8 +1692,8 @@ function buildDistrictWiseActivitiesCount(result,type){
     str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
 	str +='<td>'+result[i].attendedCount+'</td>';
 	//str +='<td>'+result[i].inviteeCount+'</td>';
-	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
+	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
 	str +='<td>'+result[i].totalImages+'</td>';
 	  str +='</tr>';
