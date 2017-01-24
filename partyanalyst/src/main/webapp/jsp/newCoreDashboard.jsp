@@ -3708,6 +3708,7 @@
 <input type="hidden" id="cmtMeetingId" attr_cmt_id="editTextmettingId'+i+'" value=""></input>
 <input type="hidden" id="cmtEventsId" attr_cmt_id="editTextEventsId'+i+'" value=""></input>
 <input type="hidden" id="cmtAttendanceId" attr_cmt_id="editTextAttendanceId'+i+'" value=""></input>
+<input type="hidden" id="hiddenActivityScopeId"></input>
 <!--attendance-->
 <input type="hidden" id="officeHidId" attr_office_hid_id="" value=""></input>
 <input type="hidden" id="deptHidId" attr_dept_hid_id="" value=""></input>
