@@ -2626,7 +2626,7 @@
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>
+								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <button class="btn btn-success btn-min btn-xs" onclick="getActivitiesDetails();"> Details </button></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
