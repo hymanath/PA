@@ -28,6 +28,32 @@
 	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 	<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 	<style type="text/css">
+	.attachmentsBlock , .attachmentsUpload
+	{
+		padding:0px;
+	}
+	.attachmentsBlock li , .attachmentsUpload li
+	{
+		margin:5px 0px;
+		list-style:none;
+		font-size:13px;
+		color:rgba(0,0,0,0.6);
+		position:relative;
+	}
+	.attachmentsUpload li .closeIcon
+	{
+		padding:2px 3px;
+		text-align:center;
+		cursor:pointer;
+		position:absolute;
+		right:0px;
+	}
+	.attachmentsUpload li
+	{
+		background-color:#fff;
+		border:1px solid #ddd;
+		padding:5px;
+	}
 	.onoffswitch {
         position: relative; width: 70px;
         -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
@@ -290,12 +316,16 @@
                         </div>
 						<div class="col-md-6 col-sm-12 col-xs-12 m_top10">    
 							<div class="fileBlockNew">
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-									<div class="media-left">
-										<input type="file" id="uploadFileId0" name="imageForDisplay" class="btn btn-mini"/>
-										<div id="extraUploadFileDiv"></div>  
-									</div>
-									<button type="button" style="margin-right: 220px;"class="btn btn-primary btn-xs pull-right m_top20" id="addFile">
+								<div class=" uploadAttachmentDivCls  col-md-12 col-xs-12 col-sm-12 m_top20">
+									<ul class="attachmentsUpload">  
+										<li>
+											<input type="file" id="uploadFileId0" name="imageForDisplay" class="btn btn-mini"/>
+											<span class="closeIcon clearFileCls" style="display:none;">x</span>
+										</li>
+									</ul>
+									<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
+									  
+									<button type="button" title="Add Another File" class="btn btn-primary btn-xs pull-right m_top20" id="addFile">
 										<i class="glyphicon glyphicon-plus"></i>
 									</button>
 								</div>   
@@ -966,6 +996,9 @@ function clearFields()
 	
 	$("#extraUploadFileDiv").html("");
 	$("#uploadFileId0").val("");
+	$("#extraClarificationUploadFileDiv li").each(function(){
+		$(this).remove();                   
+	});
 	$("#apptmemberDetailsDiv").html("");
 	$(".membersBlock").html("");
 	$("#assignedMembers").html("");
@@ -1312,15 +1345,23 @@ function getAlertImpactScope(){
 				  
 				});
 		}
-	var fileNum=0;
+	
+	var fileNo=0;
 	$(document).on("click","#addFile",function(){
-		fileNum = fileNum+1;
-		var c = $(".cloneFileCls").clone(true);
-		c.removeAttr("style");
-		c.attr("id","uploadFileId"+fileNum);
-		c.attr("name","imageForDisplay");
-		c.removeAttr("class").addClass("btn btn-mini");
-		$("#extraUploadFileDiv").append(c);
+		fileNo = fileNo+1;
+		$("#extraClarificationUploadFileDiv").append('<li id="cloned'+fileNo+'"><input type="file" id="uploadFileId'+fileNo+'" name="imageForDisplay" class="btn btn-mini cloneFileCls"/><span class="closeIcon" attr_id="'+fileNo+'">x</span></li>');
+	});
+	$(document).on("click",".clearFileCls",function(){
+		$("#uploadFileId0").val(""); 
+		$(".clearFileCls").hide();
+	});
+	$(document).on("click","#uploadFileId0",function(){
+		$(".clearFileCls").show();
+	});
+	$(document).on("click",".closeIcon",function(){  
+		var positionId = $(this).attr("attr_id");
+		$("#cloned"+positionId).remove();
+		
 	});
 </script>
 </body>
