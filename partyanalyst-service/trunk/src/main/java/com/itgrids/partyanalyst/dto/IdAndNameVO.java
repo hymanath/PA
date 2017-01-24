@@ -40,7 +40,28 @@ public class IdAndNameVO {
 	private Long imagesCovered=0l;
 	private Long totalImages=0l;
 	
+	private Long yesCount=0L;
+	private Long noCount =0L;
+	private Long mayBecount =0L;
 	
+	public Long getYesCount() {
+		return yesCount;
+	}
+	public void setYesCount(Long yesCount) {
+		this.yesCount = yesCount;
+	}
+	public Long getNoCount() {
+		return noCount;
+	}
+	public void setNoCount(Long noCount) {
+		this.noCount = noCount;
+	}
+	public Long getMayBecount() {
+		return mayBecount;
+	}
+	public void setMayBecount(Long mayBecount) {
+		this.mayBecount = mayBecount;
+	}
 	public Long getImagesCovered() {
 		return imagesCovered;
 	}
