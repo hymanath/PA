@@ -1510,9 +1510,9 @@ function buildActivityEventBasicCntDtlsNew(result)
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
 							str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'';
-							str+='<span class="activitesExpandIcon" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i></span>';
+							str+='<span class="activitesExpandIcon" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i>';
 							str+='<a role="button" class="panelBlockCollapseIcon collapsed activitiesClass" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
-							str+='</a></h4>';
+							str+='</a></span></h4>';
 						str+='</div>';
 						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
 							str+='<div class="panel-body">';
@@ -1563,22 +1563,34 @@ function buildActivityCounts(result,divId)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Planned</p>';
-							str+='<h5>'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
+							if(result[i].inviteeCount != null && result[i].inviteeCount>0)
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
+							else
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">IVR</p>';
-							str+='<h5>'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+							if(result[i].attenteeCount != null && result[i].attenteeCount>0)
+								str+='<h5>'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+							else
+								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Infocell</p>';
-							str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
+							if(result[i].inviteeAttendeeCnt != null && result[i].inviteeAttendeeCnt >0 )
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
+							else
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
-							str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
+							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
-							str+='<h5>'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
+							if(result[i].totalImages != null && result[i].totalImages>0)
+								str+='<u><h5 class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5></u>';
+							else
+								str+='<h5 class="" attr_activity_scopeid="'+result[i].tdpcadreId+'">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
 						str+='</td>';
 					str+='</tr>';
 				str+='</tbody>';
@@ -1619,7 +1631,7 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
 		type="all";
 		globalActvtyScopeId = activityScopeId;
 	}
-	
+	$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
 	$("#districtId").val(districtId);
 	//$("#districtId").append("<option value='0'>All</option>"); 
 	$("#activityId").html("");
@@ -1666,7 +1678,7 @@ function buildDistrictWiseActivitiesCount(result,type){
 	str +='<tr>';
     str +='<th class="text-capital">Constituency name</th>';
 	str +='<th class="text-capital">total</th>';
-    str +='<th class="text-capital">Planned</th>';
+    //str +='<th class="text-capital">Planned</th>';
     str +='<th class="text-capital">infocell</th>';
 	str +='<th class="text-capital">ivr</th>';
 	str +='<th class="text-capital">images covered</th>';
@@ -1678,7 +1690,7 @@ function buildDistrictWiseActivitiesCount(result,type){
   str +='<tr>';
     str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
 	str +='<td>'+result[i].attendedCount+'</td>';
-	str +='<td>'+result[i].inviteeCount+'</td>';
+	//str +='<td>'+result[i].inviteeCount+'</td>';
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
@@ -1801,6 +1813,7 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 	var activityId = $("#hiddenActivityId").val();
 		  $(".moreEventsBlocks").toggle();
 			districtWiseCohort(activityId);
+			activitiesQuestions(activityId);
 			$(".detailedBlockEvents,.activeUlCls").show();
 	        $(".detailedEvent").addClass("active")	
 	        $(".comparisonEvent").removeClass("active")
@@ -1828,8 +1841,9 @@ function districtWiseCohort(activityId){
  function buildDistrictWiseCohort(result)
 {
 	var str='';
+	$('.activitiesH4').html(result[0].partyName);
 	for(var i in result)
-	{
+	{	
 		str+='<h4 class="panel-title">'+result[i].name+'</h4>';
 		str+='<div id="eventsGraph1'+i+'" style="height:120px"></div>';
 	}
@@ -1957,11 +1971,11 @@ function districtWiseCohort(activityId){
 }
 /* Activities Functionality End */
 
-activitiesQuestions();
-function activitiesQuestions(){
+
+function activitiesQuestions(activityId){
 	var jsObj ={ 
-	               activityId : 0,
-				   activityScopeId : 12,
+	               activityId : activityId,
+				   activityScopeId : activityId,
 				   fromDateStr :"",
 				   endDateStr : ""
 				 }
@@ -1992,10 +2006,10 @@ function buildActivitiesQuesDetails(result)
 				str+='<div id="collapseOne'+j+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+j+'">';
 					str+='<div class="panel-body">';
 						str+='<div class="row">';
-							str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+							/*str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 								str+='<h4 class="panel-title">IVR REPORT</h4>';
 								str+='<div id="reportsGraph'+j+'"></div>';
-							str+='</div>';
+							str+='</div>';*/
 							str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 								str+='<h4 class="panel-title">INFOCELL REPORT</h4>';
 								str+='<div id="reportsGraph'+j+'"></div>';
@@ -2009,6 +2023,34 @@ function buildActivitiesQuesDetails(result)
 	}
 	$("#eventsDistWiseCohort2").html(str)
 	
+	for(var i in result.activityVoList)
+	{
+		for(var j in result.activityVoList[i].activityVoList)
+		{
+			var str ='';
+			str+='<table class="table table-bordered table-condensed">';
+			str+='<thead>';
+			str+='<tr>';
+			for(var k in result.activityVoList[i].activityVoList[j].optionsList)
+			{
+				str+='<th style="text-align:center;background-color:#B0C4DE;">'+result.activityVoList[i].activityVoList[j].optionsList[k].option+'</th>';
+			}
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			str+='<tr>';
+			for(var k in result.activityVoList[i].activityVoList[j].optionsList)
+			{
+				str+='<td style="text-align:center;">'+result.activityVoList[i].activityVoList[j].optionsList[k].remainingPerc+'</td>';
+			}
+			str+='</tr>';
+			str+='</thead>';
+			str+='</table>';
+			
+			$("#reportsGraph"+j).html(str);
+		}
+	}
+	/*
 	for(var i in result.activityVoList)
 	{
 		for(var j in result.activityVoList[i].activityVoList)
@@ -2050,16 +2092,16 @@ function buildActivitiesQuesDetails(result)
 			});
 		}
 	}
-	
+	*/
 }
 
 var globallocationScope;
 var globalPopupresult = "";
 $(document).on("click",".getImageCls",function(){
 	$("#myModalImageId").modal("show");
-   
+	var attr_activity_scopeid = $(this).attr('attr_activity_scopeid');
+	//alert(attr_activity_scopeid);
    var str='';
-   
     str+='<div class="row">';
 			 str+='<div class="col-md-9">';
 				 str+='<nav class="navbar navbar-default navbarCollapseCustom">';
@@ -2164,9 +2206,278 @@ $(document).on("click",".getImageCls",function(){
 				$(this).removeClass("bodM");
 			}
 		});
-buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
-buildLocationsForPopup(globallocationScope,globallocationValue,globalActivityScope);
-getEventDocuments("","");
-getEventDocumentsForPopup("district",1,0,0);
+//buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
+//getAvailableDates(globallocationScope,globallocationValue,day,path);
+globalActivityScope = attr_activity_scopeid;
+ getAvailablDates(globallocationScope,globallocationValue,1,'',attr_activity_scopeid)
+buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+getEventsDocuments("","",attr_activity_scopeid);
+getEventDocumentForPopup("district",1,0,0,attr_activity_scopeid);
 });
 
+ $(document).on('click','.daysCls',function(){
+	 $(".daysCls").removeClass( "active" )
+	 $(this).addClass("active");
+	 var day = $(this).attr("attr");
+		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,"");
+  });
+  
+function getEventsDocuments(divId,Obj,attr_activity_scopeid)
+{
+	//$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+	// var dates = $('.dateRangeIdForEvents').val();
+	//  var dateArray = dates.split("/");
+	//  var fromDateStr=dateArray[0];
+	//  var toDateStr=dateArray[1];
+	// var activityId = $("#ActivityList").val();
+	  /* if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} */
+		var jObj = {
+		activityId:attr_activity_scopeid,
+		locationScope:"state",
+		locationValue:1,		
+		day:1,
+		fromDateStr:"01-01-2015",
+		toDateStr:"22-01-2017",
+		locationName:Obj.locationName,
+		startIndex:0,
+		maxIndex:0,
+		callFrom:"BD",
+		task:"daywise"
+		};
+		/* var jObj = {
+		activityId:Obj.activityScopeId,
+		locationScope:Obj.searchType,
+		locationValue:Obj.locationId,		
+		day:0,
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		locationName:Obj.locationName,
+		startIndex:0,
+		maxIndex:0,
+		callFrom:Obj.callFrom,
+		task:"daywise"
+		}; */
+		$.ajax({
+          type:'GET',
+          url: 'getEventDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			//$('#'+divId+'').html('');
+			globallocationScope = '';
+			globallocationValue = '';
+			globallocationName = '';
+			globalActivityScope ='';
+			globallocationScope = jObj.locationScope;
+			globallocationValue = jObj.locationValue;
+			globallocationName = jObj.locationName;
+			globalActivityScope = jObj.activityId;
+			buildDayWiseImages(result,divId);
+			
+			});
+}
+
+function getAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid)
+	{
+		
+	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
+	 /* var dates = $('.dateRangeIdForEvents').val();
+	  var dateArray = dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];*/
+	  var activityScopeId = $("#ActivityList").val();
+	
+		var jObj = {
+		activityId:attr_activity_scopeid,
+		locationScope:"state",
+		locationValue:1,	
+		fromDateStr:"01-01-2016",
+		toDateStr:"01-01-2017",
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getAvailableDatesForActivitiesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				var str ='';
+				for(var i in result)
+				{
+					if(result[i].id==day)
+					{
+						str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid);
+					}
+					
+					  else
+					str+='<li class="daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+				}
+				$("#popupDaysDiv").html(str);
+				GlobalPopupScope = jObj.locationScope;
+				GlobalPopuplocation =jObj.locationValue;
+				
+		});
+}
+
+function buildLocationForPopup(locationScope,locationValue,ActivityScope)
+{
+	$("#myModalLabel").html(''+globallocationName+'');
+	var subLeveldivId = '';
+	if(locationScope == "state")
+	subLeveldivId = "popupstateConstituencies"+locationValue;
+		if(locationScope == "district")
+		subLeveldivId = "popupdistConstituencies"+locationValue;
+		if(locationScope == "constituency")
+		subLeveldivId = "constiSubLevel"+locationValue;
+		if(locationScope == "mandal")
+		subLeveldivId= "mandalSubLevel"+locationValue;
+		var str = '';
+		str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+			
+					   str+='<div class="panel panel-default panel-custommodal m_0">';
+						  str+='<div class="panel-heading panel-headingModal popupLevel" role="tab" id="headinglevel'+locationValue+'Modal" attr='+locationValue+'>';
+						  str+='<a role="button" class="accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" href="#collapselevel'+locationValue+'Modal" aria-expanded="true" aria-controls="collapselevel'+globallocationValue+'Modal">';
+							 str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">Anantapur District(157)';
+							// str+='<h4 class="panel-title popupTitle" attr="'+globallocationName+'">Anantapur District('+globalTotalImages+')';
+							 str+='</h4>';
+						   str+='</a>';
+						 str+='</div>';
+						 str+='<div id="collapselevel'+locationValue+'Modal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headinglevel'+locationValue+'Modal">';
+						   str+='<div class="panel-body pad_0">';
+							  str+='<div class="" id="'+subLeveldivId+'" style="margin-left:10px;">';
+								// str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
+							str+='</div>';
+						   str+='</div>';
+						 str+='</div>';
+						 str+='</div>';
+					
+			  str+='</div>';
+				$("#locationsPopup").html(str);
+				
+			
+}
+
+function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid)
+{
+	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
+	 var dates=$('.searchDateCls ').val();
+/* 	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} */
+		
+		var jObj = {
+		activityId:globalActivityScope,
+		locationScope:"state",
+		locationValue:1,		
+		day:day,
+		fromDateStr:"01-01-2015",
+		toDateStr:"22-01-2017",
+		type:"popup",
+		startIndex:num,
+		maxIndex:10,
+		callFrom:"",
+		//locationName:obj.locationName,
+		 task:"popupdaywise"
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getEventDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDayWisImagesForPopup1(result,jObj,path);
+			});
+}
+
+
+function buildDayWisImagesForPopup1(result,jObj,path)
+{
+	$("#popupImages").html('');
+	var str ='';
+
+	if(result != null)
+	{
+	
+		str+='<ul class="slider-for">';
+		//if(path != null && path.length>0)
+			//str+='<li><img src="https://mytdp.com/activity_documents/' +path+'"></li>';
+			for(var i in result)
+			{
+			for(var j in result[i].subList)
+			{
+				
+				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
+			}
+			}
+			  str+='</ul>';
+		str+='<ul class="slider-nav">';	
+		//if(path != null && path.length>0)
+			//str+='<li><img src="https://mytdp.com/activity_documents/' +path+'" style="cursor:pointer;"></li>';
+		for(var i in result)
+		{	 
+			for(var j in result[i].subList)
+			{
+				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"/></li>';	
+			}
+		}
+				str+='</ul>';
+			$("#popupImages").html(str);
+			
+			setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 11,
+			  slidesToScroll: 0,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			 // centerMode: true,
+			focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
+			var itemsCount=result[0].totalResult;
+			
+			
+	    var maxResults=jObj.maxIndex;
+	   if(jObj.startIndex==0){
+		   $("#paginationDivId").html('');
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,"");
+				
+			}
+		});
+
+		}
+	GlobalPopupScope = globallocationScope;
+	GlobalPopuplocation =globallocationValue;
+	
+	}
+}
