@@ -402,7 +402,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		 if(activityIds != null && activityIds.size() > 0){
 			 queryStr.append(" and model.activity.activityId in (:activityIds) ");
 		 }
-		queryStr.append(" group by model.activity.activityId,model.activity.activityName,model.activityLevelId order by model.activity.activityId ");
+		queryStr.append(" group by model.activity.activityId,model.activityLevelId order by model.activity.activityId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(activityIds != null && activityIds.size() > 0){
 			query.setParameterList("activityIds", activityIds);
