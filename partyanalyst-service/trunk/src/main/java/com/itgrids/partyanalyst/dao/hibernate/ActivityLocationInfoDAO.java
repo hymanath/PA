@@ -1475,11 +1475,11 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 												"  model.activityScope.activity.activityName, " +
 												" model.activityScope.activityLevel.level " +
 												" from ActivityLocationInfo model " +
-												" where " +
-												" model.activityScope.activityId in (:activityIdsLst) " +
+												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
+												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
 												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
 												" group by model.activityScope.activityScopeId,model.address.district.districtId " +
-												" order by model.address.district.districtId ");
+												" order by model.address.district.districtId  ");
 		query.setParameterList("activityIdsLst", activityIdsLst);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -1497,7 +1497,14 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			queryStr.append("  model.address.panchayat.panchayatId, model.address.panchayat.panchayatName,");
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
 			queryStr.append("  model.address.ward.constituencyId,model.address.constituency.name, ");
-		
+		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
+			queryStr.append("  model.userAddress.tehsil.tehsilId, model.userAddress.tehsil.tehsilName ");
+		else if( searchType != null && searchType.equalsIgnoreCase("town"))
+			queryStr.append("  model.userAddress.localElectionBody.localElectionBodyId, model.userAddress.localElectionBody.name ");
+		else if(searchType != null && searchType.equalsIgnoreCase("district"))
+			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
+		else if(searchType != null && searchType.equalsIgnoreCase("state"))
+			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
 		queryStr.append(" count(model.activityLocationInfoId) " +
 				" from ActivityLocationInfo model where " );
 		
@@ -1529,7 +1536,14 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			queryStr.append(" group by model.address.panchayat.panchayatId ");
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
 			queryStr.append(" group by model.address.ward.constituencyId ");
-		
+		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
+			queryStr.append(" group by  model.userAddress.tehsil.tehsilId");
+		else if( searchType != null && searchType.equalsIgnoreCase("town"))
+			queryStr.append(" group by  model.userAddress.localElectionBody.localElectionBodyId ");
+		else if(searchType != null && searchType.equalsIgnoreCase("district"))
+			queryStr.append(" group by  model.address.district.districtId " );
+		else if(searchType != null && searchType.equalsIgnoreCase("state"))
+			queryStr.append(" group by model.address.state.stateId" );
 		queryStr.append(" order by model.address.constituency.name  ");
 		Query query = getSession().createQuery(queryStr.toString());
 		

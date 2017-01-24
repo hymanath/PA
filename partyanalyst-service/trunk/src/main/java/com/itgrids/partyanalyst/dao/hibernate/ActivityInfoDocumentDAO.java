@@ -334,7 +334,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.day,date(model.activityDocument.activityDate) ");
-		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null and model.day is not null ");
+		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null and model.day is not null and model.isDeleted ='N' ");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
 			if(inputVO.getLocationValue() == 36)
@@ -370,6 +370,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		{
 			str.append(" and model.activityDocument.activityScopeId = :activityScopeId");
 		}
+		str.append(" order by date(model.activityDocument.activityDate) ");
 		Query query = getSession().createQuery(str.toString());
 		/*if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());*/
