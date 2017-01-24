@@ -3619,6 +3619,7 @@
 	  <property name="locationInfoDAO"  ref="locationInfoDAO"></property>
 	  <property name="activityLocationInfoDAO"  ref="activityLocationInfoDAO"></property>
 	  <property name="activityDocumentDAO"  ref="activityDocumentDAO"></property>
+	  <property name="activityConductedInfoDAO"  ref="activityConductedInfoDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
