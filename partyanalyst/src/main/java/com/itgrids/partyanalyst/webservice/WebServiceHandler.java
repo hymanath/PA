@@ -2280,15 +2280,15 @@ public class WebServiceHandler {
 		}
 		
 		@GET
-		@Path("/getDistrictAndStateImpactLevelWiseAlertDtls/{fromDateStr}/{toDateStr}/{stateId}/{impactLevelIds}/{activityMemberId}/{districtId}/{catId}/{alertTypeId}/{editionId}")
+		@Path("/getDistrictAndStateImpactLevelWiseAlertDtls/{fromDateStr}/{toDateStr}/{stateId}/{impactLevelIdStr}/{activityMemberId}/{districtId}/{catId}/{alertTypeId}/{editionId}")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
-				@PathParam("stateId") Long stateId,@PathParam("impactLevelIds") List<Long> impactLevelIds,@PathParam("activityMemberId") Long activityMemberId,
+				@PathParam("stateId") Long stateId,@PathParam("impactLevelIdStr") String impactLevelIdStr,@PathParam("activityMemberId") Long activityMemberId,
 				@PathParam("districtId") Long districtId,@PathParam("catId") Long catId,@PathParam("alertTypeId") Long alertTypeId,@PathParam("editionId") Long editionId)
 		{
 			try{			
-				return webServiceHandlerService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIds, activityMemberId, districtId, catId, alertTypeId, editionId);			
+				return webServiceHandlerService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDateStr, toDateStr, stateId, impactLevelIdStr, activityMemberId, districtId, catId, alertTypeId, editionId);			
 			}
 			catch(Exception e)
 			{
