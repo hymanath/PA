@@ -1057,8 +1057,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Long> scopeIds = new ArrayList<Long>();
+			List<Long> activityIds = new ArrayList<Long>();
+			activityIds.add(activityId);
 			Long stateId = 1L; 
-			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null);
+			
 			Map<Long,List<Long>> scopeWiseActivitiesMap = new HashMap<Long, List<Long>>(0);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
@@ -1095,8 +1098,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 			}
 			
 			if(scopeIds != null && !scopeIds.isEmpty()){
-				List<Object[]> plannedList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds);
-				List<Object[]> specialActivitiesPlannedList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds);
+
+				List<Object[]> plannedList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds,null);
+				List<Object[]> specialActivitiesPlannedList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds,null);
 				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesPlannedList)){
 					if(!commonMethodsUtilService.isListOrSetValid(plannedList))
 						plannedList = new ArrayList<Object[]>(0);
@@ -1154,9 +1158,10 @@ public class CoreDashboardService implements ICoreDashboardService{
 					for (Object[] obj : infocellList) {
 						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-						
+						Long attendenCount = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
 						if(vo != null){
+							vo.setIsCsd(attendenCount.toString());
 							vo.setInviteeAttendeeCnt(count);			//InfoCellCount
 							String percentage = "0.00";
 							if(count > 0)
@@ -1165,6 +1170,67 @@ public class CoreDashboardService implements ICoreDashboardService{
 						}
 					}
 				}
+				
+				
+				List<Object[]> yesCountList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds,"yes");
+				List<Object[]> specialActivitiesYesCountList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds,"yes");
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesYesCountList)){
+					if(!commonMethodsUtilService.isListOrSetValid(yesCountList))
+						yesCountList = new ArrayList<Object[]>(0);
+						yesCountList.addAll(specialActivitiesYesCountList);
+				}
+				
+				if(yesCountList != null && !yesCountList.isEmpty()){
+					for (Object[] obj : yesCountList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setYesCount(count);
+						}
+					}
+				}
+				
+				List<Object[]> noCountList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds,"no");
+				List<Object[]> specialActivitiesNoCountList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds,"no");
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesNoCountList)){
+					if(!commonMethodsUtilService.isListOrSetValid(noCountList))
+						noCountList = new ArrayList<Object[]>(0);
+						noCountList.addAll(specialActivitiesNoCountList);
+				}
+				
+				if(noCountList != null && !noCountList.isEmpty()){
+					for (Object[] obj : noCountList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setNoCount(count);
+						}
+					}
+				}
+				
+				List<Object[]> maybeCountList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds,"maybe");
+				List<Object[]> specialActivitiesMaybeCountList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds,"maybe");
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesMaybeCountList)){
+					if(!commonMethodsUtilService.isListOrSetValid(maybeCountList))
+						maybeCountList = new ArrayList<Object[]>(0);
+						maybeCountList.addAll(specialActivitiesMaybeCountList);
+				}
+				if(maybeCountList != null && !maybeCountList.isEmpty()){
+					for (Object[] obj : maybeCountList) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						
+						IdAndNameVO vo = getMatchedVOById(scopeId, returnList);
+						if(vo != null){
+							vo.setMayBecount(count);
+						}
+					}
+				}
+				
 			}
 			
 			if(commonMethodsUtilService.isMapValid(scopeWiseActivitiesMap)){
@@ -1248,7 +1314,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 	public List<IdAndNameVO> getDistrictWiseActivitiesSummary(Long activityId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
-			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
+			List<Long> activityIds = new ArrayList<Long>();
+			activityIds.add(activityId);
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1306,7 +1374,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
-			List<Object[]> list1 = activityScopeDAO.getActivityLevelsByActivity(activityIdsLst.get(0));
+			List<Object[]> list1 = activityScopeDAO.getActivityLevelsByActivity(activityIdsLst,fromDate,toDate);
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1373,6 +1441,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 			}
 			
 			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesList)){
+				if(!commonMethodsUtilService.isListOrSetValid(list))
+					list = new ArrayList<Object[]>(0);
+					list.addAll(specialActivitiesList);
+			}
+			
 			Map<Long,List<IdAndNameVO>> scopesMap = new HashMap<Long, List<IdAndNameVO>>(0);
 			Map<Long,List<Long>> scopeDataAvailableLocationMap = new HashMap<Long,List<Long>>(0);
 			if(list != null && !list.isEmpty()){
@@ -1385,7 +1460,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						resultList = scopesMap.get(vo.getId());
 					}
 					vo.setPartyName(commonMethodsUtilService.getStringValueForObject(obj[4]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[4]) +" - "+commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
+					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
 					vo.setCountOfActivityLocationInfo(Long.valueOf(obj[1] != null ? obj[1].toString():""));
 					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(obj[3]));
@@ -1450,7 +1525,10 @@ public class CoreDashboardService implements ICoreDashboardService{
 					/*
 					Collections.sort(vo.getDistList(), new Comparator<IdAndNameVO>() {
 						public int compare(IdAndNameVO o1, IdAndNameVO o2) {
-							return o1.getLocationName().compareTo(o2.getLocationName());
+							if(o2.getLocationName() != null && o1.getLocationName() != null )
+								return o1.getLocationName().compareTo(o2.getLocationName());
+							else
+								return 0;
 						}
 					});
 					*/
@@ -1653,11 +1731,12 @@ public class CoreDashboardService implements ICoreDashboardService{
 					
 					if(type != null && type.equalsIgnoreCase("planned"))
 						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+(Long)obj[2] : 0l);
-					else if(type != null && type.equalsIgnoreCase("infocell"))
+					else if(type != null && type.equalsIgnoreCase("infocell")){
 						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[2] : 0l);
+						vo.setInfoCellAttendedCount(obj[3] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[3] : 0l);
+					}
 					else if(type != null && type.equalsIgnoreCase("ivr"))
 						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+(Long)obj[2] : 0l);
-					
 				}
 			}
 			
