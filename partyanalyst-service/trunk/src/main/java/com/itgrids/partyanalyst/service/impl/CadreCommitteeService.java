@@ -18089,6 +18089,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				if(id==null)id=1l;
 				if(vo.getDay().longValue() == id.longValue())
 					return vo;
+			}else if(vo.getDay().longValue()==id.longValue()){
+					return vo;
 			}
 			
 		return null;

@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1030,7 +1031,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Long> scopeIds = new ArrayList<Long>();
-			Long stateId = 1L;
+			Long stateId = 1L; 
 			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityId);
 			Map<Long,List<Long>> scopeWiseActivitiesMap = new HashMap<Long, List<Long>>(0);
 			if(list != null && !list.isEmpty()){
@@ -1162,9 +1163,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 			      if(commonMethodsUtilService.isListOrSetValid(documentCountList)){
 			    	  for(Object[] param : documentCountList){
-			    		Long imageCount = commonMethodsUtilService.getLongValueForObject(param[1]);
-			    		Long coveredCount = commonMethodsUtilService.getLongValueForObject(param[0]);
-			    		Long   activityScopeId  = commonMethodsUtilService.getLongValueForObject(param[2]);
+			    		Long imageCount = commonMethodsUtilService.getLongValueForObject(param[2]);
+			    		Long coveredCount = commonMethodsUtilService.getLongValueForObject(param[1]);
+			    		Long   activityScopeId  = commonMethodsUtilService.getLongValueForObject(param[3]);
 			    		IdAndNameVO vo = getMatchedVOById(activityScopeId, returnList);
 			    		if(vo != null){
 			    			vo.setImagesCovered(coveredCount);
@@ -1336,7 +1337,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					if(scopesMap.get(vo.getId()) != null){
 						resultList = scopesMap.get(vo.getId());
 					}
-					
+					vo.setPartyName(commonMethodsUtilService.getStringValueForObject(obj[4]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[4]) +" - "+commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
 					vo.setCountOfActivityLocationInfo(Long.valueOf(obj[1] != null ? obj[1].toString():""));
 					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
@@ -1395,6 +1396,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						IdAndNameVO vo1 = vo.getDistList().get(0);
 						vo.setId(vo1.getId());
 						vo.setName(vo1.getName());
+						vo.setPartyName(vo1.getPartyName());
 					}
 					/*
 					Collections.sort(vo.getDistList(), new Comparator<IdAndNameVO>() {
@@ -1417,6 +1419,17 @@ public class CoreDashboardService implements ICoreDashboardService{
 		
 		List<EventDetailsVO> returnList = new ArrayList<EventDetailsVO>();
 		try{
+			ActivityScope scope = activityScopeDAO.get(activityScopeId);
+			if(scope != null){
+				if(scope.getActivityLevelId().longValue() == 1L || scope.getActivityLevelId().longValue() == 2L )
+					searchType ="constituency";
+				else if(scope.getActivityLevelId().longValue() == 3L )
+					searchType ="district";
+				else if(scope.getActivityLevelId().longValue() == 4L )
+					searchType ="state";
+				else if(scope.getActivityLevelId().longValue() == 5L )
+					searchType ="constituency";
+			}
 			
 			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
 				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
@@ -1425,8 +1438,22 @@ public class CoreDashboardService implements ICoreDashboardService{
 					setDataToVO(condtdcList,returnList,"infocell");
 				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
 					setDataToVO(ivrList,returnList,"ivr");
-				
+			}else if(searchType != null && searchType.equalsIgnoreCase("district")){
+				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+					setDataToVO(planedList,returnList,"planned");
+				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+					setDataToVO(condtdcList,returnList,"infocell");
+				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+					setDataToVO(ivrList,returnList,"ivr");
+			}else if(searchType != null && searchType.equalsIgnoreCase("state")){
+				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+					setDataToVO(planedList,returnList,"planned");
+				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+					setDataToVO(condtdcList,returnList,"infocell");
+				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+					setDataToVO(ivrList,returnList,"ivr");
 			}
+			
 			 List<Long> districts = new ArrayList<Long>();
 			 districts.add(districtId);
 			 List<Long> activityScopeIds = new ArrayList<Long>();
@@ -1443,11 +1470,18 @@ public class CoreDashboardService implements ICoreDashboardService{
 					setImagesCoveredAndTotalImages(mandalImgs,returnList);
 				List<Object[]> townImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"town");
 					setImagesCoveredAndTotalImages(townImgs,returnList);
-			}else if(levelId != null && levelId.longValue() == 3l){
+			}else if(levelId != null && levelId.longValue() == 5l){
 				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"constituency");
 					setImagesCoveredAndTotalImages(mandalImgs,returnList);
 			}
-			
+			else if(levelId != null && levelId.longValue() == 3l){
+				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,"district","district");
+				setImagesCoveredAndTotalImages(mandalImgs,returnList);
+			}
+			else if(levelId != null && levelId.longValue() == 4l){
+				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,"state","state");
+				setImagesCoveredAndTotalImages(mandalImgs,returnList);
+			}
 			Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long,Map<Long,Long>>();
 			SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
 	         
@@ -1474,26 +1508,32 @@ public class CoreDashboardService implements ICoreDashboardService{
 	              searchAttributeVO.getLocationTypeIdsList().add(4L);          
 	          }
 	          
-	          List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
-	          if(commonMethodsUtilService.isListOrSetValid(areasList)){
-	            for (Object[] param : areasList) {
-	              
-	              Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>();
-	              Long count = 0L;
-	              if(totalScopeLocationsMap.get(activityScopeId) != null){
-	                totalLocationsMap = totalScopeLocationsMap.get(activityScopeId);
-	                count=totalLocationsMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
-	              }
-	              if(count == null)
-	                count = 0L;
-	              totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), count+commonMethodsUtilService.getLongValueForObject(param[1]));
-	              totalScopeLocationsMap.put(activityScopeId, totalLocationsMap);
-	            }
+	          if(commonMethodsUtilService.isListOrSetValid(searchAttributeVO.getLocationTypeIdsList()) && searchAttributeVO.getLocationTypeIdsList().size()==1 && 
+	        		  searchAttributeVO.getLocationTypeIdsList().get(0).longValue() == searchAttributeVO.getScopeId().longValue()){
+	        	  setTotalLocationsToVO(returnList,null,1L);
+	          }else{
+	        	  List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
+		          if(commonMethodsUtilService.isListOrSetValid(areasList)){
+		            for (Object[] param : areasList) {
+		              
+		              Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>();
+		              Long count = 0L;
+		              if(totalScopeLocationsMap.get(activityScopeId) != null){
+		                totalLocationsMap = totalScopeLocationsMap.get(activityScopeId);
+		                count=totalLocationsMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+		              }
+		              if(count == null)
+		                count = 0L;
+		              totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), count+commonMethodsUtilService.getLongValueForObject(param[1]));
+		              totalScopeLocationsMap.put(activityScopeId, totalLocationsMap);
+		            }
+		          }
 	          }
+	          
 	          if(commonMethodsUtilService.isMapValid(totalScopeLocationsMap)){
 	        	  Map<Long,Long> locatnContMap = totalScopeLocationsMap.get(activityScopeId);
 	        	  if(commonMethodsUtilService.isMapValid(locatnContMap)){
-	        		  setTotalLocationsToVO(returnList,locatnContMap);
+	        		  setTotalLocationsToVO(returnList,locatnContMap,null);
 					}
 	        	  
 	          }
@@ -1506,15 +1546,19 @@ public class CoreDashboardService implements ICoreDashboardService{
 		
 	}
 	
-	public void setTotalLocationsToVO(List<EventDetailsVO> returnList,Map<Long,Long> totalLocationsMap){
+	public void setTotalLocationsToVO(List<EventDetailsVO> returnList,Map<Long,Long> totalLocationsMap,Long defaultValue){
 		
 		try{
 			
 			if(commonMethodsUtilService.isListOrSetValid(returnList)){
 				for(EventDetailsVO vo : returnList){
-					Long count = totalLocationsMap.get(vo.getId());
-					if(count != null && count.longValue() > 0l)
-						vo.setAttendedCount(count);//total Locations
+					if(commonMethodsUtilService.isMapValid(totalLocationsMap)){
+						Long count = totalLocationsMap.get(vo.getId());
+						if(count != null && count.longValue() > 0l)
+							vo.setAttendedCount(count);//total Locations
+					}else{
+						vo.setAttendedCount(defaultValue);//total Locations
+					}
 				}
 			}
 				
