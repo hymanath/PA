@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -15,4 +16,5 @@ public interface ILocationInfoDAO extends GenericDao<LocationInfo, Long>{
 	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue);
 	public List<Object[]> getDistrictWiseTotalCountsByLevelId(Long levelId);
 	public List<Object[]> areaCountDetailsListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId);
+	public List<Object[]> getTotalActivityLocationWise(List<Long> levelIds,Long scopeId,Set<Long> locationValues);
 }

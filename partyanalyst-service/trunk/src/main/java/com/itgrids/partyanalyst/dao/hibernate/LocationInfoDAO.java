@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -117,4 +118,15 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		
 		return query.list();
 	}
+	public List<Object[]> getTotalActivityLocationWise(List<Long> levelIds,Long scopeId,Set<Long> locationValues){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.scopeValue,sum(model.count) from LocationInfo model where model.levelId in (:levelIds) " +
+		 		         " and model.scopeId=:scopeId and model.scopeValue in (:locationValues)  group by scopeValue ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameterList("levelIds", levelIds);
+		 query.setParameter("scopeId", scopeId);
+		 query.setParameterList("locationValues", locationValues);
+		 return query.list();
+	}
+	
 }

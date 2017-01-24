@@ -13,4 +13,5 @@ public interface IActivityConductedInfoDAO extends GenericDao<ActivityConductedI
 	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId,String countType);
+	public List<Object[]> getActivityConductedCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate);
 }
