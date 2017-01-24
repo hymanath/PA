@@ -3657,18 +3657,53 @@
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModelActivityhead">DISTRICT</h4>
-		<div class="col-md-3 col-xs-12 col-sm-3">
-			<select class="form-control districtCls" id="districtId" >
-				<select>
-      </div>
+        <h4 class="modal-title" id="myModelActivityhead"> <small class="text-capitalize" id="smallHeadngId"></small></h4>
       </div>
        <div class="modal-body">
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div style="background-color:#CCC;">
+					<div class="row">
+						<div class="col-md-2 col-xs-12 col-sm-3" style="margin-left: 15px;margin-bottom: 25px;">
+							<label>District</label>
+							<select class="form-control districtCls" id="districtId" >
+								<select>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-3" style="display:none;" id="constncyDivId">
+							<label>Constituency</label>
+							<select class="form-control constituencyCls" id="constituencyId" >
+								<select>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-3" style="display:none;" id="mandalDivId">
+							<label>Mandal</label>
+							<select class="form-control mandalsCls" id="mandalId" >
+								<select>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-3" style="display:none;" id="villgWardDivId1">
+							<label>Village</label>
+							<select class="form-control villgWardCls" id="villgWardId" >
+								<select>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-3">
+							<button type="button" class="btn btn-success m_top20 submitCls">SUBMIT</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="pull-right" id="">  
-				
-			</div> 
+				<h4><span id="locatnNamId"></span>
+					<!--<label class="radio-inline pull-right">
+						<input type="radio"/>BNa
+					</label>
+					<label class="radio-inline pull-right">
+						<input type="radio"/>BNa
+					</label>
+					<label class="radio-inline pull-right">
+						<input type="radio"/>BNa
+					</label>-->
+				</h4>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="table-responsive" id="activityId">  
