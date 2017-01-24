@@ -219,6 +219,7 @@
 		}
 	});
 	function getTotalAlertGroupByDist(scopeIdsArr,location){ 
+	
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 	    var fromDateStr;
@@ -510,6 +511,10 @@
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
 		$("#alertVerificationDiv").html("");
 		$("#alertVerificationDtlsDiv").html("");
+		
+		$("#alertDocHeadingId").html("");
+		$("#alertDocId").html("");
+		
 		$("#cdrModelDivId").modal("show");
 		var alertId = $(this).attr("attr_alert_id");
 		var alertStatus = $(this).attr("attr_alert_status");
@@ -551,7 +556,7 @@
 			}
 		});
 	}
-	function getAlertData(alertId){  
+	function getAlertData(alertId){    
 		var jsObj ={
 			alertId  :alertId,
 			task : ""
@@ -567,11 +572,25 @@
 		});
 	}
 	function buildAlertData(result){
+		var docName = '';
+		var extName =[];
 		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><h5 class='text-capital m_top10' style='color:#000'>"+result[0].title+"</h5>");
 		$("#cdrModelId").html("<h5 class='text-muted headingColorStyling'>ALERT DESCRIPTION</h5>");
 		$("#alertDestId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 6px;'>"+result[0].desc+"</p>");
 		$("#sourceHeadingId").html("<h5 class='text-muted headingColorStyling'>ALERT SOURCE</h5>");
 		$("#headingNameId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 10px;'>"+result[0].alertSource+"</p>");
+		if(result[0].documentList != null && result[0].documentList.length > 1){
+			$("#alertDocHeadingId").html("<h5  class='text-muted headingColorStyling'>ALERT DOCUMENTS</h5>");
+			var docStr = '';
+			docStr+='<ul>';
+			for(var i in result[0].documentList){
+				docName = result[0].documentList[i];
+				extName = docName.split("/");
+				docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+extName[1]+'</a></li>';
+			}
+			docStr+='</ul>';  
+			$("#alertDocId").html(docStr);    
+		}
 		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
 			$("#alertAttachTitId").html("<h5  class='text-muted headingColorStyling'>ALERT ATTACHMENTS</h5>");
 			var imgStr = '';
@@ -600,18 +619,17 @@
 							if(result[i].subList[j].mobileNo.length <= 1  || result[i].subList[j].mobileNo == null){
 							}else{
 								str+='<p><i> - </i>'+result[i].subList[j].mobileNo+'</p>';      
-							}
-							if(result[i].subList[j].committeePosition.length <= 1 || result[i].subList[j].committeePosition == null){
-							}else{
+							}  
+							if(result[i].subList[j].committeePosition != null){
 								str+='<p><i> - </i>'+result[i].subList[j].committeePosition+'</p>';  
-							}      
+							}     
 						str+='</li>';      
 					}
 				}    
 			}
-			str+='</ul>';  
+			str+='</ul>';      
 			
-			$("#alertInvolvedCandidates").html(str);    
+			$("#alertInvolvedCandidates").html(str);       
 		}else{
 			str+='<h5 class="text-muted text-capital headingColorStyling">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>'; 
 			$("#alertInvolvedCandidates").html(str);        
@@ -3252,6 +3270,7 @@ function getTotalArticledetails(articleId){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 	}
 	function getAlertOverviewDetails(){
+
 		$("#alertOverview,#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 		var fromDateStr;
@@ -3744,7 +3763,7 @@ function getTotalArticledetails(articleId){
 		//userWiseAccessiblilityFunction();
 		var str = '';
 		if(result.conversationList != null && result.conversationList.length > 0){
-			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION</h4>");  
+			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION STATUS-"+result.actionTypeStatus+"</h4>");  
 			for(var i in result.conversationList){
 				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:12px;">'+result.conversationList[i].heading+'</p>';  
 				if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
@@ -3773,10 +3792,16 @@ function getTotalArticledetails(articleId){
 				}
 				if(result.conversationList[i].name != null && result.conversationList[i].name.length > 0){
 					str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';     
-				}
+				}  
 			}
 			str+='<hr class="m_top10" style="border-top: 1px solid #ccc;">';
 			$("#alertVerificationDtlsDiv").html(str);
 		}
    }
+   $(document).on('click','#showAlertVerificationPdfId',function(){      
+		var dbFilePath = $(this).attr("attr_filePath");    
+     	var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		window.open('/Reports/tour_documents/'+dbFilePath,'_blank');
+	});          
 	
