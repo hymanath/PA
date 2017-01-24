@@ -170,7 +170,7 @@ public List<Object[]> getActivityConductedCntBasedOnUserAccesslevel(Long userAcc
 	 }
 
   queryStr.append(" count(distinct model.activityConductedInfoId) " +
-		            " from ActivityConductedInfo model where model.infoCellCount is not null and model.activityScope.activity.isActive='Y' ");
+		            " from ActivityConductedInfo model where (model.infoCellCount is not null or model.ivrCount is not null ) and model.isDeleted='N' ");
  
  if(fromDate != null && toDate != null){
 	 queryStr.append(" and ((date(model.activityScope.startDate) between :fromDate and :toDate) or (date(model.activityScope.endDate) between :fromDate and :toDate))");	
