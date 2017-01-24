@@ -1573,6 +1573,10 @@ function buildActivityCounts(result,divId,activityName,activityId)
 {
 	var str=' ';
 	for(var i in result){
+		var totalCount =parseInt(result[i].apTotal);
+		var updatedCount = parseInt(result[i].yesCount)+parseInt(result[i].noCount)+parseInt(result[i].mayBecount);
+		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
+		
 		str+='<div class="m_top20">';
 			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon activityCls" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
 			str+='<table class="table bg_ED tablePaddingSyle">';
@@ -1583,25 +1587,77 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							str+='<h5>'+result[i].apTotal+'</h5>';
 						str+='</td>';
 						str+='<td>';
+							str+='<p class="text-muted text-capital">YES</p>';
+							/*if(result[i].yesCount != null && result[i].yesCount>0)
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" >'+result[i].yesCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
+							else*/
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" title="Both Info Cell and IVR status updated as conducted " >'+result[i].yesCount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">No</p>';
+							/*if(result[i].noCount != null && result[i].noCount>0)
+								str+='<h5>'+result[i].noCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+							else*/
+								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title="Both Info Cell and IVR status updated as Not conducted " >'+result[i].noCount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Maybe</p>';
+							/*if(result[i].mayBecount != null && result[i].mayBecount >0 )
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].mayBecount+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
+							else*/
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title=" One of the Info Cell and IVR updated as not conducted " >'+result[i].mayBecount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Not Updated </p>';
+							//console.log(notUpdatedCount);
+							/*if(notUpdatedCount>0)
+								str+='<u><h5 class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+notUpdatedCount+' </h5></u>';
+							else*/
+								str+='<h5 class=""  data-toggle="tooltip" data-placement="top"  attr_activity_scopeid="'+result[i].tdpcadreId+'" title=" No data available from Both Info Cell and IVR " >'+notUpdatedCount+' </h5>';
+						str+='</td>';
+					str+='</tr>';
+					
+					str+='<tr>';
+						/*str+='<td>';
+							str+='<p class="text-muted text-capital">total</p>';
+							str+='<h5>'+result[i].apTotal+'</h5>';
+						str+='</td>';*/
+					
+						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
+								str+='<td>';
+							str+='<p class="text-muted text-capital">attended Count </p>';
+							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Attended Members" >'+result[i].isCsd+'</h5>';
+								str+='</td>';
+						}else{
+							str+='<td>';
+							str+='<p class="text-muted text-capital">attended Count </p>';
+							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" > - </h5>';
+							str+='</td>';
+						}
+					
+						str+='<td>';
 							str+='<p class="text-muted text-capital">Planned</p>';
 							if(result[i].inviteeCount != null && result[i].inviteeCount>0)
-								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
+								str+='<u><h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Planned Locations" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
 							else
-								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">IVR</p>';
 							if(result[i].attenteeCount != null && result[i].attenteeCount>0)
-								str+='<h5>'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total IVR Conducted Locations " >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
 							else
-								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Infocell</p>';
 							if(result[i].inviteeAttendeeCnt != null && result[i].inviteeAttendeeCnt >0 )
-								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" attr_activity_name="'+result[i].locationName+'" attr_level_name="'+result[i].name+'" attr_level_id="'+result[i].id+'">'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
+								str+='<u><h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title=" Clikc here to view activity Conducted Locations "  attr_activity_name="'+result[i].locationName+'" attr_level_name="'+result[i].name+'" attr_level_id="'+result[i].id+'" >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
 							else
-								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top"  >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
@@ -1609,10 +1665,18 @@ function buildActivityCounts(result,divId,activityName,activityId)
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
 							if(result[i].totalImages != null && result[i].totalImages>0)
-								str+='<u><h5 class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5></u>';
+								str+='<u><h5 style="cursor:pointer;" class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5></u>';
 							else
-								str+='<h5 class="" attr_activity_scopeid="'+result[i].tdpcadreId+'">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_activity_scopeid="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top"  >'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
 						str+='</td>';
+						
+						/* str+='<td>'; //notes
+						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
+							str+='<p class="text-muted text-capital">Count </p>';
+							str+='<h5>'+result[i].isCsd+'</h5>';
+						}
+						str+='</td>'; */
+						
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
@@ -1620,6 +1684,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 	}
 	
 	$("#"+divId).html(str);
+	$('[data-toggle="tooltip"]').tooltip();
 }
 getDistricts();
 function getDistricts(){
@@ -1680,6 +1745,8 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	}).done(function(result){
 		//if(result != null && result.length > 0){
 			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType);
+		//}else{
+		//		$("#activityId").html('<div style="text-align: center;font-weight:bold;" > No data available...</div>');
 		//}
 	});
 }
@@ -1935,7 +2002,7 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 	var activityId = $("#hiddenActivityId").val();
 		  $(".moreEventsBlocks").toggle();
 			districtWiseCohort(activityId);
-			activitiesQuestions(activityId);
+			//activitiesQuestions(activityId);
 			$(".detailedBlockEvents,.activeUlCls").show();
 	        $(".detailedEvent").addClass("active")	
 	        $(".comparisonEvent").removeClass("active")
@@ -1945,7 +2012,7 @@ function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
     //var eventIds = attrEventIdsString.split(",");
 	var jsObj ={ 
-		 //activityId : [26], 
+		// activityId : [1,3,4,5,6,7,8,26,27,28,29,30], 
 		 activityId : [activityId],
 	   fromDate : customStartDateActivities,
 	   toDate : customEndDateActivities
