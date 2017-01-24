@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 
 public interface IAlertsNewsPortalService {
 
@@ -21,4 +23,9 @@ public interface IAlertsNewsPortalService {
 	public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,String scopeIdList, Long activityMemberId,Long alertTypeId, Long editionId);
 	
 	public List<AlertCommentVO> getDepartmentWiseStatusWiseCounts(String fromDateStr,String toDateStr,Long stateId,String scopeIdList);
+	
+	public List<AlertDataVO> getAlertsData(Long alertId);
+	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
+	public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId);
+	public AlertVerificationVO getAlertVerificationDtls(Long alertId);
 }
