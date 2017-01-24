@@ -2624,14 +2624,14 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <button class="btn btn-success btn-min btn-xs" onclick="getActivitiesDetails();"> Details </button></h4>
+								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
 									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
-									<div id="activityEventsListNew" class="m_top20"></div>
+									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
 								<!--</div>-->
 							</div>
 							<!--Acivites Block
@@ -2644,11 +2644,11 @@
 							<!--</div>
 							</div>-->
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
-								<h4><span class="headingColor text-capital">events </span></h4>
+								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
 								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline hideCls">
-											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
+											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
 										</ul>
 								</div> 
 								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>

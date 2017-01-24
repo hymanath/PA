@@ -2230,7 +2230,7 @@ public String getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTy
 		Long userTypeId = jObj.getLong("userTypeId");
 		eventDetailsVOList = coreDashboardEventsActivitiesService.getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(userTypeId,stateId,activityMemberId,eventIds);
 	}catch (Exception e) {
-		LOG.error("Exception raised at getUserTypeWiseTotalInviteeAndInviteeAttendedCnt() method of CoreDashBoard", e);
+		LOG.error("Exception raised at getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
 }
@@ -3498,5 +3498,48 @@ public String getDistrictWiseActivityCounts(){
 		LOG.error("Exception raised at getDistrictWiseActivityCounts() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
+}
+public String getUserTypeActivityConductedCnt(){
+try{
+		
+		jObj = new JSONObject(getTask());
+		
+		final HttpSession session = request.getSession();
+		Long userId = null;
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			//return ERROR;
+			userId = 1L;
+		}
+		else
+			userId = user.getRegistrationID();
+		
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		
+		List<Long> activityIds = new ArrayList<Long>();
+		List<Long> activityLevelList = new ArrayList<Long>(0);
+		JSONArray activityIdsArray=jObj.getJSONArray("activityIds");
+		if(activityIdsArray!=null &&  activityIdsArray.length()>0){
+			for( int i=0;i<activityIdsArray.length();i++){
+				activityIds.add(Long.valueOf(activityIdsArray.getString(i)));
+			}
+		}
+		JSONArray activityLevelIdsArray=jObj.getJSONArray("activityLevelIds");
+		if(activityLevelIdsArray!=null &&  activityLevelIdsArray.length()>0){
+			for( int i=0;i<activityLevelIdsArray.length();i++){
+				activityLevelList.add(Long.valueOf(activityLevelIdsArray.getString(i)));
+			}
+		}
+	    String fromDateStr = jObj.getString("fromDateStr");
+	    String toDateStr = jObj.getString("toDateStr");
+		Long stateId = jObj.getLong("stateId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		
+		userTypeVOList = coreDashboardEventsActivitiesService.getUserTypeActivityConductedCnt(activityIds,activityLevelList,activityMemberId,userId,userTypeId,stateId,fromDateStr,toDateStr);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getUserTypeActivityConductedCnt() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
 }
 }
