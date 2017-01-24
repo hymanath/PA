@@ -67,14 +67,11 @@
 	{
 		
 		var scopeIdsArr = [2,3,6,7,9,5,8];
-			/* scopeIdsArr.push(2);  
-			scopeIdsArr.push(3);  
-			scopeIdsArr.push(7);  
-			scopeIdsArr.push(9); 
-			scopeIdsArr.push(5); 
-			scopeIdsArr.push(8);  */
+	
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getTotalAlertGroupByDist(scopeIdsArr,"other");
+		$(".alertFilterCls li").removeClass("active");
+		$(".alertFilterCls li:first-child").addClass("active");
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 		getStateImpactLevelAlertDtlsCnt("other");
 	}
@@ -860,11 +857,7 @@
 					}]
 				});
 			});
-		//}else{
-		//$("#alertCategory"+i).html("No Data Available");
-		//$("#alertCategory"+i).css("height","35px");
-		//$("#alertCategory"+i).hide();
-		//} 
+		
 			}
 		}else{
 			$("#locationWiseAlertDivId").html('NO DATA AVAILABLE.');
@@ -997,9 +990,7 @@
 		$("#districtWiseAlertCountId").html(str);
 			if(result !=null && result.length >0){
 				for(var i in result){
-					//var districtName;
-					//districtName = (result[i].status).toUpperCase();
-					//districtName+='-'+result[i].count+'';     
+				
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var count =[];
@@ -3642,20 +3633,16 @@ function getTotalArticledetails(articleId){
 		$("#alertOverviewDetails").html(str);
 	}
 	function arrowPositionMove(id){
-	//$(document).on("click",".alertOverViewDetailsCls",function(){
-		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
-		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
-		$(id).addClass("alertsArrow");
-		$(id).find(".alertInnerArrow").addClass("alertsArrow");
-	//});
+	$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
+	$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
+	$(id).addClass("alertsArrow");
+	$(id).find(".alertInnerArrow").addClass("alertsArrow");
 	}
 	function arrowPositionMove1(id1){
-	//$(document).on("click",".alertOverViewDetailsLowCls",function(){
 		$(".alertOverViewDetailsCls,.alertInnerArrow").removeClass("alertsArrow");
 		$(".alertOverViewDetailsLowCls,.alertInnerArrowLow").removeClass("alertsArrowLow");
 		$(id1).addClass("alertsArrowLow");
 		$(id1).find(".alertInnerArrowLow").addClass("alertsArrowLow");
-	//});
 	}
 	function getEditioDtls(alertTypeStr,alertEdition){
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
@@ -3758,9 +3745,6 @@ function getTotalArticledetails(articleId){
 	}
 	
 	function buildAlertVerificationStatusRlst(result){
-		
-		//$("#alertStatusHeadingId").html("Status:<span class='text-success'>"+result.actionTypeStatus+"</span>");
-		//userWiseAccessiblilityFunction();
 		var str = '';
 		if(result.conversationList != null && result.conversationList.length > 0){
 			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION STATUS-"+result.actionTypeStatus+"</h4>");  
