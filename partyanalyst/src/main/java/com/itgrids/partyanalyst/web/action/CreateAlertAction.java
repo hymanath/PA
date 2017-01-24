@@ -389,12 +389,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				File[] files = multiPartRequestWrapper.getFiles(key);
 				if(files != null && files.length > 0){
 					for(File f : files){
-						String[] extension  =multiPartRequestWrapper.getFileNames(key)[i].split("\\.");
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
 						String ext = "";
-						if(extension.length > 1){
-							ext = extension[extension.length-1];
-							mapfiles.put(f,ext);
-						}
+						mapfiles.put(f,fileName);
 						i++;
 					}
 				}
