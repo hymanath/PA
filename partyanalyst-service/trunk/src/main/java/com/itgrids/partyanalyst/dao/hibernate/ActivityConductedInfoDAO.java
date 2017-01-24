@@ -143,4 +143,79 @@ public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activit
 		
 		return query.list();
 	}
+
+
+public List<Object[]> getActivityConductedCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate){
+	
+    StringBuilder queryStr = new StringBuilder();
+   
+	  queryStr.append(" select");
+	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+       queryStr.append(" model.address.state.stateId,");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+           queryStr.append(" model.address.district.districtId,");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+        queryStr.append(" model.address.parliamentConstituency.constituencyId, ");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+        queryStr.append(" model.address.constituency.constituencyId, ");  
+	 }
+
+  queryStr.append(" count(distinct model.activityConductedInfoId) " +
+		            " from ActivityConductedInfo model where model.infoCellCount is not null and model.activityScope.activity.isActive='Y' ");
+ 
+ if(fromDate != null && toDate != null){
+	 queryStr.append(" and ((date(model.activityScope.startDate) between :fromDate and :toDate) or (date(model.activityScope.endDate) between :fromDate and :toDate))");	
+	}
+		 
+ if(activityId != null && activityId.longValue() > 0){
+	   queryStr.append(" and model.activityScope.activity.activityId in(:activityId)");
+ }
+ if(activityLevelIds != null && activityLevelIds.size() > 0){
+	   queryStr.append(" and model.activityScope.activityLevel.activityLevelId in(:activityLevelIds)");   
+ }
+ 
+ if(stateId != null && stateId.longValue() == 1l){
+		queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+ }else if(stateId != null && stateId.longValue() == 2l){
+		queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+ }
+
+if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+   queryStr.append(" and model.address.state.stateId in (:userAccessLevelValues)");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+       queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues)");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+    queryStr.append(" and model.address.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+    queryStr.append(" and model.address.constituency.constituencyId in (:userAccessLevelValues)");  
+}
+
+if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+   queryStr.append(" group by model.address.state.stateId ");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+       queryStr.append(" group by model.address.district.districtId ");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+    queryStr.append(" group by model.address.parliamentConstituency.constituencyId ");  
+}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+    queryStr.append(" group by model.address.constituency.constituencyId ");  
+}
+   
+ Query query = getSession().createQuery(queryStr.toString());
+ if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+ }
+ if(activityId != null && activityId.longValue() > 0){
+	  query.setParameter("activityId", activityId);
+ }
+ if(activityLevelIds != null && activityLevelIds.size() > 0){
+	  query.setParameterList("activityLevelIds", activityLevelIds);   
+ }
+ if(fromDate != null && toDate != null){
+	query.setParameter("fromDate", fromDate);
+	query.setParameter("toDate", toDate);
+ }
+return query.list();
+}
+
+
 }
