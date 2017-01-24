@@ -1,9 +1,16 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.ActivityConductedInfo;
 
 public interface IActivityConductedInfoDAO extends GenericDao<ActivityConductedInfo, Long>{
-
+	public List<Object[]> getSpecialActivitiesDetails(Date fromDate,Date toDate,Long stateId);
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId,String countType);
 }
