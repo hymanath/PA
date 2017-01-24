@@ -15520,5 +15520,25 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
+	<action name="getDistrictListAction" class="activityAction" method="getDistrictList">
+	  <result type="json" name="success">
+			<param name="root">activityVOList</param>
+		</result>
+	</action>
+	<action name="getConstituencyListAction" class="activityAction" method="getConstituencyList">
+	  <result type="json" name="success">
+			<param name="root">activityVOList</param>
+		</result>
+	</action>
+	<action name="getMandalOrMuncpalityListAction" class="activityAction" method="getMandalOrMuncpalityList">
+	  <result type="json" name="success">
+			<param name="root">activityVOList</param>
+		</result>
+	</action>
+	<action name="getPanchayatOrWardListAction" class="activityAction" method="getPanchayatOrWardList">
+	  <result type="json" name="success">
+			<param name="root">activityVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
