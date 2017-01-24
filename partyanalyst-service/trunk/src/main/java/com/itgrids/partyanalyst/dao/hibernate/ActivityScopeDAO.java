@@ -324,7 +324,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 	public List<Object[]> getActivityDetails(Date fromDate,Date toDate,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.activityScope.activity.activityId," +
-						" model.activityScope.activity.activityName" +
+						" model.activityScope.activity.activityName,model.activityScope.orderNo" +
 						" from ActivityLocationInfo model" +
 						" where model.activityScope.isDeleted = 'N'" +
 						" and model.activityScope.activity.isActive = 'Y'");
