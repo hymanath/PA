@@ -3,10 +3,13 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,19 +22,33 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
+import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 
@@ -50,7 +67,78 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	private IAlertCandidateDAO alertCandidateDAO;
 	
+	private SetterAndGetterUtilService setterAndGetterUtilService;
+	private ICadreCommitteeService cadreCommitteeService;
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private IAlertCommentAssigneeDAO alertCommentAssigneeDAO;
+	private IAlertTrackingDAO alertTrackingDAO;
+	private ITdpCadreDAO tdpCadreDAO;
+	private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
+	private IVerificationStatusDAO verificationStatusDAO;
+	private IVerificationCommentsDAO verificationCommentsDAO;
 	
+	
+	public IVerificationCommentsDAO getVerificationCommentsDAO() {
+		return verificationCommentsDAO;
+	}
+	public void setVerificationCommentsDAO(
+			IVerificationCommentsDAO verificationCommentsDAO) {
+		this.verificationCommentsDAO = verificationCommentsDAO;
+	}
+	public IVerificationStatusDAO getVerificationStatusDAO() {
+		return verificationStatusDAO;
+	}
+	public void setVerificationStatusDAO(
+			IVerificationStatusDAO verificationStatusDAO) {
+		this.verificationStatusDAO = verificationStatusDAO;
+	}
+	public IAlertTrackingDocumentsDAO getAlertTrackingDocumentsDAO() {
+		return alertTrackingDocumentsDAO;
+	}
+	public void setAlertTrackingDocumentsDAO(
+			IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO) {
+		this.alertTrackingDocumentsDAO = alertTrackingDocumentsDAO;
+	}
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+	public IAlertTrackingDAO getAlertTrackingDAO() {
+		return alertTrackingDAO;
+	}
+	public void setAlertTrackingDAO(IAlertTrackingDAO alertTrackingDAO) {
+		this.alertTrackingDAO = alertTrackingDAO;
+	}
+	public IAlertCommentAssigneeDAO getAlertCommentAssigneeDAO() {
+		return alertCommentAssigneeDAO;
+	}
+	public void setAlertCommentAssigneeDAO(
+			IAlertCommentAssigneeDAO alertCommentAssigneeDAO) {
+		this.alertCommentAssigneeDAO = alertCommentAssigneeDAO;
+	}
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
+		return setterAndGetterUtilService;
+	}
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
 	public IAlertCandidateDAO getAlertCandidateDAO() {
 		return alertCandidateDAO;
 	}
@@ -1633,4 +1721,674 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 		   }
 		   return null;
 	   }
+	 
+	 
+	 public List<AlertDataVO> getAlertsData(Long alertId)
+		{
+			List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+			
+			List<Long> alertIds = new ArrayList<Long>();
+			try{
+				 List<Object[]> list = alertDAO.getAlertsData(alertId);
+				 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
+				 String alertSource = "";
+				 if(sourceDtls != null){
+					 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
+						alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+					 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 2L){//print
+						 if(sourceDtls[6] != null){
+							 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[6]);
+						 }else{
+							 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+						 }
+						 
+					 }else if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 3L){//electronic 
+						 if(sourceDtls[8] != null){
+							 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[8]);
+						 }else{
+							 alertSource = commonMethodsUtilService.getStringValueForObject(sourceDtls[2]);
+						 }
+						 
+					 }  
+				 }
+				 if(list != null && list.size() > 0)
+				 {
+					 
+					 Map<Long,Long> alertCategoryMap = new HashMap<Long, Long>();
+					 
+					 for(Object[] params : list)
+					 {
+						 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id",commonMethodsUtilService.getStringValueForObject( params[0]).toString());
+						 if(alertVO == null)
+						 {
+							 alertVO = new AlertDataVO(); 
+							 returnList.add(alertVO);
+							 if(!alertIds.contains((Long)params[0]))
+								 alertIds.add((Long)params[0]);
+						 }
+						 alertVO.setId((Long)params[0]);
+						 alertVO.setTitle(params[25] != null ? params[25].toString() : "");
+						 alertVO.setDesc(commonMethodsUtilService.getStringValueForObject(params[1]).toString());
+						 alertVO.setAlertSource(alertSource);
+						 alertVO.setDate(params[2] != null? params[2].toString():"");
+						 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
+						 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
+						 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
+						 alertVO.setRegionScopeId(params[6] != null ? (Long)params[6] : null);
+						 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
+						 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
+						 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+						 LocationVO locationVO = new LocationVO();
+						 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
+						 locationVO.setWardName(params[24] != null ? params[24].toString() : "");
+						 locationVO.setStateId(params[21] != null ? (Long)params[21] : null);
+						 locationVO.setState(params[22] != null ? params[22].toString() : "");
+						 locationVO.setDistrictId(params[16] != null ? (Long)params[16] : null);
+						 locationVO.setDistrictName(params[17] != null ?params[17].toString() : "");
+						 locationVO.setConstituencyId(params[19] != null ? (Long)params[19] : null);
+						 locationVO.setConstituencyName(params[20] != null ? params[20].toString() : "");
+						 locationVO.setTehsilId(params[10] != null ? (Long)params[10] : null);
+						 locationVO.setTehsilName(params[11] != null ? params[11].toString() : "");
+						 locationVO.setVillageId(params[12] != null ? (Long)params[12] : null);
+						 locationVO.setVillageName(params[13] != null ? params[13].toString() : "");
+						 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
+						 
+						 alertVO.setCategoryId(params[27] != null ? (Long)params[27] : null);
+						 alertVO.setCategory(params[28] != null ? params[28].toString() : "");
+						 alertVO.setImageUrl(params[29] != null ? params[29].toString() : "");
+						 alertVO.setAlertCategoryTypeId(params[30] != null ? (Long)params[30] : null);
+						 
+						 String eleType = params[18] != null ? params[18].toString() : "";
+						 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
+						 
+						 //category
+						 alertCategoryMap.put((Long)params[0], alertVO.getCategoryId());
+						 
+						alertVO.setLocationVO(locationVO);
+						 
+						
+					 }
+					 if(alertIds != null && alertIds.size() > 0)
+					 {
+						 List<Object[]> candiateCnts = null;
+						 if(alertCategoryMap.get(alertId) !=null && alertCategoryMap.get(alertId)>0l && alertCategoryMap.get(alertId) !=1l){
+							
+							 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId,
+							 //8.membershipNo,9.image
+							 List<Long> aleds = new ArrayList<Long>();
+							 aleds.add(alertId);
+							 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(aleds);
+							 setNewsAlertCandidateData(newsAlertCandidates,returnList);
+							 
+							 //total Involved Candidates
+							 candiateCnts = alertCandidateDAO.getAlertNewsCandidateCount(alertIds);
+							 
+						 }else{						 
+							 List<Object[]> alertCandidates = alertCandidateDAO.getAlertCandidatesData(alertIds);
+							 setAlertCandidateData(alertCandidates,returnList);
+							 
+							 //total Involved Candidates
+							 candiateCnts = alertCandidateDAO.getAlertCandidateCount(alertIds);
+							 
+						 }
+						 	
+						if(candiateCnts !=null && candiateCnts.size()>0){
+							 for(Object[] params : candiateCnts)
+							 {
+								 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
+									 if(alertVO != null)
+									 {
+										 alertVO.setCount((Long)params[0]);
+									 }
+							 }
+						}					 
+					 }
+					 
+					 
+				 }
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return returnList;
+			
+		}
+	 
+	 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
+		public void setNewsAlertCandidateData(List<Object[]> list , List<AlertDataVO> dataList){
+			try{
+				
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
+						if(alertVo == null)
+						{
+							alertVo = new AlertDataVO();
+							alertVo.setId((Long)params[0]);
+							dataList.add(alertVo);
+						}
+						AlertDataVO candidateVO = null;
+						if(params[1] !=null){
+							candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
+						}
+						
+						if(candidateVO == null)
+						{
+							candidateVO = new AlertDataVO();
+							alertVo.getSubList().add(candidateVO);
+						}
+						
+						candidateVO.setId(params[1] !=null ? (Long)params[1]:null);
+						candidateVO.setName(params[2] !=null ? params[2].toString():"");
+						candidateVO.setCommitteePosition(params[3] !=null ? params[3].toString():"");//designation
+						
+						candidateVO.setOrganization(params[4] !=null ? params[4].toString():"");
+						candidateVO.setImpactId(params[5] !=null ? (Long)params[5]:null);
+						candidateVO.setImpact(params[6] !=null ? params[6].toString():"");
+						
+						candidateVO.setCategoryId(params[7] !=null ? (Long)params[7]:null);//PaCandidateId
+						candidateVO.setMembershipNo(params[8] !=null ? params[8].toString():"");
+						candidateVO.setImage(params[9] !=null ? params[9].toString():"");
+						candidateVO.setMobileNo(params[10] !=null ? params[10].toString():"");     
+						
+					}
+				
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		public void setAlertCandidateData(List<Object[]> list,List<AlertDataVO> dataList)
+
+		{
+			List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			if(dataList == null)
+				dataList = new ArrayList<AlertDataVO>();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
+					if(alertVo == null)
+					{
+						alertVo = new AlertDataVO();
+						alertVo.setId((Long)params[0]);
+						dataList.add(alertVo);
+					}
+					AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
+					if(candidateVO == null)
+					{
+						candidateVO = new AlertDataVO();
+						alertVo.getSubList().add(candidateVO);
+					}
+					if(!tdpCadreIdsList.contains((Long)params[1]))
+						tdpCadreIdsList.add((Long)params[1]);
+					candidateVO.setId((Long)params[1]);
+					candidateVO.setName(params[2] != null ? params[2].toString() : "");
+					 LocationVO locationVO = new LocationVO();
+					 locationVO.setWardId(params[16] != null ? (Long)params[16] : null);
+					 locationVO.setWardName(params[17] != null ? params[17].toString() : "");
+					 locationVO.setStateId(params[14] != null ? (Long)params[14] : null);
+					 locationVO.setState(params[15] != null ? params[15].toString() : "");
+					 locationVO.setDistrictId(params[9] != null ? (Long)params[9] : null);
+					 locationVO.setDistrictName(params[10] != null ?params[10].toString() : "");
+					 locationVO.setConstituencyId(params[12] != null ? (Long)params[12] : null);
+					 locationVO.setConstituencyName(params[13] != null ? params[13].toString() : "");
+					 locationVO.setTehsilId(params[3] != null ? (Long)params[3] : null);
+					 locationVO.setTehsilName(params[4] != null ? params[4].toString() : "");
+					 locationVO.setVillageId(params[5] != null ? (Long)params[5] : null);
+					 locationVO.setVillageName(params[6] != null ? params[6].toString() : "");
+					 locationVO.setLocalBodyId(params[7] != null ? (Long)params[7] : null);
+					 String eleType = params[11] != null ? params[11].toString() : "";
+					 locationVO.setLocalEleBodyName(params[8] != null ? params[8].toString() +" "+eleType : "");
+					 candidateVO.setLocationVO(locationVO);
+					 
+					 candidateVO.setImpactId(params[18] != null ? (Long)params[18] : null);
+					 candidateVO.setImpact(params[19] != null ? params[19].toString() : "");
+					 candidateVO.setImage(params[20] != null ? params[20].toString() : "");
+					 candidateVO.setMobileNo(params[21] != null ? params[21].toString() : "");
+					 candidateVO.setMembershipNo(params[22] != null ? params[22].toString() : "");
+					 if(dataList != null && dataList.size() > 0)
+					 setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+				}
+				
+			}
+			
+		}
+		
+		public void setCurrentDesignationForCadre(List<AlertDataVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
+			List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+			
+			if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+			{
+				for (Object[] tdpCadre : tdpCommitteeMemberList) 
+				{
+					Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+					String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+					String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+					Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+					Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+					Long roleId = tdpCadre[5] != null ? Long.valueOf(String.valueOf(tdpCadre[5]).trim()):0L ;
+					AlertDataVO cadreVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(cadreCommitteeList,"id",id.toString());
+					if(cadreVO != null)
+					{
+						String location = null;
+						if(locationValue.longValue() > 0L){
+							//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
+							location = cadreCommitteeService.getLocationName(LocationTypeId,locationValue);
+							cadreVO.setCommitteeLocation(location);
+						    cadreVO.setCommitteePosition(positionName);
+						    cadreVO.setCommitteeName(committeeName);
+						    cadreVO.setElectionType(tdpCadre[6] != null ? tdpCadre[6].toString():"");
+						    if(cadreVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
+						    {
+						    	 cadreVO.setElectionType("Village/Ward ");
+						    }
+						    else if(cadreVO.getElectionType().trim().equalsIgnoreCase("Mandal"))
+						    {
+						    	 cadreVO.setElectionType("Mandal/Division/Town");
+						    }
+						    cadreVO.setVoterId(roleId);
+					    }
+				   }
+			    }
+			}
+		}
+		
+		public List<AlertDataVO> getAlertAssignedCandidates(Long alertId)
+		{
+			List<AlertDataVO> dataList = new ArrayList<AlertDataVO>();
+			try{
+				List<Long> alertIds = new ArrayList<Long>();
+				
+				alertIds.add(alertId);
+				List<Object[]> list = alertCandidateDAO.getAlertAssignedCandidates(alertIds);
+				setAlertAssignedCandidateDataNew(list,dataList);
+			
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception in getAlertAssignedCandidates()",e);	
+			}
+			return dataList;
+		}
+		
+		public void setAlertAssignedCandidateDataNew(List<Object[]> list,List<AlertDataVO> dataList)
+
+		{
+			List<Long> alertIds = new ArrayList<Long>();
+			List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			if(dataList == null)
+				dataList = new ArrayList<AlertDataVO>();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", commonMethodsUtilService.getStringValueForObject(params[0]).toString());
+					if(alertVo == null)
+					{
+						alertVo = new AlertDataVO();
+						alertVo.setId((Long)params[0]);
+						dataList.add(alertVo);
+						alertIds.add(alertVo.getId());
+					}
+					AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", commonMethodsUtilService.getStringValueForObject(params[1]).toString());
+					if(candidateVO == null)
+					{
+						candidateVO = new AlertDataVO();
+						alertVo.getSubList().add(candidateVO);
+					}
+					if(!tdpCadreIdsList.add((Long)params[1]));
+					tdpCadreIdsList.add((Long)params[1]);
+					candidateVO.setId((Long)params[1]);
+					candidateVO.setName(params[2] != null ? params[2].toString() : "");
+					 LocationVO locationVO = new LocationVO();
+					 locationVO.setWardId(params[16] != null ? (Long)params[16] : null);
+					 locationVO.setWardName(params[17] != null ? params[17].toString() : "");
+					 locationVO.setStateId(params[14] != null ? (Long)params[14] : null);
+					 locationVO.setState(params[15] != null ? params[15].toString() : "");
+					 locationVO.setDistrictId(params[9] != null ? (Long)params[9] : null);
+					 locationVO.setDistrictName(params[10] != null ?params[10].toString() : "");
+					 locationVO.setConstituencyId(params[12] != null ? (Long)params[12] : null);
+					 locationVO.setConstituencyName(params[13] != null ? params[13].toString() : "");
+					 locationVO.setTehsilId(params[3] != null ? (Long)params[3] : null);
+					 locationVO.setTehsilName(params[4] != null ? params[4].toString() : "");
+					 locationVO.setVillageId(params[5] != null ? (Long)params[5] : null);
+					 locationVO.setVillageName(params[6] != null ? params[6].toString() : "");
+					 locationVO.setLocalBodyId(params[7] != null ? (Long)params[7] : null);
+					 String eleType = params[11] != null ? params[11].toString() : "";
+					 locationVO.setLocalEleBodyName(params[8] != null ? params[8].toString() +" "+eleType : "");
+					 candidateVO.setLocationVO(locationVO);
+					 
+					/* candidateVO.setImpactId(params[17] != null ? (Long)params[17] : null);
+					 candidateVO.setImpact(params[18] != null ? params[18].toString() : "");*/
+					 candidateVO.setImage(params[18] != null ? params[18].toString() : "");
+					candidateVO.setMobileNo(params[19] != null ? params[19].toString() : "");
+				}
+				 if(dataList != null && dataList.size() > 0)
+				setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+				 
+				 
+				 //alertCommentDetails
+				 
+				 Map<Long,String> commentMap = new HashMap<Long, String>(); 
+				 if(alertIds !=null && alertIds.size()>0 && alertIds.get(0) !=null && tdpCadreIdsList !=null && tdpCadreIdsList.size() >0){
+					 //0.tdpCadreId,1.comment
+					 List<Object[]> alertCommentObj = alertCommentAssigneeDAO.getAssignedCandidateAlertComment(alertIds.get(0), tdpCadreIdsList);
+					 if(alertCommentObj !=null && alertCommentObj.size()>0){
+						 for (Object[] obj : alertCommentObj) {						 
+							 String comment = commentMap.get(obj[0] !=null ? (Long)obj[0]:null);						 
+							 if(comment == null){
+								 comment = new String();
+								 comment=obj[1] !=null ? obj[1].toString():"";
+								 commentMap.put((Long)obj[0], comment);							 
+							 }else{
+								 comment=comment+","+obj[1] !=null ? obj[1].toString():"";
+							 }
+						}
+					 }
+				 }
+					 
+				 if(commentMap !=null && commentMap.size()>0){
+					 AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", alertIds.get(0).toString());
+					 if(alertVo !=null){					 
+						 for (Entry<Long, String> tdpCadre : commentMap.entrySet()) {
+							 AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id",tdpCadre.getKey().toString());						 
+							 if(candidateVO !=null){
+								 candidateVO.setComment(tdpCadre.getValue());
+							 }						 
+						}
+					 }
+				 }
+			}
+			
+		}
+		
+		public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId){
+			LOG.info("Entered in getAlertStatusCommentsTrackingDetails() method");
+			List<StatusTrackingVO> resultList = null;
+			try{
+				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
+				
+				Map<Long,Set<String>> statusIdAndDateIdListMap = new LinkedHashMap<Long,Set<String>>();
+				Set<String> dateIdList = null;//new HashSet<String>(); 
+				
+				Map<String,Set<Long>> dateIdAndCmtListMap = new HashMap<String,Set<Long>>();
+				Set<Long> commentIdList = null;
+				Map<Long,List<KeyValueVO>> alertTrackingDocumentsMap = new HashMap<Long, List<KeyValueVO>>();//alerttrackingid,docsList
+				
+				Map<Long,List<AlertCommentVO>> commentIdAndCommentDtlsMap = new HashMap<Long,List<AlertCommentVO>>();
+				List<AlertCommentVO>  alertCommentDtlsList = null;
+				AlertCommentVO alertCommentVO = null;
+				List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId,true);
+				
+				if(list != null && list.size() > 0){
+					List<Long> alertTrackingIds = new ArrayList<Long>(0);
+					List<Long> cadreIds = new ArrayList<Long>(0);
+					for (Object[] objects : list) {
+						if(objects[6] != null)
+							cadreIds.add((Long)objects[6]);
+						if(objects[11] != null)
+							alertTrackingIds.add((Long)objects[11]);
+					}
+					 
+					if(cadreIds != null && cadreIds.size() > 0){
+						List<Object[]> objList = tdpCadreDAO.getCadreFormalDetails(cadreIds);
+						if(objList != null && objList.size() > 0){
+							for (Object[] objects : objList) {
+								List<Object[]> matchedObjList = gatMatchedObject((Long)objects[0],list);
+								if(matchedObjList != null && matchedObjList.size() > 0){
+									for (Object[] objects2 : matchedObjList) {
+										objects2[7]=objects[1].toString();
+									}
+								}
+							}
+						}
+						
+					}
+					
+					//get alert tracking documents
+					if(alertTrackingIds != null && alertTrackingIds.size() > 0){
+						List<Object[]> docsObjList = alertTrackingDocumentsDAO.getDocumentsForAlertTracking(alertTrackingIds);
+						if(docsObjList != null && docsObjList.size() > 0){
+							//0-trackingid,1-docid,2-path
+							for (Object[] objects : docsObjList) {
+								List<KeyValueVO> voList = null;
+								if(alertTrackingDocumentsMap.get((Long)objects[0]) == null){
+									voList = new ArrayList<KeyValueVO>(0);
+									alertTrackingDocumentsMap.put((Long)objects[0], voList);
+								}
+								
+								KeyValueVO vo = new KeyValueVO();
+								vo.setId((Long)objects[1]);
+								vo.setName(objects[2] != null?objects[2].toString():"");
+								alertTrackingDocumentsMap.get((Long)objects[0]).add(vo);
+								
+							}
+						}
+					}
+				}
+				
+				Map<Long,Long> statusOrderMap = new HashMap<Long, Long>(0);
+				boolean noList = false;
+				if(!commonMethodsUtilService.isListOrSetValid(list)){
+					list = new ArrayList<Object[]>(0);
+					noList = true;
+				}
+					
+						List<Object[]> list1 = alertTrackingDAO.getAlertTrackingDetailsList(alertId,false);
+					if(commonMethodsUtilService.isListOrSetValid(list1)){
+						for (Object[] param : list1) {
+							Long statusId= commonMethodsUtilService.getLongValueForObject(param[1]);
+							if(noList){
+								if(statusId == 1L)//for no assigned member alerts pending status
+									list.add(param);
+							}
+							if(statusId == 8L)// verification status
+								list.add(param);
+						}					
+					}
+				//}
+				SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm:ss");
+				SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+				if(list != null && list.size() > 0){   
+					for(Object[] param : list){
+						statusOrderMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[10]));
+						//for statusId and date list map
+						dateIdList = statusIdAndDateIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						if(dateIdList != null){
+							dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+						}else{
+							dateIdList = new LinkedHashSet<String>();  
+							dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+							statusIdAndDateIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), dateIdList);
+						}
+						//for dateId and list of comment id list
+						commentIdList = dateIdAndCmtListMap.get(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+						if(commentIdList != null){
+							commentIdList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						}else{
+							commentIdList = new HashSet<Long>();
+							commentIdList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+							dateIdAndCmtListMap.put(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]), commentIdList);
+						}  
+						
+						//for commentId and comment Dtls list map
+						alertCommentDtlsList = commentIdAndCommentDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+						if(alertCommentDtlsList != null){   
+							alertCommentVO = new AlertCommentVO();
+							alertCommentVO.setCommentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+							alertCommentVO.setComment(commonMethodsUtilService.getStringValueForObject(param[5]));
+							if(param[2] != null){
+								Date _24HourDt = _24HourSDF.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
+								alertCommentVO.setTimeString(_12HourSDF.format(_24HourDt));
+							}
+							alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
+							alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
+							if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
+								alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
+							}
+							alertCommentDtlsList.add(alertCommentVO);
+						}else{
+							alertCommentVO = new AlertCommentVO();
+							alertCommentVO.setCommentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+							alertCommentVO.setComment(commonMethodsUtilService.getStringValueForObject(param[5]));
+							if(param[2] != null){
+								Date _24HourDt = _24HourSDF.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
+								alertCommentVO.setTimeString(_12HourSDF.format(_24HourDt));
+							}
+							alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
+							alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
+							if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
+								alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
+							}
+							alertCommentDtlsList = new ArrayList<AlertCommentVO>();
+							alertCommentDtlsList.add(alertCommentVO);
+							commentIdAndCommentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), alertCommentDtlsList);
+						}
+						idAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[9]));
+					}
+				}
+				AlertCommentVO commentVO = null;
+				//vo for each date
+				AlertCommentVO commentVOForDate = null;
+				List<AlertCommentVO> commentVOForDateList = null;
+				//for multiuser involvement
+				List<List<AlertCommentVO>> list2 = null;
+				//final vo 
+				List<AlertCommentVO> finalList = new CopyOnWriteArrayList<AlertCommentVO>();  
+				if(statusIdAndDateIdListMap.size() > 0){  
+					for(Entry<Long,Set<String>> entry : statusIdAndDateIdListMap.entrySet()){
+						commentVO = new AlertCommentVO();
+						commentVO.setStatusId(entry.getKey());
+						commentVO.setStatus(idAndNameMap.get(entry.getKey()));
+						commentVO.setOrderNo(statusOrderMap.get(commentVO.getStatusId()));
+						dateIdList = (LinkedHashSet)entry.getValue();    
+						if(dateIdList != null && dateIdList.size() > 0){
+							commentVOForDateList = new ArrayList<AlertCommentVO>();
+							for(String dateId : dateIdList){
+								commentVOForDate = new AlertCommentVO();
+								commentVOForDate.setDate(dateId.split(":")[0]);
+								commentIdList = dateIdAndCmtListMap.get(dateId);
+								if(commentIdList != null && commentIdList.size() > 0){
+									list2 = new ArrayList<List<AlertCommentVO>>();
+									for(Long cmtId : commentIdList){
+										list2.add(commentIdAndCommentDtlsMap.get(cmtId));
+									}
+									//Collections.sort(list2, commentSort);
+									commentVOForDate.setSublist(list2);  
+								}
+								commentVOForDateList.add(commentVOForDate);
+							}
+						}
+						commentVO.setSublist2(commentVOForDateList);
+						finalList.add(commentVO);
+					}
+				}
+				if(finalList != null && finalList.size() > 0){
+					List<AlertCommentVO> tempList = new ArrayList<AlertCommentVO>(0);
+					List<Long> statusIdList = alertTrackingDAO.lastUpdatedstatus(alertId);
+					for(AlertCommentVO param : finalList){  
+						if(param.getStatusId().longValue() == statusIdList.get(0)){
+							finalList.remove(param);
+							finalList.add(param);  
+						}
+						tempList.add(param);
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(tempList)){
+						Collections.sort(tempList,new Comparator<AlertCommentVO>() {
+							public int compare(AlertCommentVO o1, AlertCommentVO o2) {
+								if(o1.getOrderNo() != null && o1.getOrderNo()>0L && o2.getOrderNo() != null && o2.getOrderNo()>0L)
+									return o1.getOrderNo().compareTo(o2.getOrderNo());
+								else
+									return 0;
+							}
+						});
+						
+						finalList.clear();
+						finalList.addAll(tempList);
+					}
+					
+				}  
+				
+				return finalList;   		
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
+			}
+			return null;
+		}
+		
+		public List<Object[]> gatMatchedObject(Long cadreId,List<Object[]> objList){
+	  		List<Object[]> returnObj = new ArrayList<Object[]>(0);
+	  		if(objList != null && objList.size() > 0){
+	  			for (Object[] objects : objList) {
+					if(objects[6] != null && ((Long)objects[6]).equals(cadreId))
+						returnObj.add(objects);
+				}
+	  		}
+	  		return returnObj;
+	  	}
+		
+		public AlertVerificationVO getAlertVerificationDtls(Long alertId){
+		    AlertVerificationVO resultVO = new AlertVerificationVO();
+		 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+			SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
+			Map<Long,AlertVerificationVO> alertCommentsMap = new LinkedHashMap<Long, AlertVerificationVO>(0);
+		  try{
+			  Object[] alertStatusObj = verificationStatusDAO.getAertStausIdAndName(alertId);
+			   if(alertStatusObj != null && alertStatusObj.length > 0){
+				   resultVO.setAlertActionTypeStatusId((Long)alertStatusObj[0]);
+				   resultVO.setActionTypeStatus(commonMethodsUtilService.getStringValueForObject(alertStatusObj[1]));
+			   }
+			
+			   List<Object[]> rtnrObjList = verificationCommentsDAO.getAletConversationDtls(alertId);
+			   
+			    if(rtnrObjList != null && rtnrObjList.size() > 0){
+			    	for(Object[] param:rtnrObjList){
+			    		Long conversationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			    		AlertVerificationVO commentVO = alertCommentsMap.get(conversationId);
+			    		Long userTypeId = commonMethodsUtilService.getLongValueForObject(param[1]);
+			    		if(commentVO == null){
+			    			commentVO = new AlertVerificationVO();
+			    			if(userTypeId == 1l){
+			    				commentVO.setHeading("Program Committee Remarks");
+			    			}else if(userTypeId == 2l){
+			    				commentVO.setHeading("Info Cell Remarks");	
+			    			}
+			    			commentVO.setComments(commonMethodsUtilService.getStringValueForObject(param[2]));
+			    			if(param[3] != null){
+			    				commentVO.setUpdateTime(sdf.format(param[3]));	
+			    			}
+			    			if(param[4] != null){ 
+			    				Date timeInDateFormat = sdf1.parse(param[4].toString());
+			    				commentVO.setTime(_12HourSDF.format(timeInDateFormat));	
+			    			}
+			    			commentVO.setName(commonMethodsUtilService.getStringValueForObject(param[5])+" "+commonMethodsUtilService.getStringValueForObject(param[6]));//first and last name
+			    			commentVO.setDocumentList(new ArrayList<String>());
+			    			alertCommentsMap.put(conversationId, commentVO);
+			    		}
+			    		 String filePath = commonMethodsUtilService.getStringValueForObject(param[7]);
+		    			 if(filePath.length() > 0){
+		    				 commentVO.getDocumentList().add(filePath);
+		    			 }
+			    		
+			    	}
+			    }
+			   if(alertCommentsMap != null && alertCommentsMap.size() > 0){
+				   resultVO.setConversationList(new ArrayList<AlertVerificationVO>(alertCommentsMap.values()));  
+			   }
+		  }catch(Exception e){
+			  LOG.error("Exception Occured in getAlertVerificationDtls() in ToursService", e);
+		  }
+		  return resultVO;
+	  }
 }

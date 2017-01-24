@@ -64,8 +64,10 @@ import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -4797,6 +4799,51 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }catch(Exception e){
 			  e.printStackTrace();
 				log.error("exception occured in  the getDepartmentWiseStatusWiseCounts  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 
+	 public List<AlertDataVO> getAlertsData(Long alertId){
+		 List<AlertDataVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertsData(alertId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertsData  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertDataVO> getAlertAssignedCandidates(Long alertId){
+		 List<AlertDataVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertAssignedCandidates(alertId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertAssignedCandidates  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId){
+		 List<AlertCommentVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertStatusCommentsTrackingDetails(alertId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertStatusCommentsTrackingDetails  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
+	 
+	 public AlertVerificationVO getAlertVerificationDtls(Long alertId){
+		 AlertVerificationVO returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getAlertVerificationDtls(alertId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getAlertVerificationDtls  method in WebServiceHandlerService");
 		  }
 		  return returnList;
 	  }
