@@ -44,6 +44,7 @@ public class AlertDataVO {
 	private String comment;
 	private String membershipNo;
 	private String alertSource;
+	private List<String> documentList = new ArrayList<String>(0);
 	
 	public String getTitle() {
 		return title;
@@ -248,6 +249,12 @@ public class AlertDataVO {
 	}
 	public void setAlertSource(String alertSource) {
 		this.alertSource = alertSource;
+	}
+	public List<String> getDocumentList() {
+		return documentList;
+	}
+	public void setDocumentList(List<String> documentList) {
+		this.documentList = documentList;
 	}
 	
 	
