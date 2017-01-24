@@ -2600,8 +2600,8 @@ function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 				 activityIds:activityIds,
 				 activityLevelIds:activityLevelIds,
 				 userTypeId : globalUserTypeId,
-				 fromDateStr:"",//01-01-2015
-				 toDateStr:""//31-01-2017
+				 fromDateStr:customStartDateActivities,
+				 toDateStr:customEndDateActivities
 			  }
 	$.ajax({
 		type : 'POST',
