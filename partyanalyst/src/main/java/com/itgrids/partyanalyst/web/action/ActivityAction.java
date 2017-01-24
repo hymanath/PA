@@ -14,6 +14,7 @@ import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.quartz.Job;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
@@ -77,7 +78,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private ActivityResponseVO responseVO;
 	private List<ActivityResponseVO> responsevoList;
 	private ResultStatus result;
-	
+	private List<ActivityVO> activityVOList;
 	
 	public ResultStatus getResult() {
 		return result;
@@ -266,6 +267,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	public void setActivityAttendanceService(
 			IActivityAttendanceService activityAttendanceService) {
 		this.activityAttendanceService = activityAttendanceService;
+	}
+	public List<ActivityVO> getActivityVOList() {
+		return activityVOList;
+	}
+	public void setActivityVOList(List<ActivityVO> activityVOList) {
+		this.activityVOList = activityVOList;
 	}
 	public String execute()
 	{
@@ -1180,6 +1187,47 @@ public String getCommentDetails(){
 		 activityVO = activityService.getActivitiesQuesDetails(jObj.getLong("activityId"),jObj.getLong("activityScopeId"),jObj.getString("fromDateStr"),jObj.getString("endDateStr"));
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getQustionList()", e);
+	 }
+	 return Action.SUCCESS;
+ }
+ 
+ public String getDistrictList(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 activityVOList = activityService.getDistrictNamesByScopeId(jObj.getLong("activityScopeId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getQustionList()", e);
+	 }
+	 return Action.SUCCESS;
+ }
+ public String getConstituencyList(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 activityVOList = activityService.getConstByDistrictId(jObj.getLong("activityScopeId"),jObj.getLong("districtId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getConstituencyList()", e);
+	 }
+	 return Action.SUCCESS;
+ }
+ public String getMandalOrMuncpalityList(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 activityVOList = activityService.getMandOrMuncByconstituencyId(jObj.getLong("activityScopeId"),jObj.getLong("constituencyId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getConstituencyList()", e);
+	 }
+	 return Action.SUCCESS;
+ }
+ public String getPanchayatOrWardList(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 activityVOList = activityService.getPanchayatOrWardsByMandalOrMuncId(jObj.getLong("activityScopeId"),jObj.getLong("mandalOrMuncipalityId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getConstituencyList()", e);
 	 }
 	 return Action.SUCCESS;
  }
