@@ -76,5 +76,9 @@ public interface IActivityService {
 	public List<ActivityResponseVO> getAllCallingPurpose();
 	public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long callStatusId,Long callSupportId,String description,Long cadreId,Long calledBy);
 	public ActivityVO getActivitiesQuesDetails(Long activityId,Long activityScopeId,String startDateStr,String endDateStr);
+	public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId);
+	public List<ActivityVO> getConstByDistrictId(Long activityScopeId,Long districtId);
+	public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long constituencyId);
+	public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId,Long mandalOrMuncId);
 	
 }
