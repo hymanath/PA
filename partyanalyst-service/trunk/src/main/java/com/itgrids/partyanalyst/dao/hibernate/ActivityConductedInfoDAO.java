@@ -75,7 +75,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
-public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId,String countType){
+public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activityScopeId, String searchType,Long stateId,String countType){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -88,9 +88,9 @@ public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activit
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
 			queryStr.append("  model.address.ward.constituencyId,model.address.constituency.name, ");
 		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
-			queryStr.append("  model.userAddress.tehsil.tehsilId, model.userAddress.tehsil.tehsilName ");
+			queryStr.append("  model.address.tehsil.tehsilId, model.address.tehsil.tehsilName, ");
 		else if( searchType != null && searchType.equalsIgnoreCase("town"))
-			queryStr.append("  model.userAddress.localElectionBody.localElectionBodyId, model.userAddress.localElectionBody.name ");
+			queryStr.append("  model.address.constituency.localElectionBody.localElectionBodyId, model.address.constituency.localElectionBody.name, ");
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
 			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
@@ -108,8 +108,17 @@ public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activit
 		
 		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId  ");
 		
-		if(districtId != null && districtId.longValue() > 0l){
-			queryStr.append("  and model.address.district.districtId = :districtId ");
+		
+			if(locationId != null && locationId.longValue() > 0l){
+				if(searchType != null && searchType.equalsIgnoreCase("constituency"))
+					queryStr.append("  and model.address.district.districtId = :locationId ");
+				else if(searchType != null && searchType.equalsIgnoreCase("village"))
+					queryStr.append("  and model.address.tehsil.tehsilId = :locationId ");
+				else if(searchType != null && searchType.equalsIgnoreCase("ward"))
+					queryStr.append("  and model.address.constituency.localElectionBody.localElectionBodyId = :locationId ");
+				else if( searchType != null && searchType.equalsIgnoreCase("mandal") || searchType != null && searchType.equalsIgnoreCase("town"))
+					queryStr.append("  and model.address.constituency.constituencyId = :locationId ");
+			
 		}else{
 			if(stateId != null && stateId.longValue() == 1l){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
@@ -127,9 +136,9 @@ public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activit
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
 			queryStr.append(" group by model.address.ward.constituencyId ");
 		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
-			queryStr.append(" group by  model.userAddress.tehsil.tehsilId");
+			queryStr.append(" group by  model.address.tehsil.tehsilId");
 		else if( searchType != null && searchType.equalsIgnoreCase("town"))
-			queryStr.append(" group by  model.userAddress.localElectionBody.localElectionBodyId ");
+			queryStr.append(" group by  model.address.constituency.localElectionBody.localElectionBodyId ");
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
 			queryStr.append(" group by  model.address.district.districtId " );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
@@ -137,8 +146,8 @@ public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activit
 		queryStr.append(" order by model.address.constituency.name  ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		if(districtId != null && districtId.longValue() > 0l)
-		query.setParameter("districtId",districtId );
+		if(locationId != null && locationId.longValue() > 0l)
+		query.setParameter("locationId",locationId );
 		query.setParameter("activityScopeId",activityScopeId );
 		
 		return query.list();
