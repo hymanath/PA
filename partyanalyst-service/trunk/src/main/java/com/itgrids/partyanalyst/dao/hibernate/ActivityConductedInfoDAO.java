@@ -40,13 +40,39 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
-	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds){
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.activityScope.activityScopeId, ");
+		if(type != null)
+			queryStr.append(" count(distinct model.activityConductedInfoId) " );
+		else{
+			queryStr.append(" 0 " );			
+		}
+		queryStr.append(" from ActivityConductedInfo model where model.isDeleted='N' " );
+		if(type != null){
+			if(type.equalsIgnoreCase("yes"))
+				queryStr.append(" and model.infoCellCount is not null and model.ivrCount is not null ");  
+			else if(type.equalsIgnoreCase("no"))
+				queryStr.append(" and model.infoCellCount is null and model.ivrCount is null ");
+			else if(type.equalsIgnoreCase("maybe"))
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrCount is null)  or " +
+						"  (model.infoCellCount is null and model.ivrCount is not null) ) ");
+		}
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
+		queryStr.append(" group by model.activityScope.activityScopeId");
+		
+		/*
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 												" 0 " +
 												" from ActivityConductedInfo model" +
 												" where  " +
-												"  model.activityScope.activityScopeId in (:activityScopeIds)" +
+												"  model.activityScope.activityScopeId in (:activityScopeIds) and " +
+												" model.address.state.stateId = 1 " +
 												" group by model.activityScope.activityScopeId");
+												*/
+		
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
@@ -54,22 +80,42 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 												//" sum(model.ivrCount)" +
-												"count(distinct model.address.constituency.constituencyId) "+
+												" count(distinct model.activityConductedInfoId) "+
 												" from ActivityConductedInfo model" +
 												" where  model.ivrCount is not null " +
-												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
+												" and model.activityScope.activityScopeId in (:activityScopeIds) and " +
+												" model.address.state.stateId = 1 " +
 												" group by model.activityScope.activityScopeId");
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
 	
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
+		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+												" count(model.activityConductedInfoId)," +
+												"  model.address.district.districtId," +
+												"  model.address.district.districtName," +
+												"  model.activityScope.activity.activityName, " +
+												" model.activityScope.activityLevel.level " +
+												" from ActivityConductedInfo model " +
+												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
+												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
+												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
+												" group by model.activityScope.activityScopeId,model.address.district.districtId " +
+												" order by model.address.district.districtId  ");
+		query.setParameterList("activityIdsLst", activityIdsLst);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.list();
+	}
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 				//" sum(model.infoCellCount) " +
-				" count(distinct model.address.constituency.constituencyId) "+
+				" count(distinct model.activityConductedInfoId),sum(model.infoCellCount) "+
 				" from ActivityConductedInfo model" +
 				" where model.infoCellCount is not null and " +
-				"  model.activityScope.activityScopeId in (:activityScopeIds)" +
+				"  model.activityScope.activityScopeId in (:activityScopeIds) and " +
+				" model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") " +
 				" group by model.activityScope.activityScopeId");
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
@@ -95,7 +141,7 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
-		queryStr.append(" count(model.activityConductedInfoId) " +
+		queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount) " +
 				" from ActivityConductedInfo model where model.isDeleted='N' " );
 		
 		if(countType != null && countType.equalsIgnoreCase("planned"))
