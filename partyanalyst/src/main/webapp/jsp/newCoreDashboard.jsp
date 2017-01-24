@@ -2630,7 +2630,7 @@
 									<div id="activityEventsListNew" class="m_top20"></div>				
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
-									<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>
+									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
 									<div id="activityEventsListNew" class="m_top20"></div>
 								<!--</div>-->
 							</div>
@@ -2671,7 +2671,7 @@
 								<div class="panel panel-default panelNew m_top20">
 									<div class="panel-heading">
 										<h4 class="panel-title">
-											<span class="headingColor text-capitalize">Mahanadu - Event Cohort</span>
+											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
 										</h4>
 									</div>
 									<div class="panel-body">
@@ -3749,6 +3749,12 @@
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 
+var globallocationScope;
+var globallocationValue;
+var globallocationName;
+var globalActivityScope;
+var globalImages;
+ 
 	//url Based Conditions
 	  var windowUrl = window.location.href;
 	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
