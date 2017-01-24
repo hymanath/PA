@@ -2102,111 +2102,30 @@ $(document).on("click",".getImageCls",function(){
 	$("#myModalImageId").modal("show");
 	var attr_activity_scopeid = $(this).attr('attr_activity_scopeid');
 	//alert(attr_activity_scopeid);
-   var str='';
-    str+='<div class="row">';
-			 str+='<div class="col-md-9">';
-				 str+='<nav class="navbar navbar-default navbarCollapseCustom">';
-					<!-- Brand and toggle get grouped for better mobile display -->
-					 str+='<div class="navbar-header">';
-					   str+='<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">';
-						 str+='<span class="sr-only">Toggle navigation</span>';
-						 str+='<span class="icon-bar"></span>';
-						 str+='<span class="icon-bar"></span>';
-						 str+='<span class="icon-bar"></span>';
-					   str+='</button>';
-					 str+='</div>';
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					 str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+	getDistrictNames();
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-9">';
+				str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+					str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
 					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
-						/* str+='<li class="active"><a href="#">Day 1 <span class="sr-only">(current)</span></a></li>';
-						 str+='<li><a href="#">Day 2</a></li>';
-						 str+='<li><a href="#">Day 3</a></li>';
-						 str+='</li>';*/
-					   str+='</ul>';
-					 str+='</div>';<!-- /.navbar-collapse -->
-				 str+='</nav>';
-				 str+='<div class="bg_cc pad_10" id="popupImages">';
-					 /*str+='<ul class="slider-for">';
-						 str+='<li><img src="https://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="https://mytdp.com/activity_documents  /Desert.jpg"></li>';
-						
-					 str+='</ul>';
-					 str+='<ul class="slider-nav">';
-						 str+='<li><img src="https://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="https://mytdp.com/activity_documents  /Desert.jpg"></li>';
-					 str+='</ul>';*/
-				 str+='</div>';
+					  
+					  str+='</ul>';
+					str+='</div>';
+				str+='</nav>';
+				str+='<div class="bg_CC pad_10" id="popupImages">';
+					
+				str+='</div>';
 				str+=' <div id="paginationDivId"></div>';
-			 str+='</div>';
-			str+='<div class="col-md-3" style="background:#fff;box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);position:absolute;bottom:0px;right:0px;top:0px;padding:0px;overflow:scroll" id="locationsPopup">';
-				/* str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
-				   str+='<div class="panel panel-default panel-custommodal">';
-					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModal">';
-					   str+='<a role="button" class="accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionModal" href="#collapseOneModal" aria-expanded="true" aria-controls="collapseOneModal">';
-						 str+='<h4 class="panel-title">Vijayanagaram';
-						 str+='</h4>';
-					   str+='</a>';
-					 str+='</div>';
-					 str+='<div id="collapseOneModal" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneModal">';
-					   str+='<div class="panel-body pad_0">';
-						  str+='<ul class="villageDaysModal">';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 2</a></li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 3</a></li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 4</a></li>';
-						  str+='</ul>';
-					   str+='</div>';
-					 str+='</div>';
-				   str+='</div>';
-				   str+='<div class="panel panel-default panel-custommodal">';
-					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingTwo">';
-					 str+='<a class="collapsed accordionmodal-toggle" role="button" data-toggle="collapse" data-parent="#accordionModal" href="#collapseTwoModal" aria-expanded="false" aria-controls="collapseTwoModal">';
-						 str+='<h4 class="panel-title">Srikakulam';
-						 str+='</h4>';
-					 str+='</a>';
-					 str+='</div>';
-					 str+='<div id="collapseTwoModal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">';
-					   str+='<div class="panel-body pad_0">';
-						  str+='<ul class="villageDaysModal">';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 2</a> </li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 3</a> </li>';
-							 str+='<li><span class="line"/></span><a href="#">Constituency 4</a> </li>';
-						  str+='</ul>';
-					   str+='</div>';
-					 str+='</div>';
-				   str+='</div>';
-				   str+='<div class="panel panel-default panel-custommodal">';
-					 str+='<div class="panel-heading panel-headingModal" role="tab" id="headingThreeModal">';
-					 str+='<a class="collapsed accordionmodal-toggle" role="button" data-toggle="collapse" data-parent="#accordionModal" href="#collapseThreeModal" aria-expanded="false" aria-controls="collapseThreeModal">';
-						 str+='<h4 class="panel-title">Khammam';	
-						 str+='</h4>';
-					str+='</a>';
-					str+='</div>';
-					str+='<div id="collapseThreeModal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreeModal">';
-					 str+='<div class="panel-body pad_0">';
-						 str+='<ul class="villageDaysModal">';
-							str+='<li><span class="line"/></span><a href="#">Constituency 1</a></li>';
-							str+='<li><span class="line"/></span><a href="#">Constituency 2</a></li>';
-							str+='<li><span class="line"/></span><a href="#">Constituency 3</a></li>';
-							str+='<li><span class="line"/></span><a href="#">Constituency 4</a></li>';
-						 str+='</ul>';
-					  str+='</div>';
-					str+='</div>';
-				  str+='</div>';
-				str+='</div>';*/
+			str+='</div>';
+			str+='<div class="col-md-3" style="box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);padding:0px">';
+				str+='<div id="districtsUlId"></div>';
 			str+='</div>';
 		str+='</div>';
+
 		
-		$("#buildPoupupImage").html(str);
-		$(".panel-headingModal").click(function(){
-			if($(this).find(".accordionmodal-toggle").hasClass("collapsed")){
-				$(this).parent().parent().find(".bodM").removeClass("bodM");
-				$(this).addClass("bodM")
-			}else{
-				$(this).removeClass("bodM");
-			}
-		});
+	$("#buildPoupupImage").html(str);
+		
 //buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 //getAvailableDates(globallocationScope,globallocationValue,day,path);
 globalActivityScope = attr_activity_scopeid;
@@ -2419,7 +2338,7 @@ function buildDayWisImagesForPopup1(result,jObj,path)
 			}
 			}
 			  str+='</ul>';
-		str+='<ul class="slider-nav">';	
+		str+='<ul class="slider-nav m_top20">';	
 		//if(path != null && path.length>0)
 			//str+='<li><img src="https://mytdp.com/activity_documents/' +path+'" style="cursor:pointer;"></li>';
 		for(var i in result)
@@ -2465,20 +2384,173 @@ function buildDayWisImagesForPopup1(result,jObj,path)
 	   if(jObj.startIndex==0){
 		   $("#paginationDivId").html('');
 		   $("#paginationDivId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme',
-			
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
-				getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,"");
+				items: itemsCount,
+				itemsOnPage: maxResults,
+				cssStyle: 'light-theme',
 				
-			}
-		});
-
+				onPageClick: function(pageNumber, event) {
+					var num=(pageNumber-1)*10;
+					getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,"");
+					
+				}
+			});
+			$("#paginationDivId").find("ul").addClass("pagination");
 		}
+		
 	GlobalPopupScope = globallocationScope;
 	GlobalPopuplocation =globallocationValue;
 	
 	}
+}
+$(document).on("click","#paginationDivId ul li",function(){
+	$("#paginationDivId").find("ul").addClass("pagination");
+});
+function getDistrictNames(){
+	$("#districtsUlId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var jObj = {
+		activityScopeId:11
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getDistrictListAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildDistrictNames(result);
+	});
+}
+function buildDistrictNames(result)
+{
+	var str='';
+	str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	  str+='<div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModal'+i+'">';
+		  str+='<a role="button" class="constituencyPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" attr_distId="'+result[i].districtId+'" href="#collapseOneModal'+i+'" aria-expanded="true" aria-controls="collapseOneModal'+i+'">';
+			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+		  str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseOneModal'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModal'+i+'">';
+		  str+='<div class="panel-body pad_0">';
+			str+='<div id="constituenciesBlock'+result[i].districtId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
+	str+='</div>';
+	$("#districtsUlId").html(str);
+}
+$(document).on("click",".constituencyPopups",function(){
+	var distId = $(this).attr("attr_distId");
+	getConstituencyList(distId);
+});
+
+function getConstituencyList(distId){
+	$("#constituenciesBlock"+distId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var jObj = {
+		activityScopeId:11,
+		districtId : distId
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getConstituencyListAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildConstituencyList(result,distId);
+	});
+}
+function buildConstituencyList(result,distId)
+{
+	var str='';
+	str+='<div class="panel-group" id="accordionModalCons'+distId+'" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	  str+='<div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModalCons'+i+'">';
+		  str+='<a role="button" class="mandalPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalCons'+distId+'" attr_consId="'+result[i].constituencyId+'" href="#collapseOneModalCons'+i+'" aria-expanded="true" aria-controls="collapseOneModalCons'+i+'">';
+			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+		  str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseOneModalCons'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModalCons'+i+'">';
+		  str+='<div class="panel-body pad_0">';
+			str+='<div id="mandalsBlock'+result[i].constituencyId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
+	str+='</div>';
+	$("#constituenciesBlock"+distId).html(str);
+}
+$(document).on("click",".mandalPopups",function(){
+	var constituencyId = $(this).attr("attr_consId");
+	getMandalOrMuncList(constituencyId);
+});
+
+function getMandalOrMuncList(constituencyId){
+	$("#mandalsBlock"+constituencyId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var jObj = {
+		activityScopeId:1,
+		constituencyId : constituencyId
+	};
+		
+	$.ajax({
+	  type:'GET',
+	  url: 'getMandalOrMuncpalityListAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildMandalOrMuncList(result,constituencyId)
+	});
+}
+function buildMandalOrMuncList(result,constituencyId)
+{
+	var str='';
+	str+='<div class="panel-group" id="accordionModalMandal'+constituencyId+'" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	  str+='<div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModalMandal'+i+'">';
+		  str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].constituencyId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
+			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+		  str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseOneModalMandal'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModalMandal'+i+'">';
+		  str+='<div class="panel-body pad_0"><div id="panchayatBlock'+result[i].constituencyId+'"></div></div>';
+		str+='</div>';
+	  str+='</div>';
+	}
+	str+='</div>';
+	$("#mandalsBlock"+constituencyId).html(str);
+}
+$(document).on("click",".panchayatPopups",function(){
+	var mandalId = $(this).attr("attr_mandalId");
+	getPanchayatList(mandalId)
+});
+
+function getPanchayatList(mandalId){
+	$("#panchayatBlock"+mandalId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var jObj = {
+		activityScopeId:1,
+		mandalOrMuncipalityId : mandalId
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getPanchayatOrWardListAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildPanchayatList(result,mandalId)
+	});
+}
+function buildPanchayatList(result,mandalId)
+{
+	var str='';
+	str+='<ul class="villageDaysModal">';
+		for(var i in result)
+		{
+			str+='<li><span class="line"/></span><a href="#">'+result[i].name+'</a></li>';
+		}
+	 str+='</ul>';
+	$("#panchayatBlock"+mandalId).html(str);
 }
