@@ -32,7 +32,7 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getActivityDetailsByAddressDetails(AddressVO addressVO);	
 	public List<Object[]> getConductedActivityDetailsbyScopeAndLocationID(AddressVO addressVO,Long activityLevelId);
 	
-	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type);
 	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate);
