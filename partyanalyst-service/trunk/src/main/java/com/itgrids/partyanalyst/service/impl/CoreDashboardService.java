@@ -4,16 +4,20 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
@@ -71,8 +75,16 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IActivityDocumentDAO activityDocumentDAO;
+	private IActivityConductedInfoDAO activityConductedInfoDAO;
 	
 	
+	public IActivityConductedInfoDAO getActivityConductedInfoDAO() {
+		return activityConductedInfoDAO;
+	}
+	public void setActivityConductedInfoDAO(
+			IActivityConductedInfoDAO activityConductedInfoDAO) {
+		this.activityConductedInfoDAO = activityConductedInfoDAO;
+	}
 	public IActivityDocumentDAO getActivityDocumentDAO() {
 		return activityDocumentDAO;
 	}
@@ -1010,16 +1022,30 @@ public class CoreDashboardService implements ICoreDashboardService{
 			}
 			
 			List<Object[]> list = activityScopeDAO.getActivityDetails(fromDate, toDate,stateId);
+			List<Object[]> list1 = activityConductedInfoDAO.getSpecialActivitiesDetails(fromDate, toDate,stateId);
+			if(commonMethodsUtilService.isListOrSetValid(list1))
+				if(!commonMethodsUtilService.isListOrSetValid(list1))
+					list = new ArrayList<Object[]>(0);
+					list.addAll(list1);
+					
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					IdAndNameVO vo = new IdAndNameVO();
-					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
-					
+					vo.setPartyId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					returnList.add(vo);
 				}
 			}
+			
+			Collections.sort(returnList, new Comparator<IdAndNameVO>() {
+				public int compare(IdAndNameVO o1, IdAndNameVO o2) {
+					if(o2.getPartyId() != null && o1.getPartyId() != null )
+						return o2.getPartyId().compareTo(o1.getPartyId());
+					else
+						return 0;
+				}
+			});
 			
 		} catch (Exception e) {
 			LOG.error("error occurred in getActivityDetails() of CoreDashboardService class",e);
@@ -1069,6 +1095,12 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			if(scopeIds != null && !scopeIds.isEmpty()){
 				List<Object[]> plannedList = activityLocationInfoDAO.getPlannedCountsForScopeIds(scopeIds);
+				List<Object[]> specialActivitiesPlannedList = activityConductedInfoDAO.getPlannedCountsForScopeIds(scopeIds);
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesPlannedList)){
+					if(!commonMethodsUtilService.isListOrSetValid(plannedList))
+						plannedList = new ArrayList<Object[]>(0);
+						plannedList.addAll(specialActivitiesPlannedList);
+				}
 				if(plannedList != null && !plannedList.isEmpty()){
 					for (Object[] obj : plannedList) {
 						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -1086,6 +1118,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 				
 				List<Object[]> ivrList = activityLocationInfoDAO.getIVRCountsForScopeIds(scopeIds);
+				List<Object[]> specialActivitiesivrList = activityConductedInfoDAO.getIVRCountsForScopeIds(scopeIds);
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesivrList)){
+					if(!commonMethodsUtilService.isListOrSetValid(ivrList))
+						ivrList = new ArrayList<Object[]>(0);
+						ivrList.addAll(specialActivitiesivrList);
+				}
+				
 				if(ivrList != null && !ivrList.isEmpty()){
 					for (Object[] obj : ivrList) {
 						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -1095,7 +1134,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						if(vo != null){
 							vo.setAttenteeCount(count);			//IVRCount
 							String percentage = "0.00";
-							if(count > 0)
+							if(count.longValue() > 0L)
 								percentage = (new BigDecimal((vo.getAttenteeCount() * 100.0)/vo.getApTotal().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 							vo.setImagePathStr(percentage);		//IVRPerc
 						}
@@ -1103,6 +1142,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 				
 				List<Object[]> infocellList = activityLocationInfoDAO.getInfocellCountsForScopeIds(scopeIds);
+				List<Object[]> specialActivitiesinfocellList = activityConductedInfoDAO.getInfocellCountsForScopeIds(scopeIds);
+				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesinfocellList)){
+					if(!commonMethodsUtilService.isListOrSetValid(infocellList))
+						infocellList = new ArrayList<Object[]>(0);
+						infocellList.addAll(specialActivitiesinfocellList);
+				}
+				
 				if(infocellList != null && !infocellList.isEmpty()){
 					for (Object[] obj : infocellList) {
 						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -1433,24 +1479,70 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
 				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(planedList))
+						planedList = new ArrayList<Object[]>(0);
+						planedList.addAll(list1);
 					setDataToVO(planedList,returnList,"planned");
+					
 				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
+						condtdcList = new ArrayList<Object[]>(0);
+						condtdcList.addAll(list1);
 					setDataToVO(condtdcList,returnList,"infocell");
 				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(ivrList))
+						ivrList = new ArrayList<Object[]>(0);
+						ivrList.addAll(list1);
 					setDataToVO(ivrList,returnList,"ivr");
 			}else if(searchType != null && searchType.equalsIgnoreCase("district")){
 				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(planedList))
+						planedList = new ArrayList<Object[]>(0);
+						planedList.addAll(list1);
 					setDataToVO(planedList,returnList,"planned");
 				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
+						condtdcList = new ArrayList<Object[]>(0);
+						condtdcList.addAll(list1);
 					setDataToVO(condtdcList,returnList,"infocell");
 				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(ivrList))
+						ivrList = new ArrayList<Object[]>(0);
+						ivrList.addAll(list1);
 					setDataToVO(ivrList,returnList,"ivr");
 			}else if(searchType != null && searchType.equalsIgnoreCase("state")){
 				List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(planedList))
+						planedList = new ArrayList<Object[]>(0);
+						planedList.addAll(list1);
 					setDataToVO(planedList,returnList,"planned");
-				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell");
+				List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
+						condtdcList = new ArrayList<Object[]>(0);
+						condtdcList.addAll(list1);
 					setDataToVO(condtdcList,returnList,"infocell");
 				List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr");
+				if(commonMethodsUtilService.isListOrSetValid(list1))
+					if(!commonMethodsUtilService.isListOrSetValid(ivrList))
+						ivrList = new ArrayList<Object[]>(0);
+						ivrList.addAll(list1);
 					setDataToVO(ivrList,returnList,"ivr");
 			}
 			
@@ -1585,9 +1677,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 					
 					if(type != null && type.equalsIgnoreCase("planned"))
 						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+(Long)obj[2] : 0l);
-					if(type != null && type.equalsIgnoreCase("infocell"))
+					else if(type != null && type.equalsIgnoreCase("infocell"))
 						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[2] : 0l);
-					if(type != null && type.equalsIgnoreCase("ivr"))
+					else if(type != null && type.equalsIgnoreCase("ivr"))
 						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+(Long)obj[2] : 0l);
 					
 				}
