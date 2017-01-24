@@ -6225,7 +6225,7 @@ public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long 
 		if(mandalCuntList != null && mandalCuntList.size() > 0l){
 			for (Object[] objects : mandalCuntList) {
 				ActivityVO vo = new ActivityVO();
-				 vo.setMandalId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
+				 vo.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
 				 returnList.add(vo);
@@ -6236,7 +6236,7 @@ public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long 
 		if(muncipuntList != null && muncipuntList.size() > 0l){
 			for (Object[] objects : muncipuntList) {
 				ActivityVO vo = new ActivityVO();
-				 vo.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
+				 vo.setMandalId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
 				 returnList.add(vo);
