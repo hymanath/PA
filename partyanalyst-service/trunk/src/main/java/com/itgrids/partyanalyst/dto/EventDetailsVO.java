@@ -25,11 +25,17 @@ public class EventDetailsVO {
 	private List<EventDetailsVO> constituencyList;
 	private List<EventDetailsVO> mandalTwnDivisionList;
 	private List<EventDetailsVO> villageWardList;
+	private Long infoCellAttendedCount=0L;
 	
 	private Long imagesCovered=0l;
 	private Long totalImages=0l;
 	
-	
+	public Long getInfoCellAttendedCount() {
+		return infoCellAttendedCount;
+	}
+	public void setInfoCellAttendedCount(Long infoCellAttendedCount) {
+		this.infoCellAttendedCount = infoCellAttendedCount;
+	}
 	public Long getImagesCovered() {
 		return imagesCovered;
 	}
