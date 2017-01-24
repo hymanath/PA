@@ -628,11 +628,12 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 		
 		 for (Map.Entry<File, String> entry : documentMap.entrySet())
 		 {
+
 			 pathBuilder = new StringBuilder();
 			 str = new StringBuilder();
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-			 pathBuilder.append("tour_documents").append("/").append(randomNumber).append(".")
+			 String destPath = folderName+"/"+randomNumber+"_"+entry.getValue();
+			 pathBuilder.append("tour_documents").append("/").append(randomNumber).append("_")
 			 .append(entry.getValue());
 			 str.append(randomNumber).append(".").append(entry.getValue());
 			 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
@@ -882,6 +883,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		
 		List<Long> alertIds = new ArrayList<Long>();
 		try{
+			List<Object[]> docList = alertDocumentDAO.getDocumentsForAlert(alertId);
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
 			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
 			 String alertSource = "";
@@ -903,6 +905,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 }
 					 
 				 }  
+			 }
+			 List<String> documentList = new ArrayList<String>();
+			 if(docList != null && docList.size() > 0){
+				 for(Object[] param : docList){
+					 documentList.add(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 }
 			 }
 			 if(list != null && list.size() > 0)
 			 {
@@ -931,6 +939,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+					 alertVO.setDocumentList(documentList);
 					 LocationVO locationVO = new LocationVO();
 					 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
 					 locationVO.setWardName(params[24] != null ? params[24].toString() : "");
@@ -3594,7 +3603,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-				 }
+				 }  
 			 }
 		   List<Object[]> rtrnTtlAlrtObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",alertTypes,alertEditions);
 		   Long totalAlertCnt = 0l;
