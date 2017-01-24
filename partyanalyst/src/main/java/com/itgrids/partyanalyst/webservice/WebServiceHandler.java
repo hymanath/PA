@@ -2502,4 +2502,21 @@ public class WebServiceHandler {
 				return null;
 			}
 		}
+		
+		@GET
+		@Path("/getDeptWiseStatusWiseAlertDetails/{fromDateStr}/{toDateStr}/{stateId}/{deptId}/{statusId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(@PathParam("fromDateStr") String fromDateStr,@PathParam("toDateStr") String toDateStr,
+				@PathParam("stateId") Long stateId,@PathParam("deptId") Long deptId,@PathParam("statusId") Long statusId)
+		{
+			try{			
+				return webServiceHandlerService.getDeptWiseStatusWiseAlertDetails(fromDateStr, toDateStr, stateId, deptId, statusId);			
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in getDeptWiseStatusWiseAlertDetails() Method, Exception is ",e);
+				return null;
+			}
+		}
 }
