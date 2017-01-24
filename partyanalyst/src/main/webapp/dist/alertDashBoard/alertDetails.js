@@ -7,7 +7,7 @@ getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
 getAlertAssignedCandidate(alertId);
-//getClarificationDetails(alertId);
+//getClarificationDetails(alertId);  
 getDocumentsForAlert(alertId);
 $(document).on("click",".assignModel",function(){
 	clearAssignFields();
@@ -1406,7 +1406,7 @@ $(document).on("click","#clarifiReqId",function(){
 		$("#clarReqDivId").hide();
 });
 
-	var fileNum=0;
+	/* var fileNum=0;
 	$(document).on("click","#addFile",function(){
 		$(this).closest(".panelHeights").removeAttr("style")
 		fileNum = fileNum+1;
@@ -1418,6 +1418,23 @@ $(document).on("click","#clarifiReqId",function(){
 		c.addClass("uploadCssDiv");
 		$("#extraUploadFileDiv").append(c);
 		$("#extraUploadFileDiv").append('<span id="cloneLast'+fileNum+'" class="glyphicon glyphicon-remove pull-right closeIconlast" style="margin-top: -33px;cursor:pointer;" attr_id ="'+fileNum+'"></span>');
+	}); */
+	var fileNo=0;
+	$(document).on("click","#addFile",function(){
+		fileNo = fileNo+1;
+		$("#extraUploadFileDiv").append('<li id="cloned'+fileNo+'"><input type="file" id="uploadFileId'+fileNo+'" name="imageForDisplay" class="btn btn-mini cloneFileCls"/><span class="closeIcon" attr_id="'+fileNo+'">x</span></li>');
+	});
+	$(document).on("click",".clearFileCls",function(){
+		$("#uploadFileId0").val("");
+		$(".clearFileCls").hide();  		
+	});
+	
+	$(document).on("click","#uploadFileId0",function(){
+		$(".clearFileCls").show();
+	});
+	$(document).on("click",".closeIcon",function(){  
+		var positionId = $(this).attr("attr_id");
+		$("#cloned"+positionId).remove();
 	});
 	
 	$(document).on("click",".closeIconlast",function(){
