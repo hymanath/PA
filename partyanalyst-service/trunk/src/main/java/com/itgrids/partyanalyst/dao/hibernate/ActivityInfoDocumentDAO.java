@@ -750,5 +750,105 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}*/
 
+public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.district.districtId,UA.district.districtName," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId" +
+					" and UA.state.stateId = 1 ");
+		sb.append(" group by UA.district.districtId order by UA.district.districtName asc");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	
+	return query.list();
+}
 
+public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.constituency.constituencyId,UA.constituency.name," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and UA.district.districtId = :districtId");
+		sb.append(" group by UA.constituency.constituencyId order by UA.constituency.name asc");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	if(districtId != null && districtId.longValue() > 0l)
+		 query.setParameter("districtId", districtId);
+	
+	return query.list();
+}
+
+public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.tehsil.tehsilId,UA.tehsil.tehsilName," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+		if(constitencyId != null && constitencyId.longValue() > 0l)
+			sb.append(" and UA.constituency.constituencyId = :constitencyId");
+		sb.append(" group by UA.tehsil.tehsilId order by UA.tehsil.tehsilName asc ");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	if(constitencyId != null && constitencyId.longValue() > 0l)
+		 query.setParameter("constitencyId", constitencyId);
+	
+	return query.list();
+}
+
+public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.localElectionBody.localElectionBodyId,UA.localElectionBody.name," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+		if(constitencyId != null && constitencyId.longValue() > 0l)
+			sb.append(" and UA.constituency.constituencyId = :constitencyId");
+		sb.append(" group by UA.localElectionBody.localElectionBodyId order by UA.localElectionBody.name asc ");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	if(constitencyId != null && constitencyId.longValue() > 0l)
+		 query.setParameter("constitencyId", constitencyId);
+	
+	return query.list();
+}
+
+public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.panchayat.panchayatId,UA.panchayat.panchayatName," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+		if(mandalId != null && mandalId.longValue() > 0l)
+			sb.append(" and UA.tehsil.tehsilId = :mandalId");
+		sb.append(" group by UA.panchayat.panchayatId order by UA.panchayat.panchayatName asc ");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	if(mandalId != null && mandalId.longValue() > 0l)
+		 query.setParameter("mandalId", mandalId);
+	
+	return query.list();
+}
 }
