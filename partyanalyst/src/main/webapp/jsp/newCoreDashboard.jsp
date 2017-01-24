@@ -3508,6 +3508,12 @@
 						<div id="headingNameId" ></div>
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertDocHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDocId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertAttachTitId"></div>    
 					</div> 
 					<div class="col-md-12 col-xs-12 col-sm-12"> 
@@ -4006,8 +4012,6 @@ var globalImages;
 	}
 
 $(document).on("click",".moreTrainingCampBlocksIcon",function(){
-	//$("#switchButtonId").removeClass("showCls");
-	//$("#switchButtonId").addClass("hdCls");
 	if($("#switchButtonId").hasClass("showCls")){ 
 		$(".trainingDetailedBlock").hide();  
 		$("#switchButtonId").addClass("hdCls");

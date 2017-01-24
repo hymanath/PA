@@ -32,6 +32,32 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+	.attachmentsBlock , .attachmentsUpload
+	{
+		padding:0px;
+	}
+	.attachmentsBlock li , .attachmentsUpload li
+	{
+		margin:5px 0px;
+		list-style:none;
+		font-size:13px;
+		color:rgba(0,0,0,0.6);
+		position:relative;
+	}            
+	.attachmentsUpload li .closeIcon
+	{
+		padding:2px 3px;
+		text-align:center;
+		cursor:pointer;
+		position:absolute;
+		right:0px;
+	}
+	.attachmentsUpload li
+	{
+		background-color:#fff;
+		border:1px solid #ddd;
+		padding:5px;
+	}
 	#alertStatusForm label
 	{
 		font-weight:600;
@@ -437,7 +463,6 @@
 															</li>
 														</ul>
 														<ul class="attachmentsUpload"  id="extraClarificationUploadFileDiv"></ul>
-														<!-- <button type="button" class="btn btn-primary btn-xs pull-left m_top20" title="Add Another File"  id="addClarificationFile" style="border-radius:50%;padding:5px 6px 7px 7px;"><i class="glyphicon glyphicon-plus"></i></button>-->
 													</div>
 												</div>
 												<div class="m_top20 row">
@@ -462,7 +487,7 @@
 						 </c:if>
 					 </c:if>
 				<!-- End -->
-						<div class="row m_top10 hideBlockCls" style="display:none;">
+						<div class="row m_top10">
 							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital"><b>involved members in this alert</b>
 								<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
@@ -475,7 +500,7 @@
 											<div class="media-body"></div>
 										</div>
 									</li>
-								</ul>
+								</ul>  
 							</div>  
 							<div class="col-md-8 col-xs-12 col-sm-6">
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
@@ -560,19 +585,24 @@
 															<div class="col-md-12 col-xs-12 col-sm-12">
 																<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
 															</div>
-															<div class="col-md-7 col-xs-12 col-sm-6">
-																<label>Add Attachments</label>
-																<input type="file" class="btn btn-mini uploadCssDiv btn-block" name="imageForDisplay" id="uploadFileId0"  />
+															<div class="uploadAttachmentDivCls col-md-7 col-xs-12 col-sm-6">
+																<label>Add Attachments</label>  
+																<ul class="attachmentsUpload">  
+																	<li>
+																		<input type="file" class="btn btn-mini uploadCssDiv btn-block" name="imageForDisplay" id="uploadFileId0"  />
+																		<span class="closeIcon clearFileCls" style="display:none;">x</span>  
+																	</li>
+																</ul>	
 															</div>
 															<div class="col-md-7 col-xs-12 col-sm-6">
-																<div id="extraUploadFileDiv" class=""></div>
+																<ul class="attachmentsUpload"  id="extraUploadFileDiv"></ul>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12">
-																<button type="button" class="btn btn-primary btn-sm pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
+																<button type="button" title="Add Another File" class="btn btn-primary btn-sm pull-right" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
 															</div>
 															<div id="errorId" class="m_top10"></div>
 															<div class="col-md-12 col-xs-12 col-sm-6">
-																<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Upload</button>
+																<button type="button" style="" class="btn btn-success" id="uploadAlertStatusDocBtnId">Update Alert Status</button>
 															</div>
 															<input type="hidden" id="alertHiddenIdStatus" name="alertId">
 															<input type="hidden" id="alertStatusHiddenId" name="clarificationStatusId">
@@ -580,13 +610,6 @@
 															<!--<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>-->
 															<span id="updateAlertajaxImg" class="m_top10"></span>
 														</div>
-														
-														
-														
-														
-														
-														
-														
 													</form>
 												</div>
 											</div>
@@ -720,8 +743,7 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
-<div class="modal fade" id="myModalShowNew"></div>		
-<input type="file" class="btn btn-mini cloneFileCls" style="display:none;"/>
+<div class="modal fade" id="myModalShowNew"></div>	
 <script type="text/javascript">
 
 var alertId = '${alertId}';
@@ -865,14 +887,7 @@ function buildAlertAssignedCandidateData(result)
 		}
 	}	
    
- /*
-var maxHeight = 0;
-
-$(".panelHeights").each(function(){
-   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-});
-$(".panelHeights").height(maxHeight);	
-*/			
+		
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/alertClarification.js" type="text/javascript"></script>

@@ -104,7 +104,20 @@
 								</div>
 							</div>
 						</div>
-							
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="panel panel-default">
+								<div class="panel-heading panel-headingColor">
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											<h4 class="panel-title text_capital"><b>Alert Verification Status</b></h4>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body bg_EF">
+									<div id="alertVerificationStatusTabId"></div>  
+								</div>
+							</div>
+						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 							<div class="panel panel-default">
 								<div class="panel-heading panel-headingColor">
@@ -445,6 +458,7 @@ globalLocation = "state";
 var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");  
 
+getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);  
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
 		opens:'left',
@@ -468,7 +482,8 @@ $(document).ready(function(){
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');     
 		currentFromDate = picker.startDate.format('DD/MM/YYYY');
-		currentToDate = picker.endDate.format('DD/MM/YYYY');     
+		currentToDate = picker.endDate.format('DD/MM/YYYY');
+		getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
@@ -552,7 +567,8 @@ function getAlertAssignedCandidate()
 		var stateId = $(this).attr("attr_state_Id");
 		globalStateId = stateId;
 		$("#stateId").val(stateId);
-		$("#stateId").trigger("chosen:updated");   
+		$("#stateId").trigger("chosen:updated"); 
+		getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
@@ -588,13 +604,13 @@ function getAlertAssignedCandidate()
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
-
+		getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 		
-		var statusId=0;
+		var statusId=0;    
 		var levelId = 0;
 		var levelValue = 0;
 		var categoryId=0;
@@ -956,7 +972,125 @@ function assignCadreDetailsAllLevel(){
 			$('#referconstituencyId').append('<option value="0">All</option>'); 
 			$("#referconstituencyId").trigger('chosen:updated');
 	
-}    
+}  
+function getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate){
+	$("#alertVerificationStatusTabId").html('<img src="images/search.gif" />');
+	var alertTypeId = $("#alertTypeId").val();
+	var frmDate = modifyDate(currentFromDate);
+	var toDt = modifyDate(currentToDate);
+	var jsObj = { 
+		stateId : globalStateId,     
+		fromDate : frmDate,      
+		toDate : toDt,
+		alertTypeId : alertTypeId  
+	}
+	$.ajax({
+		type : 'POST',      
+		url : 'getStatusAndCategoryWiseAlertsCountAction.action',
+		dataType : 'json',      
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			buildTotalAlertVerificationStatus(result,alertTypeId);
+		}else{
+			$("#alertVerificationStatusTabId").html("No Data Available.");
+		}
+	});
+} 
+var colorArrForStsHead = {"pending":"#F08080","completed":"#006400"};  
+function buildTotalAlertVerificationStatus(result,alertTypeId){
+		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
+		var str = '';  
+		if($(window).width() < 500)  
+		{
+			str+='<div class="table-responsive">';
+		}
+		str+='<table class="table table-condensed b_1">';
+		str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
+			str+='<th></th>';    
+			for(var i in result[0].statusTypeList[0].categoryTypeList){
+				str+='<th class="text-capital text-center" >'+result[0].statusTypeList[0].categoryTypeList[i].category+'</th>';
+			}  
+		str+='</thead>';
+		for(var i in result){
+			for(var j in result[i].statusTypeList){
+				var appClrHd = colorArrForStsHead[result[i].statusTypeList[j].status];
+				str+='<tr>';
+				if(result[i].statusTypeList[j].count > 0){  
+					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].statusTypeList[j].status+'</strong><span class="pull-right text-muted"><a class="" attr_alert_type_id="'+alertTypeId+'" attr_position="second" attr_category_id="0" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].count+'</a></span></td>';
+				}else{
+					continue;   
+				}
+				
+				for(var k in result[i].statusTypeList[j].categoryTypeList){
+					if(result[i].statusTypeList[j].categoryTypeList[k].count > 0){
+						str+='<td style="background-color:#eae9ef" class="text-center"> <a class="" attr_position="second" attr_alert_type_id="'+alertTypeId+'" attr_category_id="'+result[i].statusTypeList[j].categoryTypeList[k].alertCategoryId+'" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].categoryTypeList[k].category+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].categoryTypeList[k].count+' </a></td>';
+					}else{
+						str+='<td style="background-color:#eae9ef" class="text-center">0</td>';  
+					}
+					
+				}
+				str+='</tr>';  
+			}
+		}
+		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
+		$("#alertVerificationStatusTabId").html(str); 
+}
+$(document).on("click",".showDtlsForCountCls",function(){
+	var alertTypeId=$(this).attr("attr_alert_type_id");
+	var alertCategoryId=$(this).attr("attr_category_id");
+	var actionTypeId=$(this).attr("attr_action_type_id");
+	var actionTypeStatusId=$(this).attr("attr_action_type_status_id");
+	var levelId = $(this).attr("attr_levlId");
+	var levelValue = 0;
+	var impactScopeId = 0;
+	$('.stateCls').each(function(){
+		if($(this).hasClass("active"))   
+			levelValue = $(this).attr("attr_state_id");
+	});
+	var fromDate='';  
+	var toDate='';
+	var dateStr = $("#dateRangePickerId").val(); 
+	
+	if(dateStr !=null && dateStr.length>0){
+		fromDate = dateStr.split("-")[0];
+		toDate = dateStr.split("-")[1];
+	}
+	$("#alertCategoryId").val(alertCategoryId);
+	$("#alertCategoryId").trigger("chosen:updated");        
+	$("#locationLevelDataId").html('<img src="images/search.gif" />');
+	getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
+});
+function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId){
+	var jsObj =
+		{
+			alertTypeId:alertTpeId,
+			categoryId:alertCategoryId,
+			actionTypeId:actionTypeId,
+			actionTypeStatusId:actionTypeStatusId,
+			levelValue:levelValue,
+			fromDate :fromDate,
+			toDate   :toDate,
+			impactScopeId:impactScopeId
+		}
+		$.ajax({  
+			type:'GET',            
+			url: 'getAllAlertsWithoutFilter.action',
+			//url: 'getLocationLevelAlertClarificationDataAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+					buildAlertData(result,jsObj);
+		});
+}
+function modifyDate(currentDate){
+	var dataArr = currentDate.split("/");
+	var newDate = dataArr[1]+"/"+dataArr[0]+"/"+dataArr[2];
+	return newDate;
+}
 </script>
 </body>
 </html>
