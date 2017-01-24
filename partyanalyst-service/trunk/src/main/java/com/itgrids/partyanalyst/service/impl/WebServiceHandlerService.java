@@ -4847,4 +4847,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }
 		  return returnList;
 	  }
+	 
+	 public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId){
+		 List<AlertCoreDashBoardVO> returnList = null;
+		  try{			  
+			  returnList = alertsNewsPortalService.getDeptWiseStatusWiseAlertDetails(fromDateStr, toDateStr, stateId, deptId, statusId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getDeptWiseStatusWiseAlertDetails  method in WebServiceHandlerService");
+		  }
+		  return returnList;
+	  }
 }

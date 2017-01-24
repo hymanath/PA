@@ -312,4 +312,79 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getDeptWiseStatusWiseAlertDetails(Date fromDate,Date toDate,Long stateId,Long deptId,Long statusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct ");     
+		sb.append(" model.alert.alertId, " +//0
+						" model.alert.createdTime, " +//1
+						" model.alert.updatedTime, " +//2
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" model.alert.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName," +//11
+						" alertSource.alertSourceId, " +//12
+						" alertSource.source," +//13
+						" editionType.editionTypeId, " +//14
+						" editionType.editionType, " +//15
+						" edition.editionId, " +//16
+						" edition.editionAlias, " +//17
+						" tvNewsChannel.tvNewsChannelId, " +//18
+						" tvNewsChannel.channelName ");//19
+		sb.append(" from AlertCandidate model" +
+						" left join model.alert.alertSource alertSource " +
+		        		" left join model.alert.editionType editionType " +
+		        		" left join model.alert.edition edition " +
+		        		" left join model.alert.tvNewsChannel tvNewsChannel "+
+						" left join model.alert.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  ");  
+		sb.append(" left join model.alert.alertCategory alertCategory ");
+		sb.append(" left join model.alert.alertStatus alertStatus ");
+		sb.append(" left join model.alert.alertImpactScope alertImpactScope ");  
+		sb.append(" left join model.alert.alertType alertType ");
+		sb.append(" left join userAddress.parliamentConstituency parliamentConstituency");
+		
+		sb.append(" where model.alert.isDeleted = 'N'" +
+						" and alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+")" +
+						" and model.isDepartment = 'Y'");
+		if(fromDate != null && toDate != null){ 
+			sb.append(" and (date(model.alert.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				sb.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				sb.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				sb.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" and model.newsOrganizationId = :deptId");
+		if(statusId != null && statusId.longValue() > 0l)
+			sb.append(" and alertStatus.alertStatusId = :statusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);   
+		}
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(statusId != null && statusId.longValue() > 0l)
+			query.setParameter("statusId", statusId);
+		
+		return query.list();
+	}
 }
