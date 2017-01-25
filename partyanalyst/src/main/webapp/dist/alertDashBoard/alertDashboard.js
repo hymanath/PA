@@ -23,7 +23,7 @@ $(document).ready(function(){
 		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
 	}, 2000);
 });
-$(document).on("click",'.applyBtn',function(){
+/* $(document).on("click",'.applyBtn',function(){
 	$("#locationLevelDataId").html('');
 	getLocationLevelAlertCount();
 	var levelId = 0;
@@ -42,10 +42,10 @@ $(document).on("click",'.applyBtn',function(){
 			toDate = dateStr.split("-")[1];
 		}
 	var	categoryId =0;
-	$("#errorId").html("");
+	$("#errorId").html("");  
 	
 	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");	
-})
+}) */
 function getLocationLevelAlertCount()
 {
 	$("#locationLevelId").html('<img src="images/search.gif" />');
@@ -70,79 +70,10 @@ function getLocationLevelAlertCount()
 			   }).done(function(result){
 					
 						buildLocationLevelAlert(result,jsObj);
-					
+					  
 				});
 }
 
-/*function buildLocationLevelAlert(result,jsObj){
-	
-	
-	var str='';
-	if(result == null || result.length == 0)
-	{
-		
-		$("#locationLevelId").html('No data Available..');
-		return;
-	}
-	str+='<table class="table table-bordered tableDashboard">';
-	for(var i in result){
-    str+='<tr>';
-    str+=' <td>';
-    str+='<h2>500</h2>';
-    str+='<h4 class="text-capital textColor_333">total alerts</h4>';
-     str+='</td>';
-     str+=' <td>';
-     str+=' <h2>500</h2>';
-     str+='<h4 class="text-capital textColor_333">low</h4>';
-     str+=' </td>';
-     str+='<td>';
-     str+='<h2>500</h2>';
-     str+='<h4 class="text-capital textColor_333">medium</h4>';
-     str+='</td>';
-     str+=' <td>';
-     str+=' <h2>500</h2>';
-     str+=' <h4 class="text-capital textColor_333">high</h4>';
-     str+=' </td>';
-     str+=' <td>';
-     str+=' <h2>500</h2>';
-     str+='<h4 class="text-capital textColor_333">critical</h4>';
-     str+=' </td>';
-     str+=' </tr>';
-      str+='<tr>';
-     str+=' <td>';
-     str+=' <p>100</p>';
-     str+=' <p class="text-capital">State</p>';
-     str+=' </td>';
-      str+='<td>30</td>';
-      str+='  <td>30</td>';
-      str+='<td>30</td>';
-      str+='<td>30</td>';
-      str+=' </tr>';
-      str+=' <tr>';
-      str+='<td>';
-      str+=' <p>100</p>';
-      str+='<p class="text-capital">District</p>';
-      str+=' </td>';
-      str+='<td>30</td>';
-      str+='<td>30</td>';
-      str+='<td>30</td>';
-      str+=' <td>30</td>';
-      str+=' </tr>';
-      str+='<tr>';
-      str+='<td>';
-      str+=' <p>100</p>';
-      str+=' <p class="text-capital">constituency</p>';
-      str+=' </td>';
-      str+='<td>30</td>';
-      str+='<td>30</td>';
-      str+=' <td>30</td>';
-      str+='<td>30</td>';
-      str+=' </tr>';
-	}
-      str+='</table>';
-	$("#locationLevelId").html(str);
-}*/
-//8888
 function buildLocationLevelAlert(result,jsObj){
 	
 	
@@ -223,6 +154,10 @@ function buildLocationLevelAlert(result,jsObj){
 }
 
 $(document).on("click",".belowLocationCls",function(){
+	$("#verificationPosId").attr("attr_get_pos_id","nonVerify");
+	$("#verificationDateRangePickerId").val(' ');
+	$("#alertVerificationStatusId").val(0);
+	$("#alertVerificationStatusId").trigger("chosen:updated");
 	var id = $(this).attr("attr_id");
 	var category = $(this).attr("attr_category_id");
 	initSelectBoxForSecondPos(id,category);
@@ -266,9 +201,13 @@ $(document).on("click",".locationLevelCls",function(){
 	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
 });
 $(document).on("click",".headerWiseDataCls",function(){
+	$("#verificationPosId").attr("attr_get_pos_id","nonVerify");
+	$("#verificationDateRangePickerId").val(' ');
+	$("#alertVerificationStatusId").val(0);
+	$("#alertVerificationStatusId").trigger("chosen:updated");
 	var levelId = $(this).attr("attr_levlId");
 	var levelValue = 0;
-	var locationBlock = $(this).attr("attr_search_Location");
+	var locationBlock = $(this).attr("attr_search_Location");  
 	$('.stateCls').each(function(){
 		if($(this).hasClass("active"))   
 			levelValue = $(this).attr("attr_state_id");
@@ -322,7 +261,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 	 $("#assignedCadreId").val(0).trigger('chosen:updated'); 
 	 $('html, body').animate({
         scrollTop: $('#locationLevelDataId').offset().top
-    }, 2000);
+     }, 2000);
 	
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
 	var assignId = $('#assignedCadreId').val();
@@ -398,89 +337,44 @@ function buildAlertData(result,jsObj)
 		Level = "";
 	}
 	var str='';
-	/*
-	if(jsObj.statusId > 0)
-	{
-		if(Level.length > 0)
-		{
-			str+='<h4 class="text-success text-capital m_top10">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
-		}
-		
-		else
-		{
-			str+='<h4 class="text-success text-capital m_top10"> '+result[0].status+' Alert Details</h4>';
-		}
-	}
-	
-	else
-	{
-		if(Level.length > 0)
-		{
-			str+='<h4 class="text-success text-capital m_top10">'+Level+' Wise  Alert Details</h4>';
-		}
-		else
-		{
-			str+='<h4 class="text-success text-capital m_top10"> Alert Details</h4>';
-		}
-	}*/
 	
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
 	str+='<thead>';
-	//str+='<th>S.NO</th>';
-	//str+='<th>Desc</th>';
+	
 	str+='<th>Alert Source </th>';
 	str+='<th>Title</th>';
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
-	str+='<th>Status</th>';
+	str+='<th>Alert Status</th>';
+	str+='<th>Verification Status</th>'; 
 	str+='<th>Involved Candidates</th>';
 	str+='<th>Created Date</th>'; 
 	str+='<th>Information Source </th>';
 	str+='<th>Severity</th>';
-	/*
-	if(jsObj.levelId == 2)
-	{
-	str+='<th>STATE</th>';	
-	}
-	else
-	{
-		str+='<th>LOCATION</th>';
-	}
-	*/
-	str+='<th></th>';	
-	
+	str+='<th></th>';
 	str+='</thead>';
 	str+='<tbody>';
 	var j=0;
 	for(var i in result)
 	{
 		j++;
-	str+='<tr>';	
-	//str+='<td>'+j+'</td>';
-	//str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	str+='<tr>';
 	str+='<td>'+result[i].alertSource+'</td>';
 	str+='<td>'+result[i].title+'</td>';
 	str+='<td>'+result[i].alertCategoryName+'</td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
+	if(result[i].verificationStatus != null){
+		str+='<td>'+result[i].verificationStatus+'</td>';
+	}else{
+		str+='<td>-</td>';
+	}
 	str+='<td>'+result[i].count+'</td>';
 	str+='<td>'+result[i].date+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
 	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
-	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
-	/*if(result[i].regionScopeId== 2)
-	{
-		str+='<td>'+result[i].locationVO.state+'</td>';
-	}
-	else
-	{
-		str+='<td>'+result[i].locationVO.districtName+'</td>';	
-	}
-	*/
-	//str+='<td><button class="btn btn-success">VIEW</button></td>';
 	str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
-	//<button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
 	
 	str+='</tr>';	
 	}
@@ -494,12 +388,6 @@ var GlobalalertId;
 var globalAlertName;
 $(document).on("click",".alertModel",function(){
 GlobalalertId = $(this).attr("attr-id");
-	/*$("#ModalShow").modal('show');
-	showPopUpAlertData(GlobalalertId);
-	 globalAlertName=$(this).attr("attr-des");
-	 	$("#descriptionTitleId").html(globalAlertName);
-	getAlertStatusCommentsTrackingDetails();*/
-	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
 window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 
@@ -766,64 +654,325 @@ function getAlertStatusCommentsTrackingDetails()
 	
 	
 	function getLocationFilterAlertData()
-{
-	$(".filterBlockDiv").hide();
-	$("#locationLevelDataId").html('<img src="images/search.gif" />');
-    GlobalAlertData = [];
-	var stateId = $("#stateId").val();
-	var districtId = $("#referdistrictId").val();
-	var constituencyId = $("#referconstituencyId").val();
-	var mandalId = $("#refermandalNameId").val();
-	var panchayatId = $("#referpanchayatId").val();
-	var mandalType = $("#refermandalNameId option:selected").text();
-	
-	if(mandalType.indexOf("Mandal") == -1)
-	{
-		mandalType = "localbody";
-	}
-	else
-	{
-		mandalType = "mandal";
-	}
-	var assignedCadreId =  $("#assignedCadreId").val();
-	if(assignedCadreId.length == 0)
-		assignedCadreId =0;
-	 var fromDate='';
-	 var toDate='';
-	 var dateStr = $("#dateRangePickerId").val(); 
-		if(dateStr !=null && dateStr.length>0){
-			fromDate = dateStr.split("-")[0];
-			toDate = dateStr.split("-")[1];
-		}
-		var alertTpeId = $('#alertTypeId').val();	
-		var alertCategoryId = $('#alertCategoryId').val();	
-		var statusId = $('#alertStatusId').val();	
-		if(alertTpeId== null || alertTpeId.length==0)
-			alertTpeId=0;
+	{	    
+		var clickPosVal = $("#verificationPosId").attr("attr_get_pos_id");
+		var actionTypeStatusId = $('#alertVerificationStatusId').val();
+		var dateStr2 = $("#verificationDateRangePickerId").val();
+		if(clickPosVal == "verification" && actionTypeStatusId > 0){
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];  
+			}
+			
+			var levelValue = 0;
+			$('.stateCls').each(function(){
+				if($(this).hasClass("active"))   
+					levelValue = $(this).attr("attr_state_id");
+			});
+			var alertTypeId = $("#alertTypeId").val();
+			var alertCategoryId = $('#alertCategoryId').val();
+			
+			var statusId = $('#alertStatusId').val();
+			var actionTypeId = 1;
+			var impactScopeId = 0;      
+			var fromDate2='';
+			var toDate2='';
+			
+			if(dateStr2 != null && dateStr2.length>1){  
+				fromDate2 = dateStr2.split("-")[0];
+				toDate2 = dateStr2.split("-")[1];
+			}
+			getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId,statusId,fromDate2,toDate2);
+		}else if(actionTypeStatusId > 0 || dateStr2.length > 1){
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val();    
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			
+			var levelValue = 0;
+			$('.stateCls').each(function(){
+				if($(this).hasClass("active"))   
+					levelValue = $(this).attr("attr_state_id");
+			});
+			var alertTypeId = $("#alertTypeId").val();
+			var alertCategoryId = $('#alertCategoryId').val();
+			
+			var statusId = $('#alertStatusId').val();
+			var actionTypeId = 1;
+			var impactScopeId = 0;      
+			var fromDate2='';
+			var toDate2='';
+			
+			if(dateStr2 != null && dateStr2.length>1){  
+				fromDate2 = dateStr2.split("-")[0];    
+				toDate2 = dateStr2.split("-")[1];
+			}
+			getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId,statusId,fromDate2,toDate2);
+		}else{
+			$(".filterBlockDiv").hide();
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			GlobalAlertData = [];
+			var stateId = $("#stateId").val();
+			var districtId = $("#referdistrictId").val();
+			var constituencyId = $("#referconstituencyId").val();
+			var mandalId = $("#refermandalNameId").val();
+			var panchayatId = $("#referpanchayatId").val();
+			var mandalType = $("#refermandalNameId option:selected").text();
 		
-		var jsObj =
-		     {
-				statusId:statusId,
-				alertTypeId:alertTpeId,
-				stateId  : stateId,
-				districtId :districtId,
-				constituencyId :constituencyId,
-				mandalId   :mandalId,
-				panchayatId:panchayatId,
-				mandalType:mandalType,
-				fromDate:fromDate,
-				toDate:toDate,
-				assignedCadreId:assignedCadreId,
-				categoryId:alertCategoryId,
-				actionTypeStatusId : 0,            
-				task : ""
-		      }
+			if(mandalType.indexOf("Mandal") == -1){
+				mandalType = "localbody";
+			}else{
+				mandalType = "mandal";
+			}
+			var assignedCadreId =  $("#assignedCadreId").val();
+			if(assignedCadreId.length == 0)
+				assignedCadreId =0;
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			var alertTpeId = $('#alertTypeId').val();	
+			var alertCategoryId = $('#alertCategoryId').val();	
+			var statusId = $('#alertStatusId').val();	
+			if(alertTpeId== null || alertTpeId.length==0)
+				alertTpeId=0;
+			
+			var jsObj =
+				 {
+					statusId:statusId,
+					alertTypeId:alertTpeId,
+					stateId  : stateId,
+					districtId :districtId,
+					constituencyId :constituencyId,
+					mandalId   :mandalId,
+					panchayatId:panchayatId,
+					mandalType:mandalType,
+					fromDate:fromDate,
+					toDate:toDate,
+					assignedCadreId:assignedCadreId,
+					categoryId:alertCategoryId,
+					actionTypeStatusId : 0,            
+					task : "",  
+					fromDate2 : "",
+					toDate2 : ""
+			}
+			$.ajax({      
+				type:'GET',
+				url: 'getLocationFilterAlertDataAction.action',
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				GlobalAlertData = result;
+				buildAlertData(result,jsObj);
+			});
+		}            
+	}
+	function getAdvanceLocationFilterAlertData(){   
+		var clickPosVal = $("#verificationPosId").attr("attr_get_pos_id");
+		var actionTypeStatusId = $('#alertVerificationStatusId').val();
+		var dateStr2 = $("#verificationDateRangePickerId").val();
+		if(clickPosVal == "verification" && actionTypeStatusId > 0){
+			$(".filterBlockDiv").hide();
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			var stateId = $("#stateId").val();
+			var districtId = $("#referdistrictId").val();
+			var constituencyId = $("#referconstituencyId").val();
+			var mandalId = $("#refermandalNameId").val();
+			var panchayatId = $("#referpanchayatId").val();
+			var mandalType = $("#refermandalNameId option:selected").text();
+			
+			if(mandalType.indexOf("Mandal") == -1){
+				mandalType = "localbody";
+			}
+			else{
+				mandalType = "mandal";
+			}
+			var assignedCadreId =  $("#assignedCadreId").val();
+			if(assignedCadreId.length == 0)
+				assignedCadreId =0;
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			var alertTpeId = $('#alertTypeId').val();	
+			var alertCategoryId = $('#alertCategoryId').val();	
+			
+			var statusId = $('#alertStatusId').val();
+			var actionTypeId = 1;
+			var impactScopeId = 0;      
+			var fromDat2='';
+			var toDat2='';
+			
+			if(dateStr2 != null && dateStr2.length>1){  
+				fromDat2 = dateStr2.split("-")[0];
+				toDat2 = dateStr2.split("-")[1];
+			}
+			if(alertTpeId== null || alertTpeId.length==0)
+				alertTpeId=0;
+			var jsObj =
+				{
+					statusId:statusId,
+					alertTypeId:alertTpeId,  
+					stateId  : stateId,
+					districtId :districtId,
+					constituencyId :constituencyId,
+					mandalId   :mandalId,
+					panchayatId:panchayatId,
+					mandalType:mandalType,
+					fromDate:fromDate,
+					toDate:toDate,
+					assignedCadreId:assignedCadreId,    
+					categoryId:alertCategoryId,
+					actionTypeStatusId:actionTypeStatusId,        
+					task : "verification",
+					fromDate2 : fromDat2,
+					toDate2 : toDat2
+				}
 			$.ajax({
-					  type:'GET',
-					  url: 'getLocationFilterAlertDataAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-			        GlobalAlertData = result;
-					buildAlertData(result,jsObj);
-				});
-}
+				type:'GET',
+				url: 'getLocationFilterAlertDataAction.action',//imp
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildAlertData(result,jsObj);
+			});
+		}else if(actionTypeStatusId > 0 || dateStr2.length > 1){
+			$(".filterBlockDiv").hide();
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			var stateId = $("#stateId").val();
+			var districtId = $("#referdistrictId").val();
+			var constituencyId = $("#referconstituencyId").val();
+			var mandalId = $("#refermandalNameId").val();
+			var panchayatId = $("#referpanchayatId").val();
+			var mandalType = $("#refermandalNameId option:selected").text();
+			
+			if(mandalType.indexOf("Mandal") == -1){
+				mandalType = "localbody";
+			}
+			else{
+				mandalType = "mandal";
+			}
+			var assignedCadreId =  $("#assignedCadreId").val();
+			if(assignedCadreId.length == 0)
+				assignedCadreId =0;
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			var alertTpeId = $('#alertTypeId').val();	
+			var alertCategoryId = $('#alertCategoryId').val();	
+			
+			var statusId = $('#alertStatusId').val();
+			var actionTypeId = 1;
+			var impactScopeId = 0;      
+			var fromDat2='';
+			var toDat2='';
+			
+			if(dateStr2 != null && dateStr2.length>1){  
+				fromDat2 = dateStr2.split("-")[0];
+				toDat2 = dateStr2.split("-")[1];
+			}
+			if(alertTpeId== null || alertTpeId.length==0)
+				alertTpeId=0;
+			var jsObj =
+				{
+					statusId:statusId,
+					alertTypeId:alertTpeId,  
+					stateId  : stateId,
+					districtId :districtId,
+					constituencyId :constituencyId,
+					mandalId   :mandalId,
+					panchayatId:panchayatId,
+					mandalType:mandalType,
+					fromDate:fromDate,
+					toDate:toDate,
+					assignedCadreId:assignedCadreId,    
+					categoryId:alertCategoryId,
+					actionTypeStatusId:actionTypeStatusId,        
+					task : "verification",
+					fromDate2 : fromDat2,
+					toDate2 : toDat2
+				}
+			$.ajax({
+				type:'GET',
+				url: 'getLocationFilterAlertDataAction.action',//imp
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildAlertData(result,jsObj);
+			});
+		}else{
+			$(".filterBlockDiv").hide();
+			$("#locationLevelDataId").html('<img src="images/search.gif" />');
+			GlobalAlertData = [];   
+			var stateId = $("#stateId").val();
+			var districtId = $("#referdistrictId").val();
+			var constituencyId = $("#referconstituencyId").val();
+			var mandalId = $("#refermandalNameId").val();
+			var panchayatId = $("#referpanchayatId").val();
+			var mandalType = $("#refermandalNameId option:selected").text();
+		
+			if(mandalType.indexOf("Mandal") == -1){
+				mandalType = "localbody";
+			}else{
+				mandalType = "mandal";
+			}
+			var assignedCadreId =  $("#assignedCadreId").val();
+			if(assignedCadreId.length == 0)
+				assignedCadreId =0;
+			var fromDate='';
+			var toDate='';
+			var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			var alertTpeId = $('#alertTypeId').val();	
+			var alertCategoryId = $('#alertCategoryId').val();	
+			var statusId = $('#alertStatusId').val();	
+			if(alertTpeId== null || alertTpeId.length==0)
+				alertTpeId=0;
+			
+			var jsObj =
+				 {
+					statusId:statusId,
+					alertTypeId:alertTpeId,
+					stateId  : stateId,
+					districtId :districtId,
+					constituencyId :constituencyId,
+					mandalId   :mandalId,
+					panchayatId:panchayatId,
+					mandalType:mandalType,  
+					fromDate:fromDate,
+					toDate:toDate,
+					assignedCadreId:assignedCadreId,
+					categoryId:alertCategoryId,
+					actionTypeStatusId : 0,            
+					task : "",
+					fromDate2 : "",
+					toDate2 : ""   
+			}
+			$.ajax({
+				type:'GET',
+				url: 'getLocationFilterAlertDataAction.action',
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				GlobalAlertData = result;
+				buildAlertData(result,jsObj);
+			});
+		}
+	}
