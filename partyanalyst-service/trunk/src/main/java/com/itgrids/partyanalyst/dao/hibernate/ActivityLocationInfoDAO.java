@@ -1560,7 +1560,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		}else{
 			if(stateId != null && stateId.longValue() == 1l){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-			}else if(stateId != null && stateId.longValue() == 2l){
+			}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId != null && stateId.longValue() == 0l){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
@@ -1622,7 +1622,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		   
 		   if(stateId != null && stateId.longValue() == 1l){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-		   }else if(stateId != null && stateId.longValue() == 2l){
+		   }else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 		   }
 
