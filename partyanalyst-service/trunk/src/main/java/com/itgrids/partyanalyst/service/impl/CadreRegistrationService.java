@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ICadreMissedCallCampaignDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegSyncAccessUsersDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegistrationAllowAreasDAO;
 import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
@@ -338,6 +339,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	private ICadreRegistrationAllowAreasDAO cadreRegistrationAllowAreasDAO;
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -354,6 +357,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
 	}
 	
+	public ICadreRegistrationAllowAreasDAO getCadreRegistrationAllowAreasDAO() {
+		return cadreRegistrationAllowAreasDAO;
+	}
+
+	public void setCadreRegistrationAllowAreasDAO(
+			ICadreRegistrationAllowAreasDAO cadreRegistrationAllowAreasDAO) {
+		this.cadreRegistrationAllowAreasDAO = cadreRegistrationAllowAreasDAO;
+	}
+
 	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
 		return tdpCadreEnrollmentYearDAO;
 	}
@@ -13584,7 +13596,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 }
 
 
-	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String hNo,String voterCardNo){
+	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String hNo,String voterCardNo,Long cadreSurveyUserId){
 		List<VoterSearchVO> returnList = new ArrayList<VoterSearchVO>();
 		try {
 			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
@@ -13617,7 +13629,14 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				searchType = "const";
 			}
 			
-			List<Object[]> list1 = boothPublicationVoterDAO.getVotersBySearch(searchVal, searchType, name, hNo, voterCardNo);
+			List<Long> constituencyIds =  null;
+			List<Long> assignedBoothIds =  null;
+			if(cadreSurveyUserId != null && cadreSurveyUserId.longValue()>0L){
+				constituencyIds = cadreSurveyUserAssignDetailsDAO.getConstituencyIdByUserId(cadreSurveyUserId);
+				assignedBoothIds = cadreRegistrationAllowAreasDAO.getAssignedBoothDetailsInAssemblyList(constituencyIds);
+			} 
+			
+			List<Object[]> list1 = boothPublicationVoterDAO.getVotersBySearch(searchVal, searchType, name, hNo, voterCardNo,assignedBoothIds);
 			if(commonMethodsUtilService.isListOrSetValid(list1)){
 				for (Object[] obj : list1) {
 					VoterSearchVO vo = new VoterSearchVO();
@@ -13718,6 +13737,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			else if(voterId != null && !voterId.trim().equalsIgnoreCase("0") && voterId.trim().length() > 0)
 				searchType = "voter";
 			List<Long> constituencyIdsList = null;
+			List<Long> assignedBoothIds =  null;
 			if(cadreSurveyUserId!= null && cadreSurveyUserId.longValue()>0L){
 				constituencyIdsList = cadreSurveyUserAssignDetailsDAO.getAssignedConstiteuncyListByUserId(cadreSurveyUserId);
 				if(!commonMethodsUtilService.isListOrSetValid(constituencyIdsList)){
@@ -13727,9 +13747,14 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					returnList.add(tdpCadreVO);
 					return returnList;
 				}
+				if(constituencyIdsList != null && constituencyIdsList.size()>0){//if booths access for cadresurveyuser
+					assignedBoothIds = cadreRegistrationAllowAreasDAO.getAssignedBoothDetailsInAssemblyList(constituencyIdsList);
+				}
 			}
 				
-			List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearch(constituencyIdsList, searchType, membershipNo, mobileNo, voterId);
+			List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearch(constituencyIdsList, searchType, membershipNo, mobileNo, voterId,null);
+			
+			List<Long> voterIdsList = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -13768,11 +13793,18 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
 						vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImageURL());
 						
+						
+						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[10]));
+						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[12]));
 						cadreMap.put(cadreId, vo);
 					}
 					else{
 						vo.setEnrollmentYearId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
 						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
+						
+						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[10]));
+						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[12]));
+						
 					}
 				}
 			}
@@ -13793,6 +13825,31 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						tdpCadreVO.setStatus("renewal");
 					else if(tdpCadreVO.getId() != null && tdpCadreVO.getId().longValue() > 0l && tdpCadreVO.getEnrollmentYearId() != null && tdpCadreVO.getEnrollmentYearId().longValue() == 4l)
 						tdpCadreVO.setStatus("update");
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(assignedBoothIds)){//if booths access for cadresurveyuser
+				if(!commonMethodsUtilService.isListOrSetValid(voterIdsList))
+					returnList.clear();
+				else{
+					List<Object[]> getBoothIdsOfVoterIds = boothPublicationVoterDAO.getBoothsOfVoterIds(voterIdsList, IConstants.VOTER_DATA_PUBLICATION_ID);
+					Map<Long,Long> voterBoothsMap = new HashMap<Long, Long>(0);
+					if(commonMethodsUtilService.isListOrSetValid(getBoothIdsOfVoterIds)){
+						for (Object[] param : getBoothIdsOfVoterIds) {
+							voterBoothsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+					
+					List<TdpCadreVO> finalList = new ArrayList<TdpCadreVO>(0);
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){
+						for (TdpCadreVO vo : returnList) {
+							Long boothId = voterBoothsMap.get(vo.getVoterId()) != null?voterBoothsMap.get(vo.getVoterId()):voterBoothsMap.get(vo.getFamilyVoterId());
+							if(assignedBoothIds.contains(boothId))
+								finalList.add(vo);
+						}
+					}
+					returnList.clear();
+					returnList.addAll(finalList);
 				}
 			}
 			
