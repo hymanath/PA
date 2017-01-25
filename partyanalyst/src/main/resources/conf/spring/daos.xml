@@ -3666,5 +3666,9 @@
 	
 	<bean id="activityConductedInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityConductedInfoDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
-	</bean> 
+	</bean>
+	
+	<bean id="cadreRegistrationAllowAreasDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegistrationAllowAreasDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>  
 </beans>		
