@@ -137,10 +137,24 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 			inputVO.setName(mainInputVO.getName());
 			inputVO.setHouseNo(mainInputVO.getHouseNo());
 			inputVO.setVoterNo(mainInputVO.getVoterNo());
-			
-			returnList = getVotersBySearch(inputVO);
+			if(mainInputVO.getCadreSurveyUserId() == null || mainInputVO.getCadreSurveyUserId() ==0L)
+				returnList = getVotersBySearch(inputVO);
+			if(mainInputVO.getCadreSurveyUserId() != null && mainInputVO.getCadreSurveyUserId()>0L)
+				returnList = getVoterDetailsBySearch(mainInputVO);
 		}catch(Exception e) {
 			log.error("Entered into the getOnlineVotersBySearch() in WebServiceHandlerServiceForCadre ");
+		}
+		return returnList;
+	}
+
+	public List<VoterSearchVO> getVoterDetailsBySearch(WebServiceOnlineCadreVO inputVO){
+		List<VoterSearchVO> returnList = null;
+		try{
+			
+			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getHouseNo(),inputVO.getVoterNo(),inputVO.getCadreSurveyUserId());
+			
+		}catch(Exception e) {
+			log.error("Entered into the getVotersBySearch() in WebServiceHandlerServiceForCadre ");
 		}
 		return returnList;
 	}
@@ -150,7 +164,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		List<VoterSearchVO> returnList = null;
 		try{
 			
-			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getHouseNo(),inputVO.getVoterNo());
+			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getHouseNo(),inputVO.getVoterNo(),null);
 			
 		}catch(Exception e) {
 			log.error("Entered into the getVotersBySearch() in WebServiceHandlerServiceForCadre ");
