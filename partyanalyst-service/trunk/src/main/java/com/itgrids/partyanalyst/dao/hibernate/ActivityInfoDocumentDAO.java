@@ -813,10 +813,12 @@ public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long co
 public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.localElectionBody.localElectionBodyId,UA.localElectionBody.name," +
-				" count(model.activityDocument.activityDocumentId) " +
-				" from ActivityInfoDocument model,UserAddress UA" +
+				" count(model.activityDocument.activityDocumentId)," +
+				" ET.electionType " +
+				" from ActivityInfoDocument model,UserAddress UA,ElectionType ET" +
 				" where model.isDeleted ='N'" +
-				" and model.activityAddressId = UA.userAddressId ");
+				" and model.activityAddressId = UA.userAddressId " +
+				" and UA.localElectionBody.electionType.electionTypeId = ET.electionTypeId ");
 		if(activityScopeId != null && activityScopeId.longValue() > 0l)
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(constitencyId != null && constitencyId.longValue() > 0l)
@@ -848,6 +850,27 @@ public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mand
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(mandalId != null && mandalId.longValue() > 0l)
 		 query.setParameter("mandalId", mandalId);
+	
+	return query.list();
+}
+public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.ward.constituencyId,UA.ward.name," +
+				" count(model.activityDocument.activityDocumentId) " +
+				" from ActivityInfoDocument model,UserAddress UA,Constituency C" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId " +
+				" and UA.ward.constituencyId = C.constituencyId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+		if(muncipalityId != null && muncipalityId.longValue() > 0l)
+			sb.append(" and UA.localElectionBody.localElectionBodyId = :muncipalityId");
+		sb.append(" group by UA.ward.constituencyId order by UA.ward.name asc ");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	if(muncipalityId != null && muncipalityId.longValue() > 0l)
+		 query.setParameter("muncipalityId", muncipalityId);
 	
 	return query.list();
 }
