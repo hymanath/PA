@@ -45,6 +45,8 @@ public class AlertDataVO {
 	private String membershipNo;
 	private String alertSource;
 	private List<String> documentList = new ArrayList<String>(0);
+	private Long verificationStatusId;
+	private String verificationStatus;
 	
 	public String getTitle() {
 		return title;
@@ -257,6 +259,16 @@ public class AlertDataVO {
 		this.documentList = documentList;
 	}
 	
-	
-	
+	public Long getVerificationStatusId() {
+		return verificationStatusId;
+	}
+	public void setVerificationStatusId(Long verificationStatusId) {
+		this.verificationStatusId = verificationStatusId;
+	}
+	public String getVerificationStatus() {
+		return verificationStatus;
+	}
+	public void setVerificationStatus(String verificationStatus) {
+		this.verificationStatus = verificationStatus;
+	}
 }

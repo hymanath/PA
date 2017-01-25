@@ -13,6 +13,8 @@ public class AlertInputVO {
 	private Long alertImpactScopeId;
 	private Long actionTypeId;
 	private Long actionTypeStatusId;
+	private String fromDate2;
+	private String toDate2;
 	public Long getAlertTypeId() {
 		return alertTypeId;
 	}
@@ -84,6 +86,18 @@ public class AlertInputVO {
 	}
 	public void setActionTypeStatusId(Long actionTypeStatusId) {
 		this.actionTypeStatusId = actionTypeStatusId;
+	}
+	public String getFromDate2() {
+		return fromDate2;
+	}
+	public void setFromDate2(String fromDate2) {
+		this.fromDate2 = fromDate2;
+	}
+	public String getToDate2() {
+		return toDate2;
+	}
+	public void setToDate2(String toDate2) {
+		this.toDate2 = toDate2;
 	}
 	
 

@@ -621,7 +621,4 @@ public void setIpAddress(String ipAddress) {
 	public void setUserAccessType(String userAccessType) {
 		this.userAccessType = userAccessType;
 	}
-
-	
-	
 }
