@@ -5,7 +5,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-	<html>
+	<html>  
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title> CLARIFICATION REQUIRED DASHBOARD </title>
@@ -871,7 +871,8 @@ function buildAlertData(result,jsObj)
 	str+='<th>Title</th>';
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
-	str+='<th>Status</th>';
+	str+='<th>Alert Status</th>';
+	str+='<th>Alert Verification Status</th>';  
 	str+='<th>Involved Candidates</th>';
 	str+='<th>Created Date</th>'; 
 	str+='<th>Information Source </th>';
@@ -884,31 +885,30 @@ function buildAlertData(result,jsObj)
 	var j=0;
 	for(var i in result)
 	{
-		if(result[i].statusId == 1 || result[i].statusId == 2){
-			j++;
-			str+='<tr>';	
-			str+='<td>'+result[i].alertSource+'</td>';
-			str+='<td>'+result[i].title+'</td>';
-			str+='<td>'+result[i].alertCategoryName+'</td>';
-			if(result[i].alertType == 1){
-				str+='<td>Party</td>';
-			}else if(result[i].alertType == 2){
-				str+='<td>Govt</td>';
-			}else if(result[i].alertType == 3){
-				str+='<td>Other</td>';
-			}else{
-				str+='<td>'+result[i].alertType+'</td>';
-			}
-			str+='<td>'+result[i].status+'</td>';
-			str+='<td>'+result[i].count+'</td>';
-			str+='<td>'+result[i].date+'</td>';
-			str+='<td>'+result[i].userType+'</td>';
-			str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
-			
-			str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i></td>';
-			  
-			str+='</tr>';	
+		j++;
+		str+='<tr>';	
+		str+='<td>'+result[i].alertSource+'</td>';
+		str+='<td>'+result[i].title+'</td>';
+		str+='<td>'+result[i].alertCategoryName+'</td>';
+		if(result[i].alertType == 1){
+			str+='<td>Party</td>';
+		}else if(result[i].alertType == 2){
+			str+='<td>Govt</td>';
+		}else if(result[i].alertType == 3){
+			str+='<td>Other</td>';
+		}else{
+			str+='<td>'+result[i].alertType+'</td>';
 		}
+		str+='<td>'+result[i].status+'</td>';
+		str+='<td>'+result[i].verificationStatus+'</td>';
+		str+='<td>'+result[i].count+'</td>';
+		str+='<td>'+result[i].date+'</td>';
+		str+='<td>'+result[i].userType+'</td>';
+		str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
+		
+		str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i></td>';
+		  
+		str+='</tr>';
 	}
 	str+='</tbody>';
 	str+='</table>';
@@ -943,7 +943,9 @@ $(document).on("click",".showDtlsForCountCls",function(){
 		toDate = dateStr.split("-")[1];
 	}
 	$("#alertCategoryId").val(alertCategoryId);
-	$("#alertCategoryId").trigger("chosen:updated");        
+	$("#alertCategoryId").trigger("chosen:updated");  
+	$("#alertStatusId").val(actionTypeStatusId);
+	$("#alertStatusId").trigger("chosen:updated");
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
 	getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
 });
@@ -957,12 +959,14 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 			levelValue:levelValue,
 			fromDate :fromDate,
 			toDate   :toDate,
-			impactScopeId:impactScopeId
+			impactScopeId:impactScopeId,
+			statusId : 0,
+			fromDate2 : "",  
+			toDate2 : ""    
 		}
 		$.ajax({  
 			type:'GET',          
 			url: 'getAllAlertsWithoutFilter.action',
-			//url: 'getLocationLevelAlertClarificationDataAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 					buildAlertData(result,jsObj);
@@ -1015,55 +1019,54 @@ function getLocationFilterAlertData()
 	var panchayatId = $("#referpanchayatId").val();
 	var mandalType = $("#refermandalNameId option:selected").text();
 	
-	if(mandalType.indexOf("Mandal") == -1)
-	{
+	if(mandalType.indexOf("Mandal") == -1){
 		mandalType = "localbody";
 	}
-	else
-	{
+	else{
 		mandalType = "mandal";
 	}
 	var assignedCadreId =  $("#assignedCadreId").val();
 	if(assignedCadreId.length == 0)
 		assignedCadreId =0;
-	 var fromDate='';
-	 var toDate='';
-	 var dateStr = $("#dateRangePickerId").val(); 
-		if(dateStr !=null && dateStr.length>0){
-			fromDate = dateStr.split("-")[0];
-			toDate = dateStr.split("-")[1];
+	var fromDate='';
+	var toDate='';
+	var dateStr = $("#dateRangePickerId").val(); 
+	if(dateStr !=null && dateStr.length>0){
+		fromDate = dateStr.split("-")[0];
+		toDate = dateStr.split("-")[1];
+	}
+	var alertTpeId = $('#alertTypeId').val();	
+	var alertCategoryId = $('#alertCategoryId').val();	
+	var statusId = 0;	  
+	var actionTypeStatusId = $('#alertStatusId').val();
+	if(alertTpeId== null || alertTpeId.length==0)
+		alertTpeId=0;
+	var jsObj =
+		{
+			statusId:statusId,
+			alertTypeId:alertTpeId,  
+			stateId  : stateId,
+			districtId :districtId,
+			constituencyId :constituencyId,
+			mandalId   :mandalId,
+			panchayatId:panchayatId,
+			mandalType:mandalType,
+			fromDate:fromDate,
+			toDate:toDate,
+			assignedCadreId:assignedCadreId,    
+			categoryId:alertCategoryId,
+			actionTypeStatusId:actionTypeStatusId,        
+			task : "verification",
+			fromDate2 : "",
+			toDate2 : ""
 		}
-		var alertTpeId = $('#alertTypeId').val();	
-		var alertCategoryId = $('#alertCategoryId').val();	
-		var statusId = 0;	  
-		var actionTypeStatusId = $('#alertStatusId').val();
-		if(alertTpeId== null || alertTpeId.length==0)
-			alertTpeId=0;
-		   
-		var jsObj =
-		     {
-				statusId:statusId,
-				alertTypeId:alertTpeId,  
-				stateId  : stateId,
-				districtId :districtId,
-				constituencyId :constituencyId,
-				mandalId   :mandalId,
-				panchayatId:panchayatId,
-				mandalType:mandalType,
-				fromDate:fromDate,
-				toDate:toDate,
-				assignedCadreId:assignedCadreId,    
-				categoryId:alertCategoryId,
-				actionTypeStatusId:actionTypeStatusId,        
-				task : "accessUser"
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getLocationFilterAlertDataAction.action',//imp
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					buildAlertData(result,jsObj);
-				});
+	$.ajax({
+		type:'GET',
+		url: 'getLocationFilterAlertDataAction.action',//imp
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildAlertData(result,jsObj);
+	});
 }
 </script>  
 </body>
