@@ -131,10 +131,10 @@ $(document).on("click",".eventStrngPrCls",function(){
 });
 
 $(document).on("click",".eventsListExpandIcon",function(){
-	$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-	$("#eventsDistWiseCohort1").html(' ');
-	$(".activitiesH4").html("Cohort");
 	$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
+	$("#eventsDistWiseCohort1").html(' ');
+	$(".activitiesH4").html("Cohort")
+	$(".activitesExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
 	var eventIdsString = $(this).attr("attr_event_idsString");
 	var eventName = $(this).attr("attr_event_name");
 	$(".eventAndActivityCls").html(eventName);
@@ -1577,6 +1577,10 @@ function buildActivityCounts(result,divId,activityName,activityId)
 {
 	var str=' ';
 	for(var i in result){
+		var totalCount =parseInt(result[i].apTotal);
+		var updatedCount = parseInt(result[i].yesCount)+parseInt(result[i].noCount)+parseInt(result[i].mayBecount);
+		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
+		
 		str+='<div class="m_top20">';
 			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
 			str+='<table class="table bg_ED tablePaddingSyle">';
@@ -1587,25 +1591,77 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							str+='<h5>'+result[i].apTotal+'</h5>';
 						str+='</td>';
 						str+='<td>';
+							str+='<p class="text-muted text-capital">YES</p>';
+							/*if(result[i].yesCount != null && result[i].yesCount>0)
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" >'+result[i].yesCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
+							else*/
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" title="Both Info Cell and IVR status updated as conducted " >'+result[i].yesCount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">No</p>';
+							/*if(result[i].noCount != null && result[i].noCount>0)
+								str+='<h5>'+result[i].noCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+							else*/
+								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title="Both Info Cell and IVR status updated as Not conducted " >'+result[i].noCount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Maybe</p>';
+							/*if(result[i].mayBecount != null && result[i].mayBecount >0 )
+								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].mayBecount+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
+							else*/
+								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title=" One of the Info Cell and IVR updated as not conducted " >'+result[i].mayBecount+' </h5>';
+						str+='</td>';
+						str+='<td>';
+							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-muted text-capital">Not Updated </p>';
+							//console.log(notUpdatedCount);
+							/*if(notUpdatedCount>0)
+								str+='<u><h5 class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+notUpdatedCount+' </h5></u>';
+							else*/
+								str+='<h5 class=""  data-toggle="tooltip" data-placement="top"  attr_activity_scopeid="'+result[i].tdpcadreId+'" title=" No data available from Both Info Cell and IVR " >'+notUpdatedCount+' </h5>';
+						str+='</td>';
+					str+='</tr>';
+					
+					str+='<tr>';
+						/*str+='<td>';
+							str+='<p class="text-muted text-capital">total</p>';
+							str+='<h5>'+result[i].apTotal+'</h5>';
+						str+='</td>';*/
+					
+						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
+								str+='<td>';
+							str+='<p class="text-muted text-capital">attended Count </p>';
+							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Attended Members" >'+result[i].isCsd+'</h5>';
+								str+='</td>';
+						}else{
+							str+='<td>';
+							str+='<p class="text-muted text-capital">attended Count </p>';
+							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" > - </h5>';
+							str+='</td>';
+						}
+					
+						str+='<td>';
 							str+='<p class="text-muted text-capital">Planned</p>';
 							if(result[i].inviteeCount != null && result[i].inviteeCount>0)
-								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
+								str+='<u><h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Planned Locations" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
 							else
-								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">IVR</p>';
 							if(result[i].attenteeCount != null && result[i].attenteeCount>0)
-								str+='<h5>'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total IVR Conducted Locations " >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
 							else
-								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].attenteeCount+' <small><span class="text-success">'+result[i].imagePathStr+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Infocell</p>';
 							if(result[i].inviteeAttendeeCnt != null && result[i].inviteeAttendeeCnt >0 )
-								str+='<u><h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
+								str+='<u><h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title=" Clikc here to view activity Conducted Locations "  attr_activity_name="'+result[i].locationName+'" attr_level_name="'+result[i].name+'" attr_level_id="'+result[i].id+'" >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5></u>';
 							else
-								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top"  >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
 						str+='<td>';
 							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
@@ -1613,10 +1669,18 @@ function buildActivityCounts(result,divId,activityName,activityId)
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
 							if(result[i].totalImages != null && result[i].totalImages>0)
-								str+='<u><h5 class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5></u>';
+								str+='<u><h5 style="cursor:pointer;" class="getImageCls" attr_activity_scopeid="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5></u>';
 							else
-								str+='<h5 class="" attr_activity_scopeid="'+result[i].tdpcadreId+'">'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_activity_scopeid="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top"  >'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
 						str+='</td>';
+						
+						/* str+='<td>'; //notes
+						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
+							str+='<p class="text-muted text-capital">Count </p>';
+							str+='<h5>'+result[i].isCsd+'</h5>';
+						}
+						str+='</td>'; */
+						
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
@@ -1624,6 +1688,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 	}
 	
 	$("#"+divId).html(str);
+	$('[data-toggle="tooltip"]').tooltip();
 }
 getDistricts();
 function getDistricts(){
@@ -1647,24 +1712,34 @@ function buildDistrictsForActivityCounts(result){
       for(var i in result){
         $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
       }
-	   $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
+     // $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
 }
-function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
+function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchType,refresh,acvtyNm,levlNm,loctnNm){
+	$("#locatnNamId").text('');
+	if(refresh == "onload"){
+		$("#constncyDivId").hide();
+		$("#mandalDivId").hide();
+		$("#villgWardDivId").hide();
+		$("#districtId").val(0);
+	}
 	if(activityScopeId == 0){
 		var t = type.split("-");
 		activityScopeId = parseInt(t[0]);
 		districtId = parseInt(t[1]);
 		type="all";
 		globalActvtyScopeId = activityScopeId;
+		acvtyNm = t[2];
+		levlNm = t[3];
+		loctnNm = t[4];
 	}
+	
 	$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
-	$("#districtId").val(districtId);
-	//$("#districtId").append("<option value='0'>All</option>"); 
+	
 	$("#activityId").html("");
 	var jsObj={
 		districtId : districtId,
 		activity_scope_id:activityScopeId,
-		search_type :"constituency",
+		search_type :searchType,
 		stateId : globalStateId
 	}	
 	$.ajax({
@@ -1672,37 +1747,38 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type){
 	 url: "getDistrictWiseActivityCountsAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildDistrictWiseActivitiesCount(result,type);
-		}
+		//if(result != null && result.length > 0){
+			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType);
+		//}else{
+		//		$("#activityId").html('<div style="text-align: center;font-weight:bold;" > No data available...</div>');
+		//}
 	});
 }
-$(document).on("change",".districtCls",function(){
 
-	var districtId = $(this).val();
-	getDistrictWiseActivityCounts(globalActvtyScopeId,districtId,"change")
+function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType){
+	var str = '';
+	 if(refresh == "onload"){
+		 $("#myModelActivityhead").text(acvtyNm);
+		 $("#smallHeadngId").text(levlNm);
+	}
 	
-});
-var globalActvtyScopeId;
-$(document).on("click",".activityCountCls",function(){
-	var activityScopeId = $(this).attr("attr_actvty_scope_id");
-	globalActvtyScopeId = activityScopeId;
-	
-	getDistrictWiseActivityCounts(activityScopeId,0,"count")
-	
-});
-function buildDistrictWiseActivitiesCount(result,type){
-	
+	$("#locatnNamId").text(loctnNm +'  DETAILS');
 	if(type == "count")
 		$("#myModelActivityId").modal('show');
 	else if(type == "all")
 		$("#myModelActivityId").modal('show');
 	$("#activityId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
-	var str = '';
+	if(result != null && result.length > 0){
 	 str +='<table class="table table-bordered table-condensed " id="activityTableId">';
-	 str+='<thead>';
+	 str+='<thead style="background-color:#EEE">';
 	str +='<tr>';
-    str +='<th class="text-capital">Constituency name</th>';
+	if(searchType == "constituency"){
+		str +='<th class="text-capital">Constituency name</th>';
+	}else if(searchType == "mandal"){
+		str +='<th class="text-capital">Mandal/Town/Division name</th>';
+	}else if(searchType == "villageWard"){
+		str +='<th class="text-capital">Village/Ward name</th>';
+	}
 	str +='<th class="text-capital">total</th>';
     //str +='<th class="text-capital">Planned</th>';
     str +='<th class="text-capital">infocell</th>';
@@ -1725,16 +1801,107 @@ function buildDistrictWiseActivitiesCount(result,type){
   }
   str+='</tbody>';
 str +='</table> ';
+	}else{
+		str +='No Data Available';
+	}
 //console.log(str)
 $("#activityId").html(str);
 //$("#activityTableId").dataTable({});
    $('#activityTableId').dataTable();
 }
+$(document).on("click",".submitCls",function(){
+	//$("#districtId").val('');
+	var searchType="constituency";
+	var locationNm = "All";
+	var locationId = 0;
+	if($("#districtId").val() == 0){
+		locationId = 0;
+		searchType="constituency";
+		locationNm = "All Districts";
+	}else{
+		if($("#constituencyId").val() == 0){
+			locationId = $("#districtId").val();
+			searchType="constituency";
+			locationNm = $('#districtId option:selected').text();
+		}else{
+			if($("#mandalId").val() == 0){
+				locationNm = $('#constituencyId option:selected').text();
+				locationId = $("#constituencyId").val();
+				searchType="mandal";
+			}else{
+				if($("#villgWardId").val() == 0){
+					locationNm = $('#mandalId option:selected').text();
+					locationId = $("#mandalId").val();
+					searchType="villageWard";
+				}else{
+					locationNm = $('#villgWardId option:selected').text();
+					locationId = $("#villgWardId").val();
+					searchType="villageWard";
+				}
+			}
+		}
+	}
+	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
+	
+});
+$(document).on("change",".districtCls",function(){
+
+	var districtId = $(this).val();
+	//getDistrictWiseActivityCounts(globalActvtyScopeId,districtId,"change");
+	if(districtId == 0){
+		$("#constituencyId").val(0);
+		$("#mandalId").val(0);
+		$("#villgWardId").val(0);
+		$("#mandalDivId").hide();
+		$("#villgWardDivId").hide();
+	}else {
+		//if(globalActivityLvlId == 5 || globalActivityLvlId == 2 || globalActivityLvlId == 1 )
+		$("#constncyDivId").show();
+		getConstituenciesForDistrict(districtId);
+	}
+	
+});
+$(document).on("change",".constituencyCls",function(){
+
+	var constId = $(this).val();
+	if(constId == 0){
+		$("#mandalId").val(0);
+	}else {
+		//if(globalActivityLvlId == 2 || globalActivityLvlId == 1)
+		$("#mandalDivId").show();
+		getMandalsByConstituency(constId);
+	}
+	
+});
+$(document).on("change",".mandalsCls",function(){
+	var constId = $("#constituencyId").val();
+	var mandalId = $(this).val();
+	if(mandalId == 0){
+		$("#villgWardId").val(0);
+	}else {
+		//if(globalActivityLvlId == 1)
+		$("#villgWardDivId").show();
+		getVillageWardByMandal(mandalId,constId);
+	}
+	
+});
+var globalActvtyScopeId;
+var globalActivityLvlId;
+$(document).on("click",".activityCountCls",function(){
+	var activityScopeId = $(this).attr("attr_actvty_scope_id");
+	globalActvtyScopeId = activityScopeId;
+	var activityName = $(this).attr("attr_activity_name");
+	var levelName = $(this).attr("attr_level_name");
+	 globalActivityLvlId=$(this).attr("attr_level_id");
+	getDistrictWiseActivityCounts(activityScopeId,0,"count","constituency","onload",activityName,levelName,"All")
+	
+});
+
 $(document).on("click",".activitesExpandIcon",function(){
 	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
-	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
-        var activityId = $(this).attr("attr_id");
-	      $("#hiddenActivityId").val(activityId);	
+	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
+    var activityId = $(this).attr("attr_id");
+	$("#hiddenActivityId").val(activityId);	
 	if($(this).find("i").hasClass("glyphicon-fullscreen"))
 	{
 		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
@@ -1748,12 +1915,10 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
 		//alert("open"); 
-		$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
-		$(".dateRangePickerClsForEvents").removeClass("hide");
-		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
-		var eventIdsString = $(this).attr("attr_event_idsString");
-		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$("#accordionAct").find(".panel-collapse").removeClass("in");
+		$("#accordionAct").find(".panelBlockCollapseIcon").addClass("collapsed");
+		//$(this).closest(".panel").find(".panel-collapse").addClass("in");
+		//$(this).closest(".panel").find(".panelBlockCollapseIcon").removeClass("collapsed");
 		var activityLevelIds=[];
 		var activityId = $(this).attr("attr_id");
 		var activityName = $(this).attr("attr_activity_name");
@@ -1765,6 +1930,12 @@ $(document).on("click",".activitesExpandIcon",function(){
 		 activityName = activityName.replace("'","");
 		 activityName = activityName.replace("\'","");
 		 $(".eventAndActivityCls").html(activityName);
+		$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+		$(".dateRangePickerClsForEvents").removeClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		var eventIdsString = $(this).attr("attr_event_idsString");
+		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		if($(".detailedBlockEvents").is(":visible"))
 		{
 			//alert("already opened");
@@ -1852,7 +2023,7 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 	var activityId = $("#hiddenActivityId").val();
 		  $(".moreEventsBlocks").toggle();
 			districtWiseCohort(activityId);
-			activitiesQuestions(activityId);
+			//activitiesQuestions(activityId);
 			$(".detailedBlockEvents,.activeUlCls").show();
 	        $(".detailedEvent").addClass("active")	
 	        $(".comparisonEvent").removeClass("active")
@@ -1862,7 +2033,7 @@ function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
     //var eventIds = attrEventIdsString.split(",");
 	var jsObj ={ 
-		 //activityId : [26], 
+		// activityId : [1,3,4,5,6,7,8,26,27,28,29,30], 
 		 activityId : [activityId],
 	   fromDate : customStartDateActivities,
 	   toDate : customEndDateActivities
@@ -1901,8 +2072,8 @@ function districtWiseCohort(activityId){
 				//conductedCounts.push(parseFloat(result[i].distList[j].perc))
 				//nonConductedCounts.push(parseFloat(result[i].distList[j].remainingPerc))
 				
-				conductedCounts.push({"y":parseFloat(result[i].distList[j].perc),"extra":result[i].id+"-"+result[i].distList[j].locationId});
-				nonConductedCounts.push({"y":parseFloat(result[i].distList[j].remainingPerc),"extra":result[i].id+"-"+result[i].distList[j].locationId});
+				conductedCounts.push({"y":parseFloat(result[i].distList[j].perc),"extra":result[i].id+"-"+result[i].distList[j].locationId+"-"+result[0].partyName+"_"+result[0].actualMobNumber+"_"+result[i].distList[j].locationName});
+				nonConductedCounts.push({"y":parseFloat(result[i].distList[j].remainingPerc),"extra":result[i].id+"-"+result[i].distList[j].locationId+"-"+result[0].partyName+"_"+result[0].actualMobNumber+"_"+result[i].distList[j].locationName});
 			}
 			
 			$(function () {
@@ -1967,7 +2138,7 @@ function districtWiseCohort(activityId){
 						point: {
 							events: {
 								click: function () {
-									getDistrictWiseActivityCounts(0,0,this.extra)
+									getDistrictWiseActivityCounts(0,0,this.extra,"constituency","onload")
 								}
 							}
 						}  
@@ -2139,6 +2310,7 @@ var globalPopupresult = "";
 $(document).on("click",".getImageCls",function(){
 	$("#myModalImageId").modal("show");
 	var attr_activity_scopeid = $(this).attr('attr_activity_scopeid');
+	$("#hiddenActivityScopeId").val(attr_activity_scopeid);
 	//alert(attr_activity_scopeid);
 	getDistrictNames();
 	var str='';
@@ -2167,32 +2339,26 @@ $(document).on("click",".getImageCls",function(){
 //buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 //getAvailableDates(globallocationScope,globallocationValue,day,path);
 globalActivityScope = attr_activity_scopeid;
- getAvailablDates(globallocationScope,globallocationValue,1,'',attr_activity_scopeid)
+getAvailablDates('state',1,1,'',attr_activity_scopeid)
 buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 getEventsDocuments("","",attr_activity_scopeid);
-getEventDocumentForPopup("district",1,0,0,attr_activity_scopeid);
+getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1);
 });
 
- $(document).on('click','.daysCls',function(){
-	 $(".daysCls").removeClass( "active" )
+ $(document).on('click','.dayssCls',function(){
+	 $(".dayssCls").removeClass("active" )
 	 $(this).addClass("active");
 	 var day = $(this).attr("attr");
-		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,"");
+	 var locationScope = $(this).attr("locationScope");
+	 var locationScopeValue = $(this).attr("locationScopeValue");
+	 var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
+	 var path = $(this).attr("path");
+	 
+		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
   });
   
 function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 {
-	//$('#'+divId+'').html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
-	// var dates = $('.dateRangeIdForEvents').val();
-	//  var dateArray = dates.split("/");
-	//  var fromDateStr=dateArray[0];
-	//  var toDateStr=dateArray[1];
-	// var activityId = $("#ActivityList").val();
-	  /* if(dateArray.length == 1)
-			{
-				fromDateStr=" ";
-				toDateStr=" ";
-			} */
 		var jObj = {
 		activityId:attr_activity_scopeid,
 		locationScope:"state",
@@ -2250,10 +2416,10 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 	
 		var jObj = {
 		activityId:attr_activity_scopeid,
-		locationScope:"state",
-		locationValue:1,	
-		fromDateStr:"01-01-2016",
-		toDateStr:"01-01-2017",
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:"",
+		toDateStr:"",
 		task:""
 		};
 		$.ajax({
@@ -2265,13 +2431,13 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 				for(var i in result)
 				{
 					if(result[i].id==day)
-					{
-						str+='<li class="active daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
-						getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid);
+					{//attr_activity_scopeid,locationScope,locationScopeValue
+						str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue);
 					}
 					
 					  else
-					str+='<li class="daysCls" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationScopeValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
 				}
 				$("#popupDaysDiv").html(str);
 				GlobalPopupScope = jObj.locationScope;
@@ -2318,7 +2484,7 @@ function buildLocationForPopup(locationScope,locationValue,ActivityScope)
 			
 }
 
-function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid)
+function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue)
 {
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
@@ -2333,8 +2499,8 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		
 		var jObj = {
 		activityId:globalActivityScope,
-		locationScope:"state",
-		locationValue:1,		
+		locationScope:locationScope,
+		locationValue:locationScopeValue,		
 		day:day,
 		fromDateStr:"01-01-2015",
 		toDateStr:"22-01-2017",
@@ -2351,12 +2517,12 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
           url: 'getEventDocumentsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			buildDayWisImagesForPopup1(result,jObj,path);
+			buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue);
 			});
 }
 
 
-function buildDayWisImagesForPopup1(result,jObj,path)
+function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue)
 {
 	$("#popupImages").html('');
 	var str ='';
@@ -2428,7 +2594,7 @@ function buildDayWisImagesForPopup1(result,jObj,path)
 				
 				onPageClick: function(pageNumber, event) {
 					var num=(pageNumber-1)*10;
-					getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,"");
+					getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,path,attr_activity_scopeid,locationScope,locationScopeValue);
 					
 				}
 			});
@@ -2440,13 +2606,85 @@ function buildDayWisImagesForPopup1(result,jObj,path)
 	
 	}
 }
+function getConstituenciesForDistrict(districtId){
+	$("#constituencyId").empty();
+	
+	var jsObj ={ 
+	               districtId : districtId
+				};
+	  $.ajax({
+			type : 'POST',
+			url : 'getConstituenciesForDistrictAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if( result != null && result.length>0){
+			   buildConstituenciesForDistrict(result);
+		   }
+		});
+}
+function buildConstituenciesForDistrict(result){
+	$("#constituencyId").append("<option value='0'>All</option>");        
+      for(var i in result){
+        $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+      }
+}
+function getMandalsByConstituency(constId){
+	$("#mandalId").empty();
+	var jsObj ={ 
+	               constituencyId : constId
+				};
+	  $.ajax({
+			type : 'POST',
+			url : 'getMandalDetailsByConstituencyAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if( result != null && result.length>0){
+			   buildMandalsForConstituencies(result);
+		   }
+		});
+}
+function buildMandalsForConstituencies(result){
+	$("#mandalId").append("<option value='0'>All</option>");        
+      for(var i in result){
+		  if(result[i].locationId != 0)
+        $("#mandalId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+      }
+}
+function getVillageWardByMandal(mandalId,constId){
+	$("#villgWardId").empty();
+	var jsObj ={ 
+				   constituencyId:constId,
+	               mandalId : mandalId
+				};
+	  $.ajax({
+			type : 'POST',
+			url : 'getPanchayatWardByMandalAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if( result != null && result.length>0){
+			   buildVillageWardByMandal(result);
+		   }
+		});
+}
+function buildVillageWardByMandal(result){
+	$("#villgWardId").append("<option value='0'>All</option>");        
+      for(var i in result){
+		  if(result[i].locationId != 0)
+        $("#villgWardId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+      }
+}
 $(document).on("click","#paginationDivId ul li",function(){
 	$("#paginationDivId").find("ul").addClass("pagination");
 });
 function getDistrictNames(){
+	
 	$("#districtsUlId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:11
+		activityScopeId:scopeId
 	};
 	
 	$.ajax({
@@ -2485,9 +2723,21 @@ $(document).on("click",".constituencyPopups",function(){
 });
 
 function getConstituencyList(distId){
+	$('.dayssCls').each(function(){
+		if($(this).hasClass("active")){
+			 var day = $(this).attr("attr");
+			var locationScope = 'district';
+			var locationScopeValue = distId;
+			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
+			var path = $(this).attr("path");
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+		}
+	});
+	
 	$("#constituenciesBlock"+distId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:11,
+		activityScopeId:scopeId,
 		districtId : distId
 	};
 	
@@ -2527,9 +2777,22 @@ $(document).on("click",".mandalPopups",function(){
 });
 
 function getMandalOrMuncList(constituencyId){
+	
+	$('.dayssCls').each(function(){
+		if($(this).hasClass("active")){
+			 var day = $(this).attr("attr");
+			var locationScope = 'constituency';
+			var locationScopeValue = constituencyId;
+			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
+			var path = $(this).attr("path");
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+		}
+	});
+	
 	$("#mandalsBlock"+constituencyId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:1,
+		activityScopeId:scopeId,
 		constituencyId : constituencyId
 	};
 		
@@ -2549,12 +2812,12 @@ function buildMandalOrMuncList(result,constituencyId)
 	{
 	  str+='<div class="panel panel-default panel-custommodal">';
 		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModalMandal'+i+'">';
-		  str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].constituencyId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
+		  str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
 			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 		  str+='</a>';
 		str+='</div>';
 		str+='<div id="collapseOneModalMandal'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModalMandal'+i+'">';
-		  str+='<div class="panel-body pad_0"><div id="panchayatBlock'+result[i].constituencyId+'"></div></div>';
+		  str+='<div class="panel-body pad_0"><div id="panchayatBlock'+result[i].mandalId+'"></div></div>';
 		str+='</div>';
 	  str+='</div>';
 	}
@@ -2567,9 +2830,22 @@ $(document).on("click",".panchayatPopups",function(){
 });
 
 function getPanchayatList(mandalId){
+	
+	$('.dayssCls').each(function(){
+		if($(this).hasClass("active")){
+			 var day = $(this).attr("attr");
+			var locationScope = 'mandal';
+			var locationScopeValue = mandalId;
+			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
+			var path = $(this).attr("path");
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+		}
+	});
+	
 	$("#panchayatBlock"+mandalId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:1,
+		activityScopeId:scopeId,
 		mandalOrMuncipalityId : mandalId
 	};
 	
@@ -2617,8 +2893,8 @@ function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 				 activityIds:activityIds,
 				 activityLevelIds:activityLevelIds,
 				 userTypeId : globalUserTypeId,
-				 fromDateStr:"",//01-01-2015
-				 toDateStr:""//31-01-2017
+				 fromDateStr:customStartDateActivities,
+				 toDateStr:customEndDateActivities
 			  }
 	$.ajax({
 		type : 'POST',
