@@ -202,7 +202,7 @@ public interface ICadreRegistrationService {
 	public String  checkPaymentStatus(String memberShipNo);
 	public String  updatePaymentStatus(Long tdpCadreId);
 	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO);
-	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String hNo,String voterCardNo);
+	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String hNo,String voterCardNo,Long cadreSurveyUserId);
 	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId);
 	public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
 	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
