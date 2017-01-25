@@ -5,7 +5,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-	<html>
+	<html>        
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title> Alert Dashboard </title>
@@ -231,7 +231,7 @@
 													</select>
 												</div>
 												<div class="col-md-3 col-xs-12 col-sm-6">
-													<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
+													<button style="margin-top: 25px;" id="searchBtnId" onclick="getAdvanceLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
 												</div>
 											</div>
 										</div>
@@ -246,7 +246,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="alertheadingcolor">
 								<div class="row">
-									<div class="col-md-3 col-xs-12 col-sm-3">
+									<div class="col-md-2 col-xs-12 col-sm-3">
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Category</label>
 										<select class="form-control" id="alertCategoryId">           
 											<option value="0" selected="selected">All</option>
@@ -255,7 +255,7 @@
 											<option value="3">Electronic Media</option>  
 										</select>  
 									</div>
-									<div class="col-md-3 col-xs-12 col-sm-3">
+									<div class="col-md-2 col-xs-12 col-sm-3">
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
 										<select class="form-control chosen-select" id="alertStatusId" >
 											<option value="0" selected="selected">All</option>
@@ -268,9 +268,26 @@
 											<option value="7">Duplicate</option>
 										</select>
 									</div>
-									
-									<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button"  >View</button>
-									
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Verification Status</label>
+										<select class="form-control chosen-select" id="alertVerificationStatusId" >
+											<option value="0" selected="selected">All</option>
+											<option value="1">Progress</option>
+											<option value="2">Completed</option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Verification Date</label>  
+										<div class="input-group">  
+											<input placeholder="click here for date" type="text" class="form-control" id="verificationDateRangePickerId"/>  
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>     
+										</div>    
+									</div>  
+									<div class="col-md-2 col-xs-12 col-sm-3">  
+										<button style="margin-top: 25px;" id="searchBtId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button">View</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -292,53 +309,14 @@
 						</div>
 					</div>
 				</div>
-			</div>	
-					
-                
-					
-
-			
-			
+			</div>
         </div>
     </div>
 </div>
-<!--<div class="container">
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#ccc;">
-					<div class="row">
-						<div class="col-md-9 col-xs-12 col-sm-6">
-							<h4 class="panel-title m_top10">ALERT DASHBOARD</h4>
-						</div>
-						<div class="col-md-3 col-xs-12 col-sm-6">
-							<div class="input-group">
-								<input type="text" class="form-control" id="dateRangePickerId"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<!--<div class="col-md-12 col-xs-12 col-sm-12">
-							<div id="locationLevelId"></div>
-						</div>-->
-					</div>
-					<br/>
-					<br/>
-					<!--<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div id="alertCandidateDataId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>        
-	</div>
-</div>-->
+</div>
+<input type="hidden" id="verificationPosId" attr_get_pos_id="nonVerify"></input>
+<br/>
+<br/>
 	<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT' )}">
 <button target="_blank" class="btn btn-danger btnCreateAlert" data-toggle="tooltip" data-placement="left" onClick="createAlert()" title="Create Alert" ><i class="glyphicon glyphicon-plus" style="font-size:20px;right:-1px;top:-1px"></i></button>
 </c:if>
@@ -473,8 +451,15 @@ $(document).ready(function(){
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
 	});
-	//$("#dateRangePickerId").val(moment().subtract(29, 'days').format("MM/DD/YYYY")+'-'+moment().format("MM/DD/YYYY"))
 	$(".ranges").addClass("rangesNew")
+	$("#verificationDateRangePickerId").daterangepicker({
+		opens:'left',
+		startDate:moment().subtract(29, 'days'),    
+		endDate:moment(),
+		ranges: {
+        }     
+	});
+	$("#verificationDateRangePickerId").val(' ');
 });
 	$('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
@@ -565,7 +550,7 @@ function getAlertAssignedCandidate()
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 		var stateId = $(this).attr("attr_state_Id");
-		globalStateId = stateId;
+		globalStateId = stateId;      
 		$("#stateId").val(stateId);
 		$("#stateId").trigger("chosen:updated"); 
 		getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);
@@ -1017,14 +1002,14 @@ function buildTotalAlertVerificationStatus(result,alertTypeId){
 				var appClrHd = colorArrForStsHead[result[i].statusTypeList[j].status];
 				str+='<tr>';
 				if(result[i].statusTypeList[j].count > 0){  
-					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].statusTypeList[j].status+'</strong><span class="pull-right text-muted"><a class="" attr_alert_type_id="'+alertTypeId+'" attr_position="second" attr_category_id="0" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].count+'</a></span></td>';
+					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].statusTypeList[j].status+'</strong><span class="pull-right text-muted"><u><a href="javascript:{};" class="showDtlsForCountCls" attr_alert_type_id="'+alertTypeId+'" attr_position="second" attr_category_id="0" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].count+'</a></u></span></td>';
 				}else{
 					continue;   
 				}
 				
 				for(var k in result[i].statusTypeList[j].categoryTypeList){
 					if(result[i].statusTypeList[j].categoryTypeList[k].count > 0){
-						str+='<td style="background-color:#eae9ef" class="text-center"> <a class="" attr_position="second" attr_alert_type_id="'+alertTypeId+'" attr_category_id="'+result[i].statusTypeList[j].categoryTypeList[k].alertCategoryId+'" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].categoryTypeList[k].category+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].categoryTypeList[k].count+' </a></td>';
+						str+='<td style="background-color:#eae9ef" class="text-center"> <u><a href="javascript:{};" class="showDtlsForCountCls" attr_position="second" attr_alert_type_id="'+alertTypeId+'" attr_category_id="'+result[i].statusTypeList[j].categoryTypeList[k].alertCategoryId+'" attr_action_type_id="'+result[i].actionTypeId+'" attr_action_type_status_id="'+result[i].statusTypeList[j].actionTypeStatusId+'" title="Click here to view '+result[i].statusTypeList[j].categoryTypeList[k].category+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].statusTypeList[j].categoryTypeList[k].count+' </a></u></td>';    
 					}else{
 						str+='<td style="background-color:#eae9ef" class="text-center">0</td>';  
 					}
@@ -1041,6 +1026,8 @@ function buildTotalAlertVerificationStatus(result,alertTypeId){
 		$("#alertVerificationStatusTabId").html(str); 
 }
 $(document).on("click",".showDtlsForCountCls",function(){
+	$("#verificationDateRangePickerId").val(' ');
+	$("#verificationPosId").attr("attr_get_pos_id","verification");
 	var alertTypeId=$(this).attr("attr_alert_type_id");
 	var alertCategoryId=$(this).attr("attr_category_id");
 	var actionTypeId=$(this).attr("attr_action_type_id");
@@ -1049,7 +1036,7 @@ $(document).on("click",".showDtlsForCountCls",function(){
 	var levelValue = 0;
 	var impactScopeId = 0;
 	$('.stateCls').each(function(){
-		if($(this).hasClass("active"))   
+		if($(this).hasClass("active"))         
 			levelValue = $(this).attr("attr_state_id");
 	});
 	var fromDate='';  
@@ -1061,11 +1048,20 @@ $(document).on("click",".showDtlsForCountCls",function(){
 		toDate = dateStr.split("-")[1];
 	}
 	$("#alertCategoryId").val(alertCategoryId);
-	$("#alertCategoryId").trigger("chosen:updated");        
+	$("#alertCategoryId").trigger("chosen:updated");
+	
+	$("#alertStatusId").val(0);
+	$("#alertStatusId").trigger("chosen:updated");  
+	
+	$("#alertVerificationStatusId").val(actionTypeStatusId);
+	$("#alertVerificationStatusId").trigger("chosen:updated");
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
-	getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId);
+	getAllAlertsWithoutFilter(alertTypeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId,0,"","");
 });
-function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId){
+function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actionTypeStatusId,levelValue,fromDate,toDate,impactScopeId,statusId,fromDat2,toDat2){
+	$('html, body').animate({
+        scrollTop: $('#locationLevelDataId').offset().top
+     }, 2000);
 	var jsObj =
 		{
 			alertTypeId:alertTpeId,
@@ -1075,12 +1071,14 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 			levelValue:levelValue,
 			fromDate :fromDate,
 			toDate   :toDate,
-			impactScopeId:impactScopeId
+			impactScopeId:impactScopeId,
+			statusId : statusId,
+			fromDate2 : fromDat2,
+			toDate2 : toDat2     
 		}
 		$.ajax({  
 			type:'GET',            
 			url: 'getAllAlertsWithoutFilter.action',
-			//url: 'getLocationLevelAlertClarificationDataAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 					buildAlertData(result,jsObj);
