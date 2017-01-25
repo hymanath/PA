@@ -6237,7 +6237,7 @@ public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long 
 			for (Object[] objects : muncipuntList) {
 				ActivityVO vo = new ActivityVO();
 				 vo.setMandalId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
-				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+ " " +commonMethodsUtilService.getStringValueForObject(objects[3]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
 				 returnList.add(vo);
 			}
@@ -6253,18 +6253,30 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 	try{
 		
 		String subStrId=mandalOrMuncId.toString().substring(0,1);
-		if(subStrId.trim().equalsIgnoreCase("1")){
+		if(subStrId.trim().equalsIgnoreCase("2")){
 		List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getPanchaytNamesByMandalId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)));
 		if(panchayatCuntList != null && panchayatCuntList.size() > 0l){
 			for (Object[] objects : panchayatCuntList) {
 				ActivityVO vo = new ActivityVO();
-				 vo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				 vo.setPanchayatId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
 				 returnList.add(vo);
 				}
 			}
 		}
+		if(subStrId.trim().equalsIgnoreCase("1")){
+			List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getWardNamesByMuncipalityId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)));
+			if(panchayatCuntList != null && panchayatCuntList.size() > 0l){
+				for (Object[] objects : panchayatCuntList) {
+					ActivityVO vo = new ActivityVO();
+					 vo.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
+					 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					 returnList.add(vo);
+					}
+				}
+			}
 	}catch(Exception e){
 		 LOG.error("Exception Occured in getPanchayatOrWardsByMandalOrMuncId() method, Exception - ",e);
 	}
