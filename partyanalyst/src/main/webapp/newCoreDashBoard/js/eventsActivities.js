@@ -82,7 +82,7 @@
 	
 });
 
-$(document).on("click",".moreEventsBlocksIcon",function(){
+$(document).on("click",".moreEventsBlocksIcon",function(){	
 	var type=$(this).attr("attr_type");
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
 	if(type != null && type=="event"){
@@ -93,7 +93,70 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	 $(".detailedEvent").addClass("active")	
 	 $(".comparisonEvent").removeClass("active")	
 	}else{
-		// activity functionality
+		// activity functionality		
+	}
+});
+$(document).on("click",".activitesExpandIcon",function(){
+	
+	 
+	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
+	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
+    var activityId = $(this).attr("attr_id");
+	$("#hiddenActivityId").val(activityId);	
+	if($(this).find("i").hasClass("glyphicon-fullscreen"))
+	{
+		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			//block opened
+			//alert("block open")	
+		}else{
+			//block closed
+			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		//alert("open"); 
+		$("#accordionAct").find(".panel-collapse").removeClass("in");
+		$("#accordionAct").find(".panelBlockCollapseIcon").addClass("collapsed");
+		//$(this).closest(".panel").find(".panel-collapse").addClass("in");
+		//$(this).closest(".panel").find(".panelBlockCollapseIcon").removeClass("collapsed");
+		var activityLevelIds=[];
+		var activityId = $(this).attr("attr_id");
+		var activityName = $(this).attr("attr_activity_name");
+		var activityLevelId = $(this).attr("attr_level_id");
+		 if(activityLevelId != null && activityLevelId > 0){
+			activityLevelIds.push(activityLevelId); 
+		 }
+		 getUserTypeActivityConductedCnt(activityId,activityLevelIds);
+		 activityName = activityName.replace("'","");
+		 activityName = activityName.replace("\'","");
+		 $(".eventAndActivityCls").html(activityName);
+		$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+		$(".dateRangePickerClsForEvents").removeClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		var eventIdsString = $(this).attr("attr_event_idsString");
+		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		if($(".detailedBlockEvents").is(":visible"))
+		{
+			//alert("already opened");
+			var activityId = $("#hiddenActivityId").val();
+			districtWiseCohort(activityId);
+		}
+			$(".acitivitiesMoreExpand").removeClass("moreEventsBlocksIcon");
+			$(".acitivitiesMoreExpand").removeAttr("attr_type");
+			$(".acitivitiesMoreExpand").removeAttr("attr_event_idsString");
+			$(".acitivitiesMoreExpand").attr("attr_type","activity");
+			$(".acitivitiesMoreExpand").attr("attr_event_idsString",activityId);
+	}else{
+		//alert("close")
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").hide();
+		$(".dateRangePickerClsForEvents").addClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	}
 });
 $(document).on("click",".detailedEvent",function(){
@@ -1497,7 +1560,7 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 /*Notes Functionality End*/
 
 /* Activities Functionality Start */
-
+var  globalActivityIdsList =[];
 function getActivitiesDetails(){
 	$("#activityEventsListNew").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
@@ -1515,13 +1578,13 @@ function getActivitiesDetails(){
 	});
 }
 function buildActivityEventBasicCntDtlsNew(result)
-{
+{	
 	var str='';
 	var activityIdsString='';
     str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<div class="">';
-				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';
+				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';				
 				for(var i in result)
 				{
 				  if(i== 0){
@@ -1529,6 +1592,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 					}else{
 					 activityIdsString = activityIdsString+','+result[i].id;	
 					}
+					globalActivityIdsList.push(parseInt(result[i].id));
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
 							str+='<h4 class="text-capital" style="color:#4a5863">'+result[i].name+'';
@@ -1897,7 +1961,7 @@ $(document).on("click",".activityCountCls",function(){
 	
 });
 
-$(document).on("click",".activitesExpandIcon",function(){
+/*$(document).on("click",".activitesExpandIcon",function(){
 	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
 	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
     var activityId = $(this).attr("attr_id");
@@ -1953,7 +2017,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	}
-});
+});*/
 /* $(document).on("click",".activitesExpandIcon",function(){
 	$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -2027,14 +2091,13 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 			$(".detailedBlockEvents,.activeUlCls").show();
 	        $(".detailedEvent").addClass("active")	
 	        $(".comparisonEvent").removeClass("active")
-	
+		//globalActivityIdsList
 });
 function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-    //var eventIds = attrEventIdsString.split(",");
-	var jsObj ={ 
-		// activityId : [1,3,4,5,6,7,8,26,27,28,29,30], 
-		 activityId : [activityId],
+	globalActivityIdsList = activityId.split(',');
+	var jsObj ={
+	   activityId : globalActivityIdsList,
 	   fromDate : customStartDateActivities,
 	   toDate : customEndDateActivities
 		 
@@ -2054,7 +2117,7 @@ function districtWiseCohort(activityId){
 	$('.activitiesH4').html(result[0].partyName);
 	for(var i in result)
 	{	
-		str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+		str+='<h4 class="panel-title headingColor" style="width:800px;">'+result[i].name+'</h4>';
 		str+='<div id="eventsGraph1'+i+'" style="height:120px"></div>';
 	}
 	$("#eventsDistWiseCohort1").html(str)
@@ -2429,15 +2492,17 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
         }).done(function(result){
 				var str ='';
 				for(var i in result)
-				{
+				{ 
 					if(result[i].id==day)
 					{//attr_activity_scopeid,locationScope,locationScopeValue
 						str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
 						getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue);
-					}
-					
-					  else
-					str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationScopeValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					}else if (i==0){
+						str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue);
+					}else{
+						str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					 }
 				}
 				$("#popupDaysDiv").html(str);
 				GlobalPopupScope = jObj.locationScope;
@@ -2725,12 +2790,13 @@ $(document).on("click",".constituencyPopups",function(){
 function getConstituencyList(distId){
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
-			 var day = $(this).attr("attr");
+			// var day = $(this).attr("attr");
 			var locationScope = 'district';
 			var locationScopeValue = distId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
 	
@@ -2780,12 +2846,13 @@ function getMandalOrMuncList(constituencyId){
 	
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
-			 var day = $(this).attr("attr");
+			 //var day = $(this).attr("attr");
 			var locationScope = 'constituency';
 			var locationScopeValue = constituencyId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
 	
@@ -2833,12 +2900,13 @@ function getPanchayatList(mandalId){
 	
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
-			 var day = $(this).attr("attr");
+			// var day = $(this).attr("attr");
 			var locationScope = 'mandal';
 			var locationScopeValue = mandalId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
 	
