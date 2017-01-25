@@ -116,10 +116,6 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
 		//alert("open"); 
-		$("#accordionAct").find(".panel-collapse").removeClass("in");
-		$("#accordionAct").find(".panelBlockCollapseIcon").addClass("collapsed");
-		//$(this).closest(".panel").find(".panel-collapse").addClass("in");
-		//$(this).closest(".panel").find(".panelBlockCollapseIcon").removeClass("collapsed");
 		var activityLevelIds=[];
 		var activityId = $(this).attr("attr_id");
 		var activityName = $(this).attr("attr_activity_name");
@@ -1650,7 +1646,14 @@ function buildActivityCounts(result,divId,activityName,activityId)
 			str+='<table class="table bg_ED tablePaddingSyle">';
 				str+='<tbody>';
 					str+='<tr>';
-						str+='<td>';
+						
+						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
+							str+='<td>';
+						}else{
+							str+='<td rowspan="2">';
+						}
+							
+						
 							str+='<p class="text-muted text-capital">total</p>';
 							str+='<h5>'+result[i].apTotal+'</h5>';
 						str+='</td>';
@@ -1695,14 +1698,9 @@ function buildActivityCounts(result,divId,activityName,activityId)
 						str+='</td>';*/
 					
 						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
-								str+='<td>';
-							str+='<p class="text-muted text-capital">attended Count </p>';
-							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Attended Members" >'+result[i].isCsd+'</h5>';
-								str+='</td>';
-						}else{
 							str+='<td>';
-							str+='<p class="text-muted text-capital">attended Count </p>';
-							str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" > - </h5>';
+								str+='<p class="text-muted text-capital">attended Count </p>';
+								str+='<h5 style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Attended Members" >'+result[i].isCsd+'</h5>';
 							str+='</td>';
 						}
 					
@@ -2117,7 +2115,7 @@ function districtWiseCohort(activityId){
 	$('.activitiesH4').html(result[0].partyName);
 	for(var i in result)
 	{	
-		str+='<h4 class="panel-title headingColor" style="width:800px;">'+result[i].name+'</h4>';
+		str+='<h4 class="panel-title"><span class="headingColor">'+result[i].name+'</span></h4>';
 		str+='<div id="eventsGraph1'+i+'" style="height:120px"></div>';
 	}
 	$("#eventsDistWiseCohort1").html(str)
@@ -3253,4 +3251,4 @@ function buildUserTypeWisePoorFiveActivityConductedRlst(result){
 	}else{
 	 $("#UserTypeWiseEventMemberDtslDivId").html('NO DATA AVAILABLE.');
 	}
-	} 
+}
