@@ -1078,7 +1078,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
 			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,inputVO,fromDate,toDate);//done
-			 setAlertLocationWiseData(list,returnList);
+			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
+			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
+			 if(list2 != null && list2.size() > 0){
+				 for(Object[] param : list2){
+					 alertAndStatusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				 }
+			 }
+			 setAlertLocationWiseData(list,returnList,alertAndStatusMap,"");
 		}
 		catch(Exception e)
 		{
@@ -1091,17 +1098,29 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
 		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
-		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");  
+		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy"); 
+		 
 		
 		try{
 			Date fromDate = null;Date toDate=null;
-			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
-			{
-			 fromDate = sdf.parse(inputVO.getFromDate());
-			 toDate = sdf.parse(inputVO.getToDate());
+			Date fromDate2 = null;Date toDate2=null;
+			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty()){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId);//done
-			 setAlertLocationWiseData(list,returnList);  
+			if(inputVO.getFromDate2() != null && !inputVO.getFromDate2().toString().isEmpty()){
+				fromDate2 = sdf.parse(inputVO.getFromDate2());
+				toDate2 = sdf.parse(inputVO.getToDate2());
+			}
+			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2);//done
+			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
+			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
+			 if(list2 != null && list2.size() > 0){
+				 for(Object[] param : list2){
+					 alertAndStatusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				 }
+			 }
+			 setAlertLocationWiseData(list,returnList,alertAndStatusMap,inputVO.getTask());  
 		}
 		catch(Exception e)
 		{
@@ -1110,7 +1129,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 	}
 	
-	public void setAlertLocationWiseData(List<Object[]> list,List<AlertDataVO> returnList)
+	public void setAlertLocationWiseData(List<Object[]> list,List<AlertDataVO> returnList,Map<Long,String> alertAndStatusMap,String status)
 	{
 		List<Long> alertIds = new ArrayList<Long>();
 		List<Long> alertIdsNews = new ArrayList<Long>();
@@ -1146,6 +1165,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alertVO.setRegionScope(params[7] != null ?params[7].toString() : "");
 				 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 				 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+				 if(status.equalsIgnoreCase("verification")){
+					 alertVO.setVerificationStatusId(params[34] != null ? (Long)params[34] : null);
+					 alertVO.setVerificationStatus(params[35] != null ? params[35].toString() : null);
+				 }
+				 if(alertAndStatusMap.get((Long)params[0]) != null){
+					 alertVO.setVerificationStatus(alertAndStatusMap.get((Long)params[0]));
+				 }
 				// alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
 				 alertVO.setAlertCategoryName(commonMethodsUtilService.getStringValueForObject(params[26]));
 				 
@@ -6234,7 +6260,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 					}
   				 }
-  				 setAlertLocationWiseData(list,returnList);
+  				 setAlertLocationWiseData(list,returnList,new HashMap<Long,String>(),"");
   			}
   			catch(Exception e)
   			{
@@ -6258,13 +6284,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   			
   			try{
   				Date fromDate = null;Date toDate=null;
-  				if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
-  				{
-  				 fromDate = sdf.parse(inputVO.getFromDate());
-  				 toDate = sdf.parse(inputVO.getToDate());
+  				Date fromDate2 = null;Date toDate2=null;
+  				if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty()){
+  					fromDate = sdf.parse(inputVO.getFromDate());
+  					toDate = sdf.parse(inputVO.getToDate());
   				}
-  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate);//done
-  				 setAlertLocationWiseData(list,returnList);
+  				if(inputVO.getFromDate2() != null && !inputVO.getFromDate2().toString().isEmpty()){
+  					fromDate2 = sdf.parse(inputVO.getFromDate2());
+  					toDate2 = sdf.parse(inputVO.getToDate2());  
+  				}
+  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate,fromDate2,toDate2);//done
+  				 setAlertLocationWiseData(list,returnList,new HashMap<Long,String>(),"verification");
   			}
   			catch(Exception e)
   			{
