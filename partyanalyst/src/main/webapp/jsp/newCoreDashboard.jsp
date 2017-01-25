@@ -3685,7 +3685,7 @@
 							<select class="form-control mandalsCls" id="mandalId" >
 								<select>
 						</div>
-						<div class="col-md-2 col-xs-12 col-sm-3" style="display:none;" id="villgWardDivId1">
+						<div class="col-md-2 col-xs-12 col-sm-3" style="display:none;" id="villgWardDivId">
 							<label>Village</label>
 							<select class="form-control villgWardCls" id="villgWardId" >
 								<select>
