@@ -3861,7 +3861,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(editionList != null && editionList.size() > 0){
 			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
 		}
-		queryStr.append(" group by district.districtId,model1.newsOrganizationId order by district.districtId,model1.newsOrganizationId ");
+		queryStr.append(" group by model1.newsOrganizationId,district.districtId order by district.districtId,model1.newsOrganizationId ");
 		
 		Query query = getSession().createQuery(queryStr.toString()); 
 		
