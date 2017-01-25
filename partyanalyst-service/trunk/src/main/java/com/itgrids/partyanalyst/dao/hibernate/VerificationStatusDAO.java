@@ -59,7 +59,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllAlerts(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate){
+	public List<Object[]> getAllAlerts(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,Date fromDate2,Date toDate2){
 		StringBuilder str = new StringBuilder();
 		str.append(" select " +
 				   " model.alertId ," +//0
@@ -70,8 +70,8 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 				   " alertSeverity.severity, " +//5
 				   " model.regionScopes.regionScopesId, " +//6
 				   " model.regionScopes.scope," +//7
-				   " vs.actionTypeStatus.actionTypeStatusId, " +//8
-				   " vs.actionTypeStatus.status ");//9
+				   " alertStatus.alertStatusId, " +//8
+				   " alertStatus.alertStatus ");//9
 		str.append(" ,tehsil.tehsilId, " +//10
 				   " tehsil.tehsilName , " +//11
 				   " panc.panchayatId, " +//12
@@ -95,7 +95,10 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 				   " edition.editionAlias, " +//30
 				   " tvNewsChannel.tvNewsChannelId, " +//31
 				   " tvNewsChannel.channelName, " +//32
-				   " model.title ");//33
+				   " model.title, " +//33
+				   " vs.actionTypeStatus.actionTypeStatusId, " +//34
+				   " vs.actionTypeStatus.status ");//35
+				  
 		str.append(" from VerificationStatus vs " +
 				" 	 left join vs.alert model " +
 				" 	 left join model.editionType editionType " +
@@ -112,7 +115,8 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
-		str.append(" left join model.alertType  alertType ");
+		str.append(" left join model.alertType  alertType " +
+				   " left join model.alertStatus alertStatus ");
 		
 		str.append(" where model.isDeleted ='N' and vs.isDeleted='N' ");
 		
@@ -143,7 +147,11 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue() > 0L)
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
-		
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
+			str.append(" and alertStatus.alertStatusId = :alertStatusId");
+		if(fromDate2 != null && toDate2 != null){ 
+			str.append(" and (date(vs.updatedTime) between :fromDate2 and :toDate2) ");
+		}
 		Query query = getSession().createQuery(str.toString());
 		if(inputVO.getAlertImpactScopeId() != null && inputVO.getAlertImpactScopeId() > 0L){
 			query.setParameter("impactScopeId", inputVO.getAlertImpactScopeId());			
@@ -160,6 +168,12 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			query.setParameter("actionTypeStatusId", inputVO.getActionTypeStatusId());
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue() > 0L)
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
+			query.setParameter("alertStatusId", inputVO.getStatusId());
+		if(fromDate2 != null && toDate2 != null){ 
+			query.setDate("fromDate2", fromDate2);
+			query.setDate("toDate2", toDate2);
+		}
 		return query.list();
 	}
 	public Integer updateStatusForOldAlert(Long userId,Long alertId,Date date){
@@ -338,6 +352,14 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		if(actionTypeId != null && actionTypeId.longValue() > 0){
 			query.setParameter("actionTypeId", actionTypeId);
 		}
+		return query.list();
+	}
+	public List<Object[]> getTotalStatus(){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.alert.alertId, model.actionTypeStatus.status from VerificationStatus model " +
+						" where model.isDeleted = 'N' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
 		return query.list();
 	}
 }
