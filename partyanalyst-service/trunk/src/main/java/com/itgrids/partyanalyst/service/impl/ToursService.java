@@ -2020,7 +2020,7 @@ public class ToursService implements IToursService {
 	    	Map<Long,ToursBasicVO> leadersDetailsMap = new HashMap<Long, ToursBasicVO>();
 	    	Map<String,String> categoryIdNameMap = new HashMap<String, String>();
 	    	Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
-	    	Map<Long,List<ToursBasicVO>> designationMonthWiseTargetMap = new HashMap<Long, List<ToursBasicVO>>(0);
+	    	 Map<Long,Map<String,ToursBasicVO>> designationMonthTarget = new HashMap<Long, Map<String,ToursBasicVO>>(0);
 	    	Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date toDate=null;
@@ -2042,20 +2042,10 @@ public class ToursService implements IToursService {
 	    			 setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
 		    		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourType",designationIds);
 		    		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+		    		 //setting latest month target designation wise
+		    		 setCategoryWisePerMonthTarget(rtrnobjCtgryWseTargetLst,designationMonthTarget,"tourCategory");
+		    		 setCategoryWisePerMonthTarget(rtrnobjGovtTargetLst,designationMonthTarget,"tourType");
 		   	    }
-	    	
-	    		//Taking Per Month Target  Designation wise 
-	    		 List<Long> latestMonthYearIds = selfAppraisalToursMonthDAO.getLatestMonthYearId();
-	    		 List<Long> monthYearsId = new ArrayList<Long>();
-	    		 if(latestMonthYearIds != null && latestMonthYearIds.size() > 0){
-	    			 monthYearsId.add(latestMonthYearIds.get(0));	 
-	    		 }
-	    		 if(monthYearsId != null && monthYearsId.size() > 0){
-	    			 List<Object[]> rtrnPerMonthTrgt = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthYearsId,"tourCategory",designationIds);
-	    			 setCategoryWisePerMonthTarget(rtrnPerMonthTrgt,designationMonthWiseTargetMap,"tourCategory");
-	    			 List<Object[]> rtrnPerMonthTourTypeTrgt = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthYearsId,"tourType",designationIds);
-	    			 setCategoryWisePerMonthTarget(rtrnPerMonthTourTypeTrgt,designationMonthWiseTargetMap,"tourType");
-	    		 }
 	    	
 	    		 List<Object[]> rtrnLeadersDtlsObjLst = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(designationIds);
 	    		 	if(rtrnLeadersDtlsObjLst != null && !rtrnLeadersDtlsObjLst.isEmpty()){
@@ -2128,8 +2118,8 @@ public class ToursService implements IToursService {
 	    			 }
 	    		 if(leadersDetailsMap != null && leadersDetailsMap.size() > 0){
 	    			 for(Entry<Long, ToursBasicVO> entry:leadersDetailsMap.entrySet()){
-	    				 if(designationMonthWiseTargetMap.get(entry.getKey()) != null && designationMonthWiseTargetMap.get(entry.getKey()).size() > 0){
-	    					 entry.getValue().getSubList().addAll(designationMonthWiseTargetMap.get(entry.getKey()));	 
+	    				 if(designationMonthTarget.get(entry.getKey()) != null && designationMonthTarget.get(entry.getKey()).size() > 0){
+	    					 entry.getValue().getSubList().addAll(designationMonthTarget.get(entry.getKey()).values());	 
 	    				 }
 	    			 }
 	    		 }
@@ -2181,28 +2171,33 @@ public class ToursService implements IToursService {
   		}
   		return d;
   		}
-	 public void setCategoryWisePerMonthTarget(List<Object[]> objLst,Map<Long,List<ToursBasicVO>> categoryWiseMap,String type){
+	 public void setCategoryWisePerMonthTarget(List<Object[]> objLst,Map<Long,Map<String,ToursBasicVO>> designationMonthTarget,String type){
 		 try{
 			 if(objLst != null && objLst.size() > 0){
 				 for(Object[] param:objLst){
-					 List<ToursBasicVO> categoryList = categoryWiseMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					 	if(categoryList == null){
-					 		categoryList = new ArrayList<ToursBasicVO>();
-					 		categoryWiseMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryList);
+					 	Map<String,ToursBasicVO> categoryMap = designationMonthTarget.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 	if(categoryMap == null){
+					 		categoryMap = new HashMap<String, ToursBasicVO>();
+					 		designationMonthTarget.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryMap);
 					 	}
-					 	ToursBasicVO categoryVO = new ToursBasicVO();
+					 	
 					 	 String idStr = commonMethodsUtilService.getStringValueForObject(param[2]);
 						 if(type.equalsIgnoreCase("tourType")){
 							 idStr = "0"+idStr;
 						 }
-					 	categoryVO.setIdStr(idStr);
-					 	categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-					 	categoryVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
-					 	categoryList.add(categoryVO);
+						 ToursBasicVO categoryVO = categoryMap.get(idStr);
+						 if(categoryVO == null){
+							categoryVO = new ToursBasicVO();
+							categoryVO.setIdStr(idStr);
+							categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							categoryVO.setTargetDays(commonMethodsUtilService.getLongValueForObject(param[6]));
+							categoryMap.put(categoryVO.getIdStr(), categoryVO);
+							 
+						 }
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Exception Occured in setCategroyWiseTarget() in ToursService  : ",e);
+			 LOG.error("Exception Occured in setPerMonthTargetDesignationWise() in CoreDashboardToursService  : ",e);
 		 }
 	 }
 	 public void setDesignationWiseTarget(List<Object[]> objLst,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap,String type){
