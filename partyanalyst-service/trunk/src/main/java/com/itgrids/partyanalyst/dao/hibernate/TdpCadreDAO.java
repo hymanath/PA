@@ -7411,7 +7411,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		return query.list();
 	}
 	
-	public List<Object[]> getTdpCadreDetailsBySearch(List<Long> constituencyIds , String searchType,String memberShipNo,String mobileNo,String voterId){
+	public List<Object[]> getTdpCadreDetailsBySearch(List<Long> constituencyIds , String searchType,String memberShipNo,String mobileNo,String voterId,List<Long> assignedBoothIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.tdpCadre.tdpCadreId," +		//0
 						" model.tdpCadre.memberShipNo," +	//1
@@ -7428,14 +7428,18 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 						" model2.voterId," +				//12
 						" model2.voterIDCardNo," +			//13
 						" model.enrollmentYearId, " +		//14
-						" model.tdpCadre.isCsd" +			//15
+						" model.tdpCadre.isCsd, " + 		//15
+						" model.tdpCadre.userAddress.booth.boothId " +//16
 						" from TdpCadreEnrollmentYear model" +	
 						" left join model.tdpCadre.voter model1" +
 						" left join model.tdpCadre.familyVoter model2" +
 						" where model.tdpCadre.isDeleted = 'N'" +
 						" and model.isDeleted = 'N'" +
-						" and model.tdpCadre.enrollmentYear = :enrollmentYear");
+						" and model.tdpCadre.enrollmentYear = :enrollmentYear ");
 		
+		if(assignedBoothIds != null && assignedBoothIds.size()>0){
+			sb.append(" and model.tdpCadre.userAddress.booth.boothId in (:assignedBoothIds) ");
+		}
 		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip") && memberShipNo != null)
 			sb.append(" and model.tdpCadre.memberShipNo = :memberShipNo");
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("mobile") && mobileNo != null)
@@ -7459,6 +7463,9 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		if(constituencyIds != null && constituencyIds.size()>0){
 			query.setParameterList("constituencyIds", constituencyIds);
+		}
+		if(assignedBoothIds != null && assignedBoothIds.size()>0){
+			query.setParameterList("assignedBoothIds", assignedBoothIds);
 		}
 		
 		return query.list();

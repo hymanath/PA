@@ -7016,6 +7016,17 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 	}
 	
+	public List<Object[]> getBoothsOfVoterIds(List<Long> voterIds,Long publicationDateId){
+		Query query = getSession().createQuery(" select distinct model.voter.voterId, model.booth.boothId from BoothPublicationVoter model" +
+				" where model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+		
+	}
+	
+	
 public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) {
 		
 		Query query = getSession()
@@ -8437,7 +8448,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 
-	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo){
+	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo,List<Long> assignedBoothIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.voter.voterId," +
 						" model.voter.name," +
@@ -8450,8 +8461,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 						" model.voter.imagePath," +
 						" model.voter.houseNo" +
 						" from BoothPublicationVoter model" +
-						" where model.booth.publicationDate.publicationDateId = 22");
-		
+						" where model.booth.publicationDate.publicationDateId = 22 ");
+		if(assignedBoothIds != null && assignedBoothIds.size()>0){
+			sb.append(" and model.booth.boothId in (:assignedBoothIds)  ");
+		}
 		if(searchType != null && searchType.equalsIgnoreCase("const") && searchVal != null && searchVal.longValue() > 0l)
 			sb.append(" and model.booth.constituency.constituencyId = :searchVal");
 		else if(searchType != null && searchType.equalsIgnoreCase("mandal") && searchVal != null && searchVal.longValue() > 0l)
@@ -8481,6 +8494,9 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			query.setParameter("mobileNo", mobileNo);*/
 		if(hNo != null && hNo.trim().length() > 0l)
 			query.setParameter("hNo", hNo);
+		if(assignedBoothIds != null && assignedBoothIds.size()>0){
+			query.setParameterList("assignedBoothIds", assignedBoothIds);
+		}
 		
 		return query.list();
 	}

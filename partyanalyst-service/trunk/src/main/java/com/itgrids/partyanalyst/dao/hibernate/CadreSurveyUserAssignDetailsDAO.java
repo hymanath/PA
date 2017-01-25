@@ -19,6 +19,17 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		super(CadreSurveyUserAssignDetails.class);
 	}
 
+	public List<Long> getConstituencyIdByUserId(Long cadreSurveyUserId){
+		StringBuilder str = new StringBuilder(); 
+		
+		str.append(" select distinct model.constituencyId from CadreSurveyUserAssignDetails model where model.cadreSurveyUser.cadreSurveyUserId = :cadreSurveyUserId "
+				+ " and model.isDeleted = 'N' and model.cadreSurveyUser.isEnabled='Y' and model.cadreSurveyUser.isDeleted='N' " );
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		return query.list();
+	}
 	
 	public List<CadreSurveyUserAssignDetails> getCadreAssinedDetails(Long cadreSurveyUserId)
 	{
