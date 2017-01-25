@@ -2711,7 +2711,7 @@
 		<property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
-		<property name="tdpCadreEnrollmentInfoDAO" ref="tdpCadreEnrollmentInfoDAO" />
+		<property name="cadreRegistrationAllowAreasDAO" ref="cadreRegistrationAllowAreasDAO" />
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
