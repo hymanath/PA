@@ -37,6 +37,8 @@ public class LocationVO implements Serializable {
 	private String category;
 	private Long actionTypeStatusId;
 	private String task;
+	private String fromDate2;
+	private String toDate2;
 	
 	
 	public String getTask() {
@@ -196,7 +198,17 @@ public class LocationVO implements Serializable {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	
+	public String getFromDate2() {
+		return fromDate2;
+	}
+	public void setFromDate2(String fromDate2) {
+		this.fromDate2 = fromDate2;
+	}
+	public String getToDate2() {
+		return toDate2;
+	}
+	public void setToDate2(String toDate2) {
+		this.toDate2 = toDate2;
+	}
 	
 }
