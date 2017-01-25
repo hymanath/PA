@@ -35,7 +35,7 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type);
 	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds);
-	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate);
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId);
 	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId ,String countType);
 	public List<Object[]> getActivityConductedCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate);
 	public void flushAndclearSession();

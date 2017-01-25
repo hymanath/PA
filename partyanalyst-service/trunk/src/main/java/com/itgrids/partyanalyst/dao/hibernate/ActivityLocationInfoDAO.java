@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -1479,22 +1478,38 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		return query.list();
 	}
 	
-	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
-		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
-												" count(model.activityLocationInfoId)," +
-												"  model.address.district.districtId," +
-												"  model.address.district.districtName," +
-												"  model.activityScope.activity.activityName, " +
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId){
+		 StringBuilder queryStr = new StringBuilder();
+	      queryStr.append("select model.activityScope.activityScopeId," +
+												" count(model.activityLocationInfoId),"); 
+	      if(scopeId !=null && scopeId.longValue() == 3l){
+	    	  queryStr.append("  model.address.district.districtId," +
+												"  model.address.district.districtName," );
+	      }else if(scopeId !=null && scopeId.longValue() == 2l){
+	    	  queryStr.append("  model.address.state.stateId," +
+						"  model.address.state.stateName," );
+	      }
+	      queryStr.append("  model.activityScope.activity.activityName, " +
 												" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 												" from ActivityLocationInfo model " +
 												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
 												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
-												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
-												" group by model.activityScope.activityScopeId,model.address.district.districtId " +
-												" order by model.address.district.districtId  ");
-		query.setParameterList("activityIdsLst", activityIdsLst);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
+	      if(scopeId != null && scopeId.longValue() == 3l){
+	    	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
+	    	   queryStr.append(" order by model.address.district.districtId ");
+	      }
+	      else if(scopeId != null && scopeId.longValue() == 2l){
+	    	  queryStr.append(" group by model.activityScope.activityScopeId,model.address.state.stateId "); 
+	    	   queryStr.append(" order by model.address.state.stateId ");
+	      }
+	      Query query = getSession().createQuery(queryStr.toString());  
+	      query.setParameterList("activityIdsLst", activityIdsLst);
+	      query.setParameter("startDate", startDate);
+	      query.setParameter("endDate", endDate);
+	      /*if(scopeId != null && scopeId.longValue() > 0l){
+	    	  query.setParameter("scopeId", scopeId); 
+	      }*/
 		return query.list();
 	}
 	public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activityScopeId, String searchType,Long stateId,String countType){

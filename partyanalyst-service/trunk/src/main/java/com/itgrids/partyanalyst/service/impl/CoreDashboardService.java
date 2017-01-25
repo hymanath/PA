@@ -1350,7 +1350,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return returnList;
 	}
-	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr){
+	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr,Long scopeId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1361,16 +1361,18 @@ public class CoreDashboardService implements ICoreDashboardService{
 				toDate = sdf.parse(toDateStr);
 			}
 			Map<Long,IdAndNameVO> districtsMap = new HashMap<Long, IdAndNameVO>(0);
-			List<Object[]> districtsList = districtDAO.getDistrictListBystateId(1L);
-			if(commonMethodsUtilService.isListOrSetValid(districtsList)){
-				for (Object[] param : districtsList) {
-					IdAndNameVO vo = new IdAndNameVO();
-					vo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					vo.setPerc("0.00");
-					vo.setRemainingPerc("100.00");
-					vo.setCountOfActivityLocationInfo(0L);
-					districtsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
+			if(scopeId != null && scopeId.longValue()==3L){
+				List<Object[]> districtsList = districtDAO.getDistrictListBystateId(1L);
+				if(commonMethodsUtilService.isListOrSetValid(districtsList)){
+					for (Object[] param : districtsList) {
+						IdAndNameVO vo = new IdAndNameVO();
+						vo.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						vo.setPerc("0.00");
+						vo.setRemainingPerc("100.00");
+						vo.setCountOfActivityLocationInfo(0L);
+						districtsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
+					}
 				}
 			}
 			
@@ -1398,7 +1400,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 				for (IdAndNameVO idAndNameVO : returnList) {
 					SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
 					searchAttributeVO.setScopeValue(idAndNameVO.getSessionNo());
-					searchAttributeVO.setScopeId(3L);
+					//searchAttributeVO.setScopeId(3L); 
+					searchAttributeVO.setScopeId(scopeId);
 					
 					if(!commonMethodsUtilService.isListOrSetValid(searchAttributeVO.getLocationTypeIdsList()))
 						searchAttributeVO.setLocationTypeIdsList(new ArrayList<Long>(0));
@@ -1440,8 +1443,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
-			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
-			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
+			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
 			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesList)){
 				if(!commonMethodsUtilService.isListOrSetValid(list))
 					list = new ArrayList<Object[]>(0);
@@ -1460,7 +1463,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						resultList = scopesMap.get(vo.getId());
 					}
 					vo.setPartyName(commonMethodsUtilService.getStringValueForObject(obj[4]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
+					vo.setName(vo.getPartyName()+" "+commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
 					vo.setCountOfActivityLocationInfo(Long.valueOf(obj[1] != null ? obj[1].toString():""));
 					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(obj[3]));

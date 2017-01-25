@@ -47,7 +47,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
-import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
@@ -231,6 +230,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.MD5Algoritm;
+//import com.google.gson.Gson;
 
 
 public class CadreRegistrationService implements ICadreRegistrationService {
@@ -954,9 +954,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							familyDetails = familyDetails + "Voter Id" + ":" +familyVO.getVoterId() + "-" + "Occupation Id" + ":" + familyVO.getOccupationId()+" : " +"education Id" + ":" + familyVO.getEducationId() + ":: ";
 						}
 					}*/
-					Gson gson = new Gson();
+					//Gson gson = new Gson();
 					 
-					System.out.println(gson.toJson(inputResponse));
+					//System.out.println(gson.toJson(inputResponse));
 					
 					if(StringUtils.hasText(inputResponse.getMemberTypeId()))
 						tdpCadreBackupDetails.setTdpMemberTypeId(Long.valueOf(inputResponse.getMemberTypeId()));
@@ -969,7 +969,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					tdpCadreBackupDetails.setDataSourceType(registrationType);
 					//tdpCadreBackupDetails.setFamilyDetails(familyDetails);
 					tdpCadreBackupDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					tdpCadreBackupDetails.setJsonObject(gson.toJson(inputResponse));
+					//tdpCadreBackupDetails.setJsonObject(gson.toJson(inputResponse));
 					tdpCadreBackupDetails = tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
 					
 				}
@@ -7333,9 +7333,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							}
 						}
 						TdpCadreVerfiedData tdpCadreVerfiedData = new TdpCadreVerfiedData();
-						Gson gson = new Gson();
-						tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
-						tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
+						//Gson gson = new Gson();
+						//tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
+						//tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
 						tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));

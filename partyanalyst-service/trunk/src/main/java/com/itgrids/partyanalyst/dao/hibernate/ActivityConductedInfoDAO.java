@@ -90,7 +90,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
-	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
+	/*public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 												" count(model.activityConductedInfoId)," +
 												"  model.address.district.districtId," +
@@ -107,7 +107,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		return query.list();
-	}
+	}*/
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
 				//" sum(model.infoCellCount) " +
@@ -272,6 +272,40 @@ if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_
 	query.setParameter("toDate", toDate);
  }
 return query.list();
+}
+public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId){
+	 StringBuilder queryStr = new StringBuilder();
+     queryStr.append("select model.activityScope.activityScopeId," +
+											" count(model.activityConductedInfoId),"); 
+     if(scopeId !=null && scopeId.longValue() == 3l){
+   	  queryStr.append("  model.address.district.districtId," +
+											"  model.address.district.districtName," );
+     }else if(scopeId !=null && scopeId.longValue() == 2l){
+   	  queryStr.append("  model.address.state.stateId," +
+					"  model.address.state.stateName," );
+     }
+     queryStr.append("  model.activityScope.activity.activityName, " +
+											" model.activityScope.activityLevel.level " +
+											" from ActivityConductedInfo model " +
+											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
+											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
+											" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
+     if(scopeId != null && scopeId.longValue() == 3l){
+   	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
+   	   queryStr.append(" order by model.address.district.districtId ");
+     }
+     if(scopeId != null && scopeId.longValue() == 2l){
+   	  queryStr.append(" group by model.activityScope.activityScopeId,model.address.state.stateId "); 
+   	   queryStr.append(" order by model.address.state.stateId ");
+     }
+     Query query = getSession().createQuery(queryStr.toString());  
+     query.setParameterList("activityIdsLst", activityIdsLst);
+     query.setParameter("startDate", startDate);
+     query.setParameter("endDate", endDate);
+     /*if(scopeId != null && scopeId.longValue() > 0l){
+   	  query.setParameter("scopeId", scopeId); 
+     }*/
+	return query.list();
 }
 
 
