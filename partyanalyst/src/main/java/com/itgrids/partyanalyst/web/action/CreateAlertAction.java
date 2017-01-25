@@ -472,6 +472,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setCategoryId(jObj.getLong("categoryId"));
 			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId")); 
 			inputVO.setTask(jObj.getString("task"));
+			inputVO.setFromDate2(jObj.getString("fromDate2"));
+			inputVO.setToDate2(jObj.getString("toDate2"));
 			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
 			
 		}
@@ -1362,13 +1364,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			AlertInputVO inputVO = new AlertInputVO();
 			inputVO.setActionTypeId(jObj.getLong("actionTypeId"));
-			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId"));
+			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId"));  
 			inputVO.setFromDate(jObj.getString("fromDate"));
 			inputVO.setToDate(jObj.getString("toDate"));
 			inputVO.setLevelValue(jObj.getLong("levelValue"));
 			inputVO.setCategoryId(jObj.getLong("categoryId"));
 			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
 			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			inputVO.setFromDate2(jObj.getString("fromDate2"));
+			inputVO.setToDate2(jObj.getString("toDate2"));
+			
 			
 			alertDataList = alertService.getAllAlertsWithoutFilter(regVo.getRegistrationID(),inputVO);
 		} catch (Exception e) {
