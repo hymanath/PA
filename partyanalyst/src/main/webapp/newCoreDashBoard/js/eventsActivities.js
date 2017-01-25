@@ -137,6 +137,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 		{
 			//alert("already opened");
 			var activityId = $("#hiddenActivityId").val();
+			stateWiseCohort(activityId);
 			districtWiseCohort(activityId);
 		}
 			$(".acitivitiesMoreExpand").removeClass("moreEventsBlocksIcon");
@@ -2092,20 +2093,24 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 	$(".moreEventsBlocks").toggle();
 	var activityId = $("#hiddenActivityId").val();
 		  $(".moreEventsBlocks").toggle();
+		    stateWiseCohort(activityId); //srujana
 			districtWiseCohort(activityId);
 			//activitiesQuestions(activityId);
 			$(".detailedBlockEvents,.activeUlCls").show();
 	        $(".detailedEvent").addClass("active")	
 	        $(".comparisonEvent").removeClass("active")
+			
 		//globalActivityIdsList
 });
 function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
+	var  scopeId = 3;
 	var jsObj ={
 	   activityId : globalActivityIdsList,
 	   fromDate : customStartDateActivities,
-	   toDate : customEndDateActivities
+	   toDate : customEndDateActivities,
+	   scopeId : scopeId
 		 
 	  }
 	$.ajax({
@@ -2249,6 +2254,156 @@ function districtWiseCohort(activityId){
 	}else{
 		$("#eventsDistWiseCohort1").html("No Data Available");
 	}
+}
+//srujana
+function stateWiseCohort(activityId){
+	$("#eventsGraphBlock1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	globalActivityIdsList = activityId.split(',');
+	var  scopeId = 2;
+	var jsObj ={
+	   activityId : globalActivityIdsList,
+	   fromDate : customStartDateActivities,
+	   toDate : customEndDateActivities,
+	   scopeId : scopeId
+		 
+	  }
+	$.ajax({
+		type : 'POST',
+		url : 'activitiesDistrictWiseCohortAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildStateWiseCohort(result);
+	});
+}
+
+ function buildStateWiseCohort(result)
+{
+	var str=' ';
+	if(result.length > 3)
+	{
+		str+='<div class="scroll-div">';
+	}
+		str+='<ul class="list-inline best-matched-profile">';
+			for(var i in result)
+			{
+				str+='<li><h4>'+result[i].name+'</h4>';
+				str+='<div id="events1'+i+'" class="chartLi"></div></li>';
+			}
+			
+		str+='</ul>';
+	if(result.length > 3)
+	{
+		str+='</div>';
+	}
+	
+	$("#eventsGraphBlock1").html(str);
+
+	for(var i in result)
+	{
+		var conductedCounts = [];
+			var nonConductedCounts = [];
+			var candidateNames = [];
+			var countVar =0;
+			
+			
+			for(var j in result[i].distList){
+				candidateNames.push(result[i].distList[j].locationName)
+				//conductedCounts.push(parseFloat(result[i].distList[j].perc))
+				//nonConductedCounts.push(parseFloat(result[i].distList[j].remainingPerc))
+				
+				conductedCounts.push({"y":parseFloat(result[i].distList[j].perc),"extra":result[i].id+"-"+result[i].distList[j].locationId+"-"+result[0].partyName+"_"+result[0].actualMobNumber+"_"+result[i].distList[j].locationName});
+				nonConductedCounts.push({"y":parseFloat(result[i].distList[j].remainingPerc),"extra":result[i].id+"-"+result[i].distList[j].locationId+"-"+result[0].partyName+"_"+result[0].actualMobNumber+"_"+result[i].distList[j].locationName});
+			}
+		
+		$(function () {
+			$('#events1'+i+'').highcharts({
+				colors: ['#64C664','#D33E39'],
+				chart: {
+					type: 'column',
+					
+				},
+				title: {
+					text: null,
+					style: {
+						fontSize: '16px',
+						fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+						textTransform: "uppercase"
+					}
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Event'],
+					labels: {
+						enabled: false,
+					}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
+				},
+				legend: {
+					enabled: true,
+					align: 'left'
+			
+				},
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels:{
+							enabled: true,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) + '%';
+								}
+							}
+						},
+						
+					},
+						/* series: {
+						cursor: 'pointer',
+						point: {
+							events: {
+								click: function () {
+									getDistrictWiseActivityCounts(0,0,this.extra,"constituency","onload")
+								}
+							}
+						}  
+				     }, */
+				},
+				 series: [{
+					name: 'Conducted',
+					data: conductedCounts 
+				}, {
+					name: 'Not Conducted',
+					data: nonConductedCounts
+				}]
+			});
+		});	
+	}
+	
 }
 /* Activities Functionality End */
 
