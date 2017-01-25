@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 
 public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurveyUserAssignDetails, Long>{
 
+	public List<Long> getConstituencyIdByUserId(Long cadreSurveyUserId);
 	public List<CadreSurveyUserAssignDetails> getCadreAssinedDetails(Long cadreSurveyUserId);
 	
 	public List<Long> getCadreSurveyAssignUsersList();
