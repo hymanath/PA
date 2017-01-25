@@ -36,4 +36,5 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId);
 	public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId);
 	public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId);
+	public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId);
 }
