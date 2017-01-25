@@ -455,7 +455,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getCadreDataForSqlite(Long constituencyId);
 	  public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 	  public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterVO inputVO,String countTimeTypeStr);	  public List<Object[]> getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId,String status);
-	  public List<Object[]> getTdpCadreDetailsBySearch(List<Long> constituencyIds , String searchType,String memberShipNo,String mobileNo,String voterId);
+	  public List<Object[]> getTdpCadreDetailsBySearch(List<Long> constituencyIds , String searchType,String memberShipNo,String mobileNo,String voterId,List<Long> assignedBoothIds);
 	  public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,Long enrlollmentYearId);
 	  public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 

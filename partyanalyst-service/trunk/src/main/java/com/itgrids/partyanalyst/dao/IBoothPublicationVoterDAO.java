@@ -739,7 +739,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long constituencyId,List<Long> constituencyIdsList);
 	  public Object[] getBoothDetailsByVoterId(String voterId,Long publicationId);
 	  public List<String> getPartNoForRTCRegistration(Long constituencyId,Long voterId);
-	  public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo);
+	  public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo,List<Long> assignedBoothIds);
 	  public List<Object[]> getRegisteredCadresForVoterIds(List<Long> voterIds);
 	  public List<Object[]> getVoterDetails(Long voterId,Long publicationDateId); 
 	  public List<Object[]> getFamilyVoterDetails(Long boothId,String houseNo);
@@ -751,4 +751,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterIdDetailsByPublicationIdAndCardNo(String voterCardNo,Long publicationId);
 	  public List<Object[]> getTotalVoterGroupByLocationUrb(String location, Long constId );
 	  public List<Object[]> getTotalVoterGroupByLocationUrbWard(String location, Long constId );
+	  public List<Object[]> getBoothsOfVoterIds(List<Long> voterIds,Long publicationDateId);
 }
