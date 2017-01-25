@@ -3474,8 +3474,8 @@ public String activitiesDistrictWiseCohort(){
 		}
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
-		
-		IdAndNameVOList = coreDashboardService.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate);
+		Long scopeId = jObj.getLong("scopeId");
+		IdAndNameVOList = coreDashboardService.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
 	}
