@@ -1683,6 +1683,16 @@ public class AlertsNewsPortalService implements IAlertsNewsPortalService{
 				if(deptmap != null){
 					returnList = new ArrayList<AlertCommentVO>(deptmap.values());
 				}
+				
+				if(returnList != null && !returnList.isEmpty()){
+					for (AlertCommentVO vo : returnList) {
+						if(vo.getSublist1() != null && !vo.getSublist1().isEmpty()){
+							for (AlertCommentVO stsvo : vo.getSublist1()) {
+								vo.setCount(vo.getCount()+stsvo.getCount());
+							}
+						}
+					}
+				}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
