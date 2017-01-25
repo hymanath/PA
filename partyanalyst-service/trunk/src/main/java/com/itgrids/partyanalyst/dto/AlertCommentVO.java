@@ -16,7 +16,7 @@ public class AlertCommentVO implements Serializable {
 	private String timeString;
 	private Long LocationId;
 	private String locaitonName;
-	private Long count;
+	private Long count = 0l;
 	private List<List<AlertCommentVO>> sublist = new ArrayList<List<AlertCommentVO>>(0);
 	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>(0);
 	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>(0);
