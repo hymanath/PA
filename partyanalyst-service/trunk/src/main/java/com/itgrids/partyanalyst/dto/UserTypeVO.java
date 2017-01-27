@@ -80,6 +80,14 @@ public class UserTypeVO implements Serializable{
 	private Long totalNewCadreCount=0l;
 	private Double totalRenewalCadreCountPer=0.0d;
 	private Double totalNewCadreCountPer=0.0d;
+	private Long totalActvtiesCount = 0l;
+	private Long condctedActiesCount = 0l;
+	private Long notCondctedActiesCount = 0l;
+	private Double conductedPerc = 0.0d;
+	private Double notConductedPerc = 0.0d;
+	private Long imgesCoveredCount = 0l;
+	private Double imagesCvredCountPerc = 0.0d;
+	
 	
 	public Long getId() {
 		return id;
@@ -429,5 +437,47 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setTotalNewCadreCountPer(Double totalNewCadreCountPer) {
 		this.totalNewCadreCountPer = totalNewCadreCountPer;
+	}
+	public Long getTotalActvtiesCount() {
+		return totalActvtiesCount;
+	}
+	public void setTotalActvtiesCount(Long totalActvtiesCount) {
+		this.totalActvtiesCount = totalActvtiesCount;
+	}
+	public Long getCondctedActiesCount() {
+		return condctedActiesCount;
+	}
+	public void setCondctedActiesCount(Long condctedActiesCount) {
+		this.condctedActiesCount = condctedActiesCount;
+	}
+	public Long getNotCondctedActiesCount() {
+		return notCondctedActiesCount;
+	}
+	public void setNotCondctedActiesCount(Long notCondctedActiesCount) {
+		this.notCondctedActiesCount = notCondctedActiesCount;
+	}
+	public Double getConductedPerc() {
+		return conductedPerc;
+	}
+	public void setConductedPerc(Double conductedPerc) {
+		this.conductedPerc = conductedPerc;
+	}
+	public Double getNotConductedPerc() {
+		return notConductedPerc;
+	}
+	public void setNotConductedPerc(Double notConductedPerc) {
+		this.notConductedPerc = notConductedPerc;
+	}
+	public Long getImgesCoveredCount() {
+		return imgesCoveredCount;
+	}
+	public void setImgesCoveredCount(Long imgesCoveredCount) {
+		this.imgesCoveredCount = imgesCoveredCount;
+	}
+	public Double getImagesCvredCountPerc() {
+		return imagesCvredCountPerc;
+	}
+	public void setImagesCvredCountPerc(Double imagesCvredCountPerc) {
+		this.imagesCvredCountPerc = imagesCvredCountPerc;
 	}
 }
