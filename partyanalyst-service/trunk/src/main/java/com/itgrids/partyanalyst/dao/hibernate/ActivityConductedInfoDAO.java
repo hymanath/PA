@@ -52,15 +52,16 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		queryStr.append(" from ActivityConductedInfo model where model.isDeleted='N' " );
 		if(type != null){
 			if(type.equalsIgnoreCase("yes"))
-				queryStr.append(" and model.infoCellCount is not null and model.ivrCount is not null ");  
+				queryStr.append(" and ((model.infoCellCount is not null and model.ivrStatus ='Y') or " +
+						" (model.infoCellCount is null and model.ivrStatus ='Y') or (model.infoCellCount is not null and model.ivrStatus is null ) )  ");  
 			else if(type.equalsIgnoreCase("no"))
-				queryStr.append(" and model.infoCellCount is null and model.ivrCount is null ");
+				queryStr.append(" and ((model.infoCellCount is null and model.ivrStatus ='N') or  (model.infoCellCount is null and model.ivrStatus is null ) )   ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrCount is null)  or " +
-						"  (model.infoCellCount is null and model.ivrCount is not null) ) ");
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' )  or " +
+						"  (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
 		}
 		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
-		queryStr.append(" group by model.activityScope.activityScopeId");
+		queryStr.append(" group by model.activityScope.activityScopeId ");
 		
 		/*
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +

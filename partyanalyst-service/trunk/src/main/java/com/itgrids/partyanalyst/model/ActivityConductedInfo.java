@@ -30,6 +30,7 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	private Long addressId;
 	private Long infoCellCount;
 	private Long ivrCount;
+	private String ivrStatus;
 	private String isDeleted;
 	private Date insertedTime;
 	private Date updatedTime;;
@@ -162,6 +163,14 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	
+	@Column(name="ivr_status")
+	public String getIvrStatus() {
+		return ivrStatus;
+	}
+	public void setIvrStatus(String ivrStatus) {
+		this.ivrStatus = ivrStatus;
 	}
 	
 				

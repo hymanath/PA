@@ -1438,18 +1438,31 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.activityScope.activityScopeId,count(model.activityLocationInfoId)" +
 				" from ActivityLocationInfo model where" +
-				"  model.activityScope.activityScopeId in (:activityScopeIds)");
+				"  model.activityScope.activityScopeId in (:activityScopeIds) ");
 		if(type != null){
 			if(type.equalsIgnoreCase("yes"))
-				queryStr.append(" and model.plannedDate is not null and model.ivrStatus ='Y' ");  
+				queryStr.append(" and (model.conductedDate is not null and  model.ivrStatus ='Y' ) ");  
 			else if(type.equalsIgnoreCase("no"))
-				queryStr.append(" and model.plannedDate is null and ( model.ivrStatus is null or model.ivrStatus='N' )");
+				queryStr.append(" and ( model.conductedDate is null and  model.ivrStatus ='N') ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" and ((model.plannedDate is null and  (model.ivrStatus='Y')) or " +
-						"  (model.plannedDate is not null and ( model.ivrStatus is null or model.ivrStatus='N' ))) ");			
+				queryStr.append(" and ( (model.conductedDate is not null and  model.ivrStatus='N')  " +
+						"or (model.conductedDate is not  null and  model.ivrStatus is null) ) ");			
 		}else{
-			queryStr.append(" and model.plannedDate is not null");
+			queryStr.append(" and model.plannedDate is not null ");
 		}
+		/*if(type != null){
+			if(type.equalsIgnoreCase("yes"))
+				queryStr.append(" and  (( model.conductedDate is not null and  model.ivrStatus ='Y') or " +
+						" ( model.conductedDate is not null and  model.ivrStatus is null) or " +
+						" ( model.conductedDate is null and  model.ivrStatus ='Y' ) ) ");  
+			else if(type.equalsIgnoreCase("no"))
+				queryStr.append(" and ( ( model.conductedDate is null and  model.ivrStatus ='N' ) or ( model.conductedDate is null and  model.ivrStatus is null )  )");
+			else if(type.equalsIgnoreCase("maybe"))
+				queryStr.append(" and ( (model.conductedDate is not null and  model.ivrStatus='N') or (model.conductedDate is null and  model.ivrStatus='Y')) ");			
+		}else{
+			queryStr.append(" and model.plannedDate is not null ");
+		}
+		 * */
 		queryStr.append(" group by model.activityScope.activityScopeId");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityScopeIds", activityScopeIds);
