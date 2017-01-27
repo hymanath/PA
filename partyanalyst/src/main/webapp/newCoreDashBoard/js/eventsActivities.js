@@ -1780,12 +1780,6 @@ function buildDistrictsForActivityCounts(result){
 }
 function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchType,refresh,acvtyNm,levlNm,loctnNm){
 	$("#locatnNamId").text('');
-	if(refresh == "onload"){
-		$("#constncyDivId").hide();
-		$("#mandalDivId").hide();
-		$("#villgWardDivId").hide();
-		$("#districtId").val(0);
-	}
 	if(activityScopeId == 0){
 		var t = type.split("-");
 		activityScopeId = parseInt(t[0]);
@@ -1794,7 +1788,15 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 		globalActvtyScopeId = activityScopeId;
 		acvtyNm = t[2];
 		levlNm = t[3];
-		loctnNm = t[4];
+		//loctnNm = t[4];
+	}
+	if(refresh == "onload"){
+		$("#constncyDivId").hide();
+		$("#mandalDivId").hide();
+		$("#villgWardDivId").hide();
+		//$("#districtId").val(0);
+		$("#districtId").val(districtId);
+		loctnNm =$('#districtId option:selected').text();
 	}
 	
 	$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
@@ -1825,8 +1827,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 		 $("#myModelActivityhead").text(acvtyNm);
 		 $("#smallHeadngId").text(levlNm);
 	}
-	
-	$("#locatnNamId").text(loctnNm +'  DETAILS');
+	$("#locatnNamId").text(loctnNm +'  details');
 	if(type == "count")
 		$("#myModelActivityId").modal('show');
 	else if(type == "all")
