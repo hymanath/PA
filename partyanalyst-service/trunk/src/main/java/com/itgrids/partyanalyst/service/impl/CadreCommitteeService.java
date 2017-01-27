@@ -1332,6 +1332,71 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return affiliatedCommittiesList;
 	}
 	
+	
+	/** 
+	  *  Get All Committees(Main + Affliated ) Related Members Information  For A Given Location.
+	*/
+	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal){
+		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
+        List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
+		returnVo.setHamletsOfTownship(committeeMembersList);
+		try{
+			List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getAllCommitteeMembersInfoInALoc(locationLvl, locationVal);
+			SelectOptionVO memberVo = null;
+			for(Object[] electedMembersInfo:electedMembersInfoList){
+				memberVo = new SelectOptionVO();
+				memberVo.setValue(electedMembersInfo[0].toString());//role
+				if(electedMembersInfo[1] != null){
+				   memberVo.setUrl(electedMembersInfo[1].toString());//image
+				}
+				memberVo.setName(electedMembersInfo[2].toString());//name
+				if(electedMembersInfo[3].toString().trim().length() > 8){
+					memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));
+				}else{
+					memberVo.setType(electedMembersInfo[3].toString());//membership
+				}
+				
+				
+				memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
+				memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
+				memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
+				memberVo.setMandalName(electedMembersInfo[7].toString());//tdpCommitteeRoleId
+				committeeMembersList.add(memberVo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllCommitteeMembersInfoInALoc", e);
+		}
+		return returnVo;
+	}
+	
+	/** 
+	  *  Get Main Committee Members Information  For A Given Location.
+	*/
+	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue){
+		Long committeeId = getMainCommitteeIdInALocation(levelId,levelValue);
+		if(committeeId != null){
+			return getCommitteeMembersInfo(committeeId);
+		}else{
+			return new LocationWiseBoothDetailsVO();
+		}
+	}
+	
+	public Long getMainCommitteeIdInALocation(Long levelId,Long levelValue){
+		Long committeeId = null;
+		try{
+			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue);
+			if(committeeIds.size() > 0){
+				committeeId = committeeIds.get(0);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getMainCommitteeIdInALocation", e);
+		}
+		return committeeId;
+	}
+	
+	/** 
+	  *  GET  COMMITTEE MEMBERS INFORMATION  FOR A GIVEN COMMITTEE.
+	*/
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfo(Long committeeId){
 		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
 		returnVo.setPopulation(committeeId);
@@ -1395,59 +1460,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return returnVo;
 	}
 	
-	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal){
-		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
-        List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
-		returnVo.setHamletsOfTownship(committeeMembersList);
-		try{
-			List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getAllCommitteeMembersInfoInALoc(locationLvl, locationVal);
-			SelectOptionVO memberVo = null;
-			for(Object[] electedMembersInfo:electedMembersInfoList){
-				memberVo = new SelectOptionVO();
-				memberVo.setValue(electedMembersInfo[0].toString());//role
-				if(electedMembersInfo[1] != null){
-				   memberVo.setUrl(electedMembersInfo[1].toString());//image
-				}
-				memberVo.setName(electedMembersInfo[2].toString());//name
-				if(electedMembersInfo[3].toString().trim().length() > 8){
-					memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));
-				}else{
-					memberVo.setType(electedMembersInfo[3].toString());//membership
-				}
-				
-				
-				memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
-				memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
-				memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
-				memberVo.setMandalName(electedMembersInfo[7].toString());//tdpCommitteeRoleId
-				committeeMembersList.add(memberVo);
-			}
-		}catch(Exception e){
-			LOG.error("Exception raised in getAllCommitteeMembersInfoInALoc", e);
-		}
-		return returnVo;
-	}
-	public Long getMainCommitteeIdInALocation(Long levelId,Long levelValue){
-		Long committeeId = null;
-		try{
-			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue);
-			if(committeeIds.size() > 0){
-				committeeId = committeeIds.get(0);
-			}
-		}catch(Exception e){
-			LOG.error("Exception raised in getMainCommitteeIdInALocation", e);
-		}
-		return committeeId;
-	}
-	
-	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue){
-		Long committeeId = getMainCommitteeIdInALocation(levelId,levelValue);
-		if(committeeId != null){
-			return getCommitteeMembersInfo(committeeId);
-		}else{
-			return new LocationWiseBoothDetailsVO();
-		}
-	}
 	
 	//Hint Please call this method in transaction only
 	public ResultStatus saveMandalLevelElectrolInfo(final Long tdpCadreId,final  List<CadrePreviousRollesVO> eligibleRoles)
