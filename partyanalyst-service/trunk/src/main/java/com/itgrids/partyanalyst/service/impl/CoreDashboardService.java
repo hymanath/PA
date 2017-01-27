@@ -1249,8 +1249,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 				for (Long levelId : scopeWiseActivitiesMap.keySet()) {
 					List<Object[]> documentCountList  =  new ArrayList<Object[]>(0);
 					if(levelId != null && levelId.longValue()==1L){//village /ward
-						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","panchayat",null);
-						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","ward",null);
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesCountForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","panchayat");
+						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesCountForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","ward");
 						if(commonMethodsUtilService.isListOrSetValid(list1)){
 							documentCountList.addAll(list1);
 						}
@@ -1259,8 +1259,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 						}
 					}
 					else if(levelId != null && levelId.longValue()==2L){//mandal/town/division
-						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","mandal",null);
-						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","town",null);
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesCountForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","mandal");
+						List<Object[]>  list2  = activityDocumentDAO.getImagesCoveredAndTotalImagesCountForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","town");
 						if(commonMethodsUtilService.isListOrSetValid(list1)){
 							documentCountList.addAll(list1);
 						}
@@ -1269,7 +1269,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						}
 					}
 					else if(levelId != null && levelId.longValue()==5L){//constituency
-						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","constituency",null);
+						List<Object[]>  list1  = activityDocumentDAO.getImagesCoveredAndTotalImagesCountForConstituencies(districtIdsList,scopeWiseActivitiesMap.get(levelId),"state","constituency");
 						if(commonMethodsUtilService.isListOrSetValid(list1)){
 							documentCountList.addAll(list1);
 						}
@@ -1281,8 +1281,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 			    		Long   activityScopeId  = commonMethodsUtilService.getLongValueForObject(param[3]);
 			    		IdAndNameVO vo = getMatchedVOById(activityScopeId, returnList);
 			    		if(vo != null){
-			    			vo.setImagesCovered(coveredCount);
-			    			vo.setTotalImages(imageCount);
+			    			vo.setImagesCovered(vo.getImagesCovered()+coveredCount);
+			    			vo.setTotalImages(vo.getTotalImages()+imageCount);
 			    		}
 			    	  }
 			      }
