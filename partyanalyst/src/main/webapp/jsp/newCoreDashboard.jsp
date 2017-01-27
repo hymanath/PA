@@ -2666,6 +2666,7 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-body">
 										<div id="eventsGraphBlock"></div>
+										<div id="eventsGraphBlock1"></div>
 									</div>
 								</div>
 								<div class="panel panel-default panelNew m_top20">
