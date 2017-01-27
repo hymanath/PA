@@ -15544,6 +15544,11 @@
 		<result type="json" name="success"> 
    			<param name="root">userTypeVOList</param> 
    		</result>
+	</action>
+	<action name="insertDataInToPartyMeetingStatusTableAction" class="coreDashboardAction" method="insertDataInToPartyMeetingStatusTable">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingStatus</param> 
+   		</result>
 	</action> 
  </package>
 </struts>
