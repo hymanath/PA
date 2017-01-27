@@ -20,18 +20,20 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	public List<Object[]> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue){
 		Query query = getSession().createQuery("select model.tdpCommitteeId,model.tdpBasicCommittee.name from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue and " +
-				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2");
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
+		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
 		return query.list();
 	}
 	
 	public List<Long> getMainCommittiesInALocation(Long levelId,Long levelValue){
 		Query query = getSession().createQuery("select model.tdpCommitteeId from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue and " +
-				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1");
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
+		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
 		return query.list();
 	}
 	
