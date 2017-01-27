@@ -76,7 +76,7 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 		return query.list();
 	}
 	public List<Object[]> getAppointmentList(List<Long> appointmentIds){
-		Query query = getSession().createQuery("select model.appointment.appointmentId,model.appointmentCandidate.name," +
+		Query query = getSession().createQuery("select distinct model.appointment.appointmentId,model.appointmentCandidate.name," +
 				" model.appointmentCandidate.mobileNo,model.appointmentCandidate.membershipId,model.appointmentCandidate.imageURL" +
 				" from AppointmentCandidateRelation model" +
 				" where model.appointment.appointmentId in (:appointmentIds)" +

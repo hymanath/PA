@@ -1162,4 +1162,15 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		}
 		return query.list();
 	}
+    
+    public List<Long> checkAppointmentCandidateExistsWithAppointment(Long appointmentId,Long appointmentCandidateId){
+    	Query query = getSession().createQuery("select model.appointmentCandidateRelationId" +
+    											" from AppointmentCandidateRelation model" +
+    											" where model.appointment.appointmentId = :appointmentId" +
+    											" and model.appointmentCandidate.appointmentCandidateId = :appointmentCandidateId");
+    	query.setParameter("appointmentId", appointmentId);
+    	query.setParameter("appointmentCandidateId", appointmentCandidateId);
+    	
+    	return query.list();
+    }
 }
