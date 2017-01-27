@@ -38,9 +38,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId,7committee Name
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
 				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
-				" and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
+				" and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y' " +
+				" and  model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  " +
+				" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameter("locationLvl", locationLvl);
 		query.setParameter("locationVal", locationVal);
+		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -681,9 +684,11 @@ public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRol
 	Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo, " +
 				"  model.tdpCadre.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationType " +
 				"   and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)  and model.isActive ='Y'  " +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 order by model.tdpCommitteeRole.tdpRoles.order ");
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId " +
+				" order by model.tdpCommitteeRole.tdpRoles.order ");
 	query.setParameter("locationType", locationType);
 	query.setParameter("locationVal", locationVal);
+	query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
 	return query.list();
 }
 
