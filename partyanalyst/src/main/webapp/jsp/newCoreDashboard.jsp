@@ -2656,12 +2656,18 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks" id="eventsCmpBlckDivId">
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
 									<li class="text-capital detailedEvent">Detailed</li>
 									<li class="text-capital comparisonEvent">Comparison</li>
 								</ul>
 							</div>
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+									<li class="text-capital detailedEvent">Detailed</li>
+									<li class="text-capital comparisonActivity">Comparison</li>
+								</ul>
+							</div> -->
 							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10">
 								<div class="panel panel-default panelNew">
 									<div class="panel-body">
@@ -2682,7 +2688,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none" id="evntCmpBLockId">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2712,6 +2718,36 @@
 									</div>
 								</div>
 							</div>
+							<!--<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" style="display:none" id="activtyBlckDivId">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForActivityDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsActivityDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
 						</div>
 					</div>
 				</div>
