@@ -8495,7 +8495,8 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 									else
 										appointmentCandidate.setMembershipId(obj[3] != null ? obj[3].toString():"");
 									
-									if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0){int number = 0;
+									if(inputvo.getImageStr() != null && inputvo.getImageStr().trim().length() > 0){
+										int number = 0;
 										 while(String.valueOf(number).length()<11){
 												number = new Random().nextInt();
 											};
@@ -8577,9 +8578,14 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 								return stats;
 							}
  				}else{
- 					String result = savingAppointCandRelaDetails(inputvo.getAppointmentId(),appointmtCadtId);
- 					return result;
- 				
+ 					List<Long> apptCandRelIds = appointmentCandidateRelationDAO.checkAppointmentCandidateExistsWithAppointment(inputvo.getAppointmentId(), appointmtCadtId);
+ 					if(apptCandRelIds != null && !apptCandRelIds.isEmpty()){
+ 						return "success";
+ 					}
+ 					else{
+ 						String result = savingAppointCandRelaDetails(inputvo.getAppointmentId(),appointmtCadtId);
+ 	 					return result;
+ 					}
  				}
  					//return "failure";
  			   }
