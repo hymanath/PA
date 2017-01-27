@@ -153,6 +153,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<IdNameVO> idNameVOs;
 	private List<TabLoginAuthVO> tabDetails;
 	private String tabUserDetails;
+	private ResultStatus 						partyMeetingStatus;
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -768,7 +769,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCadreVO(CadreBasicVO cadreVO) {
 		this.cadreVO = cadreVO;
 	}
-    
+    	
+	public ResultStatus getPartyMeetingStatus() {
+		return partyMeetingStatus;
+	}
+
+	public void setPartyMeetingStatus(ResultStatus partyMeetingStatus) {
+		this.partyMeetingStatus = partyMeetingStatus;
+	}
+
 	//business methods
 	public String execute(){
 		try {
@@ -3541,5 +3550,20 @@ try{
 	LOG.error("Exception raised at getUserTypeActivityConductedCnt() method of CoreDashBoard", e);
 }
 return Action.SUCCESS;
+}
+public String insertDataInToPartyMeetingStatusTable()
+{
+	try
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		jObj = new JSONObject(getTask());
+		partyMeetingStatus = coreDashboardPartyMeetingService.insertDataInToPartyMeetingStatusTable();
+		
+	}catch(Exception e)
+	{
+		LOG.info("\n\n pushDataToPartyMeetingStatusTable "); 
+	}
+	return Action.SUCCESS;
 }
 }
