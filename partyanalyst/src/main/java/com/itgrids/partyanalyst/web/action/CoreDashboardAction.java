@@ -2265,7 +2265,8 @@ public String getSelectedChildTypeMembersForEvent(){
 				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
 			}
 		}
-		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(parentActivityMemberId,childUserTypeIds,reportType,stateId,eventsIds);
+		String searchType = jObj.getString("searchType");
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(parentActivityMemberId,childUserTypeIds,reportType,stateId,eventsIds,searchType);
 	}catch (Exception e) {
 		LOG.error("Exception raised at getSelectedChildTypeMembersForEvent() method of CoreDashBoard", e);
 	}
@@ -2293,7 +2294,8 @@ public String getDirectChildTypeMembersForEvent(){
 				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
 			}
 		}
-		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(activityMemberId,childUserTypeIds,reportType,stateId,eventsIds);
+		String searchType = jObj.getString("searchType");
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(activityMemberId,childUserTypeIds,reportType,stateId,eventsIds,searchType);
 	}catch (Exception e) {
 		LOG.error("Exception raised at getDirectChildTypeMembersForEvent() method of CoreDashBoard", e);
 	}
@@ -2346,7 +2348,8 @@ public String getEventPoorPerformanceLocation(){
 				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
 			}
 		}
-		eventDetailsVO = coreDashboardEventsActivitiesService.getEventPoorPerformanceLocation(userTypeId,stateId,activityMemberId,eventsIds); 
+		String searchType = jObj.getString("searchType");
+		eventDetailsVO = coreDashboardEventsActivitiesService.getEventPoorPerformanceLocation(userTypeId,stateId,activityMemberId,eventsIds,searchType); 
 	 }catch(Exception e) {
 		 LOG.error("Exception raised at getEventPoorPerformanceLocation() method of CoreDashBoard", e);
 	}
@@ -3566,4 +3569,35 @@ public String insertDataInToPartyMeetingStatusTable()
 	}
 	return Action.SUCCESS;
 }
+
+/*public String getSelectedChildTypeMembersForActivity(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		
+		List<Long> childUserTypeIds=new ArrayList<Long>();
+		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			for( int i=0;i<childUserTypeIdsArray.length();i++){
+				childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			}
+		}
+		String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		List<Long> activitiesIds = new ArrayList<Long>();
+		JSONArray activitiesIdsArray=jObj.getJSONArray("activityIds");
+		if(activitiesIdsArray!=null &&  activitiesIdsArray.length()>0){
+			for( int i=0;i<activitiesIdsArray.length();i++){
+				activitiesIds.add(Long.valueOf(activitiesIdsArray.getString(i)));
+			}
+		}
+		String searchType = jObj.getString("searchType");
+		Long activtyScopeId = jObj.getLong("scopeId");
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForActivties(parentActivityMemberId,childUserTypeIds,reportType,stateId,activitiesIds,searchType,activtyScopeId);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getSelectedChildTypeMembersForActivity() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}*/
 }
