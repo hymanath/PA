@@ -585,14 +585,15 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	*  @since 19-SEPTEMBER-2016
 	*/
- public List<UserTypeVO> getSelectedChildMembersForEvents(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,List<Long> eventIds){
+ public List<UserTypeVO> getSelectedChildMembersForEvents(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,List<Long> eventIds,String searchType){
+	 
 	 
 	 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
 	 Map<String,Long> eventIviteeMap = new HashMap<String, Long>(0);
 	 Map<String,Long> eventInviteeAttendedMap = new HashMap<String, Long>(0);
 	 Map<String,Long> eventAttendedMap = new HashMap<String, Long>(0);
 	
-	 
+	 if(searchType.trim().equalsIgnoreCase("events")){
 	 try{
 		  Map<Long,Set<Long>> locationLevelIdsMap=null;
 		  Map<String,String>     nameForLocationMap=null;
@@ -745,7 +746,165 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		  }
 	 }catch(Exception e) {
 		 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
+	 	}
 	 }
+	 //Activities
+	 else{
+		 try{
+			  Map<Long,Set<Long>> locationLevelIdsMap=null;
+			  Map<String,String>     nameForLocationMap=null;
+			  ActivityMemberVO activityMemberVO=null;
+			  Map<Long,UserTypeVO> childActivityMembersMap=null;
+			  
+			  //calling generic method to get childActivityMembers and there location level and values
+			  
+			  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+				  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
+				  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+				  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+			  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+				  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+					   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+				  }
+				   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+				   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+			  }
+			   
+			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+				  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+			  }
+			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			    	 
+			    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+			    		 
+			    		 List<Object[]> rtrnEventInviteeObjLst = eventInviteeDAO.getLocationWiseEventInviteedCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+			    		 
+			    		 if(rtrnEventInviteeObjLst != null && rtrnEventInviteeObjLst.size() > 0){
+			    			 
+			    			  for (Object[] param : rtrnEventInviteeObjLst) {
+			    				  
+			    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+			    				  eventIviteeMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+							}
+			    		  }
+			    	 }
+			  }
+			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			    	 
+			    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+			    		 
+			    		 List<Object[]> rtrnEventAttendedCnt = eventAttendeeDAO.getEventAttendedCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+			    		  
+			    		 if(rtrnEventAttendedCnt != null && rtrnEventAttendedCnt.size() > 0){
+			    			 
+			    			  for (Object[] param : rtrnEventAttendedCnt) {
+			    				  
+			    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+			    				  eventAttendedMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+							}
+			    		  }
+			    	 }
+			     }
+			     if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			    	 
+			    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+			    		 
+			    		 List<Object[]> rtrnEventInviteeAttendedCnt = eventAttendeeDAO.getEventInviteeAttendedCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+			    		  
+			    		 if(rtrnEventInviteeAttendedCnt != null && rtrnEventInviteeAttendedCnt.size() > 0){
+			    			  
+			    			  for (Object[] param : rtrnEventInviteeAttendedCnt) {
+			    				  
+			    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+			    				  eventInviteeAttendedMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+							}
+			    		  }
+			    	 }
+			     }
+			     //setting invitees count
+			    if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			    	
+			    	for(UserTypeVO VO:childActivityMembersMap.values()){
+			    		
+			    		  for(Long locationValueId:VO.getLocationValuesSet()){
+			    			  
+				    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+				    		  
+				    		  if(eventIviteeMap.get(key) != null){
+						    	
+				    			  VO.setTotalActvtiesCount(0l);//(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+						    	 
+				    		  }
+				    	  }
+			    	}
+			    }
+			    //setting attended count
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+				    	
+				    	for(UserTypeVO VO:childActivityMembersMap.values()){
+				    		
+				    		  for(Long locationValueId:VO.getLocationValuesSet()){
+				    			  
+					    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+					    		  
+					    		  if(eventAttendedMap.get(key) != null){
+							    	
+					    			  VO.setCondctedActiesCount(0l);//(VO.getAttendedCnt()+eventAttendedMap.get(key)); 
+							    	 
+					    		  }
+					    	  }
+				    	}
+				    }
+		   //setting invitee attended count
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		   	
+		   	for(UserTypeVO VO:childActivityMembersMap.values()){
+		   		
+		   		  for(Long locationValueId:VO.getLocationValuesSet()){
+		   			  
+			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+			    		  
+			    		  if(eventInviteeAttendedMap.get(key) != null){
+					    	
+			    			  VO.setInviteeAttendedCnt(VO.getInviteeAttendedCnt()+eventInviteeAttendedMap.get(key)); 
+					    	 
+			    		  }
+			    	  }
+		   	}
+		   }
+		   // setting location name for direct child 
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			      for(UserTypeVO vo:childActivityMembersMap.values()){
+			    	  for(Long locationValueId:vo.getLocationValuesSet()){
+			    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
+			    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+			    			  vo.setLocationName(nameForLocationMap.get(key));
+						   }else{
+							   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+						   }
+			    	  }
+			      }
+		    } 
+		   // calculating non invitees count and percentage
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			   for(UserTypeVO userVO:childActivityMembersMap.values()){
+				   userVO.setNotCondctedActiesCount(0l);//(userVO.getAttendedCnt()-userVO.getInviteeAttendedCnt());
+				    userVO.setNotConductedPerc(0.00);//(calculatePercantage(userVO.getNonInviteeAttendedCnt(), userVO.getAttendedCnt()));
+				    userVO.setConductedPerc(0.00);//(calculatePercantage(userVO.getInviteeAttendedCnt(),userVO.getInviteeCnt()));
+			   }
+		   }
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+				  resultList.addAll(childActivityMembersMap.values());
+			  }
+			  if(resultList != null && resultList.size() > 0)
+			  {
+				  Collections.sort(resultList, eventInviteeAttendedPercDesc);
+			  }
+		 }catch(Exception e) {
+			 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
+		 	}
+	 }
+	
 	 return resultList;
  }
 	public static Comparator<UserTypeVO> eventInviteeAttendedPercDesc = new Comparator<UserTypeVO>() {
@@ -757,11 +916,12 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 return perc1.compareTo(perc2);
 	}
 	}; 
-  public EventDetailsVO getEventPoorPerformanceLocation(Long userTypeId,Long stateId,Long activityMemberId,List<Long> eventsId){
+  public EventDetailsVO getEventPoorPerformanceLocation(Long userTypeId,Long stateId,Long activityMemberId,List<Long> eventsId,String searchType){
 	  
 	  EventDetailsVO resultVO = new EventDetailsVO();
 	  Map<Long,EventDetailsVO> eventDtlsMap = new HashMap<Long, EventDetailsVO>(0);
 	  Map<Long,Set<Long>> accessLevelMap = new HashMap<Long, Set<Long>>(0);
+	  if(searchType.trim().equalsIgnoreCase("events")){
 	  try{
 		  List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 		   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
@@ -783,7 +943,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
 			    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
 			    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
-			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 			    		 resultVO.getDistrictList().addAll(eventDtlsMap.values());
 			    		 eventDtlsMap.clear();
 			    	 }
@@ -799,7 +959,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
 			    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
 			    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
-			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 			    		 resultVO.getConstituencyList().addAll(eventDtlsMap.values());
 			    		 eventDtlsMap.clear();
 			    	 }
@@ -816,7 +976,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					    		// setEventAttendedCntToMap(rtrnEventMndlAttendedObjList,eventDtlsMap);
 					    		 List<Object[]> rtrnEventMndlInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
 					    		 setEventInviteeAttendedCntToMap(rtrnEventMndlInviteeAttendedObjList,eventDtlsMap);
-					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 					    		 resultVO.getMandalTwnDivisionList().addAll(eventDtlsMap.values());
 					    		 eventDtlsMap.clear();
 					    		 
@@ -826,7 +986,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					    		// setEventAttendedCntToMap(rtrnEventTwnDivAttendedObjList,eventDtlsMap);
 					    		 List<Object[]> rtrnEventTwnDivInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
 					    		 setEventInviteeAttendedCntToMap(rtrnEventTwnDivInviteeAttendedObjList,eventDtlsMap);
-					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 					    		 resultVO.getMandalTwnDivisionList().addAll(eventDtlsMap.values()); // town divsion data merging 
 					    		 eventDtlsMap.clear();
 					    	
@@ -842,7 +1002,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 							    		// setEventAttendedCntToMap(rtrnEventVllgAttendedObjList,eventDtlsMap);
 							    		 List<Object[]> rtrnEventVllgInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 							    		 setEventInviteeAttendedCntToMap(rtrnEventVllgInviteeAttendedObjList,eventDtlsMap);
-							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 							    		 resultVO.getVillageWardList().addAll(eventDtlsMap.values());
 							    		 eventDtlsMap.clear();
 							    		
@@ -852,7 +1012,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 							    		// setEventAttendedCntToMap(rtrnEventWrdAttendedObjList,eventDtlsMap);
 							    		 List<Object[]> rtrnEventWrdInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
 							    		 setEventInviteeAttendedCntToMap(rtrnEventWrdInviteeAttendedObjList,eventDtlsMap);
-							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
+							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 							    		 resultVO.getVillageWardList().addAll(eventDtlsMap.values()); // ward data merging
 							    		 eventDtlsMap.clear();
 							    	
@@ -873,9 +1033,127 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 				   Collections.sort(resultVO.getVillageWardList(), eventInviteeeAttendedMemberPercasc);   
 			   }
 		   }
-     }catch(Exception e) {
+     }
+	  catch(Exception e) {
     	 LOG.error("Error occured at getEventPoorPerformanceLocation() in setAttendedDataToMap class",e);	
-	}
+	  }
+	  }else{
+		  try{
+			  List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
+				   for (Object[] obj : rtrnUserAccessLevelIdAndValuesObjList) {
+					  Set<Long> locationValueSet= accessLevelMap.get((Long)obj[0]);
+					    if(locationValueSet == null){
+					    	locationValueSet = new java.util.HashSet<Long>();
+					    	accessLevelMap.put((Long)obj[0],locationValueSet);
+					    }
+					     locationValueSet.add(obj[1] != null ? (Long)obj[1]:0l);
+				}
+			   }
+			   if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID){
+				    if(accessLevelMap != null && accessLevelMap.size() > 0){
+				    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
+				    		 List<Object[]> rtrnEventInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
+				    		// List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
+				    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
+				    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+				    		 resultVO.getDistrictList().addAll(eventDtlsMap.values());
+				    		 eventDtlsMap.clear();
+				    	 }
+				    }
+			   }
+	          if(userTypeId != null && userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID ||  userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
+				|| userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID){
+				    if(accessLevelMap != null && accessLevelMap.size() > 0){
+				    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
+				    		 List<Object[]> rtrnEventInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+				    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
+				    		// List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+				    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
+				    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+				    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
+				    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+				    		 resultVO.getConstituencyList().addAll(eventDtlsMap.values());
+				    		 eventDtlsMap.clear();
+				    	 }
+				    }
+			   }
+	           if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
+			   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ||
+					   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+						    if(accessLevelMap != null && accessLevelMap.size() > 0){
+						    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
+						    		 List<Object[]> rtrnEventMndlInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+						    		 setEventInviteeDetailsToMap(rtrnEventMndlInviteeObjList,eventDtlsMap);
+						    		// List<Object[]> rtrnEventMndlAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+						    		// setEventAttendedCntToMap(rtrnEventMndlAttendedObjList,eventDtlsMap);
+						    		 List<Object[]> rtrnEventMndlInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+						    		 setEventInviteeAttendedCntToMap(rtrnEventMndlInviteeAttendedObjList,eventDtlsMap);
+						    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+						    		 resultVO.getMandalTwnDivisionList().addAll(eventDtlsMap.values());
+						    		 eventDtlsMap.clear();
+						    		 
+						    		 List<Object[]> rtrnEventTwnDivInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
+						    		 setEventInviteeDetailsToMap(rtrnEventTwnDivInviteeObjList,eventDtlsMap);
+						    		// List<Object[]> rtrnEventTwnDivAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
+						    		// setEventAttendedCntToMap(rtrnEventTwnDivAttendedObjList,eventDtlsMap);
+						    		 List<Object[]> rtrnEventTwnDivInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
+						    		 setEventInviteeAttendedCntToMap(rtrnEventTwnDivInviteeAttendedObjList,eventDtlsMap);
+						    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+						    		 resultVO.getMandalTwnDivisionList().addAll(eventDtlsMap.values()); // town divsion data merging 
+						    		 eventDtlsMap.clear();
+						    	
+						    	 }
+						    }
+					   }  
+	                if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID){
+								    if(accessLevelMap != null && accessLevelMap.size() > 0){
+								    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
+								    		 List<Object[]> rtrnEventVllgInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
+								    		 setEventInviteeDetailsToMap(rtrnEventVllgInviteeObjList,eventDtlsMap);
+								    		// List<Object[]> rtrnEventVllgAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
+								    		// setEventAttendedCntToMap(rtrnEventVllgAttendedObjList,eventDtlsMap);
+								    		 List<Object[]> rtrnEventVllgInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
+								    		 setEventInviteeAttendedCntToMap(rtrnEventVllgInviteeAttendedObjList,eventDtlsMap);
+								    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+								    		 resultVO.getVillageWardList().addAll(eventDtlsMap.values());
+								    		 eventDtlsMap.clear();
+								    		
+								    		 List<Object[]> rtrnEventWrdInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
+								    		 setEventInviteeDetailsToMap(rtrnEventWrdInviteeObjList,eventDtlsMap);
+								    		// List<Object[]> rtrnEventWrdAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
+								    		// setEventAttendedCntToMap(rtrnEventWrdAttendedObjList,eventDtlsMap);
+								    		 List<Object[]> rtrnEventWrdInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
+								    		 setEventInviteeAttendedCntToMap(rtrnEventWrdInviteeAttendedObjList,eventDtlsMap);
+								    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
+								    		 resultVO.getVillageWardList().addAll(eventDtlsMap.values()); // ward data merging
+								    		 eventDtlsMap.clear();
+								    	
+								    	 }
+								    }
+						 }
+			   if(resultVO != null ){
+				   if(resultVO.getDistrictList() != null && resultVO.getDistrictList().size() > 0){
+					   Collections.sort(resultVO.getDistrictList(), eventInviteeeAttendedMemberPercasc);   
+				   }
+				   if(resultVO.getConstituencyList() != null && resultVO.getConstituencyList().size() > 0){
+					   Collections.sort(resultVO.getConstituencyList(), eventInviteeeAttendedMemberPercasc);   
+				   }
+				   if(resultVO.getMandalTwnDivisionList() != null && resultVO.getMandalTwnDivisionList().size() > 0){
+					   Collections.sort(resultVO.getMandalTwnDivisionList(), eventInviteeeAttendedMemberPercasc);   
+				   }
+				   if(resultVO.getVillageWardList() != null && resultVO.getVillageWardList().size() > 0){
+					   Collections.sort(resultVO.getVillageWardList(), eventInviteeeAttendedMemberPercasc);   
+				   }
+			   }
+	     }
+		  catch(Exception e) {
+	    	 LOG.error("Error occured at getEventPoorPerformanceLocation() in setAttendedDataToMap class",e);	
+		  }
+	  }
 	return resultVO;  
   }
   public static Comparator<EventDetailsVO> eventInviteeeAttendedMemberPercasc = new Comparator<EventDetailsVO>() {
@@ -938,16 +1216,27 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	   LOG.error("Error occured at setEventInviteeAttendedCntToMap() in setAttendedDataToMap class",e);
 	}
  }
- public void caculatingNonInviteeAttendedCnt(Map<Long,EventDetailsVO> eventDtlsMap){
+ public void caculatingNonInviteeAttendedCnt(Map<Long,EventDetailsVO> eventDtlsMap,String searchType){
 	 try{
-		if(eventDtlsMap != null && eventDtlsMap.size() > 0){
-			for(Entry<Long,EventDetailsVO> entry:eventDtlsMap.entrySet()){
-				EventDetailsVO eventVO = entry.getValue();
-				//eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
-				//eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(),eventVO.getAttendedCount()));
-				eventVO.setInviteeAttendedCounPer(calculatePercantage(eventVO.getInviteeAttendedCount(), eventVO.getInviteeCount()));
-			}
-		}
+		 if(searchType.trim().equalsIgnoreCase("events")){
+			 if(eventDtlsMap != null && eventDtlsMap.size() > 0){
+				 for(Entry<Long,EventDetailsVO> entry:eventDtlsMap.entrySet()){
+					 EventDetailsVO eventVO = entry.getValue();
+					 	//eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
+					 	//eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(),eventVO.getAttendedCount()));
+					 	eventVO.setInviteeAttendedCounPer(calculatePercantage(eventVO.getInviteeAttendedCount(), eventVO.getInviteeCount()));
+				 }
+			 }
+		 }else{
+			 if(eventDtlsMap != null && eventDtlsMap.size() > 0){
+				 for(Entry<Long,EventDetailsVO> entry:eventDtlsMap.entrySet()){
+					 EventDetailsVO eventVO = entry.getValue();
+					 	//eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
+					 	//eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(),eventVO.getAttendedCount()));
+					 	eventVO.setInviteeAttendedCounPer(0.00d);//calculatePercantage(eventVO.getInviteeAttendedCount(), eventVO.getInviteeCount()));
+				 }
+			 }
+	  }
 	 }catch(Exception e){
 		LOG.error("Error occured at caculatingNonInviteeAttendedCnt() in setAttendedDataToMap class",e);
 	}
