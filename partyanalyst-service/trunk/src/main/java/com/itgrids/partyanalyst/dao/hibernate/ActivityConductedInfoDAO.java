@@ -43,6 +43,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type){
 		
 		StringBuilder queryStr = new StringBuilder();
+		Long stateId = 1L;
 		queryStr.append("select model.activityScope.activityScopeId, ");
 		if(type != null)
 			queryStr.append(" count(distinct model.activityConductedInfoId) " );
@@ -60,8 +61,19 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' )  or " +
 						"  (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
 		}
+		
+		if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");
+		else if(stateId != null && ( stateId.longValue() == 2L || stateId.longValue() == 36L))
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		else{
+			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		
 		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
 		queryStr.append(" group by model.activityScope.activityScopeId ");
+		
+		
 		
 		/*
 		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +

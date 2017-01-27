@@ -1436,6 +1436,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 	
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type){
 		StringBuilder queryStr = new StringBuilder();
+		Long stateId = 1L;
 		queryStr.append("select model.activityScope.activityScopeId,count(model.activityLocationInfoId)" +
 				" from ActivityLocationInfo model where" +
 				"  model.activityScope.activityScopeId in (:activityScopeIds) ");
@@ -1449,6 +1450,14 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 						"or (model.conductedDate is not  null and  model.ivrStatus is null) ) ");			
 		}else{
 			queryStr.append(" and model.plannedDate is not null ");
+		}
+		
+		if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");
+		else if(stateId != null && ( stateId.longValue() == 2L || stateId.longValue() == 36L))
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		else{
+			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
 		}
 		/*if(type != null){
 			if(type.equalsIgnoreCase("yes"))
