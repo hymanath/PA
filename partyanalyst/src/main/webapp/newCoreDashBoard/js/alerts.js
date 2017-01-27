@@ -576,7 +576,8 @@
 		$("#alertDestId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 6px;'>"+result[0].desc+"</p>");
 		$("#sourceHeadingId").html("<h5 class='text-muted headingColorStyling'>ALERT SOURCE</h5>");
 		$("#headingNameId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 10px;'>"+result[0].alertSource+"</p>");
-		if(result[0].documentList != null && result[0].documentList.length > 1){
+		
+		if(result[0].documentList != null && result[0].documentList.length >= 1){
 			$("#alertDocHeadingId").html("<h5  class='text-muted headingColorStyling'>ALERT DOCUMENTS</h5>");
 			var docStr = '';
 			docStr+='<ul>';
@@ -585,7 +586,7 @@
 				extName = docName.split("/");
 				docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+extName[1]+'</a></li>';
 			}
-			docStr+='</ul>';  
+			docStr+='</ul>';
 			$("#alertDocId").html(docStr);    
 		}
 		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
@@ -1430,11 +1431,11 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 			str+='<div class="tab-content alertComment">';
 				for(var i in result)
 				{
-					if(i==0)
+					if(length != i)
 					{
-						str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+						str+='<div role="tabpanel" class="tab-pane " id="commentStatus'+i+'">';
 					}else{
-						str+='<div role="tabpanel" class="tab-pane" id="commentStatus'+i+'">';
+						str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
 					}
 					for(var j in result[i].sublist2)
 					{
