@@ -44,26 +44,26 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			queryStr.append(" count(distinct model.userAddress.district.districtId)," );
 		if(type != null && type.equalsIgnoreCase("state"))
 			queryStr.append(" count(distinct model.userAddress.state.stateId)," );
-		queryStr.append(" count(model1.activityDocumentId) " );
+		queryStr.append(" count( distinct model1.activityDocumentId) " );
 		queryStr.append(" ,model1.activityScope.activityScopeId ");
 		queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model where model.isDeleted='N'  and " +
 				" model1.activityDocumentId = model.activityDocument.activityDocumentId   " );
-		/*
+		
 		if(type != null && type.equalsIgnoreCase("panchayat")){
-			queryStr.append(" and  model.userAddress.panchayat is not null  ");
+			queryStr.append(" and  model.userAddress.panchayat is not null   and  model.userAddress.ward  is null ");
 		}else if( type != null && type.equalsIgnoreCase("ward")){
-			queryStr.append("  and  model.userAddress.ward  is not null ");
+			queryStr.append("  and  model.userAddress.ward  is not null and  model.userAddress.panchayat is null  ");
 		}else if( type != null && type.equalsIgnoreCase("mandal")){
-			queryStr.append("  and  model.userAddress.tehsil is not null  ");
+			queryStr.append("  and  model.userAddress.tehsil is not null and model.userAddress.localElectionBody.localElectionBodyId is null  ");
 		}else if( type != null && type.equalsIgnoreCase("town")){
-			queryStr.append("  and model.userAddress.localElectionBody.localElectionBodyId is not null ");
+			queryStr.append("  and model.userAddress.localElectionBody.localElectionBodyId is not null  and  model.userAddress.tehsil is  null ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
 			queryStr.append("  and  model.userAddress.constituency.constituencyId is not null ");
 		}else if(type != null && type.equalsIgnoreCase("district"))
 			queryStr.append(" and  model.userAddress.district.districtId is not null " );
 		if(type != null && type.equalsIgnoreCase("state"))
-			queryStr.append(" and  model.userAddress.state.stateId is not null " );
-		*/
+			queryStr.append(" and  model.userAddress.state is not null " );
+		
 		queryStr.append(" and model1.activityScope.activityScopeId  in (:activityScopeIdsLis)  ");
 		
 		if(districtsList != null && districtsList.size() > 0l)
