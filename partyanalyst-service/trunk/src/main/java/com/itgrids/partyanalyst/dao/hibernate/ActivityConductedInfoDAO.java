@@ -285,7 +285,7 @@ public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Dat
 					"  model.address.state.stateName," );
      }
      queryStr.append("  model.activityScope.activity.activityName, " +
-											" model.activityScope.activityLevel.level " +
+											" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 											" from ActivityConductedInfo model " +
 											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
 											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
