@@ -15,5 +15,7 @@ public interface ITdpCommitteeElectrolsDAO  extends GenericDao<TdpCommitteeElect
 	public List<Object[]> getElctoralInfoForALocation(Long locationValue);
 	public List<Object[]> getElectrolsOfPanchayatAndWards(Long locationId, Long locationType, Long basicCommitteeTypeId);
 	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType, List<Long> tdpCadreIds);
+	
+	public List<Object[]> getElctoralInfoForALocation(Long locationValue,Long tdpCommitteeEnrollmentId);
 
 }
