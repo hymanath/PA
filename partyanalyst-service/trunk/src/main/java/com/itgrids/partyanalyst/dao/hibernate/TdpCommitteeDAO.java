@@ -23,7 +23,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
-		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
+		query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -33,7 +33,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
-		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
+		query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -2103,6 +2103,16 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
     }
-    
-    
+    //
+    public List<Long> getTdpCommitteeId(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue,Long tdpCommitteeEnrollmentId){
+		Query query = getSession().createQuery("select model.tdpCommitteeId from TdpCommittee model where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:tdpCommitteeLevelId and  " +
+				" model.tdpCommitteeLevelValue =:tdpCommitteeLevelValue and model.tdpBasicCommittee.tdpBasicCommitteeId = :tdpBasicCommitteeId and " +
+				" model.tdpCommitteeEnrollmentId = :tdpCommitteeEnrollmentId");
+		query.setParameter("tdpBasicCommitteeId", tdpBasicCommitteeId);
+		query.setParameter("tdpCommitteeLevelId", tdpCommitteeLevelId);
+		query.setParameter("tdpCommitteeLevelValue", tdpCommitteeLevelValue);
+		query.setParameter("tdpCommitteeEnrollmentId", tdpCommitteeEnrollmentId);
+		return query.list();
+	}
 }
