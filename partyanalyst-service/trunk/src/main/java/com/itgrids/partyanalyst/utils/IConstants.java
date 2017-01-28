@@ -1259,5 +1259,5 @@ public interface IConstants {
 	
 	public static final Long GOVT_CORE_DASHBOARD_ALERT_TYPE_ID = 2L;
 	
-	public static final Long PRESENT_COMMITTEE_ENROLLMENT_ID = 1L; 
+	
 }
