@@ -839,7 +839,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved,enrollmentId);
 			
 		} catch (Exception e) {
-			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+			LOG.error("Exception occured in getCadreDetails() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -861,7 +861,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+			LOG.error("Exception occured in generateOTP() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -885,7 +885,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+			LOG.error("Exception occured in validateOTPForMobile() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1162,7 +1162,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			status = cadreCommitteeService.saveMandalLevelAffliactedElectrolInfo(tdpCadreId,afiliatedCommitteeId);
 		}catch(Exception e)
 		{
-			LOG.error("Exception occured in updateElectrolsDetails() At CadreCommitteeAction ",e);
+			LOG.error("Exception occured in updatenonAfilaiatedElectrols() At CadreCommitteeAction ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -2330,7 +2330,7 @@ public String getSummaryDetails(){
 			cadreCommitteeList = cadreCommitteeService.updateSearchTdpCadreDetailsBySearchCriteriaForCadreCommitte(searchType,searchValue);
 			
 		} catch (Exception e) {
-			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+			LOG.error("Exception occured in getUpdateSearchDetails() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
