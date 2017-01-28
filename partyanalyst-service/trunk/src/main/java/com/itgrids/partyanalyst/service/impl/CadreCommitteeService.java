@@ -1289,7 +1289,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        		   localBodyIds.add(localBdyId);
 	        		//}
 	        	}else{
-	        		mandalIds.add(Long.valueOf(location.getLocationId().toString().substring(1)));
+	        		String locIdString = location.getLocationId().toString().substring(1);
+	        		if(locIdString != null && !locIdString.trim().isEmpty()){
+	        			mandalIds.add(Long.valueOf(locIdString));
+	        		}
 	        	}
 	        }
 	        if(mandalIds.size() > 0){
@@ -1315,6 +1318,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        return locationsList;
 	}
 	
+	/** 
+	  *  Get All Affliated Committees In A Location.
+	*/
 	public  List<LocationWiseBoothDetailsVO> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue){
 		List<LocationWiseBoothDetailsVO> affiliatedCommittiesList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try{
@@ -1503,7 +1509,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								return resultStatus;
 							}
 							
-							Long tdpCommitteeId = getTdpCommittee(1l,tdpCommitteeLevelId,levelValue);
+							Long tdpCommitteeId = getTdpCommitteeId(1l,tdpCommitteeLevelId,levelValue,IConstants.CURRENT_ENROLLMENT_ID);
 							if(tdpCommitteeId == null){
 								resultStatus.setResultCode(3);
 								resultStatus.setMessage("Committee Didn't Exist For This Location...");
@@ -1572,6 +1578,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	  }
 	}
 	
+	public Long getTdpCommitteeId(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue,Long tdpCommitteeEnrollmentId){
+		Long tdpCommitteeId = null;
+		List<Long> ids = tdpCommitteeDAO.getTdpCommitteeId(tdpBasicCommitteeId,tdpCommitteeLevelId,tdpCommitteeLevelValue,tdpCommitteeEnrollmentId);
+		if(ids.size() > 0 && ids.get(0) != null){
+			tdpCommitteeId = ids.get(0);
+		}
+		return tdpCommitteeId;
+	}
+	
 	//Hint Please call this method in transaction only
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(final Long tdpCadreId,final  Long tdpBasicCommitteeId){
 		
@@ -1608,7 +1623,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						resultStatus.setMessage("Location Not Mapped for this Cadre...");
 						return resultStatus;
 					}
-					Long tdpCommitteeId = getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue);
+					Long tdpCommitteeId = getTdpCommitteeId(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue,IConstants.CURRENT_ENROLLMENT_ID);
 					if(tdpCommitteeId == null){
 						resultStatus.setResultCode(3);
 						resultStatus.setMessage("Committee Didn't Exist For This Location...");
@@ -8149,7 +8164,7 @@ return constiLst;
 				 locationLvl = 8l;
 			 }
 			elctoralsList.addAll(tdpCommitteeMemberDAO.getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(locationLvl, Long.valueOf(locationValue.toString().substring(1))));
-			elctoralsList.addAll(tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue));
+			elctoralsList.addAll(tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue,IConstants.CURRENT_ENROLLMENT_ID));
 			Set<Long> cadreIds = new HashSet<Long>();
 			for (Object[] object : elctoralsList) {
 				if(!cadreIds.contains((Long)object[4])){
