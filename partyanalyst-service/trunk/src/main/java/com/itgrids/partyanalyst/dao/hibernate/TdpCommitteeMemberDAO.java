@@ -43,7 +43,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 				" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameter("locationLvl", locationLvl);
 		query.setParameter("locationVal", locationVal);
-		query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
+		query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -688,7 +688,7 @@ public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRol
 				" order by model.tdpCommitteeRole.tdpRoles.order ");
 	query.setParameter("locationType", locationType);
 	query.setParameter("locationVal", locationVal);
-	query.setParameter("committeeEnrollmentId", IConstants.PRESENT_COMMITTEE_ENROLLMENT_ID);
+	query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 	return query.list();
 }
 
