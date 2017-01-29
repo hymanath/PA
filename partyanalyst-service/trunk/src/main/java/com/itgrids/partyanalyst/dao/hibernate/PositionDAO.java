@@ -17,7 +17,7 @@ public class PositionDAO extends GenericDaoHibernate<Position, Long> implements 
 	}
 
 	public List<Object[]> getAllPositions(){
-		Query query = getSession().createQuery("select model.positionId,model.positionName from Position model ");
+		Query query = getSession().createQuery("select model.positionId,model.positionName from Position model order by model.orderNo asc ");
 		return query.list();
 	}
 }
