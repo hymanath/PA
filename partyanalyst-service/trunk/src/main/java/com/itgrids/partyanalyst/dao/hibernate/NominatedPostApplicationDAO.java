@@ -1808,7 +1808,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getTotalAvaiableApplicationsDetails(Long boardLevelId,Long stateId,Long applicationStatusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.applicationStatusId, count(distinct model.nominatedPostApplicationId)  from NominatedPostApplication model " +
-				" where model.boardLevelId=:boardLevelId and model.isDeleted ='N' ");
+				" where model.isDeleted ='N' ");
+		if(boardLevelId != null && boardLevelId.longValue()>0L){
+			if(boardLevelId.longValue() != 5L)
+				queryStr.append(" and model.boardLevelId=:boardLevelId ");
+			else
+				queryStr.append(" and model.boardLevelId in (5,6) ");
+		}
 		if(stateId != null && stateId>0L)
 			queryStr.append(" and model.address.state.stateId=:stateId ");
 		if(applicationStatusId != null && applicationStatusId>0L)
@@ -1816,7 +1822,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		queryStr.append(" group by model.applicationStatusId order by model.applicationStatusId ");
 		  Query query = getSession().createQuery(queryStr.toString());
-		   query.setParameter("boardLevelId", boardLevelId);
+		  if(boardLevelId != null && boardLevelId.longValue()>0L){
+				if(boardLevelId.longValue() != 5L)
+					 query.setParameter("boardLevelId", boardLevelId);
+			}
+		  
 		  if(stateId != null && stateId>0L)
 			query.setParameter("stateId", stateId);
 		  if(applicationStatusId != null && applicationStatusId>0L)
