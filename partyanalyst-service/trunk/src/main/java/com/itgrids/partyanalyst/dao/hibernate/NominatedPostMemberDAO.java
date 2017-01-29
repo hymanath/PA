@@ -181,7 +181,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 											   " from NominatedPostMember model" +
 											   " where " +
 											   " model.isDeleted = 'N' and " +
-											   " model.nominatedPostPosition.isDeleted = 'N' ");  
+											   " model.nominatedPostPosition.isDeleted = 'N'  order by model.nominatedPostPosition.position.orderNo ");  
 		return query.list();		
 	}
 	/*
@@ -263,7 +263,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	public List<Object[]> getTotalBoardsAndCorpIdsByMembrIdsList (List<Long> memberIdsList){
 		Query query = getSession().createQuery("select distinct model.nominatedPostMemberId, model.nominatedPostPosition.departments.departmentId, " +
 				" model.nominatedPostPosition.departments.deptName,  model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
-				   " from NominatedPostMember model where model.isDeleted='N' amd model.nominatedPostPosition.isDeleted = 'N' and model.nominatedPostMemberId in (:memberIdsList)");
+				   " from NominatedPostMember model where model.isDeleted='N' and model.nominatedPostPosition.isDeleted = 'N' and model.nominatedPostMemberId in (:memberIdsList)");
 		query.setParameterList("memberIdsList", memberIdsList);
 		return query.list();
 	}

@@ -162,7 +162,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			str.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId is not null ");
 			str.append(" and model.nominatedPostStatusId = 1 ");
 			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId" +
-					"  ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+					"  ORDER BY model.nominatedPostMember.nominatedPostPosition.position.orderNo ");
 			
 		}
 		else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
@@ -204,7 +204,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				//str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 			}
 			
-			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId ORDER BY model.nominatedPostMember.nominatedPostPosition.position.orderNo ");
 		
 		}
 			else{
@@ -248,7 +248,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 			}
 			
-			str.append(" GROUP BY position.positionId ORDER BY position.positionId ");
+			str.append(" GROUP BY position.positionId ORDER BY position.orderNo  ");
 		}
 		Query query = getSession().createQuery(str.toString());
 		
@@ -314,7 +314,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		str.append(" GROUP BY nominatedPostPosition.positionId ORDER BY nominatedPostPosition.positionId ");
+		str.append(" GROUP BY nominatedPostPosition.positionId ORDER BY nominatedPostPosition.orderNo ");
 		
 		if(boardLevelId !=null && boardLevelId>0){
 			query.setParameter("boardLevelId", boardLevelId);
