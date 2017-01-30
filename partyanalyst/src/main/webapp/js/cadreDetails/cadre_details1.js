@@ -1477,6 +1477,7 @@ function buildVolunteersDetails(result){
 	});
 	
 	$(document).on("click",".cadreAlertCls",function(){
+		$("#myModalLabelId").html('');
 		$("#alertModalDivId").modal('show');
 		var categoryId = $(this).attr('attr_categoryId');
 		var alertTypeId = $(this).attr('altert_Type_Id');
@@ -1512,17 +1513,17 @@ function buildVolunteersDetails(result){
 
 	function buildAlertsDEtails(result,alertType){
 		var finalResult = result.subList1;
-		$("#myModalLabelId").html("IN MANUAL ALERT " +alertType.toUpperCase());
+		$("#myModalLabelId").html(alertType.toUpperCase());
 		var str='';
 		if(finalResult != null && finalResult.length>0){
 			str+='<table class="table table-bordered table condensed" id="alertsTab">';
 			str+='<thead>';
 			str+='<tr>';
 			//str+='<th>DESCRIPTION </th>';
-			str+='<th> CREATED ON </th>';
-			str+='<th> LAST UPDATED ON </th>';
-			str+='<th> PRESENT STATUS </th>';
-			str+='<th> LOG DAYS </th>';
+			str+='<th> CREATED DATE </th>';
+			str+='<th> LAST UPDATED DATE </th>';
+			str+='<th> CURRENT STATUS </th>';
+			str+='<th> LAGS DAYS </th>';
 			str+='<th> IMPACT LEVEL </th>';
 			str+='<th> DETAILS </th>';
 			
@@ -1538,7 +1539,7 @@ function buildVolunteersDetails(result){
 				str+='<td>'+finalResult[i].status+'</td>';
 				str+='<td>'+finalResult[i].noOfDays+' </td>';
 				str+='<td>'+finalResult[i].locationName+'</td>';
-				str+='<td> <button class="btn btn-success btn-mini btn-xs alertsDetailsCls" attr_alert_id="'+finalResult[i].id+'"> Alert Details </button></td>';
+				str+='<td> <button class="btn btn-success btn-mini btn-xs alertsDetailsCls" attr_status='+finalResult[i].status+' attr_alert_id="'+finalResult[i].id+'"> Alert Details </button></td>';
 				
 				str+='</tr>';
 			}
@@ -1548,12 +1549,6 @@ function buildVolunteersDetails(result){
 		$('#alertModalStrId').html(str);
 		$('#alertsTab').dataTable({});
 	}
-	
-	$(document).on("click",".alertsDetailsCls",function(){
-		var attr_alert_id = $(this).attr('attr_alert_id');
-		window.open('cadreAlertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
-		
-	});
 	
 	function benefitSchemesRelatedCalls(){
 		getBenefitDetailsAlongFamily();
@@ -2076,11 +2071,15 @@ function buildVolunteersDetails(result){
 	}	
 	
 	$(document).on("click",".cadreTourDetailsCls",function(){
-	var candiateId = $(this).attr("attr_candiate_id");
-	var designationName = $(this).attr("attr_designation_name");
-	var candiateName = $(this).attr("attr_candiate_name");
-	$("#dateRangeSliderYear").val(0);
-     getCandiateWiseTourDetails(candiateId,designationName,candiateName);
+		//$("#cadreTourSlider").dateRangeSlider("destroy");
+		var candiateId = $(this).attr("attr_candiate_id");
+		var designationName = $(this).attr("attr_designation_name");
+		var candiateName = $(this).attr("attr_candiate_name");
+		$("#dateRangeSliderYear").val(0);
+		 getCandiateWiseTourDetails(candiateId,designationName,candiateName);
+	});
+$(document).on("click",".closeIconModal",function(){
+	$("#cadreTourSlider").dateRangeSlider("destroy");
 });
 function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	{ 
@@ -2095,12 +2094,14 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 	
 	    var tourSeletedDate = $("#toursDatePicker").val();
 		var fromDate = tourSeletedDate.split("-");
+		var toDate = tourSeletedDate.split("-");
 		tourSeletedDate = "01"+"/"+fromDate[0]+"/"+fromDate[1];
 	  
+	
 	 	$("#cadreTourSlider").dateRangeSlider({
-				bounds: {min: new Date(fromDate[1], 0, 1), max: new Date(fromDate[1], 11, 31)},
-				//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
-				defaultValues: {min: new Date(fromDate[1],fromDate[0],1), max: new Date(fromDate[1],fromDate[0],30)},
+			 bounds: {min: new Date(fromDate[1], 0, 1), max: new Date(toDate[1], 11, 31)},
+			//defaultValues: {min: new Date(2016, 1, 10), max: new Date(2016, 4, 22)},
+			   defaultValues: {min: new Date(fromDate[1],fromDate[0]-1,1), max: new Date(toDate[1],toDate[0]-1,30)},
 				scales: [{
 				  first: function(value){ return value; },
 				  end: function(value) {return value; },
@@ -2677,3 +2678,462 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 		});
 }
   /* Tour Block End */	
+  
+  /* Alert Description Details Block Start  */
+  
+    $(document).on("click",".alertsDetailsCls",function(){
+		var alertId = $(this).attr('attr_alert_id');
+		var alertStatus = $(this).attr("attr_status");
+		//window.open('cadreAlertDetailsAction.action?alertId='+attr_alert_id+'&status=false');
+		$("#tourDocHeadingId").html("");
+		$("#cdrModelId").html("");
+		$("#alertDestId").html("");
+		$("#sourceHeadingId").html("");
+		$("#headingNameId").html("");
+		$("#alertAttachTitId").html("");
+		$("#alertAttachImgId").html("");
+		$("#alertInvolvedCandidates").html("");
+		$("#alertAssignedCandidates").html("");
+		$("#alertCommentsDiv").html("");
+		$("#tourDocHeadingId").html("ALERT TITLE <br>");
+		$("#alertVerificationDiv").html("");
+		$("#alertVerificationDtlsDiv").html("");
+		
+		$("#alertDocHeadingId").html("");
+		$("#alertDocId").html("");
+		
+		  $("#cdrModelDivId").modal("show");
+		var alertId = $(this).attr("attr_alert_id");
+		var alertStatus = $(this).attr("attr_alert_status");
+		//getAlertData(alertId);
+		//getAlertAssignedCandidates(alertId);    
+		//getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
+		//getVerificationDtls(alertId);
+			getAlertData(5685);
+		getAlertAssignedCandidates(5685);    
+		getAlertStatusCommentsTrackingDetails(5685,alertStatus);
+		getVerificationDtls(5685);
+	});
+	
+  function getAlertData(alertId){    
+		var jsObj ={
+			alertId  :alertId,
+			task : ""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertsDataAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAlertData(result);
+			}    
+		});
+	}
+	function buildAlertData(result){
+		var docName = '';
+		var extName =[];
+		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><h5 class='text-capital m_top10' style='color:#000'>"+result[0].title+"</h5>");
+		$("#cdrModelId").html("<h5 class='text-muted headingColorStyling'>ALERT DESCRIPTION</h5>");
+		$("#alertDestId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 6px;'>"+result[0].desc+"</p>");
+		$("#sourceHeadingId").html("<h5 class='text-muted headingColorStyling'>ALERT SOURCE</h5>");
+		$("#headingNameId").html("<p style='border: 1px solid rgb(211, 211, 211); padding: 10px;'>"+result[0].alertSource+"</p>");
+		
+		if(result[0].documentList != null && result[0].documentList.length >= 1){
+			$("#alertDocHeadingId").html("<h5  class='text-muted headingColorStyling'>ALERT DOCUMENTS</h5>");
+			var docStr = '';
+			docStr+='<ul>';
+			for(var i in result[0].documentList){
+				docName = result[0].documentList[i];
+				extName = docName.split("/");
+				docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+extName[1]+'</a></li>';
+			}
+			docStr+='</ul>';
+			$("#alertDocId").html(docStr);    
+		}
+		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
+			$("#alertAttachTitId").html("<h5  class='text-muted headingColorStyling'>ALERT ATTACHMENTS</h5>");
+			var imgStr = '';
+			imgStr+='<ul class="list-inline imageUrlUlCls" style="border: 1px solid rgb(211, 211, 211); padding:5px;">';
+			imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 90px; height: 90px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
+			imgStr+='</ul> '; 
+			$("#alertAttachImgId").html(imgStr);  
+		}
+		var str='';
+		var invCandCnt = 0;
+		if(result[0].subList.length > 0){
+			for(var i in result){
+				for(var j in result[i].subList){
+					if(result[i].subList[j].name != null && result[i].subList[j].name.length > 1){    
+						invCandCnt+=1;
+					}
+				}    
+			}
+			str+='<h5 class="text-muted text-capital headingColorStyling">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+invCandCnt+'</h5>';           
+			str+='<ul class="list-inline assignedCandidatesUl1">';     
+			for(var i in result){
+				for(var j in result[i].subList){   
+					if(result[i].subList[j].name != null && result[i].subList[j].name.length > 1){
+						str+='<li>';      
+							str+='<p style="color: rgb(0, 0, 0);"><b>'+result[i].subList[j].name+'</b></p>';
+							if(result[i].subList[j].mobileNo.length <= 1  || result[i].subList[j].mobileNo == null){
+							}else{
+								str+='<p><i> - </i>'+result[i].subList[j].mobileNo+'</p>';      
+							}  
+							if(result[i].subList[j].committeePosition != null){
+								str+='<p><i> - </i>'+result[i].subList[j].committeePosition+'</p>';  
+							}     
+						str+='</li>';      
+					}
+				}    
+			}
+			str+='</ul>';      
+			
+			$("#alertInvolvedCandidates").html(str);       
+		}else{
+			str+='<h5 class="text-muted text-capital headingColorStyling">Involved Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>'; 
+			$("#alertInvolvedCandidates").html(str);        
+		}
+		$(".assignedCandidatesUl1").slick({          
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,    
+			 infinite: false,
+			  responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 5,
+					slidesToScroll: 3,
+					infinite: false,
+					dots: false
+				  }
+				},
+				{
+				  breakpoint: 800,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 2
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 2,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				
+			  ]  
+		}); 
+	}
+	function getAlertAssignedCandidates(alertId){
+		GlobalAlertData = [];
+		var jsObj ={
+			alertId  : alertId,    
+			task : ""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertAssignedCandidatesAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){   
+				buildAlertAssignedCandidates(result);  
+			}else{
+				var str = '';
+				str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
+				$("#alertAssignedCandidates").html(str);    
+			}
+		});
+	}
+	function buildAlertAssignedCandidates(result)
+	{
+	var str='';
+	if(result[0].subList.length > 0){  
+		str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;'+result[0].subList.length+'</h5>';
+		str+='<ul class="list-inline assignedCandidatesUl">';
+		for(var i in result)
+		{
+			for(var j in result[i].subList)
+			{
+				str+='<li>';
+					str+='<p style="color:#000"><b>'+result[i].subList[j].name+'</b></p>';
+					if(result[i].subList[j].committeePosition == null || result[i].subList[j].committeePosition.length <= 1){     
+					}else{
+						str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
+					}
+					if(result[i].subList[j].mobileNo == null || result[i].subList[j].mobileNo.length <= 1){     
+					}else{
+						str+='<p><i> - '+result[i].subList[j].mobileNo+'</i></p>';
+					}
+					if(result[i].subList[j].locationVO.districtName == null || result[i].subList[j].locationVO.districtName.length <= 1){     
+					}else{
+						str+='<p><i> - '+result[i].subList[j].locationVO.districtName+'</i></p>';
+					}  
+				str+='</li>';
+			}
+		}
+		str+='</ul>';
+		
+		$("#alertAssignedCandidates").html(str);
+	}else{
+		str+='<h5 class="text-muted text-capital headingColorStyling">Assigned Candidates&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<strong>0</strong></h5>';  
+		$("#alertAssignedCandidates").html(str);                    
+	}
+	
+	$(".assignedCandidatesUl").slick({
+		 slide: 'li',
+		 slidesToShow: 4,
+		 slidesToScroll: 3,
+		 infinite: false,
+		  responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 5,
+				slidesToScroll: 3,
+				infinite: false,
+				dots: false
+			  }
+			},
+			{
+			  breakpoint: 800,
+			  settings: {
+				slidesToShow: 3,
+				slidesToScroll: 2
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+			
+		  ]
+	});  
+}
+
+ function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){  
+		var jsObj={
+			alertId:alertId,
+			task:""
+		}
+		$.ajax({  
+			type : 'GET',
+			url : 'getAlertStatusCommentsTrackingDetails.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result != null)           
+				buildAlertStatusCommentsTrackingDetails(result,alertStatus);    
+		});
+	}
+	function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
+{
+	var docName = '';
+	var extName = [];
+	$("#alertStatusDiv").html("<h4 class='text-muted headingColorStyling' style='font-size:15px;'>ALERT STATUS</h4>");          
+	if(result != null && result.length > 0){  
+		var length = result.length;
+		length = length - 1;
+		var str='';  
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';  
+			for(var i in result)
+			{
+				
+				if(length != i){
+					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok  pull-right" style="font-size: 22px;color: #777 !important;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
+				}else{
+					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+				}        
+				
+			}
+			str+='</ul>';
+			str+='<div class="tab-content alertComment">';
+				for(var i in result)
+				{
+					if(length != i)
+					{
+						str+='<div role="tabpanel" class="tab-pane " id="commentStatus'+i+'">';
+					}else{
+						str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+					}
+					for(var j in result[i].sublist2)
+					{
+						str+='<div class="row m_top10">';
+							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+								var date = result[i].sublist2[j].date      
+								var dateArr = date.split("-");
+								var year = dateArr[0];  
+								var month = dateArr[1];
+								var day = dateArr[2];
+								str+='<table class="table tableCalendar">';
+									str+='<tr>';
+										str+='<td colspan="2">';
+											str+='<h3>'+day+'</h3>';
+										str+='</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>'+getMonth(month)+'</td>';        
+										str+='<td>'+year+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+								str+='<ul class="alertStatusTracking">';
+									str+='<li>';  
+										str+='<div class="arrow_box_left" style="background: #f5f3f8 none repeat scroll 0 0 !important;">';
+										for(var k in result[i].sublist2[j].sublist)
+										{	
+											str+='<div>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE&nbsp;&nbsp;:&nbsp;</span>';
+												for(var l in result[i].sublist2[j].sublist[k])
+												{
+													str+='&nbsp;&nbsp;<span class="glyphicon glyphicon-user"></span> <span>'+result[i].sublist2[j].sublist[k][l].cadreName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 18px;">|</span>';
+												}   
+												str+='&nbsp;&nbsp;&nbsp;&nbsp; <small style="font-size:11px">'+result[i].sublist2[j].sublist[k][0].timeString+'</small>';
+												str+='</p>';  
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+												str+='<p class="m_top10">'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+													str+='<ul>';
+													for(var t in result[i].sublist2[j].sublist[k][0].docList){
+														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+														extName = docName.split(".");
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Attachment.'+extName[1]+'</a></li>';
+													}
+													str+='</ul>';    
+												}
+												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+												str+='<hr style="margin-top:20px;border-color:#a792d2 -moz-use-text-color -moz-use-text-color;"/>';
+											str+='</div>';   
+										}
+										str+='</div>';    
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					}           
+				str+='</div>';
+				}
+			str+='</div>';
+		str+='</div>';
+		$("#alertCommentsDiv").html(str);
+	}else{
+		var str = '';
+		var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable To Resolve","6":"Action Not Required","7":"Duplicate"};            
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
+		for(var i = 1 ; i <= 7 ; i++){
+			if(alertStatus == statusArr[i]){
+				str+='<li class="m_top10" role="presentation" style="pointer-events: none;"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+statusArr[i]+'<span class="glyphicon glyphicon-ok"></span><br/></a></li>';
+			}else{
+				str+='<li class="m_top10" role="presentation" style="pointer-events: none;"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+statusArr[i]+'<br/></a></li>';
+			}
+		}
+		str+='</ul>';       
+		str+='<div class="tab-content alertComment">';    
+		$("#alertCommentsDiv").html(str);       
+	}//glyphicon glyphicon-ok
+	//alertStatus
+}
+	function getVerificationDtls(alertId){
+		var jsObj={
+			alertId:alertId
+		}
+        $.ajax({
+        type : 'POST',
+        url : 'getAlertVerificationDetailsAction.action',
+        dataType : 'json',
+        data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#converSationDtlsDivId").html(' ');
+			buildAlertVerificationStatusRlst(result);
+		});
+	}
+	
+	function buildAlertVerificationStatusRlst(result){
+		var str = '';
+		if(result.conversationList != null && result.conversationList.length > 0){
+			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION STATUS-"+result.actionTypeStatus+"</h4>");  
+			for(var i in result.conversationList){
+				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:12px;">'+result.conversationList[i].heading+'</p>';  
+				if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
+					str+='<p style="border: 1px solid rgb(211, 211, 211); padding: 6px;">'+result.conversationList[i].comments+'</p>';     
+				}
+				var documentList = result.conversationList[i].documentList;
+				if(documentList != null && documentList.length > 0){
+					str+='<p style="font-weight:bold;font-size:12px;" class="text-capital m_top10 panelTitleFont headingColorStyling">Attachments</p>';
+					str+='<ul class="attachmentsBlock">';
+					var order = 0;
+					for(var k in documentList){
+						order = order+1;
+						var fullName = documentList[k];
+						var nameArr = fullName.split(".");
+						var type = nameArr[1];  
+						var orderStr='';
+						if(k<9){
+							orderStr ="0"+order;
+						}else{
+							orderStr = order;  
+						}
+						var attachment = orderStr+'&nbspAttachment.'+type;
+						str+='<li id="showAlertVerificationPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><i class="glyphicon glyphicon-paperclip"></i><span class="border"> '+attachment+' </span></li>';
+					}
+					str+='</ul>';
+				}
+				if(result.conversationList[i].name != null && result.conversationList[i].name.length > 0){
+					str+='<p class="text-right" style="color:#7155D6;font-size:12px;">Created By:'+result.conversationList[i].name+'('+result.conversationList[i].updateTime+'&nbsp'+result.conversationList[i].time+')</p>';     
+				}  
+			}
+			str+='<hr class="m_top10" style="border-top: 1px solid #ccc;">';
+			$("#alertVerificationDtlsDiv").html(str);
+		}
+   }
+   function getMonth(month){
+	if(month=="01"){
+		return "Jan"
+	}else if(month=="02"){
+		return "Feb"
+	}else if(month=="03"){
+		return "Mar"
+	}else if(month=="04"){
+		return "Apr"
+	}else if(month=="05"){
+		return "May"
+	}else if(month=="06"){
+		return "Jun"
+	}else if(month=="07"){
+		return "Jul"
+	}else if(month=="08"){
+		return "Aug"
+	}else if(month=="09"){
+		return "Sep"
+	}else if(month=="10"){
+		return "Oct"
+	}else if(month=="11"){
+		return "Nov"
+	}else if(month=="12"){  
+		return "Dec"
+	}  
+}
+   /* Alert Description Details Block End  */

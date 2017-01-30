@@ -26,6 +26,8 @@
 	<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
     <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
     <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+     <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 		<!-- custom CSS-->
@@ -178,6 +180,7 @@
 	
 }
 .heightApply{height:990px !important;}
+
 </style>
 <script>
 var globalCadreId = '${cadreId}';
@@ -2059,7 +2062,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 <!-- Alert Modal -->
 <div class="modal fade" id="alertModalDivId">
   <div class="modal-dialog" role="document">
-    <div class="modal-content" style="width:700px;">
+    <div class="modal-content" style="width:900px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabelId"></h4>
@@ -2079,7 +2082,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		  <div class="modal-dialog modal-lg" style="width:85%" role="document">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeIconModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span id="tourCadreHeadingId"></span>
 			  </div>
 			  <div class="modal-body"> 
@@ -2116,12 +2119,11 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				</div>
 			  </div>
 			  <div class="modal-footer">     
-				<button type="button" class="btn btn-default" class="close" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default closeIconModal" class="close" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <div class="modal fade" tabindex="-1" id="tourDocumentModalId" role="dialog" style="z-index:99999;">
 	<div class="modal-dialog" style="width:70%;">
@@ -2138,7 +2140,71 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
-<!-- End -->	
+
+<!--  Tour Modal End -->
+
+<!-- Alert Details Modal Start -->
+     <div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#999999">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="tourDocHeadingId"></h4>  
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="cdrModelId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDestId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="sourceHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="headingNameId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertDocHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDocId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertInvolvedCandidates"></div>        
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAssignedCandidates"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertStatusDiv" ></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertCommentsDiv"></div>  
+					</div> 
+					<div  class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertVerificationDiv"></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertVerificationDtlsDiv"></div>  
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+ <!-- End -->
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -2175,6 +2241,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 	<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 	<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 	<script>
 	google.load("visualization", "1", {packages:["corechart"]});
 	

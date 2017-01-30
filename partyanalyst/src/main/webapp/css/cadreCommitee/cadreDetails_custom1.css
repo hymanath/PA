@@ -1525,3 +1525,225 @@ table.gridtable td {
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
+
+			
+.alertColorFont{
+color: rgb(51, 122, 183);
+}
+
+.headingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff !important;
+    padding: 10px;
+    width: 215px;
+	line-height:10px;
+	height:29px;
+	
+}
+.verifyHeadingColorStyling{
+	background-color: rgb(74, 88, 99);
+    color: #fff !important;
+    padding: 10px;
+    width: 315px;  
+	line-height:10px;
+	height:29px;
+	
+}
+.alertDtlsTabStyle thead tr th {font-size:13px !important;padding:5px !important}
+.alertDtlsTabStyle tbody tr td {font-size:13px !important;padding:3px !important}
+.alertComment .tab-pane
+{
+	border:1px solid #a286c0;
+	padding: 10px;
+}
+.alertCommentUl li a
+{
+	color:#333;
+	background-color:#A185BF;
+	text-transform: uppercase;
+	font-size:12px;
+	padding:12px;
+	border-radius:0px;
+}
+.alertCommentUl li.active a
+{
+	color:#A185BF;
+	background-color: #fff;
+	text-transform: uppercase
+}
+.alertCommentUl li.active .color_FF
+{
+	color:#333;
+}
+.assignedCandidatesUl
+{
+	border:1px solid #d3d3d3;
+	padding: 5px 0px;
+}
+.assignedCandidatesUl li
+{
+	padding:6px 20px 6px 10px;
+	border-right: 1px solid #ddd;
+	min-height:100px;
+}
+
+assignedCandidatesUl li:last-child
+{
+	border-right: 0px;
+}
+.assignedCandidatesUl1
+{
+	border:1px solid #d3d3d3;
+	padding: 5px 0px;
+	min-height:90px;
+}
+.assignedCandidatesUl1 li  
+{
+	padding:6px 20px 6px 10px;
+	border-right: 1px solid #ddd;
+}
+assignedCandidatesUl1 li:last-child
+{
+	border-right: 0px;
+}
+
+.tablePopup thead th:first-child
+{
+  background-color: #DED9C3
+}
+.tablePopup thead th:nth-child(2),.tablePopup tr td:nth-child(2)
+{
+  background-color: #808080
+}
+.tablePopup thead th:nth-child(3),.tablePopup tr td:nth-child(3)
+{
+  background-color: #B1A1C6
+}
+.tablePopup thead th:nth-child(4),.tablePopup tr td:nth-child(4)
+{
+  background-color: #538ED4
+}
+.tablePopup thead th:nth-child(5),.tablePopup tr td:nth-child(5)
+{
+  background-color: #94CDDE
+}
+.tablePopup thead th:nth-child(6),.tablePopup tr td:nth-child(6)
+{
+  background-color: #C2D699
+}
+.tablePopup thead th:nth-child(7) , .tablePopup tr td:nth-child(7)
+{
+  background-color: #FAC090
+}
+.tablePopup thead th:nth-child(8) , .tablePopup tr td:nth-child(8) 
+{
+  background-color: #D89795
+}
+.tableCalendar tr td
+{
+	border:3px solid #999;
+	text-align:center;
+	padding:3px !important;
+	position:relative;
+}
+.tableCalendar
+{
+	border-top:3px solid #999;
+}
+.tableCalendar tr:first-child td:first-child:before
+{
+	border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
+    color: #333333;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 10px;
+    font-weight: 400 !important;
+    height: 12px;
+    left: 20px;
+    margin-left: -10px;
+    margin-right: 10px;
+    margin-top: 0;
+    position: absolute;
+    top: -7px;
+    width: 4px;
+    z-index: 99;
+}
+.tableCalendar tr:first-child td:first-child:after
+{
+	border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
+    color: #333333;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 10px;
+    font-weight: 400 !important;
+    height: 12px;
+    right: 20px;
+    margin-top: 0;
+    position: absolute;
+    top: -7px;
+    width: 4px;
+    z-index: 99;
+}
+.alertStatusTracking
+{
+	padding-left:10px;
+}
+.alertStatusTracking li
+{
+	list-style:none;
+	border-radius:4px;
+	position:relative;
+}
+.arrow_box_left
+{
+	border:1px solid #A286C0 !important;
+	padding-bottom:18px !important;
+}
+.arrow_box_left:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #fff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.arrow_box_left:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-right-color: #A286C0 !important;
+	border-width: 6px;
+	margin-top: -6px;
+}
+.arrow_box_left{
+	position: relative;
+	background: #fff;
+	padding:8px;
+	border: 1px solid #ccc;
+}
+.arrow_box_left:after, .arrow_box_left:before {
+	right: 100%;
+	top: 15px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_left:after {
+	border-color: rgba(221, 221, 221, 0);
+	border-right-color: #fff;
+	border-width: 10px;
+	margin-top: -10px;
+}
+.arrow_box_left:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-right-color: #ccc;
+	border-width: 11px;
+	margin-top: -11px;
+}
+.alertComment .tab-pane
+{
+	border:1px solid #a286c0;
+	padding: 10px;
+}
