@@ -3671,4 +3671,8 @@
 	<bean id="cadreRegistrationAllowAreasDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegistrationAllowAreasDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>  
+	
+	<bean id="partyMeetingUpdationDocumentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDocumentsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
