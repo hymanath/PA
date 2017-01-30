@@ -863,6 +863,11 @@ function buildAlertAssignedCandidateData(result)
 });*/
 	
 	$(document).on("click","#uploadAlertDocBtnId",function(){
+		var childEleCount = $(".jFiler-items-list").children().length;
+		if(childEleCount == 0){
+			alert("Please select atleast one file");
+			return;    
+		}
 		$("#alertHiddenId").val('${alertId}');
 		var uploadHandler = {
 				upload: function(o) {
