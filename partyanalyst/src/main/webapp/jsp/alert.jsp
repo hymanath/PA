@@ -509,54 +509,50 @@
 
 <script type="text/javascript">
  
-$(document).on("click",".modalCloseAndShow",function(){
-	$("#myModalConformation").modal('hide');
-	$("#myModal").modal('show');
-});
-var btnAttr;
-$(document).on("click",".involveBlockNew",function(){
-	$("#myModal").modal('show');
-	 $("#apptmemberDetailsDiv").html("");
-	 $("#advanceSearchTypeId").val(0);
-	 
-	 btnAttr = $(this).attr("btn-attr");
-	
-	var select = new Dropkick("#advanceSearchTypeId");
-				select.refresh();	
+	$(document).on("click",".modalCloseAndShow",function(){
+		$("#myModalConformation").modal('hide');
+		$("#myModal").modal('show');
+	});
+	var btnAttr;
+	$(document).on("click",".involveBlockNew",function(){
+		$("#myModal").modal('show');
+		$("#apptmemberDetailsDiv").html("");
+		$("#advanceSearchTypeId").val(0);
+		 
+		btnAttr = $(this).attr("btn-attr");
+		
+		var select = new Dropkick("#advanceSearchTypeId");
+		select.refresh();	
 		showHideBySearchType();
-					
-})
-// Load the Google Transliterate API
-   google.load("elements", "1", {
-         packages: "transliteration"
-       });
+						
+	})
+	// Load the Google Transliterate API
+    google.load("elements", "1", {
+		packages: "transliteration"
+    });
 
 </script> 
 <script type="text/javascript">
 
 
- var control;
+	var control;
 	var lang;
 	var cloneCount=0;
 	var involvedCadreIds = [];
 	var assignCadreIds = [];
-	/* var globalSelectedMemberIdsArr = []; */
-   $(document).on("click",".apptDetailsDiv",function(){
+	$(document).on("click",".apptDetailsDiv",function(){
 		console.log($(this).attr("attr_name"));
-		 if($(this).is(':checked')){
-		
-			 $("#involvedCandidatesDiv").show();
-			 $(".membersBlock").show();
-			  var name  = $(this).attr("attr_name");
-			  var image = $(this).attr("attr_img_url");
-			  var attrId = $(this).attr("attr_id");
-			  var attrConsti =  $(this).attr("attr-consti");
-			   var mobile = $(this).attr("attr_mobile");
-			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
+		if($(this).is(':checked')){
+			$("#involvedCandidatesDiv").show();
+			$(".membersBlock").show();
+			var name  = $(this).attr("attr_name");
+			var image = $(this).attr("attr_img_url");
+			var attrId = $(this).attr("attr_id");
+			var attrConsti =  $(this).attr("attr-consti");
+			var mobile = $(this).attr("attr_mobile");
+			var uniqueId = $(this).attr("attr_unique_id");
 			var str ='';
-				/* str+='<div id="involveBlockParent'+attrId+'"  class="col-md-3 col-xs-12 col-sm-6">';
-				str+='<div class="involveBlock" attr_cadreId="'+attrId+'">'; */
-				str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+				str+='<div id="'+uniqueId+'" class="col-md-3 col-xs-12 col-sm-6">';
 				str+='<div class="involveBlock">';
 				str+='<div class="media"><div class="media-left">';
 				str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
@@ -578,7 +574,6 @@ $(document).on("click",".involveBlockNew",function(){
 			if(btnAttr == "involve")
 			{
 				str+='<div class="form-inline">';
-				//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 				str+='<div class="onoffswitch" style="display:inline-block">';
 				str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
 				str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
@@ -591,128 +586,108 @@ $(document).on("click",".involveBlockNew",function(){
 			str+='</div></div></div>';
 			if(btnAttr == "involve")
 			{
-				str+='<span class="closeIcon" btn-type="involve" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				str+='<span class="closeIcon cancelMemCls" btn-type="involve" attr_category="involve" attr_unique_id="'+uniqueId+'" id="'+attrId+'"  clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"       style="display:block;"></i></span></div></div>';
 				$("#duplicateCandidateBlock").html('');
 			}
 			else
 			{
-				str+='<span class="closeIcon" btn-type="assign" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				str+='<span class="closeIcon cancelMemCls" btn-type="assign" attr_category="assign" attr_unique_id="'+uniqueId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
 				$("#duplicateCandidateBlock").html('');
 				
 			}
-			if(btnAttr == "involve")
-			{
-					if(jQuery.inArray(attrId, involvedCadreIds) == -1 )
-					{
-						
-						involvedCadreIds.push(attrId);	
-						$(".membersBlock").append(str);
-						$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-						var addStr ='';
-						addStr+='<p class="text-capital" >'+name+'</p>';
-						addStr+='<p>'+mobile+'</p>';
-						addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-						$("#duplicateCandidateBlock").html(''+addStr+'');
-						$("#memberConfirmation").html("Member Added");
-						
-						$("#myModalConformation").modal('show');
-						setTimeout(function(){ $("#myModalConformation").modal('hide');
-							 }, 2000);
-							 setTimeout(function(){ $("body").addClass("modal-open");	
-						}, 3000);
-					}else{
-						var duplicateStr ='';
-						duplicateStr+='<p class="text-capital" >'+name+'</p>';
-						duplicateStr+='<p>'+mobile+'</p>';
-						duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-						$("#duplicateCandidateBlock").html(''+duplicateStr+'');
-						$("#memberConfirmation").html("already added member to this alert");
-						$("#myModalConformation").modal('show');
+			if(btnAttr == "involve"){
+				if(jQuery.inArray(attrId, involvedCadreIds) == -1 ){
+					involvedCadreIds.push(attrId);	
+					$(".membersBlock").append(str);
+					$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+					var addStr ='';
+					addStr+='<p class="text-capital" >'+name+'</p>';
+					addStr+='<p>'+mobile+'</p>';
+					addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+					$("#duplicateCandidateBlock").html(''+addStr+'');
+					$("#memberConfirmation").html("Member Added");
+					$("#myModalConformation").modal('show');
+					setTimeout(function(){ 
+						$("#myModalConformation").modal('hide');
+					}, 2000);
+					setTimeout(function(){ 
+						$("body").addClass("modal-open");	
+					}, 3000);
+				}else{
+					var duplicateStr ='';
+					duplicateStr+='<p class="text-capital" >'+name+'</p>';
+					duplicateStr+='<p>'+mobile+'</p>';
+					duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+					$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+					$("#memberConfirmation").html("already added member to this alert");
+					$("#myModalConformation").modal('show');
+					 setTimeout(function(){ $("body").addClass("modal-open");	
+					}, 3000);
+				}	
+			}else{
+				if(jQuery.inArray(attrId, assignCadreIds) == -1 ){
+					assignCadreIds.push(attrId);	
+					$(".assignedMembersBlock").append(str);
+					$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
+					var addStr ='';
+					addStr+='<p class="text-capital" >'+name+'</p>';
+					addStr+='<p>'+mobile+'</p>';
+					addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+					$("#duplicateCandidateBlock").html(''+addStr+'');
+					$("#memberConfirmation").html("Member Added");
+					
+					$("#myModalConformation").modal('show');
+					setTimeout(function(){ $("#myModalConformation").modal('hide');
+						 }, 2000);
 						 setTimeout(function(){ $("body").addClass("modal-open");	
-						}, 3000);
-					}	
+					}, 3000);
+				}else{
+					var duplicateStr ='';
+					duplicateStr+='<p class="text-capital" >'+name+'</p>';
+					duplicateStr+='<p>'+mobile+'</p>';
+					duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+					$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+					$("#memberConfirmation").html("already added member to this alert");
+					$("#myModalConformation").modal('show');
+					 setTimeout(function(){ $("body").addClass("modal-open");	
+					}, 3000);
+				}	
 			}
-			else
-				
-				{
-						if(jQuery.inArray(attrId, assignCadreIds) == -1 )
-						{
-							
-							assignCadreIds.push(attrId);	
-							$(".assignedMembersBlock").append(str);
-							$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
-							var addStr ='';
-							addStr+='<p class="text-capital" >'+name+'</p>';
-							addStr+='<p>'+mobile+'</p>';
-							addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-							$("#duplicateCandidateBlock").html(''+addStr+'');
-							$("#memberConfirmation").html("Member Added");
-							
-							$("#myModalConformation").modal('show');
-							setTimeout(function(){ $("#myModalConformation").modal('hide');
-								 }, 2000);
-								 setTimeout(function(){ $("body").addClass("modal-open");	
-							}, 3000);
-						}else{
-							var duplicateStr ='';
-							duplicateStr+='<p class="text-capital" >'+name+'</p>';
-							duplicateStr+='<p>'+mobile+'</p>';
-							duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-							$("#duplicateCandidateBlock").html(''+duplicateStr+'');
-							$("#memberConfirmation").html("already added member to this alert");
-							$("#myModalConformation").modal('show');
-							 setTimeout(function(){ $("body").addClass("modal-open");	
-							}, 3000);
-						}	
-				}
-				
-				 
-						 
-				  cloneCount = cloneCount+1;
-				  /* globalSelectedMemberIdsArr.push(attrId); */
-				   $('html, body').animate({
+			cloneCount = cloneCount+1;
+			$('html, body').animate({
 						scrollTop: $('.membersBlock').offset().bottom
 					}, 2000);
-		 }/* else{ 
+		 }else{
+			var uniqueId = $(this).attr("attr_unique_id");
 			var attrId = $(this).attr("attr_id");
-			cloneCount = cloneCount-1;
-			var index = involvedCadreIds.indexOf(attrId);
-			if (index >= 0) {
-				  involvedCadreIds.splice( index, 1 );
+			$("#"+uniqueId).remove();
+			if(btnAttr == "involve"){
+				var index = involvedCadreIds.indexOf(attrId);
+				if(index > -1){
+					involvedCadreIds.splice(index, 1);
+					$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 				}
-			$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-			$("#involveBlockParent"+attrId).remove();
-			
-			removeParticularValue(globalSelectedMemberIdsArr,attrId);
-		 } */
+			}else{
+				var index = assignCadreIds.indexOf(attrId);
+				if(index > -1){
+					assignCadreIds.splice(index, 1);
+					$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
+				}
+			}
+		 }
    });
-    /* function removeParticularValue(arr, item) {
-	      for(var i = arr.length; i--;) {
-	          if(arr[i] === item) {
-	              arr.splice(i, 1);
-	          }
-	      }
-	  } */
+ 
    function onLoad() {
-	
-       lang = $("input[name=language]:checked").val();
-     var options = {
-         sourceLanguage:
-             google.elements.transliteration.LanguageCode.ENGLISH,
-         destinationLanguage:
-             [''+lang+''],
-         shortcutKey: 'alt+t',
-         transliterationEnabled: true
-     };
-
-     // Create an instance on TransliterationControl with the required
-     // options.
-     control =
-         new google.elements.transliteration.TransliterationControl(options);
-
-     // Enable transliteration in the textbox with id
-     // 'descrptionId'.
-
+	   lang = $("input[name=language]:checked").val();
+		var options = {
+			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+			destinationLanguage:[''+lang+''],
+			shortcutKey: 'alt+t',
+			transliterationEnabled: true
+		};
+		// Create an instance on TransliterationControl with the required options.
+		control = new google.elements.transliteration.TransliterationControl(options);
+		// Enable transliteration in the textbox with id 'descrptionId'.
 	 	if ($('#alertdescriptionId').length){
 			control.makeTransliteratable(['alertdescriptionId']);
 		}
@@ -720,23 +695,19 @@ $(document).on("click",".involveBlockNew",function(){
 			control.makeTransliteratable(['alertTitleId']);
 		}
    }
-   function languageChangeHandler() {
-  
-        var lang1 = $("input[name=language]:checked").val();
-		if(lang1 =="en")
-	   {
-		control.disableTransliteration();
-		}
-		else
-	   {
-		   control.enableTransliteration();
-           control.setLanguagePair(
+   function languageChangeHandler(){
+	   var lang1 = $("input[name=language]:checked").val();
+		if(lang1 =="en"){
+			control.disableTransliteration();
+		}else{
+			control.enableTransliteration();
+			control.setLanguagePair(
             google.elements.transliteration.LanguageCode.ENGLISH,
             lang1);
-			}
-      }
- google.setOnLoadCallback(onLoad);
-$(".dropkickClass").dropkick()
+		}
+	}
+	google.setOnLoadCallback(onLoad);
+	$(".dropkickClass").dropkick()
 function getCandidatesByName(){
 		var  CandidateName=$("#candidateNameId").val();
 		var jsObj =
@@ -946,11 +917,6 @@ function createAlert()
 		if($(this).val() != null && $(this).val().length > 0)
 		candidateId += $(this).val()+",";
 	})
- /*if(candidateId==0 || candidateId.length == 0)
-  {
-    $("#errorDiv1").html(" Please select Candidate ");
-        return;
-  }*/
 	var n=candidateId.lastIndexOf(",");
     candidateId=candidateId.substring(0,n) ;
 	$("#candidateId").val(candidateId);
@@ -964,14 +930,13 @@ function createAlert()
 			return;
 	  }
   
-   if(description.length==0 ||description=='')
-	  {
+	if(description.length==0 ||description==''){
 		$("#errorDiv1").html(" Please enter description ");
-			return;
-	  }
+		return;
+	}
 	  
-$("#createAlertajaxImg").html('<img src="images/search.gif"/>');
-var uploadHandler = {
+	$("#createAlertajaxImg").html('<img src="images/search.gif"/>');
+	var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
 					$("#createAlertajaxImg").html('');
@@ -989,164 +954,150 @@ var uploadHandler = {
 
 		YAHOO.util.Connect.setForm('saveAlertForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','saveAlertAction.action',uploadHandler);
-}
+	}
 
-function clearFields()
-{
-	
-	$("#extraUploadFileDiv").html("");
-	$("#uploadFileId0").val("");
-	$("#extraClarificationUploadFileDiv li").each(function(){
-		$(this).remove();                   
-	});
-	$("#apptmemberDetailsDiv").html("");
-	$(".membersBlock").html("");
-	$("#assignedMembers").html("");
-	$(".assignedMembersBlock").html("");
-	$("#involvedCandidatesDiv").hide();	
-	
-	showHideBySearchType();	
-	
-	involvedCadreIds =[];
-	$("#involvedMembers").html('(0 - Members added)');
-	
-	$("#alertTitleId").val("");
-	$(".alertclearCls").val("");
-	$(".clearCls").val("");
-	$("#alertCategory").val(0);
-	
-	$("#advanceSearchTypeId").val(0);
-	var select = new Dropkick("#advanceSearchTypeId");
-	select.refresh();	
-	
-	$("#stateId1").val(0);
-	var select = new Dropkick("#stateId1");
-	select.refresh();
-	
-	$("#alertTypeId").val(0);
-	var select = new Dropkick("#alertTypeId");
-	select.refresh();
-	
-	$("#alertCategory").val(0);
-	var select = new Dropkick("#alertCategory");
-	select.refresh();
-	
-	$("#alertSeverityId").val(0);  
-	var select = new Dropkick("#alertSeverityId");
-	select.refresh();
-	
-	$("#alertlevelId1").val(2);
-	var select = new Dropkick("#alertlevelId1");
-	select.refresh();
-	
-	$("#alertSourceId").val(0);
-	var select = new Dropkick("#alertSourceId");
-	select.refresh();
-	
-	$("#alertImpactId").val(0);
-	var select = new Dropkick("#alertImpactId");
-	select.refresh();
-	
-}
-function getAlertType(){
-		$("#alertTypeId").html('');
-		var jsObj =
-		        {
-			task:""
-		          }
-				$.ajax({
-					  type:'GET',
-					  url: 'getAlertTypeAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#alertTypeId').append('<option value="0"> Select Alert Type </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#alertTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#alertTypeId").dropkick();
-							var select1 = new Dropkick("#alertTypeId");
-							select1.refresh();
-					}
-				  
-				});
-		}
+	function clearFields(){
+		$("#extraUploadFileDiv").html("");
+		$("#uploadFileId0").val("");
+		$("#extraClarificationUploadFileDiv li").each(function(){
+			$(this).remove();                   
+		});
+		$("#apptmemberDetailsDiv").html("");
+		$(".membersBlock").html("");
+		$("#assignedMembers").html("");
+		$(".assignedMembersBlock").html("");
+		$("#involvedCandidatesDiv").hide();	
 		
-var loginUserId = "${sessionScope.USER.registrationID}";
-function getAlertsource(){
-		$("#alertSourceId").html('');
-		var jsObj =
-		        {
-					userId : loginUserId,
-				task:""
-		          }
-				$.ajax({
-					  type:'GET',
-					  url: 'getAlertSourceForUserAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#alertSourceId').append('<option value="0"> Select Alert Source </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#alertSourceId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#alertSourceId").dropkick();
-							var select1 = new Dropkick("#alertSourceId");
-							select1.refresh();
-					}
-				  
-				});
+		showHideBySearchType();	
+		
+		involvedCadreIds =[];
+		$("#involvedMembers").html('(0 - Members added)');
+		
+		$("#alertTitleId").val("");
+		$(".alertclearCls").val("");
+		$(".clearCls").val("");
+		$("#alertCategory").val(0);
+		
+		$("#advanceSearchTypeId").val(0);
+		var select = new Dropkick("#advanceSearchTypeId");
+		select.refresh();	
+		
+		$("#stateId1").val(0);
+		var select = new Dropkick("#stateId1");
+		select.refresh();
+		
+		$("#alertTypeId").val(0);
+		var select = new Dropkick("#alertTypeId");
+		select.refresh();
+		
+		$("#alertCategory").val(0);
+		var select = new Dropkick("#alertCategory");
+		select.refresh();
+		
+		$("#alertSeverityId").val(0);  
+		var select = new Dropkick("#alertSeverityId");
+		select.refresh();
+		
+		$("#alertlevelId1").val(2);
+		var select = new Dropkick("#alertlevelId1");
+		select.refresh();
+		
+		$("#alertSourceId").val(0);
+		var select = new Dropkick("#alertSourceId");
+		select.refresh();
+		
+		$("#alertImpactId").val(0);
+		var select = new Dropkick("#alertImpactId");
+		select.refresh();
+	}
+	function getAlertType(){
+		$("#alertTypeId").html('');
+		var jsObj ={
+			task:""
 		}
-function buildapptmemberDetails(result){
+		$.ajax({
+			type:'GET',
+			url: 'getAlertTypeAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#alertTypeId').append('<option value="0"> Select Alert Type </option>');
+			if(result != null){
+				for(var i in result){			
+					$('#alertTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+				$("#alertTypeId").dropkick();
+				var select1 = new Dropkick("#alertTypeId");
+				select1.refresh();
+			}
+				  
+		});
+	}
+		
+	var loginUserId = "${sessionScope.USER.registrationID}";
+	function getAlertsource(){
+		$("#alertSourceId").html('');
+		var jsObj ={
+			userId : loginUserId,
+			task:""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertSourceForUserAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#alertSourceId').append('<option value="0"> Select Alert Source </option>');
+			if(result != null){
+				for(var i in result){			
+					$('#alertSourceId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+				$("#alertSourceId").dropkick();
+				var select1 = new Dropkick("#alertSourceId");
+				select1.refresh();
+			}
+				  
+		});
+	}
+	function buildapptmemberDetails(result){
+		var randomId = createId();
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<table id="searchedMembersId">';
 			str+='<thead style="display:none;"><th></th><th></th><th></th></thead>';
 			str+='<tbody>';
-			var xindex =0;
+			var k=0;
+			var xindex = 0;
 			for(var i in result){
-				if( xindex == 0)
-			{
-				str+='<tr>';
-			}
-				
-				
+				if( xindex == 0){
+					str+='<tr>';
+				}
 				str+='<td style="padding:0px !important;">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
 							str+='<div class="row">';
-								
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
 											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
 										str+='</div>';
 										str+='<div class="media-body">';
-										
-							
 										if(result[i].constituency !=null && result[i].constituency.length>0 ){
 											<c:choose>
-											<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
-											if(result[i].id != null && result[i].id > 0){
-												if(result[i].candidateType=="voter"){
-												 str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div>';
-												}else{
-													str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
-												}
-											}
-											else
-											str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
-											</c:when>
-											<c:otherwise>
-											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
-											</c:otherwise>
-											</c:choose>
-											
+												<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
+													if(result[i].id != null && result[i].id > 0){
+														if(result[i].candidateType=="voter"){
+														 str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div>';
+														}else{
+															str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
+														}
+													}
+													else
+													str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
+												</c:when>
+												<c:otherwise>
+													str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
+												</c:otherwise>
+											</c:choose>  
 										}else{
 											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
 										}
@@ -1157,12 +1108,8 @@ function buildapptmemberDetails(result){
 										}
 										
 										if(result[i].designation !=null && result[i].designation.length>0){
-											
-												str+='<span style="margin-left:10px;"> '+result[i].designation+'</span></p>';
+											str+='<span style="margin-left:10px;"> '+result[i].designation+'</span></p>';
 										}else{
-											
-											//str+='<span style="margin-left:10px;">Designation: - </span></p>';
-											
 											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
 												 if(result[i].candidateType == 'cadre'){
 													str+='<span style="margin-left:10px;"> - Cadre</span></p>'; 
@@ -1176,118 +1123,57 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
-							  
-								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
-									
-									str+='<div class="col-md-1 m_top10"><a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a></div>&nbsp;&nbsp;';
-									
-								}
-								
-								
-							if(result[i].designation==null){
-								result[i].designation = "";
-							}
-							if(result[i].aptExists == false && result[i].appointmentCandidateId != null){
-								str+='<div class="col-md-1   m_top10" attr_id="'+result[i].id+'" >';
-							}
-							else{
-								str+='<div class="col-md-1 col-xs-offset-1 m_top10" attr_id="'+result[i].id+'" >';
-							}
-							if(result[i].aptExists == false)
-							{
-								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
-							}								
-							else{
-								str+='<label data-toggle="tooltip"  data-placement="top" title="This Candidate Already in '+result[i].aptName+' Appointment with '+result[i].aptStatus+' Status: you can not addtion to another Appointment"> ';
-								str+=''+result[i].aptName+' - '+result[i].aptStatus+'';
-								str+='</label>';
-							}
-							
-								str+='</div>';
-								
-							str+='</div>';*/
+								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_unique_id="'+randomId+'_'+k+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';
 						str+='</li>';
-					 
 					str+='</ul>';
 				str+='</div>';
-					
 				str+='</td>';
 				xindex++;
 				var screenWidth = $(window).width();
-				
-				if(screenWidth <=500)
-				{
+				if(screenWidth <= 500){
 					str+='</tr>';
-						xindex = 0;
-						/* if(result.length-1 == i){
-						if(xindex % 1 == 2){
+					xindex = 0;
+				}else if(screenWidth >500 && screenWidth <=800){
+					if(result.length-1 == i){
+						if(xindex % 2 == 2){
 							str+='<td></td>';
 							str+='</tr>';
 						}
-						if(xindex % 1 == 1){
+						if(xindex % 2 == 1){
 							str+='<td></td>';
 							str+='<td></td>';
 							str+='</tr>';
 						}
 					}
-					 if( xindex == 3){
+					if( xindex == 2){
 						str+='</tr>';
 						xindex = 0;
-					} */
-				}
-				else if(screenWidth >500 && screenWidth <=800)
-				{
+					}  
+				}else{
 					if(result.length-1 == i){
-					if(xindex % 2 == 2){
-						str+='<td></td>';
-						str+='</tr>';
+						if(xindex % 3 == 2){
+							str+='<td></td>';
+							str+='</tr>';
+						}
+						if(xindex % 3 == 1){
+							str+='<td></td>';
+							str+='<td></td>';
+							str+='</tr>';
+						}
 					}
-					if(xindex % 2 == 1){
-						str+='<td></td>';
-						str+='<td></td>';
+					if( xindex == 3){
 						str+='</tr>';
-					}
+						xindex = 0;
+					} 
 				}
-				 if( xindex == 2){
-					str+='</tr>';
-					xindex = 0;
-				}  
-				}
-				else{
-					if(result.length-1 == i){
-					if(xindex % 3 == 2){
-						str+='<td></td>';
-						str+='</tr>';
-					}
-					if(xindex % 3 == 1){
-						str+='<td></td>';
-						str+='<td></td>';
-						str+='</tr>';
-					}
-				}
-				 if( xindex == 3){
-					str+='</tr>';
-					xindex = 0;
-				} 
-				}
-				
+				k++;
 			}
 			str+='</tbody>';
 			str+='</table>';
 		}
-		
 		$("#apptmemberDetailsDiv").html(str);
-		/* Make Selected People next time who has already selected for referral in first search */
-		/* if(globalSelectedMemberIdsArr != null && globalSelectedMemberIdsArr.length > 0){
-			for(var i=0;i<globalSelectedMemberIdsArr.length;i++){
-				$(".close"+globalSelectedMemberIdsArr[i]).prop("checked",true);
-				$(".searhMemberCls"+globalSelectedMemberIdsArr[i]).css("background-color", "lightgrey"); 
-			}	
-		} */
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
-		
 		applyPagination();
 	}
 	
@@ -1302,66 +1188,89 @@ function buildapptmemberDetails(result){
 			$('#stateId1').append("<option value='1'> Andhra Pradesh </option>");
 			$('#stateId1').append("<option value='36'> telangana </option>");
 		}
-		
 		$("#stateId1").dropkick();
 		var selects = new Dropkick("#stateId1");
 		selects.refresh();
 	}
-getAlertType();
-buildLevels();
-showHideSearch("advanceSearch");
-showHideBySearchType();
-disableByLevel(1);
-getAlertsource();
-getAlertImpactScope();
+	getAlertType();
+	buildLevels();
+	showHideSearch("advanceSearch");
+	showHideBySearchType();
+	disableByLevel(1);
+	getAlertsource();
+	getAlertImpactScope();
 
-$("#apptmemberDetailsDiv").html("");
-
-//showHideSearch("advanceSearch");
-//showHideBySearchType();
-getMemberTypes();
-function getAlertImpactScope(){
+	$("#apptmemberDetailsDiv").html("");
+	getMemberTypes();
+	function getAlertImpactScope(){
 		$("#alertImpactId").html('');
-		var jsObj =
-		        {
+		var jsObj ={
 			task:""
-		          }
-				$.ajax({
-					  type:'GET',
-					  url: 'getAlertImpactScopeAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#alertImpactId').append('<option value="0"> Select Alert Impact </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#alertImpactId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#alertImpactId").dropkick();
-							var select1 = new Dropkick("#alertImpactId");
-							select1.refresh();
-					}
-				  
-				});
 		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertImpactScopeAction.action',
+			data: {task :JSON.stringify(jsObj)}
+	   }).done(function(result){
+			$('#alertImpactId').append('<option value="0"> Select Alert Impact </option>');
+			if(result != null){
+				for(var i in result){			
+					$('#alertImpactId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+				$("#alertImpactId").dropkick();
+				var select1 = new Dropkick("#alertImpactId");
+				select1.refresh();
+			}	  
+		});
+	}
 	
 	var fileNo=0;
 	$(document).on("click","#addFile",function(){
 		fileNo = fileNo+1;
 		$("#extraClarificationUploadFileDiv").append('<li id="cloned'+fileNo+'"><input type="file" id="uploadFileId'+fileNo+'" name="imageForDisplay" class="btn btn-mini cloneFileCls"/><span class="closeIcon" attr_id="'+fileNo+'">x</span></li>');
 	});
+	
 	$(document).on("click",".clearFileCls",function(){
 		$("#uploadFileId0").val(""); 
 		$(".clearFileCls").hide();
 	});
+	
 	$(document).on("click","#uploadFileId0",function(){
 		$(".clearFileCls").show();
 	});
+	
 	$(document).on("click",".closeIcon",function(){  
 		var positionId = $(this).attr("attr_id");
 		$("#cloned"+positionId).remove();
 		
+	});
+	function createId(){   
+		var text = "";
+		var alphabates = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for( var i=0; i < 5; i++ )
+			text += alphabates.charAt(Math.floor(Math.random() * alphabates.length));
+
+		return text;
+	}
+	$(document).on("click",".cancelMemCls",function(){
+		var uniqueId = $(this).attr("attr_unique_id");
+		var category = $(this).attr("attr_category");
+		var cadreId = $(this).attr("id");  
+		if(category == "involve"){
+			var index = involvedCadreIds.indexOf(cadreId);
+			if(index > -1){
+				involvedCadreIds.splice(index, 1);
+				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+			}
+		}else{
+			var index = assignCadreIds.indexOf(cadreId);
+			if(index > -1){
+				assignCadreIds.splice(index, 1);  
+				$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
+			}
+		}
+		$("#"+uniqueId).remove();  
 	});
 </script>
 </body>
