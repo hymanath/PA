@@ -223,7 +223,7 @@ function getCandidateList(designationId){
 			$("#designationSlctBxId").trigger("chosen:updated");
 		});
 	}
-	
+
 	function getAllTourCategorys(cadreId,designationId){ 
 		var jsObj = {     
 			cadreId : cadreId,
@@ -471,7 +471,9 @@ function getCandidateList(designationId){
 			$(".tourDescNewCls").val("");
 			$("#tourMonthYear").val("");
 			var desigDtlsId = $("#designationSlctBxId").val();
-			getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
+			var tdpCadreId = $(this).attr("attr_cadre_id");
+			$("#hiddenTdpCadreId").val(tdpCadreId);
+			//getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
 		}else{
 			$("#overallDivId").hide();
 		}
@@ -1768,3 +1770,80 @@ function getCandidateList(designationId){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
+	$(document).on("keyup","#tourMonthYear",function(){
+	getAllTourDetailsOverview();
+});
+function getAllTourDetailsOverview(){//Teja
+	var tourdate = $("#tourMonthYear").val();
+	var cadreId = $("#hiddenTdpCadreId").val();
+	var jsObj = {     
+		tourdate : tourdate,
+		tdpCadreId:cadreId
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getSelectedprofileToursOverviewAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		console.log(result);
+		buildAllTourDetailsOverview(result)
+	});
+}
+function buildAllTourDetailsOverview(result){
+	$("#candidateNameId").html("SELECT PROFILE TOURS OVERVIEW");
+	var str = '';
+	var str1 = '';
+	if(result != null && result.length > 0){
+		str+='<table class="table table-bordered">';
+		  str+='<thead>';
+			str+='<th>Designation</th>';
+			str+='<th>Tour Category</th>';
+			str+='<th>Type</th>';
+			str+='<th>Tours Submitted</th>';
+			str+='<th>Updated Date</th>';
+		  str+='</thead>';
+		  str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+					if(result[i].designation != null){
+						str+='<td>'+result[i].designation+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}				  
+				  str+='<td>'+result[i].category+'</td>';
+				  str+='<td>'+result[i].comment+'</td>';
+				  if(result[i].tourDays != null){
+					  str+='<td><input type="text" class="form-control" value="'+result[i].tourDays+'"/></td>';
+				  }else{
+					  str+='<td><input type="text" class="form-control" value="0"/></td>'; 
+				  }
+				  if(result[i].tourDate != null && result[i].tourDate==""){
+					   str+='<td>'+result[i].tourDate+'</td>';
+				  }else{
+					   str+='<td class="text-center">-</td>';
+				  }
+				 
+				str+='</tr>';
+			}
+		  str+='</tbody>';
+		str+='</table>';
+		str1+='<h4 class="panel-title m_top20">Uploaded Attachments</h4>';
+		str1+='<div class="m_top10">';
+			str1+='<table class="table tableAttachments">';
+			for(var j in result[0].toursVoList){
+				str1+='<tr>';
+					str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
+					str1+='<td>'+result[0].toursVoList[j].filePath+'</td>';
+					str1+='<td>UPDATED : '+result[0].toursVoList[j].tourDate+'</td>';
+					str1+='<td><button class="btn btnView" type="button">VIEW</button></td>';
+					str1+='<td><button class="btn btnDelete" type="button">DELETE</button></td>';
+				str1+='</tr>';
+			}	
+			str1+='</table>';
+		str1+='</div>';
+	}
+	
+	$("#toursCandidateDetails").html(str);
+	$("#attachementsId").html(str1);
+}
