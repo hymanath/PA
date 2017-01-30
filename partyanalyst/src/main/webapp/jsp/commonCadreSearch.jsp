@@ -141,7 +141,7 @@
 				</div>
 				
 				</div>
-				<div class="m_top10" id="involvedCandidatesDiv" style="display:none;padding:0px 15px;">
+				<div class="m_top10" id="involvedCandidatesDiv" style="padding:0px 15px;">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
@@ -191,8 +191,6 @@ function buildapptmemberDetails(result){
 			{
 				str+='<tr>';
 			}
-				
-				
 				str+='<td style="padding:0px !important;width:33% !important">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
@@ -206,7 +204,6 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 										str+='<div class="media-body">';
 										
-							
 										if(result[i].constituency !=null && result[i].constituency.length>0 ){
 											<c:choose>
 											<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
@@ -224,7 +221,6 @@ function buildapptmemberDetails(result){
 											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
 											</c:otherwise>
 											</c:choose>
-											
 										}else{
 											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
 										}
@@ -254,40 +250,10 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
-							  
-								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
-									
-									str+='<div class="col-md-1 m_top10"><a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a></div>&nbsp;&nbsp;';
-									
-								}
-								
-								
-							if(result[i].designation==null){
-								result[i].designation = "";
-							}
-							if(result[i].aptExists == false && result[i].appointmentCandidateId != null){
-								str+='<div class="col-md-1   m_top10" attr_id="'+result[i].id+'" >';
-							}
-							else{
-								str+='<div class="col-md-1 col-xs-offset-1 m_top10" attr_id="'+result[i].id+'" >';
-							}
-							if(result[i].aptExists == false)
-							{
-								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
-							}								
-							else{
-								str+='<label data-toggle="tooltip"  data-placement="top" title="This Candidate Already in '+result[i].aptName+' Appointment with '+result[i].aptStatus+' Status: you can not addtion to another Appointment"> ';
-								str+=''+result[i].aptName+' - '+result[i].aptStatus+'';
-								str+='</label>';
-							}
-							
-								str+='</div>';
-								
-							str+='</div>';*/
+								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';
 						str+='</li>';
 					 
-					str+='</ul>';
+					str+='</ul>';  
 				str+='</div>';
 					
 				str+='</td>';
@@ -298,21 +264,7 @@ function buildapptmemberDetails(result){
 				{
 					str+='</tr>';
 						xindex = 0;
-						/* if(result.length-1 == i){
-						if(xindex % 1 == 2){
-							str+='<td></td>';
-							str+='</tr>';
-						}
-						if(xindex % 1 == 1){
-							str+='<td></td>';
-							str+='<td></td>';
-							str+='</tr>';
-						}
-					}
-					 if( xindex == 3){
-						str+='</tr>';
-						xindex = 0;
-					} */
+						
 				}
 				else if(screenWidth >500 && screenWidth <=800)
 				{
