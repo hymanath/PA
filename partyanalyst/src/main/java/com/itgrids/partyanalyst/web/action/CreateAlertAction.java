@@ -1169,7 +1169,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}*/
 	
 	
-	
+
 	
 	public String uploadAlertsDoc(){
 		try{
@@ -1183,15 +1183,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				String key = fileParams.nextElement();
 				File[] files = multiPartRequestWrapper.getFiles(key);
 				if(files != null && files.length > 0){
+					int index = 0;
 					for(File f : files){
-						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[index];
 						String ext = "";
-						if(extension.length > 1){
-							ext = extension[extension.length-1];
-							mapfiles.put(f,ext);
-						}
+						mapfiles.put(f,fileName);
+						index = index + 1;
 					}
-				}
+				}  
 			}
 			status = alertService.saveAlertDocument(alertId,regVo.getRegistrationID(),mapfiles);
 			inputStream = new StringBufferInputStream(status);
