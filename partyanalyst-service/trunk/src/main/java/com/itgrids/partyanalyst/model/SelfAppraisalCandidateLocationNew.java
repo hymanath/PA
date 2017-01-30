@@ -28,10 +28,13 @@ public class SelfAppraisalCandidateLocationNew {
 	private Long locationValue;
 	private Long selfAppraisalTourCategoryId;
 	private Long addressId;
+	private Long tourTypeId;
+	private String isDeleted;
 	
 	private SelfAppraisalCandidate selfAppraisalCandidate;
 	private SelfAppraisalTourCategory selfAppraisalTourCategory;
 	private UserAddress userAddress;
+	private TourType tourType;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -108,6 +111,28 @@ public class SelfAppraisalCandidateLocationNew {
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
-	
-	
+	@Column(name="tour_type_id")
+	public Long getTourTypeId() {
+		return tourTypeId;
+	}
+	public void setTourTypeId(Long tourTypeId) {
+		this.tourTypeId = tourTypeId;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tour_type_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TourType getTourType() {
+		return tourType;
+	}
+	public void setTourType(TourType tourType) {
+		this.tourType = tourType;
+	}
 }
