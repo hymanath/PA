@@ -49,5 +49,7 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getConstituencyByMeetingId(Long districtId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment);
 	public List<Object[]> getMandalByMeetingId(Long constituencyId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment);
 	public List<Object[]> getTownDivisionByMeetingId(Long constituencyId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment);
-	public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel);
+	public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,
+			List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel,String mayBe);
+	public List<Object[]> getThirdPartyStatusDetails(List<Long> partyMeetingIds);
 }

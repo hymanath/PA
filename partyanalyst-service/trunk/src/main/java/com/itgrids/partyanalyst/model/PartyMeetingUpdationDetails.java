@@ -27,6 +27,9 @@ public class PartyMeetingUpdationDetails implements Serializable {
 	private Date insertedTime;
 	
 	private TdpCadre tdpCadre;
+	private PartyMeeting partyMeeting;
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="party_meeting_updation_details_id", unique=true, nullable=false)
@@ -127,5 +130,16 @@ public class PartyMeetingUpdationDetails implements Serializable {
 
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "party_meeting_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeeting getPartyMeeting() {
+		return partyMeeting;
+	}
+	public void setPartyMeeting(PartyMeeting partyMeeting) {
+		this.partyMeeting = partyMeeting;
 	}
 }

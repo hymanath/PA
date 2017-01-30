@@ -2031,7 +2031,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  }
 		  return query.list();
 }
-   public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel){
+   public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,
+		   List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel,String mayBe){
 	        StringBuilder sb = new StringBuilder();
 	        
 	        sb.append(" select model.partyMeetingType.partyMeetingTypeId," +//0 - MeetingTypeId
@@ -2224,6 +2225,12 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            sb.append(" and  ( (date(model.startDate)>=:startDate and date(model.startDate)<=:endDate) or (date(model.endDate)>=:startDate and date(model.endDate)<=:endDate) ) ");
 	        }
 	        
+	        if(mayBe != null && mayBe.trim().equalsIgnoreCase("true")){
+	        	sb.append(" and model.isConducted is not null and model.isConductedByIvr is not null" +
+	        				" and ((model.isConducted = 'Y' and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted = 'N' and model.isConductedByIvr = 'Y'))");
+	        }
+	        
 	        sb.append(" order by model.startDate desc ");
 	        
 	        Query query = getSession().createQuery(sb.toString());
@@ -2358,4 +2365,14 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        }
 	        return query.list();
 	    }
+   
+   public List<Object[]> getThirdPartyStatusDetails(List<Long> partyMeetingIds){
+	   Query query = getSession().createQuery("select model.partyMeetingId,model.thirdPartyStatus" +
+	   											" from PartyMeeting model" +
+	   											" where model.partyMeetingId in (:partyMeetingIds)" +
+	   											" and model.thirdPartyStatus is not null");
+	   query.setParameterList("partyMeetingIds", partyMeetingIds);
+	   
+	   return query.list();
+   }
  }

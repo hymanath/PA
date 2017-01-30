@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
@@ -218,7 +219,19 @@ class TrainingCampService implements ITrainingCampService{
 	private ISmsSenderService smsSenderService;
 	private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
-    public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+	private IPartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
+	
+	
+    public IPartyMeetingUpdationDocumentsDAO getPartyMeetingUpdationDocumentsDAO() {
+		return partyMeetingUpdationDocumentsDAO;
+	}
+
+	public void setPartyMeetingUpdationDocumentsDAO(
+			IPartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO) {
+		this.partyMeetingUpdationDocumentsDAO = partyMeetingUpdationDocumentsDAO;
+	}
+
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
 		return tdpCadreEnrollmentYearDAO;
 	}
 
@@ -10984,7 +10997,8 @@ public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels){
 		return meetingTypes;
 	}
 
-public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString){
+public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,
+		List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString,String mayBe){
 	List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
 	try {
 		LOG.info("Entered into getFinalAllMeetings");
@@ -11021,17 +11035,17 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				}
 			
 				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-						townList,divisonList,villageList,wardList,startDate,endDate,0l);
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				
 				
 			}else{
 				
 				List<Object[]> meetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l);
+						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				List<Object[]> meetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l);
+						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				List<Object[]> meetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l);
+						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				
 				
 				meetings.addAll(meetingsMandal);
@@ -11056,7 +11070,7 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				}
 			}
 			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-					townList,divisonList,villageList,wardList,startDate,endDate,0l);
+					townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 			
 		 }else{
 			 
@@ -11080,16 +11094,16 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				 
 			 }
 			 List<Object[]> meetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l);
+						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				List<Object[]> meetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l);
+						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 				
 				meetings.addAll(meetingsVillage);
 				meetings.addAll(meetingsWards);
 		 }
 		}else{
 			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-					townList,divisonList,villageList,wardList,startDate,endDate,0l);
+					townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
 		}
 		
 		
@@ -11280,6 +11294,11 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				}
 			}
 			
+			Long documentsCnt = partyMeetingUpdationDocumentsDAO.getDocumentsCountByMeetingIds(patyMeetingsIdList);
+			if(documentsCnt != null && documentsCnt > 0l){
+				CallStatusVO vo = allMeetings.get(0);
+				vo.setCount(documentsCnt);
+			}
 		}
 		
 	} catch (Exception e) {
