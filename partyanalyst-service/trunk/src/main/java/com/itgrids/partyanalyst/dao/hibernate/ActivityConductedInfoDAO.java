@@ -91,15 +91,27 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
-	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds){
-		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
-												//" sum(model.ivrCount)" +
-												" count(distinct model.activityConductedInfoId) "+
-												" from ActivityConductedInfo model" +
-												" where  model.ivrCount is not null " +
-												" and model.activityScope.activityScopeId in (:activityScopeIds) and " +
-												" model.address.state.stateId = 1 " +
-												" group by model.activityScope.activityScopeId");
+	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds,Long stateId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.activityScope.activityScopeId," +
+				//" sum(model.ivrCount)" +
+				" count(distinct model.activityConductedInfoId) "+
+				" from ActivityConductedInfo model" +
+				" where  model.ivrCount is not null ");
+		
+		if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");
+		else if(stateId != null && ( stateId.longValue() == 2L || stateId.longValue() == 36L))
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		else{
+			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and " +
+				" model.address.state.stateId = 1 " +
+				" group by model.activityScope.activityScopeId");
+		
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
@@ -167,10 +179,10 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
 		
 		if(type != null)
-			queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount) " +
+			queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount),'' " +
 					" from ActivityConductedInfo model where model.isDeleted='N' " );
 		else{
-			queryStr.append(" 0 ,0 " +
+			queryStr.append(" 0 ,0,'' " +
 					" from ActivityConductedInfo model where model.isDeleted='N' " );			
 		}
 		
