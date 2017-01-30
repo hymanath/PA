@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -6366,8 +6365,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		}
   		return returnObj;
   	}
-  	
   	/* Alert Verification Service Start */
+  	
+  	/*
+  	 * Author:Santosh
+  	 * Description:This service is used to save and update Alert Verification Details.
+  	 */
   	public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId, final Map<File,String> mapFiles)
   	{
   	String resultStatus = (String) transactionTemplate
@@ -6555,91 +6558,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		  LOG.error("Exception Occured in getAlertVerificationDtls() in ToursService", e);
 	  }
 	  return resultVO;
-  }
-  /*public List<AlertCommentVO> getVerificationDetails(Long alertId){
-	  try{
-		  Map<Long,String> userTypeIdAndUserTypeMap = new LinkedHashMap<Long,String>();
-		  Map<Long,TreeSet<Long>> userTypeIdAndConversationIdListMap = new LinkedHashMap<Long,TreeSet<Long>>();
-		  Map<Long,Set<String>> conversationIdAndDocumentSetMap = new LinkedHashMap<Long,Set<String>>();
-		  Map<Long,String> conversationIdAndCommentMap = new LinkedHashMap<Long,String>();
-		  
-		  TreeSet<Long> conversationIdList = null;
-		  Set<String> documentList = null;
-		  List<Long> conversationList = null;
-		  AlertCommentVO alertCommentVO = null;
-		  List<String> docList = null;
-		  List<String> cmtList = null;
-		  List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>();
-		  List<Object[]> verificationDetailsList = alertDAO.getVerificationDetails(alertId);
-		  if( verificationDetailsList != null && verificationDetailsList.size() > 0){
-			  for(Object[] param : verificationDetailsList){
-				  userTypeIdAndUserTypeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-				  
-				  conversationIdList = userTypeIdAndConversationIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-				  if(conversationIdList == null){
-					  conversationIdList = new TreeSet<Long>();  
-					  
-					  userTypeIdAndConversationIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), conversationIdList);
-				  }
-				  conversationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
-				  
-				  if(commonMethodsUtilService.getStringValueForObject(param[4]) != null){
-					  documentList = conversationIdAndDocumentSetMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
-					  if(documentList == null){
-						  documentList = new HashSet<String>();
-						  conversationIdAndDocumentSetMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), documentList);
-					  }
-					  documentList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
-				  }
-				  
-				  if(commonMethodsUtilService.getStringValueForObject(param[6]) != null){
-					  conversationIdAndCommentMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[6]));
-				  }
-				  
-			  }
-			  if(userTypeIdAndUserTypeMap != null && userTypeIdAndUserTypeMap.size() > 0){
-				  for(Entry<Long,String> entry : userTypeIdAndUserTypeMap.entrySet()){
-					  alertCommentVO = new AlertCommentVO();
-					  alertCommentVO.setDeptId(entry.getKey());
-					  alertCommentVO.setDeptName(entry.getValue());
-					  if(userTypeIdAndConversationIdListMap.get(entry.getKey()) != null){
-						  conversationList = new ArrayList<Long>(userTypeIdAndConversationIdListMap.get(entry.getKey()));
-					  }
-					  if(conversationList != null && conversationList.size() > 0){
-						  docList = new ArrayList<String>();
-						  for(Long conversationId : conversationList){
-							  if(conversationIdAndDocumentSetMap.get(conversationId) != null){
-								  docList.addAll(new ArrayList<String>(conversationIdAndDocumentSetMap.get(conversationId)));
-							  }
-						  }
-					  }
-					  if(docList != null){
-						  alertCommentVO.setDocList(docList);
-					  }
-					  
-					  if(conversationList != null && conversationList.size() > 0){
-						  cmtList = new ArrayList<String>();
-						  for(Long conversationId : conversationList){
-							  if(conversationIdAndCommentMap.get(conversationId) != null){
-								  cmtList.add(conversationIdAndCommentMap.get(conversationId));
-							  }
-						  }
-					  }
-					  if(cmtList != null){
-						  alertCommentVO.setCmtList(cmtList);
-					  }
-					  finalList.add(alertCommentVO);
-				  }
-			  }
-		  }
-		  return finalList;
-		  
-	  }catch(Exception e){
-		  LOG.error("Exception Occured in getAlertVerificationDtls() in ToursService", e);
-	  }
-	  return null;
-  }*/
-	
+  }	
   public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId){
 	  List<AlertVerificationVO> actionTypeStatusList = new ArrayList<AlertVerificationVO>(0);
 	  try{
@@ -6659,5 +6578,42 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  return actionTypeStatusList;
   }
 	/* Alert Verification Service end */
+  
+  
+  /*
+	 * Author:Santosh
+	 * Description : This service is used to get alert details based on alert type
+	 */
+	public List<AlertCoreDashBoardVO> getAlertDetailsByAlertType(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId,Long activityMemberId){
+		LOG.info("Entered in getAlertDetailsByAlertType() method of AlertService{}");
+		try{
+			Date fromDate = null;      
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//get access level id and access level value
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){  
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getAlertDtlsByAlertTypeId(fromDate, toDate, stateId, alertTypeId, userAccessLevelId, userAccessLevelValues);	
+			setAlertDtls(alertCoreDashBoardVOs, alertList);
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();  
+			LOG.error("Error occured getAlertDetailsByAlertType() method of AlertService{}");
+		}
+		return null;        
+	}
+	
 }
 

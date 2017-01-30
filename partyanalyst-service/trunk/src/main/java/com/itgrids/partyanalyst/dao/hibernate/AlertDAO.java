@@ -3889,4 +3889,86 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();  
 	}
+   public List<Object[]> getAlertDtlsByAlertTypeId(Date fromDate, Date toDate, Long stateId, Long alertTypeId,Long userAccessLevelId, List<Long> userAccessLevelValues){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct ");     
+		queryStr.append(" model.alertId, " +//0
+						" model.createdTime, " +//1
+						" model.updatedTime, " +//2
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" model.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName," +//11
+						" alertSource.alertSourceId, " +//12
+						" alertSource.source," +//13
+						" editionType.editionTypeId, " +//14
+						" editionType.editionType, " +//15
+						" edition.editionId, " +//16
+						" edition.editionAlias, " +//17
+						" tvNewsChannel.tvNewsChannelId, " +//18
+						" tvNewsChannel.channelName ");//19
+		queryStr.append(" from Alert model " +
+						" left join model.alertSource alertSource " +
+		        		" left join model.editionType editionType " +
+		        		" left join model.edition edition " +
+		        		" left join model.tvNewsChannel tvNewsChannel "+
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  ");  
+		queryStr.append(" left join model.alertCategory alertCategory ");
+		queryStr.append(" left join model.alertStatus alertStatus ");
+		queryStr.append(" left join model.alertImpactScope alertImpactScope ");  
+		queryStr.append(" left join model.alertType alertType ");
+		queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency");
+		queryStr.append(" where model.isDeleted ='N' and alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
+		if(fromDate != null && toDate != null){ 
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}     
+		
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");  
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) "); 
+			}
+		}
+		
+		if(alertTypeId != null && alertTypeId.longValue() > 0L){
+			queryStr.append(" and alertType.alertTypeId = (:alertTypeId) ");
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");       
+		}if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 queryStr.append(" and parliamentConstituency.constituencyId in (:userAccessLevelValues) "); 
+		}
+		Query query = getSession().createQuery(queryStr.toString());   
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		} 
+		if(alertTypeId != null && alertTypeId.longValue() > 0L){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		return query.list();
+	}
 }
