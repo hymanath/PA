@@ -1027,7 +1027,7 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
 		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"events");
 		 }else{
-	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,"events");
 		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"events");
 		}
 		
@@ -1041,10 +1041,10 @@ $(document).on("click",".subLevelEventMemberCls",function(){
 	var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 	var attrEventIdsString = $(this).attr("attr_event_idsString");
 	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"events");
 	}else{
-	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
-		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,"events");
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"events");
 	}
 });
  function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString,searchType){
@@ -1160,7 +1160,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 			"aaSorting": [],
 			"iDisplayLength" : 5	
 		});
-	  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
 	  }else{
 	  str+='<ul class="list-inline slickPanelSliderForEvent">';
 	  var rank=1; 
@@ -2966,7 +2966,10 @@ function buildDistrictNames(result,activityLevelId)
 $(document).on("click",".constituencyPopups",function(){
 	var distId = $(this).attr("attr_distId");
 	var activityLevelId = $(this).attr("attr_activity_level_id");
-	getConstituencyList(distId,activityLevelId);
+	if(!$(this).hasClass("collapsed"))
+	{
+		getConstituencyList(distId,activityLevelId);
+	}
 });
 
 function getConstituencyList(distId,activityLevelId){
