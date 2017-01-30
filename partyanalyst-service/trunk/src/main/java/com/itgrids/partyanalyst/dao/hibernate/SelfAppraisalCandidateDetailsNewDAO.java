@@ -521,4 +521,34 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		 }
 		 return (Long) query.uniqueResult();
 	 }
+	    /**
+	  	  * @author Teja
+	  	  * date: 30th Jan, 2017
+	  	  * desc: To get  Tours Overview  By cadreId
+	  	  */
+       
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getToursOverviewByCadre(Long tdpCadreId, Long tourMonthId){
+	       	StringBuilder queryStr = new StringBuilder();
+	       	
+	       	queryStr.append(" select model.selfAppraisalCandidateDetailsNewId,model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+	       			" model.selfAppraisalDesignation.designation,model.selfAppraisalTourCategory.selfAppraisalTourCategoryId," +
+	       			" model.selfAppraisalTourCategory.tourCategory,model.tourType.tourType," +
+	       			" model.tourDays,model.updatedTime,model.selfAppraisalCandidate.selfAppraisalCandidateId,model.tourType.tourTypeId from " +
+	       			" SelfAppraisalCandidateDetailsNew model ");
+	       	
+	    	queryStr.append( " where " +
+	       			" model.tdpCadreId = :tdpCadreId ");
+	    	 if(tourMonthId != null && tourMonthId.longValue()>0l){
+	    		 queryStr.append( " and model.selfAppraisalToursMonthId = :tourMonthId ");
+	    	 }
+	       	queryStr.append( " and model.isDeleted ='N' and model.selfAppraisalTourCategory.isDeleted ='N' " +
+	       			" and model.tourType.isDeleted ='N' ");
+	       	
+	   Query query = getSession().createQuery(queryStr.toString());
+	      query.setParameter("tdpCadreId", tdpCadreId);
+	    if(tourMonthId != null && tourMonthId.longValue()>0l)
+	      query.setParameter("tourMonthId", tourMonthId);
+       	return query.list();
+       }
 }
