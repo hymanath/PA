@@ -2076,9 +2076,9 @@ public class ToursService implements IToursService {
 	    			 }
 	    		 }    		
 	    		 if(monthyearIds != null && monthyearIds.size() > 0){
-	    			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds);
+	    			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds,null);
 		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-		    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds);
+		    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,null);
 		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
 		    	 }
 	    		 //calculate category wise complaice percentage
@@ -2710,5 +2710,85 @@ public class ToursService implements IToursService {
 	    		LOG.error("Exception Occured in saveNewTourDetails() in ToursService class ", e);
 	    	}
 	    	return status;
-	    }
+	    }  
+	    
+	   /* Cadre Profile Page Service */
+	    
+	      /**
+		  * @author Santosh
+		  * date: 27th Jan, 2017
+		  * desc: This service is used to get cadre tour details
+		  */
+    public ToursBasicVO getCadreTourDetails(Long tdpCadreId,final String fromDateStr,String toDateStr){
+	   	ToursBasicVO resultVO = new ToursBasicVO();
+	   	Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
+	   	Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>();
+	   	Map<Long,ToursBasicVO> designatinIdNameMap = new HashMap<Long, ToursBasicVO>(0);
+	   	Map<String,String> categoryIdNameMap = new HashMap<String, String>();
+	   	 try{
+		   		
+	   		   //Get month year in string format based on fromDate and toDate
+	   		   // List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
+	   		   //Get month year ids based on month year 
+	   		    
+	   		    List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(new ArrayList<String>(){{add(fromDateStr);}});
+	   		    
+	   		    List<Object[]> rtrnObjLst = selfAppraisalCandidateDAO.getSelfAppraisalCandidateIdAndDesignationByTdpCadreId(tdpCadreId);
+	   		    List<Long> candiateIds = new ArrayList<Long>(0);
+	   		    List<Long> designationIds = new ArrayList<Long>(0);
+	   		    if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+	   		    	for(Object[] param:rtrnObjLst){
+	   		    		candiateIds.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+	   		    		designationIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+	   		    		ToursBasicVO designationVO = new ToursBasicVO();
+	   		    		designationVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	   		    		designationVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
+	   		    		designationVO.setName(commonMethodsUtilService.getStringValueForObject(param[3])+" "+commonMethodsUtilService.getStringValueForObject(param[4]));
+	   		    		designatinIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),designationVO);
+	   		    		resultVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[2]));
+	   		    	}
+	   		    }
+	   		 
+	   		    if(monthyearIds != null && monthyearIds.size() > 0){
+	      			 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourCategory",designationIds);
+	      			  setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+	   	    		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourType",designationIds);
+	   	    		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+	   		    }
+	   		  if(monthyearIds != null && monthyearIds.size() > 0){
+    			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds,candiateIds);
+	    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+	    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,candiateIds);
+	    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
+	    	   }
+	   		   //calculate category wise complaice percentage
+    		    calculateCategoryWiseComplaince(candiateDtlsMap);
+    		    
+    		    if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+    		    	
+    		    	for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+    		    		
+    		    		if(designationEntry != null && designationEntry.getValue().size() > 0){
+    		    			
+    		    			for(Entry<Long,ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+    		    				ToursBasicVO vo = new ToursBasicVO();
+    		    				vo.setDesignationId(designationEntry.getKey());
+    		    				ToursBasicVO designationVO=designatinIdNameMap.get(designationEntry.getKey());
+    		    				if(designationVO != null){
+    		    					vo.setDesignation(designationVO.getDesignation());
+    		    					vo.setName(designationVO.getName());
+    		    				}
+    		    				vo.setCandDtlsId(candiateEntry.getKey());
+    		    				vo.getSubList().addAll(candiateEntry.getValue().getSubList3());
+    		    				resultVO.getSubList().add(vo);
+    		    			}
+    		    		}
+    		    	}
+    		    }
+      	 }catch(Exception e){
+	   		 LOG.error("Exception Occured in getCadreTourDetails() in CoreDashboardToursService  : ",e);  
+	   	 }	 
+	   	 return resultVO;
+	   }
 }
+

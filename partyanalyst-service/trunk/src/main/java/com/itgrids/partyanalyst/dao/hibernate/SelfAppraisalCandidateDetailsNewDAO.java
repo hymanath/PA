@@ -257,7 +257,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	 
  }
 
- public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthYearIds,List<Long> designationIds){
+ public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthYearIds,List<Long> designationIds,List<Long> candiateIds){
 	 StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 		 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
@@ -274,9 +274,12 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		 " and model.selfAppraisalDesignation.isActive='Y' ");
 	   if(monthYearIds != null && monthYearIds.size() > 0 ){
          queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
-    }
+       }
 	   if(designationIds != null && designationIds.size() > 0){
 		 queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds)");  
+	   }
+	   if(candiateIds != null && candiateIds.size() > 0){
+		   queryStr.append(" and model.selfAppraisalCandidateId in (:candidateIds) ");  
 	   }
 	   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 	  				   "  model.selfAppraisalCandidateId,");
@@ -293,13 +296,16 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		}else if(type.equalsIgnoreCase("tourType")){
 			 queryStr.append(",model.tourTypeId");	
 		}
-	  Query query = getSession().createQuery(queryStr.toString());
+	   Query query = getSession().createQuery(queryStr.toString());
 	   if(monthYearIds != null && monthYearIds.size() > 0 ){
 		query.setParameterList("monthYearIds", monthYearIds);
 	   }
 	   if(designationIds != null && designationIds.size() > 0){
 		query.setParameterList("designationIds", designationIds);  
-	  }
+	    }
+	   if(candiateIds != null && candiateIds.size() > 0){
+		   query.setParameterList("candidateIds", candiateIds);   
+	   }
 	   return query.list();
  }
 	 

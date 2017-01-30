@@ -79,4 +79,5 @@ public interface IAlertService {
     public List<KeyValueVO> getDocumentsForAlert(Long alertId);
     public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);
     public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId);
+    public List<AlertCoreDashBoardVO> getAlertDetailsByAlertType(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId,Long activityMemberId);
 }
