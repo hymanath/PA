@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -125,6 +126,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<BenefitVO> benefitVOList;
 	private BenefitVO benefitVO;
 	private List<BenefitCandidateVO> benefitCandidateVOList;
+	private ToursBasicVO tourDetailsVO;
 	
 	
 	public List<BenefitCandidateVO> getBenefitCandidateVOList() {
@@ -197,7 +199,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			List<GrievanceReportVO> grievanceReportVOList) {
 		this.grievanceReportVOList = grievanceReportVOList;
 	}
-
+    
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
@@ -679,6 +681,12 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setCandidateDetailsService(
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
+	}
+	public ToursBasicVO getTourDetailsVO() {
+		return tourDetailsVO;
+	}
+	public void setTourDetailsVO(ToursBasicVO tourDetailsVO) {
+		this.tourDetailsVO = tourDetailsVO;
 	}
 	public String execute(){
 		
@@ -2077,6 +2085,21 @@ public String getVolunteerCadreDetilasInformation(){
 			benefitVOList = cadreDetailsService.getAllConstBenefitDetailsForADist(jObj.getLong("distId"));
 		} catch (Exception e) {
 			LOG.error("Exception occured in getAllConstBenefitDetailsForADist in CadreDetailsAction class  ",e);
+		}
+		return "success";
+	}
+	public String getCadreTourDetails(){
+		
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			tourDetailsVO = toursService.getCadreTourDetails(tdpCadreId,startDateStr,endDateStr);
+			
+		} catch (Exception e) {
+			 LOG.error("Exception occured in getCadreTourDetails in CadreDetailsAction class  ",e);
 		}
 		return "success";
 	}

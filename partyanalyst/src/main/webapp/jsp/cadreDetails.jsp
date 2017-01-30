@@ -23,6 +23,9 @@
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
+    <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+    <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 		<!-- custom CSS-->
@@ -31,6 +34,7 @@
 	<!--<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">-->
 	<!-- Add fancyBox main JS and CSS files -->  
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+	<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>
 	
 						<!-- End -->
 
@@ -173,13 +177,13 @@
 	padding:3px !important;
 	
 }
+.heightApply{height:990px !important;}
 </style>
 <script>
 var globalCadreId = '${cadreId}';
 var cadreParticipatedConstiId = '${basicVo.id}';
 var cadreParticipatedDistiId = '${basicVo.districtId}';
 var cadreParticipatedParliId = '${basicVo.parliament}';
-
 </script>
 </head>
 <body>
@@ -699,17 +703,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							</div>
 						</div>
 					</div>
-                <!--
-				<div class="panel panel-default" id="" style="">
+                <!-- Tour Block Start -->
+				<div class="panel panel-default" id="cadreTourBlockDivId" style="display:none;">
                 	<div class="panel-heading" id="toursHeaderId" style="padding:0px 15px">
 						<div class="row">
 							<div class="col-md-7 col-xs-12 col-sm-8" style="margin-top:10px">
 								<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-plane"></i>&nbsp;&nbsp;&nbsp;TOURS 
-								<label class="">  
-								<select class="form-control" id="toursDesignId" style="font-size:13px;display:inline-block;">
-									<option value="1">General Secretory</option>
-								</select>
-								</label>
 								</h4>
 							</div>
 							<div class="col-md-5 col-xs-12 col-sm-4">
@@ -717,31 +716,29 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<i class="glyphicon glyphicon-chevron-up pull-right"  style="margin-top:10px;margin-left:5px"></i>
 								</span>
 								<span class="pull-right" id="toursProfileHideId" style="display:none;">
-									<i class="glyphicon glyphicon-chevron-down" style="margin-top:10px;margin-left:5px"></i>
+									<i class="glyphicon glyphicon-chevron-down" style="margin-top:10px;margin-left:5px;cursor:pointer;"></i>
 								</span>
 								<div style="display:inline-block;width:200px" class="pull-right">
 									<div class="input-group pull-right">
-										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+										<span class="input-group-addon"><i class="glyphicon glyphicon-calendar" style="cursor:pointer;"></i></span>
 										<input class="form-control" id="toursDatePicker" style="width:170px; padding-left:0px; padding-right:0px;" type="text">
 									</div>
 								</div>
-								
 							</div>
-							
 						</div>
                     </div>
-					<div class="panel-body" id="">
+					<div class="panel-body" id="tourBodyId">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="cadre-election" >
-									<div id="toursDetailsDiv"></div>
-									<div id="tourssErrMsgId"></div>
+									<div id="cadreToursDetailsDiv"></div>
+									<!--<div id="tourssErrMsgId"></div>-->
 								</div>
 							</div>
 						</div>
                     </div>					
                 </div>
-				-->
+			<!-- Tour Block End -->
 				 <div class="panel panel-default" id="" style="">
                 	<div class="panel-heading" id="alertHeaderId" style="padding:0px 15px">
 						<div class="row">
@@ -2077,7 +2074,71 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     </div>
   </div>
 </div>
-	
+<!-- Tour Modal Start -->
+<div class="modal" tabindex="-1" role="dialog" id="cadreTourModalDivId" style="z-index:9999;">
+		  <div class="modal-dialog modal-lg" style="width:85%" role="document">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span id="tourCadreHeadingId"></span>
+			  </div>
+			  <div class="modal-body"> 
+				<div class="row" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%; padding: 0px 0px 20px; border-radius: 6px; margin: 10px 0px 0px;">
+					<div class="col-md-2 col-xs-12 col-sm-4"> 
+						<select class="pull-right form-control" id="dateRangeSliderYear" style="margin-top: 46px;">
+							<option value="0">Select Year</option>
+							<option value="2016">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+							<option value="2021">2021</option>
+							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>
+							<option value="2025">2025</option>
+						</select>
+					</div>
+					<div class="col-md-9 col-xs-12 col-sm-12" style="margin-left: -20px;"> 
+						<div id="cadreTourSlider" style="margin-top:7px"></div>
+					</div>
+					<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+						<button class="btn btn-success pull-right" id="subMitBtn" type="button" style="margin-top: 46px;">SUBMIT</button>
+					</div>
+				
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="cadreTourIndividualDetailsBlock" class="m_top20"></div>
+						<div id="cadreMonthWiseComplainceDivId" class="row m_top20"></div>
+						<div id="cadreTourMonthWiseDtlsBlockDivId" class="m_top20"></div>
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" class="close" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" tabindex="-1" id="tourDocumentModalId" role="dialog" style="z-index:99999;">
+	<div class="modal-dialog" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Tour Document</h4>  
+			</div>
+			<div class="modal-body" id="tourNewDocumentBodyId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div><!--  /.modal -->
+<!-- End -->	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -2111,6 +2172,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 	<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+	<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 	<script>
 	google.load("visualization", "1", {packages:["corechart"]});
 	
@@ -3369,7 +3433,10 @@ $(document).on("click","#alertHeaderId",function(){
 	$("#alertBodyId").collapse('toggle');
 });
 getCandidateAppliedPostsByCadre(0);
-buildToursDesignationslist();
+//buildToursDesignationslist();
+/*Month & Year Picker*/
+$("#toursDatePicker").datetimepicker({format:'MM-YYYY'});
+$('#toursDatePicker').val(moment().subtract(1, 'month').format('MM-YYYY'));
 </script>
 </body>
 </html>
