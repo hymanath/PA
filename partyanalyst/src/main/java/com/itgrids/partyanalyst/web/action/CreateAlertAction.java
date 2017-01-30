@@ -1438,5 +1438,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getAlertDetatilsByAlertType(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");  
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			alertCoreDashBoardVOs = alertService.getAlertDetailsByAlertType(fromDate,toDate,stateId,alertTypeId,activityMemberId);   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getAlertDetatilsByAlertType() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
 }
