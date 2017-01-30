@@ -14,4 +14,5 @@ public interface ISelfAppraisalCandidateDocumentDAO extends GenericDao<SelfAppra
 	public List<Object[]> getDocumentsOfCandidates(Date fromDate,Date toDate,Set<Long> candidateIds,List<Long> monthyearIds);
 	public int deleteDocumentByDocument(List<Long> documents);
 	public List<Object[]> getCandiateDocument(List<Long> monthYearIds,Long candiateId);
+	public List<Object[]> getSelfAppraisalDocuments(Long cadreId,Long toursMonthId);
 }
