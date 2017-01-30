@@ -298,8 +298,30 @@ textarea { resize:none; }
 							
                         </div>
 					 </div>
-					<div class="row m_top20" style="padding:10px;margin-top:35px;">
-						<div class="col-md-12">
+					<div class="row m_top20" style="padding:10px;">
+						<div class="col-md-12" id="summaryDivId" style="display:none;">
+							<table class="table table-bordered">';
+								<thead>
+									<th>TOTAL MAYBE</th>
+									<th>PENDING</th>
+									<th>UPDATED</th>
+									<th>YES</th>
+									<th>NO</th>
+									<th>DOCUMENTS</small></th>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="totalMaybeCount">0</td>
+										<td id="pendingCount">0</td>
+										<td id="updatedCount">0</td>
+										<td id="thirdPartyYesCount">0</td>
+										<td id="thirdPartyNoCount">0</td>
+										<td id="documentsCount">0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-12" style="margin-top:35px;">
 							<center><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></center><div id="meetingDetailsTableId"></div>
 						</div>
 					</div>
@@ -873,7 +895,8 @@ getUserAccessLocationDetails();
 						mandalTownDivisonId:mandalTownDivisonId,
 						villageWardId:villageWardId,
 						startDate:startDate,
-						endDate:endDate
+						endDate:endDate,
+						mayBe : "true"
 					}
 					
 		$.ajax(
@@ -884,12 +907,23 @@ getUserAccessLocationDetails();
 		}
 		).done(function(result){
 			$("#searchDataImgForResults").hide();
+			$("#summaryDivId").show();
 			buildFinalMeeting(result);
 		});
 	});
 function buildFinalMeeting(result){
 		var str ='';
+		
+		var mayBeTtl = 0;
+		var pendgCnt = 0;
+		var updatdCnt = 0;
+		var yesCnt = 0;
+		var noCnt = 0;
+		var docsCnt = 0;
 	if(result != null && result.length>0){
+		mayBeTtl = result.length;
+		docsCnt = result[0].count;
+		
 			str+='<table class="table table-bordered" id="meetingsTable">';
 				str+='<thead style="background-color:#ccc;">';
 					str+='<th>MEETING LOCATION</th>';
@@ -920,12 +954,21 @@ function buildFinalMeeting(result){
 						}
 						
 						str+='<td>';
-						str+='<button class="btn btn-success updateCls" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'">UPDATE</button>';
+						str+=' <i class="glyphicon glyphicon-edit updateCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 10px;cursor:pointer;" title="Click here to Update Status" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'"></i>';
+						//str+='<button class="btn btn-success updateCls" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'">UPDATE</button>';
 						if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true" ){
 							str+=' <i class="glyphicon glyphicon-comment commentsCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:black;" id="commentsId" title="Click here to view comment details" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'" ></i>';
 						}
 					str+='</td>';
 					str+='</tr>';
+					
+					if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true")
+						updatdCnt = updatdCnt + 1;
+					if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "Y")
+						yesCnt = yesCnt + 1;
+					else if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "N")
+						noCnt = noCnt + 1;
+					pendgCnt = mayBeTtl - updatdCnt;
 				}
 					}else{
 						str+='No Meetings Found';
@@ -937,6 +980,13 @@ function buildFinalMeeting(result){
 			"iDisplayLength": 10,
 				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "ALL"]]			
 			});
+			
+	$("#totalMaybeCount").html(mayBeTtl);
+	$("#pendingCount").html(pendgCnt);
+	$("#updatedCount").html(updatdCnt);
+	$("#thirdPartyYesCount").html(yesCnt);
+	$("#thirdPartyNoCount").html(noCnt);
+	$("#documentsCount").html(docsCnt);
 }
 	function getStateDistrictAssemblySelection(forLocation){
 		var resultArr = [];

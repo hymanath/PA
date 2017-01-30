@@ -2961,8 +2961,9 @@ public String getFinalAllMeetings(){
 		//Long villageWardId = jObj.getLong("villageWardId");
 		String startDate = jObj.getString("startDate");
 		String endDate = jObj.getString("endDate");
+		String mayBe = jObj.getString("mayBe");
 		
-		retResult = trainingCampService.getFinalAllMeetings(meetingType,locationLevel,stateIds,distIds,constIds,manTowDivIds,villWardIds,startDate,endDate);
+		retResult = trainingCampService.getFinalAllMeetings(meetingType,locationLevel,stateIds,distIds,constIds,manTowDivIds,villWardIds,startDate,endDate,mayBe);
 		
 	} catch (Exception e) {
 		LOG.error("Exception raised at getAllMeetings",e);

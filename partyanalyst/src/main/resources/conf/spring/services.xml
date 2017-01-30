@@ -3161,6 +3161,7 @@
 		<property name="smsSenderService" ref="smsSenderService" />
 		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
+		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
