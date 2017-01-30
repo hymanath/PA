@@ -594,7 +594,8 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId,
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $(this).attr("attr_filePath");
-	str += '<iframe src="https://mytdp.com/nominated_post_documents/'+filePath+'" width="100%" height="800">';    
+	//str += '<iframe src="https://mytdp.com/nominated_post_documents/'+filePath+'" width="100%" height="800">';
+	str += '<iframe src="https://mytdp.com/'+filePath+'" width="100%" height="800">';
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 }); 
