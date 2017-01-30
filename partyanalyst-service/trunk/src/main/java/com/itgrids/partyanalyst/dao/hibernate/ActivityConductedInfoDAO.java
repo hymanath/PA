@@ -42,6 +42,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 	
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type){
 		
+		  
 		StringBuilder queryStr = new StringBuilder();
 		Long stateId = 1L;
 		queryStr.append("select model.activityScope.activityScopeId, ");
@@ -134,7 +135,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
-public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activityScopeId, String searchType,Long stateId,String countType){
+public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activityScopeId, String searchType,Long stateId,String countType,String type){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -154,18 +155,35 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
-		queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount) " +
-				" from ActivityConductedInfo model where model.isDeleted='N' " );
 		
-		if(countType != null && countType.equalsIgnoreCase("planned"))
-			;//queryStr.append(" and  model.plannedDate is not null " );
-		else if(countType != null && countType.equalsIgnoreCase("infocell"))
-			queryStr.append("  and model.infoCellCount is not null " );
-		else if(countType != null && countType.equalsIgnoreCase("ivr"))
-			queryStr.append("  and model.ivrCount is not null " );
+		if(type != null)
+			queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount) " +
+					" from ActivityConductedInfo model where model.isDeleted='N' " );
+		else{
+			queryStr.append(" 0 ,0 " +
+					" from ActivityConductedInfo model where model.isDeleted='N' " );			
+		}
 		
+		if(type != null){
+			if(type.equalsIgnoreCase("yes"))
+				queryStr.append(" and ((model.infoCellCount is not null and model.ivrStatus ='Y') or " +
+						" (model.infoCellCount is null and model.ivrStatus ='Y') or (model.infoCellCount is not null and model.ivrStatus is null ) )  ");  
+			else if(type.equalsIgnoreCase("no"))
+				queryStr.append(" and ((model.infoCellCount is null and model.ivrStatus ='N') or  (model.infoCellCount is null and model.ivrStatus is null ) )   ");
+			else if(type.equalsIgnoreCase("maybe"))
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' )  or " +
+						"  (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
+		}
+		else{
+			if(countType != null && countType.equalsIgnoreCase("planned"))
+				;//queryStr.append(" and  model.plannedDate is not null " );
+			else if(countType != null && countType.equalsIgnoreCase("infocell"))
+				queryStr.append("  and model.infoCellCount is not null " );
+			else if(countType != null && countType.equalsIgnoreCase("ivr"))
+				queryStr.append("  and model.ivrCount is not null " );
+		}
 		
-		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId  ");
+		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId");
 		
 		
 			if(locationId != null && locationId.longValue() > 0l){
