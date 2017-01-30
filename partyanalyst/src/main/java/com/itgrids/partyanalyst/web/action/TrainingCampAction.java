@@ -123,6 +123,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long cadreId;
 	private String dates;
 	
+	private String updateMemberShipNumber;
+	private String updateName;
+	private String updateMobileNumber;
+	private String updateRemarks;
+	private String updateStatusId;
+	private Long updateFinalyzeMeetingId;
+	
+	
 	public ISchedulerService getSchedulerService() {
 		return schedulerService;
 	}
@@ -618,6 +626,54 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		this.simpleVOList = simpleVOList;
 	}
 
+	public String getUpdateMemberShipNumber() {
+		return updateMemberShipNumber;
+	}
+
+	public void setUpdateMemberShipNumber(String updateMemberShipNumber) {
+		this.updateMemberShipNumber = updateMemberShipNumber;
+	}
+
+	public String getUpdateName() {
+		return updateName;
+	}
+
+	public void setUpdateName(String updateName) {
+		this.updateName = updateName;
+	}
+
+	public String getUpdateMobileNumber() {
+		return updateMobileNumber;
+	}
+
+	public void setUpdateMobileNumber(String updateMobileNumber) {
+		this.updateMobileNumber = updateMobileNumber;
+	}
+
+	public String getUpdateRemarks() {
+		return updateRemarks;
+	}
+
+	public void setUpdateRemarks(String updateRemarks) {
+		this.updateRemarks = updateRemarks;
+	}
+	
+	public Long getUpdateFinalyzeMeetingId() {
+		return updateFinalyzeMeetingId;
+	}
+
+	public void setUpdateFinalyzeMeetingId(Long updateFinalyzeMeetingId) {
+		this.updateFinalyzeMeetingId = updateFinalyzeMeetingId;
+	}	
+	public String getUpdateStatusId() {
+		return updateStatusId;
+	}
+
+	public void setUpdateStatusId(String updateStatusId) {
+		this.updateStatusId = updateStatusId;
+	}
+
+	
 	public String callCenterTrainingAdmin()
 	{
 		try
@@ -2974,7 +3030,7 @@ public String saveFinalizedMeetingDetails(){
 	try{
 		LOG.info("Entered into saveFinalizedMeetingDetails");
 		RegistrationVO regVo =(RegistrationVO) request.getSession().getAttribute("USER");
-		jObj = new JSONObject(getTask());
+		/*jObj = new JSONObject(getTask());
 		
 		Long partymeetingId = jObj.getLong("partyMeetingId");
 		String memberType = jObj.getString("memberType");
@@ -2983,9 +3039,27 @@ public String saveFinalizedMeetingDetails(){
 		String mobileNo = jObj.getString("mobileNo");
 		String remark =jObj.getString("remark");
 		String statusId = jObj.getString("statusId");
-		String updateBy = jObj.getString("updatedBy");
+		String updateBy = jObj.getString("updatedBy");*/
+		
+		String imageName=null;
+		List<String> fileNamesList = new ArrayList<String>(0);
+		
+		for(int i=0;i<imageForDisplay.size();i++){
+      	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+	        	 
+	          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+	          fileNamesList.add(IConstants.PARTY_MEETINGS+"/"+imageName);
+	          
+	          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/"+IConstants.PARTY_MEETINGS;
+	        	 
+	          File fileToCreate = new File(filePath,imageName);
+			  FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+			  
+			  inputStream = new StringBufferInputStream("success");
+        }
+		
 		Long userId = regVo.getRegistrationID();
-		resultStatus = trainingCampService.saveFinalizedMeetingDetails(partymeetingId,memberType,membershipId,name,mobileNo,remark,statusId,updateBy,userId);
+		status = trainingCampService.saveFinalizedMeetingDetails(updateFinalyzeMeetingId,"",updateMemberShipNumber,updateName,updateMobileNumber,updateRemarks,updateStatusId,"IC",userId,fileNamesList);
 	}catch (Exception e) {
 		LOG.error("Exception raised into saveFinalizedMeetingDetails",e);
 	}

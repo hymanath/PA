@@ -190,6 +190,29 @@ textarea { resize:none; }
 }
 </style>
 
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<!-- YUI Dependency files (End) -->
+
 </head>
 <body>
 <main>
@@ -332,6 +355,7 @@ textarea { resize:none; }
 </main>
 <div class="modal fade" id="updateFinlizMtngBtnModal"  role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:60%">
+  <form id="meetingsForm" name="meetingsForm">
     <div class="modal-content">
 	<div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -339,41 +363,49 @@ textarea { resize:none; }
       </div>
       <div class="modal-body" id="updateFinlizMtngBtnBody">
 		<div id="errorId" style="color:red;"></div>
-		<div class="input-group" id="updateDivId">
-			<div class="row">
-				<div class="col-md-4 col-xs-12 col-sm-6">	
-					<label>Membership No<span class="text-danger"></span> :</label> <input type="text" class="form-control" id="memebershipId" /><br>
+			<div class="input-group" id="updateDivId">
+				<div class="row">
+					<div class="col-md-4 col-xs-12 col-sm-6">	
+						<label>Membership No<span class="text-danger"></span> :</label> <input type="text" class="form-control" id="memebershipId" name="updateMemberShipNumber"/><br>
+					</div>
+					<div class="col-md-4 col-xs-12 col-sm-6">	
+						<label>Name<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="nameId" name="updateName"/><br>					
+					</div>
+					<div class="col-md-4 col-xs-12 col-sm-6">	
+						<label>Mobile No<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="mobileNoId" name="updateMobileNumber"/>
+					</div>
 				</div>
-				<div class="col-md-4 col-xs-12 col-sm-6">	
-					<label>Name<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="nameId" /><br>					
+				<div class="row m_top20">
+					<div class="col-md-12 col-xs-12 col-sm-6">	
+						<label>Remark<span class="text-danger">*</span> :</label>
+						<textarea type="text" class="form-control" id="remarkId" name="updateRemarks"></textarea>
+					</div>
+					<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+						<label>Conducted Status<span class="text-danger">*</span> :</label>
+						<select class="form-control" id="statusId" name="updateStatusId">
+							<option value="0">Select</option>
+							<option value="Y">Yes</option>
+							<option value="N">No</option>
+						 </select>	
+					</div>
+					<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 20px;display:none;" id="fileUploadDivId">
+					<label>Add Attachment<span class="text-danger">*</span></label>
+						<input type="file" class="btn btn-mini btn-block" name="imageForDisplay" id="uploadFileId"  />
+					</div>
+					
 				</div>
-				<div class="col-md-4 col-xs-12 col-sm-6">	
-					<label>Mobile No<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="mobileNoId" />
-				</div>
+				<input type="hidden" value="" id="hiddenFinalizeMeetingId" name="updateFinalyzeMeetingId"/>			 
 			</div>
-			<div class="row m_top20">
-				<div class="col-md-12 col-xs-12 col-sm-6">	
-					<label>Remark<span class="text-danger">*</span> :</label>
-					<textarea type="text" class="form-control" id="remarkId" ></textarea>
-				</div>
-				<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-					<label>Conducted Status<span class="text-danger">*</span> :</label>
-					<select class="form-control" id="statusId">
-						<option value="0">Select</option>
-						<option value="Y">Yes</option>
-						<option value="N">No</option>
-					 </select>	
-				</div>
-			</div>
-			<input type="hidden" value="" id="hiddenFinalizeMeetingId" />			 
-		</div>
+		
       </div>
 	  <div id="statusDetailsDivId" style="color:green;"></div>
+	  <img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForUpdateMeetings" style="width:20px;height:20px;display:none;"/>
       <div class="modal-footer" style="padding:5px;">
 	  <button type="button" class="btn btn-success" id="saveDetailsBtnId">SAVE</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>        
       </div>
     </div>
+	</form>
   </div>
 </div>
 <div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
@@ -1740,8 +1772,10 @@ function getVillagesForDistrictId(){
 $(document).on("click",".updateCls",function(){
 	$("#statusDetailsDivId").html("");
 	$("#updateFinlizMtngBtnModal").modal("show");
-		var meetingId = $(this).attr("attr_meeting_Loc_Id");
-		$("#hiddenFinalizeMeetingId").val(meetingId);
+	var meetingId = $(this).attr("attr_meeting_Loc_Id");
+	$("#hiddenFinalizeMeetingId").val(meetingId);
+	$("#uploadFileId").val("");
+	$("#fileUploadDivId").hide();
 });
 $(document).on("click","#saveDetailsBtnId",function(){
 	$('#errorId').html('');
@@ -1752,6 +1786,7 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	var mobileNo = $("#mobileNoId").val();
 	var remark = $("#remarkId").val();
 	var updateStatus = $("#statusId").val();
+	var uploadFile = $("#uploadFileId").val();
 	
 	if(name ==0){
 	  	  errorStr += "Name is required<br>";
@@ -1765,7 +1800,12 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	if(updateStatus ==0){
 	  errorStr += "Status is required<br>";
 	}
-	 if(errorStr.length >0)
+	if(updateStatus == "Y"){
+		if(uploadFile == null || uploadFile.trim().length == 0)
+			errorStr += "Attachment is Required.<br>";
+	}
+	
+	if(errorStr.length >0)
 	{
 	  $('#errorId').html(errorStr);
 	  return ;
@@ -1773,7 +1813,17 @@ $(document).on("click","#saveDetailsBtnId",function(){
   var r=confirm("Are you sure you want to update the status.. ");
   if (r)	
   {
-	var jsObj =	{
+	  $("#searchDataImgForUpdateMeetings").show();
+	  var uploadHandler = {
+		upload: function(o) {
+		    uploadResult = o.responseText;
+			showMeetingsStatusDocsResult(uploadResult);
+		}
+	};
+
+	YAHOO.util.Connect.setForm('meetingsForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','saveFinalizedMeetingDetailsAction.action',uploadHandler); 
+	/*var jsObj =	{
 		partyMeetingId:partyMeetingId,
 		memberType:"",
 		membershipId:membershipId,
@@ -1798,9 +1848,25 @@ $(document).on("click","#saveDetailsBtnId",function(){
 				}else{
 					$("#statusDetailsDivId").html(" Error occured try again...");
 				}
-		});
+		});*/
   }
 });
+
+function showMeetingsStatusDocsResult(myResult){
+	$("#searchDataImgForUpdateMeetings").hide();
+		var result = (String)(myResult);
+		if(result.search('SUCCESS') != -1){
+			$("#statusDetailsDivId").html(" Saved successfully...");
+			$("#memebershipId").val("");
+			$("#nameId").val("");
+			$("#mobileNoId").val("");
+			$("#remarkId").val("");
+			$("#statusId").val("");
+			$("#uploadFileId").val("");
+		}else{
+			$("#statusDetailsDivId").html(" Error occured try again...");
+		}
+	}
 $(document).on("click",".commentsCls",function(){
 	$("#commentsModalId").modal('show');
 	var partymeetingId  = $(this).attr("attr_meeting_Loc_Id");
@@ -1910,6 +1976,15 @@ function buildCommentsMeetingDetailsAction(result)
 			}
 		
 }
+</script>
+<script>
+$(document).on("change","#statusId",function(){
+	$("#fileUploadDivId").hide();
+	var value = $(this).val();
+	if(value == "Y"){
+		$("#fileUploadDivId").show();
+	}
+});
 </script>
 </body>
 </html>
