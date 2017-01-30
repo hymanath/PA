@@ -1,45 +1,42 @@
-var url = window.location.href;
+	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
-	if(wurl.length == 3)
+	if(wurl.length == 3){
 		wurl = url.substr(0,(url.indexOf(".in")+3));
-
-getAlertData();
-getAlertStatusCommentsTrackingDetails();
-getAlertAssignedCandidates(alertId);
-getAlertAssignedCandidate(alertId);
-//getClarificationDetails(alertId);  
-getDocumentsForAlert(alertId);
-$(document).on("click",".assignModel",function(){
-	clearAssignFields();
-	$("#ModalShow").modal('show');
+	}
+	getAlertData();
+	getAlertStatusCommentsTrackingDetails();
+	getAlertAssignedCandidates(alertId);
+	getAlertAssignedCandidate(alertId);
+	//getClarificationDetails(alertId);  
+	getDocumentsForAlert(alertId);
+	$(document).on("click",".assignModel",function(){
+		clearAssignFields();
+		$("#ModalShow").modal('show');
 	
-});
-function clearAssignFields()
-{
-commontdpCadreIds = [];
-$("#involvedCandidatesDiv").hide();
- $(".membersBlock").html('');
- $("#apptmemberDetailsDiv").html('');
-	$("#advanceSearchTypeId").val(0);
-	  var select = new Dropkick("#advanceSearchTypeId");
+	});
+	function clearAssignFields(){
+		commontdpCadreIds = [];
+		$("#involvedCandidatesDiv").hide();
+		$(".membersBlock").html('');
+		$("#apptmemberDetailsDiv").html('');
+		$("#advanceSearchTypeId").val(0);
+		var select = new Dropkick("#advanceSearchTypeId");
 		select.refresh();
-	showHideBySearchType();//Clear Fields	
-}
+		showHideBySearchType();//Clear Fields	
+	}
 
- var cloneCount=0;
-   var commontdpCadreIds = [];
-   $(document).on("click",".candidatecls",function(){
-	   //console.log(commontdpCadreIds);	
-	  var name  = $(this).attr("attr_name");
-			  var image = $(this).attr("attr_img_url");
-			  var attrId = $(this).attr("attr_id");
-			  var attrConsti =  $(this).attr("attr-consti");
-			  var mobile =$(this).attr("attr_mobile");
-		 if($(this).is(':checked')){
-			 $("#involvedCandidatesDiv").show();
-			// $("#involvedCandidatesDiv1").show();
-			 $(".membersBlock").show();
-			//$(".membersBlock1").show();
+	var cloneCount=0;
+	var commontdpCadreIds = [];
+	$(document).on("click",".candidatecls",function(){
+		//console.log(commontdpCadreIds);  	
+		var name  = $(this).attr("attr_name");
+		var image = $(this).attr("attr_img_url");
+		var attrId = $(this).attr("attr_id");
+		var attrConsti =  $(this).attr("attr-consti");
+		var mobile =$(this).attr("attr_mobile");
+		if($(this).is(':checked')){
+			$("#involvedCandidatesDiv").show();
+			$(".membersBlock").show();
 			var str ='';
 			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 			str+='<div class="block">';
@@ -50,83 +47,75 @@ $("#involvedCandidatesDiv").hide();
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
 			str+='<div class="col-md-12 m_top5"><label><b>Name </b>: '+name+'</label></div>';
 			str+='<div class="col-md-12 m_top5"><label><b>Constituency </b>: '+attrConsti+'</label></div>';
-			str+='</div></div><span class="closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div></div>';
-			
+			str+='</div></div><span class="closestIcon closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div></div>';
+				
 			$(".membersBlock").append(str);
-			// $(".membersBlock1").append(str);
-			 cloneCount = cloneCount+1;
-			 /*  $('html, body').animate({
-                    scrollTop: $('.membersBlock').offset().top
-                }, 2000);*/
-				/* $('#ModalShow').animate({
-					scrollTop:  $(".closeIcon"+attrId).offset().top
-				  }, 2000); */
-				/*$('html, body').animate({
-                    scrollTop: $('.membersBlock1').offset().top
-                }, 2000);*/
-				$("#assignBtnId").show();
-				commontdpCadreIds.push(attrId);
-				var addStr ='';
-				addStr+='<p class="text-capital" >'+name+'</p>';
-				addStr+='<p>'+mobile+'</p>';
-				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-				$("#duplicateCandidateBlock").html(''+addStr+'');
-				$("#memberConfirmation").html("Member Added");
-				$("#myModalConformation").modal('show');
-				setTimeout(function(){ $("#myModalConformation").modal('hide');
-				
-				}, 2000);
-				setTimeout(function(){ $("body").addClass("modal-open");	
-				
-				}, 3000);
-				
-				
-			//console.log(commontdpCadreIds);		
-		 }
-		 else
-   {
-	  // commontdpCadreIds.pop(attrId);	
-	 // console.log(commontdpCadreIds);
-	  var i = $.inArray(attrId,commontdpCadreIds)
+			cloneCount = cloneCount+1;
+			$("#assignBtnId").show();
+			commontdpCadreIds.push(attrId);
+			var addStr ='';
+			addStr+='<p class="text-capital" >'+name+'</p>';
+			addStr+='<p>'+mobile+'</p>';
+			addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+			$("#duplicateCandidateBlock").html(''+addStr+'');
+			$("#memberConfirmation").html("Member Added");
+			$("#myModalConformation").modal('show');
+			setTimeout(function(){ $("#myModalConformation").modal('hide');
+			
+			}, 2000);
+			setTimeout(function(){ $("body").addClass("modal-open");	
+					
+			}, 3000);	
+		}else{
+			var i = $.inArray(attrId,commontdpCadreIds)
+			if(i>=0){
+				commontdpCadreIds.splice(i, 1);
+			}
+			$(".closeIcon"+attrId).closest(".col-md-4").remove();
+		
+	   }
+	});
+	$(document).on("click",".closestIcon",function(){  
+		$(this).closest(".col-md-4").remove();
+		var id=$(this).attr("id");
+		$(".candidatecls"+id).prop('checked', false); 
+		$(".close"+id).prop('checked', false); 
+		//commontdpCadreIds.pop(id);
+		
+		//deleting element from array
+		var i = $.inArray(id,commontdpCadreIds)
 		if(i>=0){
 			commontdpCadreIds.splice(i, 1);
 		}
-	  
-	   $(".closeIcon"+attrId).closest(".col-md-4").remove();
-	
-   }
-   });
-
-function saveAlertAssignedUser ()
-	{
+	});
+	function saveAlertAssignedUser (){
 		console.log(commontdpCadreIds);
-		if(commontdpCadreIds.length == 0)
-		{
+		if(commontdpCadreIds.length == 0){
 			$("#assignEroorDiv").html("at least one Candidate Required").css("color","red");
 			return;
 		}
-		var jsObj =
-		     {
-				 tdpCadreIds : commontdpCadreIds,
-				 alertId : alertId,
-				task : ""
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'saveAlertAssignedUserAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-				   if(result.resultCode == 0)
-				    $("#assignEroorDiv").html("assigned Successfully").css("color","green");
-				 setTimeout(function(){ $("#assignEroorDiv").html("");
-					 }, 1000);
-					$("#involvedCandidatesDiv").hide();
-					$(".membersBlock").html('');
-					$("#apptmemberDetailsDiv").html('');
-					clearCommonFields();
-					getAlertAssignedCandidates(alertId);
-					getAlertAssignedCandidate(alertId);
-			 })
+		var jsObj ={
+			tdpCadreIds : commontdpCadreIds,
+			alertId : alertId,
+			task : ""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'saveAlertAssignedUserAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result.resultCode == 0)
+				$("#assignEroorDiv").html("assigned Successfully").css("color","green");
+				setTimeout(function(){ 
+					$("#assignEroorDiv").html("");
+				}, 1000);
+				$("#involvedCandidatesDiv").hide();
+				$(".membersBlock").html('');
+				$("#apptmemberDetailsDiv").html('');
+				clearCommonFields();
+				getAlertAssignedCandidates(alertId);
+				getAlertAssignedCandidate(alertId);
+		})
 	}
 function getAlertData()
 {
