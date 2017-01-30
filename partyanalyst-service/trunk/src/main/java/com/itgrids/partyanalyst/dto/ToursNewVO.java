@@ -53,7 +53,27 @@ public class ToursNewVO implements Serializable {
 	private Long toursMonthId;
 	private Long detailsNewId;
 	private Long tourDays;
+	private Long tdpCadreId;
+	private String type;
 	
+	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
 	public List<IdNameVO> getSubList() {
 		return subList;
 	}
