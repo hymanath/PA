@@ -55,6 +55,7 @@ import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
+import com.itgrids.partyanalyst.dto.ToursNewVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
@@ -2556,5 +2557,158 @@ public class ToursService implements IToursService {
 	    		LOG.error("Exception Occured in checkForExistingTourDetails() in ToursService class ", e);
 	    	}
 			return null;
+	    }
+	    
+	    public ResultStatus saveDesignationWiseTourDetails(final ToursVO toursVo,final Map<File, String> documentMap){
+	    	ResultStatus status = null; 
+	    	try{
+	    		
+	    		status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+					@SuppressWarnings("null")
+					public Object doInTransaction(TransactionStatus arg0) {
+						
+						ResultStatus transStatus=new ResultStatus();
+						
+						Long toursMonthId=0l; 
+						if(toursVo.getTourMonth() !=null && !toursVo.getTourMonth().trim().isEmpty()){
+							List<Long> toursMonthIdsObj = selfAppraisalToursMonthDAO.getSelfAppraisalToursMonth(toursVo.getTourMonth());
+							
+							if(toursMonthIdsObj !=null && toursMonthIdsObj.size()>0){
+								toursVo.setToursMonthId(toursMonthIdsObj.get(0));
+								toursMonthId = toursMonthIdsObj.get(0);
+							}
+							
+						}
+						
+						Long newCandidateId=0l;
+						if(toursVo.getCandidateId() !=null && toursVo.getCandidateId()>0l //here candidateId means tdpCadreId
+								&& toursVo.getDesignationId() !=null && toursVo.getDesignationId()>0l){							
+							List<Long> candidates = selfAppraisalCandidateDAO.getCandidateIdOfCadre(toursVo.getCandidateId(),toursVo.getDesignationId());
+							
+							if(candidates !=null && candidates.size()>0){
+								toursVo.setSelfAppraisalCandidateId(candidates.get(0));
+								newCandidateId = candidates.get(0);
+							}							
+						}
+						
+						if(toursVo.getDetailsNewId() !=null && toursVo.getDetailsNewId() >0l)//Update
+						{
+							updateNewTourDetails(toursVo,documentMap);
+						}else{											
+							
+							DateUtilService dateUtilService = new DateUtilService();
+							
+							//Over All toured Days Saving Start
+							
+							
+								if(toursVo !=null && toursVo.getToursVoListNew() !=null && toursVo.getToursVoListNew().size()>0){
+									for (ToursVO innerTourVo : toursVo.getToursVoListNew()) {
+										
+										if(innerTourVo !=null){
+											SelfAppraisalCandidateDetailsNew selfAppraisalCandidateDetailsNew = new SelfAppraisalCandidateDetailsNew();
+											
+											selfAppraisalCandidateDetailsNew.setSelfAppraisalCandidateId(toursVo.getSelfAppraisalCandidateId());								
+											selfAppraisalCandidateDetailsNew.setSelfAppraisalDesignationId(toursVo.getDesignationId());								
+											selfAppraisalCandidateDetailsNew.setSelfAppraisalTourCategoryId(innerTourVo.getTourCategoryId() !=null ? innerTourVo.getTourCategoryId():null);
+											
+											if(innerTourVo.getTourTypeId() !=null && innerTourVo.getTourTypeId()>0l){
+												selfAppraisalCandidateDetailsNew.setTourTypeId(innerTourVo.getTourTypeId());
+											}
+											
+											selfAppraisalCandidateDetailsNew.setSelfAppraisalToursMonthId(toursMonthId !=null && toursMonthId >0l ? toursMonthId:null);
+											
+											if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+												selfAppraisalCandidateDetailsNew.setRemarks(innerTourVo.getDescription().toString());
+											}
+											
+											selfAppraisalCandidateDetailsNew.setTourDays(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():null );
+											
+											selfAppraisalCandidateDetailsNew.setIsDeleted("N");
+											
+											selfAppraisalCandidateDetailsNew.setInsertedBy(toursVo.getUserId());
+											selfAppraisalCandidateDetailsNew.setUpdatedBy(toursVo.getUserId());
+											selfAppraisalCandidateDetailsNew.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											selfAppraisalCandidateDetailsNew.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											
+											
+											SelfAppraisalCandidateDetailsNew selfAppraisalCandidateDetails = selfAppraisalCandidateDetailsNewDAO.save(selfAppraisalCandidateDetailsNew);
+											
+											//Location Address Saving								
+											saveUserLocationsOfTour(toursVo.getSelfAppraisalCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId());									
+											
+										}
+									}
+								}														
+								//Over All Toured Days Saving End
+								
+								//Day Wise Saving Start
+								
+								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");												
+								
+								if(toursVo !=null && toursVo.getToursVoList() !=null && toursVo.getToursVoList().size()>0){
+									for (ToursVO innerTourVo : toursVo.getToursVoList()) {
+										
+										if(innerTourVo !=null){
+											SelfAppraisalCandidateDayTour selfAppraisalCandidateDayTour = new SelfAppraisalCandidateDayTour();
+											
+											selfAppraisalCandidateDayTour.setSelfAppraisalCandidateId(toursVo.getSelfAppraisalCandidateId());								
+											selfAppraisalCandidateDayTour.setSelfAppraisalDesignationId(toursVo.getDesignationId());								
+											selfAppraisalCandidateDayTour.setSelfAppraisalTourCategoryId(innerTourVo.getTourCategoryId() !=null ? innerTourVo.getTourCategoryId():null);
+											
+											try {
+												selfAppraisalCandidateDayTour.setTourDate(sdf.parse(innerTourVo.getTourDateId()));
+											} catch (ParseException e) {
+												e.printStackTrace();
+											}
+											
+											//Address Saving								
+											Long addressId = saveUserAddressDetailsOfTour(innerTourVo,selfAppraisalCandidateDayTour);								
+											
+											selfAppraisalCandidateDayTour.setAddressId(addressId !=null ? addressId:null);
+											if(innerTourVo.getTourTypeId() !=null && innerTourVo.getTourTypeId()>0l){
+												selfAppraisalCandidateDayTour.setTourTypeId(innerTourVo.getTourTypeId());
+											}
+											
+											if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+												selfAppraisalCandidateDayTour.setComment(innerTourVo.getDescription().toString());
+											}
+											
+											selfAppraisalCandidateDayTour.setIsDeleted("N");
+											
+											selfAppraisalCandidateDayTour.setInsertedBy(toursVo.getUserId());
+											selfAppraisalCandidateDayTour.setUpdatedBy(toursVo.getUserId());
+											selfAppraisalCandidateDayTour.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											selfAppraisalCandidateDayTour.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											selfAppraisalCandidateDayTour.setSelfAppraisalToursMonthId(toursMonthId !=null && toursMonthId >0l ? toursMonthId:null);
+											
+											selfAppraisalCandidateDayTourDAO.save(selfAppraisalCandidateDayTour);
+											
+										}
+									}
+								}												
+								
+								// Day Wise Saving End 
+								
+								//Documents Saving	
+								if(documentMap !=null && documentMap.size()>0){
+									saveApplicationDocuments(toursVo,documentMap);
+								}
+						}
+						
+						transStatus.setMessage("success");
+						transStatus.setResultCode(1);
+						
+						return transStatus;
+						
+					}
+					
+	    		});
+	    		
+	    	}catch(Exception e){
+	    		status.setMessage("failure");
+	    		status.setResultCode(0);
+	    		LOG.error("Exception Occured in saveNewTourDetails() in ToursService class ", e);
+	    	}
+	    	return status;
 	    }
 }
