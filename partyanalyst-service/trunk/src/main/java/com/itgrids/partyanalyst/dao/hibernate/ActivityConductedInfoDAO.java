@@ -122,15 +122,25 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		query.setParameter("endDate", endDate);
 		return query.list();
 	}*/
-	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
-		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds,Long stateId1){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.activityScope.activityScopeId," +
 				//" sum(model.infoCellCount) " +
 				" count(distinct model.activityConductedInfoId),sum(model.infoCellCount) "+
 				" from ActivityConductedInfo model" +
 				" where model.infoCellCount is not null and " +
-				"  model.activityScope.activityScopeId in (:activityScopeIds) and " +
-				" model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") " +
-				" group by model.activityScope.activityScopeId");
+				"  model.activityScope.activityScopeId in (:activityScopeIds)"); 
+		queryStr.append(" and " +
+				" model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") "); 			
+		if(stateId1 != null && stateId1.longValue() == 1l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId1 != null && (stateId1.longValue() == 2l || stateId1.longValue() == 36l)){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId1 != null && stateId1.longValue() == 0l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		queryStr.append(" group by model.activityScope.activityScopeId");
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
