@@ -1122,8 +1122,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 				}
 				
-				List<Object[]> ivrList = activityLocationInfoDAO.getIVRCountsForScopeIds(scopeIds);
-				List<Object[]> specialActivitiesivrList = activityConductedInfoDAO.getIVRCountsForScopeIds(scopeIds);
+				List<Object[]> ivrList = activityLocationInfoDAO.getIVRCountsForScopeIds(scopeIds,1L);
+				List<Object[]> specialActivitiesivrList = activityConductedInfoDAO.getIVRCountsForScopeIds(scopeIds,1L);
 				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesivrList)){
 					if(!commonMethodsUtilService.isListOrSetValid(ivrList))
 						ivrList = new ArrayList<Object[]>(0);
@@ -1632,15 +1632,55 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 				}
 			}
-			List<Object[]> conductedCuntList = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId);
-			if(conductedCuntList != null && !conductedCuntList.isEmpty()){
-				for (Object[] obj : conductedCuntList) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+			ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
+			Long levelId = 0L;
+			if(activityScope != null)
+				levelId = activityScope.getActivityLevelId();
+			
+			if(levelId != null && levelId.longValue()>0L){
+				List<Object[]> conductedCuntList = new ArrayList<Object[]>(0);
+				if(levelId.longValue() == 1L){
+					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"village"); 
+					List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"wards");
 					
-					EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
-					if(vo != null){
-						vo.setConductedCount(count);
+					if(commonMethodsUtilService.isListOrSetValid(list))
+						conductedCuntList.addAll(list);
+					if(commonMethodsUtilService.isListOrSetValid(list2))
+						conductedCuntList.addAll(list2);
+				}
+				else if(levelId.longValue() == 2L){
+					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"mandal"); 
+					List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"town");
+					
+					if(commonMethodsUtilService.isListOrSetValid(list))
+						conductedCuntList.addAll(list);
+					if(commonMethodsUtilService.isListOrSetValid(list2))
+						conductedCuntList.addAll(list2);
+					
+				}
+				else if(levelId.longValue() == 3L){
+					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"district"); 
+					if(commonMethodsUtilService.isListOrSetValid(list))
+						conductedCuntList.addAll(list);
+				}
+				else if(levelId.longValue() == 4L){
+					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"constituency"); 
+					if(commonMethodsUtilService.isListOrSetValid(list))
+						conductedCuntList.addAll(list);
+				}
+				
+				if(conductedCuntList != null && !conductedCuntList.isEmpty()){
+					for (Object[] obj : conductedCuntList) {
+						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						
+						EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
+						if(vo != null){
+							if(vo.getConductedCount() == null || vo.getConductedCount().longValue()==0L)
+								vo.setConductedCount(count);
+							else
+								vo.setConductedCount(count+vo.getConductedCount());
+						}
 					}
 				}
 			}
@@ -1810,13 +1850,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setName(obj[1] != null ? obj[1].toString()+ "  "+electionType : "");
 					
 					if(type != null && type.equalsIgnoreCase("planned"))
-						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+(Long)obj[2] : 0l);
+						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
 					else if(type != null && type.equalsIgnoreCase("infocell")){
-						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[2] : 0l);
-						vo.setInfoCellAttendedCount(obj[3] != null ? vo.getInviteeNotAttendedCount()+(Long)obj[3] : 0l);
+						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+						vo.setInfoCellAttendedCount(obj[3] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[3]) : 0l);
 					}
 					else if(type != null && type.equalsIgnoreCase("ivr"))
-						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+(Long)obj[2] : 0l);
+						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
 				}
 			}
 			
