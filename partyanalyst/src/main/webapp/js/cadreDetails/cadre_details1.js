@@ -2705,14 +2705,11 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 		  $("#cdrModelDivId").modal("show");
 		var alertId = $(this).attr("attr_alert_id");
 		var alertStatus = $(this).attr("attr_alert_status");
-		//getAlertData(alertId);
-		//getAlertAssignedCandidates(alertId);    
-		//getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
-		//getVerificationDtls(alertId);
-			getAlertData(5685);
-		getAlertAssignedCandidates(5685);    
-		getAlertStatusCommentsTrackingDetails(5685,alertStatus);
-		getVerificationDtls(5685);
+		getAlertData(alertId);
+		getAlertAssignedCandidates(alertId);    
+		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
+		getVerificationDtls(alertId);
+		
 	});
 	
   function getAlertData(alertId){    
