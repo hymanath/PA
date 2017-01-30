@@ -3314,16 +3314,16 @@ function getTotalArticledetails(articleId){
 		
 		str+='<tbody>';
 			str+='<tr>';
-				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" ><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'</h3><p>TOTAL ALERTS</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" ><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" attr_alert_type_name="TOTAL ALERTS" attr_alert_count="'+result.overAllVO.totalAlertCnt+'" attr_alert_type="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>TOTAL ALERTS</p></div></td>';
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'</h3><p>PARTY</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>PARTY</p></div></td>';
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'</h3><p>GOVT</p></div></td>';
+					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" attr_alert_count="'+result.overAllVO.govtAlertCnt+'" attr_alert_type_name="GOVT ALERTS" attr_alert_type="2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>GOVT</p></div></td>';
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td colspan="2" onclick ="getEditioDtls(3,0);arrowPositionMove(overAllotherdArrowPostion);" id="overAllotherdArrowPostion"  class="alertOverViewDetailsCls " attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'</h3><p>OTHERS</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(3,0);arrowPositionMove(overAllotherdArrowPostion);" id="overAllotherdArrowPostion"  class="alertOverViewDetailsCls " 	attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" attr_alert_type_name="OTHERS ALERTS" class="glyphicon glyphicon-info-sign alertDetailsCls" attr_alert_count="'+result.overAllVO.otherAlertCnt+'" attr_alert_type="3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>OTHERS</p></div></td>';
 				}
 			str+='</tr>';
 			str+='<tr>';
@@ -3395,6 +3395,7 @@ function getTotalArticledetails(articleId){
 		}
 		
 		$("#alertOverview").html(str);  
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 	
 	
@@ -3794,3 +3795,41 @@ function getTotalArticledetails(articleId){
 		window.open('/Reports/tour_documents/'+dbFilePath,'_blank');
 	});          
 	
+	$(document).on("click",".alertDetailsCls",function(){
+	var alertTypeId = $(this).attr("attr_alert_type");
+	var alertCount = $(this).attr("attr_alert_count");
+	var selectedAlertType = $(this).attr("attr_alert_type_name");
+     getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType);
+	});
+	function getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType){
+		$("#tourDocumentBodyId").html("");           
+		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
+		$("#tourDocumentId").modal("show");  
+		$("#alertCntTitId").html(""+selectedAlertType+"-"+alertCount);
+		var dates=$("#dateRangeIdForAlert").val();        
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		      
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,      
+			stateId : globalStateId,           
+			fromDate:fromDateStr,        
+			toDate :toDateStr,
+			alertTypeId : alertTypeId
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getAlertDetatilsByAlertTypeAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAlertDtls(result);   
+			}
+      });	
+	}

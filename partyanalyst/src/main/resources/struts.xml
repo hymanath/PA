@@ -15550,5 +15550,15 @@
    			<param name="root">partyMeetingStatus</param> 
    		</result>
 	</action> 
+	<action name="getCadreTourDetailsAction" class="cadreDetailsAction"  method="getCadreTourDetails">
+			<result type="json" name="success">
+			<param name="root">tourDetailsVO</param>
+		</result>
+	</action>
+	<action name="getAlertDetatilsByAlertTypeAction" class="createAlertAction"  method="getAlertDetatilsByAlertType">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>     
+		</result>
+	</action>
  </package>
 </struts>
