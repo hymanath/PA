@@ -1709,10 +1709,12 @@ function buildActivityCounts(result,divId,activityName,activityId)
 					
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Planned</p>';
-							if(result[i].inviteeCount != null && result[i].inviteeCount>0)
+							/*if(result[i].inviteeCount != null && result[i].inviteeCount>0)
 								str+='<u><h5 style="cursor:pointer;" class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Total Planned Locations" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5><u>';
 							else
-								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';
+								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" >'+result[i].inviteeCount+' <small><span class="text-success">'+result[i].mobileNumber+'%</span></small></h5>';*/
+							str+='<h5>'+result[i].apTotal+'</h5>';
+							
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">IVR</p>';
