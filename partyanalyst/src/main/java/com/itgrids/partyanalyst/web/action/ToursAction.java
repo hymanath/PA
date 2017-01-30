@@ -773,7 +773,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
 				return Action.SUCCESS;
 			}
-			resultStatus = toursService.saveDesignationWiseTourDetails(toursVO,mapfiles);
+			resultStatus = toursService.saveDesignationWiseTourDetails(toursNewVO,mapfiles);
 			if(resultStatus!=null){
 					successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
 			}
