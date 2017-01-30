@@ -29,8 +29,15 @@ private String mobileNo;
 private Long tdpCadreId;
 private String memberShipNo;
 private String image;
+private Long count = 0l;
 
 
+public Long getCount() {
+	return count;
+}
+public void setCount(Long count) {
+	this.count = count;
+}
 public Long getTdpCadreId() {
 	return tdpCadreId;
 }
