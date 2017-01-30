@@ -1144,6 +1144,7 @@
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingStatusTemp</value>
 	                  <value>com.itgrids.partyanalyst.model.ActivityConductedInfo</value>
 	                  <value>com.itgrids.partyanalyst.model.CadreRegistrationAllowAreas</value>
+	                  <value>com.itgrids.partyanalyst.model.PartyMeetingUpdationDocuments</value>
 	              </list>
 			
 		</property>
