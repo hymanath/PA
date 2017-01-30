@@ -119,6 +119,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 import com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails;
+import com.itgrids.partyanalyst.model.PartyMeetingUpdationDocuments;
 import com.itgrids.partyanalyst.model.TrainingCamp;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
@@ -11319,9 +11320,9 @@ public CallStatusVO getMatchedMeetingVO(Long partymeetingid,List<CallStatusVO> r
 	}
 	return null;
 }
-public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
-		final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId){
-	ResultStatus status  = new ResultStatus();
+public String saveFinalizedMeetingDetails(final Long partyMeetingId,final String memberType,final String membershipId,final String name,
+		final String mobileNo,final String remark,final String statusId,final String updateBy,final Long userId,final List<String> fileNames){
+	String status  = null;
 	try {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
@@ -11349,14 +11350,25 @@ public ResultStatus saveFinalizedMeetingDetails(final Long partyMeetingId,final 
 					PMUD.setUserId(userId);
 					PMUD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
-					partyMeetingUpdationDetailsDAO.save(PMUD);
+					PMUD = partyMeetingUpdationDetailsDAO.save(PMUD);
+					
+					if(fileNames != null && fileNames.size() > 0){
+		    			for (String string : fileNames) {
+		    				PartyMeetingUpdationDocuments partyMeetingUpdationDocuments = new PartyMeetingUpdationDocuments();
+							partyMeetingUpdationDocuments.setPartyMeetingUpdationDetailsId(PMUD.getPartyMeetingUpdationDetailsId());
+							partyMeetingUpdationDocuments.setDocumentPath(string);
+							partyMeetingUpdationDocuments.setIsDeleted("N");
+							
+							partyMeetingUpdationDocumentsDAO.save(partyMeetingUpdationDocuments);
+		    			}
+					}
 			}
 		});
-		status.setResultCode(0);
-		status.setMessage("SUCCESS");
+		//status.setResultCode(0);
+		status = "SUCCESS";
 	} catch (Exception e) {
-		status.setResultCode(1);
-		status.setMessage("FAILURE");
+		//status.setResultCode(1);
+		status = "FAILURE";
 		LOG.error(" Exception occured in saveFinalizedMeetingDetails method in TrainingCampService class.",e);
 	}
 	return status;
