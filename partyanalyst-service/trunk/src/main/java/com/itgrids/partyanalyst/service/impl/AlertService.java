@@ -3630,7 +3630,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }  
-			 }
+			 }//swadhin
+			//convert parliament into constituency.
+			if(locationAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+				locationAccessLevelId = 5L;
+				locationValues.clear();
+				locationValues.addAll(parliamentAssemlyIds);      
+			}
+			 
 		   List<Object[]> rtrnTtlAlrtObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate, "false",alertTypes,alertEditions);
 		   Long totalAlertCnt = 0l;
 		   AlertOverviewVO overViewVO = new AlertOverviewVO();
@@ -4020,8 +4028,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				for(Object[] param : accessLvlIdAndValuesList){
 					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
 				}
+			}//swadhin
+			//convert parliament into constituency.
+			if(userAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
+				userAccessLevelId = 5L;
+				userAccessLevelValues.clear();
+				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
-			  
 			//DateUtilService dateUtilService = new DateUtilService();
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
@@ -4175,7 +4189,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
-			 }
+			 }//swadhin
+			//convert parliament into constituency.
+				if(locationAccessLevelId.longValue() == 4L){
+					List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+					locationAccessLevelId = 5L;
+					locationValues.clear();
+					locationValues.addAll(parliamentAssemlyIds);      
+				}
+			 
 			  List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 			  List<Object[]> rtrnAlertImpactLevelObjLst = alertImpactScopeDAO.getAllAlertImpactLevel();
 			  prepareTemplate(rtrnAlertCategoryObjLst,rtrnAlertImpactLevelObjLst,categoryMap);////Prepare Template 
@@ -5135,7 +5157,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
-			 }
+			 }//swadhin
+			//convert parliament into constituency.
+			if(locationAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+				locationAccessLevelId = 5L;
+				locationValues.clear();
+				locationValues.addAll(parliamentAssemlyIds);      
+			}
 			 List<Object[]> rtrnCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 			 prepareRquiredTemplate(rtrnCategoryObjLst,resultVO.getCategoryList());
 			 List<Object[]> rtrnStatusObjLst = alertStatusDAO.getAllStatus();
@@ -5349,7 +5378,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(userAccessLevelId.longValue() == 4L){
 				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
 				userAccessLevelId = 5L;
-				userAccessLevelValues.clear();
+				userAccessLevelValues.clear();          
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
 			
