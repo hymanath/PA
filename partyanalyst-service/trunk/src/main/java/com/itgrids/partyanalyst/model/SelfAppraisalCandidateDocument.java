@@ -42,6 +42,9 @@ public class SelfAppraisalCandidateDocument {
 	/*private User updatedUser;*/
 	private SelfAppraisalToursMonth selfAppraisalToursMonth;
 	
+	private Long tdpCadreId;
+	private TdpCadre tdpCadre;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="self_appraisal_candidate_document_id", unique=true, nullable=false)
@@ -143,6 +146,24 @@ public class SelfAppraisalCandidateDocument {
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}*/
+	
+	@Column(name="tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
 	
 	
 }

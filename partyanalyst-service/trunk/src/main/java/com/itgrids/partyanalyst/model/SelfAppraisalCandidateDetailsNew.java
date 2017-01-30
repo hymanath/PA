@@ -46,6 +46,8 @@ public class SelfAppraisalCandidateDetailsNew {
 	private User updatedUser;
 	
 	private String isDeleted;
+	private Long tdpCadreId;
+	private TdpCadre tdpCadre;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -215,6 +217,24 @@ public class SelfAppraisalCandidateDetailsNew {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@Column(name="tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
 	
 	
 	
