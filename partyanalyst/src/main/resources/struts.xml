@@ -15560,5 +15560,12 @@
 			<param name="root">alertCoreDashBoardVOs</param>     
 		</result>
 	</action>
+	
+	<action name="saveDesignationWiseTourDetailsAction" class="toursAction" method="saveDesignationWiseTourDetails">  
+		<result type="json" name="success">
+   			<param name="root">successMsg</param>        
+   		</result>
+	</action>
+	
  </package>
 </struts>
