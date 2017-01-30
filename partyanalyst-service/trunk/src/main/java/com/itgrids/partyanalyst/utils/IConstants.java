@@ -1239,7 +1239,7 @@ public interface IConstants {
 	public static final String CADRE_NEW_MINORITY_CASTE_IDS = "81,97,107,292,299,300,301";
 	
 	public static final Long CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID=334L;
-	public static final Long CNP_MANCHERIAL_DISTRICT_ID=0L;
+	public static final Long CNP_MANCHERIAL_DISTRICT_ID=344L;  
 	public static final String ALERT_PARTY_AND_OTHERS_TYPE_IDS="1,2,3";
 	public static final String ALERT_PENDING_STATUS_IDS="1";
 	public static final String ALERT_IMPACT_SCOPE_IDS="4,10,11";
