@@ -15567,5 +15567,10 @@
    		</result>
 	</action>
 	
+	<action name="getSelectedprofileToursOverviewAction" class="toursAction" method="getSelectedprofileToursOverview">
+		<result type="json" name="success"> 
+   			<param name="root">toursVOList</param> 
+   		</result>
+	</action>
  </package>
 </struts>
