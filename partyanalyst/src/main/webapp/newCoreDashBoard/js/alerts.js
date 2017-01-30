@@ -172,7 +172,11 @@
 				locVal = $(this).attr("attr_id");
 			}
 		});
-		if(locVal == "1"){  
+		if(scopeIdsArr.length == 0){
+			alert("Please select atleast one option");
+			return;  
+		}
+		if(locVal == "1"){    
 			getTotalAlertGroupByDist(scopeIdsArr,"other");      
 		}else if(locVal == "2"){
 			getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
@@ -237,7 +241,7 @@
 		if(location == "date"){
 			alertId = 0;
 			editionId = 0;  
-		}
+		}  
 		var jsObj = { 
 			stateId : globalStateId,             
 			fromDate : fromDateStr,        
