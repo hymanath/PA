@@ -29,6 +29,13 @@ public class EventDetailsVO {
 	
 	private Long imagesCovered=0l;
 	private Long totalImages=0l;
+	private Long yesCount = 0l;
+	private Long noCount = 0l;
+	private Long mayBeCount = 0l;
+	private Long notUpdatedCount = 0l;
+	private Long scopeId;
+	private Long conductedCount = 0l;
+	
 	
 	public Long getInfoCellAttendedCount() {
 		return infoCellAttendedCount;
@@ -143,6 +150,42 @@ public class EventDetailsVO {
 			villageWardList = new ArrayList<EventDetailsVO>();
 		}
 		return villageWardList;
+	}
+	public Long getYesCount() {
+		return yesCount;
+	}
+	public void setYesCount(Long yesCount) {
+		this.yesCount = yesCount;
+	}
+	public Long getNoCount() {
+		return noCount;
+	}
+	public void setNoCount(Long noCount) {
+		this.noCount = noCount;
+	}
+	public Long getMayBeCount() {
+		return mayBeCount;
+	}
+	public void setMayBeCount(Long mayBeCount) {
+		this.mayBeCount = mayBeCount;
+	}
+	public Long getNotUpdatedCount() {
+		return notUpdatedCount;
+	}
+	public void setNotUpdatedCount(Long notUpdatedCount) {
+		this.notUpdatedCount = notUpdatedCount;
+	}
+	public Long getScopeId() {
+		return scopeId;
+	}
+	public void setScopeId(Long scopeId) {
+		this.scopeId = scopeId;
+	}
+	public Long getConductedCount() {
+		return conductedCount;
+	}
+	public void setConductedCount(Long conductedCount) {
+		this.conductedCount = conductedCount;
 	}
 	
   	
