@@ -26,6 +26,34 @@
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>  
 </head>
 <style>
+.tableAttachments
+{
+	border:1px solid #ddd
+}
+.tableAttachments tr td
+{
+	border-top:1px solid #ddd;
+}
+.btnView
+{
+	border:1px solid #449D44;
+	background-color:#fff;
+}
+.btnDelete
+{
+	border:1px solid #c9302c;
+	background-color:#fff;
+}
+
+#toursCandidateDetails .table-bordered input{
+	width:80px;
+}
+#toursCandidateDetails .table-bordered thead th
+{
+  border-left:0px !important;
+  border-right:0px !important;
+  color:#ccc;
+}
 .chosen-container{width:100% !important}
 .requiredFont{
 		color:red;
@@ -144,16 +172,28 @@
 								<div id="overallDivId" style="display:none;">
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 										<div class="row">
+											<div class="col-md-10 col-xs-12 col-sm-8">
+												<h4 id="candidateNameId"></h4>
+											</div>
+										</div>
+										
+										<div class="row">
+										<form name="submitApplication" method="post">
 											<div class="col-md-2 col-xs-12 col-sm-4">
 												<label>Select Month</label>
 												<div class="input-group inputGCustom">
-													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth">
+												<input type="hidden" id="hiddenTdpCadreId"/>
+													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth" onclick="getAllTourDetailsOverview()">
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
 												</div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div id="toursCandidateDetails"></div>
+												<div id="attachementsId"></div>
+											</div>
+											<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div class="panel panel-default">
 													<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
 														<div class="row">
@@ -187,35 +227,38 @@
 													</div>
 												</div>
 											</div>
-										</div>
-										<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add Day Wise Tours Block</button>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div style="display:none;" id="dateWiseBlockId"><!--san-->
-											
-											<div class="panel panel-default">
-												<div id="addNewTourBlock"></div>
-												<div class="panel-footer borderGreen text-right">
-													<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>											
+											<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add Day Wise Tours Block</button>
+											-->
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div style="display:none;" id="dateWiseBlockId"><!--san-->
+													<div class="panel panel-default">
+														<div id="addNewTourBlock"></div>
+														<div class="panel-footer borderGreen text-right">
+															<button type="button" class="btn btn-success addAppendTourBlockCls">+ ADD TOUR</button>											
+														</div>
+													</div>
 												</div>
+												<div class="row" id="uploadFlDivId">
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+														<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+														<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+														<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+													</div>
+												</div>  
+												<div class="row" id="submitApplicationBtnId"> 
+													<div class="col-md-4 col-md-offset-4">
+														<span class="updateTourStatusCls"></span>
+														<button type="button" class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
+														<span id="successSpanId"></span>  
+													</div>   
+													<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
+												</div> 
 											</div>
+										</form>
+											
 										</div>
-										<div class="row" id="uploadFlDivId">
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-												<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
-												<span id="errFileId" style="color:red;margin-left:470px;"></span>   
-											</div>
-										</div>  
-										<div class="row" id="submitApplicationBtnId"> 
-											<div class="col-md-4 col-md-offset-4">
-												<span class="updateTourStatusCls"></span>
-												<button type="button" class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
-												<span id="successSpanId"></span>  
-											</div>   
-											<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
-										</div> 
 									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -460,7 +503,7 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
-<!-- <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     -->
+ <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>  
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 /*New Code*/
