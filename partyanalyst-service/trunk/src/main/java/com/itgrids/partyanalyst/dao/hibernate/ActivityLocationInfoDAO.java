@@ -1492,19 +1492,28 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		return query.list();
 	}
 	
-	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds){
-		Query query = getSession().createQuery("select model.activityScope.activityScopeId," +
+	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds,Long stateId1){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select model.activityScope.activityScopeId," +
 												" count(model.activityLocationInfoId), sum(model.attendedCount)" +
 												" from ActivityLocationInfo model" +
 												" where model.conductedDate is not null" +
-												" and model.activityScope.activityScopeId in (:activityScopeIds)" +
-												" group by model.activityScope.activityScopeId");
+												" and model.activityScope.activityScopeId in (:activityScopeIds)"); 
+		if(stateId1 != null && stateId1.longValue() == 1l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId1 != null && (stateId1.longValue() == 2l || stateId1.longValue() == 36l)){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId1 != null && stateId1.longValue() == 0l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		queryStr.append(" group by model.activityScope.activityScopeId");
+		 Query query = getSession().createQuery(queryStr.toString()); 
 		query.setParameterList("activityScopeIds", activityScopeIds);
 		return query.list();
 	}
 	
-	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId){
-		 StringBuilder queryStr = new StringBuilder();
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,Long stateId){
+		 StringBuilder queryStr = new StringBuilder();		
 	      queryStr.append("select model.activityScope.activityScopeId," +
 												" count(model.activityLocationInfoId),"); 
 	      if(scopeId !=null && scopeId.longValue() == 3l){
@@ -1518,17 +1527,25 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 												" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 												" from ActivityLocationInfo model " +
 												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
-												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1  " +
+												" model.activityScope.activityId in (:activityIdsLst)  " +
 												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
-												" and model.conductedDate is not null "); 
+												" and ( model.conductedDate is not null or model.ivrStatus='Y') "); 
 	      if(scopeId != null && scopeId.longValue() == 3l){
 	    	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
 	    	   queryStr.append(" order by model.address.district.districtId ");
 	      }
-	      else if(scopeId != null && scopeId.longValue() == 2l){
-	    	  queryStr.append(" group by model.activityScope.activityScopeId,model.address.state.stateId "); 
+	     else if(scopeId != null && scopeId.longValue() == 2l){
+	    	//  queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+	    	  if(stateId != null && stateId.longValue() == 1l){
+					queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
+					queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+				}
+	    	  queryStr.append(" group by model.activityScope.activityScopeId,model.address.state.stateId ");
 	    	   queryStr.append(" order by model.address.state.stateId ");
-	      }
+	     }
 	      Query query = getSession().createQuery(queryStr.toString());  
 	      query.setParameterList("activityIdsLst", activityIdsLst);
 	      query.setParameter("startDate", startDate);

@@ -1145,9 +1145,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 						}
 					}
 				}
-				
-				List<Object[]> infocellList = activityLocationInfoDAO.getInfocellCountsForScopeIds(scopeIds);
-				List<Object[]> specialActivitiesinfocellList = activityConductedInfoDAO.getInfocellCountsForScopeIds(scopeIds);
+				Long stateId1 =1l;
+				List<Object[]> infocellList = activityLocationInfoDAO.getInfocellCountsForScopeIds(scopeIds,stateId1);
+				List<Object[]> specialActivitiesinfocellList = activityConductedInfoDAO.getInfocellCountsForScopeIds(scopeIds,stateId1);
 				if(commonMethodsUtilService.isListOrSetValid(specialActivitiesinfocellList)){
 					if(!commonMethodsUtilService.isListOrSetValid(infocellList))
 						infocellList = new ArrayList<Object[]>(0);
@@ -1443,7 +1443,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
-			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
+			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l);
 			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
 			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesList)){
 				if(!commonMethodsUtilService.isListOrSetValid(list))
@@ -1465,7 +1465,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setPartyName(commonMethodsUtilService.getStringValueForObject(obj[4]));
 					vo.setName(vo.getPartyName()+" "+commonMethodsUtilService.getStringValueForObject(obj[5])+" Level Activity ");
 					vo.setCountOfActivityLocationInfo(Long.valueOf(obj[1] != null ? obj[1].toString():""));
-					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
+					vo.setLocationId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(obj[3]));
 					vo.setActualMobNumber(commonMethodsUtilService.getStringValueForObject(obj[5]));
 					vo.setPerc("0.00");
