@@ -21,6 +21,33 @@
 
 
 <style>
+.attachmentsUpload
+{
+	list-style:none;
+}
+.attachmentsUpload li
+{
+	display:block;
+	background-color:#ddd;
+	padding:8px;
+	position:relative;
+}
+.attachmentsUpload li input
+{
+	width:80%;
+}
+.attachmentsUpload li .closeIcon , .attachmentsUpload li .clearFileCls
+{
+	font-size:16px;
+	cursor:pointer;
+	position:absolute;
+	top:0px;
+	right:10px;
+	background-color:#CCC;
+	border-radius:50%;
+	padding: 0px 5px;
+	font-weight: bold;
+}
 .panelWidthCols
 {
 	width:20%;
@@ -188,6 +215,8 @@ textarea { resize:none; }
     position: absolute;
     width: 15px;
 }
+.uploadCssDiv {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
+.cloneFileCls {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
 </style>
 
 <!-- YUI Dependency files (Start) -->
@@ -388,11 +417,22 @@ textarea { resize:none; }
 							<option value="N">No</option>
 						 </select>	
 					</div>
-					<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 20px;display:none;" id="fileUploadDivId">
-					<label>Add Attachment<span class="text-danger">*</span></label>
-						<input type="file" class="btn btn-mini btn-block" name="imageForDisplay" id="uploadFileId"  />
+				</div>
+				<div class="row">
+					<div class="col-md-8 col-xs-12 col-sm-6 fileUploadDivId" style="margin-top: 20px;display:none;">
+						<label>Add Attachments<span class="text-danger">*</span></label>
+						<ul class="attachmentsUpload" id="extraUploadFileDiv">  
+							<li>
+								<input type="file" class="btn btn-mini cloneFileCls" name="imageForDisplay" id="uploadFileId0"  />
+								<span class="clearFileCls" style="display:none;cursor:pointer;">x</span>  
+							</li>
+						</ul>
 					</div>
-					
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-xs-12 col-sm-12 fileUploadDivId">
+						<button type="button" title="Add Another File" class="btn btn-primary btn-sm" id="addFile"><i class="glyphicon glyphicon-plus"></i></button>
+					</div>
 				</div>
 				<input type="hidden" value="" id="hiddenFinalizeMeetingId" name="updateFinalyzeMeetingId"/>			 
 			</div>
@@ -1774,8 +1814,9 @@ $(document).on("click",".updateCls",function(){
 	$("#updateFinlizMtngBtnModal").modal("show");
 	var meetingId = $(this).attr("attr_meeting_Loc_Id");
 	$("#hiddenFinalizeMeetingId").val(meetingId);
-	$("#uploadFileId").val("");
-	$("#fileUploadDivId").hide();
+	$("#uploadFileId0").val("");
+	$(".cloneFileCls").val("");
+	$(".fileUploadDivId").hide();
 });
 $(document).on("click","#saveDetailsBtnId",function(){
 	$('#errorId').html('');
@@ -1786,7 +1827,7 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	var mobileNo = $("#mobileNoId").val();
 	var remark = $("#remarkId").val();
 	var updateStatus = $("#statusId").val();
-	var uploadFile = $("#uploadFileId").val();
+	var upladFile = $("#uploadFileId0").val();
 	
 	if(name ==0){
 	  	  errorStr += "Name is required<br>";
@@ -1801,8 +1842,13 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	  errorStr += "Status is required<br>";
 	}
 	if(updateStatus == "Y"){
-		if(uploadFile == null || uploadFile.trim().length == 0)
-			errorStr += "Attachment is Required.<br>";
+		if(upladFile == null || upladFile.trim().length == 0)
+				errorStr += "Attachment is Required.<br>";
+		$('.cloneFileCls').each(function(){
+			var uploadFile = $(this).val();
+			if(uploadFile == null || uploadFile.trim().length == 0)
+				errorStr += "Attachment is Required.<br>";
+		});
 	}
 	
 	if(errorStr.length >0)
@@ -1853,6 +1899,7 @@ $(document).on("click","#saveDetailsBtnId",function(){
 });
 
 function showMeetingsStatusDocsResult(myResult){
+	$("#updateAlertajaxImg").html('');
 	$("#searchDataImgForUpdateMeetings").hide();
 		var result = (String)(myResult);
 		if(result.search('SUCCESS') != -1){
@@ -1862,7 +1909,8 @@ function showMeetingsStatusDocsResult(myResult){
 			$("#mobileNoId").val("");
 			$("#remarkId").val("");
 			$("#statusId").val("");
-			$("#uploadFileId").val("");
+			$(".cloneFileCls").val("");
+			$("#uploadFileId0").val("");
 		}else{
 			$("#statusDetailsDivId").html(" Error occured try again...");
 		}
@@ -1979,11 +2027,28 @@ function buildCommentsMeetingDetailsAction(result)
 </script>
 <script>
 $(document).on("change","#statusId",function(){
-	$("#fileUploadDivId").hide();
+	$(".fileUploadDivId").hide();
 	var value = $(this).val();
 	if(value == "Y"){
-		$("#fileUploadDivId").show();
+		$(".fileUploadDivId").show();
 	}
+});
+
+var fileNo=0;
+$(document).on("click","#addFile",function(){
+	fileNo = fileNo+1;
+	$("#extraUploadFileDiv").append('<li id="cloned'+fileNo+'"><input type="file" id="uploadFileId'+fileNo+'" name="imageForDisplay" class="btn btn-mini cloneFileCls"/><span class="closeIcon" style="cursor:pointer;" attr_id="'+fileNo+'">x</span></li>');
+});
+$(document).on("click",".clearFileCls",function(){
+	$("#uploadFileId0").val("");
+	$(".clearFileCls").hide();  		
+});
+$(document).on("click",".closeIcon",function(){  
+	var positionId = $(this).attr("attr_id");
+	$("#cloned"+positionId).remove();
+});
+$(document).on("click","#uploadFileId0",function(){
+	$(".clearFileCls").show();
 });
 </script>
 </body>
