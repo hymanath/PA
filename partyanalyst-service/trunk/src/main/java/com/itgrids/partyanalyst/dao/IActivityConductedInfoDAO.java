@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.ActivityConductedInfo;
 public interface IActivityConductedInfoDAO extends GenericDao<ActivityConductedInfo, Long>{
 	public List<Object[]> getSpecialActivitiesDetails(Date fromDate,Date toDate,Long stateId);
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type);
-	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds);
+	public List<Object[]> getIVRCountsForScopeIds(List<Long> activityScopeIds,Long stateId);
 	public List<Object[]> getInfocellCountsForScopeIds(List<Long> activityScopeIds,Long stateId1);
 	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId);
 	public List<Object[]> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType,Long stateId,String countType,String type);
