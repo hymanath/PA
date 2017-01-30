@@ -42,5 +42,5 @@ public interface IToursService {
 	 public ToursVO  getToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,String searchMonth);
 	 public ToursVO  getCandidateToursDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long designationId,Long categoryId,String searchMonth);
 	 public ToursBasicVO getCadreTourDetails(Long tdpCadreId,String fromDateStr,String toDateStr);
-	 public ResultStatus saveDesignationWiseTourDetails(final ToursVO toursVo,final Map<File, String> documentMap);
+	 public ResultStatus saveDesignationWiseTourDetails(final ToursNewVO toursVo,final Map<File, String> documentMap);
 }
