@@ -939,18 +939,17 @@ function showHideSearch(type)
  }
    var cloneCount=0;
    var commontdpCadreIds = [];
-   $(document).on("click",".apptDetailsDiv",function(){
-	   
-	  var name  = $(this).attr("attr_name");
-			  var image = $(this).attr("attr_img_url");
-			  var attrId = $(this).attr("attr_id");
-			  var attrConsti =  $(this).attr("attr-consti");
-			  var mobile =$(this).attr("attr_mobile");
-		 if($(this).is(':checked')){
-			 $("#involvedCandidatesDiv").show();
-			// $("#involvedCandidatesDiv1").show();
-			 $(".membersBlock").show();
-			//$(".membersBlock1").show();
+   $(".membersBlock").html(' ');
+	/* $(document).on("click",".apptDetailsDiv",function(){
+		alert(321);
+		var name  = $(this).attr("attr_name");
+		var image = $(this).attr("attr_img_url");
+		var attrId = $(this).attr("attr_id");
+		var attrConsti =  $(this).attr("attr-consti");
+		var mobile =$(this).attr("attr_mobile");
+		if($(this).is(':checked')){
+			$("#involvedCandidatesDiv").show();       
+			$(".membersBlock").show();
 			var str ='';
 			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 			str+='<div class="block">';
@@ -962,93 +961,51 @@ function showHideSearch(type)
 			str+='<div class="col-md-12 m_top5"><label><b>Name </b>: '+name+'</label></div>';
 			str+='<div class="col-md-12 m_top5"><label><b>Constituency </b>: '+attrConsti+'</label></div>';
 			str+='</div></div><span class="closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div></div>';
-			
+			alert(str);
 			$(".membersBlock").append(str);
-			// $(".membersBlock1").append(str);
-			 cloneCount = cloneCount+1;
-			 /*  $('html, body').animate({
-                    scrollTop: $('.membersBlock').offset().top
-                }, 2000);*/
-				/* $('#ModalShow').animate({
-					scrollTop:  $(".closeIcon"+attrId).offset().top
-				  }, 2000); */
-				/*$('html, body').animate({
-                    scrollTop: $('.membersBlock1').offset().top
-                }, 2000);*/
-				$("#assignBtnId").show();
-				commontdpCadreIds.push(attrId);
-				var addStr ='';
-				addStr+='<p class="text-capital" >'+name+'</p>';
-				addStr+='<p>'+mobile+'</p>';
-				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-				$("#duplicateCandidateBlock").html(''+addStr+'');
-				$("#memberConfirmation").html("Member Added");
-				$("#myModalConformation").modal('show');
-				setTimeout(function(){ $("#myModalConformation").modal('hide');
-				
-				}, 2000);
-				setTimeout(function(){ $("body").addClass("modal-open");	
-				
-				}, 3000);
-				
-				
-					
-		 }
-		 else
-   {
-	  // commontdpCadreIds.pop(attrId);	
-	  
-	  var i = $.inArray(attrId,commontdpCadreIds)
-		if(i>=0){
-			commontdpCadreIds.splice(i, 1);
+			alert(str);  
+			cloneCount = cloneCount+1;
+			$("#assignBtnId").show();
+			commontdpCadreIds.push(attrId);
+			var addStr ='';
+			addStr+='<p class="text-capital" >'+name+'</p>';
+			addStr+='<p>'+mobile+'</p>';
+			addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+			$("#duplicateCandidateBlock").html(''+addStr+'');
+			$("#memberConfirmation").html("Member Added");
+			$("#myModalConformation").modal('show');
+			setTimeout(function(){ 
+				$("#myModalConformation").modal('hide');
+			}, 2000);
+			setTimeout(function(){
+				$("body").addClass("modal-open");
+			}, 3000);
+		}else{
+			var i = $.inArray(attrId,commontdpCadreIds)
+			if(i>=0){
+				commontdpCadreIds.splice(i, 1);
+			}
+			$(".closeIcon"+attrId).closest(".col-md-4").remove();
 		}
-	  
-	   $(".closeIcon"+attrId).closest(".col-md-4").remove();
+   }); */
 	
-   }
-   })
-  
-$(document).on("click",".closeIcon",function(){
-	$(this).closest(".col-md-4").remove();
-	var id=$(this).attr("id");
-	$(".candidatecls"+id).prop('checked', false); 
-	$(".close"+id).prop('checked', false); 
-	//commontdpCadreIds.pop(id);
-	
-	//deleting element from array
-	var i = $.inArray(id,commontdpCadreIds)
-	if(i>=0){
-		commontdpCadreIds.splice(i, 1);
-	}
-	
-	
-});
-function getMemberTypes()
-{
-	
-	var jsObj =
-		     {
+	function getMemberTypes(){
+		var jsObj ={
 			task : ""
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getMemberTypesAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-				   
-				   buildMemberTypes(result);
-			   })
-}
-
-function buildMemberTypes(result)
-{
-
-	for(var i in result)
-	{
-	$("#advanceSearchTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');	
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getMemberTypesAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildMemberTypes(result);
+		})
 	}
-	   var select = new Dropkick("#advanceSearchTypeId");
-				select.refresh();
-	
-	
-}
+
+	function buildMemberTypes(result){
+		for(var i in result){
+			$("#advanceSearchTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');	
+		}
+		var select = new Dropkick("#advanceSearchTypeId");
+		select.refresh();
+	}
