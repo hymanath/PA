@@ -98,8 +98,6 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	}
 });
 $(document).on("click",".activitesExpandIcon",function(){
-	
-	 
 	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
 	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
     var activityId = $(this).attr("attr_id");
@@ -141,7 +139,6 @@ $(document).on("click",".activitesExpandIcon",function(){
 			stateWiseCohort(activityId);
 			districtWiseCohort(activityId);
 		}
-			$(".acitivitiesMoreExpand").removeClass("moreEventsBlocksIcon");
 			$(".acitivitiesMoreExpand").removeAttr("attr_type");
 			$(".acitivitiesMoreExpand").removeAttr("attr_event_idsString");
 			$(".acitivitiesMoreExpand").attr("attr_type","activity");
@@ -193,7 +190,7 @@ $(document).on("click",".eventStrngPrCls",function(){
 
 $(document).on("click",".eventsListExpandIcon",function(){
 	$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
-	$("#eventsDistWiseCohort1").html(' ');
+	$("#eventsDistWiseCohort1,#eventsGraphBlock1").html(' ');
 	$(".activitiesH4").html("Cohort")
 	$(".activitesExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
 	var eventIdsString = $(this).attr("attr_event_idsString");
@@ -1827,6 +1824,7 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 
 function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType){
 	var str = '';
+	var notUpdatedCount ;
 	 if(refresh == "onload"){
 		 $("#myModelActivityhead").text(acvtyNm);
 		 $("#smallHeadngId").text(levlNm);
@@ -1854,6 +1852,11 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	}
 
 	//str +='<th class="text-capital">Planned</th>';
+	str +='<th class="text-capital">conducted</th>';
+	str +='<th class="text-capital">Yes</th>';
+	str +='<th class="text-capital">No</th>';
+	str +='<th class="text-capital">Maybe</th>';
+	str +='<th class="text-capital">Not updated</th>';
     str +='<th class="text-capital">infocell</th>';
 	str +='<th class="text-capital">ivr</th>';
 	str +='<th class="text-capital">images covered</th>';
@@ -1868,6 +1871,15 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 		str +='<td>'+result[i].attendedCount+'</td>';
 	}
 	//str +='<td>'+result[i].inviteeCount+'</td>';
+	str +='<td>'+result[i].conductedCount+'</td>';
+	str +='<td>'+result[i].yesCount+'</td>';
+	str +='<td>'+result[i].noCount+'</td>';
+	str +='<td>'+result[i].mayBeCount+'</td>';
+		notUpdatedCount = result[i].attendedCount-result[i].conductedCount;
+	if(notUpdatedCount < 0 )
+		str +='<td> 0 </td>'; 
+	else
+		str +='<td>'+notUpdatedCount+'</td>'; 
 	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
@@ -2973,10 +2985,7 @@ function buildDistrictNames(result,activityLevelId)
 $(document).on("click",".constituencyPopups",function(){
 	var distId = $(this).attr("attr_distId");
 	var activityLevelId = $(this).attr("attr_activity_level_id");
-	if(!$(this).hasClass("collapsed"))
-	{
 		getConstituencyList(distId,activityLevelId);
-	}
 });
 
 function getConstituencyList(distId,activityLevelId){
