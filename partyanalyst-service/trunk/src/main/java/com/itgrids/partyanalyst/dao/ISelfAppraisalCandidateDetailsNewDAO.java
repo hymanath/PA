@@ -15,7 +15,7 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  public List<Object[]> getTourSubmitteedDesignationWiseAllCandiateBasedOnUserAccessLevel(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds);
  public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId);
  public List<Object[]> getSubmittedToursLeadersDetails(List<Long> desigIds,List<Long> monthyearIds);
- public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthyearIds,List<Long> designationIds);
+ public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthyearIds,List<Long> designationIds,List<Long> candiateIds);
  public List<Object[]> getCandidateComplainceCntCategoryWise(Date fromDate,Date toDate,String type,List<Long> designationIds,Long candidateId,List<Long> monthyearIds);
  public List<Object[]> getTourSubmitteedCandidates(Date fromDate,Date toDate,List<Long> designationIds,Long candidateId,List<Long> monthyearIds);
  public List<Object[]> getDateWiseTourSubmittedDetails(Date fromDate,Date toDate,Long candidateId,List<Long> monthyearIds);

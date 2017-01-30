@@ -1,14 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisalCandidate, Long> implements ISelfAppraisalCandidateDAO {
 	 public SelfAppraisalCandidateDAO() {
@@ -137,6 +135,14 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		 query.setParameter("tdpCadreId", tdpCadreId);
 		 return query.list();
 	 }
-  
+  public List<Object[]> getSelfAppraisalCandidateIdAndDesignationByTdpCadreId(Long tdpCadreId){
+	   StringBuilder queryStr = new StringBuilder();
+	    queryStr.append(" select distinct model.selfAppraisalDesignation.selfAppraisalDesignationId,model.selfAppraisalDesignation.designation," +
+	   				   "  model.selfAppraisalCandidateId,model.tdpCadre.firstname,model.tdpCadre.lastname from SelfAppraisalCandidate model where model.tdpCadreId=:tdpCadreId and model.isActive='Y' " +
+	   				   "  order by model.selfAppraisalDesignation.designation ");
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("tdpCadreId", tdpCadreId);
+	    return query.list();
+  }
   
 }
