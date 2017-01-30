@@ -1890,9 +1890,15 @@ $(document).on("click",".submitCls",function(){
 	var locationNm = "All";
 	var locationId = 0;
 	if($("#districtId").val() == 0){
-		locationId = 0;
-		searchType="constituency";
-		locationNm = "All Districts";
+		if($("#constituencyId").val() == 0){
+			locationId = $("#districtId").val();
+			searchType="constituency";
+			locationNm = $('#districtId option:selected').text();
+		}else{
+		locationId = $("#constituencyId").val();
+		searchType="mandal";
+		locationNm = $('#constituencyId option:selected').text();
+		}
 	}else{
 		if($("#constituencyId").val() == 0){
 			locationId = $("#districtId").val();
@@ -1928,6 +1934,7 @@ $(document).on("change",".districtCls",function(){
 	if(districtId == 0){
 		$("#mandalDivId").hide();
 		$("#villgWardDivId").hide();
+		$("#constncyDivId").hide();
 	}else if(globalActivityLvlId == 5 ){
 		getConstituenciesForDistrict(districtId);
 	}else if(globalActivityLvlId == 2 || globalActivityLvlId == 1){
