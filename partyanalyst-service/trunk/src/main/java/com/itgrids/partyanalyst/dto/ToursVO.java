@@ -53,7 +53,9 @@ public class ToursVO {
 	private Long toursMonthId;
 	private Long detailsNewId;
 	private Long tourDays;
-	
+	private String designation; 
+	private String category;
+	private Long id;
 	public List<IdNameVO> getSubList() {
 		return subList;
 	}
@@ -333,9 +335,28 @@ public class ToursVO {
 		this.tourDays = tourDays;
 	}
 
-	
-	
-	
-	
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 }
