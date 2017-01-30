@@ -2709,7 +2709,6 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 		getAlertAssignedCandidates(alertId);    
 		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
 		getVerificationDtls(alertId);
-		
 	});
 	
   function getAlertData(alertId){    
@@ -2959,7 +2958,7 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 				if(length != i){
 					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok  pull-right" style="font-size: 22px;color: #777 !important;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
 				}else{
-					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span  class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
 				}        
 				
 			}
@@ -3053,6 +3052,7 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 	}//glyphicon glyphicon-ok
 	//alertStatus
 }
+  
 	function getVerificationDtls(alertId){
 		var jsObj={
 			alertId:alertId
@@ -3071,7 +3071,8 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 	function buildAlertVerificationStatusRlst(result){
 		var str = '';
 		if(result.conversationList != null && result.conversationList.length > 0){
-			$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION STATUS-"+result.actionTypeStatus+"</h4>");  
+		//	$("#alertVerificationDiv").html("<h4 class='text-muted verifyHeadingColorStyling' style='font-size:15px;'>VERIFICATION STATUS-"+result.actionTypeStatus+"</h4>");  
+			$("#alertVerificationDiv").html("<div class='row'><h4 class='col-md-6 text-muted verifyHeadingColorStyling' style='font-size:15px;margin-left:16px'>ACTION TYPE- VERIFICATION</h4><h4 class='col-md-6 text-muted verifyHeadingColorStyling pull-right' style='font-size:15px;margin-right:16px'>STATUS - "+result.actionTypeStatus.toUpperCase()+"</h4></div>");  
 			for(var i in result.conversationList){
 				str+='<p class="text-capital panelTitleFont m_top20 verifyHeadingColorStyling" style="font-size:12px;">'+result.conversationList[i].heading+'</p>';  
 				if(result.conversationList[i].comments != null && result.conversationList[i].comments.length > 0){
