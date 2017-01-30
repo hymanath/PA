@@ -1515,8 +1515,9 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 												" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 												" from ActivityLocationInfo model " +
 												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
-												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
-												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
+												" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1  " +
+												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
+												" and model.conductedDate is not null "); 
 	      if(scopeId != null && scopeId.longValue() == 3l){
 	    	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
 	    	   queryStr.append(" order by model.address.district.districtId ");
