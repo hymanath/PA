@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
+import com.itgrids.partyanalyst.dto.ToursNewVO;
 import com.itgrids.partyanalyst.dto.ToursVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
@@ -62,8 +63,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private ToursBasicVO toursBasicVO;
 	   private List<ToursVO> toursVOListNew;
 	   
+	   private ToursNewVO toursNewVO;
 	   
-	   public List<ToursVO> getToursVOListNew() {
+	   
+	   public ToursNewVO getToursNewVO() {
+		return toursNewVO;
+	}
+	public void setToursNewVO(ToursNewVO toursNewVO) {
+		this.toursNewVO = toursNewVO;
+	}
+	public List<ToursVO> getToursVOListNew() {
 		return toursVOListNew;
 	}
 	public void setToursVOListNew(List<ToursVO> toursVOListNew) {
@@ -221,7 +230,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		    if(regVO==null){
 		      return "input";
 		    }
-		    List<String> entitlements = null;
+		    /* List<String> entitlements = null;
 		    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 		      entitlements = regVO.getEntitlements();
 		      if(!(entitlements.contains("TOUR_USER_ENTITLEMENT"))){//|| entitlements.contains("CADRE_TAB_LOCKING_USER_ADMIN_ENTITLEMENT")
@@ -230,7 +239,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		      if(noaccess){
 		        return "error";
 		      }
-		    }
+		    }*/
 		    return Action.SUCCESS;
 	   }
 		public String savingTourDtlsApplication(){
@@ -718,6 +727,62 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		} catch (Exception e) {
 			   LOG.error("Exception raised at getDesigationsListByCadreId()  of ToursAction", e);  
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveDesignationWiseTourDetails(){
+		try { 
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			  
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			String fileUrl = "" ;
+			List<String> filePaths = null;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+		   			
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				filePaths = new ArrayList<String>();
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+							mapfiles.put(f,ext);
+						}
+					}
+				}
+			}  
+			
+			if(toursNewVO !=null){
+				/*if(toursVOList !=null && toursVOList.size()>0){
+					toursVO.setToursVoList(toursVOList);
+				}*/				
+				
+				toursNewVO.setUserId(user.getRegistrationID());
+			}
+				
+			//resultStatus = toursService.checkForExistingTourDetails(toursVO);
+			if(resultStatus != null && resultStatus.getResultCode() == 0){
+				successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
+				return Action.SUCCESS;
+			}
+			resultStatus = toursService.saveDesignationWiseTourDetails(toursVO,mapfiles);
+			if(resultStatus!=null){
+					successMsg = resultStatus.getMessage() !=null ? resultStatus.getMessage().toString():null;
+			}
+        
+		 } catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 	
