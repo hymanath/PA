@@ -1684,20 +1684,22 @@ public class CoreDashboardService implements ICoreDashboardService{
 			}
 			
 			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
-				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"constituency",stateId);
+				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"constituency",stateId,levelId);
 				setImagesCoveredAndTotalImages(mandalImgs,returnList);
+				List<Object[]> localEltnImgsImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"localElectn",stateId,levelId);
+				setImagesCoveredAndTotalImages(localEltnImgsImgs,returnList);
 			}else if(searchType != null && searchType.equalsIgnoreCase("mandal")){
-				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"mandal",stateId);
+				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"mandal",stateId,levelId);
 				setImagesCoveredAndTotalImages(mandalImgs,returnList);
-				List<Object[]> townImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"town",stateId);
+				List<Object[]> townImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"town",stateId,levelId);
 				setImagesCoveredAndTotalImages(townImgs,returnList);
 			}else if(searchType != null && searchType.equalsIgnoreCase("villageWard")){
-				List<Object[]> panchayatsImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"panchayat",stateId);
+				List<Object[]> panchayatsImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"panchayat",stateId,levelId);
 				setImagesCoveredAndTotalImages(panchayatsImgs,returnList);
-				List<Object[]> wardsImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"ward",stateId);
+				List<Object[]> wardsImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"ward",stateId,levelId);
 				setImagesCoveredAndTotalImages(wardsImgs,returnList);
 			}else if(searchType != null && searchType.equalsIgnoreCase("onlyvillage")){
-				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"onlyvillage",stateId);
+				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"onlyvillage",stateId,levelId);
 				setImagesCoveredAndTotalImages(mandalImgs,returnList);
 			}
 			Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long,Map<Long,Long>>();
@@ -1804,7 +1806,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 					
 					vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
-					vo.setName(obj[1] != null ? obj[1].toString() : "");
+					String electionType= obj[4] != null ? obj[4].toString():"";
+					vo.setName(obj[1] != null ? obj[1].toString()+ "  "+electionType : "");
 					
 					if(type != null && type.equalsIgnoreCase("planned"))
 						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+(Long)obj[2] : 0l);
@@ -1849,7 +1852,7 @@ public void setImagesCoveredAndTotalImages(List<Object[]> planedList,List<EventD
 					EventDetailsVO vo = getMatchedVo(obj[0] != null ? (Long)obj[0] :0l,returnList);
 					if(vo != null){
 						vo.setImagesCovered(obj[1] != null ? vo.getImagesCovered()+(Long)obj[1] : 0l);
-						vo.setTotalImages(obj[2] != null ? vo.getTotalImages()+(Long)obj[2] : 0l);
+						vo.setTotalImages(vo.getTotalImages()+commonMethodsUtilService.getLongValueForObject(obj[2]));
 					}
 				}
 			}

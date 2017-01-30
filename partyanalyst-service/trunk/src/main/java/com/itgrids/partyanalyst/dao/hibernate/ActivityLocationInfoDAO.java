@@ -1549,18 +1549,24 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		else if(searchType != null && searchType.equalsIgnoreCase("village") || searchType != null && searchType.equalsIgnoreCase("onlyvillage"))
 			queryStr.append("  model.address.panchayat.panchayatId, model.address.panchayat.panchayatName,");
 		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
-			queryStr.append("  model.address.ward.constituencyId,model.address.constituency.name, ");
+			queryStr.append("  model.address.ward.constituencyId,model.address.ward.name, ");
 		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
 			queryStr.append("  model.address.tehsil.tehsilId, model.address.tehsil.tehsilName, ");
 		else if( searchType != null && searchType.equalsIgnoreCase("town"))
-			queryStr.append("  model.address.constituency.localElectionBody.localElectionBodyId, model.address.constituency.localElectionBody.name, ");
+			queryStr.append("  model.address.localElectionBody.localElectionBodyId, model.address.localElectionBody.name, ");
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
 			queryStr.append(" model.address.district.districtId,model.address.district.districtName," );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
+		queryStr.append(" count(model.activityLocationInfoId) , sum(model.attendedCount)  " );
 		
-		queryStr.append(" count(model.activityLocationInfoId) , sum(model.attendedCount) " +
-				" from ActivityLocationInfo model where " );
+		if( searchType != null && searchType.equalsIgnoreCase("town"))
+			queryStr.append("  , model.address.localElectionBody.electionType.electionType ");
+		else{
+			queryStr.append("  ,'' ");
+		}
+		
+		queryStr.append("  from ActivityLocationInfo model where " );
 		
 		if(type != null){
 			if(type.equalsIgnoreCase("yes"))
@@ -1587,7 +1593,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			else if(searchType != null && searchType.equalsIgnoreCase("village"))
 				queryStr.append("  and model.address.tehsil.tehsilId = :locationId ");
 			else if(searchType != null && searchType.equalsIgnoreCase("ward"))
-				queryStr.append("  and model.address.constituency.localElectionBody.localElectionBodyId = :locationId ");
+				queryStr.append("  and model.address.localElectionBody.localElectionBodyId = :locationId ");
 			else if( searchType != null && searchType.equalsIgnoreCase("mandal") || searchType != null && searchType.equalsIgnoreCase("town"))
 				queryStr.append("  and model.address.constituency.constituencyId = :locationId ");
 			else if(searchType != null && searchType.equalsIgnoreCase("onlyvillage"))
@@ -1611,7 +1617,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		else if( searchType != null && searchType.equalsIgnoreCase("mandal"))
 			queryStr.append(" group by  model.address.tehsil.tehsilId order by model.address.tehsil.tehsilName ");
 		else if( searchType != null && searchType.equalsIgnoreCase("town"))
-			queryStr.append(" group by  model.address.constituency.localElectionBody.localElectionBodyId order by model.address.constituency.localElectionBody.name ");
+			queryStr.append(" group by  model.address.localElectionBody.localElectionBodyId order by model.address.constituency.localElectionBody.localElectionBodyId ");
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
 			queryStr.append(" group by  model.address.district.districtId  order by model.address.district.districtName " );
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))

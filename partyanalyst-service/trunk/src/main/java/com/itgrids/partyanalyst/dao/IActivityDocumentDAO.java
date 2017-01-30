@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.ActivityDocument;
 
 public interface IActivityDocumentDAO extends GenericDao<ActivityDocument, Long>{
 	public List<Object[]> getImagesCoveredAndTotalImagesCountForConstituencies(List<Long> districtsList,List<Long> activityScopeIdsLis,String  searchType,String  type);
-	public List<Object[]> getImagesCoveredAndTotalImagesForConstituencies(List<Long> districtsList,List<Long> activityScopeIdsLis,String  searchType,String  type,Long stateId);
+	public List<Object[]> getImagesCoveredAndTotalImagesForConstituencies(List<Long> districtsList,List<Long> activityScopeIdsLis,String  searchType,String  type,Long stateId,Long levelId);
 }
