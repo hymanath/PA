@@ -621,7 +621,8 @@ var globalidentityMembershipNo = ""	;
 					getTotalMemberShipRegistrationsInCadreLocation(4,22);
 					getTotalMemberShipRegistrationsInCadreLocation(3,11);
 					getCadreAlertDetails();	
-					getCadreToursDetails();					
+					//getCadreToursDetails();	
+					//getCadreTourDetails();
 					//getUpdatedCastePartyInfo();
 				}
 			});

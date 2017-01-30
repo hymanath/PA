@@ -1928,4 +1928,752 @@ function buildVolunteersDetails(result){
 		$(".distExpandBtnCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 	});
 	
+	/* Tour Block Start */	
+	 
+   $(document).on("click","#toursHeaderId",function(){
+	var isVisible = $( "#toursProfileHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#toursProfileHideId" ).show();
+		 $( "#toursProfileShowId" ).hide();
+	}else{
+		$( "#toursProfileHideId" ).hide();
+		$( "#toursProfileShowId" ).show();
+	}
+	$("#tourBodyId").collapse('toggle');
+     });
+	$(document).on("click",".closeShowPdfCls",function(){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 500);                     
+	}); 
+	$("#toursDatePicker").on("dp.change", function(e) {
+       getCadreTourDetails();
+     });
+	function getCadreTourDetails(){
+		       $("#cadreToursDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		       var tourSeletedDate = $("#toursDatePicker").val();
+				var jsObj=
+					{
+						tdpCadreId :globalCadreId,
+						startDateStr : tourSeletedDate,
+						endDateStr : tourSeletedDate, 
+					}
+				 $.ajax({
+				 type:'POST',
+				 url: 'getCadreTourDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					 $("#cadreToursDetailsDiv").html('');
+					  buildCadreTourDetails(result);
+				});
+		}
+	function buildCadreTourDetails(result){
+		 
+		          /* Checking cadre is involve in tour or not.If cadre is involve in tour then only we are showing tour block */
+		          if(result != null && result.candDtlsId != null && result.candDtlsId > 0){
+					 $("#cadreTourBlockDivId").show();  
+				  }
+				  var str1='';
+				  if(result.subList != null && result.subList.length > 0){
+				
+					if($(window).width() < 500)
+					{
+						str1+='<div class="table-responsive">';
+					}
+					str1+='<table class="table table-bordered borderedWeight">';
+						str1+='<thead class="bg_D8">';
+							str1+='<tr>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Designation</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Category</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Target</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Submitted Tour</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Complaince</th>';
+							str1+='</tr>';
+							str1+='<tbody>';
+							  
+								for(var i in result.subList){
+									str1+='<tr>';
+									var moxCategoryLength = 0;
+									if(result.subList[i].subList != null && result.subList[i].subList.length > 0){
+									   moxCategoryLength = result.subList[i].subList.length;
+									}
+								str1+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_designation_name="'+result.subList[i].designation+'" attr_candiate_name="'+result.subList[i].name+'" class="cadreTourDetailsCls" attr_candiate_id="'+result.subList[i].candDtlsId+'" rowspan='+(moxCategoryLength)+'>'+result.subList[i].designation+'</td>';
+										if(result.subList[i].subList != null && result.subList[i].subList.length > 0){
+											 var categoryVO = result.subList[i].subList[0];
+											    if(categoryVO != null){
+													 if(categoryVO.name == null || categoryVO.name == ""){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td>'+categoryVO.name+'</td>';
+														}
+														if(categoryVO.targetDays == null || categoryVO.targetDays == ""){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td class="text-center">'+categoryVO.targetDays+'</td>';
+														}
+														if(categoryVO.complainceDays == null || categoryVO.complainceDays==0){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td class="text-center">'+categoryVO.complainceDays+'</td>';
+														}	
+														
+														var complainceDays = categoryVO.complainceDays;
+														var targetDays = categoryVO.targetDays;
+														if(complainceDays>=targetDays){
+														   str1+='<td style="background-color:#3DBC93;text-align:center;width:50px;"><i class="glyphicon glyphicon-ok" style="font-size:15px;display:block;color:#068057;"></i></td>';
+														}else{
+														   str1+='<td style="background-color:#E35B69;text-align:center;width:50px;"><i class="glyphicon glyphicon-remove" style="font-size:15px;display:block;color:#bf3646;"></i></td>';
+														} 	 	
+												}
+										} 
+									str1+='</tr>';
+										if(result.subList[i].subList != null && result.subList[i].subList.length > 0){
+											var categoryList = result.subList[i].subList ;
+												for(var k in categoryList){
+													if(k == 0)
+													continue;
+													str1+='<tr>';
+													if(categoryList[k].name == null || categoryList[k].name == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td>'+categoryList[k].name+'</td>';
+													}
+													if(categoryList[k].targetDays == null || categoryList[k].targetDays == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td class="text-center">'+categoryList[k].targetDays+'</td>';
+													}
+													if(categoryList[k].complainceDays == null || categoryList[k].complainceDays==0){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td class="text-center">'+categoryList[k].complainceDays+'</td>';
+													}
+													var complainceDays = categoryList[k].complainceDays;
+													var targetDays = categoryList[k].targetDays;
+													if(complainceDays>=targetDays){
+													   str1+='<td style="background-color:#3DBC93;text-align:center;width:50px;"><i class="glyphicon glyphicon-ok" style="font-size:15px;display:block;color:#068057;"></i></td>';
+													}else{
+													   str1+='<td style="background-color:#E35B69;text-align:center;width:50px;"><i class="glyphicon glyphicon-remove" style="font-size:15px;display:block;color:#bf3646;"></i></td>';
+													} 	 	
+											 str1+='</tr>';
+											}
+										}
+							
+							  }
+			
+							str1+='</tbody>';
+						str1+='</thead>';
+					str1+='</table>';	
+					if($(window).width() < 500)
+					{
+						str1+='</div>';
+					}  
+				  }else{
+					str1='NO DATA VAILABLE';  
+				  }	  
+		         $("#cadreToursDetailsDiv").html(str1);  
+		
+	}	
 	
+	$(document).on("click",".cadreTourDetailsCls",function(){
+	var candiateId = $(this).attr("attr_candiate_id");
+	var designationName = $(this).attr("attr_designation_name");
+	var candiateName = $(this).attr("attr_candiate_name");
+	$("#dateRangeSliderYear").val(0);
+     getCandiateWiseTourDetails(candiateId,designationName,candiateName);
+});
+function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
+	{ 
+		$("#cadreTourModalDivId").modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+		$("#cadreTourModalDivId").parent().find(".modal-backdrop").addClass("heightApply");
+		$("#subMitBtn").attr("attr_candidate_id",candiateId);
+		 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+	
+	    var tourSeletedDate = $("#toursDatePicker").val();
+		var fromDate = tourSeletedDate.split("-");
+		tourSeletedDate = "01"+"/"+fromDate[0]+"/"+fromDate[1];
+	  
+	 	$("#cadreTourSlider").dateRangeSlider({
+				bounds: {min: new Date(fromDate[1], 0, 1), max: new Date(fromDate[1], 11, 31)},
+				//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+				defaultValues: {min: new Date(fromDate[1],fromDate[0],1), max: new Date(fromDate[1],fromDate[0],30)},
+				scales: [{
+				  first: function(value){ return value; },
+				  end: function(value) {return value; },
+				  next: function(value){
+					var next = new Date(value);
+					return new Date(next.setMonth(value.getMonth() + 1));
+				  },
+				  label: function(value){
+					return months[value.getMonth()];
+				  },
+				  format: function(tickContainer, tickStart, tickEnd){
+					tickContainer.addClass("myCustomClass");
+				  }
+				}]
+		});
+		$("#tourCadreHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small></h4>");
+		$("#cadreTourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#cadreTourMonthWiseDtlsBlockDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#cadreMonthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj ={ 
+					 candiateId : candiateId,
+					 fromDate :tourSeletedDate, 
+					 toDate :tourSeletedDate 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#cadreTourIndividualDetailsBlock").html('');
+			$("#cadreTourMonthWiseDtlsBlockDivId").html('');
+			$("#cadreMonthWiseComplainceDivId").html(' ');
+			buildIndividualPersonTourDetails(result);
+		});
+	}
+	
+   function buildIndividualPersonTourDetails(result){
+	  
+	   $("#cadreTourIndividualDetailsBlock").html('');
+	 	if(result !=null && result.subList != null && result.subList.length > 0){
+			 var str='';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="row">';
+					
+						str+='<div class="col-md-4 col-xs-12 col-md-12">';
+							str+='<h4 class="text-capital">TOTAL COMPLAINCE OVERVIEW</h4>';
+							str+='<div id="overAllComplainsGraph" class="" style="height:150px" ></div>';
+						str+='</div>';
+						str+='<div class="col-md-8 col-xs-12 col-md-12">';
+							str+='<div class="row">';
+						for(var i in result.subList){
+							str+='<div class="col-md-4 col-xs-12 col-md-12">';
+							str+='<h4 class="text-capital">'+result.subList[i].name+'</h4>';
+							str+='<div id="individualComplainsGraph'+i+'" class="" style="height:150px" ></div>';
+							str+='</div>';
+						
+						}
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					
+			str+='</div>';
+			$("#cadreTourIndividualDetailsBlock").html(str);
+		}else{
+			$("#cadreTourIndividualDetailsBlock").html("NO DATA AVAILABLE.");
+		}
+		
+		if(result !=null && result.subList != null && result.subList.length > 0){
+			
+			var mainArrNma=[];
+			var individualPerfArr=[];
+			var nameArr;
+			var jsonObj=[];	
+			mainArrNma.push("All")
+			jsonObj.push(result.complaincePer);
+			for(var i in result.subList){
+				jsonObj.push(result.subList[i].complaincePer);
+				mainArrNma.push(result.subList[i].name);
+				nameArr = result.subList[i].name;
+			}
+		
+		 $(function () {
+			  $('#overAllComplainsGraph').highcharts({
+				colors: ['#80F6F8'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: mainArrNma,
+					title: {
+						text: null
+					},
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				 tooltip: {formatter: function(){
+					return '<b>'+this.x+' : '+ Highcharts.numberFormat(this.y, 2) +'%</b>';
+				}      
+				},
+				plotOptions: {
+					column: {  
+						//stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%"; 
+								}
+							}
+						  
+						},
+					},
+					
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series:  [{
+					name: nameArr,
+					data: jsonObj
+				}]
+			});
+		});
+	}
+	
+	if(result !=null && result.subList != null && result.subList.length > 0){
+			for(var i in result.subList){
+				var performanceArr =[];
+				performanceArr.push(result.subList[i].targetDays);
+				performanceArr.push(result.subList[i].complainceDays);
+				//performanceArr.push(result.subList[i].yetToTourCnt);
+		if(performanceArr != 0 && performanceArr.length > 0){		
+		 $(function () {
+			  $('#individualComplainsGraph'+i+'').highcharts({
+				colors: ['#7F7037','#80F6F8'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ["Target","Toured"],
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 5)+'...';
+							},
+							
+						}
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				 tooltip: {formatter: function(){
+					return '<b>'+this.x+' : '+ (this.y) +'</b>';
+					
+				}      
+				},
+				plotOptions: {
+					column: {  
+						//stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return '<span style="text-align:center">'+(this.y)+'</span>';
+								}
+							}
+						  
+						},
+					},
+					
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series:  [{
+					name: '',
+					data: performanceArr,
+					colorByPoint:true
+				}]
+			});
+		});
+		}else{
+			 $('#individualComplainsGraph'+i+'').html("No Data Availble");
+		}
+	}	
+	}
+	
+	if(result !=null && result.monthList != null && result.monthList.length > 0){
+		  var str2='';
+		  
+		  	 str2+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+				str2+='<h4 class="text-capital">MONTH WISE COMPLIANCE OVERVIEW</h4>';
+					 str2+='<div class="slickApplyTourCls" >';	
+				for(var i in result.monthList){
+						if(i == 0 || i%3 == 0){
+							str2+='<div class="row">';
+						}
+					   if($(window).width() < 500)
+						{
+							str2+='<div class="table-responsive">';
+						}
+						str2+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
+							str2+='<table class="table table-bordered">';
+							 var categoryList = result.monthList[i].subList;
+							 
+							 if(categoryList != null && categoryList.length > 0){
+									var moxCategoryLength = categoryList.length;
+									var categoryVO = result.monthList[i].subList[0];
+								str2+='<tr>';
+									str2+='<td  rowspan='+(moxCategoryLength+1)+' style="font-size:22px;background-color:#EDECE7">'+result.monthList[i].name+'<br>'+result.monthList[i].year+'</td>';
+									str2+='<td style="background-color:#EDECE7"><p>'+categoryVO.name+'('+categoryVO.complainceDays+')';
+									   if(categoryVO.complainceDays >= categoryVO.targetDays){
+											str2+='<small style="text-align: center;"><i  style="color:#3DBC93;margin-left:7px;" class="glyphicon glyphicon-ok text-success "></i></small>';
+										   }else{
+											str2+='<small style="text-align: center;"><i  style="color:#E35B69;margin-left:7px;" class="glyphicon glyphicon-remove text-danger"></i></small>';
+										   } 
+									  str2+='<div class="dropup">';
+									str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+										str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;z-index:999;width:220px">';
+											str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per Month</i></p>';
+											str2+='<table class="table">';
+												str2+='<tr><td style="background-color:#EDECE7">'+categoryVO.name+' - '+categoryVO.targetDays+'</td></tr>';
+											str2+='</table>';
+										str2+='</div>';
+									str2+='</div></p>';  
+										  str2+='</td>';  
+								        if(result.monthList[i].isComplaince != null && result.monthList[i].isComplaince.trim()=="True"){
+										   str2+='<td style="background-color:#3DBC93;text-align:center;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-ok" style="font-size:55px;display:block;color:#068057;"></i><small style="color:#fff;">Compliance</small></td>';
+										}else{
+										   str2+='<td style="background-color:#E35B69;text-align:center;width:50px;" rowspan="'+(moxCategoryLength+1)+'"><i class="glyphicon glyphicon-remove" style="font-size:55px;display:block;color:#bf3646;"></i><small style="color:#fff;">Non Compliance</small></td>';
+										} 	 
+								  str2+='</tr>';
+								
+									for(var k in categoryList){
+										if(k==0)
+										continue;
+										 str2+='<tr>';
+										if(categoryList[k].name == null || categoryList[k].name == ""){
+											str2+='<td style="background-color:#EDECE7;"> - </td>';
+										}else{
+										   str2+='<td style="background-color:#EDECE7"><p>'+categoryList[k].name+'('+categoryList[k].complainceDays+')';
+											   if(categoryList[k].complainceDays >= categoryList[k].targetDays){
+												str2+='<small style="text-align: center;"><i style="color:#3DBC93;margin-left:7px;" class="glyphicon glyphicon-ok text-danger"></i></small>';
+											   }else{
+													str2+='<small style="text-align: center;"><i style="color:#E35B69;margin-left:7px;" class="glyphicon glyphicon-remove text-danger"></i></small>';
+											   } 
+											 str2+='<div class="dropup">';
+											str2+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -23px;margin-right:-6px;cursor:pointer;" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+												str2+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu3" style="padding:10px;z-index:999;width:220px !important;">';
+													str2+='<p><span style="font-size: 14px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 13px;">Tours Days Target Per Month</i></p>';
+													str2+='<table class="table">';
+														str2+='<tr style="background-color:#EDECE7"><td>'+categoryList[k].name+' - '+categoryList[k].targetDays+'</td></tr>';
+													str2+='</table>';
+												str2+='</div>';
+											str2+='</div></p>';  
+										   str2+='</td>';
+										}
+									str2+='</tr>';
+								  }
+							 }
+							str2+='</table>';
+							str2+='</div>';
+							//str2+='</li>';
+						   if(i == 2 || i%3 == 2){
+								str2+='</div>';
+							}
+						 if($(window).width() < 500)
+						{
+							str2+='</div>';
+						}
+						
+				}
+				str2+='</div>';
+				str2+='</div>';
+			
+			
+		$("#cadreMonthWiseComplainceDivId").html(str2);
+	}
+	 
+	 if(result !=null && result.subList3 != null && result.subList3.length > 0){
+		var str1='';
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+		str1='<h4 class="text-capital">MONTH WISE COMPLIANCE COMMENTS & ATTACHMENTS</h4>';
+				str1+='<div class="m_top20">';
+					 if($(window).width() < 500)
+					{
+						str1+='<div class="table-responsive">';
+					}
+					str1+='<table class="table table-bordered borderedWeight">';
+						str1+='<thead class="bg_D8">';
+							str1+='<tr>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Month & Date</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Category</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Tour Type</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">NO OF Days</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">ATTACHMENT</th>';
+								str1+='<th class="text-capital text-center" style="vertical-align: middle;">Comment</th>';
+							str1+='</tr>';
+							str1+='<tbody>';
+							  
+								for(var i in result.subList3){
+									str1+='<tr>';
+									var moxCategoryLength = 0;
+									if(result.subList3[i].subList != null && result.subList3[i].subList.length > 0){
+									   moxCategoryLength = result.subList3[i].subList.length;
+									}
+										str1+='<td rowspan='+(moxCategoryLength)+'>'+result.subList3[i].tourDate+'</td>';
+										if(result.subList3[i].subList != null && result.subList3[i].subList.length > 0){
+											 var monthVO = result.subList3[i].subList[0];
+											    if(monthVO != null){
+													 if(monthVO.tourCategory == null || monthVO.tourCategory == ""){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td>'+monthVO.tourCategory+'</td>';
+														}
+														if(monthVO.tourType == null || monthVO.tourType == ""){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td>'+monthVO.tourType+'</td>';
+														}
+														if(monthVO.count == null || monthVO.count==0){
+															str1+='<td> - </td>';
+														}else{
+															str1+='<td class="text-center">'+monthVO.count+'</td>';
+														}	
+												}
+										} 
+											if(result.subList3[i].filePath != null && result.subList3[i].filePath.length > 0){
+													var filePathArr = result.subList3[i].filePath.split(",");
+													if(filePathArr != null && filePathArr.length > 0){
+														str1+='<td rowspan='+(moxCategoryLength)+'>';
+													for (var m = 0; m < filePathArr.length; m++) { 
+															var fullName = filePathArr[m];
+															var nameArr = fullName.split(".");
+															var type = nameArr[1];
+															if(type=="pdf" || type=="PDF"){
+																str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+															}else if(type=="xls" ||type=="xlsx"){  
+																str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+															}else if(type=="doc" || type=="docx"){
+																str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+															}else if(type != null){  
+																str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+															}           
+														}
+														str1+='</td>';	
+													}
+												}else{    
+													str1+='<td rowspan='+(moxCategoryLength)+'> - </td>';  
+												} 	
+												
+												
+												if(result.subList3[i].comment != null && result.subList3[i].comment.length > 0){
+														if(result.subList3[i].comment.length > 15){
+														 str1+='<td rowspan='+(moxCategoryLength)+' style="cursor:pointer;" title="'+result.subList3[i].comment+'">'+result.subList3[i].comment.substring(0,30)+'...</td>';	
+														}else{
+														 str1+='<td rowspan='+(moxCategoryLength)+'>'+result.subList3[i].comment+'</td>';	
+														}
+													}else{
+													  str1+='<td rowspan='+(moxCategoryLength)+'> - </td>';	
+													}
+									str1+='</tr>';
+										if(result.subList3[i].subList != null && result.subList3[i].subList.length > 0){
+											var categoryList = result.subList3[i].subList;
+												for(var k in categoryList){
+													if(k == 0)
+													continue;
+													str1+='<tr>';
+													if(categoryList[k].tourCategory == null || categoryList[k].tourCategory == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td>'+categoryList[k].tourCategory+'</td>';
+													}
+													if(categoryList[k].tourType == null || categoryList[k].tourType == ""){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td>'+categoryList[k].tourType+'</td>';
+													}
+													if(categoryList[k].count == null || categoryList[k].count==0){
+														str1+='<td> - </td>';
+													}else{
+														str1+='<td class="text-center">'+categoryList[k].count+'</td>';
+													}
+											 str1+='</tr>';
+											}
+										}
+							
+							  }
+			
+							str1+='</tbody>';
+						str1+='</thead>';
+					str1+='</table>';	
+					if($(window).width() < 500)
+					{
+						str1+='</div>';
+					}
+				str1+='</div>';
+			str1+='</div>';
+		$("#cadreTourMonthWiseDtlsBlockDivId").html(str1); 
+	}
+}
+$(document).on('click','#showTourPdfId',function(){
+		//$("#cdrModelId").modal("show");
+		var dbFilePath = $(this).attr("attr_filePath");         
+		var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		var extName = fileNameArr[1];
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#tourDocumentModalId").modal("hide");
+			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			
+			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+				$("#tourDocumentModalId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}
+			if(extName.trim()=="jpg"){  
+				$("#tourDocumentModalId").modal("show");
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}              
+			if(extName.trim()=="doc" || extName.trim()=="docx"){
+				$("#tourDocumentModalId").modal("show");
+				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
+				str += '</iframe>';
+			}
+			if(extName.trim()=="xls" || extName.trim()=="xlsx"){      
+				window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			}            
+			$("#tourNewDocumentBodyId").html(str);
+			$("#tourDocumentModalId").attr("isModalOpened","true");
+			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}      
+	});
+	$(document).on("change","#dateRangeSliderYear",function(){
+	var getYear = $(this).val();
+	$("#cadreTourSlider").dateRangeSlider("destroy");
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+	$("#cadreTourSlider").dateRangeSlider({
+		  bounds: {min: new Date(getYear, 0, 1), max: new Date(getYear, 11, 31)},
+		//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+		defaultValues: {min: new Date(getYear, 0,1), max: new Date(getYear,2,30)},
+		scales: [{
+		  first: function(value){ return value; },
+		  end: function(value) {return value; },
+		  next: function(value){
+			var next = new Date(value);
+			return new Date(next.setMonth(value.getMonth() + 1));
+		  },
+		  label: function(value){
+			return months[value.getMonth()];
+		  },
+		  format: function(tickContainer, tickStart, tickEnd){
+			tickContainer.addClass("myCustomClass");
+		  }
+		 }] 
+	});
+});
+
+$(document).on("click","#subMitBtn",function(){
+	var candiateId = $(this).attr("attr_candidate_id");
+	var fromDateDate = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html(); 
+	var toDateDate = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html(); 
+	var frmDateInRequiredFormat;
+	var toDateInRequiredFormat;
+	if(fromDateDate != null && fromDateDate.length > 0){
+		var fromDateArr = fromDateDate.split("-");
+		frmDateInRequiredFormat =fromDateArr[2].trim()+"/"+fromDateArr[1].trim()+"/"+fromDateArr[0].trim();
+	}
+	if(toDateDate != null && toDateDate.length > 0){
+		var toDateArr = toDateDate.split("-");
+		toDateInRequiredFormat =toDateArr[2].trim()+"/"+toDateArr[1].trim()+"/"+toDateArr[0].trim();
+	}
+	getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
+}); 
+
+function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat){
+	
+	$("#cadreTourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#cadreTourMonthWiseDtlsBlockDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#cadreMonthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jsObj ={ 
+					 candiateId : candiateId,
+					 fromDate :frmDateInRequiredFormat ,
+					 toDate : toDateInRequiredFormat
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#cadreTourIndividualDetailsBlock").html('');
+			$("#cadreTourMonthWiseDtlsBlockDivId").html('');
+			$("#cadreMonthWiseComplainceDivId").html(' ');
+			buildIndividualPersonTourDetails(result);
+		});
+}
+  /* Tour Block End */	
