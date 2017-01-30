@@ -183,6 +183,7 @@ setcolorsForStatus();
   $('#alertsDatePicker').on('apply.daterangepicker', function(ev, picker) { 
 	 /* picker.startDate.format("MM/DD/YYYY"));
 	picker.endDate.format("MM/DD/YYYY")); */ 
+	  getCadreAlertDetails();
   });
   $('#alertsDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
   
