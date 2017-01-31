@@ -178,59 +178,23 @@
 										</div>
 										
 										<div class="row">
-										<form name="submitApplication" method="post">
+										<!--<form name="submitApplication" method="post">-->
 											<div class="col-md-2 col-xs-12 col-sm-4">
 												<label>Select Month</label>
 												<div class="input-group inputGCustom">
 												<input type="hidden" id="hiddenTdpCadreId"/>
-													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth" >
+													<input type="text" class="form-control" id="tourMonthYear" >
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
 													
 												</div>
 											</div>
-											<button type="button" class="btn btn-success" title="TO get tours over view" onclick="getAllTourDetailsOverview()" style="margin-top: 22px;">Submit</button>
+											<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview()" style="margin-top: 22px;">Submit</button>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="attachementsId"></div>
 											</div>
-											<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-												<div class="panel panel-default">
-													<div class="panel-body borderGreen outerDivClsNew" attr_countNew="0">
-														<div class="row">
-															<div class="col-md-4 col-xs-12 col-sm-3">
-																<label>Tour category:<font class="requiredFont">*</font></label>
-																<select class="form-control" id="tourCategoryNew0" name="toursVOListNew[0].tourCategoryId">   
-																	<option value="0">Tour Category</option>
-																</select>
-															</div>
-															<div class="col-md-4 col-xs-12 col-sm-3">
-																<label>Tour Type:<font class="requiredFont">*</font></label>
-																<select class="form-control" id="tourTypeNew0" name="toursVOListNew[0].tourTypeId">   
-																	<option value="0">Tour Type</option>
-																</select>
-															</div>
-															<div class="col-md-4 col-xs-12 col-sm-2">
-																<label>Tour Days:<font class="requiredFont">*</font></label>
-																<input type="text" class="form-control" id="tourDaysNew0" name="toursVOListNew[0].tourDays"/>
-															</div>
-														</div>
-														<div class="row m_top10">
-															<div class="col-md-12 col-xs-12 col-sm-12">
-																<label>Add Comment/Tour Description</label>
-																<textarea class="form-control tourDescNewCls" id="tourDescNew0" name="toursVOListNew[0].description"></textarea>
-															</div>
-														</div>
-													</div>
-													<div id="toursNewBlockClonedId"></div>
-													<div class="panel-footer borderGreen text-right">
-														<button type="button" class="btn btn-success tourCloneMainDivNewBtn">+ ADD TOUR</button>
-													</div>
-												</div>
-											</div>
-											<button class="btn btn-success pull-right addNewBlockBtnCls" type="button">Add Day Wise Tours Block</button>
-											-->
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div style="display:none;" id="dateWiseBlockId"><!--san-->
 													<div class="panel panel-default">
@@ -256,7 +220,7 @@
 													<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
 												</div> 
 											</div>
-										</form>
+										 <!--</form>=-->
 											
 										</div>
 									</div>
@@ -269,13 +233,8 @@
 				
 				<!-- Hidden Variables-->
 				<div>
-					<input type="hidden" id="globalHiddenDesignationId" value="" name="toursVO.designationId">
-					<input type="hidden" id="globalHiddentdpCadreId" value="" name="toursVO.candidateId">
-					<input type="hidden" id="hiddenTdpCadreId" name="toursVo.tdpCadreId"/>
-					<input type="hidden" id="hiddenTourMonthId" name="toursVo.tourMonth"/>
-					<input type="hidden" id="hiddenTourCategoryId" name="toursVo.tourCategoryId"/>
-					<input type="hidden" id="hiddenTourTypeId" name="toursVo.tourTypeId"/>
-					<input type="hidden" id="hiddenTourdaysId" name="toursVo.tourDays"/>
+					<input type="hidden" id="hiddenCadreId" value="" name="toursNewVO.tdpCadreId" />
+					<input type="hidden" id="hiddenTourMonthId"  value="" name="toursNewVO.tourMonth"/>
 				</div>
 			</form>
 		</div>
@@ -460,14 +419,6 @@
 							</div>   
 							<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
 						</div> 
-						
-						<div>
-						
-							<input type="hidden" id="globalUpdateDayTourId" value="" name="toursVO.detailsNewId">
-							<input type="hidden" id="globalUpdateHiddenDesignationId" value="" name="toursVO.designationId">
-							<input type="hidden" id="globalUpdateHiddentdpCadreId" value="" name="toursVO.candidateId">
-							
-						</div>
 					</form>
 				</div>
 			</div>

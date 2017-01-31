@@ -1807,18 +1807,28 @@ function buildAllTourDetailsOverview(result){
 		  for(var i in result){
 				str+='<tr>';
 					if(result[i].designation != null){
-						str+='<td>'+result[i].designation+'</td>';
+						str+='<td class="desigCls'+i+'" attr_desig_id='+result[i].designationId+' attr_candidate_id='+result[i].candidateId+' attr_category_id='+result[i].categoryId+' details_newId='+result[i].detailsNewId+' tour_type_id='+result[i].tourTypeId+' tour_Days_id='+result[i].tourDays+'>'+result[i].designation+'</td>';
+						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="'+result[i].designationId+'">';
 					}else{
 						str+='<td>-</td>';
-					}				  
+						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="0">';
+					}	
+					if(result[i].detailsNewId != null){
+						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="'+result[i].detailsNewId+'">';
+					}else{
+						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="0">';
+					}
+					str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].candidateId" value="'+result[i].candidateId+'">';					
 				  str+='<td>'+result[i].category+'</td>';
-				  str+='<td>'+result[i].comment+'</td>';
+				  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourCategoryId" value="'+result[i].categoryId+'">';
+				  str+='<td>'+result[i].comment+'</td>';//TourType
+				  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourTypeId" value="'+result[i].tourTypeId+'">';
 				  if(result[i].tourDays != null){
-					  str+='<td><input type="text" class="form-control" value="'+result[i].tourDays+'"/></td>';
+					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control" value="'+result[i].tourDays+'"/></td>';
 				  }else{
-					  str+='<td><input type="text" class="form-control" value="0"/></td>'; 
+					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control" value="0"/></td>'; 
 				  }
-				  if(result[i].tourDate != null && result[i].tourDate==""){
+				  if(result[i].tourDate != null){
 					   str+='<td>'+result[i].tourDate+'</td>';
 				  }else{
 					   str+='<td class="text-center">-</td>';
@@ -1848,6 +1858,8 @@ function buildAllTourDetailsOverview(result){
 	$("#attachementsId").html(str1);
 }
 function savingApplication(){
+	$("#hiddenCadreId").val($("#profileCheckboxId").attr("attr_cadre_id"));
+	$("#hiddenTourMonthId").val($("#tourMonthYear").val());
 		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
