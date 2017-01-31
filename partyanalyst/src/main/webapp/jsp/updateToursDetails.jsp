@@ -120,7 +120,7 @@
 				</div>
 			</div>
 			
-			<form name="submitApplication" method="post">
+			<form name="toursFormApplication" method="post" id="toursFormApplication">
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -187,6 +187,7 @@
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
+													<!--<button type="button" class="btn btn-success" title="TO get tours over view">Submit</button>-->
 												</div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -269,6 +270,11 @@
 				<div>
 					<input type="hidden" id="globalHiddenDesignationId" value="" name="toursVO.designationId">
 					<input type="hidden" id="globalHiddentdpCadreId" value="" name="toursVO.candidateId">
+					<input type="hidden" id="hiddenTdpCadreId" name="toursVo.tdpCadreId"/>
+					<input type="hidden" id="hiddenTourMonthId" name="toursVo.tourMonth"/>
+					<input type="hidden" id="hiddenTourCategoryId" name="toursVo.tourCategoryId"/>
+					<input type="hidden" id="hiddenTourTypeId" name="toursVo.tourTypeId"/>
+					<input type="hidden" id="hiddenTourdaysId" name="toursVo.tourDays"/>
 				</div>
 			</form>
 		</div>

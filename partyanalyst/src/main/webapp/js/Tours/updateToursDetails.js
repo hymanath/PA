@@ -1847,3 +1847,15 @@ function buildAllTourDetailsOverview(result){
 	$("#toursCandidateDetails").html(str);
 	$("#attachementsId").html(str1);
 }
+function savingApplication(){
+		var uploadHandler = { 
+			upload: function(o) {
+				$("#savingAjaxImg").css("display","none");
+				uploadResult = o.responseText;
+				showSbmitStatusNew(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('toursFormApplication',true);  
+		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
+		YAHOO.util.Connect.asyncRequest('POST','saveDesignationWiseTourDetailsAction.action',uploadHandler);
+	}
