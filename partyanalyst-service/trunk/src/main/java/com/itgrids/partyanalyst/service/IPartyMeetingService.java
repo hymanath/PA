@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -42,4 +44,8 @@ public interface IPartyMeetingService {
 	public List<PartyMeetingsVO>  getLocationWisePartyMeetings(String locationType,Long locationValue,String startDateString,String endDateString);
 	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,List<Long> partyMeetingLevelId,int month,int year);
 	public List<PMMinuteVO> getPartyMeetingMinuteRetrieveDetails(Long minuteId);
+	
+	public List<PartyMeetingDataVO> constituencyWisePartyMeetingDetails(int month , int year);
+	public List<MeetingsVO> getConstWiseNotConductedPartyMeetings(int month , int year);
+
 }
