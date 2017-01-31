@@ -110,7 +110,7 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 		//alert('events')
 		if(typeId == 1)
 		{
-			alert('events detailed')
+			//alert('events detailed')
 			$(".detailedBlockEvents").show();
 			$(".comparisonBlockEvents").hide();
 			//var type=$(this).attr("attr_type");
@@ -4100,7 +4100,7 @@ $(document).on("click",".getPopUpImagesCls",function(){
 	var attr_activity_scopeid = $(this).attr("attr_scope_id");
 	var activityLevelId = $("#hiddenActivityLevelId").val();
 	var cnstitncyId = $(this).attr("attr_constituency_id");
-	alert(cnstitncyId);
+	//alert(cnstitncyId);
 	var searchType = $(this).attr("attr_search_type");
 	var value = $(this).attr("attr_value");
 	if(searchType == "constituency"){
