@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +57,14 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -83,9 +87,11 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.INotificationService;
+import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -123,6 +129,8 @@ public class WebServiceHandler {
 	private PeshiAppAppointmentVO peshiAppAppointmentVO;
 	private PashiAppNoCadreVO pashiAppNoCadreVO;
 	
+	@Autowired
+	private IPartyMeetingService partyMeetingService;
 	
 	public PashiAppNoCadreVO getPashiAppNoCadreVO() {
 		return pashiAppNoCadreVO;
@@ -215,21 +223,7 @@ public class WebServiceHandler {
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-
-
-
-	public IWebServiceHandlerService getWebServiceHandlerService() {
-		return webServiceHandlerService;
-	}
-
-
-
-	public void setWebServiceHandlerService(
-			IWebServiceHandlerService webServiceHandlerService) {
-		this.webServiceHandlerService = webServiceHandlerService;
-	}
-     
-    
+	
 
 	/*@GET
     @Path("{userName}/{passWord}")
@@ -239,6 +233,14 @@ public class WebServiceHandler {
 		return webServiceHandlerService.checkForUserAuthentication(userName , passWord);
     }*/
 	
+	public IPartyMeetingService getPartyMeetingService() {
+		return partyMeetingService;
+	}
+
+	public void setPartyMeetingService(IPartyMeetingService partyMeetingService) {
+		this.partyMeetingService = partyMeetingService;
+	}
+
 	@GET
     @Path("/getMobileAppAuthorizationURL")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -2519,4 +2521,53 @@ public class WebServiceHandler {
 				return null;
 			}
 		}
+		
+		@GET
+		@Path("/constituencyWisePartyMeetingDetails/{month}/{year}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<PartyMeetingDataVO> constituencyWisePartyMeetingDetails(@PathParam("month") int month,@PathParam("year") int year){
+			List<PartyMeetingDataVO> finalList = null;
+			try{
+				  if(month > 0 && year  > 0){
+					  finalList = partyMeetingService.constituencyWisePartyMeetingDetails(month,year);
+				  }else{
+					    Date date = new DateUtilService().getCurrentDateAndTime();
+					    Calendar cal = Calendar.getInstance();
+					    cal.setTime(date);
+					    year = cal.get(Calendar.YEAR);
+					    month = cal.get(Calendar.MONTH) + 1;
+					    finalList = partyMeetingService.constituencyWisePartyMeetingDetails(month,year);
+				  }		
+			}
+			catch(Exception e){
+				LOG.error("Exception Occured in getDeptWiseStatusWiseAlertDetails() Method, Exception is ",e);
+				return null;
+			}
+			return finalList;
+		}
+		
+		@GET
+		@Path("/getConstWiseNotConductedPartyMeetings/{month}/{year}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<MeetingsVO> getConstWiseNotConductedPartyMeetings(@PathParam("month") int month,@PathParam("year") int year){
+			List<MeetingsVO> finalList = null;
+			try{
+				  if(month > 0 && year  > 0){
+					  finalList = partyMeetingService.getConstWiseNotConductedPartyMeetings(month,year);
+				  }else{
+					    Date date = new DateUtilService().getCurrentDateAndTime();
+					    Calendar cal = Calendar.getInstance();
+					    cal.setTime(date);
+					    year = cal.get(Calendar.YEAR);
+					    month = cal.get(Calendar.MONTH) + 1;
+					    finalList = partyMeetingService.getConstWiseNotConductedPartyMeetings(month,year);
+				  }		
+			}
+			catch(Exception e){
+				LOG.error("Exception Occured in getConstWiseNotConductedPartyMeetings() Method, Exception is ",e);
+				return null;
+			}
+			return finalList;
+		}
+		
 }
