@@ -4722,13 +4722,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}).done(function(result){
 			$("#meetingMemberDtlsDivId").html('');
 			if(result != null && result.length > 0){
-				buildMeetingMemberDtls(result,position,isNonInvitee,partyMeetingId);
+				buildMeetingMemberDtls(result,position,isNonInvitee,partyMeetingId,status);
 			}else{      
 			           
 			}  
 		});
 	});
-	function buildMeetingMemberDtls(result,position,isNonInvitee,partyMeetingId){
+	function buildMeetingMemberDtls(result,position,isNonInvitee,partyMeetingId,status){
+		
 		var str = '';
 			str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -4749,7 +4750,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						}else{
 							str+='<th>Attendance</th>';    
 						}
-						      
+					if(status =='absent'){
+						str+='<th>Absent Reason</th>';    
+					}
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -4799,7 +4802,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 										str+='<td>'+result[i].sessionList[j]+'</td>';             
 									}  
 								}
-							str+='</tr>';
+								if(status =='absent'){
+									if(result[i].remark != null && result[i].remark.length > 0){
+										str+='<td>'+result[i].remark+'</td>';
+									}else{
+										str+='<td><center>-</center></td>';   
+									}
+								}
+								
+							str+='</tr>';	
 						}
 					}
 					else{
@@ -4921,8 +4932,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		});
 	}
 	function buildDistDtls(result,dataBuildType){  
-	
-	
+
 		var str = '';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -4988,7 +4998,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								}else{  
 									str+='<td>'+result[i].sessionList[j]+'</td>';               
 								}  
-							}
+							}		
 								str+='</tr>';
 					}		
 				}
