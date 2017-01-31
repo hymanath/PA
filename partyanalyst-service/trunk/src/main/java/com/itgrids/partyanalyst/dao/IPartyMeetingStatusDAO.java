@@ -36,4 +36,6 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
 	public Date getMeetingLastUpdatedTime();
    public List<Long> getPartyMeetingCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType);
    public List<Object[]> getPartyMeetingComulativeCommentDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String reportType,String type);
+   
+   public PartyMeetingStatus getObjectByPartyMeetingId(Long partyMeetingId);
 }
