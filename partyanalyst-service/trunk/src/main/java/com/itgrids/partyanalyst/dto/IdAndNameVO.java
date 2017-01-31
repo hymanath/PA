@@ -43,7 +43,28 @@ public class IdAndNameVO {
 	private Long yesCount=0L;
 	private Long noCount =0L;
 	private Long mayBecount =0L;
+	private String yesPerc;
+	private String noPerc;
+	private String mayPerc;
 	
+	public String getYesPerc() {
+		return yesPerc;
+	}
+	public void setYesPerc(String yesPerc) {
+		this.yesPerc = yesPerc;
+	}
+	public String getNoPerc() {
+		return noPerc;
+	}
+	public void setNoPerc(String noPerc) {
+		this.noPerc = noPerc;
+	}
+	public String getMayPerc() {
+		return mayPerc;
+	}
+	public void setMayPerc(String mayPerc) {
+		this.mayPerc = mayPerc;
+	}
 	public Long getYesCount() {
 		return yesCount;
 	}
