@@ -2899,7 +2899,7 @@ public class ToursService implements IToursService {
 						toursMonthId = toursMonthIdsObj.get(0);
 					}
 				}
-				//locationId-0,candidateId-1,categoryId-2,category-3,tourTypeId-4,tourType-5
+				//locationId-0,candidateId-1,categoryId-2,category-3,tourTypeId-4,tourType-5,designationId-6,designation-7
     	    	List<Object[]> toursList = selfAppraisalCandidateLocationNewDAO.getLocationWiseCandidate(tdpCadreId);
     	    	if(toursList != null && toursList.size() > 0){
     	    		for (Object[] objects2 : toursList) {
@@ -2910,6 +2910,8 @@ public class ToursService implements IToursService {
     	    			vo.setCategory(commonMethodsUtilService.getStringValueForObject(objects2[3]));
     	    			vo.setTourTypeId(commonMethodsUtilService.getLongValueForObject(objects2[4]));
     	    			vo.setComment(commonMethodsUtilService.getStringValueForObject(objects2[5]));
+    	    			vo.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects2[6]));
+    	    			vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects2[7]));
     	    			
     	    			finalList.add(vo);
 					}
@@ -2936,8 +2938,8 @@ public class ToursService implements IToursService {
 	    	    			for (ToursVO tourVo : finalList) {
 	    	    				tourVo = getMatchedVOById(finalList, (Long)obj[8],(Long)obj[3],(Long)obj[9]);
 	    	    				if(tourVo != null){
-	    	    					tourVo.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[1]));
-	    	    					tourVo.setDesignation(commonMethodsUtilService.getStringValueForObject(obj[2]));
+	    	    					//tourVo.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+	    	    					//tourVo.setDesignation(commonMethodsUtilService.getStringValueForObject(obj[2]));
 	    	    					tourVo.setTourDays(commonMethodsUtilService.getLongValueForObject(obj[6]));
 	    	    					tourVo.setTourDate(commonMethodsUtilService.getStringValueForObject(obj[7]));
 	    	    				}
