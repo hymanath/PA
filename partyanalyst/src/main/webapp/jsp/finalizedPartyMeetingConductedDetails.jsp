@@ -267,7 +267,7 @@ textarea { resize:none; }
 				
                 	<div class="panel panel-default" style="border:1px solid #ddd !important">
                     	<div class="panel-heading">
-                        	<h4 class="panel-title">Search / Update Meetings Conducted Status</h4>
+                        	<h4 class="panel-title">Conflict Committee Meeting Status Updates</h4>
                         </div>
                         <div class="panel-body">
                         	<div class="row">
@@ -328,7 +328,7 @@ textarea { resize:none; }
 									</select>
 								</div>
 								<div class="col-xs-12 col-md-3 col-sm-6" >
-									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button><span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh" style="left: 250px; top: 0px; right: 0px;"></i></span><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
+									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button><!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh" style="left: 250px; top: 0px; right: 0px;"></i></span>--><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
 								</div>
 								<div class="col-md-1" style="height: 44px; width: 10px;">
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
@@ -1000,8 +1000,8 @@ function buildFinalMeeting(result){
 				str+='<thead style="background-color:#ccc;">';
 					str+='<th>MEETING LOCATION</th>';
 					str+='<th>MEETING NAME</th>';
-					str+='<th>CONDUCTED (updated by info cell?)</th>';
-					str+='<th>CONDUCTED (updated by ivr?)</th>';
+					//str+='<th>CONDUCTED (updated by info cell?)</th>';
+					//str+='<th>CONDUCTED (updated by ivr?)</th>';
 					str+='<th>UPDATE STATUS</th>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -1009,7 +1009,7 @@ function buildFinalMeeting(result){
 					str+='<tr>';
 						str+='<td>'+result[i].location+'</td>';
 						str+='<td>'+result[i].meetingName+'</td>';
-						if(result[i].isConducted != null && result[i].isConducted =="Y"){
+						/*if(result[i].isConducted != null && result[i].isConducted =="Y"){
 							str+='<td>YES</td>';
 						}else if(result[i].isConducted != null && result[i].isConducted =="N"){
 							str+='<td>NO</td>';
@@ -1023,7 +1023,7 @@ function buildFinalMeeting(result){
 							str+='<td>NO</td>';
 						}else{
 							str+='<td class="text-center">-</td>';
-						}
+						}*/
 						
 						str+='<td>';
 						str+=' <i class="glyphicon glyphicon-edit updateCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 10px;cursor:pointer;" title="Click here to Update Status" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'"></i>';
@@ -1818,6 +1818,14 @@ $(document).on("click",".updateCls",function(){
 	$("#uploadFileId0").val("");
 	$(".cloneFileCls").val("");
 	$(".fileUploadDivId").hide();
+	
+	$("#memebershipId").val("");
+	$("#nameId").val("");
+	$("#mobileNoId").val("");
+	$("#remarkId").val("");
+	$("#statusId").val(0);
+	$("#uploadFileId0").val("")
+	$('#errorId').html('');
 });
 $(document).on("click","#saveDetailsBtnId",function(){
 	$('#errorId').html('');
@@ -1833,9 +1841,12 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	if(name ==0){
 	  	  errorStr += "Name is required<br>";
 	}
+	var numericExpression = /^[0-9]+$/;
 	if(mobileNo.trim().length != 10 || mobileNo.trim().length > 10 ){
 	  	  errorStr += "Mobile No is required<br>";
 	}
+	else if(!mobileNo.match(numericExpression))
+		errorStr += "Enter Valid MobileNO<br>";
 	if(remark ==0){
 	 	  errorStr += "Remark is required<br>";
 	}
@@ -1843,8 +1854,8 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	  errorStr += "Status is required<br>";
 	}
 	if(updateStatus == "Y"){
-		if(upladFile == null || upladFile.trim().length == 0)
-				errorStr += "Attachment is Required.<br>";
+		//if(upladFile == null || upladFile.trim().length == 0)
+				//errorStr += "Attachment is Required.<br>";
 		$('.cloneFileCls').each(function(){
 			var uploadFile = $(this).val();
 			if(uploadFile == null || uploadFile.trim().length == 0)
