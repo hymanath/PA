@@ -1195,7 +1195,10 @@ public String getCommentDetails(){
 	 try{
 		 
 		 jObj = new JSONObject(getTask());
-		 activityVOList = activityService.getDistrictNamesByScopeId(jObj.getLong("activityScopeId"));
+		    Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long userTypeId = jObj.getLong("userTypeId");
+		 activityVOList = activityService.getDistrictNamesByScopeId(jObj.getLong("activityScopeId"),activityMemberId,stateId,userTypeId);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getQustionList()", e);
 	 }
