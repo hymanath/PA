@@ -3219,6 +3219,7 @@
 		<property name="partyMeetingMinuteTrackingDAO" ref="partyMeetingMinuteTrackingDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="dateUtilService" ref="dateUtilService" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
