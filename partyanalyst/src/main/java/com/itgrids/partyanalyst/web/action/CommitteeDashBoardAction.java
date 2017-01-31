@@ -1196,9 +1196,12 @@ public String getAllConstituencysForADistrict(){
 			inputVo.setStartIndex(jObj.getInt("startIndex"));
 			inputVo.setMaxIndex(jObj.getInt("maxIndex"));
 			inputVo.setCallFrom(jObj.getString("callFrom"));
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long userTypeId = jObj.getLong("userTypeId");
 			
 			
-			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo);
+			docsList=cadreCommitteeService.getEventDocumentsForLocation(inputVo,activityMemberId,stateId,userTypeId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getEventDocumentsForLocation ",e);
@@ -1246,7 +1249,11 @@ public String getAllConstituencysForADistrict(){
 			inputVo.setActivityId(jObj.getLong("activityId"));	
 			inputVo.setStrDate(jObj.getString("fromDateStr"));	
 			inputVo.setEndDate(jObj.getString("toDateStr"));
-			basicVOList=cadreCommitteeService.getAvailableDates(inputVo);
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long userTypeId = jObj.getLong("userTypeId");
+			
+			basicVOList=cadreCommitteeService.getAvailableDates(inputVo,activityMemberId,stateId,userTypeId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getAvailableDatesForActivities ",e);

@@ -1663,7 +1663,10 @@ $(document).on("click",".activitiesClass",function(){
 	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
 	var jsObj={
-		activityId:activityId
+		activityId:activityId,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId
 	}	
 	$.ajax({
 	 type: "POST",
@@ -1849,7 +1852,9 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 		districtId : districtId,
 		activity_scope_id:activityScopeId,
 		search_type :searchType,
-		stateId : globalStateId
+		stateId : globalStateId,
+		activityMemberId : globalActivityMemberId,
+		userTypeId : globalUserTypeId
 	}	
 	$.ajax({
 	 type: "POST",
@@ -2213,7 +2218,10 @@ function districtWiseCohort(activityId){
 	   activityId : globalActivityIdsList,
 	   fromDate : customStartDateActivities,
 	   toDate : customEndDateActivities,
-	   scopeId : scopeId
+	   scopeId : scopeId,
+	   activityMemberId : globalActivityMemberId,
+	   stateId : globalStateId,
+	   userTypeId : globalUserTypeId
 		 
 	  }
 	$.ajax({
@@ -2367,7 +2375,10 @@ function stateWiseCohort(activityId){
 	   activityId : globalActivityIdsList,
 	   fromDate : customStartDateActivities,
 	   toDate : customEndDateActivities,
-	   scopeId : scopeId
+	   scopeId : scopeId,
+	   activityMemberId : globalActivityMemberId,
+	   stateId : globalStateId,
+	   userTypeId : globalUserTypeId
 		 
 	  }
 	$.ajax({
@@ -2701,6 +2712,9 @@ function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 		startIndex:0,
 		maxIndex:0,
 		callFrom:"BD",
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId,
 		task:"daywise"
 		};
 		/* var jObj = {
@@ -2751,6 +2765,9 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 		locationValue:locationValue,	
 		fromDateStr:"",
 		toDateStr:"",
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId,
 		task:""
 		};
 		$.ajax({
@@ -2842,6 +2859,9 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		maxIndex:10,
 		callFrom:"",
 		//locationName:obj.locationName,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId,
 		 task:"popupdaywise"
 		};
 		
@@ -3018,7 +3038,10 @@ function getDistrictNames(){
 	var scopeId = $("#hiddenActivityScopeId").val();
 	var activityLevelId= $("#hiddenActivityLevelId").val();
 	var jObj = {
-		activityScopeId:scopeId
+		activityScopeId:scopeId,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId
 	};
 	
 	$.ajax({

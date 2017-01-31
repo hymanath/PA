@@ -3465,8 +3465,11 @@ public String getActivityOverAllSummary(){
 		jObj = new JSONObject(getTask());
 		
 		Long activityId = jObj.getLong("activityId");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long userTypeId = jObj.getLong("userTypeId");
 		
-		IdAndNameVOList = coreDashboardService.getActivityOverAllSummary(activityId);
+		IdAndNameVOList = coreDashboardService.getActivityOverAllSummary(activityId,activityMemberId,stateId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getActivityOverAllSummary() method of CoreDashBoard", e);
 	}
@@ -3487,7 +3490,10 @@ public String activitiesDistrictWiseCohort(){
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
 		Long scopeId = jObj.getLong("scopeId");
-		IdAndNameVOList = coreDashboardService.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		IdAndNameVOList = coreDashboardService.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,activityMemberId,stateId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
 	}
@@ -3504,8 +3510,10 @@ public String getDistrictWiseActivityCounts(){
 		Long activityScopeId = jObj.getLong("activity_scope_id");
 		String searchType = jObj.getString("search_type");
 		Long stateId = jObj.getLong("stateId");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long userTypeId = jObj.getLong("userTypeId");
 		
-		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId);
+		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,activityMemberId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDistrictWiseActivityCounts() method of CoreDashBoard", e);
 	}
