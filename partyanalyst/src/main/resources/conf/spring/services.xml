@@ -3162,6 +3162,7 @@
 		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
+		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">

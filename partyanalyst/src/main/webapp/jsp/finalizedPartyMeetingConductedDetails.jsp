@@ -1034,12 +1034,13 @@ function buildFinalMeeting(result){
 					str+='</td>';
 					str+='</tr>';
 					
-					if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true")
+					if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true"){
 						updatdCnt = updatdCnt + 1;
-					if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "Y")
-						yesCnt = yesCnt + 1;
-					else if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "N")
-						noCnt = noCnt + 1;
+						if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "Y")
+							yesCnt = yesCnt + 1;
+						else if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "N")
+							noCnt = noCnt + 1;
+					}
 					pendgCnt = mayBeTtl - updatdCnt;
 				}
 					}else{
