@@ -1390,7 +1390,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setMobileNumber("0.00");	
 					vo.setImagePathStr("0.00");
 					vo.setActualMobNumber("0.00");
-					
+					vo.setYesPerc("0.00");
+					vo.setNoPerc("0.00");
+					vo.setMayPerc("0.00");
 					returnList.add(vo);
 				}
 			}
@@ -1443,8 +1445,60 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
-			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l);
-			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId);
+			List<Object[]> resltList = new ArrayList<Object[]>(0);
+			Map<Long,Long> yesCoutnMap = new HashMap<Long, Long>(0);
+			Map<Long,Long> noCoutnMap = new HashMap<Long, Long>(0);
+			Map<Long,Long> mayBeCoutnMap = new HashMap<Long, Long>(0);
+			
+			List<Object[]> maybelist = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l,"maybe");
+			List<Object[]> maybesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,"maybe");
+			if(commonMethodsUtilService.isListOrSetValid(maybelist)){
+				resltList.addAll(maybelist);
+			}
+			if(commonMethodsUtilService.isListOrSetValid(maybesList)){
+				resltList.addAll(maybesList);
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(resltList)){
+				for (Object[] param : resltList) {
+					mayBeCoutnMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				resltList.clear();
+			}
+			List<Object[]> nolist = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l,"no");
+			List<Object[]> nosList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,"no");
+			if(commonMethodsUtilService.isListOrSetValid(nolist)){
+				resltList.addAll(nolist);
+			}
+			if(commonMethodsUtilService.isListOrSetValid(nosList)){
+				resltList.addAll(nosList);
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(resltList)){
+				for (Object[] param : resltList) {
+					noCoutnMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				resltList.clear();
+			}
+			
+			List<Object[]> yeslist = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l,"yes");
+			List<Object[]> yessList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,"yes");
+			if(commonMethodsUtilService.isListOrSetValid(yeslist)){
+				resltList.addAll(yeslist);
+			}
+			if(commonMethodsUtilService.isListOrSetValid(yessList)){
+				resltList.addAll(yessList);
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(resltList)){
+				for (Object[] param : resltList) {
+					yesCoutnMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				resltList.clear();
+			}
+			
+			List<Object[]> list = activityLocationInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,1l,null);
+			List<Object[]> specialActivitiesList = activityConductedInfoDAO.activitiesDistrictWiseCohort(activityIdsLst,fromDate, toDate,scopeId,null);
 			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesList)){
 				if(!commonMethodsUtilService.isListOrSetValid(list))
 					list = new ArrayList<Object[]>(0);
@@ -1470,6 +1524,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setActualMobNumber(commonMethodsUtilService.getStringValueForObject(obj[5]));
 					vo.setPerc("0.00");
 					vo.setRemainingPerc("0.00");
+					vo.setYesPerc("0.00");
+					vo.setNoPerc("0.00");
+					vo.setMayPerc("0.00");
 					vo.setApTotal(commonMethodsUtilService.getLongValueForObject(obj[6]));
 					Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
 					if(totalScopeLocationsMap.get(vo.getId()) != null){
@@ -1488,6 +1545,34 @@ public class CoreDashboardService implements ICoreDashboardService{
 							vo.setRemainingPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(RemaingPerc1).toString());
 						}
 					}
+					
+					if(commonMethodsUtilService.isMapValid(yesCoutnMap)){
+						Long yesCount = yesCoutnMap.get(vo.getLocationId());
+						if(yesCount != null && yesCount.longValue()>0L){
+							Double perc = (Double) (yesCount * 100.0/totalCount);
+							Float perc1 = Float.valueOf(perc.toString());
+							vo.setYesPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+						}
+					}
+					
+					if(commonMethodsUtilService.isMapValid(noCoutnMap)){
+						Long noCount = noCoutnMap.get(vo.getLocationId());
+						if(noCount != null && noCount.longValue()>0L){
+							Double perc = (Double) (noCount * 100.0/totalCount);
+							Float perc1 = Float.valueOf(perc.toString());
+							vo.setNoPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+						}
+					}
+					
+					if(commonMethodsUtilService.isMapValid(mayBeCoutnMap)){
+						Long maybeCount = mayBeCoutnMap.get(vo.getLocationId());
+						if(maybeCount != null && maybeCount.longValue()>0L){
+							Double perc = (Double) (maybeCount * 100.0/totalCount);
+							Float perc1 = Float.valueOf(perc.toString());
+							vo.setMayPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+						}
+					}
+					
 					resultList.add(vo);
 					List<Long> locationIdsList= new ArrayList<Long>(0);
 					if(scopeDataAvailableLocationMap.get(vo.getId()) != null){
