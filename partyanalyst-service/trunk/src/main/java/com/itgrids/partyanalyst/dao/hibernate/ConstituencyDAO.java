@@ -2120,6 +2120,16 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  query.setParameter("distId",distId);
 	  return query.list();
   }
+  
+  public List<Object[]> getAssemblyConstituencyTeluguNames(){
+	  
+	  Query query = getSession().createQuery("" +
+	  " select model.constituencyId , model.localName , model.district.localName " +
+	  " from   Constituency model " +
+	  " where  model.deformDate is null and model.electionScope.electionScopeId = 2 and model.state.stateId = 1 ");
+	  return query.list();
+  }
+  
 }
 
 

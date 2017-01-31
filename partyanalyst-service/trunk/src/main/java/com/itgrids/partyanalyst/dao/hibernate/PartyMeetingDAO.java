@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
@@ -2375,4 +2376,114 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	   
 	   return query.list();
    }
+   
+   public List<Object[]> totalMeetingsInConstituencyLevelWise(int month , int year){
+	   
+		
+		  Query query = getSession().createQuery("" +
+		  " select   model.meetingAddress.constituency.constituencyId , model.meetingAddress.constituency.name," +//1
+		  "          model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level,count(distinct  model.partyMeetingId) " +//4
+		  " from     PartyMeeting model " +
+		  " where    model.isActive = 'Y' and model.meetingAddress.constituency.constituencyId = 232 " +
+		  "          month(model.startDate) =:month and year(model.startDate) =:year " +
+		  " group by model.meetingAddress.constituency.constituencyId , model.partyMeetingLevel.partyMeetingLevelId " +
+		  " order by  model.meetingAddress.constituency.name , model.partyMeetingLevel.partyMeetingLevelId ");
+		  
+		  query.setParameter("month", month);
+		  query.setParameter("year", year);
+		  return query.list();
+	   }
+	   
+	   public List<Object[]> notConductedMeetingsInConstituencyLevelWise(int month , int year){
+		  
+		   Query query = getSession().createQuery("" +
+		   " select  model.partyMeeting.meetingAddress.constituency.constituencyId , " +//0
+		   "         model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingLevel.level," +//2
+		   "         count(distinct  model.partyMeeting.partyMeetingId)" +//3
+		   " from    PartyMeetingStatus model " +
+		   " where   model.partyMeeting.isActive = 'Y' and model.mettingStatus = 'N' and " +
+		   "         model.partyMeeting.meetingAddress.constituency.constituencyId = 232 and " +
+		   "         month(model.partyMeeting.startDate) =:month and year(model.partyMeeting.startDate) =:year " +
+		   " group by model.partyMeeting.meetingAddress.constituency.constituencyId ,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
+		   
+		   query.setParameter("month", month);
+		   query.setParameter("year", year);
+		   return query.list();
+	   }
+	 
+	   public List<Object[]> notConductedMeetingsInConstituency(int month , int year){
+		   
+		   Query query = getSession().createQuery("" +
+		   " select  model.partyMeeting.meetingAddress.constituency.constituencyId ,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingLevel.level,  " +//2
+		   "         model.partyMeeting.partyMeetingId ,model.partyMeeting.meetingName," +//4
+		   "         model.partyMeeting.isConducted ,model.partyMeeting.isConductedByIvr,model.partyMeeting.thirdPartyStatus,model.partyMeeting.remarks " +//8
+		   " from    PartyMeetingStatus model " +
+		   " where   model.partyMeeting.isActive = 'Y' and model.mettingStatus = 'N' and " +
+		   "         model.partyMeeting.meetingAddress.constituency.constituencyId = 232 and " +
+		   "         month(model.partyMeeting.startDate) =:month and year(model.partyMeeting.startDate) =:year " +
+		   " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
+		   
+		   query.setParameter("month", month);
+		   query.setParameter("year", year);
+		   return query.list(); 
+		   
+	   }
+	   
+	   
+	   public List<Object[]> getConstWiseNotConductedPartyMeetings(int month , int year){
+		 
+		   Query query = getSession().createSQLQuery("" +
+		   " select   PM.party_meeting_level_id as levelId, PML.level as level," +//1
+		   "          C.constituency_id as constituencyId, T.tehsil_id as tehsilId, T.name_local as tehsilName,P.panchayat_id as panchayatId, P.name_local as panchayatName," +//6
+		   "          LEB.local_election_body_id as lebId,LEB.name_local as lebName, ward.constituency_id as wardId, ward.name_local as wardName, " +//10
+		   "          PM.party_meeting_id as partyMeetingId, PM.meeting_name as meetingName " +//12
+		   " from     party_meeting PM " +
+		   "          join party_meeting_level PML on PM.party_meeting_level_id = PML.party_meeting_level_id   " +
+		   "          join party_meeting_status PMS on PM.party_meeting_id = PMS.party_meeting_id  " +
+		   "          join user_address UA on PM.meeting_address_id = UA.user_address_id " +
+		   "          join constituency C on UA.constituency_id = C.constituency_id " +
+		   "          left join local_election_body LEB on  UA.local_election_body = LEB.local_election_body_id " +
+		   "          left join constituency ward on UA.ward = ward.constituency_id  " +
+		   "          left join tehsil T on UA.tehsil_id = T.tehsil_id   " +
+		   "          left join panchayat P on UA.panchayat_id = P.panchayat_id " +
+		   " where    PM.is_active = 'Y'   and PML.party_meeting_level_id in (4,5,6,7,8) and   PMS.meeting_status = 'N' and " +
+		   "          month(PM.start_date)=:month and year(PM.start_date)= :year " +
+		   " order by PM.party_meeting_level_id ")
+		   .addScalar("levelId", Hibernate.LONG)
+			.addScalar("level", Hibernate.STRING)
+			.addScalar("constituencyId", Hibernate.LONG)
+			.addScalar("tehsilId", Hibernate.LONG)
+			.addScalar("tehsilName", Hibernate.STRING)
+			.addScalar("panchayatId", Hibernate.LONG)
+			.addScalar("panchayatName", Hibernate.STRING)
+			.addScalar("lebId", Hibernate.LONG)
+			.addScalar("lebName", Hibernate.STRING)
+			.addScalar("wardId", Hibernate.LONG)
+			.addScalar("wardName", Hibernate.STRING)
+			.addScalar("partyMeetingId", Hibernate.LONG)
+			.addScalar("meetingName", Hibernate.STRING);
+		   query.setParameter("month",month);
+		   query.setParameter("year", year);
+		   return query.list(); 
+	   }
+	   
+	  public List<Object[]> getConstInchargeTeluguNames(){
+		  
+		 Query query = getSession().createSQLQuery("" +
+		 " select  C.constituency_id constId ,TC.tdp_cadre_id as cadreId, " +//1
+		 "         TRIM(CONCAT(TRIM(VA.firstname),' ',TRIM(VA.lastname))) AS voter_name ,  TRIM(TCN.telugu_name) AS cadre_name " +//3
+		 " from    self_appraisal_candidate_location_new SN,constituency C,self_appraisal_candidate SC  " +
+		 "         JOIN  tdp_cadre TC  ON SC.tdp_cadre_id = TC.tdp_cadre_id " +
+		 "         LEFT OUTER JOIN voter_names VA ON TC.voter_id = VA.voter_id " +
+		 "         LEFT OUTER JOIN tdp_cadre_telugu_names TCN ON TC.tdp_cadre_id = TCN.tdp_cadre_id " +
+		 " where   SC.self_appraisal_candidate_id=SN.self_appraisal_candidate_id and  " +
+		 "         SN.self_appraisal_tour_category_id=4 and " +
+		 "         SN.location_value=C.constituency_id and  " +
+		 "         SC.self_appraisal_designation_id in (7,8) and SC.is_active='Y' ")
+		 .addScalar("constId", Hibernate.LONG)
+	     .addScalar("cadreId", Hibernate.LONG)
+		 .addScalar("voter_name", Hibernate.STRING)
+		 .addScalar("cadre_name", Hibernate.STRING);
+	     return query.list();
+	  }
  }
