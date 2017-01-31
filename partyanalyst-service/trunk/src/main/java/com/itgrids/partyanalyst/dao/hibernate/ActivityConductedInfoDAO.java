@@ -326,7 +326,7 @@ if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_
  }
 return query.list();
 }
-public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId){
+public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,String type){
 	 StringBuilder queryStr = new StringBuilder();
      queryStr.append("select model.activityScope.activityScopeId," +
 											" count(model.activityConductedInfoId),"); 
@@ -343,6 +343,26 @@ public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Dat
 											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
 											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
 											" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
+     
+     if(type != null && !type.isEmpty()){
+	    	if(type.equalsIgnoreCase("yes")){
+	    		queryStr.append(" and ( (model.infoCellCount is not null and  model.ivrStatus='Y' ) OR" +
+	    				"  ( model.infoCellCount is not null and model.ivrStatus is null ) OR " +
+	    				"  ( model.infoCellCount is null and model.ivrStatus='Y' ) ) ");
+	    	}
+	    	else if(type.equalsIgnoreCase("no")){
+	    		queryStr.append(" and ( (model.infoCellCount is null and model.ivrStatus='N' )  OR " +
+	    				" ( model.infoCellCount is null and model.ivrStatus is null )  ) ");
+	    	}
+	    	else if(type.equalsIgnoreCase("maybe")){
+	    		queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus='N' )  OR " +
+	    				" ( model.infoCellCount is not null and model.ivrStatus ='N')  ) ");
+	    	}
+	      }
+	      else{
+	    	  queryStr.append(" and ( model.infoCellCount is not null or model.ivrStatus='Y') ");
+	      }
+     
      if(scopeId != null && scopeId.longValue() == 3l){
    	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
    	   queryStr.append(" order by model.address.district.districtId ");

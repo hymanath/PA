@@ -24,37 +24,49 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 		queryStr.append("select ");
 		
 		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
-			queryStr.append(" model.userAddress.constituency.constituencyId," );
+			queryStr.append(" constituency.constituencyId," );
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
-			queryStr.append(" model.userAddress.district.districtId," );
+			queryStr.append(" district.districtId," );
 		if(searchType != null && searchType.equalsIgnoreCase("state"))
-			queryStr.append(" model.userAddress.state.stateId," );
+			queryStr.append(" state.stateId," );
 		
 		if(type != null && type.equalsIgnoreCase("panchayat")){
-			queryStr.append(" count(distinct model.userAddress.panchayat.panchayatId), ");
+			queryStr.append(" count(distinct panchayat.panchayatId), ");
 		}else if( type != null && type.equalsIgnoreCase("ward")){
-			queryStr.append("  count(distinct model.userAddress.ward.constituencyId), ");
+			queryStr.append("  count(distinct ward.constituencyId), ");
 		}else if( type != null && type.equalsIgnoreCase("mandal")){
-			queryStr.append("  count( distinct model.userAddress.tehsil.tehsilId), ");
+			queryStr.append("  count( distinct tehsil.tehsilId), ");
 		}else if( type != null && type.equalsIgnoreCase("town")){
-			queryStr.append("  count(distinct model.userAddress.localElectionBody.localElectionBodyId), ");
+			queryStr.append("  count(distinct localElectionBody.localElectionBodyId), ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
-			queryStr.append("  count(distinct model.userAddress.constituency.constituencyId), ");
+			queryStr.append("  count(distinct constituency.constituencyId), ");
 		}else if(type != null && type.equalsIgnoreCase("district"))
-			queryStr.append(" count(distinct model.userAddress.district.districtId)," );
+			queryStr.append(" count(distinct district.districtId)," );
 		if(type != null && type.equalsIgnoreCase("state"))
 			queryStr.append(" count(distinct model.userAddress.state.stateId)," );
 		queryStr.append(" count( distinct model1.activityDocumentId) " );
 		queryStr.append(" ,model1.activityScope.activityScopeId ");
-		queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model where model.isDeleted='N'  and " +
+		queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model " +
+				" left join  model.userAddress userAddress " +
+				" left join  userAddress.state state " +
+				" left join  userAddress.district district " +
+				" left join  userAddress.constituency constituency " +
+				" left join  userAddress.localElectionBody localElectionBody " +
+				" left join  userAddress.tehsil tehsil " +
+				" left join  userAddress.ward ward " +
+				" left join  userAddress.panchayat panchayat ");
+		
+		
+		queryStr.append(" where model.isDeleted='N'  and " +
 				" model1.activityDocumentId = model.activityDocument.activityDocumentId   " );
 		
+		/*
 		if(type != null && type.equalsIgnoreCase("panchayat")){
-			queryStr.append(" and  model.userAddress.panchayat is not null   and  model.userAddress.ward  is null ");
+			queryStr.append(" and  panchayat is not null   and  ward  is null ");
 		}else if( type != null && type.equalsIgnoreCase("ward")){
-			queryStr.append("  and  model.userAddress.ward  is not null and  model.userAddress.panchayat is null  ");
+			queryStr.append("  and  ward  is not null and  panchayat is null  ");
 		}else if( type != null && type.equalsIgnoreCase("mandal")){
-			queryStr.append("  and  model.userAddress.tehsil is not null and model.userAddress.localElectionBody.localElectionBodyId is null  ");
+			queryStr.append("  and  tehsil is not null and localElectionBodyId is null  ");
 		}else if( type != null && type.equalsIgnoreCase("town")){
 			queryStr.append("  and model.userAddress.localElectionBody.localElectionBodyId is not null  and  model.userAddress.tehsil is  null ");
 		}else if(type != null && type.equalsIgnoreCase("constituency")){
@@ -63,20 +75,21 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			queryStr.append(" and  model.userAddress.district.districtId is not null " );
 		if(type != null && type.equalsIgnoreCase("state"))
 			queryStr.append(" and  model.userAddress.state is not null " );
+		*/
 		
 		queryStr.append(" and model1.activityScope.activityScopeId  in (:activityScopeIdsLis)  ");
 		
 		if(districtsList != null && districtsList.size() > 0l)
 			if(districtsList.get(0).longValue()>0L)
-				queryStr.append("  and model.userAddress.district.districtId in (:districtsList) ");
+				queryStr.append("  and district.districtId in (:districtsList) ");
 		
 		queryStr.append(" group by model1.activityScope.activityScopeId ");
 		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
-			queryStr.append(" , model.userAddress.constituency.constituencyId ");
+			queryStr.append(" , constituency.constituencyId ");
 		else if(searchType != null && searchType.equalsIgnoreCase("district"))
-			queryStr.append(", model.userAddress.district.districtId " );
+			queryStr.append(", district.districtId " );
 		if(searchType != null && searchType.equalsIgnoreCase("state"))
-			queryStr.append(", model.userAddress.state.stateId " );
+			queryStr.append(", state.stateId " );
 		
 		/*if(searchType != null && searchType.equalsIgnoreCase("constituency") && type != null && type.equalsIgnoreCase("panchayat")){
 			queryStr.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.panchayat.panchayatId ");
