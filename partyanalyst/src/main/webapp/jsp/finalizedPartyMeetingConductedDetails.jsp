@@ -328,7 +328,7 @@ textarea { resize:none; }
 									</select>
 								</div>
 								<div class="col-xs-12 col-md-3 col-sm-6" >
-									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
+									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button><span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh" style="left: 250px; top: 0px; right: 0px;"></i></span><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
 								</div>
 								<div class="col-md-1" style="height: 44px; width: 10px;">
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
@@ -2050,6 +2050,26 @@ $(document).on("click",".closeIcon",function(){
 $(document).on("click","#uploadFileId0",function(){
 	$(".clearFileCls").show();
 });
+function refreshMeetingStatus(){
+	getinsertDataInToPartyMeetingStatus();
+}
+function getinsertDataInToPartyMeetingStatus(){
+	  $("#partyMettingStatusIdImg").show();
+		$.ajax({
+			type : 'POST',
+			url : 'insertDataInToPartyMeetingStatusTableAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#partyMettingStatusIdImg").hide();
+			if(result != null && result.message == "success" ){
+				$("#partyMettingStatusId").html("updated  partyMettings status")
+			}else{
+				$("#partyMettingStatusId").html("Exception Occurred Please Try again")
+			}
+			
+		});	
+	}
 </script>
 </body>
 </html>

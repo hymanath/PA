@@ -1763,7 +1763,8 @@
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
-									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
+									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
+									<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
@@ -4079,6 +4080,9 @@ manageHeader();
 
 function refreshMeeting(){
 	getSpecialMeetingsByMeetingType();
+}
+function refreshMeetingStatus(){
+	getinsertDataInToPartyMeetingStatus();
 }
  
 </script> 
