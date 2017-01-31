@@ -24,7 +24,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.google.gdata.data.introspection.Collection;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -53,7 +52,6 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.dto.ToursNewVO;
@@ -2786,7 +2784,8 @@ public class ToursService implements IToursService {
 							
 							
 							//Location Address Saving								
-							saveUserLocationsOfTour(innerTourVo.getCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId());									
+							//saveUserLocationsOfTour(innerTourVo.getCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId());
+							saveUserLocationsOfTour1(innerTourVo.getCandidateId(),innerTourVo.getTourCategoryId(),selfAppraisalCandidateDetails.getSelfAppraisalCandidateDetailsNewId(),innerTourVo.getTourTypeId());
 							
 						}
 					//}
@@ -2909,7 +2908,7 @@ public class ToursService implements IToursService {
     	    			vo.setCategoryId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
     	    			vo.setCategory(commonMethodsUtilService.getStringValueForObject(objects2[3]));
     	    			vo.setTourTypeId(commonMethodsUtilService.getLongValueForObject(objects2[4]));
-    	    			vo.setComment(commonMethodsUtilService.getStringValueForObject(objects2[5]));
+    	    			vo.setComment(commonMethodsUtilService.getStringValueForObject(objects2[5]));//tourType
     	    			vo.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects2[6]));
     	    			vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects2[7]));
     	    			
@@ -2942,6 +2941,7 @@ public class ToursService implements IToursService {
 	    	    					//tourVo.setDesignation(commonMethodsUtilService.getStringValueForObject(obj[2]));
 	    	    					tourVo.setTourDays(commonMethodsUtilService.getLongValueForObject(obj[6]));
 	    	    					tourVo.setTourDate(commonMethodsUtilService.getStringValueForObject(obj[7]));
+	    	    					tourVo.setDetailsNewId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 	    	    				}
 	    					}
 						}
@@ -2971,4 +2971,26 @@ public class ToursService implements IToursService {
 			}
 			return null;
 	}
+	public void saveUserLocationsOfTour1(Long candidateId,Long categoryId,Long detailsId,Long tourTypeId){
+    	try{    		    	
+    		//0.addressId,1.locationScopeId,2.locationValue
+    		List<Object[]> locations = selfAppraisalCandidateLocationNewDAO.getLocationValuesOfCandidate1(candidateId,categoryId,tourTypeId);
+    		if(locations !=null && locations.size()>0){    			
+    			for (Object[] obj : locations) {
+    				
+    				SelfAppraisalCandidateDetailsLocation selfAppraisalCandidateDetailsLocation = new SelfAppraisalCandidateDetailsLocation();
+    				
+    				selfAppraisalCandidateDetailsLocation.setAddressId(obj[0] !=null ? (Long)obj[0]:null);
+    				selfAppraisalCandidateDetailsLocation.setLocationScopeId(obj[1] !=null ? (Long)obj[1]:null);
+    				selfAppraisalCandidateDetailsLocation.setLocationValue(obj[2] !=null ? (Long)obj[2]:null);
+    				
+    				selfAppraisalCandidateDetailsLocation.setSelfAppraisalCandidateDetailsNewId(detailsId);
+    				
+    				selfAppraisalCandidateDetailsLocationDAO.save(selfAppraisalCandidateDetailsLocation);    				
+				}    			
+    		}    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in saveUserLocationsOfTour() in ToursService class ", e);
+    	}
+    }
 }
