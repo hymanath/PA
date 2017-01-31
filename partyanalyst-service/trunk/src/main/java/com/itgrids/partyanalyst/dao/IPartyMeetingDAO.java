@@ -52,4 +52,9 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,
 			List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel,String mayBe);
 	public List<Object[]> getThirdPartyStatusDetails(List<Long> partyMeetingIds);
+	public List<Object[]> totalMeetingsInConstituencyLevelWise(int month , int year);
+	public List<Object[]> notConductedMeetingsInConstituencyLevelWise(int month , int year);
+	public List<Object[]> notConductedMeetingsInConstituency(int month , int year);
+	public List<Object[]> getConstWiseNotConductedPartyMeetings(int month , int year);
+	public List<Object[]> getConstInchargeTeluguNames();
 }
