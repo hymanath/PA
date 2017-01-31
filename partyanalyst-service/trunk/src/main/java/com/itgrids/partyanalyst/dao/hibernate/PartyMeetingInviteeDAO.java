@@ -1857,4 +1857,17 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		return query.list();  
 	}
     
+    @SuppressWarnings("unchecked")
+    public List<Object[]> getObsentReasonList(Long partyMeetingId){
+        StringBuilder sb = new StringBuilder();
+        sb.append("select distinct model.tdpCadreId, model.absenteeRemark from PartyMeetingInvitee model where model.partyMeetingId = :partyMeetingId");
+        Query query = getSession().createQuery(sb.toString());
+        query.setParameter("partyMeetingId", partyMeetingId);
+        return query.list();
+    /*StringBuilder sb = new StringBuilder();
+    	sb.append("select model.tdpCadreId, model.absenteeRemark from PartyMeetingInvitee model where model.partyMeetingId = 479287");
+    	Query query = getSession().createQuery(sb.toString());
+    	return query.list();*/	
+    }
+    
 }  
