@@ -63,10 +63,11 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private ToursBasicVO toursBasicVO;
 	   private List<ToursVO> toursVOListNew;
 	   
-	   private ToursNewVO toursNewVO;
+	   private ToursNewVO toursNewVO = new ToursNewVO();
 	   
 	   
-	   public ToursNewVO getToursNewVO() {
+
+	public ToursNewVO getToursNewVO() {
 		return toursNewVO;
 	}
 	public void setToursNewVO(ToursNewVO toursNewVO) {
