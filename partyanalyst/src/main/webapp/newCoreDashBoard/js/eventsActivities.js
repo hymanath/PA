@@ -1825,6 +1825,7 @@ function buildDistrictsForActivityCounts(result){
 	   // $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
 }
 function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchType,refresh,acvtyNm,levlNm,loctnNm){
+	
 	$("#locatnNamId").text('');
 	if(activityScopeId == 0){
 		var t = type.split("-");
@@ -1862,14 +1863,14 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		//if(result != null && result.length > 0){
-			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType);
+			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId);
 		//}else{
 		//		$("#activityId").html('<div style="text-align: center;font-weight:bold;" > No data available...</div>');
 		//}
 	});
 }
 
-function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType){
+function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId){
 	var str = '';
 	var notUpdatedCount ;
 	 if(refresh == "onload"){
@@ -1914,7 +1915,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
   str+='<tbody>';
   for(var i in result){
   str +='<tr>';
-    str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+	str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
 	if((globalActivityLvlId != 1 || searchType != "villageWard") && (globalActivityLvlId != 1 ||  searchType != "onlyvillage")){
 		str +='<td>'+result[i].attendedCount+'</td>';
 	}
@@ -1961,7 +1962,11 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 		str +='<td>  1  </td>';
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
-	str +='<td>'+result[i].totalImages+'</td>';
+	str +='<td>'+result[i].totalImages;
+	if(result[i].totalImages > 0){
+		str +='<i class="getPopUpImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].id+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_search_type="'+searchType+'"title="View Images"></i>';
+	}
+	str +='</td>';
 	  str +='</tr>';
   }
   str+='</tbody>';
@@ -2879,7 +2884,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 {
 	$("#popupImages").html('');
 	var str ='';
-
+	$('.slider-for,.slider-nav').slick('unslick');
 	if(result != null)
 	{
 	
@@ -3147,15 +3152,16 @@ function buildConstituencyList(result,distId,activityLevelId)
 	}
 	str+='</div>';
 	$("#constituenciesBlock"+distId).html(str);
+	
 }
 $(document).on("click",".mandalPopups",function(){
 	var constituencyId = $(this).attr("attr_consId");
 	var activityLevelId = $(this).attr("attr_activity_level_id");
-	var num = $(this).attr("attr_num");
-	getMandalOrMuncList(constituencyId,activityLevelId,num);
+	getMandalOrMuncList(constituencyId,activityLevelId,0,"");
 });
 
-function getMandalOrMuncList(constituencyId,activityLevelId,num){
+function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
+	
 	$("#mandalsBlock"+constituencyId).html('');
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
@@ -3170,12 +3176,15 @@ function getMandalOrMuncList(constituencyId,activityLevelId,num){
 	});
 	
 	$("#mandalsBlock"+constituencyId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	
-	$("#collapseOneModalCons"+num).addClass("in");
-	
-	var scopeId = $("#hiddenActivityScopeId").val();
+	var activtyScopeId;
+	if(scopeId !=null && scopeId.length > 0){
+		activtyScopeId = scopeId;
+	}else{
+		activtyScopeId = $("#hiddenActivityScopeId").val();
+	}
+	//var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:scopeId,
+		activityScopeId:activtyScopeId,
 		constituencyId : constituencyId
 	};
 		
@@ -3185,12 +3194,12 @@ function getMandalOrMuncList(constituencyId,activityLevelId,num){
 	 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0 )
-		buildMandalOrMuncList(result,constituencyId,activityLevelId)
+		buildMandalOrMuncList(result,constituencyId,activityLevelId,value,scopeId);
 	else
 		$("#mandalsBlock"+constituencyId).html("No Data Available.");
 	});
 }
-function buildMandalOrMuncList(result,constituencyId,activityLevelId)
+function buildMandalOrMuncList(result,constituencyId,activityLevelId,value,scopeId)
 {
 	var str='';
 	str+='<div class="panel-group" id="accordionModalMandal'+constituencyId+'" role="tablist" aria-multiselectable="true">';
@@ -3199,11 +3208,11 @@ function buildMandalOrMuncList(result,constituencyId,activityLevelId)
 	  str+='<div class="panel panel-default panel-custommodal">';
 		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModalMandal'+i+'">';
 		if(activityLevelId == 1){
-			str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
+			str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'" attr_scopeId="'+scopeId+'"  href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
 			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 		  str+='</a>';
 		}else{
-			 str+='<a role="button" class="panchayatPopups" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">'; 
+			 str+='<a role="button" class="panchayatPopups accordionmodal-toggle" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'"  attr_scopeId="'+scopeId+'" href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">'; 
 			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 		  str+='</a>';
 		}
@@ -3214,14 +3223,22 @@ function buildMandalOrMuncList(result,constituencyId,activityLevelId)
 	  str+='</div>';
 	}
 	str+='</div>';
-	$("#mandalsBlock"+constituencyId).html(str);
+	if(value == 0){
+		$("#mandalsBlock"+constituencyId).html(str);
+	}else{
+		$("#mandalsUlId").html(str);
+	}
+	
 }
 $(document).on("click",".panchayatPopups",function(){
 	var mandalId = $(this).attr("attr_mandalId");
-	getPanchayatList(mandalId)
+	var scopeId = $(this).attr("attr_scopeId");
+	var hrefRef = $(this).attr("href");
+	$(hrefRef).collapse('toggle');
+	getPanchayatList(mandalId,scopeId,0);
 });
 
-function getPanchayatList(mandalId){
+function getPanchayatList(mandalId,scopeId,value){
 	$("#panchayatBlock"+mandalId).html('');
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
@@ -3236,9 +3253,16 @@ function getPanchayatList(mandalId){
 	});
 	
 	$("#panchayatBlock"+mandalId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	var scopeId = $("#hiddenActivityScopeId").val();
+	var activtyScopeId;
+	if(scopeId != null && scopeId.length > 0){
+		activtyScopeId = scopeId;
+	}else{
+		activtyScopeId = $("#hiddenActivityScopeId").val();
+	}
+	
+	//var scopeId = $("#hiddenActivityScopeId").val();
 	var jObj = {
-		activityScopeId:scopeId,
+		activityScopeId:activtyScopeId,
 		mandalOrMuncipalityId : mandalId
 	};
 	
@@ -3247,10 +3271,10 @@ function getPanchayatList(mandalId){
 	  url: 'getPanchayatOrWardListAction.action',
 	 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		buildPanchayatList(result,mandalId)
+		buildPanchayatList(result,mandalId,value);
 	});
 }
-function buildPanchayatList(result,mandalId)
+function buildPanchayatList(result,mandalId,value)
 {
 	var str='';
 	if(result !=null && result.length > 0){
@@ -3260,9 +3284,15 @@ function buildPanchayatList(result,mandalId)
 			str+='<li><a class="villagePopup" attr_villageId="'+result[i].panchayatId+'" style="cursor:pointer;">'+result[i].name+'('+result[i].count+')</a></li>';
 		}
 	 str+='</ul>';
-	$("#panchayatBlock"+mandalId).html(str);
+	 if(value == 0)
+		 $("#panchayatBlock"+mandalId).html(str);
+	 else
+		 $("#villageUlId").html(str);
 	}else{
-		$("#panchayatBlock"+mandalId).html("No Data Available.");
+		 if(value == 0)
+			$("#panchayatBlock"+mandalId).html("No Data Available.");
+		else
+		 $("#villageUlId").html("No Data Available.");
 	}
 }
 $(document).on("click",".villagePopup",function(){
@@ -4053,4 +4083,72 @@ $(document).on("click",".subLevelActivityMemberCls",function(){
 	      getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,"activities");
 		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"activities");
 	}
+});
+$(document).on("click",".ConstImagesClose",function(){
+	$(this).removeClass("ConstImagesClose");
+	setTimeout(function(){
+		$("body").addClass("modal-open");
+	},400)
+});
+$(document).on("click",".getPopUpImagesCls",function(){
+	$(".imagesModalClose").addClass("ConstImagesClose");
+	$('#imagesModalDivId').modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	var attr_activity_scopeid = $(this).attr("attr_scope_id");
+	var activityLevelId = $("#hiddenActivityLevelId").val();
+	var cnstitncyId = $(this).attr("attr_constituency_id");
+	alert(cnstitncyId);
+	var searchType = $(this).attr("attr_search_type");
+	var value = $(this).attr("attr_value");
+	if(searchType == "constituency"){
+		getMandalOrMuncList(cnstitncyId,1,value,attr_activity_scopeid);
+	}else if(searchType == "mandal"){
+		getPanchayatList(cnstitncyId,attr_activity_scopeid,value);
+	}/* else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
+		str +='<th class="text-capital">Village/Ward name</th>';
+	} */
+	
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-9">';
+				str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+					str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
+					  
+					  str+='</ul>';
+					str+='</div>';
+				str+='</nav>';
+				str+='<div class="bg_CC pad_10" id="popupImages">';
+					
+				str+='</div>';
+				str+=' <div id="paginationDivId"></div>';
+			str+='</div>';
+			str+='<div class="col-md-3" style="box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);padding:0px">';
+			if(searchType == "constituency")
+				str+='<div id="mandalsUlId"></div>';
+			else if(searchType == "mandal")
+				str+='<div id="villageUlId"></div>';
+			str+='</div>';
+		str+='</div>';
+	$("#buildImagesId").html(str);
+		
+//buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
+//getAvailableDates(globallocationScope,globallocationValue,day,path);
+if(searchType == "constituency"){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
+	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId);
+}else if(searchType == "mandal"){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
+	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId);
+}
+
 });
