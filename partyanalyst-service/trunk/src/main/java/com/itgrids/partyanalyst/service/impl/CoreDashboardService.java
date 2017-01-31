@@ -1650,7 +1650,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 			if(!commonMethodsUtilService.isListOrSetValid(planedList))
 				planedList = new ArrayList<Object[]>(0);
 				planedList.addAll(list1);
-			setDataToVO(planedList,returnList,"planned");
+			setDataToVO(planedList,returnList,"planned",searchType);
 			
 		List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null);
 		list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null);
@@ -1658,14 +1658,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 			if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
 				condtdcList = new ArrayList<Object[]>(0);
 				condtdcList.addAll(list1);
-			setDataToVO(condtdcList,returnList,"infocell");
+			setDataToVO(condtdcList,returnList,"infocell",searchType);
 		List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null);
 		list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null);
 		if(commonMethodsUtilService.isListOrSetValid(list1))
 			if(!commonMethodsUtilService.isListOrSetValid(ivrList))
 				ivrList = new ArrayList<Object[]>(0);
 				ivrList.addAll(list1);
-			setDataToVO(ivrList,returnList,"ivr");
+			setDataToVO(ivrList,returnList,"ivr",searchType);
 			
 			
 			
@@ -1903,6 +1903,27 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 	        	  
 	          }
+	          
+	          if(returnList != null && returnList.size() > 0){
+	        	  for (EventDetailsVO vo : returnList) {
+	        		 if(vo.getType() != null && vo.getType().equalsIgnoreCase("mandal")){
+	      				Long id = vo.getId();
+	      				vo.setId(Long.valueOf("2"+id));
+	      			}else  if(vo.getType() != null && vo.getType().equalsIgnoreCase("town")){
+	      				Long id = vo.getId();
+	      				vo.setId(Long.valueOf("1"+id));
+	      			}else if(vo.getType() != null && vo.getType().equalsIgnoreCase("village")){
+	      				Long id = vo.getId();
+	      				vo.setId(Long.valueOf("1"+id));
+	      			}else if(vo.getType() != null && vo.getType().equalsIgnoreCase("ward")){
+	      				Long id = vo.getId();
+	      				vo.setId(Long.valueOf("2"+id));
+	      			}else if(vo.getType() != null && vo.getType().equalsIgnoreCase("onlyvillage")){
+	      				Long id = vo.getId();
+	      				vo.setId(Long.valueOf("1"+id));
+	      			}
+				}
+	          }
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occurred at getDistrictWiseActivityCounts() of CoreDashboardService", e);
@@ -1933,7 +1954,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 	}
 	
-	public void setDataToVO(List<Object[]> planedList,List<EventDetailsVO> returnList,String type){
+	public void setDataToVO(List<Object[]> planedList,List<EventDetailsVO> returnList,String type,String searchType){
 		
 		try{
 			
@@ -1946,6 +1967,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 						returnList.add(vo);
 					}
 					
+					vo.setType(searchType);	
 					vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
 					String electionType= obj[4] != null ? obj[4].toString():"";
 					vo.setName(obj[1] != null ? obj[1].toString()+ "  "+electionType : "");
