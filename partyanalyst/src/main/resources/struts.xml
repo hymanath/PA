@@ -15377,6 +15377,13 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	
+	<action name="getConstituencyListAction2" class="dataMonitoringAction"  method="getConstituencyList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	
 	<action name="boothWiseDataMonitoringAction" class="dataMonitoringAction" method="boothWiseDataMonitoring">
 		<result name="success">/jsp/boothWiseDataMonitoring.jsp</result>  
 	</action>
