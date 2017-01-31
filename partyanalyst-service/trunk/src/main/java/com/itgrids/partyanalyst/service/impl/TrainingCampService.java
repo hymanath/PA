@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDocumentsDAO;
@@ -118,6 +119,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.PartyMeetingStatus;
 import com.itgrids.partyanalyst.model.PartyMeetingUpdationDetails;
 import com.itgrids.partyanalyst.model.PartyMeetingUpdationDocuments;
 import com.itgrids.partyanalyst.model.TrainingCamp;
@@ -221,9 +223,19 @@ class TrainingCampService implements ITrainingCampService{
 	private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private IPartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
+	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	
 	
-    public IPartyMeetingUpdationDocumentsDAO getPartyMeetingUpdationDocumentsDAO() {
+	public IPartyMeetingStatusDAO getPartyMeetingStatusDAO() {
+		return partyMeetingStatusDAO;
+	}
+
+	public void setPartyMeetingStatusDAO(
+			IPartyMeetingStatusDAO partyMeetingStatusDAO) {
+		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
+	}
+
+	public IPartyMeetingUpdationDocumentsDAO getPartyMeetingUpdationDocumentsDAO() {
 		return partyMeetingUpdationDocumentsDAO;
 	}
 
@@ -11361,6 +11373,25 @@ public String saveFinalizedMeetingDetails(final Long partyMeetingId,final String
 							
 							partyMeetingUpdationDocumentsDAO.save(partyMeetingUpdationDocuments);
 		    			}
+					}
+					
+					PartyMeetingStatus partyMeetingStatus = partyMeetingStatusDAO.getObjectByPartyMeetingId(partyMeetingId);
+					if(partyMeetingStatus != null){
+						partyMeetingStatus.setThirdPartyStatus(statusId);
+						partyMeetingStatus.setMettingStatus(statusId);
+						partyMeetingStatusDAO.save(partyMeetingStatus);
+					}
+					else{
+						partyMeetingStatus = new PartyMeetingStatus();
+						
+						partyMeetingStatus.setPartyMeetingId(partyMeetingId);
+						partyMeetingStatus.setPartyOfficeStatus(obj.getIsConducted());
+						partyMeetingStatus.setIvrStatus(obj.getIsConductedByIvr());
+						partyMeetingStatus.setThirdPartyStatus(statusId);
+						partyMeetingStatus.setMettingStatus(statusId);
+						partyMeetingStatus.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						partyMeetingStatusDAO.save(partyMeetingStatus);
 					}
 			}
 		});
