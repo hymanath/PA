@@ -144,5 +144,10 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	    query.setParameter("tdpCadreId", tdpCadreId);
 	    return query.list();
   }
+  public Long getTdpCadreId(Long selfAppraisalCandiateId){
+	  Query query = getSession().createQuery("select model.tdpCadreId from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalCandidateId=:selfAppraisalCandiateId ");
+	  query.setParameter("selfAppraisalCandiateId", selfAppraisalCandiateId);
+	  return (Long)query.uniqueResult();
+  }
   
 }
