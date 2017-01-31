@@ -74,6 +74,17 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String isInvitee;
 	private List<String> attendedTimeList;
 	private List<String> attendedDateList;
+	private String remark;
+	
+	 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
 		return o2.getOrderId().compareTo(o1.getOrderId());
