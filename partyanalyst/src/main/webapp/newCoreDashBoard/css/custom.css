@@ -2430,3 +2430,12 @@ color: rgb(51, 122, 183);
 #alertOverview td{
 	padding:8px 2px !important;
 }
+.villageDaysModal
+{
+	padding:0px;
+}
+.villageDaysModal li
+{
+	list-style:none;
+	padding:5px 8px;
+}
