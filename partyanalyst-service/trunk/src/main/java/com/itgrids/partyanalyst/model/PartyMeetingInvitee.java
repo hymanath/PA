@@ -40,6 +40,7 @@ public class PartyMeetingInvitee extends BaseModel implements Serializable{
 	private Long publicRepresentativeId;
 	private Long insertedById;
 	private Long updatedById;
+	private String absenteeRemark;
 	
 	public PartyMeetingInvitee(){}
 
@@ -175,6 +176,15 @@ public class PartyMeetingInvitee extends BaseModel implements Serializable{
 
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
+	}
+
+	@Column(name="absentee_remark")
+	public String getAbsenteeRemark() {
+		return absenteeRemark;
+	}
+
+	public void setAbsenteeRemark(String absenteeRemark) {
+		this.absenteeRemark = absenteeRemark;
 	}
 	
 	

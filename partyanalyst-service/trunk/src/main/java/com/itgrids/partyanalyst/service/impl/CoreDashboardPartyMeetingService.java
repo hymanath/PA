@@ -3514,6 +3514,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			
 			List<Object[]> attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingIdForSession(inputVO);
 			
+			
 			/*List<Object[]> attenddList = partyMeetingInviteeDAO.getWithoutSessionDistrictWiseAttendedCountForPartyMeetingIdForSession(inputVO);
 			if(commonMethodsUtilService.isListOrSetValid(attenddList)){
 				if(!commonMethodsUtilService.isListOrSetValid(attendedList)){
@@ -3527,6 +3528,14 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			}
 			if(!commonMethodsUtilService.isListOrSetValid(attendedList)){
 				 attendedList = partyMeetingInviteeDAO.getDistrictWiseAttendedCountForPartyMeetingIdForWithoutSession(inputVO);
+			}
+			
+			Map<Long, String> absentCandidateMap = new HashMap<Long, String>();
+			List<Object[]> absentList = partyMeetingInviteeDAO.getObsentReasonList(partyMeetingId);
+			if(absentList!= null && absentList.size()>0){
+				for(Object[] param : absentList){
+					absentCandidateMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
 			}
 			
 			inputVO.setDistId(0L);
@@ -4032,6 +4041,11 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					if(totalInviteesCadreList.contains(vo.getId())){
 						vo.setIsInvitee("true");
 					}  
+					
+					if(commonMethodsUtilService.isMapValid(absentCandidateMap)){
+						if(absentCandidateMap.get(vo.getId()) != null)
+							vo.setRemark(absentCandidateMap.get(vo.getId()));
+					}
 				}
 			}
 			return idNameVOs;  
