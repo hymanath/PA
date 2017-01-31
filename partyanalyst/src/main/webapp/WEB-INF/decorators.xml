@@ -731,5 +731,6 @@
 		<pattern>/boothWiseDataMonitoringAction*</pattern>
 		<pattern>/finalizedPartyMeetingConductedAction*</pattern>
 		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
+		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
 	</decorator> 
 </decorators>
