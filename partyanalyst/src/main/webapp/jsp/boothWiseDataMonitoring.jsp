@@ -216,7 +216,7 @@ function getConstituencies(districtId){
 	}
 	$.ajax({
 		type : 'GET',
-		url : 'getConstituencyListAction.action',
+		url : 'getConstituencyListAction2.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
