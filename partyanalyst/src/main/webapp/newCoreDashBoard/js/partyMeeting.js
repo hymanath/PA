@@ -5317,4 +5317,20 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			}   
 		});
 	}    
-	
+  function getinsertDataInToPartyMeetingStatus(){
+	  $("#partyMettingStatusIdImg").show();
+		$.ajax({
+			type : 'POST',
+			url : 'insertDataInToPartyMeetingStatusTableAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#partyMettingStatusIdImg").hide();
+			if(result != null && result.message == "success" ){
+				$("#partyMettingStatusId").html("updated  partyMettings status")
+			}else{
+				$("#partyMettingStatusId").html("Exception Occurred Please Try again")
+			}
+			
+		});	
+	}
