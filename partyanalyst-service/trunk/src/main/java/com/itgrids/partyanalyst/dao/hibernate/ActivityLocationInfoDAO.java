@@ -1522,7 +1522,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		return query.list();
 	}
 	
-	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,Long stateId){
+	public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,Long stateId,String type){
 		 StringBuilder queryStr = new StringBuilder();		
 	      queryStr.append("select model.activityScope.activityScopeId," +
 												" count(model.activityLocationInfoId),"); 
@@ -1539,8 +1539,27 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 												" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
 												" model.activityScope.activityId in (:activityIdsLst)  " +
 												" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) " +
-												" and ( model.conductedDate is not null or model.ivrStatus='Y') "); 
+												"  "); 
 	     
+	      if(type != null && !type.isEmpty()){
+	    	if(type.equalsIgnoreCase("yes")){
+	    		queryStr.append(" and ( (model.conductedDate is not null and  model.ivrStatus='Y' ) OR" +
+	    				"  ( model.conductedDate is not null and model.ivrStatus is null ) OR " +
+	    				"  ( model.conductedDate is null and model.ivrStatus='Y' ) ) ");
+	    	}
+	    	else if(type.equalsIgnoreCase("no")){
+	    		queryStr.append(" and ( (model.conductedDate is null and model.ivrStatus='N' )  OR " +
+	    				" ( model.conductedDate is null and model.ivrStatus is null )  ) ");
+	    	}
+	    	else if(type.equalsIgnoreCase("maybe")){
+	    		queryStr.append(" and ( (model.conductedDate is not null and model.ivrStatus='N' )  OR " +
+	    				" ( model.conductedDate is not null and model.ivrStatus ='N' )  ) ");
+	    	}
+	      }
+	      else{
+	    	  queryStr.append(" and ( model.conductedDate is not null or model.ivrStatus='Y') ");
+	      }
+	      
 	      if(stateId != null && stateId.longValue() == 1l){
 				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
