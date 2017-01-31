@@ -82,9 +82,12 @@
 	
 });
 
-$(document).on("click",".moreEventsBlocksIcon",function(){	
+$(document).on("click",".moreEventsBlocksIcon",function(){
+	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
+	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");
 	var type=$(this).attr("attr_type");
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
+	$("#eventsCmpBlckDivId").find("ul li").attr("attr_event_idsString",attrEventIdsString)	
 	if(type != null && type=="event"){
 	$("#activitesCmpBlockDivId").hide();
 	$("#activtyBlckDivId").hide();
@@ -97,6 +100,41 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	}else{
 		$("#activitesCmpBlockDivId").hide();
 		// activity functionality		
+	}
+});
+$(document).on("click","#eventsCmpBlckDivId ul li",function(){
+	var typeId = $(this).attr("attr_typeId");
+	var type = $(this).attr("attr_type");
+	if(type == 'events')
+	{
+		//alert('events')
+		if(typeId == 1)
+		{
+			alert('events detailed')
+			$(".detailedBlockEvents").show();
+			$(".comparisonBlockEvents").hide();
+			//var type=$(this).attr("attr_type");
+			var attrEventIdsString=$(this).attr("attr_event_idsString");
+			getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString);
+			getSelectedEventDetails(attrEventIdsString);	
+		}else if(typeId == 2)
+		{
+			//alert('events comparison')
+			$(".comparisonBlockEvents").show();
+			$(".detailedBlockEvents").hide();
+			//var type=$(this).attr("attr_type");
+			var attrEventIdsString=$(this).attr("attr_event_idsString");
+			getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString,"events");
+		}
+	}else if(type == 'activities')
+	{
+		//alert('activites')
+		if(typeId == 1)
+		{
+			//alert('activities detailed')
+		}else if(typeId == 2){
+			//alert('activities comparison')
+		}
 	}
 });
 $(document).on("click",".activitesExpandIcon",function(){
@@ -156,7 +194,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	}
 });
-$(document).on("click",".detailedEvent",function(){
+/* $(document).on("click",".detailedEvent",function(){
 	$(".detailedBlockEvents").show();
 	$(".comparisonBlockEvents").hide();
 	//var type=$(this).attr("attr_type");
@@ -171,7 +209,7 @@ $(document).on("click",".comparisonEvent",function(){
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
 	getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString,"events");
 });
-
+ */
 $(document).on("click",".eventStrngPrCls",function(){
 	var selectedType = $(this).attr("attr_selected_type");
 	var memberType=$(this).attr("attr_value");
@@ -1856,7 +1894,8 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	}
 
 	//str +='<th class="text-capital">Planned</th>';
-	str +='<th class="text-capital">conducted</th>';
+	if(searchType == "constituency" ||  searchType == "mandal")
+		str +='<th class="text-capital">conducted</th>';
 	str +='<th class="text-capital">Yes</th>';
 	str +='<th class="text-capital">No</th>';
 	str +='<th class="text-capital">Maybe</th>';
@@ -1875,16 +1914,46 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 		str +='<td>'+result[i].attendedCount+'</td>';
 	}
 	//str +='<td>'+result[i].inviteeCount+'</td>';
-	str +='<td>'+result[i].conductedCount+'</td>';
-	str +='<td>'+result[i].yesCount+'</td>';
-	str +='<td>'+result[i].noCount+'</td>';
-	str +='<td>'+result[i].mayBeCount+'</td>';
+	if(searchType == "constituency" ||  searchType == "mandal"){
+		if(parseInt(result[i].conductedCount) > parseInt(result[i].attendedCount))
+			str +='<td>'+result[i].attendedCount+'</td>';
+		else if(parseInt(result[i].attendedCount) == 1)
+			str +='<td>'+result[i].attendedCount+'</td>';
+		else
+			str +='<td>'+result[i].conductedCount+'</td>';
+	}
+	
+	if(parseInt(result[i].inviteeNotAttendedCount) == 0 || parseInt(result[i].inviteeNotAttendedCount) == 0){
+		
+	if(parseInt(result[i].attendedCount) > 1)
+		str +='<td> 0 </td>';
+	else
+		str +='<td>  1  </td>';
+	
+		str +='<td> 0 </td>'; 
+		str +='<td> 0 </td>'; 
+	}else{
+		str +='<td>'+result[i].yesCount+'</td>';
+		str +='<td>'+result[i].noCount+'</td>';
+		str +='<td>'+result[i].mayBeCount+'</td>';
+	}
+	
+	if(searchType == "constituency" ||  searchType == "mandal")
 		notUpdatedCount = result[i].attendedCount-result[i].conductedCount;
+	else
+		notUpdatedCount = result[i].inviteeCount-result[i].conductedCount;
+	
 	if(notUpdatedCount < 0 )
 		str +='<td> 0 </td>'; 
-	else
+	else if(parseInt(result[i].attendedCount) == 1)
+		str +='<td>  0 </td>';
+	else 
 		str +='<td>'+notUpdatedCount+'</td>'; 
-	str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
+	
+	if(parseInt(result[i].attendedCount) > 1)
+		str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
+	else
+		str +='<td>  1  </td>';
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
 	str +='<td>'+result[i].totalImages+'</td>';
@@ -2117,8 +2186,10 @@ $(document).on("click",".activityCountCls",function(){
 	}
 }); */
 $(document).on("click",".acitivitiesMoreExpand",function(){
+	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","activities")
+	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");
 	$("#activitesCmpBlockDivId").show();
-	$("#eventsCmpBlckDivId").hide();
+	$(".moreEventsBlocks").show();
 	$(this).removeClass("acitivitiesMoreExpand");
 	$(".moreActivitiesBlocks").toggle();
 	var activityId = $("#hiddenActivityId").val();
