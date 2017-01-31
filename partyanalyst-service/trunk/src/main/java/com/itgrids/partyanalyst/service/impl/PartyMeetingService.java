@@ -56,7 +56,9 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -120,6 +122,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IPartyMeetingMinuteTrackingDAO partyMeetingMinuteTrackingDAO;
 	private IUserAddressDAO	userAddressDAO;
+	private DateUtilService dateUtilService;
 	
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
@@ -338,6 +341,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+	
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
 	}
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
@@ -4202,4 +4209,202 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return voList;
 	}
+	
+	/////////
+	public List<PartyMeetingDataVO> constituencyWisePartyMeetingDetails(int month , int year){
+		
+		List<PartyMeetingDataVO> finalList = new ArrayList<PartyMeetingDataVO>();
+		 
+		try{
+			 Map<Long,PartyMeetingDataVO> finalMap = new LinkedHashMap<Long,PartyMeetingDataVO>();
+			 
+			 List<Object[]> totalCountsList = partyMeetingDAO.totalMeetingsInConstituencyLevelWise(month,year);
+			 List<Object[]> notConductedCountsList = partyMeetingDAO.notConductedMeetingsInConstituencyLevelWise(month,year);
+			 List<Object[]> notConductedDetailsList = partyMeetingDAO.notConductedMeetingsInConstituency(month,year);
+			 
+			 //setting total meetings level wise for constituency.
+			 if(totalCountsList != null && totalCountsList.size() > 0){
+				 for(Object[] obj : totalCountsList){
+					 if(obj[0] != null && obj[2] != null){
+						 if(!finalMap.containsKey((Long)obj[0])){
+							 PartyMeetingDataVO constVO = new PartyMeetingDataVO((Long)obj[0],obj[1] != null ? obj[1].toString() : "");
+							 constVO.setSubMap(new LinkedHashMap<Long, PartyMeetingDataVO>());
+							 finalMap.put((Long)obj[0], constVO);
+						 }
+						 PartyMeetingDataVO constVO = finalMap.get((Long)obj[0]);
+						 PartyMeetingDataVO levelVO = new PartyMeetingDataVO((Long)obj[2],obj[3] != null ? obj[3].toString() : "");
+						 levelVO.setTotalMeetings(obj[4]!=null?(Long)obj[4]:0l);
+						 levelVO.setConductedMeetings(levelVO.getTotalMeetings());
+					     constVO.getSubMap().put((Long)obj[2], levelVO);
+					 }
+				 }
+			 }
+			 
+			//setting not conducted meetings level wise for constituency.
+			 if(notConductedCountsList != null && notConductedCountsList.size() > 0){
+				 for(Object[] obj : notConductedCountsList){
+					 if(obj[0] != null && obj[1] != null){
+						 if(finalMap.containsKey((Long)obj[0])){
+							 PartyMeetingDataVO constVO = finalMap.get((Long)obj[0]);
+							 if(constVO.getSubMap().containsKey((Long)obj[2])){
+								 PartyMeetingDataVO levelVO = constVO.getSubMap().get((Long)obj[2]);
+								 levelVO.setNotConductedMeetings(levelVO.getTotalMeetings() - levelVO.getConductedMeetings());
+							 }
+						 }
+					 }
+				 }
+			 }
+			 
+			 //not conducted meetings details.
+			 if(notConductedDetailsList != null && notConductedDetailsList.size() > 0){
+				 for(Object[] obj : notConductedCountsList){
+					 if(obj[0] != null && obj[1] != null){
+						 if(finalMap.containsKey((Long)obj[0])){
+							 PartyMeetingDataVO constVO = finalMap.get((Long)obj[0]);
+							 if(constVO.getSubMap().containsKey((Long)obj[1])){
+								 PartyMeetingDataVO levelVO = constVO.getSubMap().get((Long)obj[1]);
+								 
+								 PartyMeetingDataVO meetingVO = new PartyMeetingDataVO();
+								 meetingVO.setPartyMeetingId(obj[3]!=null?(Long)obj[3]:0l);
+								 meetingVO.setPartyMeetingName(obj[4]!=null?obj[4].toString():"");
+								 meetingVO.setRemarks(obj[8]!=null?obj[8].toString():"");
+								 if(levelVO.getMeetingsList() == null){
+									 levelVO.setMeetingsList(new ArrayList<PartyMeetingDataVO>());
+								 }
+								 levelVO.getMeetingsList().add(meetingVO);
+							 }
+						 }
+					 }
+				 }
+			 }
+			 
+			
+			 if(finalMap != null && finalMap.size() > 0){
+				 for(Map.Entry<Long, PartyMeetingDataVO> constEntry : finalMap.entrySet()){
+					 if(constEntry.getValue() != null && constEntry.getValue().getSubMap() != null && constEntry.getValue().getSubMap().size() > 0){
+						 constEntry.getValue().setLevelList(new ArrayList<PartyMeetingDataVO>(constEntry.getValue().getSubMap().values()));
+						 constEntry.getValue().getSubMap().clear();
+					 }
+				 }
+				 finalList.addAll(finalMap.values());
+			 }
+			 
+		}catch(Exception e){
+			LOG.error("Exception raised at constituencyWisePartyMeetingDetails", e);
+		}
+		return finalList;
+	}
+	
+	//GET CONSTITUENCY WISE NOT CONDUCTED MEETINGS .
+	public List<MeetingsVO> getConstWiseNotConductedPartyMeetings(int month , int year){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		List<MeetingsVO> finalList = null;
+	  try{
+		   String currentDateString  = sdf.format(dateUtilService.getCurrentDateAndTime());
+		   
+		   //get constituency and district telugu names
+		   List<Object[]> constDistNamesList = constituencyDAO.getAssemblyConstituencyTeluguNames();
+		   Map<Long ,MeetingsVO > constDistTeluguNamesMap = new HashMap<Long, MeetingsVO>();
+		   if(constDistNamesList != null && constDistNamesList.size() > 0){
+			   for(Object[] obj : constDistNamesList){
+				   MeetingsVO constVO = new MeetingsVO();
+				   constVO.setConstituencyId((Long)obj[0]);
+				   constVO.setConstituency(obj[1]!=null ?obj[1].toString() :"");
+				   constVO.setDistrict(obj[2]!=null ?obj[2].toString() :"");
+				   constDistTeluguNamesMap.put((Long)obj[0], constVO);
+			   }
+		   }
+		   
+		   //get incharge names for a constituency.
+		   List<Object[]> constInchargeNames = partyMeetingDAO.getConstInchargeTeluguNames();
+		   Map<Long ,String> constInchargeNamesMap = new HashMap<Long, String>();
+		   if(constInchargeNames != null && constInchargeNames.size() > 0){
+			   for(Object[] obj: constInchargeNames){
+				   if(obj[0] != null){
+					   if(obj[2]!=null && !obj[2].toString().trim().isEmpty()){
+						   constInchargeNamesMap.put((Long)obj[0], obj[2].toString().trim());
+					   }else if(obj[3]!=null && !obj[3].toString().trim().isEmpty()){
+						   constInchargeNamesMap.put((Long)obj[0],obj[3].toString().trim());
+					   }
+				   }
+			   }
+		   }
+		   
+		   Map<Long , MeetingsVO> finalMap = new LinkedHashMap<Long, MeetingsVO>(0);
+		   
+		   List<Object[]> detailsList = partyMeetingDAO.getConstWiseNotConductedPartyMeetings( month , year);
+		   if(detailsList != null && detailsList.size() > 0){
+			   for(Object[] obj : detailsList ){
+				   if(obj[2]!= null){
+					   if(constInchargeNamesMap.containsKey((Long)obj[2])){
+						   
+						   if(!finalMap.containsKey((Long)obj[2])){
+							   MeetingsVO constVO = new MeetingsVO();
+							   constVO.setConstituencyId((Long)obj[2]);
+							   constVO.setIncharge(constInchargeNamesMap.get((Long)obj[2]));
+							   if(constDistTeluguNamesMap.containsKey((Long)obj[2])){
+								   MeetingsVO namesVO = constDistTeluguNamesMap.get((Long)obj[2]);
+								   constVO.setConstituency(namesVO.getConstituency());
+								   constVO.setDistrict(namesVO.getDistrict());
+							   }
+							   constVO.setCurrentDate(currentDateString);
+							   constVO.setMonth(month);
+							   constVO.setVillageWardList(new ArrayList<MeetingsVO>());
+							   constVO.setMandalTownList(new ArrayList<MeetingsVO>());
+							   finalMap.put((Long)obj[2], constVO);
+						   }
+						   MeetingsVO constVO = finalMap.get((Long)obj[2]);
+						   if(obj[0] != null){//
+							   
+							   MeetingsVO meeting = new MeetingsVO();
+							   meeting.setLevelId((Long)obj[0]);
+							   meeting.setLevel(obj[1]!=null ?obj[1].toString() : "");
+							   
+							   if( meeting.getLevelId().longValue() == 7l || meeting.getLevelId().longValue() == 8l){//village/ward
+								   constVO.setVillageWardSerialNo( constVO.getVillageWardSerialNo() + 1);
+								   meeting.setSerialNo(constVO.getVillageWardSerialNo());
+								   if(meeting.getLevelId().longValue() == 7l){//village
+									   meeting.setLocationName(obj[6] != null ? obj[6].toString() : "");
+									   meeting.setSuperName(obj[4]!= null ? obj[4].toString(): "");
+									   
+								   }else{//ward
+									   meeting.setLocationName(obj[10] != null ? obj[10].toString() : "");
+									   meeting.setSuperName(obj[8]!= null ? obj[8].toString(): "");
+								   }
+								   constVO.getVillageWardList().add(meeting);
+								   
+							   }else{//mandal/towm/division
+								   constVO.setMandalTownSerialNo( constVO.getMandalTownSerialNo() + 1);
+								   meeting.setSerialNo(constVO.getMandalTownSerialNo());
+								   if(meeting.getLevelId().longValue() == 4l){//mandal
+									   
+									   meeting.setLocationName(obj[4] != null ? obj[4].toString() : "");
+									   
+								   }else if(meeting.getLevelId().longValue() == 5l){//Town
+									   
+									   meeting.setLocationName(obj[8] != null ? obj[8].toString() : "");
+									   
+								   }else if(meeting.getLevelId().longValue() == 6l){//Division
+									   
+									   meeting.setLocationName(obj[10] != null ? obj[10].toString() : "");
+								   }
+								   constVO.getMandalTownList().add(meeting);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   
+			   if(finalMap != null && finalMap.size() > 0){
+				   finalList = new ArrayList<MeetingsVO>(finalMap.values());
+			   }
+		   }
+		   
+	  }catch(Exception e){
+		  LOG.error("Exception raised at getConstituencyWiseDetails", e);
+	  }
+	   return finalList;
+	}
+	
+	
 }
