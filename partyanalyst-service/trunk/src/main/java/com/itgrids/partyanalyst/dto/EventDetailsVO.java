@@ -35,8 +35,15 @@ public class EventDetailsVO {
 	private Long notUpdatedCount = 0l;
 	private Long scopeId;
 	private Long conductedCount = 0l;
+	private String type;
 	
 	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public Long getInfoCellAttendedCount() {
 		return infoCellAttendedCount;
 	}
