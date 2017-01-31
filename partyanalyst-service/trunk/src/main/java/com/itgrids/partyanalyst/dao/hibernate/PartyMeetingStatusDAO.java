@@ -827,4 +827,11 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		 return query.list(); 
 	 }
    
+   public PartyMeetingStatus getObjectByPartyMeetingId(Long partyMeetingId){
+		  Query query = getSession().createQuery("select model" +
+		  											" from PartyMeetingStatus model" +
+		  											" where model.partyMeeting.partyMeetingId = :partyMeetingId");
+		  query.setParameter("partyMeetingId", partyMeetingId);
+		  return (PartyMeetingStatus) query.uniqueResult();
+	  }
 }
