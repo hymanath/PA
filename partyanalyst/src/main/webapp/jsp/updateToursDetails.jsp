@@ -183,13 +183,14 @@
 												<label>Select Month</label>
 												<div class="input-group inputGCustom">
 												<input type="hidden" id="hiddenTdpCadreId"/>
-													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth" onclick="getAllTourDetailsOverview()">
+													<input type="text" class="form-control" id="tourMonthYear" name="toursVO.tourMonth" >
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
-													<!--<button type="button" class="btn btn-success" title="TO get tours over view">Submit</button>-->
+													
 												</div>
 											</div>
+											<button type="button" class="btn btn-success" title="TO get tours over view" onclick="getAllTourDetailsOverview()" style="margin-top: 22px;">Submit</button>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="attachementsId"></div>
