@@ -1452,4 +1452,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
+	public String centralPartyMembersAlertDashBoard(){
+		return Action.SUCCESS;
+	}
 }
