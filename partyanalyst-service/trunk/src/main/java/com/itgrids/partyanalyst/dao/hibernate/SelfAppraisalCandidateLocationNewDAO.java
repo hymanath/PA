@@ -181,15 +181,15 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   			str.append("select model.selfAppraisalCandidateLocationNewId,model.selfAppraisalCandidateId," +
   					" model.selfAppraisalTourCategoryId," +
   					" model.selfAppraisalTourCategory.tourCategory," +
-  					" model.tourTypeId,model.tourType.tourType " +
+  					" model.tourTypeId,model.tourType.tourType," +
+  					" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+  					" model.selfAppraisalCandidate.selfAppraisalDesignation.designation " +
   				" from SelfAppraisalCandidateLocationNew model " +
   				" where model.selfAppraisalCandidate.tdpCadreId = :cadreId " +
-  				" and  model.isDeleted ='N' ");
+  				" and  model.isDeleted ='N' and model.tourType.isDeleted = 'N' " +
+  				" and model.selfAppraisalTourCategory.isDeleted ='N' and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive ='Y' ");
   			Query query = getSession().createQuery(str.toString());
-  			query.setParameter("cadreId", cadreId);
-  		
+  				query.setParameter("cadreId", cadreId);
   			return query.list();    	       	  
        }
-       
-      
 }
