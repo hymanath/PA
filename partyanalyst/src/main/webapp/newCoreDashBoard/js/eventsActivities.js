@@ -86,6 +86,8 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	var type=$(this).attr("attr_type");
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
 	if(type != null && type=="event"){
+	$("#activitesCmpBlockDivId").hide();
+	$("#activtyBlckDivId").hide();
 	 $(".moreEventsBlocks").toggle();
 	 getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString);
 	 getSelectedEventDetails(attrEventIdsString);
@@ -3501,36 +3503,6 @@ function buildUserTypeWisePoorFiveActivityConductedRlst(result){
 	 $("#UserTypeWiseEventMemberDtslDivId").html('NO DATA AVAILABLE.');
 	}
 }
-
-function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrEventIdsString,childUserType){
-	 $("#childEvnetMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 $("#directChildMemberForEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  var parentActivityMemberId = globalActivityMemberId;
-	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
-	   var eventIds=attrEventIdsString.split(",");
-	 var jsObj ={ 
-	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeIdsArray : childUserTypeIdsArray,
-				   reportType :"selectedUserType",
-				   stateId : globalStateId,
-				   eventIds:eventIds
-				 }
-	  $.ajax({
-			type : 'POST',
-			url : 'getSelectedChildTypeMembersForEventAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		   $("#childEvnetMemberDivId").html(' ');
-		   $("#directChildMemberForEventDivId").html(' ');
-		  if(result != null && result.length > 0){
-			  buildChildTypeMembersForEventReslt(result,attrEventIdsString,childUserType);
-		  }else{
-			  $("#childEvnetMemberDivId").html("NO DATA AVAILABLE");
-		  }
-		});
- }
- 
  $(document).on("click",".comparisonActivity",function(){
 	 $("#childEvnetMemberDivId").html(' ');
 	 $("#directChildMemberForEventDivId").html(' ');
@@ -3637,7 +3609,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 		 str+='<tbody>';
 		 var rank=1;
 		  for(var i in result){
-			str+='<tr style="cursor:pointer;" class="childEventMemberCls" attr_event_idsString="'+attrActivityIdsString+'"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' attr_search_type="'+searchType+'">';
+			str+='<tr style="cursor:pointer;" class="childActivityMemberCls" attr_event_idsString="'+attrActivityIdsString+'"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' attr_search_type="'+searchType+'">';
 			 str+='<td><span class="counts">'+rank+'</span></td>';
 			 str+='<td>'+result[i].name+'</td>';
 			 str+='<td>'+result[i].userType+'</td>';
@@ -3662,7 +3634,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 	  str+='<ul class="list-inline slickPanelSliderForEvent">';
 	  var rank=1; 
 	   for(var i in result){
-	str+='<li style="cursor:pointer;" class="childEventMemberCls"  attr_event_idsString="'+attrActivityIdsString+'" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' attr_search_type="'+searchType+'" style="width:380px !important;">';
+	str+='<li style="cursor:pointer;" class="childActivityMemberCls"  attr_event_idsString="'+attrActivityIdsString+'" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' attr_search_type="'+searchType+'" style="width:380px !important;">';
 	     if(i==0){
 			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
 		  }else{
@@ -3808,7 +3780,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 		var rank=1;
 		 for(var i in result){
 		var yourValues = result[i].locationName;
-		   str+='<tr  class="subLevelEventMemberCls" attr_event_idsString="'+attrActivityIdsString+'" attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+		   str+='<tr  class="subLevelActivityMemberCls" attr_event_idsString="'+attrActivityIdsString+'" attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
@@ -3955,3 +3927,36 @@ function buildActivityPoorPerformanceLocationRslt(result,userTypeId,selectedUser
 	 $("#topPoorLocationsActivityDivId").html(str);	
 	 $('.progressCustom').tooltip()
 	}
+$(document).on("click",".childActivityMemberCls",function(){
+	    
+		$(".slickPanelSliderForEvent").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+		$(this).find(".panelSlick").addClass("panelActiveSlick");
+	    var activityMemberId = $(this).attr("attr_activitymemberid");  
+		var userTypeId = $(this).attr("attr_usertypeid"); 
+    	var selectedMemberName = $(this).attr("attr_selectedmembername");  
+		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
+		var childActivityMemberId = $(this).attr("attr_id");  
+		var attrEventIdsString = $(this).attr("attr_event_idsString");
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"activities");
+		 }else{
+	      getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,"activities");
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"activities");
+		}
+		
+});
+$(document).on("click",".subLevelActivityMemberCls",function(){
+	$(this).next('tr.showHideTr').show(); 
+	var activityMemberId = $(this).attr("attr_activitymemberid");  
+	var userTypeId = $(this).attr("attr_usertypeid"); 
+	var selectedMemberName = $(this).attr("attr_selectedmembername");  
+	var selectedUserType = $(this).attr("attr_selectedusertype");  
+	var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
+	var attrEventIdsString = $(this).attr("attr_event_idsString");
+	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"activities");
+	}else{
+	      getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,"activities");
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,"activities");
+	}
+});
