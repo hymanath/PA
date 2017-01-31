@@ -3781,6 +3781,21 @@
   </div>
 </div>
 <!--------End Popup build----------->
+
+<!-- Modal for popUp Images -->
+<div class="modal fade" id="imagesModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close imagesModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildImagesId"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
