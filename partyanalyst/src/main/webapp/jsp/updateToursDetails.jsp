@@ -13,6 +13,12 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
 <!-- for file uploader -->
+<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>  
+<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>  
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/animation-min.js"></script> 	
@@ -22,10 +28,11 @@
 <script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
 <script type="text/javascript" src="js/yahoo/get-min.js"></script> 	  
-<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>  
-<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>  
-</head>
 <style>
+.candiateCls
+{
+	color:#337ab7;
+}
 .tableAttachments
 {
 	border:1px solid #ddd
@@ -59,6 +66,7 @@
 		color:red;
 	}
 </style>
+</head>
 <body>
 	<div class="container">
 		<div class="row">
@@ -112,8 +120,7 @@
 				<div class="panel-body pad_0 border_0">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-					  <div ><center ><img style="display: none;" src="images/icons/loading.gif" id="overAllLeaderDivProcessImgId"></center></div>
-						<div id="overAllLeaderDivId"></div>
+							<div id="overAllLeaderDivId"></div>
                         </div>
                     </div>
                 </div>
@@ -448,21 +455,91 @@
 	</div><!--  /.modal-dialog -->
 	</div><!--  /.modal -->
 	
-<script src="Assets/js/jquery-1.11.3.js" type="text/javascript"></script>
+	
+	<!-- Tours New Modal Start-->
+	<div class="modal" tabindex="-1" role="dialog" id="tourIndividualPerformanceDivId" style="z-index:9999;">
+	  <div class="modal-dialog modal-lg" style="width:85%">       
+		<div class="modal-content" style="border-radius:0px">
+		  <div class="modal-header" style="background-color:#CCC">
+			<button type="button" class="close tourIndividualCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<span id="nameOfMemberHeadingId"></span>
+		  </div>
+		  <div class="modal-body"> 
+			<div class="row" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%; padding: 0px 0px 20px; border-radius: 6px; margin: 10px 0px 0px;">
+				<div class="col-md-2 col-xs-12 col-sm-4"> 
+					<select class="pull-right form-control" id="dateRangeSliderYear" style="margin-top: 46px;">
+						<option value="0">Select Year</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+						<option value="2024">2024</option>
+						<option value="2025">2025</option>
+					</select>
+				</div>
+				<div class="col-md-9 col-xs-12 col-sm-12" style="margin-left: -20px;"> 
+					<div id="toursUpdateYear" style="margin-top:7px"></div>
+				</div>
+				<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+					<button class="btn btn-success pull-right" id="subMitBtn" type="button" style="margin-top: 46px;">SUBMIT</button>
+				</div>
+			
+			</div>
+			<!---<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div id="tourSlider" style="margin-top:7px"></div>
+				</div>
+			</div>--->
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div id="tourIndividualDetailsBlock" class="m_top20"></div>
+					<div id="monthWiseComplainceDivId" class="row m_top20"></div>
+					<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
+				</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">     
+			<button type="button" class="btn btn-default tourIndividualCls" class="close" data-dismiss="modal">Close</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Tours New Modal End-->
+	<div class="modal" tabindex="-1" role="dialog" id="editTourDetailsModalId" style="z-index:9999;">
+	  <div class="modal-dialog modal-lg" style="width:85%">       
+		<div class="modal-content" style="border-radius:0px">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	  </div>
+	</div>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="js/Tours/toursDetails.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<!--<script src="js/Tours/toursDetails.js" type="text/javascript"></script>-->
  <!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
- <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>  
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+
+<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>
 <script type="text/javascript">
 /*New Code*/
 /*Month & Year Picker*/
@@ -698,7 +775,6 @@ if($(window).width() > 500)
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
 	});    
-
 </script>
 </body>
 </html>
