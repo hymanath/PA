@@ -2657,12 +2657,13 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks" id="eventsCmpBlckDivId">
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-									<li class="text-capital detailedEvent">Detailed</li>
-									<li class="text-capital comparisonEvent">Comparison</li>
+							<!-- <div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks" id="eventsCmpBlckDivId">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital" attr_typeId="1">Detailed </li>
+									<li class="text-capital" attr_typeId="2">Comparison</li>
 								</ul>
 							</div>
+							-->
 							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
 									<li class="text-capital detailedEvent">Detailed</li>
@@ -4036,6 +4037,7 @@ var globalImages;
 		defaultCommitteeCalls();
 		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);     
 		defaultAlertCalls();
+		
 	});
 	
 	$(document).on("click",".hideDropDownView",function(){
