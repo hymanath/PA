@@ -2427,3 +2427,6 @@ color: rgb(51, 122, 183);
 	border-radius:0px;
 	background:rgba(255,255,255,0.9)
 }
+#alertOverview td{
+	padding:8px 2px !important;
+}
