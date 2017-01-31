@@ -750,7 +750,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}*/
 
-public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId){
+public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId,Long stateId){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.district.districtId,UA.district.districtName," +
 				" count(model.activityDocument.activityDocumentId) " +
@@ -758,8 +758,15 @@ public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId){
 				" where model.isDeleted ='N'" +
 				" and model.activityAddressId = UA.userAddressId ");
 		if(activityScopeId != null && activityScopeId.longValue() > 0l)
-			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId" +
-					" and UA.state.stateId = 1 ");
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+					//" and UA.state.stateId = 1 ");
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
 		sb.append(" group by UA.district.districtId order by UA.district.districtName asc");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)

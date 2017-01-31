@@ -42,7 +42,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private Long			maxFilesCount;
 	private Long noOfTimes;
 	private Long orderNo;
-	
+	private Long publicationDateId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_scope_id", unique = true, nullable = false)
@@ -178,6 +178,12 @@ public class ActivityScope extends BaseModel implements Serializable{
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
-	
-	
+	@Column(name = "publication_date_id")
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+		
 }

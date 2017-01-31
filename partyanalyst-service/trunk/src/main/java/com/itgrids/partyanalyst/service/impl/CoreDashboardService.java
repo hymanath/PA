@@ -1053,14 +1053,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 		return returnList;
 	}
 	
-	public List<IdAndNameVO> getActivityOverAllSummary(Long activityId){
+	public List<IdAndNameVO> getActivityOverAllSummary(Long activityId,Long activityMemberId,Long stateId,Long userTypeId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Long> scopeIds = new ArrayList<Long>();
 			List<Long> activityIds = new ArrayList<Long>();
 			activityIds.add(activityId);
-			Long stateId = 1L; 
-			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null);
+			//Long stateId = 1L; 
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null,stateId);
 			
 			Map<Long,List<Long>> scopeWiseActivitiesMap = new HashMap<Long, List<Long>>(0);
 			if(list != null && !list.isEmpty()){
@@ -1092,7 +1092,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			if(returnList != null && !returnList.isEmpty()){
 				for (IdAndNameVO idAndNameVO : returnList) {
-					Long totalCount = locationInfoDAO.getTotalCountByScope(idAndNameVO.getId(), idAndNameVO.getPartyId(), idAndNameVO.getSessionNo());
+					Long publicationDateId = 0l;
+				ActivityScope activityScope = activityScopeDAO.get(idAndNameVO.getTdpcadreId());
+					if(activityScope != null)
+					   publicationDateId = activityScope.getPublicationDateId();
+					Long totalCount = locationInfoDAO.getTotalCountByScope(idAndNameVO.getId(), idAndNameVO.getPartyId(), idAndNameVO.getSessionNo(),publicationDateId);
 					idAndNameVO.setApTotal(totalCount);
 				}
 			}
@@ -1316,7 +1320,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 		try {
 			List<Long> activityIds = new ArrayList<Long>();
 			activityIds.add(activityId);
-			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null);
+			Long stateId =1l;
+			List<Object[]> list = activityScopeDAO.getActivityLevelsByActivity(activityIds,null,null,stateId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1333,7 +1338,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			if(returnList != null && !returnList.isEmpty()){
 				for (IdAndNameVO idAndNameVO : returnList) {
-					List<Object[]> distList = locationInfoDAO.getDistrictWiseTotalCountsByLevelId(activityId);
+					ActivityScope activityScope = activityScopeDAO.get(idAndNameVO.getTdpcadreId());
+					Long publicationDateId = 0l;
+					if(activityScope != null)
+					   publicationDateId = activityScope.getPublicationDateId();
+					List<Object[]> distList = locationInfoDAO.getDistrictWiseTotalCountsByLevelId(activityId,publicationDateId);
 					if(distList != null && !distList.isEmpty()){
 						for (Object[] obj : distList) {
 							IdAndNameVO vo = new IdAndNameVO();
@@ -1350,7 +1359,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return returnList;
 	}
-	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr,Long scopeId){
+	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr,Long scopeId,Long activityMemberId,Long stateId,Long userTypeId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1376,7 +1385,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 			
-			List<Object[]> list1 = activityScopeDAO.getActivityLevelsByActivity(activityIdsLst,fromDate,toDate);
+			List<Object[]> list1 = activityScopeDAO.getActivityLevelsByActivity(activityIdsLst,fromDate,toDate,stateId);
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -1425,8 +1434,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 						else if(idAndNameVO.getId().longValue() == 5L)
 							searchAttributeVO.getLocationTypeIdsList().add(4L);					
 					}
-					
-					List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
+					ActivityScope activityScope = activityScopeDAO.get(idAndNameVO.getTdpcadreId());
+					Long publicationDateId = 0l;
+					if(activityScope != null)
+					   publicationDateId = activityScope.getPublicationDateId();
+					List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null,publicationDateId);
 					if(commonMethodsUtilService.isListOrSetValid(areasList)){
 						for (Object[] param : areasList) {
 							
@@ -1772,7 +1784,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			
 	}
-	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId ){
+	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId,Long activityMemberId,Long userTypeId){
 		
 		List<EventDetailsVO> returnList = new ArrayList<EventDetailsVO>();
 		try{
@@ -1800,7 +1812,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 			 List<Long> activityScopeIds = new ArrayList<Long>();
 			 activityScopeIds.add(activityScopeId);
 			 
-			Long levelId = activityScopeDAO.getActivityLevelIdByActivityScopeId(activityScopeId);
+			Long levelId = activityScopeDAO.getActivityLevelIdByActivityScopeId(activityScopeId,stateId);
 			
 			if(searchType != null && searchType.equalsIgnoreCase("villageWard") || searchType.equalsIgnoreCase("onlyvillage")){
 				String district = districts.get(0).toString();
@@ -1862,7 +1874,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 	        		  searchAttributeVO.getLocationTypeIdsList().get(0).longValue() == searchAttributeVO.getScopeId().longValue()){
 	        	  setTotalLocationsToVO(returnList,null,1L);
 	          }else{
-	        	  List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
+	        	  ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
+					Long publicationDateId = 0l;
+				if(activityScope != null)
+				   publicationDateId = activityScope.getPublicationDateId();
+	        	  List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null,publicationDateId);
 		          if(commonMethodsUtilService.isListOrSetValid(areasList)){
 		            for (Object[] param : areasList) {
 		              

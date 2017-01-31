@@ -18044,7 +18044,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return null;
 	}
 	
-	public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo)
+	public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo,Long activityMemberId,Long stateId,Long userTypeId)
 	{
 		List<EventDocumentVO> returnList = null;
 		List<Long> days =new ArrayList<Long>();
@@ -18279,7 +18279,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return vo;
 	}
 	
-	public List<BasicVO> getAvailableDates(EventDocumentVO inputVo)
+	public List<BasicVO> getAvailableDates(EventDocumentVO inputVo,Long activityMemberId,Long stateId,Long userTypeId)
 	{
 		List<BasicVO> returnList = new ArrayList<BasicVO>();
 		

@@ -36,7 +36,7 @@ public class LocationInfo extends BaseModel implements Serializable{
 	private PublicationDate publicationDate;
 	private RegionScopes regionScopes;
 	private RegionScopes regionScopes2;
-	
+
 	//location_info_id,level_id,scope_id,scope_value,count
 	
 	@Id

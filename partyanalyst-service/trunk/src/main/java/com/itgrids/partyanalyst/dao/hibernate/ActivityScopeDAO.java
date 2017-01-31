@@ -345,7 +345,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getActivityLevelsByActivity(List<Long> activityIdsList,Date fromDate , Date toDate){
+	public List<Object[]> getActivityLevelsByActivity(List<Long> activityIdsList,Date fromDate , Date toDate,Long stateId){
 		StringBuilder sb =  new StringBuilder();
 		sb.append("select distinct model.activityScopeId," +
 				" model.activityLevel.activityLevelId," +
@@ -397,9 +397,19 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 	}
 	
 	
-	public Long getActivityLevelIdByActivityScopeId(Long activityScopeId)
+	public Long getActivityLevelIdByActivityScopeId(Long activityScopeId,Long stateId)
 	{
-		Query query = getSession().createQuery(" select model.activityLevelId from ActivityScope model where model.activityScopeId =:activityScopeId and model.isDeleted = 'N' ");
+		StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.activityLevelId from ActivityScope model where model.activityScopeId =:activityScopeId and model.isDeleted = 'N' ");
+		/* if(stateId != null && stateId.longValue() == 1l){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId != null && stateId.longValue() == 0l){
+				queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+			}*/
+		 
+		 Query query = getSession().createQuery(queryStr.toString()); 
 		query.setParameter("activityScopeId", activityScopeId);
 		return (Long) query.uniqueResult();
 	}
