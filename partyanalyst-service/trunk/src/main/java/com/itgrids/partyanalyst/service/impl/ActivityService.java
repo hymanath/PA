@@ -72,7 +72,6 @@ import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
@@ -94,11 +93,9 @@ import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
-import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.OptionsCountVo;
-import com.itgrids.partyanalyst.dto.PeshiAppAppointmentVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -5887,8 +5884,11 @@ public Map<Long,Map<Long,Long>> getTotalLocationsDetailByLevelId(Long activitySc
 		              else if(levelId.longValue() == 5L)
 		                searchAttributeVO.getLocationTypeIdsList().add(4L);          
 		            }
-		            
-		            List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null);
+		            ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
+		            Long publicationDateId = 0l;
+					if(activityScope != null)
+					   publicationDateId = activityScope.getPublicationDateId();
+		            List<Object[]> areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null,publicationDateId);
 		            if(commonMethodsUtilService.isListOrSetValid(areasList)){
 		              for (Object[] param : areasList) {
 		                
@@ -6181,10 +6181,10 @@ public ActivityVO getMatchQuesActivityVO(List<ActivityVO> questionList,Long queI
 	return returnVO;
 }
 
-public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId){
+public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long activityMemberId,Long stateId,Long userTypeId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
-		List<Object[]> districtCountList = activityInfoDocumentDAO.getDistrictNamesByScopeId(activityScopeId);
+		List<Object[]> districtCountList = activityInfoDocumentDAO.getDistrictNamesByScopeId(activityScopeId,stateId);
 		if(districtCountList != null && districtCountList.size() > 0l){
 			for (Object[] objects : districtCountList) {
 				ActivityVO vo = new ActivityVO();

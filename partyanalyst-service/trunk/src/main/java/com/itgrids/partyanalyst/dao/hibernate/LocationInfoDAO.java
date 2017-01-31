@@ -50,7 +50,7 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 	}
 	
 	
-	public List<Object[]> areaCountDetailsListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId)
+	public List<Object[]> areaCountDetailsListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId,Long publicationDateId)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		if(searchAttributeVO.getScopeId() == 2L && stateId != null && stateId.longValue()>0L)
@@ -58,24 +58,30 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		
 		queryStr.append(" select distinct model.levelId, model.count,model.scopeValue from LocationInfo model where model.scopeId =:scopeId ");
 		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
-			queryStr.append(" and model.levelId in (:requiredAreasIds) ");
+			queryStr.append(" and model.levelId in (:requiredAreasIds)" );
+		if(publicationDateId != null && publicationDateId.longValue()>0)
+			queryStr.append(" and model.publicationDateId =:publicationDateId ");
 		queryStr.append(" order by model.levelId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 			query.setParameterList("requiredAreasIds", searchAttributeVO.getLocationTypeIdsList());
 		query.setParameter("scopeId", searchAttributeVO.getScopeId());
+		if(publicationDateId != null && publicationDateId.longValue()>0)
+		query.setParameter("publicationDateId", publicationDateId);
 		//query.setParameter("scopeValue", searchAttributeVO.getScopeValue());
 		
 		return query.list();
 	}
 	
-	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue){
+	public Long getTotalCountByScope(Long levelId,Long scopeId,Long scopeValue,Long publicationDateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.count)" +
 					" from LocationInfo model" +
 					" where model.scopeId = :scopeId" +
-					" and model.scopeValue = :scopeValue");
+					" and model.scopeValue = :scopeValue "); 
+		if(publicationDateId != null && publicationDateId.longValue()>0)
+			sb.append(" and model.publicationDateId =:publicationDateId ");
 		if(levelId != null && levelId > 0l){
 			if(levelId == 1l)
 				sb.append(" and model.levelId in (6,8)");
@@ -93,14 +99,18 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		
 		query.setParameter("scopeId", scopeId);
 		query.setParameter("scopeValue", scopeValue);
+		if(publicationDateId != null && publicationDateId.longValue()>0)
+		query.setParameter("publicationDateId", publicationDateId);
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getDistrictWiseTotalCountsByLevelId(Long levelId){
+	public List<Object[]> getDistrictWiseTotalCountsByLevelId(Long levelId,Long publicationDateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.count)" +
 					" from LocationInfo model" +
 					" where model.scopeId = 3");
+		if(publicationDateId != null && publicationDateId.longValue()>0)
+			sb.append(" and model.publicationDateId =:publicationDateId ");
 		if(levelId != null && levelId > 0l){
 			if(levelId == 1l)
 				sb.append(" and model.levelId in (6,8)");
@@ -115,7 +125,8 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
-		
+	if(publicationDateId != null && publicationDateId.longValue()>0)
+		query.setParameter("publicationDateId", publicationDateId);
 		return query.list();
 	}
 	public List<Object[]> getTotalActivityLocationWise(List<Long> levelIds,Long scopeId,Set<Long> locationValues){
