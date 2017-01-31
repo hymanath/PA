@@ -15549,7 +15549,7 @@
 		<result type="json" name="success"> 
    			<param name="root">partyMeetingStatus</param> 
    		</result>
-	</action> 
+	</action>
 	<action name="getCadreTourDetailsAction" class="cadreDetailsAction"  method="getCadreTourDetails">
 			<result type="json" name="success">
 			<param name="root">tourDetailsVO</param>
@@ -15571,6 +15571,9 @@
 		<result type="json" name="success"> 
    			<param name="root">toursVOList</param> 
    		</result>
+	</action>
+	<action name="centralPartyMembersAlertDashboardAction" class="createAlertAction" method="centralPartyMembersAlertDashBoard">
+		<result name="success">/jsp/centralPartyMembersAlertDashboard.jsp</result>  
 	</action>
  </package>
 </struts>
