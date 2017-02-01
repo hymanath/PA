@@ -16,6 +16,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityConductedInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -44,8 +46,15 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 private IActivityLocationInfoDAO activityLocationInfoDAO;
 	 private IActivityScopeDAO activityScopeDAO;
 	 private IActivityConductedInfoDAO activityConductedInfoDAO;
+	 private IActivityDocumentDAO activityDocumentDAO;
 	 
 	 
+	public IActivityDocumentDAO getActivityDocumentDAO() {
+		return activityDocumentDAO;
+	}
+	public void setActivityDocumentDAO(IActivityDocumentDAO activityDocumentDAO) {
+		this.activityDocumentDAO = activityDocumentDAO;
+	}
 	public IActivityConductedInfoDAO getActivityConductedInfoDAO() {
 		return activityConductedInfoDAO;
 	}
@@ -587,13 +596,12 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	*/
  public List<UserTypeVO> getSelectedChildMembersForEvents(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,List<Long> eventIds,String searchType){
 	 
-	 
 	 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
 	 Map<String,Long> eventIviteeMap = new HashMap<String, Long>(0);
 	 Map<String,Long> eventInviteeAttendedMap = new HashMap<String, Long>(0);
 	 Map<String,Long> eventAttendedMap = new HashMap<String, Long>(0);
 	
-	 if(searchType.trim().equalsIgnoreCase("events")){
+	 //if(searchType.trim().equalsIgnoreCase("events")){
 	 try{
 		  Map<Long,Set<Long>> locationLevelIdsMap=null;
 		  Map<String,String>     nameForLocationMap=null;
@@ -617,6 +625,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 			  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 		  }
+		  
+		 if(searchType != null && searchType.equalsIgnoreCase("events")){
 		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 		    	 
 		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
@@ -737,9 +747,30 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			    userVO.setInviteeAttendedCntPer(calculatePercantage(userVO.getInviteeAttendedCnt(),userVO.getInviteeCnt()));
 		   }
 	   }
-	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	  
+	   }else{
+		 setActivitiesDetails(locationLevelIdsMap, stateId,
+				 resultList,childActivityMembersMap,eventIds,searchType);
+		 if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+		    		//for(Long locationValueId:VO.getLocationValuesSet()){
+		    		if(VO.getTotalActvtiesCount() != null && VO.getTotalActvtiesCount().longValue() > 0l && VO.getCondctedActiesCount() != null){
+		    			VO.setNotCondctedActiesCount(VO.getTotalActvtiesCount()-VO.getCondctedActiesCount());
+		    			VO.setConductedPerc(calculatePercantage(VO.getCondctedActiesCount(), VO.getTotalActvtiesCount()));
+		    		}
+		    		if(VO.getTotalActvtiesCount() != null && VO.getNotCondctedActiesCount() != null){
+		    			VO.setNotConductedPerc(calculatePercantage(VO.getNotCondctedActiesCount(), VO.getTotalActvtiesCount()));
+		    		}
+		    		//}
+		    	}
+		}
+	 }
+		 
+		 
+		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			  resultList.addAll(childActivityMembersMap.values());
 		  }
+		  
 		  if(resultList != null && resultList.size() > 0)
 		  {
 			  Collections.sort(resultList, eventInviteeAttendedPercDesc);
@@ -747,9 +778,9 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 }catch(Exception e) {
 		 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
 	 	}
-	 }
+	// }
 	 //Activities
-	 else{
+	 /*else{
 		 try{
 			  Map<Long,Set<Long>> locationLevelIdsMap=null;
 			  Map<String,String>     nameForLocationMap=null;
@@ -903,9 +934,37 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		 }catch(Exception e) {
 			 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
 		 	}
-	 }
+	 }*/
 	
 	 return resultList;
+ }
+ public void setActivitiesDetails(Map<Long,Set<Long>> locationLevelIdsMap,Long stateId,List<UserTypeVO> resultList,
+		 Map<Long,UserTypeVO> childActivityMembersMap,List<Long> eventIds,String searchType){
+	 
+	 try{
+		 Map<Long,List<Long>> levlScopesMap = new HashMap<Long,List<Long>>();
+		 List<Object[]> levelScopes = activityScopeDAO.getLevelAndScopeIds(eventIds,searchType);
+		 if(commonMethodsUtilService.isListOrSetValid(levelScopes)){
+			 for (Object[] obj : levelScopes) {
+				List<Long> scopeIds = levlScopesMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				if(commonMethodsUtilService.isListOrSetValid(scopeIds)){
+					scopeIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+				}else{
+					scopeIds = new ArrayList<Long>();
+					scopeIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					levlScopesMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), scopeIds);
+				}
+			}
+		 }
+		 //Long levelId = activityScopeDAO.getActivityLevelIdByActivityScopeId(activityScopeId); 
+		 
+		 setTotalActivitiesCount(levlScopesMap,resultList,locationLevelIdsMap,stateId,childActivityMembersMap,"totalcount");
+		 setTotalActivitiesCount(levlScopesMap,resultList,locationLevelIdsMap,stateId,childActivityMembersMap,"conductedcount");
+		 
+	 }catch(Exception e) {
+		 LOG.error("Error occured at setActivitiesDetails() in setAttendedDataToMap class",e);	
+	 }
+	 
  }
 	public static Comparator<UserTypeVO> eventInviteeAttendedPercDesc = new Comparator<UserTypeVO>() {
 	public int compare(UserTypeVO member2, UserTypeVO member1) {
@@ -1500,6 +1559,122 @@ public List<List<UserTypeVO>> getUserTypeActivityConductedCnt(List<Long> activit
 		 return perc1.compareTo(perc2);
 		}
 	}; 
+	
+	public void setTotalActivitiesCount( Map<Long,List<Long>> levlScopesMap,List<UserTypeVO> resultList,Map<Long,Set<Long>>  locationLevelIdsMap,
+			Long stateId,Map<Long,UserTypeVO>  childActivityMembersMap,String type){
+		 Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long, Map<Long,Long>>(0);
+		  
+    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+    		 
+    			//Map<Long ,List<Long>>  activityLevelScopesMap = new HashMap<Long, List<Long>>(0);
+    			
+    			if(commonMethodsUtilService.isMapValid(levlScopesMap)){
+    				for (Long levelId : levlScopesMap.keySet()) {
+    					 SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
+    					if(!commonMethodsUtilService.isListOrSetValid(searchAttributeVO.getLocationTypeIdsList()))
+		    	            searchAttributeVO.setLocationTypeIdsList(new ArrayList<Long>(0));
+		    	          
+		    	          if(levelId != null){
+		    	            if(levelId.longValue() == 1L){
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(6L);
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(8L);
+		    	            }
+		    	            else if(levelId.longValue() == 2L){
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(5L);
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(7L);
+		    	            }
+		    	            else if(levelId.longValue() == 3L){
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(3L);
+		    	            }
+		    	            else if(levelId.longValue() == 4L){
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(2L);
+		    	            }else if(levelId.longValue() == 5L){
+		    	            	searchAttributeVO.getLocationTypeIdsList().add(4L);   
+		    	            }
+		    	          }
+		    	          
+		    	          if(entry.getKey().longValue() == 3L){
+		    	        	  searchAttributeVO.setScopeId(3L);
+		    	          }else if(entry.getKey().longValue() == 4L){
+		    	        	  searchAttributeVO.setScopeId(10L);
+		    	          }else if(entry.getKey().longValue() == 5L){
+		    	        	  searchAttributeVO.setScopeId(4L);
+		    	          }else if(entry.getKey().longValue() == 6L){
+		    	        	  searchAttributeVO.setScopeId(5L);
+		    	          }else if(entry.getKey().longValue() == 7L){
+		    	        	  searchAttributeVO.setScopeId(7L);
+		    	          }else if(entry.getKey().longValue() == 8L){
+		    	        	  searchAttributeVO.setScopeId(6L);
+		    	          }else if(entry.getKey().longValue() == 9L){
+		    	        	  searchAttributeVO.setScopeId(8L);
+		    	          }
+		    	          List<Object[]> areasList = null;
+		    	          List<Long> scopesList = null;
+		    	          List<Object[]> list1 = null;
+		    	          if(type != null && type.equalsIgnoreCase("totalcount")){
+		    	        	  areasList  = locationInfoDAO.areaCountDetailsListByAreaIdsOnScope(searchAttributeVO,null,null);
+		    	        	  scopesList = levlScopesMap.get(levelId);
+		    	          }else if(type != null && type.equalsIgnoreCase("conductedcount")){
+		    	        	  scopesList = levlScopesMap.get(levelId);
+		    	        	  areasList = activityLocationInfoDAO.getActivityConductedCount(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId);
+		    	      		  list1 = activityConductedInfoDAO.getActivityConductedCount(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId);
+		    	      		if(commonMethodsUtilService.isListOrSetValid(list1))
+		    	      			if(!commonMethodsUtilService.isListOrSetValid(areasList))
+		    	      				areasList = new ArrayList<Object[]>(0);
+		    	      				areasList.addAll(list1);
+		    	          }
+		    	          
+	    	    	  for (Long scopeId : scopesList) {
+    	        		  if(commonMethodsUtilService.isListOrSetValid(areasList)){
+    	      	            for (Object[] param : areasList) {      	              
+    	      	              Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>();
+    	      	              Long count = 0L;
+    	      	              if(totalScopeLocationsMap.get(scopeId) != null){
+    	      	                totalLocationsMap = totalScopeLocationsMap.get(scopeId);
+    	      	                count=totalLocationsMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+    	      	              }
+    	      	              if(count == null)
+    	      	                count = 0L;
+    	      	              totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), count+commonMethodsUtilService.getLongValueForObject(param[1]));
+    	      	              totalScopeLocationsMap.put(scopeId, totalLocationsMap);
+    	      	            }
+    	      	          }
+    	                } 
+					}
+    			}
+        
+          
+    	if(commonMethodsUtilService.isMapValid(levlScopesMap)){
+    		for (Long levelId : levlScopesMap.keySet()) {
+    			List<Long> scopesList = levlScopesMap.get(levelId);
+    			for (Long scopeId : scopesList) {
+    				 Map<Long,Long> locatnContMap = totalScopeLocationsMap.get(scopeId);
+    	        	  if(commonMethodsUtilService.isMapValid(locatnContMap)){
+    	        		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+					    	//for(UserTypeVO VO:childActivityMembersMap.values()){
+    	        			  
+    	        			  UserTypeVO VO = childActivityMembersMap.get(scopeId);
+					    		for(Long locationValueId:VO.getLocationValuesSet()){
+					    			if(type != null && type.equalsIgnoreCase("totalcount")){
+					    				Long count =VO.getTotalActvtiesCount() != null ?VO.getTotalActvtiesCount().longValue() : 0l;
+					    				Long count1 =locatnContMap.get(locationValueId) != null ?locatnContMap.get(locationValueId).longValue() : 0l;
+					    				VO.setTotalActvtiesCount(count+count1);//Total Activities Count For location Value
+					    			}else if(type != null && type.equalsIgnoreCase("conductedcount")){
+					    				Long count =VO.getCondctedActiesCount() != null ?VO.getCondctedActiesCount().longValue() : 0l;
+					    				Long count1 =locatnContMap.get(locationValueId) != null ?locatnContMap.get(locationValueId).longValue() : 0l;
+					    				VO.setCondctedActiesCount(count+count1);//Conducted Activities Count For location Value
+					    			}
+					    		}
+					    	//}
+    	        		}
+				   }
+    			}
+    		}
+    	}
+     }
+    	 
+    }
+
 }
 
 
