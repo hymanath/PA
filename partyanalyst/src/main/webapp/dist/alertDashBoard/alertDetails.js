@@ -1327,10 +1327,10 @@ function alertComments(result)
 													str+='<ul>';
 													for(var t in result[i].sublist2[j].sublist[k][0].docList){
 														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
-														extName = docName.split(".");
-														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Document.'+extName+'</a></li>';
+														extName = docName.split("/");
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
 													}
-													str+='</ul>';
+													str+='</ul>';              
 												}
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
 												str+='<hr style="margin-top:20px;"/>';
