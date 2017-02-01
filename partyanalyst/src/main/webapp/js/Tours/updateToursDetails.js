@@ -474,6 +474,8 @@ function getCandidateList(designationId){
 			var tdpCadreId = $(this).attr("attr_cadre_id");
 			$("#hiddenTdpCadreId").val(tdpCadreId);
 			//getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
+			$("#tourMonthYear").val(moment().format("MM/YYYY"));
+			getAllTourDetailsOverview(1,'',0,$("#tourMonthYear").val());
 		}else{
 			$("#overallDivId").hide();
 		}
@@ -1773,11 +1775,11 @@ function getCandidateList(designationId){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
-function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId){//Teja
+function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate){//Teja
 	
 	if(saveUpdate == 1)
 	{
-		var tourdate = $("#tourMonthYear").val();
+		//var tourdate = $("#tourMonthYear").val();
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		var jsObj = {     
 			tourdate : tourdate,
@@ -1840,8 +1842,9 @@ function buildAllTourDetailsOverview(result,saveUpdate){
 				  }else{
 					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control" value="0"/></td>'; 
 				  }
-				  if(result[i].tourDate != null){
-					   str+='<td>'+result[i].tourDate+'</td>';
+				var tourDate = result[i].tourDate.substring(0, 19);
+				  if(tourDate != null){
+					   str+='<td>'+tourDate+'</td>';
 				  }else{
 					   str+='<td class="text-center">-</td>';
 				  }
@@ -1854,10 +1857,10 @@ function buildAllTourDetailsOverview(result,saveUpdate){
 		str1+='<div class="m_top10">';
 			str1+='<table class="table tableAttachments">';
 			for(var j in result[0].toursVoList){
-				str1+='<tr>';
+				str1+='<tr id="documentTrId'+result[0].toursVoList[j].id+'">';
 					str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
 					str1+='<td>'+result[0].toursVoList[j].filePath+'</td>';
-					str1+='<td>UPDATED : '+result[0].toursVoList[j].tourDate+'</td>';
+					//str1+='<td>UPDATED : '+result[0].toursVoList[j].tourDate+'</td>';
 					str1+='<td><button class="btn btnView viewPdfCls" attr_filePath="'+result[0].toursVoList[j].filePath+'" type="button">VIEW</button></td>';
 					str1+='<td><button class="btn btnDelete deletePdfCls" type="button" attr_id='+result[0].toursVoList[j].id+'>DELETE</button></td>';
 				str1+='</tr>';
@@ -2383,7 +2386,7 @@ $(document).on("click",".candiateCls",function(){
 		editUpdateDetailsInitilize();
 		var tdpCadreId = $("#hiddentdpCadreIdForPopUp").val();
 		var toursMonthId = $("#hiddentourMonthIdForPopUp").val();
-		getAllTourDetailsOverview(2,tdpCadreId,toursMonthId)
+		getAllTourDetailsOverview(2,tdpCadreId,toursMonthId,'')
 		$('#editTourDetailsModalId').modal({
             show: true,
             keyboard: false,

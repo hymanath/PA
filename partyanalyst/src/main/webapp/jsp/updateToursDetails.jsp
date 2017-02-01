@@ -203,22 +203,21 @@
 											<div class="col-md-10 col-xs-12 col-sm-8">
 												<h4 id="candidateNameId"></h4>
 											</div>
-										</div>
-										
-										<div class="row">
-										<!--<form name="submitApplication" method="post">-->
-											<div class="col-md-2 col-xs-12 col-sm-4">
-												<label>Select Month</label>
+											<div class="col-md-2 col-xs-12 col-sm-4 pull-right">
+												<!--<label>Select Month</label>-->
 												<div class="input-group inputGCustom">
 												<input type="hidden" id="hiddenTdpCadreId"/>
 													<input type="text" class="form-control" id="tourMonthYear" >
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
-													
+													<!--<button type="button" class="btn btn-success" title="To get tours over view" style="margin-top: 22px;" onclick="getAllTourDetailsOverview(1,'',0,'')">Submit</button>-->
 												</div>
 											</div>
-											<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview(1,'',0)" style="margin-top: 22px;">Submit</button>
+										</div>
+										
+										<div class="row">
+										<!--<form name="submitApplication" method="post">-->
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="attachementsId"></div>
