@@ -460,7 +460,7 @@
 	<!--editview modal end-->
 	
 	<!-- Document Model -->
-	<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:9999;">
+	<div class="modal fade" tabindex="-1" id="tourNewDocumentId" role="dialog" style="z-index:99999;">
 	<div class="modal-dialog" style="width:70%;">
 		<div class="modal-content">
 			<div class="modal-header">
