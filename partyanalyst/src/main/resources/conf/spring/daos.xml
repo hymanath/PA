@@ -3675,4 +3675,8 @@
 	<bean id="partyMeetingUpdationDocumentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDocumentsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCadreLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLoginDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
