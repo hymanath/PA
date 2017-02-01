@@ -587,8 +587,14 @@
 			docStr+='<ul>';
 			for(var i in result[0].documentList){
 				docName = result[0].documentList[i];
-				extName = docName.split("/");
-				docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+extName[1]+'</a></li>';
+				extName = docName.split(".");
+				if(result[0].documentNameList[i].search('#') != -1 || result[0].documentNameList[i].search('u0') != -1){
+					var randumNum = result[0].documentList[i].substring(result[0].documentList[i].indexOf("/")+1,result[0].documentList[i].lastIndexOf("."));      
+					docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+randumNum+'.'+extName[1]+'</a></li>';  
+				}else{
+					docStr+='<li id="document0'+i+'"><a href="/Reports/'+result[0].documentList[i]+'" target="_blank">'+result[0].documentNameList[i]+'.'+extName[1]+'</a></li>';  
+				}
+				
 			}
 			docStr+='</ul>';
 			$("#alertDocId").html(docStr);    
@@ -1483,8 +1489,8 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 													str+='<ul>';
 													for(var t in result[i].sublist2[j].sublist[k][0].docList){
 														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
-														extName = docName.split(".");
-														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">Attachment.'+extName[1]+'</a></li>';
+														extName = docName.split("/");  
+														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';
 													}
 													str+='</ul>';    
 												}
