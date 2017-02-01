@@ -27,6 +27,7 @@ public class AlertDocument extends BaseModel implements Serializable {
 	private Long alertDocumentId;
 	private Long alertId;
 	private String documentPath;
+	private String documentName;
 	private Long insertedBy;
 	private Date insertedTime;
 	private String isDeleted;
@@ -105,6 +106,14 @@ public class AlertDocument extends BaseModel implements Serializable {
 
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
+	}
+	@Column(name = "document_name")
+	public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
 	}
 	
 	
