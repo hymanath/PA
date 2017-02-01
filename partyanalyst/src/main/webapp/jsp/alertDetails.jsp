@@ -884,6 +884,9 @@ function buildAlertAssignedCandidateData(result)
 		var result = (String)(myResult);
 		if(result.search('success') != -1){
 			alert("Documents Uploaded Successfully.");
+			$(".jFiler input").each(function(){     
+				$(this).val('');    
+			});
 			var filerKit = $("#alertScanCopyId").prop("jFiler");
 			filerKit.reset();
 			getDocumentsForAlert(alertId)
