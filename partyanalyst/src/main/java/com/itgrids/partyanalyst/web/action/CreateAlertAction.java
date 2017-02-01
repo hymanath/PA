@@ -390,8 +390,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				if(files != null && files.length > 0){
 					for(File f : files){
 						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
-						String ext = "";
-						mapfiles.put(f,fileName);
+						//fileName = StringEscapeUtils.escapeJava(fileName);
+						mapfiles.put(f,fileName);  
 						i++;
 					}
 				}
@@ -1168,9 +1168,6 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}*/
 	
-	
-
-	
 	public String uploadAlertsDoc(){
 		try{
 			session = request.getSession();
@@ -1187,8 +1184,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 					for(File f : files){
 						String fileName  =multiPartRequestWrapper.getFileNames(key)[index];
 						String ext = "";
-						mapfiles.put(f,fileName);
 						index = index + 1;
+						mapfiles.put(f,fileName);  
 					}
 				}  
 			}
