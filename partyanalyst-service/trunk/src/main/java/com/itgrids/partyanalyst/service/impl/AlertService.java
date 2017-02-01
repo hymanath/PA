@@ -652,7 +652,7 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 				
 				alertDocument = new AlertDocument();
 				alertDocument.setDocumentPath(pathBuilder.toString());
-				alertDocument.setDocumentName(fName);     
+				alertDocument.setDocumentName(StringEscapeUtils.escapeJava(fName));     
 				//System.out.println(StringEscapeUtils.unescapeJava(encode));
 				alertDocument.setAlertId(alertId);
 				alertDocument.setInsertedTime(dt.getCurrentDateAndTime());
