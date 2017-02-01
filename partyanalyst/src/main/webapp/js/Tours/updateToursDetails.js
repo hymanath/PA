@@ -1874,7 +1874,7 @@ function buildAllTourDetailsOverview(result,saveUpdate){
 	}
 	
 }
-function savingApplication(){
+function savingApplication1(){
 	$("#hiddenCadreId").val($("#profileCheckboxId").attr("attr_cadre_id"));
 	$("#hiddenTourMonthId").val($("#tourMonthYear").val());
 		var uploadHandler = { 
