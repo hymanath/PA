@@ -901,7 +901,7 @@ function getCandidateList(designationId){
 			for(var i in result)
 			{
 				str+='<tr>';
-					str+='<td><span  attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+desigId+'" attr_candiate_name="'+result[i].name+'" attr_designation_name="'+desigName+'" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+' >'+result[i].name+'</span></td>';
+					str+='<td><span  attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+result[i].id+'" attr_candiate_name="'+result[i].name+'" attr_designation_name="'+desigName+'" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+' >'+result[i].name+'</span></td>';
 					
 					str+='<div id="hiddentdpCadreIdForPopUp"></div>';
 					str+='<div id="hiddentourMonthIdForPopUp"></div>';
@@ -910,7 +910,9 @@ function getCandidateList(designationId){
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
 					}
-					str+='<td style="position:relative" class="text-center">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+'  >EDIT</button></td>';
+					str+='<td style="position:relative" class="text-center">'+result[i].count+' ';
+					/* str+='<button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+'  >EDIT</button>' */
+					str+='</td>';
 				str+='</tr>';
 			}
 
@@ -1890,7 +1892,7 @@ function savingApplication1(){
 	}
 $(document).on("click",".candiateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
-		 //$("#subMitBtn").attr("attr_candidate_id",candiateId);
+		 $("#subMitBtn").attr("attr_candidate_id",candiateId);
 		var designationName = $(this).attr("attr_designation_name");
 		var candiateName = $(this).attr("attr_candiate_name");
 		var selectedLevel = $(this).attr("attr_type");
@@ -1914,8 +1916,8 @@ $(document).on("click",".candiateCls",function(){
 		var toDateSlider = toDate.split("/")
 		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 		  $("#toursUpdateYear").dateRangeSlider({
-			bounds: {min: new Date(2012, 0, 1), max: new Date(2012, 11, 31, 12, 59, 59)},
-			defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
+			bounds: {min: new Date(fromDateSlider[2], 0, 1), max: new Date(toDateSlider[2], 11, 31)},
+			defaultValues: {min: new Date(fromDateSlider[2], fromDateSlider[1]-1, fromDateSlider[0]), max: new Date(toDateSlider[2],toDateSlider[1]-1, toDateSlider[0])},
 			scales: [{
 			  first: function(value){ return value; },
 			  end: function(value) {return value; },
@@ -2311,13 +2313,13 @@ $(document).on("click",".candiateCls",function(){
 																var nameArr = fullName.split(".");
 																var type = nameArr[1];
 																if(type=="pdf" || type=="PDF"){
-																	str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+																	str1+='<span class="viewEditPdfCls" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
 																}else if(type=="xls" ||type=="xlsx"){  
-																	str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+																	str1+='<span class="viewEditPdfCls" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
 																}else if(type=="doc" || type=="docx"){
-																	str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+																	str1+='<span class="viewEditPdfCls" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
+																	str1+='<span class="viewPdfCls" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
 																}else if(type != null){  
-																	str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
 																}           
 															}
 															str1+='<button class="btn btn-success editBtn candidateUpdate btn-xs" style="position:absolute;right:20px;" >EDIT</button></td>';	
@@ -2467,3 +2469,55 @@ function showSbmitStatus1(uploadResult){
 			}, 500);
 		}
 	}
+	
+	$(document).on("click","#subMitBtn",function(){
+	var candiateId = $(this).attr("attr_candidate_id");
+	var fromDateDate = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html(); 
+	var toDateDate = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html(); 
+	var frmDateInRequiredFormat;
+	var toDateInRequiredFormat;
+	if(fromDateDate != null && fromDateDate.length > 0){
+		var fromDateArr = fromDateDate.split("-");
+		frmDateInRequiredFormat =fromDateArr[2].trim()+"/"+fromDateArr[1].trim()+"/"+fromDateArr[0].trim();
+	}
+	if(toDateDate != null && toDateDate.length > 0){
+		var toDateArr = toDateDate.split("-");
+		toDateInRequiredFormat =toDateArr[2].trim()+"/"+toDateArr[1].trim()+"/"+toDateArr[0].trim();
+	}
+	getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
+}); 
+function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat){
+	
+	$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#tourIndividualDetailsTableBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jsObj ={ 
+					 candiateId : candiateId,
+					 fromDate :frmDateInRequiredFormat ,
+					 toDate : toDateInRequiredFormat
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualPersonTourDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#tourIndividualDetailsBlock").html('');
+			$("#tourIndividualDetailsTableBlock").html('');
+			$("#monthWiseComplainceDivId").html(' ');
+			buildIndividualPersonTourDetails(result);
+		});
+}
+	
+//Closing model when esc key has been pressed
+  $('body').keypress(function(e){
+    if(e.keyCode == 27){
+          var isModalOpened = $("#tourNewDocumentId").attr("isModalOpened");
+		   if(isModalOpened == "true"){
+			   setTimeout(function(){
+				 $('body').addClass("modal-open");
+			   }, 500);      
+			   $("#tourNewDocumentId").attr("isModalOpened","false");
+           }
+    }
+  }); 
