@@ -1,6 +1,6 @@
  package com.itgrids.partyanalyst.service.impl;
 
-import java.io.File; 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
@@ -133,7 +134,6 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
-import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -157,7 +157,6 @@ import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
@@ -284,9 +283,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;    
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	
 	
 	
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
+
 	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
 		return cadreRegUserTabUserDAO;
 	}
@@ -18052,6 +18061,17 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		Date toDate = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
+			
+			/*Long locationAccessLevelId = 0l;
+			Set<Long> locationValues = new HashSet<Long>(0);
+			//Long stateId = 1L; 
+			 List<Object[]> userAccLvlANdVals=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				if(userAccLvlANdVals != null && userAccLvlANdVals.size() > 0){
+					 locationAccessLevelId=(Long) userAccLvlANdVals.get(0)[0];
+					 for(Object[] param:userAccLvlANdVals){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+			   }*/
 			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
 			{
 				startDate = format.parse(inputVo.getStrDate().toString().trim());

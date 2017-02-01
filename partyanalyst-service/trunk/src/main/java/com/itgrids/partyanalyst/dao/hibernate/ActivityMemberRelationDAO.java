@@ -27,6 +27,7 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
     "        rel.parentMemberId = :parentActivityMemberId and amat.userType.userTypeId in (:childUserTypeIds) and " +
     "        rel.isActive = 'Y' and amat.isActive = 'Y' and amal.isActive = 'Y' ");
 	query.setParameter("parentActivityMemberId", parentActivityMemberId);
+	if(childUserTypeIds != null && childUserTypeIds.size() >0)
 	query.setParameterList("childUserTypeIds", childUserTypeIds);
 	return query.list();
 	}
