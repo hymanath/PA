@@ -6608,8 +6608,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder str=new StringBuilder();
 			
-			str.append(" select distinct model.tdpCadreId ,model.firstname,model.mobileNo,model2.userAddress.constituency.name," +
-					"   model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image " +
+			str.append(" select distinct model.tdpCadreId ,model.firstname,model.mobileNo," );
+			if(inputVo.getDesignationIds().contains(12l))//MLC
+				str.append("'',");
+			else
+				str.append("model2.userAddress.constituency.name,");
+			
+			str.append(" model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 			
