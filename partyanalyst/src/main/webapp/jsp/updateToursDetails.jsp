@@ -242,7 +242,7 @@
 												<div class="row" id="submitApplicationBtnId"> 
 													<div class="col-md-4 col-md-offset-4">
 														<span class="updateTourStatusCls"></span>
-														<button type="button" class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
+														<button type="button" class="btn btn-success btn-block" onclick="savingApplication1();" type="button">SUBMIT APPLICATION</button>
 														<span id="successSpanId"></span>  
 													</div>   
 													<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
