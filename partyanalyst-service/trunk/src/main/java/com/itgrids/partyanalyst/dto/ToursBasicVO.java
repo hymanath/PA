@@ -111,6 +111,7 @@ public class ToursBasicVO {
 	private List<IdNameVO> constList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> manTowDivList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> panWardList = new ArrayList<IdNameVO>(0);
+	private Long toursMonthId;
 	
 	public ToursBasicVO() {
 		super();
@@ -704,6 +705,12 @@ public class ToursBasicVO {
 	public void setStateTourCategoryComplaincePer(
 			Double stateTourCategoryComplaincePer) {
 		this.stateTourCategoryComplaincePer = stateTourCategoryComplaincePer;
+	}
+	public Long getToursMonthId() {
+		return toursMonthId;
+	}
+	public void setToursMonthId(Long toursMonthId) {
+		this.toursMonthId = toursMonthId;
 	}
    
 }

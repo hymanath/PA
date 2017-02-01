@@ -1987,6 +1987,8 @@ public class ToursService implements IToursService {
 					 		candiateVO = new  ToursBasicVO();
 					 		candiateVO.setId(candidateId);
 					 		candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 		candiateVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					 		candiateVO.setToursMonthId(commonMethodsUtilService.getLongValueForObject(param[3]));
 					 		submittedCandidatesMap.put( commonMethodsUtilService.getLongValueForObject(param[0]), candiateVO);
 					 	}					 	
 					 	
@@ -2569,15 +2571,22 @@ public class ToursService implements IToursService {
 						ResultStatus transStatus=new ResultStatus();
 						
 						Long toursMonthId=0l; 
-						if(toursVo.getTourMonth() !=null && !toursVo.getTourMonth().trim().isEmpty()){
-							List<Long> toursMonthIdsObj = selfAppraisalToursMonthDAO.getSelfAppraisalToursMonth(toursVo.getTourMonth());
-							
-							if(toursMonthIdsObj !=null && toursMonthIdsObj.size()>0){
-								toursVo.setToursMonthId(toursMonthIdsObj.get(0));
-								toursMonthId = toursMonthIdsObj.get(0);
+						
+						if(toursVo.getToursMonthId() !=null && toursVo.getToursMonthId()>0){ //Edit scenario
+							toursMonthId = toursVo.getToursMonthId();
+						}else{
+							if(toursVo.getTourMonth() !=null && !toursVo.getTourMonth().trim().isEmpty()){//saving scenario
+								List<Long> toursMonthIdsObj = selfAppraisalToursMonthDAO.getSelfAppraisalToursMonth(toursVo.getTourMonth());
+								
+								if(toursMonthIdsObj !=null && toursMonthIdsObj.size()>0){
+									toursVo.setToursMonthId(toursMonthIdsObj.get(0));
+									toursMonthId = toursMonthIdsObj.get(0);
+								}
+								
 							}
-							
 						}
+						
+						
 						
 					if(toursVo !=null && toursVo.getToursVoListNew() !=null && toursVo.getToursVoListNew().size()>0){
 					
@@ -2884,20 +2893,22 @@ public class ToursService implements IToursService {
 	  	  * date: 30th Jan, 2017
 	  	  * desc: To get  Tours Overview  for a cadre
 	  	  */
-		public List<ToursVO> getSelectedprofileToursOverview(String tourDate,Long tdpCadreId){  
+		public List<ToursVO> getSelectedprofileToursOverview(String tourDate,Long tdpCadreId,Long toursMonthId){  
 			LOG.info("Entered into getSelectedprofileToursOverview() of ToursService{}");
 			List<ToursVO> finalList = new ArrayList<ToursVO>(0);
 			List<ToursVO> documentsList = new ArrayList<ToursVO>(0);
 			ToursVO vo = null;
 			try{
-				Long toursMonthId=0l; 
-				if(tourDate !=null){
+				//Long toursMonthId=0l; 
+				if(tourDate !=null && !tourDate.trim().isEmpty()){
+				//if(tourDate !=null){
 					List<Long> toursMonthIdsObj = selfAppraisalToursMonthDAO.getSelfAppraisalToursMonth(tourDate);
 					
 					if(toursMonthIdsObj !=null && toursMonthIdsObj.size()>0){
 						toursMonthId = toursMonthIdsObj.get(0);
-					}
+					//}
 				}
+			}
 				//locationId-0,candidateId-1,categoryId-2,category-3,tourTypeId-4,tourType-5,designationId-6,designation-7
     	    	List<Object[]> toursList = selfAppraisalCandidateLocationNewDAO.getLocationWiseCandidate(tdpCadreId);
     	    	if(toursList != null && toursList.size() > 0){
