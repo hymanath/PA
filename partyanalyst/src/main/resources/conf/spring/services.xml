@@ -3736,6 +3736,7 @@
 	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 	 <property name="activityScopeDAO" ref="activityScopeDAO" />
 	 <property name="activityConductedInfoDAO" ref="activityConductedInfoDAO"/>
+	 <property name="activityDocumentDAO" ref="activityDocumentDAO"/>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
