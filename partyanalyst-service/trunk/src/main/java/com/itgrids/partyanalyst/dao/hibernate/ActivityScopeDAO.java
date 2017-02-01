@@ -428,4 +428,30 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		}
 		return query.list();
 	}
+	public List<Object[]> getLevelAndScopeIds(List<Long> activityIds,String searchType){
+		StringBuilder sb =  new StringBuilder();
+		sb.append("select distinct model.activity.activityId, model.activityScopeId," +
+				" model.activityLevel.activityLevelId  " +
+				" from ActivityScope model " +
+				" where model.isDeleted = 'N'" +
+				" and model.activity.isActive = 'Y'" );
+		if(activityIds != null && activityIds.size() > 0){
+			if(searchType != null && searchType.equalsIgnoreCase("All") || searchType != null && searchType.equalsIgnoreCase("SingleActivity") ){
+				sb.append(" and model.activity.activityId in (:activityIds)");
+			}else if(searchType != null && searchType.equalsIgnoreCase("ScopeId") ){
+				sb.append(" and model.activityScopeId in (:activityScopeIds)");
+			}
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(activityIds != null && activityIds.size() > 0){
+			if(searchType != null && searchType.equalsIgnoreCase("All") || searchType != null && searchType.equalsIgnoreCase("SingleActivity") ){
+				query.setParameterList("activityIds", activityIds);
+			}else if(searchType != null && searchType.equalsIgnoreCase("ScopeId") ){
+				query.setParameterList("activityScopeIds", activityIds);
+			}
+		}
+			 
+		 return query.list();
+	}
 }
