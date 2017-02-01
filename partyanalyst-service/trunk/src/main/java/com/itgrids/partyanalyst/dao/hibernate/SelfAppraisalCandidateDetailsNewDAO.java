@@ -368,7 +368,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		   StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select  " +
 		   				" distinct SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//0
-		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname " +//1
+		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname," +//1
+		   				" SACL.selfAppraisalCandidate.tdpCadreId," +//2
+		   				" SACDN.selfAppraisalToursMonthId " +//3
 		   		   		" from " +
 				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateDetailsNew SACDN " +
 				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACDN.selfAppraisalCandidate.selfAppraisalCandidateId   " +
