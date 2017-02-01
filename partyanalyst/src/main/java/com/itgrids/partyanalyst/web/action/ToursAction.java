@@ -793,8 +793,8 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			  jObj = new JSONObject(getTask());
 			  Long tdpCadreId = jObj.getLong("tdpCadreId");
 			  String tourdate = jObj.getString("tourdate");
-			  
-			  toursVOList = toursService.getSelectedprofileToursOverview(tourdate,tdpCadreId);
+			  Long tourMonthId = jObj.getLong("toursMonthId");
+			  toursVOList = toursService.getSelectedprofileToursOverview(tourdate,tdpCadreId,tourMonthId);
 		} catch (Exception e) {
 			   LOG.error("Exception raised at getSelectedprofileToursOverview()  of ToursAction", e);  
 		}
