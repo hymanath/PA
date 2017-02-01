@@ -629,12 +629,20 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 		 {
 
 			 pathBuilder = new StringBuilder();
-			 str = new StringBuilder();
+			 
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-			 String destPath = folderName+"/"+randomNumber+"_"+entry.getValue();
-			 pathBuilder.append("tour_documents").append("/").append(randomNumber).append("_")
-			 .append(entry.getValue());
-			 str.append(randomNumber).append(".").append(entry.getValue());
+			 String ext = "";
+			 String fName = "";
+			 String[] extension  = entry.getValue().split("\\.");
+			 if(extension.length > 1){
+				 ext = extension[extension.length-1];
+				 fName = extension[0];
+			 }
+			 String destPath = folderName+"/"+randomNumber+"."+ext;
+			 
+			 
+			 pathBuilder.append("tour_documents").append("/").append(randomNumber).append(".").append(ext);
+			 
 			 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
 			 
 				if(fileCpyStts.equalsIgnoreCase("error")){
@@ -643,10 +651,10 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 				}
 				
 				alertDocument = new AlertDocument();
-				alertDocument.setDocumentPath(pathBuilder.toString());				
+				alertDocument.setDocumentPath(pathBuilder.toString());
+				alertDocument.setDocumentName(fName);     
+				//System.out.println(StringEscapeUtils.unescapeJava(encode));
 				alertDocument.setAlertId(alertId);
-				
-				
 				alertDocument.setInsertedTime(dt.getCurrentDateAndTime());
 				alertDocument.setIsDeleted("N");
 				alertDocument.setInsertedBy(userId);
@@ -884,7 +892,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		try{
 			List<Object[]> docList = alertDocumentDAO.getDocumentsForAlert(alertId);
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
-			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);
+			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);   
 			 String alertSource = "";
 			 if(sourceDtls != null){
 				 if(commonMethodsUtilService.getLongValueForObject(sourceDtls[0]).longValue() == 1L){//manual
@@ -906,9 +914,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 }  
 			 }
 			 List<String> documentList = new ArrayList<String>();
+			 List<String> documentNameList = new ArrayList<String>();
 			 if(docList != null && docList.size() > 0){
 				 for(Object[] param : docList){
 					 documentList.add(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 documentNameList.add(commonMethodsUtilService.getStringValueForObject(param[2]));
 				 }
 			 }
 			 if(list != null && list.size() > 0)
@@ -939,6 +949,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
 					 alertVO.setDocumentList(documentList);
+					 alertVO.setDocumentNameList(documentNameList);
 					 LocationVO locationVO = new LocationVO();
 					 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
 					 locationVO.setWardName(params[24] != null ? params[24].toString() : "");
