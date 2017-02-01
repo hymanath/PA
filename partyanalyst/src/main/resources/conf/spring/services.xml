@@ -3028,6 +3028,7 @@
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
 		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
 		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
+		     <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />
 			<!-- <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />	 -->		 
     </bean>
 	
