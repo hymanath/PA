@@ -56,15 +56,12 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" from alert_tracking ALTT ");
 		queryStr.append(" left join alert_status ALTS on ALTT.alert_status_id = ALTS.alert_status_id ");
 		queryStr.append(" left join alert_comment ALTC on ALTC.alert_comment_id = ALTT.alert_comment_id and ALTC.is_deleted = 'N' ");
+		
 		if(hasTrue)
 			queryStr.append(" left join alert_comment_assignee ALTCA on ALTT.alert_comment_id = ALTCA.alert_comment_id ");
+		
 		queryStr.append(" left join user U on ALTT.inserted_by = U.user_id ");
-		//if(hasTrue)
-			//queryStr.append(" ,tdp_cadre TC ");
 		queryStr.append(" where ");
-		//if(hasTrue)
-			//queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id and ");
-			
 		queryStr.append(" ALTT.alert_id = :alertId ");
 		queryStr.append(" order by ALTS.status_order, date(ALTT.inserted_time) desc ,time(ALTT.inserted_time) desc ,ALTC.alert_comment_id ;");   
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString())  

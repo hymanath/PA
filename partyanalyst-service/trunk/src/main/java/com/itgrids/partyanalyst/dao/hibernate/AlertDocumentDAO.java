@@ -16,7 +16,7 @@ public class AlertDocumentDAO extends GenericDaoHibernate<AlertDocument, Long>
 	}
 	
 	public List<Object[]> getDocumentsForAlert(Long alertId){
-		Query query = getSession().createQuery(" select model.alertDocumentId,model.documentPath " +
+		Query query = getSession().createQuery(" select model.alertDocumentId,model.documentPath,model.documentName " +
 				" from AlertDocument model " +
 				" where model.isDeleted='N' and model.alertId=:alertId ");
 		query.setParameter("alertId", alertId);
