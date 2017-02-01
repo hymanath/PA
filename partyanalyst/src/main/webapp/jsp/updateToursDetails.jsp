@@ -64,7 +64,28 @@
 .chosen-container{width:100% !important}
 .requiredFont{
 		color:red;
+}
+#toursCandidateDetailsModal .table-bordered input{
+	width:80px;
+}
+.jFiler-input-dragDrop
+	{
+		padding:5px;
 	}
+	.icon-jfi-folder
+	{
+		font-size: 30px
+	}
+	.jFiler-input-text h3
+	{
+		font-size:16px;
+	}
+	.jFiler-input-text span
+	{
+		margin-top:5px !important;
+		margin-bottom:5px !important;
+	}
+.m_top20{margin-top:20px}
 </style>
 </head>
 <body>
@@ -197,7 +218,7 @@
 													
 												</div>
 											</div>
-											<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview()" style="margin-top: 22px;">Submit</button>
+											<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview(1,'',0)" style="margin-top: 22px;">Submit</button>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="attachementsId"></div>
@@ -513,11 +534,36 @@
 	  <div class="modal-dialog modal-lg" style="width:85%">       
 		<div class="modal-content" style="border-radius:0px">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeClass" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">EDIT/VIEW TOUR DETAILS</h4>  
 			</div>
+			<form name="toursUpdateFormApplication" method="post" id="toursUpdateFormApplication">
 			<div class="modal-body">
-				
+				<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">-->
+					<div id="toursCandidateDetailsModal"></div>
+					<div id="attachementsIdModal"></div>
+					<div class="row" id="updateToursModalDiv">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+						<!--<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3> -->
+							<input type="file" id="editupdateTourDiv" multiple="multiple"  name="files[]" class="m_top20"/>
+							<span id="" style="color:red;margin-left:470px;"></span>   
+						</div>
+					</div>  
+					<div class="row" id=""> 
+						<div class="col-md-4 col-md-offset-4">
+							<span class="updateTourStatusModalCls"></span>
+							<button type="button" class="btn btn-success btn-block" onclick="updateApplication1()" type="button">SUBMIT/UPDATE TOURS</button>
+							<span id="successSpanModalId"></span>  
+						</div>   
+						<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
+					</div> 
+				<!--</div>-->
+				<div>
+					<input type="hidden" id="hiddentdpCadreIdForModal" value="" name="toursNewVO.tdpCadreId" />
+					<input type="hidden" id="hiddentourMonthIdForModal"  value="" name="toursNewVO.ToursMonthId"/>
+				</div>
 			</div>
+			</form>
 		</div>
 	  </div>
 	</div>
@@ -536,6 +582,7 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
+<script type="text/javascript" src="dragAndDropPhoto/js/editUpdateDetails.js?v=1.0.5"></script>                
 <!-- for file uploader -->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 

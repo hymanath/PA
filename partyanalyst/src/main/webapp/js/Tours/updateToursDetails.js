@@ -901,13 +901,16 @@ function getCandidateList(designationId){
 			for(var i in result)
 			{
 				str+='<tr>';
-					str+='<td><span  attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+desigId+'" attr_candiate_name="'+result[i].name+'" attr_designation_name="'+desigName+'">'+result[i].name+'</span></td>'
+					str+='<td><span  attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+desigId+'" attr_candiate_name="'+result[i].name+'" attr_designation_name="'+desigName+'" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+' >'+result[i].name+'</span></td>';
+					
+					str+='<div id="hiddentdpCadreIdForPopUp"></div>';
+					str+='<div id="hiddentourMonthIdForPopUp"></div>';
 					for(var j in result[i].subList3)
 					{
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].targetDays+'</td>'
 						str+='<td class="bg_ED text-center">'+result[i].subList3[j].complainceDays+'</td>'
 					}
-					str+='<td style="position:relative" class="text-center">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;">EDIT</button></td>';
+					str+='<td style="position:relative" class="text-center">'+result[i].count+' <button class="btn btn-success editBtn editModalBtn btn-xs" attr_designation_id="'+desigId+'" attr_candidateId="'+result[i].id+'" attr_name="'+result[i].name+'" style="position:absolute;right:20px;" attr_tdp_cadre_id='+result[i].tdpCadreId+' attr_tours_month_id='+result[i].toursMonthId+'  >EDIT</button></td>';
 				str+='</tr>';
 			}
 
@@ -1677,7 +1680,6 @@ function getCandidateList(designationId){
 	$(document).on("click",".deletePdfCls",function(){
 		var id = $(this).attr("attr_id");
 		var arr=[id];
-		
 		var dt = confirm(" Are you sure want to delete Attatchment ? ")
 		if(dt == false){
 			return;
@@ -1769,27 +1771,36 @@ function getCandidateList(designationId){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
-	$(document).on("keyup","#tourMonthYear",function(){
-	getAllTourDetailsOverview();
-});
-function getAllTourDetailsOverview(){//Teja
-	var tourdate = $("#tourMonthYear").val();
-	var cadreId = $("#hiddenTdpCadreId").val();
-	var jsObj = {     
-		tourdate : tourdate,
-		tdpCadreId:cadreId
+function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId){//Teja
+	
+	if(saveUpdate == 1)
+	{
+		var tourdate = $("#tourMonthYear").val();
+		var tdpCadreId = $("#hiddenTdpCadreId").val();
+		var jsObj = {     
+			tourdate : tourdate,
+			tdpCadreId:tdpCadreId,
+			toursMonthId:toursMonthId
+		}
+	}else{
+		var jsObj = {     
+			tourdate : "",
+			tdpCadreId:tdpCadreId,
+			toursMonthId:toursMonthId
+		}
 	}
+	
 	$.ajax({
 		type : 'POST',
 		url : 'getSelectedprofileToursOverviewAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		console.log(result);
-		buildAllTourDetailsOverview(result)
+		//console.log(result);
+		buildAllTourDetailsOverview(result,saveUpdate)
 	});
 }
-function buildAllTourDetailsOverview(result){
+function buildAllTourDetailsOverview(result,saveUpdate){
 	$("#candidateNameId").html("SELECT PROFILE TOURS OVERVIEW");
 	var str = '';
 	var str1 = '';
@@ -1845,16 +1856,23 @@ function buildAllTourDetailsOverview(result){
 					str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
 					str1+='<td>'+result[0].toursVoList[j].filePath+'</td>';
 					str1+='<td>UPDATED : '+result[0].toursVoList[j].tourDate+'</td>';
-					str1+='<td><button class="btn btnView" type="button">VIEW</button></td>';
-					str1+='<td><button class="btn btnDelete" type="button">DELETE</button></td>';
+					str1+='<td><button class="btn btnView viewPdfCls" attr_filePath="'+result[0].toursVoList[j].filePath+'" type="button">VIEW</button></td>';
+					str1+='<td><button class="btn btnDelete deletePdfCls" type="button" attr_id='+result[0].toursVoList[j].id+'>DELETE</button></td>';
 				str1+='</tr>';
 			}	
 			str1+='</table>';
 		str1+='</div>';
 	}
+	if(saveUpdate == '1')
+	{
+		$("#toursCandidateDetails").html(str);
+		$("#attachementsId").html(str1);
+	}else if(saveUpdate == '2')
+	{
+		$("#toursCandidateDetailsModal").html(str);
+		$("#attachementsIdModal").html(str1);
+	}
 	
-	$("#toursCandidateDetails").html(str);
-	$("#attachementsId").html(str1);
 }
 function savingApplication(){
 	$("#hiddenCadreId").val($("#profileCheckboxId").attr("attr_cadre_id"));
@@ -1870,11 +1888,7 @@ function savingApplication(){
 		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
 		YAHOO.util.Connect.asyncRequest('POST','saveDesignationWiseTourDetailsAction.action',uploadHandler);
 	}
-	
-	
-	
-	
-	$(document).on("click",".candiateCls",function(){
+$(document).on("click",".candiateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
 		 //$("#subMitBtn").attr("attr_candidate_id",candiateId);
 		var designationName = $(this).attr("attr_designation_name");
@@ -1883,6 +1897,10 @@ function savingApplication(){
 		$(".tourIndividualCls").attr("attr_type",selectedLevel);
 		//var selectedDate = globalFormTourDate.split("/");
 		$("#dateRangeSliderYear").val(0);
+		var tdpHiddenCadre = $(this).attr("attr_tdp_cadre_id");
+		var toursHiddenMonth = $(this).attr("attr_tours_month_id");
+		$("#hiddentdpCadreIdForPopUp").val(tdpHiddenCadre);
+		$("#hiddentourMonthIdForPopUp").val(toursHiddenMonth);
 	   getCandiateWiseTourDetails(candiateId,designationName,candiateName);
 	});
 	function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
@@ -2302,7 +2320,7 @@ function savingApplication(){
 																	str1+='<span id="showTourPdfId" attr_filePath="'+fullName+'" style="cursor:pointer;"><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></span>';
 																}           
 															}
-															str1+='<button class="btn btn-success editBtn candidateUpdate btn-xs" style="position:absolute;right:20px;">EDIT</button></td>';	
+															str1+='<button class="btn btn-success editBtn candidateUpdate btn-xs" style="position:absolute;right:20px;" >EDIT</button></td>';	
 														}
 													}else{    
 														str1+='<td rowspan='+(moxCategoryLength)+'> - <button class="btn btn-success editBtn candidateUpdate btn-xs" style="position:absolute;right:20px;">EDIT</button></td>';  
@@ -2360,6 +2378,10 @@ function savingApplication(){
 
 	}
 	$(document).on("click",".candidateUpdate",function(){
+		editUpdateDetailsInitilize();
+		var tdpCadreId = $("#hiddentdpCadreIdForPopUp").val();
+		var toursMonthId = $("#hiddentourMonthIdForPopUp").val();
+		getAllTourDetailsOverview(2,tdpCadreId,toursMonthId)
 		$('#editTourDetailsModalId').modal({
             show: true,
             keyboard: false,
@@ -2390,3 +2412,58 @@ function savingApplication(){
 			 }] 
 		});
 	});
+	function updateApplication1(){//Teja
+		$("#hiddentdpCadreIdForModal").val($("#hiddentdpCadreIdForPopUp").val());
+		$("#hiddentourMonthIdForModal").val($("#hiddentourMonthIdForPopUp").val());
+	
+		var uploadHandler = { 
+			upload: function(o) {
+				$("#savingAjaxImg").css("display","none");
+				uploadResult = o.responseText;
+				showSbmitStatusNew1(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('toursUpdateFormApplication',true);  
+		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
+		YAHOO.util.Connect.asyncRequest('POST','saveDesignationWiseTourDetailsAction.action',uploadHandler);
+	}
+$(document).on("click",".closeClass",function(){
+	setTimeout(function(){
+		$("body").addClass("modal-open");
+	},400);
+});
+function showSbmitStatus1(uploadResult){
+			$(".clearFieldCls").val(' ');
+			$("#monthSelectBoxId").val(0);
+			$("#yearId").val(0);    
+			$("#update_TourFileId2").val('');        
+			$(".selectChosen").trigger("chosen:updated");
+			var filerKit = $("#update_TourFileId2").prop("jFiler");
+			//if(uploadResult != null && uploadResult == '<pre>"Saved"</pre>'){
+			setTimeout(function () {
+			$("#successSpanModalId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+			}, 500);  
+			$("#successSpanModalId").show();
+			$("#successSpanModalId").html("");       
+			filerKit.reset();
+			/* }else{
+				setTimeout(function () {      
+					$("#successSpanModalId").html("<center style='color: red; font-size: 16px;'>Failed</center>").fadeOut(3000);
+					}, 500);  
+					$("#successSpanModalId").show();
+					$("#successSpanModalId").html("");          
+			} */
+				
+	}
+	function showSbmitStatusNew1(uploadResult){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			$("#successSpanModalId").show();			
+			$("#update_TourFileId2").val('');
+			var filerKit = $("#update_TourFileId2").prop("jFiler");
+			setTimeout(function () {
+				$("#successSpanModalId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+				filerKit.reset();
+				location.reload(true);				
+			}, 500);
+		}
+	}
