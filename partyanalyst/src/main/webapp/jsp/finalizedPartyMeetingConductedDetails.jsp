@@ -328,7 +328,8 @@ textarea { resize:none; }
 									</select>
 								</div>
 								<div class="col-xs-12 col-md-3 col-sm-6" >
-									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button><!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh" style="left: 250px; top: 0px; right: 0px;"></i></span>--><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
+									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button>
+									<div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
 								</div>
 								<div class="col-md-1" style="height: 44px; width: 10px;">
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
@@ -558,14 +559,14 @@ getUserAccessLocationDetails();
 			}
 			
 			if(distArr.length==0 && parlArr.length==0){
-				$('#meetingLocationLevel').val('1').trigger('change');
+				//$('#meetingLocationLevel').val('1').trigger('change');
 				$("#statesDivId").val(stateArr[0]).trigger('change');
 				setTimeout(function(){
-					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
+					//$('#typeOfMeeting').val(firstMeetingId).trigger('change');
 					//$("#viewMeetings").trigger( "click" );
 				},1000); 
 			} else if(stateArr.length>0 && distArr.length>0 && parlArr.length==0){
-				$('#meetingLocationLevel').val('2').trigger('change');
+				//$('#meetingLocationLevel').val('2').trigger('change');
 				$('#statesDivId').val(stateArr[0]).trigger('change');
 				setTimeout(function(){
 					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
@@ -575,7 +576,7 @@ getUserAccessLocationDetails();
 				},1000); 
 				
 			}else if(parlArr.length>0){
-				$('#meetingLocationLevel').val('3').trigger('change');
+				//$('#meetingLocationLevel').val('3').trigger('change');
 				$('#statesDivId').val(stateArr[0]).trigger('change');
 				setTimeout(function(){
 					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
@@ -726,10 +727,10 @@ getUserAccessLocationDetails();
 		  locationLevelsArr.push(4);
 		  locationLevelsArr.push(5);
 		  locationLevelsArr.push(6);
-	  }else if($(this).val() == 7){
+	  }/* else if($(this).val() == 7){
 		  locationLevelsArr.push(7);
 		  locationLevelsArr.push(8);
-	  }else{
+	  } */else{
 		  locationLevelsArr.push(locationLevelId);
 	  }
 	  
@@ -757,7 +758,7 @@ getUserAccessLocationDetails();
 	});
 	
 	$("#viewMeetings").click(function() {
-		
+		$("#summaryDivId").hide();
 		$("#meetingDetailsTableId").html("");
 				
 		if($("#meetingLocationLevel").val()==0){
@@ -1117,11 +1118,9 @@ function buildFinalMeeting(result){
 		$("#districtId  option").remove();
 		//$("#districtId").append('<option value="">Select District</option>');
 		$("#constituencyId  option").remove();
-		<!--$("#constituencyId").append('<option value="">Select Constituency</option>');-->
+		$("#constituencyId").append('<option value="0">ALL</option>');
 		$("#manTowDivId  option").remove();
-		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Divison</option>');
-		$("#villWardId  option").remove();
-		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		$("#manTowDivId").append('<option value="0">ALL</option>');
 	   var jsObj=
 	   {				
 					stateId:state,
@@ -1215,7 +1214,7 @@ function buildFinalMeeting(result){
 	});
 	//Location Showing and Hiding
 		$("#meetingLocationLevel").change(function(){
-			
+			getDistrictsForStates(0);
 			$("#districtId").val($("#districtId option:first").val());
 			$("#constituencyId").val($("#constituencyId option:first").val());
 			$("#manTowDivId").val($("#manTowDivId option:first").val());
@@ -1258,12 +1257,12 @@ function buildFinalMeeting(result){
 meetingLevelWiseHideShow();	
 });			
 			
-		$("#constituencyId").change(function(){
+		 $("#constituencyId").change(function(){
 			$("#ConsErrorMSgShow").html("");
 			getMandalVillageDetails(4);
-		});
+		}); 
 		$("#manTowDivId").change(function(){
-			$("#ManErrorMSgShow").html("");
+					$("#ManErrorMSgShow").html("");
 				if($("#manTowDivId").val() !=null && $("#manTowDivId").val().length>0 && $("#manTowDivId").val()>0){
 					getMandalVillageDetails(5);
 				}
@@ -1289,8 +1288,12 @@ function getMandalVillageDetails(locationLevel){
 		if(locationLevel==5){
 			mandalId = $("#manTowDivId").val();
 			//$("#manTowDivId").html("")
-			//if(mandalId >0)
+			if(mandalId >0){
+				$("#VillWardShowId").show();
 				$("#villWardId").html("");
+			}else{
+				$("#VillWardShowId").hide();
+			}
 		}
 		var assmblyArrTemp = [];
 		if(constituencyId==0){
@@ -1326,10 +1329,10 @@ function getMandalVillageDetails(locationLevel){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   $("#searchDataImgForman").hide();
-			  var divId = "#manTowDivId";
+			   var divId = "#manTowDivId";
 				  if(locationLevel ==5){					  
 				  divId = "#villWardId";
-				 }
+				 }  
 			$(divId).append("<option value='0'>ALL</option>");
 			for(var i in result){
 				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
@@ -1782,7 +1785,7 @@ function getVillagesForDistrictId(){
 			levelId = $(this).val();	
 			}
 		});
- function handleFunctions(){
+ /* function handleFunctions(){
 	getLevelWiseMeetingDetails(); 
 		$("#loadingImgForLevelId").show();
 		$(".stateCls").each(function(){
@@ -1809,7 +1812,7 @@ function getVillagesForDistrictId(){
 				}
 			}
 		});
- }
+ } */
 $(document).on("click",".updateCls",function(){
 	$("#statusDetailsDivId").html("");
 	$("#updateFinlizMtngBtnModal").modal("show");
@@ -1920,9 +1923,10 @@ function showMeetingsStatusDocsResult(myResult){
 			$("#nameId").val("");
 			$("#mobileNoId").val("");
 			$("#remarkId").val("");
-			$("#statusId").val("");
+			$("#statusId").val(0);
 			$(".cloneFileCls").val("");
 			$("#uploadFileId0").val("");
+			setTimeout(function(){$("#updateFinlizMtngBtnModal").modal('hide');}, 1500);
 		}else{
 			$("#statusDetailsDivId").html(" Error occured try again...");
 		}
@@ -1985,15 +1989,14 @@ function buildCommentsMeetingDetailsAction(result)
 				$("#DistrictShowId").show();
 				$("#ConstShowId").show();
 				$("#ManTwnDivShowId").hide();
-				$("#VillWardShowId").hide();
+				//$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
-				
 				getConstituenciesForDistricts("");
 					
-				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				/* <c:if test="${sessionScope.USER.isAdmin == 'true'}">
 				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
-				</c:if>
+				</c:if> */ 
 				
 				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
 				setTimeout(function(){getMandalsForDistrictId();}, 2000);
@@ -2010,23 +2013,24 @@ function buildCommentsMeetingDetailsAction(result)
 				getConstituenciesForDistricts("");
 				/* start */
 				
-				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				 <!-- <c:if test="${sessionScope.USER.isAdmin == 'true'}">
 				getMandalVillageDetails(4);
-				</c:if>
+				</c:if>  -->
 				/* end */
 				
-				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
+				<!--<c:if test="${sessionScope.USER.isAdmin == 'false'}">
 				getMandalsForDistrictId();
 				getVillagesForDistrictId();
-				</c:if>
+				</c:if>-->
 				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
 				$("#ConstShowId").show();
 				$("#ManTwnDivShowId").show();
-				$("#VillWardShowId").show();
+				<!--$("#VillWardShowId").show();-->
 				
-			}else if($("#meetingLocationLevel").val()== 1){
+			}
+			else if($("#meetingLocationLevel").val()== 1){
 				
 				$("#stateShowId").show();
 				$("#DistrictShowId").hide();
