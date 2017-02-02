@@ -474,8 +474,8 @@ function getCandidateList(designationId){
 			var tdpCadreId = $(this).attr("attr_cadre_id");
 			$("#hiddenTdpCadreId").val(tdpCadreId);
 			//getAllTourCategorys($(this).attr("attr_cadre_id"),desigDtlsId);
-			$("#tourMonthYear").val(moment().format("MM/YYYY"));
-			getAllTourDetailsOverview(1,'',0,$("#tourMonthYear").val());
+			$("#tourMonthYear").val(moment().format("MM-YYYY"));
+			//getAllTourDetailsOverview(1,'',0,$("#tourMonthYear").val());
 		}else{
 			$("#overallDivId").hide();
 		}
@@ -1779,7 +1779,7 @@ function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate){
 	
 	if(saveUpdate == 1)
 	{
-		//var tourdate = $("#tourMonthYear").val();
+		var tourdate = $("#tourMonthYear").val();
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		var jsObj = {     
 			tourdate : tourdate,
@@ -1842,8 +1842,8 @@ function buildAllTourDetailsOverview(result,saveUpdate){
 				  }else{
 					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control" value="0"/></td>'; 
 				  }
-				var tourDate = result[i].tourDate.substring(0, 19);
-				  if(tourDate != null){
+				  if(result[i].tourDate != null){
+					  var tourDate = result[i].tourDate.substring(0, 19);
 					   str+='<td>'+tourDate+'</td>';
 				  }else{
 					   str+='<td class="text-center">-</td>';

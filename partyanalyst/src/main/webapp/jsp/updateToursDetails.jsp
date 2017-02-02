@@ -203,7 +203,10 @@
 											<div class="col-md-10 col-xs-12 col-sm-8">
 												<h4 id="candidateNameId"></h4>
 											</div>
-											<div class="col-md-2 col-xs-12 col-sm-4 pull-right">
+										</div>
+										
+										<div class="row">
+											<div class="col-md-2 col-xs-12 col-sm-4">
 												<!--<label>Select Month</label>-->
 												<div class="input-group inputGCustom">
 												<input type="hidden" id="hiddenTdpCadreId"/>
@@ -211,12 +214,9 @@
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
-													<!--<button type="button" class="btn btn-success" title="To get tours over view" style="margin-top: 22px;" onclick="getAllTourDetailsOverview(1,'',0,'')">Submit</button>-->
 												</div>
+												<button type="button" class="btn btn-success" title="To get tours over view" style="margin-top: -34px; margin-left: 197px;" onclick="getAllTourDetailsOverview(1,'',0,'')">Submit</button>
 											</div>
-										</div>
-										
-										<div class="row">
 										<!--<form name="submitApplication" method="post">-->
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
