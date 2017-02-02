@@ -576,7 +576,7 @@
 <script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <!--<script src="js/Tours/toursDetails.js" type="text/javascript"></script>-->
- <!-- for file uploader  -->              
+<!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
@@ -592,7 +592,7 @@
 $("#tourMonthYear").datetimepicker({
 	format:'MM-YYYY'
 })
-
+editUpdateDetailsInitilize();
 var TourCategoryArray =[];
 var TourTypesArray =[];
 var tourCloneMainDivCount=1;
