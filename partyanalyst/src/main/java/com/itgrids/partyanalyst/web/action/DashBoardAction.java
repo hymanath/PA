@@ -764,6 +764,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			{
 				return "cadreDataMonitoring";
 			}
+			else if(entitlements.contains("TDP_CADRE_LOGIN_ENTITLEMENT"))
+			{
+				return "centralMembersAlertDashboard";
+			}
 		}
 		
 		/*

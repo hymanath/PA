@@ -110,9 +110,9 @@
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
             	<p style="margin-top:1px;margin-bottom:0px;font-size:10px;color:#333;padding:0px;">Welcome, ${sessionScope.UserName} |</p> </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;" class="adminCls">Welcome, ${sessionScope.UserName} |</c:if>
-				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<a style="color:green !important;" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;" class="adminCls">Welcome, ${sessionScope.UserName} </c:if>
+				<c:if test="${sessionScope.USER.isAdmin == 'true' && fn:contains(sessionScope.USER.entitlements, 'APPLICATION_ADMIN_ENTITLEMENT' )}">
+						| <a style="color:green !important;" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" Admin</a>
 						|
 				</c:if>
 				<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
@@ -781,7 +781,8 @@
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')
 				|| fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || 
 				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') ||
-				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
+				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') ||
+				fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
 					<li>
 						<a href="#"><i class="fa fa-bell-o ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
 							 <h2><i class="fa fa-bell-o ico-white line_heightDiv"></i> Alert</h2>
@@ -792,6 +793,11 @@
 										</li>											
 										<li>
 											<a href="alertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
+										</li>
+									</c:if> 
+									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
+										<li>
+											<a href="centralPartyMembersAlertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
 										</li>
 									</c:if> 
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
@@ -891,7 +897,7 @@
 							</c:if>
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ADMIN_ENTITLEMENT')}">
 								<li>
-									<a href="finalizedPartyMeetingConductedAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Update Party Meetings</span></a>
+									<a href="finalizedPartyMeetingConductedAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Update Party Meetings Conflicts</span></a>
 								</li>
 							</c:if>
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">

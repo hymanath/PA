@@ -1455,6 +1455,114 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;  
 	}
 	public String centralPartyMembersAlertDashBoard(){
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains("TDP_CADRE_LOGIN_ENTITLEMENT"))  
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;	
+		//return Action.SUCCESS;
+	}
+	
+	public String getTotalAlertGroupByStatusForCentralMembers(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long alertyTypeId = jObj.getLong("alertyTypeId");
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			alertVOs = alertService.getTotalAlertGroupByStatusForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatusForCentralMembers() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTotalAlertGroupByStatusThenCategoryForCentralMembers(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long alertyTypeId = jObj.getLong("alertyTypeId");
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			alertVOs = alertService.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryForCentralMembers() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAlertAssignedCandidatesForCentralMembers()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			
+			alertDataList = alertService.getAlertAssignedCandidatesForCentralMembers(jObj.getLong("tdpCadreId"));
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception rised in getAlertAssignedCandidatesForCentralMembers",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	public String getLocationLevelWiseAlertsDataForCentralMembers()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			AlertInputVO inputVO = new AlertInputVO();
+			inputVO.setLevelId(jObj.getLong("levelId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate")); 
+			
+			inputVO.setLevelValue(jObj.getLong("levelValue"));
+			inputVO.setCategoryId(jObj.getLong("categoryId"));
+			inputVO.setAssignId(jObj.getLong("assignId"));
+			inputVO.setSearchTypeStr(jObj.getString("task"));
+			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
+			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
+			
+			alertDataList = alertService.getLocationLevelWiseAlertsDataForCentralMembers(regVo.getRegistrationID(),inputVO);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	public String getAllAlertsWithoutFilterForCentralMembers(){   
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			AlertInputVO inputVO = new AlertInputVO();
+			inputVO.setActionTypeId(jObj.getLong("actionTypeId"));
+			inputVO.setActionTypeStatusId(jObj.getLong("actionTypeStatusId"));  
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate"));
+			inputVO.setLevelValue(jObj.getLong("levelValue"));
+			inputVO.setCategoryId(jObj.getLong("categoryId"));
+			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
+			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			inputVO.setFromDate2(jObj.getString("fromDate2"));
+			inputVO.setToDate2(jObj.getString("toDate2"));
+			inputVO.setAssignId(jObj.getLong("assignId"));
+			
+			alertDataList = alertService.getAllAlertsWithoutFilterForCentralMembers(regVo.getRegistrationID(),inputVO);
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
+		}
 		return Action.SUCCESS;
 	}
 }

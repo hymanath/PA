@@ -243,6 +243,7 @@
 			<result type="redirect" name="cardPrintPostVerification">cardPrintPostVerificationAction.action</result>
 			<result type="redirect" name="cardPrintDispatch">cardPrintDispatchAction.action</result>
 			<result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
+			<result type="redirect" name="centralMembersAlertDashboard">centralPartyMembersAlertDashboardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5705,6 +5706,7 @@
       <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
       <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
       <result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
+      <result type="redirect" name="centralMembersAlertDashboard">centralPartyMembersAlertDashboardAction.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -15579,8 +15581,38 @@
    			<param name="root">toursVOList</param> 
    		</result>
 	</action>
+	
+	
 	<action name="centralPartyMembersAlertDashboardAction" class="createAlertAction" method="centralPartyMembersAlertDashBoard">
 		<result name="success">/jsp/centralPartyMembersAlertDashboard.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	
+	<action name="getTotalAlertGroupByStatusForCentralMembersAction" class="createAlertAction"  method="getTotalAlertGroupByStatusForCentralMembers">
+		<result type="json" name="success">  
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	
+	<action name="getTotalAlertGroupByStatusThenCategoryForCentralMembersAction" class="createAlertAction"  method="getTotalAlertGroupByStatusThenCategoryForCentralMembers">
+		<result type="json" name="success">  
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	<action name="getAlertAssignedCandidatesForCentralMembersAction" class="createAlertAction" method="getAlertAssignedCandidatesForCentralMembers">
+		<result type="json" name="success">
+			<param name="root">alertDataList</param>
+		</result>
+	</action>
+	<action name="getLocationLevelWiseAlertsDataForCentralMembersAction" class="createAlertAction" method="getLocationLevelWiseAlertsDataForCentralMembers">
+		<result type="json" name="success">
+			<param name="root">alertDataList</param>
+		</result>
+	</action>
+	<action name="getAllAlertsWithoutFilterForCentralMembersAction" class="createAlertAction"  method="getAllAlertsWithoutFilterForCentralMembers">
+		<result type="json" name="success">
+			<param name="root">alertDataList</param>
+		</result>
 	</action>
  </package>
 </struts>
