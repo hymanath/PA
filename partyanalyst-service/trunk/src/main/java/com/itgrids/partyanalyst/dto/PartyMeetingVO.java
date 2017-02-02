@@ -57,6 +57,11 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private List<String> atrPoints;
 	private String path;
 	private List<PartyMeetingVO> docsList;
+	private Long partyMeetingId;
+	private String partyMeetingName;
+	private String mobileNo;
+	private List<String> docmentsList = new ArrayList<String>();
+	
 	
 	
 	public String getPath() {
@@ -354,6 +359,30 @@ public class PartyMeetingVO implements java.io.Serializable{
 	}
 	public void setNonInviteeCount(Long nonInviteeCount) {
 		this.nonInviteeCount = nonInviteeCount;
+	}
+	public Long getPartyMeetingId() {
+		return partyMeetingId;
+	}
+	public void setPartyMeetingId(Long partyMeetingId) {
+		this.partyMeetingId = partyMeetingId;
+	}
+	public String getPartyMeetingName() {
+		return partyMeetingName;
+	}
+	public void setPartyMeetingName(String partyMeetingName) {
+		this.partyMeetingName = partyMeetingName;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public List<String> getDocmentsList() {
+		return docmentsList;
+	}
+	public void setDocmentsList(List<String> docmentsList) {
+		this.docmentsList = docmentsList;
 	}
 	
 }
