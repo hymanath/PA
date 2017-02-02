@@ -14,6 +14,7 @@ public class BenefitCandidateVO {
 	private Long benefitId;
 	private String benefitName="";
 	private Long amount;
+	private Long totalCount=0l;
 	
 	
 	public Long getId() {
@@ -94,6 +95,12 @@ public class BenefitCandidateVO {
 	}
 	public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
 	}
 	
 }

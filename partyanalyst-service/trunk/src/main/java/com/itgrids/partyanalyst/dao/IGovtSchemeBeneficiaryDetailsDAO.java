@@ -11,6 +11,6 @@ public interface IGovtSchemeBeneficiaryDetailsDAO extends GenericDao<GovtSchemeB
 	public List<Object[]> getBenefitsApprovedDetails(List<Long> cadreIds);
 	public List<Object[]> getOwnAndParticipatedConstituenciesBenefitDetails(List<Long> constIds);
 	public List<Object[]> getLocalityBasedBenefitSchemesDetails(Long accessLevelId,List<Long> accessLevelValuesList);
-	public List<Object[]> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId);
+	public List<Object[]> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue);
 	public List<Object[]> getAllConstBenefitDetailsForADist(Long distId);
 }

@@ -11,4 +11,5 @@ public interface IActivityMemberAccessTypeDAO extends GenericDao<ActivityMemberA
 	public List<Object[]> getAllActivityMembersOfGSAndDistAndMpUserTypes(List<Long> childUserTypeIds);
 	public Object[] getUserAccessTypeAndActivityMemberIdByUserId(Long userId);
 	public List<Object[]> getDesignation(List<Long> activityMemberIdList);
+	public List<Object[]> getMemberIdMemberLvlAndLocationValueByTdpCadre(Long tdpCadreId);
 }

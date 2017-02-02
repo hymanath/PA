@@ -9394,7 +9394,6 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 			return query.list();
 }
-	   
 	   public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForWebService(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId)
 		{
 			StringBuilder queryStr = new StringBuilder();
@@ -9455,6 +9454,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 			return query.list();
 		}
-	   
-	
+	   public List<Object[]> getCadreNameByTdpCadreIds(List<Long> tdpCadreIds){
+		   Query query = getSession().createQuery("select model.tdpCadreId,model.firstname,model.lastname from TdpCadre model where model.isDeleted='N' and model.tdpCadreId in (:tdpCadreIds) ");
+		   query.setParameterList("tdpCadreIds", tdpCadreIds);
+		   return query.list();
+	   }
 }
