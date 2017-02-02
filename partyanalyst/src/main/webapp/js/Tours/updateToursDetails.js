@@ -1801,7 +1801,18 @@ function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate){
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		//console.log(result);
-		buildAllTourDetailsOverview(result,saveUpdate)
+		if(result != null && result.length > 0){
+			buildAllTourDetailsOverview(result,saveUpdate);
+		}else{
+			$("#candidateNameId").html("");
+		if(saveUpdate == '1')
+		{
+			$("#toursCandidateDetails,attachementsId").html("No data available...");
+		}else if(saveUpdate == '2')
+		{
+			$("#toursCandidateDetailsModal,attachementsIdModal").html("No data available...");
+		}
+		}	
 	});
 }
 function buildAllTourDetailsOverview(result,saveUpdate){
