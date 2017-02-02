@@ -2949,6 +2949,7 @@
 		 <property name="govtSchemesDAO" ref="govtSchemesDAO" />
 		 <property name="govtSchemeBeneficiaryDetailsDAO" ref="govtSchemeBeneficiaryDetailsDAO" />
 		  <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
+		  <property name="activityMemberAccessTypeDAO" ref="activityMemberAccessTypeDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
