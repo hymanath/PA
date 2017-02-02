@@ -37,6 +37,7 @@
 	<!-- Add fancyBox main JS and CSS files -->  
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 	<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="newCoreDashBoard/css/simplePagination.css"/>
 	
 						<!-- End -->
 
@@ -180,6 +181,15 @@
 	
 }
 .heightApply{height:990px !important;}
+.pagination li .prev , .pagination li .next
+{
+	height: 34px;
+    min-width: 52px !important;
+}
+.alertColorFont{
+color: rgb(51, 122, 183);
+}
+.tableHeaderFontSize thead tr th{font-size:11px !important;background-color:#e9e9e9 !important;text-transform:uppercase !important;vertical-align:middle}
 
 </style>
 <script>
@@ -1436,24 +1446,24 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					</div>
 					<div class="panel-body in" id="benefitsCollapseBodyId">
 						<div>
-							<h4>Personal Benefits</h4>
-							<div id="personalBenefitsDivId"></div>
+						     <h4 class="text-capital;">PERSONAL BENEFITS<i class="glyphicon expandIcon glyphicon-minus benefiExpandCls" style="margin-left:20px;" ></i></h4>
+							 <div class="hideShowCls" id="personalBenefitsDivId"></div>
 						</div>	
 						<div>
-							<h4>Family Members Benefits</h4>
-							<div id="familyBenefitsDivId"></div>
+						    <h4 class="text-capital;">FAMILY MEMBERS BENEFITS<i class="glyphicon expandIcon  glyphicon-minus benefiExpandCls" style="margin-left:20px;" ></i></h4>
+							<div class="hideShowCls" id="familyBenefitsDivId"></div>
 						</div>
 						<div>
-							<h4>Own Constituency Benefits</h4>
-							<div id="constituencyBenefitsDivId"></div>
+						    <h4 class="text-capital;">OWN CONSTITUENCY BENEFITS<i class="glyphicon expandIcon  glyphicon-minus benefiExpandCls" style="margin-left:20px;" ></i></h4>
+							<div class="hideShowCls" id="constituencyBenefitsDivId"></div>
 						</div>
-						<div>
-							<h4>Participated Constituency Benefits</h4>
-							<div id="partConstituencyBenefitsDivId"></div>
+						<div id="participatedConsGBenefitDivId">
+						    <h4 class="text-capital;">PARTICIPATED CONSTITUENCY BENEFITS<i class="glyphicon expandIcon glyphicon-minus benefiExpandCls" style="margin-left:20px;" ></i></h4>
+							<div class="hideShowCls" id="partConstituencyBenefitsDivId"></div>
 						</div>
-						<div>
-							<h4>Locality Benefits</h4>
-							<div id="localityBasedBenefitsDivId"></div>
+						<div id="localityConsBenefitDivId">
+						    <h4 class="text-capital;">LOCALITY BENEFITS<i class="glyphicon expandIcon glyphicon-minus benefiExpandCls" style="margin-left:20px;" ></i></h4>
+							<div class="hideShowCls" id="localityBasedBenefitsDivId"></div>
 						</div>
 					</div>
 				</div>
@@ -2043,12 +2053,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     <div class="modal-content">
       <div class="modal-header" style="background-color:#999999">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="benefitCountModalHeading">Heading</h4>
+        <h4 class="modal-title" id="benefitCountModalHeading" style="text-transform:uppercase">Heading</h4>
       </div>
       <div class="modal-body" >
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div id="benefitCountCorpBene"></div>
+				<div id="customPaginationDivId"></div>
 			</div>
 		</div>
       </div>
@@ -2242,6 +2253,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 	<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 	<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+	<script type="text/javascript" src="newCoreDashBoard/js/simplePagination3.js" ></script>
 	<script>
 	google.load("visualization", "1", {packages:["corechart"]});
 	

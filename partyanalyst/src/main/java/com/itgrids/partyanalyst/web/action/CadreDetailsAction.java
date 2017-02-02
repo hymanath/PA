@@ -2032,17 +2032,14 @@ public String getVolunteerCadreDetilasInformation(){
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
 			
 			List<Long> familyCadreIds = new ArrayList<Long>(0);
-			familyCadreIds.add(tdpCadreId);
+			//familyCadreIds.add(tdpCadreId);
 			JSONArray arr = jObj.getJSONArray("familyCadreIdsArray");
 			if(arr != null && arr.length() > 0){
 				for (int i = 0; i < arr.length(); i++) {
-					familyCadreIds.add((i+1),Long.parseLong(arr.getString(i)));
+					familyCadreIds.add(Long.parseLong(arr.getString(i)));
 				}
 			}
-			
-			benefitVOList = cadreDetailsService.getBenefitDetailsAlongFamily(familyCadreIds);
-			
-			
+			benefitVO = cadreDetailsService.getBenefitDetailsAlongFamily(tdpCadreId,familyCadreIds);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getBenefitDetailsAlongFamily in CadreDetailsAction class  ",e);
 		}
@@ -2072,7 +2069,7 @@ public String getVolunteerCadreDetilasInformation(){
 	public String getBenefitSchemesMembersDetails(){
 		try {
 			jObj = new JSONObject(getTask());
-			benefitCandidateVOList = cadreDetailsService.getBenefitSchemesMembersDetails(jObj.getLong("locationLevelValue"),jObj.getLong("benefitId"));
+			benefitCandidateVOList = cadreDetailsService.getBenefitSchemesMembersDetails(jObj.getLong("locationLevelValue"),jObj.getLong("benefitId"),jObj.getInt("minValue"),jObj.getInt("maxValue"));
 		} catch (Exception e) {
 			LOG.error("Exception occured in getBenefitSchemesMembersDetails in CadreDetailsAction class  ",e);
 		}
