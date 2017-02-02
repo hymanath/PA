@@ -348,7 +348,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.CREATE_ALERT_ENTITLEMENT) || 
 				 regVo.getEntitlements().contains("ALERT_DASHBOARD_USER_ENTITLEMENT") || 
-				  regVo.getEntitlements().contains("ALERT_DASHBOARD_ADMIN_ENTITLEMENT"))  
+				  regVo.getEntitlements().contains("ALERT_DASHBOARD_ADMIN_ENTITLEMENT") ||
+				  regVo.getEntitlements().contains("TDP_CADRE_LOGIN_ENTITLEMENT"))  
 			return Action.SUCCESS;
 		else
 			return Action.ERROR;	
