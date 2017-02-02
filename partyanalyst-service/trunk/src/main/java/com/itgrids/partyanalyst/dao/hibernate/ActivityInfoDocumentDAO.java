@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -19,13 +20,37 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		
 	}
 	
-	public List<Object[]> getEventDocuments(EventDocumentVO inputVO,Date startDate,Date endDate)
+	public List<Object[]> getEventDocuments(EventDocumentVO inputVO,Date startDate,Date endDate,
+			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N' " );
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
+		
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l){
+				 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+					 str.append("  and model.userAddress.state.stateId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.district.districtId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						 str.append("  and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+						 str.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+						 str.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+						 str.append(" and model.userAddress.panchayat.panchayatId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+						 str.append(" and model.userAddress.ward.constituencyId in (:userAccessLevelValues) "); 
+					 }
+			}
+			
+		}else{
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
 			str.append(" and model.userAddress.state.stateId = :locationValue ");
@@ -42,6 +67,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
+		}
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
@@ -51,13 +77,25 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
 		query.setParameter("activityDocumentId", inputVO.getActivityId());
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		/*if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
 			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
-		}
+		}*/
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelValues != null && userAccessLevelValues.size() > 0l){
+				query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			}}else {
+			if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+				query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+				else
+				{
+					//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+					query.setParameter("locationValue",inputVO.getLocationValue());
+				}
+		}	
 		if(startDate != null)
 		{
 			query.setDate("startDate", startDate);
@@ -71,13 +109,36 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			
 		return query.list();
 	}
-	public Long getEventDocumentsCount(EventDocumentVO inputVO,Date startDate,Date endDate)
+	public Long getEventDocumentsCount(EventDocumentVO inputVO,Date startDate,Date endDate,Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct count(model.activityDocument.activityDocumentId)" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N'  ");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
+		
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l){
+				 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+					 str.append("  and model.userAddress.state.stateId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.district.districtId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						 str.append("  and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+						 str.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+						 str.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+						 str.append(" and model.userAddress.panchayat.panchayatId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+						 str.append(" and model.userAddress.ward.constituencyId in (:userAccessLevelValues) "); 
+					 }
+			}
+			
+		}else{
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
 			if(inputVO.getLocationValue() == 36)
@@ -102,6 +163,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
+		}
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
@@ -111,13 +173,25 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
 		query.setParameter("activityDocumentId", inputVO.getActivityId());
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		/*if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
 			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
-		}
+		}*/
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelValues != null && userAccessLevelValues.size() > 0l){
+				query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			}}else {
+			if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+				query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+				else
+				{
+					//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+					query.setParameter("locationValue",inputVO.getLocationValue());
+				}
+		}	
 		if(startDate != null)
 		{
 			query.setDate("startDate", startDate);
@@ -516,13 +590,36 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}
 	
-	public List<Object[]> getEventDocumentsByLocationInfo(EventDocumentVO inputVO,Date startDate,Date endDate)
+	public List<Object[]> getEventDocumentsByLocationInfo(EventDocumentVO inputVO,Date startDate,Date endDate,
+			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId  and model.isDeleted='N'");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l){
+				 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+					 str.append("  and model.userAddress.state.stateId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.district.districtId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						 str.append("  and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+						 str.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+						 str.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+						 str.append(" and model.userAddress.panchayat.panchayatId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+						 str.append(" and model.userAddress.ward.constituencyId in (:userAccessLevelValues) "); 
+					 }
+			}
+			
+		}else{
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
 			if(inputVO.getLocationValue() == 36)
@@ -547,6 +644,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		else if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
+		}
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
@@ -556,13 +654,13 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
 		query.setParameter("activityDocumentId", inputVO.getActivityId());
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		/*if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
 			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
-		}
+		}*/
 		if(startDate != null)
 		{
 			query.setDate("startDate", startDate);
@@ -573,16 +671,51 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			query.setFirstResult(inputVO.getStartIndex());
 			query.setMaxResults(inputVO.getMaxIndex());
 		}
-			
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0l){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}}else {
+			if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+				query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+				else
+				{
+					//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+					query.setParameter("locationValue",inputVO.getLocationValue());
+				}
+		}	
 		return query.list();
 	}
-	public Long getEventDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate)
+	public Long getEventDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate,
+			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.activityDocument.activityDocumentId)" +
 				"  from ActivityInfoDocument model where model.activityLocationInfo.activityScopeId = :activityDocumentId and model.isDeleted='N' ");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
+		
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l){
+				 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+					 str.append("  and model.userAddress.state.stateId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.district.districtId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						 str.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						 str.append("  and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+						 str.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLevelValues) ");  
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+						 str.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+						 str.append(" and model.userAddress.panchayat.panchayatId in (:userAccessLevelValues) "); 
+					 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+						 str.append(" and model.userAddress.ward.constituencyId in (:userAccessLevelValues) "); 
+					 }
+			}
+			
+		}else{
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
 			if(inputVO.getLocationValue() == 36)
@@ -607,6 +740,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
 		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
+		}
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
@@ -616,13 +750,25 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		if(inputVO.getDay() > 0)
 			query.setParameter("day", inputVO.getDay());
 		query.setParameter("activityDocumentId", inputVO.getActivityId());
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+		/*if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
 		query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
 		else
 		{
 			//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
 			query.setParameter("locationValue",inputVO.getLocationValue());
-		}
+		}*/
+		if(inputVO.getCallFrom() != null && inputVO.getCallFrom().equalsIgnoreCase("firstClick")){
+			if(userAccessLevelValues != null && userAccessLevelValues.size() > 0l){
+				query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			}}else {
+			if(inputVO.getLocationScope().equalsIgnoreCase("village") || inputVO.getLocationScope().equalsIgnoreCase("mandal"))
+				query.setParameter("locationValue", new Long(inputVO.getLocationValue().toString().substring(1)));
+				else
+				{
+					//if(!inputVO.getLocationScope().equalsIgnoreCase("state"))
+					query.setParameter("locationValue",inputVO.getLocationValue());
+				}
+		}	
 		if(startDate != null)
 		{
 			query.setDate("startDate", startDate);

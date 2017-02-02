@@ -18062,7 +18062,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
 			
-			/*Long locationAccessLevelId = 0l;
+			Long locationAccessLevelId = 0l;
 			Set<Long> locationValues = new HashSet<Long>(0);
 			//Long stateId = 1L; 
 			 List<Object[]> userAccLvlANdVals=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
@@ -18071,7 +18071,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					 for(Object[] param:userAccLvlANdVals){
 						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 					 }
-			   }*/
+			   }
 			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
 			{
 				startDate = format.parse(inputVo.getStrDate().toString().trim());
@@ -18082,11 +18082,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			Long totalCount = null;
 			
 			if(inputVo.getCallFrom().equalsIgnoreCase("BD")){
-				list = activityInfoDocumentDAO.getEventDocumentsByLocationInfo(inputVo,startDate,toDate);
-				totalCount = activityInfoDocumentDAO.getEventDocumentsCountByLocationInbfo(inputVo,startDate,toDate);
+				list = activityInfoDocumentDAO.getEventDocumentsByLocationInfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+				totalCount = activityInfoDocumentDAO.getEventDocumentsCountByLocationInbfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
 			}else{
-				list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate);
-				totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate);
+				list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+				totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
 			}
 			
 			if(list != null && list.size() > 0)
