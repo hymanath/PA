@@ -3223,6 +3223,8 @@
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="dateUtilService" ref="dateUtilService" />
+		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
+		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
