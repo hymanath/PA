@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.PartyMeetingUpdationDocuments;
 public interface IPartyMeetingUpdationDocumentsDAO extends GenericDao<PartyMeetingUpdationDocuments, Long>{
 
 	public Long getDocumentsCountByMeetingIds(List<Long> partyMeetingIds);
+	public List<Object[]> getDocumentsForUpdationDetsId(List<Long> meetingDetailsId);
 }
