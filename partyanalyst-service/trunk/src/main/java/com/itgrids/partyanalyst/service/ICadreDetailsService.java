@@ -144,9 +144,9 @@ public interface ICadreDetailsService {
 	public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId);
 	
 	public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,String mobileNo);
-	public List<BenefitVO> getBenefitDetailsAlongFamily(List<Long> cadreIds);
+	public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> famillyCadreIds);
 	public BenefitVO getOwnAndParticipatedConstituenciesBenefitDetails(Long constId,Long pConstId);
 	public List<BenefitVO> getLocalityBasedBenefitSchemesDetails(Long cadreId);
-	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId);
+	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue);
 	public List<BenefitVO> getAllConstBenefitDetailsForADist(Long distId);
 }

@@ -31,6 +31,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -270,6 +271,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	private IGovtSchemesDAO govtSchemesDAO;
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO; 
+	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
 	
 	
 	public IGovtSchemeBeneficiaryDetailsDAO getGovtSchemeBeneficiaryDetailsDAO() {
@@ -1031,6 +1033,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setVolunteersCadreDetailsDAO(
 			IVolunteersCadreDetailsDAO volunteersCadreDetailsDAO) {
 		this.volunteersCadreDetailsDAO = volunteersCadreDetailsDAO;
+	}
+	public void setActivityMemberAccessTypeDAO(
+			IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO) {
+		this.activityMemberAccessTypeDAO = activityMemberAccessTypeDAO;
 	}
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,
 			String memberShipCardNo,String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,
@@ -11668,111 +11674,109 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 	return memberShipNo;
 }
 	
-	public List<BenefitVO> getBenefitDetailsAlongFamily(List<Long> cadreIds){
-		List<BenefitVO> finalVoList = new ArrayList<BenefitVO>(0);
-		try {
-			if(cadreIds != null && cadreIds.size() > 0){
-				List<GovtSchemes> govtSchemesList = govtSchemesDAO.getAll();//get all benefit schemes
-				
-				Map<Long,List<BenefitVO>> cadreMap = new HashMap<Long, List<BenefitVO>>(0);
-				for (Long cadreId : cadreIds) {
-					cadreMap.put(cadreId, null);
-				}
-					
-				//0-cadreId,1-name,2-schemeId,3-scheneName,4-amount
-				List<Object[]> schemeDetails = govtSchemeBeneficiaryDetailsDAO.getBenefitsApprovedDetails(cadreIds);
-				if(schemeDetails != null && schemeDetails.size() > 0){
-					for (Object[] objects : schemeDetails) {
-						List<BenefitVO> matchedUserVOList = cadreMap.get((Long)objects[0]);
-						if(matchedUserVOList == null){
-							matchedUserVOList = getBenefitsSchemasSkeleton(govtSchemesList);
-							matchedUserVOList.get(0).setCadreName(objects[1].toString());
-							matchedUserVOList.get(0).setCadreId((Long)objects[0]);
-							cadreMap.put((Long)objects[0], matchedUserVOList);
-						}
-						matchedUserVOList = cadreMap.get((Long)objects[0]);
-						BenefitVO matchedBenefitVO = getMatchedBenefitVO(matchedUserVOList,(Long)objects[2]);
-						if(matchedBenefitVO != null){
-							matchedBenefitVO.setCadreId((Long)objects[0]);
-							matchedBenefitVO.setCadreName(objects[1].toString());
-							matchedBenefitVO.setAmount(objects[4] != null && (Long)objects[4] > 0l ? (Long)objects[4] : 0l);
-							matchedBenefitVO.setStatus("Y");
-						}
-					}
-				}
-				
-				if(cadreMap != null && cadreMap.size() > 0){
-					//calculate user wise total
-					for (Entry<Long, List<BenefitVO>> entry : cadreMap.entrySet()) {
-						if(entry != null && entry.getValue() != null && entry.getValue().size() > 0){
-							Long userWisetotalAmount = 0l;
-							for (BenefitVO vo : entry.getValue()) {
-								if(vo.getAmount() != null && vo.getAmount() > 0l)
-									userWisetotalAmount = userWisetotalAmount + vo.getAmount();
-							}
-							entry.getValue().get(0).setUserWisetotalAmount(userWisetotalAmount);
-						}
-					}
-					
-					//calcaulate scheme wise totals
-					List<BenefitVO> tempVoList = getBenefitsSchemasSkeleton(govtSchemesList);
-					Map<Long,Long> tempMap = new HashMap<Long, Long>(0);//benefitId,benefitWiseTotal
-					if(tempVoList != null && tempVoList.size() > 0){
-						for (BenefitVO benefitVO : tempVoList) {
-							tempMap.put(benefitVO.getBenefitId(), 0l);
-						}
-					}
-					
-					Long overAllAmount = 0l;
-					int index = 0;
-					for (Entry<Long, List<BenefitVO>> entry : cadreMap.entrySet()) {
-						if(index == 1){
-							List<BenefitVO> voList  = entry.getValue();
-							if(overAllAmount != null && overAllAmount.longValue()>0L && commonMethodsUtilService.isListOrSetValid(voList))
-								overAllAmount = overAllAmount+voList.get(0).getUserWisetotalAmount();
-							for (BenefitVO benefitVO : voList) {
-								tempMap.put(benefitVO.getBenefitId(), tempMap.get(benefitVO.getBenefitId())+benefitVO.getAmount());
-							}
-						}
-						index = 1;
-					}
-					
-					//set scheme wise total amount to main map
-					if(cadreIds.size() > 1 && cadreIds.get(1) != null && cadreMap.get(cadreIds.get(1)) != null){
-						cadreMap.get(cadreIds.get(1)).get(0).setSumOfAll(overAllAmount);
-						for (BenefitVO benefitVO : cadreMap.get(cadreIds.get(1))) {
-							benefitVO.setSchemeWiseTotalCount(tempMap.get(benefitVO.getBenefitId()));
-						}
-					}
-					
-					
-					for (int i=0;i<cadreIds.size();i++) {
-						if(i == 0){
-							if(cadreMap.get(cadreIds.get(0)) == null){
-								finalVoList.add(0,null);
-							}else{
-								if(cadreMap.get(cadreIds.get(i)) != null){
-									BenefitVO vo = new BenefitVO();
-									vo.setCadreDetailsVO(cadreMap.get(cadreIds.get(i)));
-									finalVoList.add(0,vo);
-								}
-							}
-						}else{
-							if(cadreMap.get(cadreIds.get(i)) != null){
-								BenefitVO vo = new BenefitVO();
-								vo.setCadreDetailsVO(cadreMap.get(cadreIds.get(i)));
-								finalVoList.add(vo);
-							}
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception Occured in getBenefitDetailsAlongFamily() Method, Exception is - ",e);
-		}
-		return finalVoList;
-	}
 	
+ /*
+  * Santosh (non-Javadoc)
+  * @see com.itgrids.partyanalyst.service.ICadreDetailsService#getBenefitDetailsAlongFamily(java.lang.Long, java.util.List)
+  */
+public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> famillyVoterIds){
+	  BenefitVO resultVO = new BenefitVO();
+	  Map<Long,BenefitVO> cadreMap = new HashMap<Long, BenefitVO>();
+	try {
+		
+		  famillyVoterIds.add(tdpCadreId);//adding personal tdpcadreId 
+		  List<GovtSchemes> govtSchemesList = null;
+		 if(famillyVoterIds != null && famillyVoterIds.size() > 0){
+			List<Object[]> cadreDtlsObjLst = tdpCadreDAO.getCadreNameByTdpCadreIds(famillyVoterIds);	
+			govtSchemesList = govtSchemesDAO.getAll();//get all benefit schemes
+			preparTemplate(cadreDtlsObjLst,govtSchemesList,cadreMap,"personalBenefit");
+		 }
+		//0-cadreId,1-name,2-schemeId,3-scheneName,4-benefit amount
+		 List<Object[]> schemeDetails = govtSchemeBeneficiaryDetailsDAO.getBenefitsApprovedDetails(famillyVoterIds);
+		 if(schemeDetails != null && schemeDetails.size() > 0){
+			 for(Object[] param:schemeDetails){
+				 BenefitVO cadreVO = cadreMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 if(cadreVO != null){
+					  if(param[1] != null && param[1].toString().length() > 0){
+						  cadreVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[1]));//we are overriding name with benefit name   
+					  }
+					  BenefitVO schemeVO = getMatchedBenefitVO(cadreVO.getCadreDetailsVO(),commonMethodsUtilService.getLongValueForObject(param[2]));
+					  if(schemeVO != null){
+						  schemeVO.setAmount(commonMethodsUtilService.getLongValueForObject(param[4]));
+						  schemeVO.setStatus("Y");  
+					  } 
+				 }
+			 }
+		 }
+		 if(cadreMap != null && cadreMap.size() > 0){
+			  //Calculating Personal Benefit Data
+			  BenefitVO personBenefitCadreVO = cadreMap.get(tdpCadreId); 
+			  if(personBenefitCadreVO != null){
+				  for(BenefitVO benefitVO:personBenefitCadreVO.getCadreDetailsVO()){
+					  personBenefitCadreVO.setUserWisetotalAmount(personBenefitCadreVO.getUserWisetotalAmount()+benefitVO.getAmount());//calculate total amount  
+				  }
+			  }
+			  
+			  resultVO.getCadreDetailsVO().add(personBenefitCadreVO);
+			  
+			  cadreMap.remove(tdpCadreId);//remove personal tdpcadre vo from Map.
+			  
+			 //Calculating Family Benefit Data 
+			  BenefitVO overAllFamilyDtlsVO = null;
+			  if(cadreMap != null && cadreMap.size() > 1){ // if more then only family is there then we are calculating overAll Family Benefit
+				  overAllFamilyDtlsVO = new BenefitVO();
+				  overAllFamilyDtlsVO.setCadreName("TOTAL");
+				  overAllFamilyDtlsVO.setCadreDetailsVO(getBenefitsSchemasSkeleton(govtSchemesList));
+			  }
+			  for(BenefitVO familyCadreVO:cadreMap.values()){
+				  for(BenefitVO benefitVO:familyCadreVO.getCadreDetailsVO()){
+					  familyCadreVO.setUserWisetotalAmount(familyCadreVO.getUserWisetotalAmount()+benefitVO.getAmount());//calculate total amount
+					  if(overAllFamilyDtlsVO != null){
+						  BenefitVO benefitMatchVO = getMatchedBenefitVO(overAllFamilyDtlsVO.getCadreDetailsVO(),benefitVO.getBenefitId());  
+						  if(benefitMatchVO != null){
+							  benefitMatchVO.setAmount(benefitMatchVO.getAmount()+benefitVO.getAmount()); 
+							  benefitMatchVO.setStatus("Y");  
+						  }
+					  }
+				  }
+			  }	 
+			  //calculating overAll Sum
+			  if(overAllFamilyDtlsVO != null){
+				  for(BenefitVO overAllBenefitVO:overAllFamilyDtlsVO.getCadreDetailsVO()){
+					  overAllFamilyDtlsVO.setUserWisetotalAmount(overAllFamilyDtlsVO.getUserWisetotalAmount()+overAllBenefitVO.getAmount());//calculate total amount  
+				  }
+			  }
+			  resultVO.getFamilyDetailsVO().addAll(cadreMap.values());
+			   if(overAllFamilyDtlsVO != null && overAllFamilyDtlsVO.getUserWisetotalAmount() > 0){
+				   resultVO.getFamilyDetailsVO().add(overAllFamilyDtlsVO);
+			  }
+		 }
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getBenefitDetailsAlongFamily() Method, Exception is - ",e);
+	}
+	return resultVO;
+}
+
+ public void preparTemplate(List<Object[]> objList,List<GovtSchemes> govtSchemesList,Map<Long,BenefitVO> cadreMap,String resultType){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 BenefitVO cadreVO = new BenefitVO();
+				 if(resultType.equalsIgnoreCase("personalBenefit")){
+					 cadreVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 cadreVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[1])+" "+commonMethodsUtilService.getStringValueForObject(param[2]));
+				 }else if(resultType.equalsIgnoreCase("constituency")){
+					 cadreVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 cadreVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[1]));	 
+				 }
+				 cadreVO.setCadreDetailsVO(getBenefitsSchemasSkeleton(govtSchemesList));
+				 cadreMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), cadreVO);
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception Occured in preparTemplate() Method, Exception is - ",e); 
+	 }
+ }
 	public List<BenefitVO> getBenefitsSchemasSkeleton(List<GovtSchemes> govtSchemesList){
 		List<BenefitVO> voList = new ArrayList<BenefitVO>(0);
 		if(govtSchemesList != null && govtSchemesList.size() > 0){
@@ -11796,49 +11800,58 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 		}
 		return null;
 	}
-	
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.ICadreDetailsService#getOwnAndParticipatedConstituenciesBenefitDetails(java.lang.Long, java.lang.Long)
+	 */
 	public BenefitVO getOwnAndParticipatedConstituenciesBenefitDetails(Long constId,Long pConstId){
 		BenefitVO finalVo = new BenefitVO();
+		Map<Long,BenefitVO> constituencyMap = new HashMap<Long, BenefitVO>();
 		try {
 			List<Long> constIdsList = new ArrayList<Long>(0);
 			if(constId > 0l)constIdsList.add(constId);
 			if(pConstId > 0l)constIdsList.add(pConstId);
 			
 			if(constIdsList != null && constIdsList.size() > 0){
-				
+				 List<Object[]> constituencyObjLst = constituencyDAO.getConstituencyByConstituencyIds(constIdsList);
 				List<GovtSchemes> govtSchemesList = govtSchemesDAO.getAll();
+				preparTemplate(constituencyObjLst,govtSchemesList,constituencyMap,"constituency");
 				
 				//0-constId,1-name,2-schemeId,3-count
 				List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getOwnAndParticipatedConstituenciesBenefitDetails(constIdsList);
-				
 				if(objList != null && objList.size() > 0){
-					for (Object[] objects : objList) {
-						Long  cId = (Long)objects[0];
-						if(constId != null && constId > 0l && cId.equals(constId)){//own const
-							BenefitVO matchedVO = getMatchedBenefitVO(finalVo.getCadreDetailsVO(),(Long)objects[2]);
-							if(matchedVO == null){
-								List<BenefitVO> voList = getBenefitsSchemasSkeleton(govtSchemesList);
-								voList.get(0).setConstituencyId((Long)objects[0]);
-								voList.get(0).setConstituencyName(objects[1].toString());
-								finalVo.setCadreDetailsVO(voList);
-							}
-							matchedVO = getMatchedBenefitVO(finalVo.getCadreDetailsVO(),(Long)objects[2]);
-							setCountsTOVO(matchedVO,objects);
-						}else if(pConstId != null && pConstId > 0l && cId.equals(pConstId)){//pconstId
-							BenefitVO matchedVO = getMatchedBenefitVO(finalVo.getFamilyDetailsVO(),(Long)objects[2]);
-							if(matchedVO == null){
-								List<BenefitVO> voList = getBenefitsSchemasSkeleton(govtSchemesList);
-								voList.get(0).setConstituencyId((Long)objects[0]);
-								voList.get(0).setConstituencyName(objects[1].toString());
-								finalVo.setFamilyDetailsVO(voList);
-							}
-							matchedVO = getMatchedBenefitVO(finalVo.getFamilyDetailsVO(),(Long)objects[2]);
-							setCountsTOVO(matchedVO,objects);
+					for(Object[] param:objList){
+						BenefitVO constituecnyVO = constituencyMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(constituecnyVO != null){
+							BenefitVO schemeVO = getMatchedBenefitVO(constituecnyVO.getCadreDetailsVO(),commonMethodsUtilService.getLongValueForObject(param[2]));	
+							 if(schemeVO != null){
+								 schemeVO.setAmount(commonMethodsUtilService.getLongValueForObject(param[3]));//setting number of benefit member scheme wise 
+							 }
 						}
 					}
 				}
-			}
+				//Setting own constituency data to final VO
+				BenefitVO ownConstituencyVO = constituencyMap.get(constId);
+				if(ownConstituencyVO != null){
+					finalVo.getCadreDetailsVO().addAll(ownConstituencyVO.getCadreDetailsVO());
+					if(finalVo.getCadreDetailsVO() != null && finalVo.getCadreDetailsVO().size() > 0){
+						finalVo.getCadreDetailsVO().get(0).setConstituencyId(ownConstituencyVO.getConstituencyId());
+						finalVo.getCadreDetailsVO().get(0).setConstituencyName(ownConstituencyVO.getConstituencyName());
 			
+					}	
+				}
+				//Setting participated constituency data to final VO
+				BenefitVO participatedConstituencyVO = constituencyMap.get(pConstId);
+				if(participatedConstituencyVO != null){
+					finalVo.getFamilyDetailsVO().addAll(participatedConstituencyVO.getCadreDetailsVO());
+					if(finalVo.getFamilyDetailsVO() != null && finalVo.getFamilyDetailsVO().size() > 0){
+						finalVo.getFamilyDetailsVO().get(0).setConstituencyId(participatedConstituencyVO.getConstituencyId());
+						finalVo.getFamilyDetailsVO().get(0).setConstituencyName(participatedConstituencyVO.getConstituencyName());
+			
+					}
+				}
+				constituencyMap.clear();
+			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getOwnAndParticipatedConstituenciesBenefitDetails() Method, Exception is - ",e);
 		}
@@ -11852,28 +11865,26 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 			matchedVO.setAmount((Long)objects[3]);
 		}
 	}
-	
-	public List<BenefitVO> getLocalityBasedBenefitSchemesDetails(Long cadreId){
-		List<BenefitVO> benefitVOList = new ArrayList<BenefitVO>(0);
-		try {
-			List<List<CadreCountsVO>> cadreRolesList = candidateDetailsService.getLeaderDtlsInfo(cadreId);
-			
-			if(cadreRolesList != null && cadreRolesList.size() > 0){
-				List<GovtSchemes> govtSchemesList = govtSchemesDAO.getAll();Long accessLevelId= 0l;
-				for (List<CadreCountsVO> list : cadreRolesList) {//role based List
-					List<Long> accesLevelValuesList = new ArrayList<Long>(0);
-					if(list != null && list.size() > 0){
-						accessLevelId = list.get(0).getAccessLvlId();
-						for (CadreCountsVO vo : list) {
-							accesLevelValuesList.add(vo.getId());
-						}
-					}
+   public List<BenefitVO> getLocalityBasedBenefitSchemesDetails(Long cadreId){
+	List<BenefitVO> benefitVOList = new ArrayList<BenefitVO>(0);
+	Map<Long,Map<Long,BenefitVO>> roleWiseAccessLevelMap = new HashMap<Long, Map<Long,BenefitVO>>(0);
+	try {
+		
+		List<Object[]> rtrnAccesslevelAndValueObjLst = activityMemberAccessTypeDAO.getMemberIdMemberLvlAndLocationValueByTdpCadre(cadreId);
+		setRoleWiseAccessLevelValues(rtrnAccesslevelAndValueObjLst,roleWiseAccessLevelMap);
+		
+		if(roleWiseAccessLevelMap != null && roleWiseAccessLevelMap.size() > 0){
+			List<GovtSchemes> govtSchemesList = govtSchemesDAO.getAll();
+			for(Entry<Long, Map<Long, BenefitVO>> candidateEntry:roleWiseAccessLevelMap.entrySet()){
+				
+				if(candidateEntry.getValue() != null && candidateEntry.getValue().size() > 0){
 					
-					
-					if(accessLevelId != null && accessLevelId > 0l && accesLevelValuesList != null && accesLevelValuesList.size() > 0){
+					for(Entry<Long,BenefitVO> locationEntry:candidateEntry.getValue().entrySet()){
+						Long accessLevelId = locationEntry.getKey();
+						
 						Map<Long,BenefitVO> roleLevelMap = new HashMap<Long, BenefitVO>(0);
 						//0-levelId,1-levelName,2-benefitSchemeId,3-count
-						List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getLocalityBasedBenefitSchemesDetails(accessLevelId,accesLevelValuesList);
+						List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getLocalityBasedBenefitSchemesDetails(accessLevelId,locationEntry.getValue().getLocationValues());
 						
 						if(objList != null && objList.size() > 0){
 							for (Object[] objects : objList) {
@@ -11898,6 +11909,10 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 						
 						if(roleLevelMap != null && roleLevelMap.size() > 0){
 							BenefitVO vo = new BenefitVO();
+							vo.setDesignationId(locationEntry.getValue().getDesignationId());
+							vo.setDesignationName(locationEntry.getValue().getDesignationName());
+							vo.setName(locationEntry.getValue().getName());
+							vo.setCadreId(locationEntry.getValue().getCadreId());
 							for (Entry<Long, BenefitVO> entry : roleLevelMap.entrySet()) {
 								vo.getCadreDetailsVO().add(entry.getValue());
 							}
@@ -11907,42 +11922,67 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 					}
 				}
 			}
-			
-			
-			if(benefitVOList != null && benefitVOList.size() > 0){
-				for (BenefitVO vo : benefitVOList) {
-					Map<Long,Long> tempMap = new HashMap<Long, Long>();
-					if(vo.getCadreDetailsVO() != null && vo.getCadreDetailsVO().size() > 0){
-						for (BenefitVO inVO : vo.getCadreDetailsVO()) {
-							if(inVO.getCadreDetailsVO() != null && inVO.getCadreDetailsVO().size() > 0){
-								for (BenefitVO in1VO : inVO.getCadreDetailsVO()) {
-									if(tempMap.get(in1VO.getBenefitId()) == null){
-										tempMap.put(in1VO.getBenefitId(), in1VO.getAmount());
-									}else{
-										tempMap.put(in1VO.getBenefitId(), tempMap.get(in1VO.getBenefitId())+in1VO.getAmount());
-									}
+		}
+		
+		if(benefitVOList != null && benefitVOList.size() > 0){
+			for (BenefitVO vo : benefitVOList) {
+				Map<Long,Long> tempMap = new HashMap<Long, Long>();
+				if(vo.getCadreDetailsVO() != null && vo.getCadreDetailsVO().size() > 0){
+					for (BenefitVO inVO : vo.getCadreDetailsVO()) {
+						if(inVO.getCadreDetailsVO() != null && inVO.getCadreDetailsVO().size() > 0){
+							for (BenefitVO in1VO : inVO.getCadreDetailsVO()) {
+								if(tempMap.get(in1VO.getBenefitId()) == null){
+									tempMap.put(in1VO.getBenefitId(), in1VO.getAmount());
+								}else{
+									tempMap.put(in1VO.getBenefitId(), tempMap.get(in1VO.getBenefitId())+in1VO.getAmount());
 								}
 							}
-							
 						}
-						for(BenefitVO voIn : vo.getCadreDetailsVO().get(0).getCadreDetailsVO()){
-							if(tempMap.get(voIn.getBenefitId()) != null && tempMap.get(voIn.getBenefitId()) > 0l)
-								voIn.setSchemeWiseTotalCount(tempMap.get(voIn.getBenefitId()));
-						}
+						
+					}
+					for(BenefitVO voIn : vo.getCadreDetailsVO().get(0).getCadreDetailsVO()){
+						if(tempMap.get(voIn.getBenefitId()) != null && tempMap.get(voIn.getBenefitId()) > 0l)
+							voIn.setSchemeWiseTotalCount(tempMap.get(voIn.getBenefitId()));
 					}
 				}
 			}
-		} catch (Exception e) {
-			LOG.error("Exception Occured in getLocalityBasedBenefitSchemesDetails() Method, Exception is - ",e);
 		}
-		return benefitVOList;
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getLocalityBasedBenefitSchemesDetails() Method, Exception is - ",e);
 	}
-	
-	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId){
+	return benefitVOList;
+}
+  public void setRoleWiseAccessLevelValues(List<Object[]> objList,Map<Long,Map<Long,BenefitVO>> roleWiseAccessLevelMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  Map<Long,BenefitVO> userAccessLevelMap = roleWiseAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				    if(userAccessLevelMap == null){
+				    	userAccessLevelMap = new HashMap<Long, BenefitVO>();
+				    	roleWiseAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), userAccessLevelMap);
+				    }
+				     BenefitVO locationVO = userAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+				     if(locationVO == null){
+				    	 locationVO = new BenefitVO(); 
+				    	 locationVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[2]));//designationId
+				    	 locationVO.setDesignationName(commonMethodsUtilService.getStringValueForObject(param[3]));//designationName
+				    	 locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//Candiate Name
+				    	 locationVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));//ActivityMemer Id
+				    	 locationVO.setLocationValues(new ArrayList<Long>())
+;				    	 userAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), locationVO);
+				     }
+				     locationVO.getLocationValues().add(commonMethodsUtilService.getLongValueForObject(param[6]));
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception Occured in setRoleWiseAccessLevelValues() Method, Exception is - ",e);  
+	  }
+  }
+	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue){
 		List<BenefitCandidateVO> benefitCandidateVOList = new ArrayList<BenefitCandidateVO>(0);
-		try {
+		try {	
 			//0-id,1-name,2-relativeName,3-cadreId,4-membershipNum,5-adharNum,6-tehsilId,7-tehsinName,8-lebId,9-lebName,10-schemeId,11-schemeName,12-amount
-			List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getBenefitSchemesMembersDetails(locationLevelId,benefitId);
+			List<Object[]> objList = govtSchemeBeneficiaryDetailsDAO.getBenefitSchemesMembersDetails(locationLevelId,benefitId,minValue,maxValue);
 			
 			Map<Long,Long> cadreYearMap = new HashMap<Long, Long>();
 			if(objList != null && objList.size() > 0){
@@ -11988,6 +12028,12 @@ public String getMemberShipNumberByVoterNumberOrMobileNo(String voterCardNo,Stri
 					benefitCandidateVOList.add(vo);
 				}
 				
+			}
+			if(minValue == 0){
+				List<Object[]> rtrnAllObjLst = govtSchemeBeneficiaryDetailsDAO.getBenefitSchemesMembersDetails(locationLevelId,benefitId,0,0);	
+				 if(rtrnAllObjLst != null && rtrnAllObjLst.size() > 0 && benefitCandidateVOList.size() > 0){
+					 benefitCandidateVOList.get(0).setTotalCount(new Long(rtrnAllObjLst.size())); 
+				 }
 			}
 			
 		} catch (Exception e) {

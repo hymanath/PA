@@ -20,9 +20,10 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 	public List<Object[]> getBenefitsApprovedDetails(List<Long> cadreIds){
 		
 		Query query = getSession().createQuery(" select model.tdpCadreId,model.benefiaryName,model.govtSchemesId,model.govtSchemes.schemeName," +
-				" model.benefitedAmount " +
+				" sum(model.benefitedAmount) " +
 				" from GovtSchemeBeneficiaryDetails model " +
-				" where model.isDeleted='N' and model.tdpCadreId in (:cadreIds) ");
+				" where model.isDeleted='N' and model.tdpCadreId in (:cadreIds) group by model.tdpCadreId,model.govtSchemesId " +
+				" order by model.tdpCadreId,model.govtSchemesId ");
 		query.setParameterList("cadreIds", cadreIds);
 		
 		return query.list();
@@ -120,7 +121,7 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		return query.list();
 	}
 	
-	public List<Object[]> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId){
+	public List<Object[]> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue){
 		//0-id,1-name,2-relativeName,3-cadreId,4-membershipNum,5-adharNum,6-mobileNum,7-tehsilId,8-tehsinName,9-lebId,10-lebName,11-schemeId,12-schemeName,13-amount
 		Query query = getSession().createQuery(" select model.govtSchemeBeneficiaryDetailsId,model.benefiaryName," +
 				" tdpCadre.relativename,tdpCadre.tdpCadreId,tdpCadre.memberShipNo,model.avmId,model.mobileNo," +
@@ -137,7 +138,12 @@ public class GovtSchemeBeneficiaryDetailsDAO extends GenericDaoHibernate<GovtSch
 		
 		query.setParameter("locationLevelId", locationLevelId);
 		query.setParameter("benefitId", benefitId);
-		
+		if(minValue != null && minValue > 0){
+			query.setFirstResult(minValue);
+		}
+		if(maxValue != null && maxValue > 0){
+			query.setMaxResults(maxValue);
+		}
 		return query.list();
 	}
 	

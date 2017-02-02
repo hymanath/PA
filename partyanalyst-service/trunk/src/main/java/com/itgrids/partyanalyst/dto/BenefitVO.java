@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BenefitVO {
 	
@@ -23,6 +24,9 @@ public class BenefitVO {
 	private String locationName;
 	private String locationtype;
 	private Long sumOfAll=0l;
+	private List<Long> locationValues;
+	private String designationName;
+	private Long designationId;
 	
 	
 	public Long getBenefitId() {
@@ -133,6 +137,23 @@ public class BenefitVO {
 	public void setSumOfAll(Long sumOfAll) {
 		this.sumOfAll = sumOfAll;
 	}
-	
-	
+	public List<Long> getLocationValues() {
+		return locationValues;
+	}
+	public void setLocationValues(List<Long> locationValues) {
+		this.locationValues = locationValues;
+	}
+	public String getDesignationName() {
+		return designationName;
+	}
+	public void setDesignationName(String designationName) {
+		this.designationName = designationName;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	  
 }

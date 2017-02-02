@@ -2129,7 +2129,14 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  " where  model.deformDate is null and model.electionScope.electionScopeId = 2 and model.state.stateId = 1 ");
 	  return query.list();
   }
-  
+  public List<Object[]> getConstituencyByConstituencyIds(List<Long> constituencyIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyId,model.name from Constituency model where " +
+				  "  model.deformDate is null and model.electionScope.electionScopeId = 2 and model.constituencyId in(:constituencyIds) ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }
 
 
