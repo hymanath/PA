@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -41,6 +42,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private List<PartyMeetingVO> partyMeetingVOList;
 	private List<PartyMeetingStatusVO> meetingStatusVOs;
 	private List<PMMinuteVO> pmMinutelist;
+	
 	
 	
 	public List<PMMinuteVO> getPmMinutelist() {
@@ -164,7 +166,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public void setMeetingStatusVOs(List<PartyMeetingStatusVO> meetingStatusVOs) {
 		this.meetingStatusVOs = meetingStatusVOs;
 	}
-
+	
 	public String getPartyMeetingsOverViewForCadre()
 	{
 		try {
@@ -634,5 +636,23 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getUpdationDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			partyMeetingVOList = partyMeetingService.getUpdateDetails(jObj.getLong("levelId"),jObj.getString("startDate"),jObj.getString("endDate"));
+		}catch(Exception e){
+			LOG.error("Entered into getUpdationDetails Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDocumentList(){
+		try{
+			jObj = new JSONObject(getTask());
+			partyMeetingVO = partyMeetingService.getDocumentsForMeetingId(jObj.getLong("partyMeetingId"));
+		}catch(Exception e){
+			LOG.error("Entered into getDocumentList Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
