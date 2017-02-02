@@ -86,7 +86,17 @@ public class RegistrationVO extends BaseDTO{
 	
 	private String userAccessType;
 	private String task;
+	private List<Long> assignCadreIds = new ArrayList<Long>();
 	
+	
+	public List<Long> getAssignCadreIds() {
+		return assignCadreIds;
+	}
+
+	public void setAssignCadreIds(List<Long> assignCadreIds) {
+		this.assignCadreIds = assignCadreIds;
+	}
+
 	public String getTask() {
 		return task;
 	}
