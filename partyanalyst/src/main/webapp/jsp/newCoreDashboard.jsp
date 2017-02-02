@@ -3796,6 +3796,21 @@
     </div>
   </div>
 </div>
+<!-- Modal For UpdationDetails -->
+<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:60%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mdlHeadingId"></h4>
+      </div>
+      <div class="modal-body">
+        <div id="commentsBlock"></div>
+        <!--<div id="commentsDivId"></div>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
