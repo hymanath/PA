@@ -2393,8 +2393,9 @@ $(document).on("click",".candiateCls",function(){
 		}
 
 	}
+	
 	$(document).on("click",".candidateUpdate",function(){
-		editUpdateDetailsInitilize();
+		
 		var tdpCadreId = $("#hiddentdpCadreIdForPopUp").val();
 		var toursMonthId = $("#hiddentourMonthIdForPopUp").val();
 		getAllTourDetailsOverview(2,tdpCadreId,toursMonthId,'')
