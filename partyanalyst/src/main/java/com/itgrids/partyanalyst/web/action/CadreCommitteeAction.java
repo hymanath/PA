@@ -1815,7 +1815,8 @@ public String getSummaryDetails(){
 				&&  !(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT"))){
 			return "error";
 		}*/
-		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT") || reqLocationType.equalsIgnoreCase("district")){
+			
+		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT") && reqLocationType.equalsIgnoreCase("district")){
 			
 			reqLocationType = "district";
 			if(locationId != null && locationId > 0)
