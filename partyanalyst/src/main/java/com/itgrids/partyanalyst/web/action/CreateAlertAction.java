@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -1309,15 +1310,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			 
 			 if(regVO!=null){
 				 Long userId = regVO.getRegistrationID();
-				 
 				 List<String> fileNamesList = new ArrayList<String>(0);
 				 
 				 for(int i=0;i<imageForDisplay.size();i++){
 		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
-			        	 
-			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
-			          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
-			          
+		        	  String fileName = imageForDisplayFileName.get(i);
+		        	  String[] extName = imageForDisplayFileName.get(i).split("\\.");
+		        	  if(Pattern.matches(".*[a-zA-Z]+.*", extName[0])){
+		        		  imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+				          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
+		        	  }else{
+		        		  imageName= UUID.randomUUID().toString()+"."+extName[1];
+				          fileNamesList.add(IConstants.TOUR_DOCUMENTS+"/"+imageName);
+		        	  }
 			          String filePath=IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
 			        	 
 			          File fileToCreate = new File(filePath,imageName);
