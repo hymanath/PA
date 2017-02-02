@@ -101,7 +101,7 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         			"  from SelfAppraisalCandidateDocument model " +
         			" where model.isDeleted='N' " +
         			" and model.tdpCadreId =:cadreId " +
-        			" and selfAppraisalToursMonthId=:toursMonthId " );
+        			" and selfAppraisalToursMonthId=:toursMonthId order by model.selfAppraisalCandidateDocumentId desc " );
         	
         	query.setParameter("cadreId", cadreId);
         	query.setParameter("toursMonthId", toursMonthId);
