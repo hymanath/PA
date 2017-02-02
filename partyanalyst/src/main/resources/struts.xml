@@ -15614,5 +15614,15 @@
 			<param name="root">alertDataList</param>
 		</result>
 	</action>
+	<action name="getUpdationDetailsAction" class="partyMeetingAction" method="getUpdationDetails">
+	  <result type="json" name="success">
+			<param name="root">partyMeetingVOList</param>
+		</result>
+	</action>
+	<action name="getDocumentListAction" class="partyMeetingAction" method="getDocumentList">
+	    <result type="json" name="success">
+	       <param name="root">partyMeetingVO</param>
+	  </result>
+	</action>
  </package>
 </struts>
