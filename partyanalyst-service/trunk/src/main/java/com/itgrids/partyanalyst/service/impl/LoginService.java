@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IPashiAppUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessIpAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -40,7 +41,6 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PashiAppUserDAO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -67,7 +67,6 @@ import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IJobConstants;
-import com.itgrids.partyanalyst.utils.Util;
 
 public class LoginService implements ILoginService{
 	
@@ -94,7 +93,18 @@ public class LoginService implements ILoginService{
 	private IMailService mailService;
 	private TransactionTemplate transactionTemplate = null;
 	private IPashiAppUserDAO pashiAppUserDAO; 
+	private ITdpCadreLoginDetailsDAO tdpCadreLoginDetailsDAO;
 	
+	
+	public ITdpCadreLoginDetailsDAO getTdpCadreLoginDetailsDAO() {
+		return tdpCadreLoginDetailsDAO;
+	}
+
+	public void setTdpCadreLoginDetailsDAO(
+			ITdpCadreLoginDetailsDAO tdpCadreLoginDetailsDAO) {
+		this.tdpCadreLoginDetailsDAO = tdpCadreLoginDetailsDAO;
+	}
+
 	public IPashiAppUserDAO getPashiAppUserDAO() {
 		return pashiAppUserDAO;
 	}
@@ -376,6 +386,12 @@ public class LoginService implements ILoginService{
 				}
 				
 				getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
+				
+				//Getting Assigned CadreIds For LoginUserId
+				if(entitlements != null && entitlements.size()>0 && entitlements.contains("TDP_CADRE_LOGIN_ENTITLEMENT")){
+					List<Long> assignCadreIds = tdpCadreLoginDetailsDAO.getAssignedCadreIdsForLoginUserId(userId);
+					regVO.getAssignCadreIds().addAll(assignCadreIds);
+				}
 				
 				regVO.setEntitlements(entitlements);
 				regVO.setCountries(countries);

@@ -387,4 +387,19 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getAlertAssignedCandidatesForCentralMembers(Long tdpCadreId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname");
+		str.append(" from AlertAssigned model");
+		str.append(" where model.alert.isDeleted ='N' and model.isDeleted ='N' and model.tdpCadre.tdpCadreId = :tdpCadreId" +
+					" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
+		str.append(" order by model.tdpCadre.firstname ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		return query.list();
+	}
 }

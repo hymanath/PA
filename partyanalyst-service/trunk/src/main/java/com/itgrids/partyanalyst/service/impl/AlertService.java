@@ -6688,5 +6688,227 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return null;        
 	}
 	
+	
+	public List<AlertVO> getTotalAlertGroupByStatusForCentralMembers(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId,Long tdpCadreId){
+		LOG.info("Entered in getTotalAlertGroupByStatusForCentralMembers() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = new ArrayList<AlertVO>();
+			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert status and build the template
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			if(statusList != null && statusList.size() > 0){
+				for(Object[] param : statusList){
+					alertVO = new AlertVO();
+					alertVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[1]));
+					alertVOs.add(alertVO);
+				}
+			}
+			//get alert status count and and create a map of alertStatusId and its count
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId);
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			//push the status count into list if count is 0 push 0 also
+			if(alertVOs != null && alertVOs.size() > 0){
+				for(AlertVO vo : alertVOs){
+					if(statusIdAndCountMap.get(vo.getStatusId()) != null){
+						vo.setCount(statusIdAndCountMap.get(vo.getStatusId()));
+					}else{
+						vo.setCount(0l);
+					}
+				}
+			}
+			return alertVOs; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByStatusForCentralMembers() method of AlertService{}");
+		}
+		return null;
+	}
+	
+	public List<AlertVO> getTotalAlertGroupByStatusThenCategoryForCentralMembers(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long tdpCadreId){
+		LOG.info("Entered in getTotalAlertGroupByStatusThenCategoryForCentralMembers() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
+			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert category for  building the template
+			List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
+			
+			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId);
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			//get all the alert count group by status then category.
+			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();
+			Map<Long,Map<Long,Long>> statusIdAndCategoryIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			List<Object[]> alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,tdpCadreId);
+			if(alertCountGrpByCatList != null && alertCountGrpByCatList.size() > 0){
+				for(Object[] param : alertCountGrpByCatList){
+					categoryIdAndCountMap = statusIdAndCategoryIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(categoryIdAndCountMap != null){
+						categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						categoryIdAndCountMap = new HashMap<Long, Long>();
+						categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						statusIdAndCategoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),categoryIdAndCountMap);
+					}
+					statusIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			//build final vo to sent to ui
+			List<AlertVO> finalList = new ArrayList<AlertVO>();
+			AlertVO innerListAlertVO = null;
+			if(statusIdAndCategoryIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> entry : statusIdAndCategoryIdAndCountMap.entrySet()){
+					categoryIdAndCountMap = entry.getValue();
+					if(categoryIdAndCountMap.size() > 0){
+						if(categoryList != null && categoryList.size() > 0){
+							alertVOs = new ArrayList<AlertVO>();
+							innerListAlertVO = new AlertVO();
+							for(Object[] param : categoryList){
+								alertVO = new AlertVO();
+								alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+								alertVOs.add(alertVO);  
+							}
+						}
+						for(AlertVO param : alertVOs){
+							if(categoryIdAndCountMap.get(param.getCategoryId()) != null){
+								param.setCategoryCount(categoryIdAndCountMap.get(param.getCategoryId()));  
+							}else{
+								param.setCategoryCount(0l);
+							}
+						}
+						innerListAlertVO.setSubList1(alertVOs);
+						if(statusIdAndNameMap.get(entry.getKey()) != null){
+							innerListAlertVO.setStatusId(entry.getKey());
+							innerListAlertVO.setStatus(statusIdAndNameMap.get(entry.getKey()));
+							
+						}
+						if(statusIdAndCountMap.get(entry.getKey()) != null){
+							innerListAlertVO.setCount(statusIdAndCountMap.get(entry.getKey()));
+						}
+						finalList.add(innerListAlertVO);     
+					}
+				}
+			}
+			return finalList; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByStatusThenCategoryForCentralMembers() method of AlertService{}");
+		}
+		return null;
+	}
+	
+	public List<AlertDataVO> getAlertAssignedCandidatesForCentralMembers(Long tdpCadreId)
+	{
+		List<AlertDataVO> dataList = new ArrayList<AlertDataVO>();
+		try{
+			
+			List<Object[]> list = alertCandidateDAO.getAlertAssignedCandidatesForCentralMembers(tdpCadreId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					AlertDataVO vo = new AlertDataVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					dataList.add(vo);
+				}
+			}
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception in getAlertAssignedCandidatesForCentralMembers()",e);	
+		}
+		return dataList;
+	}
+	
+	public List<AlertDataVO> getLocationLevelWiseAlertsDataForCentralMembers(Long userId,AlertInputVO inputVO)
+	{
+		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+		
+		try{
+			Date fromDate = null;Date toDate=null;
+			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
+			{
+			 fromDate = sdf.parse(inputVO.getFromDate());
+			 toDate = sdf.parse(inputVO.getToDate());
+			}
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate);//done
+			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
+			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
+			 if(list2 != null && list2.size() > 0){
+				 for(Object[] param : list2){
+					 alertAndStatusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				 }
+			 }
+			 setAlertLocationWiseData(list,returnList,alertAndStatusMap,"");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+	public List<AlertDataVO> getAllAlertsWithoutFilterForCentralMembers(Long userId,AlertInputVO inputVO){
+  		List<AlertDataVO> voList = new ArrayList<AlertDataVO>(0);
+  		try {
+
+  			List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+  			 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+  			 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");  
+  			
+  			try{
+  				Date fromDate = null;Date toDate=null;
+  				Date fromDate2 = null;Date toDate2=null;
+  				if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty()){
+  					fromDate = sdf.parse(inputVO.getFromDate());
+  					toDate = sdf.parse(inputVO.getToDate());
+  				}
+  				if(inputVO.getFromDate2() != null && !inputVO.getFromDate2().toString().isEmpty()){
+  					fromDate2 = sdf.parse(inputVO.getFromDate2());
+  					toDate2 = sdf.parse(inputVO.getToDate2());  
+  				}
+  				 List<Object[]> list = verificationStatusDAO.getAllAlertsForCentralMembers(userTypeIds,inputVO,fromDate,toDate,fromDate2,toDate2);//done
+  				 setAlertLocationWiseData(list,returnList,new HashMap<Long,String>(),"verification");
+  			}
+  			catch(Exception e)
+  			{
+  				e.printStackTrace();
+  			}
+  			return returnList;
+  		
+		} catch (Exception e) {
+			LOG.error("Error occured at getLocationLevelAlertClarificationData() in AlertService",e);
+		}
+  		return voList;
+  	}
 }
 
