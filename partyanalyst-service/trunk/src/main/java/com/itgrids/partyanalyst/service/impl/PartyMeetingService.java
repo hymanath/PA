@@ -51,6 +51,8 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDocumentsDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -123,6 +125,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPartyMeetingMinuteTrackingDAO partyMeetingMinuteTrackingDAO;
 	private IUserAddressDAO	userAddressDAO;
 	private DateUtilService dateUtilService;
+	private PartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
+	private PartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
 	
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
@@ -345,6 +349,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 	
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
+	}
+	public PartyMeetingUpdationDetailsDAO getPartyMeetingUpdationDetailsDAO() {
+		return partyMeetingUpdationDetailsDAO;
+	}
+	public void setPartyMeetingUpdationDetailsDAO(PartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO) {
+		this.partyMeetingUpdationDetailsDAO = partyMeetingUpdationDetailsDAO;
+	}
+	public PartyMeetingUpdationDocumentsDAO getPartyMeetingUpdationDocumentsDAO() {
+		return partyMeetingUpdationDocumentsDAO;
+	}
+	public void setPartyMeetingUpdationDocumentsDAO(PartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO) {
+		this.partyMeetingUpdationDocumentsDAO = partyMeetingUpdationDocumentsDAO;
 	}
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
@@ -4406,5 +4422,89 @@ public class PartyMeetingService implements IPartyMeetingService{
 	   return finalList;
 	}
 	
+	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr){
+		List<PartyMeetingVO> returnList = new ArrayList<PartyMeetingVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			if(startDateStr != null && !startDateStr.isEmpty())
+				startDate = sdf.parse(startDateStr);
+			if(endDateStr != null && !endDateStr.isEmpty())
+				endDate = sdf.parse(endDateStr);
+			
+			
+			List<Object[]>  updationList = partyMeetingUpdationDetailsDAO.getUpdatedDetails(locationLvlId, startDate, endDate);
+			if(updationList != null && updationList.size() > 0l){
+				for (Object[] objects : updationList) {
+					PartyMeetingVO vo = new PartyMeetingVO();
+					vo.setPartyMeetingId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setPartyMeetingName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));//Username
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getUpdateDetails", e);
+		}
+		return returnList;
+	}
+	public PartyMeetingVO getDocumentsForMeetingId(Long partyMeetingId){
+		PartyMeetingVO returnVO = new PartyMeetingVO();
+		try{
+			List<Long> updationDetIdList = new ArrayList<Long>();
+			List<PartyMeetingVO> returnList = new ArrayList<PartyMeetingVO>();
+			Map<Long,List<String>> filePathMap = new LinkedHashMap<Long, List<String>>();
+			List<Object[]> docmentList = partyMeetingUpdationDetailsDAO.getDocumentList(partyMeetingId);
+			if(docmentList != null && docmentList.size() > 0l){
+				for (Object[] objects : docmentList) {
+					PartyMeetingVO vo = new PartyMeetingVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));//UpdationDetailsId
+					vo.setSubName(commonMethodsUtilService.getStringValueForObject(objects[1]));//updatedname
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					vo.setMemberStatus(commonMethodsUtilService.getStringValueForObject(objects[3]));//comments
+					vo.setInsertedTime(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					vo.setMeetingLevel(commonMethodsUtilService.getStringValueForObject(objects[5]));//membershipNo
+					updationDetIdList.add(vo.getId());
+					returnList.add(vo);
+				}
+			}
+			/*String memberShipNumber = partyMeetingUpdationDetailsDAO.getMemberShipNo(partyMeetingId);
+			if(memberShipNumber != null && memberShipNumber.length() > 0l){
+				PartyMeetingVO vo = new PartyMeetingVO();
+				vo.setMeetingLevel(memberShipNumber);
+				returnList.add(vo);
+			}*/
+			
+			if(updationDetIdList != null && updationDetIdList.size() > 0l){
+			List<Object[]> filePathList = partyMeetingUpdationDocumentsDAO.getDocumentsForUpdationDetsId(updationDetIdList);
+			if(filePathList != null && filePathList.size() > 0l){
+				for (Object[] objects : filePathList) {
+					Long detailsId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					String filepath = commonMethodsUtilService.getStringValueForObject(objects[2]);
+					List<String> fileLst = filePathMap.get(detailsId);
+					if(fileLst == null || fileLst.isEmpty()){
+						fileLst = new ArrayList<String>();
+						fileLst.add(filepath);
+							filePathMap.put(detailsId,fileLst);
+						}
+						else
+							fileLst.add(filepath);
+					}
+				}
+			}
+			if(returnList!= null && !returnList.isEmpty()){
+				if(filePathMap != null && filePathMap.size() > 0l ){
+				for (PartyMeetingVO vo : returnList) {
+					vo.getDocmentsList().addAll(filePathMap.get(vo.getId()));
+					}
+				}
+			}
+			returnVO.setPartyMeetingVOList(returnList);
+		}catch(Exception e){
+			LOG.error("Exception raised at getDocumentsForMeetingId", e);
+		}
+		return returnVO;
+	}
 	
 }
