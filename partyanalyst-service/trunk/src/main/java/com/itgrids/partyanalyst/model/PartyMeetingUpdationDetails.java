@@ -28,6 +28,7 @@ public class PartyMeetingUpdationDetails implements Serializable {
 	
 	private TdpCadre tdpCadre;
 	private PartyMeeting partyMeeting;
+	private User user;
 	
 	
 	@Id
@@ -142,4 +143,16 @@ public class PartyMeetingUpdationDetails implements Serializable {
 	public void setPartyMeeting(PartyMeeting partyMeeting) {
 		this.partyMeeting = partyMeeting;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }
