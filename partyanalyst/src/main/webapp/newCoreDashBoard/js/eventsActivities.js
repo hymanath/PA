@@ -2702,9 +2702,9 @@ globalActivityScope = attr_activity_scopeid;
 getAvailablDates('state',1,1,'',attr_activity_scopeid)
 buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 getEventsDocuments("","",attr_activity_scopeid);
-getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1);
+getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1,"firstClick");
 });
-
+//var globallocationValue = 0;
  $(document).on('click','.dayssCls',function(){
 	 $(".dayssCls").removeClass("active" )
 	 $(this).addClass("active");
@@ -2714,11 +2714,12 @@ getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1);
 	 var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 	 var path = $(this).attr("path");
 	 
-		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
   });
   
 function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 {
+	
 		var jObj = {
 		activityId:attr_activity_scopeid,
 		locationScope:"state",
@@ -2813,7 +2814,7 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 				
 		});
 }
-
+//var globallocationName = '';
 function buildLocationForPopup(locationScope,locationValue,ActivityScope)
 {
 	$("#myModalLabel").html(''+globallocationName+'');
@@ -2852,8 +2853,9 @@ function buildLocationForPopup(locationScope,locationValue,ActivityScope)
 			
 }
 
-function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue)
+function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom)
 {
+	
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
 /* 	  var dateArray=dates.split("/");
@@ -2875,7 +2877,7 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		type:"popup",
 		startIndex:num,
 		maxIndex:10,
-		callFrom:"",
+		callFrom:calFrom,
 		//locationName:obj.locationName,
 		activityMemberId : globalActivityMemberId,
 	    stateId : globalStateId,
@@ -2895,6 +2897,7 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 
 function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue)
 {
+	
 	$("#popupImages").html('');
 	var str ='';
 	$('.slider-for,.slider-nav').slick('unslick');
@@ -2965,7 +2968,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 				
 				onPageClick: function(pageNumber, event) {
 					var num=(pageNumber-1)*10;
-					 getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,path,attr_activity_scopeid,locationScope,locationScopeValue); 
+					 getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,""); 
 					
 				}
 			});
@@ -3114,7 +3117,7 @@ function getConstituencyList(distId,activityLevelId){
 			var locationScopeValue = distId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
@@ -3183,7 +3186,7 @@ function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 			var locationScopeValue = constituencyId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
@@ -3260,7 +3263,7 @@ function getPanchayatList(mandalId,scopeId,value){
 			var locationScopeValue = mandalId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
@@ -3317,7 +3320,7 @@ $(document).on("click",".villagePopup",function(){
 			var locationScopeValue = panchayatId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
-			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 		}
 	});
@@ -4155,19 +4158,19 @@ if(searchType == "constituency"){
 	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId);
+	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
 }else if(searchType == "mandal"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId);
+	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId,"");
 }else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId);
+	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
 }
 
 });
