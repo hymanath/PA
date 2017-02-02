@@ -284,7 +284,7 @@ $(document).on("click",".selectAll",function(){
 						         str+='<h4>'+levelWiseResult[i].mayBeCount+' <span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span></h4>';
 							  }else if(levelWiseResult[i].mayBeCount > 0){
 								 str+='<p class="text-muted text-capital">maybe</p>';	
-	                             str+='<h4 attr_meeting_status="M" attr_level_type="'+levelWiseResult[i].name+'" style="cursor: pointer;" attr_comment="No" class="overAllMeetingCls" id="partyMeetingsIdE'+i+'"  onclick="overAllMeetings(this.id);" >'+levelWiseResult[i].mayBeCount+' <span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span></h4>';
+	                             str+='<h4><span attr_meeting_status="M" attr_level_type="'+levelWiseResult[i].name+'" style="cursor: pointer;" attr_comment="No" class="overAllMeetingCls" id="partyMeetingsIdE'+i+'"  onclick="overAllMeetings(this.id);">'+levelWiseResult[i].mayBeCount+'</span> <span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span><!--<span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'"></span>--></h4>';
 							  }else{
 								 str+='<p class="text-muted text-capital">maybe</p>';	
 	                             str+='<h4>'+levelWiseResult[i].mayBeCount+' <span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span></h4>';
@@ -5344,3 +5344,122 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			
 		});	
 	}
+$(document).on("click",".updationDetailsCls",function(){
+		$("#commentsModalId").modal('show');
+		$("#commentsBlock").html('');
+		var levelType = $(this).attr("attr_level_type");
+		var locationLevel ;
+		if(levelType == "Village/Ward"){
+			locationLevel = 7;
+		}else if(levelType == "Mandal/Town/Division"){
+			locationLevel = 4;
+		}else if(levelType == "Constituency"){
+			locationLevel = 3;
+		}else if(levelType == "District"){
+			locationLevel = 2;
+		}
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates != undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		$("#mdlHeadingId").html("<span>"+levelType+ " wise Party Meeting Conflicts");
+		var jsObj ={ 
+		             levelId : locationLevel,
+					 startDate : fromDateStr,
+					 endDate : toDateStr
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getUpdationDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0)
+				buildCommentsMeetingDetailsAction(result);
+			else
+				$("#commentsBlock").html("No Data Available.");
+		});
+});
+
+function buildCommentsMeetingDetailsAction(result)
+{
+	var str='';
+	str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+	for(var i in result){
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+			str+='<div class="row">';
+				str+='<div class="col-md-8 col-sm-12 col-xs-8">';
+					str+='<h4 class="panel-title">';
+					str+='<a role="button" class="meetingsConflictsCls" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne" attr_div_id="meetingDetailsDivId'+i+'" attr_meeting_id="'+result[i].partyMeetingId+'">'+result[i].partyMeetingName+' </a></h4>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-sm-12 col-xs-4">';
+					str+='<span class="pull-right"><small> Created By : </small>'+result[i].name+'</span>';
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+			  str+='<div class="panel-body">';
+				str+='<div id="meetingDetailsDivId'+i+'"></div>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	str+='</div>';
+	$("#commentsBlock").html(str);
+}
+
+$(document).on("click",".meetingsConflictsCls",function(){
+	var meetingId = $(this).attr("attr_meeting_id");
+	var divId = $(this).attr("attr_div_id");
+	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
+	$('.documentSlickApply').slick('unslick');
+	var jsObj ={ 
+		partyMeetingId : meetingId
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getDocumentListAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildDocumentListDetails(result,divId);
+	});
+});
+
+function buildDocumentListDetails(result,divId){
+	var str='';
+	if(result !=null && result.partyMeetingVOList !=null && result.partyMeetingVOList.length>0){
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			for(var i in result.partyMeetingVOList){
+				str+='<div class="arrow_box_left">';
+			if(result.partyMeetingVOList[i].meetingLevel != null && result.partyMeetingVOList[i].meetingLevel.length > 0){
+				str+='<span class="m_0"><strong>UPDATED BY:</strong> '+result.partyMeetingVOList[i].subName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <strong>MOBILE NO:</strong>'+result.partyMeetingVOList[i].mobileNo+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MEMBERSHIP NO:<strong style="color:green">'+result.partyMeetingVOList[i].meetingLevel+'</strong></br> <strong>Remarks:&nbsp;</strong> '+result.partyMeetingVOList[i].memberStatus+'</br><span class="pull-right"><strong> TIME:</strong> '+result.partyMeetingVOList[i].insertedTime+'</span></span>';
+			}else{
+				str+='<span class="m_0"><strong>UPDATED BY:</strong> '+result.partyMeetingVOList[i].subName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <strong>MOBILE NO:</strong>'+result.partyMeetingVOList[i].mobileNo+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br> <strong>Remarks:&nbsp;</strong> '+result.partyMeetingVOList[i].memberStatus+'</br><span class="pull-right"><strong> TIME:</strong> '+result.partyMeetingVOList[i].insertedTime+'</span></span>';
+			}
+				str+='</div>';
+				str+='<ul class="list-inline documentSlickApply">';
+				if(result.partyMeetingVOList[i].docmentsList !=null && result.partyMeetingVOList[i].docmentsList.length>0){
+					for(var j in result.partyMeetingVOList[i].docmentsList){
+						str+='<li><img class="image-responsive thumbnail" src="http://mytdp.com/'+result.partyMeetingVOList[i].docmentsList[j]+'" style="width:800px;height:400px;"></li>';
+					}
+				}
+				str+='</ul>';
+			}
+		str+='</div>';
+	}
+	$("#"+divId).html(str);
+	$(".documentSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 2,
+			 infinite: false,
+			 variableWidth: true
+		});
+}
