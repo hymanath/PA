@@ -24,4 +24,15 @@ public class PartyMeetingUpdationDocumentsDAO extends GenericDaoHibernate<PartyM
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> getDocumentsForUpdationDetsId(List<Long> meetingDetailsId){
+		Query query = getSession().createQuery("select model.partyMeetingUpdationDetails.partyMeetingUpdationDetailsId," +
+				" model.partyMeetingUpdationDocumentsId," +
+				" model.documentPath " +
+				" from PartyMeetingUpdationDocuments model" +
+				" where model.partyMeetingUpdationDetails.partyMeetingUpdationDetailsId in (:meetingDetailsId)" +
+				" and model.isDeleted = 'N'");
+		query.setParameterList("meetingDetailsId", meetingDetailsId);
+		return query.list();
+	}
 }
