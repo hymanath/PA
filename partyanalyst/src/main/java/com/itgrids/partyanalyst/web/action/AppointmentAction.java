@@ -1574,7 +1574,13 @@ public String getPanchayatiesByMandalOrMuncipality(){
 							}
 							locationVo.setDesignationIds(designationIds);
 						}
+						
+						if(levelStr.equalsIgnoreCase("central")){
+							locationVo.getCounrtyIds().add(1l);
+						}
+						
 						locationVo.setStateId(stateId);
+						
 						if(levelStr.equalsIgnoreCase("state") && districtId == 0l)
 						{
 							

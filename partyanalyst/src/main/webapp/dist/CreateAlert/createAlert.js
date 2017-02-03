@@ -8,14 +8,25 @@ function disableByLevel(index)
 	  var constituencyId = $("#referconstituencyId"+index).val();
 	  var panchayatId = $("#referpanchayatId"+index).val();
 	  var mandalId = $("#refermandalNameId"+index).val();
+	  var serchTpeId = $("#advanceSearchTypeId").val();
 	  var select = new Dropkick("#referdistrictId"+index);
 		select.refresh();
-		
+		$('.stateShowCls').show();
 		if(levelId != 2 && levelId != 0)
 		{
 			getDistrictsForReferPopup(index);
 		}
-		
+		if(levelId == 1)
+		{	
+			$(".commiteeDtlsCls").hide();
+			$('.stateShowCls').hide();
+			$(".distCls"+index).hide();
+			$(".constiCls"+index).hide();
+			$(".mandalCls"+index).hide();
+			$(".panchayatCls"+index).hide();
+		}else{
+			$(".commiteeDtlsCls").show();
+		}
 		if(levelId == 2 || levelId == 0)
 		{
 			  $("#referdistrictId"+index).find('option').not(':first').remove();
@@ -35,7 +46,16 @@ function disableByLevel(index)
 				$(".constiCls"+index).hide();
 				$(".mandalCls"+index).hide();
 				$(".panchayatCls"+index).hide();
-				
+				if(levelId == 2)
+					$('.stateShowCls').show();
+				/*
+				if(index.length>0){
+					$('.stateShowCls').show();
+				}else{
+					if(levelId >1)
+						$('.stateShowCls').show();
+				}
+				*/
 		}
 		else if(levelId == 3)
 		{
@@ -53,6 +73,7 @@ function disableByLevel(index)
 				$(".constiCls"+index).hide();
 				$(".mandalCls"+index).hide();
 				$(".panchayatCls"+index).hide();
+				
 		}
 		else if(levelId == 4)
 		{
@@ -127,8 +148,10 @@ function disableByLevel(index)
 				$(".advancePRCls").parent().hide();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").show();
+				//$(".advanceCadreCommittee").hide();
 				$(".advanceprcls").hide();
-				$(".stateShowCls").show();
+				//$(".stateShowCls").show(); 
+				$(".stateShowCls").hide(); 
 				$(".levelShowCls").show();
 				$(".advanceprclsDiv").hide();
 				$("#cadreCommitteeDiv_chosen").show();
@@ -199,7 +222,7 @@ function disableByLevel(index)
 					$("#searchNameLabel").html("Search By Mobile No <span  class='requiredCls'> </span> :");
 				}
 			}
-				disableByLevel('');
+				//disableByLevel('');
 				$(".stateCls").show();
 				$(".distCls").hide();
 				$(".constiCls").hide();
@@ -494,6 +517,13 @@ function disableByLevel(index)
 		var searchType = $("#advanceSearchTypeId").val();
 		var str='';
 		 $("#alertlevelId").find('option').remove();
+		 
+		 if(searchType == "committee"){
+			 str+='<option value="1">Central</option>';
+			 $('.commiteeDtlsCls').hide();
+		 }else{
+			 $('.commiteeDtlsCls').show();
+		 }
 		  str+='<option value="2">State</option>';
 		  str+='<option value="3">District</option>';
 		  if(searchType != 3)
@@ -596,7 +626,7 @@ function disableByLevel(index)
  {
 	 
 	  $("#alertlevelId").find('option').remove();
-	   var stateGrpIds = ["6","23","7","12","16","22"];
+	 var stateGrpIds = ["6","23","7","12","16","22"];
 	 var distGrpIds = ["1","9","11"];
 	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
 	 var constiGrpIds =["2","8","10",];
@@ -632,6 +662,7 @@ function disableByLevel(index)
 	 
 	else
 	 {
+		  str+='<option value="1" selected>Central</option>';
 		  str+='<option value="2">State</option>';
 		  str+='<option value="3">District</option>';
 		   str+='<option value="4">Constituency</option>';
@@ -801,13 +832,17 @@ function disableByLevel(index)
 		
 		 levelId  = $("#alertlevelId").val();
 		 var alertLevelId =levelId;
+		 
+		if(levelId == 1){
+			level = "central";
+			alertLevelId = 12;
+			levelStr = "central";
+			levelValue = 1;
+		} 
 		if(levelId == 2)
 		{
-			
-			level = "state";
-			
+			level = "state";	
 			alertLevelId = 10; 
-		
 		}
 			
 		if(levelId == 3)
@@ -834,7 +869,7 @@ function disableByLevel(index)
 			alertLevelId = 6;
 		}
 			
-		if(districtId == 0)
+		if(districtId == 0 && levelId >1)
 		{
 			levelStr = "state";
 			levelValue = 0;
