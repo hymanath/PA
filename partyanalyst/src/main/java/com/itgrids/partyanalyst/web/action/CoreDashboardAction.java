@@ -2261,7 +2261,7 @@ public String getSelectedChildTypeMembersForEvent(){
 		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
 		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
 			for( int i=0;i<childUserTypeIdsArray.length();i++){
-				childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+				childUserTypeIds.add(childUserTypeIdsArray.getString(i) != null && !childUserTypeIdsArray.getString(i).trim().isEmpty() ?Long.valueOf(childUserTypeIdsArray.getString(i)):0L);
 			}
 		}
 		String reportType = jObj.getString("reportType");
