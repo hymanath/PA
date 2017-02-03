@@ -32,7 +32,7 @@ public interface ICoreDashboardGenericService {
 	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO);
 	public Map<String,CoreDashboardCountsVO> getMeetingsCountByLocationLevelIdAndLevelValues(Map<Long,Set<Long>> locationLevelIdsMap,CommitteeInputVO committeeBO);
 	
-	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(Long parentUserTypeId);
+	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(List<Long> parentUserTypeIdsList);
 	public ActivityMemberVO getRequiredSubLevelActivityMembersDetails(Long parentActivityMemberId,List<Long> childUSerTypeIds);
 	
 }
