@@ -30,8 +30,10 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusTempDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISessionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
@@ -66,6 +68,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private ISessionTypeDAO sessionTypeDAO;
 	 private IPartyMeetingSessionDAO partyMeetingSessionDAO;
 	 private IPartyMeetingStatusTempDAO partyMeetingStatusTempDAO;
+	 private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
@@ -128,6 +131,13 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	public void setPartyMeetingStatusTempDAO(
 			IPartyMeetingStatusTempDAO partyMeetingStatusTempDAO) {
 		this.partyMeetingStatusTempDAO = partyMeetingStatusTempDAO;
+	}
+	public IPartyMeetingUpdationDetailsDAO getPartyMeetingUpdationDetailsDAO() {
+		return partyMeetingUpdationDetailsDAO;
+	}
+
+	public void setPartyMeetingUpdationDetailsDAO(IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO) {
+		this.partyMeetingUpdationDetailsDAO = partyMeetingUpdationDetailsDAO;
 	}
 
 /**
@@ -327,6 +337,18 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
     		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));   
     	   }
         }
+       Map<String,Long> updationCuntMap = getLvelWiseUpdationCount(fromDate,toDate);
+       if(updationCuntMap != null && updationCuntMap.size() > 0){
+    	   if(resultVO.getPartyMettingsVOList() !=null && resultVO.getPartyMettingsVOList().size() > 0){
+    		   for (PartyMeetingsVO vo : resultVO.getPartyMettingsVOList()) {
+    			   String name = vo.getName();
+    			   Long count = updationCuntMap.get(name);
+    			   if(count != null){
+    				   vo.setUpdationCount(count);
+    			   }
+    		   }
+    	   }
+       }
     }catch(Exception e) {
 		 LOG.error("Exception raised at getPartyMeetingBasicCount() method of CoreDashboardPartyMeetingService", e);	
 	 }
@@ -6015,5 +6037,60 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 	  }
 	  return null;
   }
-	
+public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
+		Map<String,Long> lvelWiseUpdationCountMap = new LinkedHashMap<String, Long>();
+		try{
+			List<Object[]> updationCuntList = partyMeetingUpdationDetailsDAO.getUpdationDetailsCount(startDate,endDate);
+			if(updationCuntList != null && updationCuntList.size() > 0){
+				for (Object[] objects : updationCuntList) {
+					Long levelId = commonMethodsUtilService.getLongValueForObject(objects[2]);
+					Long countTemp = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					if(levelId != null && levelId == 1l){
+						Long count = lvelWiseUpdationCountMap.get("State");
+						if(count == null){
+							count = countTemp;
+							lvelWiseUpdationCountMap.put("State", count);
+						}
+						else
+							count = count + countTemp;
+					}else if(levelId != null && levelId == 2l){
+						Long count = lvelWiseUpdationCountMap.get("District");
+						if(count == null){
+							count = countTemp;
+							lvelWiseUpdationCountMap.put("District", count);
+						}
+						else
+							count = count + countTemp;
+					}else if(levelId != null && levelId == 3l){
+						Long count = lvelWiseUpdationCountMap.get("Constituency");
+						if(count == null){
+							count = countTemp;
+							lvelWiseUpdationCountMap.put("Constituency", count);
+						}
+						else
+							count = count + countTemp;
+					}else if(levelId != null && (levelId == 4l || levelId == 5l || levelId == 6l)){
+						Long count = lvelWiseUpdationCountMap.get("Mandal/Town/Division");
+						if(count == null){
+							count = countTemp;
+							lvelWiseUpdationCountMap.put("Mandal/Town/Division", count);
+						}
+						else
+							count = count + countTemp;
+					}else if(levelId != null && (levelId == 7l || levelId == 8l )){
+						Long count = lvelWiseUpdationCountMap.get("Village/Ward");
+						if(count == null){
+							count = countTemp;
+							lvelWiseUpdationCountMap.put("Village/Ward", count);
+						}
+						else
+							count = count + countTemp;
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured at getLvelWiseUpdationCount() in CoreDashboardPartyMeetingService {}",e);
+		}
+		return lvelWiseUpdationCountMap;
+	}
 }
