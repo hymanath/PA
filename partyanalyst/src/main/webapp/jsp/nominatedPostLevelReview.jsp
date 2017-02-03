@@ -120,14 +120,14 @@
 				<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
-      <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+      <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 			<div class="applicationsOverView">
 			<span class="bar_view" style="background-color: #330099;"></span>
 				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Panchayat/Ward/Division Level </span> - <span class="font_15">Board/Corporation Overview</span></span>
 				<div id="villageORWardWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
-        
+         <!-- 
 		 <div class="col-md-12 col-xs-12 col-sm-12">
         	<h4 class="headingColor"></h4>
 				<div id="villageORWardWiseOverviewId"  style="margin-top: 15px"></div>
@@ -390,7 +390,7 @@ $(document).on("click",".stateCls",function(){
 		getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 		getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
 		getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
-		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+		getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 });
 $('document').ready(function(){
 	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
@@ -398,7 +398,7 @@ $('document').ready(function(){
 	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
 	getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
-	//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+	getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 		
 	});
 </script>
