@@ -1566,4 +1566,34 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String editAlertAction()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			int i = 0;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
+						//fileName = StringEscapeUtils.escapeJava(fileName);
+						mapfiles.put(f,fileName);  
+						i++;
+					}
+				}
+			}
+			status = alertService.editAlert(alertVO,regVo.getRegistrationID(),mapfiles);
+			inputStream = new StringBufferInputStream(status);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in raiseComplaint",e);
+		}
+		return Action.SUCCESS;	
+	}
 }
