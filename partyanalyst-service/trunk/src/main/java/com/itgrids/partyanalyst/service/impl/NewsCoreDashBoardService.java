@@ -68,7 +68,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
+	         WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
@@ -264,7 +264,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyComparisonChildUserTypeMembers");
+	         WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getPartyComparisonChildUserTypeMembers");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
@@ -432,7 +432,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyCompareSubLevelMemberDetails");
+	         WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getPartyCompareSubLevelMemberDetails");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
