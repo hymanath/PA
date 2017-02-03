@@ -3512,8 +3512,9 @@ public String getDistrictWiseActivityCounts(){
 		Long stateId = jObj.getLong("stateId");
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long userTypeId = jObj.getLong("userTypeId");
+		String showType = jObj.getString("showType");
 		
-		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,activityMemberId,userTypeId);
+		eventDetailsVOList = coreDashboardService.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,activityMemberId,userTypeId,showType);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDistrictWiseActivityCounts() method of CoreDashBoard", e);
 	}

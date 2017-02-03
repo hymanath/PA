@@ -3703,6 +3703,15 @@
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModelActivityhead"> <small class="text-capitalize" id="smallHeadngId"></small></h4>
+					<label class="radio-inline pull-right">
+					<input type="radio" name="radioBtn" class="radioBtnCls" value="All"/>All
+					</label>
+					<label class="radio-inline pull-right">
+						<input type="radio" name="radioBtn" class="radioBtnCls" value="Conducted" checked />Conducted
+					</label>
+					<label class="radio-inline pull-right">
+						<input type="radio" name="radioBtn" class="radioBtnCls" value="NotConducted"/>Not Conducted
+					</label>
       </div>
        <div class="modal-body">
 		<div class="row">
@@ -3739,15 +3748,6 @@
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<h4><span id="locatnNamId"></span>
-					<!--<label class="radio-inline pull-right">
-						<input type="radio"/>BNa
-					</label>
-					<label class="radio-inline pull-right">
-						<input type="radio"/>BNa
-					</label>
-					<label class="radio-inline pull-right">
-						<input type="radio"/>BNa
-					</label>-->
 				</h4>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
