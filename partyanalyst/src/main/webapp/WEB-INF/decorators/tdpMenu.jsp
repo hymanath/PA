@@ -797,7 +797,7 @@
 									</c:if> 
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
 										<li>
-											<a href="centralPartyMembersAlertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
+											<a href="centralPartyMembersAlertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Assigned Alert Dashboard</span></a>
 										</li>
 									</c:if> 
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
