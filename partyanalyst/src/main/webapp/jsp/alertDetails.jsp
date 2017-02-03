@@ -546,7 +546,7 @@
 												<div style="text-align: center;" id="alertAssignedCandidateDataId"></div>
 											</div>
 										</div>
-										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
 										<div class="col-md-8 col-xs-12 col-sm-8">
 											<div class="panel panel-default panelHeights" style="position:relative;">
 												<div class="panel-body">
