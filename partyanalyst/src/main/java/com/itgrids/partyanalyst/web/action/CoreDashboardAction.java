@@ -1245,7 +1245,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		try{
 			
 			jObj = new JSONObject(getTask());
-			activityMembersList = coreDashboardGenericService.getAllItsSubUserTypeIdsByParentUserTypeId(jObj.getLong("parentUserTypeId"));
+			List<Long> userTypeIdsList = new ArrayList<Long>(0);
+			JSONArray idArr = jObj.getJSONArray("parentUserTypeId");
+			if(idArr != null && idArr.length()>0){
+				for (int i = 0; i < idArr.length(); i++) {
+					userTypeIdsList.add(idArr.get(i) != null ? Long.valueOf(idArr.get(i).toString()):0L);
+				}
+			}
+			//activityMembersList = coreDashboardGenericService.getAllItsSubUserTypeIdsByParentUserTypeId(jObj.getLong("parentUserTypeId"));
+			activityMembersList = coreDashboardGenericService.getAllItsSubUserTypeIdsByParentUserTypeId(userTypeIdsList);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAllItsSubUserTypeIdsByParentUserTypeId() method of CoreDashBoard", e);
