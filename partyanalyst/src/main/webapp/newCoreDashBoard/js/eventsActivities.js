@@ -1848,13 +1848,16 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
 	
 	$("#activityId").html("");
+	var radioVal = $('input[name=radioBtn]:checked').val();
+	
 	var jsObj={
 		districtId : districtId,
 		activity_scope_id:activityScopeId,
 		search_type :searchType,
 		stateId : globalStateId,
 		activityMemberId : globalActivityMemberId,
-		userTypeId : globalUserTypeId
+		userTypeId : globalUserTypeId,
+		showType : radioVal
 	}	
 	$.ajax({
 	 type: "POST",
@@ -1862,14 +1865,14 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		//if(result != null && result.length > 0){
-			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId);
+			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal);
 		//}else{
 		//		$("#activityId").html('<div style="text-align: center;font-weight:bold;" > No data available...</div>');
 		//}
 	});
 }
 
-function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId){
+function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal){
 	var str = '';
 	var notUpdatedCount ;
 	 if(refresh == "onload"){
@@ -1922,7 +1925,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	if(searchType == "constituency" ||  searchType == "mandal"){
 		if(parseInt(result[i].conductedCount) > parseInt(result[i].attendedCount))
 			str +='<td>'+result[i].attendedCount+'</td>';
-		else if(parseInt(result[i].attendedCount) == 1)
+		else if(parseInt(result[i].attendedCount) == 1 && radioVal != "NotConducted")
 			str +='<td>'+result[i].attendedCount+'</td>';
 		else
 			str +='<td>'+result[i].conductedCount+'</td>';
@@ -1930,7 +1933,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	
 	if(parseInt(result[i].inviteeNotAttendedCount) == 0 || parseInt(result[i].inviteeNotAttendedCount) == 0){
 		
-	if(parseInt(result[i].attendedCount) > 1)
+	if(parseInt(result[i].attendedCount) > 1 || radioVal == "NotConducted" )
 		str +='<td> 0 </td>';
 	else
 		str +='<td>  1  </td>';
@@ -1955,7 +1958,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	else 
 		str +='<td>'+notUpdatedCount+'</td>'; 
 	
-	if(parseInt(result[i].attendedCount) > 1)
+	if(parseInt(result[i].attendedCount) > 1 || radioVal == "NotConducted" )
 		str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
 	else
 		str +='<td>  1  </td>';
@@ -1984,8 +1987,17 @@ $(document).on("click",".modalCloseCls",function(){
 	$("#villgWardId").empty();
 	$("#districtId").val(0);
 });
+
 $(document).on("click",".submitCls",function(){
-	//$("#districtId").val('');
+	var searchType="constituency";
+	var locationNm = "All";
+	var locationId = 0;
+	commonData(locationId,searchType,locationNm);
+	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
+	
+});
+
+function commonData(locationId,searchType,locationNm){
 	var searchType="constituency";
 	var locationNm = "All";
 	var locationId = 0;
@@ -1993,15 +2005,6 @@ $(document).on("click",".submitCls",function(){
 			locationId = $("#districtId").val();
 			searchType="constituency";
 			locationNm = $('#districtId option:selected').text();
-		/* if($("#constituencyId").val() == 0){
-			locationId = $("#districtId").val();
-			searchType="constituency";
-			locationNm = $('#districtId option:selected').text();
-		}else{
-		locationId = $("#constituencyId").val();
-		searchType="mandal";
-		locationNm = $('#constituencyId option:selected').text();
-		} */
 	}else{
 		locationId = $("#districtId").val();
 		searchType="constituency";
@@ -2028,9 +2031,7 @@ $(document).on("click",".submitCls",function(){
 			}
 		}
 	}
-	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
-	
-});
+}
 $(document).on("change",".districtCls",function(){
 	$("#constituencyId").val(0);
 	$("#mandalId").val(0);
@@ -4173,4 +4174,11 @@ if(searchType == "constituency"){
 	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
 }
 
+});
+$(document).on("click",".radioBtnCls",function(){
+	var searchType="constituency";
+	var locationNm = "All";
+	var locationId = 0;
+	commonData(locationId,searchType,locationNm);
+	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
 });
