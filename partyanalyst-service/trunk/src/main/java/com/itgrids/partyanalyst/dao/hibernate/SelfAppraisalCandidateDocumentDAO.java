@@ -109,4 +109,28 @@ public class SelfAppraisalCandidateDocumentDAO extends GenericDaoHibernate<SelfA
         	return query.list();
         	
         }
+@SuppressWarnings("unchecked")
+public List<Object[]> getDocumentsbyTdpCadreId(Set<Long> tdpCadreIds,List<Long> monthyearIds){
+        	
+        	StringBuilder str = new StringBuilder();
+        	
+        	str.append(" select model.tdpCadreId,count(model.documentPath) " +
+        			" from SelfAppraisalCandidateDocument model " +
+        			" where model.isDeleted='N' " );
+        	
+        	if(tdpCadreIds !=null && tdpCadreIds.size()>0){
+        		str.append(" and model.tdpCadreId in (:tdpCadreIds) " ); 
+        	}
+        	if(monthyearIds !=null && monthyearIds.size()>0){
+        		str.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in (:monthyearIds) ");
+        	}
+        	str.append(" group by model.tdpCadreId "); 
+        	
+        	Query query = getSession().createQuery(str.toString());
+        		query.setParameterList("tdpCadreIds", tdpCadreIds);
+        		if(monthyearIds !=null && monthyearIds.size()>0){
+        			query.setParameterList("monthyearIds", monthyearIds);
+            	}
+        	return query.list();
+        }
 }

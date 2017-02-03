@@ -194,7 +194,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		
 		   return query.list();  
 	   }
- public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){
+ public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){//Here candidateId means TdpCadreId
 	    StringBuilder queryStr = new StringBuilder();
 	    queryStr.append(" select " +
 	  					" model.selfAppraisalToursMonth.monthName," + //0
@@ -213,7 +213,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	  					" left join model.tourType tourType" +
 	  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
 	  					" where model.isDeleted='N' " +
-	  					" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");
+	  					" and model.tdpCadreId=:selfAppraisalCandidateId");
 				    if(monthYearIds != null && monthYearIds.size() > 0 ){
 			            queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 			        }
@@ -231,7 +231,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	 StringBuilder queryStr = new StringBuilder();
 	  queryStr.append( " select " +
 	    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
-	    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId) " + // Submitted Leaders Count
+	    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId),model.tdpCadreId " + // Submitted Leaders Count
 
 	    		       " from SelfAppraisalCandidateDetailsNew model " +
 	    		       " where model.selfAppraisalCandidate.isActive='Y' " +
@@ -541,7 +541,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	       	
 	    	queryStr.append( " where " +
 	       			" model.tdpCadreId = :tdpCadreId ");
-	    	 if(tourMonthId != null && tourMonthId.longValue()>0l){
+	    	 if(tourMonthId != null){
 	    		 queryStr.append( " and model.selfAppraisalToursMonthId = :tourMonthId ");
 	    	 }
 	       	queryStr.append( " and model.isDeleted ='N' and model.selfAppraisalTourCategory.isDeleted ='N' " +
@@ -549,7 +549,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	       	
 	   Query query = getSession().createQuery(queryStr.toString());
 	      query.setParameter("tdpCadreId", tdpCadreId);
-	    if(tourMonthId != null && tourMonthId.longValue()>0l)
+	    if(tourMonthId != null)
 	      query.setParameter("tourMonthId", tourMonthId);
        	return query.list();
        }

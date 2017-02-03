@@ -194,7 +194,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	public List<Object[]> getLocationWiseCandidate(Long cadreId){
     	   StringBuilder str = new StringBuilder();
     	   
-  			str.append("select model.selfAppraisalCandidateLocationNewId,model.selfAppraisalCandidateId," +
+  			str.append("select distinct model.selfAppraisalCandidateLocationNewId,model.selfAppraisalCandidateId," +
   					" model.selfAppraisalTourCategoryId," +
   					" model.selfAppraisalTourCategory.tourCategory," +
   					" model.tourTypeId,model.tourType.tourType," +
@@ -203,7 +203,9 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
   				" from SelfAppraisalCandidateLocationNew model " +
   				" where model.selfAppraisalCandidate.tdpCadreId = :cadreId " +
   				" and  model.isDeleted ='N' and model.tourType.isDeleted = 'N' " +
-  				" and model.selfAppraisalTourCategory.isDeleted ='N' and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive ='Y' ");
+  				" and model.selfAppraisalTourCategory.isDeleted ='N' and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive ='Y' " +
+  				" group by model.selfAppraisalCandidateId,model.selfAppraisalTourCategoryId,model.tourTypeId " +
+  				" order by model.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
   			Query query = getSession().createQuery(str.toString());
   				query.setParameter("cadreId", cadreId);
   			return query.list();    	       	  
