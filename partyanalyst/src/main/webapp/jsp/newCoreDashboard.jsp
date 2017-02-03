@@ -3355,7 +3355,7 @@
 				<h4 class="modal-title">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
-				  <div id="debateModelId" class="row"></div>				 
+				  <div  class="row debateModelCls"></div>				 
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
