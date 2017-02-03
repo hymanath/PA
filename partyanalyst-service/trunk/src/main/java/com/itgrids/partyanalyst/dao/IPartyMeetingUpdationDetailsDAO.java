@@ -13,5 +13,6 @@ public interface IPartyMeetingUpdationDetailsDAO extends GenericDao<PartyMeeting
 	public List<Object[]> getUpdatedDetails(Long locationLevelId,Date startDate,Date endDate);
 	public List<Object[]> getDocumentList(Long partyMeetingId);
 	public String getMemberShipNo(Long partyMeetingId);
+	public List<Object[]> getUpdationDetailsCount(Date startDate,Date endDate);
 
 }
