@@ -1969,7 +1969,12 @@ function buildVolunteersDetails(result){
 						str+='<td>'+result[i].manMumName+'</td>';
 						str+='<td>'+result[i].year+'</td>';
 						str+='<td>'+result[i].benefitName+'</td>';
-						str+='<td>'+result[i].amount+'</td>';
+						if(result[i].amount > 0){
+						 str+='<td>'+result[i].amount+'</td>';	
+						}else{
+						 str+='<td>-</td>';	
+						}
+						
 					str+='</tr>';
 				}
 			str+='</table>';
@@ -3217,4 +3222,255 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 		return "Dec"
 	}  
 }
+$(document).on("click",".articleImgDetailsCls",function(){
+	var articleId= $(this).attr("attr_articleId");
+	getTotalArticledetails(articleId);
+});
+
+function getTotalArticledetails(articleId){
+	$("#myModalShowNew").modal('show');
+	$("#myModalShowNewId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	var url = window.location.href;
+	  var wurl = url.substr(0,(url.indexOf(".com")+4));
+	  if(wurl.length == 3)
+	  wurl = url.substr(0,(url.indexOf(".in")+3));
+	  $.ajax({       
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  
+		  //url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
+		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
+	}).then(function(results){
+			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+				var result = results[0];
+				var str = '';
+					str+='<div class="modal-header">';
+					str+='<h4 class="modal-title" id="myModalLabel">';
+					str+='<button type="button" class="close topModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+						str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div class="modal-body">';
+					str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
+						str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;border:1px solid #ddd;width:100%" alt="Img Title"/>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h4 class="panel-title text-success">Description</h4>';
+					str+='<p class="m_0 f_14">'+result.description+'</p>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					if( result.subList != null && result.subList.length > 0){
+						for(var i in result.subList){
+							/* Candidate*/
+							str+='<div class="row m_top10">';
+							str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">FROM WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* From Table*/
+								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
+									for( var j in result.subList[i].fromList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].fromList[j].candidateName != null && $.trim(result.subList[i].fromList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].fromList[j].candidateName;
+										}
+										if( result.subList[i].fromList[j].designation != null && $.trim(result.subList[i].fromList[j].designation).length > 0 ){
+											candidataExist = true; 
+											str+=' ('+result.subList[i].fromList[j].designation + ")";
+										}
+										if(!candidataExist){
+											str+=' - ';
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
+											str+='<p class="m_0">Impact Level : '+result.subList[i].fromList[j].impactLevel+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Impact Level : - </p>';	
+										}
+										if(result.subList[i].fromList[j].categories != null && $.trim(result.subList[i].fromList[j].categories).length > 0){
+											str+='<p class="m_0">Category : '+result.subList[i].fromList[j].categories+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Category : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsActivity != null && $.trim(result.subList[i].fromList[j].newsActivity).length > 0){
+											str+='<p class="m_0">News Activity : '+result.subList[i].fromList[j].newsActivity+' </p>';
+										}else{ 
+											str+='<p class="m_0">News Activity : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsType != null && $.trim(result.subList[i].fromList[j].newsType).length > 0){
+											str+='<p class="m_0">News type : '+result.subList[i].fromList[j].newsType+' </p>';
+										}else{ 
+											str+='<p class="m_0">News type : - </p>';	
+										}
+										if( result.subList[i].fromList[j].newsType != null && result.subList[i].fromList[j].newsType == "Problems"){
+											if(result.subList[i].fromList[j].newsRelated != null && $.trim(result.subList[i].fromList[j].newsRelated).length > 0){
+												str+='<p class="m_0">News Related : '+result.subList[i].fromList[j].newsRelated+' </p>';
+											}else{ 
+												str+='<p class="m_0">News Related : - </p>';	
+											}
+											if(result.subList[i].fromList[j].priority != null && $.trim(result.subList[i].fromList[j].priority).length > 0){
+												str+='<p class="m_0">Priority : '+result.subList[i].fromList[j].priority+' </p>';
+											}else{ 
+												str+='<p class="m_0">Priority : - </p>';	
+											}
+											if(result.subList[i].fromList[j].solution != null && $.trim(result.subList[i].fromList[j].solution).length > 0){
+												str+='<p class="m_0">Solution : '+result.subList[i].fromList[j].solution+' </p>';
+											}else{ 
+												str+='<p class="m_0">Solution : - </p>';	
+											}
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='</table>';
+									}
+								}
+							str+='</div>';//panel-body
+							str+='</div>';//panel
+							str+='</div>';//colmd6
+							str+='<div class="col-md-6 col-xs-12  col-sm-12">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">TO WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* TO Table*/
+								if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
+									for( var j in result.subList[i].toList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].toList[j].organizationName != null && $.trim(result.subList[i].toList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].toList[j].candidateName != null && $.trim(result.subList[i].toList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].toList[j].candidateName;
+																			}
+																			if( result.subList[i].toList[j].designation != null && $.trim(result.subList[i].toList[j].designation).length > 0 ){
+																				candidataExist = true; 
+																				str+=' ('+result.subList[i].toList[j].designation + ")";
+																			}
+																			if(!candidataExist){
+																				str+=' - ';
+																			}
+																		   str+='</td>';
+																	str+='</tr>';
+																	str+='<tr>';
+																		str+='<td colspan="2">';
+																		    
+																			if(result.subList[i].toList[j].impactLevel != null && $.trim(result.subList[i].toList[j].impactLevel).length > 0){
+																			  str+='<p class="m_0">Impact Level : '+result.subList[i].toList[j].impactLevel+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Impact Level : - </p>';	
+																			}
+																		
+																		    if(result.subList[i].toList[j].categories != null && $.trim(result.subList[i].toList[j].categories).length > 0){
+																			  str+='<p class="m_0">Category : '+result.subList[i].toList[j].categories+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Category : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsActivity != null && $.trim(result.subList[i].toList[j].newsActivity).length > 0){
+																			  str+='<p class="m_0">News Activity : '+result.subList[i].toList[j].newsActivity+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News Activity : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsType != null && $.trim(result.subList[i].toList[j].newsType).length > 0){
+																			  str+='<p class="m_0">News type : '+result.subList[i].toList[j].newsType+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News type : - </p>';	
+																			}
+																			if( result.subList[i].toList[j].newsType != null && result.subList[i].toList[j].newsType == "Problems"){
+																				
+																				if(result.subList[i].toList[j].newsRelated != null && $.trim(result.subList[i].toList[j].newsRelated).length > 0){
+																				  str+='<p class="m_0">News Related : '+result.subList[i].toList[j].newsRelated+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">News Related : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].priority != null && $.trim(result.subList[i].toList[j].priority).length > 0){
+																				  str+='<p class="m_0">Priority : '+result.subList[i].toList[j].priority+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Priority : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].solution != null && $.trim(result.subList[i].toList[j].solution).length > 0){
+																				  str+='<p class="m_0">Solution : '+result.subList[i].toList[j].solution+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Solution : - </p>';	
+																				}
+																			}
+																		str+='</td>';
+																	str+='</tr>';
+																str+='</table>';
+															}
+														}
+														
+													str+='</div>';//panelbody
+												str+='</div>';//panel
+											str+='</div>';//colmd6
+											
+										str+='</div>';//row
+								  }
+								}
+								
+								str+='</div>';//colmd12
+							str+='</div>';//row
+								/* Article Scope Location */
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<div class="panel panel-default panelArticleGroup">';
+										str+='<div class="panel-heading">';
+											str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<table class="table table-condensed">';
+												str+='<tr>';
+													str+='<td>Impact Scope : </td>';
+													if(result.impactScopeId!=null){
+														str+='<td>'+obj[result.impactScopeId]+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+												str+='<tr>';
+													str+='<td>Location : </td>';
+													if(result.scopeLocation!=null){
+														str+='<td>'+result.scopeLocation+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+											str+='</table>';       
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+							str+='<div class="row">';
+							/*Lnking*/
+							str+='</div>';  
+					$("#myModalShowNewId").html(str);
+		});    
+} 	
    /* Alert Description Details Block End  */
