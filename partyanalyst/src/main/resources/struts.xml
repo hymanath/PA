@@ -15624,5 +15624,10 @@
 	       <param name="root">partyMeetingVO</param>
 	  </result>
 	</action>
+	<action name="editAlertAction" class="createAlertAction" method="createAlert">
+	  	  <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+	  </action>
  </package>
 </struts>
