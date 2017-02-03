@@ -198,6 +198,7 @@
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Alert Location Level</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
+											<option value="1">Central</option>
 											<option value="2">State</option>
 											 <option value="3">District</option>
 											 <option value="4">Constituency</option>
@@ -437,7 +438,7 @@
 						
 						<div>
 									<div class="advanceCadreCommittee" id="referCommitteeDiv">
-									 <div class="col-md-3 col-xs-12 col-sm-6 ">
+									 <div class="col-md-3 col-xs-12 col-sm-6 commiteeDtlsCls">
 										<label>Select Committee</label>
 										<select id="referCommitteeId" class="dropkickClass" >
 											<option value="0">All</option>
