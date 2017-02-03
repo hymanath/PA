@@ -569,7 +569,7 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
       /**   START
  	  *  This  Method is used to get all aub level child userTypes to parent userType.. 
  	  */
-  	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(Long parentUserTypeId){
+  	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(List<Long> parentUserTypeIdsList){
   		
   		List<UserTypeVO> finalList = null;
   		try{
@@ -578,7 +578,7 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
   			
   			Map<Long,UserTypeVO> finalMap = new TreeMap<Long,UserTypeVO>();
   			
-  			getAllSubUserTypes(finalMap,parentUserTypeId,allParentChildUserTypesMap);
+  			getAllSubUserTypes(finalMap,parentUserTypeIdsList,allParentChildUserTypesMap);
   			
   			if(finalMap!=null && finalMap.size() > 0){
   				
@@ -638,35 +638,39 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
   		return finalList;
   	}
   	
-  	public void getAllSubUserTypes(Map<Long,UserTypeVO> finalMap,Long parentUserTypeId,Map<Long,List<UserTypeVO>> ParentChildUserTypesMap){
+  	public void getAllSubUserTypes(Map<Long,UserTypeVO> finalMap,List<Long> parentUserTypeIdsList,Map<Long,List<UserTypeVO>> ParentChildUserTypesMap){
   		
   		try{
   			
-  			 List<UserTypeVO> childUserTypeIds = ParentChildUserTypesMap.get(parentUserTypeId);
-  			 
-  			 if(childUserTypeIds!=null && childUserTypeIds.size() > 0)
-  			 {
-  				 for(UserTypeVO childUserTypeVO : childUserTypeIds)
-  				 {
-  					 Long childUserTypeId = childUserTypeVO.getId();
-  					 
-  					 UserTypeVO childVO = finalMap.get(childUserTypeId);
-  					 
-  					 if(childVO == null)
-  					 {
-  						 UserTypeVO userTypeVO = new UserTypeVO();
-  						 userTypeVO.setUserTypeId(childUserTypeId);
-  						 userTypeVO.setUserType(childUserTypeVO.getName());
-  						 userTypeVO.setShortName(childUserTypeId.toString());
-  						 finalMap.put(childUserTypeId, userTypeVO);
-  						 
-  						 //its child data.
-  						 getAllSubUserTypes(finalMap,childUserTypeId,ParentChildUserTypesMap);
-  						 
-  					 }
-  				 }
-  			 }
-  			
+  			if(parentUserTypeIdsList != null && parentUserTypeIdsList.size()>0){
+  				for (Long parentUserTypeId : parentUserTypeIdsList) {
+  					List<UserTypeVO> childUserTypeIds = ParentChildUserTypesMap.get(parentUserTypeId);
+  		  			 
+  		  			 if(childUserTypeIds!=null && childUserTypeIds.size() > 0)
+  		  			 {
+  		  				 for(UserTypeVO childUserTypeVO : childUserTypeIds)
+  		  				 {
+  		  					 Long childUserTypeId = childUserTypeVO.getId();
+  		  					 
+  		  					 UserTypeVO childVO = finalMap.get(childUserTypeId);
+  		  					 
+  		  					 if(childVO == null)
+  		  					 {
+  		  						 UserTypeVO userTypeVO = new UserTypeVO();
+  		  						 userTypeVO.setUserTypeId(childUserTypeId);
+  		  						 userTypeVO.setUserType(childUserTypeVO.getName());
+  		  						 userTypeVO.setShortName(childUserTypeId.toString());
+  		  						 finalMap.put(childUserTypeId, userTypeVO);
+  		  						List<Long> childUserTypeIdsList = new ArrayList<Long>(0);
+  		  						childUserTypeIdsList.add(childUserTypeId);
+  		  						 //its child data.
+  		  						 getAllSubUserTypes(finalMap,childUserTypeIdsList,ParentChildUserTypesMap);
+  		  						 
+  		  					 }
+  		  				 }
+  		  			 }
+				}
+  			}
   		}catch(Exception e){
   			LOG.error("Exception occurred in getAllSubUserTypes() ",e);
   		}
