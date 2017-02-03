@@ -84,4 +84,24 @@ public class PartyMeetingUpdationDetailsDAO extends GenericDaoHibernate<PartyMee
 		query.setParameter("partyMeetingId", partyMeetingId);
 		return  (String) query.uniqueResult();
 	}
+	public List<Object[]> getUpdationDetailsCount(Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder(); 
+		sb.append("select count(distinct model.partyMeeting.partyMeetingId)," +
+				" model.partyMeeting.partyMeetingLevel.level," +
+				" model.partyMeeting.partyMeetingLevelId" +
+				" from PartyMeetingUpdationDetails model " +
+				" where model.isDeleted= 'false'" +
+				" and model.partyMeeting.isActive= 'Y'");
+		if(startDate != null && endDate !=  null)
+			sb.append(" and  ( (date(model.partyMeeting.startDate)>=:startDate and date(model.partyMeeting.startDate)<=:endDate) or (date(model.partyMeeting.endDate)>=:startDate and date(model.partyMeeting.endDate)<=:endDate) ) ");
+			sb.append(" group by model.partyMeeting.partyMeetingLevelId");
+			
+		Query query = getSession().createQuery(sb.toString());
+		if(startDate != null && endDate !=  null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+	}
+	
 }
