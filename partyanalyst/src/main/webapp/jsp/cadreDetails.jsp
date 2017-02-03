@@ -2214,6 +2214,14 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
+	 <div class="modal fade" id="myModalShowNew">
+		 <div class="modal-dialog modal-lg" role="document" style="width:90%">
+			<div class="modal-content">
+				<div id="myModalShowNewId"></div>
+			</div>
+		 </div>  
+	</div>    
  <!-- End -->
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

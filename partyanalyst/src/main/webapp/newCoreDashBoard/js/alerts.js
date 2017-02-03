@@ -3355,7 +3355,11 @@ function getTotalArticledetails(articleId){
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyArrowPostion)" id="overAlltotalpartyArrowPostion" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[0].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyArrowPostion)" id="overAlltotalpartyArrowPostion" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+''
+					if(result.totalPartyList[0].editionCnt > 0){
+					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[0].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+					}
+					str+='</p>';
 					if(result.totalPartyList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;">0</p></td>';
 					}else{
@@ -3363,7 +3367,11 @@ function getTotalArticledetails(articleId){
 					}
 					
 					
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyEdArrowPostion)" id="overAlltotalpartyEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[1].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyEdArrowPostion)" id="overAlltotalpartyEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+''
+					if(result.totalPartyList[1].editionCnt > 0){
+					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[1].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+					}
+					str+='</p>';
 					if(result.totalPartyList[1].editionCnt == 0){  
 						str+='<p style="font-size:13px;">0</p></td>';
 					}else{
@@ -3372,14 +3380,22 @@ function getTotalArticledetails(articleId){
 					
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[0].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';    
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+''
+					if(result.totalGovtList[0].editionCnt > 0){
+					 str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[0].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+					}
+					str+='</p>';    
 					if(result.totalGovtList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
 						str+='<p onclick ="getEditioDtls('+result.totalGovtList[0].alertTypeId+','+result.totalGovtList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'"><span class="alertColorFont">'+result.totalGovtList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls " onclick="arrowPositionMove1(overAlltotalgovtEd1ArrowPostion)" id="overAlltotalgovtEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[1].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+					str+='<td class="alertOverViewDetailsLowCls " onclick="arrowPositionMove1(overAlltotalgovtEd1ArrowPostion)" id="overAlltotalgovtEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+''
+					if(result.totalGovtList[1].editionCnt > 0){
+						str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[1].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+					}
+					str+='</p>';
 					if(result.totalGovtList[1].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
@@ -3388,14 +3404,22 @@ function getTotalArticledetails(articleId){
 					
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[0].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+''
+					if(result.totalOtherList[0].editionCnt > 0){
+					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[0].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+					}
+					str+='</p>';
 					if(result.totalOtherList[0].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
 						str+='<p onclick ="getEditioDtls('+result.totalOtherList[0].alertTypeId+','+result.totalOtherList[0].editionId+');" style="font-size:13px;cursor:pointer;"  attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'"><span class="alertColorFont">'+result.totalOtherList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls1" onclick="arrowPositionMove1(overAlltotalothersEd2ArrowPostion);" id="overAlltotalothersEd2ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+'<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[1].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+					str+='<td class="alertOverViewDetailsLowCls1" onclick="arrowPositionMove1(overAlltotalothersEd2ArrowPostion);" id="overAlltotalothersEd2ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+''
+					if(result.totalOtherList[1].editionCnt > 0){
+					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[1].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+					}
+					str+='</p>';
 					if(result.totalOtherList[1].editionCnt == 0){
 						str+='<p style="font-size:13px;cursor:pointer;">0</p></td>';
 					}else{
