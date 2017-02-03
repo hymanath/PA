@@ -3089,8 +3089,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   //calculating category wise complaince per
 		   calculateCategoryWiseComplainceCnt(candiateMap);
 		   //Get Candidate Wise Document 
+		   Long tdpCadreId =0l;
 		   if(monthyearIds.size() > 0){
-			Long tdpCadreId = selfAppraisalCandidateDAO.getTdpCadreId(selfAppraisalCandidateId);
+			   tdpCadreId = selfAppraisalCandidateDAO.getTdpCadreId(selfAppraisalCandidateId);
            List<Object[]> rtrnObjList = selfAppraisalCandidateDocumentDAO.getCandiateDocument(monthyearIds, tdpCadreId);
             setCandidateDocument(rtrnObjList,monthWiseCandiateDocMap);
 		   }
@@ -3098,8 +3099,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   Map<Long,List<ToursBasicVO>> monthWiseTourDtlsMap = new LinkedHashMap<Long, List<ToursBasicVO>>(0);
 		   Map<Long,ToursBasicVO> monthMap = new HashMap<Long, ToursBasicVO>(0);
 		   if(monthyearIds.size() > 0){
-		   List<Object[]> rtrnDateWiseTourDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getMonthWiseTourSubmittedDetails(monthyearIds, selfAppraisalCandidateId);
-		   setMonthWiseTourDetails(rtrnDateWiseTourDtlsObjLst,monthWiseTourDtlsMap,monthMap);
+		   //List<Object[]> rtrnDateWiseTourDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getMonthWiseTourSubmittedDetails(monthyearIds, selfAppraisalCandidateId);
+			   List<Object[]> rtrnDateWiseTourDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getMonthWiseTourSubmittedDetails(monthyearIds, tdpCadreId);
+			   setMonthWiseTourDetails(rtrnDateWiseTourDtlsObjLst,monthWiseTourDtlsMap,monthMap);
 		   }
 		    Double totalPer =0.0d;
 		    if(candiateMap != null && candiateMap.size() > 0){
@@ -3468,11 +3470,11 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 if(objList != null && objList.size() > 0){
 			 for(Object[] param:objList){
 				 String monthPath = monthWiseCandiateDocMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-				 if(monthPath == null){
+				/* if(monthPath == null){
 					 monthPath =  commonMethodsUtilService.getStringValueForObject(param[1]);
-				 }else{
+				 }else{*/
 					 monthPath = monthPath+","+commonMethodsUtilService.getStringValueForObject(param[1]);;
-				 }
+				// }
 				 monthWiseCandiateDocMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),monthPath);
 			 }
 		 }
