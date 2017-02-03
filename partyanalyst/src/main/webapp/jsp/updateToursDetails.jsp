@@ -199,24 +199,25 @@
 								
 								<div id="overallDivId" style="display:none;">
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
-										<div class="row">
-											<div class="col-md-10 col-xs-12 col-sm-8">
-												<h4 id="candidateNameId"></h4>
+										<div  id="toursId">
+											<div class="col-md-8 col-xs-12 col-sm-8">
+												<h4><span  id="candidateNameId"></span>&nbsp;&nbsp;&nbsp;<small id="changedDate"></small></h4>
 											</div>
-										</div>
-										
-										<div class="row">
-											<div class="col-md-2 col-xs-12 col-sm-4">
-												<!--<label>Select Month</label>-->
+											<div class="col-md-2 col-xs-12 col-sm-2">
 												<div class="input-group inputGCustom">
-												<input type="hidden" id="hiddenTdpCadreId"/>
+													<input type="hidden" id="hiddenTdpCadreId"/>
 													<input type="text" class="form-control" id="tourMonthYear" >
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
 													</span>
 												</div>
-												<button type="button" class="btn btn-success" title="To get tours over view" style="margin-top: -34px; margin-left: 197px;" onclick="getAllTourDetailsOverview(1,'',0,'')">Submit</button>
+												<div id="errorDiv" class="text-danger"></div>
 											</div>
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview(1,'',0,'','')">Submit</button>
+											</div>
+										</div>
+										<div class="row">
 										<!--<form name="submitApplication" method="post">-->
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
@@ -244,6 +245,9 @@
 														<button type="button" class="btn btn-success btn-block" onclick="savingApplication1();" type="button">SUBMIT APPLICATION</button>
 														<span id="successSpanId"></span>  
 													</div>   
+													<div class="col-md-1">
+														<div id="formSubmitLoader"></div>
+													</div>
 													<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
 												</div> 
 											</div>
@@ -590,8 +594,13 @@
 /*New Code*/
 /*Month & Year Picker*/
 $("#tourMonthYear").datetimepicker({
-	format:'MM-YYYY'
-})
+	format:'MM-YYYY',
+	maxDate:moment()
+});
+$('#tourMonthYear').on('dp.change', function(e) { 
+	var date = e.date.format("MMM-YYYY")
+	$("#changedDate").html(date);
+});
 editUpdateDetailsInitilize();
 var TourCategoryArray =[];
 var TourTypesArray =[];
