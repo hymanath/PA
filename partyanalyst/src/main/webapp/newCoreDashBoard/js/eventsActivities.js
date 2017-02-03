@@ -1992,15 +1992,6 @@ $(document).on("click",".submitCls",function(){
 	var searchType="constituency";
 	var locationNm = "All";
 	var locationId = 0;
-	commonData(locationId,searchType,locationNm);
-	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
-	
-});
-
-function commonData(locationId,searchType,locationNm){
-	var searchType="constituency";
-	var locationNm = "All";
-	var locationId = 0;
 	if($("#districtId").val() == 0){
 			locationId = $("#districtId").val();
 			searchType="constituency";
@@ -2031,7 +2022,10 @@ function commonData(locationId,searchType,locationNm){
 			}
 		}
 	}
-}
+	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
+	
+});
+
 $(document).on("change",".districtCls",function(){
 	$("#constituencyId").val(0);
 	$("#mandalId").val(0);
@@ -4179,6 +4173,35 @@ $(document).on("click",".radioBtnCls",function(){
 	var searchType="constituency";
 	var locationNm = "All";
 	var locationId = 0;
-	commonData(locationId,searchType,locationNm);
+	if($("#districtId").val() == 0){
+			locationId = $("#districtId").val();
+			searchType="constituency";
+			locationNm = $('#districtId option:selected').text();
+	}else{
+		locationId = $("#districtId").val();
+		searchType="constituency";
+		locationNm = $('#districtId option:selected').text();
+		if($("#constituencyId").val() == 0){
+			locationId = $("#districtId").val();
+			searchType="constituency";
+			locationNm = $('#districtId option:selected').text();
+		}else{
+			if($("#mandalId").val() == 0){
+				locationNm = $('#constituencyId option:selected').text();
+				locationId = $("#constituencyId").val();
+				searchType="mandal";
+			}else{
+				if($("#villgWardId").val() == 0){
+					locationNm = $('#mandalId option:selected').text();
+					locationId = $("#mandalId").val();
+					searchType="villageWard";
+				}else if($("#villgWardId").val() > 0){
+					locationNm = $('#villgWardId option:selected').text();
+					locationId = $("#villgWardId").val();
+					searchType="onlyvillage";
+				}
+			}
+		}
+	}
 	getDistrictWiseActivityCounts(globalActvtyScopeId,locationId,"change",searchType,"submit","NA","NA",locationNm);
 });
