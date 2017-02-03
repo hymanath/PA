@@ -299,8 +299,9 @@ $(document).on("click",".casteGroupCls",function(){
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
+		$('#locationLevelId').append('<option value="0">ALL</option>');
       if(result != null && result.length > 0){
-        for(var i in result){
+		for(var i in result){
           if(result[i].id == "2"){  
             $('#locationLevelId').append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');  
           }else{
@@ -1316,7 +1317,13 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			if(locationLevelName == ""){
 			locationLevelName = "state";
 			}
-		getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName);
+			
+			if(locationLevelId != 0){
+				$(".geographicCls").show();
+				getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName);
+			}else{
+				$(".geographicCls").hide();
+			}
 		var positionStatusId = $("#positionStatusId").val(); 
 		var postionStatus =$("#positionStatusId option:selected").text();
 		if(positionId==0){

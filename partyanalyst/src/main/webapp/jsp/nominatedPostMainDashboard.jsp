@@ -346,7 +346,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="col-md-12 col-xs-12 col-sm-12 geographicCls" style="display:none;">
         	<div class="row m_top10">
             	<div class="col-md-12 col-xs-12 col-sm-12">
                 	<h3 class="headingColor text-capitalize">Geographic Positions Overview<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
