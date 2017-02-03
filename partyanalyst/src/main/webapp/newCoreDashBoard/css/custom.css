@@ -1271,7 +1271,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .collapseDebatesIcon::before {
     border: 1px solid rgb(75, 87, 99);
     color: rgb(75, 87, 99);
-    content: "−";
+    content: "\2212";
     float: right;
     font-family: "Glyphicons Halflings";
     font-size: 13px;
@@ -1281,7 +1281,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 3px 5px;
 }
 .collapseDebatesIcon.collapsed::before {
-    content: "+";
+    content: "\002b";
 }
 .b_right1 {
     border-right: 1px solid rgb(221, 221, 221);
