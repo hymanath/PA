@@ -60,6 +60,7 @@ public class PartyMeetingsVO implements Serializable{
 	private String updatedTime;
 	private Long meetingCount=0l;
 	private Long commentCount=0l;
+	private Long updationCount = 0l;
 
 	public Long getId() {
 		return id;
@@ -334,6 +335,12 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+	public Long getUpdationCount() {
+		return updationCount;
+	}
+	public void setUpdationCount(Long updationCount) {
+		this.updationCount = updationCount;
 	}
 	
 }
