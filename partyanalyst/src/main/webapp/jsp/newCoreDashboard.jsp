@@ -2627,7 +2627,7 @@
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
@@ -2657,13 +2657,94 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
-							<!-- <div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks" id="eventsCmpBlckDivId">
+							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId">
+								
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
 									<li class="text-capital" attr_typeId="1">Detailed </li>
 									<li class="text-capital" attr_typeId="2">Comparison</li>
 								</ul>
 							</div>
-							-->
+							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks">
+							
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital settingsIconAct">
+										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+									</li>
+								</ul>
+								<div class="actBlockDropDown documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
+											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
+										  </ul>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+										  <div class="tab-content navTabsSettingsContent">
+											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+												<hr style ="margin-bottom:0px;" />
+												<div class="">
+													<ul class="settingsUl">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="actSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+												<hr style ="margin-bottom:0px;" />
+												<div class="">
+													<ul class="settingsUl">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+													</ul>
+												</div>
+											</div>
+										  </div>
+										  
+										</div>
+										<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+											<button type="button" class="btn btn-success">Get Details</button>
+										</div>
+									</div>
+									
+									
+								</div>
+							</div>
 							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
 									<li class="text-capital detailedEvent">Detailed</li>
@@ -2720,7 +2801,7 @@
 									</div>
 								</div>
 							</div>
-							<!--<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" style="display:none" id="activtyBlckDivId">
+							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" style="display:none" id="activtyBlckDivId">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2749,7 +2830,7 @@
 										</div>
 									</div>
 								</div>
-							</div>-->
+							</div>
 						</div>
 					</div>
 				</div>
