@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationInputVO {
@@ -20,6 +21,7 @@ public class LocationInputVO {
 	private List<Long> localMandalIds;
 	private List<Long> localPanchayatIds;
 	
+	private List<Long> counrtyIds = new ArrayList<Long>(0);
 	private List<Long> stateIdsList;	
 	private List<Long> districtIdsList ;	
 	private List<Long> tehsilIdsList;
@@ -184,6 +186,12 @@ public class LocationInputVO {
 	}
 	public void setCommitteeId(Long committeeId) {
 		this.committeeId = committeeId;
+	}
+	public List<Long> getCounrtyIds() {
+		return counrtyIds;
+	}
+	public void setCounrtyIds(List<Long> counrtyIds) {
+		this.counrtyIds = counrtyIds;
 	}
 
 	

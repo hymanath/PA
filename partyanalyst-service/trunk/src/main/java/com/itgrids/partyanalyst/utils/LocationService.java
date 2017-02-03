@@ -55,7 +55,7 @@ public class LocationService {
 		 LocationInputVO locationVO = new LocationInputVO();
 			
 			try{
-			
+				List<Long> contryIds = mainVo.getCounrtyIds();
 				List<Long> stateIds=mainVo.getLocalStateIds();//inputs from UI
 				List<Long> districtIds=mainVo.getLocalDistrictIds();//inputs from UI
 				List<Long> constituencyIds=mainVo.getLocalConstituencyIds();//inputs from UI	
@@ -338,6 +338,9 @@ public class LocationService {
 						
 						locationVO.setLevelId(levelId);
 						
+					}else if(levelId == 12l){
+						locationVO.setLevelId(levelId);
+						locationVO.getCounrtyIds().add(1l);
 					}
 							
 				}
