@@ -308,7 +308,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													//str+='<td class="text-capitalize">'+canidateName+'</td>';
 													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+'</td>';
 													str+='<td>';
-															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</span>';
+															str+='<span class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;"><a>'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></span>';
 													str+='</td>';
 													
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
@@ -980,8 +980,8 @@ $(document).on("click",".partyWiseDebateCls",function(){
 	getCoreDebateBasicDetailsOfParty(partyId,type);
 });
 function getCoreDebateBasicDetailsOfParty(partyId,type){
-	$("#debateModelId").html("");	
-	$("#debateModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$(".debateModelCls").html("");	
+	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
 	var jsObj={
 		partyId:partyId,
@@ -1044,7 +1044,7 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 			str+= '</div>';
 			str+= '</div>';
 			
-			$("#debateModelId").html(str);
+			$(".debateModelCls").html(str);
 			$('.debateFirstBlockCls').dataTable({
 				"iDisplayLength": 15,
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
@@ -1058,3 +1058,88 @@ $(document).on("click",".debateDetailsCls",function(){
 		var debateId = $(this).attr("attr_debateId");		
 		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
 	});
+	
+	$(document).on("click",".overAllCandidateCls",function(){
+		var partyId = $(this).attr("attr_party_id");		
+		var candidateId = $(this).attr("attr_candidate_id");		
+		getCandidateWiseDebateDetailsOfCore(partyId,candidateId);		
+	});
+	
+function getCandidateWiseDebateDetailsOfCore(partyId,candidateId){
+	$(".debateModelCls").html("");	
+	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	var jsObj={
+		partyId:partyId,
+		startDate:customStartDate,
+		endDate:customEndDate,
+		candidateId:candidateId
+	}		
+	$.ajax({
+	 type: "POST",
+	 url: "getCandidateWiseDebateDetailsOfCoreAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildDebateModelDetails(result,"debate");
+	});
+}
+function buildDebateModelDetails(result,type){
+		var str = '';
+		if(result !=null && result.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			str+= '<div class="table-responsive">';
+			str+= '<table class="table table-bordered table-condensed debateFirstBlockCls">';
+				str+= '<thead style="background:#ccc">';
+				if(type =="candidate"){
+					str+='<th>Candidate Name</th>';
+				}
+					str+='<th>Subject</th>';
+					str+='<th>Start Time</th>';
+					str+='<th>End Time</th>';
+					str+='<th>Observer</th>';
+					str+='<th>Channel</th>';
+
+				str+= '</thead>';
+				str+= '<tbody>';					
+					for(var i in result){
+						str+='<tr>';
+							var name='';
+							var subject='';
+							var candiName='';
+							if(result[i].debateSubject !=null && result[i].debateSubject.length>0){
+								for(var j in result[i].debateSubject){
+										name=name.concat(result[i].debateSubject);
+								}
+									subject=getTitleContent(name,30);
+									if(result[i].candidateName !=null && result[i].candidateName.length>0)
+										candiName=getTitleContent(result[i].candidateName,30);
+							}		
+						if(type =="candidate"){
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+						}							
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td>'+result[i].startTime+'</td>';
+							str+='<td>'+result[i].endTime+'</td>';
+							str+='<td>'+result[i].observerName+'</td>';
+							str+='<td>'+result[i].charecterName+'</td>';
+						str+='</tr>';						
+					}
+					
+				str+= '</tbody>';
+			str+= '</table>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			
+			$(".debateModelCls").html(str);
+			$('.debateFirstBlockCls').dataTable({
+				"iDisplayLength": 15,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			 });
+		}
+		
+}
+	

@@ -3617,4 +3617,18 @@ public String insertDataInToPartyMeetingStatusTable()
 	}
 	return Action.SUCCESS;
 }*/
+
+public String getCandidateWiseDebateDetailsOfCore(){
+	try {
+		
+		jObj = new JSONObject(getTask()); 
+		
+		codeDebateVoList = coreDashboardMainService.getCandidateWiseDebateDetailsOfCore(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("candidateId"));
+		
+	} catch (Exception e) {
+		LOG.info("\n\n getCandidateWiseDebateDetailsOfCore ");
+	}
+	return Action.SUCCESS;
+}
+
 }

@@ -15623,7 +15623,12 @@
 	    <result type="json" name="success">
 	       <param name="root">partyMeetingVO</param>
 	  </result>
-	</action>
+	</action>	
+	<action name="getCandidateWiseDebateDetailsOfCoreAction" class="coreDashboardAction" method="getCandidateWiseDebateDetailsOfCore">
+	    <result type="json" name="success">
+	       <param name="root">codeDebateVoList</param>
+	  </result>
+	</action>		
 	<action name="editAlertAction" class="createAlertAction" method="createAlert">
 	  	  <result name="success" type="stream">			   
 			    <param name="inputName">inputStream</param>
