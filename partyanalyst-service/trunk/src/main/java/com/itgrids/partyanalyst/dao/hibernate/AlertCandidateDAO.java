@@ -402,4 +402,35 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		return query.list();
 	}
+	public List<Long> getTdpCadreIdsByAlertId(Long alertId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.tdpCadreId from AlertCandidate model where model.alertId =:alertId");
+		
+		Query qry = getSession().createQuery(sb.toString());
+		
+		if(alertId != null && alertId.longValue()>0l){
+			qry.setParameter("alertId", alertId);
+		}
+		return qry.list();
+	}
+	
+	
+public int deleteAlertCandidatesExistingtdpCadreIds(Long tdpCadreIds,Long alertId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("  delete from AlertCandidate model " +
+				" where " +
+				" model.tdpCadreId in (:tdpCadreIds) and model.alertId =:alertId ");
+	
+		Query query = getSession().createQuery(str.toString());
+		
+		if(tdpCadreIds != null && tdpCadreIds.longValue()>0l){
+		query.setParameter("tdpCadreIds", tdpCadreIds);
+		  }
+		if(alertId != null && alertId.longValue()>0l){
+			query.setParameter("alertId", alertId);
+		}
+		return query.executeUpdate();
+	}
 }

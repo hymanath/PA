@@ -6910,5 +6910,236 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return voList;
   	}
+	public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
+	{
+		
+	    String resultStatus = (String) transactionTemplate
+			   .execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					String rs = new String();
+					try {
+				 DateUtilService date = new DateUtilService();
+				 Alert alert = new Alert();
+				 
+				 alert.setAlertSeverityId(inputVO.getSeverity());
+				 alert.setAlertTypeId(inputVO.getAlertTypeId());
+				 alert.setImpactLevelId(inputVO.getLocationLevelId());
+				 alert.setImpactLevelValue(inputVO.getLocationValue());
+				 alert.setDescription(inputVO.getDesc().toString());
+				 alert.setCreatedBy(userId);
+				 alert.setUpdatedBy(userId);
+				 alert.setImpactScopeId(inputVO.getAlertImpactId());
+
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+					 alert.setAlertStatusId(2l);// if assign list given default status is notified
+				 else
+					 alert.setAlertStatusId(1l);// default pending status
+
+				 alert.setAlertSourceId(inputVO.getAlertSourceId());
+				 alert.setCreatedTime(date.getCurrentDateAndTime());
+				 alert.setUpdatedTime(date.getCurrentDateAndTime());
+				 alert.setIsDeleted("N");
+				 
+				 alert.setAlertCategoryId(1L);//default Manual alert
+				 alert.setTitle(inputVO.getTitle());
+				 
+				 UserAddress userAddress = saveUserAddress(inputVO);
+				 alert.setAddressId(userAddress.getUserAddressId());
+				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
+				 alert = alertDAO.save(alert);
+				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 
+				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
+				 {
+					 List<Long> newCadreList = new ArrayList<Long>(0);
+					 
+					 List<Long> exitingCadreIdsList = new ArrayList<Long>(0);
+					 
+					 String resultMsg = "";
+					for(IdNameVO vo : inputVO.getIdNamesList())
+					 {
+						 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+						 {
+							 newCadreList.add(vo.getId());
+						
+							 List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(alert.getAlertId());//based on alertId we can get the tdpCadreIds
+							 if(existingCadreIds != null && !existingCadreIds.isEmpty()){
+								 exitingCadreIdsList.addAll(existingCadreIds);
+							 }
+							 
+							 if(exitingCadreIdsList != null && exitingCadreIdsList.size()>0){
+								 for(Long existIds : exitingCadreIdsList){
+									 if(newCadreList.contains(existIds)){
+										 
+									 }else{
+										int  result = alertCandidateDAO.deleteAlertCandidatesExistingtdpCadreIds(existIds,alert.getAlertId());//if existing cadreIds is not equal to newCadreIds 
+										                                                                                                     // we can delete the existing tdpCadreIds table records
+										if(result >0){
+											resultMsg = "Records will be deleted";
+										}else{
+											resultMsg = "No records will be deleted";
+										}
+										
+									 }
+									 
+								 }
+							 }
+							       List<Long> finalLst = new ArrayList<Long>();
+							 
+	                               if((exitingCadreIdsList == null || newCadreList.isEmpty()) && (newCadreList == null || exitingCadreIdsList.isEmpty()))
+	                            	   return null;
+	                               else if((exitingCadreIdsList == null || newCadreList.isEmpty()) && (newCadreList != null || !exitingCadreIdsList.isEmpty())){
+	                            	   if(newCadreList != null && newCadreList.size()>0)
+	          							 for(Long newCadreId : newCadreList)
+	                            	   finalLst.add(newCadreId);
+	                               }
+							 
+							 if(newCadreList != null && newCadreList.size()>0){
+								 for(Long newCadreId : newCadreList){
+									 if(exitingCadreIdsList.contains(newCadreId)){
+										 
+									 }else{// if existing cadreIds is not equal to new CadreIds then we can add to that tdpCadreIds add to new List  of finalLst
+										 finalLst.add(newCadreId);
+										 if(finalLst != null && finalLst.size()>0){
+											for(int i=0;i<finalLst.size();i++){
+												
+												 Long ids = finalLst.get(i);
+												 AlertCandidate alertCandidate = new AlertCandidate();
+												 alertCandidate.setAlertId(alert.getAlertId());
+												 alertCandidate.setTdpCadreId(ids);
+												 if(vo.getName() == null)
+													 alertCandidate.setAlertImpactId(2l); 
+												else
+												 alertCandidate.setAlertImpactId(1l);
+												 alertCandidateDAO.save(alertCandidate);
+											 }
+										 }
+									  }
+									 }
+								 }//
+									 
+							 }
+							
+						 }
+						 return resultMsg;
+					 }
+				 
+				if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 {
+					 /* List<Long> existCadreIds = new ArrayList<Long>();
+					  for(IdNameVO vo : inputVO.getAssignList())
+						 {
+							 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+							 {
+								 existCadreIds.add(vo.getId());
+							 }
+						}
+						
+						  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(existCadreIds,alert.getAlertId());*/
+					
+				 	       
+							for(IdNameVO vo1 : inputVO.getAssignList())
+							 {
+								List<Long> newAssignedList = new ArrayList<Long>();
+								List<Long> existsAssignedList = new ArrayList<Long>();
+								 if(vo1 != null && vo1.getId()!= null && vo1.getId() > 0)
+								 {
+									 newAssignedList.add(vo1.getId());
+									 
+									 List<Long> existAsigndList = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(alert.getAlertId());//based on alertId we can get the tdpCadreIds 
+									 
+									 if(existAsigndList != null && ! existAsigndList.isEmpty()){
+										 existsAssignedList.addAll(existAsigndList);
+									 }
+									 String assignedMsg = ""; 
+	                                      if(existsAssignedList != null && existsAssignedList.isEmpty()){
+	                                    	  for(Long exstAssgnedId :existsAssignedList){
+	                                    		  if(newAssignedList.contains(exstAssgnedId.longValue())){
+	                                    			  
+	                                    		  }else{
+	                                    			  int assgnReslt = alertAssignedDAO.deleteAlertAssignedByExistingIds(vo1.getId(),alert.getAlertId());//if existing cadreIds is not equal to newCadreIds 
+	                                                                                                                                                    // we can delete the existing tdpCadreIds table records
+	                                    			  if(assgnReslt >0){
+	                                    				  assignedMsg = "assigned Records will be deleted";
+	                                    				  
+	                                    			  }else{
+	                                    				  assignedMsg = "No assigned Records will be deleted";
+	                                    			  }
+	                                    		  }
+	                                    		  return assignedMsg;
+	                                    	  }
+	                                      }
+	                                    	  
+	                                           List<Long> newAsigedCdrLst = new ArrayList<Long>();
+	         
+	                                      if((existAsigndList == null || newAssignedList.isEmpty()) && (newAssignedList == null || existAsigndList.isEmpty()))
+	                                   	           return null;
+	                                      else if((existAsigndList == null || existAsigndList.isEmpty())  && (newAssignedList != null || !newAssignedList.isEmpty())){
+	                                   	   if(newAsigedCdrLst != null && newAsigedCdrLst.size()>0)
+	                 							 for(Long cadreIds : newAsigedCdrLst)
+	                 								newAsigedCdrLst.add(cadreIds);
+	                                      }
+	                                      
+	                                      
+	                                      if(newAssignedList != null && !newAssignedList.isEmpty() && newAssignedList.size()>0){
+	                                    	  for(Long newAssgndIds : newAssignedList){
+	                                    		  if(existsAssignedList.contains(newAssgndIds.longValue())){
+	                                    			  
+	                                    		  }else{// if existing Assigned TdpCadre cadreIds is not equal to new assigned CadreIds then we can add to that tdpCadreIds add to new List ofnewAsigedCdrLst
+	                                    			  newAsigedCdrLst.add(newAssgndIds);
+	                                    			  for(int i=0;i<newAsigedCdrLst.size();i++){
+	                                    				  Long newCadrId = newAsigedCdrLst.get(i);
+	                                    				  AlertAssigned alertAssigned = new AlertAssigned();
+	        												alertAssigned.setAlertId(alert.getAlertId());
+	        												alertAssigned.setTdpCadreId(newCadrId);
+	        												alertAssigned.setCreatedBy(userId);
+	        												alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+	        												alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+	        												alertAssigned.setIsDeleted("N");
+	        												alertAssignedDAO.save(alertAssigned);
+	                                    			  }
+	                                              }
+	                                    	  }
+	                                      }
+									 				
+								 	}
+								
+							 }
+				 	}
+				 rs = "success";
+				    AlertComment alertComment = new AlertComment();
+				    alertComment.setComments(inputVO.getDesc().toString());
+				    alertComment.setAlertId(alert.getAlertId());
+				    alertComment.setInsertedTime(date.getCurrentDateAndTime());
+				    alertComment.setIsDeleted("N");
+				    alertComment.setInsertedBy(userId);
+				    alertComment = alertCommentDAO.save(alertComment);
+				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+				 alertTrackingVO.setUserId(userId);
+				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+				 alertTrackingVO.setAlertUserTypeId(inputVO.getAlertSourceId());
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 {
+					 alertTrackingVO.setAlertStatusId(2l);
+				 }else{
+					 alertTrackingVO.setAlertStatusId(1l);
+				 }
+				 
+				 alertTrackingVO.setAlertId(alert.getAlertId());
+				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+				 
+				 saveAlertTrackingDetails(alertTrackingVO)	;	
+					}
+					catch (Exception ex) {
+						 rs = "fail";
+						
+						return rs;
+					}
+						return rs;
+				}
+
+			});
+	return resultStatus;
+	}
 }
 
