@@ -1702,22 +1702,27 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		
 		if(type != null){
 			if(type.equalsIgnoreCase("yes"))
-				queryStr.append(" ( model.conductedDate is not null and  model.ivrStatus ='Y' ) ");  
+				queryStr.append(" ( model.conductedDate is not null and  model.ivrStatus ='Y' )  and ");  
 			else if(type.equalsIgnoreCase("no"))
-				queryStr.append(" ( model.conductedDate is null and  model.ivrStatus ='N') ");
+				queryStr.append(" ( model.conductedDate is null and  model.ivrStatus ='N') and  ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" ( (model.conductedDate is not null and  model.ivrStatus='N')  " +
-						"or (model.conductedDate is not  null and  model.ivrStatus is null) ) ");			
+				queryStr.append(" ( (model.conductedDate is not null and  model.ivrStatus='N')   " +
+						"or (model.conductedDate is not  null and  model.ivrStatus is null) ) and ");			
 		}else{
-			if(countType != null && countType.equalsIgnoreCase("planned"))
-				queryStr.append(" model.plannedDate is not null " );
+			if(countType != null && countType.equalsIgnoreCase("Conducted")){
+				queryStr.append(" (model.conductedDate is not null or model.ivrStatus = 'Y')  and " );
+			}else if(countType != null && countType.equalsIgnoreCase("NotConducted")){
+				queryStr.append(" model.conductedDate is  null and ( model.ivrStatus = 'N' or model.ivrStatus is  null )  and " );
+			}
+			else if(countType != null && countType.equalsIgnoreCase("planned"))
+				queryStr.append(" model.plannedDate is not null  and " );
 			else if(countType != null && countType.equalsIgnoreCase("infocell"))
-				queryStr.append(" model.conductedDate is not null " );
+				queryStr.append(" model.conductedDate is not null  and " );
 			else if(countType != null && countType.equalsIgnoreCase("ivr"))
-				queryStr.append(" model.ivrStatus = 'Y' " );
+				queryStr.append(" model.ivrStatus = 'Y'  and " );
 		}
 		
-		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId");
+		queryStr.append("  model.activityScope.activityScopeId =:activityScopeId");
 		/*if(locationId != null && locationId.longValue() > 0l){
 		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
 			queryStr.append("  and model.address.district.districtId = :locationId ");
