@@ -6795,15 +6795,23 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						
 					}
 				
-				}else//State,District Level
+				}
+				else if(locationVo.getLevelId().equals(12l)){
+					query.setParameter("levelId",locationVo.getLevelId());
+					query.setParameterList("levelValues", locationVo.getCounrtyIds());
+					
+				}
+				else//State,District Level
 				{
 					query.setParameter("levelId",locationVo.getLevelId());
 					if(locationVo.getLevelId() == 10l && locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
 					{
 						query.setParameterList("levelValues", locationVo.getStateIdsList());
 					}
-					else
+					else{
 						query.setParameterList("levelValues", locationVo.getDistrictIdsList());
+					}
+						
 					
 				}
 		}

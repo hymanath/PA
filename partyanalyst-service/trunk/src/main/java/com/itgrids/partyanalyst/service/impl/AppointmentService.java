@@ -1497,6 +1497,12 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 					    		   setDataMembersForCadreRole(memList,finalList,inputVo.getAptUserId());
 						    	   }
 						    	
+						    }else if(inputVo.getLevelId() == 12l){//central
+						    	locationVo.getCounrtyIds().add(1l);
+						    	List<Object[]> memList  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"",inputVo);
+						    	if(memList != null && memList.size()>0){
+					    		   setDataMembersForCadreRole(memList,finalList,inputVo.getAptUserId());
+						    	}
 						    }
 						    else // All
 						   {
