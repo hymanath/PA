@@ -14,7 +14,6 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 
 	public ActivityDocumentDAO() {
 		super(ActivityDocument.class);
-		
 	}
 	
 	public List<Object[]> getImagesCoveredAndTotalImagesCountForConstituencies(List<Long> districtsList,List<Long> activityScopeIdsLis,String  searchType,

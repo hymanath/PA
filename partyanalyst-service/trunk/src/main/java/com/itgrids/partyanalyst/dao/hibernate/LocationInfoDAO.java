@@ -67,7 +67,7 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 			query.setParameterList("requiredAreasIds", searchAttributeVO.getLocationTypeIdsList());
 		query.setParameter("scopeId", searchAttributeVO.getScopeId());
-		if(publicationDateId != null && publicationDateId.longValue()>0)
+		if(publicationDateId != null && publicationDateId.longValue()>0L)
 		query.setParameter("publicationDateId", publicationDateId);
 		//query.setParameter("scopeValue", searchAttributeVO.getScopeValue());
 		
