@@ -5281,5 +5281,99 @@ public List<List<IdNameVO>> getStateLevelCampDetailsDayWise(List<Long> programId
 	return null;
 }
 
+public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId){
+	
+	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
+	try{
+
+		Date startDate = null;
+		Date endDate   =null;
+		String searchType = "debate";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+		
+		
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		List<Long> partyIds = new ArrayList<Long>(0);
+		List<Long> candidateIds = new ArrayList<Long>();
+		
+		partyIds.add(partyId);
+		candidateIds.add(candidateId);
+		
+		Set<Long> debateIds = new LinkedHashSet<Long>(0);
+		Map<Long,CoreDebateVO> mainMap = new LinkedHashMap<Long, CoreDebateVO>(0);
+		//0.candidateId,1.candidateName,2.debateId,3.startTime,4.endTime,5.debateObserverid,6.observer,7.channelId,8.channelName
+		List<Object[]> listObj = debateParticipantDAO.getPartyAndCandidateWiseDebates(partyIds,startDate,endDate,null,searchType,candidateIds);
+		
+		if(listObj !=null && listObj.size()>0){			
+			for(Object[] obj:listObj){
+				CoreDebateVO VO = new CoreDebateVO();
+				
+				if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+					VO.setCandidateId(obj[0] !=null ? (Long)obj[0]:0l);
+					VO.setCandidateName(obj[1] !=null ? obj[1].toString():"");
+				}
+				VO.setId(obj[2] !=null ? (Long)obj[2]:0l);//debateId
+				VO.setStartTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
+				VO.setEndTime(obj[4] !=null ? sdf1.format((Date)obj[4]):null);
+				VO.setObserverId(obj[5] !=null ? (Long)obj[5]:0l);
+				VO.setObserverName(obj[6] !=null ? obj[6].toString():"");
+				VO.setCharecterId(obj[7] !=null ? (Long)obj[7]:0l);
+				VO.setCharecterName(obj[8] !=null ? obj[8].toString():"");
+				debateIds.add(VO.getId());
+				finalList.add(VO);
+			}	
+		}
+		
+		// here we are getting the main subjet of the debeate
+		Map<Long,List<String>> subjectsMap = new HashMap<Long, List<String>>();
+		
+		if(debateIds !=null && debateIds.size()>0){	
+			//get Subjects Of Debate
+			getDebateSubjects(debateIds,subjectsMap);			
+			
+			for(CoreDebateVO VO:finalList){				
+				List<String> subjects = subjectsMap.get(VO.getId());
+				if(subjects !=null){
+					VO.setDebateSubject(subjects);
+				}				
+			}
+			
+		}
+		
+	}catch(Exception e){
+		Log.error("Exception raised at getCoreDebateBasicDetailsOfParty", e);
+	}
+	return finalList;
+
+}
+
+public void getDebateSubjects(Set<Long> debateIds,Map<Long,List<String>> subjectsMap){
+	try {
+		
+		List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds);			
+		if(subjectsList != null && subjectsList.size() > 0)
+		{
+			for(Object[] obj:subjectsList){										
+				List<String> subject = subjectsMap.get((Long)obj[0]);					
+				if(subject == null){
+					subject = new ArrayList<String>();
+					subjectsMap.put((Long)obj[0], subject);
+				}
+				subject.add(obj[2] !=null ? StringEscapeUtils.unescapeJava(obj[2].toString()):"");				
+			}
+		}
+		
+	} catch (Exception e) {
+		Log.error("Exception raised at getDebateSubjects", e);
+	}
+}
+
 }  
 

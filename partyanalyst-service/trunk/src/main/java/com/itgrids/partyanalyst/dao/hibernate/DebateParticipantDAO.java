@@ -555,4 +555,61 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		
 		return  (Long) query.uniqueResult();
 	}
+	
+public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,List<Long> candidateIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select ");
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
+			str.append(" '','',");
+		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+		}else{
+			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+		}
+		
+		str.append("  DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
+				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName " +
+				"  " +
+				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " +
+				" WHERE model.debateId = DS.debate.debateId  " +
+				" and model.debate.debateId = DOB.debate.debateId" +
+				" and model.debate.isDeleted = 'N' " );
+		
+		if(partyIds !=null && partyIds.size()>0){
+			str.append(" and model.partyId in (:partyIds) ");
+		}
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime)  between :startDate and :endDate  ");
+		}
+		
+		if(candidateIds !=null && candidateIds.size()>0){
+			str.append(" and model.candidate.candidateId in (:candidateIds) " );
+		}
+		
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
+			str.append(" group by DS.debate.debateId ");
+		}else{
+			str.append(" group by model.candidate.candidateId ");
+		}
+		//str.append(" group by DS.debate.debateId ");
+		str.append(" order by model.debate.startTime desc ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(partyIds !=null && partyIds.size()>0){
+			query.setParameterList("partyIds", partyIds);
+		}
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		if(candidateIds !=null && candidateIds.size()>0){
+			query.setParameterList("candidateIds", candidateIds);
+		}
+		
+		return query.list();
+	}
 }
