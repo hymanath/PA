@@ -86,4 +86,5 @@ public interface IAlertService {
     public List<AlertDataVO> getAlertAssignedCandidatesForCentralMembers(Long tdpCadreId);
     public List<AlertDataVO> getLocationLevelWiseAlertsDataForCentralMembers(Long userId,AlertInputVO inputVO);
     public List<AlertDataVO> getAllAlertsWithoutFilterForCentralMembers(Long userId,AlertInputVO inputVO);
+    public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
 }

@@ -131,5 +131,39 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		return query.list();
 	}
 
+public List<Long> getAssignedTdpCadreIdsByAlertId(Long alertId){
+	
+	StringBuilder queryStr = new StringBuilder();
+	
+	queryStr.append("select distinct model.tdpCadreId from AlertAssigned model where model.alertId =:alertId");
+	
+	Query qry = getSession().createQuery(queryStr.toString());
+	
+	if(alertId != null && alertId.longValue()>0l){
+		qry.setParameter("alertId", alertId);
+	}
+	return qry.list();
+}
+
+
+public int deleteAlertAssignedByExistingIds(Long tdpCadreId,Long alertId){
+	
+	StringBuilder sb = new StringBuilder();
+	
+	sb.append(" delete from AlertAssigned model " +
+			  " where model.tdpCadreId =:cadreId " +
+			  " and model.alertId =:alertId");
+	
+	Query qry = getSession().createQuery(sb.toString());
+	
+	if(tdpCadreId != null && tdpCadreId.longValue()>0l){
+		qry.setParameter("cadreId", tdpCadreId);
+	}
+	if(alertId != null && alertId.longValue()>0l){
+		qry.setParameter("alertId", alertId);
+	}
+	
+	return qry.executeUpdate();
+}
 }
 
