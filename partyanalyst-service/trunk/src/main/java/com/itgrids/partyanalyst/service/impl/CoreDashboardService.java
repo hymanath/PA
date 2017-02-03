@@ -1662,7 +1662,22 @@ public class CoreDashboardService implements ICoreDashboardService{
 		return returnList;
 	}
 	public void buildDataToList(List<EventDetailsVO> returnList,Long districtId,Long activityScopeId,String searchType,Long stateId,Long locationAccessLevelId ,
-	Set<Long> locationValues){
+	Set<Long> locationValues,String showType){
+		
+		
+		List<Object[]> totalList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,showType,null,locationAccessLevelId
+				,locationValues);
+		activityLocationInfoDAO.flushAndclearSession();
+		List<Object[]> totalList1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,showType,null
+				,locationAccessLevelId
+				,locationValues);
+		if(commonMethodsUtilService.isListOrSetValid(totalList1))
+			if(!commonMethodsUtilService.isListOrSetValid(totalList))
+				totalList = new ArrayList<Object[]>(0);
+				totalList.addAll(totalList1);
+			setDataToVO(totalList,returnList,showType,searchType);
+			
+	if(showType == null || !showType.equalsIgnoreCase("NotConducted")){	
 		List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned",null,locationAccessLevelId
 				,locationValues);
 		activityLocationInfoDAO.flushAndclearSession();
@@ -1762,6 +1777,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 				}
 			}
+			
 			ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
 			Long levelId = 0L;
 			if(activityScope != null)
@@ -1820,11 +1836,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 				}
 			}
-			
+	}
 			
 	}
 	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId,Long activityMemberId,
-			Long userTypeId){
+			Long userTypeId,String showType){
 		
 		List<EventDetailsVO> returnList = new ArrayList<EventDetailsVO>();
 		try{
@@ -1840,20 +1856,20 @@ public class CoreDashboardService implements ICoreDashboardService{
 					 }
 			   }
 			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
-				buildDataToList(returnList,districtId,activityScopeId,searchType,stateId,locationAccessLevelId,locationValues);
+				buildDataToList(returnList,districtId,activityScopeId,searchType,stateId,locationAccessLevelId,locationValues,showType);
 			}else if(searchType != null && searchType.equalsIgnoreCase("mandal")){
 				
-				buildDataToList(returnList,districtId,activityScopeId,"mandal",stateId,locationAccessLevelId,locationValues);
-				buildDataToList(returnList,districtId,activityScopeId,"town",stateId,locationAccessLevelId,locationValues);
+				buildDataToList(returnList,districtId,activityScopeId,"mandal",stateId,locationAccessLevelId,locationValues,showType);
+				buildDataToList(returnList,districtId,activityScopeId,"town",stateId,locationAccessLevelId,locationValues,showType);
 				
 			}else if(searchType != null && searchType.equalsIgnoreCase("villageWard")){
 				String district = districtId.toString();
-				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,"village",stateId,locationAccessLevelId,locationValues);
-				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,"ward",stateId,locationAccessLevelId,locationValues);
+				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,"village",stateId,locationAccessLevelId,locationValues,showType);
+				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,"ward",stateId,locationAccessLevelId,locationValues,showType);
 				
 			}else if(searchType != null && searchType.equalsIgnoreCase("onlyvillage")){
 				String district = districtId.toString();
-				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,searchType,stateId,locationAccessLevelId,locationValues);
+				buildDataToList(returnList,Long.valueOf(district.substring(1)),activityScopeId,searchType,stateId,locationAccessLevelId,locationValues,showType);
 			}
 			
 			 List<Long> districts = new ArrayList<Long>();
@@ -1869,7 +1885,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				districts.clear();
 				districts.add(Long.valueOf(district.substring(1)));
 			}
-			
+			if(showType == null || !showType.equalsIgnoreCase("NotConducted")){
 			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
 				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"constituency",stateId,levelId,locationAccessLevelId,locationValues);
 				setImagesCoveredAndTotalImages(mandalImgs,returnList);
@@ -1889,7 +1905,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 				List<Object[]> mandalImgs = activityDocumentDAO.getImagesCoveredAndTotalImagesForConstituencies(districts,activityScopeIds,searchType,"onlyvillage",stateId,levelId,locationAccessLevelId,locationValues);
 				setImagesCoveredAndTotalImages(mandalImgs,returnList);
 			}
-			Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long,Map<Long,Long>>();
+			}
+			/*Map<Long,Map<Long,Long>> totalScopeLocationsMap = new HashMap<Long,Map<Long,Long>>();
 			SearchAttributeVO searchAttributeVO = new SearchAttributeVO();
 	         
 			if(searchType != null && searchType.equalsIgnoreCase("constituency"))
@@ -1952,7 +1969,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	        		  setTotalLocationsToVO(returnList,locatnContMap,null);
 					}
 	        	  
-	          }
+	          }*/
 	          
 	          if(returnList != null && returnList.size() > 0){
 	        	  for (EventDetailsVO vo : returnList) {
@@ -2030,6 +2047,12 @@ public class CoreDashboardService implements ICoreDashboardService{
 					}
 					else if(type != null && type.equalsIgnoreCase("ivr"))
 						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+					else if(type != null && type.equalsIgnoreCase("All"))
+						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+					else if(type != null && type.equalsIgnoreCase("Conducted"))
+						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+					else if(type != null && type.equalsIgnoreCase("NotConducted"))
+						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
 				}
 			}
 			
