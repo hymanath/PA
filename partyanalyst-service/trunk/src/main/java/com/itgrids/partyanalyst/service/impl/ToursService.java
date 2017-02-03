@@ -1809,10 +1809,15 @@ public class ToursService implements IToursService {
 			  List<Object[]> rtrnGovtDaysToursObjLst = selfAppraisalCandidateDetailsNewDAO.getCandidateComplainceCntCategoryWise(fromDate, toDate, "Govt",designationIds,candidateId,monthyearIds);
 			  setComplainceDtls(rtrnGovtDaysToursObjLst,candidateTargetMap,"Govt");
 			  
-			  
+			  Set<Long> tdpCadreIds = new HashSet<Long>(0);
 			  List<Object[]> rtrnMemberDtlsObjLst = selfAppraisalCandidateDetailsNewDAO.getTourSubmitteedCandidates(fromDate, toDate, designationIds,candidateId,monthyearIds);
 			  setTourSubmitteedMembers(rtrnMemberDtlsObjLst,submittedCandidatesMap,candidateTargetMap);
 			  
+			  if(rtrnMemberDtlsObjLst != null && rtrnMemberDtlsObjLst.size()>0){
+				  for (Object[] objects1 : rtrnMemberDtlsObjLst) {
+					  tdpCadreIds.add((Long)objects1[2]);
+				}
+			  }
 			  Set<Long> candidateIds = new HashSet<Long>(0);
 			  if(resultList !=null && resultList.size()>0){
 				  for (ToursBasicVO obj : resultList) {										 
@@ -1821,7 +1826,7 @@ public class ToursService implements IToursService {
 				  }
 			  }		
 			
-			  List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsOfCandidates(fromDate,toDate,candidateIds,monthyearIds);
+			  /*List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsOfCandidates(fromDate,toDate,candidateIds,monthyearIds);
 			  
 			  if(documentsList !=null && documentsList.size()>0){
 				  for (Object[] objects : documentsList) {					
@@ -1830,12 +1835,23 @@ public class ToursService implements IToursService {
 						  VO.setCount(objects[1] !=null ? (Long)objects[1]:0l);
 					  }					  					  
 				}
-			  }
-			  
+			  }*/
 			  if(submittedCandidatesMap !=null && submittedCandidatesMap.size()>0){
 				  resultList = new ArrayList<ToursBasicVO>(submittedCandidatesMap.values());
 			  }
-			  
+			  List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsbyTdpCadreId(tdpCadreIds,monthyearIds);
+			  if(resultList != null && resultList.size() > 0){
+				  if(documentsList != null && documentsList.size() > 0){
+					  for (Object[] objects : documentsList) {
+						  for (ToursBasicVO resultVo : resultList) {
+							   resultVo = getMatchedVOByTdpCadreId(resultList,(Long)objects[0]);
+							if(resultVo != null){
+								resultVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
+							}
+						}
+					}
+				  }
+			  }
 		}catch(Exception e){
 			LOG.error("Exception raised at getMemberDetailsByDesignationWise in ToursService Class ", e);
 		}
@@ -2073,6 +2089,7 @@ public class ToursService implements IToursService {
 	    				   if(desigVo != null ){    					
 	    					   desigVo.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
 	    					   desigVo.setNotSubmitedLeaserCnt(desigVo.getNoOfLeaderCnt()-desigVo.getSubmitedLeaderCnt());
+	    					   desigVo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[2]));
 	    				   }
 	    			 }
 	    		 }    		
@@ -3004,4 +3021,21 @@ public class ToursService implements IToursService {
     		LOG.error("Exception Occured in saveUserLocationsOfTour() in ToursService class ", e);
     	}
     }
+	public ToursBasicVO getMatchedVOByTdpCadreId(List<ToursBasicVO> returnList,Long tdpCadreId)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0 || tdpCadreId == null )
+				return null;
+			for(ToursBasicVO vo : returnList)
+			{
+				if(vo.getTdpCadreId().longValue()== tdpCadreId.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+}
 }
