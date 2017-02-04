@@ -3679,4 +3679,52 @@
 	<bean id="tdpCadreLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLoginDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<!-- Command Control Alerts Start -->
+    
+    <bean id="govtDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentLevelDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentCandidateDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentDesignationLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentDesignationOfficerDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationOfficerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentAssignDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentAssignDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentCommentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertDepartmentDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentDocumentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+    <!-- Command Control Alerts End -->
 </beans>		

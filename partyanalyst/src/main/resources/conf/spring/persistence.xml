@@ -1146,6 +1146,22 @@
 	                  <value>com.itgrids.partyanalyst.model.CadreRegistrationAllowAreas</value>
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingUpdationDocuments</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreLoginDetails</value>
+	                  
+	                  <!-- Command Control Alerts Start -->
+	                  
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartment</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentLevel</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignation</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentStatus</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartment</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentCandidate</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationLocation</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficer</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentAssign</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentComment</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentDocument</value>
+	                  
+	                  <!-- Command Control Alerts End -->
 	              </list>
 			
 		</property>
