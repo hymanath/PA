@@ -160,7 +160,7 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 			var attrEventIdsString=$(this).attr("attr_event_idsString");
 			var attrActivityIdsString = attrEventIdsString;
 			getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrActivityIdsString,"activities",globalUserTypeId);			
-			getSelectedChildTypeMembersForEvent("",attrEventIdsString,globalUserTypeId,searchType);
+			//getSelectedChildTypeMembersForEvent("",attrEventIdsString,globalUserTypeId,searchType);
 			
 		}
 	}
@@ -182,12 +182,13 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$("#activtyBlckDivId").hide();
 		}
 		//alert("open"); 
 		var searchType = $(this).attr("attr_search_type");
 		$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","activities");
 		$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attr_search_type",searchType);
-		$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attrEventIdsString",activityId);
+		$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attr_event_idsstring",activityId);
 		var activityLevelIds=[];
 		var activityId = $(this).attr("attr_id");
 		var activityName = $(this).attr("attr_activity_name");
@@ -213,10 +214,11 @@ $(document).on("click",".activitesExpandIcon",function(){
 			districtWiseCohort(activityId);
 		}
 		if($(".comparisonBlockActivities").is(":visible")){
-			//alert('activities comaprison')
+			//alert('activities comaprison');
+			$('#eventsCmpBlckDivId ul li').trigger('click');
 		}
 		if($(".detailedBlockEvents").is(":visible")){
-			//alert('events comaprison')
+			alert('events comaprison');
 		}
 		
 			$(".acitivitiesMoreExpand").removeAttr("attr_type");
@@ -270,6 +272,7 @@ $(document).on("click",".eventStrngPrCls",function(){
 
 $(document).on("click",".eventsListExpandIcon",function(){
 	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
+	$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
 	$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
 	$("#eventsDistWiseCohort1,#eventsGraphBlock1").html(' ');
 	$(".activitiesH4").html("Cohort")
@@ -286,6 +289,7 @@ $(document).on("click",".eventsListExpandIcon",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	
 	$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+	$("#activtyBlckDivId").hide();
 	
 	if(!$(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
 	{
@@ -1086,10 +1090,16 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
     var attrEventIdsString = $(this).attr("attr_event_idsString");
 	var childUserType = $(this).attr("attr_userType");
 	var searchType = $(this).attr("attr_search_type");
-	getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrEventIdsString,searchType,childUserTypeId);//globalUserTypeId
+		//alert(3333);
+	//getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrEventIdsString,searchType,childUserTypeId);//globalUserTypeId
 	
-	getSelectedChildTypeMembersForEvent("",attrEventIdsString,userType,searchType);
-	//getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString,childUserType,searchType);
+	//getSelectedChildTypeMembersForEvent("",attrEventIdsString,userType,searchType);
+	
+	if(searchType == 'activities' || searchType == 'singleActivity' || searchType == 'scopeId')
+		getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrActivityIdsString,userType,searchType);
+	else{
+		getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString,childUserType,searchType);
+	}
 });
  $(document).on("click",".remveSlcUsrTypeForEvent",function(){
 		 var removeSelected = $(this).attr("attr_remove_SelecUserType"); 
@@ -1330,8 +1340,8 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 				// instead of a settings object
 			  ]
 		}); 
-     getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
-	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString,searchType);		
+		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
+		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString,searchType);		
 	  }		
  }
 function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,searchType){
@@ -3690,7 +3700,8 @@ function buildUserTypeWisePoorFiveActivityConductedRlst(result){
 	$(".comparisonBlockActivities").show();
 	$(".detailedBlockEvents").hide();
 	//var type=$(this).attr("attr_type");
-	var attrActivityIdsString="1";
+	alert(1111);
+	var attrActivityIdsString="";
 	getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrActivityIdsString,"activities",globalUserTypeId);
 });
 
