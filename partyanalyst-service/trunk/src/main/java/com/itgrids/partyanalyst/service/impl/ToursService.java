@@ -2694,7 +2694,7 @@ public class ToursService implements IToursService {
 					
 						for (ToursNewVO innerTourVo : toursVo.getToursVoListNew()) {
 							
-							if(innerTourVo !=null){
+							if(innerTourVo !=null && innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0l){
 								
 								if(innerTourVo.getDetailsNewId()  !=null && innerTourVo.getDetailsNewId()>0l)//Update
 								{
