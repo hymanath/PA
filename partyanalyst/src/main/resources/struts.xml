@@ -232,7 +232,7 @@
 			<result type="redirect" name="accessUsersCadreDashboard">cadreRegistrationDetailsAction.action</result>
 			<result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
-			<result type="redirect" name="tourUserEntitlement">updateToursAction.action</result>
+			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
 			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
 			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
 			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
@@ -5701,7 +5701,7 @@
       <result type="redirect" name="accessUsersCadreDashboard">cadreRegistrationDetailsAction.action</result>   
       <result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
-      <result type="redirect" name="tourUserEntitlement">updateToursAction.action</result>
+      <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
       <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
       <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
       <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
