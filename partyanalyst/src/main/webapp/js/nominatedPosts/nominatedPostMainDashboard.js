@@ -2074,3 +2074,84 @@ $(".modelHeading").html(locationName+ "  " +positionName+ "  POSITION CANDIDATES
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
+getLocationAndBoardLevelWisePostsData();
+function getLocationAndBoardLevelWisePostsData(){
+   $(".loctnLvlCntDivCls").show();
+    $("#loctnLvlCntId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
+  var searchType = "constituency";
+  var jsObj={
+        postLevelId : 0,
+		casteGrpId     :0,
+		casteId      : 0,
+		ageRangeId:0,
+		positionId:1,
+		gender:0,
+		stateId:1,
+		searchType:searchType
+    
+      };
+      $.ajax({
+         type:'GET',
+         url:'getLocationAndBoardLevelWisePostsDataAction.action',
+         dataType: 'json',
+         data: {task:JSON.stringify(jsObj)}
+      }).done(function(result){
+      //alert(12345);
+      if(result != null && result.length > 0){
+        buildLocationAndBoardLevelWisePostsData(result,searchType);   
+      }else{
+       $("#loctnLvlCntId").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>"); 
+      }
+    });
+ }
+ function buildLocationAndBoardLevelWisePostsData(result,searchType){
+	 var total ;
+     var str='';
+	 
+     str+='<div class="col-md-12 pad_left0">';
+         str+='<div class="table-responsive">';
+        str+='<table class="table table-bordered dataTableCandLoc" style="margin:0px !important" id ="">';
+    if(result[0].distList != null && result[0].distList.length > 0){
+      str+='<thead class="text-capital" style="font-size:12px;">';
+	  if(searchType != null && searchType == "district"){
+		  str+='<th>District</th>';
+	  }else if(searchType != null && searchType == "constituency"){
+		  str+='<th>Constituency</th>';
+	  }
+      str+='<th>Total</th>';
+      for(var i in result[0].distList){
+        str+='<th id="'+result[0].distList[i].id+'">'+result[0].distList[i].name+'</th>';
+      }  
+          str+='</thead>';      
+    }
+    str+='<tbody>';
+    for(var i in result){
+		total = 0;
+      var distList = result[i].distList;
+       if(distList != null && distList.length > 0){
+        str+='<tr>';
+        str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+		for(var k in result[i].distList){
+			total = total+result[i].distList[k].tsTotal;
+		 }
+		str+='<td  attr_location_id ='+result[i].id+' class="" style ="" attr_location_name =\''+result[i].name+'\'>'+total+'</td>';
+        for(var j in result[i].distList){
+			if(distList[j].count == 0){
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].count+'</td>'; 
+          }else{
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="castePstnCls" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';
+          }
+         }
+        str+='</tr>';
+       }
+    }
+      str+='</tbody>';
+    str+='</table>';
+        str+='</div>';
+        str+='</div>';
+       $("#loctnLvlCntId").html(str);
+        $(".dataTableCandLoc").dataTable({});  
+		/* if(result.length > 20){
+			$("#tableschrollId1").mCustomScrollbar({setHeight: '440px'});  
+		} */
+ }

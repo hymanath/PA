@@ -349,7 +349,7 @@
         <div class="col-md-12 col-xs-12 col-sm-12 geographicCls" style="display:none;">
         	<div class="row m_top10">
             	<div class="col-md-12 col-xs-12 col-sm-12">
-                	<h3 class="headingColor text-capitalize">Geographic Positions Overview<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
+                	<h3 class="headingColor text-capitalize">Geographic Positions Overview (Posts Location Wise)<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
 					<div style="margin-top:25px">
                     <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4></div>
                     <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow" style="font-size:15px;">
@@ -364,6 +364,28 @@
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="tableschrollId">
                     	<div class="table-responsive" id="statePositionId"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="col-md-12 col-xs-12 col-sm-12 loctnLvlCntDivCls" style="display:none;">
+        	<div class="row m_top10">
+            	<div class="col-md-12 col-xs-12 col-sm-12">
+                	<h3 class="headingColor text-capitalize">Geographic Positions Overview (Candidates Location Wise)<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
+					<div style="margin-top:25px">
+                    <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4></div>
+                   <!-- <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow" style="font-size:15px;">
+                        <li><span class="locationCls">State</span> </li>
+                        <li><span class="departmentCls">All department</span></li>
+                        <li><span class="corporationCls">All corporation</span></li>
+                        <li><span class="positionCls">All Positions</span></li>
+                        <li><span class="casteGroupsCls">All caste groups</span></li>
+                        <li><span class="gOssuedCls">G.O Issued</span></li>
+                    </ul>-->
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
+                	<div class="pad_10 bg_ff" id="">
+                    	<div class="table-responsive" id="loctnLvlCntId"></div>
                     </div>
                 </div>
             </div>

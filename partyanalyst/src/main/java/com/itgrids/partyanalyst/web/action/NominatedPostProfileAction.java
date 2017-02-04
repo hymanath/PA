@@ -2005,4 +2005,24 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getLocationAndBoardLevelWisePostsData(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long postLevelId = jObj.getLong("postLevelId");
+			Long casteGrpId = jObj.getLong("casteGrpId");
+			Long casteId = jObj.getLong("casteId");
+			Long ageRangeId = jObj.getLong("ageRangeId");
+			Long positionId = jObj.getLong("positionId");
+			String gender = jObj.getString("gender");
+			Long stateId = jObj.getLong("stateId");
+			String searchType = jObj.getString("searchType");
+			idAndNameVOList = nominatedPostMainDashboardService.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Entered into fileSaving method of getLocationAndBoardLevelWisePostsData Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
