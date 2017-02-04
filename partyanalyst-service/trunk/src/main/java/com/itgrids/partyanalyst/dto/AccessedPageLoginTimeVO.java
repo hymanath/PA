@@ -8,6 +8,8 @@ public class AccessedPageLoginTimeVO {
 	private String toTime;
 	private String timeSpent;
 	private String loginDate;
+	private String committeeMemberStatus;
+	private String committeeType;
 	
 	public Integer getAccessCount() {
 		return accessCount;
@@ -51,4 +53,17 @@ public class AccessedPageLoginTimeVO {
 	public void setLoginDate(String loginDate) {
 		this.loginDate = loginDate;
 	}
+	public String getCommitteeMemberStatus() {
+		return committeeMemberStatus;
+	}
+	public void setCommitteeMemberStatus(String committeeMemberStatus) {
+		this.committeeMemberStatus = committeeMemberStatus;
+	}
+	public String getCommitteeType() {
+		return committeeType;
+	}
+	public void setCommitteeType(String committeeType) {
+		this.committeeType = committeeType;
+	}
+	
 }
