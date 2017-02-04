@@ -1376,13 +1376,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
 				memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
 				memberVo.setMandalName(electedMembersInfo[7].toString());//tdpCommitteeRoleId
+				memberVo.setCommitteeMemberStatus(electedMembersInfo[8] != null ? electedMembersInfo[8].toString() : "");
 				committeeMembersList.add(memberVo);
 			}
 		}catch(Exception e){
+
 			LOG.error("Exception raised in getAllCommitteeMembersInfoInALoc", e);
 		}
 		return returnVo;
 	}
+	
 	
 	/** 
 	  *  Get Main Committee Members Information  For A Given Location.
@@ -1390,7 +1393,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue){
 		Long committeeId = getMainCommitteeIdInALocation(levelId,levelValue);
 		if(committeeId != null){
-			return getCommitteeMembersInfo(committeeId);
+			return getCommitteeMembersInfoNEW(committeeId);
 		}else{
 			return new LocationWiseBoothDetailsVO();
 		}
@@ -1474,7 +1477,83 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return returnVo;
 	}
-	
+	public LocationWiseBoothDetailsVO getCommitteeMembersInfoNEW(Long committeeId){
+		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
+		
+		returnVo.setPopulation(committeeId);
+		if(committeeId != null && committeeId.longValue() > 0){
+		   returnVo.setLocationName(tdpCommitteeDAO.get(committeeId).getIsCommitteeConfirmed());
+		}
+		
+		try{
+			
+			//SUMMARY BLOCK
+			List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
+			Map<Long,LocationWiseBoothDetailsVO> committeeMembersMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
+			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
+			for(Object[] obj:totalCommitteRolesList){
+				
+				LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+				
+				vo.setLocationId((Long)obj[0]);//roleId
+				vo.setLocationName(obj[1] != null ? obj[1].toString() : "");//role
+				vo.setRoleType( obj[3] != null ? obj[3].toString() : null);
+				vo.setTotalCount(obj[2] != null ? (Long)obj[2] : 0l);
+				vo.setVaccancyCount(vo.getTotalCount());
+				vo.setFinalizedCount(0l);
+				
+				committeeMembersMap.put((Long)obj[0], vo);
+				committeeMembersInfoList.add(vo);
+			}
+			if(committeeMembersMap.size() > 0){
+				List<Object[]>  electedPersonsList = tdpCommitteeMemberDAO.getRoleWiseProposedAndFinalizedMembersCounts(committeeMembersMap.keySet());
+				for(Object[] obj:electedPersonsList){
+					LocationWiseBoothDetailsVO roleVO = committeeMembersMap.get((Long)obj[0]);	
+					if(roleVO != null){
+						if(obj[1] != null && !obj[1].toString().trim().isEmpty()){
+							if(obj[1].toString().trim().equalsIgnoreCase("P")){//proposed
+								roleVO.setProposedCount(obj[2] != null ? (Long)obj[2] : 0l);
+							}else{//finalized
+								roleVO.setFinalizedCount(obj[2] != null ? (Long)obj[2] : 0l);
+								roleVO.setVaccancyCount( roleVO.getTotalCount() - roleVO.getFinalizedCount());
+							}
+						}
+					}
+				}
+			}
+			returnVo.setResult(committeeMembersInfoList);
+			
+			//GETTING MEMBERS BLOCK
+			List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
+			if(committeeMembersMap.size() > 0){
+				  List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getMembersInfo(committeeMembersMap.keySet());//committee role members
+				//List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getFinalizedMembersInfoForCommitteeRoleIds(committeeMembersMap.keySet()); 
+				for(Object[] electedMembersInfo:electedMembersInfoList){
+					SelectOptionVO memberVo = new SelectOptionVO();
+					memberVo.setValue(electedMembersInfo[0].toString());//role
+					if(electedMembersInfo[1] != null){
+					   memberVo.setUrl(electedMembersInfo[1].toString());//image
+					}
+					memberVo.setName(electedMembersInfo[2].toString());//name
+					if(electedMembersInfo[3].toString().trim().length() > 8){
+						memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));//membership
+					}else{
+					    memberVo.setType(electedMembersInfo[3].toString());//membership
+					}
+					memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
+					memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
+					memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
+					memberVo.setCommitteeMemberStatus(electedMembersInfo[7] != null ? electedMembersInfo[7].toString() : null);
+					committeeMembersList.add(memberVo);
+				}
+				returnVo.setHamletsOfTownship(committeeMembersList);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getCommitteeMembersInfoNEW", e);
+		}
+		return returnVo;
+	}
 	
 	//Hint Please call this method in transaction only
 	public ResultStatus saveMandalLevelElectrolInfo(final Long tdpCadreId,final  List<CadrePreviousRollesVO> eligibleRoles)
@@ -8163,7 +8242,7 @@ return constiLst;
 	}
 	
 	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue){
-		List<Object[]> elctoralsList= new ArrayList<Object[]>();
+		
 		List<AccessedPageLoginTimeVO> returnResult=new ArrayList<AccessedPageLoginTimeVO>();
 		try{
 			Long locationLvl  = null;
@@ -8172,12 +8251,16 @@ return constiLst;
 			 }else{
 				 locationLvl = 8l;
 			 }
-			elctoralsList.addAll(tdpCommitteeMemberDAO.getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(locationLvl, Long.valueOf(locationValue.toString().substring(1))));
-			elctoralsList.addAll(tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue,IConstants.CURRENT_ENROLLMENT_ID));
+			
 			Set<Long> cadreIds = new HashSet<Long>();
-			for (Object[] object : elctoralsList) {
+			
+			List<Object[]> mainCommitList = tdpCommitteeMemberDAO.getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(locationLvl, Long.valueOf(locationValue.toString().substring(1)) , null);
+			
+			for (Object[] object : mainCommitList) {
 				if(!cadreIds.contains((Long)object[4])){
+					
 					cadreIds.add((Long)object[4]);
+					
 					AccessedPageLoginTimeVO result=new AccessedPageLoginTimeVO();
 					result.setFromTime(object[0].toString());//comm type
 					result.setToTime(object[1].toString());//name
@@ -8189,10 +8272,35 @@ return constiLst;
 					}else{
 					  result.setTimeSpent(object[3].toString());//id
 					}
-					
+					result.setCommitteeType("main");
+					result.setCommitteeMemberStatus(object[5] != null ? object[5].toString() :null);
 					returnResult.add(result);
 				}
 			}
+			
+			List<Object[]> elctoralsList = tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue,IConstants.CURRENT_ENROLLMENT_ID);
+			for (Object[] object : elctoralsList) {
+				if(!cadreIds.contains((Long)object[4])){
+					
+					cadreIds.add((Long)object[4]);
+					
+					AccessedPageLoginTimeVO result=new AccessedPageLoginTimeVO();
+					result.setFromTime(object[0].toString());//comm type
+					result.setToTime(object[1].toString());//name
+					if(object[2]!=null){
+						result.setPageUrl(object[2].toString());//img url
+					}
+					if(object[3].toString().trim().length() > 8){
+						result.setTimeSpent(object[3].toString().trim().substring(object[3].toString().trim().length()-8));
+					}else{
+					  result.setTimeSpent(object[3].toString());//id
+					}
+					result.setCommitteeType("electrols");
+					result.setCommitteeMemberStatus("F");//All electrols are finalized by default.
+					returnResult.add(result);
+				}
+			}
+			
 			
 		}
 		catch (Exception e) {
