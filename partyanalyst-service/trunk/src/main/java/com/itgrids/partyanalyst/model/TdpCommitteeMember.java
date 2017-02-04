@@ -39,6 +39,7 @@ public class TdpCommitteeMember {
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private String status;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -201,6 +202,15 @@ public class TdpCommitteeMember {
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	@Column(name = "status")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }
