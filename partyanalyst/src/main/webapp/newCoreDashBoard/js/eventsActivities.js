@@ -1146,14 +1146,14 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
     var attrEventIdsString = $(this).attr("attr_event_idsString");
 	var childUserType = $(this).attr("attr_userType");
-	var searchType = $(this).attr("attr_search_type");
+	var searchType = $(this).attr("attr_search_type"); // attrActivityIdsString 
 		//alert(3333);
 	//getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrEventIdsString,searchType,childUserTypeId);//globalUserTypeId
 	
 	//getSelectedChildTypeMembersForEvent("",attrEventIdsString,userType,searchType);
-	
+	$("#topPoorLocationsEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	if(searchType == 'activities' || searchType == 'singleActivity' || searchType == 'scopeId')
-		getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrActivityIdsString,userType,searchType);
+		getSelectedChildTypeMembersForActivity(childUserTypeId,attrEventIdsString,childUserType,searchType);
 	else{
 		getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString,childUserType,searchType);
 	}
@@ -1940,10 +1940,10 @@ function buildDistrictsForActivityCounts(result){
       for(var i in result){
         $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
       }
-	   // $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
+	   $("#districtId").append('<option value="517"> Vishakapattanam-Rural</option>');
 }
 function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchType,refresh,acvtyNm,levlNm,loctnNm){
-	
+	$("#activityId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>')
 	$("#locatnNamId").text('');
 	if(activityScopeId == 0){
 		var t = type.split("-");
@@ -1963,9 +1963,9 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 		$("#districtId").val(districtId);
 		loctnNm =$('#districtId option:selected').text();
 	}
-	$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
+	//$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
 	
-	$("#activityId").html("");
+	//$("#activityId").html("");
 	var radioVal = $('input[name=radioBtn]:checked').val();
 	
 	var jsObj={
@@ -1982,6 +1982,7 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	 url: "getDistrictWiseActivityCountsAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#activityId").html('');
 		//if(result != null && result.length > 0){
 			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal);
 		//}else{
@@ -1997,12 +1998,15 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 		 $("#myModelActivityhead").text(acvtyNm);
 		 $("#smallHeadngId").text(levlNm);
 	}
-	$("#locatnNamId").text(loctnNm +'  details');
+	if(loctnNm =='All')
+		$("#locatnNamId").text('ALL DISTRICT DETAILS ');
+	else
+		$("#locatnNamId").text(loctnNm +' DISTRICT  DETAILS');
 	if(type == "count")
 		$("#myModelActivityId").modal('show');
 	else if(type == "all")
 		$("#myModelActivityId").modal('show');
-	$("#activityId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
+	//$("#activityId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 	if(result != null && result.length > 0){
 	 str +='<table class="table table-bordered table-condensed " id="activityTableId">';
 	 str+='<thead style="background-color:#EEE">';
@@ -2083,9 +2087,9 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
 	str +='<td>'+result[i].totalImages;
-	/* if(result[i].totalImages > 0){
+	 if(result[i].totalImages > 0){
 		str +='<i class="getPopUpImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].id+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_search_type="'+searchType+'"title="View Images"></i>';
-	} */
+	}
 	str +='</td>';
 	  str +='</tr>';
   }
@@ -2196,6 +2200,7 @@ $(document).on("click",".activityCountCls",function(){
 	var activityName = $(this).attr("attr_activity_name");
 	var levelName = $(this).attr("attr_level_name");
 	 globalActivityLvlId=$(this).attr("attr_level_id");
+	 $("#myModelActivityId").modal('show');
 	getDistrictWiseActivityCounts(activityScopeId,0,"count","constituency","onload",activityName,levelName,"All")
 	
 });
