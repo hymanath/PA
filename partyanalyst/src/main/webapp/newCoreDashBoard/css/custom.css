@@ -697,7 +697,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-width: 16px;
     margin-left: -16px;
 }
-.basicCommitteesBlockDropDown, .newsBlockDropDown, .cadreRDD , .emnBlockDropDown{
+.basicCommitteesBlockDropDown, .newsBlockDropDown, .cadreRDD , .emnBlockDropDown , .actBlockDropDown{
     background: rgb(255, 255, 255);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
     display: none;
@@ -1271,7 +1271,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .collapseDebatesIcon::before {
     border: 1px solid rgb(75, 87, 99);
     color: rgb(75, 87, 99);
-    content: "\2212";
+    content: "−";
     float: right;
     font-family: "Glyphicons Halflings";
     font-size: 13px;
@@ -1281,7 +1281,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 3px 5px;
 }
 .collapseDebatesIcon.collapsed::before {
-    content: "\002b";
+    content: "+";
 }
 .b_right1 {
     border-right: 1px solid rgb(221, 221, 221);
@@ -1588,7 +1588,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .bg_EE {
     background-color: rgb(238, 238, 238);
 }
-.newsSetClose  , .emnSetClose{
+.newsSetClose  , .emnSetClose , .actSetClose{
     background-color: rgb(204, 204, 204);
     border-radius: 50%;
     cursor: pointer;
