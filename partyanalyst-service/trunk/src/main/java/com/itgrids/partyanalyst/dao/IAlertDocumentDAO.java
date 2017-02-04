@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.AlertDocument;
 public interface IAlertDocumentDAO extends GenericDao<AlertDocument, Long> {
 	
 	public List<Object[]> getDocumentsForAlert(Long alertId);
+	public int deleteDocument(Long docId);
 }
