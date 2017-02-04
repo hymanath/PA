@@ -26,20 +26,26 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}
 	
 	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds){
-		//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
-				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpRoles.order ");
+		
+		Query query = getSession().createQuery("" +
+		"select  model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +//4
+		"        model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.status " +//7
+		"from    TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y'  " +
+		"order by model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
 		return query.list();
 	}
 	
 	public List<Object[]> getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal){
-		//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId,7committee Name
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
-				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
-				" and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y' " +
-				" and  model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  " +
+		
+		Query query = getSession().createQuery("" +
+				" select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +//4
+				"        model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.status " +//8
+				" from   TdpCommitteeMember model " +
+				" where  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
+				"        and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y' " +
+				"        and  model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  " +
 				" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameter("locationLvl", locationLvl);
 		query.setParameter("locationVal", locationVal);
@@ -679,16 +685,27 @@ public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long lo
 	return query.list();
 }
 
-public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(Long locationType,Long locationVal){
-	//0 committee name,1 electoral name,2image,3membership,4cadreId
-	Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo, " +
-				"  model.tdpCadre.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationType " +
-				"   and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)  and model.isActive ='Y'  " +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId " +
-				" order by model.tdpCommitteeRole.tdpRoles.order ");
+public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(Long locationType,Long locationVal,String committeeMemberStatus){
+	StringBuilder sb = new StringBuilder();
+	
+	sb.append("" +
+	"select distinct model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo, " +//3
+	"       model.tdpCadre.tdpCadreId , model.status " +//5
+	"from   TdpCommitteeMember model " +
+	"where  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationType " +
+	"       and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)  and model.isActive ='Y'  " +
+	"       and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId ");
+	if(committeeMemberStatus != null){
+	   sb.append(" and model.status = :committeeMemberStatus ");	
+	}
+	sb.append(" order by model.tdpCommitteeRole.tdpRoles.order ");
+	Query query = getSession().createQuery( sb.toString());
 	query.setParameter("locationType", locationType);
 	query.setParameter("locationVal", locationVal);
 	query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
+	if(committeeMemberStatus != null){
+		query.setParameter("committeeMemberStatus", committeeMemberStatus);	
+	}
 	return query.list();
 }
 
@@ -2378,4 +2395,51 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 	   }
 	return query.list();
 }
+
+    
+	public List<Object[]> getFinalizedMembersInfoForCommitteeRoleIds(Set<Long> committeeRoleIds){
+		Query query = getSession().createQuery("" +
+	    "select   model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +//4
+		"         model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.status  " +//7
+		"from     TdpCommitteeMember model " +
+		"where    model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y' and model.status = 'F' " +
+		"order by model.tdpCommitteeRole.tdpRoles.order ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		return query.list();
+	}
+	public List<Object[]> getRoleWiseProposedAndFinalizedMembersCounts(Set<Long> committeeRoleIds){
+		
+		Query query = getSession().createQuery("" +
+		" select    model.tdpCommitteeRole.tdpCommitteeRoleId,model.status , count(distinct model.tdpCommitteeMemberId)  " +
+		" from      TdpCommitteeMember model where " +
+		"           model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y' " +
+		" group by  model.tdpCommitteeRole.tdpCommitteeRoleId , model.status ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllCommitteesMembersInfoInALocByStatus(Long locationLvl,Long locationVal,String committeeMemberStatus){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
+				"        model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name, model.status " +
+				" from   TdpCommitteeMember model " +
+				" where  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
+				"        and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y' " +
+				"        and  model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
+		if(committeeMemberStatus != null){
+			sb.append(" and  model.status = :committeeMemberStatus ");
+		}
+		sb.append(" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("locationLvl", locationLvl);
+		query.setParameter("locationVal", locationVal);
+		query.setParameter("committeeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
+		if(committeeMemberStatus != null){
+			query.setParameter("committeeMemberStatus", committeeMemberStatus);
+		}
+		return query.list();
+	}
 }
