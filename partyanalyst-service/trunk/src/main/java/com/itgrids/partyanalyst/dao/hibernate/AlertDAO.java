@@ -4209,4 +4209,40 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setParameter("tdpCadreId", inputVO.getAssignId());
 		return query.list();
 	}
+   	//swadhin lenka
+	public List<Object[]> getAlertDetailsForUpdate(Long alertId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select alert.alertTypeId, " +//0
+				        " alert.title, " +//1
+				        " alert.description, " +//2
+				        " alert.alertSeverityId, " +//3
+				        " alert.impactLevelId, " +//4
+				        " alert.alertSourceId, " +//5
+				        " alert.impactScopeId, " +//6
+				        " state.stateId, " +//7
+				        " district.districtId, " +//8
+				        " constituency.constituencyId, " +//9
+				        " tehsil.tehsilId, " +//10
+				        " panchayat.panchayatId, " +//11
+				        " localElectionBody.localElectionBodyId, " +//12
+				        " ward.constituencyId " +//13
+				        " from Alert alert " +
+				        " left join alert.userAddress userAddress " +
+				        " left join userAddress.state state" +
+				        " left join userAddress.district district " +
+				        " left join userAddress.constituency constituency " +
+				        " left join userAddress.tehsil tehsil " +
+				        " left join userAddress.panchayat panchayat " +
+				        " left join userAddress.localElectionBody localElectionBody " +
+				        " left join userAddress.ward ward " +
+				        " where alert.alertId = :alertId and alert.isDeleted = 'N'");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
+	public int deleteAlert(Long alertId){
+		Query query = getSession().createQuery(" update Alert model set model.isDeleted = 'Y' where model.alertId = :alertId");
+		query.setParameter("alertId", alertId);
+		return query.executeUpdate();
+	}
 }

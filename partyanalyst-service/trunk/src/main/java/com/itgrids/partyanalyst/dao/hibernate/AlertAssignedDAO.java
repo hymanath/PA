@@ -130,19 +130,40 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		
 		return query.list();
 	}
+	//swadhin lenka
+	public List<Object[]> getAssignedCandidateList(Long alertId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  " +
+						" alertAssigned.tdpCadre.tdpCadreId, " +//0
+						" alertAssigned.tdpCadre.firstname," +//1
+						" alertAssigned.tdpCadre.mobileNo, " +//2
+						" constituency.name " +//3
+				     	" from " +
+				     	" AlertAssigned alertAssigned " +
+				     	" left join alertAssigned.tdpCadre.userAddress userAddress " +
+				     	" left join userAddress.constituency constituency " +
+				     	" where " +
+				     	" alertAssigned.isDeleted = 'N' and " +
+				     	" alertAssigned.alert.alertId = :alertId and " +
+				     	" constituency.electionScope = 2 and " +
+				     	" constituency.deformDate is null ");  
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("alertId", alertId);
+		return query.list();  
+	}
 
 public List<Long> getAssignedTdpCadreIdsByAlertId(Long alertId){
 	
 	StringBuilder queryStr = new StringBuilder();
 	
-	queryStr.append("select distinct model.tdpCadreId from AlertAssigned model where model.alertId =:alertId");
+	queryStr.append("select distinct model.tdpCadreId from AlertAssigned model where model.alertId =:alertId and model.isDeleted = 'N'");
 	
 	Query qry = getSession().createQuery(queryStr.toString());
 	
 	if(alertId != null && alertId.longValue()>0l){
 		qry.setParameter("alertId", alertId);
 	}
-	return qry.list();
+	return qry.list();  
 }
 
 
@@ -151,8 +172,8 @@ public int deleteAlertAssignedByExistingIds(Long tdpCadreId,Long alertId){
 	StringBuilder sb = new StringBuilder();
 	
 	sb.append(" delete from AlertAssigned model " +
-			  " where model.tdpCadreId =:cadreId " +
-			  " and model.alertId =:alertId");
+			  " where model.tdpCadreId = :cadreId " +
+			  " and model.alertId = :alertId");
 	
 	Query qry = getSession().createQuery(sb.toString());
 	
@@ -166,4 +187,3 @@ public int deleteAlertAssignedByExistingIds(Long tdpCadreId,Long alertId){
 	return qry.executeUpdate();
 }
 }
-

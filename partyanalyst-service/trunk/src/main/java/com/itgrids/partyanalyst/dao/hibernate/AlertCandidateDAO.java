@@ -387,6 +387,26 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		
 		return query.list();
 	}
+	public List<Object[]> getInvolveCandidateList(Long alertId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" alertCandidate.tdpCadre.tdpCadreId, " +
+						" alertCandidate.tdpCadre.firstname, " +
+						" alertCandidate.tdpCadre.mobileNo, " +
+						" constituency.name, " +
+						" alertCandidate.alertImpact.alertImpactId " +
+						" from " +
+						" AlertCandidate alertCandidate " +
+						" left join alertCandidate.tdpCadre.userAddress userAddress " +
+				     	" left join userAddress.constituency constituency " +
+						" where" +
+						" alertCandidate.alert.alertId = :alertId and" +
+						" constituency.electionScope = 2 and " +
+						" constituency.deformDate is null ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
 	
 	public List<Object[]> getAlertAssignedCandidatesForCentralMembers(Long tdpCadreId)
 	{
@@ -408,7 +428,7 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 		
 		Query qry = getSession().createQuery(sb.toString());
 		
-		if(alertId != null && alertId.longValue()>0l){
+		if(alertId != null && alertId.longValue() > 0l){
 			qry.setParameter("alertId", alertId);
 		}
 		return qry.list();
@@ -421,7 +441,7 @@ public int deleteAlertCandidatesExistingtdpCadreIds(Long tdpCadreIds,Long alertI
 		
 		str.append("  delete from AlertCandidate model " +
 				" where " +
-				" model.tdpCadreId in (:tdpCadreIds) and model.alertId =:alertId ");
+				" model.tdpCadreId = :tdpCadreIds and model.alertId =:alertId ");
 	
 		Query query = getSession().createQuery(str.toString());
 		
@@ -431,6 +451,6 @@ public int deleteAlertCandidatesExistingtdpCadreIds(Long tdpCadreIds,Long alertI
 		if(alertId != null && alertId.longValue()>0l){
 			query.setParameter("alertId", alertId);
 		}
-		return query.executeUpdate();
+		return query.executeUpdate();  
 	}
 }
