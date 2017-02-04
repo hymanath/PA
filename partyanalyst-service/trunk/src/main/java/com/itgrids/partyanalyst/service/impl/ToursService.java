@@ -2717,19 +2717,20 @@ public class ToursService implements IToursService {
 	   		    		resultVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[2]));
 	   		    	}
 	   		    }
-	   		 
-	   		    if(monthyearIds != null && monthyearIds.size() > 0){
-	      			 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourCategory",designationIds);
-	      			  setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-	   	    		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourType",designationIds);
-	   	    		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
-	   		    }
-	   		  if(monthyearIds != null && monthyearIds.size() > 0){
-    			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds,candiateIds);
-	    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
-	    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,candiateIds);
-	    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
-	    	   }
+	   		    if(candiateIds != null && candiateIds.size() > 0){
+	   			   if(monthyearIds != null && monthyearIds.size() > 0){
+		      			 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourCategory",designationIds);
+		      			  setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+		   	    		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourType",designationIds);
+		   	    		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+		   		    }
+		   		  if(monthyearIds != null && monthyearIds.size() > 0){
+	    			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds,candiateIds);
+		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+		    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,candiateIds);
+		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
+		    	   }   
+	   		   }
 	   		   //calculate category wise complaice percentage
     		    calculateCategoryWiseComplaince(candiateDtlsMap);
     		    
