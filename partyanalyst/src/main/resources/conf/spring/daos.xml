@@ -3726,5 +3726,9 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="alertDepartmentTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentTrackingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
     <!-- Command Control Alerts End -->
 </beans>		
