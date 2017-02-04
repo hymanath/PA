@@ -1312,7 +1312,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 		});
 	  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
 	  }else{
-	  str+='<ul class="list-inline slickPanelSliderForEvent">';
+	  str+='<ul class="list-inline slickPanelSliderForEventDiv">';
 	  var rank=1; 
 	   for(var i in result){
 	str+='<li style="cursor:pointer;" class="childEventMemberCls"  attr_event_idsString="'+attrEventIdsString+'" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
@@ -1356,7 +1356,14 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 	rank=rank+1;
 	}
    $("#childEvnetMemberDivId").html(str);
-   $(".slickPanelSliderForEvent").slick({
+   
+		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
+		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString,searchType);	
+		
+				
+	  }
+		
+	$(".slickPanelSliderForEventDiv").slick({
 			 slide: 'li',
 			 slidesToShow: 3,
 			 slidesToScroll: 3,
@@ -1397,9 +1404,6 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 				// instead of a settings object
 			  ]
 		}); 
-		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString,searchType);
-		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString,searchType);		
-	  }		
  }
 function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString,searchType){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1764,6 +1768,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 		str+='</div>';
 	str+='</div>';
 	$("#activityEventsListNew").html(str);
+	
 	$(".overAllActivityCls").attr("attr_id",activityIdsString);
 	$(".overAllActivityCls").attr("attr_level_id",0);
 }
@@ -2800,7 +2805,6 @@ $(document).on("click",".getImageCls",function(){
 			str+='</div>';
 		str+='</div>';
 
-		
 	$("#buildPoupupImage").html(str);
 		
 //buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
@@ -3757,7 +3761,6 @@ function buildUserTypeWisePoorFiveActivityConductedRlst(result){
 	$(".comparisonBlockActivities").show();
 	$(".detailedBlockEvents").hide();
 	//var type=$(this).attr("attr_type");
-	alert(1111);
 	var attrActivityIdsString="";
 	getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(attrActivityIdsString,"activities",globalUserTypeId);
 });
@@ -3929,7 +3932,11 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 	rank=rank+1;
 	}
    $("#childActivityMemberDivId").html(str);
-   $(".slickPanelSliderForEvent").slick({
+    
+     getActivityPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrActivityIdsString,searchType);
+	getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForActivityDivId",attrActivityIdsString,searchType);		
+	  }
+		$(".slickPanelSliderForEvent").slick({
 			 slide: 'li',
 			 slidesToShow: 3,
 			 slidesToScroll: 3,
@@ -3969,10 +3976,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 				// settings: "unslick"
 				// instead of a settings object
 			  ]
-		}); 
-     getActivityPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrActivityIdsString,searchType);
-	getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForActivityDivId",attrActivityIdsString,searchType);		
-	  }		
+		});
  }
  
  function getDirectChildTypeMembersForActivities(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrActivityIdsString,searchType){
@@ -4330,3 +4334,137 @@ $(document).on("click",".radioBtnCls",function(){
 	$(document).on("click",".actSetClose",function(){
 		$(this).closest(".actBlockDropDown").hide();
 	});
+	
+function getSettingActivities(){
+	//getActivitiesDetails();
+	 var type = "activities"
+	var jsObj={
+		fromDate:customStartDateActivities,
+		toDate: customEndDateActivities
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getActivityDetailsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			buildActivityEventSettings(result,type);
+	});
+}	
+
+function buildActivityEventSettings(result,typeVal){
+	var str='';
+		for(var i in result)
+		{
+			str+='<li>';
+				str+='<label class="checkbox-inline">';
+				if(typeVal == "events"){
+						str+='<input type="checkbox" value="'+result[i].id+'" class="checkedEvntValCls" checked>';
+					}else{
+						str+='<input type="checkbox" value="'+result[i].id+'" class="checkedActValCls" checked>';
+					}
+						str+='<div style="margin-top: 3px;">';
+						str+='<h5 class="text-capital" style="color:#54616C;">'+result[i].name+'</h5>';
+					str+='</div>';
+				str+='</label>';
+			str+='</li>';
+		}
+		str+='<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">';
+			str+='<button type="button" class="btn btn-success getDetailsOfSetingCls" attr_type="'+typeVal+'">Get Details</button>';
+		str+='</div>';
+		if(typeVal == "activities")
+			$(".activitySettingsUl").html(str);
+		else if(typeVal == "events")
+			$(".evntsSettingsUl").html(str);
+}
+function getSettingEvents(){
+	var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);
+	var type="events";
+	var jsObj ={ 
+				 activityMemberId : globalActivityMemberId,
+				 stateId : globalStateId,
+				 eventIds:eventIds
+				 
+			  }
+	$.ajax({
+		type : 'POST',
+		url : 'getEventBasicCntDtlsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		 if(result != null && result.length > 0 ){
+			buildActivityEventSettings(result,type);	
+		}
+	});
+}
+$(document).on("click",".getDetailsOfSetingCls",function(){
+	var type=$(this).attr("attr_type");
+	var evntActitiesIds = [];
+	var evntActitiesIdStr = '';
+	var typeId = orderTypeValue();
+	if(type == "events"){
+		$("#eventsDistWiseCohort1").html('');
+		$("#eventsGraphBlock1").html('');
+		//$(".activitiesH4").html('');
+		$('.checkedEvntValCls:checked').each(function() {
+			evntActitiesIds.push($(this).val());
+		});
+		if(evntActitiesIds != null && evntActitiesIds.length > 0){
+			for(var i in evntActitiesIds){
+				if(i == 0)
+					evntActitiesIdStr+= evntActitiesIds[i];
+				else{
+					evntActitiesIdStr+= ",";
+					evntActitiesIdStr+= evntActitiesIds[i];
+				}
+					
+			}
+		}
+		if(typeId == 1){
+			getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(evntActitiesIdStr);
+			getSelectedEventDetails(evntActitiesIdStr);
+		}else{
+			$("#evntCmpBLockId").show();
+			$("#activtyBlckDivId").hide();
+			getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(evntActitiesIdStr,type,globalUserTypeId);
+		}
+		//getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(evntActitiesIdStr,type,globalUserTypeId);
+	}else if(type == "activities"){
+		$("#eventsDistWiseCohort").html('');
+		$("#eventsGraphBlock").html('');
+		$('.checkedActValCls:checked').each(function() {
+			evntActitiesIds.push($(this).val());
+		});
+		if(evntActitiesIds != null && evntActitiesIds.length > 0){
+			for(var i in evntActitiesIds){
+				if(i == 0)
+					evntActitiesIdStr+= evntActitiesIds[i];
+				else{
+					evntActitiesIdStr+= ",";
+					evntActitiesIdStr+= evntActitiesIds[i];
+				}
+					
+			}
+		}
+		if(typeId == 1){
+			districtWiseCohort(evntActitiesIdStr);
+			stateWiseCohort(evntActitiesIdStr);
+		}else{
+			$("#evntCmpBLockId").hide();
+			$("#activtyBlckDivId").show();
+		getAllItsSubUserTypeIdsByParentUserTypeIdForActivity(evntActitiesIdStr,type,globalUserTypeId);
+		}
+	}
+});
+
+function orderTypeValue(){
+  var orderType = ''; 
+     $('.activeLICls').each(function(){
+        if($(this).hasClass("active")){
+          orderType = $(this).attr("attr_typeId");
+        }
+     });
+  return orderType;
+}
