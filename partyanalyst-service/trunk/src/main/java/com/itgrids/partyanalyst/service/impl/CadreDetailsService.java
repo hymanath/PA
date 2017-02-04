@@ -1055,15 +1055,16 @@ public class CadreDetailsService implements ICadreDetailsService{
     			if(locationLevel.longValue() == 2L) // State 
     			{
     				if(locationValue.longValue() == 1l)
-    				queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+    				//queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+    					queryStr.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
     				else if(locationValue.longValue() == 2l || locationValue.longValue() == 36l)
-    					queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");	
+    					queryStr.append(" and model.tdpCadre.userAddress.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");	
     				else{
     					if(memberShipCardNo.endsWith("HIDE") || mobileNo.endsWith("HIDE")){
-    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
     						
     					}else{
-    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 23 ");
+    						queryStr.append(" and model.tdpCadre.userAddress.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
     					}
     				}
     				locationValue = 0l;
