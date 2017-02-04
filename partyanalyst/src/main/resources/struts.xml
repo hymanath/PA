@@ -15634,6 +15634,16 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 	  </action>
+	<action name="getAlertDetailsForEditAction" class="createAlertAction"  method="getAlertDetailsForEdit">
+		<result type="json" name="success">    
+			<param name="root">alertVO</param>       
+		</result>
+	</action>
+	<action name="deleteAlertAction" class="createAlertAction"  method="deleteAlert">
+		<result type="json" name="success">    
+			<param name="root">status</param>       
+		</result>
+	</action>
 	  <action name="getLocationAndBoardLevelWisePostsDataAction" class="nominatedPostProfileAction" method="getLocationAndBoardLevelWisePostsData">
 	  	  <result type="json" name="success">		   
 			    <param name="root">idAndNameVOList</param>
