@@ -308,7 +308,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													//str+='<td class="text-capitalize">'+canidateName+'</td>';
 													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+'</td>';
 													str+='<td>';
-															str+='<span class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;"><a>'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></span>';
+															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
 													str+='</td>';
 													
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
@@ -1060,6 +1060,7 @@ $(document).on("click",".debateDetailsCls",function(){
 	});
 	
 	$(document).on("click",".overAllCandidateCls",function(){
+		$("#debateModelDivId").modal("show");
 		var partyId = $(this).attr("attr_party_id");		
 		var candidateId = $(this).attr("attr_candidate_id");		
 		getCandidateWiseDebateDetailsOfCore(partyId,candidateId);		
