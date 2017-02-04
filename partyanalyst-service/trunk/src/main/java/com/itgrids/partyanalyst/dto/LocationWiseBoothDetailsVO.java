@@ -35,6 +35,11 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private String day;
 	private String dateStr;
 	
+	private String roleType;
+	private Long   totalCount = 0l;
+	private Long   proposedCount = 0l;
+	private Long   finalizedCount = 0l;
+	private Long   vaccancyCount = 0l;
 	
 	
 	public String getDateStr() {
@@ -214,5 +219,37 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	
 	public Object clone() throws CloneNotSupportedException{  
 		return super.clone();  
-	}  
+	}
+	public String getRoleType() {
+		return roleType;
+	}
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getProposedCount() {
+		return proposedCount;
+	}
+	public void setProposedCount(Long proposedCount) {
+		this.proposedCount = proposedCount;
+	}
+	public Long getFinalizedCount() {
+		return finalizedCount;
+	}
+	public void setFinalizedCount(Long finalizedCount) {
+		this.finalizedCount = finalizedCount;
+	}
+	public Long getVaccancyCount() {
+		return vaccancyCount;
+	}
+	public void setVaccancyCount(Long vaccancyCount) {
+		this.vaccancyCount = vaccancyCount;
+	}
+	
+	
 }
