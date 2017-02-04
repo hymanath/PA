@@ -413,20 +413,26 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			String fileUrl = "" ;
 			List<String> filePaths = null;  
 			while(fileParams.hasMoreElements()){
-				String key = fileParams.nextElement();
-		   			
-				File[] files = multiPartRequestWrapper.getFiles(key);
-				filePaths = new ArrayList<String>();
-				if(files != null && files.length > 0)
-					for(File f : files){
-						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
-						String ext = "";
-						if(extension.length > 1){
-							ext = extension[extension.length-1];
-								mapfiles.put(f,ext);
-							}
-						}
-			}  
+		        String key = fileParams.nextElement();
+		             
+		        File[] files = multiPartRequestWrapper.getFiles(key);
+		        filePaths = new ArrayList<String>();
+		        if(files != null && files.length > 0){
+		          int i=0;
+		          for(File f : files){
+		            
+		            String[] extension  =multiPartRequestWrapper.getFileNames(key)[i].split("\\.");
+		            String ext = "";
+		            if(extension.length > 1){
+		              ext = extension[extension.length-1];
+		                mapfiles.put(f,ext);
+		              }
+		            
+		            i++;
+		          }
+		        }
+		          
+		      } 
 		     
 			resultStatus = toursService.updateTourDtls(toursInputVO,1l,mapfiles);
 			if(resultStatus!=null){
@@ -750,13 +756,15 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				File[] files = multiPartRequestWrapper.getFiles(key);
 				filePaths = new ArrayList<String>();
 				if(files != null && files.length > 0){
+					int i = 0;
 					for(File f : files){
-						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[i].split("\\.");
 						String ext = "";
 						if(extension.length > 1){
 							ext = extension[extension.length-1];
 							mapfiles.put(f,ext);
 						}
+						i++;
 					}
 				}
 			}  
