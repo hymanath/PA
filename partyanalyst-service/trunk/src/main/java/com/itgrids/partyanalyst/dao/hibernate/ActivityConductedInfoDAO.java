@@ -44,6 +44,54 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		return query.list();
 	}
 	
+	public List<Object[]> getTotalCountsForScopeIds(List<Long> activityScopeIds,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues){
+		
+		  
+		StringBuilder queryStr = new StringBuilder();
+		Long stateId = 1L;
+		queryStr.append("select model.activityScope.activityScopeId, ");
+			queryStr.append(" count(distinct model.activityConductedInfoId) " );
+			
+		queryStr.append(" from ActivityConductedInfo model where model.isDeleted='N' " );
+		
+		if(userAccessLevelId != null && userAccessLevelId.longValue() >0l){
+		 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		       queryStr.append("  and model.address.state.stateId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			     queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			     queryStr.append(" and model.address.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			     queryStr.append("  and model.address.constituency.constituencyId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			        queryStr.append(" and model.address.tehsil.tehsilId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			        queryStr.append(" and model.address.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			        queryStr.append(" and model.address.panchayat.panchayatId in (:userAccessLevelValues) "); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			        queryStr.append(" and model.address.ward.constituencyId in (:userAccessLevelValues) "); 
+			 }
+		
+		}else if(stateId != null && stateId.longValue() == 1L)
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");
+		else if(stateId != null && ( stateId.longValue() == 2L || stateId.longValue() == 36L))
+			queryStr.append(" and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		else{
+			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
+		queryStr.append(" group by model.activityScope.activityScopeId ");
+	
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("activityScopeIds", activityScopeIds);
+		
+		if(userAccessLevelValues != null && userAccessLevelValues.size() >0)
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		return query.list();
+	}
+	
 	public List<Object[]> getPlannedCountsForScopeIds(List<Long> activityScopeIds,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues){
 		
 		  
@@ -63,8 +111,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 			else if(type.equalsIgnoreCase("no"))
 				queryStr.append(" and ((model.infoCellCount is null and model.ivrStatus ='N') or  (model.infoCellCount is null and model.ivrStatus is null ) )   ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' )  or " +
-						"  (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' ) ) ");
 		}
 		if(userAccessLevelId != null && userAccessLevelId.longValue() >0l){
 		 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -240,13 +287,13 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 		else if(searchType != null && searchType.equalsIgnoreCase("state"))
 			queryStr.append(" model.address.state.stateId,model.address.state.stateName," );
 		
-		if(type != null)
+		//if(type != null)
 			queryStr.append(" count(model.activityConductedInfoId) ,sum(model.infoCellCount),'' " +
 					" from ActivityConductedInfo model where model.isDeleted='N' " );
-		else{
-			queryStr.append(" 0 ,0,'' " +
-					" from ActivityConductedInfo model where model.isDeleted='N' " );			
-		}
+		//else{
+		//	queryStr.append(" 0 ,0,'' " +
+		//			" from ActivityConductedInfo model where model.isDeleted='N' " );			
+		//}
 		
 		if(type != null){
 			if(type.equalsIgnoreCase("yes"))
@@ -255,8 +302,7 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			else if(type.equalsIgnoreCase("no"))
 				queryStr.append(" and ((model.infoCellCount is null and model.ivrStatus ='N') or  (model.infoCellCount is null and model.ivrStatus is null ) )   ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' )  or " +
-						"  (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' ) ) ");
 		}
 		else{
 			if(countType != null && countType.equalsIgnoreCase("planned"))
@@ -264,7 +310,15 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			else if(countType != null && countType.equalsIgnoreCase("infocell"))
 				queryStr.append("  and model.infoCellCount is not null " );
 			else if(countType != null && countType.equalsIgnoreCase("ivr"))
-				queryStr.append("  and model.ivrCount is not null " );
+				queryStr.append("  and model.ivrStatus ='Y' " );
+			
+			if(countType != null && countType.equalsIgnoreCase("Conducted")){
+				queryStr.append("  and model.ivrStatus ='Y' or model.infoCellCount is not null  ");
+			}else if(countType != null && countType.equalsIgnoreCase("NotConducted")){
+				queryStr.append("  and model.ivrStatus ='N'  or model.infoCellCount is null   ");
+			}
+			
+				queryStr.append("     " );
 		}
 		
 		queryStr.append(" and model.activityScope.activityScopeId =:activityScopeId");
@@ -354,6 +408,78 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 	}
 
 
+public List<Object[]> getActivityTotalCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate){
+	
+    StringBuilder queryStr = new StringBuilder();
+   
+	  queryStr.append(" select");
+	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+       queryStr.append(" model.address.state.stateId,");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+           queryStr.append(" model.address.district.districtId,");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+        queryStr.append(" model.address.parliamentConstituency.constituencyId, ");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+        queryStr.append(" model.address.constituency.constituencyId, ");  
+	 }
+
+	 queryStr.append(" count(distinct model.activityConductedInfoId) " +
+		            " from ActivityConductedInfo model where  model.isDeleted='N' ");
+ 
+	 if(fromDate != null && toDate != null){
+		 queryStr.append(" and ((date(model.activityScope.startDate) between :fromDate and :toDate) or (date(model.activityScope.endDate) between :fromDate and :toDate))");	
+		}
+			 
+	 if(activityId != null && activityId.longValue() > 0){
+		   queryStr.append(" and model.activityScope.activity.activityId in(:activityId)");
+	 }
+	 if(activityLevelIds != null && activityLevelIds.size() > 0){
+		   queryStr.append(" and model.activityScope.activityLevel.activityLevelId in(:activityLevelIds)");   
+	 }
+	 
+	 if(stateId != null && stateId.longValue() == 1l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+	 }else if(stateId != null && stateId.longValue() == 2l){
+			queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+	 }
+	
+	if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	   queryStr.append(" and model.address.state.stateId in (:userAccessLevelValues)");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues)");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	    queryStr.append(" and model.address.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	    queryStr.append(" and model.address.constituency.constituencyId in (:userAccessLevelValues)");  
+	}
+	
+	if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	   queryStr.append(" group by model.address.state.stateId ");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       queryStr.append(" group by model.address.district.districtId ");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	    queryStr.append(" group by model.address.parliamentConstituency.constituencyId ");  
+	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	    queryStr.append(" group by model.address.constituency.constituencyId ");  
+	}
+	   
+	 Query query = getSession().createQuery(queryStr.toString());
+	 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	 }
+	 if(activityId != null && activityId.longValue() > 0){
+		  query.setParameter("activityId", activityId);
+	 }
+	 if(activityLevelIds != null && activityLevelIds.size() > 0){
+		  query.setParameterList("activityLevelIds", activityLevelIds);   
+	 }
+	 if(fromDate != null && toDate != null){
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+	 }
+	return query.list();
+}
+
 public List<Object[]> getActivityConductedCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate){
 	
     StringBuilder queryStr = new StringBuilder();
@@ -425,6 +551,64 @@ if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_
  }
 return query.list();
 }
+
+public List<Object[]> activitiesDistrictWiseCount(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues){
+	 StringBuilder queryStr = new StringBuilder();
+    queryStr.append("select model.activityScope.activityScopeId," +
+											" count(model.activityConductedInfoId),"); 
+    if(scopeId !=null && scopeId.longValue() == 3l){
+  	  queryStr.append("  model.address.district.districtId," +
+											"  model.address.district.districtName," );
+    }else if(scopeId !=null && scopeId.longValue() == 2l){
+  	  queryStr.append("  model.address.state.stateId," +
+					"  model.address.state.stateName," );
+    }
+    queryStr.append("  model.activityScope.activity.activityName, " +
+											" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
+											" from ActivityConductedInfo model " +
+											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
+											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
+											" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
+    
+    if(userAccessLevelId != null && userAccessLevelId.longValue() >0l){
+	     if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	       queryStr.append("  and model.address.state.stateId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		     queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		     queryStr.append(" and model.address.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		     queryStr.append("  and model.address.constituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		        queryStr.append(" and model.address.tehsil.tehsilId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+		        queryStr.append(" and model.address.constituency.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+		        queryStr.append(" and model.address.panchayat.panchayatId in (:userAccessLevelValues) "); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+		        queryStr.append(" and model.address.ward.constituencyId in (:userAccessLevelValues) "); 
+		 }
+	 }
+    if(scopeId != null && scopeId.longValue() == 3l){
+  	   queryStr.append(" group by model.activityScope.activityScopeId,model.address.district.districtId "); 
+  	   queryStr.append(" order by model.address.district.districtId ");
+    }
+    if(scopeId != null && scopeId.longValue() == 2l){
+  	  queryStr.append(" group by model.activityScope.activityScopeId,model.address.state.stateId "); 
+  	   queryStr.append(" order by model.address.state.stateId ");
+    }
+    Query query = getSession().createQuery(queryStr.toString());  
+    query.setParameterList("activityIdsLst", activityIdsLst);
+    query.setParameter("startDate", startDate);
+    query.setParameter("endDate", endDate);
+    if(userAccessLevelValues != null && userAccessLevelValues.size() >0)
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+    /*if(scopeId != null && scopeId.longValue() > 0l){
+  	  query.setParameter("scopeId", scopeId); 
+    }*/
+	return query.list();
+}
+
 public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues){
 	 StringBuilder queryStr = new StringBuilder();
      queryStr.append("select model.activityScope.activityScopeId," +
@@ -454,8 +638,7 @@ public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Dat
 	    				" ( model.infoCellCount is null and model.ivrStatus is null )  ) ");
 	    	}
 	    	else if(type.equalsIgnoreCase("maybe")){
-	    		queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus='N' )  OR " +
-	    				" ( model.infoCellCount is not null and model.ivrStatus ='N')  ) ");
+	    		queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus='N' ) ) ");
 	    	}
 	      }
 	      else{
