@@ -139,17 +139,14 @@
 	{
 		var url;
 		var level = $("#committeLevel").val();
-		if(level != 2)
-		{
-		var constituenyId = $("#displayconstbox").val();
-		if(constituenyId > 0)
-		url = "/cadreCommitteeAction.action?locationId="+constituenyId+"";
-		}
-		else
-		{
+		if(level != 2){//2 --> District
+		  var constituenyId = $("#displayconstbox").val();
+		  if(constituenyId > 0){
+			  url = "cadreCommitteeAction.action?locationId="+constituenyId+"";
+		  }
+		}else{
 			var distId = $("#districtsDispalyId").val();
-			url = "/committeeManagementAction.action?locationId="+distId+"& reqLocationType=district";
-			
+			url = "committeeManagementAction.action?locationId="+distId+"& reqLocationType=district";
 		}
 		window.open(url,'_blank');
 	}
