@@ -103,6 +103,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		   if(candiateIds != null && candiateIds.size() > 0){
 			   queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)");    
 		   }
+		   if(type.equalsIgnoreCase("tourCategory")){
+			   queryStr.append(" and model.tourTypeId not in ("+IConstants.GOVT_TOUR_TYPE_ID+")");
+		   }
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 		  				   "  model.selfAppraisalCandidateId,");
 		    if(type.equalsIgnoreCase("tourCategory")){
@@ -194,7 +197,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		
 		   return query.list();  
 	   }
- public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){//Here candidateId means TdpCadreId
+ public List<Object[]> getMonthWiseTourSubmittedDetails(List<Long> monthYearIds,Long candidateId){
 	    StringBuilder queryStr = new StringBuilder();
 	    queryStr.append(" select " +
 	  					" model.selfAppraisalToursMonth.monthName," + //0
@@ -213,7 +216,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	  					" left join model.tourType tourType" +
 	  					" left join model.selfAppraisalDesignation selfAppraisalDesignation " +
 	  					" where model.isDeleted='N' " +
-	  					" and model.tdpCadreId=:selfAppraisalCandidateId");
+	  					" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");
 				    if(monthYearIds != null && monthYearIds.size() > 0 ){
 			            queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 			        }
@@ -256,7 +259,6 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                return query.list();
 	 
  }
-
  public List<Object[]> getCategoryWiseLeaderTourSubmittedCnt(String type,List<Long> monthYearIds,List<Long> designationIds,List<Long> candiateIds){
 	 StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
@@ -275,6 +277,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	   if(monthYearIds != null && monthYearIds.size() > 0 ){
          queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
        }
+	   if(type.equalsIgnoreCase("tourCategory")){
+		   queryStr.append(" and model.tourTypeId not in ("+IConstants.GOVT_TOUR_TYPE_ID+")");
+	   }
 	   if(designationIds != null && designationIds.size() > 0){
 		 queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds)");  
 	   }
