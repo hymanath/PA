@@ -166,7 +166,6 @@ private IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO;
 private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
 
-
 public ITdpCadreDAO getTdpCadreDAO() {
 	return tdpCadreDAO;
 }
@@ -816,7 +815,63 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return userAddress;
 	}
-	
+	public UserAddress editUserAddress(final AlertVO inputVO, Long addressId)
+	{
+		UserAddress userAddress = new UserAddress();
+		try{
+			
+			if(inputVO.getLocationLevelId().longValue() == 2l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+			}
+			else if(inputVO.getLocationLevelId().longValue() == 3l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				
+			}
+			
+			else if(inputVO.getLocationLevelId().longValue() == 4l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+			}
+			else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				if(inputVO.getLocationLevelId() ==  5l)
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getTehsilId()));
+				else
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getTehsilId()));	
+			}
+			
+			else if(inputVO.getLocationLevelId().longValue() == 6l || inputVO.getLocationLevelId().longValue() == 8l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				if(inputVO.getLocationLevelId() ==  6l)
+				{
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getTehsilId()));
+					userAddress.setPanchayatId(inputVO.getPanchayatId());
+				}
+				else
+				{
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getTehsilId()));	
+					userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
+				}
+			}
+			
+			userAddress = userAddressDAO.save(userAddress);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return userAddress;
+	}
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String fromDate,String toDate)
 	{
 		 List<BasicVO> returnList = new ArrayList<BasicVO>();
@@ -6910,6 +6965,90 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
   		return voList;
   	}
+	/*
+	 * Author:Swadhin Lenka
+	*/
+	public AlertVO getAlertDetailsForEdit(Long alertId){
+		try{
+			//contains alert details
+			AlertVO alertVO = new AlertVO();
+			//contains assign candidate dtls
+			List<IdNameVO> assignedCandList = new ArrayList<IdNameVO>();
+			//contains involved candidate dtls
+			List<IdNameVO> involvedCandList = new ArrayList<IdNameVO>();
+			//contains document list
+			List<IdNameVO> docList = new ArrayList<IdNameVO>();
+			IdNameVO idNameVO = null;
+			List<Object[]> alertDtlsList = alertDAO.getAlertDetailsForUpdate(alertId);
+			List<Object[]> assignedCandidateList = alertAssignedDAO.getAssignedCandidateList(alertId);
+			List<Object[]> involvedCandidateList = alertCandidateDAO.getInvolveCandidateList(alertId);
+			List<Object[]> documentList = alertDocumentDAO.getDocumentsForAlert(alertId);
+			//this list c ontain only one element
+			if(alertDtlsList != null && alertDtlsList.size() > 0){
+				for(Object[] param : alertDtlsList){
+					alertVO.setAlertTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertVO.setTitle(commonMethodsUtilService.getStringValueForObject(param[1]));
+					alertVO.setDesc(commonMethodsUtilService.getStringValueForObject(param[2]));
+					alertVO.setSeverity(commonMethodsUtilService.getLongValueForObject(param[3]));
+					alertVO.setLocationLevelId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					alertVO.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					alertVO.setAlertImpactId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					alertVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[7]));
+					alertVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					alertVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[9]));
+					alertVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					alertVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					alertVO.setLocalBodyId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					alertVO.setWardId(commonMethodsUtilService.getLongValueForObject(param[13]));
+				}
+			}
+			if(assignedCandidateList != null && assignedCandidateList.size() > 0){
+				for(Object[] param : assignedCandidateList){
+					idNameVO = new IdNameVO();
+					idNameVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					idNameVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+					idNameVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					assignedCandList.add(idNameVO);
+				}
+			}
+			if(involvedCandidateList != null && involvedCandidateList.size() > 0){
+				for(Object[] param : involvedCandidateList){
+					idNameVO = new IdNameVO();
+					idNameVO.setCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					idNameVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+					idNameVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					idNameVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					involvedCandList.add(idNameVO);
+				}
+			}
+			if(documentList != null && documentList.size() > 0){
+				for(Object[] param : documentList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					idNameVO.setPositionName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					docList.add(idNameVO);
+				}
+			}
+			if(assignedCandList != null && assignedCandList.size() > 0){
+				alertVO.setAssignList(assignedCandList);
+			}
+			if(involvedCandList != null && involvedCandList.size() > 0){
+				alertVO.setIdNamesList(involvedCandList);
+			}
+			if(docList != null && docList.size() > 0){
+				alertVO.setDocList(docList);
+			}
+			return alertVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertDetailsForEdit() method of AlertService{}");
+		}  
+		return null;
+	}
+	
 	public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
 	{
 		
@@ -6919,7 +7058,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String rs = new String();
 					try {
 				 DateUtilService date = new DateUtilService();
-				 Alert alert = new Alert();
+				 Alert alert = alertDAO.get(inputVO.getAlertId());
 				 
 				 alert.setAlertSeverityId(inputVO.getSeverity());
 				 alert.setAlertTypeId(inputVO.getAlertTypeId());
@@ -6929,208 +7068,208 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
 				 alert.setImpactScopeId(inputVO.getAlertImpactId());
-
-				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-					 alert.setAlertStatusId(2l);// if assign list given default status is notified
-				 else
-					 alert.setAlertStatusId(1l);// default pending status
-
 				 alert.setAlertSourceId(inputVO.getAlertSourceId());
-				 alert.setCreatedTime(date.getCurrentDateAndTime());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
 				 alert.setIsDeleted("N");
 				 
 				 alert.setAlertCategoryId(1L);//default Manual alert
 				 alert.setTitle(inputVO.getTitle());
 				 
-				 UserAddress userAddress = saveUserAddress(inputVO);
-				 alert.setAddressId(userAddress.getUserAddressId());
+				 //UserAddress userAddress = saveUserAddress(inputVO);
+				
+				 //alert.setAddressId(userAddress.getUserAddressId());
 				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 				 alert = alertDAO.save(alert);
-				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
 				 
-				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
-				 {
-					 List<Long> newCadreList = new ArrayList<Long>(0);
-					 
-					 List<Long> exitingCadreIdsList = new ArrayList<Long>(0);
-					 
-					 String resultMsg = "";
-					for(IdNameVO vo : inputVO.getIdNamesList())
-					 {
-						 if(vo != null && vo.getId()!= null && vo.getId() > 0)
-						 {
-							 newCadreList.add(vo.getId());
+				 UserAddress userAddress = alert.getUserAddress();
+				 
+				 if(inputVO.getLocationLevelId().longValue() == 2l)
+					{
+						userAddress.setState(stateDAO.get(inputVO.getStateId()));
+						//swa
+						//userAddress.setDistrict(null);
+						//userAddress.setConstituency(null); 
+					}
+					else if(inputVO.getLocationLevelId().longValue() == 3l)
+					{
+						userAddress.setState(stateDAO.get(inputVO.getStateId()));
+						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 						
-							 List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(alert.getAlertId());//based on alertId we can get the tdpCadreIds
-							 if(existingCadreIds != null && !existingCadreIds.isEmpty()){
-								 exitingCadreIdsList.addAll(existingCadreIds);
-							 }
-							 
-							 if(exitingCadreIdsList != null && exitingCadreIdsList.size()>0){
-								 for(Long existIds : exitingCadreIdsList){
-									 if(newCadreList.contains(existIds)){
-										 
-									 }else{
-										int  result = alertCandidateDAO.deleteAlertCandidatesExistingtdpCadreIds(existIds,alert.getAlertId());//if existing cadreIds is not equal to newCadreIds 
-										                                                                                                     // we can delete the existing tdpCadreIds table records
-										if(result >0){
-											resultMsg = "Records will be deleted";
-										}else{
-											resultMsg = "No records will be deleted";
-										}
-										
-									 }
-									 
-								 }
-							 }
-							       List<Long> finalLst = new ArrayList<Long>();
-							 
-	                               if((exitingCadreIdsList == null || newCadreList.isEmpty()) && (newCadreList == null || exitingCadreIdsList.isEmpty()))
-	                            	   return null;
-	                               else if((exitingCadreIdsList == null || newCadreList.isEmpty()) && (newCadreList != null || !exitingCadreIdsList.isEmpty())){
-	                            	   if(newCadreList != null && newCadreList.size()>0)
-	          							 for(Long newCadreId : newCadreList)
-	                            	   finalLst.add(newCadreId);
-	                               }
-							 
-							 if(newCadreList != null && newCadreList.size()>0){
-								 for(Long newCadreId : newCadreList){
-									 if(exitingCadreIdsList.contains(newCadreId)){
-										 
-									 }else{// if existing cadreIds is not equal to new CadreIds then we can add to that tdpCadreIds add to new List  of finalLst
-										 finalLst.add(newCadreId);
-										 if(finalLst != null && finalLst.size()>0){
-											for(int i=0;i<finalLst.size();i++){
-												
-												 Long ids = finalLst.get(i);
-												 AlertCandidate alertCandidate = new AlertCandidate();
-												 alertCandidate.setAlertId(alert.getAlertId());
-												 alertCandidate.setTdpCadreId(ids);
-												 if(vo.getName() == null)
-													 alertCandidate.setAlertImpactId(2l); 
-												else
-												 alertCandidate.setAlertImpactId(1l);
-												 alertCandidateDAO.save(alertCandidate);
-											 }
-										 }
-									  }
-									 }
-								 }//
-									 
-							 }
-							
-						 }
-						 return resultMsg;
-					 }
+					}
+					
+					else if(inputVO.getLocationLevelId().longValue() == 4l)
+					{
+						userAddress.setState(stateDAO.get(inputVO.getStateId()));
+						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+						userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					}
+					else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
+					{
+						userAddress.setState(stateDAO.get(inputVO.getStateId()));
+						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+						userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+						if(inputVO.getLocationLevelId() ==  5l){
+							userAddress.setTehsil(tehsilDAO.get(inputVO.getTehsilId()));
+							//swa
+							userAddress.setLocalElectionBody(null);	
+						}	
+						else{
+							userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getTehsilId()));
+							//swa
+							userAddress.setTehsil(null);
+						}
+					}
+					
+					else if(inputVO.getLocationLevelId().longValue() == 6l || inputVO.getLocationLevelId().longValue() == 8l)
+					{
+						userAddress.setState(stateDAO.get(inputVO.getStateId()));
+						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+						userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+						if(inputVO.getLocationLevelId() ==  6l)
+						{
+							userAddress.setTehsil(tehsilDAO.get(inputVO.getTehsilId()));
+							userAddress.setPanchayatId(inputVO.getPanchayatId());
+							//swa
+							userAddress.setLocalElectionBody(null);	
+							userAddress.setWard(null);
+						}
+						else
+						{
+							userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getTehsilId()));	
+							userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
+							//swa
+							userAddress.setTehsil(null);
+							userAddress.setPanchayatId(null);
+						}
+					}
+					
+					userAddress = userAddressDAO.save(userAddress);  
 				 
-				if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-				 {
-					 /* List<Long> existCadreIds = new ArrayList<Long>();
-					  for(IdNameVO vo : inputVO.getAssignList())
-						 {
-							 if(vo != null && vo.getId()!= null && vo.getId() > 0)
-							 {
-								 existCadreIds.add(vo.getId());
-							 }
+				 //delete the document list here//fileIdList//  ,122,125,145
+				 if(inputVO.getFileIdList() != null && inputVO.getFileIdList().length() >1){
+					 String[] fileIdArr = inputVO.getFileIdList().split(",");
+					 for(String fId : fileIdArr){
+						 if(fId != null && fId.length() > 0){
+							 long fileId = Long.parseLong(fId);
+							 int count = alertDocumentDAO.deleteDocument(new Long(fileId));
+						 }
+					 }
+				 }
+				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				
+				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0){
+					Map<Long,Long> candidateAneImpactMap = new HashMap<Long,Long>();
+					List<Long> newCandidateList = new ArrayList<Long>();
+					List<Long> newList = new ArrayList<Long>();
+					
+					for(IdNameVO vo : inputVO.getIdNamesList()){
+						if(vo != null && vo.getId() != null && vo.getId().longValue() > 0L){
+							newCandidateList.add(vo.getId());    
+							if(vo.getName() == null){
+								candidateAneImpactMap.put(vo.getId(), 2L);
+							}else{
+								candidateAneImpactMap.put(vo.getId(), 1L);
+							}
 						}
 						
-						  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(existCadreIds,alert.getAlertId());*/
+					}
+					List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
 					
-				 	       
-							for(IdNameVO vo1 : inputVO.getAssignList())
-							 {
-								List<Long> newAssignedList = new ArrayList<Long>();
-								List<Long> existsAssignedList = new ArrayList<Long>();
-								 if(vo1 != null && vo1.getId()!= null && vo1.getId() > 0)
-								 {
-									 newAssignedList.add(vo1.getId());
-									 
-									 List<Long> existAsigndList = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(alert.getAlertId());//based on alertId we can get the tdpCadreIds 
-									 
-									 if(existAsigndList != null && ! existAsigndList.isEmpty()){
-										 existsAssignedList.addAll(existAsigndList);
-									 }
-									 String assignedMsg = ""; 
-	                                      if(existsAssignedList != null && existsAssignedList.isEmpty()){
-	                                    	  for(Long exstAssgnedId :existsAssignedList){
-	                                    		  if(newAssignedList.contains(exstAssgnedId.longValue())){
-	                                    			  
-	                                    		  }else{
-	                                    			  int assgnReslt = alertAssignedDAO.deleteAlertAssignedByExistingIds(vo1.getId(),alert.getAlertId());//if existing cadreIds is not equal to newCadreIds 
-	                                                                                                                                                    // we can delete the existing tdpCadreIds table records
-	                                    			  if(assgnReslt >0){
-	                                    				  assignedMsg = "assigned Records will be deleted";
-	                                    				  
-	                                    			  }else{
-	                                    				  assignedMsg = "No assigned Records will be deleted";
-	                                    			  }
-	                                    		  }
-	                                    		  return assignedMsg;
-	                                    	  }
-	                                      }
-	                                    	  
-	                                           List<Long> newAsigedCdrLst = new ArrayList<Long>();
-	         
-	                                      if((existAsigndList == null || newAssignedList.isEmpty()) && (newAssignedList == null || existAsigndList.isEmpty()))
-	                                   	           return null;
-	                                      else if((existAsigndList == null || existAsigndList.isEmpty())  && (newAssignedList != null || !newAssignedList.isEmpty())){
-	                                   	   if(newAsigedCdrLst != null && newAsigedCdrLst.size()>0)
-	                 							 for(Long cadreIds : newAsigedCdrLst)
-	                 								newAsigedCdrLst.add(cadreIds);
-	                                      }
-	                                      
-	                                      
-	                                      if(newAssignedList != null && !newAssignedList.isEmpty() && newAssignedList.size()>0){
-	                                    	  for(Long newAssgndIds : newAssignedList){
-	                                    		  if(existsAssignedList.contains(newAssgndIds.longValue())){
-	                                    			  
-	                                    		  }else{// if existing Assigned TdpCadre cadreIds is not equal to new assigned CadreIds then we can add to that tdpCadreIds add to new List ofnewAsigedCdrLst
-	                                    			  newAsigedCdrLst.add(newAssgndIds);
-	                                    			  for(int i=0;i<newAsigedCdrLst.size();i++){
-	                                    				  Long newCadrId = newAsigedCdrLst.get(i);
-	                                    				  AlertAssigned alertAssigned = new AlertAssigned();
-	        												alertAssigned.setAlertId(alert.getAlertId());
-	        												alertAssigned.setTdpCadreId(newCadrId);
-	        												alertAssigned.setCreatedBy(userId);
-	        												alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
-	        												alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
-	        												alertAssigned.setIsDeleted("N");
-	        												alertAssignedDAO.save(alertAssigned);
-	                                    			  }
-	                                              }
-	                                    	  }
-	                                      }
-									 				
-								 	}
-								
+					if(existingCadreIds != null && existingCadreIds.size() > 0 && newCandidateList != null && newCandidateList.size() > 0){
+						for(Long id : existingCadreIds){
+							if(!(newCandidateList.contains(id))){
+								int  result = alertCandidateDAO.deleteAlertCandidatesExistingtdpCadreIds(id,inputVO.getAlertId());
+							}
+						}
+						for(Long id : newCandidateList){
+							if(!(existingCadreIds.contains(id))){
+								newList.add(id);
+							}
+						}
+						if(newList != null && newList.size() > 0){
+							for(Long id : newList){
+								Long impactId = candidateAneImpactMap.get(id);
+								AlertCandidate alertCandidate = new AlertCandidate();
+								alertCandidate.setAlertId(inputVO.getAlertId());
+								alertCandidate.setTdpCadreId(id);
+								alertCandidate.setAlertImpactId(impactId);
+								alertCandidateDAO.save(alertCandidate);
+							}
+						}
+						
+					}else if(newCandidateList != null && newCandidateList.size() > 0){
+						for(IdNameVO vo : inputVO.getIdNamesList()){
+							 if(vo != null && vo.getId()!= null && vo.getId() > 0L){
+								 AlertCandidate alertCandidate = new AlertCandidate();
+								 alertCandidate.setAlertId(inputVO.getAlertId());
+								 alertCandidate.setTdpCadreId(vo.getId());
+								 if(vo.getName() == null)
+									 alertCandidate.setAlertImpactId(2l); 
+								 else
+									alertCandidate.setAlertImpactId(1l);
+								 alertCandidateDAO.save(alertCandidate);
 							 }
-				 	}
-				 rs = "success";
-				    AlertComment alertComment = new AlertComment();
-				    alertComment.setComments(inputVO.getDesc().toString());
-				    alertComment.setAlertId(alert.getAlertId());
-				    alertComment.setInsertedTime(date.getCurrentDateAndTime());
-				    alertComment.setIsDeleted("N");
-				    alertComment.setInsertedBy(userId);
-				    alertComment = alertCommentDAO.save(alertComment);
-				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
-				 alertTrackingVO.setUserId(userId);
-				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
-				 alertTrackingVO.setAlertUserTypeId(inputVO.getAlertSourceId());
-				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-				 {
-					 alertTrackingVO.setAlertStatusId(2l);
-				 }else{
-					 alertTrackingVO.setAlertStatusId(1l);
-				 }
+							 
+						 }
+					}
+					
+				 }  
+				
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0){
+					 List<Long> newCandidateList = new ArrayList<Long>();
+						List<Long> newList = new ArrayList<Long>();
+						
+						for(IdNameVO vo : inputVO.getAssignList()){  
+							if(vo != null && vo.getId()!= null && vo.getId() > 0L)
+								newCandidateList.add(vo.getId());
+						}
+						List<Long> existingCadreIds = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(inputVO.getAlertId());
+						
+						if(existingCadreIds != null && existingCadreIds.size() > 0 && newCandidateList != null && newCandidateList.size() > 0){
+							for(Long id : existingCadreIds){
+								if(!(newCandidateList.contains(id))){
+									int  result = alertAssignedDAO.deleteAlertAssignedByExistingIds(id,inputVO.getAlertId());
+								}
+							}
+							for(Long id : newCandidateList){
+								if(!(existingCadreIds.contains(id))){
+									newList.add(id);
+								}
+							}
+							if(newList != null && newList.size() > 0){
+								for(Long id : newList){
+									AlertAssigned alertAssigned = new AlertAssigned();
+									alertAssigned.setAlertId(inputVO.getAlertId());
+									alertAssigned.setTdpCadreId(id);
+									alertAssigned.setCreatedBy(userId);
+									alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+									alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+									alertAssigned.setIsDeleted("N");
+									alertAssignedDAO.save(alertAssigned);
+								}
+							}
+							
+						}else if(newCandidateList != null && newCandidateList.size() > 0){
+							for(IdNameVO vo : inputVO.getIdNamesList()){
+								 if(vo != null && vo.getId()!= null && vo.getId() > 0){
+									 	AlertAssigned alertAssigned = new AlertAssigned();
+										alertAssigned.setAlertId(inputVO.getAlertId());
+										alertAssigned.setTdpCadreId(vo.getId());
+										alertAssigned.setCreatedBy(userId);
+										alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+										alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+										alertAssigned.setIsDeleted("N");
+										alertAssignedDAO.save(alertAssigned);
+								 }
+								 
+							 }
+						}//
+				}
 				 
-				 alertTrackingVO.setAlertId(alert.getAlertId());
-				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
-				 
-				 saveAlertTrackingDetails(alertTrackingVO)	;	
+				 rs = "edit";
 					}
 					catch (Exception ex) {
+						LOG.error("Error occured editAlert() method of AlertService{}",ex);
 						 rs = "fail";
 						
 						return rs;
@@ -7140,6 +7279,20 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 			});
 	return resultStatus;
+	}
+	public String deleteAlert(Long alertId){
+		try{
+			int count = alertDAO.deleteAlert(alertId);
+			if(count > 0){
+				return "success";
+			}else{
+				return "failed";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured deleteAlert() method of AlertService{}",e);
+		}
+		return null;
 	}
 }
 
