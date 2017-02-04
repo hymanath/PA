@@ -30,6 +30,11 @@ public class TdpCommitteeRole {
 	private Long maxMembers;
 	private Date updatedTime;
 	
+	private Long minProposeMembers;
+	private Long maxProposeMembers;
+	private Long tdpCommitteeEnrollmentId;
+	private String roleType;
+	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -100,6 +105,55 @@ public class TdpCommitteeRole {
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	@Column(name = "min_propose_members")
+	public Long getMinProposeMembers() {
+		return minProposeMembers;
+	}
+
+	public void setMinProposeMembers(Long minProposeMembers) {
+		this.minProposeMembers = minProposeMembers;
+	}
+	
+	@Column(name = "max_propose_members")
+	public Long getMaxProposeMembers() {
+		return maxProposeMembers;
+	}
+
+	public void setMaxProposeMembers(Long maxProposeMembers) {
+		this.maxProposeMembers = maxProposeMembers;
+	}
+
+	@Column(name = "tdp_committee_enrollment_id")
+	public Long getTdpCommitteeEnrollmentId() {
+		return tdpCommitteeEnrollmentId;
+	}
+
+	public void setTdpCommitteeEnrollmentId(Long tdpCommitteeEnrollmentId) {
+		this.tdpCommitteeEnrollmentId = tdpCommitteeEnrollmentId;
+	}
+	
+	@Column(name = "role_type")
+	public String getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_committee_enrollment_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCommitteeEnrollment getTdpCommitteeEnrollment() {
+		return tdpCommitteeEnrollment;
+	}
+
+	public void setTdpCommitteeEnrollment(
+			TdpCommitteeEnrollment tdpCommitteeEnrollment) {
+		this.tdpCommitteeEnrollment = tdpCommitteeEnrollment;
 	}
 	
 }
