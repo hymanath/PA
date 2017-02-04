@@ -952,7 +952,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				 }
 				 membersInfo = cadreCommitteeService.getMainCommitteeMembersInfo(locationLvl,Long.valueOf(locationValue.substring(1)));
 			}else{
-				membersInfo = cadreCommitteeService.getCommitteeMembersInfo(Long.valueOf(request.getParameter("locationValue")));
+				membersInfo = cadreCommitteeService.getCommitteeMembersInfoNEW(Long.valueOf(request.getParameter("locationValue")));
 			}
 		} catch (Exception e) {
 			LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
@@ -984,7 +984,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 						 locationLvl = 8l;
 					 }
 				 }
-				 membersInfo = cadreCommitteeService.getAllCommitteeMembersInfoInALoc(locationLvl,Long.valueOf(locationValue.substring(1)));
+				
+				  membersInfo = cadreCommitteeService.getAllCommitteeMembersInfoInALoc(locationLvl,Long.valueOf(locationValue.substring(1)));
+				 //membersInfo = cadreCommitteeService.getAllCommitteesFinalizedMembersInfoInALoc(locationLvl,Long.valueOf(locationValue.substring(1)));
+				 
 		} catch (Exception e) {
 			LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
 		}		
