@@ -38,6 +38,9 @@ public class AlertDepartment extends BaseModel implements Serializable{
 	private Alert alert;
 	private AlertDepartmentStatus alertDepartmentStatus;
 	
+	private Long govtDepartmentId;
+	private GovtDepartment govtDepartment;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_department_id", unique = true, nullable = false)
@@ -132,5 +135,26 @@ public class AlertDepartment extends BaseModel implements Serializable{
 	}
 	public void setAlertDepartmentStatus(AlertDepartmentStatus alertDepartmentStatus) {
 		this.alertDepartmentStatus = alertDepartmentStatus;
+	}
+	
+	@Column(name = "govt_department_id")
+	public Long getGovtDepartmentId() {
+		return govtDepartmentId;
+	}
+
+	public void setGovtDepartmentId(Long govtDepartmentId) {
+		this.govtDepartmentId = govtDepartmentId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_department_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public GovtDepartment getGovtDepartment() {
+		return govtDepartment;
+	}
+
+	public void setGovtDepartment(GovtDepartment govtDepartment) {
+		this.govtDepartment = govtDepartment;
 	}
 }
