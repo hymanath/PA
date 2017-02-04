@@ -214,7 +214,7 @@
 												<div id="errorDiv" class="text-danger"></div>
 											</div>
 											<div class="col-md-2 col-xs-12 col-sm-2">
-												<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview(1,'',0,'','')">Submit</button>
+												<button type="button" class="btn btn-success" title="To get tours over view" onclick="getAllTourDetailsOverview(1,'',0,'','','')">Submit</button>
 											</div>
 										</div>
 										<div class="row">
@@ -538,6 +538,7 @@
 		<div class="modal-content" style="border-radius:0px">
 			<div class="modal-header">
 				<button type="button" class="close closeClass" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div id="monthEditId" style="margin-left: 228px;margin-bottom:-21px;"></div>
 				<h4 class="modal-title">EDIT/VIEW TOUR DETAILS</h4>  
 			</div>
 			<form name="toursUpdateFormApplication" method="post" id="toursUpdateFormApplication">
@@ -599,7 +600,7 @@ $("#tourMonthYear").datetimepicker({
 });
 $('#tourMonthYear').on('dp.change', function(e) { 
 	var date = e.date.format("MMM-YYYY")
-	$("#changedDate").html(date);
+	$("#changedDate").html('('+(date)+')');
 });
 editUpdateDetailsInitilize();
 var TourCategoryArray =[];
