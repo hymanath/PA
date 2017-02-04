@@ -271,7 +271,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		 queryStr.append(" model.tourTypeId,");//3	
 		}
 		queryStr.append(" model.selfAppraisalToursMonthId," +//4
-		 " sum(model.tourDays) " +//5
+		 " sum(model.tourDays),model.tdpCadreId,model.tdpCadre.firstname " +//7
 		 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
 		 " and model.selfAppraisalDesignation.isActive='Y' ");
 	   if(monthYearIds != null && monthYearIds.size() > 0 ){
