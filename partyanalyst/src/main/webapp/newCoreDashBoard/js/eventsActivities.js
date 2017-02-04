@@ -218,7 +218,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$('#eventsCmpBlckDivId ul li').trigger('click');
 		}
 		if($(".detailedBlockEvents").is(":visible")){
-			alert('events comaprison');
+			//alert('events comaprison');
 		}
 		
 			$(".acitivitiesMoreExpand").removeAttr("attr_type");
