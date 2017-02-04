@@ -352,7 +352,7 @@ function buildAlertData(result,jsObj)
 	str+='<th>Created Date</th>'; 
 	str+='<th>Information Source </th>';
 	str+='<th>Severity</th>';
-	str+='<th></th>';
+	str+='<th style="width:50px;"></th>';
 	str+='</thead>';
 	str+='<tbody>';
 	var j=0;
@@ -374,9 +374,12 @@ function buildAlertData(result,jsObj)
 	str+='<td>'+result[i].date+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
 	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
-	str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
-	
-	str+='</tr>';	
+	if(result[i].alertCategoryName == "Manual"){
+		str+='<td><i style="cursor: pointer; margin-left:10px;margin-right:10px;"  class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i><i class="glyphicon glyphicon-edit alertEditModel"  target="_blank" title="Click here to Edit Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" ></i></td>';
+	}else{
+		str+='<td><i style="cursor: pointer; margin-left:10px;margin-right:10px;"  class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'"></i></td>';
+	}
+	str+='</tr>';
 	}
 	str+='</tbody>';
 	str+='</table>';
@@ -387,8 +390,12 @@ function buildAlertData(result,jsObj)
 var GlobalalertId;
 var globalAlertName;
 $(document).on("click",".alertModel",function(){
-GlobalalertId = $(this).attr("attr-id");
-window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+	GlobalalertId = $(this).attr("attr-id");
+	window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+});
+$(document).on("click",".alertEditModel",function(){
+	GlobalalertId = $(this).attr("attr-id");
+	window.open("createAlertAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 
 $(document).on("click",".alertCandidate",function(){
