@@ -64,6 +64,9 @@ public class Alert extends BaseModel implements Serializable {
 	private Long editionId;
 	private Editions edition;
 	
+	private Long govtDepartmentId;
+	private GovtDepartment govtDepartment;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -408,6 +411,26 @@ public class Alert extends BaseModel implements Serializable {
 	public void setEdition(Editions edition) {
 		this.edition = edition;
 	}
-	
-	
+
+	@Column(name = "govt_department_id")
+	public Long getGovtDepartmentId() {
+		return govtDepartmentId;
+	}
+
+	public void setGovtDepartmentId(Long govtDepartmentId) {
+		this.govtDepartmentId = govtDepartmentId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_department_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public GovtDepartment getGovtDepartment() {
+		return govtDepartment;
+	}
+
+	public void setGovtDepartment(GovtDepartment govtDepartment) {
+		this.govtDepartment = govtDepartment;
+	}
+		
 }
