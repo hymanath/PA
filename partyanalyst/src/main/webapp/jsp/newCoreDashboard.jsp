@@ -2660,8 +2660,8 @@
 							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId">
 								
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital" attr_typeId="1">Detailed </li>
-									<li class="text-capital" attr_typeId="2">Comparison</li>
+									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
+									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
 								</ul>
 							</div>
 							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks">
@@ -2686,8 +2686,8 @@
 												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
 												<hr style ="margin-bottom:0px;" />
 												<div class="">
-													<ul class="settingsUl">
-														<li>
+													<ul class="evntsSettingsUl">
+														<!--<li>
 															<label class="checkbox-inline">
 																<input type="checkbox" value="0" checked>
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
@@ -2704,7 +2704,7 @@
 																<input type="checkbox" value="0" checked>
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
 															</label>
-														</li>
+														</li>-->
 													</ul>
 												</div>
 											</div>
@@ -2712,8 +2712,8 @@
 												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
 												<hr style ="margin-bottom:0px;" />
 												<div class="">
-													<ul class="settingsUl">
-														<li>
+													<ul class="activitySettingsUl">
+														<!-- <li>
 															<label class="checkbox-inline">
 																<input type="checkbox" value="0" checked>
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
@@ -2730,16 +2730,16 @@
 																<input type="checkbox" value="0" checked>
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
 															</label>
-														</li>
+														</li> -->
 													</ul>
 												</div>
 											</div>
 										  </div>
 										  
 										</div>
-										<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
 											<button type="button" class="btn btn-success">Get Details</button>
-										</div>
+										</div>-->
 									</div>
 									
 									
@@ -4099,6 +4099,8 @@ var globalImages;
 		getActivitiesDetails();
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
+		getSettingActivities();
+		getSettingEvents();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
 	  }else {
