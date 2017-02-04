@@ -24,6 +24,7 @@
 	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
+	<script src="dist/CreateAlert/editAlert.js" type="text/javascript"></script>      
 	<script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
 	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 	<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
@@ -165,13 +166,13 @@
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
                 <div class="panel-body bg_EF">
                 	<div class="row">
-                    	<div class="col-md-4 col-sm-6 col-xs-12">
+                    	<div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Select Alert Type</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId" onchange="updateStateDetails(this.value);">
                             	<option value="0">Select Alert</option>
                             </select>
                         </div>
-						<div class="col-md-4 col-sm-6 col-xs-12">
+						<div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Select Alert Impact</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertImpactId" name="alertVO.alertImpactId">
                             	<option value="0">Select Alert Impact</option>
@@ -206,7 +207,7 @@
 											 <option value="6">Village/Ward</option>
                             </select>
                         </div>
-                        <div class="col-md-2 col-sm-6 col-xs-12 stateShowCls1">
+                        <div class="col-md-3 col-sm-6 col-xs-12 stateShowCls1">
                         	<label>State</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
 											 <option value="0">Select State</option>            
@@ -214,13 +215,13 @@
 								 			 <option value="36"> Telangana </option>       
                             </select>
                         </div>
-                        <div class="col-md-2 col-sm-6 col-xs-12 locationsFilterCls distCls1">
+                        <div class="col-md-3 col-sm-6 col-xs-12 locationsFilterCls distCls1">
                         	<label>District</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
 											 <option value="0">Select District</option></select>
                             </select>
                         </div>
-                        <div class="col-md-2 col-sm-6 col-xs-12 locationsFilterCls constiCls1">
+                        <div class="col-md-3 col-sm-6 col-xs-12 locationsFilterCls constiCls1">
                         	<label>Constituency</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
 							<option value="0">Select Assembly</option>
@@ -269,7 +270,7 @@
                         </div>
 						
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="row membersBlock"></div>
+							<div class="row membersBlock"></div>  
 						</div>
 						
                         <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
@@ -315,6 +316,13 @@
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
                         	<h4 class="text-success text-capital">Upload Document linking to this alert</h4>
                         </div>
+					</div>  
+					<div class="row">
+						<div class="col-md-6 col-sm-12 col-xs-12 m_top10"> 
+							<div id="existDocId"></div>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-6 col-sm-12 col-xs-12 m_top10">    
 							<div class="fileBlockNew">
 								<div class=" uploadAttachmentDivCls  col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -336,16 +344,21 @@
 					
 					
 					<div class="row m_top10">
-
 						<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 						<div style="font-weight:bold;color:red;font-size:15px;" class="col-md-12" id="errorDiv1"></div>
 							<button type="button" class="btn btn-success btn-block btnNewCustom1" onclick="createAlert();" id="addThisalertId">CREATE ALERT</button>
 							<span class="m_top10" id="createAlertajaxImg"></span>
 						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+							<div id="deleteBtnId"></div>
+						</div>
 					</div>
                 </div>
 					<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
-				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
+					<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
+					<input type="hidden" class="form-control" id="fileIdList" value="" name="alertVO.fileIdList" />
+					<input type="hidden" class="form-control" id="hiddenAlertId" value="" name="alertVO.alertId" />
+					
 				</form>
             </div>
         </div>
@@ -375,7 +388,7 @@
 							<option value="PR">Public Representative</option>
 							<option value="committee">Party Committee</option>
 						</select>  
-					</div>
+					</div>       
 					
 					
 					 <div class="col-md-6 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">     
@@ -509,7 +522,27 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script type="text/javascript">
- 
+	var globalAlertId ="${alertId}";
+	if(globalAlertId > 0){
+		$("#hiddenAlertId").val(globalAlertId);        
+		$("#addThisalertId").html("EDIT ALERT");
+		var str = '';
+		str+='<button type="button" class="btn btn-success btn-block btnNewCustom1" onclick="deleteAlert();" id="deleteThisalertId">DELETE ALERT</button>';
+		str+='<span class="m_top10" id="deleteAlertajaxImg"></span>';
+		$("#deleteBtnId").html(str);       
+	}
+	function getAlertDtls(){        
+		var jsObj ={
+			alertId : globalAlertId
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertDetailsForEditAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildAlertPage(result);
+		});
+	}
 	$(document).on("click",".modalCloseAndShow",function(){
 		$("#myModalConformation").modal('hide');
 		$("#myModal").modal('show');
@@ -597,7 +630,12 @@
 				
 			}
 			if(btnAttr == "involve"){
-				if(jQuery.inArray(attrId, involvedCadreIds) == -1 ){
+				var ind = -1;
+				for(var k in involvedCadreIds){
+					if(parseInt(involvedCadreIds[k]) == parseInt(attrId))
+					ind = parseInt(k);  
+				}  
+				if(ind == -1 ){    
 					involvedCadreIds.push(attrId);	
 					$(".membersBlock").append(str);
 					$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
@@ -626,7 +664,12 @@
 					}, 3000);
 				}	
 			}else{
-				if(jQuery.inArray(attrId, assignCadreIds) == -1 ){
+				var ind = -1;
+				for(var k in assignCadreIds){
+					if(parseInt(assignCadreIds[k]) == parseInt(attrId))
+					ind = parseInt(k);  
+				}    
+				if(ind == -1 ){                                  
 					assignCadreIds.push(attrId);	
 					$(".assignedMembersBlock").append(str);
 					$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
@@ -677,7 +720,7 @@
 			}
 		 }
    });
- 
+ //swadhin
    function onLoad() {
 	   lang = $("input[name=language]:checked").val();
 		var options = {
@@ -746,7 +789,24 @@ function getCandidatesByName(){
          }	
 		 getCandidatesByName();
 		}
-		
+function deleteAlert(){
+	clearFields();  
+	var jobj = {
+			alertId : globalAlertId  
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'deleteAlertAction.action',  
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)} 
+		}).done(function(result){
+			if(result != null){    
+				$("#errorDiv1").html("Alert Deleted Successfully ").css("color","green");	
+						setTimeout(function(){ $("#errorDiv1").html("");
+				}, 1000);
+			}  
+		});
+}	
 function createAlert()
 {
   var  alertType=$("#alertTypeId").val();
@@ -946,7 +1006,11 @@ function createAlert()
 					 $("#errorDiv1").html("Alert Created Successfully ").css("color","green");	
 					 setTimeout(function(){ $("#errorDiv1").html("");
 					 }, 1000);
-					}
+					}else if(uploadResult.indexOf("success") !=-1){
+						$("#errorDiv1").html("Alert Edited Successfully ").css("color","green");	
+						setTimeout(function(){ $("#errorDiv1").html("");
+						}, 1000);
+					}  
 					clearFields();
 					disableByLevel(1);
 					return false;
@@ -962,6 +1026,9 @@ function createAlert()
 		$("#uploadFileId0").val("");
 		$("#extraClarificationUploadFileDiv li").each(function(){
 			$(this).remove();                   
+		});
+		$("#totalFileListId li").each(function(){
+			$(this).remove();                             
 		});
 		$("#apptmemberDetailsDiv").html("");
 		$(".membersBlock").html("");
@@ -1254,13 +1321,13 @@ function createAlert()
 
 		return text;
 	}
-	$(document).on("click",".cancelMemCls",function(){
+	$(document).on("click",".cancelMemCls",function(){   
 		var uniqueId = $(this).attr("attr_unique_id");
 		var category = $(this).attr("attr_category");
-		var cadreId = $(this).attr("id");  
+		var cadreId = $(this).attr("id");
 		if(category == "involve"){
-			var index = involvedCadreIds.indexOf(cadreId);
-			if(index > -1){
+			var index = involvedCadreIds.indexOf(cadreId);          
+			if(index > -1){  
 				involvedCadreIds.splice(index, 1);
 				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 			}
@@ -1273,6 +1340,7 @@ function createAlert()
 		}
 		$("#"+uniqueId).remove();  
 	});
+	getAlertDtls();
 </script>
 </body>
 </html>
