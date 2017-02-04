@@ -1,7 +1,8 @@
-disableByLevel('');
+//disableByLevel('');  
 
 function disableByLevel(index)
   {
+	  
 	  setDefault(index);	
 	  var levelId = $("#alertlevelId"+index).val();
 	  var districtId = $("#referdistrictId"+index).val();
@@ -115,7 +116,9 @@ function disableByLevel(index)
 				$(".panchayatCls"+index).show();
 		}
 		
+		
   }
+     
  
   function showHideBySearchType(){
 	 
@@ -563,7 +566,7 @@ function disableByLevel(index)
 			$("#advanceDesignationId").val(0);
 			$("#advanceDesignationId").dropkick('reset');
 			
-			$("#alertlevelId").val(0);	
+			$("#alertlevelId").val(0);     	
 			$("#alertlevelId").dropkick('reset');
 			
 			$("#stateId").val(0);	
@@ -1114,57 +1117,36 @@ function disableByLevel(index)
    }
 	
    $(document).on("click",".closeIcon",function(){
+	  
 	//$(this).parent().remove();
 	$(this).closest(".col-md-3").remove();
-	/* var id = 0;
-	//var id=$(this).attr("id");
-	 var retVal = confirm("Are you sure want to remove this refer ?");
-      //var retVal = $("#memberConfirmation").html("already added member to this alert");
-               if( retVal == true ){
-				    id=$(this).attr("id");
-					  $(".involveBlock").each(function(){
-						  alert(40);
-						var cadreId = $(this).attr("attr_cadreId") ; 
-							if(id == cadreId)
-							{
-								alert(890);
-								$("#involveBlockParent"+id).remove();
-							}
-					  }); 
-	  $(".candidatecls"+id).prop('checked', false); 
-	  $(".close"+id).prop('checked', false);
-	              removeParticularValue(globalSelectedMemberIdsArr,id);
-				  removeParticularValue(involvedCadreIds,id);
-				  $("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-            return true;
-               }
-               else{
-                  return false;
-               } */	
-			   
+
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
 	
-	if($(this).attr("btn-type") == "involve")
-	{
-	//involvedCadreIds.pop(id);	
-	
-		//deleting element from array
-		var i = $.inArray(id,involvedCadreIds)
+	if($(this).attr("btn-type") == "involve"){
+		//var i = $.inArray(id,involvedCadreIds);
+		//var i = involvedCadreIds.indexOf(id);  
+		var i = -1;
+		for(var k in involvedCadreIds){
+			if(parseInt(involvedCadreIds[k]) == parseInt(id))
+				i = parseInt(k);
+		}          
 		if(i>=0){
-			involvedCadreIds.splice(i, 1);
-		}
-	
-	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');	
-	}
-	else{
-		//assignCadreIds.pop(id);
-
+			involvedCadreIds.splice(i, 1);   
+		} 
+		$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');	
+	}else{
 		//deleting element from array
-		var i = $.inArray(id,assignCadreIds)
+		//var i = $.inArray(id,assignCadreIds)
+		var i = -1;
+		for(var k in assignCadreIds){
+			if(parseInt(assignCadreIds[k]) == parseInt(id))
+				i = parseInt(k);
+		} 
 		if(i>=0){
-			assignCadreIds.splice(i, 1);
+			assignCadreIds.splice(i,1);    
 		}
 		$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');	
 	}
