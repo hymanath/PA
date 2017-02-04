@@ -1761,7 +1761,7 @@ public class ToursService implements IToursService {
 	}
 	
 	//View For Submitted Leaders
-	public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId){
+	/*public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId){
 		
 		 List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 		
@@ -1826,7 +1826,7 @@ public class ToursService implements IToursService {
 				  }
 			  }		
 			
-			  /*List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsOfCandidates(fromDate,toDate,candidateIds,monthyearIds);
+			  List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsOfCandidates(fromDate,toDate,candidateIds,monthyearIds);
 			  
 			  if(documentsList !=null && documentsList.size()>0){
 				  for (Object[] objects : documentsList) {					
@@ -1835,7 +1835,7 @@ public class ToursService implements IToursService {
 						  VO.setCount(objects[1] !=null ? (Long)objects[1]:0l);
 					  }					  					  
 				}
-			  }*/
+			  }
 			  if(submittedCandidatesMap !=null && submittedCandidatesMap.size()>0){
 				  resultList = new ArrayList<ToursBasicVO>(submittedCandidatesMap.values());
 			  }
@@ -1857,8 +1857,93 @@ public class ToursService implements IToursService {
 		}
 		return resultList;
 		
-	}
+	}*/
 	 
+	
+	/*'
+	 * Author:santosh 
+	 */
+	
+	public List<ToursBasicVO> getMemberDetailsByDesignationWise(String fromDateStr,String toDateStr,Long designationId,Long candidateId){
+		
+		   List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
+		 
+		    Map<String,String> categoryIdNameMap = new HashMap<String, String>();
+	    	Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
+	     	Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date toDate=null;
+			Date fromDate=null;
+		try{
+			
+			  List<Long> designationIds = new ArrayList<Long>();			  
+			  designationIds.add(designationId);
+			  
+			//candidate,categoryList
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+				 fromDate = sdf.parse(fromDateStr);
+			 }
+	   		//Get month year in string format based on fromDate and toDate
+	   		 List<String> monthYearList = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
+	   		 //Get month year ids based on month year 
+	   		 List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYearList);
+   		 
+   		   if(monthyearIds != null && monthyearIds.size() > 0){
+   			 	 List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourCategory",designationIds);
+   			     setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+	    		 List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds,"tourType",designationIds);
+	    		 setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap,categoryIdNameMap,"tourType");
+	        }
+				  
+			
+   		 if(monthyearIds != null && monthyearIds.size() > 0){
+			 List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourCategory",monthyearIds,designationIds,null);
+    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
+    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,null);
+    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
+    	 }
+		 //calculate category wise complaice percentage
+		   calculateCategoryWiseComplaince(candiateDtlsMap);
+		
+			  Set<Long> tdpCadreIds = new HashSet<Long>(0);
+			
+			  if(candiateDtlsMap != null && candiateDtlsMap.size()>0){
+				for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+					if(designationEntry.getValue() != null && designationEntry.getValue().size() > 0){
+						for(Entry<Long, ToursBasicVO> candiateEntry:designationEntry.getValue().entrySet()){
+							tdpCadreIds.add(candiateEntry.getValue().getTdpCadreId());
+						}
+					}
+				}
+			  }
+			  if(candiateDtlsMap != null && candiateDtlsMap.size() > 0){
+				  for(Entry<Long,Map<Long,ToursBasicVO>> designationEntry:candiateDtlsMap.entrySet()){
+					  resultList.addAll(designationEntry.getValue().values());  
+				  }
+			  }
+			  if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+				  List<Object[]> documentsList = selfAppraisalCandidateDocumentDAO.getDocumentsbyTdpCadreId(tdpCadreIds,monthyearIds);
+				  if(resultList != null && resultList.size() > 0){
+					  if(documentsList != null && documentsList.size() > 0){
+						  for (Object[] objects : documentsList) {
+							  for (ToursBasicVO resultVo : resultList) {
+								   resultVo = getMatchedVOByTdpCadreId(resultList,(Long)objects[0]);
+								if(resultVo != null){
+									resultVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
+								}
+							}
+						}
+					  }
+				  }  
+			  }
+		}catch(Exception e){
+			LOG.error("Exception raised at getMemberDetailsByDesignationWise in ToursService Class ", e);
+		}
+		return resultList;
+		
+	}
+	
 	 public List<Date> getBetWeenMonthsOfDates(Date fromDate,Date toDate){
 		 List<Date> finalDates = new ArrayList<Date>();
 		 try{				
@@ -2038,7 +2123,7 @@ public class ToursService implements IToursService {
 	    	Map<Long,ToursBasicVO> leadersDetailsMap = new HashMap<Long, ToursBasicVO>();
 	    	Map<String,String> categoryIdNameMap = new HashMap<String, String>();
 	    	Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String,List<ToursBasicVO>>>(0);
-	    	 Map<Long,Map<String,ToursBasicVO>> designationMonthTarget = new HashMap<Long, Map<String,ToursBasicVO>>(0);
+	        Map<Long,Map<String,ToursBasicVO>> designationMonthTarget = new HashMap<Long, Map<String,ToursBasicVO>>(0);
 	    	Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long,ToursBasicVO>>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date toDate=null;
@@ -2048,8 +2133,6 @@ public class ToursService implements IToursService {
 					 toDate = sdf.parse(toDateStr);
 					 fromDate = sdf.parse(fromDateStr);
 				 }
-	    		// int noOfMonth = getMonthsDifference(fromDate, toDate);
-	    		 
 	    		//Get month year in string format based on fromDate and toDate
 	    		 List<String> monthYearList = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
 	    		 //Get month year ids based on month year 
@@ -2267,6 +2350,8 @@ public class ToursService implements IToursService {
 					    	  if(categoryList != null && categoryList.size() > 0){
 					    		  candiateVO.setSubList3(categoryList);
 					    	  }
+					    	  candiateVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					    	  candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
 					    	  candiateMap.put(candiateVO.getId(), candiateVO);
 					      }
 					        String idStr = commonMethodsUtilService.getStringValueForObject(param[3]);//categoryId or tourTypeId
