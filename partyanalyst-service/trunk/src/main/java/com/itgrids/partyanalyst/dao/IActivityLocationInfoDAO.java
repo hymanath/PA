@@ -50,4 +50,7 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getLocationWiseTotalActivitiesCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> activitiesList);
 	public List<Object[]> getLocationWiseEventInviteedCntBasedOnUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> activitiesIdsList,String locationType);
 	public List<Object[]> getLocationWiseEventInviteeAttendedCntBasedOnUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> actiovitiesIds,String locationType);
+	public List<Object[]> getTotalCountsForScopeIds(List<Long> activityScopeIds,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues);
+	public List<Object[]> getActivityTotalCntBasedOnUserAccesslevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long activityId,List<Long> activityLevelIds,Date fromDate,Date toDate);
+	public List<Object[]> activitiesDistrictWiseCount(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,Long stateId,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 }
