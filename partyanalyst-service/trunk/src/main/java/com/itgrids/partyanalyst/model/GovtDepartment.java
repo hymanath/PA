@@ -20,6 +20,8 @@ public class GovtDepartment extends BaseModel implements Serializable{
 	private Long govtDepartmentId;
 	private String departmentName;
 	
+	private Long cnpGovtDepartmentId;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "govt_department_id", unique = true, nullable = false)
@@ -37,4 +39,14 @@ public class GovtDepartment extends BaseModel implements Serializable{
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
+	
+	@Column(name = "cnp_govt_department_id")
+	public Long getCnpGovtDepartmentId() {
+		return cnpGovtDepartmentId;
+	}
+	public void setCnpGovtDepartmentId(Long cnpGovtDepartmentId) {
+		this.cnpGovtDepartmentId = cnpGovtDepartmentId;
+	}
+	
+	
 }
