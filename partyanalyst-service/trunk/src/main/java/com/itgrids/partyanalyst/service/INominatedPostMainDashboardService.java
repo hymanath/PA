@@ -31,5 +31,6 @@ public interface INominatedPostMainDashboardService {
 	 public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
              Long ageRangeTypeId,Long deptmentId,Long corptionId,
              String genderType,List<Long> postStatusIds,Long locationId,String type);
+	 public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType);
 
 }
