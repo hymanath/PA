@@ -24,6 +24,7 @@ public class AlertVO {
 	
 	private List<IdNameVO> idNamesList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> assignList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> docList = new ArrayList<IdNameVO>(0);
 	
 	private Long tdpCadreId;
 	private Long id;
@@ -46,7 +47,7 @@ public class AlertVO {
 	private Long alertId;
 	private List<String> filePthList = new ArrayList<String>(0);
 	private String clarificationRequired;
-	
+	private String fileIdList;
 	
 	public Long getNoOfDays() {
 		return noOfDays;
@@ -272,11 +273,23 @@ public class AlertVO {
 	public void setFilePthList(List<String> filePthList) {
 		this.filePthList = filePthList;
 	}
-	public String getClarificationRequired() {
+	public String getClarificationRequired() {  
 		return clarificationRequired;
 	}
 	public void setClarificationRequired(String clarificationRequired) {
 		this.clarificationRequired = clarificationRequired;
+	}
+	public List<IdNameVO> getDocList() {
+		return docList;
+	}
+	public void setDocList(List<IdNameVO> docList) {
+		this.docList = docList;
+	}
+	public String getFileIdList() {
+		return fileIdList;
+	}
+	public void setFileIdList(String fileIdList) {
+		this.fileIdList = fileIdList;
 	}
 	
 }
