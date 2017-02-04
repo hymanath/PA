@@ -1160,6 +1160,7 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentAssign</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentComment</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentDocument</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentTracking</value>
 	                  
 	                  <!-- Command Control Alerts End -->
 	              </list>
