@@ -18,6 +18,9 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 
 
 <style>
@@ -217,6 +220,13 @@ textarea { resize:none; }
 }
 .uploadCssDiv {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
 .cloneFileCls {padding: 10px; margin-top: 10px; background: rgb(229, 229, 229) none repeat scroll 0% 0%;text-align:left}
+
+.updatedCountStyle{
+	font-weight:bold;
+	color:green;
+	text-decoration: underline;
+	cursor: pointer;
+	}
 </style>
 
 <!-- YUI Dependency files (Start) -->
@@ -366,7 +376,7 @@ textarea { resize:none; }
 									<tr>
 										<td id="totalMaybeCount">0</td>
 										<td id="pendingCount">0</td>
-										<td id="updatedCount">0</td>
+										<td> <span  class="updatedCountStyle" id="updatedCount">0</span></td>
 										<td id="thirdPartyYesCount">0</td>
 										<td id="thirdPartyNoCount">0</td>
 										<td id="documentsCount">0</td>
@@ -449,12 +459,12 @@ textarea { resize:none; }
 	</form>
   </div>
 </div>
-<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+<div class="modal fade" id="conflictsModalId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Comments</h4>
+        <h4 class="modal-title">Updated Details</h4>
       </div>
       <div class="modal-body">
         <div id="commentsBlock"></div>
@@ -463,6 +473,22 @@ textarea { resize:none; }
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<!--<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:60%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mdlHeadingId"></h4>
+      </div>
+      <div class="modal-body">
+        <div id="commentsBlock"></div>
+        <!--<div id="commentsDivId"></div>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>-->
+
 <!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
@@ -473,6 +499,7 @@ textarea { resize:none; }
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 
@@ -2086,6 +2113,125 @@ function getinsertDataInToPartyMeetingStatus(){
 			
 		});	
 	}
+	
+$(document).on("click","#updatedCount",function(){
+	$("#conflictsModalId").modal('show');
+		$("#commentsBlock").html('');
+		
+	    var dates=$("#datePickerBlockId").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates != undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		
+		var jsObj ={ 
+		             levelId : 4,
+					 startDate : fromDateStr,
+					 endDate : toDateStr
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getUpdationDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0)
+				buildCommentsMeetingDetailsAction(result);
+			else
+				$("#commentsBlock").html("No Data Available.");
+		});
+	
+});
+
+function buildCommentsMeetingDetailsAction(result)
+{
+	
+	var str='';
+	str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+	for(var i in result){
+		
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+			str+='<div class="row">';
+				str+='<div class="col-md-8 col-sm-12 col-xs-8">';
+					str+='<h4 class="panel-title">';
+					str+='<a role="button" class="meetingsConflictsCls" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne" attr_div_id="meetingDetailsDivId'+i+'" attr_meeting_id="'+result[i].partyMeetingId+'">'+result[i].partyMeetingName+' </a></h4>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-sm-12 col-xs-4">';
+					str+='<span class="pull-right"><small> Created By : </small>'+result[i].name+'</span>';
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+			  str+='<div class="panel-body">';
+				str+='<div id="meetingDetailsDivId'+i+'"></div>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	str+='</div>';
+	$("#commentsBlock").html(str);
+
+	
+}
+
+$(document).on("click",".meetingsConflictsCls",function(){
+	var meetingId = $(this).attr("attr_meeting_id");
+	var divId = $(this).attr("attr_div_id");
+	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
+	//$('.documentSlickApply').slick('unslick');
+	var jsObj ={ 
+		partyMeetingId : meetingId
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getDocumentListAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildDocumentListDetails(result,divId);
+	});
+});
+
+function buildDocumentListDetails(result,divId){
+	var str='';
+	if(result !=null && result.partyMeetingVOList !=null && result.partyMeetingVOList.length>0){
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			for(var i in result.partyMeetingVOList){
+				str+='<div class="arrow_box_left">';
+			if(result.partyMeetingVOList[i].meetingLevel != null && result.partyMeetingVOList[i].meetingLevel.length > 0){
+				str+='<span class="m_0"><strong>UPDATED BY:</strong> '+result.partyMeetingVOList[i].subName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <strong>MOBILE NO:</strong>'+result.partyMeetingVOList[i].mobileNo+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MEMBERSHIP NO:<strong style="color:green">'+result.partyMeetingVOList[i].meetingLevel+'</strong></br> <strong>Remarks:&nbsp;</strong> '+result.partyMeetingVOList[i].memberStatus+'<span class="pull-right"><strong> TIME:</strong> '+result.partyMeetingVOList[i].insertedTime+'</span></span>';
+			}else{
+				str+='<span class="m_0"><strong>UPDATED BY:</strong> '+result.partyMeetingVOList[i].subName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <strong>MOBILE NO:</strong>'+result.partyMeetingVOList[i].mobileNo+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br> <strong>Remarks:&nbsp;</strong> '+result.partyMeetingVOList[i].memberStatus+'<span class="pull-right"><strong> TIME:</strong> '+result.partyMeetingVOList[i].insertedTime+'</span></span>';
+			}
+				str+='</div>';
+				str+='<ul class="list-inline documentSlickApply1">';
+				if(result.partyMeetingVOList[i].docmentsList !=null && result.partyMeetingVOList[i].docmentsList.length>0){
+					for(var j in result.partyMeetingVOList[i].docmentsList){
+						
+						str+='<li><img class="image-responsive thumbnail" src="https://www.mytdp.com/'+result.partyMeetingVOList[i].docmentsList[j]+'" style="width:800px;height:400px;"></li>';
+												
+					}
+				}
+				str+='</ul>';
+			}
+		str+='</div>';
+		$("#"+divId).html(str);
+		$(".documentSlickApply1").slick({
+				 slide: 'li',
+				 slidesToShow: 1,
+				 slidesToScroll: 1,
+				 infinite: false,
+				 variableWidth: true
+			});
+	}
+	
+}
+
 </script>
 </body>
 </html>
