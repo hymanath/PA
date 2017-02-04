@@ -22,4 +22,10 @@ public class AlertDocumentDAO extends GenericDaoHibernate<AlertDocument, Long>
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
+	public int deleteDocument(Long docId){
+		Query query = getSession().createQuery(" delete from AlertDocument alertDocument where alertDocument.alertDocumentId = :docId");
+		query.setParameter("docId", docId);
+		return query.executeUpdate();
+	}
+	
 }
