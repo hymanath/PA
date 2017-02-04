@@ -80,6 +80,7 @@ public interface IAlertService {
     public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);
     public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId);
     public List<AlertCoreDashBoardVO> getAlertDetailsByAlertType(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId,Long activityMemberId);
+    public AlertVO getAlertDetailsForEdit(Long alertId);
     
     public List<AlertVO> getTotalAlertGroupByStatusForCentralMembers(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId,Long tdpCadreId);
     public List<AlertVO> getTotalAlertGroupByStatusThenCategoryForCentralMembers(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long tdpCadreId);
@@ -87,4 +88,5 @@ public interface IAlertService {
     public List<AlertDataVO> getLocationLevelWiseAlertsDataForCentralMembers(Long userId,AlertInputVO inputVO);
     public List<AlertDataVO> getAllAlertsWithoutFilterForCentralMembers(Long userId,AlertInputVO inputVO);
     public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
+    public String deleteAlert(Long alertId);
 }
