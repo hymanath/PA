@@ -398,7 +398,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 					}
 				}
 			}
-			status = alertService.createAlert(alertVO,regVo.getRegistrationID(),mapfiles);
+			if(alertVO.getAlertId() != null && alertVO.getAlertId().longValue() > 0L){
+				status = alertService. editAlert(alertVO,regVo.getRegistrationID(),mapfiles);
+			}else{
+				status = alertService.createAlert(alertVO,regVo.getRegistrationID(),mapfiles);
+			}
+			
 			inputStream = new StringBufferInputStream(status);
 			
 		}
@@ -1566,34 +1571,26 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	public String editAlertAction()
-	{
+	public String getAlertDetailsForEdit(){
 		try{
 			session = request.getSession();
-			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			Map<File,String> mapfiles = new HashMap<File,String>();
-			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
-			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
-			int i = 0;
-			while(fileParams.hasMoreElements()){
-				String key = fileParams.nextElement();
-				File[] files = multiPartRequestWrapper.getFiles(key);
-				if(files != null && files.length > 0){
-					for(File f : files){
-						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
-						//fileName = StringEscapeUtils.escapeJava(fileName);
-						mapfiles.put(f,fileName);  
-						i++;
-					}
-				}
-			}
-			status = alertService.editAlert(alertVO,regVo.getRegistrationID(),mapfiles);
-			inputStream = new StringBufferInputStream(status);
-			
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			alertVO = alertService.getAlertDetailsForEdit(alertId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
-		catch (Exception e) {
-			LOG.error("Exception rised in raiseComplaint",e);
+		return Action.SUCCESS;
+	}
+	public String deleteAlert(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			status = alertService.deleteAlert(alertId);
+		}catch(Exception e){
+			LOG.error("Exception occured in deleteAlert() of CreateAlertAction",e);
 		}
-		return Action.SUCCESS;	
+		return Action.SUCCESS;
 	}
 }
