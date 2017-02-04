@@ -15,9 +15,11 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 	}
 	
 	public List<Object[]> getAllCommitteeRoles(Long committeeId){
-		//0committeeRoleid,1role name,2max nos
-		Query query = getSession().createQuery("select model.tdpCommitteeRoleId,model.tdpRoles.role,model.maxMembers from TdpCommitteeRole model where " +
-				" model.tdpCommittee.tdpCommitteeId =:committeeId order by model.tdpRoles.order");
+		Query query = getSession().createQuery("" +
+		" select model.tdpCommitteeRoleId, model.tdpRoles.role, model.maxMembers , model.roleType , model.minProposeMembers , model.maxProposeMembers " +
+		" from   TdpCommitteeRole model " +
+		" where  model.tdpCommittee.tdpCommitteeId =:committeeId " +
+		" order  by model.tdpRoles.order");
 		query.setParameter("committeeId", committeeId);
 		return query.list();
 	}
