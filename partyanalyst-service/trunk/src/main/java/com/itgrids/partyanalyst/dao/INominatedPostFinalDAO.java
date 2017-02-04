@@ -65,4 +65,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId);
 	 public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 	 public List<Object[]> getPositionDetaislOfEveryApplicationnStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);
+	 public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType);
 }

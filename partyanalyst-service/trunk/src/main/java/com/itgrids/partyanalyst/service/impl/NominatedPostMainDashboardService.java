@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -50,7 +51,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
-	
+	private IBoardLevelDAO boardLevelDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -60,6 +61,17 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private 
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	public ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+
+	
+	public IBoardLevelDAO getBoardLevelDAO() {
+		return boardLevelDAO;
+	}
+
+
+	public void setBoardLevelDAO(IBoardLevelDAO boardLevelDAO) {
+		this.boardLevelDAO = boardLevelDAO;
+	}
+
 
 	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
 		return tdpCadreCandidateDAO;
@@ -1068,5 +1080,108 @@ public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteSt
 		LOG.error("Exception occured into NominatedPostMainDashboardervice",e);
 	}
 	return finalList;
+}
+
+public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType){
+	List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	try{
+		List<Object[]> locations =  null;
+		if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+			locations = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+		}else if(searchType != null && searchType.equalsIgnoreCase("district")){
+			locations = districtDAO.getDistrictListBystateId(stateId);
+		}
+		returnList = setObjectDataToVO(returnList,locations,"locations");
+		
+		List<Object[]> locatnLvlCounts = nominatedPostFinalDAO.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType);
+		returnList = setObjectDataToVO(returnList,locatnLvlCounts,"counts");
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in getLocationAndBoardLevelWisePostsData()", e);
+	}
+	return returnList;
+	
+}
+
+public List<IdAndNameVO> setObjectDataToVO(List<IdAndNameVO> returnList,List<Object[]> locations,String type){
+	
+	try{
+		if(type != null && type.equalsIgnoreCase("locations")){
+		if(commonMethodsUtilService.isListOrSetValid(locations)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdAndNameVO>) setterAndGetterUtilService.setValuesToVO(locations, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdAndNameVO");
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(IdAndNameVO  vo :returnList){
+				vo.setDistList(getBoardLevels());
+			}
+		}
+		}else if(type != null && type.equalsIgnoreCase("counts")){
+			if(commonMethodsUtilService.isListOrSetValid(locations)){
+				for(Object[]  obj :locations){
+					IdAndNameVO locationVO = (IdAndNameVO)setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", commonMethodsUtilService.getStringValueForObject(obj[0]));
+					if(locationVO != null){
+						if(obj[2] != null && (Long)obj[2] == 5l || (Long)obj[2] == 6l){
+							IdAndNameVO levelVO = (IdAndNameVO)setterAndGetterUtilService.getMatchedVOfromList(locationVO.getDistList(), "id", "5");
+								if(levelVO != null){
+									levelVO.setTsTotal(levelVO.getTsTotal()+commonMethodsUtilService.getLongValueForObject(obj[4]));
+								}
+						}else if(obj[2] != null && (Long)obj[2] == 7l || (Long)obj[2] == 8l){
+							IdAndNameVO levelVO = (IdAndNameVO)setterAndGetterUtilService.getMatchedVOfromList(locationVO.getDistList(), "id", "6");
+								if(levelVO != null){
+									levelVO.setTsTotal(levelVO.getTsTotal()+commonMethodsUtilService.getLongValueForObject(obj[4]));
+								}
+						}else{
+							IdAndNameVO levelVO = (IdAndNameVO)setterAndGetterUtilService.getMatchedVOfromList(locationVO.getDistList(), "id", commonMethodsUtilService.getStringValueForObject(obj[2]));
+								if(levelVO != null){
+									levelVO.setTsTotal(levelVO.getTsTotal()+commonMethodsUtilService.getLongValueForObject(obj[4]));
+								}
+						}
+					}
+				}
+			}
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in setObjectDataToVO()", e);
+	}
+	return returnList;
+}
+/**
+ * @Author  Hyma
+ * @Version NominatedPostProfileService.java  July 13, 2016 05:30:00 PM 
+ * @return List<IdNameVO>
+ * description  { Getting All BoardLevels From Database }
+ */
+public List<IdAndNameVO> getBoardLevels(){
+	List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	try{
+	//List<Object[]> list = boardLevelDAO.getBoardLevels();
+		List<Object[]> list = new ArrayList<Object[]>();
+		//list = [{11,"Central"}{21,"State"}{31,"District"}{41,"Assembly"}{51,"Mandal/Muncipality/Corporation"}{51,"Village/Ward"}];
+		Object[] objArr1 = {1,"Central"};
+		Object[] objArr2 = {2,"State"};
+		Object[] objArr3 = {3,"District"};
+		Object[] objArr4 = {4,"Assembly"};
+		Object[] objArr5 = {5,"Mandal/Muncipality/Corporation"};
+		Object[] objArr6 = {6,"Village/Ward"};
+		list.add(objArr1);
+		list.add(objArr2);
+		list.add(objArr3);
+		list.add(objArr4);
+		list.add(objArr5);
+		list.add(objArr6);
+		
+	if(commonMethodsUtilService.isListOrSetValid(list)){
+		String[] setterPropertiesList = {"id","name"};
+		returnList = (List<IdAndNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdAndNameVO");
+	}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in getBoardLevels()", e);
+	}
+	return returnList;
 }
 }
