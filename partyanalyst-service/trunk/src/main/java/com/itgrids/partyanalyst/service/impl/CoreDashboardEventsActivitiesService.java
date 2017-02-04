@@ -1051,7 +1051,8 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 				    		 
 				    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
 				    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
-				    		 resultVO.getDistrictList().addAll(eventDtlsMap.values());
+				    		// resultVO.getDistrictList().addAll(eventDtlsMap.values());
+				    		 resultVO.getConstituencyList().addAll(eventDtlsMap.values());
 				    		 eventDtlsMap.clear();
 				    	 
 				    	 }
