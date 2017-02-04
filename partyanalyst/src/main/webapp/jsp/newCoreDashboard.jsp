@@ -615,14 +615,14 @@
 								<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
 								  <div class="tab-content navTabsSettingsContent">
 									<div role="tabpanel" class="tab-pane active" id="Editions">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS </h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl" id="newsPapersUlId"></ul>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane" id="impactScope">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS </h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl">
@@ -3783,22 +3783,10 @@
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModelActivityhead"> <small class="text-capitalize" id="smallHeadngId"></small></h4>
-					<label class="radio-inline pull-right">
-					<input type="radio" name="radioBtn" class="radioBtnCls" value="All"/>All
-					</label>
-					<label class="radio-inline pull-right">
-						<input type="radio" name="radioBtn" class="radioBtnCls" value="Conducted" checked />Conducted
-					</label>
-					<label class="radio-inline pull-right">
-						<input type="radio" name="radioBtn" class="radioBtnCls" value="NotConducted"/>Not Conducted
-					</label>
-      </div>
-       <div class="modal-body">
-		<div class="row">
-			<div class="col-md-12 col-xs-12 col-sm-12">
-				<div style="background-color:#CCC;">
-					<div class="row">
+        <h4 class="modal-title text-capital" id="myModelActivityhead"> <small class="" id="smallHeadngId" ></small></h4>
+			<div class="row m_top10">
+			<div style="background-color:#E9E9E9;">
+				<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-3" style="margin-left: 15px;margin-bottom: 25px;">
 							<label>District</label>
 							<select class="form-control districtCls" id="districtId" >
@@ -3822,14 +3810,30 @@
 						<div class="col-md-2 col-xs-12 col-sm-3">
 							<button type="button" class="btn btn-success m_top20 submitCls">SUBMIT</button>
 						</div>
-					</div>
 				</div>
 			</div>
+			</div>
 		</div>
+       <div class="modal-body">
+			
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
-				<h4><span id="locatnNamId"></span>
-				</h4>
+				<div class="col-md-8 col-xs-12 col-sm-6">
+					<h4><span id="locatnNamId" class="text-capital"></span></h4>
+				</div>
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<!--<label class="radio-inline ">
+					<input type="radio" name="radioBtn" class="radioBtnCls" value="All"/>All
+					</label>-->
+					<label class="radio-inline ">
+						<input type="radio" name="radioBtn" class="radioBtnCls" value="Conducted" checked />Conducted
+					</label>
+					<label class="radio-inline ">
+						<input type="radio" name="radioBtn" class="radioBtnCls" value="NotConducted"/>Not Conducted
+					</label>
+				</div>
+				
+					
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="table-responsive" id="activityId">  
