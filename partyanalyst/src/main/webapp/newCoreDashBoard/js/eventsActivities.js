@@ -1964,7 +1964,7 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 		loctnNm =$('#districtId option:selected').text();
 	}
 	//$("#activityId").html('<div style="text-align: center" ><img src="./images/Loading-data.gif" /></div>');
-	
+	$("#myModelActivityId").modal('show');
 	//$("#activityId").html("");
 	var radioVal = $('input[name=radioBtn]:checked').val();
 	
@@ -4033,7 +4033,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 					str+='<th> %  </th>';
 					str+='<th>NOT CONDUCTED </th>';
 					str+='<th> %  </th>';
-					str+='<th> MAYBE </th>';
+				//	str+='<th> MAYBE </th>';
 				str+'=</thead>';
 		str+='<tbody>';
 		var rank=1;
@@ -4062,7 +4062,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 			str+='<td>'+result[i].conductedPerc+'</td>';
 			str+='<td>'+result[i].notCondctedActiesCount+'</td>';
 			str+='<td>'+result[i].notConductedPerc+'</td>';
-			str+='<td> 0 </td>';
+			//str+='<td> 0 </td>';
 		 str+='</tr>';
 		str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelEventMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='<td colspan="8"  id="subChildLevelEventMemDtslId'+result[i].userTypeId+''+i+'">';
