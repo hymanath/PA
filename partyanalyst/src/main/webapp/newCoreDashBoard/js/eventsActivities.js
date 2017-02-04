@@ -2083,9 +2083,9 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	str +='<td>'+result[i].inviteeAttendedCount+'</td>';
 	str +='<td>'+result[i].imagesCovered+'</td>';
 	str +='<td>'+result[i].totalImages;
-	if(result[i].totalImages > 0){
+	/* if(result[i].totalImages > 0){
 		str +='<i class="getPopUpImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].id+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_search_type="'+searchType+'"title="View Images"></i>';
-	}
+	} */
 	str +='</td>';
 	  str +='</tr>';
   }
