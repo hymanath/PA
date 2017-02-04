@@ -41,7 +41,8 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long count=0l;
 	private List<Long> totalCountList;
 	private Long constituencyId;
-	
+	private String status;
+	private String committeeMemberStatus;
 	
 	public String getMandalName() {
 		return mandalName;
@@ -356,6 +357,22 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCommitteeMemberStatus() {
+		return committeeMemberStatus;
+	}
+
+	public void setCommitteeMemberStatus(String committeeMemberStatus) {
+		this.committeeMemberStatus = committeeMemberStatus;
 	}
 	
 	
