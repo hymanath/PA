@@ -1891,7 +1891,10 @@ function buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate){
 			}
 		  str+='</tbody>';
 		str+='</table>';
-		str1+='<h4 class="panel-title m_top20">Uploaded Attachments</h4>';
+		if(result[0].toursVoList !=null && result[0].toursVoList.length>0){
+			str1+='<h4 class="panel-title m_top20" style="margin-top:20px !important">Uploaded Attachments</h4>';
+		}
+		
 		str1+='<div class="m_top10">';
 			str1+='<table class="table tableAttachments">';
 			for(var j in result[0].toursVoList){
