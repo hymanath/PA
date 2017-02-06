@@ -257,12 +257,15 @@
 				<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
 					<div class="row">
 						<div class="col-md-4 col-sm-4 col-xs-4 form-group"> <!--  value="${cadreCommitteeVO.DOB}"-->
+							<label>Date Of Birth</label>
 							<input type="text" class="form-control editClass datesCls" id="dateOfBirth" value="${cadreCommitteeVO.DOB}" readOnly="true" style="cursor:text;" name="cadreRegistrationVO.dobStr" disabled>
 						</div>
 						<div class="col-md-4  col-sm-4 col-xs-4 form-group">
+							<label>Age</label>
 							<input type="number" id="ageId" class="form-control  editClass" value="${cadreCommitteeVO.age}" placeholder="Age: 33" name="cadreRegistrationVO.age" disabled>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 form-group">
+							<label>Gender</label>
 							<select id="genderDetailsId" class="form-control  editClass"  name="cadreRegistrationVO.gender" disabled> 
 							<option value="0"> Select Gender </option>
 								<option value="M"> Male </option>
@@ -281,9 +284,11 @@
 				</div>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+					<label>Voter Id</label>
 					<input type="text" id="voterCardNoId" class="form-control "  value="${cadreCommitteeVO.voterCardNo}" placeholder="Voter ID:" name="cadreRegistrationVO.voterCardNumber" disabled>				
 				</div>
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
+					<label>Aadhar No</label>
 					<input type="text" id="adhaarNoId" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:"  name="cadreRegistrationVO.candidateAadherNo" disabled>
 				</div>
 
@@ -295,20 +300,23 @@
 				</div>
 				
 				<div class="row">
-					<div class="col-md-8 col-md-offset-2  col-sm-12 col-xs-12 form-group">
-						<div class="col-md-4   col-sm-4 col-xs-4 form-group">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+						<div class="col-md-3   col-sm-4 col-xs-4 form-group">
+							<label>Mobile No</label>
 							<input type="text" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
 						</div>				
 				
-						<div class="col-md-4  col-sm-4 col-xs-4 form-group" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); text-transform: uppercase; line-height: 11px; border-radius: 4px; font-size: 11px; padding: 4px 8px;">
-							Is your mobile a smart Phone? 
+						<div class="col-md-5  col-sm-4 col-xs-4 form-group" >
+							<label>Mobile Type</label>
+							<div style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); text-transform: uppercase; line-height: 11px; border-radius: 4px; font-size: 11px; padding: 4px 8px;">Is your mobile a smart Phone? 
 								<a class="btn btn-success btn-xs" onclick="javascript:{changeSmartPhoneStatus(1);}"><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(1)" id="yesRadioId"  checked="checked">yes</a>  
 								<a class="btn btn-danger btn-xs" onclick="javascript:{changeSmartPhoneStatus(2);}" ><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(2)"  id="noRadioId">No</a> 
 								<input type="hidden" id="smartPhoneId" class="form-control editClass mobileType"  value="${cadreCommitteeVO.isSmartPhone}" name="cadreRegistrationVO.isSmartPhone" >
-							
+							</div>
 						</div>	
 						
 						<div class="col-md-4   col-sm-4 col-xs-4 form-group">
+							<label>Caste</label>
 							<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:100%;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
 						</div>
 					</div>
@@ -321,14 +329,17 @@
 					</span>
 				</div>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
+					<label>Address</label>
 					<input type="text" id="addressId" class="form-control editClass"  value="${cadreCommitteeVO.address}" placeholder="Address: "  name="cadreRegistrationVO.street" disabled>
 				</div>
 				<span class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="addressIdError"></span>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+					<label>Education</label>
 					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
 				</div>
 				<div class="col-md-4 col-sm-6 col-xs-6 form-group">
+					<label>Occupation</label>
 					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
 				</div>
 				<div class="row">
@@ -337,12 +348,13 @@
 				</div>
 				
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
+					<label>Email</label>
 					<input type="text" id="emailIdDiv" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " name="cadreRegistrationVO.emailId" disabled>
 				</div>
 				<span class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="emailIdDivError"></span>
 				
-				<div>
-			
+				<!--
+				 <div>
 					<div class="col-md-3 col-md-offset-2  col-sm-6 col-xs-6 form-group">
 						<div class="input-group">
 						  <div><input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${cadreCommitteeVO.preEnrollNo}" style=""  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input></div>
@@ -352,13 +364,14 @@
 						</div>
 					</div>
 					<div class="col-md-4 col-sm-6 col-xs-6 form-group">
-						<!--<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>-->
+						<!--<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">LookUp For EnrollmentNo</button>
 					</div>
 					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
 						<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${cadreCommitteeVO.preEnrollNo}" style="width:260px;" ></input>
 					</div>						
-				</div>	
+				</div>	 -->
+				
 		</div>
 		
 		<div class="row m_top20">
