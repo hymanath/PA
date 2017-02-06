@@ -2117,6 +2117,13 @@ function getLocationAndBoardLevelWisePostsData(){
  function buildLocationAndBoardLevelWisePostsData(result,searchType){
 	 var total ;
      var str='';
+	 var centralCount = 0;
+	 var stateCount = 0;
+	 var districtCount =0;
+	 var assemblyCount =0;
+	 var mandalCorpCount =0;
+	 var villageCount =0;
+	 var totalCount =0;
 	 
      str+='<div class="col-md-12 pad_left0">';
          str+='<div class="table-responsive">';
@@ -2141,21 +2148,50 @@ function getLocationAndBoardLevelWisePostsData(){
        if(distList != null && distList.length > 0){
         str+='<tr>';
         str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
-		for(var k in result[i].distList){
+		for(var k in result[i].distList){	
 			total = total+result[i].distList[k].tsTotal;
 		 }
-		str+='<td  attr_location_id ='+result[i].id+' class="" style ="" attr_location_name =\''+result[i].name+'\'>'+total+'</td>';
+		str+='<td  attr_location_id ='+result[i].id+' class="" style="text-align:center" attr_location_name =\''+result[i].name+'\'>'+total+'</td>';
+		totalCount = totalCount+total;
         for(var j in result[i].distList){
 			if(distList[j].tsTotal == 0){
-            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>'; 
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style="text-align:center"  attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';			
           }else{
-            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="castePstnCls" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="castePstnCls" style="text-align:center" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';
+			if(result[i].distList[j].id == "1"){
+				centralCount = centralCount+distList[j].tsTotal;
+			  }
+			if(result[i].distList[j].id == "2"){
+					  stateCount = stateCount+distList[j].tsTotal;
+			  
+				  }
+			if(result[i].distList[j].id == "3"){
+					  districtCount = districtCount+distList[j].tsTotal;
+			}
+			if(result[i].distList[j].id == 4){
+					  assemblyCount =assemblyCount+distList[j].tsTotal;
+			}
+			if(result[i].distList[j].id == 5){
+					  mandalCorpCount =mandalCorpCount+distList[j].tsTotal;
+			}
+			if(result[i].distList[j].id == 6){
+					  villageCount =villageCount+distList[j].tsTotal;
+			}
           }
          }
         str+='</tr>';
        }
     }
-      str+='</tbody>';
+	  str+='</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
+	  str += '<td style="text-align:center">Total</td>';
+	  str += '<td style="text-align:center">'+totalCount+'</td>';
+	  str += '<td style="text-align:center" >'+centralCount+'</td>';
+	  str += '<td style="text-align:center" >'+stateCount+'</td>';
+      str += '<td style="text-align:center" >'+districtCount+'</td>';
+      str += '<td style="text-align:center" >'+assemblyCount+'</td>';  	  
+	  str += '<td style="text-align:center" >'+mandalCorpCount+'</td>';
+	  str += '<td style="text-align:center" >'+villageCount+'</td>';
+      str += '</tr></tfoot>';
     str+='</table>';
         str+='</div>';
         str+='</div>';
