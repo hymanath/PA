@@ -2086,7 +2086,9 @@ $("#nominatedCandadteModalId").modal("show");
 function getLocationAndBoardLevelWisePostsData(){
    $(".loctnLvlCntDivCls").show();
     $("#loctnLvlCntId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
-  var searchType = $('#geoViewType').val();
+  //var searchType = $('#geoViewType').val();
+  var searchType  = $('input[name=checkBoxName]:checked').val();
+
   var jsObj={
         postLevelId : $('#locationsLevelId').val(),
 		casteGrpId   :$('#casteGroupId').val(),
@@ -2144,8 +2146,8 @@ function getLocationAndBoardLevelWisePostsData(){
 		 }
 		str+='<td  attr_location_id ='+result[i].id+' class="" style ="" attr_location_name =\''+result[i].name+'\'>'+total+'</td>';
         for(var j in result[i].distList){
-			if(distList[j].count == 0){
-            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].count+'</td>'; 
+			if(distList[j].tsTotal == 0){
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>'; 
           }else{
             str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="castePstnCls" style ="" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';
           }
@@ -2163,3 +2165,7 @@ function getLocationAndBoardLevelWisePostsData(){
 			$("#tableschrollId1").mCustomScrollbar({setHeight: '440px'});  
 		} */
  }
+ $(document).on("click",".radioBtnCls",function(){
+	 getLocationAndBoardLevelWisePostsData();	 
+	 });
+	 

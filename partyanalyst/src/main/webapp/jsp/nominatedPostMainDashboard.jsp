@@ -381,7 +381,7 @@
                         <li><span class="positionCls">All Positions</span></li>
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
-                    </ul>-->
+                    </ul>-->					
 					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
                     	<label>Position</label>
                         <select class="chosenSelect" id="positonId" onchange="getLocationAndBoardLevelWisePostsData();">
@@ -394,14 +394,25 @@
                         <select class="chosenSelect" id="locationsLevelId" onchange="getLocationAndBoardLevelWisePostsData();">
                         </select>
                     </div>					
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+					<!--<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
                     	<label>
 						Geographical View : </label>
                         <select class="chosenSelect" id="geoViewType" onchange="getLocationAndBoardLevelWisePostsData();">
                         	<option value="district"> District Level </option>
                         	<option value="constituency">  Constituency Level  </option>
                         </select>
+                    </div>-->
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+                    	<label>
+                        	<input  type="radio" name="checkBoxName" style="margin-top: 25px; margin-left: 26px;" value="constituency" class="radioBtnCls"/><span> Constituency Level </span>
+                        </label>
                     </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+                    	<label>
+                        	<input  type="radio" name="checkBoxName" checked="true"  style="margin-top: 25px; margin-left: 68px;" value="district" class="radioBtnCls" /><span>District Level</span>
+                        </label>
+                    </div>
+					
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
@@ -444,7 +455,7 @@
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
 <script type="text/javascript">
 $('.chosenSelect').chosen();
-$("#geoViewType").trigger("chosen:updated");
+//$("#geoViewType").trigger("chosen:updated");
  $(".navTabSelectionSlick li a").on('click', function(e){
    // $(".navTabsSelection li").removeClass('active');
     $(this).addClass('active');
