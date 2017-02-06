@@ -229,8 +229,13 @@
 	</s:if>
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
 	<s:if test="%{committeeMngtType == 1}">
-	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br>
+	 <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}">  click here If  you want CHANGE designation </a> 
+	 <a class="btn btn-success btn-xs" href="committeeInfoAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> 
+	</span>
+
 	<input type="hidden" value="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}" id="redirectURLId"/>
+	
 	</s:if>
 	<s:if test="%{committeeMngtType == 2}">
 	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}  <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </b>
@@ -245,7 +250,7 @@
 		<div id="profileDiv">
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;">
-				<button href="#" class="btn btn-xs btn-warning pull-right" id="editFieldsId">EDIT</button>
+				<button href="#" class="btn btn-xs btn-warning pull-right" id="editFieldsId">EDIT DETAILS</button>
 				<img src="images/cadre_images/${cadreCommitteeVO.imageURL}" onerror="setDefaultImage(this);"  id="cadreLiveimg" class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
 				<h3>${cadreCommitteeVO.cadreName}</h3>
 				<h4>Cadre Number : ${cadreCommitteeVO.memberShipCardId}</h4>				
