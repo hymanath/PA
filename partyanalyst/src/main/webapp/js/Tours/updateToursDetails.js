@@ -1786,7 +1786,7 @@ function getCandidateList(designationId){
 		}      
 	});
 function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,tdpCadreName,monthDate){//Teja
-	$("#toursCandidateDetails").html("");
+    $("#toursCandidateDetails").html("");
 	$("#attachementsId").html("");
 	$("#toursCandidateDetailsModal").html("");
 	$("#attachementsIdModal").html("");
@@ -1813,15 +1813,17 @@ function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,t
 			toursMonthId:toursMonthId
 		}
 	}
-	
+
 	$.ajax({
 		type : 'POST',
 		url : 'getSelectedprofileToursOverviewAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		$("#changedDate").html('('+moment().format("MMM-YYYY")+')');
 		//console.log(result);
+		var selecteDateArr = $("#tourMonthYear").val().split("-");
+		$("#changedDate").html('('+getMonth(selecteDateArr[0])+'-'+selecteDateArr[1]+')');
+		//$("#changedDate").html('('+moment().format("MMM-YYYY")+')');
 		if(result != null && result.length > 0){
 			buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate);
 		}else{
@@ -1922,7 +1924,7 @@ function isNumberKey(evt){
              return false;
           return true;
 } 
-	   
+ 
 function savingApplication1(){
 	var tourdate = $("#tourMonthYear").val();
 	var flag = false;
@@ -2633,3 +2635,30 @@ $(document).on("click",".tourIndividualCls",function(){
 		$("body").addClass("modal-open");
 	},400);
 });
+function getMonth(month){
+	if(month=="01"){
+		return "Jan"
+	}else if(month=="02"){
+		return "Feb"
+	}else if(month=="03"){
+		return "Mar"
+	}else if(month=="04"){
+		return "Apr"
+	}else if(month=="05"){
+		return "May"
+	}else if(month=="06"){
+		return "Jun"
+	}else if(month=="07"){
+		return "Jul"
+	}else if(month=="08"){
+		return "Aug"
+	}else if(month=="09"){
+		return "Sep"
+	}else if(month=="10"){
+		return "Oct"
+	}else if(month=="11"){
+		return "Nov"
+	}else if(month=="12"){  
+		return "Dec"
+	}  
+}
