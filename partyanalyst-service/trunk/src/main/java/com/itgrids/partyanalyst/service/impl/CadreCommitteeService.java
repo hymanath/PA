@@ -735,6 +735,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			{
 				cadreCommitteeVO = new CadreCommitteeVO();
 				
+				//CADRE BASIC DETAILS.
 				cadreCommitteeVO.setCadreName(tdpCadre.getFirstname());
 				cadreCommitteeVO.setTdpCadreId(tdpCadre.getTdpCadreId());
 				if(tdpCadre.getMemberShipNo().toString().trim().length() > 8){
@@ -779,6 +780,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				cadreCommitteeVO.setCasteCategoryId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId():0L);
 				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName():"");
+				
 				UserAddress address = tdpCadre.getUserAddress();
 				if(address.getLocalElectionBody() != null){
 					cadreCommitteeVO.setElectrolLocation(address.getLocalElectionBody().getName()+" "+address.getLocalElectionBody().getElectionType().getElectionType() );
@@ -821,13 +823,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				cadreCommitteeVO.setImageURL(tdpCadre.getImage() != null ? tdpCadre.getImage():"null");
 				
+				//CADRE PREVIOUS ROLES IN COMMITTEES.
 				cadreCommitteeVO.setPreviousRoles(getExistingRollsInfo(tdpCadreId));
+				
+				//CADRE PREVIOUS ELECTIONS PARTICIPATION INFO.
 				cadreCommitteeVO.setPreviousElections(getExistingCadreParticipationInfo(tdpCadreId));
 				
+				//GET ALL CASTESTATE FOR AP STATE
 				List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
-				
 				List<CadreCommitteeVO> stateCasteList = new ArrayList<CadreCommitteeVO>();
-				
 				if(castesList != null && castesList.size()>0){
 					for (Object[] cast : castesList) {
 						CadreCommitteeVO castevo = new  CadreCommitteeVO();
@@ -836,9 +840,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						
 						stateCasteList.add(castevo);
 					}
-					
 					cadreCommitteeVO.setCasteList(stateCasteList);			
 				}
+				
+				//CADRE IN COMMITTEES INFORMATION AT PRESENT.
 				TdpCommitteeMember tdpCommitteeMember = null;
 				List<TdpCommitteeMember> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
 				if(tdpCommitteeMemberList.size() > 0){
@@ -1792,20 +1797,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			boolean isEligible = true;
 			boolean isExist = false;
 			Long oldCommitteeId = null;
+			
+			//CHECK IF ALREADY EXISTS
 			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
 			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0)
 			{
 				isExist = true;
 			}
 			
+			//CHECK FOR ELIGIBILITY
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
-			
 			Long maxMembers = tdpCommitteeRole.getMaxMembers();
 			Set<Long> committeeRoleIds = new HashSet<Long>();
 			committeeRoleIds.add(tdpCommitteeRoleId);
-			
 			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
-		
 			if(existringDtails != null && existringDtails.size()>0)
 			{
 				for (Object[] role : existringDtails) 
@@ -1875,6 +1880,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				tdpCommitteeMember.setIsActive("Y");
 				tdpCommitteeMember.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
 				
+				String committeeRoleType = tdpCommitteeRoleDAO.getTdpCommitteeRoleType(tdpCommitteeRoleId);
+				if(committeeRoleType != null){
+					tdpCommitteeMember.setStatus(committeeRoleType);
+				}
+				
 				tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				if(isExist)
 				{
@@ -1886,6 +1896,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				
 				tdpCommitteeMember = tdpCommitteeMemberDAO.save(tdpCommitteeMember);
+				
+				
 				TdpCommittee tdpCommittee = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId).getTdpCommittee();
 				if(tdpCommittee.getStartedDate() == null){
 					tdpCommittee.setStartedDate(dateUtilService.getCurrentDateAndTime());
@@ -3822,29 +3834,70 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		String isEligible ="";
 		try {			
-			String status = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
-			if(status.equalsIgnoreCase("Y")){
+			String committeeStatus = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
+			if(committeeStatus.equalsIgnoreCase("Y")){
 				return " This Committee Is Already Confirmed, You Cannot Add Or Update Committee Members Info ";
 			}
+			
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
-			
+			String roleType = tdpCommitteeRole.getRoleType();
 			Long maxMembers = tdpCommitteeRole.getMaxMembers();
-			Set<Long> committeeRoleIds = new HashSet<Long>();
-			committeeRoleIds.add(tdpCommitteeRoleId);
 			
-			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
-		
-			if(existringDtails != null && existringDtails.size()>0)
+			if(roleType != null && roleType.equalsIgnoreCase("F"))//NOMINATED ROLE.
 			{
-				for (Object[] role : existringDtails) 
+				Set<Long> committeeRoleIds = new HashSet<Long>();
+				committeeRoleIds.add(tdpCommitteeRoleId);
+				List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
+			
+				if(existringDtails != null && existringDtails.size()>0)
 				{
-					Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
-					if( maxMembers.longValue() > 0 && (count.longValue() >= maxMembers.longValue()) )
+					for (Object[] role : existringDtails) 
 					{
-						isEligible = " Max Members Already Added for this designation... ";
+						Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
+						if( maxMembers.longValue() > 0 && (count.longValue() >= maxMembers.longValue()) )
+						{
+							isEligible = " Max Members Already Added for this designation... ";
+						}
 					}
 				}
+			}else if(roleType != null && roleType.equalsIgnoreCase("P"))//ELECTION ROLE.
+			{
+				
+				List<Object[]>  statusCounts = tdpCommitteeMemberDAO.getStatusWiseCandiCountForACommitteeRole(tdpCommitteeRoleId);
+				
+				Long finalizedMembersCount = 0l;
+				Long proposedMembersCount = 0l;
+				
+				if(statusCounts != null && statusCounts.size() > 0)
+				{
+					for(Object[] obj : statusCounts)
+					{
+						if(obj[0] != null)
+						{
+							String status = obj[0].toString();
+							if(status.trim().equalsIgnoreCase("F")){
+								finalizedMembersCount = obj[1] != null ? (Long)obj[1] : 0l;
+							}else if(status.trim().equalsIgnoreCase("P")){
+								proposedMembersCount = obj[1] != null ? (Long)obj[1] : 0l;
+							}
+						}
+					}
+					if( maxMembers.longValue() > 0 && (finalizedMembersCount.longValue() >= maxMembers.longValue()) )
+					{
+						isEligible = " Max Members Already Added for this designation... ";
+					}else{
+						
+						Long maxProposeMembers = tdpCommitteeRole.getMaxProposeMembers();
+						if(maxProposeMembers != null && maxProposeMembers.longValue() > 0l){
+							if(proposedMembersCount.longValue() >= maxProposeMembers.longValue() ){
+								isEligible = " Max Members Already Proposed for this designation... ";
+							}
+						}
+					}
+				}
+				
 			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in checkIsVacancyForDesignation method"+e);
 			return " ";
