@@ -2137,6 +2137,16 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
 	}
+  public List<Object[]> getConstLebDetailsByConstIds(List<Long> constIds){
+	  Query query = getSession().createQuery("" +
+	  " select constituency.constituencyId , constituency.name , leb.localElectionBodyId , leb.name , electionType.electionTypeId , electionType.electionType,constituency.state.stateId" +//6
+	  " from   Constituency constituency " +
+	  "        left join constituency.localElectionBody leb " +
+	  "        left join  leb.electionType electionType " +
+	  " where  constituency.constituencyId in (:constIds)");
+	  query.setParameterList("constIds", constIds);
+	  return query.list();
+  }
 }
 
 

@@ -3139,11 +3139,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		List<BasicVO> returnList = new ArrayList<BasicVO>();
 		try {
-			Election election = electionDAO.get(electionId);
+			//Election election = electionDAO.get(electionId);
+			
+			String electionType  = null;
+			List<String> electionTypeList = electionDAO.getElectionTypeByElectionId(electionId);
+			if(electionTypeList != null && electionTypeList.size() > 0){
+				electionType = electionTypeList.get(0);
+			}
+			
 			List<Object[]> constituencyList = null;
-			if(election != null )
+			if(electionType != null )
 			{
-				String electionType = election.getElectionScope().getElectionType().getElectionType();
+				//String electionType = election.getElectionScope().getElectionType().getElectionType();
 				
 				if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 				{
@@ -3159,7 +3166,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 			}
 			
-			List<Long> constiIds = new ArrayList<Long>();
+			/*List<Long> constiIds = new ArrayList<Long>();
 			
 			if(constituencyList != null && constituencyList.size() > 0)
 			{
@@ -3189,6 +3196,87 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							returnList.add(basicVO);
 						}
 					}
+				}
+			}*/
+			
+			List<Long> reqConstIds = new ArrayList<Long>();
+			if(constituencyList != null && constituencyList.size() > 0){
+				for(Object[] obj : constituencyList){
+					if(obj[0] != null){
+						reqConstIds.add((Long)obj[0]);
+					}
+				}
+			}
+			
+			Map<Long , Object[]> detailsMap = new HashMap<Long, Object[]>();
+			int noOfRecords = 50;
+			if(reqConstIds != null && reqConstIds.size() > 0){
+				int totalCount =  reqConstIds.size();
+				if(totalCount <=  noOfRecords)
+		        {	
+			    	List<Object[]> details= constituencyDAO.getConstLebDetailsByConstIds(reqConstIds);
+			    	if(details != null && details.size() > 0){
+			    		for(Object[] obj : details){
+			    			if(obj[0] != null){
+			    				detailsMap.put((Long)obj[0], obj);
+			    			}
+			    		}
+			    	}
+			    }else{
+			    	int quotient = (int) (totalCount / noOfRecords);
+			    	int checkCount = quotient + 1;
+			    	for(int i=0 ; i<checkCount ; i++){
+			    		
+			    		int fromIndex = i * noOfRecords;
+			    		int toIndex = 0;
+			    		if(i == checkCount - 1){
+			    			toIndex = fromIndex + (totalCount % noOfRecords );
+			    		}else{
+			    			toIndex = fromIndex + noOfRecords;
+			    		}
+			    		
+			    		//System.out.println(fromIndex + " - " +toIndex );
+			    		List<Long> sublist = reqConstIds.subList(fromIndex, toIndex);
+			    		if(sublist != null && sublist.size() > 0){
+			    			List<Object[]> details= constituencyDAO.getConstLebDetailsByConstIds(sublist);
+			    			if(details != null && details.size() > 0){
+					    		for(Object[] obj : details){
+					    			if(obj[0] != null){
+					    				detailsMap.put((Long)obj[0], obj);
+					    			}
+					    		}
+					    	}
+		    			}
+			    	}
+			    }
+			}
+			
+			
+			List<Long> constiIds = new ArrayList<Long>();
+			if(detailsMap != null && detailsMap.size() > 0){
+				for( Map.Entry<Long, Object[]>   detailsEntry: detailsMap.entrySet() ){
+					Object[] details = detailsEntry.getValue();
+					if(details != null){
+						
+						if(details[2] != null){//lebId
+							Long lebId = (Long)details[2];
+							if(!constiIds.contains(lebId))
+							{
+								constiIds.add(lebId);
+								
+								BasicVO basicVO = new BasicVO();
+								basicVO.setId(lebId);
+								basicVO.setName(details[3].toString() +" "+details[5].toString());
+								returnList.add(basicVO);
+							}
+						}else if(details[6] != null && ((Long)details[6]).longValue() == 1l){
+						   
+								BasicVO basicVO = new BasicVO();
+								basicVO.setId((Long)details[0]);
+								basicVO.setName(details[1]!=null ? details[1].toString() :"");
+								returnList.add(basicVO);
+						 }
+				     }
 				}
 			}
 			
