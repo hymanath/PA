@@ -953,6 +953,11 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		}
 	}
 	
+	public List<String> getElectionTypeByElectionId(Long electionId){
+		Query query = getSession().createQuery(" select model.electionScope.electionType.electionType from Election model where model.electionId = :electionId ");
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
 	
   
 }

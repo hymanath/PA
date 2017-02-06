@@ -1511,6 +1511,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				committeeMembersInfoList.add(vo);
 			}
 			if(committeeMembersMap.size() > 0){
+				
 				List<Object[]>  electedPersonsList = tdpCommitteeMemberDAO.getRoleWiseProposedAndFinalizedMembersCounts(committeeMembersMap.keySet());
 				for(Object[] obj:electedPersonsList){
 					LocationWiseBoothDetailsVO roleVO = committeeMembersMap.get((Long)obj[0]);	
@@ -1525,7 +1526,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 					}
 				}
+				
+				for(Map.Entry<Long,LocationWiseBoothDetailsVO>  roleEntry: committeeMembersMap.entrySet()){
+					LocationWiseBoothDetailsVO role = roleEntry.getValue();
+					if(role != null && role.getRoleType() != null && role.getRoleType().equalsIgnoreCase("P")){
+						role.setProposedCount( role.getProposedCount() + role.getFinalizedCount());
+					}
+				}
+				
 			}
+			
+			
 			returnVo.setResult(committeeMembersInfoList);
 			
 			//GETTING MEMBERS BLOCK
@@ -3834,10 +3845,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		String isEligible ="";
 		try {			
-			String committeeStatus = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
+			/*String committeeStatus = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
 			if(committeeStatus.equalsIgnoreCase("Y")){
 				return " This Committee Is Already Confirmed, You Cannot Add Or Update Committee Members Info ";
-			}
+			}*/
 			
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
 			String roleType = tdpCommitteeRole.getRoleType();
