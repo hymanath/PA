@@ -1047,8 +1047,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 		List<Long> cadreIds = new ArrayList<Long>();
     	try {
     		
+    		
     		StringBuilder queryStr = new StringBuilder();
     		
+    		//BUILDING QUERYSTR FOR LOCATION
     		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
     		{
     			
@@ -1161,6 +1163,8 @@ public class CadreDetailsService implements ICadreDetailsService{
     			
     		}
     		
+    		
+    		
     		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
 			{
 				queryStr.append(" and model.tdpCadre.firstname like '%"+searchName+"%' ");
@@ -1226,6 +1230,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					queryStr.append(" and (model.tdpCadre.gender like 'Female' or model.tdpCadre.gender like 'F')");
 				}
 			}
+			
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
 				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved,enrollmentId);
