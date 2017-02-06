@@ -1283,7 +1283,9 @@ function createAlert()
 			data: {task :JSON.stringify(jsObj)}
 	   }).done(function(result){
 			$('#alertImpactId').append('<option value="0"> Select Alert Impact </option>');
-			getAlertDtls();       
+			setTimeout(function(){
+				getAlertDtls();
+			}, 1000);     
 			if(result != null){
 				for(var i in result){			
 					$('#alertImpactId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
