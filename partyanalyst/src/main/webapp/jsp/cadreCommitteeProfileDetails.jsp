@@ -663,9 +663,15 @@
 		-->
 		<s:if test="%{cadreCommitteeVO.eligibleRoles == null || cadreCommitteeVO.eligibleRoles.size() == 0}">
 			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
+			   
 			  <s:if test="%{committeeMngtType == 1}">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE & PROCEED TO ADD AS COMMITTEE MEMBER</button>
-			  </s:if>
+			     <c:if test="${param.roleType == 'F'}">
+     				  <button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE & PROCEED TO ADD AS COMMITTEE MEMBER  </button>
+	             </c:if>
+                 <c:if test="${param.roleType == 'P'}">
+     				  <button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE & PROCEED TO PROPOSE AS COMMITTEE MEMBER  </button>
+	             </c:if>				 
+			 </s:if>
 			  <s:if test="%{committeeMngtType == 2}">
 				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD TO MANDAL ELECTORAL</button>
 			  </s:if>
