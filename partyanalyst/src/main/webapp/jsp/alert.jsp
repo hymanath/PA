@@ -540,7 +540,9 @@
 			url: 'getAlertDetailsForEditAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildAlertPage(result);
+			if(result.alertTypeId > 0){
+				buildAlertPage(result);
+			}            
 		});
 	}
 	$(document).on("click",".modalCloseAndShow",function(){
@@ -790,7 +792,6 @@ function getCandidatesByName(){
 		 getCandidatesByName();
 		}
 function deleteAlert(){
-	clearFields();  
 	var jobj = {
 			alertId : globalAlertId  
 		}
@@ -805,6 +806,7 @@ function deleteAlert(){
 						setTimeout(function(){ $("#errorDiv1").html("");
 				}, 1000);
 			}  
+			clearFields(); 
 		});
 }	
 function createAlert()
@@ -1006,7 +1008,7 @@ function createAlert()
 					 $("#errorDiv1").html("Alert Created Successfully ").css("color","green");	
 					 setTimeout(function(){ $("#errorDiv1").html("");
 					 }, 1000);
-					}else if(uploadResult.indexOf("success") !=-1){
+					}else if(uploadResult.indexOf("edit") !=-1){  
 						$("#errorDiv1").html("Alert Edited Successfully ").css("color","green");	
 						setTimeout(function(){ $("#errorDiv1").html("");
 						}, 1000);
