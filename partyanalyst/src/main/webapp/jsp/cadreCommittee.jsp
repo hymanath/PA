@@ -848,9 +848,10 @@
 			   var members = result.hamletsOfTownship;
 			   str ="";
 			   if(members != null && members.length > 0){
-				   if(result.locationName != null && result.locationName == "N"){
+				   
+				   /*  if(result.locationName != null && result.locationName == "N"){
 				      str+='<div class="text-right editDesignation"><input type="button" value="EDIT DESIGNATION" onclick="showEditInfo();" class="btn btn-success" /></div>';
-				   }
+				    }  */
 				   str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000;">';
 				   str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2); color:#000">';
                    str+='<th>Designation</th>';
@@ -861,8 +862,8 @@
 				   str+='<th  class="hideRowClass">Update</th>';
 				   str+='<th>Status</th>'
 				   str+='</thead>';
-				   str+='<tbody >';
-				   str+='	<tbody>';
+				   
+				   str+='<tbody>';
 				   var x = 0;
 				   for(var i in members){
 					  str+=' <tr>';
@@ -879,9 +880,10 @@
 						  }
 					  }
 					  str+='</select></td>';
-					  if(x == 0){
-					    str+=' 	<td class="hideRowClass" rowspan="'+members.length+'"><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div><br><div id="desigChangErrs"></div></td>';
-					  }
+					  //if(x == 0){
+					    //str+=' 	<td class="hideRowClass" rowspan="'+members.length+'"><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div><br><div id="desigChangErrs"></div></td>';
+						str+=' 	<td class="hideRowClass" ><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div><br><div id="desigChangErrs"></div></td>';
+					  //}
 					  if(members[i].committeeMemberStatus != null && members[i].committeeMemberStatus.trim().length > 0){
 						  if(members[i].committeeMemberStatus == 'F'){//Finalized
 							  str+='<td> Finalized </td>';
@@ -910,6 +912,12 @@
 					  variableWidth: true
 					});  
 		    });
+	}
+	 function showEditInfo(){
+		$("#desigChangErrs").html("");
+		$(".hideRowClass").each(function(){
+			$(this).show();
+		});
 	}
 	function setDefaultImage(img)
 	{
@@ -1196,13 +1204,7 @@
 			  str1+='<a href="javascript:{addMoreEligibleRoles(\''+divId+'\','+index+',\''+btnDivId+'\','+cadreId+');}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>';	
 			  $('#'+btnDivId+'').html(str1);
 	}	
-	function showEditInfo(){
-		$("#desigChangErrs").html("");
-		$(".hideRowClass").each(function(){
-			$(this).show();
-		});
-		
-	}
+
 	function updateExistingDesig(reqCommitteeId){
 		$("#desigChangErrs").html("");
 		var newRequestArray =  new Array();
