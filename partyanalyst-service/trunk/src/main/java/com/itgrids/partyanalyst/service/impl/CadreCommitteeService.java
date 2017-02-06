@@ -1805,33 +1805,26 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		ResultStatus status = new ResultStatus();
 	
 	//	try {
-			boolean isEligible = true;
-			boolean isExist = false;
+			
 			Long oldCommitteeId = null;
 			
 			//CHECK IF ALREADY EXISTS
+			boolean isExist = false;
 			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
-			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0)
-			{
+			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0){
 				isExist = true;
 			}
 			
 			//CHECK FOR ELIGIBILITY
-			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
-			Long maxMembers = tdpCommitteeRole.getMaxMembers();
-			Set<Long> committeeRoleIds = new HashSet<Long>();
-			committeeRoleIds.add(tdpCommitteeRoleId);
-			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
-			if(existringDtails != null && existringDtails.size()>0)
-			{
-				for (Object[] role : existringDtails) 
-				{
-					Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
-					if(maxMembers.longValue() > 0 && (count.longValue() >= maxMembers.longValue()) )
-					{
-						isEligible = false;
-					}
-				}
+			boolean isEligible = true;
+			String eligibleCheck = checkIsVacancyForDesignation(tdpCommitteeRoleId);
+			if(eligibleCheck != null && !eligibleCheck.toString().trim().isEmpty()){
+				isEligible = false;
+			}
+			if(!isEligible){
+				status.setMessage(eligibleCheck);
+				status.setResultCode(2);
+				return status;
 			}
 			
 			if(isEligible)				
@@ -1920,17 +1913,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				status.setMessage(" Cadre Added To Committee Successfully... ");
 				status.setResultCode(0);
 			}
-			else
-			{
-				status.setMessage(" Max Members are already Added for This Position... ");
-				status.setResultCode(2);
-			}
-			
-		/*} catch (Exception e) {
-			status.setMessage(" Error Occured While Updating Details... ");
-			status.setResultCode(1);
-			LOG.error("Exception raised in saveCadreCommitteDetails", e);
-		}*/
+		
 		return status;
 	}
 	
@@ -2354,7 +2337,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 	}
 	public void setCurrentDesignation(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
-		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList,IConstants.CURRENT_ENROLLMENT_ID);
 		
 		if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
 		{
@@ -3888,8 +3871,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							String status = obj[0].toString();
 							if(status.trim().equalsIgnoreCase("F")){
 								finalizedMembersCount = obj[1] != null ? (Long)obj[1] : 0l;
+								proposedMembersCount = proposedMembersCount + finalizedMembersCount;
 							}else if(status.trim().equalsIgnoreCase("P")){
-								proposedMembersCount = obj[1] != null ? (Long)obj[1] : 0l;
+								proposedMembersCount = proposedMembersCount + (obj[1] != null ? (Long)obj[1] : 0l);
 							}
 						}
 					}

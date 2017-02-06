@@ -101,4 +101,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getAllCommitteesMembersInfoInALocByStatus(Long locationLvl,Long locationVal,String committeeMemberStatus);
 	public Long getCandiCountForACommitteeRoleByStatus(Long committeeRoleId , String committeeMemberStatus);
 	public List<Object[]> getStatusWiseCandiCountForACommitteeRole(Long committeeRoleId);
+	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList , Long committeeEnrollmentId);
 }
