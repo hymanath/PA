@@ -393,25 +393,20 @@
 						Position Level : </label>
                         <select class="chosenSelect" id="locationsLevelId" onchange="getLocationAndBoardLevelWisePostsData();">
                         </select>
-                    </div>					
-					<!--<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
-                    	<label>
-						Geographical View : </label>
-                        <select class="chosenSelect" id="geoViewType" onchange="getLocationAndBoardLevelWisePostsData();">
-                        	<option value="district"> District Level </option>
-                        	<option value="constituency">  Constituency Level  </option>
-                        </select>
-                    </div>-->
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
-                    	<label>
-                        	<input  type="radio" name="checkBoxName" style="margin-top: 25px; margin-left: 26px;" value="constituency" class="radioBtnCls"/><span> Constituency Level </span>
-                        </label>
                     </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
-                    	<label>
-                        	<input  type="radio" name="checkBoxName" checked="true"  style="margin-top: 25px; margin-left: 68px;" value="district" class="radioBtnCls" /><span>District Level</span>
-                        </label>
-                    </div>
+                    <div class="col-md-3 col-sm-4 col-xs-12 pull-right">					
+						<div>
+							<label style="margin-left: 30px;"> Geographical View : </label>
+							<span class="btn btn-success btn-xs form-inline" style="margin-left: 33px;">
+								<label>
+									<input  type="radio" name="checkBoxName" checked="true"  style="" value="district" class="radioBtnCls"/><span>District View</span>
+								</label>
+								<label>
+									<input  type="radio" name="checkBoxName" style="" value="constituency" class="radioBtnCls"/><span> Constituency View </span>
+								</label>
+							</span>
+						</div>
+					 </div>
 					
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
