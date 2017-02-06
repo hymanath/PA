@@ -286,8 +286,10 @@ $(document).on("click",".casteGroupCls",function(){
 				buildPositionTabMenu(result);
 				for(var i in result){
 					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#positonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
 				$("#positionId").trigger("chosen:updated");
+				$("#positonId").trigger("chosen:updated");
 			}
 		});
 	}
@@ -300,15 +302,19 @@ $(document).on("click",".casteGroupCls",function(){
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		$('#locationLevelId').append('<option value="0">ALL</option>');
+		$('#locationsLevelId').append('<option value="0">ALL</option>');
       if(result != null && result.length > 0){
 		for(var i in result){
           if(result[i].id == "2"){  
             $('#locationLevelId').append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');  
+            $('#locationsLevelId').append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');  
           }else{
             $('#locationLevelId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>'); 
+            $('#locationsLevelId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>'); 
           }
         }
         $("#locationLevelId").trigger("chosen:updated");
+        $("#locationsLevelId").trigger("chosen:updated");
 		var locationLevelId = $("#locationLevelId").val();		
 		var locationLevelName = $("#locationLevelId option:selected").text();  
 		if(locationLevelId==0){
@@ -364,6 +370,7 @@ $(document).on("click",".casteGroupCls",function(){
 	}
 
 	 function getAllStatusDetails(){
+		
 		positionId =$("#positionId option:selected").val();
 	    levelId = $("#locationLevelId").val();
 		if(levelId == null){
@@ -401,6 +408,7 @@ $(document).on("click",".casteGroupCls",function(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			 getLocationAndBoardLevelWisePostsData();
 			if(result !=null){
 				buildOverAllTotalCountsByPosition(result);
 			}else{
@@ -2074,19 +2082,19 @@ $(".modelHeading").html(locationName+ "  " +positionName+ "  POSITION CANDIDATES
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
-getLocationAndBoardLevelWisePostsData();
+
 function getLocationAndBoardLevelWisePostsData(){
    $(".loctnLvlCntDivCls").show();
     $("#loctnLvlCntId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
-  var searchType = "constituency";
+  var searchType = $('#geoViewType').val();
   var jsObj={
-        postLevelId : 0,
-		casteGrpId     :0,
+        postLevelId : $('#locationsLevelId').val(),
+		casteGrpId   :$('#casteGroupId').val(),
 		casteId      : 0,
 		ageRangeId:0,
-		positionId:1,
+		positionId:$('#positionId').val(),
 		gender:0,
-		stateId:1,
+		stateId:globalStateId,
 		searchType:searchType
     
       };
