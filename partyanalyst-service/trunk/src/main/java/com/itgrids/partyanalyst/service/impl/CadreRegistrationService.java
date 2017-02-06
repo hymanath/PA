@@ -8273,22 +8273,22 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								// for cadre committee details updations
 								TdpCadre existingTdpCadre = tdpCadreDAO.get(cadreRegistrationVO.getTdpCadreId());
 								
-								List<TdpCadre> voterIdsList = new ArrayList<TdpCadre>();
-								voterIdsList.add(existingTdpCadre);
+								List<TdpCadre> tdpCadresList = new ArrayList<TdpCadre>();
+								tdpCadresList.add(existingTdpCadre);
 
-								if(voterIdsList.size() > 0)
+								if(tdpCadresList.size() > 0)
 								{
-									List<Long> existingVoters = new ArrayList<Long>();
+									List<Long> tdpCadreIds = new ArrayList<Long>();
 									
-									for (TdpCadre tdpCadre : voterIdsList) 
+									for (TdpCadre tdpCadre : tdpCadresList) 
 									{
-										existingVoters.add(tdpCadre.getTdpCadreId());
+										tdpCadreIds.add(tdpCadre.getTdpCadreId());
 									}
 									
-									cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-									cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+									cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(tdpCadreIds);
+									cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(tdpCadreIds);
 										
-									TdpCadre tdpCadre = voterIdsList.get(0);
+									TdpCadre tdpCadre = tdpCadresList.get(0);
 									saveDataToHistoryTable(tdpCadre);
 									
 									surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
