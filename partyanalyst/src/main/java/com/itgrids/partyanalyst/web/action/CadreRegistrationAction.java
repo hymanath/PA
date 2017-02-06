@@ -2044,6 +2044,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				}else{
 					cadreRegistrationVO.setPhotoType("new");
 				}
+				
+				//CADRE PREVIOUS ROLES IN COMMITTEE.
 				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
 				if(rolesVOList != null && rolesVOList.size() > 0)
 				{
