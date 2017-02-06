@@ -7009,6 +7009,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					idNameVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
 					idNameVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					idNameVO.setImage(commonMethodsUtilService.getStringValueForObject(param[4]));
 					assignedCandList.add(idNameVO);
 				}
 			}
@@ -7020,6 +7021,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					idNameVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
 					idNameVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					idNameVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					idNameVO.setImage(commonMethodsUtilService.getStringValueForObject(param[5])); 
 					involvedCandList.add(idNameVO);
 				}
 			}
