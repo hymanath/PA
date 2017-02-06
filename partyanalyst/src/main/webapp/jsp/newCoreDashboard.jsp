@@ -615,14 +615,14 @@
 								<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
 								  <div class="tab-content navTabsSettingsContent">
 									<div role="tabpanel" class="tab-pane active" id="Editions">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS </h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Publication </h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl" id="newsPapersUlId"></ul>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane" id="impactScope">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS </h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Impact </h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl">
@@ -2683,7 +2683,7 @@
 										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
 										  <div class="tab-content navTabsSettingsContent">
 											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
 												<hr style ="margin-bottom:0px;" />
 												<div class="">
 													<ul class="evntsSettingsUl">
@@ -2709,7 +2709,7 @@
 												</div>
 											</div>
 											<div role="tabpanel" class="tab-pane" id="actSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
 												<hr style ="margin-bottom:0px;" />
 												<div class="">
 													<ul class="activitySettingsUl">
