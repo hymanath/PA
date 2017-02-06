@@ -1009,7 +1009,7 @@
 					{
 						for(var i in result.result)
 						{
-							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
+							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'" attr_role_type = "'+result.result[i].roleType+'">'+result.result[i].locationName+'</option>');
 						}
 						
 						if(cadreRoleId != 0 && isFirstCadreRoleIdSettingValues)
