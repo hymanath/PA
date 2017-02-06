@@ -382,6 +382,26 @@
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>-->
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+                    	<label>Position</label>
+                        <select class="chosenSelect" id="positonId" onchange="getLocationAndBoardLevelWisePostsData();">
+                        	<option value="0">ALL</option>
+                        </select>
+                    </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+                    	<label>
+						Position Level : </label>
+                        <select class="chosenSelect" id="locationsLevelId" onchange="getLocationAndBoardLevelWisePostsData();">
+                        </select>
+                    </div>					
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
+                    	<label>
+						Geographical View : </label>
+                        <select class="chosenSelect" id="geoViewType" onchange="getLocationAndBoardLevelWisePostsData();">
+                        	<option value="district"> District Level </option>
+                        	<option value="constituency">  Constituency Level  </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
@@ -424,6 +444,7 @@
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
 <script type="text/javascript">
 $('.chosenSelect').chosen();
+$("#geoViewType").trigger("chosen:updated");
  $(".navTabSelectionSlick li a").on('click', function(e){
    // $(".navTabsSelection li").removeClass('active');
     $(this).addClass('active');
