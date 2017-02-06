@@ -374,7 +374,7 @@
 				$("#involvedCandidatesDiv").show();
 				$(".membersBlock").show();
 				var name  = candidateList[i].name;
-				var image = $(this).attr("attr_img_url");
+				var image = candidateList[i].image;
 				var attrId = parseInt(candidateList[i].cadreId);       
 				var attrConsti =  candidateList[i].constituencyName;
 				var mobile = candidateList[i].mobileNo;
@@ -384,7 +384,7 @@
 				str+='<div id="'+uniqueId+'" class="col-md-3 col-xs-12 col-sm-6">';
 				str+='<div class="involveBlock">';
 				str+='<div class="media"><div class="media-left">';
-				str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
+				str+='<img src="images/cadre_images/'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 				str+='</div>';
 				str+='<div class="media-body">';
 				str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
@@ -426,7 +426,7 @@
 				$("#involvedCandidatesDiv").show();
 				$(".membersBlock").show();
 				var name  = candidateList[i].name;
-				var image = $(this).attr("attr_img_url");
+				var image = candidateList[i].image;
 				var attrId = parseInt(candidateList[i].cadreId);       
 				var attrConsti =  candidateList[i].constituencyName;
 				var mobile = candidateList[i].mobileNo;
@@ -435,8 +435,8 @@
 				str+='<div id="'+uniqueId+'" class="col-md-3 col-xs-12 col-sm-6">';
 				str+='<div class="involveBlock">';
 				str+='<div class="media"><div class="media-left">';
-				str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
-				str+='</div>';
+				str+='<img src="images/cadre_images/'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
+				str+='</div>';           
 				str+='<div class="media-body">';
 				str+='<input type="hidden" class="form-control assignmemberDatacls" name="alertVO.assignList['+cloneCount+'].id" value="'+attrId+'"/>';
 				str+='<div class="col-md-12"><b>'+name+'</b></div>';
