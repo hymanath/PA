@@ -394,7 +394,8 @@ public List<Object[]> getCandidateAlertDetailsBySearch(Long tdpCadreId,Date from
 						" alertCandidate.tdpCadre.firstname, " +
 						" alertCandidate.tdpCadre.mobileNo, " +
 						" constituency.name, " +
-						" alertCandidate.alertImpact.alertImpactId " +
+						" alertCandidate.alertImpact.alertImpactId," +
+						" alertCandidate.tdpCadre.image " +  
 						" from " +
 						" AlertCandidate alertCandidate " +
 						" left join alertCandidate.tdpCadre.userAddress userAddress " +
