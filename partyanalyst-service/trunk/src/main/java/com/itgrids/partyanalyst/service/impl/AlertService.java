@@ -7073,12 +7073,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alert.setIsDeleted("N");
 				 
 				 alert.setAlertCategoryId(1L);//default Manual alert
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0){
+					 alert.setAlertStatusId(2L);  
+				 }
 				 alert.setTitle(inputVO.getTitle());
-				 
-				 //UserAddress userAddress = saveUserAddress(inputVO);
-				
-				 //alert.setAddressId(userAddress.getUserAddressId());
-				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 				 alert = alertDAO.save(alert);
 				 
 				 UserAddress userAddress = alert.getUserAddress();
@@ -7087,14 +7085,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					{
 						userAddress.setState(stateDAO.get(inputVO.getStateId()));
 						//swa
-						//userAddress.setDistrict(null);
-						//userAddress.setConstituency(null); 
+						userAddress.setDistrict(null);
+						userAddress.setConstituency(null); 
+						userAddress.setLocalElectionBody(null);	
+						userAddress.setWard(null);
+						userAddress.setTehsil(null);
+						userAddress.setPanchayatId(null);
 					}
 					else if(inputVO.getLocationLevelId().longValue() == 3l)
 					{
 						userAddress.setState(stateDAO.get(inputVO.getStateId()));
 						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
-						
+						//swa
+						userAddress.setConstituency(null); 
+						userAddress.setLocalElectionBody(null);	
+						userAddress.setWard(null);
+						userAddress.setTehsil(null);
+						userAddress.setPanchayatId(null);
 					}
 					
 					else if(inputVO.getLocationLevelId().longValue() == 4l)
@@ -7102,6 +7109,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						userAddress.setState(stateDAO.get(inputVO.getStateId()));
 						userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 						userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+						//swa
+						userAddress.setLocalElectionBody(null);	
+						userAddress.setWard(null);
+						userAddress.setTehsil(null);
+						userAddress.setPanchayatId(null);
 					}
 					else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
 					{
