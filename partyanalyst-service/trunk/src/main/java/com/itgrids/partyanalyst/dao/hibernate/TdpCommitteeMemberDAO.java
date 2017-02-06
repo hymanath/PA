@@ -55,14 +55,16 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	public List<Object[]> getMemberInfo(Long tdpCadreId){
 
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, " +
-				" model.tdpCommitteeRole.tdpCommitteeRoleId, model.tdpCommitteeRole.tdpRoles.role    " +
-				" from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId and model.isActive ='Y' ");
+		Query query = getSession().createQuery("" +
+				" select  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				"         model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
+				"         model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
+				"         model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, " +
+				"         model.tdpCommitteeRole.tdpCommitteeRoleId, model.tdpCommitteeRole.tdpRoles.role    " +
+				" from    TdpCommitteeMember model " +
+			    " where   model.tdpCadreId =:tdpCadreId and model.isActive ='Y' and model.tdpCommitteeEnrollmentId = :tdpCommitteeEnrollmentId ");
 		query.setParameter("tdpCadreId", tdpCadreId);
-	//	query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("tdpCommitteeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -81,8 +83,9 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}
 	
 	public List<TdpCommitteeMember> getTdpCommitteeMemberByTdpCadreId(Long tdpCadreId){
-		Query query = getSession().createQuery("select model from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId  and model.isActive ='Y'");
+		Query query = getSession().createQuery("select model from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId  and model.isActive ='Y' and model.tdpCommitteeEnrollmentId = :tdpCommitteeEnrollmentId ");
 		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("tdpCommitteeEnrollmentId", IConstants.CURRENT_ENROLLMENT_ID);
 		return query.list();
 	}
 	
@@ -2407,17 +2410,6 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		return query.list();
 	}
-	public List<Object[]> getRoleWiseProposedAndFinalizedMembersCounts(Set<Long> committeeRoleIds){
-		
-		Query query = getSession().createQuery("" +
-		" select    model.tdpCommitteeRole.tdpCommitteeRoleId,model.status , count(distinct model.tdpCommitteeMemberId)  " +
-		" from      TdpCommitteeMember model where " +
-		"           model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y' " +
-		" group by  model.tdpCommitteeRole.tdpCommitteeRoleId , model.status ");
-		query.setParameterList("committeeRoleIds", committeeRoleIds);
-		
-		return query.list();
-	}
 	
 	public List<Object[]> getAllCommitteesMembersInfoInALocByStatus(Long locationLvl,Long locationVal,String committeeMemberStatus){
 		
@@ -2442,4 +2434,38 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		}
 		return query.list();
 	}
+	
+	//Following 3 queries : For Members Count For Committees roles status wise.
+	public Long getCandiCountForACommitteeRoleByStatus(Long committeeRoleId , String committeeMemberStatus){
+		
+		Query query = getSession().createQuery("" +
+		"select count(distinct model.tdpCommitteeMemberId) "+
+		"       from TdpCommitteeMember model where " +
+		"       model.tdpCommitteeRole.tdpCommitteeRoleId = :committeeRoleId and model.isActive ='Y' and  model.status = :committeeMemberStatus ");
+		query.setParameter("committeeRoleId", committeeRoleId);
+		query.setParameter("committeeMemberStatus",committeeMemberStatus);
+		return (Long)query.uniqueResult();
+	}
+	public List<Object[]> getStatusWiseCandiCountForACommitteeRole(Long committeeRoleId){
+		Query query = getSession().createQuery("" +
+		"select   model.status , count(distinct model.tdpCommitteeMemberId) "+
+		"from     TdpCommitteeMember model  " +
+		"where    model.tdpCommitteeRole.tdpCommitteeRoleId = :committeeRoleId and model.isActive ='Y' " +
+		"group by model.status");
+		query.setParameter("committeeRoleId", committeeRoleId);
+		return query.list();
+	}
+	
+	public List<Object[]> getRoleWiseProposedAndFinalizedMembersCounts(Set<Long> committeeRoleIds){
+		
+		Query query = getSession().createQuery("" +
+		" select    model.tdpCommitteeRole.tdpCommitteeRoleId,model.status , count(distinct model.tdpCommitteeMemberId)  " +
+		" from      TdpCommitteeMember model where " +
+		"           model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y' " +
+		" group by  model.tdpCommitteeRole.tdpCommitteeRoleId , model.status ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		
+		return query.list();
+	}//END
+	
 }
