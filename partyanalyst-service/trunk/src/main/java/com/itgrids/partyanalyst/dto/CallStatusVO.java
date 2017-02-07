@@ -30,8 +30,43 @@ private Long tdpCadreId;
 private String memberShipNo;
 private String image;
 private Long count = 0l;
+private String stsStr;
+private Long districtId;
+private String districtName;
+private Long constId;
+private String constName;
 
 
+public Long getDistrictId() {
+	return districtId;
+}
+public void setDistrictId(Long districtId) {
+	this.districtId = districtId;
+}
+public String getDistrictName() {
+	return districtName;
+}
+public void setDistrictName(String districtName) {
+	this.districtName = districtName;
+}
+public Long getConstId() {
+	return constId;
+}
+public void setConstId(Long constId) {
+	this.constId = constId;
+}
+public String getConstName() {
+	return constName;
+}
+public void setConstName(String constName) {
+	this.constName = constName;
+}
+public String getStsStr() {
+	return stsStr;
+}
+public void setStsStr(String stsStr) {
+	this.stsStr = stsStr;
+}
 public Long getCount() {
 	return count;
 }

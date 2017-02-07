@@ -2033,7 +2033,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		  return query.list();
 }
    public List<Object[]> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,
-		   List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel,String mayBe){
+		   List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList,Date startDate,Date endDate,Long meetingLevel,String status){
 	        StringBuilder sb = new StringBuilder();
 	        
 	        sb.append(" select model.partyMeetingType.partyMeetingTypeId," +//0 - MeetingTypeId
@@ -2053,17 +2053,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        
 	        sb.append(" ,model.isConducted," +								//12.conducted or NotConducted
 	        		" model.isConductedByIvr," +								//13.conducted Date 
-	        		" model.remarks,model.thirdPartyStatus ");										//14.remarks
+	        		" model.remarks,model.thirdPartyStatus ");										//14.remarks,15.thirdParty
 	        
 	        
-	        if(meetingLevel>=2){
-	        	sb.append(" ,model.meetingAddress.district.districtId ");	// 15 -- District Id
-	        	sb.append(" ,model.meetingAddress.district.districtName ");	// 16 -- District Name
-	        }
-	        if(meetingLevel>=3){
-	        	sb.append(" ,model.meetingAddress.constituency.constituencyId "); // 17 -- Constituency Id
-	        	sb.append(" ,model.meetingAddress.constituency.name "); 		  // 18 -- Constituency Name
-	        }
+	        //if(meetingLevel>=2){
+	        	sb.append(" ,model.meetingAddress.district.districtId ");	// 16 -- District Id
+	        	sb.append(" ,model.meetingAddress.district.districtName ");	// 17 -- District Name
+	       // }
+	        //if(meetingLevel>=3){
+	        	sb.append(" ,model.meetingAddress.constituency.constituencyId "); // 18 -- Constituency Id
+	        	sb.append(" ,model.meetingAddress.constituency.name "); 		  // 19 -- Constituency Name
+	       // }
 	        
 	        
 	         sb.append(" from PartyMeeting model " +
@@ -2226,11 +2226,27 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            sb.append(" and  ( (date(model.startDate)>=:startDate and date(model.startDate)<=:endDate) or (date(model.endDate)>=:startDate and date(model.endDate)<=:endDate) ) ");
 	        }
 	        
-	        if(mayBe != null && mayBe.trim().equalsIgnoreCase("true")){
+	        if(status != null && status.trim().equalsIgnoreCase("maybe")){
 	        	sb.append(" and model.isConducted is not null and model.isConductedByIvr is not null" +
 	        				" and ((model.isConducted = 'Y' and model.isConductedByIvr = 'N')" +
 	        				" or (model.isConducted = 'N' and model.isConductedByIvr = 'Y'))");
 	        }
+	        else if(status != null && status.trim().equalsIgnoreCase("no")){
+	        	sb.append(" and ((model.isConducted = 'N' and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted is null and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted = 'N' and model.isConductedByIvr is null))");
+	        }
+	       /* else if(status != null && status.trim().equalsIgnoreCase("all")){
+	        	sb.append(" and (model.isConducted is not null and model.isConductedByIvr is not null" +
+	        				" and ((model.isConducted = 'Y' and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted = 'N' and model.isConductedByIvr = 'Y')))" +
+	        				" OR ((model.isConducted = 'N' and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted is null and model.isConductedByIvr = 'N')" +
+	        				" or (model.isConducted = 'N' and model.isConductedByIvr is null))");
+	        	/*sb.append(" and ((model.isConducted != 'Y' and model.isConductedByIvr != 'Y')" +
+	        				" and model.isConducted != 'Y' and model.isConductedByIvr is null" +
+	        				" or (model.isConducted is null and model.isConductedByIvr != 'Y'))");
+	        }*/
 	        
 	        sb.append(" order by model.startDate desc ");
 	        

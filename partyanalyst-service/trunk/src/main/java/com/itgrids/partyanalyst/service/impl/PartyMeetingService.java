@@ -4422,7 +4422,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	   return finalList;
 	}
 	
-	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr){
+	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr,String status){
 		List<PartyMeetingVO> returnList = new ArrayList<PartyMeetingVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -4434,7 +4434,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				endDate = sdf.parse(endDateStr);
 			
 			
-			List<Object[]>  updationList = partyMeetingUpdationDetailsDAO.getUpdatedDetails(locationLvlId, startDate, endDate);
+			List<Object[]>  updationList = partyMeetingUpdationDetailsDAO.getUpdatedDetails(locationLvlId, startDate, endDate, status);
 			if(updationList != null && updationList.size() > 0l){
 				for (Object[] objects : updationList) {
 					PartyMeetingVO vo = new PartyMeetingVO();
