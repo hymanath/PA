@@ -173,12 +173,10 @@ import com.itgrids.partyanalyst.model.PublicRepresentativeType;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
-import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
@@ -3902,7 +3900,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		return isEligible;
 	}
-	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue)
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue,List<Long> committeeEnrollmentIdsLst)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
@@ -3916,14 +3914,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			{
 				levelIds.add(6l);// Village/Ward
 				levelIds.add(8l);
-			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status);
+			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status,committeeEnrollmentIdsLst);
 			}
 			
 			else if(levelId == 10 || levelId == 11)
 			{
 				List<Long> locationIds = new ArrayList<Long>();
 				locationIds.add(new Long(accessValue));
-				list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelId,basicCommitteeTypeId,locationIds,status);
+				list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelId,basicCommitteeTypeId,locationIds,status,committeeEnrollmentIdsLst);
 			}
 			else
 			{
@@ -3964,13 +3962,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}		
 					}
 					if(muncipalIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(7l,basicCommitteeTypeId,muncipalIds,status));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(7l,basicCommitteeTypeId,muncipalIds,status,committeeEnrollmentIdsLst));
 					}
 					if(mandalIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(5l,basicCommitteeTypeId,mandalIds,status));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(5l,basicCommitteeTypeId,mandalIds,status,committeeEnrollmentIdsLst));
 					}
 					if(divisionIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(9l,basicCommitteeTypeId,divisionIds,status));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(9l,basicCommitteeTypeId,divisionIds,status,committeeEnrollmentIdsLst));
 					}
 				}
 					
@@ -4008,7 +4006,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  for(Long level : levelValuesMap.keySet()){
 					  
 					  List<CadreCommitteeMemberVO> newResultList = levelVosMap.get(level);
-					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(level,levelValuesMap.get(level),basicCommitteeTypeId,status);
+					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(level,levelValuesMap.get(level),basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
 					if(membersList != null && membersList.size() > 0)
 					{
 						for(Object[] params : membersList)
@@ -4097,12 +4095,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return location;
 	}*/
-	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status)
+	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status,List<Long> committeeEnrollmentIdsLst)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
 		try{
-			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status);
+			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
 			if(membersList != null && membersList.size() > 0)
 			{
 				String locationName = getLocationName(levelId,locationId);
@@ -4137,13 +4135,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId)
+	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
 			DateUtilService date = new DateUtilService();
 			
-			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId);
+			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst);
 			for(Long id : tdpcommitteIds)
 			{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
@@ -4162,13 +4160,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId)
+	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId,List<Long> committeeEnrollmentIdsLst)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
 		
-			List<Object[]> list = tdpCommitteeMemberDAO.getCommitteStatusAndId(tdpCommitteeMemberId);
+			List<Object[]> list = tdpCommitteeMemberDAO.getCommitteStatusAndId(tdpCommitteeMemberId,committeeEnrollmentIdsLst);
 			if(list != null)
 			{
 				Object[] params = list.get(0);
@@ -4176,7 +4174,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				Long tdpCommitteId = new Long(params[1].toString());
 				if(!status.equalsIgnoreCase("Y"))
 				{
-					Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId);
+					Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId,committeeEnrollmentIdsLst);
 					if(val != null && val > 0)
 					{
 					vo.setStatus("Removed");
@@ -4439,7 +4437,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 		
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue)
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue,List<Long> committeeEnrollmentIdsLst)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		try{
@@ -4481,18 +4479,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 			if(mandalIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(mandalIds,5l);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(mandalIds,5l);
+				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(mandalIds,5l,committeeEnrollmentIdsLst);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(mandalIds,5l,committeeEnrollmentIdsLst);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			if(muncipalIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(muncipalIds,7l);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(muncipalIds,7l);
+				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(muncipalIds,7l,committeeEnrollmentIdsLst);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(muncipalIds,7l,committeeEnrollmentIdsLst);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			if(divisionIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(divisionIds,9l);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(divisionIds,9l);
+				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(divisionIds,9l,committeeEnrollmentIdsLst);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(divisionIds,9l,committeeEnrollmentIdsLst);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			returnList = new ArrayList<CommitteeSummaryVO>(returnMap.values());
@@ -4512,7 +4510,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType)
+	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		List<Long> locationIds = new ArrayList<Long>();
@@ -4524,8 +4522,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			locationLevelId = 11l;
 		try{
 			
-			List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(locationIds,locationLevelId);
-			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId);
+			List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst);
+			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst);
 			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
 			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
 			getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO);
@@ -9171,7 +9169,7 @@ return constiLst;
 		}
 	}
 	
-	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status)
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
 	{
 		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
 		try
@@ -9250,7 +9248,7 @@ return constiLst;
 			
 			
 			//19tehsilId, 20localElectionBodyId 21constituencyId
-		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
+		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
 		    	casteGroupMap = new HashMap<String, CasteDetailsVO>();
 		    	ageGroupMap = new LinkedHashMap<String, CasteDetailsVO>();
