@@ -79,7 +79,10 @@
 		<h3 style="text-align:center"> DESIGNATION WISE CADRE COMMITTEE DASHBOARD </h3>
 		<hr style="margin-top:5px;border-color:#FC6"/>
 	</div>
-	<div class="col-md-3 col-md-offset-8" style="margin-top:10px;" id="buttonsDiv">
+	<div class="col-md-2 col-md-offset-6 col-xs-12 col-sm-2 col-sm-offset-4">
+		<select class="form-control" id="tdpCommitteeYearId"></select>
+	</div>
+	<div class="col-md-3" style="margin-top:10px;" id="buttonsDiv">
        
 		<button class="btn btn-xs btn-success  APCls" onclick="getRolesBasedReport('AP',0,0,'constiRoleSummary',0,0);"><label class="radio-inline">
 			<input type="radio" name="optradio" id="AP"  value="AP" >AP</label>
@@ -188,13 +191,14 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-
+	<script src="js/cadreCommittee/cadreCommitteeDashboard1.js" type="text/javascript"></script>
 	
 <script>
 
 var userInitialAccessType = '${pageAccessType}';
 //console.log(userInitialAccessType);
-	$(document).ready(function(){		
+	$(document).ready(function(){	
+			getCadreEnrollmentYears();	
 			$('#AP').prop("checked",true);
 			if(userInitialAccessType != 'ALL')
 			{
@@ -581,6 +585,8 @@ var userInitialAccessType = '${pageAccessType}';
 		var roleId = $('#committeePostitionId').val();		
 		var locationLevelId =$('#searchLevelId').val();
 		var committeeTypeId =$('#committeeTypeId').val();
+		var enrollmentIdsArr = new Array();
+			enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
 		$('#'+divId+'').html('');
 		var userAccessType =userInitialAccessType;
 		var radioval  =  $('input[name=optradio]:radio:checked').val()
@@ -644,7 +650,8 @@ var userInitialAccessType = '${pageAccessType}';
 			userAccessType : userAccessType,
 			castePercentage:castePercentage,
 			searchTypeId:searchTypeId,
-			selectedRadio:selectedRadio
+			selectedRadio:selectedRadio,
+			enrollmentIdsArr:enrollmentIdsArr
 		};
 		$.ajax({
           type:'GET',
