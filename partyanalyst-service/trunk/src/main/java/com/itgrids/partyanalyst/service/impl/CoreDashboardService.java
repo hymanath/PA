@@ -1556,10 +1556,12 @@ public class CoreDashboardService implements ICoreDashboardService{
 			if(commonMethodsUtilService.isListOrSetValid(resltList)){
 				for (Object[] param : resltList) {
 					Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
-					if(scopeWiseTotalLoationsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))==null){						
+					if(scopeWiseTotalLoationsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))!=null){	
+						totalLocationsMap = scopeWiseTotalLoationsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
 						totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
 						scopeWiseTotalLoationsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), totalLocationsMap);
-					}
+					
 				}
 				resltList.clear();
 			}
