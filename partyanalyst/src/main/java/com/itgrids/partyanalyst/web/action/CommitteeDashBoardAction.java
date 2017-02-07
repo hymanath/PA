@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
@@ -85,12 +86,18 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<LocationWiseBoothDetailsVO>    locations;
 	private List<IdNameVO>  castes;
 	private List<GenericVO>						genericVOList;
+	private List<CadreCommitteeVO> 				committeeVoList;
 	
 	
 	
 	
 	
-	
+	public List<CadreCommitteeVO> getCommitteeVoList() {
+		return committeeVoList;
+	}
+	public void setCommitteeVoList(List<CadreCommitteeVO> committeeVoList) {
+		this.committeeVoList = committeeVoList;
+	}
 	public List<GenericVO> getGenericVOList() {
 		return genericVOList;
 	}
@@ -1341,6 +1348,35 @@ public String getAllConstituencysForADistrict(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCadreEnrollmentYears(){
+		try{			
+			jObj = new JSONObject(getTask());
+			
+			committeeVoList = cadreCommitteeService.getCadreEnrollmentYears();
+		}catch(Exception e){
+			LOG.error("Exception occured in getCadreEnrollmentYears ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCommitteeDetailsByEnrollementId(){
+		try{			
+			jObj = new JSONObject(getTask());
+			List<Long> enrollYearIdsList = new ArrayList<Long>(0);
+			JSONArray EnrollIdsArr = jObj.getJSONArray("enrollmentIdsArr");
+			if(EnrollIdsArr != null && EnrollIdsArr.length()>0)
+			{
+				for (int i = 0; i < EnrollIdsArr.length(); i++)
+				{
+					Long value = EnrollIdsArr.get(i) != null ? Long.valueOf(EnrollIdsArr.get(i).toString().trim()):0L;
+					enrollYearIdsList.add(value);
+				}
+			}
+			committeeVoList = cadreCommitteeService.getCommitteeDetailsByEnrollementId(enrollYearIdsList);
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeDetailsByEnrollementId ",e);
 		}
 		return Action.SUCCESS;
 	}

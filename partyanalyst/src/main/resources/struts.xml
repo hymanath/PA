@@ -15649,5 +15649,15 @@
 			    <param name="root">idAndNameVOList</param>
 		  </result>	
 	  </action>
+	<action name="getCadreEnrollmentYearsAction" class="committeeDashBoardAction" method="getCadreEnrollmentYears">
+	  	  <result type="json" name="success">		   
+			    <param name="root">committeeVoList</param>
+		  </result>	
+	</action>
+	<action name="getCommitteeDetailsByEnrollementIdAction" class="committeeDashBoardAction" method="getCommitteeDetailsByEnrollementId">
+	  	  <result type="json" name="success">		   
+			    <param name="root">committeeVoList</param>
+		  </result>	
+	</action>
  </package>
 </struts>
