@@ -35,7 +35,8 @@ $(document).ready(function(){
 	//getApplicationStatusList();
 	getPositionList();
 	getLocationLevelList();
-	getDepartmentList(2);   
+	getDepartmentList(2);  
+	 	
 	//getBoardList(0,2);
 	//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
     //getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
@@ -392,6 +393,12 @@ $(document).on("click",".casteGroupCls",function(){
 		$("#totalFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 		$("#totalMaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 	    $("#totalMaleFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		$("#locationsLevelId").val(levelId);
+		$("#positonId").val(positionId);
+		
+		$("#locationsLevelId").trigger("chosen:updated");
+        $("#positonId").trigger("chosen:updated");
+		
 		var jsObj={
 		positionId  : positionId,
 		levelId     : levelId,
@@ -2084,6 +2091,7 @@ $("#nominatedCandadteModalId").modal("show");
 });
 
 function getLocationAndBoardLevelWisePostsData(){
+	$("#loctnLvlCntId1").html('');
    $(".loctnLvlCntDivCls").show();
     $("#loctnLvlCntId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
   //var searchType = $('#geoViewType').val();
@@ -2201,15 +2209,170 @@ function getLocationAndBoardLevelWisePostsData(){
 			$("#tableschrollId1").mCustomScrollbar({setHeight: '440px'});  
 		} */
  }
- $(document).on("click",".radioBtnCls",function(){
-	 getLocationAndBoardLevelWisePostsData();	 
+ $(document).on("change","#positonId",function(){
+	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
+		if(searchType1 == "1" ){
+			getLocationAndBoardLevelWisePostsData();
+		 }else if(searchType1 == "2"){
+			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+		 }	 
 	 });
-		$(document).on("click",".radioBtnCls1",function(){
+	 $(document).on("change","#locationsLevelId",function(){
+	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
+		if(searchType1 == "1" ){
+			getLocationAndBoardLevelWisePostsData();
+		 }else if(searchType1 == "2"){
+			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+		 }	 
+	 });
+$(document).on("click",".radioBtnCls",function(){
+	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
+		if(searchType1 == "1" ){
+			getLocationAndBoardLevelWisePostsData();
+		 }else if(searchType1 == "2"){
+			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+		 }	 
+	 });
+	 $(document).on("click",".radioBtnCls1",function(){
 		var searchType1  = $('input[name=checkBoxName1]:checked').val();
 		if(searchType1 == "1" ){
-			alert(searchType1);
-		 getLocationAndBoardLevelWisePostsData();
-		 }else if(searchType1 == "2")
-			 alert(searchType1);
-	 
-		 });
+			getLocationAndBoardLevelWisePostsData();
+		 }else if(searchType1 == "2"){
+			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+		 }
+		});
+ function getLocationAndBoardLevelWiseCasteCatgryPostsData(){
+	$("#loctnLvlCntId").html('');
+ $(".loctnLvlCntDivCls").show();
+   $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
+	var locationIds = [];
+	//locationIds.push(19);
+	//locationIds.push(23);
+  var searchType  = $('input[name=checkBoxName]:checked').val();
+  var jObj={
+        postLevelId : 0,
+		casteGrpId   :0,
+		casteId      : 0,
+		ageRangeId:0,
+		positionId:0,
+		gender:0,
+		stateId:globalStateId,
+		searchType:searchType,
+		locationIdsList :locationIds,
+		dataType:"casteCategory"
+		
+    
+      };
+      $.ajax({
+         type:'GET',
+         url:'getLocationAndBoardLevelWiseCasteCatgryPostsDataAction.action',
+         dataType: 'json',
+         data: {task:JSON.stringify(jObj)}
+      }).done(function(result){
+		if(result != null && result.length > 0){
+        builddata(result,searchType);   
+      }else{
+       $("#loctnLvlCntId1").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>"); 
+      } 
+    });
+ }
+ function builddata(result,searchType){
+	
+		var str='';
+		str+='<table class="table table-bordered dataTableCandLocCatgry">';
+		str+='<thead class="bg_ef ">';
+		str+='<tr>';
+		
+		if(searchType == "district")
+			str+='<th rowspan="2">District</th>';
+		if(searchType == "constituency")
+			str+='<th rowspan="2">Constituency</th>';
+		str+='<th rowspan="2">Caste Group</th>';
+		if(result[0].positinsList[0].applicatnStatsList != null && result[0].positinsList[0].applicatnStatsList.length > 0){
+			for(var i in result[0].positinsList[0].applicatnStatsList){
+				if(result[0].positinsList[0].applicatnStatsList[i].statusName == 'Total')
+					str+='<th colspan="3"> Total </th>'
+				else
+					str+='<th colspan="2">'+result[0].positinsList[0].applicatnStatsList[i].statusName+'</th>'
+			}
+		}
+		str+='</tr>';
+		str+='<tr>';
+		if(result[0].positinsList[0].applicatnStatsList != null && result[0].positinsList[0].applicatnStatsList.length > 0){
+			for(var i in result[0].positinsList[0].applicatnStatsList){
+				if(result[0].positinsList[0].applicatnStatsList[i].statusName == 'Total'){
+					str+='<th> T </th>'
+					str+='<th> M </th>'
+					str+='<th> F </th>'
+				}
+				else{
+					str+='<th> M </th>'
+					str+='<th> F </th>'
+				}
+			}
+		}
+		str+='</tr>';
+		str+='</thead>'
+		str+='<tbody>';
+		for(var i in result){
+		str+='<tr>';
+		str+='<td rowspan="'+result[i].positinsList.length+'">'+result[i].statusName+'</td>';
+		//str+='<td rowspan="'+result[i].positinsList.length+'">'+result[i].statusName+'</td>';
+		for(var k in result[i].positinsList){
+			
+				str+='<td>'+result[i].positinsList[k].statusName+'</td>';
+				
+				if(result[i].positinsList[k].applicatnStatsList != null && result[i].positinsList[k].applicatnStatsList.length > 0){
+					for(var j in result[i].positinsList[k].applicatnStatsList){
+						//
+						if(result[i].positinsList[k].applicatnStatsList[j].statusName == 'Total'){ 
+							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" style="">'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</td>';
+							}else{
+								str+='<td class="" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" style="">'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</td>';
+							}
+							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+							}else{
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+							}
+							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+							}else{
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+							}
+						}
+						else{
+							if(result[i].positinsList[k].applicatnStatsList[j].maleCount == 0){
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+							}else{
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+							}
+							if(result[i].positinsList[k].applicatnStatsList[j].femaleCount == 0){
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+							}else{
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+							}
+						}
+					}
+				}
+			str+='</tr>';
+		}
+		}
+		str+='<tr>';
+		str+='<td ></td>';
+		 str+='<td >TOTAL</td>';
+		  str+='<td colspan="3">'+result[0].positinsList[0].overAllCount+'</td>';
+		  str+='<td colspan="2">'+result[0].positinsList[0].twentyTo29AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].positinsList[0].thirtyTo39AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].positinsList[0].fourtyTo49AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].positinsList[0].fiftyTo59AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].positinsList[0].sixtyAvoveAgeRangeCount+'</td>';
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+		$("#loctnLvlCntId1").html(str);
+		//$(".dataTableCandLocCatgry").dataTable({});
+ }
+ 
+ 
