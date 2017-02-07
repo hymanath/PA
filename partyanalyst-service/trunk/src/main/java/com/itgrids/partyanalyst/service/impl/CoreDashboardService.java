@@ -1702,180 +1702,239 @@ public class CoreDashboardService implements ICoreDashboardService{
 	}
 	public void buildDataToList(List<EventDetailsVO> returnList,Long districtId,Long activityScopeId,String searchType,Long stateId,Long locationAccessLevelId ,
 	Set<Long> locationValues,String showType){
+		List<Long> scopeIds = new ArrayList<Long>(0);
+		scopeIds.add(activityScopeId);
+		List<Object[]> hasSpecilaActivitiesList = activityConductedInfoDAO.getTotalCountsForScopeIds(scopeIds,null,null,null);
 		
 		
 		List<Object[]> totalList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,showType,null,locationAccessLevelId
 				,locationValues);
-		activityLocationInfoDAO.flushAndclearSession();
-		List<Object[]> totalList1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,showType,null
-				,locationAccessLevelId
+		
+		if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+			List<Object[]> totalList1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,showType,null
+					,locationAccessLevelId,locationValues);
+			if(commonMethodsUtilService.isListOrSetValid(totalList1))
+				if(!commonMethodsUtilService.isListOrSetValid(totalList))
+					totalList = new ArrayList<Object[]>(0);
+					totalList.addAll(totalList1);
+		}
+		setDataToVO(totalList,returnList,showType,searchType);
+		
+		 totalList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,null,null,locationAccessLevelId
 				,locationValues);
-		if(commonMethodsUtilService.isListOrSetValid(totalList1))
-			if(!commonMethodsUtilService.isListOrSetValid(totalList))
-				totalList = new ArrayList<Object[]>(0);
-				totalList.addAll(totalList1);
-			setDataToVO(totalList,returnList,showType,searchType);
-			
+		
+		if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+			List<Object[]> totalList1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,null,null,locationAccessLevelId,locationValues);
+			if(commonMethodsUtilService.isListOrSetValid(totalList1))
+				if(!commonMethodsUtilService.isListOrSetValid(totalList))
+					totalList = new ArrayList<Object[]>(0);
+					totalList.addAll(totalList1);
+		}
+		setDataToVO(totalList,returnList,"total",searchType);
+		
 	if(showType == null || !showType.equalsIgnoreCase("NotConducted")){	
 		/*List<Object[]> planedList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned",null,locationAccessLevelId
-				,locationValues);
-		activityLocationInfoDAO.flushAndclearSession();
-		List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned",null
-				,locationAccessLevelId
-				,locationValues);
-		if(commonMethodsUtilService.isListOrSetValid(list1))
-			if(!commonMethodsUtilService.isListOrSetValid(planedList))
-				planedList = new ArrayList<Object[]>(0);
-				planedList.addAll(list1);
-			setDataToVO(planedList,returnList,"planned",searchType);
-			*/
-		List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null,locationAccessLevelId
-				,locationValues);
-		List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null,locationAccessLevelId
-				,locationValues);
-		if(commonMethodsUtilService.isListOrSetValid(list1))
-			if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
-				condtdcList = new ArrayList<Object[]>(0);
-				condtdcList.addAll(list1);
-			setDataToVO(condtdcList,returnList,"infocell",searchType);
-		List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null,locationAccessLevelId
-				,locationValues);
-		list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null,locationAccessLevelId
-				,locationValues);
-		if(commonMethodsUtilService.isListOrSetValid(list1))
-			if(!commonMethodsUtilService.isListOrSetValid(ivrList))
-				ivrList = new ArrayList<Object[]>(0);
-				ivrList.addAll(list1);
-			setDataToVO(ivrList,returnList,"ivr",searchType);
-			
-			
-			
-			List<Long> scopeIds = new ArrayList<Long>(0);
-			scopeIds.add(activityScopeId);
-			List<Object[]> yesCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","yes",locationAccessLevelId
-					,locationValues);
-			List<Object[]> specialActivitiesYesCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","yes",locationAccessLevelId
-					,locationValues);
-			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesYesCountList)){
-				if(!commonMethodsUtilService.isListOrSetValid(yesCountList))
-					yesCountList = new ArrayList<Object[]>(0);
-					yesCountList.addAll(specialActivitiesYesCountList);
-			}
-			
-			if(yesCountList != null && !yesCountList.isEmpty()){
-				for (Object[] obj : yesCountList) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					
-					EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
-					if(vo != null){
-						vo.setYesCount(count);
-					}
-				}
-			}
-			
-			List<Object[]> noCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","no",locationAccessLevelId
-					,locationValues);
-			List<Object[]> specialActivitiesNoCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","no",locationAccessLevelId
-					,locationValues);
-			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesNoCountList)){
-				if(!commonMethodsUtilService.isListOrSetValid(noCountList))
-					noCountList = new ArrayList<Object[]>(0);
-					noCountList.addAll(specialActivitiesNoCountList);
-			}
-			
-			if(noCountList != null && !noCountList.isEmpty()){
-				for (Object[] obj : noCountList) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					
-					EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
-					if(vo != null){
-						vo.setNoCount(count);
-					}
-				}
-			}
-			
-			List<Object[]> maybeCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","maybe",locationAccessLevelId
-					,locationValues);
-			List<Object[]> specialActivitiesMaybeCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","maybe",locationAccessLevelId
-					,locationValues);
-			if(commonMethodsUtilService.isListOrSetValid(specialActivitiesMaybeCountList)){
-				if(!commonMethodsUtilService.isListOrSetValid(maybeCountList))
-					maybeCountList = new ArrayList<Object[]>(0);
-					maybeCountList.addAll(specialActivitiesMaybeCountList);
-			}
-			if(maybeCountList != null && !maybeCountList.isEmpty()){
-				for (Object[] obj : maybeCountList) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					
-					EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
-					if(vo != null){
-						vo.setMayBeCount(count);
-					}
-				}
-			}
-			
-			ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
-			Long levelId = 0L;
-			if(activityScope != null)
-				levelId = activityScope.getActivityLevelId();
-			
-			if(levelId != null && levelId.longValue()>0L){
-				List<Object[]> conductedCuntList = new ArrayList<Object[]>(0);
-				if(levelId.longValue() == 1L){
-					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"village",locationAccessLevelId
-							,locationValues); 
-					List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"wards",locationAccessLevelId
-							,locationValues);
-					
-					if(commonMethodsUtilService.isListOrSetValid(list))
-						conductedCuntList.addAll(list);
-					if(commonMethodsUtilService.isListOrSetValid(list2))
-						conductedCuntList.addAll(list2);
-				}
-				else if(levelId.longValue() == 2L){
-					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"mandal",locationAccessLevelId
-							,locationValues); 
-					List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"town",locationAccessLevelId
-							,locationValues);
-					
-					if(commonMethodsUtilService.isListOrSetValid(list))
-						conductedCuntList.addAll(list);
-					if(commonMethodsUtilService.isListOrSetValid(list2))
-						conductedCuntList.addAll(list2);
-					
-				}
-				else if(levelId.longValue() == 3L){
-					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"district",locationAccessLevelId
-							,locationValues); 
-					if(commonMethodsUtilService.isListOrSetValid(list))
-						conductedCuntList.addAll(list);
-				}
-				else if(levelId.longValue() == 4L){
-					List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"constituency",locationAccessLevelId
-							,locationValues); 
-					if(commonMethodsUtilService.isListOrSetValid(list))
-						conductedCuntList.addAll(list);
-				}
-				
-				if(conductedCuntList != null && !conductedCuntList.isEmpty()){
-					for (Object[] obj : conductedCuntList) {
-						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-						Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-						
-						EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
-						if(vo != null){
-							if(vo.getConductedCount() == null || vo.getConductedCount().longValue()==0L)
-								vo.setConductedCount(count);
-							else
-								vo.setConductedCount(count+vo.getConductedCount());
-						}
-					}
-				}
-			}
+		,locationValues);
+activityLocationInfoDAO.flushAndclearSession();
+List<Object[]> list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned",null
+		,locationAccessLevelId
+		,locationValues);
+if(commonMethodsUtilService.isListOrSetValid(list1))
+	if(!commonMethodsUtilService.isListOrSetValid(planedList))
+		planedList = new ArrayList<Object[]>(0);
+		planedList.addAll(list1);
+	setDataToVO(planedList,returnList,"planned",searchType);
+	*/
+List<Object[]> condtdcList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null,locationAccessLevelId
+		,locationValues);
+List<Object[]> list1 = null;
+if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+	list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell",null,locationAccessLevelId
+		,locationValues);
+	if(commonMethodsUtilService.isListOrSetValid(list1))
+		if(!commonMethodsUtilService.isListOrSetValid(condtdcList))
+			condtdcList = new ArrayList<Object[]>(0);
+			condtdcList.addAll(list1);
+}
+
+	setDataToVO(condtdcList,returnList,"infocell",searchType);
+List<Object[]> ivrList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null,locationAccessLevelId
+		,locationValues);
+if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+	list1 = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"ivr",null,locationAccessLevelId
+		,locationValues);
+	if(commonMethodsUtilService.isListOrSetValid(list1))
+		if(!commonMethodsUtilService.isListOrSetValid(ivrList))
+			ivrList = new ArrayList<Object[]>(0);
+			ivrList.addAll(list1);
+}
+
+	setDataToVO(ivrList,returnList,"ivr",searchType);
+
+	List<Object[]> yesCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","yes",locationAccessLevelId
+			,locationValues);
+	if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+		List<Object[]> specialActivitiesYesCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","yes",locationAccessLevelId
+			,locationValues);
+		if(commonMethodsUtilService.isListOrSetValid(specialActivitiesYesCountList)){
+			if(!commonMethodsUtilService.isListOrSetValid(yesCountList))
+				yesCountList = new ArrayList<Object[]>(0);
+				yesCountList.addAll(specialActivitiesYesCountList);
+		}
 	}
+	
+	
+	if(yesCountList != null && !yesCountList.isEmpty()){
+		for (Object[] obj : yesCountList) {
+			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+			Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+			
+			EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
+			if(vo != null){
+				vo.setYesCount(count);
+			}
+		}
+	}
+	
+	List<Object[]> noCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","no",locationAccessLevelId
+			,locationValues);
+	if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+		List<Object[]> specialActivitiesNoCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","no",locationAccessLevelId
+			,locationValues);
+		if(commonMethodsUtilService.isListOrSetValid(specialActivitiesNoCountList)){
+			if(!commonMethodsUtilService.isListOrSetValid(noCountList))
+				noCountList = new ArrayList<Object[]>(0);
+				noCountList.addAll(specialActivitiesNoCountList);
+		}
+	}
+	
+	
+	if(noCountList != null && !noCountList.isEmpty()){
+		for (Object[] obj : noCountList) {
+			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+			Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+			
+			EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
+			if(vo != null){
+				vo.setNoCount(count);
+			}
+		}
+	}
+	
+	List<Object[]> maybeCountList = activityLocationInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"planned","maybe",locationAccessLevelId
+			,locationValues);
+	if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+		List<Object[]> specialActivitiesMaybeCountList = activityConductedInfoDAO.getDistrictWiseActivityCounts(districtId,activityScopeId,searchType,stateId,"infocell","maybe",locationAccessLevelId
+			,locationValues);
+		if(commonMethodsUtilService.isListOrSetValid(specialActivitiesMaybeCountList)){
+			if(!commonMethodsUtilService.isListOrSetValid(maybeCountList))
+				maybeCountList = new ArrayList<Object[]>(0);
+				maybeCountList.addAll(specialActivitiesMaybeCountList);
+		}
+	}
+	
+	
+	if(maybeCountList != null && !maybeCountList.isEmpty()){
+		for (Object[] obj : maybeCountList) {
+			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+			Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+			
+			EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
+			if(vo != null){
+				vo.setMayBeCount(count);
+			}
+		}
+	}
+	
+	ActivityScope activityScope = activityScopeDAO.get(activityScopeId);
+	Long levelId = 0L;
+	if(activityScope != null)
+		levelId = activityScope.getActivityLevelId();
+	
+	if(levelId != null && levelId.longValue()>0L){
+		List<Object[]> conductedCuntList = new ArrayList<Object[]>(0);
+		if(levelId.longValue() == 1L){
+			List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"village",locationAccessLevelId,locationValues); 
+			List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"wards",locationAccessLevelId,locationValues);
+			
+			if(commonMethodsUtilService.isListOrSetValid(list))
+				conductedCuntList.addAll(list);
+			if(commonMethodsUtilService.isListOrSetValid(list2))
+				conductedCuntList.addAll(list2);
+			if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				List<Object[]> list5 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"village",locationAccessLevelId,locationValues); 
+				List<Object[]> list6 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"wards",locationAccessLevelId,locationValues);
+				
+				if(commonMethodsUtilService.isListOrSetValid(list))
+					conductedCuntList.addAll(list5);
+				if(commonMethodsUtilService.isListOrSetValid(list2))
+					conductedCuntList.addAll(list6);
+			}
+			
+		}
+		else if(levelId.longValue() == 2L){
+			List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"mandal",locationAccessLevelId,locationValues); 
+			List<Object[]> list2 = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"town",locationAccessLevelId,locationValues);
+			
+			if(commonMethodsUtilService.isListOrSetValid(list))
+				conductedCuntList.addAll(list);
+			if(commonMethodsUtilService.isListOrSetValid(list2))
+				conductedCuntList.addAll(list2);
+			
+			if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				List<Object[]> list5 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"mandal",locationAccessLevelId	,locationValues); 
+				List<Object[]> list6 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"town",locationAccessLevelId,locationValues);
+				
+				if(commonMethodsUtilService.isListOrSetValid(list))
+					conductedCuntList.addAll(list5);
+				if(commonMethodsUtilService.isListOrSetValid(list2))
+					conductedCuntList.addAll(list6);
+			}
+			
+		}
+		else if(levelId.longValue() == 3L){
+			List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"district",locationAccessLevelId,locationValues); 
+			if(commonMethodsUtilService.isListOrSetValid(list))
+				conductedCuntList.addAll(list);
+			
+			if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				List<Object[]> list5 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"district",locationAccessLevelId,locationValues); 
+				
+				if(commonMethodsUtilService.isListOrSetValid(list))
+					conductedCuntList.addAll(list5);
+			}
+			
+		}
+		else if(levelId.longValue() == 4L){
+			List<Object[]> list = activityLocationInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"constituency",locationAccessLevelId,locationValues); 
+			if(commonMethodsUtilService.isListOrSetValid(list))
+				conductedCuntList.addAll(list);
+			
+			if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				List<Object[]> list5 = activityConductedInfoDAO.getConductedCounts(districtId,activityScopeId,searchType,stateId,"constituency",locationAccessLevelId,locationValues); 
+				
+				if(commonMethodsUtilService.isListOrSetValid(list))
+					conductedCuntList.addAll(list5);
+			}
+			
+		}
+		
+		if(conductedCuntList != null && !conductedCuntList.isEmpty()){
+			for (Object[] obj : conductedCuntList) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+				
+				EventDetailsVO vo = getMatchedVOByIdForCounts(id, returnList);
+				if(vo != null){
+					if(vo.getConductedCount() == null || vo.getConductedCount().longValue()==0L)
+						vo.setConductedCount(count);
+					else
+						vo.setConductedCount(count+vo.getConductedCount());
+				}
+			}
+		}
+	}
+}
 			
 	}
 	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId,Long activityMemberId,
@@ -2063,35 +2122,49 @@ public class CoreDashboardService implements ICoreDashboardService{
 	public void setDataToVO(List<Object[]> planedList,List<EventDetailsVO> returnList,String type,String searchType){
 		
 		try{
-			
+			boolean isFilled =true;
+		if(!commonMethodsUtilService.isListOrSetValid(returnList))
+			isFilled=false;
+		
 		if(planedList != null && planedList.size() > 0){
 				for(Object[] obj : planedList){
 					EventDetailsVO vo = getMatchedVo(obj[0] != null ? (Long)obj[0] :0l,returnList);
-					
-					if(vo == null){
-						vo = new EventDetailsVO();
-						returnList.add(vo);
+					if(!isFilled){
+						if(vo == null){
+							vo = new EventDetailsVO();
+							returnList.add(vo);
+						}
 					}
-					
-					vo.setType(searchType);	
-					vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
-					String electionType= obj[4] != null ? obj[4].toString():"";
-					vo.setName(obj[1] != null ? obj[1].toString()+ "  "+electionType : "");
-					
-					if(type != null && type.equalsIgnoreCase("planned"))
-						vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
-					else if(type != null && type.equalsIgnoreCase("infocell")){
-						vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
-						vo.setInfoCellAttendedCount(obj[3] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[3]) : 0l);
+					if(vo != null){
+						vo.setType(searchType);	
+						vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
+						String electionType= obj[4] != null ? obj[4].toString():"";
+						vo.setName(obj[1] != null ? obj[1].toString()+ "  "+electionType : "");
+						
+						if(type != null && type.equalsIgnoreCase("planned"))
+							vo.setInviteeCount(obj[2] != null ? vo.getInviteeCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+						else if(type != null && type.equalsIgnoreCase("infocell")){
+							vo.setInviteeNotAttendedCount(obj[2] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+							vo.setInfoCellAttendedCount(obj[3] != null ? vo.getInviteeNotAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[3]) : 0l);
+						}
+						else if(type != null && type.equalsIgnoreCase("ivr"))
+							vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
+						else if(type != null && type.equalsIgnoreCase("All"))
+							vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
+						else if(type != null && type.equalsIgnoreCase("Conducted")){
+							vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
+							try {vo.setActivityAttendedCount(obj[3] != null ? vo.getActivityAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[3]) : 0l);} catch (Exception e) {}
+							
+							if(vo.getTotalCount() != null && vo.getTotalCount().longValue()>0L && vo.getAttendedCount() != null && vo.getAttendedCount().longValue()>0L)
+								vo.setNotUpdatedCount(vo.getTotalCount()-vo.getAttendedCount());
+						}
+						else if(type != null && type.equalsIgnoreCase("NotConducted"))
+							vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
+						else if(type != null && type.equalsIgnoreCase("total")){
+							vo.setTotalCount(obj[2] != null ? vo.getTotalCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
+							
+						}
 					}
-					else if(type != null && type.equalsIgnoreCase("ivr"))
-						vo.setInviteeAttendedCount(obj[2] != null ? vo.getInviteeAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 0l);
-					else if(type != null && type.equalsIgnoreCase("All"))
-						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
-					else if(type != null && type.equalsIgnoreCase("Conducted"))
-						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
-					else if(type != null && type.equalsIgnoreCase("NotConducted"))
-						vo.setAttendedCount(obj[2] != null ? vo.getAttendedCount()+commonMethodsUtilService.getLongValueForObject(obj[2]) : 1l);
 				}
 			}
 			
