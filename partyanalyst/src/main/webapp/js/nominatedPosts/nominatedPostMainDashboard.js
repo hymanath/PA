@@ -2168,13 +2168,13 @@ function getLocationAndBoardLevelWisePostsData(){
 			if(result[i].distList[j].id == "3"){
 					  districtCount = districtCount+distList[j].tsTotal;
 			}
-			if(result[i].distList[j].id == 4){
+			if(result[i].distList[j].id == "4"){
 					  assemblyCount =assemblyCount+distList[j].tsTotal;
 			}
-			if(result[i].distList[j].id == 5){
+			if(result[i].distList[j].id == "5"){
 					  mandalCorpCount =mandalCorpCount+distList[j].tsTotal;
 			}
-			if(result[i].distList[j].id == 6){
+			if(result[i].distList[j].id == "6"){
 					  villageCount =villageCount+distList[j].tsTotal;
 			}
           }
