@@ -71,7 +71,8 @@
         var dateString = $("#dateRangeId").val();
 		
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		var committeeEnrollmentYearArray =[1,2];
+		var committeeEnrollmentYearArray = new Array();
+		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
@@ -123,7 +124,8 @@
 	   var state = globalState;
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	   var committeeEnrollmentYearArray = [1,2];
+	   var committeeEnrollmentYearArray = new Array();
+		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
 					  userTypeId : globalUserTypeId,
@@ -156,7 +158,8 @@
 	   
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	    var committeeEnrollmentYearArray = [1,2];
+	   var committeeEnrollmentYearArray = new Array();
+		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
 					 userAccessLevelValuesArray:globalUserAccessLevelValues,
 					 state:state,
@@ -189,7 +192,8 @@
 		var committeeStatus = 'all';
         var dateString = $("#dateRangeId").val();
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		var committeeEnrollmentYearArray = [1,2];
+		var committeeEnrollmentYearArray = new Array();
+		    committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
 					levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					committeeStatus:committeeStatus,
@@ -239,7 +243,8 @@
 	 var date = $("#dateRangeId").val();
 	 var state = globalState;
   	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	 var committeeEnrollmentYearArray = [1,2];
+	 var committeeEnrollmentYearArray = new Array();
+		 committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
@@ -264,7 +269,8 @@
 	   
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	   var committeeEnrollmentYearArray = [1,2];
+	   var committeeEnrollmentYearArray = new Array();
+		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 	   var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
@@ -289,7 +295,8 @@
 	  
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	   var committeeEnrollmentYearArray = [1,2];
+	   var committeeEnrollmentYearArray = new Array();
+		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -314,7 +321,8 @@
 	   
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	    var committeeEnrollmentYearArray = [1,2];
+	    var committeeEnrollmentYearArray = new Array();
+		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -1834,7 +1842,7 @@
 	});
 	 
 	 $(document).on("click",".iconExpand",function(){
-			$(".dateRangePickerCls,#tdpCommitteeYearId").toggleClass("hide");
+			$(".dateRangePickerCls").toggleClass("hide");
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -1939,6 +1947,7 @@
 		}
 		$(document).on("change","#tdpCommitteeYearId",function(){
 			getCommitteeDetailsByEnrollement();
+			committeeBasicCall();
 		});
 		
 		function getCommitteeDetailsByEnrollement(){
