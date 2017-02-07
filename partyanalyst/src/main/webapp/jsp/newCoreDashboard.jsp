@@ -2672,7 +2672,7 @@
 										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 									</li>
 								</ul>
-								<div class="actBlockDropDown documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
 									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
 									<div class="row">
 										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
@@ -2685,7 +2685,7 @@
 										  <div class="tab-content navTabsSettingsContent">
 											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
 												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
-												<hr style ="margin-bottom:0px;" />
+												<hr style ="margin-bottom:0px;margin-top:0px;" />
 												<div class="">
 													<ul class="evntsSettingsUl">
 														<!--<li>
