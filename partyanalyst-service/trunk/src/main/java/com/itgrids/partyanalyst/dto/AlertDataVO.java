@@ -48,6 +48,7 @@ public class AlertDataVO {
 	private List<String> documentNameList = new ArrayList<String>(0);
 	private Long verificationStatusId;
 	private String verificationStatus;
+	private String designation="";
 	
 	public String getTitle() {
 		return title;
@@ -277,6 +278,12 @@ public class AlertDataVO {
 	}
 	public void setDocumentNameList(List<String> documentNameList) {
 		this.documentNameList = documentNameList;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 	
 }
