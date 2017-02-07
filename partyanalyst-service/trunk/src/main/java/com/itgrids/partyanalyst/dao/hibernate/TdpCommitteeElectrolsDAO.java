@@ -12,14 +12,21 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 	public TdpCommitteeElectrolsDAO() {
 		super(TdpCommitteeElectrols.class);
 	}
-	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList)
+	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList , Long tdpCommitteeEnrollmentId)
 	{
-		String queryStr = " select distinct model.tdpCadre.tdpCadreId ,model.tdpCommittee.tdpBasicCommittee.name," +
-				" '', model.tdpCommittee.tdpCommitteeLevelId, " +
-				" model.tdpCommittee.tdpCommitteeLevelValue " +
-				" from TdpCommitteeElectrols model where model.tdpCadre.tdpCadreId in (:tdpCadreIdsList)  and model.isDeleted = 'N'";
-		Query query = getSession().createQuery(queryStr);
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.tdpCadre.tdpCadreId ,model.tdpCommittee.tdpBasicCommittee.name,'', model.tdpCommittee.tdpCommitteeLevelId,model.tdpCommittee.tdpCommitteeLevelValue "+
+	    " from   TdpCommitteeElectrols model" + 
+	    " where  model.tdpCadre.tdpCadreId in (:tdpCadreIdsList)  and model.isDeleted = 'N' ");
+	    
+		if(tdpCommitteeEnrollmentId != null && tdpCommitteeEnrollmentId.longValue() > 0l){
+			sb.append(" and model.tdpCommitteeEnrollmentId = :tdpCommitteeEnrollmentId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		if(tdpCommitteeEnrollmentId != null && tdpCommitteeEnrollmentId.longValue() > 0l){
+			query.setParameter("tdpCommitteeEnrollmentId", tdpCommitteeEnrollmentId);
+		}
 		return query.list();
 	}
 	
