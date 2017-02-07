@@ -89,16 +89,17 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");
 	var type=$(this).attr("attr_type");
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
-	$("#eventsCmpBlckDivId").find("ul li").attr("attr_event_idsString",attrEventIdsString)	
+	$("#eventsCmpBlckDivId").find("ul li").attr("attr_event_idsString",attrEventIdsString)
 	if(type != null && type=="event"){
 	$("#activitesCmpBlockDivId").hide();
 	$("#activtyBlckDivId").hide();
-	 $(".moreEventsBlocks").toggle();
+	$(".moreEventsBlocks").toggle();
+	$(".activeUlCls").show();
 	 getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString);
 	 getSelectedEventDetails(attrEventIdsString);
 	 $(".detailedBlockEvents,.activeUlCls").show();
 	 $(".detailedEvent").addClass("active")	
-	 $(".comparisonEvent").removeClass("active")	
+	 $(".comparisonEvent").removeClass("active")
 	}else{
 		$("#activitesCmpBlockDivId").hide();
 		// activity functionality		
@@ -431,7 +432,7 @@ $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
   $("#eventsCmpBlckDivId").hide();
   $("#evntCmpBLockId").hide();
   $("#activtyBlckDivId").hide();
-  $(".settingsIconAct").hide();
+  $(".activeUlCls").hide();
   $(".detailedBlockEvents").hide();
 	getEventBasicCntDtls();
 	getActivitiesDetails();
