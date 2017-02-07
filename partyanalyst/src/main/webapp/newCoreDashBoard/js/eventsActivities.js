@@ -2003,14 +2003,14 @@ function getDistrictWiseActivityCounts(activityScopeId,districtId,type,searchTyp
 	}).done(function(result){
 		$("#activityId").html('');
 		//if(result != null && result.length > 0){
-			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal);
+			buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal,radioVal);
 		//}else{
 		//		$("#activityId").html('<div style="text-align: center;font-weight:bold;" > No data available...</div>');
 		//}
 	});
 }
 
-function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal){
+function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loctnNm,searchType,activityScopeId,radioVal,radioVal){
 	var str = '';
 	var notUpdatedCount ;
 	 if(refresh == "onload"){
@@ -2041,7 +2041,7 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	if((globalActivityLvlId != 1 || searchType != "villageWard") && (globalActivityLvlId != 1 ||  searchType != "onlyvillage")){
 		str +='<th class="text-capital">total</th>';
 	}
-
+	str +='<th class="text-capital"> attended count </th>';
 	//str +='<th class="text-capital">Planned</th>';
 	if(searchType == "constituency" ||  searchType == "mandal")
 		str +='<th class="text-capital">conducted</th>';
@@ -2060,9 +2060,13 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
   str +='<tr>';
 	str +='<td id="'+result[i].id+'">'+result[i].name+'</td>';
 	if((globalActivityLvlId != 1 || searchType != "villageWard") && (globalActivityLvlId != 1 ||  searchType != "onlyvillage")){
-		str +='<td>'+result[i].attendedCount+'</td>';
+		str +='<td>'+parseInt(result[i].totalCount)+'</td>';
 	}
 	//str +='<td>'+result[i].inviteeCount+'</td>';
+	if(result[i].activityAttendedCount ==null || result[i].activityAttendedCount ==0)
+		str +='<td> - </td>';
+	else
+		str +='<td>'+result[i].activityAttendedCount+'</td>';
 	if(searchType == "constituency" ||  searchType == "mandal"){
 		if(parseInt(result[i].conductedCount) > parseInt(result[i].attendedCount))
 			str +='<td>'+result[i].attendedCount+'</td>';
@@ -2092,12 +2096,17 @@ function buildDistrictWiseActivitiesCount(result,type,refresh,acvtyNm,levlNm,loc
 	else
 		notUpdatedCount = result[i].inviteeCount-result[i].conductedCount;
 	
-	if(notUpdatedCount < 0 )
-		str +='<td> 0 </td>'; 
-	else if(parseInt(result[i].attendedCount) == 1)
-		str +='<td>  0 </td>';
-	else 
-		str +='<td>'+notUpdatedCount+'</td>'; 
+	if(radioVal=='NotConducted')
+		str +='<td> '+parseInt(result[i].totalCount)+' </td>';
+	else{
+		if(notUpdatedCount < 0 )
+			str +='<td> 0 </td>'; 
+		else if(parseInt(result[i].attendedCount) == 1)
+			str +='<td>  0 </td>';
+		else 
+			str +='<td>'+notUpdatedCount+'</td>'; 
+	}
+	
 	
 	if(parseInt(result[i].attendedCount) > 1 || radioVal == "NotConducted" )
 		str +='<td>'+result[i].inviteeNotAttendedCount+'</td>';
