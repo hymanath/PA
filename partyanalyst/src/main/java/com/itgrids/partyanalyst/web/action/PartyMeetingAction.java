@@ -640,7 +640,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		try{
 			
 			jObj = new JSONObject(getTask());
-			partyMeetingVOList = partyMeetingService.getUpdateDetails(jObj.getLong("levelId"),jObj.getString("startDate"),jObj.getString("endDate"));
+			partyMeetingVOList = partyMeetingService.getUpdateDetails(jObj.getLong("levelId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("status"));
 		}catch(Exception e){
 			LOG.error("Entered into getUpdationDetails Action",e);
 		}

@@ -25,7 +25,7 @@
 				<div class="panel-heading panel-headingColor">
 					<div class="row">
 						<div class="col-md-5 col-xs-12 col-sm-6">    
-							<h3 class="text-capital" style="margin-top:5px !important;"><b>alert dashboard</b></h3>
+							<h3 class="text-capital" style="margin-top:5px !important;"><b>My Assigned Alerts</b></h3>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">
 							<div class="input-group">
