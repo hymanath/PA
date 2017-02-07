@@ -783,6 +783,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			String gender = jObj.getString("gender");
 			boolean isRemoved = jObj.getBoolean("removedStatus");
 			Long enrollmentId = jObj.getLong("enrollmentId");
+			
 			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
 			{
 				
@@ -794,7 +795,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
-							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId);
+							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId,null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
@@ -802,6 +803,49 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getCadreSearchDetailsForCommittee()
+	{
+		try {
+			
+			int startIndex = 0;
+			int maxIndex = 0;
+			jObj = new JSONObject(getTask());
+			Long locationLevel = jObj.getLong("locationLevel");
+			Long locationValue = jObj.getLong("locationValue");
+			String searchName = jObj.getString("searchName");
+			String mobileNo = jObj.getString("mobileNo");
+			
+			Long casteStateId = jObj.getLong("casteStateId");
+			String casteCategory = jObj.getString("casteCategory");
+			Long fromAge = jObj.getLong("fromAge");
+			Long toAge = jObj.getLong("toAge");
+			String houseNo = jObj.getString("houseNo");
+			String memberShipCardNo = jObj.getString("memberShipCardNo");
+			String trNumber = jObj.getString("trNumber");
+			String voterCardNo = jObj.getString("voterCardNo");
+			String gender = jObj.getString("gender");
+			boolean isRemoved = jObj.getBoolean("removedStatus");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+			
+			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
+			{	
+				startIndex = jObj.getInt("startIndex");
+				maxIndex = jObj.getInt("maxIndex");
+				
+			}
+		    String searchType = "committeeSearch";
+			
+			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
+							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId ,searchType);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCadreSearchDetailsForCommittee() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public String getCadreDetails()
 	{
 		try {
@@ -836,7 +880,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, "",memberShipCardNo, 
-							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved,enrollmentId);
+							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved,enrollmentId,null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getCadreDetails() At CadreCommitteeAction ",e);
