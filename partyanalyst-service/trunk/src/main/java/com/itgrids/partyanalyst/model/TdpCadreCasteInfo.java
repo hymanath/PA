@@ -21,6 +21,7 @@ public class TdpCadreCasteInfo implements java.io.Serializable{
 	private Long casteStateId;
 	private Long count;
 	private Long casteCategoryId;
+	private Long tdpCadreEnrollmentId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,4 +72,12 @@ public class TdpCadreCasteInfo implements java.io.Serializable{
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	@Column(name="tdp_cadre_enrollment_id")
+	public Long getTdpCadreEnrollmentId() {
+		return tdpCadreEnrollmentId;
+	}
+	public void setTdpCadreEnrollmentId(Long tdpCadreEnrollmentId) {
+		this.tdpCadreEnrollmentId = tdpCadreEnrollmentId;
+	}
+	
 }

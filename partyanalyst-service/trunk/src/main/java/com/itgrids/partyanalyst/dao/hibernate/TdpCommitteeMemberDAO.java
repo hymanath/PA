@@ -790,7 +790,8 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
     return query.list();
 }
 	
-	public List<Object[]> getCommitteeRolesGenderWiseDetailsByLocation(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr,Long descriptionLevelId)
+	public List<Object[]> getCommitteeRolesGenderWiseDetailsByLocation(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,
+			String userAccessType,String segrigatStr,Long descriptionLevelId,List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		quertyStr.append(" select distinct TC.gender , count(TC.gender) ");
@@ -810,6 +811,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId ");
 		quertyStr.append(" and TCM.isActive ='Y' ");
 		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in (:enrollIdsList) ");
+		}
 		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
 		{
 			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
@@ -918,10 +923,15 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteeRoleAgerangeWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
+	public List<Object[]> getCommitteeRoleAgerangeWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,
+			 String userAccessType,String segrigatStr,List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		quertyStr.append(" select VAR.voterAgeRangeId ,VAR.ageRange,TC.gender , count(TC.gender) ");
@@ -1006,6 +1016,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 			}
 			
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0) 
+		{
+			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in(:enrollIdsList)  ");
+		}
 		
 		quertyStr.append(" group by VAR.voterAgeRangeId,TC.gender order by VAR.minValue asc");
 		
@@ -1027,10 +1041,14 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0) 
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteeRoleCasteNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
+	public List<Object[]> getCommitteeRoleCasteNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr,List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		quertyStr.append(" select CS.casteStateId ,C.casteName,TC.gender , count(TC.gender) ");
@@ -1042,6 +1060,11 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		quertyStr.append(" and TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId ");
 		quertyStr.append(" and TCM.isActive ='Y' ");
 		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in(:enrollIdsList)  ");
+		}
 		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
 		{
 			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
@@ -1136,10 +1159,15 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
+	public List<Object[]> getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,
+			String segrigatStr,List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		quertyStr.append(" select distinct CC.casteCategoryId ,CC.categoryName,TC.gender , count(TC.gender) ");
@@ -1151,6 +1179,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 
 		quertyStr.append(" and CS.casteStateId not in (459,301,292,430) and TCM.isActive ='Y' ");
 		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(enrollIdsList != null && enrollIdsList.size()>0) 
+		{
+			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in(:enrollIdsList) ");
+		}
 		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
 		{
 			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
@@ -1245,10 +1277,15 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0) 
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCasteCategoryInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType)
+	public List<Object[]> getCasteCategoryInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType,
+			List<Long> enrollmentIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder(); 
 		quertyStr.append(" select ");
@@ -1321,7 +1358,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 				quertyStr.append(" and ( TCCI.location_type like '%Teshil%' or TCCI.location_type like '%LocalBody%' ) ");
 			}
 		}
-
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		{
+			quertyStr.append(" and TCCI.tdp_cadre_enrollment_id in (:enrollmentIdsList ) ");
+		}
 		Query query = getSession().createSQLQuery(quertyStr.toString());
 		
 		if( (locationLevelId != null && locationLevelId.longValue() != 1L) && (locationIdsList != null && locationIdsList.size()>0))
@@ -1332,10 +1372,14 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		{
+			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCasteInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType)
+	public List<Object[]> getCasteInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType,List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder(); 
 		quertyStr.append(" select ");
@@ -1416,6 +1460,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 				quertyStr.append(" and ( TCCI.location_type like '%Teshil%' or TCCI.location_type like '%LocalBody%' ) ");
 			}
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			quertyStr.append(" and  TCCI.tdp_cadre_enrollment_id in (:enrollIdsList ) ");
+		}
 
 		Query query = getSession().createSQLQuery(quertyStr.toString());
 		
@@ -1427,16 +1475,23 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		}
+
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreAgerangeInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType,String segrigatStr)
+	public List<Object[]> getCadreAgerangeInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType,String segrigatStr,
+			List<Long> enrollIdsList)
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		boolean isLocationEmpty = false;
 		quertyStr.append(" select TCAGE.location_id,TCAGE.age_range_id, TCAGE.count ");
 				
 		quertyStr.append(" from tdp_cadre_agerange_info TCAGE where ");
+		
 		if(userAccessType.equalsIgnoreCase("AP"))
 		{
 			isLocationEmpty = true;
@@ -1507,7 +1562,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 				quertyStr.append(" and ( TCAGE.location_type like '%Teshil%' or TCAGE.location_type like '%LocalBody%' ) ");
 			}
 		}
-
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			quertyStr.append(" and TCAGE.tdp_cadre_enrollment_id in (:enrollIdsList) ");
+		}
 		Query query = getSession().createSQLQuery(quertyStr.toString());
 		
 		if( (locationLevelId != null && locationLevelId.longValue() != 1L) && (locationIdsList != null && locationIdsList.size()>0))
@@ -1517,6 +1575,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		if(wardIdsList != null && wardIdsList.size()>0)
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
+		}
+		if(enrollIdsList != null && enrollIdsList.size()>0)
+		{
+			query.setParameterList("enrollIdsList", enrollIdsList);
 		}
 		return query.list();
 	}

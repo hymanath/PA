@@ -20,7 +20,7 @@ public class TdpCadreAgerangeInfo implements java.io.Serializable{
 	private Long locationId;
 	private Long voterAgeRangeId;
 	private Long count;
-	
+	private Long tdpCadreEnrollmentId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_agerange_info_id", unique = true, nullable = false)
@@ -62,4 +62,12 @@ public class TdpCadreAgerangeInfo implements java.io.Serializable{
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	@Column(name="tdp_cadre_enrollment_id")
+	public Long getTdpCadreEnrollmentId() {
+		return tdpCadreEnrollmentId;
+	}
+	public void setTdpCadreEnrollmentId(Long tdpCadreEnrollmentId) {
+		this.tdpCadreEnrollmentId = tdpCadreEnrollmentId;
+	}
+	
 }
