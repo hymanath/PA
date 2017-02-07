@@ -1040,7 +1040,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	}
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,
 			String memberShipCardNo,String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,
-			 Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId)
+			 Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId,String searchType)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
 		List<Long> ids = new ArrayList<Long>();
@@ -1233,7 +1233,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
-				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved,enrollmentId);
+				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids,isRemoved,enrollmentId,searchType);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 				List<TdpCadreVO> finalResult = new ArrayList<TdpCadreVO>();
@@ -1376,7 +1376,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setTdpCadreDetailsList(returnLsit);
 					if(commonMethodsUtilService.isListOrSetValid(returnLsit) && maxIndex != 0)
 					{
-					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved,enrollmentId);
+					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids,isRemoved,enrollmentId,searchType);
 					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
 					}
 				}
