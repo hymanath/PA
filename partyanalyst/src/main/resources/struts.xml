@@ -15659,5 +15659,8 @@
 			    <param name="root">committeeVoList</param>
 		  </result>	
 	</action>
+	<action name="cccDashboardAction" class="cccDashboardAction">
+	  	<result name="success">/jsp/govtCoreDashboard.jsp</result>
+	</action>
  </package>
 </struts>
