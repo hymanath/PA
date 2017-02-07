@@ -47,7 +47,7 @@ public interface IPartyMeetingService {
 	
 	public List<PartyMeetingDataVO> constituencyWisePartyMeetingDetails(int month , int year);
 	public List<MeetingsVO> getConstWiseNotConductedPartyMeetings(int month , int year);
-	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr);
+	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr,String status);
 	public PartyMeetingVO getDocumentsForMeetingId(Long partyMeetingId);
 
 }

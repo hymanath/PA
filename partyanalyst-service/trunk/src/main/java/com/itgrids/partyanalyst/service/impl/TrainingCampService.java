@@ -11011,7 +11011,7 @@ public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels){
 	}
 
 public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLevel,List<Long> stateIds,List<Long> districtIds,List<Long> constituencyIds,
-		List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString,String mayBe){
+		List<Long> mandalTownDivisonIds,List<Long> villageWardIds,String startDateString,String endDateString,String status){
 	List<CallStatusVO> allMeetings = new ArrayList<CallStatusVO>();
 	try {
 		LOG.info("Entered into getFinalAllMeetings");
@@ -11046,24 +11046,55 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 					}
 					
 				}
-			
-				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-						townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
+			if(status != null && status.trim().equalsIgnoreCase("all")){
+				List<Object[]> mayBeMeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+				List<Object[]> noMeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"no");
 				
+				meetings.addAll(mayBeMeetings);
+				meetings.addAll(noMeetings);
+			}
+			else{
+				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,status);
+			}
 				
 			}else{
-				
-				List<Object[]> meetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
-				List<Object[]> meetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
-				List<Object[]> meetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
-				
-				
-				meetings.addAll(meetingsMandal);
-				meetings.addAll(meetingsTowns);
-				meetings.addAll(meetingsDivs);
+				if(status != null && status.trim().equalsIgnoreCase("all")){
+					List<Object[]> meetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+					List<Object[]> meetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+					List<Object[]> meetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+					List<Object[]> nomeetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"no");
+					List<Object[]> nomeetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"no");
+					List<Object[]> nomeetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"no");
+					
+					meetings.addAll(meetingsMandal);
+					meetings.addAll(meetingsTowns);
+					meetings.addAll(meetingsDivs);
+					meetings.addAll(nomeetingsMandal);
+					meetings.addAll(nomeetingsTowns);
+					meetings.addAll(nomeetingsDivs);
+				}
+				else{
+					List<Object[]> meetingsMandal = partyMeetingDAO.getFinalAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,status);
+					List<Object[]> meetingsTowns = partyMeetingDAO.getFinalAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,status);
+					List<Object[]> meetingsDivs = partyMeetingDAO.getFinalAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,status);
+					
+					
+					meetings.addAll(meetingsMandal);
+					meetings.addAll(meetingsTowns);
+					meetings.addAll(meetingsDivs);
+				}
 			}
 		}
 		
@@ -11082,8 +11113,19 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 					wardList.add(Long.parseLong(vilwrdId.substring(1)));
 				}
 			}
-			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-					townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
+			if(status != null && status.trim().equalsIgnoreCase("all")){
+				List<Object[]> maybeMeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+				List<Object[]> noMeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"no");
+				
+				meetings.addAll(maybeMeetings);
+				meetings.addAll(noMeetings);
+			}
+			else{
+				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,status);
+			}
 			
 		 }else{
 			 
@@ -11106,17 +11148,45 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				 }
 				 
 			 }
-			 List<Object[]> meetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
-				List<Object[]> meetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
-						divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
-				
-				meetings.addAll(meetingsVillage);
-				meetings.addAll(meetingsWards);
+			 if(status != null && status.trim().equalsIgnoreCase("all")){
+				 List<Object[]> meetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+				 List<Object[]> meetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+				 List<Object[]> nomeetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"no");
+				 List<Object[]> nomeetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,"no");
+					
+					meetings.addAll(meetingsVillage);
+					meetings.addAll(meetingsWards);
+					meetings.addAll(nomeetingsVillage);
+					meetings.addAll(nomeetingsWards);
+			 }
+			 else{
+				 List<Object[]> meetingsVillage = partyMeetingDAO.getFinalAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,status);
+					List<Object[]> meetingsWards = partyMeetingDAO.getFinalAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l,status);
+					
+					meetings.addAll(meetingsVillage);
+					meetings.addAll(meetingsWards); 
+			 }
+			 
 		 }
 		}else{
-			meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
-					townList,divisonList,villageList,wardList,startDate,endDate,0l,mayBe);
+			if(status != null && status.trim().equalsIgnoreCase("all")){
+				List<Object[]> maybemeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"maybe");
+				List<Object[]> nomeetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l,"no");
+				
+				meetings.addAll(maybemeetings);
+				meetings.addAll(nomeetings);
+			}
+			else
+				meetings = partyMeetingDAO.getFinalAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+					townList,divisonList,villageList,wardList,startDate,endDate,0l,status);
 		}
 		
 		
@@ -11290,7 +11360,20 @@ public List<CallStatusVO> getFinalAllMeetings(Long meetingType,Long locationLeve
 				vo.setPartyMeetingId((Long)objects[9]);
 				vo.setIsConducted(objects[12] !=null ? objects[12].toString():"");
 				vo.setConductedDate(objects[13] !=null ? objects[13].toString():"" );//conductedByIvr
+				vo.setRemarks(objects[12] !=null ? objects[12].toString():"");
 				vo.setThirdPartyStatus(objects[15] !=null ? objects[15].toString():"" );
+				
+				if((vo.getIsConducted().trim().equalsIgnoreCase("Y") && vo.getConductedDate().trim().equalsIgnoreCase("N")) || 
+						(vo.getIsConducted().trim().equalsIgnoreCase("N") && vo.getConductedDate().trim().equalsIgnoreCase("Y")))
+					vo.setStsStr("maybe");
+				else
+					vo.setStsStr("no");
+				
+				vo.setDistrictId(Long.valueOf(objects[16] !=null ? objects[16].toString():"0"));
+				vo.setDistrictName(objects[17] !=null ? objects[17].toString():"");
+				vo.setConstId(Long.valueOf(objects[18] !=null ? objects[18].toString():"0"));
+				vo.setConstName(objects[19] !=null ? objects[19].toString():"");
+				
 				patyMeetingsIdList.add(vo.getPartyMeetingId());
 				allMeetings.add(vo);
 			}
@@ -11338,18 +11421,10 @@ public String saveFinalizedMeetingDetails(final Long partyMeetingId,final String
 	try {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-				PartyMeeting partyMeeting = new PartyMeeting();
-				
-				PartyMeeting obj = (PartyMeeting) partyMeetingDAO.get(partyMeetingId);
-				
-				obj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				obj.setThirdPartyStatus(statusId);
-				
-				partyMeetingDAO.save(obj);
-				
-				Long tdpcadreId = tdpCadreEnrollmentYearDAO.getTdpCadreIdByMembership(membershipId);
-				
-				PartyMeetingUpdationDetails PMUD = new PartyMeetingUpdationDetails();
+				if(statusId != null && statusId.trim().equalsIgnoreCase("0")){
+					Long tdpcadreId = tdpCadreEnrollmentYearDAO.getTdpCadreIdByMembership(membershipId);
+					
+					PartyMeetingUpdationDetails PMUD = new PartyMeetingUpdationDetails();
 					PMUD.setPartyMeetingId(partyMeetingId);
 					if(tdpcadreId != null && tdpcadreId.longValue() > 0l){
 						PMUD.setTdpCadreId(tdpcadreId);
@@ -11363,36 +11438,65 @@ public String saveFinalizedMeetingDetails(final Long partyMeetingId,final String
 					PMUD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
 					PMUD = partyMeetingUpdationDetailsDAO.save(PMUD);
+				}
+				else{
+					PartyMeeting partyMeeting = new PartyMeeting();
 					
-					if(fileNames != null && fileNames.size() > 0){
-		    			for (String string : fileNames) {
-		    				PartyMeetingUpdationDocuments partyMeetingUpdationDocuments = new PartyMeetingUpdationDocuments();
-							partyMeetingUpdationDocuments.setPartyMeetingUpdationDetailsId(PMUD.getPartyMeetingUpdationDetailsId());
-							partyMeetingUpdationDocuments.setDocumentPath(string);
-							partyMeetingUpdationDocuments.setIsDeleted("N");
+					PartyMeeting obj = (PartyMeeting) partyMeetingDAO.get(partyMeetingId);
+					
+					obj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					obj.setThirdPartyStatus(statusId);
+					
+					partyMeetingDAO.save(obj);
+					
+					Long tdpcadreId = tdpCadreEnrollmentYearDAO.getTdpCadreIdByMembership(membershipId);
+					
+					PartyMeetingUpdationDetails PMUD = new PartyMeetingUpdationDetails();
+						PMUD.setPartyMeetingId(partyMeetingId);
+						if(tdpcadreId != null && tdpcadreId.longValue() > 0l){
+							PMUD.setTdpCadreId(tdpcadreId);
+						}
+						PMUD.setName(name);
+						PMUD.setMobileNo(mobileNo);
+						PMUD.setComment(remark);
+						PMUD.setIsDeleted("false");
+						PMUD.setUpdatedBy(updateBy);
+						PMUD.setUserId(userId);
+						PMUD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						PMUD = partyMeetingUpdationDetailsDAO.save(PMUD);
+						
+						if(fileNames != null && fileNames.size() > 0){
+			    			for (String string : fileNames) {
+			    				PartyMeetingUpdationDocuments partyMeetingUpdationDocuments = new PartyMeetingUpdationDocuments();
+								partyMeetingUpdationDocuments.setPartyMeetingUpdationDetailsId(PMUD.getPartyMeetingUpdationDetailsId());
+								partyMeetingUpdationDocuments.setDocumentPath(string);
+								partyMeetingUpdationDocuments.setIsDeleted("N");
+								
+								partyMeetingUpdationDocumentsDAO.save(partyMeetingUpdationDocuments);
+			    			}
+						}
+						
+						PartyMeetingStatus partyMeetingStatus = partyMeetingStatusDAO.getObjectByPartyMeetingId(partyMeetingId);
+						if(partyMeetingStatus != null){
+							partyMeetingStatus.setThirdPartyStatus(statusId);
+							partyMeetingStatus.setMettingStatus(statusId);
+							partyMeetingStatusDAO.save(partyMeetingStatus);
+						}
+						else{
+							partyMeetingStatus = new PartyMeetingStatus();
 							
-							partyMeetingUpdationDocumentsDAO.save(partyMeetingUpdationDocuments);
-		    			}
-					}
-					
-					PartyMeetingStatus partyMeetingStatus = partyMeetingStatusDAO.getObjectByPartyMeetingId(partyMeetingId);
-					if(partyMeetingStatus != null){
-						partyMeetingStatus.setThirdPartyStatus(statusId);
-						partyMeetingStatus.setMettingStatus(statusId);
-						partyMeetingStatusDAO.save(partyMeetingStatus);
-					}
-					else{
-						partyMeetingStatus = new PartyMeetingStatus();
-						
-						partyMeetingStatus.setPartyMeetingId(partyMeetingId);
-						partyMeetingStatus.setPartyOfficeStatus(obj.getIsConducted());
-						partyMeetingStatus.setIvrStatus(obj.getIsConductedByIvr());
-						partyMeetingStatus.setThirdPartyStatus(statusId);
-						partyMeetingStatus.setMettingStatus(statusId);
-						partyMeetingStatus.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						
-						partyMeetingStatusDAO.save(partyMeetingStatus);
-					}
+							partyMeetingStatus.setPartyMeetingId(partyMeetingId);
+							partyMeetingStatus.setPartyOfficeStatus(obj.getIsConducted());
+							partyMeetingStatus.setIvrStatus(obj.getIsConductedByIvr());
+							partyMeetingStatus.setThirdPartyStatus(statusId);
+							partyMeetingStatus.setMettingStatus(statusId);
+							partyMeetingStatus.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							
+							partyMeetingStatusDAO.save(partyMeetingStatus);
+						}
+				}
+				
 			}
 		});
 		//status.setResultCode(0);

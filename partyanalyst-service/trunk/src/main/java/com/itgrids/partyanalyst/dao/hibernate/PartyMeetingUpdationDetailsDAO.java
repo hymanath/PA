@@ -35,7 +35,7 @@ public class PartyMeetingUpdationDetailsDAO extends GenericDaoHibernate<PartyMee
       	query.setParameterList("partyMeetingIds",partyMeetingIds);
       	return query.list();
       }
-	public List<Object[]> getUpdatedDetails(Long locationLevelId,Date startDate,Date endDate){
+	public List<Object[]> getUpdatedDetails(Long locationLevelId,Date startDate,Date endDate,String status){
 		StringBuilder sb = new StringBuilder();
 		    sb.append("select distinct model.partyMeeting.partyMeetingId," +
 		    		" model.partyMeeting.meetingName," +
@@ -50,6 +50,17 @@ public class PartyMeetingUpdationDetailsDAO extends GenericDaoHibernate<PartyMee
 		    	sb.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId = :locationLevelId");
 		    if(startDate != null && endDate != null){
 	            sb.append(" and  ( (date(model.partyMeeting.startDate)>=:startDate and date(model.partyMeeting.startDate)<=:endDate) or (date(model.partyMeeting.endDate)>=:startDate and date(model.partyMeeting.endDate)<=:endDate) ) ");
+	        }
+		    
+		    if(status != null && status.trim().equalsIgnoreCase("maybe")){
+	        	sb.append(" and model.partyMeeting.isConducted is not null and model.partyMeeting.isConductedByIvr is not null" +
+	        				" and ((model.partyMeeting.isConducted = 'Y' and model.partyMeeting.isConductedByIvr = 'N')" +
+	        				" or (model.partyMeeting.isConducted = 'N' and model.partyMeeting.isConductedByIvr = 'Y'))");
+	        }
+	        else if(status != null && status.trim().equalsIgnoreCase("no")){
+	        	sb.append(" and ((model.partyMeeting.isConducted = 'N' and model.partyMeeting.isConductedByIvr = 'N')" +
+	        				" or (model.partyMeeting.isConducted is null and model.partyMeeting.isConductedByIvr = 'N')" +
+	        				" or (model.partyMeeting.isConducted = 'N' and model.partyMeeting.isConductedByIvr is null))");
 	        }
 		
 		 Query query = getSession().createQuery(sb.toString());
