@@ -1582,16 +1582,22 @@ public String getSummaryDetails(){
 		session = request.getSession();	
 		try {
 			jObj = new JSONObject(getTask());
-		
+			List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"));
+			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"),committeeEnrollmentIdsLst);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue());	
+				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue(),committeeEnrollmentIdsLst);	
 			}
 		}else{
 			return ERROR;
@@ -1607,17 +1613,24 @@ public String getSummaryDetails(){
 		try{
 		session = request.getSession();	
 		jObj = new JSONObject(getTask());
+		List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+		JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+		if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+			for( int i=0;i<committeeEnrollmentIds.length();i++){
+				committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+			}
+		}
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null && (user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS") || user.getEntitlements().contains("COMMITTEE_MGT")
 				 || user.getEntitlements().contains("TDP_COMMITTEE_ADMIN") || (user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")))){
 			
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"));
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"),committeeEnrollmentIdsLst);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType());
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType(),committeeEnrollmentIdsLst);
 			}
 		}else{
 			return ERROR;
