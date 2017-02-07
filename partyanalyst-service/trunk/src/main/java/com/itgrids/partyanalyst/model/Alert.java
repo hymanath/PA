@@ -67,6 +67,8 @@ public class Alert extends BaseModel implements Serializable {
 	private Long govtDepartmentId;
 	private GovtDepartment govtDepartment;
 	
+	private String isMultiple;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -432,5 +434,15 @@ public class Alert extends BaseModel implements Serializable {
 	public void setGovtDepartment(GovtDepartment govtDepartment) {
 		this.govtDepartment = govtDepartment;
 	}
+
+	@Column(name = "is_multiple")
+	public String getIsMultiple() {
+		return isMultiple;
+	}
+
+	public void setIsMultiple(String isMultiple) {
+		this.isMultiple = isMultiple;
+	}
 		
+	
 }
