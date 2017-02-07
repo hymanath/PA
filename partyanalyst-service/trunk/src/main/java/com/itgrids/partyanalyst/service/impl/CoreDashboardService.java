@@ -1552,11 +1552,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 				resltList.addAll(totallist1);
 			}
 			
-			Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
-			
+			Map<Long,Map<Long,Long>> scopeWiseTotalLoationsMap = new HashMap<Long,Map<Long, Long>>(0);
 			if(commonMethodsUtilService.isListOrSetValid(resltList)){
 				for (Object[] param : resltList) {
-					totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					Map<Long,Long> totalLocationsMap = new HashMap<Long, Long>(0);
+					if(scopeWiseTotalLoationsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))==null){						
+						totalLocationsMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[1]));
+						scopeWiseTotalLoationsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), totalLocationsMap);
+					}
 				}
 				resltList.clear();
 			}
@@ -1594,45 +1597,48 @@ public class CoreDashboardService implements ICoreDashboardService{
 					vo.setMayPerc("0.00");
 					vo.setApTotal(commonMethodsUtilService.getLongValueForObject(obj[6]));
 					
+					Map<Long,Long> totalLocationsMap = scopeWiseTotalLoationsMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					Long totalCount = totalLocationsMap.get(vo.getLocationId());
-					
-					if(totalCount != null && totalCount.longValue()>0L && 
-							 vo.getCountOfActivityLocationInfo() != null && vo.getCountOfActivityLocationInfo().longValue()>0L){
-						Double perc = (Double) (vo.getCountOfActivityLocationInfo() * 100.0/totalCount);
-						Float perc1 = Float.valueOf(perc.toString());
-						vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
-						if(perc1 < 100){
-							Double RemaingPerc = (Double)(100.0-perc1);
-							Float RemaingPerc1 =Float.valueOf(RemaingPerc.toString());
-							vo.setRemainingPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(RemaingPerc1).toString());
-						}
-					}
-					
-					if(commonMethodsUtilService.isMapValid(yesCoutnMap)){
-						Long yesCount = yesCoutnMap.get(vo.getLocationId());
-						if(yesCount != null && yesCount.longValue()>0L){
-							Double perc = (Double) (yesCount * 100.0/totalCount);
-							Float perc1 = Float.valueOf(perc.toString());
-							vo.setYesPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
-						}
-					}
-					
-					if(commonMethodsUtilService.isMapValid(noCoutnMap)){
-						Long noCount = noCoutnMap.get(vo.getLocationId());
-						if(noCount != null && noCount.longValue()>0L){
-							Double perc = (Double) (noCount * 100.0/totalCount);
-							Float perc1 = Float.valueOf(perc.toString());
-							vo.setNoPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
-						}
-					}
-					
-					if(commonMethodsUtilService.isMapValid(mayBeCoutnMap)){
-						Long maybeCount = mayBeCoutnMap.get(vo.getLocationId());
-						if(maybeCount != null && maybeCount.longValue()>0L){
-							Double perc = (Double) (maybeCount * 100.0/totalCount);
-							Float perc1 = Float.valueOf(perc.toString());
-							vo.setMayPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
-						}
+					if(totalCount != null && totalCount.longValue()>0L)
+					{
+							if(totalCount != null && totalCount.longValue()>0L && 
+									 vo.getCountOfActivityLocationInfo() != null && vo.getCountOfActivityLocationInfo().longValue()>0L){
+								Double perc = (Double) (vo.getCountOfActivityLocationInfo() * 100.0/totalCount);
+								Float perc1 = Float.valueOf(perc.toString());
+								vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+								if(perc1 < 100){
+									Double RemaingPerc = (Double)(100.0-perc1);
+									Float RemaingPerc1 =Float.valueOf(RemaingPerc.toString());
+									vo.setRemainingPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(RemaingPerc1).toString());
+								}
+							}
+							
+							if(commonMethodsUtilService.isMapValid(yesCoutnMap)){
+								Long yesCount = yesCoutnMap.get(vo.getLocationId());
+								if(yesCount != null && yesCount.longValue()>0L){
+									Double perc = (Double) (yesCount * 100.0/totalCount);
+									Float perc1 = Float.valueOf(perc.toString());
+									vo.setYesPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+								}
+							}
+							
+							if(commonMethodsUtilService.isMapValid(noCoutnMap)){
+								Long noCount = noCoutnMap.get(vo.getLocationId());
+								if(noCount != null && noCount.longValue()>0L){
+									Double perc = (Double) (noCount * 100.0/totalCount);
+									Float perc1 = Float.valueOf(perc.toString());
+									vo.setNoPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+								}
+							}
+							
+							if(commonMethodsUtilService.isMapValid(mayBeCoutnMap)){
+								Long maybeCount = mayBeCoutnMap.get(vo.getLocationId());
+								if(maybeCount != null && maybeCount.longValue()>0L){
+									Double perc = (Double) (maybeCount * 100.0/totalCount);
+									Float perc1 = Float.valueOf(perc.toString());
+									vo.setMayPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(perc1).toString());
+								}
+							}
 					}
 					
 					resultList.add(vo);
