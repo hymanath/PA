@@ -120,7 +120,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		font-weight:bold;
 		color:#FFF;
 	}
-	
+
 	</style>
 
 <script>
@@ -169,15 +169,23 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
         </div>
 		
 		<div class="row">
-               <div class="col-md-12 col-xs-12  col-sm-12" style="padding-right:0px; padding-bottom:5px;">
-					<div id="reportrange" class="pull-right" style="background:rgba(0,0,0,0.1); cursor: pointer; padding: 5px 10px; border: 1px solid rgba(0,0,0,0.1);">
-					  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-					  <span></span> <b class="caret"></b>
-					</div>
-                </div>
+			<div class="col-md-2 col-md-offset-6 col-xs-12 col-sm-2 col-sm-offset-4">
+				<select class="form-control" id="tdpCommitteeYearId"></select>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+					</span>
+					<input type="text" class="form-control" id="reportrange"/>
+				</div>
+			</div>
+			<div class="col-md-1 col-xs-12 col-sm-2">
+				<button class="btn btn-success" id="getDetailsId">GO</button>
+			</div>
         </div>
 		
-    	<div class="row" id="APStateDiv" style="display:none;">
+    	<div class="row m_top10" id="APStateDiv" style="display:none;">
 			<table class="table table-bordered" width="100%"  >
 				<tr>
 					<td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
@@ -440,7 +448,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			</table>
         </div>
 		
-		<div class="row" id="districtDiv" style="display:none;"> 
+		<div class="row m_top20" id="districtDiv" style="display:none;"> 
 			<table class="table table-bordered" width="100%"  >
 				<tr>
 					<td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
@@ -1065,6 +1073,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	 <script src="js/jquery.classyloader.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script src="js/cadreCommittee/cadreCommitteeDashBoard.js" type="text/javascript"></script>
+	<script src="js/cadreCommittee/cadreCommitteeDashboard1.js" type="text/javascript"></script>
 	<script>
 	
 	</script>
@@ -1081,76 +1090,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					$('#districtDiv').hide();
 					
 					$('#statesBtnsId').hide();
-                  var cb = function(start, end, label) {
-                    //console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
-                  }
-
-                  var optionSet1 = {
-                    startDate: '02/02/2015',
-                    endDate: moment(),
-                    minDate: '01/01/2012',
-                    maxDate: '12/31/2015',
-                    //dateLimit: { days: 60 },
-                    showDropdowns: true,
-                    showWeekNumbers: true,
-                    timePicker: false,
-                    timePickerIncrement: 1,
-                    timePicker12Hour: true,
-                   /* ranges: {
-                       'Today': [moment(), moment()],
-                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                       'This Month': [moment().startOf('month'), moment().endOf('month')],
-                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    }, */
-                    opens: 'left',
-                    buttonClasses: ['btn btn-default'],
-                    applyClass: 'btn-small btn-success rangeButton',
-                    cancelClass: 'btn-small',
-                    format: 'MM/DD/YYYY',
-                    separator: ' to ',
-                    locale: {
-                        applyLabel: 'Submit',
-                        cancelLabel: 'Clear',
-                        fromLabel: 'From',
-                        toLabel: 'To',
-                        customRangeLabel: 'Custom',
-                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                        firstDay: 1
-                    }
-                  };
-
-                  var optionSet2 = {
-                    startDate: moment().subtract(7, 'days'),
-                    endDate: moment(),
-                    opens: 'left',
-                    ranges: {
-                       'Today': [moment(), moment()],
-                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                       'This Month': [moment().startOf('month'), moment().endOf('month')],
-                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    }
-                  };
-
-                  $('#reportrange span').html("February 02, 2015" + ' - ' + moment().format('MMMM D, YYYY'));
-
-                  $('#reportrange').daterangepicker(optionSet1, cb);
-
-                  $('#reportrange').on('show.daterangepicker', function() { //console.log("show event fired"); 
-				  });
-                  $('#reportrange').on('hide.daterangepicker', function() { //console.log("hide event fired"); 
-				  });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    //console.log("apply event fired, start/end dates are "+ picker.startDate.format('MMMM D, YYYY') + " to "  + picker.endDate.format('MMMM D, YYYY') ); 
-                  });
-                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { //console.log("cancel event fired"); 
-				  });
+					getCadreEnrollmentYears();
+					$('#reportrange').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
+					$("#reportrange").daterangepicker({
+						startDate: moment(),
+						endDate: moment(),
+						opens: 'left',
+						format: 'DD/MM/YYYY',
+						ranges: {
+						   'Today' : [moment(), moment()],
+						   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+						   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+						   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+						   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+						   'This Month': [moment().startOf('month'), moment()],
+						   'This Year': [moment().startOf('Year'), moment()]
+						}
+					});
 
 					$(".highlightClick").click(function(){
 						$(".highlightClick").removeClass("highlight");
@@ -5847,7 +5804,6 @@ function capitalize(str) {
    }
    return arr.join(" ");
 }
-
 </script>		
 </body>
 </html>

@@ -1824,7 +1824,7 @@
 	});
 	 
 	 $(document).on("click",".iconExpand",function(){
-			$(".dateRangePickerCls").toggleClass("hide");
+			$(".dateRangePickerCls,#tdpCommitteeYearId").toggleClass("hide");
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -1908,3 +1908,57 @@
 				//initialiseGraph();
 			},500);
 		});
+		
+		function getCadreEnrollmentYears(){
+			 var jsObj={
+			
+				   };
+				   
+			 $.ajax({
+				type : "GET",
+				url : "getCadreEnrollmentYearsAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					for(var i in result){
+						$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+					}
+				}
+			});
+		}
+		$(document).on("change","#tdpCommitteeYearId",function(){
+			getCommitteeDetailsByEnrollement();
+		});
+		
+		function getCommitteeDetailsByEnrollement(){
+			var enrollmentIdsArr = new Array();
+			enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+			var jsObj={
+				enrollmentIdsArr:enrollmentIdsArr
+			};
+				   
+			 $.ajax({
+				type : "GET",
+				url : "getCommitteeDetailsByEnrollementIdAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					for(var i in result){
+						
+						 var fYear = result[i].fromDate.split('-')[0];
+						 var fMonth = result[i].fromDate.split('-')[1];
+						 var fDate = result[i].fromDate.split('-')[2].substring(0,2);
+						 var tYear = result[i].toDate.split('-')[0];
+						 var tMonth = result[i].toDate.split('-')[1];
+						 var tDate = result[i].toDate.split('-')[2].substring(0,2);
+						
+						$('#dateRangeId').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+						$('#dateRangeId').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+						$('#dateRangeId').val(fDate+'/'+fMonth+'/'+fYear+' - '+tDate+'/'+tMonth+'/'+tYear)
+					}
+				}
+			});
+		}
+		
