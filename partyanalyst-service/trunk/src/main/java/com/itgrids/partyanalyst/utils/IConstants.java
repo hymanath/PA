@@ -900,7 +900,7 @@ public interface IConstants {
     public static final String SUBSCRIBER_ABSENT = "SUBSCRIBER_ABSENT";
     public static final String INTERWORKING = "INTERWORKING";
     
-    public static final Long  CURRENT_ENROLLMENT_ID =1l;
+    public static final Long  CURRENT_ENROLLMENT_ID =2l;
     public static final Long CADRE_ENROLLMENT_YEAR_FOROTHER_STATES = 2014l;
     
     // RabbitMQ Configurations
