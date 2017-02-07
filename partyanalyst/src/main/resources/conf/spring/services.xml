@@ -3648,6 +3648,7 @@
 		<property name="panchayatDAO" ref="panchayatDAO"></property>
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
 		<property name="boardLevelDAO" ref="boardLevelDAO"></property>
+		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
 	</bean>
 
 	<bean name="birthDayDetailsService"  class="com.itgrids.partyanalyst.service.impl.BirthDayDetailsService">

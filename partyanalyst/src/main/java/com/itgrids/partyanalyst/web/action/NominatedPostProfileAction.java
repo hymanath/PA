@@ -2021,8 +2021,41 @@ public String execute()
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Entered into fileSaving method of getLocationAndBoardLevelWisePostsData Action",e);
+			LOG.error("Entered into  getLocationAndBoardLevelWisePostsData () of NominatedPostProfileAction ",e);
 		}
 		return Action.SUCCESS;
 	}
+	public String getLocationAndBoardLevelWiseCasteCatgryPostsData(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long postLevelId = jObj.getLong("postLevelId");
+			Long casteGrpId = jObj.getLong("casteGrpId");
+			Long casteId = jObj.getLong("casteId");
+			Long ageRangeId = jObj.getLong("ageRangeId");
+			Long positionId = jObj.getLong("positionId");
+			String gender = jObj.getString("gender");
+			Long stateId = jObj.getLong("stateId");
+			String searchType = jObj.getString("searchType");
+			
+			JSONArray locIdsArry = jObj.getJSONArray("locationIdsList");
+			
+			List<Long> locIdsList = new ArrayList<Long>(0);
+			if(locIdsArry !=null && locIdsArry.length()>0){
+				for (int i = 0; i < locIdsArry.length(); i++) {
+					Long locId = Long.valueOf(locIdsArry.get(i).toString());
+					locIdsList.add(locId);
+				}
+			}
+			
+			String dataType = jObj.getString("dataType");
+			
+			nominatedPostDashboardvoList = nominatedPostMainDashboardService.getLocationAndBoardLevelWiseCasteCatgryPostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,locIdsList,dataType);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Entered into getLocationAndBoardLevelWiseCasteCatgryPostsData method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+
 }

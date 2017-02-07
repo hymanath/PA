@@ -384,14 +384,14 @@
                     </ul>-->					
 					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
                     	<label>Position</label>
-                        <select class="chosenSelect" id="positonId" onchange="getLocationAndBoardLevelWisePostsData();">
+                        <select class="chosenSelect" id="positonId">
                         	<option value="0">ALL</option>
                         </select>
                     </div>
 					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
                     	<label>
 						Position Level : </label>
-                        <select class="chosenSelect" id="locationsLevelId" onchange="getLocationAndBoardLevelWisePostsData();">
+                        <select class="chosenSelect" id="locationsLevelId">
                         </select>
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12 pull-right">					
@@ -407,24 +407,22 @@
 							</span>
 						</div>
 					 </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right" style="left: 50px; margin-top: 26px;">
-                    	<label> </label>
+					<div class="col-md-4 col-sm-4 col-xs-12 pull-right" style="left: 50px; margin-top: 26px;">
+                    	<input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1"/><span> Overall View </span>
                        <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
-                    </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right" style="left: 110px; top: 25px;">
-                    	<label> </label>
-                       <input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1"/><span> Overall View </span>
-                    </div>
+                   </div>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
                     	<div class="table-responsive" id="loctnLvlCntId"></div>
+                    	<div class="table-responsive" id="loctnLvlCntId1"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="nominatedCandadteModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 		<div class="modal-content">
@@ -456,6 +454,7 @@
 <script type="text/javascript" src="js/nominatedPosts/nominatedPostMainDashboard.js"></script>
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
 <script type="text/javascript">
+
 $('.chosenSelect').chosen();
 //$("#geoViewType").trigger("chosen:updated");
  $(".navTabSelectionSlick li a").on('click', function(e){
@@ -493,6 +492,8 @@ $(document).on("click",".changeIconClass",function(){
 		casteWisePositionsCountsByPosition(casteId,"close");
 	}
 });
+
+
 </script>
 </body>
 </html>

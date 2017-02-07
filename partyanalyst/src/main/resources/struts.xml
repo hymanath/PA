@@ -15649,7 +15649,7 @@
 			    <param name="root">idAndNameVOList</param>
 		  </result>	
 	  </action>
-	<action name="getCadreEnrollmentYearsAction" class="committeeDashBoardAction" method="getCadreEnrollmentYears">
+	  <action name="getCadreEnrollmentYearsAction" class="committeeDashBoardAction" method="getCadreEnrollmentYears">
 	  	  <result type="json" name="success">		   
 			    <param name="root">committeeVoList</param>
 		  </result>	
@@ -15662,5 +15662,10 @@
 	<action name="cccDashboardAction" class="cccDashboardAction">
 	  	<result name="success">/jsp/alertManagementSystem.jsp</result>
 	</action>
+	  <action name="getLocationAndBoardLevelWiseCasteCatgryPostsDataAction" class="nominatedPostProfileAction" method="getLocationAndBoardLevelWiseCasteCatgryPostsData">
+	  	  <result type="json" name="success">		   
+			    <param name="root">nominatedPostDashboardvoList</param>
+		  </result>	
+	  </action>
  </package>
 </struts>
