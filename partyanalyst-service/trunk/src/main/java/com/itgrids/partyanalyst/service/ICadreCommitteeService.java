@@ -184,5 +184,7 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
 	 public List<CadreCommitteeVO> updateSearchTdpCadreDetailsBySearchCriteriaForCadreCommitte(String searchType,String searchValue);
 	 public LocationWiseBoothDetailsVO getCommitteeMembersInfoNEW(Long committeeId);
+	 public List<CadreCommitteeVO> getCadreEnrollmentYears();
+	 public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enrollYearIds);
 	
 }

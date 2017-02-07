@@ -173,10 +173,12 @@ import com.itgrids.partyanalyst.model.PublicRepresentativeType;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
+import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
@@ -19499,6 +19501,49 @@ public List<CadreCommitteeVO> updateSearchTdpCadreDetailsBySearchCriteriaForCadr
 		
 	} catch (Exception e) {
 		LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCadreCommitte", e);
+	}
+	return returnList;
+}
+public List<CadreCommitteeVO> getCadreEnrollmentYears()
+{
+	List<CadreCommitteeVO> returnList = new ArrayList<CadreCommitteeVO>();
+	CadreCommitteeVO vo = null;
+	try {
+		List<Object[]> cadreCommitteeYearsLst = tdpCommitteeEnrollmentDAO.getCadreCommitteYearsList();
+		if(cadreCommitteeYearsLst != null && cadreCommitteeYearsLst.size() > 0){
+			for (Object[] objects : cadreCommitteeYearsLst) {
+				vo = new CadreCommitteeVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				vo.setElectionYear(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				
+				returnList.add(vo);
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in getCadreEnrollmentYears", e);
+	}
+	return returnList;
+}
+public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enrollYearIds)
+{
+	List<CadreCommitteeVO> returnList = new ArrayList<CadreCommitteeVO>();
+	CadreCommitteeVO vo = null;
+	try {
+		List<Object[]> CommitteesLst = tdpCommitteeDAO.getTdpCommitteeDetailsByEnrollmentId(enrollYearIds);
+		if(CommitteesLst != null && CommitteesLst.size() > 0){
+			for (Object[] objects : CommitteesLst) {
+				vo = new CadreCommitteeVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				vo.setFromDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				vo.setToDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				
+				returnList.add(vo);
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in getCommitteeDetailsByEnrollementId", e);
 	}
 	return returnList;
 }

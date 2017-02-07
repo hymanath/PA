@@ -75,4 +75,5 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	
 	
 	 public List<Long> getTdpCommitteeId(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue,Long tdpCommitteeEnrollmentId);
+	 public List<Object[]> getTdpCommitteeDetailsByEnrollmentId(List<Long> enrollmentIds);
 }

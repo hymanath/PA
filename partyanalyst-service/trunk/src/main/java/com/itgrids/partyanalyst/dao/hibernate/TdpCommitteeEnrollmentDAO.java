@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
@@ -9,4 +12,10 @@ public class TdpCommitteeEnrollmentDAO extends GenericDaoHibernate<TdpCommitteeE
 	public TdpCommitteeEnrollmentDAO() {
 		super(TdpCommitteeEnrollment.class);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCadreCommitteYearsList(){
+		   Query query = getSession().createQuery(" select model.tdpCommitteeEnrollmentId,model.description from TdpCommitteeEnrollment model order by model.tdpCommitteeEnrollmentId desc ");
+		   
+		  return query.list();
+	 }
 }
