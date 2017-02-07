@@ -1803,8 +1803,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 candidateVO.setImage(params[20] != null ? params[20].toString() : "");
 				 candidateVO.setMobileNo(params[21] != null ? params[21].toString() : "");
 				 candidateVO.setMembershipNo(params[22] != null ? params[22].toString() : "");
-				 if(dataList != null && dataList.size() > 0)
-				 setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+				 if(dataList != null && dataList.size() > 0){
+					 setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+
+					 List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(tdpCadreIdsList);
+						if(publicRepDertails != null && publicRepDertails.size() > 0){
+							for (Object[] objects : publicRepDertails) {
+								AlertDataVO matchedCadreVO = getMatchedCadreVO(dataList.get(0).getSubList(),(Long)objects[0]);
+								if(matchedCadreVO != null){
+									if(matchedCadreVO.getDesignation().trim().isEmpty())
+										matchedCadreVO.setDesignation(objects[2].toString());
+									else
+										matchedCadreVO.setDesignation(matchedCadreVO.getDesignation()+" , "+objects[2].toString());
+								}
+							}
+						}
+				 }
+				 
 			}
 			
 		}
@@ -2006,7 +2021,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				candidateVO.setMobileNo(params[19] != null ? params[19].toString() : "");
 			}
 			 if(dataList != null && dataList.size() > 0)
-			setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+				setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
+			
+			if(dataList != null && dataList.size() > 0){
+				List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(tdpCadreIdsList);
+				if(publicRepDertails != null && publicRepDertails.size() > 0){
+					for (Object[] objects : publicRepDertails) {
+						AlertDataVO matchedCadreVO = getMatchedCadreVO(dataList.get(0).getSubList(),(Long)objects[0]);
+						if(matchedCadreVO != null){
+							if(matchedCadreVO.getDesignation().trim().isEmpty())
+								matchedCadreVO.setDesignation(objects[2].toString());
+							else
+								matchedCadreVO.setDesignation(matchedCadreVO.getDesignation()+" , "+objects[2].toString());
+						}
+					}
+				}
+			}
+				
 			 
 			 
 			 //alertCommentDetails
@@ -7305,6 +7336,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error occured deleteAlert() method of AlertService{}",e);
+		}
+		return null;
+	}
+	
+	public AlertDataVO getMatchedCadreVO(List<AlertDataVO> voList,Long cadreId){
+		if(voList != null && voList.size() > 0){
+			for (AlertDataVO alertDataVO : voList) {
+				if(alertDataVO.getId().equals(cadreId)){
+					return alertDataVO;
+				}
+			}
 		}
 		return null;
 	}
