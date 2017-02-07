@@ -2217,6 +2217,7 @@ public List<Object[]> getConductedCounts(Long locationId,Long activityScopeId, S
 		queryStr.append(" count(distinct   model.address.district.districtId)  " );
 	else if(levelType != null && levelType.equalsIgnoreCase("state"))
 		queryStr.append("  count(distinct model.address.state.stateId ) " );
+	queryStr.append(" ,sum(model.attendedCount) ");
 	
 	queryStr.append("  from ActivityLocationInfo model where " +
 			" model.activityScope.activityScopeId =:activityScopeId" +
