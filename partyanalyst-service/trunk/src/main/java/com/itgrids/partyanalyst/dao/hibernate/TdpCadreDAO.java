@@ -3578,7 +3578,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 	  
 	  
-	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId)
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds,boolean isRemoved,Long enrollmentId,String searchType)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
@@ -3601,21 +3601,21 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			if(isRemoved){
 				queryStr.append(" where  model.tdpCadre.isDeleted = 'MD'  and model.tdpCadre.enrollmentYear = 2014  ");
-			}
-			
+			}			
 			else{
 				queryStr.append(" where model.isDeleted ='N' and (model.tdpCadre.isDeleted = 'N' or model.tdpCadre.isDeleted = 'MD')  and model.tdpCadre.enrollmentYear = 2014  ");
 			}
 				
 			queryStr.append(" "+queryString+" ");
-			/*
-			if(enrollmentId != null && enrollmentId.longValue() == 3l)
-			{
-				queryStr.append(" and  model.enrollmentYearId in(3,4) and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
-			}else{
-			queryStr.append(" and  model.enrollmentYearId = 4 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
-		}
-			*/
+			
+			if(searchType != null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("committeeSearch")){
+				if(enrollmentId != null && enrollmentId.longValue() == 3l){
+					queryStr.append(" and  model.enrollmentYearId = 3 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+				}else if(enrollmentId != null && enrollmentId.longValue() == 4l){
+				   queryStr.append(" and  model.enrollmentYearId = 4 and model.isDeleted ='N'  order by model.tdpCadre.firstname ");
+			    }
+			}
+			
 			Query query = getSession().createQuery(queryStr.toString());
 			if((constituencyId != null && constituencyId != 0L) && (constituencyIds == null || constituencyIds.size() == 0))
 			{
