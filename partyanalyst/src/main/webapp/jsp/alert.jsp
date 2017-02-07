@@ -532,6 +532,9 @@
 		$("#deleteBtnId").html(str);       
 	}
 	function getAlertDtls(){
+		if(!(globalAlertId > 0)){
+			return;  
+		}
 		var jsObj ={
 			alertId : globalAlertId
 		}
