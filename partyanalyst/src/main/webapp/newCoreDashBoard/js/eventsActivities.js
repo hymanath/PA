@@ -21,6 +21,8 @@
 		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
 	}else{
+		$("#activtyBlckDivId").hide();
+		$(".activitesExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents").hide();
 	}
 	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -182,7 +184,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-			$("#activtyBlckDivId").hide();
+			
 		}
 		//alert("open"); 
 		var searchType = $(this).attr("attr_search_type");
@@ -227,6 +229,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".acitivitiesMoreExpand").attr("attr_event_idsString",activityId);
 	}else{
 		//alert("close")
+		$("#activtyBlckDivId").hide();
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon").hide();
 		$(".dateRangePickerClsForEvents").addClass("hide");
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
@@ -360,7 +363,8 @@ $(document).on("click",".eventsListExpandIcon",function(){
 	{
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$("#activtyBlckDivId").hide();
 	}else{
 		$(".eventsListExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -402,8 +406,8 @@ $(document).on("click",".eventsListExpandIcon",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}
 });
-var customStartDateActivities = moment().subtract(2,"year").format('DD/MM/YYYY');
-var customEndDateActivities = moment().format('DD/MM/YYYY');  
+//var customStartDateActivities = moment().subtract(2,"year").format('DD/MM/YYYY');
+//var customEndDateActivities = moment().format('DD/MM/YYYY');  
 $("#dateRangeIdForEvents").daterangepicker({
 	opens: 'left',
 	startDate: moment().subtract(1, 'month').startOf('month'),
@@ -420,10 +424,20 @@ $("#dateRangeIdForEvents").daterangepicker({
 	   'This Month': [moment().startOf('month'), moment()],
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
-})
+});
 $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
-  customStartDateActivities = picker.startDate.format('DD/MM/YYYY');
-  customEndDateActivities = picker.endDate.format('DD/MM/YYYY');  
+  //customStartDateActivities = picker.startDate.format('DD/MM/YYYY');
+  //customEndDateActivities = picker.endDate.format('DD/MM/YYYY'); 
+  $("#eventsCmpBlckDivId").hide();
+  $("#evntCmpBLockId").hide();
+  $("#activtyBlckDivId").hide();
+  $(".settingsIconAct").hide();
+  $(".detailedBlockEvents").hide();
+	getEventBasicCntDtls();
+	getActivitiesDetails();
+	getUserTypeWiseTotalInviteeAndInviteeAttendedCnt("7,30");
+  //getUserTypeActivityConductedCnt();
+  
 });
 
 function getEventBasicCntDtls(){
@@ -1718,10 +1732,14 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 var  globalActivityIdsList =[];
 function getActivitiesDetails(){
 	$("#activityEventsListNew").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 var dates = $('#dateRangeIdForEvents').val();
+	  var dateArray = dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
 	
 	var jsObj={
-		fromDate:customStartDateActivities,
-		toDate: customEndDateActivities
+		fromDate: fromDateStr,//customStartDateActivities,
+		toDate: toDateStr //customEndDateActivities
 	}	
 	$.ajax({
 	 type: "POST",
@@ -2348,11 +2366,15 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
+	var dates = $('#dateRangeIdForEvents').val();
+	  var dateArray = dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
 	var  scopeId = 3;
 	var jsObj ={
 	   activityId : globalActivityIdsList,
-	   fromDate : customStartDateActivities,
-	   toDate : customEndDateActivities,
+	   fromDate : fromDateStr,//customStartDateActivities,
+	   toDate : toDateStr,//customEndDateActivities,
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -2506,10 +2528,16 @@ function stateWiseCohort(activityId){
 	$("#eventsGraphBlock1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
 	var  scopeId = 2;
+	
+	var dates = $('#dateRangeIdForEvents').val();
+	  var dateArray = dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	
 	var jsObj ={
 	   activityId : globalActivityIdsList,
-	   fromDate : customStartDateActivities,
-	   toDate : customEndDateActivities,
+	   fromDate : fromDateStr,//customStartDateActivities,
+	   toDate : toDateStr,//customEndDateActivities,
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -3460,14 +3488,18 @@ function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$(".eventStrngPrCls").attr("attr_selected_type","Activity");
 	   var activityIds= activityIdsString.split(",");
+	   var dates = $('#dateRangeIdForEvents').val();
+	  var dateArray = dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
 				 activityIds:activityIds,
 				 activityLevelIds:activityLevelIds,
 				 userTypeId : globalUserTypeId,
-				 fromDateStr:customStartDateActivities,
-				 toDateStr:customEndDateActivities
+				 fromDateStr: fromDateStr, //customStartDateActivities,
+				 toDateStr: toDateStr //customEndDateActivities
 			  }
 	$.ajax({
 		type : 'POST',
@@ -3856,12 +3888,13 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 		     str+='<th>Rank</th>';
 			 str+='<th>Name</th>';
 			 str+='<th>Designation</th>';
-			 str+='<th>Location</th>';
-			 str+='<th>Invitees</th>';
-			 str+='<th>Invitees Attended</th>';
+			 str+='<th>Total Activities</th>';
+			 str+='<th>Conducted</th>';
 			 str+='<th>%</th>';
-			 str+='<th>Non Invitees Attended</th>';
+			 str+='<th>Not conducted</th>';
 			 str+='<th>%</th>';
+			 //str+='<th>Non Invitees Attended</th>';
+			 //str+='<th>%</th>';
 		 str+='</thead>';
 		 str+='<tbody>';
 		 var rank=1;
@@ -3870,7 +3903,7 @@ function getSelectedChildTypeMembersForActivity(firstChildUserTypeIdString,attrA
 			 str+='<td><span class="counts">'+rank+'</span></td>';
 			 str+='<td>'+result[i].name+'</td>';
 			 str+='<td>'+result[i].userType+'</td>';
-			 str+='<td>'+result[i].locationName+'</td>';
+			 //str+='<td>'+result[i].locationName+'</td>';
 			 str+='<td>'+result[i].totalActvtiesCount+'</td>';
 			 str+='<td>'+result[i].condctedActiesCount+'</td>';
 			 str+='<td>'+result[i].conductedPerc+'</td>';
@@ -4343,9 +4376,13 @@ $(document).on("click",".radioBtnCls",function(){
 function getSettingActivities(){
 	//getActivitiesDetails();
 	 var type = "activities"
+	 var dates = $('#dateRangeIdForEvents').val();
+	  var dateArray = dates.split("-");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
 	var jsObj={
-		fromDate:customStartDateActivities,
-		toDate: customEndDateActivities
+		fromDate: fromDateStr,//customStartDateActivities,
+		toDate: toDateStr //customEndDateActivities
 	}	
 	$.ajax({
 	 type: "POST",
