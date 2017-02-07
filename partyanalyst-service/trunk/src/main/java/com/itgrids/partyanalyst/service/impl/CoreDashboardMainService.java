@@ -190,6 +190,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setTrainingCampDetailsInfoDAO(ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
 		this.trainingCampDetailsInfoDAO = trainingCampDetailsInfoDAO;
 	}
+	//santosh
 	/**
 	  * @param  Long userAccessLevelId
 	  * @param  List<Long> userAccessLevelValues
@@ -202,7 +203,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	  *  This Service Method is used to get the main and affliated committees total and completed and started counts level wise based on the user access levels. 
 	  *  @since 29-JULY-2016
 	  */
-	public CommitteeDataVO getCommitteesBasicCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString){
+	public CommitteeDataVO getCommitteesBasicCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 		
 		LOG.info(" entered in to getCommitteesBAsicCountReport() ");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -210,11 +211,13 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		Date startDate = null;
 		Date endDate = null;
 		try{
-		     
+		//	dateString.split("-");
 		     //Create Business object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
 		     coreDashboardGenericService.getRequiredCommitteeLevelIdsByUserAccessLevelId(userAccessLevelId,committeeBO);
 		     coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,userAccessLevelValues,committeeBO);
+		     //setting committee enrollment year
+		     committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
 		     
 		     //committeeBO.setBasicCommitteeIds(basicCommitteeIds);
 		     committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap));
@@ -440,7 +443,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	  *  @since 10-AUGUST-2016
 	  */
    
-	public List<List<UserTypeVO>> getUserTypeWiseCommitteesCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString){
+	public List<List<UserTypeVO>> getUserTypeWiseCommitteesCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 		List<List<UserTypeVO>> userTypesList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{ 
@@ -455,6 +458,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		    	 committeeBO.setDate(sdf.parse(dateString));
 		     }
 		     
+		     //setting committee enrollment year
+		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
+		      
 			 //calling generic method.
 			 ActivityMemberVO activityMemberVO = new ActivityMemberVO();
 		     activityMemberVO.setUserId(userId);
@@ -595,7 +601,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	  *  This Service Method is used to get committees count of given basic committess level wise based on user access levels. 
 	  *  @since 10-AUGUST-2016
 	  */
-		public List<CommitteeDataVO> getLevelWiseBasicCommitteesCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString){
+		public List<CommitteeDataVO> getLevelWiseBasicCommitteesCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 		
 		LOG.info(" entered in to getLevelWiseBasicCommitteesCountReport() ");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -616,6 +622,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 			 }
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
+		     
+		     //Setting enrollment years ids
+		     committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
 		     
 		     Map<Long,CommitteeDataVO> committeeLevelMap = new LinkedHashMap<Long,CommitteeDataVO>(0);
 		     setCommitteeLevelstoMap(committeeLevelMap,committeeBO.getTdpCommitteeLevelIds(),committeeLevelBasedCommitteeIdsMap);
@@ -765,7 +774,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		  *  This Service Method is used to get CommitteesPerformance cohort details. 
 		  *  @since 10-AUGUST-2016
 		  */
-		public List<CommitteeDataVO> committeesPerformanceCohort(List<Long> tdpCommitteeLevelIdsClicked,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String committeeStatus,Long userLocationLevelId,List<Long> userLocationLevelValues,String dateString,String state){
+		public List<CommitteeDataVO> committeesPerformanceCohort(List<Long> tdpCommitteeLevelIdsClicked,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String committeeStatus,Long userLocationLevelId,List<Long> userLocationLevelValues,String dateString,String state,List<Long> committeeEnrollmentYearsIdsLst){
 		    List<CommitteeDataVO> finalList = null;
 		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    try{
@@ -777,6 +786,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		      if(dateString != null && !dateString.isEmpty()){
 		         committeeBO.setDate(sdf.parse(dateString));
 		       }
+		      // Setting committee enrollment years
+		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
+		      
 		      Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		      committeeBO.setStateId(stateId);
 		      setAppropriateLocationLevelInputsToBO(userLocationLevelId,committeeBO,userLocationLevelValues);
@@ -961,7 +973,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
 	  *  @since 25-AUGUST-2016
 	  */
-   public List<UserTypeVO> getSelectedChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIds,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString){
+   public List<UserTypeVO> getSelectedChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIds,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 	    List<UserTypeVO> activityMembersList = null;
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   try{
@@ -975,6 +987,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		    	 committeeBO.setDate(sdf.parse(dateString));
 		     }
 		   
+		      // Setting committee enrollment years
+		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
+		      
 		     //calling generic method.
 		   /* ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);*/
 		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
@@ -1122,7 +1137,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  *  This Service Method is used to get the direct child usertype activity memberids and its committee counts for a parent usertype activity member id. 
 	  *  @since 25-AUGUST-2016
 	  */
- public List<UserTypeVO> getDirectChildActivityMemberCommitteeDetails(Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString){
+ public List<UserTypeVO> getDirectChildActivityMemberCommitteeDetails(Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 	    List<UserTypeVO> activityMembersList = null;
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   try{
@@ -1136,6 +1151,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		    	 committeeBO.setDate(sdf.parse(dateString));
 		     }
 		   
+		     // Setting committee enrollment years
+		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
+		      
 		     //calling generic method.
 		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
 		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
@@ -1191,7 +1209,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  *  This Service Method is used to get the getTopPoorPerformancecommittees.
 	  *  @since 27-AUGUST-2016
 	  */
- public CommitteeDataVO getTopPoorPerformancecommittees(Long activityMemberId,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String state,String dateString){
+ public CommitteeDataVO getTopPoorPerformancecommittees(Long activityMemberId,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String state,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   CommitteeDataVO finalVO = new CommitteeDataVO();
 	   try {
@@ -1216,6 +1234,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     if(dateString != null && !dateString.isEmpty()){
 		    	 committeeBO.setDate(sdf.parse(dateString));
 		     }
+		      // Setting committee enrollment years
+		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
+		      
 		     List<Long> requiredCommitteeLevelIds = coreDashboardGenericService.getRequiredTdpCommitteeLevelIdsByUserAccessLevelId(userLocationLevelId,userLocationLevelValues);
 		     committeeBO.setTdpCommitteeLevelIds(requiredCommitteeLevelIds);
 		     coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userLocationLevelId,userLocationLevelValues,committeeBO);
@@ -1418,7 +1439,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  *  This Service Method is used to get the getTopPoorPerformancecommittees.
 	  *  @since 29-AUGUST-2016
 	  */
-	public List<CommitteeDataVO> getTopPoorCommitteeLocations(Long activityMemberId,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String state,String dateString){
+	public List<CommitteeDataVO> getTopPoorCommitteeLocations(Long activityMemberId,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String state,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
 		   List<CommitteeDataVO> finalList = null;
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		   try{
@@ -1445,6 +1466,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			    	 committeeBO.setDate(sdf.parse(dateString));
 			     }
 			     
+			     // Setting committee enrollment years
+			      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
 			     setAppropriateLocationLevelInputsToBO(userLocationLevelId,committeeBO,userLocationLevelValues);
 			     
 			     committeeBO.setQueryString(coreDashboardGenericService.getCommittesRelatedLocationQuerypart(committeeBO));
