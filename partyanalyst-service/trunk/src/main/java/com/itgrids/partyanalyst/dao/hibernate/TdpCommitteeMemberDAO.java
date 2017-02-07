@@ -246,13 +246,14 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		
 		return query.list();
 	}
-	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String status)
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue" +
 				" from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive = 'Y'");
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive = 'Y' and " +
+				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(status.equalsIgnoreCase("Conform"))
 		str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
 		else if(status.equalsIgnoreCase("Started"))
@@ -262,10 +263,11 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		query.setParameter("levelId", levelId);
 		query.setParameterList("locationVals", locationVals);
 		query.setParameter("committeeTypeId", committeeTypeId);
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
 		return query.list();
 			
 	}
-	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status)
+	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
 	{
 		StringBuilder str = new StringBuilder();
 		//19tehsilId, 20localElectionBodyId 21constituencyId
@@ -275,7 +277,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 				" ,tehsil.tehsilId,leb.localElectionBodyId,ward.constituencyId  " +
 				" from TdpCommitteeMember model left join model.tdpCadre.userAddress.constituency constituency  left join model.tdpCadre.userAddress.tehsil tehsil " +
 				" left join model.tdpCadre.userAddress.localElectionBody leb left join model.tdpCadre.userAddress.ward ward " +
-				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal");
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and " +
+				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(committeeTypeId.longValue() !=0L)
 			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
 		else 
@@ -290,15 +293,17 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		query.setParameter("locationVal", locationVal);
 		if(committeeTypeId.longValue() !=0L)
 			query.setParameter("committeeTypeId", committeeTypeId);
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
 		return query.list();
 			
 	}
 	
-	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId)
+	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId,List<Long> committeeEnrollmentIdsLst)
 	{
 		Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive ='Y'  ");
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive ='Y' and " +
+				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("locationVal", locationVal);
 		query.setParameter("committeeTypeId", committeeTypeId);
@@ -313,10 +318,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.executeUpdate();	
 	}
 	
-	public Integer deleteCadreRole(Long Id)
+	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst)
 	{
-		Query query = getSession().createQuery("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id ");
+		Query query = getSession().createQuery("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id  and " +
+				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		query.setParameter("Id", Id);
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
 		return query.executeUpdate();	
 	}
 	
@@ -414,10 +421,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId)
+	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst)
 	{
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from  TdpCommitteeMember model where model.tdpCommitteeMemberId =:tdpCommitteMemberId ");
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from  TdpCommitteeMember model where model.tdpCommitteeMemberId =:tdpCommitteMemberId and " +
+				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		query.setParameter("tdpCommitteMemberId", tdpCommitteMemberId);
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
 		return query.list();	
 	}
 	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
