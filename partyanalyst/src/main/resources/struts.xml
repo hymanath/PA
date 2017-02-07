@@ -15660,7 +15660,7 @@
 		  </result>	
 	</action>
 	<action name="cccDashboardAction" class="cccDashboardAction">
-	  	<result name="success">/jsp/govtCoreDashboard.jsp</result>
+	  	<result name="success">/jsp/alertManagementSystem.jsp</result>
 	</action>
  </package>
 </struts>
