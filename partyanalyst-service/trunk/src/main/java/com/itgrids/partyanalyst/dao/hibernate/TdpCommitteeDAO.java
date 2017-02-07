@@ -1392,6 +1392,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			str.append(" and model.userAddress.state.stateId = :stateId ");
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size()>0){
+			str.append(" and model.tdpCommitteeEnrollmentId in (:tdpCommitteeEnrollmentId) ");
+		}
 		if(committeeBO.getCommitteesQueryString()!=null && committeeBO.getCommitteesQueryString().length()>0){
 			str.append(committeeBO.getCommitteesQueryString());
 		}
@@ -1434,6 +1437,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size()>0){
+			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
 		}
 		return query.list();
 	}
@@ -1478,7 +1484,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		sbM.append(" from  TdpCommittee model " +
 				  "  where model.tdpCommitteeLevel.tdpCommitteeLevelId in (:tdpCommitteeLevelIds) ");
-				
+			
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			sbM.append(" and model.tdpCommitteeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
+		}
 		/*if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size() >0l){
 			sbM.append(" and model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
 		}*/
@@ -1570,6 +1579,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
 		}
 		return query.list();
     }
@@ -1804,7 +1817,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			sbM.append(" and model.userAddress.state.stateId = :stateId ");
 		}
-		
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			sbM.append(" and model.tdpCommitteeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
+		}
 		if(committeeBO.getCommitteesQueryString()!=null && committeeBO.getCommitteesQueryString().length()>0){
 			sbM.append(committeeBO.getCommitteesQueryString());
 		}
@@ -1835,6 +1850,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
+		}
 		return query.list();
 	}
     
@@ -1850,7 +1868,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		"        count(distinct model.tdpCommitteeId)" +//4
 		" from   TdpCommittee model " +
 	    " where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:tdpCommitteeLevelIds)  " );
-				
+		
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			sb.append(" and model.tdpCommitteeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
+		}
 		/*if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size()>0){
 			sb.append(" and model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
 		}*/
@@ -1924,6 +1945,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
+		}
 		return query.list();
 	}
     
@@ -1935,7 +1959,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  	    " select model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name,count(distinct model.tdpCommitteeId)" +//2
  		" from   TdpCommittee model " +
  	    " where  model.tdpCommitteeId is not null ");
- 		
+ 		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			sb.append(" and model.tdpCommitteeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
+		}
  		//locations related.
  		if(committeeBO.getQueryString() != null && committeeBO.getQueryString().length()>0){
  			sb.append( committeeBO.getQueryString() );
@@ -2001,7 +2027,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
  			query.setParameter("stateId",committeeBO.getStateId());
  		}
- 		
+ 		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+ 			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
+		}
  		return query.list();
  	}
     
@@ -2039,7 +2067,6 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		
 		sbM.append(" from  TdpCommittee model where model.tdpCommitteeId is not null ");
-				
 		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size() >0l){
 			sbM.append(" and  model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
 		}
@@ -2079,6 +2106,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			sbM.append(" and model.userAddress.state.stateId = :stateId ");
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			sbM.append(" and model.tdpCommitteeEnrollmentId in(:tdpCommitteeEnrollmentId) ");
+		}
+			
 		if(committeeBO.getCommitteesQueryString()!=null && committeeBO.getCommitteesQueryString().length()>0){
 			sbM.append(committeeBO.getCommitteesQueryString());
 		}
@@ -2108,6 +2139,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size() > 0){
+			query.setParameterList("tdpCommitteeEnrollmentId",committeeBO.getEnrollmentYearList());
 		}
 		return query.list();
     }

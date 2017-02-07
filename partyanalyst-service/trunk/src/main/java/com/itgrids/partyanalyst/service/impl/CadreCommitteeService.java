@@ -10177,7 +10177,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 }
 
 	public CadreCommitteeRolesInfoVO getConstituencyOverviewCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio)
+		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio,List<Long> enrollIdsList)
 	{
 		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
 		try {
@@ -10265,7 +10265,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteWiseCategoryList = tdpCommitteeMemberDAO.getCasteCategoryInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr,"casteCategory");
+			List<Object[]> casteWiseCategoryList = tdpCommitteeMemberDAO.getCasteCategoryInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr,"casteCategory",enrollIdsList);
 			Map<String , Long> casteCategoryCountMap = new HashMap<String, Long>();
 			
 			if(casteWiseCategoryList != null && casteWiseCategoryList.size()>0)
@@ -10284,7 +10284,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
+			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,enrollIdsList);
 			List<CadreCommitteeRolesInfoVO> casteCategoryVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			
 			List<Long> constiteuncyIds = new ArrayList<Long>();
@@ -10338,7 +10338,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteWiseList = tdpCommitteeMemberDAO.getCasteInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr,"caste");
+			List<Object[]> casteWiseList = tdpCommitteeMemberDAO.getCasteInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr,"caste",enrollIdsList);
 			Map<Long , Long> casteCountMap = new HashMap<Long, Long>();
 			List<Long> minorityCastes = new ArrayList<Long>();
 			minorityCastes.add(459L);//459,301,292,430
@@ -10368,7 +10368,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
+			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,enrollIdsList);
 					
 			
 			List<CadreCommitteeRolesInfoVO> castewiseVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
@@ -10457,7 +10457,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					availableVotersByAgeRange.put(ageRangeId, votersCount);
 				}
 			}
-			List<Object[]> ageRangeList = tdpCommitteeMemberDAO.getCadreAgerangeInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr);
+			List<Object[]> ageRangeList = tdpCommitteeMemberDAO.getCadreAgerangeInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr,enrollIdsList);
 			Map<Long , Long> agerangeCountMap = new HashMap<Long, Long>();
 			
 			if(ageRangeList != null && ageRangeList.size()>0)
@@ -10476,7 +10476,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
+			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,enrollIdsList);
 			List<CadreCommitteeRolesInfoVO> ageRangeVOList = new LinkedList<CadreCommitteeRolesInfoVO>();
 						
 			if(cadreDetails != null && cadreDetails.size()>0)			
@@ -10535,7 +10535,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			
 			}
 			
-			List<Object[]> genderWiseResults = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,null);
+			List<Object[]> genderWiseResults = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,null,enrollIdsList);
 			Long totalCount = 0L;
 			Long totalMaleCount = 0L;
 			Long totalFemaleCount = 0L;
@@ -10690,7 +10690,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 	}
 
 	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio)
+		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio,List<Long> enrollIdsList)
 	{
 		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
 		try {
@@ -10720,7 +10720,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L && Long.valueOf(locationLevelId).longValue() == 3L) //Constituency
 			{
 				return  getConstituencyOverviewCommitteeRoleAgeWiseDetailsByLocationType(userAccessType, locationValue, committeeTypeId, positionIdsList, 
-						casteCategoryIdsList, casteCategoryGroupIdsList, casteIdsList, locationLevelId, userId, accessValue, selectedRadio);
+						casteCategoryIdsList, casteCategoryGroupIdsList, casteIdsList, locationLevelId, userId, accessValue, selectedRadio,enrollIdsList);
 			}
 			
 			if(committeeTypeId != null && Long.valueOf(committeeTypeId).longValue() != 0L)
@@ -10849,7 +10849,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						descriptionLevelId = actuallevelId; 
 					}
 					
-					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId,enrollIdsList);
 					
 					List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
 					Set<Long> locationIdsSet = new HashSet<Long>();
@@ -11039,7 +11039,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					{
 						descriptionLevelId = actuallevelId; 
 					}
-					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId,enrollIdsList);
 					
 					List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
 					Set<Long> locationIdsSet = new HashSet<Long>();
@@ -11226,7 +11226,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 
 						descriptionLevelId = actuallevelId; 
 
-						List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+						List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId,enrollIdsList);
 						
 						List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
 						Set<Long> locationIdsSet = new HashSet<Long>();
@@ -11368,7 +11368,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			}
 			
 			
-			List<Object[]> casteWiseCategoryList = tdpCommitteeMemberDAO.getCasteCategoryInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,"casteCategory");
+			List<Object[]> casteWiseCategoryList = tdpCommitteeMemberDAO.getCasteCategoryInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,"casteCategory",enrollIdsList);
 			Map<String , Long> casteCategoryCountMap = new HashMap<String, Long>();
 			
 			if(casteWiseCategoryList != null && casteWiseCategoryList.size()>0)
@@ -11387,7 +11387,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,enrollIdsList);
 			List<CadreCommitteeRolesInfoVO> casteCategoryVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			if(casteCategoryWiseCountList != null && casteCategoryWiseCountList.size()>0)
 			{
@@ -11435,7 +11435,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteWiseList = tdpCommitteeMemberDAO.getCasteInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,"caste");
+			List<Object[]> casteWiseList = tdpCommitteeMemberDAO.getCasteInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,"caste",enrollIdsList);
 			Map<Long , Long> casteCountMap = new HashMap<Long, Long>();
 			List<Long> minorityCastes = new ArrayList<Long>();
 			minorityCastes.add(459L);//459,301,292,430
@@ -11466,7 +11466,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			}
 			
 			
-			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,enrollIdsList);
 			Long totalCount = 0L;
 			Long totalMaleCount = 0L;
 			Long totalFemaleCount = 0L;
@@ -11564,7 +11564,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			}
 			
 			
-			List<Object[]> ageRangeList = tdpCommitteeMemberDAO.getCadreAgerangeInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery);
+			List<Object[]> ageRangeList = tdpCommitteeMemberDAO.getCadreAgerangeInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,enrollIdsList);
 			Map<Long , Long> agerangeCountMap = new HashMap<Long, Long>();
 			
 			if(ageRangeList != null && ageRangeList.size()>0)
@@ -11583,7 +11583,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,enrollIdsList);
 			List<CadreCommitteeRolesInfoVO> ageRangeVOList = new LinkedList<CadreCommitteeRolesInfoVO>();
 			
 			if(cadreDetails != null && cadreDetails.size()>0)			
@@ -11784,7 +11784,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			{
 				descriptionLevelId = actuallevelId; 
 			}
-			List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+			List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId,enrollIdsList);
 			List<Long> locationIdsForTotalTdpCadreCount = new ArrayList<Long>();
 			
 			if(genderWiseCountList != null && genderWiseCountList.size()>0)
