@@ -515,7 +515,7 @@
 		//console.log(jsObj);
 		$.ajax({
 				type : "POST",
-				url : "getCadreSearchDetailsAction.action",
+				url : "getCadreSearchDetailsForCommitteeAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				 if(typeof result == "string"){
@@ -790,14 +790,14 @@
 				    //window.open(url,'_blank');
 				}
 				else{
-					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
+					 window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
 				    //var url = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
 			        //window.open(url,'_blank');
 				}
 			}
 		}else
 		{
-			  window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
+			 window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
 		    //var url = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
 			//window.open(url,'_blank');
 		}
