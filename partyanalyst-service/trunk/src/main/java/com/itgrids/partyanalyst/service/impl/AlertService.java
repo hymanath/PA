@@ -7098,17 +7098,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alert.setImpactLevelId(inputVO.getLocationLevelId());
 				 alert.setImpactLevelValue(inputVO.getLocationValue());
 				 alert.setDescription(inputVO.getDesc().toString());
-				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
 				 alert.setImpactScopeId(inputVO.getAlertImpactId());
 				 alert.setAlertSourceId(inputVO.getAlertSourceId());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
-				 alert.setIsDeleted("N");
-				 
 				 alert.setAlertCategoryId(1L);//default Manual alert
 				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0){
-					 alert.setAlertStatusId(2L);  
-				 }
+					 if(alert.getAlertStatusId().longValue() == 1L){
+						 alert.setAlertStatusId(2L);
+					 }
+				 }else if(inputVO.getAssignList() != null && inputVO.getAssignList().size() == 0){
+					 alert.setAlertStatusId(1L);
+				 }  
 				 alert.setTitle(inputVO.getTitle());
 				 alert = alertDAO.save(alert);
 				 
@@ -7201,7 +7202,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 }
 				 }
 				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
-				
+				 List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
 				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0){
 					Map<Long,Long> candidateAneImpactMap = new HashMap<Long,Long>();
 					List<Long> newCandidateList = new ArrayList<Long>();
@@ -7218,8 +7219,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						
 					}
-					List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
-					
 					if(existingCadreIds != null && existingCadreIds.size() > 0 && newCandidateList != null && newCandidateList.size() > 0){
 						for(Long id : existingCadreIds){
 							if(!(newCandidateList.contains(id))){
@@ -7258,8 +7257,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 }
 					}
 					
-				 }  
-				
+				 }else if(existingCadreIds != null && existingCadreIds.size() > 0){
+						for(Long id : existingCadreIds){
+							int  result = alertCandidateDAO.deleteAlertCandidatesExistingtdpCadreIds(id,inputVO.getAlertId());
+						}  
+					}  
+				 existingCadreIds = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(inputVO.getAlertId());
 				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0){
 					 List<Long> newCandidateList = new ArrayList<Long>();
 						List<Long> newList = new ArrayList<Long>();
@@ -7268,7 +7271,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							if(vo != null && vo.getId()!= null && vo.getId() > 0L)
 								newCandidateList.add(vo.getId());
 						}
-						List<Long> existingCadreIds = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(inputVO.getAlertId());
+						
 						
 						if(existingCadreIds != null && existingCadreIds.size() > 0 && newCandidateList != null && newCandidateList.size() > 0){
 							for(Long id : existingCadreIds){
@@ -7295,7 +7298,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							}
 							
 						}else if(newCandidateList != null && newCandidateList.size() > 0){
-							for(IdNameVO vo : inputVO.getIdNamesList()){
+							for(IdNameVO vo : inputVO.getAssignList()){
 								 if(vo != null && vo.getId()!= null && vo.getId() > 0){
 									 	AlertAssigned alertAssigned = new AlertAssigned();
 										alertAssigned.setAlertId(inputVO.getAlertId());
@@ -7308,7 +7311,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 }
 								 
 							 }
-						}//
+						}
+				}else if(existingCadreIds != null && existingCadreIds.size() > 0){
+					for(Long id : existingCadreIds){
+						int  result = alertAssignedDAO.deleteAlertAssignedByExistingIds(id,inputVO.getAlertId());
+					}
 				}
 				 
 				 rs = "edit";
