@@ -820,7 +820,9 @@ function buildAlertAssignedCandidateData(result)
 			str+='</c:if>';  
 			str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
 			if(result[i].subList[j].committeePosition != null && result[i].subList[j].committeePosition.length > 0)
-			str+='<p class="text-capital"><b>'+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';  
+				str+='<p class="text-capital"><b>'+result[i].subList[j].electionType+" "+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';
+			if(result[i].subList[j].designation != null && result[i].subList[j].designation != "")
+				str+='<b><p class="text-capital">'+result[i].subList[j].designation+'</b></p>';			  
 			//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
 			//str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
 			str+=' <p>'+result[i].subList[j].mobileNo+'</p>';

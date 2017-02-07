@@ -496,7 +496,9 @@ function buildAlertCandidateData(result,categoryId)
 				   str+=' <div class="media-body">';
 					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
 					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
-						str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
+							str+='<b><p class="text-capital">'+result[i].electionType+" "+result[i].committeeName+' Committee '+result[i].committeePosition+'</b></p>';
+						if(result[i].designation != null && result[i].designation != "")
+							str+='<b><p class="text-capital">'+result[i].designation+'</p></b>';
 					  str+='  <p>'+result[i].mobileNo+'</p>';
 					  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
 					  
