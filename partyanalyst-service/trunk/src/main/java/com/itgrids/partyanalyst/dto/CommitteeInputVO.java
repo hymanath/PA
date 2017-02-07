@@ -24,6 +24,7 @@ public class CommitteeInputVO implements Serializable{
 	
 	private Long basicCommitteeId;
 	private String groupingLocation;
+	private List<Long> enrollmentYearList;
 	
 	private List<String> statusList; 
 	private StringBuilder queryString;
@@ -143,6 +144,10 @@ public class CommitteeInputVO implements Serializable{
 	public void setPartyMeetingTypeIds(List<Long> partyMeetingTypeIds) {
 		this.partyMeetingTypeIds = partyMeetingTypeIds;
 	}
-	
-	
+	public List<Long> getEnrollmentYearList() {
+		return enrollmentYearList;
+	}
+	public void setEnrollmentYearList(List<Long> enrollmentYearList) {
+		this.enrollmentYearList = enrollmentYearList;
+	}
 }
