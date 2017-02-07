@@ -2204,4 +2204,12 @@ function getLocationAndBoardLevelWisePostsData(){
  $(document).on("click",".radioBtnCls",function(){
 	 getLocationAndBoardLevelWisePostsData();	 
 	 });
+		$(document).on("click",".radioBtnCls1",function(){
+		var searchType1  = $('input[name=checkBoxName1]:checked').val();
+		if(searchType1 == "1" ){
+			alert(searchType1);
+		 getLocationAndBoardLevelWisePostsData();
+		 }else if(searchType1 == "2")
+			 alert(searchType1);
 	 
+		 });
