@@ -1739,6 +1739,7 @@
 	
 	<bean id="cardPrintAction" class="com.itgrids.partyanalyst.web.action.CardPrintAction" singleton="false">
 			<property name="cardPrintService" ref="cardPrintService" />  
-	</bean>	
+	</bean>
+	<bean id="cccDashboardAction" class="com.itgrids.partyanalyst.web.action.CccDashboardAction" singleton="false"></bean>	
 </beans>	
 	
