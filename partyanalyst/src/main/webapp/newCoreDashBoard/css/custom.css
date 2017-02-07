@@ -1344,10 +1344,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-width: 1px 0 1px 1px;
     right: -3px;
 }
-.settingsUl , .settingsUlEmn {
+.settingsUl , .settingsUlEmn , .evntsSettingsUl , .activitySettingsUl{
     padding: 0;
 }
-.settingsUl li  , .settingsUlEmn li{
+.settingsUl li  , .settingsUlEmn li , .evntsSettingsUl li , .activitySettingsUl li{
     border-bottom: 1px solid rgb(221, 221, 221);
     list-style: outside none none;
     padding: 3px 6px;
@@ -2438,4 +2438,12 @@ color: rgb(51, 122, 183);
 {
 	list-style:none;
 	padding:5px 8px;
+}
+.actBlockDropDown.notesArrow
+{
+	margin-top:33px;
+}
+.actBlockDropDown.notesArrow::after, .actBlockDropDown.notesArrow::before
+{
+	right:30px;
 }
