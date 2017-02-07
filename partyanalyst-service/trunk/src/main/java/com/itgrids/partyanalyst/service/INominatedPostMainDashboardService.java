@@ -32,5 +32,5 @@ public interface INominatedPostMainDashboardService {
              Long ageRangeTypeId,Long deptmentId,Long corptionId,
              String genderType,List<Long> postStatusIds,Long locationId,String type);
 	 public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType);
-
+	 public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,Long stateId,String searchType,List<Long> locationIds,String type);
 }

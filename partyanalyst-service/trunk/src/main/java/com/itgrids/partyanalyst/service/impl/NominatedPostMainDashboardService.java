@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -61,8 +64,20 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private 
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	public ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private ICasteCategoryDAO casteCategoryDAO;
 
 	
+	
+	public ICasteCategoryDAO getCasteCategoryDAO() {
+		return casteCategoryDAO;
+	}
+
+
+	public void setCasteCategoryDAO(ICasteCategoryDAO casteCategoryDAO) {
+		this.casteCategoryDAO = casteCategoryDAO;
+	}
+
+
 	public IBoardLevelDAO getBoardLevelDAO() {
 		return boardLevelDAO;
 	}
@@ -1096,6 +1111,8 @@ public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,
 		List<Object[]> locatnLvlCounts = nominatedPostFinalDAO.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType);
 		returnList = setObjectDataToVO(returnList,locatnLvlCounts,"counts");
 		
+		
+		
 	}catch(Exception e){
 		e.printStackTrace();
 		LOG.error("Exception Occured in getLocationAndBoardLevelWisePostsData()", e);
@@ -1183,5 +1200,275 @@ public List<IdAndNameVO> getBoardLevels(){
 		LOG.error("Exception Occured in getBoardLevels()", e);
 	}
 	return returnList;
+}
+
+public List<NominatedPostDashboardVO> setDataToCasteCategoryMap(List<Object[]> list,List<NominatedPostDashboardVO> returnList,String type){
+	
+	try{
+		
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for (Object[] obj : list) {
+				NominatedPostDashboardVO locationVO = getMatchedVOByList(returnList, commonMethodsUtilService.getLongValueForObject(obj[6]));
+				if(locationVO != null){
+				
+				locationVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+				locationVO.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[7]));
+				Long casteId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				Long ageId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+				String gender = obj[4] != null ? obj[4].toString():"";
+				Long count = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+				Map<Long,NominatedPostDashboardVO> casteMap = locationVO.getCasteMap();
+				NominatedPostDashboardVO castevo = null;
+				if(type != null && type.equalsIgnoreCase("casteCatgry")){
+					 castevo = casteMap.get(casteId);
+				}else if(type != null && type.equalsIgnoreCase("minority")){
+					 castevo = casteMap.get(0l);
+				}
+				
+				if(castevo != null){
+					NominatedPostDashboardVO vo = getMatchedVOByList(castevo.getApplicatnStatsList(), ageId);
+					if(vo == null){
+						vo = new NominatedPostDashboardVO();
+					}
+					if(type != null && type.equalsIgnoreCase("casteCatgry")){
+						vo.setId(casteId);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+					}else if(type != null && type.equalsIgnoreCase("minority")){
+						vo.setId(0l);
+						vo.setName("Minority");
+					}
+					
+					if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
+						vo.setMaleCount(vo.getMaleCount()+count);
+					else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
+						vo.setFemaleCount(vo.getFemaleCount()+count);
+			}
+		}
+	}
+}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in setDataToCasteCategoryMap()", e);
+	}
+	return returnList;
+}
+public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,Long stateId,String searchType,List<Long> locIdsList,String type){
+	List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
+	try {
+		
+		Long totalCount = 0l;
+		
+		List<Object[]> casteCategrys = casteCategoryDAO.getAllCasteCategoryDetails();
+		
+		
+		//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
+		List<Object[]> list = nominatedPostFinalDAO.getLocationAndBoardLevelWiseCasteCatgryPostsData( postLevelId, casteGrpId, casteId1, ageRangeId, positionId, 
+				gender1, stateId, searchType, locIdsList,type,"casteCatgry");
+		
+		
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for (Object[] obj : list) {
+				NominatedPostDashboardVO locationVO = getMatchedVOByList(returnList, commonMethodsUtilService.getLongValueForObject(obj[6]));
+				if(locationVO == null){
+					locationVO = new NominatedPostDashboardVO();
+					Map<Long,NominatedPostDashboardVO> defaultCasteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
+					NominatedPostDashboardVO minrtycastevo = new NominatedPostDashboardVO();
+					minrtycastevo.setStatusId(0l);
+					minrtycastevo.setApplicatnStatsList(getAgeGroupList());
+					minrtycastevo.setStatusName("Minority");
+					defaultCasteMap.put(0l, minrtycastevo);
+					if(commonMethodsUtilService.isListOrSetValid(casteCategrys)){
+						for (Object[] obj1 : casteCategrys) {
+							NominatedPostDashboardVO castevo1 = new NominatedPostDashboardVO();
+							castevo1.setId(commonMethodsUtilService.getLongValueForObject(obj1[0]));
+							castevo1.setStatusName(commonMethodsUtilService.getStringValueForObject(obj1[1]));
+							castevo1.setApplicatnStatsList(getAgeGroupList());
+							defaultCasteMap.put(commonMethodsUtilService.getLongValueForObject(obj1[0]), castevo1);
+						}
+					}
+					locationVO.setCasteMap(defaultCasteMap);
+					returnList.add(locationVO);
+				}
+				locationVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+				locationVO.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[7]));
+			}
+		}
+		returnList = setDataToCasteCategoryMap(list,returnList,"casteCatgry");
+			
+		List<Object[]> minorityData = nominatedPostFinalDAO.getLocationAndBoardLevelWiseCasteCatgryPostsData( postLevelId, casteGrpId, casteId1, 
+					ageRangeId, positionId, gender1, stateId, searchType, locIdsList,type,"minority");
+			
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					NominatedPostDashboardVO locationVO = getMatchedVOByList(returnList, commonMethodsUtilService.getLongValueForObject(obj[6]));
+					if(locationVO == null){
+						locationVO = new NominatedPostDashboardVO();
+						Map<Long,NominatedPostDashboardVO> defaultCasteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
+						NominatedPostDashboardVO minrtycastevo = new NominatedPostDashboardVO();
+						minrtycastevo.setStatusId(0l);
+						minrtycastevo.setApplicatnStatsList(getAgeGroupList());
+						minrtycastevo.setStatusName("Minority");
+						defaultCasteMap.put(0l, minrtycastevo);
+						if(commonMethodsUtilService.isListOrSetValid(casteCategrys)){
+							for (Object[] obj1 : casteCategrys) {
+								NominatedPostDashboardVO castevo1 = new NominatedPostDashboardVO();
+								castevo1.setId(commonMethodsUtilService.getLongValueForObject(obj1[0]));
+								castevo1.setStatusName(commonMethodsUtilService.getStringValueForObject(obj1[1]));
+								castevo1.setApplicatnStatsList(getAgeGroupList());
+								defaultCasteMap.put(commonMethodsUtilService.getLongValueForObject(obj1[0]), castevo1);
+							}
+						}
+						locationVO.setCasteMap(defaultCasteMap);
+						returnList.add(locationVO);
+					}
+					locationVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+					locationVO.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[7]));
+				}
+			}
+			returnList = setDataToCasteCategoryMap(minorityData,returnList,"minority");
+			
+		Long twentyTo29AgeRangeCount=0l;
+		Long thirtyTo39AgeRangeCount=0l;
+		Long fourtyTo49AgeRangeCount=0l;
+		Long fiftyTo59AgeRangeCount=0l;
+		Long sixtyAvoveAgeRangeCount=0l;
+		Long overAllCount=0l;
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(NominatedPostDashboardVO locationVO : returnList){
+				Map<Long,NominatedPostDashboardVO> casteMap2 = locationVO.getCasteMap();
+				List<NominatedPostDashboardVO> casteCatgryList = new ArrayList<NominatedPostDashboardVO>(casteMap2.values());
+				locationVO.setPositinsList(casteCatgryList);
+			}
+		}
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(NominatedPostDashboardVO locationVO : returnList){
+				locationVO.getCasteMap().clear();
+			}
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(NominatedPostDashboardVO locationVO : returnList){
+				if(commonMethodsUtilService.isListOrSetValid(locationVO.getPositinsList())){
+					for (NominatedPostDashboardVO castevo : locationVO.getPositinsList()) {
+						NominatedPostDashboardVO totalvo = getMatchedVOByList(castevo.getApplicatnStatsList(), 0l);
+							if(commonMethodsUtilService.isListOrSetValid(castevo.getApplicatnStatsList())){
+								
+								for (NominatedPostDashboardVO vo : castevo.getApplicatnStatsList()) {
+									totalvo.setId(castevo.getId());
+									totalvo.setName(castevo.getName());
+									totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
+									totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
+									totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
+									totalCount = totalCount+totalvo.getStatusCount();
+									overAllCount = overAllCount + vo.getMaleCount()+vo.getFemaleCount();
+									if(vo.getStatusId() != null && vo.getStatusId().longValue()==1l){
+										twentyTo29AgeRangeCount = twentyTo29AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+									}else if(vo.getStatusId() != null && vo.getStatusId().longValue()==2l){
+										thirtyTo39AgeRangeCount = thirtyTo39AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+									}else if(vo.getStatusId() != null && vo.getStatusId().longValue()==3l){
+										fourtyTo49AgeRangeCount = fourtyTo49AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+									}else if(vo.getStatusId() != null && vo.getStatusId().longValue()==4l){
+										fiftyTo59AgeRangeCount = fiftyTo59AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+									}else{
+										sixtyAvoveAgeRangeCount = sixtyAvoveAgeRangeCount +	vo.getMaleCount()+vo.getFemaleCount();
+									}
+								}
+							}
+							castevo.setTotalCnt(totalvo.getStatusCount());
+						}
+					}
+				}
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(NominatedPostDashboardVO locationVO : returnList){
+				if(commonMethodsUtilService.isListOrSetValid(locationVO.getPositinsList())){
+					
+					for (NominatedPostDashboardVO vo : locationVO.getPositinsList()) {
+						Long count = vo.getTotalCnt();
+						if(totalCount != null && totalCount.longValue() > 0l && count != null && count.longValue() > 0l){
+						String percentage = (new BigDecimal((count * 100.0)/overAllCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+						vo.setPercentage(percentage);
+						}
+					}
+				}
+			}
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(NominatedPostDashboardVO locationVO : returnList){
+				if(locationVO.getPositinsList() !=null && locationVO.getPositinsList().size() > 0){
+					NominatedPostDashboardVO vo = locationVO.getPositinsList().get(0);
+					  vo.setTwentyTo29AgeRangeCount(twentyTo29AgeRangeCount);
+					  vo.setThirtyTo39AgeRangeCount(thirtyTo39AgeRangeCount);
+					  vo.setFourtyTo49AgeRangeCount(fourtyTo49AgeRangeCount);
+					  vo.setFiftyTo59AgeRangeCount(fiftyTo59AgeRangeCount);
+					  vo.setSixtyAvoveAgeRangeCount(sixtyAvoveAgeRangeCount);
+					  vo.setOverAllCount(overAllCount);
+				}
+			}
+		}
+		
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCasteGroupWiseCountsByPosition() method of NominatedPostMainDashboardervice", e);
+	}
+	return returnList;
+}
+public List<NominatedPostDashboardVO> getAgeGroupList(){
+	List<NominatedPostDashboardVO> voList = new ArrayList<NominatedPostDashboardVO>();
+	try {
+		List<Object[]> list = nominatedPostAgeRangeDAO.getAllAgeRanges();
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for (Object[] obj : list) {
+				NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
+				vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setStatusName(obj[1] != null ? obj[1].toString():"");
+				if(vo.getStatusId() != 6l)
+					voList.add(vo);
+			}
+		}
+		NominatedPostDashboardVO totalvo1= new NominatedPostDashboardVO();
+		 //castevo.getPositinsList().add(totalvo);
+		 
+		
+		totalvo1.setStatusId(0l);
+		totalvo1.setStatusName("Total");
+		voList.add(0,totalvo1);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getAgeGroupList() method of NominatedPostMainDashboardervice", e);
+	}
+	return voList;
+}
+public NominatedPostDashboardVO getMatchedVOByList(List<NominatedPostDashboardVO> voList,Long id){
+	NominatedPostDashboardVO returnvo = new NominatedPostDashboardVO();
+	try {
+		if(commonMethodsUtilService.isListOrSetValid(voList)){
+			for (NominatedPostDashboardVO nominatedPostDashboardVO : voList) {
+				if(nominatedPostDashboardVO.getStatusId().longValue() == id.longValue()){
+					return nominatedPostDashboardVO;
+				}
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised at getMatchedVOByList() method of NominatedPostMainDashboardervice", e);
+	}
+	return null;
+}
+public NominatedPostDashboardVO getMatchedVOByList1(List<NominatedPostDashboardVO> voList,Long id){
+	NominatedPostDashboardVO returnvo = new NominatedPostDashboardVO();
+	try {
+		if(commonMethodsUtilService.isListOrSetValid(voList)){
+			for (NominatedPostDashboardVO nominatedPostDashboardVO : voList) {
+				if(nominatedPostDashboardVO.getId().longValue() == id.longValue()){
+					return nominatedPostDashboardVO;
+				}
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised at getMatchedVOByList() method of NominatedPostMainDashboardervice", e);
+	}
+	return null;
 }
 }

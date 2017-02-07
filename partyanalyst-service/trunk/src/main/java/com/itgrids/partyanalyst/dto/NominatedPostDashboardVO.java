@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author HYMAVATHI
@@ -34,7 +36,16 @@ public class NominatedPostDashboardVO {
 	private Long totalApplicationCount=0l;
 	private Long openPostCnt=0l;
 	private Long finalizedAndGoPassedCnt=0l;
+	private Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 	
+	
+	
+	public Map<Long, NominatedPostDashboardVO> getCasteMap() {
+		return casteMap;
+	}
+	public void setCasteMap(Map<Long, NominatedPostDashboardVO> casteMap) {
+		this.casteMap = casteMap;
+	}
 	public String getPercentage() {
 		return percentage;
 	}

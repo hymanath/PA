@@ -2279,5 +2279,112 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId){
 	    
 	    return query.list();
  }
- 
+public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
+		List<Long> locIdsList,String type,String casteType){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	 
+	 queryStr.append(" select " );
+	 
+	 
+		if(type != null && type.equalsIgnoreCase("casteCategory"))
+			queryStr.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName,");
+		else if(type != null && type.equalsIgnoreCase("casteName"))
+			queryStr.append(" model.nominationPostCandidate.casteState.caste.casteId," +
+						" model.nominationPostCandidate.casteState.caste.casteName,");
+		
+		queryStr.append(" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
+					" model.nominationPostCandidate.gender," +
+					" count(model.nominationPostCandidate.nominationPostCandidateId)");
+		if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+			 queryStr.append(" , model.nominationPostCandidate.address.constituency.constituencyId,model.nominationPostCandidate.address.constituency.name " );
+		 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+			 queryStr.append(" , model.nominationPostCandidate.address.district.districtId,model.nominationPostCandidate.address.district.districtName " );
+		 }
+	 
+	 queryStr.append("  from NominatedPostFinal model where model.isDeleted = 'N'  and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " );
+	 if(casteType != null && casteType.equalsIgnoreCase("casteCatgry")){
+		 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId not in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+	 }else if(casteType != null && casteType.equalsIgnoreCase("minority")){
+		 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId  in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+	 }
+	
+		if(!(positionId.equals(0l)) && positionId != null){
+			queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId  ");
+		}
+		if(!(postLevelId.equals(0l)) && postLevelId != null){
+			queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :postLevelId  ");
+		}
+		
+		if(!(ageRangeId.equals(0l)) && ageRangeId != null){
+			queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId = :ageRangeId " );
+		}
+		if(!(casteId.equals(0l)) && casteId != null){
+			queryStr.append(" and model.nominationPostCandidate.casteState.casteStateId = :casteId  ");
+		}
+		if(!(casteGrpId.equals(0l)) && casteGrpId != null){
+			queryStr.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId  ");
+		}
+		
+		
+		if(stateId != null && stateId.longValue() > 0l){
+			if( stateId.longValue() == 1l){
+				queryStr.append(" and  model.nominationPostCandidate.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if( stateId.longValue()==36l){
+				queryStr.append(" and model.nominationPostCandidate.address.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
+		if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
+			queryStr.append(" and  model.nominationPostCandidate.gender=:gender  ");
+		}
+		if(locIdsList != null && locIdsList.size() > 0l){
+			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+				 queryStr.append(" and model.nominationPostCandidate.address.constituency.constituencyId  in (:locIdsList) group by model.nominationPostCandidate.address.constituency.constituencyId,model.nominatedPostMember.boardLevel.boardLevelId " );
+			 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+				 queryStr.append(" and model.nominationPostCandidate.address.district.districtId in (:locIdsList) group by model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
+			 }
+		}else if(locIdsList != null && locIdsList.size() == 0l){
+			if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+				 queryStr.append(" group by model.nominationPostCandidate.address.constituency.constituencyId,model.nominatedPostMember.boardLevel.boardLevelId " );
+			 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+				 queryStr.append(" group by model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
+			 }
+		}
+		if(type != null && type.equalsIgnoreCase("casteCategory"))
+			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		else if(type != null && type.equalsIgnoreCase("casteName"))
+			queryStr.append(" ,model.nominationPostCandidate.casteState.caste.casteId ");
+	 Query query = getSession().createQuery(queryStr.toString());
+	 
+	 if(!(casteGrpId.equals(0l)) && casteGrpId != null){
+		 query.setParameter("castGroupId", casteGrpId);
+	 }
+	 if(!(positionId.equals(0l)) && positionId != null){
+		 query.setParameter("positionId", positionId);
+	 }
+	 if(!(postLevelId.equals(0l)) && postLevelId != null){
+		 query.setParameter("postLevelId", postLevelId);
+	 }
+	 if(!(casteId.equals(0l)) && casteId != null){
+		 query.setParameter("casteId", casteId); 
+	 }
+	 if(!(ageRangeId.equals(0l)) && ageRangeId != null){
+		 query.setParameter("ageRangeId", ageRangeId); 
+	 }
+	 /*if(stateId != null && stateId.longValue() > 0){
+		 query.setParameter("stateId", stateId); 
+	 }*/
+	 if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
+		 query.setParameter("gender", gender); 
+	 }
+	 if(locIdsList != null && locIdsList.size() > 0l){
+		 query.setParameterList("locIdsList", locIdsList); 
+	 }
+	    
+	    return query.list();
+ } 
 }
