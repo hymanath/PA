@@ -1,9 +1,12 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Party Meetings - ATR & MOM</title>
 
@@ -306,37 +309,44 @@ textarea { resize:none; }
 										</select>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-4 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
+							<div class="row m_top10">
+								<div class="col-md-3 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
 										<label>District</label>
 										<span id="districtErrorMSgShow" style="color: red;"></span>
 										<select class="form-control" id="districtId">
 										<!--<option>Select District</option>-->
 										</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
+								<div class="col-md-3 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
 										<label>Constituency</label>
 										<span id="ConsErrorMSgShow" style="color: red;"></span>
 										<select class="form-control" id="constituencyId" name="constBox">
 										<!--<option>Select Constituency</option>-->
 										</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
+								<div class="col-md-3 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
 										<label>Mandal/Town/Division</label>
 										<span id="ManErrorMSgShow" style="color: red;"></span>
 										<select class="form-control" id="manTowDivId">
 										<option>Select Mandal/Town/Division</option>
 										</select>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-4 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;">
+								<div class="col-md-3 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;">
 									<label>Village/Ward</label>
 										<span id="VillErrorMSgShow" style="color: red;"></span>
 									<select class="form-control" id="villWardId">
 									<option>Select Village/Ward</option>
 									</select>
 								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6" id="statusShowId" style="display:none;">
+									<label>Status</label>
+									<select class="form-control" id="statusSelId">
+									<option value="maybe">May Be</option>
+									<option value="no">No</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-xs-12 col-md-3 col-sm-6" >
 									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View </button>
 									<div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span>	
@@ -363,9 +373,10 @@ textarea { resize:none; }
 					 </div>
 					<div class="row m_top20" style="padding:10px;">
 						<div class="col-md-12" id="summaryDivId" style="display:none;">
-							<table class="table table-bordered">';
+							<h4 style="margin-bottom: 20px ! important;">CONFLICTS MEETINGS SUMMARY</h4>
+							<table class="table table-bordered">
 								<thead>
-									<th>TOTAL MAYBE</th>
+									<th>TOTAL MEETINGS (MAYBE)</th>
 									<th>PENDING</th>
 									<th>UPDATED</th>
 									<th>YES</th>
@@ -376,10 +387,28 @@ textarea { resize:none; }
 									<tr>
 										<td id="totalMaybeCount">0</td>
 										<td id="pendingCount">0</td>
-										<td> <span  class="updatedCountStyle" id="updatedCount">0</span></td>
+										<td> <span class="updatedCountStyle updatedCountCls" id="updatedCount">0</span></td>
 										<td id="thirdPartyYesCount">0</td>
 										<td id="thirdPartyNoCount">0</td>
 										<td id="documentsCount">0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="col-md-12 m_top10" id="summaryNoDivId" style="display:none;">
+							<h4 style="margin-bottom: 20px ! important;">NO STATUS MEETINGS SUMMARY</h4>
+							<table class="table table-bordered">
+								<thead>
+									<th>TOTAL MEETINGS (NO)</th>
+									<th>PENDING</th>
+									<th>UPDATED</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="totalNoCount">0</td>
+										<td id="pendingNoCount">0</td>
+										<td> <span class="updatedCountStyle updatedCountCls" id="updatedNoCount">0</span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -412,7 +441,7 @@ textarea { resize:none; }
 						<label>Name<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="nameId" name="updateName"/><br>					
 					</div>
 					<div class="col-md-4 col-xs-12 col-sm-6">	
-						<label>Mobile No<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="mobileNoId" name="updateMobileNumber"/>
+						<label>Mobile No<span class="text-danger">*</span> :</label> <input type="text" class="form-control" id="mobileNoId" name="updateMobileNumber" maxlength="10"/>
 					</div>
 				</div>
 				<div class="row m_top20">
@@ -420,7 +449,7 @@ textarea { resize:none; }
 						<label>Remark<span class="text-danger">*</span> :</label>
 						<textarea type="text" class="form-control" id="remarkId" name="updateRemarks"></textarea>
 					</div>
-					<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+					<div class="col-md-4 col-xs-12 col-sm-6 m_top20" id="statusDivId" style="display:none;">
 						<label>Conducted Status<span class="text-danger">*</span> :</label>
 						<select class="form-control" id="statusId" name="updateStatusId">
 							<option value="0">Select</option>
@@ -446,6 +475,7 @@ textarea { resize:none; }
 					</div>
 				</div>
 				<input type="hidden" value="" id="hiddenFinalizeMeetingId" name="updateFinalyzeMeetingId"/>			 
+				<input type="hidden" value="" id="hiddenFinalizeMeetingStatus"/>			 
 			</div>
 		
       </div>
@@ -468,40 +498,57 @@ textarea { resize:none; }
       </div>
       <div class="modal-body">
         <div id="commentsBlock"></div>
-        <div id="commentsDivId"></div>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!--<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+<div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mdlHeadingId"></h4>
+        <h4 class="modal-title" id="mdlHeadingId">COMMENTS</h4>
       </div>
       <div class="modal-body">
-        <div id="commentsBlock"></div>
-        <!--<div id="commentsDivId"></div>-->
+        <div id="commentsDivId"></div>
       </div>
-    </div><!-- /.modal-content -->
+    </div>
   </div><!-- /.modal-dialog -->
-</div>-->
+</div>
 
 <!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+
+ google.load("elements", "1", {
+	  packages: "transliteration"
+});
+
+function onLoad() {
+  var options = {
+	  sourceLanguage:
+		  google.elements.transliteration.LanguageCode.ENGLISH,
+	  destinationLanguage:
+		  [google.elements.transliteration.LanguageCode.TELUGU],
+	  shortcutKey: 'alt+t',
+	  transliterationEnabled: true
+  };
+  var control = new google.elements.transliteration.TransliterationControl(options);
+	control.makeTransliteratable(['remarkId']);
+}
+google.setOnLoadCallback(onLoad);
 
 $("#datePickerBlockId").daterangepicker({
 	opens:'left',
@@ -519,7 +566,8 @@ $("#datePickerBlockId").daterangepicker({
 		 }
 });
 
-$("#datePickerBlockId").val(moment().subtract(29, 'days').format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
+//$("#datePickerBlockId").val(moment().subtract(29, 'days').format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
+$("#datePickerBlockId").val(moment().startOf('month').format("MM/DD/YYYY") +'-'+ moment().endOf('month').format("MM/DD/YYYY"));
 
 //Adding Class To "ranges" Class
 $(document).find(".datePickerBlockCls").closest(".ranges").addClass("datePickerRangesCls");
@@ -585,7 +633,7 @@ getUserAccessLocationDetails();
 				}
 			}
 			
-			if(distArr.length==0 && parlArr.length==0){
+			/*if(distArr.length==0 && parlArr.length==0){
 				//$('#meetingLocationLevel').val('1').trigger('change');
 				$("#statesDivId").val(stateArr[0]).trigger('change');
 				setTimeout(function(){
@@ -615,7 +663,7 @@ getUserAccessLocationDetails();
 					$('select[name="constBox"] option:eq(2)').attr('selected', 'selected');
 					//$("#viewMeetings").trigger( "click" );
 				},2000);
-			} 
+			} */
 		});
 	}
 	
@@ -775,7 +823,10 @@ getUserAccessLocationDetails();
 			if(result!=null && result.length>0){
 				firstMeetingId=result[0].id;
 				for(var i in result){
-					$("#typeOfMeeting").append('<option value="'+result[i].id+'">'+result[i].meetingType+'</option>');
+					if(i == 0)
+						$("#typeOfMeeting").append('<option value="'+result[i].id+'" selected>'+result[i].meetingType+'</option>');
+					else
+						$("#typeOfMeeting").append('<option value="'+result[i].id+'">'+result[i].meetingType+'</option>');
 				}
 			}
 			
@@ -786,6 +837,7 @@ getUserAccessLocationDetails();
 	
 	$("#viewMeetings").click(function() {
 		$("#summaryDivId").hide();
+		$("#summaryNoDivId").hide();
 		$("#meetingDetailsTableId").html("");
 				
 		if($("#meetingLocationLevel").val()==0){
@@ -984,6 +1036,7 @@ getUserAccessLocationDetails();
 			endDate =dates.split("-")[1];
 		}
 		
+		var status = $("#statusSelId").val();
 		
 		$("#searchDataImgForResults").show();
 		var jsObj =	{
@@ -996,7 +1049,7 @@ getUserAccessLocationDetails();
 						villageWardId:villageWardId,
 						startDate:startDate,
 						endDate:endDate,
-						mayBe : "true"
+						mayBe : status
 					}
 					
 		$.ajax(
@@ -1007,11 +1060,19 @@ getUserAccessLocationDetails();
 		}
 		).done(function(result){
 			$("#searchDataImgForResults").hide();
-			$("#summaryDivId").show();
-			buildFinalMeeting(result);
+			if(status != null && (status == "maybe" || status == "no")){
+				if(status == "maybe")
+					$("#summaryDivId").show();
+				else
+					$("#summaryNoDivId").show();
+			}else{
+				$("#summaryDivId").show();
+				$("#summaryNoDivId").show();
+			}
+			buildFinalMeeting(result,status);
 		});
 	});
-function buildFinalMeeting(result){
+function buildFinalMeeting(result,status){
 		var str ='';
 		
 		var mayBeTtl = 0;
@@ -1020,12 +1081,17 @@ function buildFinalMeeting(result){
 		var yesCnt = 0;
 		var noCnt = 0;
 		var docsCnt = 0;
-	if(result != null && result.length>0){
-		mayBeTtl = result.length;
-		docsCnt = result[0].count;
 		
+		var noTtl = 0;
+		var noPendngCnt = 0;
+		var noUpdCnt = 0;
+	if(result != null && result.length>0){
+		docsCnt = result[0].count;
+			str+='<h4 style="text-transform:uppercase;margin-bottom: 20px ! important;">'+status+' status meetings details</h4>';
 			str+='<table class="table table-bordered" id="meetingsTable">';
 				str+='<thead style="background-color:#ccc;">';
+					str+='<th>DISTRICT</th>';
+					str+='<th>CONSTITUENCY</th>';
 					str+='<th>MEETING LOCATION</th>';
 					str+='<th>MEETING NAME</th>';
 					//str+='<th>CONDUCTED (updated by info cell?)</th>';
@@ -1035,6 +1101,8 @@ function buildFinalMeeting(result){
 				str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
+						str+='<td>'+result[i].districtName+'</td>';
+						str+='<td>'+result[i].constName+'</td>';
 						str+='<td>'+result[i].location+'</td>';
 						str+='<td>'+result[i].meetingName+'</td>';
 						/*if(result[i].isConducted != null && result[i].isConducted =="Y"){
@@ -1054,7 +1122,7 @@ function buildFinalMeeting(result){
 						}*/
 						
 						str+='<td>';
-						str+=' <i class="glyphicon glyphicon-edit updateCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 10px;cursor:pointer;" title="Click here to Update Status" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'"></i>';
+						str+=' <i class="glyphicon glyphicon-edit updateCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 10px;cursor:pointer;" title="Click here to Update Status" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'" attr_status="'+result[i].stsStr+'"></i>';
 						//str+='<button class="btn btn-success updateCls" id="updateStatus'+i+'Id" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'">UPDATE</button>';
 						if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true" ){
 							str+=' <i class="glyphicon glyphicon-comment commentsCls" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:black;" id="commentsId" title="Click here to view comment details" attr_meeting_Loc_Id="'+result[i].partyMeetingId+'" ></i>';
@@ -1062,15 +1130,27 @@ function buildFinalMeeting(result){
 					str+='</td>';
 					str+='</tr>';
 					
-					if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true"){
-						updatdCnt = updatdCnt + 1;
-						if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "Y")
-							yesCnt = yesCnt + 1;
-						else if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "N")
-							noCnt = noCnt + 1;
+					if(result[i].stsStr != null && result[i].stsStr == "maybe")
+						mayBeTtl = mayBeTtl+1;
+					else
+						noTtl = noTtl+1;
+					
+					if(result[i].stsStr != null && result[i].stsStr == "maybe"){
+						if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true"){
+							updatdCnt = updatdCnt + 1;
+							if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "Y")
+								yesCnt = yesCnt + 1;
+							else if(result[i].thirdPartyStatus != null && result[i].thirdPartyStatus == "N")
+								noCnt = noCnt + 1;
+						}
 					}
-					pendgCnt = mayBeTtl - updatdCnt;
+					else{
+						if(result[i].iscommentsAvailable != null && result[i].iscommentsAvailable == "true")
+							noUpdCnt = noUpdCnt + 1;
+					}
 				}
+				pendgCnt = mayBeTtl - updatdCnt;
+				noPendngCnt = noTtl - noUpdCnt;
 					}else{
 						str+='No Meetings Found';
 					}
@@ -1082,12 +1162,32 @@ function buildFinalMeeting(result){
 				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "ALL"]]			
 			});
 			
-	$("#totalMaybeCount").html(mayBeTtl);
-	$("#pendingCount").html(pendgCnt);
-	$("#updatedCount").html(updatdCnt);
-	$("#thirdPartyYesCount").html(yesCnt);
-	$("#thirdPartyNoCount").html(noCnt);
-	$("#documentsCount").html(docsCnt);
+			if(status != null && (status == "maybe" || status == "no")){
+				if(status == "maybe"){
+					$("#totalMaybeCount").html(mayBeTtl);
+					$("#pendingCount").html(pendgCnt);
+					$("#updatedCount").html(updatdCnt);
+					$("#thirdPartyYesCount").html(yesCnt);
+					$("#thirdPartyNoCount").html(noCnt);
+					$("#documentsCount").html(docsCnt);
+				}
+				else{
+					$("#totalNoCount").html(noTtl);
+					$("#pendingNoCount").html(noPendngCnt);
+					$("#updatedNoCount").html(noUpdCnt);
+				}
+			}else{
+				$("#totalMaybeCount").html(mayBeTtl);
+				$("#pendingCount").html(pendgCnt);
+				$("#updatedCount").html(updatdCnt);
+				$("#thirdPartyYesCount").html(yesCnt);
+				$("#thirdPartyNoCount").html(noCnt);
+				$("#documentsCount").html(docsCnt);
+				$("#totalNoCount").html(noTtl);
+				$("#pendingNoCount").html(noPendngCnt);
+				$("#updatedNoCount").html(noUpdCnt);
+			}
+	
 }
 	function getStateDistrictAssemblySelection(forLocation){
 		var resultArr = [];
@@ -1241,7 +1341,7 @@ function buildFinalMeeting(result){
 	});
 	//Location Showing and Hiding
 		$("#meetingLocationLevel").change(function(){
-			getDistrictsForStates(0);
+			getDistrictsForStates(1);
 			$("#districtId").val($("#districtId option:first").val());
 			$("#constituencyId").val($("#constituencyId option:first").val());
 			$("#manTowDivId").val($("#manTowDivId option:first").val());
@@ -1253,7 +1353,7 @@ function buildFinalMeeting(result){
 				$("#statesDivId").append('<option value=0> ALL </option>');
 				
 				if($.inArray(1, stateArr) > -1){
-					$("#statesDivId").append('<option value=1> AndhraPradesh </option>');
+					$("#statesDivId").append('<option value=1 selected> AndhraPradesh </option>');
 				}
 				if($.inArray(36, stateArr) > -1){
 					$("#statesDivId").append('<option value=36> Telangana </option>');
@@ -1480,7 +1580,7 @@ $(document).on("click", ".datePickerRangesCls li",function(){
 				getLevelWiseMeetingDetails();
 		}	
 });
-getLevelWiseMeetingDetails();
+//getLevelWiseMeetingDetails();
 function getLevelWiseMeetingDetails(){
 	
 		$("#levelBuildingId").html('');
@@ -1623,7 +1723,7 @@ function getLevelWiseMeetingDetails(){
 				$("#levelBuildingId").html(str);
 				
 				//High Charts Building Start
-				for(var i in result){
+				/*for(var i in result){
 					
 					var plannedCount=result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
 					
@@ -1675,11 +1775,11 @@ function getLevelWiseMeetingDetails(){
 							]
 						}]
 					});					
-				}
+				}*/
 				
 				
 					
-					$('.totalMeetings').highcharts({
+					/*$('.totalMeetings').highcharts({
 						colors: ['#fec601', '#458ae9', '#f64911'],
 						chart: {
 							type: 'pie',
@@ -1727,7 +1827,7 @@ function getLevelWiseMeetingDetails(){
 								['Not Conducted', totalNotConducted]
 							]
 						}]
-					});
+					});*/
 					
 					//High Chart Building End
 				
@@ -1842,9 +1942,14 @@ function getVillagesForDistrictId(){
  } */
 $(document).on("click",".updateCls",function(){
 	$("#statusDetailsDivId").html("");
+	$("#statusDivId").hide();
 	$("#updateFinlizMtngBtnModal").modal("show");
 	var meetingId = $(this).attr("attr_meeting_Loc_Id");
+	var status = $(this).attr("attr_status");
+	if(status != null && status == "maybe")
+		$("#statusDivId").show();
 	$("#hiddenFinalizeMeetingId").val(meetingId);
+	$("#hiddenFinalizeMeetingStatus").val(status);
 	$("#uploadFileId0").val("");
 	$(".cloneFileCls").val("");
 	$(".fileUploadDivId").hide();
@@ -1880,9 +1985,14 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	if(remark ==0){
 	 	  errorStr += "Remark is required<br>";
 	}
-	if(updateStatus ==0){
-	  errorStr += "Status is required<br>";
+	if(status != null && status == "maybe"){
+			if(updateStatus ==0){
+		  errorStr += "Status is required<br>";
+		}
+	}else{
+		updateStatus = 0;
 	}
+	
 	if(updateStatus == "Y"){
 		//if(upladFile == null || upladFile.trim().length == 0)
 				//errorStr += "Attachment is Required.<br>";
@@ -1960,6 +2070,7 @@ function showMeetingsStatusDocsResult(myResult){
 	}
 $(document).on("click",".commentsCls",function(){
 	$("#commentsModalId").modal('show');
+	$("#commentsDivId").html("");
 	var partymeetingId  = $(this).attr("attr_meeting_Loc_Id");
 	var jsObj = {
 		partyMeetingId :partymeetingId
@@ -1969,10 +2080,10 @@ $(document).on("click",".commentsCls",function(){
 			url:"getCommentsMeetingDetailsAction.action",
 			data:{task :JSON.stringify(jsObj)}
 		}).done(function(result){
-				buildCommentsMeetingDetailsAction(result);
+				buildCommentsMeetingDetailsAction1(result);
 		});
 });
-function buildCommentsMeetingDetailsAction(result)
+function buildCommentsMeetingDetailsAction1(result)
 {
 	var str='';
 	if(result !=null && result.length>0){
@@ -1995,12 +2106,13 @@ function buildCommentsMeetingDetailsAction(result)
 	}
 	}
 	str+='</ul>';
-	$("#commentsBlock").html(str);
+	$("#commentsDivId").html(str);
 	}else{
-	   $("#commentsBlock").html(" No comments available...");
+	   $("#commentsDivId").html(" No comments available...");
 	}
 }
  function meetingLevelWiseHideShow(){
+	 $("#statusShowId").show();
 	 if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
@@ -2114,7 +2226,7 @@ function getinsertDataInToPartyMeetingStatus(){
 		});	
 	}
 	
-$(document).on("click","#updatedCount",function(){
+$(document).on("click",".updatedCountCls",function(){
 	$("#conflictsModalId").modal('show');
 		$("#commentsBlock").html('');
 		
@@ -2127,10 +2239,14 @@ $(document).on("click","#updatedCount",function(){
 			toDateStr = datesArr[1]; 
 		}
 		
+		var levelId = $("#meetingLocationLevel").val();
+		var status = $("#statusSelId").val();
+		
 		var jsObj ={ 
-		             levelId : 4,
+		             levelId : levelId,
 					 startDate : fromDateStr,
-					 endDate : toDateStr
+					 endDate : toDateStr,
+					 status : status
 				  }
 		$.ajax({
 			type : 'POST',
