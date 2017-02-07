@@ -71,12 +71,13 @@
         var dateString = $("#dateRangeId").val();
 		
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		
+		var committeeEnrollmentYearArray =[1,2];
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
 					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
-					  dateString : dateString
+					  dateString : dateString,
+					  committeeEnrollmentYearArray :committeeEnrollmentYearArray
 					}
 		
 		$.ajax({
@@ -122,16 +123,16 @@
 	   var state = globalState;
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		
+	   var committeeEnrollmentYearArray = [1,2];
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
 					  userTypeId : globalUserTypeId,
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
-					  
 					  state:state,
 					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
-					  dateString : dateString
+					  dateString : dateString,
+					  committeeEnrollmentYearArray :committeeEnrollmentYearArray
  			         
 					}
 		
@@ -155,12 +156,13 @@
 	   
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	   
+	    var committeeEnrollmentYearArray = [1,2];
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
 					 userAccessLevelValuesArray:globalUserAccessLevelValues,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
-					 dateString : dateString
+					 dateString : dateString,
+					  committeeEnrollmentYearArray :committeeEnrollmentYearArray
 					}
 		
 		$.ajax({
@@ -187,14 +189,15 @@
 		var committeeStatus = 'all';
         var dateString = $("#dateRangeId").val();
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-		
+		var committeeEnrollmentYearArray = [1,2];
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
 					levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					committeeStatus:committeeStatus,
 					userLocationLevelId:userLocationLevelId,
 					userLocationLevelValuesArray:userLocationLevelValuesArray,
 					dateString : dateString,
-					state:state
+					state:state,
+					committeeEnrollmentYearArray:committeeEnrollmentYearArray
 					}
 		
 		$.ajax({
@@ -236,12 +239,14 @@
 	 var date = $("#dateRangeId").val();
 	 var state = globalState;
   	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	 var committeeEnrollmentYearArray = [1,2];
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
 				   dateString : date,
 				   state:state,
-				   levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray
+				   levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray,
+				  committeeEnrollmentYearArray:committeeEnrollmentYearArray
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -259,12 +264,13 @@
 	   
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
-	   
+	   var committeeEnrollmentYearArray = [1,2];
 	   var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
- 			         dateString :   dateString
+ 			         dateString :   dateString,
+					 committeeEnrollmentYearArray:committeeEnrollmentYearArray
 				  }
 	   
 	   	$.ajax({
@@ -283,10 +289,12 @@
 	  
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   var committeeEnrollmentYearArray = [1,2];
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
- 			         dateString :   dateString
+ 			         dateString :   dateString,
+					 committeeEnrollmentYearArray:committeeEnrollmentYearArray
 				  }
 	   
 	   	$.ajax({
@@ -306,10 +314,12 @@
 	   
 	   var dateString = $('#dateRangeId').val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	    var committeeEnrollmentYearArray = [1,2];
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
- 			         dateString :   dateString
+ 			         dateString :   dateString,
+					 committeeEnrollmentYearArray:committeeEnrollmentYearArray
 				  }
 	   
 	   	$.ajax({
