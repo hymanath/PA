@@ -407,7 +407,14 @@
 							</span>
 						</div>
 					 </div>
-					
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right" style="left: 50px; margin-top: 26px;">
+                    	<label> </label>
+                       <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
+                    </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 pull-right" style="left: 110px; top: 25px;">
+                    	<label> </label>
+                       <input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1"/><span> Overall View </span>
+                    </div>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
