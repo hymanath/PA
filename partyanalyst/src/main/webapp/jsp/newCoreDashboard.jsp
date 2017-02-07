@@ -2298,13 +2298,13 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-8">
+						<div class="col-md-7 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted committeesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4">
+						<div class="col-md-5 col-sm-4 col-xs-4">
 							<span class="basicCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
@@ -2314,8 +2314,9 @@
 							<span class="iconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
+							<select id="tdpCommitteeYearId" class="hide"></select>
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
-								<input type="text" id="dateRangeId"	 class="form-control" />
+								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -4043,6 +4044,7 @@ var globalImages;
 		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		stateLevelCampDetails();
+		getCadreEnrollmentYears();
 	});
 	getLoggedInUserStructure();
 
