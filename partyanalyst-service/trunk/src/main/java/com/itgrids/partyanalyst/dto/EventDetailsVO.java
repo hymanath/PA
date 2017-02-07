@@ -36,8 +36,21 @@ public class EventDetailsVO {
 	private Long scopeId;
 	private Long conductedCount = 0l;
 	private String type;
+	private Long totalCount=0L;
+	private Long activityAttendedCount =0L;
 	
-	
+	public Long getActivityAttendedCount() {
+		return activityAttendedCount;
+	}
+	public void setActivityAttendedCount(Long activityAttendedCount) {
+		this.activityAttendedCount = activityAttendedCount;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getType() {
 		return type;
 	}
