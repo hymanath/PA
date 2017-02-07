@@ -16,10 +16,6 @@ function getCadreEnrollmentYears(){
 			}
 		});
 	}
-$(document).on("change","#tdpCommitteeYearId",function(){
-	$( "#reportrange" ).val('');
-	getCommitteeDetailsByEnrollement();
-});	
 $(document).on("click","#getDetailsId",function(){
 	
 });
