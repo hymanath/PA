@@ -230,8 +230,8 @@
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
 	<s:if test="%{committeeMngtType == 1}">
 	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br>
-	 <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}">  click here If  you want CHANGE designation </a> 
-	 <a class="btn btn-success btn-xs" href="committeeInfoAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> 
+	 <!--<a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}">  click here If  you want CHANGE designation </a> -->
+	 <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> 
 	</span>
 
 	<input type="hidden" value="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}" id="redirectURLId"/>
