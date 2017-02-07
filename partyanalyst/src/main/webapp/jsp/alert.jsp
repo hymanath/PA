@@ -531,7 +531,7 @@
 		str+='<span class="m_top10" id="deleteAlertajaxImg"></span>';
 		$("#deleteBtnId").html(str);       
 	}
-	function getAlertDtls(){        
+	function getAlertDtls(){
 		var jsObj ={
 			alertId : globalAlertId
 		}
@@ -540,7 +540,7 @@
 			url: 'getAlertDetailsForEditAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result.alertTypeId > 0){
+			if(result != null && result.alertTypeId > 0){
 				buildAlertPage(result);
 			}            
 		});
