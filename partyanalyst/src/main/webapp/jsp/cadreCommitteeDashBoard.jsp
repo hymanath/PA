@@ -3907,9 +3907,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
 				var reqLocationType ='District';
 				var locationId = id;
+				var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 			var jsObj = {
 					locationId:id,
 					reqLocationType :reqLocationType,
+					committeeEnrollmentId :[committeeEnrollmentId],
 					task:""
 				}
 			$.ajax({
@@ -4286,12 +4288,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#committeeMemberDiv").html('');
 		$("#conformedBtn").html('');
 		$("#presGenSecrErrDivId").html("");
+		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 		var jsObj = 
 	{
 		basicCommitteetypeId:basicCommitteetypeId,
 		status:status,
 		levelId:levelId,
 		constituencyId : constituencyId,
+		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"memberCnt"
 	}
 	$.ajax({
@@ -4385,12 +4389,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			$("#conformedBtn").html('');
 			$("#presGenSecrErrDivId").html("");
 			$("#"+ajaxImgId+"").show();
+			var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 			var jsObj = 
 			{
 				basicCommitteetypeId:basicCommitteetypeId,
 				levelId:levelId,
 				locationId:locationId,
 				status:status,
+				committeeEnrollmentId :[committeeEnrollmentId],
 				task:"memberInfo"
 			}
 			$.ajax({
@@ -4482,6 +4488,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function committeeComplete(basicCommitteetypeId,levelId,locationId,constituencyId)
 	{
+		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 	$("#presGenSecrErrDivId").html("");
 		if(levelId == 6 || levelId == 8){
 			if(isPresidentAvail == false && isGenSecAvail == false){
@@ -4505,6 +4512,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		basicCommitteetypeId:basicCommitteetypeId,
 		levelId:levelId,
 		locationId:locationId,
+		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"committeComplete"
 	}
 	$.ajax({
@@ -4533,12 +4541,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	}
 	function deleteCadreRole(tdpCommitteeMemberId)
 	{
+		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 	var r=confirm("Are You Sure To Remove ?");
 		if(r)
 		{
 	var jsObj = 
 	{
 		tdpcommitteeMemberId:tdpCommitteeMemberId,
+		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"deleterole"
 	}
 	$.ajax({
