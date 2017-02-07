@@ -2314,7 +2314,7 @@
 							<span class="iconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							<select id="tdpCommitteeYearId" class="hide"></select>
+							<select id="tdpCommitteeYearId" style="width: 110px;display:inline-block;padding:2px 6px;height:25px"></select>
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
@@ -4058,7 +4058,7 @@ var globalImages;
 	  {
 		//ALL BLOCKS
 		getRescentArticleTime();		
-		committeeBasicCall();
+		//committeeBasicCall();
 		
 		//training program call
 		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");

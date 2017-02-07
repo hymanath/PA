@@ -181,7 +181,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				</div>
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-2">
-				<button class="btn btn-success" id="getDetailsId">GO</button>
+				<button class="btn btn-success" id="getDetailsId">SUBMIT</button>
 			</div>
         </div>
 		
@@ -5814,6 +5814,10 @@ function capitalize(str) {
    }
    return arr.join(" ");
 }
+$(document).on("change","#tdpCommitteeYearId",function(){
+	$( "#reportrange" ).val('');
+	getCommitteeDetailsByEnrollement();
+});	
 </script>		
 </body>
 </html>
