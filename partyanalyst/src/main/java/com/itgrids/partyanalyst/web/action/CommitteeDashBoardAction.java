@@ -988,11 +988,13 @@ public String getAllConstituencysForADistrict(){
 			JSONArray casteCategoryArr = jObj.getJSONArray("casteCategoryArr");
 			JSONArray casteCategoryGroupArr = jObj.getJSONArray("casteCategoryGroupArr");
 			JSONArray casteIdsArr = jObj.getJSONArray("casteIdsArr");
+			JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsArr");
 			
 			List<Long> positionIdsList = new ArrayList<Long>();
 			List<Long> casteCategoryIdsList  = new ArrayList<Long>();
 			List<Long> casteCategoryGroupIdsList  = new ArrayList<Long>();
 			List<Long> casteIdsList  = new ArrayList<Long>();
+			List<Long> enrollIdsList = new ArrayList<Long>(0);
 			
 			Long locationLevelId  = jObj.getLong("locationLevelId");
 			Long committeeTypeId = jObj.getLong("committeeTypeId");
@@ -1034,9 +1036,17 @@ public String getAllConstituencysForADistrict(){
 					casteCategoryIdsList.add(value);
 				}
 			}
+			if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0)
+			{
+				for (int i = 0; i < enrollmentIdsArr.length(); i++)
+				{
+					Long value = enrollmentIdsArr.get(i) != null ? Long.valueOf(enrollmentIdsArr.get(i).toString().trim()):0L;
+					enrollIdsList.add(value);
+				}
+			}
 			
 			cadreCommitteeRolesInfoVO = cadreCommitteeService.getCommitteeRoleAgeWiseDetailsByLocationType(userAccessType,castePercentage,committeeTypeId,positionIdsList,
-					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()),selectedRadio);
+					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()),selectedRadio,enrollIdsList);
 			
 			
 		} catch (Exception e) {
