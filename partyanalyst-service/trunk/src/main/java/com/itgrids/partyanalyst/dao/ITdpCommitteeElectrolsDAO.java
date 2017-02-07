@@ -7,7 +7,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 
 public interface ITdpCommitteeElectrolsDAO  extends GenericDao<TdpCommitteeElectrols, Long>{
-	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList);
+	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList ,  Long tdpCommitteeEnrollmentId);
 	public Long checkUserAlreadyAddedToThisCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId,Long commitTypeId,Long tdpCommitId);
 	public Long checkUserAlreadyAddedToOtherAffiliatedCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId);
 	
