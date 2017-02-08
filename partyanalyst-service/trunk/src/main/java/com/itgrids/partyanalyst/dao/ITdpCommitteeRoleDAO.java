@@ -8,7 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 
 public interface ITdpCommitteeRoleDAO  extends GenericDao<TdpCommitteeRole, Long>{
-	public List<Object[]> getAllCommitteeRoles(Long committeeId);
+	public List<Object[]> getAllCommitteeRoles(Long committeeId,List<Long> enrollmentIds,Date startDate,Date endDate);
 	
 	public List<Object[]> getDetailsForTdpCommitteRoleId(Long roleId);
 	public int updateMaxPosForCommitteeRoleId(Long roleId, Long maxPos, Date updatedTime);
