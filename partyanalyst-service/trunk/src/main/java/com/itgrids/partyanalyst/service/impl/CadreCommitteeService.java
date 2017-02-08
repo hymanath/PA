@@ -1810,7 +1810,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			//CHECK IF ALREADY EXISTS
 			boolean isExist = false;
-			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
+			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);//any status
 			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0){
 				isExist = true;
 			}
@@ -1834,7 +1834,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				TdpCommitteeMember tdpCommitteeMember = null;
 				if(isExist)
 				{
-					List<TdpCommitteeMember> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
+					List<TdpCommitteeMember> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);//any status
 					if(tdpCommitteeMemberList.size() > 0){
 						tdpCommitteeMember = tdpCommitteeMemberList.get(0);
 					}
@@ -1903,6 +1903,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				
 				TdpCommittee tdpCommittee = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId).getTdpCommittee();
+				
+				//UPDATE START DATE TO COMMITTEE
 				if(tdpCommittee.getStartedDate() == null){
 					tdpCommittee.setStartedDate(dateUtilService.getCurrentDateAndTime());
 					tdpCommitteeDAO.save(tdpCommittee);
