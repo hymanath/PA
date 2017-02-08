@@ -2590,7 +2590,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 	}*/
 	
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString,Long userId,String accessType,Long accessValue){
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString,Long userId,String accessType,Long accessValue,List<Long> enrollmentIdsList){
 		
 		Long completedMainCommittees=0l;
 		Long completedAfflCommittees=0l;
@@ -2710,9 +2710,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			
 			if((!accessType.trim().equalsIgnoreCase("MP") || levelIds.contains(6l) || levelIds.contains(8l) ) || levelIds.contains(11l) || levelIds.contains(10l)){
-				Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues);
+				Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues,enrollmentIdsList,null,null);
 				//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,enrollmentIdsList);
 				
 				if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 					for (Object[] objects : committeeCntDtls) {
@@ -2739,7 +2739,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 						
 					
-			  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);				
+			  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,enrollmentIdsList);				
 					
 			  cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 					
@@ -2766,13 +2766,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  if(lctnsIds!=null && lctnsIds.size()>0){
 					  List<Long> lvlIds = new ArrayList<Long>();
 					  lvlIds.add(5l);
-					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 					  committeesCount = committeesCount + cmtCnt;
 					  
-					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 					  memsCount = memsCount + memberscount;
 					  
-					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						
 						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 							for (Object[] objects : committeeCntDtls) {
@@ -2805,13 +2805,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  if(lctnsIds!=null && lctnsIds.size()>0){
 					  List<Long> lvlIds = new ArrayList<Long>();
 					  lvlIds.add(7l);
-					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 					  committeesCount = committeesCount + cmtCnt;
 					  
-					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 					  memsCount = memsCount + memberscount;
 					  
-					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						
 						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 							for (Object[] objects : committeeCntDtls) {
@@ -2841,13 +2841,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  if(lctnsIds!=null && lctnsIds.size()>0){
 					  List<Long> lvlIds = new ArrayList<Long>();
 					  lvlIds.add(9l);
-					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 					  committeesCount = committeesCount + cmtCnt;
 					  
-					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 					  memsCount = memsCount + memberscount;
 					  
-					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						
 						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 							for (Object[] objects : committeeCntDtls) {
@@ -3388,7 +3388,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return rs;
 	}
-	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String accessType,Long accessValue){
+	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String accessType,Long accessValue,List<Long> enrollmentIdsList,String startDateStr,String endDateStr){
 		
 		Long totalCompletedCommittees=0l;
 		Long totalStartedCommittees=0l;
@@ -3397,6 +3397,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Long> districtIds = new ArrayList<Long>();
 			List<Long> assemblyIds = new ArrayList<Long>();
 			List<Long> locationLevelValues = new ArrayList<Long>();
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr != null && !startDateStr.isEmpty() && endDateStr != null && !endDateStr.isEmpty()){
+				 startDate = sdf.parse(startDateStr);
+				 endDate = sdf.parse(endDateStr);
+			 }
 			
 			cadreCommitteeReportVO.setAccessState("ALL");
 			if(accessType.trim().equalsIgnoreCase("MP"))
@@ -3482,10 +3489,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		
 			if(!accessType.trim().equalsIgnoreCase("MP") && !accessType.trim().equalsIgnoreCase("DISTRICT") ){
-				Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null);		
+				Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null,enrollmentIdsList,null,null);		
 				cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 				
-				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,null);
+				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,startDate,endDate,districtIds,assemblyIds,null ,enrollmentIdsList);
 				
 				if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 					for (Object[] objects : committeeCntDtls) {
@@ -3511,10 +3518,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  levelIds.add(6l);
 				  levelIds.add(8l);
 				  levelIds.add(11l);
-					Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,null);		
+					Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,null,enrollmentIdsList,null,null);		
 					cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 					
-					List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,null,null,districtIds,assemblyIds,null);
+					List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,null,enrollmentIdsList);
 					
 					if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 						for (Object[] objects : committeeCntDtls) {
@@ -3553,11 +3560,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						  if(lctnsIds!=null && lctnsIds.size()>0){
 							  List<Long> lvlIds = new ArrayList<Long>();
 							  lvlIds.add(5l);
-							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 							  committeesCount = committeesCount + cmtCnt;
 							  
 							
-							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state, levelIds, null, null, districtIds, assemblyIds, lctnsIds);
+							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state, levelIds,startDate,endDate, districtIds, assemblyIds, lctnsIds,enrollmentIdsList);
 								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 									for (Object[] objects : committeeCntDtls) {
 														
@@ -3575,10 +3582,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						  if(lctnsIds!=null && lctnsIds.size()>0){
 							  List<Long> lvlIds = new ArrayList<Long>();
 							  lvlIds.add(7l);
-							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 							  committeesCount = committeesCount + cmtCnt;
 							  
-							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,null,null,districtIds,null,lctnsIds);
+							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 									for (Object[] objects : committeeCntDtls) {
 														
@@ -3596,10 +3603,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						  if(lctnsIds!=null && lctnsIds.size()>0){
 							  List<Long> lvlIds = new ArrayList<Long>();
 							  lvlIds.add(9l);
-							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds,enrollmentIdsList,null,null);
 							  committeesCount = committeesCount + cmtCnt;
 							  
-							   List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,null,null,districtIds,null,lctnsIds);
+							   List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 								
 								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 									for (Object[] objects : committeeCntDtls) {
@@ -3620,10 +3627,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  ruralLvlIds.add(6l);
 				  ruralLvlIds.add(8l);
 				  
-				  Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,ruralLvlIds,districtIds,assemblyIds,null);
+				  Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,ruralLvlIds,districtIds,assemblyIds,null,enrollmentIdsList,null,null);
 				  committeesCount = committeesCount + committeeCnt;
 				  //0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-				  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,ruralLvlIds,null,null,districtIds,assemblyIds,null);
+				  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,ruralLvlIds,startDate,endDate,districtIds,assemblyIds,null,enrollmentIdsList);
 				  if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 						for (Object[] objects : committeeCntDtls) {
 											
