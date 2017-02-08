@@ -13,9 +13,18 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -25,8 +34,63 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private IAlertStatusDAO alertStatusDAO;
 	private IGovtDepartmentDAO govtDepartmentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private IGovtDepartmentLevelDAO govtDepartmentLevelDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
+	private IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO;
 	
-	
+	public IGovtDepartmentDesignationOfficerDAO getGovtDepartmentDesignationOfficerDAO() {
+		return govtDepartmentDesignationOfficerDAO;
+	}
+	public void setGovtDepartmentDesignationOfficerDAO(IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO) {
+		this.govtDepartmentDesignationOfficerDAO = govtDepartmentDesignationOfficerDAO;
+	}
+	public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
+		return govtDepartmentDesignationDAO;
+	}
+	public void setGovtDepartmentDesignationDAO(IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO) {
+		this.govtDepartmentDesignationDAO = govtDepartmentDesignationDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IGovtDepartmentLevelDAO getGovtDepartmentLevelDAO() {
+		return govtDepartmentLevelDAO;
+	}
+	public void setGovtDepartmentLevelDAO(IGovtDepartmentLevelDAO govtDepartmentLevelDAO) {
+		this.govtDepartmentLevelDAO = govtDepartmentLevelDAO;
+	}
 	public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
 		this.govtDepartmentDAO = govtDepartmentDAO;
 	}
@@ -248,5 +312,114 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		return d;
 	}
 	
+	public List<GovtDepartmentVO> getDepartmentLevels(){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = govtDepartmentLevelDAO.getDepartmentLevels();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getDepartmentLevels() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
 	
+	public List<GovtDepartmentVO> getLocationsBasedOnLevel(Long levelId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = new ArrayList<Object[]>();
+			
+			if(levelId != null && levelId > 0l){
+				if(levelId == 1l)							//State
+					list = stateDAO.getTeluguStates();
+				else if(levelId == 2l)						//District
+					list = districtDAO.getDistrictsWithNewDistricts();
+				else if(levelId == 3l)						//Constituenncy
+					list = constituencyDAO.getConstituencyByStateDetails();
+				else if(levelId == 4l){						//Mandal/Muncipality
+					List<Object[]> mandalList = tehsilDAO.getAllTehsilListByState();
+					List<Object[]> lebList = localElectionBodyDAO.getAllLocalElectionBodyListByState();
+					
+					list.addAll(mandalList);
+					list.addAll(lebList);
+				}
+				
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						GovtDepartmentVO vo = new GovtDepartmentVO();
+						
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						returnList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getLocationsBasedOnLevel() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = alertDAO.getDepartmentsByAlertId(alertId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getDepartmentsByAlert() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = govtDepartmentDesignationDAO.getDesignationsForDepartment(departmentId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getDesignationsByDepartment() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = govtDepartmentDesignationOfficerDAO.getOfficersByDesignationAndLevel(levelId, levelValue, designationId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getOfficersByDesignationAndLevel() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
 }

@@ -260,4 +260,13 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		query.setParameter("stateId", stateId);
 		return query.list();  
 	}
+  
+  public List<Object[]> getAllLocalElectionBodyListByState(){
+		Query query = getSession().createQuery("select distinct model.localElectionBodyId," +
+									" concat(model.name,' Muncipality')" +
+									" from LocalElectionBody model" +
+									" where model.district.state.stateId in (1,36)" +
+									" order by model.name"); 
+		return query.list();  
+	}
 }
