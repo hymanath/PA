@@ -437,6 +437,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .text-capital {
     text-transform: uppercase;
 }
+.m_top5
+{
+	margin-top:5px !important;
+}
 .m_top10 {
     margin-top: 10px !important;
 }
@@ -2439,11 +2443,109 @@ color: rgb(51, 122, 183);
 	list-style:none;
 	padding:5px 8px;
 }
-.actBlockDropDown.notesArrow
-{
-	margin-top:33px;
+
+
+/*Alert Management System*/
+.AMS .navbarHeader {
+    background: #555555 none repeat scroll 0 0;
+    height: 60px !important;
+    margin-bottom: 0;
 }
-.actBlockDropDown.notesArrow::after, .actBlockDropDown.notesArrow::before
+.AMS .navbarHeader .navbar-brand img
 {
-	right:30px;
+	display: inline-block;
+    height: 50px;
+    width: 210px;
+}
+.AMS .panel-heading.headingColor
+{
+	background-color:#4A5863 !important;
+	padding:10px 15px !important;
+}
+.AMS .panel-heading.headingColor h4.panel-title
+{
+	color:#fff !important;
+}
+.AMS .settingsBlockDropDown {
+    background: #ffffff none repeat scroll 0 0;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
+    display: none;
+    margin-top: 34px;
+    padding: 12px;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    width: 550px;
+    z-index: 9999;
+}
+.AMS .alertCommentsCollapse .panel-heading {
+    background-color: #a286c0;
+    border-radius: 0;	
+}
+.AMS .alertCommentsCollapse .panel-heading a {
+    color: #333333;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.AMS .alertCommentsCollapse .panel-heading a h4 {
+    font-weight: bold;
+}
+.AMS .alertCommentsCollapse .panel-heading a i {
+    margin-left: 8px;
+}
+.AMS .alertCommentsCollapse .panel-heading a i.glyphicon-ok {
+    color: #ffffff;
+}
+.AMS .alertCommentColapse.collapsed::before {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    color: #333333;
+    content: "\2b";
+    transition: background 0.5s linear 0s;
+}
+.AMS .alertCommentColapse::before {
+    background: #ffffff none repeat scroll 0 0;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    color: #333333;
+    content: "\2212";
+    float: right;
+    font-family: "Glyphicons Halflings";
+    font-size: 10px;
+    font-weight: 400 !important;
+    margin-left: -10px;
+    margin-right: 10px;
+    margin-top: 0;
+    padding: 3px 4px;
+    transition: background 0.5s linear 0s;
+}
+.AMS .tableCategory
+{
+	background-color: #e5e5ff;
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+.AMS .tableCategory tr:first-child td {
+    border-bottom: 0 none !important;
+    border-left: 0 none !important;
+    border-top: 0 none !important;
+    vertical-align: middle;
+}
+.AMS .tableCategory tr:first-child td:last-child {
+    border-right: 0 none !important;
+}
+.AMS .tableCategory tr:nth-child(2) td, .tableCategory tr:nth-child(3) td, .tableCategory tr:nth-child(4) td {
+    border-bottom: 0 none !important;
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+}
+.AMS .tableCategory tr td {
+    background-color: #e5e5ff;
+    border: 1px solid #cccccc !important;
+}
+.AMS .tableCategory tr:nth-child(3) td
+{
+	border-left:0px !important;
+	border-right:0px !important;
 }
