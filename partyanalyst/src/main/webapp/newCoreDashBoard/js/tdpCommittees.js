@@ -73,6 +73,7 @@
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 		var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		// alert(888);
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
@@ -124,6 +125,7 @@
 	   var state = globalState;
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	  // alert(1111);
 	   var committeeEnrollmentYearArray = new Array();
 		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={  
@@ -158,6 +160,7 @@
 	   
        var dateString = $("#dateRangeId").val();
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   // alert(222);
 	   var committeeEnrollmentYearArray = new Array();
 		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
@@ -192,6 +195,7 @@
 		var committeeStatus = 'all';
         var dateString = $("#dateRangeId").val();
 		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+		 //alert(333);
 		var committeeEnrollmentYearArray = new Array();
 		    committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
@@ -245,6 +249,7 @@
   	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	 var committeeEnrollmentYearArray = new Array();
 		 committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		  //alert(444);
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
@@ -271,6 +276,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		   committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		  //  alert(555);
 	   var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
@@ -297,6 +303,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	   var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		// alert(666);
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -323,6 +330,7 @@
 	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	    var committeeEnrollmentYearArray = new Array();
 		committeeEnrollmentYearArray.push($("#tdpCommitteeYearId").val());
+		// alert(777);
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
 					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
@@ -1812,7 +1820,10 @@
 		}
 	}
 	function committeeBasicCall(){
-		getCommitteesBasicCountReport();
+		setTimeout(function(){
+			getCommitteesBasicCountReport(); 
+		}, 2000);
+		
 	}
 	$(document).on("click",".comparisonSelect li",function(){
 		if($(this).hasClass("active") == true)
@@ -1942,17 +1953,24 @@
 					for(var i in result){
 						$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 					}
+					
 				}
+				getCommitteeDetailsByEnrollement(2);
 			});
 		}
 		$(document).on("change","#tdpCommitteeYearId",function(){
-			getCommitteeDetailsByEnrollement();
-			committeeBasicCall();
+			getCommitteeDetailsByEnrollement(0);
 		});
 		
-		function getCommitteeDetailsByEnrollement(){
+		function getCommitteeDetailsByEnrollement(id){
 			var enrollmentIdsArr = new Array();
-			enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+			if(id == 0)
+				enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+			else{
+				enrollmentIdsArr.push(id);
+				defaultCommitteeCalls();
+			}
+			
 			var jsObj={
 				enrollmentIdsArr:enrollmentIdsArr
 			};
@@ -1963,20 +1981,52 @@
 				dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				
 				if(result != null && result.length > 0){
+					console.log(result);
 					for(var i in result){
 						
-						 var fYear = result[i].fromDate.split('-')[0];
-						 var fMonth = result[i].fromDate.split('-')[1];
-						 var fDate = result[i].fromDate.split('-')[2].substring(0,2);
-						 var tYear = result[i].toDate.split('-')[0];
-						 var tMonth = result[i].toDate.split('-')[1];
-						 var tDate = result[i].toDate.split('-')[2].substring(0,2);
+						var fromDate = result[i].fromDate.split('-');
+						var toDate = result[i].toDate.split('-');
+				
+				
+						if(fromDate.length ==0){
+							fromDate=[];
+							fromDate.push('2017');
+							fromDate.push('02');
+							fromDate.push('01');
+							
+							var fYear = fromDate[0];
+							var fMonth = fromDate[1];
+							var fDate = fromDate[2];
+						 
+						}
+						else{
+							 var fYear = result[i].fromDate.split('-')[0];
+							var fMonth = result[i].fromDate.split('-')[1];
+							var fDate = result[i].fromDate.split('-')[2].substring(0,2);
+						}
+						if(toDate == '' || toDate.length ==0){
+							toDate=[];
+							toDate.push('2018');
+							toDate.push('02');
+							toDate.push('01');
+							
+							var tYear = toDate[0];
+							var tMonth = toDate[1];
+							var tDate = toDate[2];
+						 
+						}else{
+							var tYear = result[i].toDate.split('-')[0];
+							var tMonth = result[i].toDate.split('-')[1];
+							var tDate = result[i].toDate.split('-')[2].substring(0,2);
+						}
 						
 						$('#dateRangeId').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
 						$('#dateRangeId').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
 						$('#dateRangeId').val(fDate+'/'+fMonth+'/'+fYear+' - '+tDate+'/'+tMonth+'/'+tYear)
 					}
+					committeeBasicCall();
 				}
 			});
 		}
