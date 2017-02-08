@@ -4260,10 +4260,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 CommitteeBasicVO districtVO = new CommitteeBasicVO();
 			 districtVO.setLocationType("District");
 			
-			 List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null, districtIds);//Total Committee Members Count
+			 List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null, districtIds,null);//Total Committee Members Count
 			  setTotalCommitteeMembersCount(list, districtVO);
 			 
-		     List<Object[]> list2 = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, levelIds);//total committes Count
+		     List<Object[]> list2 = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, levelIds,null);//total committes Count
 		     setTotalCommitteesCount(list2, districtVO);
 		     
 		     //0committeeId,1committeeTypeid
@@ -4292,10 +4292,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			mandalMunciDivisionIds.add(7l);
 			mandalMunciDivisionIds.add(9l);
 			
-			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, null, null, districtIds);
+			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, null, null, districtIds,null);
 			setTotalCommitteeMembersCount(memResLst, mandalVO);
 			
-			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, mandalMunciDivisionIds);
+			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, mandalMunciDivisionIds,null);
 			setTotalCommitteesCount(ttlList, mandalVO);
 			
 			//0committeeId,1committeeTypeid
@@ -4324,10 +4324,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
 			
-			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, null, null, districtIds);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, null, null, districtIds,null);
 			setTotalCommitteeMembersCount(memResLstVill, villageVO);
 			
-			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, villageWardIds);
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, villageWardIds,null);
 			setTotalCommitteesCount(ttlListVill, villageVO);
 			
 			//0committeeId,1committeeTypeid
