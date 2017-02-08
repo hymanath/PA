@@ -45,8 +45,6 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			globalFormTourDate = datesArr[0]; 
 			glovalToTourDate = datesArr[1]; 
 		}
-		 $(".tourNewComplainceFilterCls li").removeClass("active");
-		 $(".tourNewComplainceFilterCls li:first-child").addClass("active");
 		 getToursBasicOverviewDtls();
 	 });
 	 
@@ -462,6 +460,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
     var globalUserTypeWiseTourComplainceRslt;  
 	function getDesignationWiseMembersDtls()
 	{  
+		 
+		$(".tourNewComplainceFilterCls li").removeClass("active");
+		$(".tourNewComplainceFilterCls li:first-child").addClass("active");
+
  		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
 		{ 
