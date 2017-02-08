@@ -52,7 +52,7 @@ public interface ICadreCommitteeService {
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,Long userId,String locationType,Long locationValue);
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString,Long userId,String accessType,Long accessValue,List<Long> enrollmentIdsList);
 	
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId);
 	
@@ -60,7 +60,7 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue);
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId);
 
-	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String locationType,Long locationValue);
+	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String accessType,Long accessValue,List<Long> enrollmentIdsList,String startDateStr,String endDateStr);
 	
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status,List<Long> committeeEnrollmentIdsLst);
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst);
