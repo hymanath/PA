@@ -220,7 +220,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 				    if(monthYearIds != null && monthYearIds.size() > 0 ){
 			            queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 			        }
-				    queryStr.append(" order by model.selfAppraisalToursMonth.monthNo desc ");
+				    queryStr.append(" order by model.selfAppraisalToursMonth.year desc,model.selfAppraisalToursMonth.monthNo desc ");
                    Query query = getSession().createQuery(queryStr.toString());
                    query.setParameter("selfAppraisalCandidateId", candidateId);
                    if(monthYearIds != null && monthYearIds.size() > 0 ){

@@ -100,8 +100,8 @@ public class SelfAppraisalDesignationTargetDAO extends GenericDaoHibernate<SelfA
 	       }
 		  queryStr.append(",model.selfAppraisalToursMonth.selfAppraisalToursMonthId ");
 		   queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId desc," +
-  				   		   "  model2.selfAppraisalCandidateId desc,model.selfAppraisalToursMonth.monthNo desc ");
-    	   Query query = getSession().createQuery(queryStr.toString());
+  				   		   "  model2.selfAppraisalCandidateId desc,model.selfAppraisalToursMonth.year desc,model.selfAppraisalToursMonth.monthNo desc ");
+		   Query query = getSession().createQuery(queryStr.toString());
     	   if(monthYearsIds != null && monthYearsIds.size() > 0){
          	   query.setParameterList("monthYearids", monthYearsIds);
             }
