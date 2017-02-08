@@ -2279,7 +2279,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	}
     @SuppressWarnings("unchecked")
 	public List<Object[]> getTdpCommitteeDetailsByEnrollmentId(List<Long> enrollmentIds){
-		Query query = getSession().createQuery("select model.tdpCommitteeId,min(model.startedDate),max(model.completedDate) from TdpCommittee model where " +
+		Query query = getSession().createQuery("select model.tdpCommitteeId,min(model.startedDate),max(model.startedDate) from TdpCommittee model where " +
 				" model.tdpCommitteeEnrollmentId in(:enrollmentIds) ");
 		
 		query.setParameterList("enrollmentIds", enrollmentIds);
