@@ -2284,5 +2284,28 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		query.setParameterList("enrollmentIds", enrollmentIds);
 		return query.list();
+		
+	}
+	
+	public List<Long> getCommitteeIds(Long levelId,Long levelValue,Long committeeEnrollmentId,Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select model.tdpCommitteeId from TdpCommittee model where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue and " +
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
+		if(startDate != null && endDate != null)
+		str.append( " and ( (date(model.startedDate) between :startDate and :endDate )  OR  date(model.completedDate) between :startDate and :endDate )  )" );
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("committeeEnrollmentId", committeeEnrollmentId);
+		if(startDate != null && endDate != null){
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
 	}
 }
