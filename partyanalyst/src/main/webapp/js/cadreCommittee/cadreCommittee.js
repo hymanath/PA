@@ -574,20 +574,30 @@
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
-					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					
+					//showing current designation in committees.
+					if(result[i].committeeMemberStatus != null && result[i].committeeMemberStatus.trim().length > 0){
+						if(result[i].committeeMemberStatus.trim() == 'F'){
+							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
+						}else if(result[i].committeeMemberStatus.trim() == 'P'){
+							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' Proposed as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
+						}
+					}
+					//showing current designation in Electrols.
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
 							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
 						}
 					}
-					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
 					if(committeeMngntTypeId == 1)
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 						str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
@@ -624,6 +634,7 @@
 					}								
 				}
 				else{
+					 //showing current designation in Electrols.
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 					    str+='<ul>';
 						for(var j in result[i].previousRoles){
@@ -637,7 +648,7 @@
 					if(committeeMngntTypeId == 1)
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 						str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
@@ -955,23 +966,22 @@
 		}
 
 		var result = JSON.parse(uploadResult);
+        alert( reqcommitteeMngtType + "-" +result.resultCode );
+		if(result.resultCode == 0){//Success
 
-		if(result.resultCode == 0)
-		{			
-
-		$('.existingDiv').hide();
-		$('#step2Id').hide();
-		$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
-		if(reqcommitteeMngtType == 4){
-			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
-		}else{
-		$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
-		}
-		$('#profileDiv').html('');
+			$('.existingDiv').hide();
+			$('#step2Id').hide();
+			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
+			if(reqcommitteeMngtType == 4){
+				$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			}else{
+			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			}
+			$('#profileDiv').html('');
 
 		}		
-		else if(result.resultCode == 2)
-		{			
+		else if(result.resultCode == 2){ // Not Eligible For This Committee.
+					
 			var redirectURL = $('#redirectURLId').val();
 			$('#profileDiv').hide();
 			$('#step2Id').hide();
@@ -986,6 +996,7 @@
 			}
 		}
 		else{
+			
 			$("#submitCadreFormBtnReqId").show();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 			if(reqcommitteeMngtType == 4){
@@ -994,7 +1005,6 @@
 				$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
 			}
 		}
-		
 		
 	}
 	function addMoreRolesForCadre()
