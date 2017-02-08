@@ -4140,6 +4140,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					vo.setRole(params[1].toString());//role
 					vo.setTotal((Long)params[6]);
 					vo.setStatus(params[7].toString());
+					vo.setOccupation(params[22] != null ? params[22].toString() : "");
 					resultList.add(vo);	
 				}
 				if(resultList != null && resultList.size() > 0)
@@ -19578,5 +19579,37 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 		LOG.error("Exception raised in getCommitteeDetailsByEnrollementId", e);
 	}
 	return returnList;
+}
+
+public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate){
+	LocationWiseBoothDetailsVO returnVo = null;
+	try{
+	SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+    Date stDate = (Date)format.parse(startDate);
+    Date edDate = (Date)format.parse(endDate);
+	Long committeeId = getCommitteeId(levelId,levelValue,committeeEnrollmentId,stDate,edDate);
+	if(committeeId != null){
+		returnVo =  getCommitteeMembersInfoNEW(committeeId);
+	}else{
+		returnVo =  new LocationWiseBoothDetailsVO();
+	}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception raised in getCommitteeMembersAvailableInfo1", e);
+	}
+	return returnVo;
+}
+
+public Long getCommitteeId(Long levelId,Long levelValue,Long committeeEnrollmentId,Date stDate,Date edDate){
+	Long committeeId = null;
+	try{
+		List<Long> committeeIds = tdpCommitteeDAO.getCommitteeIds(levelId, levelValue,committeeEnrollmentId,stDate,edDate);
+		if(committeeIds.size() > 0){
+			committeeId = committeeIds.get(0);
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised in getMainCommitteeIdInALocation", e);
+	}
+	return committeeId;
 }
 }
