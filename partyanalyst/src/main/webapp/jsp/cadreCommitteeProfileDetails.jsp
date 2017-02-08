@@ -223,7 +223,12 @@
 	</div>
 	<s:if test="%{cadreCommitteeVO.committeePosition != null}">
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-info existingDiv" >
-	<span style="font-weight:bold;text-transform: uppercase;"> Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation} </span>
+	 <c:if test="${param.roleType == 'F'}">
+		  <span style="font-weight:bold;text-transform: uppercase;"> Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation} </span>
+	 </c:if>
+	 <c:if test="${param.roleType == 'P'}">
+		  <span style="font-weight:bold;text-transform: uppercase;"> Already  ${cadreCommitteeVO.cadreName} Proposed as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation} </span>
+	 </c:if>
 	<input type="hidden" value="Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation}. Do You want to Change his Designation  AS  ${result1} for ${result2} in ${result4} " id="existingMsg"/>
 	</div>
 	</s:if>
