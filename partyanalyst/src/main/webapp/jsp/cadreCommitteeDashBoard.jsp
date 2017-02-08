@@ -18,7 +18,13 @@
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 	<style>
+	.slick-track
+	{
+		width:950px !important;
+	}
 	.table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > th,
@@ -120,7 +126,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		font-weight:bold;
 		color:#FFF;
 	}
-
+	.greyClass{ background-color:#777 !important ; color : #FFF !important;font-weight:bold !important }
+	.orangeCls{background-color:orange !important;color:#fff !important;font-weight:bold !important}	
+	.redCls{background-color:red !important;color:#fff !important;font-weight:bold !important}
 	</style>
 
 <script>
@@ -181,7 +189,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				</div>
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-2">
-				<button class="btn btn-success" id="getDetailsId" onclick="onLoadCalls();">SUBMIT</button>
+				<button class="btn btn-success" id="getDetailsId" onclick="onLoadcimmitteeDashboardCalls();">SUBMIT</button>
 			</div>
         </div>
 		
@@ -922,15 +930,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
             </div>
         </div>
 		<div id="dialogSummary" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-lg">
-				<div class="modal-content">
+			  <div class="modal-dialog" style="width:85%">
+				<div class="modal-content" style="padding:15px">
 					
 					
 				<!-- Summary Block For POPUP	-->		
 				
-				<div class="container" style="width:881px;">
+				<div>
 					<!--Content Start-->
-					<div class="row" style="text-align:center;">
+					<div class="row">
 						<div class="col-md-6 col-md-offset-3">
 							<h3 class="panel-header"><div id="mainCommTitleDivId">COMMITTEE SUMMARY</div></h3>
 							<hr style="border-color:#F00;margin-top:10px;" />
@@ -1008,8 +1016,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							
 							
 						<img id="comitteeCntAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
-							<table class="table table-condensed table-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
-							</table>
+							<div class="table-responsive">
+								<table class="table table-condensed table-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
+								</table>
+							</div> 
 						</div>  
 					   
 						 <img id="comitteeMemberAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
@@ -1093,6 +1103,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script src="js/cadreCommittee/cadreCommitteeDashBoard.js" type="text/javascript"></script>
 	<script src="js/cadreCommittee/cadreCommitteeDashboard1.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 	<script>
 	
 	</script>
@@ -4344,12 +4355,35 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');">view</button></td>';
+		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');getCommitteeMembersAvailableInfo(\''+result[i].level+'\',\''+result[i].id+'\');">view</button></td>';
 			}
          //str+='<tr>';
+		 str+='<tr id="'+result[i].id+'infoTrId" class=" " style="display:none">';
+		 //str+='<td colspan="4" id="'+result[i].id+'infoDivId" class="variable-width"></td>';
+		 str+='<td colspan="4">';
+		 //str+='<div class="" id="committeeDetailsDiv">';	
+			str+='<div class="col-md-4 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">';
+				str+='<h4><span id="affComitteeMainTitle"></span></h4>';
+				str+='<hr style="margin: 0px;">';
+				str+='<ul class="list-inline pull-right ">';
+					str+='<li><span style="color:#777;font-weight:bold;">TOTAL </span></li>';
+					str+='<li><span style="color:orange;font-weight:bold;">PROPOSED </span></li>';
+					str+='<li><span style="color:#449D44;font-weight:bold;">FINALIZED</span></li>';
+					str+='<li><span style="color:#F65050;font-weight:bold;">VACANCY</span></li>';
+				str+='</ul>';
+				
+			str+='</div>';			
+			
+			str+='<div class="col-md-12 col-xs-12">';
+				str+='<div class="variable-width" id="'+result[i].id+'infoDivId"></div>';
+			str+='</div>';
+		
+		//str+='</div>';
+		str+='</td>';
+		 str+='</tr>';
 		 str+='<tr id="'+result[i].id+'resultTrId" class="dtlsTR" style="display:none">';
 		 str+='<td colspan="4" id="'+result[i].id+'resultDiv" class="buildDivDtals"></td>';
-		 str+='</tr>'
+		 str+='</tr>';
 			
 		}
 	 $("#CommitteeDetails").html(str);           
@@ -4425,7 +4459,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var str='';
 		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000000;">';
 		str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);">';
-        str+='<th colspan="4" class="text-uppercase">'+result[0].locationName+'  <b>'+result[0].committe+'  COMMITTEE</b></th>';
+        str+='<th colspan="5" class="text-uppercase">'+result[0].locationName+'  <b>'+result[0].committe+'  COMMITTEE</b></th>';
         str+='</thead>';
         str+='<tbody>';
 		str+='<i class="glyphicon glyphicon-remove" style="cursor:pointer;" id="closeCommitteeMemberDetailsId" onclick="removeDtlsDiv(\''+locationId+'resultTrId\');"></i>';
@@ -4437,7 +4471,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].membershipNo+'</td>';
-		str+='<td>'+result[i].role+'';
+		str+='<td>'+result[i].role+'</td>';
+		var status = result[i].occupation;
+		if(status == "F"){
+			str+='<td style="color:#449D44;">Finalized';
+		}else if(status == "P"){
+			str+='<td class="orangeCls">Proposed';
+		}
 		
 		var roleStr = result[i].role;
 		
@@ -5946,6 +5986,91 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 				toDate = dates[1];
 	getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
 });
+var slickCount = 0;
+function getCommitteeMembersAvailableInfo(levelId,levelValue){
+		
+		$("#"+levelValue+"infoTrId").show();
+			$("#"+levelValue+"infoDivId").html('<img id="ajaxImgStyle"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
+			var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+			 var date =$("#reportrange1").val();
+        var fromDate;
+        var toDate;
+        var dates = date.split("-");
+        fromDate = dates[0];
+        toDate = dates[1]; 
+		 var jsObj={
+		         levelId:levelId,levelValue:levelValue,enrollmentYrId:committeeEnrollmentId,startDate:fromDate,endDate:toDate
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "getCommitteeMembersAvailableInfoAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+			if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+			    }
+				//Summary Building
+				slickCount = slickCount+1;
+				var counts = result.result;
+				var str ='<div id="variable-width'+slickCount+'" class="row">';
+			    for(var i in  counts){
+					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+					str+='<div class=" slick_widget text-center">';
+					str+='	<h5>'+counts[i].locationName+'</h5>';
+					str+='	<ul class="list-inline text-center" >';
+					
+					if(counts[i].totalCount!=0){
+						str+='<li class="btn btn-xs  greyClass"  disabled="disabled">'+counts[i].totalCount+'</li>';
+					}else{
+						str+='<li class="btn btn-xs  greyClass" disabled="disabled">N/A</li>';
+					}
+					
+					if(counts[i].roleType != null && counts[i].roleType == 'P'){
+						if(counts[i].proposedCount != null && counts[i].proposedCount != 0){
+						   str+='<li class="btn btn-xs orangeCls" disabled="disabled" style="margin-left: 5px;">'+counts[i].proposedCount+'</li>';
+						}else{
+							str+='<li class="btn btn-xs orangeCls" disabled="disabled" style="margin-left: 5px;">0</li>';
+						}
+					}
+					
+					if(counts[i].finalizedCount != 0){
+					  str+='<li class="btn btn-xs btn-success" disabled="disabled" style="margin-left: 5px;font-weight:bold !important">'+counts[i].finalizedCount+'</li>';	
+					}else{
+						str+='<li class="btn btn-xs btn-success" disabled="disabled" style="margin-left: 5px;font-weight:bold !important">0</li>';
+					}
+					
+					if(counts[i].totalCount!= 0){
+						str+='<li class="btn btn-xs redCls" disabled="disabled" style="margin-left: 5px;">'+counts[i].vaccancyCount+'</li>';
+					}else{
+						str+='<li class="btn btn-xs redCls" disabled="disabled" style="margin-left: 5px;">N/A</li>';
+					}
+					str+='	</ul>';
+					str+='</div>';
+					str+='</div>';
+			   }
+			   
+			   $("#"+levelValue+"infoDivId").html(str);
+			   /*  $('#variable-width'+slickCount).slick({
+					  slide: '.slickW',
+					  slidesToShow: 3,
+					  slidesToScroll: 3,
+					  dots: false,
+					  infinite: false,
+					  speed: 300,
+					  autoplay: false,
+					  autoplaySpeed: 2000,
+					  variableWidth: true
+					}); */
+				/*var getSlickWidth = ($('#dialogSummary').width()-($('#dialogSummary').width()) * (0.2)) ;
+				alert(getSlickWidth)
+			   $('#variable-width'+slickCount).find(".slick-track").css("width",getSlickWidth);*/
+		});
+	}
 </script>		
 </body>
 </html>
