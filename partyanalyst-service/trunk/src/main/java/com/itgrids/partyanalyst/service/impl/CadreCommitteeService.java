@@ -3915,28 +3915,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		return isEligible;
 	}
-	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue,List<Long> committeeEnrollmentIdsLst)
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
 		//List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
 		Long constituencyId=Long.parseLong(accessValue);
 		List<Object[]> list = new ArrayList<Object[]>();
-		try{
 			
+		try{
+		  SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);
 		
 			if(levelId == 2)
 			{
 				levelIds.add(6l);// Village/Ward
 				levelIds.add(8l);
-			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status,committeeEnrollmentIdsLst);
+			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status,committeeEnrollmentIdsLst,stDate,edDate);
 			}
 			
 			else if(levelId == 10 || levelId == 11)
 			{
 				List<Long> locationIds = new ArrayList<Long>();
 				locationIds.add(new Long(accessValue));
-				list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelId,basicCommitteeTypeId,locationIds,status,committeeEnrollmentIdsLst);
+				list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelId,basicCommitteeTypeId,locationIds,status,committeeEnrollmentIdsLst,stDate,edDate);
 			}
 			else
 			{
@@ -3977,13 +3980,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}		
 					}
 					if(muncipalIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(7l,basicCommitteeTypeId,muncipalIds,status,committeeEnrollmentIdsLst));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(7l,basicCommitteeTypeId,muncipalIds,status,committeeEnrollmentIdsLst,stDate,edDate));
 					}
 					if(mandalIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(5l,basicCommitteeTypeId,mandalIds,status,committeeEnrollmentIdsLst));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(5l,basicCommitteeTypeId,mandalIds,status,committeeEnrollmentIdsLst,stDate,edDate));
 					}
 					if(divisionIds.size() > 0){
-						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(9l,basicCommitteeTypeId,divisionIds,status,committeeEnrollmentIdsLst));
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(9l,basicCommitteeTypeId,divisionIds,status,committeeEnrollmentIdsLst,stDate,edDate));
 					}
 				}
 					
@@ -4021,7 +4024,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				  for(Long level : levelValuesMap.keySet()){
 					  
 					  List<CadreCommitteeMemberVO> newResultList = levelVosMap.get(level);
-					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(level,levelValuesMap.get(level),basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
+					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(level,levelValuesMap.get(level),basicCommitteeTypeId,status,committeeEnrollmentIdsLst,stDate,edDate);
 					if(membersList != null && membersList.size() > 0)
 					{
 						for(Object[] params : membersList)
@@ -4110,12 +4113,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return location;
 	}*/
-	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
 		try{
-			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
+			 SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");	
+				Date stDate = (Date)format.parse(startDate);
+				Date edDate = (Date)format.parse(endDate);
+			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst,stDate,edDate);
 			if(membersList != null && membersList.size() > 0)
 			{
 				String locationName = getLocationName(levelId,locationId);
@@ -4150,13 +4156,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst)
+	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
 			DateUtilService date = new DateUtilService();
-			
-			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst);
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");	
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);
+			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
 			for(Long id : tdpcommitteIds)
 			{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
@@ -4175,13 +4183,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId,List<Long> committeeEnrollmentIdsLst)
+	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
+			 SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+				Date stDate = (Date)format.parse(startDate);
+				Date edDate = (Date)format.parse(endDate);
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
 		
-			List<Object[]> list = tdpCommitteeMemberDAO.getCommitteStatusAndId(tdpCommitteeMemberId,committeeEnrollmentIdsLst);
+			List<Object[]> list = tdpCommitteeMemberDAO.getCommitteStatusAndId(tdpCommitteeMemberId,committeeEnrollmentIdsLst,stDate,edDate);
 			if(list != null)
 			{
 				Object[] params = list.get(0);
@@ -4189,7 +4200,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				Long tdpCommitteId = new Long(params[1].toString());
 				if(!status.equalsIgnoreCase("Y"))
 				{
-					Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId,committeeEnrollmentIdsLst);
+					Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId,committeeEnrollmentIdsLst,stDate,edDate);
 					if(val != null && val > 0)
 					{
 					vo.setStatus("Removed");
@@ -4452,10 +4463,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 		
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue,List<Long> committeeEnrollmentIdsLst)
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		try{
+        SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");	
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);
 			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
 			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
 		Long constituencyId=Long.parseLong(accessValue);
@@ -4494,18 +4508,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 			if(mandalIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(mandalIds,5l,committeeEnrollmentIdsLst);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(mandalIds,5l,committeeEnrollmentIdsLst);
+				List<Object[]> valuesList = tdpCommitteeDAO.getLocationWiseMandalDetails(mandalIds,5l,committeeEnrollmentIdsLst,stDate,edDate);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(mandalIds,5l,committeeEnrollmentIdsLst,stDate,edDate);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			if(muncipalIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(muncipalIds,7l,committeeEnrollmentIdsLst);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(muncipalIds,7l,committeeEnrollmentIdsLst);
+				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(muncipalIds,7l,committeeEnrollmentIdsLst,stDate,edDate);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(muncipalIds,7l,committeeEnrollmentIdsLst,stDate,edDate);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			if(divisionIds.size() > 0){
-				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(divisionIds,9l,committeeEnrollmentIdsLst);
-				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(divisionIds,9l,committeeEnrollmentIdsLst);
+				List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(divisionIds,9l,committeeEnrollmentIdsLst,stDate,edDate);
+				List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(divisionIds,9l,committeeEnrollmentIdsLst,stDate,edDate);
 				getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO); 
 			}
 			returnList = new ArrayList<CommitteeSummaryVO>(returnMap.values());
@@ -4525,7 +4539,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst)
+	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		List<Long> locationIds = new ArrayList<Long>();
@@ -4536,9 +4550,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		else if(accessType.equalsIgnoreCase("District"))
 			locationLevelId = 11l;
 		try{
-			
-			List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst);
-			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst);
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);		
+			List<Object[]> valuesList = tdpCommitteeDAO.getLocationWiseMandalDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst,stDate,edDate);
+			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst,stDate,edDate);
 			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
 			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
 			getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO);
@@ -9184,11 +9200,14 @@ return constiLst;
 		}
 	}
 	
-	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
 		try
 		{
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);
 			Map<String,CasteDetailsVO> casteGroupMap = null;
 			Map<String,CasteDetailsVO> ageGroupMap = null;
 			Map<Long,Long> mandalIdsMap = new HashMap<Long,Long>();
@@ -9263,7 +9282,7 @@ return constiLst;
 			
 			
 			//19tehsilId, 20localElectionBodyId 21constituencyId
-		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst);
+		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst,stDate,edDate);
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
 		    	casteGroupMap = new HashMap<String, CasteDetailsVO>();
 		    	ageGroupMap = new LinkedHashMap<String, CasteDetailsVO>();

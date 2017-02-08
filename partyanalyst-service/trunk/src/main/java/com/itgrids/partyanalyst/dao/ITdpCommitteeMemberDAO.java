@@ -24,8 +24,8 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	//public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds);
 	//public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate);
 	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds);
-	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId,List<Long> committeeEnrollmentIdsLst);
-	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst);
+	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate);
+	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst,Date stDate, Date edDate);
 	public List<Object[]> getStartedCommitteesCountInALocation(Long constituencyId);
 /*	public List<Object[]> getMandalTotalCommittees(Long constituencyId,List mandalIds);
 	public List<Object[]> getMuncipalTotalCommittees(Long constituencyId,List muncipalIds);
@@ -34,11 +34,11 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> basicCommitteeDetails();
 	public List<Object[]> getVillageStartedCount(Long constituencyId);
 	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate);
-	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String committeeMemberStatus,List<Long> committeeEnrollmentIdsLst);
-	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst);;
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String committeeMemberStatus,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate);
+	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate);;
 	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
 	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds,List<Long> committeeSpanTypeIdsList);
-	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst);
+	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate);
 	public Long getCommitteMembers(Long tdpCommitteeId);
 	public List<Object[]> getCommitteeDetails(Long committeeId);
 	

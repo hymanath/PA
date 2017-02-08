@@ -121,7 +121,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return (Long)query.uniqueResult();
 	}
 	
-	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId,Long constituencyId,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId,Long constituencyId,String status,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
@@ -134,16 +134,21 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 			else if(status.equalsIgnoreCase("NotStarted"))
 			str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			if(stDate != null && edDate != null)
+			str.append( " and ( (date(model.startedDate) between :stDate and :edDate )  OR  ( date(model.completedDate) between :stDate and :edDate )  )" );
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("levelIds", levelIds);
 		query.setParameter("committeTypeId", committeTypeId);
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationsByTypeIdAndLevel(Long levelId,Long committeTypeId,List<Long> locationValues,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<Object[]> getLocationsByTypeIdAndLevel(Long levelId,Long committeTypeId,List<Long> locationValues,String status,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
@@ -157,12 +162,17 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		else if(status.equalsIgnoreCase("NotStarted"))
 		str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		 if(stDate != null && edDate != null)
+			 str.append( " and ( (date(model.startedDate) between :stDate and :edDate )  OR  ( date(model.completedDate) between :stDate and :edDate )  )" );
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("committeTypeId", committeTypeId);
 		query.setParameterList("locationValues", locationValues);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();
 	}
 	
@@ -213,30 +223,44 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	//getting total and confirmed counts for mandal lvl
-		public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId,List<Long> committeeEnrollmentIdsLst){
+		public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate){
 			//0 basiccommId,1 name,2confirmd,3count
-			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*),TC.completedDate " +
+			StringBuilder str = new StringBuilder();
+			str.append("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*),TC.completedDate " +
 					" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  " +
 					" and  TC.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId and TC.tdpCommitteeLevelValue in(:locationIds) and " +
-					" TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) " +
-					" group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
+					" TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) "); 
+			if(startDate != null && endDate != null)
+				str.append( " and ( (date(TC.startedDate) between :startDate and :endDate )  OR  ( date(TC.completedDate) between :startDate and :endDate )  )" );
+			str.append(" group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
+			Query query = getSession().createQuery(str.toString());
 			query.setParameter("levelId", levelId);
 			query.setParameterList("locationIds", locationIds);
 			query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+			if(startDate != null && endDate != null)
+				query.setParameter("startDate", startDate);
+			    query.setParameter("endDate", endDate);
 			return query.list();
 		}
 		 //getting started  for mandal lvl
-		public List<Object[]> getLocationWiseMandalStartedDetails(List<Long> locationIds,Long levelId,List<Long> committeeEnrollmentIdsLst){
+		public List<Object[]> getLocationWiseMandalStartedDetails(List<Long> locationIds,Long levelId,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate){
 			//0 basiccommId,3count
-			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,count(*) " +
+			StringBuilder str = new StringBuilder();
+			str.append("select TBC.tdpBasicCommitteeId,count(*) " +
 					" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  " +
 					" and  TC.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId and TC.tdpCommitteeLevelValue in (:locationIds) " +
 					" and TC.startedDate is not null and TC.isCommitteeConfirmed ='N'  and " +
-					" TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) and " +
-					" TC.completedDate is null group by TBC.tdpBasicCommitteeId");
+					" TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) and " );
+			if(startDate != null && endDate != null)
+				str.append( "  ( (date(TC.startedDate) between :startDate and :endDate )  OR  ( date(TC.completedDate) between :startDate and :endDate )  )" );			
+			str.append(" and TC.completedDate is null group by TBC.tdpBasicCommitteeId");
+			Query query = getSession().createQuery(str.toString());
 			query.setParameter("levelId", levelId);
 			query.setParameterList("locationIds", locationIds);
 			query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+			if(startDate != null && endDate != null)
+				query.setParameter("startDate", startDate);
+			    query.setParameter("endDate", endDate);
 			return query.list();
 		}
 	/*public List<Object[]> muncipalList(Long constituencyId,List muncipalIds){

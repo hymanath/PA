@@ -256,7 +256,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		
 		return query.list();
 	}
-	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue" +
@@ -268,16 +268,21 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
 		else if(status.equalsIgnoreCase("Started"))
 		str.append(" and model.tdpCommitteeRole.tdpCommittee.startedDate is not null  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.tdpCommitteeRole.tdpCommittee.completedDate is null ");
+		if(stDate != null && edDate != null)
+		str.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
 		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameterList("locationVals", locationVals);
 		query.setParameter("committeeTypeId", committeeTypeId);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();
 			
 	}
-	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst)
+	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate )
 	{
 		StringBuilder str = new StringBuilder();
 		//19tehsilId, 20localElectionBodyId 21constituencyId
@@ -296,7 +301,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		
 		if(status.equalsIgnoreCase("Conform"))
 			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
-		
+		if(stDate != null && edDate != null)
+		str.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
 		str.append(" order by model.tdpCommitteeRole.tdpRoles.tdpRolesId  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
@@ -304,19 +310,29 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		if(committeeTypeId.longValue() !=0L)
 			query.setParameter("committeeTypeId", committeeTypeId);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();
 			
 	}
 	
-	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId,List<Long> committeeEnrollmentIdsLst)
+	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate)
 	{
-		Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from TdpCommitteeMember model" +
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive ='Y' and " +
 				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
+		if(stDate != null && edDate != null)
+			str.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("locationVal", locationVal);
 		query.setParameter("committeeTypeId", committeeTypeId);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();
 			
 	}
@@ -328,12 +344,19 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.executeUpdate();	
 	}
 	
-	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst)
+	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst,Date stDate, Date edDate)
 	{
-		Query query = getSession().createQuery("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id  and " +
+		StringBuilder str = new StringBuilder();
+		str.append("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id  and " +
 				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
+		if(stDate != null && edDate != null)
+			str.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.executeUpdate();	
 	}
 	
@@ -431,12 +454,19 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst)
+	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst,Date stDate,Date edDate)
 	{
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from  TdpCommitteeMember model where model.tdpCommitteeMemberId =:tdpCommitteMemberId and " +
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from  TdpCommitteeMember model where model.tdpCommitteeMemberId =:tdpCommitteMemberId and " +
 				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
+		if(stDate != null && edDate != null)
+			sb.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("tdpCommitteMemberId", tdpCommitteMemberId);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		if(stDate != null && edDate != null)
+			query.setParameter("stDate", stDate);
+		    query.setParameter("edDate", edDate);
 		return query.list();	
 	}
 	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
