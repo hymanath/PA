@@ -51,6 +51,8 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String electionYear;
 	private String enrollmentYears;
 	
+	private String committeeMemberStatus;
+	
 	public String getEnrollmentYears() {
 		return enrollmentYears;
 	}
@@ -533,6 +535,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setReportDate(String reportDate) {
 		this.reportDate = reportDate;
+	}
+	public String getCommitteeMemberStatus() {
+		return committeeMemberStatus;
+	}
+	public void setCommitteeMemberStatus(String committeeMemberStatus) {
+		this.committeeMemberStatus = committeeMemberStatus;
 	}
 	
 }
