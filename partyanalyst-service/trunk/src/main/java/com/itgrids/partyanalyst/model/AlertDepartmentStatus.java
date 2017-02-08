@@ -25,9 +25,12 @@ import org.hibernate.annotations.NotFoundAction;
 public class AlertDepartmentStatus extends BaseModel implements Serializable{
 
 	private Long alertDepartmentStatusId;
-	private String status;
+	private Long alertStatusId;
+	private Long alertTypeId;
 	private Long govtDepartmentId;
 	
+	private AlertStatus alertStatus;
+	private AlertType alertType;  
 	private GovtDepartment govtDepartment;
 	
 	
@@ -40,15 +43,20 @@ public class AlertDepartmentStatus extends BaseModel implements Serializable{
 	public void setAlertDepartmentStatusId(Long alertDepartmentStatusId) {
 		this.alertDepartmentStatusId = alertDepartmentStatusId;
 	}
-	
-	@Column(name = "status")
-	public String getStatus() {
-		return status;
+	@Column(name = "alert_status_id")
+	public Long getAlertStatusId() {
+		return alertStatusId;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAlertStatusId(Long alertStatusId) {
+		this.alertStatusId = alertStatusId;
 	}
-	
+	@Column(name = "alert_type_id")
+	public Long getAlertTypeId() {
+		return alertTypeId;
+	}
+	public void setAlertTypeId(Long alertTypeId) {
+		this.alertTypeId = alertTypeId;
+	}
 	@Column(name = "govt_department_id")
 	public Long getGovtDepartmentId() {
 		return govtDepartmentId;
@@ -56,7 +64,26 @@ public class AlertDepartmentStatus extends BaseModel implements Serializable{
 	public void setGovtDepartmentId(Long govtDepartmentId) {
 		this.govtDepartmentId = govtDepartmentId;
 	}
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertStatus getAlertStatus() {
+		return alertStatus;
+	}
+	public void setAlertStatus(AlertStatus alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertType getAlertType() {
+		return alertType;
+	}
+	public void setAlertType(AlertType alertType) {
+		this.alertType = alertType;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="govt_department_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
