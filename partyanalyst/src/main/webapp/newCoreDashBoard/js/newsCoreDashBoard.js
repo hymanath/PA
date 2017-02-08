@@ -489,7 +489,7 @@
 		str+='</div>';
 		
 		/* Opposition Parties*/
-		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Other Parties</span></h4>';
 		
 			str+='<div class="row">';
 				str+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
