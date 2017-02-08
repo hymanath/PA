@@ -181,7 +181,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.list();
 	}
 
-	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
+	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList ,List<Long> enrollmentIdsList){
 
 		StringBuilder str = new StringBuilder();
 
@@ -203,6 +203,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		{
 			str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		}
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:enrollmentIdsList) ");
+		}	
 		if(startDate !=null && endDate !=null){
 			
 			str.append(" and ( date(model.insertedTime)>=:startDate and date(model.insertedTime)<=:endDate ) ");
@@ -230,6 +234,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		if(startDate !=null && endDate !=null){
 		 query.setParameter("startDate", startDate);
 		 query.setParameter("endDate", endDate);
+		}
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		{
+			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		}
 		query.setParameterList("levelIds",levelIds);
 		
