@@ -1910,7 +1910,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				if(oldCommitteeId != null && oldCommitteeId.longValue() > 0){
 					updateCommitteeStartedStatus(oldCommitteeId);
 				}
-				status.setMessage(" Cadre Added To Committee Successfully... ");
+				
+				if(committeeRoleType != null){
+					if(committeeRoleType.equalsIgnoreCase("F")){
+						status.setMessage(" Cadre Added To Committee Successfully... ");		
+					}else if(committeeRoleType.equalsIgnoreCase("P")){
+						status.setMessage(" Cadre Proposed To Committee Successfully... ");
+					}
+				}
 				status.setResultCode(0);
 			}
 		
@@ -2359,6 +2366,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						cadreVO.setCommitteeLocation(location);
 					    cadreVO.setCommitteePosition(positionName);
 					    cadreVO.setCommitteeName(committeeName);
+					    cadreVO.setCommitteeMemberStatus(tdpCadre[7] != null ? tdpCadre[7].toString() :"");
 					    cadreVO.setElectionType(tdpCadre[6] != null ? tdpCadre[6].toString():"");
 					    if(cadreVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
 					    {
