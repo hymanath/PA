@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -3280,7 +3279,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				  }
 				  
 				  if(categoryMap == null){
-					  categoryMap = new HashMap<String, List<ToursBasicVO>>(0);
+					  categoryMap = new LinkedHashMap<String, List<ToursBasicVO>>(0);
 					  if(resultType != null && resultType.equalsIgnoreCase("Month")){
 						  candidateCategoryMap.put(commonMethodsUtilService.getLongValueForObject(param[5]), categoryMap); 
 					  }else{
