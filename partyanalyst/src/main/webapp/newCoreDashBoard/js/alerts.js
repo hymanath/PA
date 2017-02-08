@@ -1756,6 +1756,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 			  commitLvlIdArr.push(7);
 			  commitLvlIdArr.push(6);
 			  commitLvlIdArr.push(8);    
+			  commitLvlIdArr.push(12);    
 			  getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,0,"alertDetailsDivId",commitLvlIdArr,"");  
 		  }else if(groupAssignType == "Program Committee"){
 			  getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,"alertDetailsDivId")
@@ -2011,6 +2012,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				commitLvlIdArr.push(7);
 				commitLvlIdArr.push(6);
 				commitLvlIdArr.push(8);
+				commitLvlIdArr.push(12);
 			}else if(commitLvlVal == "State"){
 				 commitLvlIdArr.push(10);
 			}else if(commitLvlVal == "District"){
@@ -2021,7 +2023,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			}else if(commitLvlVal == "Village"){
 				commitLvlIdArr.push(6);
 				commitLvlIdArr.push(8);
-			}  
+			}else if(commitLvlVal == "Central")  {
+			  commitLvlIdArr.push(12);	
+			}
 			if(selectTypeId == "Party Committee"){    
 				getTotalAlertGroupByPubRepThenStatusBellow(commitLvlIdArr,designationId,divId,selectTypeId);
 				$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
@@ -2054,6 +2058,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				commitLvlIdArr.push(7);
 				commitLvlIdArr.push(6);
 				commitLvlIdArr.push(8);
+				commitLvlIdArr.push(12);
 			}else if(commitLvlVal == "State"){
 				 commitLvlIdArr.push(10);
 			}else if(commitLvlVal == "District"){
@@ -2064,7 +2069,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			}else if(commitLvlVal == "Village"){
 				commitLvlIdArr.push(6);
 				commitLvlIdArr.push(8);
-			} 
+			}else if(commitLvlVal == "Central"){
+			  commitLvlIdArr.push(12);	
+			}
 			var scopeIdsArr = [];
 		  	$(".alertSettingsUl li").each(function() {
 				if($(this).find("input").is(":checked")){
@@ -2198,6 +2205,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			commitLvlIdArr.push(7);
 			commitLvlIdArr.push(6);
 			commitLvlIdArr.push(8);
+			commitLvlIdArr.push(12);
 		}else if(commitLvlVal == "State"){
 			 commitLvlIdArr.push(10);
 		}else if(commitLvlVal == "District"){
@@ -2208,6 +2216,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		}else if(commitLvlVal == "Village"){
 			commitLvlIdArr.push(6);
 			commitLvlIdArr.push(8);
+		}else if(commitLvlVal == "Central"){
+			commitLvlIdArr.push(12);	
 		} 
 		var scopeIdsArr = [];
 		$(".alertSettingsUl li").each(function() {
@@ -2304,6 +2314,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			commitLvlIdArr.push(7);
 			commitLvlIdArr.push(6);
 			commitLvlIdArr.push(8);
+			commitLvlIdArr.push(12);
 			getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,"Party Committee",0,"alertDetailsDivId",commitLvlIdArr,"");
 		}else if(commitLvlVal == "State"){
 			 commitLvlIdArr.push(10);
@@ -2319,6 +2330,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			commitLvlIdArr.push(6);
 			commitLvlIdArr.push(8);    
 			getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,"Party Committee",0,"alertDetailsDivId",commitLvlIdArr,"");
+		}else if(commitLvlVal == "Central"){
+			commitLvlIdArr.push(12);    
+			getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,"Party Committee",0,"alertDetailsDivId",commitLvlIdArr,"");	
 		}
 	});
 	function getTotalAlertGroupByPubRepThenStatusBellow(commitLvlIdArr,commitTypeId,divId,selectTypeId){

@@ -5,10 +5,8 @@ getMemberTypes();
 showHideBySearchType();
 function disableByLevel(index)
   {
-
-	  setDefault(index);	
+      	
 	  var levelId = $("#commonLevelId"+index).val();
-	
 	  var districtId = $("#referdistrictId"+index).val();
 	  var constituencyId = $("#referconstituencyId"+index).val();
 	  var panchayatId = $("#referpanchayatId"+index).val();
@@ -98,6 +96,20 @@ function disableByLevel(index)
 				$(".constiCls"+index).show();
 				$(".mandalCls"+index).show();
 				$(".panchayatCls"+index).show();
+		}else if(levelId == 12){ //central level 
+		   $("#referCommitteeDiv").hide(); // hiding committee in the case of central level
+			$(".stateShowCls").hide();
+			$(".distCls"+index).hide();
+			$(".constiCls"+index).hide();
+			$(".mandalCls"+index).hide();
+			$(".panchayatCls"+index).hide();
+		}
+		var selectVal = $("#advanceSearchTypeId").val();
+		if(selectVal == "committee"){
+			 buildDesignation(globalDesignationRslt);  
+			if(levelId != 12){
+			 $("#referCommitteeDiv").show();	
+			}
 		}
 }
 
@@ -414,6 +426,9 @@ function getLevelByDesignation()
 		var searchType = $("#advanceSearchTypeId").val();
 		var str='';
 		 $("#commonLevelId").find('option').remove();
+		 if(searchType == "committee"){
+		   str+='<option value="12">Central</option>';
+		 }
 		  str+='<option value="10">State</option>';
 		  str+='<option value="11">District</option>';
 		  if(searchType != "committee")
@@ -424,6 +439,7 @@ function getLevelByDesignation()
 		    $("#commonLevelId").dropkick();
 			 var select = new Dropkick("#commonLevelId");
 			 select.refresh();
+			 disableByLevel('');
 	}
 	
 		function buildLevelsByIndex(index)
@@ -518,7 +534,7 @@ function showHideSearch(type)
 		    
 	  }
  }
-  
+  var globalDesignationRslt ;
   function getCommitteeRoles(){
     	var jsObj={
     			task:"roles"
@@ -528,21 +544,25 @@ function showHideSearch(type)
     			  url: 'getAllCommitteesAction.action',
     			  data: {task:JSON.stringify(jsObj)}
     	   }).done(function(result){
-				
-				var str ='';
-				str +='<option id="0" attr_value="All"  >All</option>';
-					for(var i in result){
-						str +='<option value="'+result[i].id+'" attr_value="'+result[i].name+'"  >'+result[i].name+'</option>';
-					}
-				
-				$("#cadreCommitteeDiv").html(str);
-				$("#cadreCommitteeDiv").chosen();
-				$("#cadreCommitteeDiv").trigger("chosen:updated");
-				$("#cadreCommitteeDiv_chosen").addClass("m_top20");
-				$("#cadreCommitteeDiv_chosen").addClass("addwidth");
-				});			  
+			   globalDesignationRslt = result;
+			   if(result != null && result.length > 0){
+				  buildDesignation(result);  
+			    }
+			});			  
     }
-	
+	function buildDesignation(result){
+		var str ='';
+		str +='<option id="0" attr_value="All">All</option>';
+			for(var i in result){
+				str +='<option value="'+result[i].id+'" attr_value="'+result[i].name+'"  >'+result[i].name+'</option>';
+			}
+		
+		$("#cadreCommitteeDiv").html(str);
+		$("#cadreCommitteeDiv").chosen();
+		$("#cadreCommitteeDiv").trigger("chosen:updated");
+		$("#cadreCommitteeDiv_chosen").addClass("m_top20");
+		$("#cadreCommitteeDiv_chosen").addClass("addwidth");	
+	}
 	function handleBySearchType()
 	{
 		getAdvancedSearchDetails();
@@ -615,7 +635,11 @@ function showHideSearch(type)
 					statusArr.push($(this).attr("value"));
 				}		
 			});
-			 referCommitteeId = $("#referCommitteeId").val();
+			 if($("#referCommitteeDiv").is(':visible')){
+				 referCommitteeId = $("#referCommitteeId").val();
+			 }else{
+				  referCommitteeId = 0;
+			 }
 		}
 		
 		//else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
@@ -684,7 +708,7 @@ function showHideSearch(type)
 			levelStr = "mandal";
 			levelValue = tehsilId;
 		}
-	else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId > 0)
+	  else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId > 0)
 		{
 			levelStr = "village";
 			levelValue = panchayatId;
@@ -732,6 +756,13 @@ function showHideSearch(type)
 				
 			}
 		}
+		
+		if(levelId == 12) //Central Level 
+		{
+			level = "central";
+			levelStr = "central";
+		}
+		
 		if(errorStr.length >0)
        {
 	  $('#errorDivId').html(errorStr);
