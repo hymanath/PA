@@ -944,11 +944,30 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 					<!-- start -->
 				<div id="districtContent">	
-			 <div class="row">
+			 <!-- <div class="row">
             	<div class="col-md-12">
                 	<h3 style="color:#090" id="stateDistrictTitle" ></h3>
                 </div>
-            </div>
+            </div> -->
+			<div class="row">
+				<div class="col-md-3 col-md-offset-4 col-xs-12 col-sm-2 col-sm-offset-4">
+					<select class="form-control" id="tdpCommitteeYearId1"></select>
+				</div>
+				<div class="col-md-3 col-xs-12 col-sm-3">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+						</span>
+						<input type="text" class="form-control" id="reportrange1"/>
+					</div>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-2">
+					<button class="btn btn-success" id="getDetailsId1">SUBMIT</button>
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<h3 style="color:#090" id="stateDistrictTitle" ></h3>
+				</div>
+			</div>
 			 <div class="row">
  				<div class="col-md-12">
 				
@@ -1091,8 +1110,26 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 					$('#statesBtnsId').hide();
 					getCadreEnrollmentYears();
+					getCadreEnrollmentYears1();
 					$('#reportrange').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
 					$("#reportrange").daterangepicker({
+						startDate: moment(),
+						endDate: moment(),
+						opens: 'left',
+						format: 'DD/MM/YYYY',
+						ranges: {
+						   'Today' : [moment(), moment()],
+						   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+						   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+						   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+						   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+						   'This Month': [moment().startOf('month'), moment()],
+						   'This Year': [moment().startOf('Year'), moment()]
+						}
+					});
+					$('#reportrange1').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
+					$("#reportrange1").daterangepicker({
 						startDate: moment(),
 						endDate: moment(),
 						opens: 'left',
@@ -3779,7 +3816,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	
 	/* script for District */
+	var globalDistrictId =0;
 	function getPopUpForSummaryForDistrict(id,name){
+		globalDistrictId=id;
 	$("#districtContent").show();
 	$("#constituencyContent").hide();
 		$("#dialogSummary" ).modal("show");
@@ -3787,7 +3826,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#committeeMemberDiv").html("");
 		$("#presGenSecrErrDivId").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
-		getCommitteeSummaryInfo(id);
+		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+				var date =$("#reportrange").val();
+				var fromDate;
+				var toDate;
+				var dates = date.split("-");
+				fromDate = dates[0];
+				toDate = dates[1];
+		getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate);
 		$('.loader5').ClassyLoader({
 				speed: 10,
 				diameter: 80,
@@ -3814,16 +3860,27 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			});
 	}
 	
-		function getCommitteeSummaryInfo(id)
+		function getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate)
 		{
-		
+		 $("#mainCommitteDivId").html("");
+		 $("#AffliCommitteDivId").html("");
+		 $("#CommitteeDetails").html("");
+		 $("#conformedBtn").html("");
 				var reqLocationType ='District';
 				var locationId = id;
-				var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+				/* var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+				var date =$("#reportrange").val();
+				var fromDate;
+				var toDate;
+				var dates = date.split("-");
+				fromDate = dates[0];
+				toDate = dates[1]; */
 			var jsObj = {
 					locationId:id,
 					reqLocationType :reqLocationType,
 					committeeEnrollmentId :[committeeEnrollmentId],
+					startDate : fromDate,
+					endDate   : toDate,
 					task:""
 				}
 				//alert(666)	;
@@ -4202,7 +4259,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#committeeMemberDiv").html('');
 		$("#conformedBtn").html('');
 		$("#presGenSecrErrDivId").html("");
-		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+		var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		var date =$("#reportrange1").val();
+		var fromDate;
+		var toDate;
+		var dates = date.split("-");
+		fromDate = dates[0];
+		toDate = dates[1];
 		var jsObj = 
 	{
 		basicCommitteetypeId:basicCommitteetypeId,
@@ -4210,6 +4273,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		levelId:levelId,
 		constituencyId : constituencyId,
 		committeeEnrollmentId :[committeeEnrollmentId],
+		fromDate :fromDate,
+		toDate :toDate,
 		task:"memberCnt"
 	}
 	//alert(1122)	;
@@ -4304,7 +4369,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			$("#conformedBtn").html('');
 			$("#presGenSecrErrDivId").html("");
 			$("#"+ajaxImgId+"").show();
-			var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+			var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+			var date =$("#reportrange1").val();
+		    var fromDate;
+		    var toDate;
+		    var dates = date.split("-");
+		    fromDate = dates[0];
+		    toDate = dates[1];
 			var jsObj = 
 			{
 				basicCommitteetypeId:basicCommitteetypeId,
@@ -4312,6 +4383,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				locationId:locationId,
 				status:status,
 				committeeEnrollmentId :[committeeEnrollmentId],
+				fromDate :fromDate,
+				toDate :toDate,
 				task:"memberInfo"
 			}
 			//alert(1133)	;
@@ -4404,7 +4477,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function committeeComplete(basicCommitteetypeId,levelId,locationId,constituencyId)
 	{
-		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+		var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		var date =$("#reportrange1").val();
+		    var fromDate;
+		    var toDate;
+		    var dates = date.split("-");
+		    fromDate = dates[0];
+		    toDate = dates[1];
 	$("#presGenSecrErrDivId").html("");
 		if(levelId == 6 || levelId == 8){
 			if(isPresidentAvail == false && isGenSecAvail == false){
@@ -4429,6 +4508,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		levelId:levelId,
 		locationId:locationId,
 		committeeEnrollmentId :[committeeEnrollmentId],
+		fromDate :fromDate,
+		toDate :toDate,
 		task:"committeComplete"
 	}
 	//alert(1144)	;
@@ -4458,7 +4539,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	}
 	function deleteCadreRole(tdpCommitteeMemberId)
 	{
-		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+		var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		var date =$("#reportrange1").val();
+		var fromDate;
+		var toDate;
+		var dates = date.split("-");
+		fromDate = dates[0];
+		toDate = dates[1];
 	var r=confirm("Are You Sure To Remove ?");
 		if(r)
 		{
@@ -4466,6 +4553,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	{
 		tdpcommitteeMemberId:tdpCommitteeMemberId,
 		committeeEnrollmentId :[committeeEnrollmentId],
+		fromDate :fromDate,
+		toDate :toDate,
 		task:"deleterole"
 	}
 	//alert(1155)	;
@@ -5689,7 +5778,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		
 		
 	}
-	
+		
 	function gettingCadreDetailsPerformance(locationTypeId,locationId){
 		
 		 var jsObj={
@@ -5705,10 +5794,6 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 			console.log(result);
 		});
 	}
-	
-	
-	
-
 $(document).on("click","#performanceId",function(){
 	var locationId = $(this).attr("attr_distId");
 	var locationTypeId = 11;
@@ -5846,6 +5931,21 @@ function onLoadcimmitteeDashboardCalls(){
 			
 		}
 }
+
+$(document).on("change","#tdpCommitteeYearId1",function(){
+	$( "#reportrange1" ).val('');
+	getCommitteeDetailsByEnrollement1();
+});
+ $(document).on("click","#getDetailsId1",function(){
+	var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+				var date =$("#reportrange1").val();
+				var fromDate;
+				var toDate;
+				var dates = date.split("-");
+				fromDate = dates[0];
+				toDate = dates[1];
+	getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
+});
 </script>		
 </body>
 </html>
