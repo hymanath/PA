@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -57,6 +58,52 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 	}
 	
 	@SuppressWarnings("unchecked")
+	/*public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType,List<Long> enrollIdsList,Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId from TdpCommitteeElectrols model where");
+		
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId in(:locationIds) ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId in(:locationIds) ");
+		}
+		
+		sb.append(" and model.isDeleted = 'N'" +
+				" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1 ");
+		if(enrollIdsList != null && enrollIdsList.size() > 0l)
+			sb.append(" and model.tdpCommitteeEnrollmentId in (:enrollIdsList)");
+		
+		if(startDate != null && endDate != null)
+			sb.append( " and ( (date(model.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
+			//sb.append(" and date(model.tdpCommittee.startedDate) between :startDate and :endDate");
+			
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " group by model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+			query.setParameterList("locationIds", locationIds);
+		if(enrollIdsList != null && enrollIdsList.size() > 0l)
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+		
+	}*/
+	
 	public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.tdpCadreId), ");
@@ -86,13 +133,64 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
 		
 		Query query = getSession().createQuery(sb.toString());
+			query.setParameterList("locationIds", locationIds);
+		return query.list();
+	}
+	/*public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType,List<Long> tdpCadreIds,List<Long> enrollIdsList,Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId from TdpCommitteeElectrols model where");
+		
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId in(:locationIds) ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId in(:locationIds) ");
+		}
+		
+		if(tdpCadreIds.size()>0){
+			sb.append(" and model.tdpCadre.tdpCadreId not in(:tdpCadreIds)" );
+		}
+		
+		sb.append(" and model.isDeleted = 'N'" +
+				" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 ");
+		
+		if(enrollIdsList != null && enrollIdsList.size() > 0l)
+			sb.append(" and model.tdpCommitteeEnrollmentId in (:enrollIdsList)");
+		
+		if(startDate != null && endDate != null)
+			sb.append( " and ( (date(model.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
+			//sb.append(" and date(model.tdpCommittee.startedDate) between :startDate and :endDate ");
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " group by model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(tdpCadreIds.size()>0){
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
+		}
 		query.setParameterList("locationIds", locationIds);
+		if(enrollIdsList != null && enrollIdsList.size() > 0l)
+			query.setParameterList("enrollIdsList", enrollIdsList);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
 		
 		return query.list();
 		
-	}
-	
-	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType, List<Long> tdpCadreIds){
+	}*/
+	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType,List<Long> tdpCadreIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase("panchayat")){
@@ -129,11 +227,9 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 			query.setParameterList("tdpCadreIds", tdpCadreIds);
 		}
 		query.setParameterList("locationIds", locationIds);
-		
 		return query.list();
 		
 	}
-	
 	
 	
 	public List<Object[]> getElctoralInfoForALocation(Long locationValue){
