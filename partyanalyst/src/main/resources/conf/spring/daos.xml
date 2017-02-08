@@ -3714,10 +3714,6 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="alertDepartmentAssignDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentAssignDAO">
-	  	<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
 	<bean id="alertDepartmentCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentCommentDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

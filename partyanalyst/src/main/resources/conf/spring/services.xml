@@ -4020,6 +4020,14 @@
 		<property name="alertDAO" ref="alertDAO" ></property>
 		<property name="alertStatusDAO" ref="alertStatusDAO" ></property>        
 		<property name="govtDepartmentDAO" ref="govtDepartmentDAO" ></property>
+		<property name="govtDepartmentLevelDAO" ref="govtDepartmentLevelDAO" ></property>
+		<property name="stateDAO" ref="stateDAO" ></property>
+		<property name="districtDAO" ref="districtDAO" ></property>
+		<property name="constituencyDAO" ref="constituencyDAO" ></property>
+		<property name="tehsilDAO" ref="tehsilDAO" ></property>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" ></property>
+		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO" ></property>
+		<property name="govtDepartmentDesignationOfficerDAO" ref="govtDepartmentDesignationOfficerDAO" ></property>
 	</bean>
 </beans>			
 	
