@@ -787,8 +787,19 @@ public String getUserAccessListConstituency()
 	HttpSession session = request.getSession();
 	RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
 	jObj = new JSONObject(getTask());
+	
+	JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsArr");
+    List<Long> enrollIdsList = new ArrayList<Long>(0);
+	if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0)
+      {
+        for (int i = 0; i < enrollmentIdsArr.length(); i++)
+        {
+          Long value = enrollmentIdsArr.get(i) != null ? Long.valueOf(enrollmentIdsArr.get(i).toString().trim()):0L;
+          enrollIdsList.add(value);
+        }
+      } 
 
-	basicVO = cadreCommitteeService.getAccessLocationValuesByState(user.getAccessType(),Long.valueOf(user.getAccessValue()),jObj.getLong("stateId"),user.getRegistrationID());
+	basicVO = cadreCommitteeService.getAccessLocationValuesByState(user.getAccessType(),Long.valueOf(user.getAccessValue()),jObj.getLong("stateId"),user.getRegistrationID(),enrollIdsList);
 	
 	}
 	catch(Exception e)
@@ -843,7 +854,19 @@ public String getAllConstituencysForADistrict(){
 			jObj = new JSONObject(getTask());
 			HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-			constiSummaryVO = cadreCommitteeService.getConstituencySummary(jObj.getLong("reportType"), jObj.getLong("constituencyId"),user.getRegistrationID(),jObj.getLong("committeeTypeId"));
+			
+			JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsArr");
+		    List<Long> enrollIdsList = new ArrayList<Long>(0);
+			if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0)
+		      {
+		        for (int i = 0; i < enrollmentIdsArr.length(); i++)
+		        {
+		          Long value = enrollmentIdsArr.get(i) != null ? Long.valueOf(enrollmentIdsArr.get(i).toString().trim()):0L;
+		          enrollIdsList.add(value);
+		        }
+		      }
+			
+			constiSummaryVO = cadreCommitteeService.getConstituencySummary(jObj.getLong("reportType"), jObj.getLong("constituencyId"),user.getRegistrationID(),jObj.getLong("committeeTypeId"),enrollIdsList,jObj.getString("startDate"),jObj.getString("endDate"));
 		}catch(Exception e){
 			LOG.error("Exception Occured In getSummaryDetailsPopUp method "+e);			
 		}
@@ -860,12 +883,10 @@ public String getAllConstituencysForADistrict(){
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
-			String startDate = jObj.getString("startDate"); 
-			String endDate = jObj.getString("endDate");
 			if(jObj.getString("type").equalsIgnoreCase("electrols"))
 			cadreCommitteeMemberVOList = cadreCommitteeService.getElectrolsOfPanchayatAndWards(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
 			else 
-			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status",committeeEnrollmentIdsLst,startDate,endDate);
+			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status",committeeEnrollmentIdsLst,jObj.getString("startDate"),jObj.getString("endDate"));
 			
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
@@ -1046,6 +1067,8 @@ public String getAllConstituencysForADistrict(){
 			String userAccessType = jObj.getString("userAccessType");
 			String castePercentage = jObj.getString("castePercentage");
 			String selectedRadio = jObj.getString("selectedRadio");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
 			if(casteIdsArr != null && casteIdsArr.length()>0)
 			{
 				for (int i = 0; i < casteIdsArr.length(); i++)
@@ -1091,7 +1114,7 @@ public String getAllConstituencysForADistrict(){
 			}
 			
 			cadreCommitteeRolesInfoVO = cadreCommitteeService.getCommitteeRoleAgeWiseDetailsByLocationType(userAccessType,castePercentage,committeeTypeId,positionIdsList,
-					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()),selectedRadio,enrollIdsList);
+					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()),selectedRadio,enrollIdsList,startDate,endDate);
 			
 			
 		} catch (Exception e) {
