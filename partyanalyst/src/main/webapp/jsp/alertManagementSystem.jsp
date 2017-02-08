@@ -49,7 +49,7 @@
 											<h4 class="panel-title text-capital fontColor">status overview</h4>
 										</div>
 										<div class="panel-body">
-											
+											<div id="statusOverview"></div>
 										</div>
 									</div>
 								</div>
@@ -167,116 +167,7 @@
 										<div class="panel-body">
 											<div class="row">
 												<div class="col-md-12 col-xs-12 col-sm-12">
-													<div>
-
-													  <ul class="nav nav-tabs" role="tablist">
-														<li role="presentation" class="active text-capital"><a href="#pending" aria-controls="pending" role="tab" data-toggle="tab">pending</a></li>
-														<li role="presentation" class="text-capital"><a href="#notified" aria-controls="notified" role="tab" data-toggle="tab">notified</a></li>
-													  </ul>
-													  <div class="tab-content">
-														<div role="tabpanel" class="tab-pane active" id="pending">
-														
-															str+='<div class="row">';
-																str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-																	str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
-																		str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-																		str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
-																		for(var i in result){
-																			if(result[i].name !=null && result[i].name.length>55){
-																				str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
-																			}else{
-																				str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
-																			}
-																			
-																		}
-																		str+='</ul>';
-																	str+='</div>';
-																	str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-																	str+='<div id="problemsRelatedGraphState" style="width:300px;"></div>';
-																	$('#problemsRelatedGraphState').highcharts({
-																		chart: {
-																			type: 'bar'
-																		},
-																		title: {
-																			text: ''
-																		},
-																		subtitle: {
-																			text: ''
-																		},
-																		xAxis: {
-																		 min: 0,
-																			 gridLineWidth: 0,
-																			 minorGridLineWidth: 0,
-																			categories: '',
-																			labels: {
-																			enabled: false,
-																				
-																			}
-																	},
-																	yAxis: {
-																		min: 0,
-																			   gridLineWidth: 0,
-																				minorGridLineWidth: 0,
-																		title: {
-																			text: ''
-																		},
-																		labels: {
-																			enabled: false,
-																				
-																			},
-																		stackLabels: {
-																			enabled: false,
-																			style: {
-																				fontWeight: 'bold',
-																				color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-																			}
-																		}
-																	},
-																		tooltip: {
-																			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
-																		},
-																		plotOptions: {
-																			bar: {
-																				dataLabels: {
-																					enabled: true,
-																					formatter: function() {
-																						if (this.y === 0) {
-																							return null;
-																						} else {
-																							return Highcharts.numberFormat(this.y,2) + '%';
-																						}
-																					}
-																				}
-																			}
-																		},
-																		legend: {
-																			enabled: false,
-																			layout: 'vertical',
-																			align: 'right',
-																			verticalAlign: 'top',
-																			x: -40,
-																			y: 80,
-																			floating: true,
-																			borderWidth: 1,
-																			backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-																			shadow: true
-																		},
-																		
-																		series: [{
-																			 name: '',
-																			 colorByPoint: true,
-																			 data: mainArray
-																		}]
-																	});
-																	str+='</div>';
-																str+='</div>';
-															str+='</div>';
-														</div>
-														<div role="tabpanel" class="tab-pane" id="notified">...</div>
-													  </div>
-
-													</div>
-
+													<div id="departmentWiseStatusOvrVw"></div>
 												</div>
 											</div>
 										</div>
@@ -438,10 +329,10 @@
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="js/alertManagementSystem/alertManagementSystem.js" type="text/javascript"></script>
-
 </body>
 </html>
