@@ -181,7 +181,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				</div>
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-2">
-				<button class="btn btn-success" id="getDetailsId">SUBMIT</button>
+				<button class="btn btn-success" id="getDetailsId" onclick="onLoadCalls();">SUBMIT</button>
 			</div>
         </div>
 		
@@ -1126,127 +1126,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$(this).addClass("highlight");
 					});
 					
-					if(userAccessType=="MP"){
-						//$("#commityClsi").hide();
-						$("#searchScenariodiv").hide();
-						$("#districtCommDiv").hide();
-						$("#villageId").prop('checked','checked');
-						$("#constiRdId").prop('checked','checked');
-						$("#districtId").removeAttr('checked');
-						$("#districtCommId").removeAttr('checked');
-					}else{
-						$("#commityClsi").show();
-						$("#searchScenariodiv").show();
-						$("#districtCommDiv").show();
-					}
-
-					if(userAccessType == 'ALL'){
-						getCommitteeCountByState("AP");
-						getCommitteeCountByState("TS");
-						getCommitteeDetails("AP","mandalAll");
-						getCommitteeDetails("AP","villageAll");	
-						getCommitteeDetails("TS","mandalAll");	
-						getCommitteeDetails("TS","villageAll");						
-						getCommitteeDetails("AP","district");
-						getCommitteeDetails("AP","state");
-						getCommitteeDetails("TS","district");
-						getCommitteeDetails("TS","state");
-						getDistrictWiseCommittesSummary();
-						$("#apDistrictHeadingTR").show();
-						//$("#apDistrictBodyTR").show();
-						$("#tsDistrictHeadingTR").show();
-						//$("#tsDistrictBodyTR").show();
-						
-						$("#apStateHeadingTR").show();
-						//$("#apStateBodyTR").show();
-						$("#tsStateHeadingTR").show();
-						//$("#tsStateBodyTR").show();
-						
-					}else if(userAccessType == 'TS'){
-						getCommitteeCountByState("TS");
-						getCommitteeDetails("TS","mandalAll");	
-						getCommitteeDetails("TS","villageAll");
-						getCommitteeDetails("TS","district");
-						getCommitteeDetails("TS","state");
-						//$("#apDistrictHeadingTR").hide();
-						//$("#apDistrictBodyTR").hide();
-						$("#tsDistrictHeadingTR").show();
-						//$("#tsDistrictBodyTR").show();
-						
-						//$("#apStateHeadingTR").hide();
-						//$("#apStateBodyTR").hide();
-						$("#tsStateHeadingTR").show();
-						//$("#tsStateBodyTR").show();
-						getDistrictWiseCommittesSummary();
-					}
-					else if(userAccessType == 'AP'){
-						getCommitteeCountByState("AP");
-						getCommitteeDetails("AP","mandalAll");
-						getCommitteeDetails("AP","villageAll");
-						getCommitteeDetails("AP","district");
-						getCommitteeDetails("AP","state");
-						$("#apDistrictHeadingTR").show();
-						//$("#apDistrictBodyTR").show();
-						//$("#tsDistrictHeadingTR").hide();
-						//$("#tsDistrictBodyTR").hide();
-						
-						$("#apStateHeadingTR").show();
-						//$("#apStateBodyTR").show();
-						//$("#tsStateHeadingTR").hide();
-						//$("#tsStateBodyTR").hide();
-						getDistrictWiseCommittesSummary();
-					}else{					
-						if(userAccessType=="MP"){
-							//$("#districtCommDiv").hide();
-							getCommitteeCountByState("TS");
-							getCommitteeDetails("TS","mandalAll");
-							getCommitteeDetails("TS","villageAll");
-							/*$("#apDistrictHeadingTR").hide();
-							$("#apDistrictBodyTR").hide();
-							$("#tsDistrictHeadingTR").hide();
-							$("#tsDistrictBodyTR").hide();
-							$("#apStateHeadingTR").hide();
-							$("#apStateBodyTR").hide();
-							$("#tsStateHeadingTR").hide();
-							$("#tsStateBodyTR").hide();*/
-							$("#districtDistrictHeadingTR").hide();
-							//$("#districtDistrictBodyTR").hide();
-
-							getConstituencyWiseCommittesSummary();
-						}else if( userAccessType.indexOf("District") >= 0){
-							//$('#areaBtnsDiv').hide();
-							//$('.areaBtnsDiv').hide();
-							//$('#constiRdId').prop('checked','checked');
-							
-							//getConstituencyWiseCommittesSummary();
-							getCommitteeCountByState("AP");
-							getCommitteeDetails("AP","mandalAll");
-							getCommitteeDetails("AP","villageAll");
-							getCommitteeDetails("AP","district");
-							//getConstituencyWiseCommittesSummary();
-							//getCommitteeDetails("AP","state");
-							/*$("#apDistrictHeadingTR").show();
-							$("#apDistrictBodyTR").show();
-							$("#tsDistrictHeadingTR").show();
-							$("#tsDistrictBodyTR").show();*/
-							
-							$("#apStateHeadingTR").hide();
-							//$("#apStateBodyTR").hide();
-							$("#tsStateHeadingTR").hide();
-							//$("#tsStateBodyTR").hide();
-							getDistrictWiseCommittesSummary();
-						}else {
-							getCommitteeCountByState("AP");
-							getCommitteeDetails("AP","mandalAll");
-							getCommitteeDetails("AP","villageAll");
-							getCommitteeDetails("AP","district");
-							getCommitteeDetails("AP","state");
-							getDistrictWiseCommittesSummary();
-						
-						}
-						
-						
-					}
                });
 			   
                </script>
@@ -1293,9 +1172,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$('#ajaxImageId'+state+'state').show();	
 	}
 	
-	var startDate=$(".dp_startDate").val();
-	var endDate=$(".dp_endDate").val();
-	
+	//var startDate=$(".dp_startDate").val();
+	//var endDate=$(".dp_endDate").val();
+	var dateStr = $('#reportrange').val();
+	var dateStrArr = dateStr.split('-');
+	var startDatStr = dateStrArr[0];
+	var endDatStr = dateStrArr[1];
+		
 		var levelIdsArr = new Array();
 		var state = state; 
 		if(level == 'mandal')
@@ -1333,14 +1216,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    levelIdsArr.push(10);
 			
 		}
-
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			levelIdsArr : levelIdsArr,
 			state:state,
-			startDate:startDate,
-			endDate:endDate,
-			task:"committeeDetails"
+			startDate:startDatStr,
+			endDate:endDatStr,
+			task:"committeeDetails",
+			committeeSpanTypeIdsList:committeeSpanTypeIdsArr
 		}
+		//alert(2211)	;
 		$.ajax({
           type:'GET',
           url: 'getDashBoardLocationWiseDetails.action',
@@ -2193,11 +2079,18 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$('#districtDiv').hide();
 		//<div class="row" id="districtDiv" style="display:none;"> LocationIdDiv
 		var state = state; 
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
+		var dateStr = $('#reportrange').val();
+		var dateStrArr = dateStr.split('-');
 		var jObj = {
 			state:state,
-			task:"committeeDetails"
+			task:"committeeDetails",
+			committeeSpanTypeIdsList:committeeSpanTypeIdsArr,
+			startDate:dateStrArr[0],
+			endDate:dateStrArr[1]
 		}
-				
+			//alert(2233)	;	
 		$.ajax({
           type:'GET',
           url: 'getTotalCommitteeCntsByStateAction.action',
@@ -2314,18 +2207,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		else{
 		$("#constiRdId").attr('disabled', false);	
 		}
-		var startDate=$(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();
-		
+		//var startDate=$(".dp_startDate").val();
+		//var endDate=$(".dp_endDate").val();
+	var dateStr = $('#reportrange').val();		
+	var dateStrArr = dateStr.split('-');
+	var startDate = dateStrArr[0];
+	var endDate = dateStrArr[1];
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
 			state:state,
 			districtCommCheck:districtCommCheck,
 			mandalCheck:mandalCheck,
-			villageCheck:villageCheck
+			villageCheck:villageCheck,
+			committeeSpanTypeIdsList:committeeSpanTypeIdsArr
 		}
-				
+			//alert(111)	;
 		$.ajax({
           type:'GET',
           url: 'getDistrictWiseCommittesSummaryAction.action',
@@ -2351,9 +2250,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function getMainCommitteeMembersCount(state,level,type,committeeId,committeeType){
 		
-		var startDate=$(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();
-		
+		//var startDate=$(".dp_startDate").val();
+		//var endDate=$(".dp_endDate").val();
+		var dateStr = $('#reportrange').val();
+		var dateStrArr = dateStr.split('-');
+		var startDate = dateStrArr[0];
+		var endDate = dateStrArr[1];
 		var levelIdsArr = new Array();
 		var state = state; 
 		if(level == 'mandal')
@@ -2401,7 +2303,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
-				
+			//alert(222)	;	
 		$.ajax({
           type:'GET',
           url: 'getMembersRangeCountByLocationAction.action',
@@ -2466,9 +2368,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function getMainCommitteeMembersCount1(state,level,type,committeeId,id, removeId,committeeType){
 		
-		var startDate=$(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();
-		
+		//var startDate=$(".dp_startDate").val();
+		//var endDate=$(".dp_endDate").val();
+			var dateStr = $('#reportrange').val();		
+			var dateStrArr = dateStr.split('-');
+			var startDate = dateStrArr[0];
+			var endDate = dateStrArr[1];
 		var levelIdsArr = new Array();
 		var state = state; 
 		if(level == 'mandal')
@@ -2516,7 +2421,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
-				
+			//alert(333)	;	
 		$.ajax({
           type:'GET',
           url: 'getMembersRangeCountByLocationAction.action',
@@ -2592,9 +2497,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function getAflCommitteeCount(state,level,committeeType){
 		
-		var startDate=$(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();
-		
+	//	var startDate=$(".dp_startDate").val();
+	//	var endDate=$(".dp_endDate").val();
+	var dateStr = $('#reportrange').val();		
+	var dateStrArr = dateStr.split('-');
+	var startDate = dateStrArr[0];
+	var endDate = dateStrArr[1];	
 		var levelIdsArr = new Array();
 		var state = state; 
 		if(level == 'mandal')
@@ -2639,7 +2547,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
-				
+			//alert(444)	;	
 		$.ajax({
           type:'GET',
           url: 'getStartedAffliCommitteesCountByLocation.action',
@@ -2768,8 +2676,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			state = selected.val();
 		}
 		
-		var startDate = $(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();	
+		//var startDate = $(".dp_startDate").val();
+		//var endDate=$(".dp_endDate").val();	
+			var dateStr = $('#reportrange').val();		
+			var dateStrArr = dateStr.split('-');
+			var startDate = dateStrArr[0];
+			var endDate = dateStrArr[1];
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
@@ -2777,7 +2689,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			mandalCheck:mandalCheck,
 			villageCheck:villageCheck
 		}
-				
+			//alert(555)	;	
 		$.ajax({
           type:'GET',
           url: 'getConstituencyWiseCommittesSummaryAction.action',
@@ -3914,6 +3826,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					committeeEnrollmentId :[committeeEnrollmentId],
 					task:""
 				}
+				//alert(666)	;
 			$.ajax({
 				type : "POST",
 				url : "gettingCommitteeSummaryInfoAction.action",
@@ -4056,7 +3969,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		 $("#villageMainTableDivId").html("");
 		 $("#villageAfflicatedTableDivId").html("");
-		 
+		// alert(777)	;
 		$.ajax({
 				type : "POST",
 				url : "getSummaryActionPopUp.action",
@@ -4161,7 +4074,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 			$("#mandalMainCommitteDivId").html("");
 			 $("#mandalAffliCommitteDivId").html("");
-			
+			//alert(888)	;
 			$.ajax({
 				type : "POST",
 				url : "gettingMandalMuncipalDivisonSummaryPopUpAction.action",
@@ -4253,6 +4166,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 		}
 		function getMandalMuncipalDivisonTotalCommittees(){
+			//alert(999)	;
 			$.ajax({
 				type : "POST",
 				url : "getMandalMuncipalDivisonTotalCommitteesPopUpAction.action",
@@ -4298,6 +4212,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"memberCnt"
 	}
+	//alert(1122)	;
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4399,6 +4314,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				committeeEnrollmentId :[committeeEnrollmentId],
 				task:"memberInfo"
 			}
+			//alert(1133)	;
 			$.ajax({
 				  type:'GET',
 				  url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4515,6 +4431,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"committeComplete"
 	}
+	//alert(1144)	;
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4551,6 +4468,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		committeeEnrollmentId :[committeeEnrollmentId],
 		task:"deleterole"
 	}
+	//alert(1155)	;
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4752,7 +4670,7 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 			accessValue:districtId,
 			task:"District"
 		}
-				
+				//alert(1166)	;
 		$.ajax({
           type:'GET',
           url: 'getConstituencyWiseCommittesSummaryForDistrictAction.action',
@@ -5348,7 +5266,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			accessValue:constituencyId,
 			task:"Constituency"
 		}
-				
+				//alert(1177)	;
 		$.ajax({
           type:'GET',
           url: 'getConstituencyWiseCommittesSummaryForDistrictAction.action',
@@ -5753,7 +5671,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		 var jsObj={
 		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
 		       };
-			   
+			  // alert(1188)	;
 		 $.ajax({
 			type : "GET",
 			url : "gettingCadreDetailsAction.action",
@@ -5777,7 +5695,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		 var jsObj={
 		         locationId:locationId,locationTypeId:locationTypeId
 		       };
-			   
+			  // alert(1199)	;
 		 $.ajax({
 			type : "GET",
 			url : "gettingPerformanceOfCadreAction.action",
@@ -5818,6 +5736,116 @@ $(document).on("change","#tdpCommitteeYearId",function(){
 	$( "#reportrange" ).val('');
 	getCommitteeDetailsByEnrollement();
 });	
+
+function onLoadcimmitteeDashboardCalls(){
+		if(userAccessType == 'ALL'){
+			getCommitteeCountByState("AP");
+			getCommitteeCountByState("TS");
+			getCommitteeDetails("AP","mandalAll");
+			getCommitteeDetails("AP","villageAll");	
+			getCommitteeDetails("TS","mandalAll");	
+			getCommitteeDetails("TS","villageAll");						
+			getCommitteeDetails("AP","district");
+			getCommitteeDetails("AP","state");
+			getCommitteeDetails("TS","district");
+			getCommitteeDetails("TS","state");
+			getDistrictWiseCommittesSummary();
+			$("#apDistrictHeadingTR").show();
+			//$("#apDistrictBodyTR").show();
+			$("#tsDistrictHeadingTR").show();
+			//$("#tsDistrictBodyTR").show();
+			
+			$("#apStateHeadingTR").show();
+			//$("#apStateBodyTR").show();
+			$("#tsStateHeadingTR").show();
+			//$("#tsStateBodyTR").show();
+			
+		}else if(userAccessType == 'TS'){
+			getCommitteeCountByState("TS");
+			getCommitteeDetails("TS","mandalAll");	
+			getCommitteeDetails("TS","villageAll");
+			getCommitteeDetails("TS","district");
+			getCommitteeDetails("TS","state");
+			//$("#apDistrictHeadingTR").hide();
+			//$("#apDistrictBodyTR").hide();
+			$("#tsDistrictHeadingTR").show();
+			//$("#tsDistrictBodyTR").show();
+			
+			//$("#apStateHeadingTR").hide();
+			//$("#apStateBodyTR").hide();
+			$("#tsStateHeadingTR").show();
+			//$("#tsStateBodyTR").show();
+			getDistrictWiseCommittesSummary();
+		}
+		else if(userAccessType == 'AP'){
+			getCommitteeCountByState("AP");
+			getCommitteeDetails("AP","mandalAll");
+			getCommitteeDetails("AP","villageAll");
+			getCommitteeDetails("AP","district");
+			getCommitteeDetails("AP","state");
+			$("#apDistrictHeadingTR").show();
+			//$("#apDistrictBodyTR").show();
+			//$("#tsDistrictHeadingTR").hide();
+			//$("#tsDistrictBodyTR").hide();
+			
+			$("#apStateHeadingTR").show();
+			//$("#apStateBodyTR").show();
+			//$("#tsStateHeadingTR").hide();
+			//$("#tsStateBodyTR").hide();
+			getDistrictWiseCommittesSummary();
+		}else{					
+			if(userAccessType=="MP"){
+				//$("#districtCommDiv").hide();
+				getCommitteeCountByState("TS");
+				getCommitteeDetails("TS","mandalAll");
+				getCommitteeDetails("TS","villageAll");
+				/*$("#apDistrictHeadingTR").hide();
+				$("#apDistrictBodyTR").hide();
+				$("#tsDistrictHeadingTR").hide();
+				$("#tsDistrictBodyTR").hide();
+				$("#apStateHeadingTR").hide();
+				$("#apStateBodyTR").hide();
+				$("#tsStateHeadingTR").hide();
+				$("#tsStateBodyTR").hide();*/
+				$("#districtDistrictHeadingTR").hide();
+				//$("#districtDistrictBodyTR").hide();
+
+				getConstituencyWiseCommittesSummary();
+			}else if( userAccessType.indexOf("District") >= 0){
+				//$('#areaBtnsDiv').hide();
+				//$('.areaBtnsDiv').hide();
+				//$('#constiRdId').prop('checked','checked');
+				
+				//getConstituencyWiseCommittesSummary();
+				getCommitteeCountByState("AP");
+				getCommitteeDetails("AP","mandalAll");
+				getCommitteeDetails("AP","villageAll");
+				getCommitteeDetails("AP","district");
+				//getConstituencyWiseCommittesSummary();
+				//getCommitteeDetails("AP","state");
+				/*$("#apDistrictHeadingTR").show();
+				$("#apDistrictBodyTR").show();
+				$("#tsDistrictHeadingTR").show();
+				$("#tsDistrictBodyTR").show();*/
+				
+				$("#apStateHeadingTR").hide();
+				//$("#apStateBodyTR").hide();
+				$("#tsStateHeadingTR").hide();
+				//$("#tsStateBodyTR").hide();
+				getDistrictWiseCommittesSummary();
+			}else {
+				getCommitteeCountByState("AP");
+				getCommitteeDetails("AP","mandalAll");
+				getCommitteeDetails("AP","villageAll");
+				getCommitteeDetails("AP","district");
+				getCommitteeDetails("AP","state");
+				getDistrictWiseCommittesSummary();
+			
+			}
+			
+			
+		}
+}
 </script>		
 </body>
 </html>
