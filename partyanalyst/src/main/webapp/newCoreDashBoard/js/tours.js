@@ -524,7 +524,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			  if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						countVar =countVar+1;
-						candidateNameArray.push(result[i][j].name);
+						candidateNameArray.push(result[i][j].name.toUpperCase());
 						totalComplainceArr.push({"y":result[i][j].complaincePer,"extra":result[i][j].id+"-"+result[i][j].name+"-"+result[i][j].designation});
 						
 						if (countVar === 5) {
@@ -661,7 +661,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				if(result[i] != null && result[i].length > 0){
 					var length = result[i].length - 1;
 					for(var j = length; j >= 0; j--){
-						candidateNameArray.push(result[i][j].name);
+						candidateNameArray.push(result[i][j].name.toUpperCase());
 						  totalComplainceArr.push({"y":result[i][j].complaincePer,"extra":result[i][j].id+"-"+result[i][j].name+"-"+result[i][j].designation});
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -1433,7 +1433,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				$("#tourSlider").dateRangeSlider({
 					    bounds: {min: new Date(fromDate[2], 0, 1), max: new Date(toDate[2], 11, 31)},
 						//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
-						defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1],toDate[0])},
+						defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1]-1,toDate[0])},
 						scales: [{
 						  first: function(value){ return value; },
 						  end: function(value) {return value; },
@@ -1800,7 +1800,7 @@ function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
 		$("#tourSlider").dateRangeSlider({
 				bounds: {min: new Date(fromDate[2], 0, 1), max: new Date(toDate[2], 11, 31)},
 				//defaultValues: {min: new Date(2012, 1, 10), max: new Date(2012, 4, 22)},
-				defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1],toDate[0])},
+				defaultValues: {min: new Date(fromDate[2], fromDate[1]-1,fromDate[0]), max: new Date(toDate[2],toDate[1]-1,toDate[0])},
 				scales: [{
 				  first: function(value){ return value; },
 				  end: function(value) {return value; },
