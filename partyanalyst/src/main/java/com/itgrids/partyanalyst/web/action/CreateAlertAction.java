@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -50,6 +51,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String task = null;
 	JSONObject jObj = null;	
 	private IAlertService alertService;
+	private ICccDashboardService cccDashboardService;
 	private InputStream inputStream;
 	private String status;
 	private AlertVO alertVO;
@@ -80,6 +82,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 
 	
+	public ICccDashboardService getCccDashboardService() {
+		return cccDashboardService;
+	}
+
+	public void setCccDashboardService(ICccDashboardService cccDashboardService) {
+		this.cccDashboardService = cccDashboardService;
+	}
+
 	public List<Long> getCadreIds() {
 		return cadreIds;
 	}
@@ -1593,4 +1603,68 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-}
+	public String getTotalAlertGroupByStatusForGovt(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			
+			alertVOs = cccDashboardService.getTotalAlertGroupByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTotalAlertGroupByStatusThenDepartment(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			
+			alertVOs = cccDashboardService.getTotalAlertGroupByStatusThenDepartment(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+}//getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
