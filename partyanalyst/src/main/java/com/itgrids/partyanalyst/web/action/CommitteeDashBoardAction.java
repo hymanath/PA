@@ -404,7 +404,19 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				String startDate=jObj.getString("startDate");
 				String endDate=jObj.getString("endDate");
 				
-				cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds,startDate,endDate,regVO.getRegistrationID(),accessType,accessValue);
+				List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>(0);
+				try {
+					JSONArray committeeSpanTypeIdsArr = jObj.getJSONArray("committeeSpanTypeIdsList");
+					if(committeeSpanTypeIdsArr != null && committeeSpanTypeIdsArr.length()>0){
+						for (int i = 0; i < committeeSpanTypeIdsArr.length(); i++) {
+							committeeSpanTypeIdsLsit.add(committeeSpanTypeIdsArr.get(i) != null ? Long.valueOf(committeeSpanTypeIdsArr.get(i).toString()):0L);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds,startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,committeeSpanTypeIdsLsit);
 			}
 			else
 			{
@@ -433,8 +445,23 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				jObj = new JSONObject(getTask());
 				
 				String state =jObj.getString("state");
+				String startDateStr = null;
+				String endDateStr = null;
+				List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>(0);
+				try {
+					startDateStr = jObj.getString("startDate");
+					endDateStr = jObj.getString("endDate");
+					JSONArray committeeSpanTypeIdsArr = jObj.getJSONArray("committeeSpanTypeIdsList");
+					if(committeeSpanTypeIdsArr != null && committeeSpanTypeIdsArr.length()>0){
+						for (int i = 0; i < committeeSpanTypeIdsArr.length(); i++) {
+							committeeSpanTypeIdsLsit.add(committeeSpanTypeIdsArr.get(i) != null ? Long.valueOf(committeeSpanTypeIdsArr.get(i).toString()):0L);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				
-				cadreCommitteeReportVO = cadreCommitteeService.getTotalCommitteeDetailsByLocation(state,regVO.getRegistrationID(),accessType,accessValue);
+				cadreCommitteeReportVO = cadreCommitteeService.getTotalCommitteeDetailsByLocation(state,regVO.getRegistrationID(),accessType,accessValue,committeeSpanTypeIdsLsit,startDateStr,endDateStr);
 			}
 			else{
 				noaccess = true;
