@@ -732,5 +732,6 @@
 		<pattern>/finalizedPartyMeetingConductedAction*</pattern>
 		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
+		<pattern>/cccDashboardAction*</pattern>
 	</decorator> 
 </decorators>
