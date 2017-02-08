@@ -678,7 +678,9 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
-			districtWiseSummaryList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("constituencyId"),committeeEnrollmentIdsLst);
+			String startDate = jObj.getString("startDate"); 
+			String endDate = jObj.getString("endDate");
+			districtWiseSummaryList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate);
 		}catch(Exception e){
 			LOG.error("Exception Occured In gettingMandalAndMuncipalAndDivisonSummary method "+e);			
 		}
@@ -696,14 +698,16 @@ public String getCommitteeDetailsByStatusPopUp(){
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
+			String startDate = jObj.getString("fromDate");
+			String endDate = jObj.getString("toDate");
 			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
-			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),jObj.getString("constituencyId"),committeeEnrollmentIdsLst);
+			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("deleterole"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"),committeeEnrollmentIdsLst,startDate,endDate);
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
 		}
@@ -856,10 +860,12 @@ public String getAllConstituencysForADistrict(){
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
+			String startDate = jObj.getString("startDate"); 
+			String endDate = jObj.getString("endDate");
 			if(jObj.getString("type").equalsIgnoreCase("electrols"))
 			cadreCommitteeMemberVOList = cadreCommitteeService.getElectrolsOfPanchayatAndWards(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
 			else 
-			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status",committeeEnrollmentIdsLst);
+			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status",committeeEnrollmentIdsLst,startDate,endDate);
 			
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);

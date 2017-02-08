@@ -1633,15 +1633,17 @@ public String getSummaryDetails(){
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
+			String startDate = jObj.getString("startDate"); 
+			String endDate = jObj.getString("endDate");
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"),committeeEnrollmentIdsLst);
+			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"),committeeEnrollmentIdsLst,startDate,endDate);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue(),committeeEnrollmentIdsLst);	
+				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue(),committeeEnrollmentIdsLst,startDate,endDate);	
 			}
 		}else{
 			return ERROR;
@@ -1664,17 +1666,19 @@ public String getSummaryDetails(){
 				committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 			}
 		}
+		String startDate = jObj.getString("startDate");
+		String endDate = jObj.getString("endDate"); 
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null && (user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS") || user.getEntitlements().contains("COMMITTEE_MGT")
 				 || user.getEntitlements().contains("TDP_COMMITTEE_ADMIN") || (user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")))){
 			
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"),committeeEnrollmentIdsLst);
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"),committeeEnrollmentIdsLst,startDate,endDate);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType(),committeeEnrollmentIdsLst);
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType(),committeeEnrollmentIdsLst,startDate,endDate);
 			}
 		}else{
 			return ERROR;

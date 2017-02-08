@@ -142,14 +142,16 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
+			String startDate = jObj.getString("startDate"); 
+			String endDate = jObj.getString("endDate");
 			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
-			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),user.getAccessValue(),committeeEnrollmentIdsLst);
+			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),user.getAccessValue(),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst,startDate,endDate);
 			else if(jObj.getString("task").equalsIgnoreCase("deleterole"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"),committeeEnrollmentIdsLst);
+				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"),committeeEnrollmentIdsLst,startDate,endDate);
 			
 			}
 		}catch(Exception e){
