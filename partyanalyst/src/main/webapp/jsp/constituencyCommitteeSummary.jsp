@@ -16,7 +16,7 @@
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
 	<link rel="stylesheet" type="text/css" href="css/cadreCommitee/slick/slick.css"/>
-	
+	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 	<!----slick Js----->
@@ -78,7 +78,13 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h4 class="panel-title" id="titleId"> </h4>
+				<h4 class="panel-title">
+					<span  id="titleId" style="hieght:20px;margin-top:-7px;"></span>
+					<select id="tdpCommitteeYearId"  class="form-control pull-right" style="width:150px;margin-top:-7px;">	
+						<option value="2">2016 - 2018</option>
+						<option value="1">2014 - 2016</option>
+					</select>
+				</h4>
 			</div>
 			<div class="panel-body">
 			   <div class="row m_top20 locationCls" style="display:none;">
@@ -93,7 +99,7 @@
 						<label>
 							Select State	
 						</label>
-						<select id="stateId" onchange="getUserAccessInfo();" class="form-control">	
+						<select id="stateId" onchange="getUserAccessInfo();"  class="form-control">	
 							<option value="0">All</option> 
 							<option value="1"> Andhra Pradesh </option>
 							<option value="2"> Telangana </option>
@@ -105,13 +111,29 @@
 					</div>
 					<div class="col-md-2">
 						<label>Select Committee Type</label>
-						<select id="committetypeId"  class="form-control"  onchange="getRolesBasedReport(0)">	
+						<select id="committetypeId"  class="form-control" onchange="getRolesBasedReport(0)">	
 							<option value="0">All</option> 
 							<option value="1"> Main </option>
 							<option value="2"> Affiliated </option>
 						</select>
 					</div>
+					<!--<div class="col-md-2">
+						<label>Select Enrollment Year</label>
+						<select id="tdpCommitteeYearId"  class="form-control">	
+							<option value="0">Select Year</option> 
+						</select>
+					</div>-->
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<label>Date</label>
+						<div class="input-group">
+							  <span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+							  </span>
+							  <input type="text" class="form-control" id="reportrange"/>
+							</div>
+					</div>
 				</div>	
+				
 			</c:if>	
 			<c:if test="${pageAccessType != 'ALL'}">
 			<div  class="row m_top20 form-inline">
@@ -137,7 +159,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div id="constiRoleSummry" style="display:none;">
-								<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
+								<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image" style="display:none;"/>
 							</div>
 						</div>
 					</div>
@@ -161,7 +183,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="panel-group" id="constSummary" role="tablist" aria-multiselectable="true">
-								<img id="summaryAjax" src="./images/Loading-data.gif" class="" alt="Processing Image"/>
+								<img id="summaryAjax" src="./images/Loading-data.gif" class="" alt="Processing Image" style="display:none;"/>
 							</div>
 						</div>
 					</div>
@@ -311,16 +333,35 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
+<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
 <script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
-			<script>
-		var casteArray=new Array();
+<script src="js/cadreCommittee/cadreCommitteeDashboard1.js" type="text/javascript"></script>
+<script>
+$('#reportrange').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
+$("#reportrange").daterangepicker({
+	startDate: moment(),
+	endDate: moment(),
+	opens: 'left',
+	format: 'DD/MM/YYYY',
+	ranges: {
+	   'Today' : [moment(), moment()],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+	   'This Month': [moment().startOf('month'), moment()],
+	   'This Year': [moment().startOf('Year'), moment()]
+	}
+});		var casteArray=new Array();
 		
             <c:forEach var="caste" items="${castes}">
 				var casteObject = { id:"${caste.id}",name:"${caste.name}" }
 				casteArray.push(casteObject);
 			</c:forEach>			
 	
-	</script>
+</script>
 <script type="text/javascript">
 $(document).on("click","#updateCadreCls",function(){
 	setTimeout(function(){
@@ -333,7 +374,8 @@ var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
 
 $(document).ready(function(){
-	$('.summaryEventCls').click(function(){
+	//getCadreEnrollmentYears();
+	 $('.summaryEventCls').click(function(){
 		var btnId = $(this).attr('id');
 		if(btnId == 'hide')
 		{
@@ -348,15 +390,16 @@ $(document).ready(function(){
 			$('#hide').show();
 			$('#constiRoleSummary').show();
 		}
-	});
+	}); 
 });
-if(accessConstituencyId!='null' && accessConstituencyId!=""){
-	$(".locationCls").hide();
-	getConstituencySummary();
-	$("#constSummary").show();
+  if(accessConstituencyId !='null' && accessConstituencyId!=""){
+		$(".locationCls").hide();
+		getConstituencySummary();
+		$("#constSummary").show();
+	  
 }else{
 	getAllDistricts();
-}
+}  
 
 
 function getAllDistricts()
@@ -382,22 +425,22 @@ function getAllDistricts()
 		});
 }
 
-$("#constituencysId").change(function(){
+ /* $("#constituencysId").change(function(){
 	$("#constSummary").show();
 	$(".exportToExcel").hide();
 	getConstituencySummary();
-});
-$(".reportTypeCls").click(function(){
+}); */ 
+ $(".reportTypeCls").click(function(){
 	getConstituencySummary();
 	getRolesBasedReport(0);
 
 	
-});
+}); 
 $("#committetypeId").change(function(){
 	getConstituencySummary();
 	getRolesBasedReport(0);
 });
-
+ 
 
 	
 function getAllConstituencysForADistrict()
@@ -445,8 +488,21 @@ function getConstituencySummary(){
 	}
 	var reportType = $("input[type='radio'][name='reportType']:checked").val();
 	var committeeTypeId =$("#committetypeId").val();
+	var enrollmentIdsArr = new Array();
+	  enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+	   var dates = $("#reportrange").val();
+	   var dateArray = dates.split("-");
+		var fromDateStr=dateArray[0];
+		var toDateStr=dateArray[1];
+		
+  
 	var jsObj ={
-		 constituencyId:constiId,reportType :reportType ,committeeTypeId:committeeTypeId       
+		 constituencyId:constiId,reportType :reportType ,
+		 committeeTypeId:committeeTypeId,
+		 enrollmentIdsArr:enrollmentIdsArr,
+		 startDate : fromDateStr,
+		 endDate : toDateStr
+     
 	}	
 	$.ajax({
 		type : "POST",
@@ -528,7 +584,7 @@ function buildImportantCandidateDetails(result){
 }
 
 function buildConstituencySummary(results,jsObj){
-
+$("#titleId").html('');
 	var repType = jsObj.reportType;
 	
 	$("#constSummary").html("");
@@ -876,9 +932,25 @@ function buildConstituencySummary(results,jsObj){
 }
 function gettingCadreDetails(type,locationType,location,basicCmmtyId,locationName,basicCmmtyName){
 	
+		var dates = $("#reportrange").val();
+	   var dateArray = dates.split("-");
+		var fromDateStr=dateArray[0];
+		var toDateStr=dateArray[1];
+		var enrollmentIdsArr = new Array();
+		enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
 		
 		 var jsObj={
-		         locationId:location,locationType:locationType,basicCommitteeTypeId:basicCmmtyId,type:type,casteStateId:0,gender:"",fromAge:0,toAge:0
+		         locationId:location,
+				 locationType:locationType,
+				 basicCommitteeTypeId:basicCmmtyId,
+				 type:type,
+				 casteStateId:0,
+				 gender:"",
+				 fromAge:0,
+				 toAge:0,
+				 committeeEnrollmentId:enrollmentIdsArr,
+				startDate :fromDateStr ,
+				endDate : toDateStr
 		       };
 			   
 		 $.ajax({
@@ -1183,8 +1255,11 @@ function getUserAccessInfo()
 	
 	if ($('#stateId').length != null && $('#stateId').length != 0)
 	 stateId = $("#stateId").val();
+	var enrollmentIdsArr = new Array();
+	enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
 	var jObj ={
 		stateId:stateId,
+		enrollmentIdsArr:enrollmentIdsArr,
 		task:"getConstituencies"
 	}
 	$.ajax({
@@ -1240,7 +1315,13 @@ function getRolesBasedReport(roleId)
 		{
 			rolesArr.push(roleId);
 		}
-
+		var enrollmentIdsArr = new Array();
+		enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+		var dates = $("#reportrange").val();
+	   var dateArray = dates.split("-");
+		var fromDateStr=dateArray[0];
+		var toDateStr=dateArray[1];
+		
 		var jObj = {
 			rolesArr : rolesArr,
 			casteCategoryArr : casteCategoryArr,
@@ -1251,7 +1332,10 @@ function getRolesBasedReport(roleId)
 			userAccessType : userAccessType,
 			castePercentage:'${accessConstituencyId}',
 			searchTypeId:searchTypeId,
-			selectedRadio:selectedRadio
+			selectedRadio:selectedRadio,
+			enrollmentIdsArr:enrollmentIdsArr,
+			startDate :fromDateStr ,
+			endDate : toDateStr
 		};
 		$.ajax({
           type:'GET',
@@ -1271,6 +1355,7 @@ function getRolesBasedReport(roleId)
 	
 	function buildRoleWiseDetailsInfo(result)
 	{
+		$("#constiRoleSummary").html('<img id="summaryAjax" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>');
 		var totalResult = result.cadreCommitteeRolesInfoVOList;
 			var str='';
 		if(totalResult != null)
@@ -1634,11 +1719,17 @@ function getRolesBasedReport(roleId)
 	  
   }
 	getRolesBasedReport(0);
+ $(document).on("change","#tdpCommitteeYearId",function(){
+	getCommitteeDetailsByEnrollement();
+	getConstituencySummary();
+	getRolesBasedReport(0);
+});
 </script>
 <script>
-<c:if test="${pageAccessType == 'ALL'}">
- getUserAccessInfo();
- </c:if>
+ <c:if test="${pageAccessType == 'ALL'}">
+		getUserAccessInfo();
+</c:if>
+
 </script>
 </body>
 </html>
