@@ -48,6 +48,7 @@ public class AlertVO {
 	private List<String> filePthList = new ArrayList<String>(0);
 	private String clarificationRequired;
 	private String fileIdList;
+	private Double statusPercent = 0.0d;
 	
 	public Long getNoOfDays() {
 		return noOfDays;
@@ -290,6 +291,12 @@ public class AlertVO {
 	}
 	public void setFileIdList(String fileIdList) {
 		this.fileIdList = fileIdList;
+	}
+	public Double getStatusPercent() {
+		return statusPercent;
+	}
+	public void setStatusPercent(Double statusPercent) {
+		this.statusPercent = statusPercent;
 	}
 	
 }
