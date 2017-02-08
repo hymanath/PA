@@ -3706,10 +3706,6 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="govtDepartmentDesignationLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationLocationDAO">
-	  	<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
 	<bean id="govtDepartmentDesignationOfficerDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationOfficerDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
