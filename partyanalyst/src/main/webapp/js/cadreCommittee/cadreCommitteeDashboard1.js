@@ -42,7 +42,6 @@ function getCommitteeDetailsByEnrollement(){
 					 var tYear = result[i].toDate.split('-')[0];
 					 var tMonth = result[i].toDate.split('-')[1];
 					 var tDate = result[i].toDate.split('-')[2].substring(0,2);
-					 
 					$('#reportrange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
 					$('#reportrange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
 				}
