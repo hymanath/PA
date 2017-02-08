@@ -448,4 +448,17 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			query.setParameterList("districtIds", districtIds);
 			return query.list();
 		}
+		
+		public List<Object[]> getDistrictsWithNewDistricts(){
+			StringBuilder str = new StringBuilder();
+		    
+			str.append("select distinct model.districtId," +
+							" model.districtName" +
+		    				" from District model" +
+		    				" where model.districtId <= 23 or model.districtId in (517,518)");
+			str.append(" order by  model.districtName ");
+			  
+			Query query = getSession().createQuery(str.toString());
+			return query.list();
+		}
 }

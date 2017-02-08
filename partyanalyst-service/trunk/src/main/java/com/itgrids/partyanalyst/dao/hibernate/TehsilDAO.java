@@ -266,5 +266,12 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return query.list();
 	}
 
-	
+	public List<Object[]> getAllTehsilListByState() {
+		Query query = getSession().createQuery(" select distinct model.tehsilId," +
+										" concat(model.tehsilName,' Mandal')" +
+										" from Tehsil model" +
+										" where model.district.state.stateId in (1,36)" +
+										" order by model.tehsilName");
+		return query.list();
+	}
 }

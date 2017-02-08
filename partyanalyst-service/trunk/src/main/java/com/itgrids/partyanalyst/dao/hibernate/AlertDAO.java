@@ -4359,6 +4359,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list(); 
 	}
+	
+	public List<Object[]> getDepartmentsByAlertId(Long alertId){
+		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId," +
+											" model.govtDepartment.departmentName" +
+											" from Alert model" +
+											" where model.alertId = :alertId" +
+											" and model.isDeleted = 'N'");
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
 	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");
