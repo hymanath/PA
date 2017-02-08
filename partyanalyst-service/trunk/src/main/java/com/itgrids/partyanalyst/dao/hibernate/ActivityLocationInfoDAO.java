@@ -2223,18 +2223,7 @@ public List<Object[]> getConductedCounts(Long locationId,Long activityScopeId, S
 			" model.activityScope.activityScopeId =:activityScopeId" +
 			" and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
 	
-	/*if(locationId != null && locationId.longValue() > 0l){
-		if(searchType != null && searchType.equalsIgnoreCase("constituency"))
-			queryStr.append("  and model.address.district.districtId = :locationId ");
-		else if(searchType != null && searchType.equalsIgnoreCase("village"))
-			queryStr.append("  and model.address.tehsil.tehsilId = :locationId ");
-		else if(searchType != null && searchType.equalsIgnoreCase("ward"))
-			queryStr.append("  and model.address.constituency.localElectionBody.localElectionBodyId = :locationId ");
-		else if( searchType != null && searchType.equalsIgnoreCase("mandal") || searchType != null && searchType.equalsIgnoreCase("town"))
-			queryStr.append("  and model.address.constituency.constituencyId = :locationId ");
-		else if(searchType != null && searchType.equalsIgnoreCase("onlyvillage"))
-			queryStr.append("  and model.address.panchayat.panchayatId = :locationId ");
-	}*/
+	
 	if(locationId.longValue() == 0l){
 	if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l){
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -2266,15 +2255,7 @@ public List<Object[]> getConductedCounts(Long locationId,Long activityScopeId, S
 		else if(searchType != null && searchType.equalsIgnoreCase("onlyvillage"))
 			queryStr.append("  and model.address.panchayat.panchayatId = :locationId ");
 	}
-		/*else{
-		if(stateId != null && stateId.longValue() == 1l){
-			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-		}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
-			queryStr.append("  and model.address.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-		}else if(stateId != null && stateId.longValue() == 0l){
-			queryStr.append("  and model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
-		}
-	}*/
+		
 	
 	if(searchType != null && searchType.equalsIgnoreCase("constituency"))
 		queryStr.append(" group by model.address.constituency.constituencyId order by model.address.constituency.name ");
