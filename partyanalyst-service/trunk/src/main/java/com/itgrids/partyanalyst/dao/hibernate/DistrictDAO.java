@@ -88,7 +88,8 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		query.append("select model.districtId,model.districtName from District model where model.state.stateId = ? ");
 		if(stateId.longValue() == 0L)
 		{
-			query.append(" and model.districtId between 1 and 23 ");
+			//query.append(" and model.districtId between 1 and 23 ");
+			query.append(" and model.districtId in("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 		}else if(stateId.longValue()==1L){
 			query.append(" and model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		}
