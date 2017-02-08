@@ -854,7 +854,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					String LocationType = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpCommitteeLevel().getTdpCommitteeLevel();
 					String location = null;
 					Long locationValue = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpCommitteeLevelValue();
-					if(LocationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+					if(LocationType.equalsIgnoreCase(IConstants.PANCHAYAT) || LocationType.equalsIgnoreCase("Village"))
 					{
 						location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
 					}
