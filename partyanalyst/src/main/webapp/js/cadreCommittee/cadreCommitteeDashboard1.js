@@ -14,6 +14,8 @@ function getCadreEnrollmentYears(){
 					$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 				}
 			}
+			
+			onLoadcimmitteeDashboardCalls();
 		});
 	}
 $(document).on("click","#getDetailsId",function(){
