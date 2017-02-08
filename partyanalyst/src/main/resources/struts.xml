@@ -15688,5 +15688,10 @@
 		    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
   	</action>
+	  <action name="getCommitteeMembersAvailableInfoAction" class="committeeDashBoardAction" method="getCommitteeMembersAvailableInfo">
+	  	  <result type="json" name="success">		   
+			    <param name="root">locationWiseBoothDetailsVO</param>
+		  </result>	
+	  </action>
  </package>
 </struts>

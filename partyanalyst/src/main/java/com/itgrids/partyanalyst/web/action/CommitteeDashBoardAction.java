@@ -1455,5 +1455,15 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getCommitteeMembersAvailableInfo(){
+		try {
+			jObj = new JSONObject(getTask());
+			locationWiseBoothDetailsVO = cadreCommitteeService.getCommitteeMembersAvailableInfo1(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("enrollmentYrId"),jObj.getString("startDate"),jObj.getString("endDate"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCommitteeMembersAvailableInfo() At CadreCommitteeAction ",e);
+		}		
+		return Action.SUCCESS;
+	}
 	
 }
