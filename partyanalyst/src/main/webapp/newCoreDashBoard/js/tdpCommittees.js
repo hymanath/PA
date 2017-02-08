@@ -1820,10 +1820,7 @@
 		}
 	}
 	function committeeBasicCall(){
-		setTimeout(function(){
 			getCommitteesBasicCountReport(); 
-		}, 2000);
-		
 	}
 	$(document).on("click",".comparisonSelect li",function(){
 		if($(this).hasClass("active") == true)
@@ -1951,11 +1948,13 @@
 			}).done(function(result){
 				if(result != null && result.length > 0){
 					for(var i in result){
-						$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+						if(parseInt(result[i].id) == 1)
+							$("#tdpCommitteeYearId").append('<option value='+result[i].id+' selected="selected">'+result[i].electionYear+'</option>');
+						else
+							$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 					}
-					
 				}
-				getCommitteeDetailsByEnrollement(2);
+				getCommitteeDetailsByEnrollement(1);
 			});
 		}
 		$(document).on("change","#tdpCommitteeYearId",function(){
@@ -1968,9 +1967,7 @@
 				enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
 			else{
 				enrollmentIdsArr.push(id);
-				defaultCommitteeCalls();
 			}
-			
 			var jsObj={
 				enrollmentIdsArr:enrollmentIdsArr
 			};
@@ -2026,7 +2023,7 @@
 						$('#dateRangeId').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
 						$('#dateRangeId').val(fDate+'/'+fMonth+'/'+fYear+' - '+tDate+'/'+tMonth+'/'+tYear)
 					}
-					committeeBasicCall();
+					defaultCommitteeCalls();
 				}
 			});
 		}
