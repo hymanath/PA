@@ -7,14 +7,340 @@ $("#dateRangePicker").daterangepicker({
 	  format: 'DD-MM-YYYY'  
 	},
 });
+
+/* Status OverView Start*/
+totalAlertGroupByStatusForGovt()
+totalAlertGroupByStatusThenDepartment()
+function totalAlertGroupByStatusForGovt()
+{
+	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var deptIdArr = [1,2,3,4];
+    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:'01/02/2017',
+      toDate:'07/02/2017',
+      stateId : 36,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertGroupByStatusForGovtAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildTotalAlertGroupByStatusForGovt(result);
+		}else{
+			$("#statusOverview").html('NO DATA AVAILABLE')
+		}
+    });
+}
+function buildTotalAlertGroupByStatusForGovt(result)
+{
+	var str='';
+	
+	str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div id="totalAlertGroupByStatusForGovt"></div>';
+			str+='<div id="statusOverViewTotal"></div>';
+		str+='</div>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<table class="table tableGraph">';
+				str+='<thead>';
+					str+='<th>Status</th>';
+					str+='<th>Total</th>';
+					str+='<th>%</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result)
+					{	
+						str+='<tr>';
+							str+='<td>'+result[i].status+'</td>';
+							str+='<td>'+result[i].count+'</td>';
+							str+='<td>'+result[i].statusPercent+'%</td>';
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	$("#statusOverview").html(str);
+	var statusOverviewArr =[];
+	for(var i in result)
+	{
+		statusPercent = result[i].statusPercent;
+		statusName = result[i].status;
+		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+		
+		var obj = {
+			name: statusName,
+			y:statusPercent,
+			//color:color
+		}
+		
+		statusOverviewArr.push(obj);
+		
+	}
+	
+	$(function() {
+		var chart = new Highcharts.Chart({
+			colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
+			chart: {
+				renderTo: 'totalAlertGroupByStatusForGovt',
+				type: 'pie',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			 tooltip: {
+				enabled: false,
+				shared: true
+			}, 
+			plotOptions: {
+				series: {
+					dataLabels: {
+						enabled: true,
+						formatter: function() {
+							return Math.round(this.percentage*100)/100 + ' %';
+						},
+						distance: -30,
+						color:'black'
+					}
+				},
+				pie: {
+					innerSize: 130,
+					depth: 100,
+					dataLabels:{
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1)+ '%';
+								}
+							} 
+					},
+					showInLegend: false
+				},
+			},
+			series: [{
+				data: statusOverviewArr
+			}]
+		},
+	
+		function(chart) { // on complete
+			var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
+			var textY = chart.plotTop  + (chart.plotHeight * 0.5);
+
+			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
+			span += '<span style="font-size: 18px">TOTAL</span><br>';
+			span += '<span style="font-size: 14px">100</span>';
+			span += '</span>';
+
+			$("#statusOverViewTotal").append(span);
+			span = $('#pieChartInfoText');
+			span.css('left', textX + (span.width() * -0.5));
+			span.css('top', textY + (span.height() * -0.5));
+		});
+	});
+}
+/* Status OverView End*/
+
+/* DEPARTMENT WISE STATUS OVERVIEW START*/
+function totalAlertGroupByStatusThenDepartment()
+{
+	$("#departmentWiseStatusOvrVw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+    var deptIdArr = [1,2,3,4];
+    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+	var jsObj ={
+      fromDate:'01/02/2017',
+      toDate:'07/02/2017',
+      stateId : 36,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertGroupByStatusThenDepartmentAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildtotalAlertGroupByStatusThenDepartment(result);   
+		}else{
+			$("#departmentWiseStatusOvrVw").html('NO DATA AVAILABLE')
+		}
+    });
+}
+function buildtotalAlertGroupByStatusThenDepartment(result)
+{
+	var str='';
+	str+='<ul class="nav nav-tabs" role="tablist">';
+	for(var i in result)
+	{
+		if(i == 0)
+		{
+			str+='<li role="presentation" class="active text-capital"><a href="#'+result[i].status+'" aria-controls="'+result[i].status+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
+		}else{
+			str+='<li role="presentation" class="text-capital"><a href="#'+result[i].status+'" aria-controls="'+result[i].status+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
+		}
+	}
+	str+='</ul>';
+	str+='<div class="tab-content">';
+	for(var i in result)
+	{
+		if(i == 0)
+		{
+			str+='<div role="tabpanel" class="tab-pane active" id="'+result[i].status+'">';
+		}else{
+			str+='<div role="tabpanel" class="tab-pane" id="'+result[i].status+'">';
+		}
+		
+			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
+					str+='<div class="row">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
+							for(var j in result[i].subList1)
+							{
+								if(result[i].subList1[j].category !=null && result[i].subList1[j].category.length > 40){
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span class="pull-right">'+result[i].subList1[j].categoryCount+'</span></li>';
+								}else{
+									str+='<li>'+result[i].subList1[j].category+'  <span class="pull-right">'+result[i].subList1[j].categoryCount+'</span></li>';
+								}
+								
+							}
+							str+='</ul>';
+						str+='</div>';
+						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+							str+='<div id="departmentStatusGraph'+i+'"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';	
+	}
+	str+='</div>';
+	$("#departmentWiseStatusOvrVw").html(str);
+	$('[data-toggle="tooltip"]').tooltip();
+	
+	for(var i in result)
+	{
+		var dynamicHeight;
+		$(".dynamicHeightApply"+i).each(function(){
+			dynamicHeight = $(this).find("li").length;
+			dynamicHeight = (dynamicHeight*40)+"px";
+		});
+		$("#departmentStatusGraph"+i).css("height",dynamicHeight);
+		var dynamicWidth = $("#departmentStatusGraph0").parent().width();
+		$("#departmentStatusGraph"+i).css("width",dynamicWidth)
+		var departmentStatusOvrVwArr = [];
+		for(var j in result[i].subList1)
+		{
+			var departmentStatus = [];
+			departmentStatus.push(result[i].subList1[j].category)
+			departmentStatus.push(result[i].subList1[j].statusPercent)
+			departmentStatusOvrVwArr.push(departmentStatus)
+		}
+		$('#departmentStatusGraph'+i).highcharts({
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: '',
+				labels: {
+				enabled: false,
+					
+				}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: false,
+						
+					},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			},
+			tooltip: {
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
+			},
+			plotOptions: {
+				bar: {
+					dataLabels: {
+						enabled: true,
+						formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return Highcharts.numberFormat(this.y,2) + '%';
+							}
+						}
+					}
+				}
+			},
+			legend: {
+				enabled: false,
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -40,
+				y: 80,
+				floating: true,
+				borderWidth: 1,
+				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+				shadow: true
+			},
+			
+			series: [{
+				 name: '',
+				 colorByPoint: true,
+				 data: departmentStatusOvrVwArr
+			}]
+		});
+	}
+	
+}
+
+/* DEPARTMENT WISE STATUS OVERVIEW END*/
 		
 var alertId = 3725;
 buildtotalAlertsModalTabId()
-	$("#totalAlertsModal").modal({
+	/* $("#totalAlertsModal").modal({
 		show: true,
 		keyboard: false,
 		backdrop: 'static'
-	});
+	}); */
 function buildtotalAlertsModalTabId()
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -382,4 +708,3 @@ function getMonth(month){
 		return "Dec"
 	}  
 }
-
