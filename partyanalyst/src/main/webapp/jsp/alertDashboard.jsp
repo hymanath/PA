@@ -1089,6 +1089,97 @@ function modifyDate(currentDate){
 	var newDate = dataArr[1]+"/"+dataArr[0]+"/"+dataArr[2];
 	return newDate;
 }
+function createAlert(){
+	window.open("createAlertAction.action", '_blank');
+}
+function buildAlertData(result,jsObj){  
+	if(result == null || result.length == 0)
+	{
+		$("#locationLevelDataId").html('No Data Available..');
+		return;
+	}
+		
+	var Level = "";
+	
+	if(jsObj.levelId == 2)
+	{
+		Level = "STATE";
+	}
+	else if(jsObj.levelId == 3)
+	{
+		Level = "DISTRICT";
+	}
+	else if(jsObj.levelId == 4)
+	{
+		Level = "CONSTITUENCY";
+	}
+	else if(jsObj.levelId == 5)
+	{
+		Level = "MANDAL";
+	}
+	else if(jsObj.levelId == 6)
+	{
+		Level = "VILLAGE";
+	}
+	else
+	{
+		Level = "";
+	}
+	var str='';
+	
+	str+='<div class="table-responsive">';
+	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
+	str+='<thead>';
+	
+	str+='<th>Alert Source </th>';
+	str+='<th>Title</th>';
+	str+='<th>Alert Category </th>';
+	str+='<th>Alert Type </th>';
+	str+='<th>Alert Status</th>';
+	str+='<th>Verification Status</th>'; 
+	str+='<th>Involved Candidates</th>';
+	str+='<th>Created Date</th>'; 
+	str+='<th>Information Source </th>';
+	str+='<th>Severity</th>';
+	str+='<th style="width:50px;"></th>';
+	str+='</thead>';
+	str+='<tbody>';
+	var j=0;
+	for(var i in result)
+	{
+		j++;
+	str+='<tr>';
+	str+='<td>'+result[i].alertSource+'</td>';
+	str+='<td>'+result[i].title+'</td>';
+	str+='<td>'+result[i].alertCategoryName+'</td>';
+	str+='<td>'+result[i].alertType+'</td>';
+	str+='<td>'+result[i].status+'</td>';
+	if(result[i].verificationStatus != null){
+		str+='<td>'+result[i].verificationStatus+'</td>';
+	}else{
+		str+='<td>-</td>';
+	}
+	str+='<td>'+result[i].count+'</td>';
+	str+='<td>'+result[i].date+'</td>';
+	str+='<td>'+result[i].userType+'</td>';
+	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
+	if(result[i].alertCategoryName == "Manual"){
+		str+='<td><i style="cursor: pointer; margin-left:10px;margin-right:10px;"  class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DETAILS_EDIT_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DETAILS_EDIT_ADMIN_USER_ENTITLEMENT')}">   
+			str+='<i class="glyphicon glyphicon-edit alertEditModel"  target="_blank" title="Click here to Edit Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" ></i>';
+		</c:if>
+		str+='</td>';
+	}else{
+		str+='<td><i style="cursor: pointer; margin-left:10px;margin-right:10px;"  class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'"></i></td>';
+	}
+	str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#locationLevelDataId").html(str);
+	$("#alertDataTableId").dataTable(); 
+}
 </script>
 </body>
 </html>
