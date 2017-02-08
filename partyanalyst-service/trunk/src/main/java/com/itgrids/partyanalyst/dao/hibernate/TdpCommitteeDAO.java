@@ -303,7 +303,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> committeesCountByDistrict(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> districtIds){
+	public List<Object[]> committeesCountByDistrict(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> districtIds,List<Long> committeeSpanTypeIdsList){
 		StringBuilder str = new StringBuilder();
 
 		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
@@ -388,7 +388,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds){
+	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds,List<Long> committeeSpanTypeIdsList){
 		Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.district.districtId, model.tdpBasicCommitteeId" +
 				" from TdpCommittee model" +
 				" where model.district.districtId in(:districtIds)" +
@@ -1268,6 +1268,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				str.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
 				if( committeeBO.getDate()!=null){
 					str.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}
+				else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
 				}else{
 					str.append(" and model.startedDate is null ");
 				}
@@ -1276,14 +1279,19 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			   str.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
 				if(committeeBO.getDate()!=null){
 					str.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null )" );
 				}else{
 					str.append(" and model.completedDate is null ");
 				}
 			}
 			else if(committeeBO.getStatus().equalsIgnoreCase("completed")){
 				str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+				
 				if( committeeBO.getDate()!=null){
 					str.append( " and date(model.completedDate) < :givendate " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.startedDate) between :startDate and :endDate ))" );
 				}
 			} 
 		}
@@ -1293,6 +1301,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getCommitteesQueryString()!=null && committeeBO.getCommitteesQueryString().length()>0){
 			str.append(committeeBO.getCommitteesQueryString());
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size()>0){
+			str.append(" and model.tdpCommitteeEnrollmentId in (:enrollmentYearList) ");
+		}
+		
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 				   " order by model.tdpCommitteeLevel.tdpCommitteeLevelId ");
 
@@ -1327,11 +1339,18 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			if(committeeBO.getDate()!=null){
 				query.setDate("givendate",committeeBO.getDate());
+			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+				query.setDate("startDate",committeeBO.getStartDate());
+				query.setDate("endDate",committeeBO.getEndDate());
 			}
 		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
 			query.setParameter("stateId",committeeBO.getStateId());
 		}
+		if(committeeBO.getEnrollmentYearList() != null && committeeBO.getEnrollmentYearList().size()>0){
+			query.setParameterList("enrollmentYearList",committeeBO.getEnrollmentYearList());
+		}
+		
 		return query.list();
 	}
     
@@ -1367,8 +1386,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			
 			if(committeeBO.getStatus().equalsIgnoreCase("notStarted")){
 				str.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
-				if( committeeBO.getDate()!=null){
+				if(committeeBO.getDate()!=null){
 					str.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
 				}else{
 					str.append(" and model.startedDate is null ");
 				}
@@ -1377,6 +1398,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			   str.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
 				if(committeeBO.getDate()!=null){
 					str.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null)" );
 				}else{
 					str.append(" and model.completedDate is null ");
 				}
@@ -1385,6 +1408,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 				if( committeeBO.getDate()!=null){
 					str.append( " and date(model.completedDate) < :givendate " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					str.append( " and ( (date(model.completedDate) between :startDate and :endDate ) )" );
 				}
 			} 
 		}
@@ -1432,6 +1457,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			if(committeeBO.getDate()!=null){
 				query.setDate("givendate",committeeBO.getDate());
+			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+				query.setDate("startDate",committeeBO.getStartDate());
+				query.setDate("endDate",committeeBO.getEndDate());
 			}
 		}
 		
@@ -1525,6 +1553,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sbM.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
 				if( committeeBO.getDate()!=null){
 					sbM.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
 				}else{
 					sbM.append(" and model.startedDate is null ");
 				}
@@ -1533,6 +1563,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			   sbM.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
 				if(committeeBO.getDate()!=null){
 					sbM.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null)" );
 				}else{
 					sbM.append(" and model.completedDate is null ");
 				}
@@ -1541,6 +1573,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sbM.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 				if( committeeBO.getDate()!=null){
 					sbM.append( " and date(model.completedDate) < :givendate " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.completedDate) between :startDate and :endDate ))" );
 				}
 			} 
 		}
@@ -1574,6 +1608,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			if(committeeBO.getDate()!=null){
 				query.setDate("givendate",committeeBO.getDate());
+			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+				query.setDate("startDate",committeeBO.getStartDate());
+				query.setDate("endDate",committeeBO.getEndDate());
 			}
 		}
 		
@@ -1794,6 +1831,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sbM.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
 				if( committeeBO.getDate()!=null){
 					sbM.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
 				}else{
 					sbM.append(" and model.startedDate is null ");
 				}
@@ -1802,6 +1841,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sbM.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
 				if(committeeBO.getDate()!=null){
 					sbM.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null)" );
 				}else{
 					sbM.append(" and model.completedDate is null ");
 				}
@@ -1810,6 +1851,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sbM.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 				if( committeeBO.getDate()!=null){
 					sbM.append( " and date(model.completedDate) < :givendate " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sbM.append( " and ( (date(model.completedDate) between :startDate and :endDate ))" );
 				}
 			} 
 		}
@@ -1845,6 +1888,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			
 			if(committeeBO.getDate()!=null){
 				query.setDate("givendate",committeeBO.getDate());
+			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+				query.setDate("startDate",committeeBO.getStartDate());
+				query.setDate("endDate",committeeBO.getEndDate());
 			}
 		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
@@ -1887,6 +1933,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sb.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
 				if( committeeBO.getDate()!=null){
 					sb.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sb.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
 				}else{
 					sb.append(" and model.startedDate is null ");
 				}
@@ -1895,6 +1943,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sb.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
 				if(committeeBO.getDate()!=null){
 					sb.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sb.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null)" );
 				}else{
 					sb.append(" and model.completedDate is null ");
 				}
@@ -1903,6 +1953,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				sb.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 				if( committeeBO.getDate()!=null){
 					sb.append( " and date(model.completedDate) < :givendate " );
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					sb.append( " and ( (date(model.completedDate) between :startDate and :endDate ) )" );
 				}
 			} 
 		}
@@ -1940,6 +1992,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			if(committeeBO.getDate()!=null){
 				query.setDate("givendate",committeeBO.getDate());
+			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+				query.setDate("startDate",committeeBO.getStartDate());
+				query.setDate("endDate",committeeBO.getEndDate());
 			}
 		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
@@ -2083,6 +2138,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  				sbM.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
  				if( committeeBO.getDate()!=null){
  					sbM.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+ 				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+ 					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
  				}else{
  					sbM.append(" and model.startedDate is null ");
  				}
@@ -2091,6 +2148,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  			  sbM.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
  				if(committeeBO.getDate()!=null){
  					sbM.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+ 				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+ 					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.completedDate is null)" );
  				}else{
  					sbM.append(" and model.completedDate is null ");
  				}
@@ -2099,6 +2158,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
  				sbM.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
  				if( committeeBO.getDate()!=null){
  					sbM.append( " and date(model.completedDate) < :givendate " );
+ 				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+ 					sbM.append( " and ( (date(model.completedDate) between :startDate and :endDate ))" );
  				}
  			} 
  		}
@@ -2135,6 +2196,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
  			if(committeeBO.getDate()!=null){
  				query.setDate("givendate",committeeBO.getDate());
+ 			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+ 				query.setDate("startDate",committeeBO.getStartDate());
+ 				query.setDate("endDate",committeeBO.getEndDate());
  			}
  		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){

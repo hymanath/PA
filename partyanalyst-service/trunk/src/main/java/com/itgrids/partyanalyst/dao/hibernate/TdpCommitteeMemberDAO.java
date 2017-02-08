@@ -388,7 +388,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		return query.list();
 	}
 	
-	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds){
+	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds,List<Long> committeeSpanTypeIdsList){
 		 
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.district.districtId, model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +

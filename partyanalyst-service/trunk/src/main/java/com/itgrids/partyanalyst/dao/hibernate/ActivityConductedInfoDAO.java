@@ -81,7 +81,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
 		}
 		
-		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds)  ");
 		queryStr.append(" group by model.activityScope.activityScopeId ");
 	
 		Query query = getSession().createQuery(queryStr.toString());
@@ -140,7 +140,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
 		}
 		
-		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and  model.address.state.stateId = 1 ");
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds)  ");
 		queryStr.append(" group by model.activityScope.activityScopeId ");
 		
 		/*
@@ -194,8 +194,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 		else{
 			queryStr.append(" and  model.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+", "+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
 		}
-		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds) and " +
-				" model.address.state.stateId = 1 " +
+		queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIds)  " +
 				" group by model.activityScope.activityScopeId");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -567,7 +566,7 @@ public List<Object[]> activitiesDistrictWiseCount(List<Long> activityIdsLst,Date
 											" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 											" from ActivityConductedInfo model " +
 											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
-											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
+											" model.activityScope.activityId in (:activityIdsLst)  " +
 											" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
     
     if(userAccessLevelId != null && userAccessLevelId.longValue() >0l){
@@ -624,7 +623,7 @@ public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Dat
 											" model.activityScope.activityLevel.level,model.activityScope.activityLevel.activityLevelId " +
 											" from ActivityConductedInfo model " +
 											" where model.activityScope.isDeleted='N' and model.activityScope.activity.isActive='Y' and " +
-											" model.activityScope.activityId in (:activityIdsLst) and  model.address.state.stateId = 1 " +
+											" model.activityScope.activityId in (:activityIdsLst)  " +
 											" and (model.activityScope.startDate >=:startDate and model.activityScope.endDate <=:endDate) "); 
      
      if(type != null && !type.isEmpty()){
