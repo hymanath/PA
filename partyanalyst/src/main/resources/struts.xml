@@ -15678,10 +15678,15 @@
 	<action name="cccDashboardAction" class="cccDashboardAction">
 	  	<result name="success">/jsp/alertManagementSystem.jsp</result>
 	</action>
-	  <action name="getLocationAndBoardLevelWiseCasteCatgryPostsDataAction" class="nominatedPostProfileAction" method="getLocationAndBoardLevelWiseCasteCatgryPostsData">
-	  	  <result type="json" name="success">		   
-			    <param name="root">nominatedPostDashboardvoList</param>
-		  </result>	
-	  </action>
+  	<action name="getLocationAndBoardLevelWiseCasteCatgryPostsDataAction" class="nominatedPostProfileAction" method="getLocationAndBoardLevelWiseCasteCatgryPostsData">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">nominatedPostDashboardvoList</param>
+	  	</result>	
+  	</action>
+  	<action name="getTotalAlertByStatusAction" class="createAlertAction" method="getTotalAlertByStatus">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>
  </package>
 </struts>
