@@ -4386,8 +4386,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " D.district_name as district_name, " +//11
 				        " A.alert_source_id as alert_source_id, " +//12
 				        " ALTSRC.source as source, " +//13
-				        " 0 as edition_type_id as edition_type_id, " +//14
-				        " '' as edition_type as edition_type, " +//15
+				        " 0 as edition_type_id, " +//14
+				        " '' as edition_type, " +//15
 				        " EDS.edition_id as edition_id, " +//16
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
