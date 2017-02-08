@@ -15665,6 +15665,16 @@
 			    <param name="root">committeeVoList</param>
 		  </result>	
 	</action>
+	<action name="getTotalAlertGroupByStatusForGovtAction" class="createAlertAction"  method="getTotalAlertGroupByStatusForGovt">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>       
+		</result>
+	</action>
+	<action name="getTotalAlertGroupByStatusThenDepartmentAction" class="createAlertAction"  method="getTotalAlertGroupByStatusThenDepartment">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>       
+		</result>
+	</action>
 	<action name="cccDashboardAction" class="cccDashboardAction">
 	  	<result name="success">/jsp/alertManagementSystem.jsp</result>
 	</action>

@@ -4015,6 +4015,11 @@
 		<property name="verificationStatusDAO" ref="verificationStatusDAO"></property>
 		<property name="verificationCommentsDAO" ref="verificationCommentsDAO"></property>
 	</bean>
-	
+	<bean name="cccDashboardService" class="com.itgrids.partyanalyst.service.impl.CccDashboardService">
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="alertDAO" ref="alertDAO" ></property>
+		<property name="alertStatusDAO" ref="alertStatusDAO" ></property>        
+		<property name="govtDepartmentDAO" ref="govtDepartmentDAO" ></property>
+	</bean>
 </beans>			
 	

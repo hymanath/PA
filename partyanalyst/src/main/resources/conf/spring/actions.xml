@@ -1680,6 +1680,7 @@
 	</bean>
 	<bean id="createAlertAction" class="com.itgrids.partyanalyst.web.action.CreateAlertAction" singleton="false">	
 		<property name="alertService" ref="alertService"/>
+		<property name="cccDashboardService" ref="cccDashboardService"/>
 	</bean>
 	
 	<!-- Deabete End -->
