@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -11,11 +12,13 @@ public interface ITdpCommitteeElectrolsDAO  extends GenericDao<TdpCommitteeElect
 	public Long checkUserAlreadyAddedToThisCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId,Long commitTypeId,Long tdpCommitId);
 	public Long checkUserAlreadyAddedToOtherAffiliatedCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId);
 	
+	//public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType,List<Long> enrollIdsList,Date startDate,Date endDate);
 	public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType);
 	public List<Object[]> getElctoralInfoForALocation(Long locationValue);
 	public List<Object[]> getElectrolsOfPanchayatAndWards(Long locationId, Long locationType, Long basicCommitteeTypeId);
-	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType, List<Long> tdpCadreIds);
-	
+	//public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType, List<Long> tdpCadreIds,List<Long> enrollIdsList,Date startDate,Date endDate);
+	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType,List<Long> tdpCadreIds);
 	public List<Object[]> getElctoralInfoForALocation(Long locationValue,Long tdpCommitteeEnrollmentId);
+	
 
 }
