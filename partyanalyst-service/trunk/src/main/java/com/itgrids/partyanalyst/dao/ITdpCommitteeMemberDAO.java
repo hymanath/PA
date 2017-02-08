@@ -37,7 +37,7 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(Long levelId,List<Long> locationVals,Long committeeTypeId,String committeeMemberStatus,List<Long> committeeEnrollmentIdsLst);
 	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst);;
 	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
-	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds);
+	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds,List<Long> committeeSpanTypeIdsList);
 	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId,List<Long> committeeEnrollmentIdsLst);
 	public Long getCommitteMembers(Long tdpCommitteeId);
 	public List<Object[]> getCommitteeDetails(Long committeeId);
