@@ -4809,7 +4809,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return finalCounts;
 	}
 	
-	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue,String mandalCheck, String villageCheck,String districtCommCheck){
+	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue,String mandalCheck, String villageCheck,String districtCommCheck,List<Long> committeeSpanTypeIdsList ){
 		LOG.debug("Entered Into getDistrictWiseCommittesSummary");
 		List<CommitteeSummaryVO> fnlLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -4889,8 +4889,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			mandalMunciDivisionIds.add(7l);
 			mandalMunciDivisionIds.add(9l);
 			if(mandalCheck.equalsIgnoreCase("true")){
-			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, stDate, edDate, distIds);
-			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, mandalMunciDivisionIds);
+			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, stDate, edDate, distIds,committeeSpanTypeIdsList);
+			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, mandalMunciDivisionIds,committeeSpanTypeIdsList);
 			pushResultDistrictWiseMemsCount("munci", memResLst, fnlLst);
 			pushTotalCountsForDistrict("munci", ttlList, fnlLst);
 			}
@@ -4899,8 +4899,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
 			if(villageCheck.equalsIgnoreCase("true")){
-			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, stDate, edDate, distIds);
-			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, villageWardIds);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, stDate, edDate, distIds,committeeSpanTypeIdsList);
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, villageWardIds,committeeSpanTypeIdsList);
 			pushResultDistrictWiseMemsCount("village", memResLstVill, fnlLst);
 			pushTotalCountsForDistrict("village", ttlListVill, fnlLst);
 			}
@@ -4909,27 +4909,27 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Long> districtCommIds = new ArrayList<Long>();
 			districtCommIds.add(11l);			
 			if(districtCommCheck.equalsIgnoreCase("true")){
-			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(districtCommIds, stDate, edDate, distIds);
-			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, districtCommIds);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(districtCommIds, stDate, edDate, distIds,committeeSpanTypeIdsList);
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, districtCommIds,committeeSpanTypeIdsList);
 			pushResultDistrictWiseMemsCount("district", memResLstVill, fnlLst);
 			pushTotalCountsForDistrict("district", ttlListVill, fnlLst);
 			}
 			if(mandalCheck.equalsIgnoreCase("true")){
-			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "started", distIds);
-			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "completed", distIds);
+			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "started", distIds,committeeSpanTypeIdsList);
+			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "completed", distIds,committeeSpanTypeIdsList);
 			pushResultDistrictWise("munci", stResLst, fnlLst, "start");
 			pushResultDistrictWise("munci", endResLst, fnlLst, "completed");
 			}
 			if(villageCheck.equalsIgnoreCase("true")){
-			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "started", distIds);
-			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "completed", distIds);
+			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "started", distIds,committeeSpanTypeIdsList);
+			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "completed", distIds,committeeSpanTypeIdsList);
 			pushResultDistrictWise("village", stResLstVill, fnlLst, "start");
 			pushResultDistrictWise("village", endResLstVill, fnlLst, "completed");		
 			}
 						
 			if(districtCommCheck.equalsIgnoreCase("true")){
-			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "started", distIds);
-			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "completed", distIds);
+			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "started", distIds,committeeSpanTypeIdsList);
+			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "completed", distIds,committeeSpanTypeIdsList);
 			pushResultDistrictWise("district", stResLst, fnlLst, "start");
 			pushResultDistrictWise("district", endResLst, fnlLst, "completed");
 			}

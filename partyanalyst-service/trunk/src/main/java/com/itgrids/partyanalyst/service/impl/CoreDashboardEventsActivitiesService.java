@@ -637,7 +637,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 			  ActivityMemberVO activityMemberVO=null;
 			  Map<Long,UserTypeVO> childActivityMembersMap=null;
 			  
-			  
+			  List<Object[]> hasSpecilaActivitiesList = activityConductedInfoDAO.getTotalCountsForScopeIds(eventIds,null,null,null);
 			 Map<String,Long> activityConductedMap = new HashMap<String, Long>(0);
 			 Map<String,Long> totalActiviteesMap = new HashMap<String, Long>(0);
 			 //Map<String,Long> activityAttendedMap = new HashMap<String, Long>(0);
@@ -665,12 +665,15 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 		    		 
 		    		 List<Object[]> rtrnActivitiesObjLst = new ArrayList<Object[]>(0);
 		    		 List<Object[]> rtnActivitiesObjLst = activityLocationInfoDAO.getLocationWiseTotalActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
-		    		 List<Object[]> rtrActivitiesObjLst = activityConductedInfoDAO.getLocationWiseTotalActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+		    			 List<Object[]> rtrActivitiesObjLst = activityConductedInfoDAO.getLocationWiseTotalActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    			 if(commonMethodsUtilService.isListOrSetValid(rtrActivitiesObjLst))
+			    			 rtrnActivitiesObjLst.addAll(rtrActivitiesObjLst);
+		    		 }
 		    		 
 		    		 if(commonMethodsUtilService.isListOrSetValid(rtnActivitiesObjLst))
 		    			 rtrnActivitiesObjLst.addAll(rtnActivitiesObjLst);
-		    		 if(commonMethodsUtilService.isListOrSetValid(rtrActivitiesObjLst))
-		    			 rtrnActivitiesObjLst.addAll(rtrActivitiesObjLst);
+		    		 
 		    		 
 		    		 if(rtrnActivitiesObjLst != null && rtrnActivitiesObjLst.size() > 0){
 		    			  for (Object[] param : rtrnActivitiesObjLst) {
@@ -689,12 +692,14 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
 		    		 List<Object[]> rtrnActivitiesObjLst = new ArrayList<Object[]>(0);
 		    		 List<Object[]> rtnActivitiesObjLst = activityLocationInfoDAO.getLocationWiseConductedActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
-		    		 List<Object[]> rtrActivitiesObjLst = activityConductedInfoDAO.getLocationWiseConductedActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
-		    		 
+		    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+		    			 List<Object[]> rtrActivitiesObjLst = activityConductedInfoDAO.getLocationWiseConductedActivitiesCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    			 if(commonMethodsUtilService.isListOrSetValid(rtrActivitiesObjLst))
+			    			 rtrnActivitiesObjLst.addAll(rtrActivitiesObjLst);
+		    		 }
 		    		 if(commonMethodsUtilService.isListOrSetValid(rtnActivitiesObjLst))
 		    			 rtrnActivitiesObjLst.addAll(rtnActivitiesObjLst);
-		    		 if(commonMethodsUtilService.isListOrSetValid(rtrActivitiesObjLst))
-		    			 rtrnActivitiesObjLst.addAll(rtrActivitiesObjLst);
+		    		
 		    		 
 		    		 if(rtrnActivitiesObjLst != null && rtrnActivitiesObjLst.size() > 0){
 		    			  for (Object[] param : rtrnActivitiesObjLst) {
@@ -789,7 +794,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 		  Map<String,String>     nameForLocationMap=null;
 		  ActivityMemberVO activityMemberVO=null;
 		  Map<Long,UserTypeVO> childActivityMembersMap=null;
-		  
+		 
 		  //calling generic method to get childActivityMembers and there location level and values
 		  
 		  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
@@ -982,6 +987,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 		  Map<Long,EventDetailsVO> eventDtlsMap = new HashMap<Long, EventDetailsVO>(0);
 		  Map<Long,Set<Long>> accessLevelMap = new HashMap<Long, Set<Long>>(0);
 		try {
+			 List<Object[]> hasSpecilaActivitiesList = activityConductedInfoDAO.getTotalCountsForScopeIds(eventsId,null,null,null);
 			  List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 			   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
 				   for (Object[] obj : rtrnUserAccessLevelIdAndValuesObjList) {
@@ -993,29 +999,35 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 					     locationValueSet.add(obj[1] != null ? (Long)obj[1]:0l);
 				}
 			   }
+			   
 			   if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID){
 				    if(accessLevelMap != null && accessLevelMap.size() > 0){
 				    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 				    		 
 				    		 List<Object[]> rtrnEventInviteeObjList = new ArrayList<Object[]>(0);
 				    		 List<Object[]> list1 = activityLocationInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
-				    		 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				    			 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+					    			 rtrnEventInviteeObjList.addAll(list2);
+				    		 }
 				    		 
 				    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 				    			 rtrnEventInviteeObjList.addAll(list1);
-				    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-				    			 rtrnEventInviteeObjList.addAll(list2);
+				    		
 				    		 
 				    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
 				    		 List<Object[]> rtrnEventInviteeAttendedObjList = new ArrayList<Object[]>(0);
 				    		 
 				    		 List<Object[]> list3 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
-				    		 List<Object[]> list4 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
-				    		 
+				    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				    			 List<Object[]> list4 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+				    			 if(commonMethodsUtilService.isListOrSetValid(list4))
+					    			 rtrnEventInviteeAttendedObjList.addAll(list4);
+				    		 }
 				    		 if(commonMethodsUtilService.isListOrSetValid(list3))
 				    			 rtrnEventInviteeAttendedObjList.addAll(list3);
-				    		 if(commonMethodsUtilService.isListOrSetValid(list4))
-				    			 rtrnEventInviteeAttendedObjList.addAll(list4);
+				    		 
 				    		 
 				    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
 				    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
@@ -1031,23 +1043,27 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 				    		 
 				    		 List<Object[]> rtrnEventInviteeObjList = new ArrayList<Object[]>(0);
 				    		 List<Object[]> list1 = activityLocationInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
-				    		 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
-				    		 
+				    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				    			 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+				    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+					    			 rtrnEventInviteeObjList.addAll(list2);
+				    		 }
 				    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 				    			 rtrnEventInviteeObjList.addAll(list1);
-				    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-				    			 rtrnEventInviteeObjList.addAll(list2);
+				    		 
 				    		 
 				    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
 				    		 List<Object[]> rtrnEventInviteeAttendedObjList = new ArrayList<Object[]>(0);
 				    		 
 				    		 List<Object[]> list3 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
-				    		 List<Object[]> list4 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
-				    		 
+				    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+				    			 List<Object[]> list4 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+				    			 if(commonMethodsUtilService.isListOrSetValid(list4))
+					    			 rtrnEventInviteeAttendedObjList.addAll(list4);
+				    		 }
 				    		 if(commonMethodsUtilService.isListOrSetValid(list3))
 				    			 rtrnEventInviteeAttendedObjList.addAll(list3);
-				    		 if(commonMethodsUtilService.isListOrSetValid(list4))
-				    			 rtrnEventInviteeAttendedObjList.addAll(list4);
+				    		
 				    		 
 				    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
 				    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
@@ -1065,12 +1081,14 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 						    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 						    		 List<Object[]> rtrnEventMndlInviteeObjList = new ArrayList<Object[]>(0);
 						    		 List<Object[]> list1 = activityLocationInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 
+						    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+						    			 List<Object[]> list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+						    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventMndlInviteeObjList.addAll(list2);
+						    		 }
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventMndlInviteeObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventMndlInviteeObjList.addAll(list2);
+						    		
 						    		 
 						    		 setEventInviteeDetailsToMap(rtrnEventMndlInviteeObjList,eventDtlsMap);
 						    		// List<Object[]> rtrnEventMndlAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
@@ -1078,12 +1096,15 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 						    		 //List<Object[]> rtrnEventMndlInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
 						    		 List<Object[]> rtrnEventMndlInviteeAttendedObjList = new ArrayList<Object[]>(0);
 						    		 list1 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 
+						    		 List<Object[]> list2 = null;
+						    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+							    		 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+							    		 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventMndlInviteeAttendedObjList.addAll(list2);
+						    		 }
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventMndlInviteeAttendedObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventMndlInviteeAttendedObjList.addAll(list2);
+						    		 
 						    		 
 						    		 setEventInviteeAttendedCntToMap(rtrnEventMndlInviteeAttendedObjList,eventDtlsMap);
 						    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
@@ -1093,22 +1114,26 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 						    		// List<Object[]> rtrnEventTwnDivInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
 						    		 List<Object[]> rtrnEventTwnDivInviteeObjList = new ArrayList<Object[]>(0);
 						    		 list1 = activityLocationInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 
+						    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+						    			 list2 = activityConductedInfoDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+						    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventTwnDivInviteeObjList.addAll(list2);
+						    		 }
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventTwnDivInviteeObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventTwnDivInviteeObjList.addAll(list2);
+						    		
 						    		 
 						    		 setEventInviteeDetailsToMap(rtrnEventTwnDivInviteeObjList,eventDtlsMap);
 						    		 List<Object[]> rtrnEventTwnDivInviteeAttendedObjList = new ArrayList<Object[]>(0);
 						    		 list1 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
-						    		 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
-						    		 
+						    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+						    			 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
+						    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventTwnDivInviteeAttendedObjList.addAll(list2);
+						    		 }
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventTwnDivInviteeAttendedObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventTwnDivInviteeAttendedObjList.addAll(list2);
+						    		
 						    		 
 						    		 setEventInviteeAttendedCntToMap(rtrnEventTwnDivInviteeAttendedObjList,eventDtlsMap);
 						    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
@@ -1124,25 +1149,31 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 						    		//List<Object[]> rtrnEventVllgInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 						    		 List<Object[]> rtrnEventVllgInviteeObjList = new ArrayList<Object[]>(0);
 						    		 List<Object[]>  list1 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-						    		 List<Object[]>  list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+							    	if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+							    		 List<Object[]>  list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+							    		 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventVllgInviteeObjList.addAll(list2);
+						    		 }
 						    		 
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventVllgInviteeObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventVllgInviteeObjList.addAll(list2);
+						    		 
 						    		 
 						    		 setEventInviteeDetailsToMap(rtrnEventVllgInviteeObjList,eventDtlsMap);
 						    		// List<Object[]> rtrnEventVllgAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 						    		// setEventAttendedCntToMap(rtrnEventVllgAttendedObjList,eventDtlsMap);
 						    		// List<Object[]> rtrnEventVllgInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 						    		 List<Object[]> rtrnEventVllgInviteeAttendedObjList = new ArrayList<Object[]>(0);
+						    		 List<Object[]> list2 = null;
 						    		 list1 = activityLocationInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
-						    		 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
-						    		 
+						    		 if(commonMethodsUtilService.isListOrSetValid(hasSpecilaActivitiesList)){
+						    			 list2 = activityConductedInfoDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
+						    			 if(commonMethodsUtilService.isListOrSetValid(list2))
+							    			 rtrnEventVllgInviteeAttendedObjList.addAll(list2);
+						    		 }
 						    		 if(commonMethodsUtilService.isListOrSetValid(list1))
 						    			 rtrnEventVllgInviteeAttendedObjList.addAll(list1);
-						    		 if(commonMethodsUtilService.isListOrSetValid(list2))
-						    			 rtrnEventVllgInviteeAttendedObjList.addAll(list2);
+						    		
 						    		 setEventInviteeAttendedCntToMap(rtrnEventVllgInviteeAttendedObjList,eventDtlsMap);
 						    		 caculatingNonInviteeAttendedCnt(eventDtlsMap,searchType);
 						    		 resultVO.getVillageWardList().addAll(eventDtlsMap.values());
