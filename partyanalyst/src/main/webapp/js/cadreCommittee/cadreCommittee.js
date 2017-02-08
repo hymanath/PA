@@ -596,9 +596,9 @@
 					str+='</div>';
 					if(committeeMngntTypeId == 1)
 					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-						str+='</div>	';	
+						//str+='<div class="form-inline ">';
+						//str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						//str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
 					{
@@ -966,7 +966,7 @@
 		}
 
 		var result = JSON.parse(uploadResult);
-        alert( reqcommitteeMngtType + "-" +result.resultCode );
+       // alert( reqcommitteeMngtType + "-" +result.resultCode );
 		if(result.resultCode == 0){//Success
 
 			$('.existingDiv').hide();
