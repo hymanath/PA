@@ -1667,4 +1667,37 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getTotalAlertByStatus(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			Long statusId = jObj.getLong("statusId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			
+			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }//getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
