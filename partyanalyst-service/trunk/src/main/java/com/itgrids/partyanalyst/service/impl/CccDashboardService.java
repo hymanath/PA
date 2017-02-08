@@ -14,11 +14,12 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
-public class CccDashboardService implements ICccDashboardService{
+public class CccDashboardService extends AlertService implements ICccDashboardService{
 	private static final Logger logger = Logger.getLogger(CccDashboardService.class);
 	private IAlertDAO alertDAO;
 	private IAlertStatusDAO alertStatusDAO;
@@ -209,6 +210,30 @@ public class CccDashboardService implements ICccDashboardService{
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Error occured getTotalAlertGroupByStatusThenDepartment() method of CccDashboardService{}");
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)
+	 */
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId){
+		logger.info("Entered in getTotalAlertByStatus() method of CccDashboardService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getTotalAlertByStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId);
+			setAlertDtls(alertCoreDashBoardVOs, alertList);    
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getTotalAlertByStatus() method of CccDashboardService{}");
 		}
 		return null;
 	}
