@@ -473,7 +473,19 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				//Long mandalId = jObj.getLong("mandalId");
 				//Long panchayatId = jObj.getLong("panchayatId");
 				
-				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck,districtCommCheck);
+				List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>(0);
+				try {
+					JSONArray committeeSpanTypeIdsArr = jObj.getJSONArray("committeeSpanTypeIdsList");
+					if(committeeSpanTypeIdsArr != null && committeeSpanTypeIdsArr.length()>0){
+						for (int i = 0; i < committeeSpanTypeIdsArr.length(); i++) {
+							committeeSpanTypeIdsLsit.add(committeeSpanTypeIdsArr.get(i) != null ? Long.valueOf(committeeSpanTypeIdsArr.get(i).toString()):0L);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck,districtCommCheck,committeeSpanTypeIdsLsit);
 			}
 			else{
 				noaccess = true;
