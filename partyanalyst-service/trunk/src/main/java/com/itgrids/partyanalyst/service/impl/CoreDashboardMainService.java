@@ -224,7 +224,15 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     
 		     
 		     if(dateString != null && !dateString.isEmpty()){
-			    committeeBO.setDate(sdf.parse(dateString));
+			   // committeeBO.setDate(sdf.parse(dateString));
+		    	 String DatesArr[] = dateString.split("-");
+		    	 if(DatesArr != null && DatesArr.length>0){
+		    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    		 
+		    		 committeeBO.setStartDate(startDate);
+		    		 committeeBO.setEndDate(endDate);
+		    	 }
 			 }
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
@@ -447,7 +455,8 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		List<List<UserTypeVO>> userTypesList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{ 
-			 
+			Date startDate = null;
+			Date endDate = null;
 			//Creating Business Object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
 		     //committeeBO.setBasicCommitteeIds(basicCommitteeIds);
@@ -455,7 +464,15 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
 		     if(dateString != null && !dateString.isEmpty()){
-		    	 committeeBO.setDate(sdf.parse(dateString));
+		    	// committeeBO.setDate(sdf.parse(dateString));
+		    	 String DatesArr[] = dateString.split("-");
+		    	 if(DatesArr != null && DatesArr.length>0){
+		    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    		 
+		    		 committeeBO.setStartDate(startDate);
+		    		 committeeBO.setEndDate(endDate);
+		    	 }
 		     }
 		     
 		     //setting committee enrollment year
@@ -618,7 +635,18 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     //committeeBO.setBasicCommitteeIds(basicCommitteeIds);
 		     committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap));
 		     if(dateString != null && !dateString.isEmpty()){
-				committeeBO.setDate(sdf.parse(dateString));
+				//committeeBO.setDate(sdf.parse(dateString));
+		    	 if(dateString != null && !dateString.isEmpty()){
+		    		   // committeeBO.setDate(sdf.parse(dateString));
+		    			 String DatesArr[] = dateString.split("-");
+		    			 if(DatesArr != null && DatesArr.length>0){
+		    				 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    				 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    				 
+		    				 committeeBO.setStartDate(startDate);
+		    				 committeeBO.setEndDate(endDate);
+		    			 }
+		    		 }
 			 }
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
@@ -778,13 +806,27 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		    List<CommitteeDataVO> finalList = null;
 		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    try{
-		      
+		    	Date startDate = null;
+		    	Date endDate = null;
 		      //CREATING BUSINESS OBJECT.
 		      CommitteeInputVO committeeBO = new CommitteeInputVO();
 		      committeeBO.setTdpCommitteeLevelIds(tdpCommitteeLevelIdsClicked);
 		      committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap));
 		      if(dateString != null && !dateString.isEmpty()){
-		         committeeBO.setDate(sdf.parse(dateString));
+		        // committeeBO.setDate(sdf.parse(dateString));
+		    	  
+		    	  if(dateString != null && !dateString.isEmpty()){
+		    		   // committeeBO.setDate(sdf.parse(dateString));
+		    			 String DatesArr[] = dateString.split("-");
+		    			 if(DatesArr != null && DatesArr.length>0){
+		    				 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    				 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    				 
+		    				 committeeBO.setStartDate(startDate);
+		    				 committeeBO.setEndDate(endDate);
+		    			 }
+		    		 }
+		    	  
 		       }
 		      // Setting committee enrollment years
 		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
@@ -977,14 +1019,28 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	    List<UserTypeVO> activityMembersList = null;
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   try{
-		   
+		   Date startDate = null;
+		   Date endDate = null;
 		     //Creating Business Object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
 		     committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap));
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
 		     if(dateString != null && !dateString.isEmpty()){
-		    	 committeeBO.setDate(sdf.parse(dateString));
+		    	 //committeeBO.setDate(sdf.parse(dateString));
+		    	 
+		    	 if(dateString != null && !dateString.isEmpty()){
+		    		   // committeeBO.setDate(sdf.parse(dateString));
+		    			 String DatesArr[] = dateString.split("-");
+		    			 if(DatesArr != null && DatesArr.length>0){
+		    				 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    				 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    				 
+		    				 committeeBO.setStartDate(startDate);
+		    				 committeeBO.setEndDate(endDate);
+		    			 }
+		    		 }
+		    	 
 		     }
 		   
 		      // Setting committee enrollment years
@@ -1141,14 +1197,23 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	    List<UserTypeVO> activityMembersList = null;
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   try{
-		   
+		   Date startDate = null;
+		   Date endDate = null;
 		     //Creating Business Object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
 		     committeeBO.setCommitteesQueryString(prepareQueryForCommitteeLevelBasedCommitteeIds(committeeLevelBasedCommitteeIdsMap));
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
 		     if(dateString != null && !dateString.isEmpty()){
-		    	 committeeBO.setDate(sdf.parse(dateString));
+		    	// committeeBO.setDate(sdf.parse(dateString));
+		    	 String DatesArr[] = dateString.split("-");
+		    	 if(DatesArr != null && DatesArr.length>0){
+		    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    		 
+		    		 committeeBO.setStartDate(startDate);
+		    		 committeeBO.setEndDate(endDate);
+		    	 }
 		     }
 		   
 		     // Setting committee enrollment years
@@ -1213,7 +1278,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   CommitteeDataVO finalVO = new CommitteeDataVO();
 	   try {
-		   	
+		   Date startDate = null;
+		   Date endDate = null;
 		    Long userLocationLevelId = null;
 		    List<Long> userLocationLevelValues = null;
 		    
@@ -1232,7 +1298,15 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
 		     if(dateString != null && !dateString.isEmpty()){
-		    	 committeeBO.setDate(sdf.parse(dateString));
+		    	// committeeBO.setDate(sdf.parse(dateString));
+		    	 String DatesArr[] = dateString.split("-");
+		    	 if(DatesArr != null && DatesArr.length>0){
+		    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    		 
+		    		 committeeBO.setStartDate(startDate);
+		    		 committeeBO.setEndDate(endDate);
+		    	 }
 		     }
 		      // Setting committee enrollment years
 		      committeeBO.setEnrollmentYearList(committeeEnrollmentYearsIdsLst);
@@ -1443,7 +1517,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		   List<CommitteeDataVO> finalList = null;
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		   try{
-			
+			   Date startDate = null;
+			   Date endDate = null;
 			    Long userLocationLevelId = null;
 			    List<Long> userLocationLevelValues = null;
 			    
@@ -1463,7 +1538,15 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 			     committeeBO.setStateId(stateId);
 			     if(dateString != null && !dateString.isEmpty()){
-			    	 committeeBO.setDate(sdf.parse(dateString));
+			    	 //committeeBO.setDate(sdf.parse(dateString));
+			    	 String DatesArr[] = dateString.split("-");
+			    	 if(DatesArr != null && DatesArr.length>0){
+			    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+			    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+			    		 
+			    		 committeeBO.setStartDate(startDate);
+			    		 committeeBO.setEndDate(endDate);
+			    	 }
 			     }
 			     
 			     // Setting committee enrollment years
