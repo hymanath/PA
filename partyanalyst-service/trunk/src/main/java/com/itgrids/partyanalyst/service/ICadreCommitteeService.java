@@ -86,7 +86,7 @@ public interface ICadreCommitteeService {
 	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId,Long startNo,Long endNo);
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
-	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId,Long committeeTypeId);
+	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId,Long committeeTypeId,List<Long> enrollIdsList,String startDateStr,String endDateStr);
 	public LocationWiseBoothDetailsVO getAffiliatedCommitteMembersInfo(List<Long> affiliIds);
 	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue);
 
@@ -104,9 +104,9 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType);
 	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType);
 //	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String castePercentage,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList,List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue);
-	public BasicVO getAccessLocationValuesByState(String accessType,Long accessValue,Long stateId,Long userId);
+	public BasicVO getAccessLocationValuesByState(String accessType,Long accessValue,Long stateId,Long userId,List<Long> enrollIdsList);
 	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-			List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio,List<Long> enrollIdsList);
+			List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio,List<Long> enrollIdsList,String startDateStr,String endDateStr);
 	public String getDistrictName(Long  districtId);
 	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
