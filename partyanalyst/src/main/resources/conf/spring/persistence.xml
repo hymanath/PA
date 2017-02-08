@@ -1157,7 +1157,6 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentCandidate</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationLocation</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficer</value>
-	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentAssign</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentComment</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentDocument</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentTracking</value>

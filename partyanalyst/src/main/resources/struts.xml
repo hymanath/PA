@@ -15693,5 +15693,9 @@
 			    <param name="root">locationWiseBoothDetailsVO</param>
 		  </result>	
 	  </action>
+	  
+	  <action name="alertDepartmentLoginAction" class="cccDashboardAction" method="alertDepartmentLogin">
+	  	<result name="success">/jsp/alertDepartmentLoginPage.jsp</result>
+	</action>
  </package>
 </struts>

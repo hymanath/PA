@@ -79,4 +79,8 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	   public String execute(){
 		    return Action.SUCCESS;
 	   }
+	   
+	   public String alertDepartmentLogin(){
+		    return Action.SUCCESS;
+	   }
 }

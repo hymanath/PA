@@ -733,5 +733,6 @@
 		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
 		<pattern>/cccDashboardAction*</pattern>
+		<pattern>/alertDepartmentLoginAction*</pattern>
 	</decorator> 
 </decorators>
