@@ -81,8 +81,8 @@
 				<h4 class="panel-title">
 					<span  id="titleId" style="hieght:20px;margin-top:-7px;"></span>
 					<select id="tdpCommitteeYearId"  class="form-control pull-right" style="width:150px;margin-top:-7px;">	
-						<option value="2">2016 - 2018</option>
-						<option value="1">2014 - 2016</option>
+						<!--<option value="2">2016 - 2018</option>
+						<option value="1">2014 - 2016</option>-->
 					</select>
 				</h4>
 			</div>
@@ -359,8 +359,7 @@ $("#reportrange").daterangepicker({
             <c:forEach var="caste" items="${castes}">
 				var casteObject = { id:"${caste.id}",name:"${caste.name}" }
 				casteArray.push(casteObject);
-			</c:forEach>			
-	
+			</c:forEach>
 </script>
 <script type="text/javascript">
 $(document).on("click","#updateCadreCls",function(){
@@ -374,7 +373,7 @@ var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
 
 $(document).ready(function(){
-	//getCadreEnrollmentYears();
+	getCadreEnrollmentYearsForSummary();
 	 $('.summaryEventCls').click(function(){
 		var btnId = $(this).attr('id');
 		if(btnId == 'hide')
@@ -394,7 +393,7 @@ $(document).ready(function(){
 });
   if(accessConstituencyId !='null' && accessConstituencyId!=""){
 		$(".locationCls").hide();
-		getConstituencySummary();
+		//getConstituencySummary();
 		$("#constSummary").show();
 	  
 }else{
@@ -494,8 +493,7 @@ function getConstituencySummary(){
 	   var dateArray = dates.split("-");
 		var fromDateStr=dateArray[0];
 		var toDateStr=dateArray[1];
-		
-  
+
 	var jsObj ={
 		 constituencyId:constiId,reportType :reportType ,
 		 committeeTypeId:committeeTypeId,
@@ -526,7 +524,6 @@ $(document).on("click",".impCandCls",function(){
 	var searchType = $(this).attr("attr_search");
 	$("#impCandTitleId").html(location.toUpperCase());
 	getImportantCandidateDetails(locationId,searchType);
-	//alert(111);
 });
 
 function getImportantCandidateDetails(locationId,searchType){
@@ -1720,10 +1717,64 @@ function getRolesBasedReport(roleId)
   }
 	getRolesBasedReport(0);
  $(document).on("change","#tdpCommitteeYearId",function(){
-	getCommitteeDetailsByEnrollement();
+	getCommitteeDetailsByEnrollementForConSummary();
+});
+function getCommitteeDetailsByEnrollementForConSummary(){
+	  var enrollmentIdsArr = new Array();
+	  enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+	var jsObj={
+			enrollmentIdsArr:enrollmentIdsArr
+		};
+			   
+		 $.ajax({
+			type : "GET",
+			url : "getCommitteeDetailsByEnrollementIdAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				for(var i in result){
+					 var fYear = result[i].fromDate.split('-')[0];
+					 var fMonth = result[i].fromDate.split('-')[1];
+					 var fDate = result[i].fromDate.split('-')[2];
+					 var tYear = result[i].toDate.split('-')[0];
+					 var tMonth = result[i].toDate.split('-')[1];
+					 var tDate = result[i].toDate.split('-')[2].substring(0,2);
+					$('#reportrange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+					$('#reportrange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+					}
+				}
+				getConstituencySummary();
+				getRolesBasedReport(0);
+			});
+	}
+$(document).on("change","#userAccessconstituencyId",function(){
 	getConstituencySummary();
 	getRolesBasedReport(0);
-});
+});	
+function getCadreEnrollmentYearsForSummary(){
+		 var jsObj={
+		
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "getCadreEnrollmentYearsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+				}
+			}
+			
+			getUserAccessInfo();
+			getRolesBasedReport(0);
+			getConstituencySummary();
+			
+		});
+	}
 </script>
 <script>
  <c:if test="${pageAccessType == 'ALL'}">
