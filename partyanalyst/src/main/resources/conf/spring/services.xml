@@ -4030,7 +4030,7 @@
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO" ></property>
 		<property name="transactionTemplate" ref="transactionTemplate"></property>
 		<property name="alertDepartmentCommentDAO" ref="alertDepartmentCommentDAO"></property>
-		<property name="alertdeDepartmentDocumentDAO" ref="alertdeDepartmentDocumentDAO"></property>
+		<property name="alertDepartmentDocumentDAO" ref="alertDepartmentDocumentDAO"></property>
 		<property name="govtDepartmentDesignationOfficerDAO" ref="govtDepartmentDesignationOfficerDAO"></property>
 		<property name="alertAssignedOfficerDAO" ref="alertAssignedOfficerDAO"></property>
 		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>
