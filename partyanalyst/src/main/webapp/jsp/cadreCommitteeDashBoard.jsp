@@ -3837,6 +3837,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#committeeMemberDiv").html("");
 		$("#presGenSecrErrDivId").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
+		var selectedTdpCommitteeYearId =$("#tdpCommitteeYearId").val();
+		$("#tdpCommitteeYearId1").val(selectedTdpCommitteeYearId);
+		var selectedDate = $("#reportrange").val();
+		$("#reportrange1").val(selectedDate);
 		var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
 				var date =$("#reportrange").val();
 				var fromDate;
@@ -3876,16 +3880,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		 $("#mainCommitteDivId").html("");
 		 $("#AffliCommitteDivId").html("");
 		 $("#CommitteeDetails").html("");
-		 $("#conformedBtn").html("");
+		 $("#conformedBtn").html(""); 
+         $("stateDistrictTitle").html("");		 
 				var reqLocationType ='District';
 				var locationId = id;
-				/* var committeeEnrollmentId =$("#tdpCommitteeYearId").val();
-				var date =$("#reportrange").val();
-				var fromDate;
-				var toDate;
-				var dates = date.split("-");
-				fromDate = dates[0];
-				toDate = dates[1]; */
 			var jsObj = {
 					locationId:id,
 					reqLocationType :reqLocationType,
@@ -3900,90 +3898,100 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				url : "gettingCommitteeSummaryInfoAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				if(result[0].locationId == 10)
-				$("#stateDistrictTitle").html(''+result[0].locationName+'');
-				if(result[0].locationId == 11)
-				$("#stateDistrictTitle").html(''+result[0].locationName+'');
-				if(result!=null){
 				
-					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
-					var str='';
-					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
-						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
-								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
-							   if(result[0].startedCount != null && result[0].startedCount > 0)
-								{
+				//NAME BUILDING
+				if(result[0].locationId == 10){
+					$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				}
+				if(result[0].locationId == 11){
+					$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				}
+				
+				if(result!=null && result[0] != null){
+					if(result[0].mainCommitteesExist == false && result[0].affliatedCommitteesExist == false){
+						$("#mainCommitteDivId").html("NO DATA AVAILABLE..");
+						return;
+					}
+					//Building main committees
+					if(result[0].mainCommitteesExist == true){
+						var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
+						var str='';
+						str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+							str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+							str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
+							if(result[0].startedCount != null && result[0].startedCount > 0){
 							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].startedCount+'</a></h2> STARTED</td>';
-								}
-								else
-								{
-									 str+='<td width="25%"><h2 style="display:inline;" >'+result[0].startedCount+'</h2> STARTED</td>';
-								
-								}
-								if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0)
-								{
-									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
-									
-								}
-								else
-								{
-							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
-								}
-								if(notStarted != null && notStarted > 0)
-								{
+							}else{
+								str+='<td width="25%"><h2 style="display:inline;" >'+result[0].startedCount+'</h2> STARTED</td>';
+							}
+							if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0){
+							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+							}else{
+								str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
+							}		
+							if(notStarted != null && notStarted > 0){
 							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
-								}
-								else
-								{
-									str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
-								}
-								str+='</tr>';
-							  
-					 str+='</table>';
-					 $("#mainCommitteDivId").html(str);
-			
-				var str1='';
+							}else{
+								str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
+							}
+							str+='</tr>';
+						 str+='</table>';
+						 $("#mainCommitteDivId").html(str);
+					}else{
+						var str='';
+						str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+						str+='<tr><td> NO DATA AVAILABLE</td></tr>';
+						str+='</table>';
+					   $("#mainCommitteDivId").html(str);	
+					}
+					 
+			        //Building Affliated committees.
+					if(result[0].affliatedCommitteesExist == true){
+						 var str1='';
 						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
-							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
-							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
-					 for(var i in result){
-						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
-						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
-						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
-						if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
-						 {
-		str1+='<td width="20%">';
-		str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+						str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
+						str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
+						str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
+					   for(var i in result){
+						 var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+						  str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+						  str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
+						  if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0){
+		                    str1+='<td width="20%">';
+		                    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+						  }else{
+						    str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+						  }
+					      if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0){
+						    str1+='<td width="20%">';
+						    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+						  }
+						 else{
+							str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>'; 
 						 }
-						 else
-						 {
-						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
-						 }
-					if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
-						 {
-						str1+='<td width="20%">';
-						str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
-						
-						 }
-						 else
-						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
-						 if(notConformed != null && notConformed > 0)
-						 {
+						 if(notConformed != null && notConformed > 0){
 							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+notConformed+'</td>';
 						 }
-						 else
-						 {
-						str1+='<td width="20%">'+notConformed+'</td>';
+						 else{
+						   str1+='<td width="20%">'+notConformed+'</td>';
 						 }
 						 str1+='</tr>';
-					
-						
 					 }
-					 
 					 str1+='</table>';
-					  $("#AffliCommitteDivId").html(str1);
-				}
+					 $("#AffliCommitteDivId").html(str1);
+					}else{
+						 var str1='';
+						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
+						str1+='<tbody>'
+						str1+='<tr><td> NO DATA AVAILABLE</td></tr>';
+						str1+='</table>';
+						$("#AffliCommitteDivId").html(str1);
+					} 
+				 }else{
+					 $("#mainCommitteDivId").html("NO DATA AVAILABLE..");
+				 }
 			    });
 		}
 	
