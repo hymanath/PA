@@ -240,7 +240,7 @@ function getLevelByDesignation()
 				$(".advanceprclsDiv").hide();
 				$("#advanceDesignationId").css("display","none");
 				$(".advancePRCls").parent().hide();
-			
+			    $("#cadreCommitteeDiv_chosen").hide(); 
 			}
 			else 
 			{
