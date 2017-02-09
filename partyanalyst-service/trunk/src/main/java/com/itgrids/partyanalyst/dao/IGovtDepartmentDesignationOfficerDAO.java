@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficer;
 
 public interface IGovtDepartmentDesignationOfficerDAO extends GenericDao<GovtDepartmentDesignationOfficer, Long>{
 
-	public List<Object[]> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
+	public List<Long> getDesignationOfficerIds(Long levelId,Long levelValue,Long designationId);
 }

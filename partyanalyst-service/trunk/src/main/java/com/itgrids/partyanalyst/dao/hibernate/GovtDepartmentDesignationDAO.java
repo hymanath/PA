@@ -15,12 +15,14 @@ public class GovtDepartmentDesignationDAO extends GenericDaoHibernate<GovtDepart
 		
 	}
 
-	public List<Object[]> getDesignationsForDepartment(Long govtDepartmentId){
+	public List<Object[]> getDesignationsForDepartment(Long govtDepartmentId,Long levelId){
 		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationId," +
 												" model.designationName" +
 												" from GovtDepartmentDesignation model" +
-												" where model.govtDepartment.govtDepartmentId = :govtDepartmentId");
+												" where model.govtDepartment.govtDepartmentId = :govtDepartmentId" +
+												" and model.govtDepartmentLevel.govtDepartmentLevelId = :levelId");
 		query.setParameter("govtDepartmentId", govtDepartmentId);
+		query.setParameter("levelId", levelId);
 		return query.list();
 	}
 }
