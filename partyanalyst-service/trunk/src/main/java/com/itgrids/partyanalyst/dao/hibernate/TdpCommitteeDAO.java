@@ -31,14 +31,22 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.tdpCommitteeId from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue and " +
-				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1 and model.tdpCommitteeEnrollmentId in (:enrollmentIds) ");
-		if(startDate != null && endDate != null)
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1  ");
+		if(enrollmentIds != null && enrollmentIds.size() > 0){
+			sb.append("  and model.tdpCommitteeEnrollmentId in (:enrollmentIds) ");
+		}
+		if(startDate != null && endDate != null){
 			sb.append( " and ( (date(model.startedDate) between :startDate and :endDate )  OR  date(model.completedDate) between :startDate and :endDate )  )" );
+		}
+			
 			//sb.append(" and date(model.startedDate) between :startDate and :endDate");
 		Query query = getSession().createQuery(sb.toString());
 			query.setParameter("levelId", levelId);
 			query.setParameter("levelValue", levelValue);
-			query.setParameterList("enrollmentIds", enrollmentIds);
+			if(enrollmentIds != null && enrollmentIds.size() > 0){
+				query.setParameterList("enrollmentIds", enrollmentIds);
+			}
+			
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
