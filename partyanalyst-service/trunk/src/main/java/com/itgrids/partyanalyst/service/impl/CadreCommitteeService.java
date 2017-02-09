@@ -8142,11 +8142,8 @@ return constiLst;
 					List<Object[]> electrolsRslt = new ArrayList<Object[]>();
 					List<Object[]> electrolsRsltAffl = new ArrayList<Object[]>();
 					
-						//electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(panchIds, "panchayat", eletedMemIds,enrollIdsList,startDate,endDate);
-						//electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat",enrollIdsList,startDate,endDate);
-						
-						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(panchIds, "panchayat", eletedMemIds);
-						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat");
+						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(panchIds, "panchayat", eletedMemIds,enrollIdsList,startDate,endDate);
+						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat",enrollIdsList,startDate,endDate);
 						
 						if(electrolsRsltAffl!=null && electrolsRsltAffl.size()>0){
 							electrolsRslt.addAll(electrolsRsltAffl);
@@ -8178,10 +8175,8 @@ return constiLst;
 					List<Object[]> electrolsRslt = new ArrayList<Object[]>();
 					List<Object[]> electrolsRsltAffl = new ArrayList<Object[]>();
 					
-						//electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(wardIds, "ward", eletedMemIds,enrollIdsList,startDate,endDate);
-						//electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward",enrollIdsList,startDate,endDate);
-						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(wardIds, "ward", eletedMemIds);
-						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward");
+						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(wardIds, "ward", eletedMemIds,enrollIdsList,startDate,endDate);
+						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward",enrollIdsList,startDate,endDate);
 						
 						if(electrolsRsltAffl!=null && electrolsRsltAffl.size()>0){
 							electrolsRslt.addAll(electrolsRsltAffl);
@@ -18180,7 +18175,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			
 			 //get Constituencies.
 			 List<Long> constIds=new ArrayList<Long>(0);
-			 BasicVO basicVO=getAccessLocationValuesByState(accessType,accessValue,stateId,userId,null);
+			 
+			 List<Long>  committeeEnrollmentIds = new ArrayList<Long>();
+				committeeEnrollmentIds.add(IConstants.CURRENT_ENROLLMENT_ID);
+			 BasicVO basicVO=getAccessLocationValuesByState(accessType,accessValue,stateId,userId,committeeEnrollmentIds);
 			 if(basicVO!=null && basicVO.getHamletVoterInfo()!=null && basicVO.getHamletVoterInfo().size()>0){
 				 
 				 List<BasicVO> constList=basicVO.getHamletVoterInfo();
