@@ -16,6 +16,10 @@ public class GovtDepartmentVO {
 	private Long id;
 	private String name;
 	
+	private String department;
+	private String mobileNo;
+	private String designation;
+	
 	
 	public Long getId() {
 		return id;
@@ -28,5 +32,23 @@ public class GovtDepartmentVO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 }

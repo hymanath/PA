@@ -10,23 +10,40 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerActionDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerAction;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTracking;
+import com.itgrids.partyanalyst.model.AlertDepartmentComment;
+import com.itgrids.partyanalyst.model.AlertDepartmentDocument;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class CccDashboardService extends AlertService implements ICccDashboardService{
 	private static final Logger logger = Logger.getLogger(CccDashboardService.class);
@@ -41,13 +58,70 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
+	private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private IAlertDepartmentCommentDAO alertDepartmentCommentDAO;
+	private IAlertDepartmentDocumentDAO alertdeDepartmentDocumentDAO;
 	private IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO;
+	private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
+	private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
+	private IAlertAssignedOfficerActionDAO alertAssignedOfficerActionDAO;
 	
+	
+	public IAlertAssignedOfficerActionDAO getAlertAssignedOfficerActionDAO() {
+		return alertAssignedOfficerActionDAO;
+	}
+	public void setAlertAssignedOfficerActionDAO(
+			IAlertAssignedOfficerActionDAO alertAssignedOfficerActionDAO) {
+		this.alertAssignedOfficerActionDAO = alertAssignedOfficerActionDAO;
+	}
+	public IAlertAssignedOfficerTrackingDAO getAlertAssignedOfficerTrackingDAO() {
+		return alertAssignedOfficerTrackingDAO;
+	}
+	public void setAlertAssignedOfficerTrackingDAO(
+			IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO) {
+		this.alertAssignedOfficerTrackingDAO = alertAssignedOfficerTrackingDAO;
+	}
+	public IAlertAssignedOfficerDAO getAlertAssignedOfficerDAO() {
+		return alertAssignedOfficerDAO;
+	}
+	public void setAlertAssignedOfficerDAO(
+			IAlertAssignedOfficerDAO alertAssignedOfficerDAO) {
+		this.alertAssignedOfficerDAO = alertAssignedOfficerDAO;
+	}
 	public IGovtDepartmentDesignationOfficerDAO getGovtDepartmentDesignationOfficerDAO() {
 		return govtDepartmentDesignationOfficerDAO;
 	}
-	public void setGovtDepartmentDesignationOfficerDAO(IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO) {
+	public void setGovtDepartmentDesignationOfficerDAO(
+			IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO) {
 		this.govtDepartmentDesignationOfficerDAO = govtDepartmentDesignationOfficerDAO;
+	}
+	public IAlertDepartmentDocumentDAO getAlertdeDepartmentDocumentDAO() {
+		return alertdeDepartmentDocumentDAO;
+	}
+	public void setAlertdeDepartmentDocumentDAO(
+			IAlertDepartmentDocumentDAO alertdeDepartmentDocumentDAO) {
+		this.alertdeDepartmentDocumentDAO = alertdeDepartmentDocumentDAO;
+	}
+	public IAlertDepartmentCommentDAO getAlertDepartmentCommentDAO() {
+		return alertDepartmentCommentDAO;
+	}
+	public void setAlertDepartmentCommentDAO(
+			IAlertDepartmentCommentDAO alertDepartmentCommentDAO) {
+		this.alertDepartmentCommentDAO = alertDepartmentCommentDAO;
+	}
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+	public IGovtDepartmentDesignationOfficerDetailsDAO getGovtDepartmentDesignationOfficerDetailsDAO() {
+		return govtDepartmentDesignationOfficerDetailsDAO;
+	}
+	public void setGovtDepartmentDesignationOfficerDetailsDAO(
+			IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO) {
+		this.govtDepartmentDesignationOfficerDetailsDAO = govtDepartmentDesignationOfficerDetailsDAO;
 	}
 	public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
 		return govtDepartmentDesignationDAO;
@@ -385,10 +459,10 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		return returnList;
 	}
 	
-	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId){
+	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
-			List<Object[]> list = govtDepartmentDesignationDAO.getDesignationsForDepartment(departmentId);
+			List<Object[]> list = govtDepartmentDesignationDAO.getDesignationsForDepartment(departmentId,levelId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					GovtDepartmentVO vo = new GovtDepartmentVO();
@@ -407,7 +481,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
-			List<Object[]> list = govtDepartmentDesignationOfficerDAO.getOfficersByDesignationAndLevel(levelId, levelValue, designationId);
+			List<Object[]> list = govtDepartmentDesignationOfficerDetailsDAO.getOfficersByDesignationAndLevel(levelId, levelValue, designationId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					GovtDepartmentVO vo = new GovtDepartmentVO();
@@ -419,6 +493,113 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 		} catch (Exception e) {
 			logger.error("Error occured getOfficersByDesignationAndLevel() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public String assigningAlertToOfficer(final AlertAssigningVO inputvo){
+		String status = null;
+		try {
+			status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					//Comments Saving
+					AlertDepartmentComment alertDepartmentComment = new AlertDepartmentComment();
+					alertDepartmentComment.setComment(inputvo.getComment());
+					alertDepartmentComment.setInsertedBy(inputvo.getUserId());
+					alertDepartmentComment.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertDepartmentComment = alertDepartmentCommentDAO.save(alertDepartmentComment);
+					
+					//Documents Saving
+					AlertDepartmentDocument alertDepartmentDocument = new AlertDepartmentDocument();
+					alertDepartmentDocument.setDocument(inputvo.getDocument());
+					alertDepartmentDocument.setInsertedBy(inputvo.getUserId());
+					alertDepartmentDocument.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertDepartmentDocument = alertdeDepartmentDocumentDAO.save(alertDepartmentDocument);
+					
+					//Alert Status Updation
+					Alert alert = alertDAO.get(inputvo.getAlertId());
+					alert.setAlertStatusId(2l);
+					alert.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alert = alertDAO.save(alert);
+					
+					//Get Department Designation Officer Ids
+					Long desigOfficerId = null;
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
+					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
+						desigOfficerId = designationOfficerIds.get(0);
+					
+					//Officer Assigning
+					AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
+					alertAssignedOfficer.setAlertId(inputvo.getAlertId());
+					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficer.setInsertedBy(inputvo.getUserId());
+					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(2l);
+					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
+					
+					//Officer Assigning Tracking
+					AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
+					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerTracking.setAlertId(inputvo.getAlertId());
+					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficerTracking.setInsertedBy(inputvo.getUserId());
+					alertAssignedOfficerTracking.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setAlertStatusId(2l);
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
+					
+					//Alert Assigned Officer Action Saving
+					AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
+					alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
+					alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficerAction.setAlertStatusId(2l);
+					alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
+					alertAssignedOfficerAction.setAlertDepartmentDocumentId(alertDepartmentDocument.getAlertDepartmentDocumentId());
+					alertAssignedOfficerAction.setInsertedBy(inputvo.getUserId());
+					alertAssignedOfficerAction.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficerAction.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerAction.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerAction.setIsDeleted("N");
+					alertAssignedOfficerAction = alertAssignedOfficerActionDAO.save(alertAssignedOfficerAction);
+					
+					if(alertAssignedOfficerAction != null)
+						return "success";
+					else
+						return "failure";
+				}
+			});
+		} catch (Exception e) {
+			logger.error("Error occured assigningAlertToOfficer() method of CccDashboardService",e);
+		}
+		return status;
+	}
+	
+	public List<GovtDepartmentVO> getAssignedOfficersDetailsForAlert(Long alertId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = alertAssignedOfficerDAO.getAssignedOfficersForAlert(alertId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setDepartment(obj[2] != null ? obj[2].toString():"");
+					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+					vo.setDesignation(obj[4] != null ? obj[4].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getAssignedOfficersDetailsForAlert() method of CccDashboardService",e);
 		}
 		return returnList;
 	}

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -14,18 +15,16 @@ public class GovtDepartmentDesignationOfficerDAO extends GenericDaoHibernate<Gov
 		super(GovtDepartmentDesignationOfficer.class);
 		
 	}
-
-	public List<Object[]> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
-		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficerId," +
-												" model.officerName" +
-												" from GovtDepartmentDesignationOfficer model" +
-												" where model.govtDepartmentDesignationLocation.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" +
-												" and model.govtDepartmentDesignationLocation.govtDepartmentLevel.govtDepartmentLevelId = :levelId" +
-												" and model.govtDepartmentDesignationLocation.levelValue = :levelValue");
-		query.setParameter("designationId", designationId);
+	
+	public List<Long> getDesignationOfficerIds(Long levelId,Long levelValue,Long designationId){
+		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficerId" +
+											" from GovtDepartmentDesignationOfficer model" +
+											" where model.govtDepartmentLevelId = :levelId" +
+											" and model.levelValue = :levelValue" +
+											" and model.govtDepartmentDesignationId = :designationId");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
-		
+		query.setParameter("designationId", designationId);
 		return query.list();
 	}
 }
