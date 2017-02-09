@@ -1396,6 +1396,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	  *  Get Main Committee Members Information  For A Given Location.
 	*/
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue){
+		
 		Long committeeId = getMainCommitteeIdInALocation(levelId,levelValue);
 		if(committeeId != null){
 			return getCommitteeMembersInfoNEW(committeeId);
@@ -1407,7 +1408,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public Long getMainCommitteeIdInALocation(Long levelId,Long levelValue){
 		Long committeeId = null;
 		try{
-			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,null,null,null);
+
+			List<Long>  committeeEnrollmentIds = new ArrayList<Long>();
+			committeeEnrollmentIds.add(IConstants.CURRENT_ENROLLMENT_ID);
+			
+			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,committeeEnrollmentIds,null,null);
 			if(committeeIds.size() > 0){
 				committeeId = committeeIds.get(0);
 			}
@@ -1436,7 +1441,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LocationWiseBoothDetailsVO vo = null;
 			SelectOptionVO memberVo = null;
 			//0committeeRoleid,1role name,2max nos
-			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId,null,null,null);
+			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
 			for(Object[] totalCommitteRole:totalCommitteRolesList){
 				vo = new LocationWiseBoothDetailsVO();
 				vo.setLocationName(totalCommitteRole[1].toString());
@@ -1495,7 +1500,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			//SUMMARY BLOCK
 			List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
 			Map<Long,LocationWiseBoothDetailsVO> committeeMembersMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
-			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId,null,null,null);
+			
+			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
+			
 			for(Object[] obj:totalCommitteRolesList){
 				
 				LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
@@ -3143,7 +3150,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			public Long getMainCommitteeIdInALocationRequest(Long levelId,Long levelValue){
 				Long committeeId = null;
 				try{
-					List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,null,null,null);
+					
+					List<Long>  committeeEnrollmentIds = new ArrayList<Long>();
+					committeeEnrollmentIds.add(IConstants.CURRENT_ENROLLMENT_ID);
+					List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,committeeEnrollmentIds,null,null);
 					if(committeeIds.size() > 0){
 						committeeId = committeeIds.get(0);
 					}
@@ -3169,7 +3179,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						LocationWiseBoothDetailsVO vo = null;
 						SelectOptionVO memberVo = null;
 						//0committeeRoleid,1role name,2max nos
-						List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId,null,null,null);
+						List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
 						for(Object[] totalCommitteRole:totalCommitteRolesList){
 						         vo = new LocationWiseBoothDetailsVO();
 								 vo.setLocationName(totalCommitteRole[1].toString());
@@ -6123,7 +6133,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue){
 		Long committeeId = null;
 		try{
-			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,null,null,null);
+			
+			List<Long>  committeeEnrollmentIds = new ArrayList<Long>();
+			committeeEnrollmentIds.add(IConstants.CURRENT_ENROLLMENT_ID);
+			
+			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue,committeeEnrollmentIds,null,null);
 			if(committeeIds.size() > 0){
 				committeeId = committeeIds.get(0);
 			}
