@@ -4420,7 +4420,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		queryStr.append(" AND ( EDS.edition_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
-		queryStr.append(" and A.alert_status_id = :statusId ; ");
+		if(statusId != null && statusId.longValue() > 0L){
+			queryStr.append(" and A.alert_status_id = :statusId ; ");
+		}
+		
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("alert_id", Hibernate.LONG)//0
 				.addScalar("created_time", Hibernate.STRING)//1
@@ -4456,7 +4459,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
 		}
-		query.setParameter("statusId", statusId);
+		if(statusId != null && statusId.longValue() > 0L){
+			query.setParameter("statusId", statusId);
+		}
+		
 		return query.list(); 
 	}
 }
