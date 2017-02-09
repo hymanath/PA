@@ -487,7 +487,7 @@ function buildtotalAlertsModalTabId(result){
 					}else{
 						str+='<td> - </td>';        
 					}
-					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alertId="3725">Alert Details</button></td>';
+					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'">Alert Details</button></td>';      
 				str+='</tr>';
 			}
 			str+='</tbody>';
