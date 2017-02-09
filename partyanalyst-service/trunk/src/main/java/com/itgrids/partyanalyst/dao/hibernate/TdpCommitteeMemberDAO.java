@@ -305,10 +305,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
 		
 		if(startDate != null && endDate != null){
-			str.append( " and ( (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
-		}
+			str.append( " and (" +
+					" (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  (date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate ) " +
+					" )" );
 			//str.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate ");
-		
+			}
+			
 		str.append(" order by model.tdpCommitteeRole.tdpRoles.tdpRolesId  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
@@ -666,8 +668,12 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 		str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");
 	if(enrollIdsList != null && enrollIdsList.size() > 0l)
 		str.append(" and model.tdpCommitteeEnrollmentId in (:enrollIdsList)");
-	if(startDate != null && endDate != null)
-		str.append( " and ( (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
+	if(startDate != null && endDate != null){
+		str.append( " and (" +
+				" (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  (date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate ) " +
+				" )" );
+		}
+		
 		//str.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate ");
 	str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
 			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
@@ -703,8 +709,11 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 				str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");
 		if(enrollIdsList != null && enrollIdsList.size() > 0l)
 			str.append(" and model.tdpCommitteeEnrollmentId in (:enrollIdsList)");
-		if(startDate != null && endDate != null)
-			str.append( " and ( (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
+		if(startDate != null && endDate != null){
+			str.append( " and (" +
+					" (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  (date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate ) " +
+					" )" );
+			}
 			//str.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate");
 		str.append(" group by " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
@@ -768,8 +777,11 @@ public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long lo
 			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");
 	if(enrollIdsList != null && enrollIdsList.size() > 0l)
 		str.append(" and model.tdpCommitteeEnrollmentId in (:enrollIdsList)");
-	if(startDate != null && endDate != null)
-		str.append( " and ( (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
+	if(startDate != null && endDate != null){
+		str.append( " and ( " +
+				"(date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  (date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate )  " +
+				" )" );
+		}
 		
 	/*str.append(" group by" +
 			"  model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId, " +
@@ -970,9 +982,11 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		/*if(enrollIdsList != null && enrollIdsList.size() > 0l)
 			quertyStr.append(" and TCM.tdpCommitteeEnrollmentId in (:enrollIdsList)");*/
 		
-		if(startDate != null && endDate != null)
-			quertyStr.append( " and ( (date(TCO.startedDate) between :startDate and :endDate )  OR  date(TCO.completedDate) between :startDate and :endDate )  )" );
-		
+		if(startDate != null && endDate != null){
+			quertyStr.append( " and (" +
+					" (date(TCO.startedDate) between :startDate and :endDate )  OR  (date(TCO.completedDate) between :startDate and :endDate ) " +
+					" )" );
+			}
 		quertyStr.append(" group by  ");
 		if(descriptionLevelId != null && descriptionLevelId.longValue() == 2L) // districtWise
 		{
@@ -1108,8 +1122,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		if(enrollIdsList != null && enrollIdsList.size() > 0l)
 			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in (:enrollIdsList)");
 		
-		if(startDate != null && endDate != null)
-			quertyStr.append( " and ( (date(TCO.startedDate) between :startDate and :endDate )  OR  date(TCO.completedDate) between :startDate and :endDate )  )" );
+		if(startDate != null && endDate != null){
+			quertyStr.append( " and (" +
+					" (date(TCO.startedDate) between :startDate and :endDate )  OR  (date(TCO.completedDate) between :startDate and :endDate ) " +
+					" )" );
+			}
+			
 			
 		quertyStr.append(" group by VAR.voterAgeRangeId,TC.gender order by VAR.minValue asc");
 		
@@ -1236,9 +1254,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		}
 		/*if(enrollIdsList != null && enrollIdsList.size() > 0l)
 			quertyStr.append(" and TCM.tdpCommitteeEnrollmentId in (:enrollIdsList)");*/
-		if(startDate != null && endDate != null)
-			quertyStr.append( " and ( (date(TCO.startedDate) between :startDate and :endDate )  OR  date(TCO.completedDate) between :startDate and :endDate )  )" );
-		
+		if(startDate != null && endDate != null){
+			quertyStr.append( " and (" +
+					" (date(TCO.startedDate) between :startDate and :endDate )  OR  (date(TCO.completedDate) between :startDate and :endDate ) " +
+					" )" );
+			}
+			
 		quertyStr.append(" group by CS.casteStateId,TC.gender order by C.casteName asc");
 		
 		Query query = getSession().createQuery(quertyStr.toString());
@@ -1363,9 +1384,11 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		}
 		/*if(enrollIdsList != null && enrollIdsList.size() > 0l)
 			quertyStr.append(" and TCM.tdpCommitteeEnrollmentId in (:enrollIdsList)");*/
-		if(startDate != null && endDate != null)
-			quertyStr.append( " and ( (date(TCO.startedDate) between :startDate and :endDate )  OR  date(TCO.completedDate) between :startDate and :endDate )  )" );
-		
+		if(startDate != null && endDate != null){
+			quertyStr.append( " and (" +
+					" (date(TCO.startedDate) between :startDate and :endDate )  OR  (date(TCO.completedDate) between :startDate and :endDate ) " +
+					" )" );
+			}
 		quertyStr.append(" group by CC.casteCategoryId,TC.gender order by TC.gender asc");
 		
 		Query query = getSession().createQuery(quertyStr.toString());
