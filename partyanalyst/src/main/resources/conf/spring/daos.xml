@@ -3722,5 +3722,33 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="govtOfficerDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtOfficerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentDesignationOfficerDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationOfficerDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertAssignedOfficerDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedOfficerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertAssignedOfficerTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedOfficerTrackingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="alertAssignedOfficerActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedOfficerActionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtDepartmentDesignationOfficerUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationOfficerUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="govtAlertDepartmentLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtAlertDepartmentLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
     <!-- Command Control Alerts End -->
 </beans>		
