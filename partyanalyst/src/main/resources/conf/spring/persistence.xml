@@ -1160,6 +1160,13 @@
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentDocument</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertDepartmentTracking</value>
 	                  
+	                  <value>com.itgrids.partyanalyst.model.GovtOfficer</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetails</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertAssignedOfficer</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerTracking</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerAction</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerUser</value>
+	                  <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocation</value>
 	                  <!-- Command Control Alerts End -->
 	              </list>
 			
