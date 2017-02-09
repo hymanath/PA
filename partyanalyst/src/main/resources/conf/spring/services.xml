@@ -4027,7 +4027,14 @@
 		<property name="tehsilDAO" ref="tehsilDAO" ></property>
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" ></property>
 		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO" ></property>
-		<property name="govtDepartmentDesignationOfficerDAO" ref="govtDepartmentDesignationOfficerDAO" ></property>
+		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO" ></property>
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="alertDepartmentCommentDAO" ref="alertDepartmentCommentDAO"></property>
+		<property name="alertdeDepartmentDocumentDAO" ref="alertdeDepartmentDocumentDAO"></property>
+		<property name="govtDepartmentDesignationOfficerDAO" ref="govtDepartmentDesignationOfficerDAO"></property>
+		<property name="alertAssignedOfficerDAO" ref="alertAssignedOfficerDAO"></property>
+		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>
+		<property name="alertAssignedOfficerActionDAO" ref="alertAssignedOfficerActionDAO"></property>
 	</bean>
 </beans>			
 	
