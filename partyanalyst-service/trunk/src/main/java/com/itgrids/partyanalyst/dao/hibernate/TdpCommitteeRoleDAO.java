@@ -14,21 +14,39 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		super(TdpCommitteeRole.class);
 	}
 	
+	public List<Object[]> getAllCommitteeRoles(Long committeeId){
+		Query query = getSession().createQuery("" +
+		" select model.tdpCommitteeRoleId, model.tdpRoles.role, model.maxMembers , model.roleType , model.minProposeMembers , model.maxProposeMembers " +
+		" from   TdpCommitteeRole model " +
+		" where  model.tdpCommittee.tdpCommitteeId =:committeeId " +
+		" order  by model.tdpRoles.order");
+		query.setParameter("committeeId", committeeId);
+		return query.list();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllCommitteeRoles(Long committeeId,List<Long> enrollmentIds,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append("" +
 		" select model.tdpCommitteeRoleId, model.tdpRoles.role, model.maxMembers , model.roleType , model.minProposeMembers , model.maxProposeMembers " +
 		" from   TdpCommitteeRole model " +
-		" where  model.tdpCommittee.tdpCommitteeId =:committeeId " +
-		" and model.tdpCommitteeEnrollmentId in (:enrollmentIds) " );
-		if(startDate != null && endDate != null)
+		" where  model.tdpCommittee.tdpCommitteeId =:committeeId ");
+		
+		if(enrollmentIds != null && enrollmentIds.size() > 0){
+			sb.append("  and model.tdpCommitteeEnrollmentId in (:enrollmentIds) ");
+		}
+		if(startDate != null && endDate != null){
 			sb.append( " and ( (date(model.tdpCommittee.startedDate) between :startDate and :endDate )  OR  date(model.tdpCommittee.completedDate) between :startDate and :endDate )  )" );
-			//sb.append(" and date(model.tdpCommittee.startedDate) between :startDate and :endDate");
+		}
+		//sb.append(" and date(model.tdpCommittee.startedDate) between :startDate and :endDate");
+		
 		sb.append(" order  by model.tdpRoles.order");
 		Query query = getSession().createQuery(sb.toString());
 			query.setParameter("committeeId", committeeId);
-			query.setParameterList("enrollmentIds", enrollmentIds);
+			if(enrollmentIds != null && enrollmentIds.size() > 0){
+				query.setParameterList("enrollmentIds", enrollmentIds);
+			}
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
