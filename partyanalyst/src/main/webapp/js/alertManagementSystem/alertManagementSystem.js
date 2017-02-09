@@ -40,6 +40,7 @@ function totalAlertGroupByStatusForGovt()
 function buildTotalAlertGroupByStatusForGovt(result)
 {
 	var str='';
+	var totalAlert = 0;
 	
 	str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -56,13 +57,14 @@ function buildTotalAlertGroupByStatusForGovt(result)
 				str+='<tbody>';
 					for(var i in result)
 					{	
+						totalAlert+=result[i].count;
 						str+='<tr>';
 							str+='<td>'+result[i].status+'</td>';
-							str+='<td>'+result[i].count+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].statusId+'">'+result[i].count+'</td>';
 							str+='<td>'+result[i].statusPercent+'%</td>';
 						str+='</tr>';
 					}
-				str+='</tbody>';
+				str+='</tbody>';  
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
@@ -72,16 +74,17 @@ function buildTotalAlertGroupByStatusForGovt(result)
 	{
 		statusPercent = result[i].statusPercent;
 		statusName = result[i].status;
+		var cnt = result[i].count;
+		var stsId = result[i].statusId;
 		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
 		
 		var obj = {
 			name: statusName,
 			y:statusPercent,
-			//color:color
+			count:cnt,   
+			sts:stsId
 		}
-		
 		statusOverviewArr.push(obj);
-		
 	}
 	
 	$(function() {
@@ -102,8 +105,12 @@ function buildTotalAlertGroupByStatusForGovt(result)
 				text: null
 			},
 			 tooltip: {
-				enabled: false,
-				shared: true
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					var cnt = this.point.count;
+					return "Total Alerts - "+cnt+"";
+				}  
 			}, 
 			plotOptions: {
 				series: {
@@ -114,6 +121,13 @@ function buildTotalAlertGroupByStatusForGovt(result)
 						},
 						distance: -30,
 						color:'black'
+					},
+					point:{
+						events:{
+							click:function(){
+								getData(this.count,this.sts);     
+							}
+						}
 					}
 				},
 				pie: {
@@ -143,7 +157,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 
 			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
 			span += '<span style="font-size: 18px">TOTAL</span><br>';
-			span += '<span style="font-size: 14px">100</span>';
+			span += '<span style="font-size: 14px;cursor:pointer;" class="getDtlsCls" attr_status_id="0">'+totalAlert+'</span>';
 			span += '</span>';
 
 			$("#statusOverViewTotal").append(span);
@@ -154,7 +168,44 @@ function buildTotalAlertGroupByStatusForGovt(result)
 	});
 }
 /* Status OverView End*/
-
+function getData(count, alertStatusId){ 
+	$("#totalAlertsModalTabId").html('');
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'  
+	});
+	var deptIdArr = [];
+	var deptId = $(this).attr("attr_dept_id");
+	if(deptId != null){
+		deptIdArr.push(deptId);  
+	}else{
+		deptIdArr = [1,2,3,4];
+	}
+	
+    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:'01/02/2017',
+      toDate:'07/02/2017',
+      stateId : 36,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr,
+	  statusId : alertStatusId       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertByStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildtotalAlertsModalTabId(result);
+		}else{
+			$("#statusOverview").html('NO DATA AVAILABLE')
+		}
+    });
+}
 /* DEPARTMENT WISE STATUS OVERVIEW START*/
 function totalAlertGroupByStatusThenDepartment()
 {
@@ -215,12 +266,12 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 							for(var j in result[i].subList1)
 							{
 								if(result[i].subList1[j].category !=null && result[i].subList1[j].category.length > 40){
-									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span class="pull-right">'+result[i].subList1[j].categoryCount+'</span></li>';
-								}else{
-									str+='<li>'+result[i].subList1[j].category+'  <span class="pull-right">'+result[i].subList1[j].categoryCount+'</span></li>';
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';  
+								}else{//swadhin
+									str+='<li>'+result[i].subList1[j].category+'  <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';
 								}
 								
-							}
+							}//class="getDtlsCls" attr_status_id="'+result[i].statusId+'"
 							str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
@@ -335,14 +386,46 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 /* DEPARTMENT WISE STATUS OVERVIEW END*/
 		
 var alertId = 3725;
-buildtotalAlertsModalTabId()
-	/* $("#totalAlertsModal").modal({
+$(document).on("click",".getDtlsCls",function(){
+	$("#totalAlertsModalTabId").html('');
+	$("#totalAlertsModal").modal({
 		show: true,
 		keyboard: false,
 		backdrop: 'static'
-	}); */
-function buildtotalAlertsModalTabId()
-{
+	});
+	var deptIdArr = [];
+	var alertStatusId = $(this).attr("attr_status_id");
+	var deptId = $(this).attr("attr_dept_id");
+	if(deptId != null){
+		deptIdArr.push(deptId);  
+	}else{
+		deptIdArr = [1,2,3,4];
+	}
+	
+    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:'01/02/2017',
+      toDate:'07/02/2017',
+      stateId : 36,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr,
+	  statusId : alertStatusId       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertByStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildtotalAlertsModalTabId(result);
+		}else{
+			$("#statusOverview").html('NO DATA AVAILABLE')
+		}
+    });
+});
+function buildtotalAlertsModalTabId(result){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var str='';
 	if($(window).width() < 500)
@@ -353,14 +436,60 @@ function buildtotalAlertsModalTabId()
 			str+='<thead>';
 				str+='<th>Alert Source</th>';
 				str+='<th>Alert Title</th>';
+				str+='<th>Created Date</th>';
+				str+='<th>Last Updated Date</th>';
+				str+='<th>Current Status</th>'	 
+				str+='<th>LAG Days</th>';
+				str+='<th>Alert Level</th>';
+				str+='<th>Location</th>';
 				str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
+			for(var i in result){
 				str+='<tr>';
-					str+='<td></td>';
-					str+='<td></td>';
+					if(result[i].source != null && result[i].source.length > 0){
+						str+='<td><strong>'+result[i].source+'</strong></td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].title != null && result[i].title.length > 0){
+						str+='<td><strong>'+result[i].title+'</strong></td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].createdDate != null && result[i].createdDate.length > 0){
+						str+='<td>'+result[i].createdDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].updatedDate != null && result[i].updatedDate.length > 0){
+						str+='<td>'+result[i].updatedDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].status != null && result[i].status.length > 0){
+						str+='<td>'+result[i].status+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].interval != null){
+						str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';            
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].alertLevel != null && result[i].alertLevel.length > 0){
+						str+='<td>'+result[i].alertLevel+'</td>';               
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].location != null && result[i].location.length > 0){
+						str+='<td>'+result[i].location+'</td>';        
+					}else{
+						str+='<td> - </td>';        
+					}
 					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alertId="3725">Alert Details</button></td>';
 				str+='</tr>';
+			}
 			str+='</tbody>';
 		str+='</table>';
 	if($(window).width() < 500)
@@ -370,7 +499,6 @@ function buildtotalAlertsModalTabId()
 	$("#totalAlertsModalTabId").html(str);
 	$("#dataTableTotalAlerts").dataTable();
 }
-
 $(document).on("click",".alertDetailsModalCls",function(){
 	$("#alertDetailsModal").modal({
 		show: true,
