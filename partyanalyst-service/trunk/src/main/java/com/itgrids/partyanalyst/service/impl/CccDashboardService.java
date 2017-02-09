@@ -61,13 +61,20 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private IAlertDepartmentCommentDAO alertDepartmentCommentDAO;
-	private IAlertDepartmentDocumentDAO alertdeDepartmentDocumentDAO;
+	private IAlertDepartmentDocumentDAO alertDepartmentDocumentDAO;
 	private IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO;
 	private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
 	private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
 	private IAlertAssignedOfficerActionDAO alertAssignedOfficerActionDAO;
 	
 	
+	public IAlertDepartmentDocumentDAO getAlertDepartmentDocumentDAO() {
+		return alertDepartmentDocumentDAO;
+	}
+	public void setAlertDepartmentDocumentDAO(
+			IAlertDepartmentDocumentDAO alertDepartmentDocumentDAO) {
+		this.alertDepartmentDocumentDAO = alertDepartmentDocumentDAO;
+	}
 	public IAlertAssignedOfficerActionDAO getAlertAssignedOfficerActionDAO() {
 		return alertAssignedOfficerActionDAO;
 	}
@@ -95,13 +102,6 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	public void setGovtDepartmentDesignationOfficerDAO(
 			IGovtDepartmentDesignationOfficerDAO govtDepartmentDesignationOfficerDAO) {
 		this.govtDepartmentDesignationOfficerDAO = govtDepartmentDesignationOfficerDAO;
-	}
-	public IAlertDepartmentDocumentDAO getAlertdeDepartmentDocumentDAO() {
-		return alertdeDepartmentDocumentDAO;
-	}
-	public void setAlertdeDepartmentDocumentDAO(
-			IAlertDepartmentDocumentDAO alertdeDepartmentDocumentDAO) {
-		this.alertdeDepartmentDocumentDAO = alertdeDepartmentDocumentDAO;
 	}
 	public IAlertDepartmentCommentDAO getAlertDepartmentCommentDAO() {
 		return alertDepartmentCommentDAO;
@@ -515,7 +515,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alertDepartmentDocument.setDocument(inputvo.getDocument());
 					alertDepartmentDocument.setInsertedBy(inputvo.getUserId());
 					alertDepartmentDocument.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					alertDepartmentDocument = alertdeDepartmentDocumentDAO.save(alertDepartmentDocument);
+					alertDepartmentDocument = alertDepartmentDocumentDAO.save(alertDepartmentDocument);
 					
 					//Alert Status Updation
 					Alert alert = alertDAO.get(inputvo.getAlertId());
