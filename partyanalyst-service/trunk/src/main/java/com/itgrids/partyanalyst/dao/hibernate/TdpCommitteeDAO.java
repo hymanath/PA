@@ -36,10 +36,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			sb.append("  and model.tdpCommitteeEnrollmentId in (:enrollmentIds) ");
 		}
 		if(startDate != null && endDate != null){
-			sb.append( " and ( (date(model.startedDate) between :startDate and :endDate )  OR  date(model.completedDate) between :startDate and :endDate )  )" );
-		}
+			sb.append( " and (" +
+					" (date(model.startedDate) between :startDate and :endDate )  OR  (date(model.completedDate) between :startDate and :endDate )" +
+					"  )" );
+		}//sb.append(" and date(model.startedDate) between :startDate and :endDate");
 			
-			//sb.append(" and date(model.startedDate) between :startDate and :endDate");
+			
 		Query query = getSession().createQuery(sb.toString());
 			query.setParameter("levelId", levelId);
 			query.setParameter("levelValue", levelValue);
