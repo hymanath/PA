@@ -15688,14 +15688,56 @@
 		    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
   	</action>
-	  <action name="getCommitteeMembersAvailableInfoAction" class="committeeDashBoardAction" method="getCommitteeMembersAvailableInfo">
-	  	  <result type="json" name="success">		   
-			    <param name="root">locationWiseBoothDetailsVO</param>
-		  </result>	
-	  </action>
+	<action name="getCommitteeMembersAvailableInfoAction" class="committeeDashBoardAction" method="getCommitteeMembersAvailableInfo">
+		<result type="json" name="success">		   
+			<param name="root">locationWiseBoothDetailsVO</param>
+		</result>	
+	</action>
 	  
-	  <action name="alertDepartmentLoginAction" class="cccDashboardAction" method="alertDepartmentLogin">
-	  	<result name="success">/jsp/alertDepartmentLoginPage.jsp</result>
+	<action name="alertDepartmentLoginAction" class="cccDashboardAction" method="alertDepartmentLogin">
+		<result name="success">/jsp/alertDepartmentLoginPage.jsp</result>
+	</action>
+	
+	<action name="getDepartmentLevelsAction" class="cccDashboardAction" method="getDepartmentLevels">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+	
+	<action name="getLocationsBasedOnLevelAction" class="cccDashboardAction" method="getLocationsBasedOnLevel">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+	
+	<action name="getDepartmentsByAlertAction" class="cccDashboardAction" method="getDepartmentsByAlert">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+	
+	<action name="getDesignationsByDepartmentAction" class="cccDashboardAction" method="getDesignationsByDepartment">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+	
+	<action name="getOfficersByDesignationAndLevelAction" class="cccDashboardAction" method="getOfficersByDesignationAndLevel">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+	
+	<action name="assigningAlertToOfficerAction" class="cccDashboardAction" method="assigningAlertToOfficer">
+		<result type="json" name="success">		   
+			<param name="root">successMsg</param>
+		</result>	
+	</action>
+	
+	<action name="getAssignedOfficersDetailsForAlertAction" class="cccDashboardAction" method="getAssignedOfficersDetailsForAlert">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
 	</action>
  </package>
 </struts>
