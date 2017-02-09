@@ -94,6 +94,8 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long culturalCmpltd;	
 	private Long othersCmpltd;
 	
+	private Boolean affliatedCommitteesExist;
+	private Boolean mainCommitteesExist;
 	
 	public Long getAfflMembersCount() {
 		return afflMembersCount;
@@ -607,7 +609,18 @@ public class CommitteeSummaryVO implements Serializable{
 	public void setStateCommVO(CommitteeSummaryVO stateCommVO) {
 		this.stateCommVO = stateCommVO;
 	}
-	
+	public Boolean getAffliatedCommitteesExist() {
+		return affliatedCommitteesExist;
+	}
+	public void setAffliatedCommitteesExist(Boolean affliatedCommitteesExist) {
+		this.affliatedCommitteesExist = affliatedCommitteesExist;
+	}
+	public Boolean getMainCommitteesExist() {
+		return mainCommitteesExist;
+	}
+	public void setMainCommitteesExist(Boolean mainCommitteesExist) {
+		this.mainCommitteesExist = mainCommitteesExist;
+	}
 	
 
 }
