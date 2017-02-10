@@ -69,7 +69,7 @@
 	
 	function defaultAlertCalls()
 	{
-		
+		$(".alertImpactCheckCls").prop('checked', true);
 		var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];
 	
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
