@@ -5923,7 +5923,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return null;
 	}
 	
-	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType){
+	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType,List<Long> committeeSpanTypeIdsLsit){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
 			
@@ -5999,11 +5999,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			List<Object[]>  startedCount = null;
 			if(committeeType.equalsIgnoreCase("started")){
-				startedCount=tdpCommitteeDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				startedCount=tdpCommitteeDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
 			}
 			else
 			{
-				startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
 			}
 			
 			if(startedCount != null && startedCount.size() > 0){
@@ -6022,7 +6022,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	
-	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType){
+	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType,List<Long> committeeSpanTypeIdsLsit){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
 			
@@ -6116,9 +6116,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			 
 			List<Object[]> membersCount = null; 
 			if(committeeType.equalsIgnoreCase("started")){
-				membersCount = tdpCommitteeMemberDAO.getStartedCommitteesMembersCountByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				membersCount = tdpCommitteeMemberDAO.getStartedCommitteesMembersCountByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
 			}else{
-				membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
 			}
 			
 			if(membersCount != null && membersCount.size() > 0){
