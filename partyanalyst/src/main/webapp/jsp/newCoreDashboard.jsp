@@ -240,6 +240,30 @@
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
 															</label>
 														</li>
+													   <li>
+														 <label class="checkbox-inline">
+															<input type="checkbox" attr_scope_type="National" class="alertImpactCheckCls" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">NATIONAL</h5></div>
+														 </label>
+														</li>
+														<li>
+														 <label class="checkbox-inline">
+															<input type="checkbox" attr_scope_type="International" class="alertImpactCheckCls" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">INTERNATIONAL</h5></div>
+														 </label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="State" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">STATE</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="Parliament" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">PARLIAMENT</h5></div>
+															</label>
+														</li>
 														<li>
 															<label class="checkbox-inline">
 																<input type="checkbox" attr_scope_type="District" class="alertImpactCheckCls" checked>
