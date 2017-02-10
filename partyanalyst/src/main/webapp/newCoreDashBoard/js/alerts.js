@@ -49,6 +49,10 @@
 		scopeIdsArr.push(9); 
 		scopeIdsArr.push(5); 
 		scopeIdsArr.push(8);  
+		scopeIdsArr.push(10);  
+		scopeIdsArr.push(11);  
+		scopeIdsArr.push(1);  
+		scopeIdsArr.push(4);  
 	  $(".alertImpactCheckCls").prop('checked', true); //checked all scope level
 	  $(".alertFilterCls li").removeClass("active");
 	  $(".alertFilterCls li:first-child").addClass("active");
@@ -66,7 +70,7 @@
 	function defaultAlertCalls()
 	{
 		
-		var scopeIdsArr = [2,3,6,7,9,5,8];
+		var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];
 	
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		getTotalAlertGroupByDist(scopeIdsArr,"other");
@@ -167,6 +171,14 @@
 				scopeIdsArr.push(7);  
 				scopeIdsArr.push(9);	
 				scopeIdsArr.push(6);	
+			}else if(selectionType == "National"){
+				scopeIdsArr.push(10);  	
+			}else if(selectionType == "International"){
+				scopeIdsArr.push(11);  
+			}else if(selectionType == "State"){
+				scopeIdsArr.push(1);	
+			}else if(selectionType == "Parliament"){
+				scopeIdsArr.push(4);	
 			}
 		  }
 	   });
@@ -212,7 +224,15 @@
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
 					scopeIdsArr.push(6);  	
-				}
+				}else if(selectionType == "National"){
+				   scopeIdsArr.push(10);  	
+			    }else if(selectionType == "International"){
+				   scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				   scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				   scopeIdsArr.push(4);	
+			    }
 			  }
 		   });
 		if(option == "1"){
@@ -702,7 +722,6 @@
 		});
 	}
 	function getAlertCategoryDtlsLocationWise(alertId,editionId){ 
-		
 		$("#locationWiseAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 		 var fromDateStr;
@@ -880,7 +899,7 @@
 	}
 	//ssss
 	function buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId){
-		var alertTypeIds = $("#alertTypeHiddenId").attr("attr_alert_id")
+	 	var alertTypeIds = $("#alertTypeHiddenId").attr("attr_alert_id")
 		if(alertTypeIds == undefined){
 			alertTypeIds = 0;
 		}
@@ -1743,7 +1762,15 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
-				}
+				}else if(selectionType == "National"){
+				   scopeIdsArr.push(10);  	
+			    }else if(selectionType == "International"){
+				   scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				   scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				   scopeIdsArr.push(4);	
+			    }
 			  }
 		   });
 		  if(groupAssignType == "Public Representative"){
@@ -2000,8 +2027,16 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(6);  
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
-					}
-				}
+					}else if(selectionType == "National"){
+				        scopeIdsArr.push(10);  	
+			        }else if(selectionType == "International"){
+				       scopeIdsArr.push(11);  
+				    }else if(selectionType == "State"){
+				       scopeIdsArr.push(1);	
+				    }else if(selectionType == "Parliament"){
+				       scopeIdsArr.push(4);	
+			      }
+			}
 			});
 			var commitLvlIdArr = [];
 			var commitLvlVal = $("input:radio[name=commitLvlName]:checked").val();
@@ -2087,7 +2122,15 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(6);  
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
-					}
+					}else if(selectionType == "National"){
+				        scopeIdsArr.push(10);  	
+			        }else if(selectionType == "International"){
+				       scopeIdsArr.push(11);  
+				    }else if(selectionType == "State"){
+				       scopeIdsArr.push(1);	
+				    }else if(selectionType == "Parliament"){
+				      scopeIdsArr.push(4);	
+			      }
 				}
 			});  
 			getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId);
@@ -2234,7 +2277,15 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
-				}
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+			    }else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
+			    }
 			}
 		});
 		getAlertDtlsAssignedByPartyCommite(scopeIdsArr,commitTypeId,designationId,commitLvlIdArr,cadreId,statusId);  
@@ -2302,6 +2353,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}
 			  }
 		   });
@@ -2351,6 +2410,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}
 			  }
 		   });
@@ -2434,6 +2501,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}
 			}
 		});
@@ -2862,6 +2937,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}
 			}
 		});
@@ -2933,6 +3016,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);   
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}
 			}
 		});
@@ -3717,7 +3808,7 @@ function getTotalArticledetails(articleId){
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		
 		if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			var scopeIdsArr = [2,3,6,7,9,5,8];          
+			var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];          
 			getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 			getStateImpactLevelAlertDtlsCnt("other"); 
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
@@ -3738,6 +3829,14 @@ function getTotalArticledetails(articleId){
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
 					scopeIdsArr.push(6);	
+				}else if(selectionType == "National"){
+				    scopeIdsArr.push(10);  	
+				}else if(selectionType == "International"){
+				    scopeIdsArr.push(11);  
+				}else if(selectionType == "State"){
+				    scopeIdsArr.push(1);	
+				}else if(selectionType == "Parliament"){
+				    scopeIdsArr.push(4);	
 				}else if(selectionType == "All"){
 					scopeIdsArr.push(2);
 					scopeIdsArr.push(3);
@@ -3746,7 +3845,10 @@ function getTotalArticledetails(articleId){
 					scopeIdsArr.push(7);
 					scopeIdsArr.push(8);
 					scopeIdsArr.push(9);  
-					
+					scopeIdsArr.push(10);  
+					scopeIdsArr.push(11);  
+					scopeIdsArr.push(1);  
+					scopeIdsArr.push(4);  
 				}
 			  }
 		   });
