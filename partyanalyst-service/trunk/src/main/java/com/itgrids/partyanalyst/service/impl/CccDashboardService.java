@@ -31,10 +31,12 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerAction;
@@ -48,6 +50,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 public class CccDashboardService extends AlertService implements ICccDashboardService{
 	private static final Logger logger = Logger.getLogger(CccDashboardService.class);
 	private IAlertDAO alertDAO;
+	private ITvNewsChannelDAO tvNewsChannelDAO;
 	private IAlertStatusDAO alertStatusDAO;
 	private IGovtDepartmentDAO govtDepartmentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
@@ -68,6 +71,10 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private IAlertAssignedOfficerActionDAO alertAssignedOfficerActionDAO;
 	
 	
+	
+	public void setTvNewsChannelDAO(ITvNewsChannelDAO tvNewsChannelDAO) {
+		this.tvNewsChannelDAO = tvNewsChannelDAO;
+	}
 	public IAlertDepartmentDocumentDAO getAlertDepartmentDocumentDAO() {
 		return alertDepartmentDocumentDAO;
 	}
@@ -495,6 +502,75 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			logger.error("Error occured getOfficersByDesignationAndLevel() method of CccDashboardService",e);
 		}
 		return returnList;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 */
+	public List<IdAndNameVO> getNewsPapaerList(){
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			List<Object[]> newsPaperList = alertDAO.getNewsPapaerList();
+			if(newsPaperList != null && newsPaperList.size() > 0){  
+				for(Object[] param : newsPaperList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 */
+	public List<IdAndNameVO> getChannelList(){
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			List<Object[]> channelList = tvNewsChannelDAO.getChannelList();
+			if(channelList != null && channelList.size() > 0){  
+				for(Object[] param : channelList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 */
+	public List<IdAndNameVO> getDeptList(){
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			if(deptList != null && deptList.size() > 0){  
+				for(Object[] param : deptList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
 	}
 	
 	public String assigningAlertToOfficer(final AlertAssigningVO inputvo){
