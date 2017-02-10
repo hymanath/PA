@@ -9401,6 +9401,7 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
 		    		cadreCommitteeMemberVO.setConstituencyName(objects[17] != null ? objects[17].toString(): "");
+		    		cadreCommitteeMemberVO.setOccupation(objects[22] != null ? objects[22].toString() : "");
 		    			    		
 		    		if(cadreCommitteeMemberVO.getRole() != null && !cadreCommitteeMemberVO.getRole().isEmpty())
 		    		{			    				    			
