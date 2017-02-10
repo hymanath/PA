@@ -1,4 +1,4 @@
-function getCadreEnrollmentYears(){
+function getCadreEnrollmentYears(id){
 		 var jsObj={
 		
 		       };
@@ -14,14 +14,14 @@ function getCadreEnrollmentYears(){
 					$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 				}
 			}
-			
-			onLoadcimmitteeDashboardCalls();
+			if(id == 1)
+				onLoadcimmitteeDashboardCalls();
 		});
 	}
 $(document).on("click","#getDetailsId",function(){
 	
 });
-function getCommitteeDetailsByEnrollement(){
+function getCommitteeDetailsByEnrollement(id){
 	  var enrollmentIdsArr = new Array();
 	  enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
 	var jsObj={
@@ -42,12 +42,22 @@ function getCommitteeDetailsByEnrollement(){
 					 var tYear = result[i].toDate.split('-')[0];
 					 var tMonth = result[i].toDate.split('-')[1];
 					 var tDate = result[i].toDate.split('-')[2].substring(0,2);
-					$('#reportrange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
-					$('#reportrange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+					 
+					 if(id == 1 ){
+						 $('#reportrange').data('daterangepicker').setStartDate(fMonth+'/'+fDate+'/'+fYear);
+						 $('#reportrange').data('daterangepicker').setEndDate(tMonth+'/'+tDate+'/'+tYear);
+					 }else if(id == 2 ){
+						$('#reportrange1').data('daterangepicker').setStartDate(fMonth+'/'+fDate+'/'+fYear);
+						$('#reportrange1').data('daterangepicker').setEndDate(tMonth+'/'+tDate+'/'+tYear);
+					 }else{
+						$('#reportrange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+						$('#reportrange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+					 }
 				}
 				}
 			});
 	}
+/*
 	function getCadreEnrollmentYears1(){
 		 var jsObj={
 		
@@ -94,3 +104,4 @@ function getCommitteeDetailsByEnrollement(){
 				}
 			});
 	}
+*/
