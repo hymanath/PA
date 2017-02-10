@@ -38,7 +38,7 @@ function totalAlertGroupByStatusForGovt()
 {
 	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var deptIdArr = [1,2,3,4];
-    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var paperIdArr = [2,8,11];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -196,7 +196,7 @@ function totalAlertGroupByStatusThenDepartment()
 {
 	$("#departmentWiseStatusOvrVw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
     var deptIdArr = [1,2,3,4];
-    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var paperIdArr = [2,8,11];
     var chanelIdArr = [1,2,3,4,5,6,7];
 	var jsObj ={
       fromDate:currentFromDate,
@@ -387,7 +387,7 @@ $(document).on("click",".getDtlsCls",function(){
 		deptIdArr = [1,2,3,4];
 	}
 	
-    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var paperIdArr = [2,8,11];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -425,7 +425,7 @@ function getData(count, alertStatusId){
 		deptIdArr = [1,2,3,4];
 	}
 	
-    var paperIdArr = [68,78,78,93,103,106,147,147,147];
+    var paperIdArr = [2,8,11];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
