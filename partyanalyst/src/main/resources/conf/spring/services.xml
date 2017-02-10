@@ -4035,6 +4035,7 @@
 		<property name="alertAssignedOfficerDAO" ref="alertAssignedOfficerDAO"></property>
 		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>
 		<property name="alertAssignedOfficerActionDAO" ref="alertAssignedOfficerActionDAO"></property>
+		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO" ></property>
 	</bean>
 </beans>			
 	
