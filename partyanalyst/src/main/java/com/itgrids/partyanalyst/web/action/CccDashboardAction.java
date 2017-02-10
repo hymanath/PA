@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -44,7 +46,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		private List<File> imageForDisplay = new ArrayList<File>();
 		private List<String> imageForDisplayContentType = new ArrayList<String>();
 		private List<String> imageForDisplayFileName = new ArrayList<String>();
-		
+		private List<AlertVO> alertVOs;
 	   
 	    private List<IdAndNameVO> newsPaperList;
 	    private List<IdAndNameVO> chanelList;
@@ -158,7 +160,13 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		   this.deptList = deptList;
 	   }
 	   
-	   //Business method
+	   public List<AlertVO> getAlertVOs() {
+		return alertVOs;
+	}
+	public void setAlertVOs(List<AlertVO> alertVOs) {
+		this.alertVOs = alertVOs;
+	}
+	//Business method
 	   public String execute(){
 			newsPaperList = cccDashboardService.getNewsPapaerList();
 			chanelList = cccDashboardService.getChannelList();
@@ -282,6 +290,67 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   LOG.error("Exception Raised in getAssignedOfficersDetailsForAlert() in CccDashboardAction",e);
 			}
 			   return Action.SUCCESS;
+		}
+		public String getTotalAlertGroupByStatusForOneDept(){
+			try{
+				session = request.getSession();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				Long userId = null;
+				alertVOs = cccDashboardService.getTotalAlertGroupByStatusForOneDept(fromDate, toDate, stateId, paperIdList, chanelIdList,userId);
+			}catch(Exception e){
+				LOG.error("Exception occured in getTotalAlertGroupByStatusForOneDept() of CccDashboardAction",e);
+			}
+			return Action.SUCCESS;
+		}
+		public String getTotalAlertGroutByDeptThenStatus(){
+			try{
+				session = request.getSession();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				Long userId =null;
+				alertVOs = cccDashboardService.getTotalAlertGroutByDeptThenStatus(fromDate, toDate, stateId, paperIdList, chanelIdList,userId);
+			}catch(Exception e){
+				LOG.error("Exception occured in getTotalAlertGroutByDeptThenStatus() of CccDashboardAction",e);
+			}
+			return Action.SUCCESS;
+		}
+		public String getDepartmentDetails(){
+			try{
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+			}
+			return Action.SUCCESS;
 		}
 		
 		public String getStatusWiseCommentsTracking(){
