@@ -20,6 +20,9 @@ public class GovtDepartmentVO {
 	private String mobileNo;
 	private String designation;
 	
+	private Long commentId;
+	private String comment;
+	
 	
 	public Long getId() {
 		return id;
@@ -50,5 +53,17 @@ public class GovtDepartmentVO {
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	public Long getCommentId() {
+		return commentId;
+	}
+	public void setCommentId(Long commentId) {
+		this.commentId = commentId;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

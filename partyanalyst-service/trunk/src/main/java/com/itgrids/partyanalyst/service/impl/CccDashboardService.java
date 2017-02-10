@@ -679,4 +679,25 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return returnList;
 	}
+	
+	public List<GovtDepartmentVO> getStatusWiseCommentsTracking(Long alertId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = alertAssignedOfficerTrackingDAO.getStatusWiseTrackingComments(alertId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setCommentId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setComment(obj[3] != null ? obj[3].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getStatusWiseCommentsTracking() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
 }

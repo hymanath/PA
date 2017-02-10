@@ -26,14 +26,14 @@ public class GovtAlertDepartmentLocation extends BaseModel implements Serializab
 
 	private Long govtAlertDepartmentLocationId;
 	private Long userId;
-	private Long departmentId;
+	private Long govtDepartmentId;
 	private Long govtDepartmentLevelId;
 	private Long levelValue;
 	private Long addressId;
 	private String isDeleted;
 	
 	private User user;
-	private Department department;
+	private GovtDepartment govtDepartment;
 	private GovtDepartmentLevel govtDepartmentLevel;
 	private UserAddress address;
 	
@@ -55,12 +55,12 @@ public class GovtAlertDepartmentLocation extends BaseModel implements Serializab
 		this.userId = userId;
 	}
 	
-	@Column(name = "department_id")
-	public Long getDepartmentId() {
-		return departmentId;
+	@Column(name = "govt_department_id")
+	public Long getGovtDepartmentId() {
+		return govtDepartmentId;
 	}
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setGovtDepartmentId(Long govtDepartmentId) {
+		this.govtDepartmentId = govtDepartmentId;
 	}
 	
 	@Column(name = "govt_department_level_id")
@@ -107,14 +107,14 @@ public class GovtAlertDepartmentLocation extends BaseModel implements Serializab
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="department_id", insertable=false, updatable = false)
+	@JoinColumn(name="govt_department_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Department getDepartment() {
-		return department;
+	public GovtDepartment getGovtDepartment() {
+		return govtDepartment;
 	}
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setGovtDepartment(GovtDepartment govtDepartment) {
+		this.govtDepartment = govtDepartment;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
