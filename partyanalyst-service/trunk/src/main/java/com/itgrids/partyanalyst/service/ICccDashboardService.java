@@ -24,5 +24,7 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
 	public String assigningAlertToOfficer(final AlertAssigningVO inputvo);
 	public List<GovtDepartmentVO> getAssignedOfficersDetailsForAlert(Long alertId);
+	public List<AlertVO> getTotalAlertGroupByStatusForOneDept(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId);
+	public List<AlertVO> getTotalAlertGroutByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId);
 	public List<GovtDepartmentVO> getStatusWiseCommentsTracking(Long alertId);
 } 
