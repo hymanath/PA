@@ -204,15 +204,18 @@ public List<Object[]> getDistrictIdAndNameByStateForStateTypeId(Long stateId,Lon
 	str.append("select distinct model.districtId,model.districtName from District model where model.state.stateId = :stateId ");
 	if(stateTypeId.longValue() == 0L)
 	{
-		str.append(" and model.districtId between 1 and 23 ");
+		//str.append(" and model.districtId between 1 and 23 ");
+		str.append(" and model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+"+IConstants.TS_NEW_DISTRICTS_IDS_LIST+"+") ");
 	}
 	else if(stateTypeId.longValue() == 1L)
 	{
-		str.append(" and model.districtId between 11 and 23 ");
+		//str.append(" and model.districtId between 11 and 23 ");
+		str.append(" and model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 	}
-	else if(stateTypeId.longValue() == 36L)
+	else if(stateTypeId.longValue() == 2L || stateTypeId.longValue() == 36L)
 	{
-		str.append(" and model.districtId between 1 and 10 ");
+		//str.append(" and model.districtId between 1 and 10 ");
+		str.append(" and model.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 	}
 	str.append(" order by model.districtName asc"); 
 	
