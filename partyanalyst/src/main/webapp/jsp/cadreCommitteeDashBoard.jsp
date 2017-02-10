@@ -1120,8 +1120,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					$('#districtDiv').hide();
 					
 					$('#statesBtnsId').hide();
-					getCadreEnrollmentYears();
-					getCadreEnrollmentYears1();
+					getCadreEnrollmentYears(1);
+					getCadreEnrollmentYears(2);
 					$('#reportrange').val(moment().format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
 					$("#reportrange").daterangepicker({
 						startDate: moment(),
@@ -5867,7 +5867,7 @@ function capitalize(str) {
 }
 $(document).on("change","#tdpCommitteeYearId",function(){
 	$( "#reportrange" ).val('');
-	getCommitteeDetailsByEnrollement();
+	getCommitteeDetailsByEnrollement(1);
 });	
 
 function onLoadcimmitteeDashboardCalls(){
@@ -5982,7 +5982,7 @@ function onLoadcimmitteeDashboardCalls(){
 
 $(document).on("change","#tdpCommitteeYearId1",function(){
 	$( "#reportrange1" ).val('');
-	getCommitteeDetailsByEnrollement1();
+	getCommitteeDetailsByEnrollement(2);
 });
  $(document).on("click","#getDetailsId1",function(){
 	var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
