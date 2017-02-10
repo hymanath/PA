@@ -1482,7 +1482,7 @@ public String getAllConstituencysForADistrict(){
 			{
 				for (int i = 0; i < EnrollIdsArr.length(); i++)
 				{
-					Long value = EnrollIdsArr.get(i) != null ? Long.valueOf(EnrollIdsArr.get(i).toString().trim()):0L;
+					Long value = EnrollIdsArr.get(i) != null && !EnrollIdsArr.get(i).toString().equalsIgnoreCase("null") ? Long.valueOf(EnrollIdsArr.get(i).toString().trim()):0L;
 					enrollYearIdsList.add(value);
 				}
 			}
