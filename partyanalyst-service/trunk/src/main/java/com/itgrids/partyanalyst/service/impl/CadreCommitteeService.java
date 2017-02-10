@@ -2735,7 +2735,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					 
 				cadreCommitteeReportVO.setMainCommittees(0l);
 				cadreCommitteeReportVO.setAfflCommittees(0l);
-				 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,enrollmentIdsList);
 						if(startedCount != null && startedCount.size() > 0){
 							for (Object[] objects : startedCount) {
 								if(Long.valueOf(objects[1].toString())==1l){
@@ -2753,10 +2753,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			  cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 					
 			  cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
-			  if(userId.longValue() == 1 && (levelIds.contains(6l) || levelIds.contains(8l)))
+			 // if(Arrays.asList(IConstants.COMMITTEE_ALL_DATA_ACCESS_USER_IDS).contains(userId.longValue()) && (levelIds.contains(6l) || levelIds.contains(8l)))
+			  if((userId.longValue() == 1L || userId.longValue() == 7446L ) && (levelIds.contains(6l) || levelIds.contains(8l)))
 			  {
 				   CadreIVRVO committeeSummaryVO = new CadreIVRVO();
-				   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state,levelIds);
+				   if(enrollmentIdsList != null && enrollmentIdsList.contains(1L))
+					   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state,levelIds);
 				   cadreCommitteeReportVO.setCommitteeSummaryVO(committeeSummaryVO);
 			  }
 			   
@@ -2793,7 +2795,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							}
 						}
 						
-						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						if(startedCount != null && startedCount.size() > 0){
 							for (Object[] objects : startedCount) {
 								if(Long.valueOf(objects[1].toString())==1l){
@@ -2832,7 +2834,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							}
 						}
 						
-						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						if(startedCount != null && startedCount.size() > 0){
 							for (Object[] objects : startedCount) {
 								if(Long.valueOf(objects[1].toString())==1l){
@@ -2868,7 +2870,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							}
 						}
 					  
-						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds,enrollmentIdsList);
 						if(startedCount != null && startedCount.size() > 0){
 							for (Object[] objects : startedCount) {
 								if(Long.valueOf(objects[1].toString())==1l){
@@ -19633,8 +19635,8 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 			for (Object[] objects : CommitteesLst) {
 				vo = new CadreCommitteeVO();
 				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				vo.setFromDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
-				vo.setToDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+				vo.setFromDate(commonMethodsUtilService.getStringValueForObject(objects[0]));
+				vo.setToDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				
 				returnList.add(vo);
 			}
