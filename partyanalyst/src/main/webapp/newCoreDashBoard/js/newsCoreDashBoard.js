@@ -2852,6 +2852,17 @@
 			$("#districtWiseNewsReportGovtDetailed").html("No Data Available")
 		}	
 		
+		$("#districtWiseNewsReportGovtDetailed").each(function(){
+			var scrollengthDiv = $(this).find(".chartLiD").length;
+			if(scrollengthDiv >= 2){
+				$(".verticalScrollBarPM").mCustomScrollbar({setHeight:'560px'})
+				
+			}else{
+				$(".verticalScrollBarPM").css("height","auto");
+			
+			}
+		});
+		
 	}
 	
 	function getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(val){
