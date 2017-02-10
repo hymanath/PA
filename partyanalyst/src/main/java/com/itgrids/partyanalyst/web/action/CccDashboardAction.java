@@ -16,16 +16,18 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CccDashboardAction extends ActionSupport implements ServletRequestAware {
-	   
+		
 		private final static Logger LOG = Logger.getLogger(CccDashboardAction.class);
 		private HttpServletRequest request;
 		private HttpSession session;
@@ -42,8 +44,12 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		private List<String> imageForDisplayContentType = new ArrayList<String>();
 		private List<String> imageForDisplayFileName = new ArrayList<String>();
 		
-		
-		public List<File> getImageForDisplay() {
+	   
+	    private List<IdAndNameVO> newsPaperList;
+	    private List<IdAndNameVO> chanelList;
+	    private List<IdAndNameVO> deptList;
+	   
+	    public List<File> getImageForDisplay() {
 			return imageForDisplay;
 		}
 		public void setImageForDisplay(List<File> imageForDisplay) {
@@ -74,21 +80,21 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		public void setCccDashboardService(ICccDashboardService cccDashboardService) {
 			this.cccDashboardService = cccDashboardService;
 		}
-		public JSONObject getjObj() {
-			return jObj;
-		}
-		public void setjObj(JSONObject jObj) {
-			this.jObj = jObj;
-		}
-		public String getTask() {
-			return task;
-		}
-		public void setTask(String task) {
-			this.task = task;
-		}
-		public void setServletRequest(HttpServletRequest request) {
-			this.request = request;    
-	   }
+	    public JSONObject getjObj() {
+		    return jObj;
+	    }
+	    public void setjObj(JSONObject jObj) {
+		    this.jObj = jObj;
+	    }
+	    public String getTask() {
+		    return task;
+	    }
+	    public void setTask(String task) {
+		    this.task = task;
+	    }
+	    public void setServletRequest(HttpServletRequest request) {
+		   this.request = request;    
+	    }
 	   public HttpServletRequest getRequest() {
 		   return request;
 	   }
@@ -110,7 +116,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	   }
 	   
 	   public InputStream getInputStream() {
-			return inputStream;
+		   return inputStream;
 	   }
 	   public void setInputStream(InputStream inputStream) {
 		   this.inputStream = inputStream;
@@ -128,22 +134,40 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	   }
 	   public List<GovtDepartmentVO> getGovtDeptVoList() {
 			return govtDeptVoList;
-		}
-		public void setGovtDeptVoList(List<GovtDepartmentVO> govtDeptVoList) {
+	   }
+	   public void setGovtDeptVoList(List<GovtDepartmentVO> govtDeptVoList) {
 			this.govtDeptVoList = govtDeptVoList;
-		}
-		
-		
-		//Business method
-		public String execute(){
-			return Action.SUCCESS;
-		}
-   
-		public String alertDepartmentLogin(){
-			return Action.SUCCESS;
-		}
-   
-		public String getDepartmentLevels(){
+	   }
+	   public List<IdAndNameVO> getNewsPaperList() {
+			return newsPaperList;
+	   }
+	   public void setNewsPaperList(List<IdAndNameVO> newsPaperList) {
+		   this.newsPaperList = newsPaperList;
+	   }
+	   public List<IdAndNameVO> getChanelList() {
+		   return chanelList;
+	   }
+	   public void setChanelList(List<IdAndNameVO> chanelList) {
+		   this.chanelList = chanelList;
+	   }
+	   public List<IdAndNameVO> getDeptList() {
+		   return deptList;
+	   }
+	   public void setDeptList(List<IdAndNameVO> deptList) {
+		   this.deptList = deptList;
+	   }
+	   
+	   //Business method
+	   public String execute(){
+			newsPaperList = cccDashboardService.getNewsPapaerList();
+			chanelList = cccDashboardService.getChannelList();
+			deptList = cccDashboardService.getDeptList();  
+		    return Action.SUCCESS;
+	   }
+	   public String alertDepartmentLogin(){
+		   return Action.SUCCESS;
+	   }
+	   public String getDepartmentLevels(){
 			try {
 				jObj = new JSONObject(getTask());
 		
