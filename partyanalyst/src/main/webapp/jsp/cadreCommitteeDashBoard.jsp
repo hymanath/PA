@@ -1122,12 +1122,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					$('#statesBtnsId').hide();
 					getCadreEnrollmentYears();
 					getCadreEnrollmentYears1();
-					$('#reportrange').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
+					$('#reportrange').val(moment().format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
 					$("#reportrange").daterangepicker({
 						startDate: moment(),
 						endDate: moment(),
 						opens: 'left',
-						format: 'DD/MM/YYYY',
+						format: 'MM/DD/YYYY',
 						ranges: {
 						   'Today' : [moment(), moment()],
 						   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -1139,12 +1139,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						   'This Year': [moment().startOf('Year'), moment()]
 						}
 					});
-					$('#reportrange1').val(moment().format("DD/MM/YYYY") +'-'+ moment().format("DD/MM/YYYY"));
+					$('#reportrange1').val(moment().format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
 					$("#reportrange1").daterangepicker({
 						startDate: moment(),
 						endDate: moment(),
 						opens: 'left',
-						format: 'DD/MM/YYYY',
+						format: 'MM/DD/YYYY',
 						ranges: {
 						   'Today' : [moment(), moment()],
 						   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -6075,7 +6075,7 @@ function getCommitteeMembersAvailableInfo(levelId,levelValue){
 					  variableWidth: true
 					}); */
 				/*var getSlickWidth = ($('#dialogSummary').width()-($('#dialogSummary').width()) * (0.2)) ;
-				alert(getSlickWidth)
+				//alert(getSlickWidth)
 			   $('#variable-width'+slickCount).find(".slick-track").css("width",getSlickWidth);*/
 		});
 	}
