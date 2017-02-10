@@ -6031,7 +6031,7 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			//console.log(result);
 			if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 					  location.reload(); 
@@ -6059,6 +6059,8 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 						}else{
 							str+='<li class="btn btn-xs orangeCls" disabled="disabled" style="margin-left: 5px;">0</li>';
 						}
+					}else{
+						str+='<li class="btn btn-xs orangeCls" disabled="disabled" style="margin-left: 5px;">0</li>';
 					}
 					
 					if(counts[i].finalizedCount != 0){
