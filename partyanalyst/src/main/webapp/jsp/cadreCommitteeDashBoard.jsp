@@ -4369,7 +4369,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');getCommitteeMembersAvailableInfo(\''+result[i].level+'\',\''+result[i].id+'\');">view</button></td>';
+		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');getCommitteeMembersAvailableInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\');">view</button></td>';
 			}
          //str+='<tr>';
 		 str+='<tr id="'+result[i].id+'infoTrId" class=" " style="display:none">';
@@ -6001,7 +6001,7 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 	getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
 });
 var slickCount = 0;
-function getCommitteeMembersAvailableInfo(levelId,levelValue){
+function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValue){
 		
 		$("#"+levelValue+"infoTrId").show();
 			$("#"+levelValue+"infoDivId").html('<img id="ajaxImgStyle"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
@@ -6013,7 +6013,8 @@ function getCommitteeMembersAvailableInfo(levelId,levelValue){
         fromDate = dates[0];
         toDate = dates[1]; 
 		 var jsObj={
-		         levelId:levelId,levelValue:levelValue,enrollmentYrId:committeeEnrollmentId,startDate:fromDate,endDate:toDate
+		         levelId:levelId,levelValue:levelValue,enrollmentYrId:committeeEnrollmentId,startDate:fromDate,endDate:toDate,
+				 basicCommitteetypeId:basicCommitteetypeId
 		       };
 			   
 		 $.ajax({
