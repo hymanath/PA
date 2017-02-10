@@ -504,6 +504,7 @@ function getConstituency(){
 
 //999
 	function buildResultDistrictSummary(result,mandalCheck,villageCheck,districtCommCheck,jObj){
+		$("#distSummaryBody").html("");
 		var districtInfoArr = [];
 		var villageInfoArr = [];
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
@@ -1609,7 +1610,7 @@ function getConstituency(){
 				}
 				//888
 				if(result[i].townMandalDivisionVO.membersCount!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Main Committee \',1,2);}">'+result[i].townMandalDivisionVO.membersCount+'</a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.membersCount+'</td>';
 					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -1622,42 +1623,42 @@ function getConstituency(){
 				}
 				
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committees \',0,2);}">'+result[i].townMandalDivisionVO.afflStarted+'</a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.afflStarted+'</td>';
 					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflCompleted!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committees \',0,2);}">'+result[i].townMandalDivisionVO.afflCompleted+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.afflCompleted+'</td>';
 					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.youvathaStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committee \',2,2);}">'+result[i].townMandalDivisionVO.youvathaStarted+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.youvathaStarted+'</td>';
 					yuvathaStartedCount = yuvathaStartedCount+result[i].townMandalDivisionVO.youvathaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.youvathaCmpltd!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committee \',2,2);}">'+result[i].townMandalDivisionVO.youvathaCmpltd+'</a> </td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.youvathaCmpltd+'</td>';
 					yuvathaCompltdCount = yuvathaCompltdCount+result[i].townMandalDivisionVO.youvathaCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mahilaStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,2);}">'+result[i].townMandalDivisionVO.mahilaStarted+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.mahilaStarted+'</td>';
 					mahilaStartedCount = mahilaStartedCount + result[i].townMandalDivisionVO.mahilaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mahilaCmpltd!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,2);}">'+result[i].townMandalDivisionVO.mahilaCmpltd+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.mahilaCmpltd+'</td>';
 					mahilaCompltdCount = mahilaCompltdCount+result[i].townMandalDivisionVO.mahilaCmpltd;					
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -1665,14 +1666,14 @@ function getConstituency(){
 				
 				
 				if(result[i].townMandalDivisionVO.rythuStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committee \',4,2);}">'+result[i].townMandalDivisionVO.rythuStarted+'</a> </td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.rythuStarted+'</td>';
 					rythuStartedCount = rythuStartedCount+result[i].townMandalDivisionVO.rythuStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.rythuCmpltd!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committee \',4,2);}">'+result[i].townMandalDivisionVO.rythuCmpltd+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.rythuCmpltd+'</td>';
 					rythuCompltdCount = rythuCompltdCount+result[i].townMandalDivisionVO.rythuCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -1681,238 +1682,238 @@ function getConstituency(){
 				if(isConsiderAffl == "true")
 				{
 						if(result[i].townMandalDivisionVO.tradeStarted != null){
-							str += '<td style="text-align:center"  ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,2);}">'+result[i].townMandalDivisionVO.tradeStarted+' </a></td>';
+							str += '<td style="text-align:center"  >'+result[i].townMandalDivisionVO.tradeStarted+' </td>';
 							tradeStartedCount = tradeStartedCount+result[i].townMandalDivisionVO.tradeStarted;
 						}else{
 							str += '<td style="text-align:center"  > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tradeCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,2);}">'+result[i].townMandalDivisionVO.tradeCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tradeCmpltd+'</td>';
 							tradeCmpltdCount = tradeCmpltdCount+result[i].townMandalDivisionVO.tradeCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 
 						if(result[i].townMandalDivisionVO.bcCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,2);}">'+result[i].townMandalDivisionVO.bcCellStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.bcCellStarted+' </td>';
 							bcCellStartedCount = bcCellStartedCount+result[i].townMandalDivisionVO.bcCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.bcCellCmpltd!=null){
-							str += '<td style="text-align:center"><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,2);}">'+result[i].townMandalDivisionVO.bcCellCmpltd+' </a></td>';
+							str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.bcCellCmpltd+'</td>';
 							bcCellCmpltdCount = bcCellCmpltdCount+result[i].townMandalDivisionVO.bcCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.scCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,2);}">'+result[i].townMandalDivisionVO.scCellStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.scCellStarted+'</td>';
 							scCellStartedCount = scCellStartedCount+result[i].townMandalDivisionVO.scCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.scCellCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,2);}">'+result[i].townMandalDivisionVO.scCellCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.scCellCmpltd+'</td>';
 							scCellCmpltdCount = scCellCmpltdCount+result[i].townMandalDivisionVO.scCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.stCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,2);}">'+result[i].townMandalDivisionVO.stCellStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.stCellStarted+'</td>';
 							stCellStartedCount = stCellStartedCount+result[i].townMandalDivisionVO.stCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.stCellCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,2);}">'+result[i].townMandalDivisionVO.stCellCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.stCellCmpltd+'</td>';
 							stCellCmpltdCount = stCellCmpltdCount+result[i].townMandalDivisionVO.stCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.minorityStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,2);}">'+result[i].townMandalDivisionVO.minorityStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.minorityStarted+'</td>';
 							minorityStartedCount = minorityStartedCount+result[i].townMandalDivisionVO.minorityStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.minorityCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,2);}">'+result[i].townMandalDivisionVO.minorityCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.minorityCmpltd+'</td>';
 							minorityCmpltdCount = minorityCmpltdCount+result[i].townMandalDivisionVO.minorityCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.CristianStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,2);}">'+result[i].townMandalDivisionVO.CristianStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.CristianStarted+' </td>';
 							CristianStartedCount = CristianStartedCount+result[i].townMandalDivisionVO.CristianStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.CristianCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,2);}">'+result[i].townMandalDivisionVO.CristianCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.CristianCmpltd+'</td>';
 							CristianCmpltdCount = CristianCmpltdCount+result[i].townMandalDivisionVO.CristianCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tnsfStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,2);}">'+result[i].townMandalDivisionVO.tnsfStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tnsfStarted+'</td>';
 							tnsfStartedCount = tnsfStartedCount+result[i].townMandalDivisionVO.tnsfStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tnsfCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,2);}">'+result[i].townMandalDivisionVO.tnsfCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tnsfCmpltd+'</td>';
 							tnsfCmpltdCount = tnsfCmpltdCount+result[i].townMandalDivisionVO.tnsfCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tntucStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,2);}">'+result[i].townMandalDivisionVO.tntucStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tntucStarted+'</td>';
 							tntucStartedCount = tntucStartedCount+result[i].townMandalDivisionVO.tntucStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tntucCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,2);}">'+result[i].townMandalDivisionVO.tntucCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tntucCmpltd+'</td>';
 							tntucCmpltdCount = tntucCmpltdCount+result[i].townMandalDivisionVO.tntucCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tsnvStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,2);}">'+result[i].townMandalDivisionVO.tsnvStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tsnvStarted+'</td>';
 							tsnvStartedCount = tsnvStartedCount+result[i].townMandalDivisionVO.tsnvStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tsnvCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,2);}">'+result[i].townMandalDivisionVO.tsnvCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tsnvCmpltd+'</td>';
 							tsnvCmpltdCount = tsnvCmpltdCount+result[i].townMandalDivisionVO.tsnvCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.legalCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,2);}">'+result[i].townMandalDivisionVO.legalCellStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.legalCellStarted+' </td>';
 							legalCellStartedCount = legalCellStartedCount+result[i].townMandalDivisionVO.legalCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.legalCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,2);}">'+result[i].townMandalDivisionVO.legalCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.legalCmpltd+'</td>';
 							legalCmpltdCount = legalCmpltdCount+result[i].townMandalDivisionVO.legalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.doctorStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,2);}">'+result[i].townMandalDivisionVO.doctorStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.doctorStarted+'<td>';
 							doctorStartedCount = doctorStartedCount+result[i].townMandalDivisionVO.doctorStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.doctorCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,2);}">'+result[i].townMandalDivisionVO.doctorCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.doctorCmpltd+'</td>';
 							doctorCmpltdCount = doctorCmpltdCount+result[i].townMandalDivisionVO.doctorCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.kalluGeethaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,2);}">'+result[i].townMandalDivisionVO.kalluGeethaStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.kalluGeethaStarted+' </td>';
 							kalluGeethaStartedCount = kalluGeethaStartedCount+result[i].townMandalDivisionVO.kalluGeethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.kalluGeethaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,2);}">'+result[i].townMandalDivisionVO.kalluGeethaCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.kalluGeethaCmpltd+' </td>';
 							kalluGeethaCmpltdCount = kalluGeethaCmpltdCount+result[i].townMandalDivisionVO.kalluGeethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.chenethaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,2);}">'+result[i].townMandalDivisionVO.chenethaStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.chenethaStarted+'</td>';
 							chenethaStartedCount = chenethaStartedCount+result[i].townMandalDivisionVO.chenethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.chenethaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,2);}">'+result[i].townMandalDivisionVO.chenethaCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.chenethaCmpltd+'</td>';
 							chenethaCmpltdCount = chenethaCmpltdCount+result[i].townMandalDivisionVO.chenethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.rakshaVedikaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,2);}">'+result[i].townMandalDivisionVO.rakshaVedikaStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.rakshaVedikaStarted+' </td>';
 							rakshaVedikaStartedCount = rakshaVedikaStartedCount+result[i].townMandalDivisionVO.rakshaVedikaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.rakshaVedikaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,2);}">'+result[i].townMandalDivisionVO.rakshaVedikaCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.rakshaVedikaCmpltd+' </td>';
 							rakshaVedikaCmpltdCount = rakshaVedikaCmpltdCount+result[i].townMandalDivisionVO.rakshaVedikaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tnusStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,2);}">'+result[i].townMandalDivisionVO.tnusStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tnusStarted+'</td>';
 							tnusStartedCount = tnusStartedCount+result[i].townMandalDivisionVO.tnusStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.tnusCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,2);}">'+result[i].townMandalDivisionVO.tnusCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.tnusCmpltd+'</td>';
 							tnusCmpltdCount = tnusCmpltdCount+result[i].townMandalDivisionVO.tnusCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.commercialStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,2);}">'+result[i].townMandalDivisionVO.commercialStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.commercialStarted+' </td>';
 							commercialStartedCount = commercialStartedCount+result[i].townMandalDivisionVO.commercialStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.commercialCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,2);}">'+result[i].townMandalDivisionVO.commercialCmpltd+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.commercialCmpltd+'</td>';
 							commercialCmpltdCount = commercialCmpltdCount+result[i].townMandalDivisionVO.commercialCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.culturalStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,2);}">'+result[i].townMandalDivisionVO.culturalStarted+'</a> </td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.culturalStarted+'</td>';
 							culturalStartedCount = culturalStartedCount+result[i].townMandalDivisionVO.culturalStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].townMandalDivisionVO.culturalCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,2);}">'+result[i].townMandalDivisionVO.culturalCmpltd+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.culturalCmpltd+'</td>';
 							culturalCmpltdCount = culturalCmpltdCount+result[i].townMandalDivisionVO.culturalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
@@ -1921,14 +1922,14 @@ function getConstituency(){
 				else
 				{
 					if(result[i].townMandalDivisionVO.othersStarted != null){
-						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\'  Affiliated Committee Committee \',0,2);}">'+result[i].townMandalDivisionVO.othersStarted+'</a> </td>';
+						str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.othersStarted+'</td>';
 						othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
 					}
 					
 					if(result[i].townMandalDivisionVO.othersCmpltd!=null){
-						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\'  Affiliated Committee Committee \',0,2);}">'+result[i].townMandalDivisionVO.othersCmpltd+'</a> </td>';
+						str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.othersCmpltd+'</td>';
 						othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
@@ -1979,14 +1980,14 @@ function getConstituency(){
 				  
 				if(result[i].villageWardVO.mainStarted!=null){
 					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Main Committee \',1,1);}">'+result[i].villageWardVO.mainStarted+'</a></td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.mainStarted+'</td>';
 					panStarted=panStarted+result[i].villageWardVO.mainStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainCompleted!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Main Committee \',1,1);}">'+result[i].villageWardVO.mainCompleted+'</a></td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.mainCompleted+'</td>';
 					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -2006,42 +2007,42 @@ function getConstituency(){
 				}
 				
 				if(result[i].villageWardVO.afflStarted!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committees \',0,1);}">'+result[i].villageWardVO.afflStarted+' </a></td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.afflStarted+'</td>';
 					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflCompleted!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committees \',0,1);}">'+result[i].villageWardVO.afflCompleted+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.afflCompleted+'</td>';
 					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				   
 				if(result[i].villageWardVO.youvathaStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committees \',2,1);}">'+result[i].villageWardVO.youvathaStarted+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.youvathaStarted+'</td>';
 					panyuvathaStartedCount = panyuvathaStartedCount+result[i].villageWardVO.youvathaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.youvathaCmpltd!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Yuvatha Committee \',2,1);}">'+result[i].villageWardVO.youvathaCmpltd+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.youvathaCmpltd+'</td>';
 					panyuvathaCompltdCount = panyuvathaCompltdCount+result[i].villageWardVO.youvathaCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.mahilaStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,1);}">'+result[i].villageWardVO.mahilaStarted+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.mahilaStarted+'</td>';
 					panmahilaStartedCount = panmahilaStartedCount + result[i].villageWardVO.mahilaStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.mahilaCmpltd!=null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Mahila Committee \',3,1);}">'+result[i].villageWardVO.mahilaCmpltd+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.mahilaCmpltd+'</td>';
 					panmahilaCompltdCount = panmahilaCompltdCount+result[i].villageWardVO.mahilaCmpltd;					
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -2049,14 +2050,14 @@ function getConstituency(){
 				
 				
 				if(result[i].villageWardVO.rythuStarted != null){
-					str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committee \',4,1);}">'+result[i].villageWardVO.rythuStarted+'  </a></td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.rythuStarted+'</td>';
 					panrythuStartedCount = panrythuStartedCount+result[i].villageWardVO.rythuStarted;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
 				}
 				
 				if(result[i].villageWardVO.rythuCmpltd!=null){
-					str += '<td style="text-align:center" <a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rythu Committees \',4,1);}">'+result[i].villageWardVO.rythuCmpltd+' </a> </td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.rythuCmpltd+'</td>';
 					panrythuCompltdCount = panrythuCompltdCount+result[i].villageWardVO.rythuCmpltd;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -2065,238 +2066,238 @@ function getConstituency(){
 				if(isConsiderAffl == "true")
 				{
 						if(result[i].villageWardVO.tradeStarted != null){
-							str += '<td style="text-align:center"  ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,1);}">'+result[i].villageWardVO.tradeStarted+' </a> </td>';
+							str += '<td style="text-align:center"  >'+result[i].villageWardVO.tradeStarted+'</td>';
 							pantradeStartedCount = pantradeStartedCount+result[i].villageWardVO.tradeStarted;
 						}else{
 							str += '<td style="text-align:center"  > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tradeCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Trade Committee \',17,1);}">'+result[i].villageWardVO.tradeCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tradeCmpltd+'</td>';
 							pantradeCmpltdCount = pantradeCmpltdCount+result[i].villageWardVO.tradeCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 
 						if(result[i].villageWardVO.bcCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,1);}">'+result[i].villageWardVO.bcCellStarted+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.bcCellStarted+'</td>';
 							panbcCellStartedCount = panbcCellStartedCount+result[i].villageWardVO.bcCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.bcCellCmpltd!=null){
-							str += '<td style="text-align:center"><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' BC Cell Committee \',6,1);}">'+result[i].villageWardVO.bcCellCmpltd+' </a> </td>';
+							str += '<td style="text-align:center">'+result[i].villageWardVO.bcCellCmpltd+'</td>';
 							panbcCellCmpltdCount = panbcCellCmpltdCount+result[i].villageWardVO.bcCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.scCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,1);}">'+result[i].villageWardVO.scCellStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.scCellStarted+'</td>';
 							panscCellStartedCount = panscCellStartedCount+result[i].villageWardVO.scCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.scCellCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' SC Cell Committee \',7,1);}">'+result[i].villageWardVO.scCellCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.scCellCmpltd+'</td>';
 							panscCellCmpltdCount = panscCellCmpltdCount+result[i].villageWardVO.scCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.stCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,1);}">'+result[i].villageWardVO.stCellStarted+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.stCellStarted+'</td>';
 							panstCellStartedCount = panstCellStartedCount+result[i].villageWardVO.stCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.stCellCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' ST Cell Committee \',8,1);}">'+result[i].villageWardVO.stCellCmpltd+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.stCellCmpltd+'</td>';
 							panstCellCmpltdCount = panstCellCmpltdCount+result[i].villageWardVO.stCellCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.minorityStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,1);}">'+result[i].villageWardVO.minorityStarted+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.minorityStarted+'</td>';
 							panminorityStartedCount = panminorityStartedCount+result[i].villageWardVO.minorityStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.minorityCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Minority Cell Committee \',9,1);}">'+result[i].villageWardVO.minorityCmpltd+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.minorityCmpltd+'</td>';
 							panminorityCmpltdCount = panminorityCmpltdCount+result[i].villageWardVO.minorityCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.CristianStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,1);}">'+result[i].villageWardVO.CristianStarted+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.CristianStarted+'</td>';
 							panCristianStartedCount = panCristianStartedCount+result[i].villageWardVO.CristianStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.CristianCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Christian Committee \',18,1);}">'+result[i].villageWardVO.CristianCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.CristianCmpltd+'</td>';
 							CristianCmpltdCount = CristianCmpltdCount+result[i].villageWardVO.CristianCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tnsfStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,1);}">'+result[i].villageWardVO.tnsfStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tnsfStarted+'</td>';
 							pantnsfStartedCount = pantnsfStartedCount+result[i].villageWardVO.tnsfStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tnsfCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNSF (Student Union) Committee \',11,1);}">'+result[i].villageWardVO.tnsfCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tnsfCmpltd+'</td>';
 							pantnsfCmpltdCount = pantnsfCmpltdCount+result[i].villageWardVO.tnsfCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tntucStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,1);}">'+result[i].villageWardVO.tntucStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tntucStarted+'</td>';
 							pantntucStartedCount = pantntucStartedCount+result[i].villageWardVO.tntucStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tntucCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNTUC Committee \',5,1);}">'+result[i].villageWardVO.tntucCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tntucCmpltd+'</td>';
 							pantntucCmpltdCount = pantntucCmpltdCount+result[i].villageWardVO.tntucCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tsnvStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,1);}">'+result[i].villageWardVO.tsnvStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tsnvStarted+'</td>';
 							pantsnvStartedCount = pantsnvStartedCount+result[i].villageWardVO.tsnvStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tsnvCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TSNV (Technical Expert Cell) Committee \',15,1);}">'+result[i].villageWardVO.tsnvCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tsnvCmpltd+'</td>';
 							pantsnvCmpltdCount = pantsnvCmpltdCount+result[i].villageWardVO.tsnvCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.legalCellStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,1);}">'+result[i].villageWardVO.legalCellStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.legalCellStarted+'</td>';
 							panlegalCellStartedCount = panlegalCellStartedCount+result[i].villageWardVO.legalCellStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.legalCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Legal Cell Committee \',10,1);}">'+result[i].villageWardVO.legalCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.legalCmpltd+'</td>';
 							panlegalCmpltdCount = panlegalCmpltdCount+result[i].villageWardVO.legalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.doctorStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,1);}">'+result[i].villageWardVO.doctorStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.doctorStarted+'</td>';
 							pandoctorStartedCount = pandoctorStartedCount+result[i].villageWardVO.doctorStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.doctorCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Doctor Cell Committee \',16,1);}">'+result[i].villageWardVO.doctorCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.doctorCmpltd+'</td>';
 							pandoctorCmpltdCount = pandoctorCmpltdCount+result[i].villageWardVO.doctorCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.kalluGeethaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,1);}">'+result[i].villageWardVO.kalluGeethaStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.kalluGeethaStarted+'</td>';
 							pankalluGeethaStartedCount = pankalluGeethaStartedCount+result[i].villageWardVO.kalluGeethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.kalluGeethaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Kallu Geetha Karmikulu Committee \',20,1);}">'+result[i].villageWardVO.kalluGeethaCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.kalluGeethaCmpltd+'</td>';
 							pankalluGeethaCmpltdCount = pankalluGeethaCmpltdCount+result[i].villageWardVO.kalluGeethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.chenethaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,1);}">'+result[i].villageWardVO.chenethaStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.chenethaStarted+'</td>';
 							panchenethaStartedCount = panchenethaStartedCount+result[i].villageWardVO.chenethaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.chenethaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Chenetha Committee \',21,1);}">'+result[i].villageWardVO.chenethaCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.chenethaCmpltd+'</td>';
 							panchenethaCmpltdCount = panchenethaCmpltdCount+result[i].villageWardVO.chenethaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.rakshaVedikaStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,1);}">'+result[i].villageWardVO.rakshaVedikaStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.rakshaVedikaStarted+'</td>';
 							panrakshaVedikaStartedCount = panrakshaVedikaStartedCount+result[i].villageWardVO.rakshaVedikaStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.rakshaVedikaCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Telugu Rakshana Vedika Committee \',19,1);}">'+result[i].villageWardVO.rakshaVedikaCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.rakshaVedikaCmpltd+'</td>';
 							panrakshaVedikaCmpltdCount = panrakshaVedikaCmpltdCount+result[i].villageWardVO.rakshaVedikaCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tnusStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,1);}">'+result[i].villageWardVO.tnusStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tnusStarted+'</td>';
 							pantnusStartedCount = pantnusStartedCount+result[i].villageWardVO.tnusStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.tnusCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' TNUS ( Teachers Union)  Committee \',14,1);}">'+result[i].villageWardVO.tnusCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.tnusCmpltd+'</td>';
 							pantnusCmpltdCount = pantnusCmpltdCount+result[i].villageWardVO.tnusCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.commercialStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,1);}">'+result[i].villageWardVO.commercialStarted+' </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.commercialStarted+'</td>';
 							pancommercialStartedCount = pancommercialStartedCount+result[i].villageWardVO.commercialStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.commercialCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Commercial Cell Committee \',12,1);}">'+result[i].villageWardVO.commercialCmpltd+'  </a></td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.commercialCmpltd+'</td>';
 							pancommercialCmpltdCount = pancommercialCmpltdCount+result[i].villageWardVO.commercialCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.culturalStarted != null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,1);}">'+result[i].villageWardVO.culturalStarted+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.culturalStarted+'</td>';
 							panculturalStartedCount = panculturalStartedCount+result[i].villageWardVO.culturalStarted;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
 						}
 						
 						if(result[i].villageWardVO.culturalCmpltd!=null){
-							str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Cultural Cell Committee \',13,1);}">'+result[i].villageWardVO.culturalCmpltd+' </a> </td>';
+							str += '<td style="text-align:center" >'+result[i].villageWardVO.culturalCmpltd+'</td>';
 							panculturalCmpltdCount = panculturalCmpltdCount+result[i].villageWardVO.culturalCmpltd;
 						}else{
 							str += '<td style="text-align:center" > - </td>';
@@ -2305,14 +2306,14 @@ function getConstituency(){
 				else
 				{
 					if(result[i].villageWardVO.othersStarted != null){
-						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committees \',0,1);}">'+result[i].villageWardVO.othersStarted+' </a> </td>';
+						str += '<td style="text-align:center" >'+result[i].villageWardVO.othersStarted+'</td>';
 						panothersStartedCount = panothersStartedCount+result[i].villageWardVO.othersStarted;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
 					}
 					
 					if(result[i].villageWardVO.othersCmpltd!=null){
-						str += '<td style="text-align:center" ><a href="javascript:{gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+' District\',\' Affiliated Committee \',0,1);}">'+result[i].villageWardVO.othersCmpltd+' </a></td>';
+						str += '<td style="text-align:center" >'+result[i].villageWardVO.othersCmpltd+'</td>';
 						panothersCompltdCount = panothersCompltdCount+result[i].villageWardVO.othersCmpltd;
 					}else{
 						str += '<td style="text-align:center" > - </td>';
