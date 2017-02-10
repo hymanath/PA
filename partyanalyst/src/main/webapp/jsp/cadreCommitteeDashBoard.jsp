@@ -642,7 +642,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
 							     <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE / WARD LEVEL COMMITTEES</b></button>
-								 <div id="tsVillageButtonsDiv" style="display:none;" class="toggleCls1">
+								 <div id="tsVillageButtonsDiv"  class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
 								<button id="tsWard" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
