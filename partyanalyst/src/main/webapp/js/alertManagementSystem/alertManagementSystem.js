@@ -1,5 +1,5 @@
 /*global Function and variables Start*/
-var currentFromDate = moment().format("DD/MM/YYYY");
+var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
 var globalStateId = 36;
 $("#dateRangePicker").daterangepicker({
@@ -26,12 +26,16 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	totalAlertGroupByStatusForGovt()
 	totalAlertGroupByStatusThenDepartment()
 });
+$(".chosenSelect").chosen({width:'100%'});
 onLoadCalls();
 function onLoadCalls()
 {
 	totalAlertGroupByStatusForGovt()
 	totalAlertGroupByStatusThenDepartment()
 }
+$(document).on("click",".settingsIcon",function(){
+	$(".settingsBlockDropDown").show();
+});
 /*global Function and variables End*/
 /* Status OverView Start*/
 function totalAlertGroupByStatusForGovt()
@@ -532,9 +536,12 @@ $(document).on("click",".alertDetailsModalCls",function(){
 		backdrop: 'static'
 	});
 	
-	var alertId = $(this).attr("attr_alertId");
+	var alertId = $(this).attr("attr_alert_Id");
+	$("#hiddenAlertId").val(alertId);
 	getAlertData();
 	getAlertStatusCommentsTrackingDetails()
+	getDepartmentLevels();
+	assignedOfficersDetailsForAlert();
 });
 function getAlertData()
 {
@@ -857,6 +864,178 @@ $(document).on("click",".alertDetailsModalClose",function(){
 	setTimeout(function(){
 		$("body").addClass("modal-open")
 	},500);
+});
+function assignedOfficersDetailsForAlert()
+{
+	var jsObj = {
+		alertId : 3752
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getAssignedOfficersDetailsForAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildAssignedOfficersDetailsForAlert(result);
+	});
+}
+function buildAssignedOfficersDetailsForAlert(result)
+{
+	var str='';
+	str+='<ul class="assignedOfficersUl">';
+	for(var i in result)
+	{
+		str+='<li>';
+			str+='<div class="media">';
+				str+='<div class="media-left">';
+					str+='<img src="" alt="" class="media-object"/>';
+				str+='</div>';
+				str+='<div class="media-body">';
+					str+='<p><b>'+result[i].name+'</b></p>';
+					str+='<p><b><i>'+result[i].department+'</i></b></p>';
+					str+='<p>'+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].designation+'</p>';
+				str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	}
+	str+='</ul>';
+	$("#assignedOfficersId").html(str);
+}
+function getDepartmentLevels()
+{
+	var jsObj = {}
+	$.ajax({
+      type:'GET',
+      url: 'getDepartmentLevelsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<select name="alertAssigningVO.levelId" class="chosenSelect" id="locationLevelSelectId">	';
+			str+='<option value="0">Select Level</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		str+='</select>';
+		$("#locationLevelId").html(str);
+		$(".chosenSelect").chosen();
+	});
+}
+$(document).on('change','#locationLevelSelectId', function(evt, params) {
+	var levelId = $(this).val();
+	locationsBasedOnLevel(levelId)
+});
+function locationsBasedOnLevel(levelId)
+{
+	var jsObj = {
+		levelId : levelId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getLocationsBasedOnLevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Location</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#locationId").html(str);
+		$("#locationId").trigger("chosen:updated");
+	});
+}
+$(document).on('change','#locationId', function(evt, params) {
+	departmentsByAlert()
+});
+function departmentsByAlert()
+{
+	var jsObj = {
+		alertId : 3725
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDepartmentsByAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option val="0">Select Departments</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#departmentsId").html(str);
+		$("#departmentsId").trigger("chosen:updated");
+	});
+}
+$(document).on('change','#departmentsId', function(evt, params) {
+	var departmentId = $(this).val();
+	designationsByDepartment(departmentId)
+});
+function designationsByDepartment(departmentId)
+{
+	var LevelId = $("#locationLevelSelectId").chosen().val()
+	
+	var jsObj = {
+		departmentId	: departmentId,
+		levelId			: LevelId,
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDesignationsByDepartmentAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Designation</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#designationsId").html(str);
+		$("#designationsId").trigger("chosen:updated");
+	});
+}
+$(document).on('change','#designationsId', function(evt, params) {
+	var designationId = $(this).val();
+	officersByDesignationAndLevel(designationId)
+});
+function officersByDesignationAndLevel(designationId)
+{
+	var LevelId = $("#locationLevelSelectId").chosen().val()
+	var LevelValue = $("#locationId").chosen().val()
+	
+	var jsObj = {
+		levelId				: LevelId,
+		levelValue			: LevelValue,
+		designationId		: designationId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getOfficersByDesignationAndLevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Officer</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#officerNamesId").html(str);
+		$("#officerNamesId").trigger("chosen:updated");
+	});
+}
+$(document).on("click","#assignOfficerId",function(){
+
+	var uploadHandler = {
+		upload: function(o) {
+			uploadResult = o.responseText;
+			//showMeetingsStatusDocsResult(uploadResult);
+		}
+	};
+
+	YAHOO.util.Connect.setForm('alertAssignForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','assigningAlertToOfficerAction.action',uploadHandler); 
+	
 });
 /* Alert Details Modal End*/
 

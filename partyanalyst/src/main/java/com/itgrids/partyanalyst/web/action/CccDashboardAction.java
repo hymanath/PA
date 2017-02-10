@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
@@ -231,6 +232,12 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		   
 		public String assigningAlertToOfficer(){
 		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   if(regVo == null)
+				   return "input";
+			   Long userId = regVo.getRegistrationID();
+			   alertAssigningVO.setUserId(userId);
 			   String imageName=null;
 			   List<String> fileNamesList = new ArrayList<String>(0);
 			   
@@ -273,6 +280,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				govtDeptVoList = cccDashboardService.getAssignedOfficersDetailsForAlert(alertId);
 		   } catch (Exception e) {
 			   LOG.error("Exception Raised in getAssignedOfficersDetailsForAlert() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getStatusWiseCommentsTracking(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long alertId = jObj.getLong("alertId");
+			
+				govtDeptVoList = cccDashboardService.getStatusWiseCommentsTracking(alertId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getStatusWiseCommentsTracking() in CccDashboardAction",e);
 			}
 			   return Action.SUCCESS;
 		}
