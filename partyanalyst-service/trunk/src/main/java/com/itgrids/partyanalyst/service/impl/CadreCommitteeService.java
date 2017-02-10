@@ -19645,13 +19645,13 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 	return returnList;
 }
 
-public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate){
+public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate,Long basicCommitteetypeId){
 	LocationWiseBoothDetailsVO returnVo = null;
 	try{
 	SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
     Date stDate = (Date)format.parse(startDate);
     Date edDate = (Date)format.parse(endDate);
-	Long committeeId = getCommitteeId(levelId,levelValue,committeeEnrollmentId,stDate,edDate);
+	Long committeeId = getCommitteeId(levelId,levelValue,committeeEnrollmentId,stDate,edDate,basicCommitteetypeId);
 	if(committeeId != null){
 		returnVo =  getCommitteeMembersInfoNEW(committeeId);
 	}else{
@@ -19664,10 +19664,10 @@ public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId
 	return returnVo;
 }
 
-public Long getCommitteeId(Long levelId,Long levelValue,Long committeeEnrollmentId,Date stDate,Date edDate){
+public Long getCommitteeId(Long levelId,Long levelValue,Long committeeEnrollmentId,Date stDate,Date edDate,Long basicCommitteetypeId){
 	Long committeeId = null;
 	try{
-		List<Long> committeeIds = tdpCommitteeDAO.getCommitteeIds(levelId, levelValue,committeeEnrollmentId,stDate,edDate);
+		List<Long> committeeIds = tdpCommitteeDAO.getCommitteeIds(levelId, levelValue,committeeEnrollmentId,stDate,edDate,basicCommitteetypeId);
 		if(committeeIds.size() > 0){
 			committeeId = committeeIds.get(0);
 		}

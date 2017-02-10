@@ -288,13 +288,21 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	{
 		StringBuilder str = new StringBuilder();
 		//19tehsilId, 20localElectionBodyId 21constituencyId
-		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed," +
-				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, model.tdpCadre.mobileNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId, " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,constituency.name,model.tdpCadre.casteState.casteStateId  " +
+		str.append("select model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image," +
+				"model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed," +
+				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ," +
+				"model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+				"model.tdpCadre.mobileNo,model.tdpCadre.voterId,model.tdpCadre.familyVoterId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
+				"constituency.name,model.tdpCadre.casteState.casteStateId  " +
 				" ,tehsil.tehsilId,leb.localElectionBodyId,ward.constituencyId,model.status  " +
-				" from TdpCommitteeMember model left join model.tdpCadre.userAddress.constituency constituency  left join model.tdpCadre.userAddress.tehsil tehsil " +
-				" left join model.tdpCadre.userAddress.localElectionBody leb left join model.tdpCadre.userAddress.ward ward " +
-				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and " +
+				" from TdpCommitteeMember model " +
+				"left join model.tdpCadre.userAddress.constituency constituency  " +
+				"left join model.tdpCadre.userAddress.tehsil tehsil " +
+				" left join model.tdpCadre.userAddress.localElectionBody leb " +
+				"left join model.tdpCadre.userAddress.ward ward " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' " +
+				"and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and " +
 				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(committeeTypeId.longValue() !=0L)
 			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");

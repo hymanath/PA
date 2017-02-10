@@ -2329,13 +2329,13 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 	}
 	
-	public List<Long> getCommitteeIds(Long levelId,Long levelValue,Long committeeEnrollmentId,Date startDate,Date endDate){
+	public List<Long> getCommitteeIds(Long levelId,Long levelValue,Long committeeEnrollmentId,Date startDate,Date endDate,Long basicCommitteetypeId){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append("select model.tdpCommitteeId from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue =:levelValue and " +
-				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1 and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
+				" model.tdpBasicCommitteeId = :basicCommitteetypeId and model.tdpCommitteeEnrollmentId =:committeeEnrollmentId  ");
 		if(startDate != null && endDate != null)
 		str.append( " and ( (date(model.startedDate) between :startDate and :endDate )  OR  date(model.completedDate) between :startDate and :endDate )  )" );
 		
@@ -2347,6 +2347,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		}
+		
+		if(basicCommitteetypeId != null && basicCommitteetypeId.longValue() > 0l)
+			query.setParameter("basicCommitteetypeId", basicCommitteetypeId);
 		
 		return query.list();
 	}
