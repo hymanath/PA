@@ -4275,7 +4275,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
-		queryStr.append(" AND ( EDS.edition_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id; ");
 		
 		
@@ -4332,7 +4332,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
-		queryStr.append(" AND ( EDS.edition_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		queryStr.append(" group by ALTS.alert_status_id,A.govt_department_id order by ALTS.alert_status_id,A.govt_department_id; ");
 		
 		
@@ -4419,7 +4419,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
-		queryStr.append(" AND ( EDS.edition_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		if(statusId != null && statusId.longValue() > 0L){
 			queryStr.append(" and A.alert_status_id = :statusId ; ");
 		}
@@ -4464,5 +4464,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		
 		return query.list(); 
+	}
+	public List<Object[]> getNewsPapaerList(){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct alert.edition.newsPaper.newsPaperId, alert.edition.newsPaper.newsPaper from Alert alert order by alert.edition.newsPaper.newsPaper ");
+		Query query = getSession().createQuery(queryStr.toString());  
+		return query.list();
 	}
 }

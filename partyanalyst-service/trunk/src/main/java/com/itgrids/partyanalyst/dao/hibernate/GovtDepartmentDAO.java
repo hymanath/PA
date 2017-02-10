@@ -16,5 +16,4 @@ public class GovtDepartmentDAO extends GenericDaoHibernate<GovtDepartment, Long>
 	public List<Object[]> getAllDepartment(){
 		return getHibernateTemplate().find("select model.govtDepartmentId,model.departmentName from GovtDepartment  model order by model.departmentName ");
 	}
-
 }
