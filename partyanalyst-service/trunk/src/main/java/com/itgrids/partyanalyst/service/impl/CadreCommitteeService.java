@@ -19648,7 +19648,7 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate){
 	LocationWiseBoothDetailsVO returnVo = null;
 	try{
-	SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+	SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
     Date stDate = (Date)format.parse(startDate);
     Date edDate = (Date)format.parse(endDate);
 	Long committeeId = getCommitteeId(levelId,levelValue,committeeEnrollmentId,stDate,edDate);
