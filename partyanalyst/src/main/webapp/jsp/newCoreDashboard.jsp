@@ -1046,7 +1046,7 @@
 												<div class="panel-heading">
 													<h4 class="panel-title"><span class="headingColor">Departments Wise Districts Overview</span></h4>
 												</div>
-												<div class="panel-body">
+												<div class="panel-body verticalScrollBarPM">
 												<div id="districtWiseNewsReportGovtDetailed"></div>
 												</div>
 											</div>
