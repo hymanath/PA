@@ -2342,6 +2342,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 		}
 		var state = state; 
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			state:state,
 			levelIdsArr:levelIdsArr,
@@ -2350,6 +2352,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			committeeId:committeeId,
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
+			committeeSpanTypeIdsList :committeeSpanTypeIdsArr
 		}
 			//alert(222)	;	
 		$.ajax({
@@ -2587,6 +2590,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    levelIdsArr.push(10);
 		}
 		var state = state; 
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			state:state,
 			levelIdsArr:levelIdsArr,
@@ -2594,6 +2599,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			endDate    :endDate,
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
+			committeeSpanTypeIdsList :committeeSpanTypeIdsArr
 		}
 			//alert(444)	;	
 		$.ajax({

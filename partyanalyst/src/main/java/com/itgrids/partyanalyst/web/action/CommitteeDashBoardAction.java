@@ -549,7 +549,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			String startdate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			String committeeType = jObj.getString("committeeType");
-			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,accessType,accessValue,regVO.getRegistrationID(), committeeType);
+			List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeSpanTypeIdsList");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeSpanTypeIdsLsit.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,accessType,accessValue,regVO.getRegistrationID(), committeeType,committeeSpanTypeIdsLsit);
 			}
 			
 		}catch(Exception e){
@@ -577,7 +584,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			String committeeType = jObj.getString("committeeType");
 			String accessType = regVo.getAccessType();
 			Long accessValue = Long.valueOf(regVo.getAccessValue());
-			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,accessType,accessValue,regVo.getRegistrationID(),committeeType);
+			List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeSpanTypeIdsList");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeSpanTypeIdsLsit.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,accessType,accessValue,regVo.getRegistrationID(),committeeType,committeeSpanTypeIdsLsit);
 		
 			
 		}catch(Exception e){
