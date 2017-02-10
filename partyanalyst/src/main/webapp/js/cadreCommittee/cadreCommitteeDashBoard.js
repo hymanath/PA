@@ -456,9 +456,9 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				  var status = result[i].occupation;
 				  
 				  if(status != null && status == "P"){
-					  str+='<td style="padding-left: 15px; padding-top: 13px;"> Proposed </td>';
+					  str+='<td style="padding-left: 15px; padding-top: 13px;" class="orangeCls"> Proposed </td>';
 				  }else if(status != null && status == "F"){
-					  str+='<td style="padding-left: 15px; padding-top: 13px;"> Finalized </td>';
+					  str+='<td style="padding-left: 15px; padding-top: 13px;color:#449D44;" class=""> Finalized </td>';
 				  }
 				 str+='</tr>';
 				}
