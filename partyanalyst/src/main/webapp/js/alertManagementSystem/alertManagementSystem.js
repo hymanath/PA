@@ -1126,4 +1126,43 @@ function buildDistrictWiseArticleRelatedToProblem(result){
 	});
 
 }
-/* Departments Complete Overview End*/
+getTotalAlertGroupByStatusForOneDept();
+function getTotalAlertGroupByStatusForOneDept(){
+	
+    var paperIdArr = [2,8,11];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:'10/02/2017',
+      toDate:'10/02/2017',
+      stateId : globalStateId,
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertGroutByDeptThenStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+    });
+}
+getTotalAlertGroutByDeptThenStatus();
+function getTotalAlertGroutByDeptThenStatus(){
+	
+    var paperIdArr = [2,8,11];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:'10/02/2017',
+      toDate:'10/02/2017',
+      stateId : globalStateId,
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertGroutByDeptThenStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+    });
+}
