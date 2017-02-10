@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 
 public interface ICccDashboardService {   
 	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList);
@@ -16,6 +17,9 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId);
 	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId);
 	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId);
+	public List<IdAndNameVO> getNewsPapaerList();
+	public List<IdAndNameVO> getChannelList();
+	public List<IdAndNameVO> getDeptList(); 
 	
 	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
 	public String assigningAlertToOfficer(final AlertAssigningVO inputvo);
