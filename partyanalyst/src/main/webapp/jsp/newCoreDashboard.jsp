@@ -4047,7 +4047,7 @@ var globalImages;
 		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		stateLevelCampDetails();
-		getCadreEnrollmentYears();
+		getCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
 
