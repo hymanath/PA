@@ -689,7 +689,7 @@
 													if (this.y === 0) {
 														return null;
 													} else {
-														return Highcharts.numberFormat(this.y,1) + '%';
+														return Highcharts.numberFormat(this.percentage,2) + '%';
 													}
 												}
 											},
