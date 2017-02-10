@@ -5809,10 +5809,18 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 	}
 
 	function gettingCadreDetails(locationId,locationName,basicCmmtyName,basicCmmtyId,locationTypeId){	
-		gettingConstituenciesByDistrict(locationId);
+		//gettingConstituenciesByDistrict(locationId);
 		$("#performanceId").hide();
+		var dates = $("#reportrange").val();
+		var dateArray = dates.split("-");
+		var fromDateStr=dateArray[0];
+		var toDateStr=dateArray[1];
+		var enrollmentIdsArr = new Array();
+		enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
+		$("#cadreDetailsDiv").html('');
 		 var jsObj={
-		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0
+		         locationId:locationId,locationType:locationTypeId,basicCommitteeTypeId:basicCmmtyId,type:"committeembrs",casteStateId:0,gender:"",fromAge:0,toAge:0,committeeEnrollmentId:enrollmentIdsArr,
+				startDate :fromDateStr,endDate : toDateStr
 		       };
 			  // alert(1188)	;
 		 $.ajax({
