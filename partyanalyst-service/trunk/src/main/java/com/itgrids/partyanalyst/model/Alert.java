@@ -68,6 +68,7 @@ public class Alert extends BaseModel implements Serializable {
 	private GovtDepartment govtDepartment;
 	
 	private String isMultiple;
+	private Long newsUserId;
 	
 
 	@Id
@@ -443,6 +444,15 @@ public class Alert extends BaseModel implements Serializable {
 	public void setIsMultiple(String isMultiple) {
 		this.isMultiple = isMultiple;
 	}
-		
+	@Column(name = "news_user_id")
+	public Long getNewsUserId() {
+		return newsUserId;
+	}
+
+	public void setNewsUserId(Long newsUserId) {
+		this.newsUserId = newsUserId;
+	}
+	
+	
 	
 }

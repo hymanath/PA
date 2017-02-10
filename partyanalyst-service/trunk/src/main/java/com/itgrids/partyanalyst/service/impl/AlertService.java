@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -165,6 +167,13 @@ private IVerificationCommentsDAO verificationCommentsDAO;
 private IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO;
 private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
+
+private IGovtDepartmentDAO govtDepartmentDAO;
+
+
+public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
+	this.govtDepartmentDAO = govtDepartmentDAO;
+}
 
 public ITdpCadreDAO getTdpCadreDAO() {
 	return tdpCadreDAO;
@@ -2472,6 +2481,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		
 	}
 	
+	Alert globalAlert=null;
 	public void updateAlertForNewsInUpdateStatus(final ActionableVO inputVO,final Alert oldAlert){
 		try {
 			
@@ -2481,11 +2491,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				String updateAlert = updateActionableItemsToActionNotRequired(inputVO);
 				
 			}
-			else{				
+			else{	
+				
+				 final Map<Long,IdNameVO> deptMap = new HashMap<Long, IdNameVO>();
+				
 				//saveAlertForNewsInUpdateStatus(inputVO,oldAlert);				
 				
-				String result = (String) transactionTemplate.execute(new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus status) {
+				 transactionTemplate.execute(new TransactionCallbackWithoutResult() 
+			    	{
+					  public void doInTransactionWithoutResult(TransactionStatus status){
 					//else{
 										
 						Alert alert = null;
@@ -2565,7 +2579,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						
 						alert.setImageUrl(inputVO.getImageUrl() !=null ? inputVO.getImageUrl():null);
 						
+						alert.setNewsUserId(inputVO.getNewsUserId());
+						
 						 alert = alertDAO.save(alert);
+						 
+						 if(alert !=null){
+							 globalAlert = alert;
+						 }
+							
 						 
 						 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 						// alertTrackingVO.setAlertUserTypeId(alert.getAlertSourceId());
@@ -2605,6 +2626,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 tdpcadreMap.put((Long)obj[0], obj[1] !=null ? (Long)obj[1]:null);
 								}
 							 }
+							 							 							 
+							
 							 
 							//Adding Involved candidates For alert
 							for(ActionableVO vo : inputVO.getActionableVoList())
@@ -2614,12 +2637,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 AlertCandidate alertCandidate = new AlertCandidate();
 									 alertCandidate.setAlertId(alert.getAlertId());
 									 alertCandidate.setAlertImpactId(vo.getBenefitId());
-									 alertCandidate.setCandidateId(vo.getCandidateId());//pacandidate
-									 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
+									 alertCandidate.setCandidateId( vo.getCandidateId() != null && vo.getCandidateId() > 0l ?vo.getCandidateId():null);//pacandidate
+									 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l && tdpcadreMap !=null && tdpcadreMap.size()>0){
 										 alertCandidate.setTdpCadreId(tdpcadreMap.get(vo.getCandidateId()));
 									 }
 									 
-									 alertCandidate.setNewsCandidateId(vo.getNewsCandidateId());
+									 alertCandidate.setNewsCandidateId(vo.getNewsCandidateId() != null && vo.getNewsCandidateId() > 0l ?vo.getNewsCandidateId():null);
 									 alertCandidate.setNewsCandidate(vo.getNewsCandidate() !=null ? vo.getNewsCandidate():"");
 									 
 									 if(vo.getDesignationList() !=null && vo.getDesignationList().size()>0){
@@ -2633,19 +2656,99 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 										}										 
 									 }
 									 
+									 if(vo.getCategoryList() !=null && vo.getCategoryList().size()>0){
+										 for (String category : vo.getCategoryList()) {
+											 if(alertCandidate.getCategory() !=null && !alertCandidate.getCategory().trim().isEmpty()){
+												 alertCandidate.setCategory(alertCandidate.getCategory()+","+category);
+											 }else{
+												 alertCandidate.setCategory(category);
+											 }
+											
+										}										 
+									 }
+									 
 									 alertCandidate.setOrganization(vo.getOrganization());
 									 alertCandidate.setNewsOrganizationId(vo.getNewsOrganizationId() != null && vo.getNewsOrganizationId() > 0l ?vo.getNewsOrganizationId():null);
 									 alertCandidate.setIsDepartment(vo.getIsDepartment());
 									 alertCandidateDAO.save(alertCandidate);
-								 }						
-							 }														
-						 }
-					return "success";
+									 
+									 
+									// Single Organization Adding for every alert 
+									 
+									 if(alert.getAlertTypeId() !=null && alert.getAlertTypeId() == 2l && vo.getIsDepartment() !=null &&
+											  !vo.getIsDepartment().isEmpty() && vo.getIsDepartment().equalsIgnoreCase("Y")){
+										 if(vo.getNewsOrganizationId() !=null && vo.getNewsOrganizationId()>0l){									 
+											 IdNameVO VO = new IdNameVO();									 
+											 VO.setId(vo.getNewsOrganizationId());
+											 VO.setOrderId(vo.getBenefitId());									
+											 deptMap.put(vo.getNewsOrganizationId(), VO);									
+										 }
+									 }									 									
+								 }		
+								 								 								
+							 }
+						 }						 
 			      }
 				});
+				
+				if(deptMap !=null && deptMap.size()>0 )
+					updateGovtDepartment(deptMap,globalAlert);
+				
+				
 			}
 		} catch (Exception e) {
 			LOG.error("error in updateAlertForNewsInUpdateStatus() method",e);
+		}
+	}
+	
+	public void updateGovtDepartment(Map<Long,IdNameVO> deptMap,Alert alert ){
+		try{
+			
+			if(deptMap !=null && deptMap.size()>0){
+				
+				Long newsDeptId = 0l;
+				String isMultiple= "N";
+				
+					//If only one Organization
+					if(deptMap.size() ==1){
+						
+						for (Entry<Long, IdNameVO> obj : deptMap.entrySet()) {
+							newsDeptId = obj.getKey();
+						} 
+						
+					}else{
+						
+						isMultiple = "Y";
+						
+						for (Entry<Long, IdNameVO> obj : deptMap.entrySet()) {
+							
+							IdNameVO vo  = obj.getValue();
+							
+							//If any Organization is Negative
+							if(vo.getOrderId() !=null && vo.getOrderId() >0l && vo.getOrderId() ==2l){ //benefitId
+								newsDeptId = vo.getId();//organizationId
+							}																				
+						}
+						
+						//If Organizations all are positive
+						if(newsDeptId <=0l){																		
+							newsDeptId = new ArrayList<IdNameVO>(deptMap.values()).get(0).getId();
+						}
+					}
+					
+					if(newsDeptId !=null && newsDeptId>0l){																				
+						List<Long> deptIds = govtDepartmentDAO.getGovtDepartmentIdsOfNewsDept(new ArrayList<Long>(Arrays.asList(newsDeptId)));
+						
+						if(deptIds !=null && deptIds.size()>0){
+							int cnt = alertDAO.setDepartmentOfAlert(deptIds.get(0),isMultiple,alert.getAlertId()); //Like saving Not Updation
+						}
+																	
+					}
+					
+				}
+			
+		}catch(Exception e){
+			LOG.error("error in updateGovtDepartment() method",e);
 		}
 	}
 	
