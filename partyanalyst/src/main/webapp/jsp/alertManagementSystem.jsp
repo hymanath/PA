@@ -14,6 +14,31 @@
 <link rel="stylesheet" href="dist/css/font-awesome.css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+<!-- YUI Dependency files (End) -->
+
 <style type="text/css">
 .eventsheader
 {
@@ -80,7 +105,11 @@
 																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
 																		<hr style ="margin-bottom:0px;" />
 																		<div class="">
-																			<ul class="settingsUlEmn" id="emnNewsChannelsUlId"></ul>
+																			<ul class="settingsUlEmn" id="emnNewsChannelsUlId">
+																				<c:forEach items="${newsPaperList}"  var="newsPaper">
+																					<li attr_val="${newsPaper.id}">${newsPaper.name}</option></li>
+																				</c:forEach>
+																			</ul>
 																		</div>
 																	</div>
 																	<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
@@ -321,6 +350,84 @@
 					<div id="alertCommentsDivIdNew"></div>
 				</div>
 			</div>
+			<form id="alertAssign" name="alertAssignForm">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading headingColor">
+								<h4 class="panel-title text-capital">assigned officers - 01</h4>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div id="assignedOfficersId"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Location Level</label>
+										<div id="locationLevelId"></div>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Location</label>
+										<select class="chosenSelect" id="locationId" name="alertAssigningVO.levelValue">	
+											<option></option>
+										</select>
+									</div>
+									<div class="col-md-2 col-xs-12 col-sm-6">
+										<label>Department</label>
+										<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
+											<option></option>
+										</select>
+									</div>
+									<div class="col-md-2 col-xs-12 col-sm-6">
+										<label>Designation</label>
+										<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">	
+											<option></option>
+										</select>
+									</div>
+									<div class="col-md-2 col-xs-12 col-sm-6">
+										<label>Officer Name</label>
+										<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+											<option></option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading headingColor">
+								<h4 class="panel-title text-capital">update alert information</h4>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<label>
+											Comments
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="Lang"/>Telugu
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="Lang"/>English
+										</label>
+										<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments"></textarea>
+										<input type="file" name="imageForDisplay" class="form-control m_top20"/>
+									</div>
+									<div class="col-md-4 col-xs-12 col-sm-6">
+										<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">assign alert to designated officer</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>
+			</form>
 		  </div>
 		</div>
 	  </div>
@@ -336,6 +443,7 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/alertManagementSystem/alertManagementSystem.js" type="text/javascript"></script>
 </body>
 </html>

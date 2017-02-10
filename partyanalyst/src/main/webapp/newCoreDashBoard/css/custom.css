@@ -2563,3 +2563,31 @@ color: rgb(51, 122, 183);
 {
 	padding-left:0px;
 }
+.AMS .assignedOfficersUl
+{
+	padding-left:0px;
+}
+.AMS .assignedOfficersUl li
+{
+	list-style:none;
+	border:1px solid #ddd;
+	padding:8px;
+	margin:0px 5px;
+	width:300px;
+	position:relative;
+}
+.AMS .assignedOfficersUl li .media-object
+{
+	border-radius:50%;
+	border:1px solid #ddd;
+	width:75px;
+	height:75px;
+}
+.AMS .assignedOfficersUl li .glyphicon-trash
+{
+	position:absolute;
+	cursor:pointer;
+	right:5px;
+	top:5px;
+	color:red;
+}
