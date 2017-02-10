@@ -4245,6 +4245,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("alertId", alertId);
 		return query.executeUpdate();
 	}
+	
 	public List<Object[]> getTotalAlertGroupByStatusForGovt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
@@ -4470,5 +4471,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" select distinct alert.edition.newsPaper.newsPaperId, alert.edition.newsPaper.newsPaper from Alert alert order by alert.edition.newsPaper.newsPaper ");
 		Query query = getSession().createQuery(queryStr.toString());  
 		return query.list();
+	}
+	public int setDepartmentOfAlert(Long organizationId,String isMultiple,Long alertId){ //Like saving Not For Updation
+		Query query = getSession().createQuery(" update Alert model set model.govtDepartmentId =:organizationId ,model.isMultiple =:isMultiple  where model.alertId = :alertId ");
+		query.setParameter("alertId", alertId);
+		query.setParameter("organizationId", organizationId);
+		query.setParameter("isMultiple", isMultiple);
+		return query.executeUpdate();
 	}
 }

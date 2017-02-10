@@ -39,6 +39,8 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private Long newsOrganizationId;
 	private String isDepartment;
 	
+	private String category;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -169,6 +171,15 @@ public class AlertCandidate extends BaseModel implements Serializable {
 
 	public void setIsDepartment(String isDepartment) {
 		this.isDepartment = isDepartment;
+	}
+	
+	@Column(name = "category")
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	
