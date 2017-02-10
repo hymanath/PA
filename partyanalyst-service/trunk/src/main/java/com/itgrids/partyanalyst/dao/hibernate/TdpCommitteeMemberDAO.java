@@ -512,7 +512,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	
 	
-	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
+	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -541,9 +541,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		}
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = :committeeId" +
-				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' " +
-				" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
-					" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");		
+				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' "); 
+		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
+			str.append(" and  model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeSpanTypeIdsLsit) ");
+		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+					" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+		
        			
 		Query query = getSession().createQuery(str.toString());
 		if(state != null)
@@ -567,6 +570,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
+		}
+		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
+		{
+			query.setParameterList("committeeSpanTypeIdsLsit", committeeSpanTypeIdsLsit);
 		}
         return query.list();
     }
@@ -824,7 +831,7 @@ public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRol
 }
 
 
-public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
+public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit ){
 	
 	StringBuilder str = new StringBuilder();
 	
@@ -855,9 +862,13 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	
 	str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 			" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = :committeeId" +
-			" and model.tdpCommitteeRole.tdpCommittee.completedDate is null  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' " +
-			" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
-				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");		
+			" and model.tdpCommitteeRole.tdpCommittee.completedDate is null  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' "); 
+	if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
+		str.append(" and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in (:committeeSpanTypeIdsLsit) ");
+	
+	str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+	
 	
 	Query query = getSession().createQuery(str.toString());
 	if(state != null)
@@ -881,6 +892,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	else if(districtIds != null && districtIds.size()>0)
 	{
 		query.setParameterList("districtIds", districtIds);
+	}
+	if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
+	{
+		query.setParameterList("committeeSpanTypeIdsLsit", committeeSpanTypeIdsLsit);
 	}
     return query.list();
 }
