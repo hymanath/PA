@@ -1935,7 +1935,7 @@
 			},500);
 		});
 		
-		function getCadreEnrollmentYears(){
+		function getCadreEnrolmentYears(){
 			 var jsObj={
 			
 				   };
@@ -1954,14 +1954,14 @@
 							$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 					}
 				}
-				getCommitteeDetailsByEnrollement(1);
+				getCommitteeDetailsBiEnrollement(1);
 			});
 		}
 		$(document).on("change","#tdpCommitteeYearId",function(){
 			getCommitteeDetailsByEnrollement(0);
 		});
 		
-		function getCommitteeDetailsByEnrollement(id){
+		function getCommitteeDetailsBiEnrollement(id){
 			var enrollmentIdsArr = new Array();
 			if(id == 0)
 				enrollmentIdsArr.push($("#tdpCommitteeYearId").val());
