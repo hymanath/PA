@@ -19635,8 +19635,8 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 			for (Object[] objects : CommitteesLst) {
 				vo = new CadreCommitteeVO();
 				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				vo.setFromDate(commonMethodsUtilService.getStringValueForObject(objects[0]));
-				vo.setToDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				vo.setFromDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				vo.setToDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
 				
 				returnList.add(vo);
 			}
