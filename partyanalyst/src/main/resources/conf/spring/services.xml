@@ -3560,7 +3560,8 @@
 		<property name="alertVerificationUserTypeUserDAO" ref="alertVerificationUserTypeUserDAO"></property>
 		
 		<property name="alertTrackingDocumentsDAO" ref="alertTrackingDocumentsDAO"></property>
-		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>		
+		<property name="govtDepartmentDAO" ref="govtDepartmentDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
