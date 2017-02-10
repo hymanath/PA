@@ -410,6 +410,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='<th style="padding-left: 19px;"> GENDER </th>';
 				str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
 				str+='<th style="padding-left: 19px;"> VOTER ID </th>';
+				str+='<th style="padding-left: 19px;"> STATUS </th>';
 				str+='</thead>';
 				for(var i in result){
 				 str+='<tr>';
@@ -452,6 +453,13 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
 				 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
 				  str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].voterCardNo+' </td>';
+				  var status = result[i].occupation;
+				  
+				  if(status != null && status == "P"){
+					  str+='<td style="padding-left: 15px; padding-top: 13px;"> Proposed </td>';
+				  }else if(status != null && status == "F"){
+					  str+='<td style="padding-left: 15px; padding-top: 13px;"> Finalized </td>';
+				  }
 				 str+='</tr>';
 				}
 			   str+='</tbody>';
