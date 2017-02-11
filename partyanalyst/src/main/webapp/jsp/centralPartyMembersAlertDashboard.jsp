@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CENTRAL MEMBERS ALERT DASHBOARD</title>
+<title>MY ASSIGNED ALERTS</title>
 
 <link href="dist/alertDashBoard/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
@@ -228,7 +228,10 @@ $(document).ready(function(){
            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
            'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 3 Months': [moment().subtract(3, 'month'),moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'),moment()],
+		   'Last 1 Year': [moment().subtract(1, 'year'),moment()]
         }
 	});
 	$(".ranges").addClass("rangesNew")
