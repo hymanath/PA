@@ -490,6 +490,8 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		   //get commitees count based on location level id and location level values.
 		     List<String> statusList = new ArrayList<String>();
 		     statusList.add("completed");
+		     statusList.add("started");
+		     statusList.add("notStarted");
 		     committeeBO.setStatusList(statusList);
 		     Map<String,UserTypeVO> locationLevelCountsMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
 		     
@@ -579,6 +581,8 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 									   {
 										   memberVO.setTotalCount(memberVO.getTotalCount() + countVO.getTotalCount());
 										   memberVO.setCompletedCount(memberVO.getCompletedCount()+countVO.getCompletedCount());
+										   memberVO.setStartedCount(memberVO.getStartedCount()+countVO.getStartedCount());
+										   memberVO.setNotStartedCount(memberVO.getNotStartedCount()+countVO.getNotStartedCount());
 									   }
 								   }
 							   } 
@@ -587,6 +591,8 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 							   if(memberVO.getTotalCount()!=null && memberVO.getTotalCount() > 0l)
 							   {
 								   memberVO.setCompletedPerc( coreDashboardGenericService.caclPercantage(memberVO.getCompletedCount(),memberVO.getTotalCount()) );
+								   memberVO.setStartedPerc(coreDashboardGenericService.caclPercantage(memberVO.getStartedCount(), memberVO.getTotalCount()));
+								   memberVO.setNotStartedPerc(coreDashboardGenericService.caclPercantage(memberVO.getNotStartedCount(), memberVO.getTotalCount()));
 							   }
 						   }
 					   }
