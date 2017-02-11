@@ -4171,26 +4171,47 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
+	public List<CadreCommitteeMemberVO> setCommitteConfirmation(final Long basicCommitteeTypeId,final Long locationId,final Long levelId,final List<Long> committeeEnrollmentIdsLst,final String startDate,final String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
-			DateUtilService date = new DateUtilService();
-			SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");	
-			Date stDate = (Date)format.parse(startDate);
-			Date edDate = (Date)format.parse(endDate);
-			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
-			for(Long id : tdpcommitteIds)
-			{
-				CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
-				TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
-				tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
-				tdpCommittee.setIsCommitteeConfirmed("Y");
-				tdpCommitteeDAO.save(tdpCommittee);
-				vo.setStatus("Updated");
-				resultList.add(vo);	
-			}
+			CadreCommitteeMemberVO resultVo = new CadreCommitteeMemberVO();
+			resultVo = (CadreCommitteeMemberVO) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus resultVo) {
+					 List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
+					 CadreCommitteeMemberVO returnVo = new CadreCommitteeMemberVO();
+						DateUtilService date = new DateUtilService();
+						SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+						Date stDate = null;
+						Date edDate = null;
+						try{
+						 stDate = (Date)format.parse(startDate);
+						 edDate = (Date)format.parse(endDate);
+						}catch (Exception e) {
+							LOG.error("Exception raised in setCommitteConfirmation () of parsing dates", e);	
+						}
+						List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
+						for(Long id : tdpcommitteIds)
+						{
+							CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+							TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
+							tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
+							tdpCommittee.setIsCommitteeConfirmed("Y");
+							tdpCommitteeDAO.save(tdpCommittee);
+							vo.setStatus("Updated");
+							returnList.add(vo);	
+						}
+			
+				if(returnList != null && returnList.size() > 0){
+					returnVo = returnList.get(0);
+				}
+				return returnVo;
+				}
+			});
 		
+			if(resultVo != null && resultVo.getStatus().equalsIgnoreCase("Updated")){
+				resultList.add(resultVo);
+			}
 		}
 		catch(Exception e)
 		{
