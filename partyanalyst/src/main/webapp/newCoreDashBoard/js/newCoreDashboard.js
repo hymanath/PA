@@ -250,6 +250,7 @@ function MainPart(result){
 		
 	var str='';
 	if(result != null ){
+		$("#mainHeadinId").html(result.name);
 		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 		  str+='<div class="panel panel-default panelProfileView">';
 			//MAIN level start

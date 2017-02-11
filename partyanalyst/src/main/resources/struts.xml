@@ -233,7 +233,7 @@
 			<result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
-			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
+			<result type="redirect" name="coredashboarduser">partyLeadersDashboardAction.action</result>
 			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
 			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
 			<result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>
@@ -5702,7 +5702,7 @@
       <result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
-      <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
+      <result type="redirect" name="coredashboarduser">partyLeadersDashboardAction.action</result>
       <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
       <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
       <result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
@@ -13201,6 +13201,12 @@
 	</action>
 	
 	<action name="coreDashboardAction1" class="coreDashboardAction" method="newCoreDashboardPage">
+		<result name="success">/jsp/newCoreDashboard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
+		<result name="error" type="redirect">loginAction.action</result>
+	</action>
+	
+	<action name="partyLeadersDashboardAction" class="coreDashboardAction" method="newCoreDashboardPage">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
 		<result name="error" type="redirect">loginAction.action</result>
