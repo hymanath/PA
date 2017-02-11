@@ -29,6 +29,22 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 			if(result.length>0){
 				name = result[0].locationName;
 			var str='';
+			str+='<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">';
+				str+='<h4><span id=""></span></h4>';
+				str+='<hr style="margin: 0px;">';
+				str+='<ul class="list-inline pull-right ">';
+					str+='<li><span style="color:#777;font-weight:bold;">TOTAL </span></li>';
+					str+='<li><span style="color:orange;font-weight:bold;">PROPOSED </span></li>';
+					str+='<li><span style="color:#449D44;font-weight:bold;">FINALIZED</span></li>';
+					str+='<li><span style="color:#F65050;font-weight:bold;">VACANCY</span></li>';
+				str+='</ul>';
+				str+='</div>';			
+			
+				str+='<div class="col-md-12 col-xs-12">';
+				str+='<div class="variable-width" id="memsAvailableInfoId"></div>';
+				str+='</div>';
+				
+				getCommitteeMembersAvailableInfo(basicCmmtyId,locationTypeId,lctnId,'memsAvailableInfoId');
 			str+='<div>';
 			str+='<table class="table">';
 				str+='<thead>';
@@ -74,7 +90,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 				str+='</table>';
 				str+='</div>';
 				
-				if(result[0].rolesList != null && result[0].rolesList.length > 0){
+				/* if(result[0].rolesList != null && result[0].rolesList.length > 0){
 				str += '<div>';
 				str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
 				str += '<caption class="tablecaption" >Role Wise Information';
@@ -101,7 +117,7 @@ function buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locatio
 
 				str += '</table>';
 				str += '</div>';
-				}
+				} */
 				
 				var array1 = [" SC"," ST"," BC"," OC"," Minority"];
 				var array2 = new Array();
