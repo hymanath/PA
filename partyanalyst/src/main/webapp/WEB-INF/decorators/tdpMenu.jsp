@@ -797,7 +797,7 @@
 									</c:if> 
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
 										<li>
-											<a href="centralPartyMembersAlertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Assigned Alerts</span></a>
+											<a href="centralPartyMembersAlertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;My Assigned Alerts</span></a>
 										</li>
 									</c:if> 
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT')}">
@@ -834,11 +834,13 @@
 										 </ul>
 									</li>
 									</c:if>
-												
-								<!--<li style="text-align: right">
-									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
-								</li>-->
 								
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_ADMIN_DASHBOARD_ENTITLEMENT') || 
+				        fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
+								<li style="text-align: right">
+									<a href="cadreRegistrationDetailsAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp; Cadre Dashboard</span></a>
+								</li>
+							</c:if>	
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING') || 
 				        fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD') ||
 						 fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING') ||
