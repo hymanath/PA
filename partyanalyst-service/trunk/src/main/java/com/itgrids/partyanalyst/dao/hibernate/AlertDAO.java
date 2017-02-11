@@ -4479,4 +4479,191 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("isMultiple", isMultiple);
 		return query.executeUpdate();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictWiseTotalAlertsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.govtDepartment.govtDepartmentId," +
+						" model.govtDepartment.departmentName," +
+						" model.userAddress.district.districtId," +
+						" model.userAddress.district.districtName," +
+						" count(distinct model.alertId)" +
+						" from Alert model " +
+						" where model.isDeleted = 'N' " +
+						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) "); 
+		}
+		if(fromDate != null && toDate != null){ 
+			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		/*if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				sb.append(" and model.userAddress.state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				sb.append(" and model.userAddress.state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				sb.append(" and model.userAddress.state.stateId in (1,36) ");
+			}
+		}*/
+		sb.append(" group by model.govtDepartmentId, model.userAddress.district.districtId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			query.setParameterList("deptIds",deptIds);
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			query.setParameterList("channelIds",channelIds);
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			query.setParameterList("paperIds",paperIds);
+		}
+		/*if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 0L){
+				query.setParameter("stateId", stateId);
+			}
+		}*/
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);   
+		}
+		
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStatusWiseTotalCountsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.alertStatus.alertStatusId," +
+						" model.alertStatus.alertStatus," +
+						" count(distinct model.alertId)" +
+						" from Alert model " +
+						" where model.isDeleted = 'N' " +
+						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) ");
+		}
+		if(fromDate != null && toDate != null){ 
+			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		/*if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				sb.append(" and model.userAddress.state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				sb.append(" and model.userAddress.state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				sb.append(" and model.userAddress.state.stateId in (1,36) ");
+			}
+		}*/
+		sb.append(" group by model.alertStatus.alertStatusId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			query.setParameterList("deptIds",deptIds);
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			query.setParameterList("channelIds",channelIds);
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			query.setParameterList("paperIds",paperIds);
+		}
+		/*if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 0L){
+				query.setParameter("stateId", stateId);
+			}
+		}*/
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);   
+		}
+		
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistWiseTotalAlertsStatusForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.userAddress.district.districtId," +
+						" model.userAddress.district.districtName," +
+						" model.alertStatus.alertStatusId," +
+						" model.alertStatus.alertStatus," +
+						" count(distinct model.alertId) " +
+						" from Alert model,AlertDepartmentStatus model1 " +
+						" where " +
+						" model.alertStatusId = model1.alertStatusId " +
+						" and model.alertTypeId = model1.alertTypeId " +
+						" and model.isDeleted = 'N' " +
+						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) "); 
+		}
+		if(fromDate != null && toDate != null){ 
+			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		/*if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				sb.append(" and model.userAddress.state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				sb.append(" and model.userAddress.state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				sb.append(" and model.userAddress.state.stateId in (1,36) ");
+			}
+		}*/
+		sb.append(" group by model.alertStatus.alertStatusId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(deptIds != null && deptIds.size() > 0 ){
+			query.setParameterList("deptIds",deptIds);
+		}
+		if(channelIds != null && channelIds.size() > 0){ 
+			query.setParameterList("channelIds",channelIds);
+		}
+		if(paperIds != null && paperIds.size() > 0 ){
+			query.setParameterList("paperIds",paperIds);
+		}
+	/*	if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId", stateId);
+			}else if(stateId.longValue() == 0L){
+				query.setParameter("stateId", stateId);
+			}
+		}*/
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);   
+		}
+		
+		return query.list();
+	}
 }

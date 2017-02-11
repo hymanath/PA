@@ -817,4 +817,165 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 		}
 	}
+	/*
+	 * Author: Teja
+	 *  getDistrictWiseTotalAlerts Strip */
+	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList ){
+		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			List<Object[]> distWiseAlertLst = null;
+			List<Object[]> statusWiseCntsLst = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr != null && startDateStr.trim().length() > 0 && endDateStr != null && endDateStr.trim().length() > 0){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(endDateStr);
+			}
+			//departmentId-0,departmentName-1,districtId-2,districtName-3,Count-4
+			distWiseAlertLst = alertDAO.getDistrictWiseTotalAlertsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			
+			if(distWiseAlertLst != null && distWiseAlertLst.size() > 0){
+				for (Object[] objects : distWiseAlertLst) {
+					GovtDepartmentVO matchedVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
+					if(matchedVO == null){
+						matchedVO = new GovtDepartmentVO();
+						matchedVO.setDepartmentId((Long)objects[0]);
+						matchedVO.setDepartment(objects[1].toString());
+						
+					GovtDepartmentVO districtVO = new GovtDepartmentVO();
+						districtVO.setDepartmentId((Long)objects[2]);
+						districtVO.setDepartment(objects[3].toString());
+							districtVO.setCount((Long)objects[4]);
+							
+						matchedVO.getGovtDepartmentVOList().add(districtVO);	
+						finalVOList.add(matchedVO);
+					}else{
+						GovtDepartmentVO matchedDistVO = getmatchedDeptVo(matchedVO.getGovtDepartmentVOList(), (Long)objects[2]);
+						if(matchedDistVO == null){
+								matchedDistVO = new GovtDepartmentVO();
+								matchedDistVO.setDepartmentId((Long)objects[2]);
+								matchedDistVO.setDepartment(objects[3].toString());
+								matchedDistVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+								
+							matchedVO.getGovtDepartmentVOList().add(matchedDistVO);
+						}else{
+							matchedDistVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+						}
+					}
+				}
+			}
+			//statusWiseMediaTypeTotalCounts
+			//statusId-0,status-1,Count-2
+			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
+				 setDataToVoList(statusWiseCntsLst,finalVOList);
+			 }
+		} catch (Exception e) {
+			logger.error("Error occured getDistrictWiseTotalAlertsForAlert() method of CccDashboardService",e);
+		}
+		return finalVOList;
+	}
+
+	public GovtDepartmentVO getmatchedDeptVo(List<GovtDepartmentVO> finalVOList,Long govtId){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (GovtDepartmentVO govtDeptVO : finalVOList) {
+				if(govtDeptVO.getDepartmentId() != null && govtDeptVO.getDepartmentId().equals(govtId)){
+					return govtDeptVO;
+				}
+			}
+		}
+		return null;
+	}
+	public void setDataToVoList(List<Object[]> objList,List<GovtDepartmentVO> finalVOList){
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				GovtDepartmentVO matchedStatusVO = getmatchedDeptVo(finalVOList, (Long)objects[0]);
+				if(matchedStatusVO == null){
+					matchedStatusVO = new GovtDepartmentVO();
+					matchedStatusVO.setDepartmentId((Long)objects[0]);
+					matchedStatusVO.setDepartment(objects[1].toString());
+					matchedStatusVO.setCount((Long)objects[2]);
+					
+					finalVOList.get(0).getGovtDeptList().add(matchedStatusVO);
+				}else{
+					matchedStatusVO.setCount(matchedStatusVO.getCount()+(Long)objects[2]);
+				}
+			}
+		}
+	}
+	public List<GovtDepartmentVO> getStatusWiseDistrictTotalForAlert(String startDateStr,String endDateStr,Long stateId,
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList ){
+		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			List<Object[]> statusWiseDistLst = null;
+			List<Object[]> statusWiseCntsLst = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr != null && startDateStr.trim().length() > 0 && endDateStr != null && endDateStr.trim().length() > 0){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(endDateStr);
+			}
+			//districtId-0,districtName-1,statusId-2,statusName-3,count-4
+			statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			
+			if(statusWiseDistLst != null && statusWiseDistLst.size() > 0){
+				for (Object[] objects : statusWiseDistLst) {
+					GovtDepartmentVO matchedDistVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
+					if(matchedDistVO == null){
+						matchedDistVO = new GovtDepartmentVO();
+						matchedDistVO.setDepartmentId((Long)objects[0]);
+						matchedDistVO.setDepartment(objects[1].toString());
+						
+					GovtDepartmentVO statusVO = new GovtDepartmentVO();
+						statusVO.setDepartmentId((Long)objects[2]);
+						statusVO.setDepartment(objects[3].toString());
+						statusVO.setCount((Long)objects[4]);
+							
+							matchedDistVO.getGovtDepartmentVOList().add(statusVO);	
+						finalVOList.add(matchedDistVO);
+					}else{
+						GovtDepartmentVO matchedStatusVO = getmatchedDeptVo(matchedDistVO.getGovtDepartmentVOList(), (Long)objects[2]);
+						if(matchedStatusVO == null){
+							matchedStatusVO = new GovtDepartmentVO();
+							matchedStatusVO.setDepartmentId((Long)objects[2]);
+							matchedStatusVO.setDepartment(objects[3].toString());
+							matchedStatusVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+								
+							matchedDistVO.getGovtDepartmentVOList().add(matchedStatusVO);
+						}else{
+							matchedStatusVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+						}
+					}
+				}
+			}
+			//statusWiseMediaTypeTotalCounts
+			//statusId-0,status-1,Count-2
+			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
+				 setDataToVoList(statusWiseCntsLst,finalVOList);
+			 }
+			 if(finalVOList != null && finalVOList.size() >0){
+				 for (GovtDepartmentVO govtDeptVo : finalVOList) {
+					 if(govtDeptVo.getGovtDepartmentVOList() != null && govtDeptVo.getGovtDepartmentVOList().size() > 0){
+						 for (GovtDepartmentVO vo2 : govtDeptVo.getGovtDepartmentVOList()) {
+							 vo2.setTotalCount(vo2.getCount());
+							 if(vo2.getTotalCount()>0l){
+								 vo2.setPercentage(caclPercantage(vo2.getCount(),vo2.getTotalCount())); 
+							 }
+						}
+					 }
+				}
+			 }
+		} catch (Exception e) {
+			logger.error("Error occured getStatusWiseDistrictTotalForAlert() method of CccDashboardService",e);
+		}
+		return finalVOList;
+	}
+	public Double caclPercantage(Long subCount,Long totalCount){
+		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return d;
+	}
 }
