@@ -35,6 +35,10 @@ public class GovtDepartmentVO {
 	public List<GovtDepartmentVO> govtDeptList=new ArrayList<GovtDepartmentVO>(0);
 	public GovtDepartmentVO  govtDepartmentVO ;
 	private Double percentage = 0.0;
+	private Long printCnt=0l;
+	private Long ElecCnt = 0l;
+	private Long totElecCount =0l;
+	private Long totPrintCount =0l;
 	public Long getId() {
 		return id;
 	}
@@ -124,6 +128,30 @@ public class GovtDepartmentVO {
 	}
 	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
+	}
+	public Long getPrintCnt() {
+		return printCnt;
+	}
+	public void setPrintCnt(Long printCnt) {
+		this.printCnt = printCnt;
+	}
+	public Long getElecCnt() {
+		return ElecCnt;
+	}
+	public void setElecCnt(Long elecCnt) {
+		ElecCnt = elecCnt;
+	}
+	public Long getTotElecCount() {
+		return totElecCount;
+	}
+	public void setTotElecCount(Long totElecCount) {
+		this.totElecCount = totElecCount;
+	}
+	public Long getTotPrintCount() {
+		return totPrintCount;
+	}
+	public void setTotPrintCount(Long totPrintCount) {
+		this.totPrintCount = totPrintCount;
 	}
 	
 	

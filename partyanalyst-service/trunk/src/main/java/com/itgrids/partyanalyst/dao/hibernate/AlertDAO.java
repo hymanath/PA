@@ -4488,20 +4488,24 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" model.userAddress.district.districtName," +
 						" count(distinct model.alertId)" +
 						" from Alert model " +
-						" where model.isDeleted = 'N' " +
+						" left join model.edition edition " );
+		
+		//sb.append(" left join model.tvNewsChannel tvNewsChannel " );
+		
+		sb.append(" where model.isDeleted = 'N' " +
 						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
 		
 		if(deptIds != null && deptIds.size() > 0 ){
-			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+			sb.append(" and model.govtDepartment.govtDepartmentId in(:deptIds) ");
 		}
-		if(paperIds != null && paperIds.size() > 0 ){
-			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+		if(paperIds != null && paperIds.size() > 0 && channelIds != null && channelIds.size() > 0){
+			sb.append(" and ((edition.newsPaper.newsPaperId in(:paperIds)) ");
 		}
 		if(channelIds != null && channelIds.size() > 0){ 
-			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) "); 
+			sb.append(" or (model.tvNewsChannel.tvNewsChannelId in(:channelIds))) "); 
 		}
 		if(fromDate != null && toDate != null){ 
-			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
 		}
 		/*if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -4544,24 +4548,28 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStatusWiseTotalCountsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.alertStatus.alertStatusId," +
-						" model.alertStatus.alertStatus," +
-						" count(distinct model.alertId)" +
-						" from Alert model " +
-						" where model.isDeleted = 'N' " +
-						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
+		sb.append("select  ASTS.alert_status_id, ASTS.alert_status, count(distinct A.alert_id),A.alert_category_id " +
+				" from alert_department_status ADS, alert_status ASTS,alert A " +
+				" left outer join editions E on A.edition_id=E.edition_id  ");
+	
+		sb.append(" where A.alert_status_id=ADS.alert_status_id and" +
+				"  ADS.alert_status_id=ASTS.alert_status_id" +
+				"  and A.is_deleted='N' and " +
+				" A.alert_type_id in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") and ");
+		
+		sb.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") " );
 		
 		if(deptIds != null && deptIds.size() > 0 ){
-			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+			sb.append(" and A.govt_department_id in(:deptIds) ");
 		}
 		if(paperIds != null && paperIds.size() > 0 ){
-			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+			sb.append(" and ((E.news_paper_id in(:paperIds)) ");
 		}
-		if(channelIds != null && channelIds.size() > 0){ 
-			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) ");
+		if(channelIds != null && channelIds.size() > 0){
+			sb.append(" or (A.tv_news_channel_id in(:channelIds)))");
 		}
 		if(fromDate != null && toDate != null){ 
-			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			sb.append("  and date(A.created_time) between :fromDate and :toDate ");
 		}
 		/*if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -4572,9 +4580,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
 			}
 		}*/
-		sb.append(" group by model.alertStatus.alertStatusId ");
+		sb.append("  group by A.alert_category_id,ADS.alert_status_id ");
 		
-		Query query = getSession().createQuery(sb.toString());
+		Query query = getSession().createSQLQuery(sb.toString());
 		
 		if(deptIds != null && deptIds.size() > 0 ){
 			query.setParameterList("deptIds",deptIds);
@@ -4585,7 +4593,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(paperIds != null && paperIds.size() > 0 ){
 			query.setParameterList("paperIds",paperIds);
 		}
-		/*if(stateId != null && stateId.longValue() >= 0L){
+	/*	if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				query.setParameter("stateId", stateId);
 			}else if(stateId.longValue() == 36L){
@@ -4609,24 +4617,27 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" model.alertStatus.alertStatusId," +
 						" model.alertStatus.alertStatus," +
 						" count(distinct model.alertId) " +
-						" from Alert model,AlertDepartmentStatus model1 " +
-						" where " +
+						" from AlertDepartmentStatus model1,Alert model " +
+						" left join model.edition edition " );
+		
+		//sb.append(" left join model.tvNewsChannel tvNewsChannel " );
+		sb.append(" where " +
 						" model.alertStatusId = model1.alertStatusId " +
 						" and model.alertTypeId = model1.alertTypeId " +
 						" and model.isDeleted = 'N' " +
 						" and model.alertType.alertTypeId in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") ");
 		
 		if(deptIds != null && deptIds.size() > 0 ){
-			sb.append(" and (model.govtDepartment.govtDepartmentId in(:deptIds)) ");
+			sb.append(" and model.govtDepartment.govtDepartmentId in(:deptIds) ");
 		}
 		if(paperIds != null && paperIds.size() > 0 ){
-			sb.append(" and (model.edition.newsPaper.newsPaperId in(:paperIds)) ");
+			sb.append(" and ((edition.newsPaper.newsPaperId in(:paperIds)) ");
 		}
-		if(channelIds != null && channelIds.size() > 0){ 
-			sb.append(" and (model.tvNewsChannel.tvNewsChannelId in(:channelIds)) "); 
+		if(channelIds != null && channelIds.size() > 0){
+			sb.append(" or (model.tvNewsChannel.tvNewsChannelId in(:channelIds))) ");
 		}
 		if(fromDate != null && toDate != null){ 
-			sb.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
 		}
 		/*if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -4637,7 +4648,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
 			}
 		}*/
-		sb.append(" group by model.alertStatus.alertStatusId ");
+		sb.append(" group by model.userAddress.district.districtId,model.alertStatus.alertStatusId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
