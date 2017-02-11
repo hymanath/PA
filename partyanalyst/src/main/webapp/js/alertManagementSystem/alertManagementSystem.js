@@ -1169,18 +1169,18 @@ function getTotalAlertGroutByDeptThenStatus(){
     });
 }
 getDistrictWiseTotalForAlertOverview()
-getDistrictTotalForAlertStatus();
+getDistrictTotalForAlertStatus()
 function getDistrictWiseTotalForAlertOverview(){
 	var deptIdArr = [];
 	var deptId = $(this).attr("attr_dept_id");
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [1,2,3,4];
+		deptIdArr = [];
 	}
 	
-    var paperIdArr = [];
-    var chanelIdArr = [];
+     var paperIdArr = [2,8,11];
+    var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -1195,7 +1195,7 @@ function getDistrictWiseTotalForAlertOverview(){
 	  dataType : 'json',
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-			
+			buildStatusWiseTotalAlerts(result)
 	});
 	
 }
@@ -1209,8 +1209,8 @@ function getDistrictTotalForAlertStatus()
 		deptIdArr = [1,2,3,4];
 	}
 	
-    var paperIdArr = [];
-    var chanelIdArr = [];
+     var paperIdArr = [2,8,11];
+    var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -1229,4 +1229,52 @@ function getDistrictTotalForAlertStatus()
 	});
 	
 }
+function buildStatusWiseTotalAlerts(result){
+	var totalAlerts = 0;
+	 var str='';
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+					str+='<th></th>';
+					str+='<th class="bg_EE">Total</th>';
+					for(var k in result[0].govtDeptList){
+						str+='<th>'+result[0].govtDeptList[k].department+'</th>';
+					}
+			str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td class="bg_D8">Total Alerts</td>';
+						var totalCount=0;
+						var totalElecCount =0;
+						for(var j in result[0].govtDeptList){
+							totalElecCount=totalElecCount+result[0].govtDeptList[j].elecCnt;
+						}
+						var totalPrintCount =0;
+						for(var k in result[0].govtDeptList){
+							totalPrintCount = totalPrintCount+result[0].govtDeptList[k].printCnt;
+						}
+						totalCount = totalPrintCount+totalElecCount;
+						str+='<td class="bg_D8">'+totalCount+'</td>';
+						for(var i in result[0].govtDeptList){
+							str+='<th>'+result[0].govtDeptList[i].count+'</th>';
+						}
+					str+='</tr>';
+					 str+='<tr>';
+						str+='<td>Print Media Alerts</td>';
+						str+='<td class="bg_EE">'+totalPrintCount+'</td>';
+						for(var k in result[0].govtDeptList){
+							str+='<th>'+result[0].govtDeptList[k].printCnt+'</th>';
+						}
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>Electronic Media Alerts</td>';
+						str+='<td class="bg_EE">'+totalElecCount+'</td>';
+						for(var j in result[0].govtDeptList){
+							str+='<th>'+result[0].govtDeptList[j].elecCnt+'</th>';
+						}
+					str+='</tr>'; 
+				str+='</tbody>';
+			str+='</table>';
+			str+='<button class="btn btn-default btnBorder pull-right"></button>';
+		$("#statusWiseTotalDiv").html(str);
+} 
 /* Departments Complete Overview End*/
