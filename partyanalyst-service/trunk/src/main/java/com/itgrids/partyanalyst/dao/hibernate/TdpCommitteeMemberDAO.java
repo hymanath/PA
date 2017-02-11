@@ -358,6 +358,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 			query.setParameter("stDate", stDate);
 		    query.setParameter("edDate", edDate);
 		}
+		
+		if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size() > 0){
+			query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		}
 		return query.list();
 			
 	}
