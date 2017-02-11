@@ -4504,7 +4504,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
 		if(result[i].status != "Y"){
 			
-				str+='<div class="pull-right  btn btn-default btn-sm" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+				str+='<div class="pull-right  btn btn-default btn-sm deleteCls" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
 			
 		}
 		str+='</td>';
@@ -4519,7 +4519,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		{
 			
 				var str1='';
-				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')">Finalize Committee</button>';
+				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')">Proposal Finished</button>';
 				$("#conformedBtn").html(str1);
 			
 		}
@@ -4553,7 +4553,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				return;
 			}
 		}
-	var r=confirm("Are You Sure To Conform ?");
+	var r=confirm("Are you sure want to confirm ?");
 		if(r)
 		{
 	var jsObj = 
@@ -4580,11 +4580,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			  }
 			  if(result != null){
 				  {
-				alert("Committee Confirmed")
+				alert("Successfully Committee Confirmed")
 				$("#conformedBtn").html('');
 				$("#presGenSecrErrDivId").html("");
-				getSummary(constituencyId);
-				getMandalMuncipalDivisonStartedCommittees(constituencyId);
+				$(".deleteCls").remove();
+				//getSummary(constituencyId);
+				//getMandalMuncipalDivisonStartedCommittees(constituencyId);
 				  }
 				
 			}
