@@ -1927,16 +1927,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 			if(committeeBO.getStatus().equalsIgnoreCase("notStarted")){
 				sbM.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
-				if( committeeBO.getDate()!=null){
-					sbM.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
-				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
-					sbM.append( " and ( (date(model.startedDate) between :startDate and :endDate ) or model.startedDate is null)" );
-				}else{
-					sbM.append(" and model.startedDate is null ");
-				}
+				sbM.append(" and model.startedDate is null ");
 			}
 		   else if(committeeBO.getStatus().equalsIgnoreCase("started")){
-				sbM.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
+				sbM.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N'  and model.completedDate is null ");
 				if(committeeBO.getDate()!=null){
 					sbM.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
 				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
@@ -1983,12 +1977,13 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}*/
 		
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
-			
-			if(committeeBO.getDate()!=null){
-				query.setDate("givendate",committeeBO.getDate());
-			}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
-				query.setDate("startDate",committeeBO.getStartDate());
-				query.setDate("endDate",committeeBO.getEndDate());
+			if(!committeeBO.getStatus().equalsIgnoreCase("notStarted")){
+				if(committeeBO.getDate()!=null){
+					query.setDate("givendate",committeeBO.getDate());
+				}else if(committeeBO.getStartDate() != null && committeeBO.getEndDate() != null){
+					query.setDate("startDate",committeeBO.getStartDate());
+					query.setDate("endDate",committeeBO.getEndDate());
+				}
 			}
 		}
 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
