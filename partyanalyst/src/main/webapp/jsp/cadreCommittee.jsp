@@ -121,9 +121,9 @@
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="radio">
-				  <label>
+				  <!--<label>
 				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2"/> Mandal / Town / Division 
-				  </label>
+				  </label>-->
 			    </div>
 			</div>
 			
