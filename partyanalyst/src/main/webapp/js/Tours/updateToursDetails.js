@@ -1820,10 +1820,8 @@ function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,t
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#changedDate").html('('+moment().format("MMM-YYYY")+')');
 		//console.log(result);
-		var selecteDateArr = $("#tourMonthYear").val().split("-");
-		$("#changedDate").html('('+getMonth(selecteDateArr[0])+'-'+selecteDateArr[1]+')');
-		//$("#changedDate").html('('+moment().format("MMM-YYYY")+')');
 		if(result != null && result.length > 0){
 			buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate);
 		}else{
@@ -1891,17 +1889,18 @@ function buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate){
 			}
 		  str+='</tbody>';
 		str+='</table>';
-		if(result[0].toursVoList !=null && result[0].toursVoList.length>0){
-			str1+='<h4 class="panel-title m_top20" style="margin-top:20px !important">Uploaded Attachments</h4>';
-		}
-		
+		str1+='<h4 class="panel-title m_top20">Uploaded Attachments</h4>';
 		str1+='<div class="m_top10">';
 			str1+='<table class="table tableAttachments">';
 			for(var j in result[0].toursVoList){
 				str1+='<tr id="documentTrId'+result[0].toursVoList[j].id+'">';
 					str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
 					str1+='<td>'+result[0].toursVoList[j].filePath+'</td>';
-					//str1+='<td>UPDATED : '+result[0].toursVoList[j].tourDate+'</td>';
+					if(saveUpdate == '2')
+					{
+						var tourUpdatedDate = result[0].toursVoList[j].tourDate.substring(0, 19);
+						str1+='<td>UPDATED : '+tourUpdatedDate+'</td>';
+					}
 					str1+='<td><button class="btn btnView viewPdfCls" attr_filePath="'+result[0].toursVoList[j].filePath+'" type="button">VIEW</button></td>';
 					str1+='<td><button class="btn btnDelete deletePdfCls" type="button" attr_id='+result[0].toursVoList[j].id+'>DELETE</button></td>';
 				str1+='</tr>';
@@ -1927,7 +1926,7 @@ function isNumberKey(evt){
              return false;
           return true;
 } 
- 
+	   
 function savingApplication1(){
 	var tourdate = $("#tourMonthYear").val();
 	var flag = false;
@@ -1969,6 +1968,7 @@ function savingApplication1(){
 		YAHOO.util.Connect.setForm('toursFormApplication',true);  
 		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
 		YAHOO.util.Connect.asyncRequest('POST','saveDesignationWiseTourDetailsAction.action',uploadHandler);
+		$("#submitId").attr("disabled","disabled");
 	}
 $(document).on("click",".candiateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
@@ -2409,10 +2409,10 @@ $(document).on("click",".candiateCls",function(){
 																  str1+='<span class="viewPdfCls"  attr_filePath="'+fullName+'" style="cursor:pointer;display:inline-block;"><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></span>';
 																}           
 															}
-															str1+='<button class="btn btn-success editBtn candidateUpdate btn-xs" attr_monthdate="'+result.subList3[i].id+'" style="position:absolute;right:20px;" >EDIT</button></td>';	
+															str1+='<button class="btn btn-success editBtn candidateUpdate btn-xs" attr_monthdate="'+result.subList3[i].tourDate+'"  attr_monthId="'+result.subList3[i].id+'" style="position:absolute;right:20px;" >EDIT</button></td>';	
 														}
 													}else{    
-														str1+='<td rowspan='+(moxCategoryLength)+'> - <button class="btn btn-success editBtn candidateUpdate btn-xs" attr_monthdate="'+result.subList3[i].id+'" style="position:absolute;right:20px;">EDIT</button></td>';  
+														str1+='<td rowspan='+(moxCategoryLength)+'> - <button class="btn btn-success editBtn candidateUpdate btn-xs" attr_monthdate="'+result.subList3[i].tourDate+'" attr_monthId="'+result.subList3[i].id+'" style="position:absolute;right:20px;">EDIT</button></td>';  
 													} 	
 													
 													
@@ -2470,6 +2470,7 @@ $(document).on("click",".candiateCls",function(){
 	$(document).on("click",".candidateUpdate",function(){
 		$(".jFiler-items-list").html(' ');
 		var tdpCadreId = $("#hiddentdpCadreIdForPopUp").val();
+		$("#hiddentourMonthIdForPopUp").val($(this).attr("attr_monthId"));
 		var toursMonthId = $("#hiddentourMonthIdForPopUp").val();
 		$('#editTourDetailsModalId').modal({
             show: true,
@@ -2477,7 +2478,8 @@ $(document).on("click",".candiateCls",function(){
             backdrop: 'static'
         });
 		var monthDate = $(this).attr("attr_monthdate");
-		getAllTourDetailsOverview(2,tdpCadreId,monthDate,'','',monthDate);
+		var monthId = $(this).attr("attr_monthId");
+		getAllTourDetailsOverview(2,tdpCadreId,monthId,'','',monthDate);
 		
 	});
 	$(document).on("change","#dateRangeSliderYear",function(){
@@ -2527,8 +2529,8 @@ $(document).on("click",".candiateCls",function(){
 			$("#errorDiv").html("");
 		}
 		$("#hiddentdpCadreIdForModal").val($("#hiddentdpCadreIdForPopUp").val());
+		//$("#hiddentourMonthIdForModal").val($("#hiddentourMonthIdForPopUp").val());
 		$("#hiddentourMonthIdForModal").val($("#hiddentourMonthIdForPopUp").val());
-	
 		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
@@ -2539,6 +2541,7 @@ $(document).on("click",".candiateCls",function(){
 		YAHOO.util.Connect.setForm('toursUpdateFormApplication',true);  
 		//YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
 		YAHOO.util.Connect.asyncRequest('POST','saveDesignationWiseTourDetailsAction.action',uploadHandler);
+		$("#updateId").attr("disabled","disabled");
 	}
 $(document).on("click",".closeClass",function(){
 	setTimeout(function(){
@@ -2638,30 +2641,3 @@ $(document).on("click",".tourIndividualCls",function(){
 		$("body").addClass("modal-open");
 	},400);
 });
-function getMonth(month){
-	if(month=="01"){
-		return "Jan"
-	}else if(month=="02"){
-		return "Feb"
-	}else if(month=="03"){
-		return "Mar"
-	}else if(month=="04"){
-		return "Apr"
-	}else if(month=="05"){
-		return "May"
-	}else if(month=="06"){
-		return "Jun"
-	}else if(month=="07"){
-		return "Jul"
-	}else if(month=="08"){
-		return "Aug"
-	}else if(month=="09"){
-		return "Sep"
-	}else if(month=="10"){
-		return "Oct"
-	}else if(month=="11"){
-		return "Nov"
-	}else if(month=="12"){  
-		return "Dec"
-	}  
-}

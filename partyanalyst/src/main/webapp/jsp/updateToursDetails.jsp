@@ -221,6 +221,7 @@
 										<!--<form name="submitApplication" method="post">-->
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
+												<div id="commentsUlId"></div>
 												<div id="attachementsId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -242,7 +243,7 @@
 												<div class="row" id="submitApplicationBtnId"> 
 													<div class="col-md-4 col-md-offset-4">
 														<span class="updateTourStatusCls"></span>
-														<button type="button" class="btn btn-success btn-block" onclick="savingApplication1();" type="button">SUBMIT APPLICATION</button>
+														<button type="button" class="btn btn-success btn-block" onclick="savingApplication1();" type="button" id="submitId">SUBMIT APPLICATION</button>
 														<span id="successSpanId"></span>  
 													</div>   
 													<div class="col-md-1">
@@ -556,7 +557,7 @@
 					<div class="row" id=""> 
 						<div class="col-md-4 col-md-offset-4">
 							<span class="updateTourStatusModalCls"></span>
-							<button type="button" class="btn btn-success btn-block" onclick="updateApplication1()" type="button">SUBMIT/UPDATE TOURS</button>
+							<button type="button" class="btn btn-success btn-block" id="updateId"onclick="updateApplication1()" type="button">SUBMIT/UPDATE TOURS</button>
 							<span id="successSpanModalId"></span>  
 						</div>   
 						<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
