@@ -15758,5 +15758,15 @@
 			<param name="root">govtDeptVoList</param>
 		</result>	
 	</action>
+	<action name="getDistrictWiseTotalAlertsForAlertAction" class="cccDashboardAction" method="getDistrictWiseTotalAlertsForAlert">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
+		<action name="getStatusWiseDistrictTotalForAlertAction" class="cccDashboardAction" method="getStatusWiseDistrictTotalForAlert">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
  </package>
 </struts>
