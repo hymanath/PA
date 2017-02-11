@@ -223,31 +223,7 @@
 												<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 													<div id=""></div>
 												</div>
-												<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-													<table class="table table-bordered">
-														<thead>
-															<th></th>
-															<th class="bg_EE">Total</th>
-															<th>Pending</th>
-															<th>Notified</th>
-														</thead>
-														<tbody>
-															<tr>
-																<td class="bg_D8">Total Alerts</td>
-																<td class="bg_D8"></td>
-																<td class="bg_D8"></td>
-																<td class="bg_D8"></td>
-															</tr>
-															<tr>
-																<td>Print Media Alerts</td>
-																<td class="bg_EE"></td>
-																<td></td>
-																<td></td>
-															</tr>
-														</tbody>
-													</table>
-													<button class="btn btn-default btnBorder pull-right"></button>
-												</div>
+												<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="statusWiseTotalDiv"></div>
 											</div>
 										</div>
 									</div>
