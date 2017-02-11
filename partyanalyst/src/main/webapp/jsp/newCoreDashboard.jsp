@@ -3984,7 +3984,6 @@ var globalImages;
 	//url Based Conditions
 	  var windowUrl = window.location.href;
 	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
-	  var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
 	  var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
 		
   
@@ -4081,16 +4080,11 @@ var globalImages;
 	
 	function onLoadCalls(){
 		
-		/*
-		 var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
-		var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
-		var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
-		*/
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
 		//console.log(URLArr[parseInt(URLArr.length) - 1].replace('.action',''));
-		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
+	 var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 		
 	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
