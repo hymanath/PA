@@ -1132,6 +1132,8 @@
 				
 				var candidateNameAndCompletedCountArray = [];
 				var countVar =0;
+				var candidateNameStartedCountArray =[];
+				var candidateNameNotStartedCountArray =[];
 				
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
@@ -1140,7 +1142,18 @@
 								name: result[i][j].name,
 								y: result[i][j].completedPerc
 							};
+						var obj2 = {
+								name: result[i][j].name,
+								y: result[i][j].startedPerc
+							};
+						var obj3 = {
+								name: result[i][j].name,
+								y: result[i][j].notStartedPerc
+							};
 						candidateNameAndCompletedCountArray.push(obj1);
+						candidateNameStartedCountArray.push(obj2);
+						candidateNameNotStartedCountArray.push(obj3);
+						
 							
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -1150,7 +1163,7 @@
 				}
 				
 					
-				if( result[i][j].completedPerc !=0){
+				if( result[i][j].completedPerc !=0 || result[i][j].startedPerc !=0 || result[i][j].notStartedPerc !=0){
 					
 					var str='';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1165,7 +1178,7 @@
 					
 					$(function () {
 						 $("#genSec"+i).highcharts({
-							 colors: ['#0066DC'],
+							 colors: ['#0066DC','#FF8119','#ADADAD'],
 							chart: {
 								type: 'column'
 							},
@@ -1230,6 +1243,12 @@
 							series: [{
 								name: 'Completed',
 								data: candidateNameAndCompletedCountArray
+							},{
+								name: 'Started',
+								data: candidateNameStartedCountArray
+							},{
+								name: 'Not Started',
+								data: candidateNameNotStartedCountArray
 							}],
 						 
 						});
@@ -1957,10 +1976,6 @@
 				getCommitteeDetailsBiEnrollement(1);
 			});
 		}
-		$(document).on("change","#tdpCommitteeYearId",function(){
-			getCommitteeDetailsByEnrollement(0);
-		});
-		
 		function getCommitteeDetailsBiEnrollement(id){
 			var enrollmentIdsArr = new Array();
 			if(id == 0)
@@ -2027,4 +2042,9 @@
 				}
 			});
 		}
+		$(document).on("change","#tdpCommitteeYearId",function(){
+			/* alert(12);
+			var id =0; */
+			getCommitteeDetailsBiEnrollement(0);
+		});
 		
