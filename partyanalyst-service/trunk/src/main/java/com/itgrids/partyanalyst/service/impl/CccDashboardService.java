@@ -608,6 +608,15 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			if(printIdList != null && printIdList.size() > 0){
+				if(electronicIdList != null && electronicIdList.size() == 0){
+					electronicIdList.add(0L);
+				}
+			}else if(electronicIdList != null && electronicIdList.size() > 0){
+				if(printIdList != null && printIdList.size() == 0){
+					printIdList.add(0L);
+				}
+			}
 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
 			//get all the alert status and build the template
 			List<Object[]> statusList = new ArrayList<Object[]>();
@@ -640,6 +649,15 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+			}
+			if(printIdList != null && printIdList.size() > 0){
+				if(electronicIdList != null && electronicIdList.size() == 0){
+					electronicIdList.add(0L);
+				}
+			}else if(electronicIdList != null && electronicIdList.size() > 0){
+				if(printIdList != null && printIdList.size() == 0){
+					printIdList.add(0L);
+				}
 			}
 			
 			Map<Long,Long> deptIdAndCountMap = new HashMap<Long,Long>();
