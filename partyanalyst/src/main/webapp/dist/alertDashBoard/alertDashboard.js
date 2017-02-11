@@ -307,7 +307,8 @@ var GlobalalertId;
 var globalAlertName;
 $(document).on("click",".alertModel",function(){
 	GlobalalertId = $(this).attr("attr-id");
-	window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+	//window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+	window.open("http://mytdp.com/alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 $(document).on("click",".alertEditModel",function(){
 	GlobalalertId = $(this).attr("attr-id");
