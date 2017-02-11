@@ -462,13 +462,16 @@ import com.itgrids.partyanalyst.utils.IConstants;
 				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
 				" and model.isActive = 'Y' ");
 		if(startDate!=null){
-			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
+			sb.append(" and ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
 		}
 		if(endDate!=null){
-			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) <= :endDate");
+			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) <= :endDate ) ");
+		}
+		if(committeeSpanTypeIdsList != null && committeeSpanTypeIdsList.size()>0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeSpanTypeIdsList) ");
 		}
 		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
-				" order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+				" order by model.tdpCommitteeRole.tdpCommittee.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
@@ -479,7 +482,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		if(endDate!=null){
 			query.setParameter("endDate", endDate);
 		}
-		
+		if(committeeSpanTypeIdsList != null && committeeSpanTypeIdsList.size()>0)
+			query.setParameterList("committeeSpanTypeIdsList", committeeSpanTypeIdsList);
 		query.setParameterList("districtIds", districtIds);
 		
 		return query.list();
