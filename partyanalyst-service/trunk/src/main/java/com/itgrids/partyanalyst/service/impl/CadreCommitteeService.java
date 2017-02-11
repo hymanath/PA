@@ -4182,13 +4182,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
 			for(Long id : tdpcommitteIds)
 			{
-			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
-			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
-			tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
-			tdpCommittee.setIsCommitteeConfirmed("Y");
-			tdpCommitteeDAO.save(tdpCommittee);
-			vo.setStatus("Updated");
-			resultList.add(vo);	
+				CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+				TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
+				tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
+				tdpCommittee.setIsCommitteeConfirmed("Y");
+				tdpCommitteeDAO.save(tdpCommittee);
+				vo.setStatus("Updated");
+				resultList.add(vo);	
 			}
 		
 		}
