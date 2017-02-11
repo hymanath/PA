@@ -1,7 +1,7 @@
 /*global Function and variables Start*/
 var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
-var globalStateId = 36;
+var globalStateId = 1;  
 $("#dateRangePicker").daterangepicker({
 	opens: 'left',
 	startDate: currentFromDate,
@@ -43,8 +43,8 @@ $(document).on("click",".settingsIcon",function(){
 function totalAlertGroupByStatusForGovt()
 {
 	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var deptIdArr = [1,2,3,4];
-    var paperIdArr = [2,8,11];
+	var deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -201,8 +201,8 @@ function buildTotalAlertGroupByStatusForGovt(result)
 function totalAlertGroupByStatusThenDepartment()
 {
 	$("#departmentWiseStatusOvrVw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-    var deptIdArr = [1,2,3,4];
-    var paperIdArr = [2,8,11];
+    var deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
 	var jsObj ={
       fromDate:currentFromDate,
@@ -390,10 +390,10 @@ $(document).on("click",".getDtlsCls",function(){
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [1,2,3,4];
+		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
 	}
 	
-    var paperIdArr = [2,8,11];
+    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -428,10 +428,10 @@ function getData(count, alertStatusId){
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [1,2,3,4];
+		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
 	}
 	
-    var paperIdArr = [2,8,11];
+    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -749,7 +749,7 @@ function alertComments(result)
 		statusId = result[i].statusId;
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
-			if(length == i)  
+			if(length == i)    
 			{
 				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
 			}else{
@@ -1131,7 +1131,7 @@ function buildDistrictWiseArticleRelatedToProblem(result){
 getTotalAlertGroupByStatusForOneDept();
 function getTotalAlertGroupByStatusForOneDept(){
 	
-    var paperIdArr = [];
+    var paperIdArr = [];      
     var chanelIdArr = [];     
     var jsObj ={
       fromDate:'10/02/2017',
