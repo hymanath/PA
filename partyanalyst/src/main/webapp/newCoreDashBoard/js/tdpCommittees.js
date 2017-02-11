@@ -1967,15 +1967,19 @@
 			}).done(function(result){
 				if(result != null && result.length > 0){
 					for(var i in result){
-						if(parseInt(result[i].id) == 1)
+						if(parseInt(result[i].id) == 2)
 							$("#tdpCommitteeYearId").append('<option value='+result[i].id+' selected="selected">'+result[i].electionYear+'</option>');
 						else
 							$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 					}
 				}
-				getCommitteeDetailsBiEnrollement(1);
+				getCommitteeDetailsBiEnrollement(2);
 			});
 		}
+		$(document).on("change","#tdpCommitteeYearId",function(){
+			getCommitteeDetailsBiEnrollement(0);
+		});
+		
 		function getCommitteeDetailsBiEnrollement(id){
 			var enrollmentIdsArr = new Array();
 			if(id == 0)
