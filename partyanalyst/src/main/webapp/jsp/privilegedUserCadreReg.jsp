@@ -225,9 +225,9 @@
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
 				<div class="row">
 					<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 15px;">
-						<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
+						<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" style="margin-top:0px;"/>
 						<span style="margin-right:10px;"> TODAY</span>
-						<input type="radio" class="radiobuttonSelectedWise" id="totalId" name="compareC" value="Total" style="margin-top:0px;"/>
+						<input type="radio" class="radiobuttonSelectedWise" id="totalId" name="compareC" value="Total" checked="true" style="margin-top:0px;"/>
 						<span style="margin-right:10px;"> OVER ALL </span> 
 					</div>
 					<div class="col-md-8 col-xs-12 col-sm-3">
@@ -436,7 +436,7 @@
 	var userId = ${userId};
 	var stateName = '${stateName}';
 	var globalUserId = userId;      
-	var type = "Today";       
+	var type = "Total";       
 	var locationType = stateName;
 	$(document).ready(function() {
 		initialiseDatePickerForCadreRegistration();
