@@ -3984,6 +3984,7 @@ var globalImages;
 	//url Based Conditions
 	  var windowUrl = window.location.href;
 	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
+	  var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
 	  var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
 		
   
