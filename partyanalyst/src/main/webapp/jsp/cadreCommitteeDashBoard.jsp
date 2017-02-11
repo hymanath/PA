@@ -4369,7 +4369,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');getCommitteeMembersAvailableInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\');">view</button></td>';
+		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+',\'ajaxImgStyle'+i+'\','+i+');getCommitteeMembersAvailableInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\'infoDivId\');">view</button></td>';
 			}
          //str+='<tr>';
 		 str+='<tr id="'+result[i].id+'infoTrId" class=" " style="display:none">';
@@ -6009,17 +6009,28 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 	getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
 });
 var slickCount = 0;
-function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValue){
-		
-		$("#"+levelValue+"infoTrId").show();
-			$("#"+levelValue+"infoDivId").html('<img id="ajaxImgStyle"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
-			var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
-			 var date =$("#reportrange1").val();
-        var fromDate;
+function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValue,divId){
+		var fromDate;
         var toDate;
+		var committeeEnrollmentId = 1;
+		if(divId == 'infoDivId'){
+			   $("#"+levelValue+"infoTrId").show();
+			$("#"+levelValue+"infoDivId").html('<img id="ajaxImgStyle"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
+			committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+			 var date =$("#reportrange1").val();
+        
         var dates = date.split("-");
         fromDate = dates[0];
         toDate = dates[1]; 
+			  }else{
+				  $("#"+divId).html('<img id=""  class="ajximgCls" style="margin-center: 10px;width:90px;" src="images/Loading-data.gif"/>');
+				  var dates = $("#reportrange").val();
+		var dateArray = dates.split("-");
+		 fromDate=dateArray[0];
+		 toDate=dateArray[1];
+		committeeEnrollmentId =$("#tdpCommitteeYearId").val();
+			  }
+		
 		 var jsObj={
 		         levelId:levelId,levelValue:levelValue,enrollmentYrId:committeeEnrollmentId,startDate:fromDate,endDate:toDate,
 				 basicCommitteetypeId:basicCommitteetypeId
@@ -6079,7 +6090,11 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 					str+='</div>';
 			   }
 			   
+			   if(divId == 'infoDivId'){
 			   $("#"+levelValue+"infoDivId").html(str);
+			  }else{
+				  $("#"+divId).html(str);
+			  }
 			   /*  $('#variable-width'+slickCount).slick({
 					  slide: '.slickW',
 					  slidesToShow: 3,
