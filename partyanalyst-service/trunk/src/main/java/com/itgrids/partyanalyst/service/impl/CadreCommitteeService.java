@@ -5101,7 +5101,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 
 				}
 			}
-			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1 && committeeSpanTypeIdsList.contains(1L)){
 				getAllIvrDetailsForCampaind(fnlLst,1l,"District");
 			}
 			
