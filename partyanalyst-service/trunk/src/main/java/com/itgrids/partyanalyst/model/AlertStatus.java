@@ -27,11 +27,11 @@ public class AlertStatus extends BaseModel implements Serializable {
 	private String alertStatus;
 	private Long statusOrder;
 	
-	private Long alertTypeId;
+	/*private Long alertTypeId;
 	private Long govtDepartmentId;
 	
 	private AlertType alertType;
-	private GovtDepartment govtDepartment;
+	private GovtDepartment govtDepartment;*/
 	
 	
 
@@ -62,7 +62,7 @@ public class AlertStatus extends BaseModel implements Serializable {
 	public void setStatusOrder(Long statusOrder) {
 		this.statusOrder = statusOrder;
 	}
-
+/*
 	@Column(name = "alert_type_id")
 	public Long getAlertTypeId() {
 		return alertTypeId;
@@ -104,7 +104,7 @@ public class AlertStatus extends BaseModel implements Serializable {
 	public void setGovtDepartment(GovtDepartment govtDepartment) {
 		this.govtDepartment = govtDepartment;
 	}
-	
+	*/
 	
 
 }
