@@ -683,6 +683,7 @@
 	    <pattern>/nominatedPostManagementAction*</pattern>
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
 	   <pattern>/coreDashboardAction*</pattern>
+	   <pattern>/partyLeadersDashboardAction*</pattern>
 	   <pattern>/partyAndLeaderActivitiesAndPerformanceTracking*</pattern>
 	   <pattern>/dailyMonthlyPartyActivities*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>

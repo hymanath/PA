@@ -71,8 +71,8 @@
             	<div class="col-md-7 col-xs-12 col-sm-6">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
-                          <a style="cursor:pointer;">KALA VENKATA RAO 
-                          	<span class="caretBackground">
+                          <a style="cursor:pointer;"><span id="mainHeadinId""> </span> 
+                          	<span class="caretBackground"><!--KALA VENKATA RAO-->
                             	<span class="fa fa-sort-desc" aria-hidden="true" style="color: rgb(255, 255, 255); margin-left: -1px;"></span>
                             </span>
                           </a>
@@ -3984,8 +3984,9 @@ var globalImages;
 	//url Based Conditions
 	  var windowUrl = window.location.href;
 	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
+	  var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
 	  var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
-  
+		
   
   
 	$(document).on('click','#alertSettingsId',function(){
@@ -4046,6 +4047,7 @@ var globalImages;
       initialiseDatePicker();
 	  initialiseDatePickerForTrainingProgram();
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
+	   
 	  
 	  if(loggedInUserId == null || loggedInUserId == '')
 		  loggedInUserId = 1;
@@ -4078,10 +4080,19 @@ var globalImages;
 	onLoadCalls()
 	
 	function onLoadCalls(){
+		
+		/*
+		 var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
+		var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
+		var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
+		*/
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		var URLArr = windowUrl.split('/');
+		//console.log(URLArr[parseInt(URLArr.length) - 1].replace('.action',''));
+		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 		
-		if(ignoreLoginsUrl == -1)
+	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
 		//ALL BLOCKS
 		getRescentArticleTime();		
@@ -4136,7 +4147,10 @@ var globalImages;
 		getSettingEvents();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
-	  }else {
+	  }
+	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
+	  {
+		  
 		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -4153,6 +4167,81 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		
+		
+	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="coreDashboardAction1")
+	  {
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
+		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		getRescentArticleTime();
+		getToursBasicOverviewDtls();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		getAlertOverviewDetails();
+	  }
+	  else{
+		  
+		//ALL BLOCKS
+		getRescentArticleTime();		
+		//committeeBasicCall();
+		
+		//training program call
+		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
+		var programIdArr = [];
+		var arr = idStr.split(","); 
+		for(var i in arr){
+			programIdArr.push(arr[i]);
+		} 
+		console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
+		stateLevelCampDetails();
+		stateLevelCampDetailsRepresentativeWise(programIdArr);
+		getStateLevelCampCount(programIdArr); */   
+		getTrainingCampBasicDetailsCntOverview();   
+		//getTrainingCampProgramOverviewDtls();   
+		//Meeting
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		getSpecialMeetingsByMeetingType();
+		//events
+		getEventBasicCntDtls();
+		//news please dont remove
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		//getPaperWiseNewsBasicCounts();
+		//Debates
+		getPartyWiseTotalDebateDetails();      
+        //cadreRegistration
+		cadreRegistrationBasicCall(globalActivityMemberId);
+		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
+        /* Tours Default Call */
+       // getToursBasicOverviewCountDetails();     
+		//getDesigWiseMemberDtls();  
+		/*New Tours implementation Default Call */
+		getToursBasicOverviewDtls();
+     	/*Electronic Media Calls*/
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+		getAllTvChannels();
+		getRescentNewsBulletinTime();
+		/* Alert Default Call */
+		getAlertOverviewDetails();  
+		/* Activities Default Call */
+		getActivitiesDetails();
+		getAttendanceOverViewForPartyOffice();
+		getAttendanceOverViewForPartyOfficeWise();
+		getSettingActivities();
+		getSettingEvents();
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+		$("#attendanceId").html('TODAY ('+datStr+')');
 	  }
 	}
 	$(document).on("click",".userStructureClass",function(){
