@@ -25,6 +25,8 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	currentToDate = picker.endDate.format('DD/MM/YYYY');
 	totalAlertGroupByStatusForGovt()
 	totalAlertGroupByStatusThenDepartment()
+	getDistrictWiseTotalForAlertOverview()
+	getDistrictTotalForAlertStatus()
 });
 $(".chosenSelect").chosen({width:'100%'});
 onLoadCalls();
@@ -1166,3 +1168,65 @@ function getTotalAlertGroutByDeptThenStatus(){
 		
     });
 }
+getDistrictWiseTotalForAlertOverview()
+getDistrictTotalForAlertStatus();
+function getDistrictWiseTotalForAlertOverview(){
+	var deptIdArr = [];
+	var deptId = $(this).attr("attr_dept_id");
+	if(deptId != null){
+		deptIdArr.push(deptId);  
+	}else{
+		deptIdArr = [1,2,3,4];
+	}
+	
+    var paperIdArr = [];
+    var chanelIdArr = [];
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : globalStateId,
+      deptIdArr : deptIdArr,  
+      newsPaperIdArr : paperIdArr,
+      newChanelIdArr : chanelIdArr    
+    }
+	$.ajax({
+	  type : 'GET',
+	  url : 'getDistrictWiseTotalAlertsForAlertAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+			
+	});
+	
+}
+function getDistrictTotalForAlertStatus()
+{
+	var deptIdArr = [];
+	var deptId = $(this).attr("attr_dept_id");
+	if(deptId != null){
+		deptIdArr.push(deptId);  
+	}else{
+		deptIdArr = [1,2,3,4];
+	}
+	
+    var paperIdArr = [];
+    var chanelIdArr = [];
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : globalStateId,
+      deptIdArr : deptIdArr,  
+      newsPaperIdArr : paperIdArr,
+      newChanelIdArr : chanelIdArr     
+    }
+	$.ajax({
+	  type : 'GET',
+	  url : 'getStatusWiseDistrictTotalForAlertAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+			
+	});
+	
+}
+/* Departments Complete Overview End*/

@@ -364,4 +364,68 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		public String getDistrictWiseTotalAlertsForAlert(){
+		   try {
+				jObj = new JSONObject(getTask());
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+				List<Long> deptIdList = new ArrayList<Long>();
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				}  
+				
+				JSONArray paperIdArr = jObj.getJSONArray("newsPaperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("newChanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+			
+				govtDeptVoList = cccDashboardService.getDistrictWiseTotalAlertsForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList);
+		  } catch (Exception e) {
+			   LOG.error("Exception Raised in getDistrictWiseTotalAlertsForAlert() in CccDashboardAction",e);
+		  }
+			return Action.SUCCESS;
+	}
+		public String getStatusWiseDistrictTotalForAlert(){
+			   try {
+					jObj = new JSONObject(getTask());
+					jObj = new JSONObject(getTask());
+					String fromDate = jObj.getString("fromDate");
+					String toDate = jObj.getString("toDate");
+					Long stateId = jObj.getLong("stateId");
+					
+					JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+					List<Long> deptIdList = new ArrayList<Long>();
+					for (int i = 0; i < deptIdArr.length(); i++){
+						deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+					}  
+					
+					JSONArray paperIdArr = jObj.getJSONArray("newsPaperIdArr");  
+					List<Long> paperIdList = new ArrayList<Long>();
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+					
+					JSONArray chanelIdArr = jObj.getJSONArray("newChanelIdArr");  
+					List<Long> chanelIdList = new ArrayList<Long>();
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
+				
+					govtDeptVoList = cccDashboardService.getStatusWiseDistrictTotalForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList);
+			  } catch (Exception e) {
+				   LOG.error("Exception Raised in getStatusWiseDistrictTotalForAlert() in CccDashboardAction",e);
+			  }
+				return Action.SUCCESS;
+		}
 }
