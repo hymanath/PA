@@ -70,9 +70,9 @@ public interface ICadreCommitteeService {
 	public CommitteeApprovalVO getStatusCountsOfApproval();
 	
 	
-	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue);
+	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue,String reqLocationType,String startDate,String endDate, List<Long> committeeEnrollmentIdsLst,List<Long>  levelIdsLsit);
 	public List<LocationWiseBoothDetailsVO> getStartedCommitteesCountInALocation(String accessValue);
-	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String constituencyId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String constituencyId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate,String reqLocationTypeStr , List<Long> levelIdsList);
 	public List<LocationWiseBoothDetailsVO> getMandalMuncipalDivisonTotalCommittees(String accessValue,Map<Long,CommitteeSummaryVO> affilatedMap);
 	//public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startdateStr,String endDateStr);
 	//public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startdateStr,String endDateStr);
@@ -97,7 +97,7 @@ public interface ICadreCommitteeService {
 	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId);
 	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal);
 	
-	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList);
 	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus);
 	public CommitteeApprovalVO statusForChangeDesignationsApproval();
 	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
@@ -108,7 +108,7 @@ public interface ICadreCommitteeService {
 	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
 			List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio,List<Long> enrollIdsList,String startDateStr,String endDateStr);
 	public String getDistrictName(Long  districtId);
-	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
+	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate,List<Long> committeeLevelIdsList,List<Long> mainOrAfflCommitteIds);
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId,String searchType);
 	public List<BasicVO> getAllCommittees();
