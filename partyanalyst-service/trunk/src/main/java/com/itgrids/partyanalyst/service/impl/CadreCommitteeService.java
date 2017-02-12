@@ -3938,7 +3938,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<Object[]> list = new ArrayList<Object[]>();
 			
 		try{
-		  SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+		  SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
 			Date stDate = (Date)format.parse(startDate);
 			Date edDate = (Date)format.parse(endDate);
 		
@@ -4132,7 +4132,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
 		try{
-			SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");	
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");	
 			Date stDate = (Date)format.parse(startDate);
 			Date edDate = (Date)format.parse(endDate);
 		List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status,committeeEnrollmentIdsLst,stDate,edDate);
@@ -4181,7 +4181,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					 List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
 					 CadreCommitteeMemberVO returnVo = new CadreCommitteeMemberVO();
 						DateUtilService date = new DateUtilService();
-						SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+						SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
 						Date stDate = null;
 						Date edDate = null;
 						try{
@@ -4223,7 +4223,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
-			 SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+			 SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
 				Date stDate = (Date)format.parse(startDate);
 				Date edDate = (Date)format.parse(endDate);
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
@@ -4376,23 +4376,29 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return output;
 	}
 	
-	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue)
+	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue,String reqLocationType,String startDateStr,String endDateStr, 
+			 List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsLsit)
 	{
 		List<CommitteeSummaryVO> returnList = null;
 		try {
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");	
+			Date startDate = (Date)format.parse(startDateStr);
+			Date endDate = (Date)format.parse(endDateStr);
 			
 			Long constituencyId=Long.parseLong(accessValue);
-			List<Object[]> valuesList = tdpCommitteeDAO.getLocationWiseVillageDetails(constituencyId);
-			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseVillageStartedDetails(constituencyId);
+			List<Object[]> valuesList = tdpCommitteeDAO.getLocationWiseVillageDetails(constituencyId,reqLocationType,startDate,endDate,committeeEnrollmentIdsLst,levelIdsLsit);
+			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseVillageStartedDetails(constituencyId,reqLocationType,startDate,endDate,committeeEnrollmentIdsLst,levelIdsLsit);
 			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
 			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
 			 getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO);
 			 returnList = new ArrayList<CommitteeSummaryVO>(returnMap.values());
 			if(returnList.size() > 0){
 				CommitteeSummaryVO vo = returnList.get(0);
-				vo.setMainComitteesConformed(mainVO.getMainComitteesConformed());
-				vo.setMainComittees(mainVO.getMainComittees());
-				vo.setStartedCount(mainVO.getStartedCount());
+				vo.setMainComitteesConformed(mainVO.getMainComitteesConformed() != null ? mainVO.getMainComitteesConformed():0L );
+				vo.setMainComittees(mainVO.getMainComittees() != null ? mainVO.getMainComittees():0L);
+				vo.setStartedCount(mainVO.getStartedCount() != null ? mainVO.getStartedCount():0L);
+			}else{
+				returnList.add(mainVO);
 			}
 			return returnList;
 		} catch (Exception e) {
@@ -4499,7 +4505,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 		
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate,String reqLocationTypeStr , List<Long> levelIdsList)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		try{
@@ -4575,7 +4581,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	@SuppressWarnings("unused")
-	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
+	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType,List<Long> committeeEnrollmentIdsLst,String startDate,
+			 String endDate,List<Long> committeeLevelIdsList,List<Long> mainOrAfflCommitteIds)
 	{	
 		List<CommitteeSummaryVO> returnList = null;
 		List<Long> locationIds = new ArrayList<Long>();
@@ -4585,12 +4592,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			locationLevelId = 10l;
 		else if(accessType.equalsIgnoreCase("District"))
 			locationLevelId = 11l;
+				
 		try{
-			SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
 			Date stDate = (Date)format.parse(startDate);
 			Date edDate = (Date)format.parse(endDate);		
-			List<Object[]> valuesList = tdpCommitteeDAO.getLocationWiseMandalDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst,stDate,edDate);
-			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId,committeeEnrollmentIdsLst,stDate,edDate);
+			List<Object[]> valuesList = tdpCommitteeDAO.getLocationsWiseMandalDetails(locationIds,committeeLevelIdsList,committeeEnrollmentIdsLst,stDate,edDate,accessType,mainOrAfflCommitteIds);
+			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationsWiseMandalStartedDetails(locationIds,committeeLevelIdsList,committeeEnrollmentIdsLst,stDate,edDate,accessType,mainOrAfflCommitteIds);
 			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
 			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
 			getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO);
@@ -5364,6 +5372,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			
 				else{
+					
+					if(temp.getDistrictCommVO()==null){
+						temp.setDistrictCommVO(new CommitteeSummaryVO());
+					}
+					if(Long.valueOf(obj[2].toString()).longValue() == 1L){
+						temp.getDistrictCommVO().setMembersCount(Long.valueOf(obj[0].toString()));
+					}else
+					{
+						setDistrictCommitteeParameterValues(temp,Long.valueOf(obj[2].toString()),"start", Long.valueOf(obj[0].toString()));
+					}
+					
 					Long committeeId = Long.valueOf(obj[2].toString());
 					if(temp.getVillageWardVO()==null){
 						temp.setVillageWardVO(new CommitteeSummaryVO());
@@ -5441,146 +5460,320 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(committeeId.longValue() == 2l){
 				isConsidered = true;
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setYouvathaStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getYouvathaStarted() != null)
+						temp.getDistrictCommVO().setYouvathaStarted(temp.getDistrictCommVO().getYouvathaStarted()+1L);
+					else
+						temp.getDistrictCommVO().setYouvathaStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setYouvathaCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getYouvathaCmpltd() != null)
+						temp.getDistrictCommVO().setYouvathaCmpltd(temp.getDistrictCommVO().getYouvathaCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setYouvathaCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 3l){
 				isConsidered = true;
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setMahilaStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getMahilaStarted() != null)
+						temp.getDistrictCommVO().setMahilaStarted(temp.getDistrictCommVO().getMahilaStarted()+1L);
+					else
+						temp.getDistrictCommVO().setMahilaStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setMahilaCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getMahilaCmpltd() != null)
+						temp.getDistrictCommVO().setMahilaCmpltd(temp.getDistrictCommVO().getMahilaCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setMahilaCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 4l){
 				isConsidered = true;
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setRythuStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getRythuStarted() != null)
+						temp.getDistrictCommVO().setRythuStarted(temp.getDistrictCommVO().getRythuStarted()+1L);
+					else
+						temp.getDistrictCommVO().setRythuStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setRythuCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getRythuCmpltd() != null)
+						temp.getDistrictCommVO().setRythuCmpltd(temp.getDistrictCommVO().getRythuCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setRythuCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 5l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setTntucStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTntucStarted() != null)
+						temp.getDistrictCommVO().setTntucStarted(temp.getDistrictCommVO().getTntucStarted()+1L);
+					else
+						temp.getDistrictCommVO().setTntucStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setTntucCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTntucCmpltd() != null)
+						temp.getDistrictCommVO().setTntucCmpltd(temp.getDistrictCommVO().getTntucCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setTntucCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 6l){
+				
+
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setBcCellStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getBcCellStarted() != null)
+						temp.getDistrictCommVO().setBcCellStarted(temp.getDistrictCommVO().getBcCellStarted()+1L);
+					else
+						temp.getDistrictCommVO().setBcCellStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setBcCellCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getBcCellCmpltd() != null)
+						temp.getDistrictCommVO().setBcCellCmpltd(temp.getDistrictCommVO().getBcCellCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setBcCellCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 7l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setScCellStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getScCellStarted() != null)
+						temp.getDistrictCommVO().setScCellStarted(temp.getDistrictCommVO().getScCellStarted()+1L);
+					else
+						temp.getDistrictCommVO().setScCellStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setScCellCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getScCellCmpltd() != null)
+						temp.getDistrictCommVO().setScCellCmpltd(temp.getDistrictCommVO().getScCellCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setScCellCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 8l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setStCellStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getStCellStarted() != null)
+						temp.getDistrictCommVO().setStCellStarted(temp.getDistrictCommVO().getStCellStarted()+1L);
+					else
+						temp.getDistrictCommVO().setStCellStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setStCellCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getStCellCmpltd() != null)
+						temp.getDistrictCommVO().setStCellCmpltd(temp.getDistrictCommVO().getStCellCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setStCellCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 9l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setMinorityStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getMinorityStarted() != null)
+						temp.getDistrictCommVO().setMinorityStarted(temp.getDistrictCommVO().getMinorityStarted()+1L);
+					else
+						temp.getDistrictCommVO().setMinorityStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setMinorityCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getMinorityCmpltd() != null)
+						temp.getDistrictCommVO().setMinorityCmpltd(temp.getDistrictCommVO().getMinorityCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setMinorityCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 10l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setLegalCellStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getLegalCellStarted() != null)
+						temp.getDistrictCommVO().setLegalCellStarted(temp.getDistrictCommVO().getLegalCellStarted()+1L);
+					else
+						temp.getDistrictCommVO().setLegalCellStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setLegalCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getLegalCmpltd() != null)
+						temp.getDistrictCommVO().setLegalCmpltd(temp.getDistrictCommVO().getLegalCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setLegalCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 11l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setTnsfStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTnsfStarted() != null)
+						temp.getDistrictCommVO().setTnsfStarted(temp.getDistrictCommVO().getTnsfStarted()+1L);
+					else
+						temp.getDistrictCommVO().setTnsfStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setTnsfCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTnsfCmpltd() != null)
+						temp.getDistrictCommVO().setTnsfCmpltd(temp.getDistrictCommVO().getTnsfCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setTnsfCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 12l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setCommercialStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCommercialStarted() != null)
+						temp.getDistrictCommVO().setCommercialStarted(temp.getDistrictCommVO().getCommercialStarted()+1L);
+					else
+						temp.getDistrictCommVO().setCommercialStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setCommercialCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCommercialCmpltd() != null)
+						temp.getDistrictCommVO().setCommercialCmpltd(temp.getDistrictCommVO().getCommercialCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setCommercialCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 13l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setCulturalStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCulturalStarted() != null)
+						temp.getDistrictCommVO().setCulturalStarted(temp.getDistrictCommVO().getCulturalStarted()+1L);
+					else
+						temp.getDistrictCommVO().setCulturalStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setCulturalCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCulturalCmpltd() != null)
+						temp.getDistrictCommVO().setCulturalCmpltd(temp.getDistrictCommVO().getCulturalCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setCulturalCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 14l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setTnusStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTnusStarted() != null)
+						temp.getDistrictCommVO().setTnusStarted(temp.getDistrictCommVO().getTnusStarted()+1L);
+					else
+						temp.getDistrictCommVO().setTnusStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setTnusCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTnusCmpltd() != null)
+						temp.getDistrictCommVO().setTnusCmpltd(temp.getDistrictCommVO().getTnusCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setTnusCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 15l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setTsnvStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTsnvStarted() != null)
+						temp.getDistrictCommVO().setTsnvStarted(temp.getDistrictCommVO().getTsnvStarted()+1L);
+					else
+						temp.getDistrictCommVO().setTsnvStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setTsnvCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTsnvCmpltd() != null)
+						temp.getDistrictCommVO().setTsnvCmpltd(temp.getDistrictCommVO().getTsnvCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setTsnvCmpltd(1L);
 				}
 			}
 			else if(committeeId.longValue() == 16l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setDoctorStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getDoctorStarted() != null)
+						temp.getDistrictCommVO().setDoctorStarted(temp.getDistrictCommVO().getDoctorStarted()+1L);
+					else
+						temp.getDistrictCommVO().setDoctorStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setDoctorCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getDoctorCmpltd() != null)
+						temp.getDistrictCommVO().setDoctorCmpltd(temp.getDistrictCommVO().getDoctorCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setDoctorCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 17l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setTradeStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTradeStarted() != null)
+						temp.getDistrictCommVO().setTradeStarted(temp.getDistrictCommVO().getTradeStarted()+1L);
+					else
+						temp.getDistrictCommVO().setTradeStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setTradeCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getTradeCmpltd() != null)
+						temp.getDistrictCommVO().setTradeCmpltd(temp.getDistrictCommVO().getTradeCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setTradeCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 18l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setCristianStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCristianStarted() != null)
+						temp.getDistrictCommVO().setCristianStarted(temp.getDistrictCommVO().getCristianStarted()+1L);
+					else
+						temp.getDistrictCommVO().setCristianStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setCristianCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getCristianCmpltd() != null)
+						temp.getDistrictCommVO().setCristianCmpltd(temp.getDistrictCommVO().getCristianCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setCristianCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 19l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setRakshaVedikaStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getRakshaVedikaStarted() != null)
+						temp.getDistrictCommVO().setRakshaVedikaStarted(temp.getDistrictCommVO().getRakshaVedikaStarted()+1L);
+					else
+						temp.getDistrictCommVO().setRakshaVedikaStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setRakshaVedikaCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getRakshaVedikaCmpltd() != null)
+						temp.getDistrictCommVO().setRakshaVedikaCmpltd(temp.getDistrictCommVO().getRakshaVedikaCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setRakshaVedikaCmpltd(1L);
 				}
+				
 			}
 			
 			else if(committeeId.longValue() == 20l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setKalluGeethaStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getKalluGeethaStarted() != null)
+						temp.getDistrictCommVO().setKalluGeethaStarted(temp.getDistrictCommVO().getKalluGeethaStarted()+1L);
+					else
+						temp.getDistrictCommVO().setKalluGeethaStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setKalluGeethaCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getKalluGeethaCmpltd() != null)
+						temp.getDistrictCommVO().setKalluGeethaCmpltd(temp.getDistrictCommVO().getKalluGeethaCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setKalluGeethaCmpltd(1L);
 				}
+				
 			}
 			else if(committeeId.longValue() == 21l){
+				
 				if(resType.equalsIgnoreCase("start")){
-					temp.getDistrictCommVO().setChenethaStarted(1L);
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getChenethaStarted() != null)
+						temp.getDistrictCommVO().setChenethaStarted(temp.getDistrictCommVO().getChenethaStarted()+1L);
+					else
+						temp.getDistrictCommVO().setChenethaStarted(1L);
 				}else{
-					temp.getDistrictCommVO().setChenethaCmpltd(1L);
+					
+					if(temp.getDistrictCommVO() != null && temp.getDistrictCommVO().getChenethaCmpltd() != null)
+						temp.getDistrictCommVO().setChenethaCmpltd(temp.getDistrictCommVO().getChenethaCmpltd()+1L);
+					else
+						temp.getDistrictCommVO().setChenethaCmpltd(1L);
 				}
+				
 			}
 			
 			if(!isConsidered)
@@ -6283,7 +6476,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				return basicVO;
 	    }
 	
-	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck){  
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck,
+			String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long>levelIdsList){  
 		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
 		List<CommitteeSummaryVO> constiLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -6428,7 +6622,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				constiCountForMandalTownDivisions(constiIds, stDate, edDate, mainMembersCountMap,afflMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, 
 						startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap,startedYuvathaCommitteesAffCountMap,completedYuvathaCommitteesAffCountMap,
 						startedMahilaCommitteesAffCountMap,completedMahilaCommitteesAffCountMap,startedRythuCommitteesAffCountMap,
-						completedRythuCommitteesAffCountMap,startedOthersCommitteesAffCountMap,completedOthersCommitteesAffCountMap,basicCmmty);
+						completedRythuCommitteesAffCountMap,startedOthersCommitteesAffCountMap,completedOthersCommitteesAffCountMap,basicCmmty,reqLocationTypeStr, committeeEnrollmentIdsLst,levelIdsList);
 			if(villageCheck.equalsIgnoreCase("true"))
 			{
 			
@@ -6436,8 +6630,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
 			
-			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds);
-			List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constiIds, villageWardIds);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
+			List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constiIds, villageWardIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
 			pushResultConstituencyWiseMemsCount("village", memResLstVill, constiLst);
 			pushTotalCountsForConstituency("village", ttlV, constiLst);
 			
@@ -6447,8 +6641,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			pushResultConstiWise("munci", stResLst, constiLst, "start");
 			pushResultConstiWise("munci", endResLst, constiLst, "completed");*/
 			
-			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds);
-			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds);
+			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
+			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
 			pushResultConstiWise("village", stResLstVill, constiLst, "start");
 			pushResultConstiWise("village", endResLstVill, constiLst, "completed");
 			}
@@ -6772,6 +6966,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Long> districtIds = new ArrayList<Long>();
 			List<Long> constiIds = new ArrayList<Long>();
 			List<Long> constiIds1 = new ArrayList<Long>();
+			
+			String reqLocationTypeStr = null;
+			List<Long> committeeEnrollmentIdsLst = null ;
+			List<Long>levelIdsList = null;
+			
+			
 			if(accessValue != null)
 			{
 				
@@ -6884,7 +7084,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		constiCountForMandalTownDivisions(constiIds, stDate, edDate, mainMembersCountMap,afflMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, 
 				startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap,startedYuvathaCommitteesAffCountMap,completedYuvathaCommitteesAffCountMap,
 				startedMahilaCommitteesAffCountMap,completedMahilaCommitteesAffCountMap,startedRythuCommitteesAffCountMap,completedRythuCommitteesAffCountMap,
-				startedOthersCommitteesAffCountMap,completedOthersCommitteesAffCountMap,basicCmmty);
+				startedOthersCommitteesAffCountMap,completedOthersCommitteesAffCountMap,basicCmmty,reqLocationTypeStr, committeeEnrollmentIdsLst,levelIdsList );
 	if(villageCheck.equalsIgnoreCase("true"))
 	{
 	
@@ -6892,8 +7092,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	villageWardIds.add(6l);
 	villageWardIds.add(8l);
 	
-	List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds);
-	List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constiIds, villageWardIds);
+	List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
+	List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constiIds, villageWardIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
 	pushResultConstituencyWiseMemsCount("village", memResLstVill, constiLst);
 	pushTotalCountsForConstituency("village", ttlV, constiLst);
 	
@@ -6903,8 +7103,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	pushResultConstiWise("munci", stResLst, constiLst, "start");
 	pushResultConstiWise("munci", endResLst, constiLst, "completed");*/
 	
-	List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds);
-	List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds);
+	List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
+	List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds,reqLocationTypeStr, committeeEnrollmentIdsLst);
 	pushResultConstiWise("village", stResLstVill, constiLst, "start");
 	pushResultConstiWise("village", endResLstVill, constiLst, "completed");
 	}
@@ -7559,7 +7759,8 @@ return constiLst;
 			Map<Long,Long>  startedYuvathaCommitteesAffCountMap,Map<Long,Long>  completedYuvathaCommitteesAffCountMap,
 			Map<Long,Long>  startedMahilaCommitteesAffCountMap,Map<Long,Long>  completedMahilaCommitteesAffCountMap,
 			Map<Long,Long>  startedRythuCommitteesAffCountMap,Map<Long,Long>  completedRythuCommitteesAffCountMap,
-			Map<Long,Long>  startedOthersCommitteesAffCountMap,Map<Long,Long>  completedOthersCommitteesAffCountMap,List<CadreCommitteeReportVO> basicCmmty){
+			Map<Long,Long>  startedOthersCommitteesAffCountMap,Map<Long,Long>  completedOthersCommitteesAffCountMap,List<CadreCommitteeReportVO> basicCmmty,
+			String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long>levelIdsList){
 			Map<Long,List<Long>> mandalIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
 			Map<Long,List<Long>> localBodiesMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
 			List<Long> divisionLclIds = new ArrayList<Long>();//Map<id,List<1constituencyId>>
@@ -7581,14 +7782,14 @@ return constiLst;
 				 List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
 				 
 				//0 count,1levelId
-				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues);
+				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID
-				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues);
+				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				
 				 
 				    populateLocationCounts(
@@ -7613,14 +7814,14 @@ return constiLst;
 				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
 				 
 				//0 count,1levelId
-				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues);
+				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID
-				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues);
+				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				
 				 
 				 populateLocationCounts(
@@ -7645,14 +7846,14 @@ return constiLst;
 				 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
 				 
 				//0 count,1levelId
-				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues);
+				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID
-				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues);
+				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed",reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 				
 				 
 				 populateLocationCounts(
@@ -12597,14 +12798,14 @@ return mandalList;
 				 
 				
 				//0 count,1levelId
-				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues);
+				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues,null,null,null);
 				//0count,1locationID
-				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues);
+				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues,null,null,null);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started",null,null,null);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed",null,null,null);
 				
 				 
 				    populateLocationCounts1(
@@ -12627,14 +12828,14 @@ return mandalList;
 				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
 				
 				//0 count,1levelId
-				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues);
+				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues,null,null,null);
 				//0count,1locationID
-				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues);
+				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues,null,null,null);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started",null,null,null);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed",null,null,null);
 				
 				 
 				 populateLocationCounts1(
@@ -12657,14 +12858,14 @@ return mandalList;
 				 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
 				
 				//0 count,1levelId
-				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues);
+				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues,null,null,null);
 				//0count,1locationID
-				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues);
+				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues,null,null,null);
 				 
 				//0count,1locationID,2typeId
-				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started");
+				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started",null,null,null);
 				//0count,1locationID,2typeId
-				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed");
+				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed",null,null,null);
 				
 				 
 				 populateLocationCounts1(
@@ -19672,7 +19873,7 @@ public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enro
 public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate,Long basicCommitteetypeId){
 	LocationWiseBoothDetailsVO returnVo = null;
 	try{
-	SimpleDateFormat format =  new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
     Date stDate = (Date)format.parse(startDate);
     Date edDate = (Date)format.parse(endDate);
 	Long committeeId = getCommitteeId(levelId,levelValue,committeeEnrollmentId,stDate,edDate,basicCommitteetypeId);
