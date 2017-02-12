@@ -886,22 +886,22 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					 <span class="btn btn-success btn-xs form-inline" id="areaBtnsDiv">
-						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" >&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select" checked="true" >&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
 					</span>
                     </div>
                     <div style="display:inline-block; margin-right: 25px;">
                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp; VILLAGE / WARD &nbsp;</label>
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true" >&nbsp; VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" >&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" disabled>&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
 					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
-						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck" checked="true">&nbsp; DISTRICT &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck" disabled>&nbsp; DISTRICT &nbsp;&nbsp;</label>
 					</span>
                     </div>
 	
@@ -951,7 +951,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 					
 					<!-- start -->
-				<div id="districtContent">	
+				
 			 <!-- <div class="row">
             	<div class="col-md-12">
                 	<h3 style="color:#090" id="stateDistrictTitle" ></h3>
@@ -976,6 +976,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<h3 style="color:#090" id="stateDistrictTitle" ></h3>
 				</div>
 			</div>
+			<div id="districtContent">	
 			 <div class="row">
  				<div class="col-md-12">
 				
@@ -989,7 +990,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<div id="constituencyContent">
 					<div class="row">
 						<div class="col-md-12">
-							<h3 style="color:#090" >MANDAL / TOWN / DIVISION</h2>
+							<!--<h3 style="color:#090" >MANDAL / TOWN / DIVISION</h2>-->
 						</div>
 					</div>
 					<div class="row">
@@ -1112,7 +1113,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		<script type="text/javascript">
                $(document).ready(function() {
 				   $("#APId").prop("checked", true);
-				   $("#districtId").prop("checked", true);
+				  // $("#districtId").prop("checked", true);
+					$("#constiRdId").prop("checked", true);
 				   //$("#districtCommId").prop("checked", true);
 
 					$('#APStateDiv').hide();
@@ -2736,16 +2738,28 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			var dateStrArr = dateStr.split('-');
 			var startDate = dateStrArr[0];
 			var endDate = dateStrArr[1];
+			
+			var committeeLevelIdsListArr = [];
+				committeeLevelIdsListArr.push(6);
+				committeeLevelIdsListArr.push(8);
+				
+				var mainOrAfflCommitteIdsArr = []; 
+				mainOrAfflCommitteIdsArr.push(1);
+				mainOrAfflCommitteIdsArr.push(2);
+				
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
 			state:state,
 			mandalCheck:mandalCheck,
-			villageCheck:villageCheck
+			villageCheck:villageCheck ,
+			committeeEnrollmentId:[$('#tdpCommitteeYearId').val()],
+			reqLocationTypeStr:"constituency",
+			levelIds:committeeLevelIdsListArr
 		}
 			//alert(555)	;	
 		$.ajax({
-          type:'GET',
+          type:'POST',
           url: 'getConstituencyWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
@@ -3883,19 +3897,28 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 		function getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate)
 		{
-		 $("#mainCommitteDivId").html("");
-		 $("#AffliCommitteDivId").html("");
+		 $("#mainCommitteDivId").html('<img id=""  class="ajximgCls" style="margin-center: 10px;width:80px;margin-left:600px;" src="images/Loading-data.gif"/>');
+		 $("#AffliCommitteDivId").html('');
 		 $("#CommitteeDetails").html("");
 		 $("#conformedBtn").html(""); 
          $("stateDistrictTitle").html("");		 
 				var reqLocationType ='District';
 				var locationId = id;
+				var committeeLevelIdsListArr = [];
+				committeeLevelIdsListArr.push(6);
+				committeeLevelIdsListArr.push(8);
+				
+				var mainOrAfflCommitteIdsArr = []; 
+				mainOrAfflCommitteIdsArr.push(1);
+				mainOrAfflCommitteIdsArr.push(2);
 			var jsObj = {
 					locationId:id,
 					reqLocationType :reqLocationType,
 					committeeEnrollmentId :[committeeEnrollmentId],
 					startDate : fromDate,
 					endDate   : toDate,
+					committeeLevelIdsList:committeeLevelIdsListArr,
+					mainOrAfflCommitteIds:mainOrAfflCommitteIdsArr,
 					task:""
 				}
 				//alert(666)	;
@@ -4004,17 +4027,25 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	/* end */
 	/* Script For Summary POpUP  */
 	
+	var GlobalLocationId = 0;
 	function getPopUpForSummary(id,name){
-		$("#districtContent").hide();
+	//	$("#districtContent").hide();
 		$("#constituencyContent").show();
 		$( "#dialogSummary" ).modal("show");
 		$("#presGenSecrErrDivId").html("");
 		$("#CommitteeDetails").html(""); 
 		$("#committeeMemberDiv").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
+		if(id == 0){
+			getSummary(GlobalLocationId);
+			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
+		}else{
+			GlobalLocationId = id;
+			getSummary(id);
+			getMandalMuncipalDivisonStartedCommittees(id);
+		}
 		
-		getSummary(id);
-		getMandalMuncipalDivisonStartedCommittees(id);
+		
 	
 		$('.loader5').ClassyLoader({
 				speed: 10,
@@ -4044,10 +4075,36 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function getSummary(id){
 		$("#CommitteeDetails").html(""); 
+		$("#stateDistrictTitle").html(""); 
+		$("#districtContent").hide();
+		$("#constituencyContent").show();
 		$("#committeeMemberDiv").html("");
 		var Id=id;
+		var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		 var dateStr = $('#reportrange').val();		
+		 var dateStrArr = dateStr.split('-');
+		 var fromDate = dateStrArr[0];
+		var toDate = dateStrArr[1];
+			
+						
+		var committeeLevelIdListArr = [];
+			committeeLevelIdListArr.push(6);
+			committeeLevelIdListArr.push(8);
+			
+			var mainOrAfflCommitteIdsArr = []; 
+			mainOrAfflCommitteIdsArr.push(1);
+			mainOrAfflCommitteIdsArr.push(2);
+			
 		var jObj={
-			constituencyId:Id
+			constituencyId:Id ,
+			locationId:id,
+			reqLocationType :"constituency",
+			committeeEnrollmentId :[committeeEnrollmentId],
+			startDate : fromDate,
+			endDate   : toDate,
+			levelIds : committeeLevelIdListArr,
+			
+			task:""
 		}
 		 $("#villageMainTableDivId").html("");
 		 $("#villageAfflicatedTableDivId").html("");
@@ -4100,35 +4157,37 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
 							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
-						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
-						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
-						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
-						if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
-						 {
-							str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',2,'+id+')">'+result[i].affilatedStartedCount+'</a></td>';
-						 }
+						 if(result[i].affilatedCommitteeName != null){
+							var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+							str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+							str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
+							if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
+							 {
+								str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',2,'+id+')">'+result[i].affilatedStartedCount+'</a></td>';
+							 }
+								else
+							 {
+							str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+							 }
+							
+							 if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
+							 {
+							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',2,'+id+')">'+result[i].affComitteesConformed+'</a></td>';
+							 }
 							else
-						 {
-						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+							 {
+							str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+							 }
+							 if(notConformed > 0)
+							 {
+								 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',2,'+id+')">'+notConformed+'</a></td>';
+							 }
+								 else
+							 {
+							str1+='<td width="20%">'+notConformed+'</td>';
+							 }
+							str1+='</tr>';
 						 }
-						
-						 if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
-						 {
-						 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',2,'+id+')">'+result[i].affComitteesConformed+'</a></td>';
-						 }
-						else
-						 {
-						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
-						 }
-						 if(notConformed > 0)
-						 {
-							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',2,'+id+')">'+notConformed+'</a></td>';
-						 }
-							 else
-						 {
-						str1+='<td width="20%">'+notConformed+'</td>';
-						 }
-						str1+='</tr>';
 					 }
 					 
 					 str1+='</table>';
@@ -4150,8 +4209,30 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			$("#CommitteeDetails").html(""); 
 			$("#committeeMemberDiv").html("");
 			var Id = id;
+			var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		
+		var dateStr = $('#reportrange').val();		
+			var dateStrArr = dateStr.split('-');
+			var fromDate = dateStrArr[0];
+			var toDate = dateStrArr[1];
+			
+			var committeeLevelIdsListArr = [];
+				committeeLevelIdsListArr.push(6);
+				committeeLevelIdsListArr.push(8);
+				
+				var mainOrAfflCommitteIdsArr = []; 
+				mainOrAfflCommitteIdsArr.push(1);
+				mainOrAfflCommitteIdsArr.push(2);
+				
 			var jObj={
-				constituencyId:Id
+				constituencyId:Id ,
+				locationId:id,
+				reqLocationType :"constituency",
+				committeeEnrollmentId :[committeeEnrollmentId],
+				startDate : fromDate,
+				endDate   : toDate,
+				levelIds:committeeLevelIdsListArr,
+				task:""
 			}
 			
 			$("#mandalMainCommitteDivId").html("");
@@ -4210,35 +4291,35 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
 							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
-						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
-						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
-						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
-						if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
-						 {
-						str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',1,'+id+')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+						 if(result[i].affilatedCommitteeName != null){
+								var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+								str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+								str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
+								if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
+								 {
+								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',1,'+id+')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+								 }
+								 else
+								 {
+								str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+								 }
+							if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
+								 {
+								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',1,'+id+')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+								
+								 }
+								 else
+								str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+								 if(notConformed != null && notConformed > 0)
+								 {
+									 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',1,'+id+')" style="cursor:pointer;">'+notConformed+'</td>';
+								 }
+								 else
+								 {
+								str1+='<td width="20%">'+notConformed+'</td>';
+								 }
+								 str1+='</tr>';
 						 }
-						 else
-						 {
-						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
-						 }
-					if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
-						 {
-						str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',1,'+id+')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
-						
-						 }
-						 else
-						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
-						 if(notConformed != null && notConformed > 0)
-						 {
-							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',1,'+id+')" style="cursor:pointer;">'+notConformed+'</td>';
-						 }
-						 else
-						 {
-						str1+='<td width="20%">'+notConformed+'</td>';
-						 }
-						 str1+='</tr>';
-					
-						
 					 }
 					 
 					 str1+='</table>';
@@ -4291,18 +4372,27 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var dates = date.split("-");
 		fromDate = dates[0];
 		toDate = dates[1];
+		
+		var levelSlected = $("input[type='radio'][name='select']:checked").val();
+		if(levelSlected == 'district'){
+			status = status+":district";
+		}
+		else if(levelSlected == 'consti'){
+			status = status+":consti";
+		}
+		
 		var jsObj = 
 	{
 		basicCommitteetypeId:basicCommitteetypeId,
 		status:status,
-		levelId:levelId,
+		levelId:2,
 		constituencyId : constituencyId,
 		committeeEnrollmentId :[committeeEnrollmentId],
 		fromDate :fromDate,
 		toDate :toDate,
 		task:"memberCnt"
 	}
-	//alert(1122)	;
+	//alert(4444);
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4346,7 +4436,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
        // str+='<td>COMMITTEE TYPE</td>
         str+='<td>COMMITTEE MEMBERS COUNT</td>';
         str+='<td>STATUS</td>';
-        str+='<td>FINAL</td>';
+       // str+='<td>FINAL</td>';
          str+='</tr>';
 		 for(var i in result)
 		{
@@ -4376,26 +4466,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		 //str+='<td colspan="4" id="'+result[i].id+'infoDivId" class="variable-width"></td>';
 		 str+='<td colspan="4">';
 		 //str+='<div class="" id="committeeDetailsDiv">';	
-			str+='<div class="col-md-4 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">';
-				str+='<h4><span id="affComitteeMainTitle"></span></h4>';
-				str+='<hr style="margin: 0px;">';
-				str+='<ul class="list-inline pull-right ">';
-					str+='<li><span style="color:#777;font-weight:bold;">TOTAL </span></li>';
-					str+='<li><span style="color:orange;font-weight:bold;">PROPOSED </span></li>';
-					str+='<li><span style="color:#449D44;font-weight:bold;">FINALIZED</span></li>';
-					str+='<li><span style="color:#F65050;font-weight:bold;">VACANCY</span></li>';
-				str+='</ul>';
-				
-			str+='</div>';			
+					
 			
 			str+='<div class="col-md-12 col-xs-12">';
-				str+='<div class="variable-width" id="'+result[i].id+'infoDivId"></div>';
+				str+='<div class="variable-width summeryCls" id="'+result[i].id+'infoDivId"></div>';
 			str+='</div>';
 		
 		//str+='</div>';
 		str+='</td>';
 		 str+='</tr>';
-		 str+='<tr id="'+result[i].id+'resultTrId" class="dtlsTR" style="display:none">';
+		 str+='<tr id="'+result[i].id+'resultTrId" class="dtlsTR" style="display:none;background-color: lightsteelblue;">';
 		 str+='<td colspan="4" id="'+result[i].id+'resultDiv" class="buildDivDtals"></td>';
 		 str+='</tr>';
 			
@@ -4424,6 +4504,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    var dates = date.split("-");
 		    fromDate = dates[0];
 		    toDate = dates[1];
+			//alert(1111);
 			var jsObj = 
 			{
 				basicCommitteetypeId:basicCommitteetypeId,
@@ -4435,7 +4516,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				toDate :toDate,
 				task:"memberInfo"
 			}
-			//alert(1133)	;
+			//alert(6666);
 			$.ajax({
 				  type:'GET',
 				  url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4443,6 +4524,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				  data: {task:JSON.stringify(jsObj)},
 				  }).done(function(result){
 				$("#"+ajaxImgId+"").show();
+				$("#"+locationId+"resultDiv").html('');
 				  isWorking=false;
 						if(typeof result == "string"){
 							if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -4482,13 +4564,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
 		str+='<tr>';
 		
-		str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
+		str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="https://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].membershipNo+'</td>';
 		str+='<td>'+result[i].role+'</td>';
 		var status = result[i].occupation;
 		if(status == "F"){
-			str+='<td style="color:#449D44;">Finalized';
+			str+='<td style="color:#449D44;font-weight:bold;">Finalized';
 		}else if(status == "P"){
 			str+='<td class="orangeCls">Proposed';
 		}
@@ -4504,7 +4586,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
 		if(result[i].status != "Y"){
 			
-				str+='<div class="pull-right  btn btn-default btn-sm deleteCls" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+				//str+='<div class="pull-right  btn btn-default btn-sm deleteCls" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
 			
 		}
 		str+='</td>';
@@ -4514,15 +4596,28 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str+='</table>';
 		//$("#committeeMemberDiv").html(str);
 		//$("#"+locationId+"resultTrId").show();
+		
+		if(result[0].status != "Y")
+		{
+			str+='<button class="btn btn-success btn-lg pull-right confirmBtnCls" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')"> Entry Finished </button>';
+		}
+		
 		$("#"+locationId+"resultDiv").html(str);
 		if(result[0].status != "Y")
 		{
 			
 				var str1='';
-				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')">Proposal Finished</button>';
-				$("#conformedBtn").html(str1);
+				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')">Entry Finished </button>';
+				//$("#conformedBtn").html(str1);
 			
 		}
+
+		$('#dialogSummary').animate({ scrollTop: $("#imagecdr0").offset().top}, 'slow');
+	/*	$("html, body").animate({
+			scrollTop: $("#"+locationId+"resultDiv").offset().top 
+		}, 2000);
+	*/
+		
 	}
 	function setDefaultImage(img)
 	{
@@ -4566,7 +4661,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		toDate :toDate,
 		task:"committeComplete"
 	}
-	//alert(1144)	;
+	
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4583,7 +4678,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				alert("Successfully Committee Confirmed")
 				$("#conformedBtn").html('');
 				$("#presGenSecrErrDivId").html("");
-				$(".deleteCls").remove();
+				$(".deleteCls,.confirmBtnCls").remove(); 
 				//getSummary(constituencyId);
 				//getMandalMuncipalDivisonStartedCommittees(constituencyId);
 				  }
@@ -4612,7 +4707,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		toDate :toDate,
 		task:"deleterole"
 	}
-	//alert(1155)	;
+	alert(3333);
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -5897,7 +5992,8 @@ function onLoadcimmitteeDashboardCalls(){
 			getCommitteeDetails("AP","state");
 			getCommitteeDetails("TS","district");
 			getCommitteeDetails("TS","state");
-			getDistrictWiseCommittesSummary();
+			//getDistrictWiseCommittesSummary();
+			getConstituencyWiseCommittesSummary();
 			$("#apDistrictHeadingTR").show();
 			//$("#apDistrictBodyTR").show();
 			$("#tsDistrictHeadingTR").show();
@@ -5923,7 +6019,8 @@ function onLoadcimmitteeDashboardCalls(){
 			//$("#apStateBodyTR").hide();
 			$("#tsStateHeadingTR").show();
 			//$("#tsStateBodyTR").show();
-			getDistrictWiseCommittesSummary();
+			//getDistrictWiseCommittesSummary();
+			getConstituencyWiseCommittesSummary();
 		}
 		else if(userAccessType == 'AP'){
 			getCommitteeCountByState("AP");
@@ -5940,7 +6037,8 @@ function onLoadcimmitteeDashboardCalls(){
 			//$("#apStateBodyTR").show();
 			//$("#tsStateHeadingTR").hide();
 			//$("#tsStateBodyTR").hide();
-			getDistrictWiseCommittesSummary();
+			//getDistrictWiseCommittesSummary();
+			getConstituencyWiseCommittesSummary();
 		}else{					
 			if(userAccessType=="MP"){
 				//$("#districtCommDiv").hide();
@@ -5980,15 +6078,16 @@ function onLoadcimmitteeDashboardCalls(){
 				//$("#apStateBodyTR").hide();
 				$("#tsStateHeadingTR").hide();
 				//$("#tsStateBodyTR").hide();
-				getDistrictWiseCommittesSummary();
+				//getDistrictWiseCommittesSummary();
+				getConstituencyWiseCommittesSummary();
 			}else {
 				getCommitteeCountByState("AP");
 				getCommitteeDetails("AP","mandalAll");
 				getCommitteeDetails("AP","villageAll");
 				getCommitteeDetails("AP","district");
 				getCommitteeDetails("AP","state");
-				getDistrictWiseCommittesSummary();
-			
+				//getDistrictWiseCommittesSummary();
+				getConstituencyWiseCommittesSummary();
 			}
 			
 			
@@ -6007,13 +6106,22 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 				var dates = date.split("-");
 				fromDate = dates[0];
 				toDate = dates[1];
-	getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
+				
+		var levelSlected = $("input[type='radio'][name='select']:checked").val();
+		if(levelSlected == 'district'){
+			getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
+		}
+		else if(levelSlected == 'consti'){
+			getSummary(GlobalLocationId);
+			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
+		}
 });
 var slickCount = 0;
 function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValue,divId){
 		var fromDate;
         var toDate;
 		var committeeEnrollmentId = 1;
+		$('.summeryCls').html('');
 		if(divId == 'infoDivId'){
 			   $("#"+levelValue+"infoTrId").show();
 			$("#"+levelValue+"infoDivId").html('<img id="ajaxImgStyle"  class="ajximgCls" style="margin-center: 10px;width:80px;" src="images/Loading-data.gif"/>');
@@ -6052,6 +6160,19 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 				//Summary Building
 				slickCount = slickCount+1;
 				var counts = result.result;
+				var str='';
+				str+='<div class="col-md-4 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">';
+				str+='<h4><span id="affComitteeMainTitle"></span></h4>';
+				str+='<hr style="margin: 0px;">';
+				str+='<ul class="list-inline pull-right ">';
+					str+='<li><span style="color:#777;font-weight:bold;">TOTAL </span></li>';
+					str+='<li><span style="color:orange;font-weight:bold;">PROPOSED </span></li>';
+					str+='<li><span style="color:#449D44;font-weight:bold;">FINALIZED</span></li>';
+					str+='<li><span style="color:#F65050;font-weight:bold;">VACANCY</span></li>';
+				str+='</ul>';
+				
+			str+='</div>';	
+			
 				var str ='<div id="variable-width'+slickCount+'" class="row">';
 			    for(var i in  counts){
 					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
