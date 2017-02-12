@@ -91,6 +91,13 @@
 		</div>-->
 		<div class="container">
 		<div class="row ">
+		
+			<div class="row" style="margin-top:20px;">
+				 <div class="container breadcrumb">
+					   <i>For any Technical Support, please contact : <b> +91-7032818783 / 8499912198</b> , @email: tdpparty.helpdesk@gmail.com </i></p>
+				</div>
+			</div>
+			
 		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
