@@ -471,7 +471,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeSpanTypeIdsList) ");
 		}
 		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
-				" order by model.tdpCommitteeRole.tdpCommittee.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+				" order by model.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
@@ -615,7 +615,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}
 	
 	
-public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds){
+public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds,String reqLocationTypeStr, List<Long>  committeeEnrollmentIdsLst){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
@@ -631,6 +631,9 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		if(endDate!=null){
 			sb.append(" and date(model.insertedTime) <= :endDate");
 		}
+		if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeEnrollmentIdsLst) ");
+		}
 		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -644,11 +647,14 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		}
 		
 		query.setParameterList("constiIds", constiIds);
+		if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+			query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		}
 		
 		return query.list();
 	}
 
-public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues){
+public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long>levelIdsList){
 	//0 count,1levelId
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
@@ -663,6 +669,9 @@ public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date star
 	if(endDate!=null){
 		sb.append(" and date(model.insertedTime) <= :endDate");
 	}
+	if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+		sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeEnrollmentIdsLst) ");
+	}
 	sb.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
 	
 	Query query = getSession().createQuery(sb.toString());
@@ -676,6 +685,9 @@ public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date star
 	}
 	
 	query.setParameterList("levelValues",levelValues);
+	if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+	}
 	
 	return query.list();
 }
