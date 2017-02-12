@@ -1577,13 +1577,34 @@ public String getSummaryDetails(){
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
 			
+			List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			
+			List<Long> levelIdsLsit = new ArrayList<Long>();
+			JSONArray levelIdLsit=jObj.getJSONArray("levelIds");
+			if(levelIdLsit!=null &&  levelIdLsit.length()>0){
+				for( int i=0;i<levelIdLsit.length();i++){
+					levelIdsLsit.add(Long.valueOf(levelIdLsit.getString(i))); 
+				}
+			}
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate"); 
+			
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-				returnList = cadreCommitteeService.getSummaryDetails(jObj.getString("locationId"));
+				returnList = cadreCommitteeService.getSummaryDetails(jObj.getString("locationId"),reqLocationType,startDate,endDate, 
+						 committeeEnrollmentIdsLst,levelIdsLsit);
 			}
 			else
 			{
-			returnList = cadreCommitteeService.getSummaryDetails(user.getAccessValue());
+			returnList = cadreCommitteeService.getSummaryDetails(user.getAccessValue(),reqLocationType, startDate,endDate, 
+					  committeeEnrollmentIdsLst,levelIdsLsit);
 			}
 		}else{
 			return ERROR;
@@ -1636,14 +1657,25 @@ public String getSummaryDetails(){
 			String startDate = jObj.getString("startDate"); 
 			String endDate = jObj.getString("endDate");
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		String reqLocationTypeStr = jObj.getString("reqLocationTypeStr");
+		List<Long> levelIdsList = new ArrayList<Long>();
+		JSONArray levelIdLsit=jObj.getJSONArray("levelIds");
+		if(levelIdLsit!=null &&  levelIdLsit.length()>0){
+			for( int i=0;i<levelIdLsit.length();i++){
+				levelIdsList.add(Long.valueOf(levelIdLsit.getString(i))); 
+			}
+		}
+		
+		
 		if(user != null){
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"),committeeEnrollmentIdsLst,startDate,endDate);
+			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("locationId"),committeeEnrollmentIdsLst,startDate,endDate,reqLocationTypeStr,levelIdsList);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue(),committeeEnrollmentIdsLst,startDate,endDate);	
+				returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue(),committeeEnrollmentIdsLst,startDate,endDate,reqLocationTypeStr,levelIdsList);	
 			}
 		}else{
 			return ERROR;
@@ -1666,6 +1698,23 @@ public String getSummaryDetails(){
 				committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 			}
 		}
+		
+		List<Long> committeeLevelIdsList = new ArrayList<Long>(0);
+		JSONArray committeeLevelIdList=jObj.getJSONArray("committeeLevelIdsList");
+		if(committeeLevelIdList!=null &&  committeeLevelIdList.length()>0){
+			for( int i=0;i<committeeLevelIdList.length();i++){
+				committeeLevelIdsList.add(Long.valueOf(committeeLevelIdList.getString(i))); 
+			}
+		}
+		List<Long> mainOrAfflCommitteIds = new ArrayList<Long>(0);
+		JSONArray mainOrAffliCommitteIds=jObj.getJSONArray("mainOrAfflCommitteIds");
+		if(mainOrAffliCommitteIds!=null &&  mainOrAffliCommitteIds.length()>0){
+			for( int i=0;i<mainOrAffliCommitteIds.length();i++){
+				mainOrAfflCommitteIds.add(Long.valueOf(mainOrAffliCommitteIds.getString(i))); 
+			}
+		}
+		
+		
 		String startDate = jObj.getString("startDate");
 		String endDate = jObj.getString("endDate"); 
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1674,11 +1723,11 @@ public String getSummaryDetails(){
 			
 			if(jObj.getString("locationId") != null && jObj.getLong("locationId") > 0)
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"),committeeEnrollmentIdsLst,startDate,endDate);
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(jObj.getLong("locationId"),jObj.getString("reqLocationType"),committeeEnrollmentIdsLst,startDate,endDate,committeeLevelIdsList,mainOrAfflCommitteIds);
 			}
 			else
 			{
-				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType(),committeeEnrollmentIdsLst,startDate,endDate);
+				returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType(),committeeEnrollmentIdsLst,startDate,endDate,committeeLevelIdsList,mainOrAfflCommitteIds);
 			}
 		}else{
 			return ERROR;

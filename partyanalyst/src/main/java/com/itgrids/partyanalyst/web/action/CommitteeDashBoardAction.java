@@ -608,6 +608,9 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		try{
 			boolean noaccess = false;
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+			List<Long> levelIdsList = new ArrayList<Long>();
+			String reqLocationTypeStr =  null;
 			if(regVO != null)
 			{
 				String accessType = regVO.getAccessType();
@@ -620,7 +623,25 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 			
-				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck);
+				
+				JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+				if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+					for( int i=0;i<committeeEnrollmentIds.length();i++){
+						committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+					}
+				}
+				
+			
+			reqLocationTypeStr = jObj.getString("reqLocationTypeStr");
+			
+			JSONArray levelIdLsit=jObj.getJSONArray("levelIds");
+			if(levelIdLsit!=null &&  levelIdLsit.length()>0){
+				for( int i=0;i<levelIdLsit.length();i++){
+					levelIdsList.add(Long.valueOf(levelIdLsit.getString(i))); 
+				}
+			}
+			
+				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck,reqLocationTypeStr,committeeEnrollmentIdsLst,levelIdsList);
 			}
 			else
 			{
@@ -676,7 +697,27 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public String getSummaryDetailsPopUp(){
 		try{
 			jObj = new JSONObject(getTask());
-			districtWiseSummaryList = cadreCommitteeService.getSummaryDetails(jObj.getString("constituencyId"));
+			
+			List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			
+			List<Long> levelIdsLsit = new ArrayList<Long>();
+			JSONArray levelIdLsit=jObj.getJSONArray("levelIds");
+			if(levelIdLsit!=null &&  levelIdLsit.length()>0){
+				for( int i=0;i<levelIdLsit.length();i++){
+					levelIdsLsit.add(Long.valueOf(levelIdLsit.getString(i))); 
+				}
+			}
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate"); 
+			
+			districtWiseSummaryList = cadreCommitteeService.getSummaryDetails(jObj.getString("constituencyId"),jObj.getString("reqLocationType"),startDate,endDate,committeeEnrollmentIdsLst,levelIdsLsit);
 		}catch(Exception e){
 			LOG.error("Exception Occured In getSummaryDetailsPopUp method "+e);			
 		}
@@ -692,9 +733,18 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
 				}
 			}
-			String startDate = jObj.getString("startDate"); 
-			String endDate = jObj.getString("endDate");
-			districtWiseSummaryList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate);
+			
+			List<Long> levelIdsLsit = new ArrayList<Long>();
+			JSONArray levelIdLsit=jObj.getJSONArray("levelIds");
+			if(levelIdLsit!=null &&  levelIdLsit.length()>0){
+				for( int i=0;i<levelIdLsit.length();i++){
+					levelIdsLsit.add(Long.valueOf(levelIdLsit.getString(i))); 
+				}
+			}
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate"); 
+			districtWiseSummaryList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate,jObj.getString("reqLocationType"),levelIdsLsit);
 		}catch(Exception e){
 			LOG.error("Exception Occured In gettingMandalAndMuncipalAndDivisonSummary method "+e);			
 		}
