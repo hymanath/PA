@@ -454,4 +454,21 @@ public int deleteAlertCandidatesExistingtdpCadreIds(Long tdpCadreIds,Long alertI
 		}
 		return query.executeUpdate();  
 	}
+
+public List<Object[]> getInvolvedMembersInAlert(Long alertId){
+	Query query = getSession().createQuery("select model.newsOrganizationId," +
+										" model.organization," +
+										" tdpCadre.tdpCadreId," +
+										" tdpCadre.firstname," +
+										" tdpCadre.memberShipNo," +
+										" tdpCadre.mobileNo" +
+										" from AlertCandidate model" +
+										" left join model.tdpCadre tdpCadre" +
+										" where model.alert.alertId = :alertId" +
+										" and model.alert.alertTypeId = :alertTypeId" +
+										" and model.isDepartment = 'Y'");
+	query.setParameter("alertId", alertId);
+	query.setParameter("alertTypeId", IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID);
+	return query.list();
+}
 }

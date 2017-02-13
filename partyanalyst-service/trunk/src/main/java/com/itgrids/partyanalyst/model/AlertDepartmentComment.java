@@ -30,6 +30,7 @@ public class AlertDepartmentComment extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Date insertedTime;
 	
+	private User insertedUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,5 +64,16 @@ public class AlertDepartmentComment extends BaseModel implements Serializable{
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "inserted_by", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
 	}
 }

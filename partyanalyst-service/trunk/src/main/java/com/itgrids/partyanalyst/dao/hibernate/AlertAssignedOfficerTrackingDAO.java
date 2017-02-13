@@ -19,13 +19,18 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 		Query query = getSession().createQuery("select model.alertStatusId," +
 											" model.alertStatus.alertStatus," +
 											" model1.alertDepartmentComment.alertDepartmentCommentId," +
-											" model1.alertDepartmentComment.comment" +
+											" model1.alertDepartmentComment.comment," +
+											" model1.alertDepartmentComment.insertedUser.userId," +
+											" model1.alertDepartmentComment.insertedUser.userName," +
+											" date(model1.alertDepartmentComment.insertedTime)," +
+											" model.alert.alertSource.source" +
 											" from AlertAssignedOfficerTracking model,AlertAssignedOfficerAction model1" +
 											" where model.alertId = model1.alertId" +
 											" and model.alertAssignedOfficerId = model1.alertAssignedOfficerId" +
 											" and model.alertId = :alertId" +
 											" and model1.isDeleted = 'N'" +
-											" order by model.alertStatusId");
+											" group by model.alertStatusId,date(model1.alertDepartmentComment.insertedTime)" +
+											" order by model.alertStatusId,date(model1.alertDepartmentComment.insertedTime)");
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}

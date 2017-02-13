@@ -31,4 +31,9 @@ public interface ICccDashboardService {
 			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList );
 	public List<GovtDepartmentVO> getStatusWiseDistrictTotalForAlert(String startDateStr,String endDateStr,Long stateId,
 			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList );
+	
+	public List<GovtDepartmentVO> getMandalsForConstituency(Long constituencyId);
+	public List<GovtDepartmentVO> getLebsForConstituency(Long constituencyId);
+	public List<GovtDepartmentVO> getPanchayatsMandalId(Long mandalId,Long constituencyId);
+	public List<GovtDepartmentVO> getInvolvedMembersInAlert(Long alertId);
 } 
