@@ -85,24 +85,21 @@
 				<div class="col-md-5 col-xs-12 col-sm-6 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
 						<li>
-							<!--<img src="today" id="thisMonthRadionBtnId" class="datesClass" attr_type="today" title="today"/>-->
-							<!--<button type="button" attr_type="currentMonth" class="btn btn-success datesClass">Current Month</button>-->
-							 <label style="color:green;" class="radio-inline">
-							  <input type="radio" attr_type="currentMonth" class="datesClass" name="optradio" checked>Current Month</input>
+							<!-- Dont Add New Classes and new functionalities for this class a click has been already initialised please use that-->
+							<label style="color:green;" class="radio-inline">
+							  <input type="radio" attr_type="default" class="globalDateChange" name="optradio" checked>Default</input>
+							 </label>
+							<label style="color:green;" class="radio-inline">
+							  <input type="radio" attr_type="currentMonth" class="globalDateChange" name="optradio">Current Month</input>
 							 </label>
 							<label style="color:green;"  class="radio-inline">
-							  <input type="radio" attr_type="lastMonth"  class="datesClass" name="optradio">Last Month</input>
+							  <input type="radio" attr_type="lastMonth"  class="globalDateChange" name="optradio">Last Month</input>
 							</label>
 						</li> 
-						<!--<li>
-							<!--<img src="lastMonth" id="lastMonthRadio" class="datesClass" checked="true" attr_type="lastMonth"/>-->
-						     <!--<button type="button" attr_type="lastMonth"  class="btn btn-success datesClass">Last Month</button> -->
-						 <!--</li>-->
 						<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
-						
-                        <!--<li>
+						<!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
 							<a>TS</a>
                         </li> -->
@@ -3974,6 +3971,15 @@
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
+/* GLobal Navbar Date Change Start*/
+$(document).on("click",".globalDateChange",function(){
+	var type = $(this).attr("attr_type");
+	globalAlertsCalls(type);
+	globalDebateCalls(type);
+	globalPrintMediaCalls(type);
+	globalElectronicMediaCalls(type);
+});
+/* GLobal Navbar Date Change End*/
 
 var globallocationScope;
 var globallocationValue;

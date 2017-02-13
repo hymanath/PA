@@ -1,3 +1,35 @@
+	var customStartDateAlert = moment().startOf('month').format('DD/MM/YYYY')
+	var customEndDateAlert = moment().format('DD/MM/YYYY');
+	
+	function globalAlertsCalls(type)
+	{
+		if(type == "default"){
+			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment());
+			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment());
+			customStartDateAlert = moment().format("DD/MM/YYYY")
+			customEndDateAlert = moment().format("DD/MM/YYYY")
+			$("#alertDateHeadingId").html("TODAY"+" ( "+moment().format("DD/MM/YYYY")+"-"+moment().format("DD/MM/YYYY")+" )");
+		}else if(type == "currentMonth"){
+			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment().startOf("month"));
+			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment().endOf("month"));
+			customStartDateAlert = moment().startOf("month").format("DD/MM/YYYY")
+			customEndDateAlert = moment().endOf("month").format("DD/MM/YYYY")
+			$("#alertDateHeadingId").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD/MM/YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+		}else if(type == "lastMonth"){
+			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+			customStartDateAlert = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")
+			customEndDateAlert = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")
+			$("#alertDateHeadingId").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")+" )");
+		}
+		$("#dateRangeIdForAlert").val(customStartDateAlert+"/"+customEndDateAlert);
+		getAlertOverviewDetails();
+		if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".alertLocationDiv").show();
+			defaultAlertCalls();
+		}
+	}
+
 	   $(document).on("click",".alertSetClose",function(){
 			$(".specialAlertDropDown").hide(); 
 		 });
@@ -11,13 +43,12 @@
 		});
 
 
-   	var customStartDateAlert = moment().startOf('month').format('DD/MM/YYYY')
-	var customEndDateAlert = moment().format('DD/MM/YYYY');
+   
 
 	$("#dateRangeIdForAlert").daterangepicker({
 		opens: 'left',
-	     startDate: moment(),
-         endDate: moment(),
+	    startDate: moment(),
+        endDate: moment(),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -246,14 +277,6 @@
 	function getTotalAlertGroupByDist(scopeIdsArr,location){ 
 	
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var dates=$("#dateRangeIdForAlert").val();
-	    var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
@@ -268,8 +291,8 @@
 		}  
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,             
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,             
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			alertIds : alertId,
@@ -409,21 +432,13 @@
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
 		$("#alertCntTitId").html("TOTAL ALERTS-"+alertCount);
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var jsObj = { 
 			alertTypeId : alertTypeId,    
 			alertStatusId : alertStatusId,
 			alertCategoryId : alertCategoryId,  
 			stateId : globalStateId,             
-			fromDate : fromDateStr,                
-			toDate : toDateStr,                
+			fromDate : customStartDateAlert,                
+			toDate : customEndDateAlert,                
 			activityMemberId : globalActivityMemberId,
 			editionIds : editionId,
             isActionType : isActionType,
@@ -723,27 +738,19 @@
 	}
 	function getAlertCategoryDtlsLocationWise(alertId,editionId){ 
 		$("#locationWiseAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var dates=$("#dateRangeIdForAlert").val();
-		 var fromDateStr;
-		 var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		if(alertId == undefined){
 			alertId = 0;
 		}
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		var jsObj={  
-			activityMemberId : globalActivityMemberId,      
-			stateId : globalStateId,           
-			fromDate :fromDateStr,        
-			toDate :toDateStr,
-			alertIds : alertId,
-			editionIds : editionId
+		var jsObj={
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate :			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			alertIds : 			alertId,
+			editionIds : 		editionId
 		};
 		$.ajax({  
 			type : 'POST',
@@ -911,14 +918,6 @@
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
 		$("#tourDocumentId").modal("show");
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){    
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];		
 		
 		if(locationId == 1){
@@ -937,15 +936,15 @@
 		}
 		
 		var jsObj = { 
-			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
-			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : globalActivityMemberId,
-			districtId : 0,       
-			catId : catId,
-			alertTypeId : alertTypeIds,
-			editionId : editionIds
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,        
+			toDate : 			customEndDateAlert,                  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,
+			districtId : 		0,       
+			catId : 			catId,
+			alertTypeId : 		alertTypeIds,
+			editionId : 		editionIds
 		
 		}                  
 		$.ajax({   
@@ -964,13 +963,7 @@
 	function getTotalAlertGroupByLocationThenCategory(scopeIdsArr){
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
-		 var fromDateStr;
-		 var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
+		 
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
@@ -982,14 +975,14 @@
 
 
 		var jsObj = { 
-			stateId : globalStateId,             
-			fromDate : fromDateStr,      
-			toDate : toDateStr,  
-			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : globalActivityMemberId,       
-			group : "",
-			alertIds : alertId,
-			editionIds : editionId
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			group : 			"",
+			alertIds : 			alertId,
+			editionIds : 		editionId
 		}                  
 		$.ajax({
 			type : 'POST',        
@@ -1162,14 +1155,6 @@
 	//getTotalAlertGroupByLocationThenStatusAction  
 	function getTotalAlertGroupByLocationThenStatus(scopeIdsArr){
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var dates=$("#dateRangeIdForAlert").val();
-		 var fromDateStr;
-		 var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
@@ -1182,14 +1167,14 @@
 		
 		
 		var jsObj = { 
-			stateId : globalStateId,             
-			fromDate : fromDateStr,      
-			toDate : toDateStr,  
-			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : globalActivityMemberId,       
-			group : "",
-			alertIds : alertId,
-			editionIds : editionId
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			group : 			"",
+			alertIds : 			alertId,
+			editionIds : 		editionId
 		}                  
 		$.ajax({
 			type : 'POST',        
@@ -1581,15 +1566,7 @@ function getMonth(month){
 function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 	 $(".groupAssignCls").show();
 	 $("#groupAssignAlertDlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 	var dates=$("#dateRangeIdForAlert").val();
-	     var fromDateStr;
-		 var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
-		
+	 	
        	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
@@ -1600,13 +1577,13 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 		}
 		
 		var jsObj = { 
-			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,             
-			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : globalActivityMemberId,
-			alertTypeId : alertId,
-		    editionTypeId : editionId			
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,        
+			toDate : 			customEndDateAlert,             
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,
+			alertTypeId : 		alertId,
+		    editionTypeId : 	editionId			
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -1806,14 +1783,6 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
   $("#alertModalHeadingId").html(groupAssignType+" Alert Details");
   $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
   $("#alertModalId").modal("show");
-  	var dates=$("#dateRangeIdForAlert").val();
-	var fromDateStr;
-	var toDateStr;
-	if(dates != null && dates!=undefined){
-		var datesArr = dates.split("-");
-		fromDateStr = datesArr[0]; 
-		toDateStr = datesArr[1]; 
-	}
 	
 	    var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -1826,8 +1795,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 	
 	  var jsObj = { 
 		stateId : globalStateId,             
-		fromDate : fromDateStr,      
-		toDate : toDateStr,  
+		fromDate : customStartDateAlert,      
+		toDate : customEndDateAlert,  
 		scopeIdsArr : scopeIdsArr,                       
 		activityMemberId : globalActivityMemberId,
 		publicRepresentativeTypeId :publicRepresentativeTypeId,
@@ -1922,15 +1891,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 	  $("#alertModalHeadingId").html(groupAssignType+" Alert Details");
 	  $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  $("#alertModalId").modal("show");
-	  var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
-		
+	  
 		
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -1944,8 +1905,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 		
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,             
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,             
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
             resultType:groupAssignType,
@@ -2142,14 +2103,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		}             
 	});
 	function getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId){
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){   
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -2162,8 +2115,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 	
 		var jsObj = { 
 			stateId : globalStateId,               
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
             commitTypeId : commitTypeId,
@@ -2292,14 +2245,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		
 	});
 	function getAlertDtlsAssignedByPartyCommite(scopeIdsArr,commitTypeId,designationId,commitLvlIdArr,cadreId,statusId){
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		
 	   var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -2312,8 +2257,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		
 		var jsObj = { 
 			stateId : globalStateId,               
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
             commitTypeId : commitTypeId,
@@ -2421,14 +2366,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				}
 			  }
 		   });
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -2442,8 +2379,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			commitLvlIdArr : commitLvlIdArr,
@@ -2478,14 +2415,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		var statusId = $(this).attr("attr_status_id");
 		var alertCount = $(this).attr("attr_alert_count");
 		$("#alertCntTitId").html("TOTAL ALERTS-"+alertCount);  
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];		
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -2523,8 +2452,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 	  
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			publicRepresentativeTypeId : publicRepresentativeTypeId,
@@ -2556,14 +2485,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#stateWiseAlertDtlsDiv").html(' ');
 		$("#categoryWiseAlertDiv").html(' ');
 		$("#statusWiseAlertDiv").html(' ');
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];
             scopeIdsArr.push(1);
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
@@ -2579,13 +2500,13 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			editionId = 0;
 		}
 		var jsObj={  
-			activityMemberId : globalActivityMemberId,      
-			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
-			scopeIdsArr:scopeIdsArr,
-			alertIds : alertId,
-			editionIds : editionId
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate:			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			scopeIdsArr:		scopeIdsArr,
+			alertIds : 			alertId,
+			editionIds : 		editionId
 		};
 		$.ajax({
 			type : 'GET',
@@ -2914,14 +2835,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		var cadreId = $(this).attr("attr_cadre_id");
 		var statusId = $(this).attr("attr_status_id");
 		var selectType = $(this).attr("attr_selected_type");
-		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];		
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -2961,8 +2874,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			cadreId : cadreId,
@@ -2994,13 +2907,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
 		$("#tourDocumentId").modal("show");
 		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];		
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -3037,8 +2943,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		}
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			districtId : districtId,
@@ -3069,13 +2975,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#tourDocumentId").modal("show");
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);
 		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		var scopeIdsArr = [];		
 		scopeIdsArr.push(1);
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
@@ -3088,8 +2987,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		}
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : fromDateStr,        
-			toDate : toDateStr,                  
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			districtId : 0,
@@ -3381,25 +3280,19 @@ function getTotalArticledetails(articleId){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 	}
 	function getAlertOverviewDetails(){
-
+		
 		$("#alertOverview,#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
+		
 		var alertTypeStr = 0;          
 		var alertEdition = 0;          
-		var jsObj={  
-			activityMemberId : globalActivityMemberId,      
-			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
-			alertType : alertTypeStr,
-			editionType : alertEdition
+		var jsObj={
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate:			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			alertType : 		alertTypeStr,
+			editionType:		alertEdition
 		};
 		$.ajax({
 			type : 'GET',
@@ -3866,20 +3759,12 @@ function getTotalArticledetails(articleId){
 				getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 			}
 		}
-		var dates=$("#dateRangeIdForAlert").val();        
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		      
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
+			fromDate:customStartDateAlert,        
+			toDate :customEndDateAlert,
 			alertType : alertTypeStr,
 			editionType : alertEdition
 		};
@@ -3967,20 +3852,12 @@ function getTotalArticledetails(articleId){
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
 		$("#alertCntTitId").html(""+selectedAlertType+"-"+alertCount);
-		var dates=$("#dateRangeIdForAlert").val();        
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
 		      
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
-			fromDate:fromDateStr,        
-			toDate :toDateStr,
+			fromDate:customStartDateAlert,        
+			toDate :customEndDateAlert,
 			alertTypeId : alertTypeId
 		};
 		$.ajax({

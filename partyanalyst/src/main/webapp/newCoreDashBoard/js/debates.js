@@ -4,6 +4,44 @@
 var customStartDate = moment().format('DD/MM/YYYY')
 var customEndDate = moment().format('DD/MM/YYYY');
 
+function globalDebateCalls(type)
+{
+	if(type == "default"){
+		$('#dateRangeIdForDebates').data('daterangepicker').setStartDate(moment());
+		$('#dateRangeIdForDebates').data('daterangepicker').setEndDate(moment());
+		customStartDate = moment().format("DD/MM/YYYY")
+		customEndDate = moment().format("DD/MM/YYYY")
+		$(".debatesDate").html("TODAY"+" ( "+moment().format("DD/MM/YYYY")+"-"+moment().format("DD/MM/YYYY")+" )");
+	}else if(type == "currentMonth"){
+		$('#dateRangeIdForDebates').data('daterangepicker').setStartDate(moment().startOf("month"));
+		$('#dateRangeIdForDebates').data('daterangepicker').setEndDate(moment().endOf("month"));
+		customStartDate = moment().startOf("month").format("DD/MM/YYYY")
+		customEndDate = moment().endOf("month").format("DD/MM/YYYY")
+		$(".debatesDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD/MM/YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+	}else if(type == "lastMonth"){
+		$('#dateRangeIdForDebates').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+		$('#dateRangeIdForDebates').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+		customStartDate = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")
+		customEndDate = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")
+		$(".debatesDate").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")+" )");
+	}
+	$("#dateRangeIdForDebates").val(customStartDate+"/"+customEndDate);
+	getPartyWiseTotalDebateDetails();
+	if($(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		getSpokesPersonWiseDebate("top");
+		 if($(".moreDebatesBlocksIcon").hasClass("unExpandDebatesBlock"))
+		{
+			getScaleBasedPerformanceCohort();
+			getCandidateOverAllPerformanceCohort();
+			getChannelAndPartyWiseDetails();
+			getRoleBasedPerformanceCohort();
+			getRolesPerformanceOfCandidate(0);
+			getDebateRolesNew();
+		}
+	}
+}
+
+
 $(document).ready(function(){
 	
 	
@@ -149,10 +187,10 @@ function buildPartyWiseTotalDebateDetails(result)
 			hoverOnClear: true,
 			animate:false
 		});
-		if(result.length> 6)
+		/* if(result.length> 6)
 		{
 			$("#partyWiseTotalDebateDetails").mCustomScrollbar({setHeight:'300px'})
-		}
+		} */
 	}else{
 			$("#partyWiseTotalDebateDetails").html('<h3>NO DATA AVAILABLE</h3>')
 		}
@@ -1147,4 +1185,3 @@ function buildDebateModelDetails(result,type){
 		}
 		
 }
-	
