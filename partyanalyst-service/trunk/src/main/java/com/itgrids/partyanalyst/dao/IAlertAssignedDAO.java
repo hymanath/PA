@@ -17,4 +17,5 @@ public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
 	public List<Object[]> getAssignedCandidateList(Long alertId);
 	public List<Long> getAssignedTdpCadreIdsByAlertId(Long alertId);
 	public int deleteAlertAssignedByExistingIds(Long tdpCadreId,Long alertId);
+	public List<Long> checkCadreAssignedForAlert(Long alertId);
 }

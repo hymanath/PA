@@ -187,4 +187,11 @@ public int deleteAlertAssignedByExistingIds(Long tdpCadreId,Long alertId){
 	
 	return qry.executeUpdate();
 }
+public List<Long> checkCadreAssignedForAlert(Long alertId)
+{
+	Query query = getSession().createQuery("select distinct model.tdpCadre.tdpCadreId from AlertAssigned model " +
+			" where model.alert.alertId = :alertId and model.isDeleted ='N'");
+	query.setParameter("alertId", alertId);
+	return query.list();
+}
 }

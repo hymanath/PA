@@ -44,7 +44,6 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		return query.list();
 	}
 	
-	
 	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
@@ -57,8 +56,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				" alertSeverity.severity, " +//5
 				" model.regionScopes.regionScopesId, " +//6
 				" model.regionScopes.scope," +//7
-				" alertStatus.alertStatusId, " +//8
-				" alertStatus.alertStatus");//9
+				" model.alertStatus.alertStatusId, " +//8
+				" model.alertStatus.alertStatus");//9
 		str.append(" ,tehsil.tehsilId, " +//10
 				  " tehsil.tehsilName , " +//11
 				  " panc.panchayatId, " +//12
@@ -98,9 +97,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
-		str.append(" left join model.alertType  alertType ");
-		str.append(" left join model.alertStatus  alertStatus ");
-		str.append(" where model.isDeleted ='N' ");
+		str.append(" left join model.alertType  alertType,AlertDepartmentStatus model1 ");
+		str.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+				  "  and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
+		str.append(" and model.isDeleted ='N' ");
+		
 		
 		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
 			str.append(" and model.impactScopeId=:impactScopeId");
@@ -152,7 +153,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null)
 			str.append(" and ( date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate ) ");
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
-			str.append(" and alertStatus.alertStatusId = :statusId");
+			str.append(" and model.alertStatus.alertStatusId = :statusId");
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		
@@ -232,7 +233,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
-	//hiii
+	//hiii 
 	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId,Date fromDate2,Date toDate2)
 	{
 		StringBuilder str = new StringBuilder();
@@ -245,9 +246,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				   " alertSeverity.severity, " +
 				   " model.regionScopes.regionScopesId, " +
 				   " model.regionScopes.scope, "); //7
-			str.append(" alertStatus.alertStatusId, " +//8
-					   " alertStatus.alertStatus, ");//9
-		str.append(" tehsil.tehsilId, " + 
+		  str.append(" model.alertStatus.alertStatusId, " +//8
+					 " model.alertStatus.alertStatus, ");//9
+		  str.append(" tehsil.tehsilId, " + 
 				   " tehsil.tehsilName , " +
 				   " panc.panchayatId, " +
 				   " panc.panchayatName," +
@@ -271,6 +272,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				   " tvNewsChannel.tvNewsChannelId, " +//31
 				   " tvNewsChannel.channelName, " +//32
 				   " model.title ");//33
+		
 		if(inputVO.getTask().equalsIgnoreCase("verification")){
 			str.append(" ,verificationStatus.actionTypeStatus.actionTypeStatusId, " +//34
 					   " verificationStatus.actionTypeStatus.status ");//35
@@ -299,12 +301,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 
 			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" left join model.alertSeverity alertSeverity");
-			str.append(" left join model.alertType alertType");
-			str.append(" left join model.alertStatus alertStatus ");
+			str.append(" left join model.alertType alertType,AlertDepartmentStatus model2 ");
+			str.append(" where model2.alertType.alertTypeId = model.alertType.alertTypeId " +
+					   " and model2.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 			if(inputVO.getTask().equalsIgnoreCase("verification")){
-				str.append(" where model.isDeleted ='N' and alertAssigned.isDeleted='N' and verificationStatus.alert.alertId = alertAssigned.alert.alertId and alertAssigned.tdpCadre.tdpCadreId =:assignedCadreId ");
+				str.append(" and model.isDeleted ='N' and alertAssigned.isDeleted='N' and verificationStatus.alert.alertId = alertAssigned.alert.alertId and alertAssigned.tdpCadre.tdpCadreId =:assignedCadreId ");
 			}else{
-				str.append(" where model.isDeleted ='N' and model1.isDeleted='N'  and model1.tdpCadre.tdpCadreId =:assignedCadreId ");
+				str.append(" and model.isDeleted ='N' and model1.isDeleted='N'  and model1.tdpCadre.tdpCadreId =:assignedCadreId ");
 			}
 			
 		}
@@ -330,9 +333,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.userAddress.ward ward ");
 			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" left join model.alertSeverity alertSeverity");
-			str.append(" left join model.alertType alertType");
-			str.append(" left join model.alertStatus alertStatus ");
-			str.append(" where model.isDeleted ='N' ");
+			str.append(" left join model.alertType alertType,AlertDepartmentStatus model2 ");
+			str.append(" where model2.alertType.alertTypeId = model.alertType.alertTypeId " +
+					  "  and model2.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
+			str.append(" and model.isDeleted ='N' ");
 			
 				
 		}
@@ -356,7 +360,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append("and verificationStatus.isDeleted='N' ");
 		}
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L){
-			str.append(" and alertStatus.alertStatusId = :alertStatusId ");
+			str.append(" and model.alertStatus.alertStatusId = :alertStatusId ");
 		}
 		
 		
@@ -457,9 +461,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();
 	}
+//Santosh
 	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select alertStatus.alertStatusId, alertStatus.alertStatus, count(distinct model.alertId) " +
+		queryStr.append("select model.alertStatus.alertStatusId, model.alertStatus.alertStatus, count(distinct model.alertId) " +
 						" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -468,10 +473,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.tehsil tehsil  " +
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
-						" left join userAddress.ward ward  ");
-		queryStr.append(" left join model.alertStatus alertStatus ");
+						" left join userAddress.ward ward,AlertDepartmentStatus model1   ");
+		queryStr.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 		
-		queryStr.append(" where model.isDeleted ='N'  ");
+		queryStr.append(" and model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
@@ -501,8 +507,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByStatusThenCategory(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
-						" alertStatus.alertStatusId, " +
-						" alertStatus.alertStatus, " +
+						" model.alertStatus.alertStatusId, " +
+						" model.alertStatus.alertStatus, " +
 						" alertCategory.alertCategoryId, " +
 						" alertCategory.category," +
 						" count(distinct model.alertId) " +
@@ -518,9 +524,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		queryStr.append(" left join model.alertCategory alertCategory ");
 		queryStr.append(" left join model.alertType alertType ");
 		queryStr.append(" left join model.alertSource alertSource ");
-		queryStr.append(" left join model.alertSeverity alertSeverity ");
-		queryStr.append(" left join model.alertStatus alertStatus ");
-		queryStr.append(" where model.isDeleted ='N'  ");
+		queryStr.append(" left join model.alertSeverity alertSeverity,AlertDepartmentStatus model1  ");
+		queryStr.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId  ");
+		queryStr.append(" and  model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and ( date(model.createdTime) between :fromDate and :toDate)  ");
 		}
@@ -536,8 +543,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(alertTypeId !=null && alertTypeId > 0L){
 			queryStr.append(" and model.alertTypeId = :alertTypeId ");
 		}
-		queryStr.append(" group by alertStatus.alertStatusId, alertCategory.alertCategoryId " +
-						" order by alertStatus.alertStatusId, alertCategory.alertCategoryId ");
+		queryStr.append(" group by model.alertStatus.alertStatusId, alertCategory.alertCategoryId " +
+						" order by model.alertStatus.alertStatusId, alertCategory.alertCategoryId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
@@ -553,8 +560,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.alertImpactScope.alertImpactScopeId, model.alertImpactScope.impactScope, count(distinct model.alertId) " +
-				" from Alert model " +
-				" where model.isDeleted ='N'  ");
+				" from Alert model,AlertDepartmentStatus model1 " +
+				" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+				" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId  " +
+				" and model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
@@ -589,8 +598,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		queryStr.append(" select " +
 						" model.alertImpactScope.alertImpactScopeId, " +
 						" model.alertImpactScope.impactScope, " +
-						" alertStatus.alertStatusId, " +
-						" alertStatus.alertStatus," +
+						" model.alertStatus.alertStatusId, " +
+						" model.alertStatus.alertStatus," +
 						" count(distinct model.alertId) " +
 						" from Alert model " +
 						" left join model.userAddress userAddress " +
@@ -600,9 +609,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.tehsil tehsil  " +
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
-						" left join userAddress.ward ward  " );
-		queryStr.append(" left join model.alertStatus alertStatus ");
-		queryStr.append(" where model.isDeleted ='N'  ");
+						" left join userAddress.ward ward,AlertDepartmentStatus model1  " );
+		queryStr.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
+		queryStr.append(" and model.isDeleted ='N'  ");
 		
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate)  ");
@@ -709,6 +719,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();    
 	}
+	
 	public List<Object[]> getAlertCountGrpBylocationIdAndStatusIdAndCategoryId(Date fromDate, Date toDate, Long stateId, List<Long> locaionIds, String Location,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
@@ -723,9 +734,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(Location.equalsIgnoreCase("ward")){
 			queryStr.append(" ward.wardId, ward.wardName ");  
 		}
-		
-		queryStr.append(" alertStatus.alertStatusId, " +//1
-						" alertStatus.alertStatus, " +//2
+	
+		queryStr.append(" model.alertStatus.alertStatusId, " +//1
+						" model.alertStatus.alertStatus, " +//2
 						" alertCategory.alertCategoryId, " +//3
 						" alertCategory.category, " +//4
 						" count(distinct model.alertId) " +//5
@@ -739,12 +750,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  ");
 
-		queryStr.append(" left join model.alertCategory alertCategory ");
-		queryStr.append(" left join model.alertStatus alertStatus ");
-		queryStr.append(" where ");
+		queryStr.append(" left join model.alertCategory alertCategory,AlertDepartmentStatus model1  ");
+		queryStr.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 		
 		if(fromDate != null && toDate != null){  
-			queryStr.append(" date(model.createdTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
+			queryStr.append(" and date(model.createdTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -4471,6 +4482,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" select distinct alert.edition.newsPaper.newsPaperId, alert.edition.newsPaper.newsPaper from Alert alert order by alert.edition.newsPaper.newsPaper ");
 		Query query = getSession().createQuery(queryStr.toString());  
 		return query.list();
+	}
+	public Long getAlertTypeByAlertTypeId(Long alertId){
+		Query query = getSession().createQuery("select model.alertType.alertTypeId from Alert model where model.isDeleted='N' and model.alertId=:alertId");
+		query.setParameter("alertId", alertId);
+		return (Long)query.uniqueResult();
 	}
 	public int setDepartmentOfAlert(Long organizationId,String isMultiple,Long alertId){ //Like saving Not For Updation
 		Query query = getSession().createQuery(" update Alert model set model.govtDepartmentId =:organizationId ,model.isMultiple =:isMultiple  where model.alertId = :alertId ");

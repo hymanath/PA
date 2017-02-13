@@ -92,6 +92,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDepartmentsByAlertId(Long alertId);
 	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId);
 	public List<Object[]> getNewsPapaerList();
+	public Long getAlertTypeByAlertTypeId(Long alertId);
 	public int setDepartmentOfAlert(Long organizationId,String isMultiple,Long alertId);
 	public Object[] getAlertStatus(Long alertId);
 	public List<Object[]> getDistrictWiseTotalAlertsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds);

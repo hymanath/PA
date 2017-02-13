@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IAlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
@@ -70,6 +71,7 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -167,7 +169,7 @@ private IVerificationCommentsDAO verificationCommentsDAO;
 private IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO;
 private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
-
+private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
 private IGovtDepartmentDAO govtDepartmentDAO;
 
 
@@ -465,6 +467,10 @@ public void setVerificationCommentsDAO(
 public void setAlertVerificationUserTypeUserDAO(
 		IAlertVerificationUserTypeUserDAO alertVerificationUserTypeUserDAO) {
 	this.alertVerificationUserTypeUserDAO = alertVerificationUserTypeUserDAO;
+}
+public void setAlertDepartmentStatusDAO(
+		IAlertDepartmentStatusDAO alertDepartmentStatusDAO) {
+	this.alertDepartmentStatusDAO = alertDepartmentStatusDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -1840,44 +1846,67 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		
 	}
-	
-	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId)
+	// Service Changed by Santosh
+	public ResultStatus saveAlertAssignedUser(final AlertVO inputVO,final Long userId)
 	{
-		ResultStatus rs = new ResultStatus();
-		List<Long> tdpCadreIds = new ArrayList();
-		try{
-			 DateUtilService date = new DateUtilService();
-			  List<Long> existCadreIds = new ArrayList<Long>();
-			 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
-			 {
-				 
-				 for(IdNameVO vo : inputVO.getIdNamesList() )
-				 {
-					 tdpCadreIds.add(vo.getId());
-				 }
-				  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(tdpCadreIds,inputVO.getAlertTypeId());
+		final ResultStatus rs = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+		        	  // Changing Alert Status Pending to Notified first time When Candidate is going to assigned for that alert 
+					if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue() > 0l){
+						 List<Long> cadreIds = alertAssignedDAO.checkCadreAssignedForAlert(inputVO.getAlertTypeId());
+						  if(cadreIds == null || cadreIds.size() == 0){
+							  if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0){
+								  Alert alert = alertDAO.get(inputVO.getAlertTypeId()); 
+								  alert.setAlertStatusId(2l);//Notified Status
+								  alertDAO.save(alert);
+								  
+								    AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+							    	alertTrackingVO.setUserId(userId);
+							    	alertTrackingVO.setAlertCommentId(null);
+							    	alertTrackingVO.setAlertStatusId(2l);//Notified Status
+							    	alertTrackingVO.setAlertId(inputVO.getAlertTypeId());
+							    	alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+							        saveAlertTrackingDetails(alertTrackingVO);	
+							  }
+						  }
+					}
 				  
-				 for(IdNameVO vo : inputVO.getIdNamesList() )
+				   DateUtilService date = new DateUtilService();
+				  List<Long> existCadreIds = new ArrayList<Long>();
+				  List<Long> tdpCadreIds = new ArrayList();
+				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
 				 {
-					 if(!existCadreIds.contains(vo.getId()))
+					 
+					 for(IdNameVO vo : inputVO.getIdNamesList() )
 					 {
-						AlertAssigned alertAssigned = new AlertAssigned();
-						alertAssigned.setAlertId(inputVO.getAlertTypeId());
-						alertAssigned.setTdpCadreId(vo.getId());
-						alertAssigned.setCreatedBy(userId);
-						alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
-						alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
-						alertAssigned.setIsDeleted("N");
-						alertAssignedDAO.save(alertAssigned);
+						 tdpCadreIds.add(vo.getId());
+					 }
+					  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(tdpCadreIds,inputVO.getAlertTypeId());
+					  
+					 for(IdNameVO vo : inputVO.getIdNamesList() )
+					 {
+						 if(!existCadreIds.contains(vo.getId()))
+						 {
+							AlertAssigned alertAssigned = new AlertAssigned();
+							alertAssigned.setAlertId(inputVO.getAlertTypeId());
+							alertAssigned.setTdpCadreId(vo.getId());
+							alertAssigned.setCreatedBy(userId);
+							alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+							alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+							alertAssigned.setIsDeleted("N");
+							alertAssignedDAO.save(alertAssigned);
+						 }
 					 }
 				 }
-			 }
-			rs.setResultCode(0);
-			if(existCadreIds != null && existCadreIds.size() > 0)
-			rs.setMessage(Integer.toString(existCadreIds.size()));
-		}
-		catch(Exception e)
-		{
+				    rs.setResultCode(0);
+					if(existCadreIds != null && existCadreIds.size() > 0)
+					rs.setMessage(Integer.toString(existCadreIds.size()));
+				 }
+			});
+		
+		} catch (Exception e) {
 			LOG.error("Exception in saveAlertAssignedUser()",e);	
 			rs.setResultCode(121);
 		}
@@ -2196,7 +2225,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertVO> alertVOs = new ArrayList<AlertVO>();
 			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
 			//get all the alert status and build the template
-			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			//List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			List<Object[]> statusList = alertDepartmentStatusDAO.getAlertStatusByAlertType(alertTypeId);
 			if(statusList != null && statusList.size() > 0){
 				for(Object[] param : statusList){
 					alertVO = new AlertVO();
@@ -2336,7 +2366,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
 			Map<Long,Long> impactLevelIdAndCountMap = new HashMap<Long,Long>();
 			//get all the alert status for  building the template
-			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			//List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			List<Object[]> statusList = alertDepartmentStatusDAO.getAlertStatusByAlertType(alertTypeId);
+			
 			//get alert status count and and create a map of impactLevelId and its corresponding alert count
 			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByImpactLevel(fromDate,toDate,stateId,alertTypeId);
 			if(alertCountList != null && alertCountList.size() > 0){
@@ -7465,6 +7497,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		}
 		return null;
+	}
+	public List<AlertVO> getAlertStatusByAlertTypeId(Long alertTypeId,Long alertId){
+		List<AlertVO> statusList = new ArrayList<AlertVO>(0);
+		try{
+			if(alertTypeId == 0l){
+				alertTypeId = alertDAO.getAlertTypeByAlertTypeId(alertId);
+			}
+			List<Object[]> rtrnObjLst = alertDepartmentStatusDAO.getAlertStatusByAlertType(alertTypeId);
+			  if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+				  for(Object[] param:rtrnObjLst){
+					  AlertVO statusVO = new AlertVO();
+					  statusVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  statusVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[1]));
+					  statusList.add(statusVO);
+				  }
+			  }
+		}catch(Exception e){
+			LOG.error("Error occured getAlertStatusByAlertTypeId() method of AlertService{}",e);	
+		}
+		return statusList;
+		
 	}
 }
 
