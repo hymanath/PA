@@ -1829,8 +1829,8 @@
 											</h4>
 										</div>
 										<div class="col-md-5 col-xs-12 col-sm-5">
-											<button class="btn btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
-											<button class="btn btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="thisMonth" attr_startDate="" attr_endDate="">This month</button>
+											<button class="btn btn-default text-capital btn-xs specialMeetingBtnCls" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
+											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
 										</div>
 									</div>
 									<!--<h4>
