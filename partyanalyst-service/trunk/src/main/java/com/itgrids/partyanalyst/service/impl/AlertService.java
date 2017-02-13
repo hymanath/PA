@@ -1608,7 +1608,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 				
 			}  
-			
+			Object[] statusIdAndNme = alertDAO.getAlertStatus(alertId);
+			if(finalList != null && finalList.size() > 0){
+				for(AlertCommentVO param : finalList){
+					param.setCurrentStsId(commonMethodsUtilService.getLongValueForObject(statusIdAndNme[0]));
+					param.setCurrentSts(commonMethodsUtilService.getStringValueForObject(statusIdAndNme[1]));
+				}    
+			}  
 			return finalList;   		
 		}catch(Exception e){
 			e.printStackTrace();
