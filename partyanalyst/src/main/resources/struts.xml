@@ -15774,5 +15774,8 @@
 			<param name="root">govtDeptVoList</param>
 		</result>	
 	</action>
+	<action name="committeeCreationDetailsAction" class="cadreCommitteeAction" method="committeeCreationDetails">
+		<result name="success">/jsp/committeeCreationDetails.jsp</result>  
+	</action>
  </package>
 </struts>
