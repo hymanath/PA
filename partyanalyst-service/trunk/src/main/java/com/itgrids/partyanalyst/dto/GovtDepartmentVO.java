@@ -25,7 +25,10 @@ public class GovtDepartmentVO {
 	
 	private Long commentId;
 	private String comment;
-	
+	private Long statusId;
+	private String status;
+	private String dateStr;
+	private String source;
 	
 	private Long departmentId;
 	private Long count = 0l;
@@ -35,6 +38,8 @@ public class GovtDepartmentVO {
 	public List<GovtDepartmentVO> govtDeptList=new ArrayList<GovtDepartmentVO>(0);
 	public GovtDepartmentVO  govtDepartmentVO ;
 	private Double percentage = 0.0;
+	
+	
 	private Long printCnt=0l;
 	private Long ElecCnt = 0l;
 	private Long totElecCount =0l;
@@ -80,6 +85,30 @@ public class GovtDepartmentVO {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
 	}
 	public Long getDepartmentId() {
 		return departmentId;
