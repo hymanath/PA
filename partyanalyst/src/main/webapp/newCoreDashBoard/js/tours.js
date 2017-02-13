@@ -5,6 +5,40 @@ var globalStateIdForTour=1; //for
 
 var customStartToursDate = moment().startOf('month').format('DD/MM/YYYY')
 var customEndToursDate = moment().format('DD/MM/YYYY');
+	function globalToursCalls(type)
+	{
+		if(type == "default"){
+			$('#tourNewDateRangePickerId').data('daterangepicker').setStartDate(moment());
+			$('#tourNewDateRangePickerId').data('daterangepicker').setEndDate(moment());
+			customStartToursDate = moment().format('DD/MM/YYYY')
+			customEndToursDate = moment().format('DD/MM/YYYY')
+			$("#toursNewHeadingId").html("TODAY"+" ( "+moment().format('DD/MM/YYYY')+"-"+moment().format('DD/MM/YYYY')+" )");
+		}else if(type == "currentMonth"){
+			$('#tourNewDateRangePickerId').data('daterangepicker').setStartDate(moment().startOf("month"));
+			$('#tourNewDateRangePickerId').data('daterangepicker').setEndDate(moment().endOf("month"));
+			customStartToursDate = moment().startOf("month").format('DD/MM/YYYY')
+			customEndToursDate = moment().endOf("month").format('DD/MM/YYYY')
+			$("#toursNewHeadingId").html("THIS MONTH"+" ( "+moment().startOf("month").format('DD/MM/YYYY')+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+		}else if(type == "lastMonth"){
+			$('#tourNewDateRangePickerId').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+			$('#tourNewDateRangePickerId').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+			customStartToursDate = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
+			customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY')
+			$("#toursNewHeadingId").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')+"-"+moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY')+" )");
+		}
+		$("#tourNewDateRangePickerId").val(customStartToursDate+" - "+customEndToursDate);
+		getToursBasicOverviewDtls();
+		if($(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			getDesignationWiseMembersDtls();
+			if($('.moreNewToursBlocksDetailed').css('display') != 'none'){
+				var isFilterApply = "No";
+				var filterType = "";
+				var desgnatnIdsLst = [];
+				getDesignationWiseAverageTourPerformanceDtls(desgnatnIdsLst,isFilterApply,filterType,0,0,0,0,0,0,0,"");
+			}
+		}
+		
+	}
 	$("#tourNewDateRangePickerId").daterangepicker({
 		opens: 'left',
 	     startDate: moment().subtract(1, 'month').startOf('month'),
@@ -237,74 +271,71 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<h4><span class="headingColor text-capital">Overall&nbsp Leaders</span></h4>';
 					str+='<div id="" class="m_top10">';
-						str+='<div class="pad_10 bg_ED">';
-							str+='<div class="row">';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
-									    if(overViewRslt.noOfLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="all">'+overViewRslt.noOfLeaderCnt+'</h3>';	
-										}else{
-										  str+='<h3>0</h3>';	
-										}
-										str+='<p class="text-muted text-capital">total leaders</p>';
-									str+='</div>';
+						str+='<div class="row">';
+							str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+								str+='<div class="pad_5  bg_ED">';
+									if(overViewRslt.noOfLeaderCnt > 0){
+									  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="all">'+overViewRslt.noOfLeaderCnt+'</h3>';	
+									}else{
+									  str+='<h3>0</h3>';	
+									}
+									str+='<p class="text-muted text-capital">total leaders</p>';
 								str+='</div>';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
+							str+='</div>';
+							str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+								str+='<div class="pad_5  bg_ED">';
+								   if(overViewRslt.submitedLeaderCnt > 0){
+									  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted" >'+overViewRslt.submitedLeaderCnt+'&nbsp<small class="text-success" style="font-size:13px">'+overViewRslt.submitedCandidateTourPer+'%</small></h3>';	
+									}else{
+									  str+='<h3>0</h3>';	
+									}
+									//str+='<small class="text-success" style="font-size:13px">'+overViewRslt.submitedCandidateTourPer+'%</small></h3>';
+									str+='<p class="text-muted text-capital">Submitted leaders</p>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+								str+='<div class="pad_5  bg_ED">';
+									if(overViewRslt.notSubmitedLeaserCnt > 0){
+									  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="notSubmitteed">'+overViewRslt.notSubmitedLeaserCnt+'&nbsp<small class="text-success" style="font-size:13px">'+overViewRslt.notsubmitedCandidateTourPer+'%</small></h3>';	
+									}else{
+									  str+='<h3>0</h3>';	
+									}
+									//str+='<small class="text-success" style="font-size:13px">'+overViewRslt.notsubmitedCandidateTourPer+'%</small></h3>';
+									str+='<p class="text-muted text-capital">Not Submitted leaders</p>';
+								str+='</div>';
+							str+='</div>';
+							if(overViewRslt.submitedLeaderCnt > 0){
+									str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+									str+='<div class="pad_5 bg_ED">';
 									   if(overViewRslt.submitedLeaderCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted" >'+overViewRslt.submitedLeaderCnt+'&nbsp<small class="text-success" style="font-size:13px">'+overViewRslt.submitedCandidateTourPer+'%</small></h3>';	
+										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted">'+overViewRslt.submitedLeaderCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
-										//str+='<small class="text-success" style="font-size:13px">'+overViewRslt.submitedCandidateTourPer+'%</small></h3>';
 										str+='<p class="text-muted text-capital">Submitted leaders</p>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-									str+='<div class="pad_10">';
-									    if(overViewRslt.notSubmitedLeaserCnt > 0){
-										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="notSubmitteed">'+overViewRslt.notSubmitedLeaserCnt+'&nbsp<small class="text-success" style="font-size:13px">'+overViewRslt.notsubmitedCandidateTourPer+'%</small></h3>';	
+								str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+									str+='<div class="pad_5 bg_ED">';
+									  if(overViewRslt.complainceCnt > 0){
+										  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="Complaince">'+overViewRslt.complainceCnt+'</h3>';	
 										}else{
 										  str+='<h3>0</h3>';	
 										}
-										//str+='<small class="text-success" style="font-size:13px">'+overViewRslt.notsubmitedCandidateTourPer+'%</small></h3>';
-										str+='<p class="text-muted text-capital">Not Submitted leaders</p>';
+										str+='<p class="text-muted text-capital">Complaince</p>';
 									str+='</div>';
 								str+='</div>';
-								if(overViewRslt.submitedLeaderCnt > 0){
-										str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-										str+='<div class="pad_10">';
-										   if(overViewRslt.submitedLeaderCnt > 0){
-											  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall"  style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="submitted">'+overViewRslt.submitedLeaderCnt+'</h3>';	
-											}else{
-											  str+='<h3>0</h3>';	
-											}
-											str+='<p class="text-muted text-capital">Submitted leaders</p>';
-										str+='</div>';
+								str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
+									str+='<div class="pad_5 bg_ED">';
+										if(overViewRslt.nonComplainceCnt > 0){
+										  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="nonComplaince">'+overViewRslt.nonComplainceCnt+'</h3>';	
+										}else{
+										  str+='<h3>0</h3>';	
+										}
+										str+='<p class="text-muted text-capital">Non-Complaince</p>';
 									str+='</div>';
-									str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-										str+='<div class="pad_10">';
-										  if(overViewRslt.complainceCnt > 0){
-											  str+='<h3 class="tourOverViewCls overAllTourCls" attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="Complaince">'+overViewRslt.complainceCnt+'</h3>';	
-											}else{
-											  str+='<h3>0</h3>';	
-											}
-											str+='<p class="text-muted text-capital">Complaince</p>';
-										str+='</div>';
-									str+='</div>';
-									str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-										str+='<div class="pad_10">';
-											if(overViewRslt.nonComplainceCnt > 0){
-											  str+='<h3 class="tourOverViewCls overAllTourCls"  attr_designation_name="Overall" style="cursor:pointer;color:rgb(51, 122, 183)" attr_tour_filter_type="nonComplaince">'+overViewRslt.nonComplainceCnt+'</h3>';	
-											}else{
-											  str+='<h3>0</h3>';	
-											}
-											str+='<p class="text-muted text-capital">Non-Complaince</p>';
-										str+='</div>';
-									str+='</div>';	
-								}
-						
-							str+='</div>';
+								str+='</div>';	
+							}
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';	
@@ -1065,7 +1096,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					str1+='</div>';
 					str1+='<div class="panel-body">';
 						str1+='<div class="row">';
-							str1+='<div id="toursPerformanceBlocks'+i+'"></div>';
+							str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str1+='<div id="toursPerformanceBlocks'+i+'"></div>';
+							str1+='</div>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
