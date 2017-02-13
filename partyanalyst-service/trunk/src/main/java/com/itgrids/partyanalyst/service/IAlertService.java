@@ -89,4 +89,5 @@ public interface IAlertService {
     public List<AlertDataVO> getAllAlertsWithoutFilterForCentralMembers(Long userId,AlertInputVO inputVO);
     public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public String deleteAlert(Long alertId);
+    public List<AlertVO> getAlertStatusByAlertTypeId(Long alertTypeId,Long alertId);
 }

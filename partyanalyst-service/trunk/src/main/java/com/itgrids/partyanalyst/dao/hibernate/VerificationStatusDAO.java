@@ -70,8 +70,8 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 				   " alertSeverity.severity, " +//5
 				   " model.regionScopes.regionScopesId, " +//6
 				   " model.regionScopes.scope," +//7
-				   " alertStatus.alertStatusId, " +//8
-				   " alertStatus.alertStatus ");//9
+				   " model.alertStatus.alertStatusId, " +//8
+				   " model.alertStatus.alertStatus ");//9
 		str.append(" ,tehsil.tehsilId, " +//10
 				   " tehsil.tehsilName , " +//11
 				   " panc.panchayatId, " +//12
@@ -115,10 +115,11 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
-		str.append(" left join model.alertType  alertType " +
-				   " left join model.alertStatus alertStatus ");
+		str.append(" left join model.alertType  alertType,AlertDepartmentStatus model1 " +
+				   " where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+				   " and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 		
-		str.append(" where model.isDeleted ='N' and vs.isDeleted='N' ");
+		str.append(" and model.isDeleted ='N' and vs.isDeleted='N' ");
 		
 		if(inputVO.getAlertImpactScopeId() != null && inputVO.getAlertImpactScopeId() > 0l){
 			str.append(" and model.impactScopeId=:impactScopeId ");
