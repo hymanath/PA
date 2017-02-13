@@ -1829,8 +1829,8 @@
 											</h4>
 										</div>
 										<div class="col-md-5 col-xs-12 col-sm-5">
-											<button class="btn btn-default text-capital btn-xs specialMeetingBtnCls" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
-											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
+											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
+											<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
 										</div>
 									</div>
 									<!--<h4>
@@ -4187,10 +4187,9 @@ var globalImages;
 		getAllNewsPapers();
 		
 		
-	  }else  if(finalURL =="partyLeadersDashboardAction")//|| finalURL =="coreDashboardAction1"
+	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="coreDashboardAction1")
 	  {
-		
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.alertsBlock,.attendanceBlock,.trainingsBlock").remove();
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
