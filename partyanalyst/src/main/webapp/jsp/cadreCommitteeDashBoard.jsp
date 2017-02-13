@@ -879,7 +879,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
              	<div class="col-md-12 col-xs-12 col-sm-12" >
                     
 					
-					 <div style="display:inline-block; margin-right: 25px;" id="searchScenariodiv">
+					 <div style="display:inline-block; margin-right: 15px;" id="searchScenariodiv">
                      <h5 class="text-success areaBtnsDiv" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px" >LOCATION</h5>
                      <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
@@ -890,7 +890,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select" checked="true" >&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
 					</span>
                     </div>
-                    <div style="display:inline-block; margin-right: 25px;">
+                    <div style="display:inline-block; margin-right: 15px;">
                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
 					<span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true" >&nbsp; VILLAGE / WARD &nbsp;</label>
@@ -911,6 +911,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFILIATED COMMITTEES &nbsp;&nbsp;</label>
 					</span>
                     </div>
+					<!--<button id="detailReportId" class="btn btn-success btn-xs" style="dispaly:inline-block">Detailed Report</button>-->
 					<div style="display:inline-block; margin-top:10px;text-align:center;" class="col-md-12">
                     	<h4 id="headingId" style="display:inline-block" class="text-success">DISTRICT WISE COMMITTEES</h4>
                         <span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
@@ -1079,8 +1080,105 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	<!-- end -->
 
     </div>
-
-
+<!-- DetailedReport PopUp -->
+	<div class="modal" tabindex="-1" role="dialog" id="detailedReportModalDivId">
+		  <div class="modal-dialog modal-lg" style="width:85%">
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Committee Details Report</h4>
+			  </div>
+			  <div class="modal-body">
+			  <div class="row">
+				  	  <div class="col-md-3 col-xs-12 col-sm-3">
+							<label>Committee Type</label>
+							<select class="form-control" style="width:220px" id="committeeTypeId">
+								<option value="0"> All </option>
+								<option value="1">Main Committee</option>
+								<option value="2">Affiliated Committee</option>
+							</select>
+						  </div>
+						  <div class="col-md-3 col-xs-12 col-sm-3">
+							<label>Committee Level</label>
+							<select class="form-control" style="width:220px" onchange="updateAllLocLvls();" id="committeeLevelTypeId">
+								<!--<option value="0">Select Committee Level</option>-->
+								<option value="1">Village/Ward</option>
+								<option value="2">Mandal/Town/Division</option>
+								<option value="3">District</option>
+								<option value="4">State</option>
+							</select>
+						  </div>
+						  <div class="col-md-3 col-xs-12 col-sm-3">
+								<label> Designation </label>
+								<select class="form-control" style="width:220px" id="committeePostitionId" >
+									<option value="0">All </option>
+									<option value="1">President </option>
+									<option value="2">Vice-President </option>
+									<option value="3">General Secretary </option>
+									<option value="4">Organizing Secretary </option>
+									<option value="5">Secretary </option>
+									<option value="6">Official Spokesman </option>
+									<option value="7">Campaign Secretary </option>
+									<option value="8">Treasurer </option>
+									<option value="9">Executive Member </option>					
+								</select>
+						  </div>
+						 <div class="col-md-3 col-xs-12 col-sm-3" id="statedisplaydivid">
+							<label>State</label>
+									<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+									<select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="form-control" style="width:220px">
+										<option value="0">All</option>
+										<option value="1">Andhra Pradesh</option>
+										<option value="36">Telangana</option>
+									</select>
+							</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="districtDiv">
+										<label>District</label>
+										<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="detsRptdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
+											<option value="0">All</option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="constitunecyDiv">
+										<label>Constituency</label>
+										<span id="constituencyIdImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="detsRptConstituencyId" onchange="getMandalCorporationsByConstituency('',this.id);" class="form-control" style="width:220px">
+											<option value="0">All</option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="mandalDiv">
+										<label>Mandal/Muncipality/Corporation</label>
+										<span id="mandalListImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="mandalList" onchange="getPanchayatWardByMandal('',this.id);"  class="form-control" style="width:220px">
+											<option value="0"> Select Mandal/Municipality </option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="panchayatDiv">
+										<label>Village/Ward</label>
+										<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="panchaytList"  class="form-control" style="width:220px">
+											<option value="0"> Select Village/Ward </option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<label> Status </label>
+										<select class="form-control" style="width:220px" id="committeeStatusId" >
+											<option value="1">Started </option>
+											<option value="2">Completed </option>
+											<option value="3">Not Yet Started</option>
+										</select>
+									</div>
+						  <div class="col-md-3 col-xs-12 col-sm-3" style="margin-top:25px;">
+							<button type="submit" class="btn btn-default btn-success" onclick="getRolesBasedReport();">Get Details</button>
+						  </div>
+					</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
@@ -1105,6 +1203,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	<script src="js/cadreCommittee/cadreCommitteeDashBoard.js" type="text/javascript"></script>
 	<script src="js/cadreCommittee/cadreCommitteeDashboard1.js" type="text/javascript"></script>
 	<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+	<script src="js/cadreCommittee/committeeCreationDetails.js" type="text/javascript"></script>
 	<script>
 	
 	</script>
