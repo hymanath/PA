@@ -214,5 +214,63 @@ function getDistrictsForStates(state,id,num){
 				$("#panchaytList").trigger("chosen:updated");	
 			}
 		});	
+	}
+	function getRolesBasedReport(){
+		var committeeLevelIdsListArr = []; 
+		var designationIdsArr = [];
+		var committeeTypeId = $("#committeeTypeId").val();
+		alert(committeeTypeId);
+		var committeeLvlId = $("#committeeLevelTypeId").val();
+		alert(committeeLvlId);
+		if(committeeLvlId == 1){
+			committeeLevelIdsListArr.push(6);
+			committeeLevelIdsListArr.push(8);
+		}else if(committeeLvlId == 2){
+			committeeLevelIdsListArr.push(5);
+			committeeLevelIdsListArr.push(7);
+			committeeLevelIdsListArr.push(9);
+		}else if(committeeLvlId == 3){
+			committeeLevelIdsListArr.push(11);
+		}else if(committeeLvlId == 4){
+			committeeLevelIdsListArr.push(10);
+		}
+		designationIdsArr.push($("#committeePostitionId").val());
+		
+		var locationLevelId =8;//region_Scopes
+		var panchayatId=$('#panchaytList').val();
+		var mandalId=$('#mandalList').val();
+		var cosntiteucnyId=$('#constituencyId').val();
+		var districtId=$('#districtId').val();
+		var stateId=$('#statesDivId').val();
+		
+		var locationLevelValuesList = [];
+			if(panchayatId != null && panchayatId.length>0 && panchayatId>0){
+				locationLevelId =8;
+				locationLevelValuesList.push(panchayatId); 
+			}else if(mandalId != null && mandalId.length>0 && mandalId>0){
+				locationLevelId =5;
+				locationLevelValuesList.push(mandalId); 
+			} else if(cosntiteucnyId != null && cosntiteucnyId.length>0 && cosntiteucnyId>0){
+				locationLevelId =4;
+				locationLevelValuesList.push(cosntiteucnyId); 
+			}else if(districtId != null && districtId.length>0 && districtId>0){
+				locationLevelId =3;
+				locationLevelValuesList.push(districtId); 
+			}else if(stateId != null && stateId.length>0 && stateId>0){
+				locationLevelId =2;
+				locationLevelValuesList.push(stateId); 
+			}
 			
+			
+		var obj = {
+			enrollmentYearIdsArr: [$('#tdpCommitteeYearId').val()],
+			basicCommiteeTypeId: committeeTypeId,
+			committeeLevelIdsArr: [committeeLevelIdsListArr],
+			roleIdsArr: [designationIdsArr],
+			locationLevelId: locationLevelId,
+			locationLevelValuesArr: locationLevelValuesList,
+			statId: stateId
+		}
+		
+		
 	}
