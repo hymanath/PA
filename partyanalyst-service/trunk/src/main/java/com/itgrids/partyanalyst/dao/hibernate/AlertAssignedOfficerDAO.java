@@ -272,7 +272,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" GDDO.govt_department_designation_id = GDD.govt_department_designation_id and ");
 		queryStr.append(" GDDO.govt_department_level_id = GDL.govt_department_level_id and ");
 		queryStr.append(" GDD.govt_department_id = GD.govt_department_id and ");
-		queryStr.append(" GD.govt_department_id in (:deptId) and ");
+		queryStr.append(" GD.govt_department_id =:deptId and ");
 		queryStr.append(" GDL.govt_department_level_id = :levelValue and ");
 		queryStr.append(" date(AAO.inserted_time) between :fromDate and :toDate ");
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
