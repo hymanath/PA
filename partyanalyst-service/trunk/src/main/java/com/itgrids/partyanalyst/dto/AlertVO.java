@@ -13,6 +13,7 @@ public class AlertVO {
 	private String candidateId;
 	private Long alertImpactId;
 	private Long alertSourceId;
+	private String color;
 	
 	private Long stateId;
 	private Long districtId;
@@ -298,5 +299,12 @@ public class AlertVO {
 	public void setStatusPercent(Double statusPercent) {
 		this.statusPercent = statusPercent;
 	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
 	
 }
