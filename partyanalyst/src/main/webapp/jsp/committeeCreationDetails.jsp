@@ -79,16 +79,8 @@
 		<h3 style="text-align:center"> DESIGNATION WISE CADRE COMMITTEE DASHBOARD </h3>
 		<hr style="margin-top:5px;border-color:#FC6"/>
 	</div>
-	<div class="col-md-2 col-xs-12 col-sm-2 col-sm-offset-4">
-		<select class="form-control" id="tdpCommitteeYearId"></select>
-	</div>
-	<div class="col-md-3 col-xs-12 col-sm-3">
-		<div class="input-group">
-			<span class="input-group-addon">
-				<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-			</span>
-			<input type="text" class="form-control" id="reportrange"/>
-		</div>
+	<div class="col-md-2 col-xs-12 col-sm-2 col-sm-offset-4 ">
+		<select class="form-control" id="tdpCommitteeYearId" style="margin-left:325px;"></select>
 	</div>
 	<div class="col-md-3" style="margin-top:10px;" id="buttonsDiv">
        
@@ -184,7 +176,7 @@
                         </select>
                     </div>
 		  <div class="col-md-3 pull-right">
-			<button type="submit" class="btn btn-default btn-success" style="margin-top:10px" onclick="getRolesBasedReport(0,0,0,'constiRoleSummary',0,0);">Get Details</button>
+			<button type="submit" class="btn btn-default btn-success" style="margin-top:10px" onclick="getRolesBasedReport();">Get Details</button>
 		  </div>
 		
     </div>
