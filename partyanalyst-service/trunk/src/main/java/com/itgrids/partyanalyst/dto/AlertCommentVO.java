@@ -26,8 +26,22 @@ public class AlertCommentVO implements Serializable {
 	private List<String> documentList = new ArrayList<String>();
 	private List<String> cmtList = new ArrayList<String>();
 	private List<KeyValueVO> docList = new ArrayList<KeyValueVO>(0);
+	private String currentSts;
+	private Long currentStsId;
 	
 	
+	public String getCurrentSts() {
+		return currentSts;
+	}
+	public void setCurrentSts(String currentSts) {
+		this.currentSts = currentSts;
+	}
+	public Long getCurrentStsId() {
+		return currentStsId;
+	}
+	public void setCurrentStsId(Long currentStsId) {
+		this.currentStsId = currentStsId;
+	}
 	public Long getOrderNo() {
 		return orderNo;
 	}
