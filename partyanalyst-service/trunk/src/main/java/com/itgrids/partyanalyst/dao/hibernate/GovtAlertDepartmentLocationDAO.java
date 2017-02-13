@@ -15,7 +15,12 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 		
 	}
 	public List<Long> getDeptListForUser(Long userId){
-		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId from GovtAlertDepartmentLocation model where model.userId = :userId");
+		Query query = getSession().createQuery(" select distinct " +
+											   " model.govtDepartment.govtDepartmentId " +
+											   " from " +
+											   " GovtAlertDepartmentLocation model " +
+											   " where " +
+											   " model.userId = :userId");
 		query.setParameter("userId", userId);
 		return query.list();
 	}  
