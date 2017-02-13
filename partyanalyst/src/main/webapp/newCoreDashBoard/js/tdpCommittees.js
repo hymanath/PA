@@ -630,7 +630,7 @@
 							if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
 								$(function () {
 								$('#levelWiseCommittesDetailed'+i+''+j+'').highcharts({
-									colors: ['#F56800','#53BF8B','#66728C'],
+									colors: ['#0061D0','#7DDF7D','#C53A36'],
 									chart: {
 										type: 'column',
 										
@@ -703,7 +703,7 @@
 										name: 'Completed',
 										data: levelWiseBasicCompletedPercArray
 									}, {
-										name: 'Yet To Start',
+										name: 'Not Started',
 										data: levelWiseBasicNotStartedPercArray
 									}]
 								});
@@ -793,7 +793,7 @@
 			}
 						$(function () {
 							$('#mainCommittees'+i+'').highcharts({
-								colors: ['#F56800','#53BF8B','#66728C'],
+								colors: ['#0061D0','#7DDF7D','#C53A36'],
 								chart: {
 									type: 'column'
 								},
@@ -869,7 +869,7 @@
 									name: 'Completed',
 									data: districtWiseCompletedPercArray
 								}, {
-									name: 'Yet To Started',
+									name: 'Not Started',
 									data: districtWiseNotStartedPercArray
 								}]
 							});
@@ -1134,10 +1134,10 @@
 				var countVar =0;
 				var candidateNameStartedCountArray =[];
 				var candidateNameNotStartedCountArray =[];
-				
+				var candidateNameArray=[];
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
-						
+							candidateNameArray.push(result[i][j].name)
 						 var obj1 = {
 								name: result[i][j].name,
 								y: result[i][j].completedPerc
@@ -1172,13 +1172,13 @@
 					}else{
 						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 					}	
-					str+='<div id="genSec'+i+'" style="height:100px;"></div>';
+					str+='<div id="genSec'+i+'" style="height:170px;"></div>';
 					str+='</div>'
 					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
 					
 					$(function () {
 						 $("#genSec"+i).highcharts({
-							 colors: ['#0066DC','#FF8119','#ADADAD'],
+							 colors: ['#0061D0','#7DDF7D','#C53A36'],
 							chart: {
 								type: 'column'
 							},
@@ -1192,7 +1192,7 @@
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								
+								categories: candidateNameArray,
 								type: 'category',
 								labels: {
 											formatter: function() {
@@ -1235,21 +1235,34 @@
 								}
 							},
 
-							tooltip: {
+							/* tooltip: {
 								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
 								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-							},
+							}, */
+							
+							 tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												(this.y)+'%';
+										});
 
-							series: [{
-								name: 'Completed',
-								data: candidateNameAndCompletedCountArray
-							},{
-								name: 'Started',
-								data: candidateNameStartedCountArray
-							},{
-								name: 'Not Started',
-								data: candidateNameNotStartedCountArray
-							}],
+										return s;
+									},
+									shared: true
+								},
+								
+								series: [{
+									name: 'Started',
+									data: candidateNameStartedCountArray
+								},{
+									name: 'Completed',
+									data: candidateNameAndCompletedCountArray
+								},{
+									name: 'Not Started',
+									data: candidateNameNotStartedCountArray
+								}],
 						 
 						});
 					});
@@ -1274,6 +1287,9 @@
 			for(var i in result){
 				
 				var candidateNameAndCompletedCountArray =[];
+				var candidateNameStartedCountArray =[];
+				var candidateNameNotStartedCountArray =[];
+				var candidateNameArray=[];
 				var countVar = 0;
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
@@ -1281,8 +1297,18 @@
 								name: result[i][j].name,
 								y: result[i][j].completedPerc
 							};
-						
+						var obj2 = {
+								name: result[i][j].name,
+								y: result[i][j].startedPerc
+							};
+						var obj3 = {
+								name: result[i][j].name,
+								y: result[i][j].notStartedPerc
+							};
 						candidateNameAndCompletedCountArray.push(obj1);
+						candidateNameStartedCountArray.push(obj2);
+						candidateNameNotStartedCountArray.push(obj3);
+						
 						countVar =countVar+1;
 						if (countVar === 5) {
 							break;
@@ -1299,7 +1325,7 @@
 						}else{
 							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 						}
-					str+='<div id="genSec1'+i+'" class="m_top20" style="height:100px;"></div>';
+					str+='<div id="genSec1'+i+'" class="m_top20" style="height:170px;"></div>';
 					str+='</div>';
 				
 					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
@@ -1308,7 +1334,7 @@
 					$("#genSec1"+i).width(getWidth);
 					$(function () {
 						 $("#genSec1"+i).highcharts({
-							 colors: ['#0066DC'],
+							 colors: ['#0061D0','#7DDF7D','#C53A36'],
 							chart: {
 								type: 'column'
 							},
@@ -1322,7 +1348,7 @@
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								
+								categories: candidateNameArray,
 								type: 'category',
 								labels: {
 											formatter: function() {
@@ -1363,15 +1389,32 @@
 								}
 							},
 
-							tooltip: {
+							/* tooltip: {
 								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
 								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-							},
+							}, */
+							tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												(this.y)+'%';
+										});
 
-							series: [{
-								name: 'Completed',
-								data: candidateNameAndCompletedCountArray
-							}],
+										return s;
+									},
+									shared: true
+								},
+								series: [{
+									name: 'Started',
+									data: candidateNameStartedCountArray
+								},{
+									name: 'Completed',
+									data: candidateNameAndCompletedCountArray
+								},{
+									name: 'Not Started',
+									data: candidateNameNotStartedCountArray
+								}],
 						 
 						});
 					});
