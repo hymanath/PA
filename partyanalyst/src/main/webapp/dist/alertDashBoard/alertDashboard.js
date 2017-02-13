@@ -900,3 +900,26 @@ function getAlertStatusCommentsTrackingDetails()
 			});
 		}
 	}
+
+ function getAlertStatusByAlertType(){
+	  var alertTpeId = $("#alertTypeId").val();
+	  var jsObj ={
+				  alertTypeId:alertTpeId,
+				  alertId : 0
+				 }
+			$.ajax({
+				type:'POST',
+				url: 'getAlertStatusByAlertTypeAction.action',
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				var str='';
+				str+="<option value='0' selected='selected'>All</option>";
+				if(result != null && result.length > 0){
+					for(var i in result){
+					 str+='<option value='+result[i].statusId+'>'+result[i].status+'</option>';	
+					}
+				}
+				$("#alertStatusId").html(str);
+		        $("#alertStatusId").trigger("chosen:updated");
+			});	
+	}

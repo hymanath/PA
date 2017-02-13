@@ -3,7 +3,8 @@
 	if(wurl.length == 3){
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 	}
-	getAlertData();
+	//getAlertData();
+	getAlertStatusByAlertType(alertId);
 	getAlertStatusCommentsTrackingDetails();
 	getAlertAssignedCandidates(alertId);
 	getAlertAssignedCandidate(alertId);
@@ -116,6 +117,30 @@
 				getAlertAssignedCandidates(alertId);
 				getAlertAssignedCandidate(alertId);
 		})
+	}
+	function getAlertStatusByAlertType(alertId){
+	  var jsObj ={
+				 alertTypeId:0,
+				 alertId : alertId
+				 
+				 }
+			$.ajax({
+				type:'POST',
+				url: 'getAlertStatusByAlertTypeAction.action',
+				data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				var str='';
+				str+="<option value='0' selected='selected'>Select Status</option>";
+				if(result != null && result.length > 0){
+					for(var i in result){
+					 str+='<option value='+result[i].statusId+'>'+result[i].status+'</option>';	
+					}
+				}
+				$("#statusId").html(str);
+				var select = new Dropkick("#statusId");
+				select.refresh();
+				getAlertData();
+			});	
 	}
 function getAlertData()
 {
@@ -617,7 +642,7 @@ $(document).on("click","#uploadAlertStatusDocBtnId",function(){//san12
 	var uploadHandler = {
 		upload: function(o) {
 		    uploadResult = o.responseText;
-			showAlertStatusDocsResult(uploadResult,'${alertId}');
+			showAlertStatusDocsResult(uploadResult,alertId);
 		}
 	};
 
@@ -677,7 +702,6 @@ function getConfirmation(tdpCadreId){
 // $("#assignedCadreId").multiselect({ noneSelectedText:"Select Assign Cadre"}).multiselectfilter({});
 function getAlertAssignedCandidate(alertId,type)
 {
-	
 	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
 	   $("#assignedCadreId option").remove();
     // $("#assignedCadreId").multiselect('refresh'); 
@@ -685,6 +709,7 @@ function getAlertAssignedCandidate(alertId,type)
     			alertId:alertId,
 				task:""
     		}
+			
 	$.ajax({
 	  type : 'GET',
 	  url : 'getAlertAssignedCandidateAction.action',
@@ -1265,24 +1290,22 @@ function alertComments(result)
 		statusId = result[i].statusId;
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
-			if(length == i)  
+			if(result[i].currentSts == result[i].status)  
 			{
 				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-			}else{
-				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
-			}
-			if(length != i){
-				str+='<h4 class="panel-title">'+result[i].status+'';
-						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';    
-				str+='</h4>';
-			}else{
 				str+='<h4 class="panel-title">'+result[i].status+'';
 					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';
 				str+='</h4>';
-			} 
+			}else{
+				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
+				str+='<h4 class="panel-title">'+result[i].status+'';
+						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';    
+				str+='</h4>';
+			}
+		
 				str+='</a>';  
 			str+='</div>';
-			if(length == i)  
+			if(result[i].currentSts == result[i].status)
 			{
 				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}else{

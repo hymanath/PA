@@ -27,7 +27,7 @@
 	<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-	<script src="dist/CreateAlert/alertCommonCadreSearch.js" type="text/javascript"></script>
+	<!--<script src="dist/CreateAlert/alertCommonCadreSearch.js" type="text/javascript"></script>-->
 	
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
@@ -555,14 +555,14 @@
 															<div class="col-md-6 col-xs-12 col-sm-6">
 																<label>Alert Status</label>
 																<select class="dropkickClass" id="statusId">
-																	<option value='0'>Select Status</option>
+																	<!--<option value='0'>Select Status</option>
 																	<option value='1'>Pending</option>      
 																	<option value='2'>Notified</option>  
 																	<option value='3'>Action In Progess</option>  
 																	<option value='4'>Completed</option>
 																	<option value='5'>Unable to Resolve</option>
 																	<option value='6'>Action Not Required</option>
-																	<option value='7'>Duplicate</option>
+																	<option value='7'>Duplicate</option>-->
 																</select>
 															</div>
 															<div class="col-md-6 col-xs-12 col-sm-6">
@@ -899,6 +899,7 @@ function buildAlertAssignedCandidateData(result)
    
 		
 </script>
+<script src="dist/CreateAlert/alertCommonCadreSearch.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/alertClarification.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>

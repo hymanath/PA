@@ -1572,9 +1572,9 @@ public String getPanchayatiesByMandalOrMuncipality(){
 								//designations.add(desgId);
 								designationIds.add(new Long(designations.get(i).toString()));
 							}
-							locationVo.setDesignationIds(designationIds);
+							//locationVo.setDesignationIds(designationIds);
 						}
-						
+						locationVo.setDesignationIds(designationIds);
 						if(levelStr.equalsIgnoreCase("central")){
 							locationVo.getCounrtyIds().add(1l);
 						}

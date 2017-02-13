@@ -3562,6 +3562,7 @@
 		<property name="alertTrackingDocumentsDAO" ref="alertTrackingDocumentsDAO"></property>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>		
 		<property name="govtDepartmentDAO" ref="govtDepartmentDAO"></property>
+		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
