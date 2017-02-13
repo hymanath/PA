@@ -3856,11 +3856,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId)
 	{
 		String isEligible ="";
-		try {			
-			/*String committeeStatus = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
+		try {	
+			
+			String committeeStatus = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
 			if(committeeStatus.equalsIgnoreCase("Y")){
 				return " This Committee Is Already Confirmed, You Cannot Add Or Update Committee Members Info ";
-			}*/
+			}
 			
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
 			String roleType = tdpCommitteeRole.getRoleType();
