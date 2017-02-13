@@ -1171,6 +1171,7 @@ function getTotalAlertGroutByDeptThenStatus(){
 getDistrictWiseTotalForAlertOverview()
 getDistrictTotalForAlertStatus()
 function getDistrictWiseTotalForAlertOverview(){
+	$("#statusWiseTotalDiv").html("");
 	var deptIdArr = [];
 	var deptId = $(this).attr("attr_dept_id");
 	if(deptId != null){
