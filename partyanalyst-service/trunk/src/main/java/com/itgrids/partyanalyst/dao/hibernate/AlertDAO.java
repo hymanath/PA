@@ -4479,6 +4479,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("isMultiple", isMultiple);
 		return query.executeUpdate();
 	}
+	public Object[] getAlertStatus(Long alertId){
+		Query query = getSession().createQuery(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus from Alert model where model.alertId = :alertId");
+		query.setParameter("alertId", alertId);
+		return (Object[]) query.uniqueResult();
+	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictWiseTotalAlertsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
 		StringBuilder sb = new StringBuilder();
