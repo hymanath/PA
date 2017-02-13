@@ -1,4 +1,4 @@
-	var customStartDateAlert = moment().startOf('month').format('DD/MM/YYYY')
+	var customStartDateAlert = moment().format('DD/MM/YYYY')
 	var customEndDateAlert = moment().format('DD/MM/YYYY');
 	
 	function globalAlertsCalls(type)
@@ -3280,7 +3280,8 @@ function getTotalArticledetails(articleId){
 	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 	}
 	function getAlertOverviewDetails(){
-		
+		alert(customStartDateAlert)
+		alert(customEndDateAlert)
 		$("#alertOverview,#alertOverviewDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
 		
