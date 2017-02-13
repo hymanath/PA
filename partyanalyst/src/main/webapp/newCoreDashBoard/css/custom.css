@@ -2591,3 +2591,28 @@ color: rgb(51, 122, 183);
 	top:5px;
 	color:red;
 }
+.AUMS .bg_Style{
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    padding: 6px;
+}
+.AUMS .colorSpecify{
+	border-radius: 50%;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.AUMS .tableBorLefRig tbody tr th:last-child {
+	border-right:1px solid #ddd !important;
+}
+.AUMS .tableBorLefRig tbody tr th:first-child {
+	border-left:1px solid #ddd !important;
+}
+.AUMS .tableBorLefRig tbody tr th {
+	border-bottom:1px solid #ddd !important;
+}
+.AUMS .colorStyleAlert{
+	background: #ddd none repeat scroll 0 0;
+    border-radius: 10px;
+    padding: 5px;
+}

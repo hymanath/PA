@@ -15756,7 +15756,7 @@
 		</result>
 	</action>
 	<action name="departmentDetailsAction" class="cccDashboardAction" method="getDepartmentDetails">
-		<result name="success">/jsp/***.jsp</result>
+		<result name="success">/jsp/alertUserManagement.jsp</result>
 	</action>
 	
 	<action name="getStatusWiseCommentsTrackingAction" class="cccDashboardAction" method="getStatusWiseCommentsTracking">
