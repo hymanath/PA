@@ -344,9 +344,21 @@
 										<label>Location Level</label>
 										<div id="locationLevelId"></div>
 									</div>
+									<div class="col-md-3 col-xs-12 col-sm-6" id="constituencyLevelDiv" style="display:none;">
+										<label>Constituency</label>
+										<select class="chosenSelect" id="constLvlId">	
+											<option></option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-6" id="mndlMuncLevelDiv" style="display:none;">
+										<label>Mandal/Muncipality</label>
+										<select class="chosenSelect" id="mndlMuncLvlId">	
+											<option></option>
+										</select>
+									</div>
 									<div class="col-md-3 col-xs-12 col-sm-6">
 										<label>Location</label>
-										<select class="chosenSelect" id="locationId" name="alertAssigningVO.levelValue">	
+										<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
 											<option></option>
 										</select>
 									</div>

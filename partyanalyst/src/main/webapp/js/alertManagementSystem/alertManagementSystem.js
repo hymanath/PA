@@ -539,18 +539,19 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	});
 	
 	var alertId = $(this).attr("attr_alert_Id");
-	$("#hiddenAlertId").val(alertId);
-	getAlertData();
-	getAlertStatusCommentsTrackingDetails()
+	$("#hiddenAlertId").val(alertId);   //3725
+	getAlertData(alertId);
+	getInvolvedMembersDetilas(alertId);
+	getAlertStatusCommentsTrackingDetails(alertId)
 	getDepartmentLevels();
-	assignedOfficersDetailsForAlert();
+	assignedOfficersDetailsForAlert(alertId);
 });
-function getAlertData()
+function getAlertData(alertId)
 {
 	$("#alertCandidateDataId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj =
 	{
-		alertId  :3725,
+		alertId  :alertId,
 		task : ""
 	}
 	$.ajax({
@@ -622,8 +623,21 @@ function buildAlertData(result)
 			$("#imageUrlTrId").hide();
 		}
 		
-		buildAlertCandidateData(result[i].subList,result[i].categoryId);
+		//buildAlertCandidateData(result[i].subList,result[i].categoryId);
 	}
+}
+
+function getInvolvedMembersDetilas(alertId){
+	var jsObj ={
+		alertId  :alertId
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getInvolvedMembersInAlertAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildAlertCandidateData(result);
+	});
 }
 function buildAlertCandidateData(result,categoryId)
 {
@@ -636,7 +650,7 @@ function buildAlertCandidateData(result,categoryId)
 		return;
 	}
 	
-	if(categoryId !=null && categoryId>1){
+	/*if(categoryId !=null && categoryId>1){
 		for(var i in result)
 		{
 			
@@ -677,57 +691,61 @@ function buildAlertCandidateData(result,categoryId)
 		   str+=' </div>';
 
 		}
-	}else{
+	//}else{*/
 		for(var i in result)
 		{
 			str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10" style="padding: 3px;">';
 				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
-					str+='<div class="media-left">';
+					/*str+='<div class="media-left">';
 					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-				   str+=' </div>';
+				   str+=' </div>';*/
 				   str+=' <div class="media-body">';
 					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
-					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
+					   str+=' <p class="text-capital"><b>Organization: '+result[i].status+'</b></p>';
+					   /*if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
 							str+='<b><p class="text-capital">'+result[i].electionType+" "+result[i].committeeName+' Committee '+result[i].committeePosition+'</b></p>';
 						if(result[i].designation != null && result[i].designation != "")
-							str+='<b><p class="text-capital">'+result[i].designation+'</p></b>';
-					  str+='  <p>'+result[i].mobileNo+'</p>';
-					  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+							str+='<b><p class="text-capital">'+result[i].designation+'</p></b>';*/
+					  str+='  <p>'+result[i].source+'</p>';
+					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
 					  
-					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
-						  str+='<p><a>'+result[i].membershipNo+'</a></p>';
+					  if(result[i].dateStr !=null && result[i].dateStr.length>0){
+						  str+='<p><a>'+result[i].dateStr+'</a></p>';
 					  }
-					  if(result[i].impactId == 1)
+					  /*if(result[i].impactId == 1)
 					  {
 						 str+=' <span class="label label-success" style="margin-top: 7px;">+ Ve</span>'; 
 					  }else if(result[i].impactId == 2){
 						  str+=' <span class="label label-danger" style="margin-top: 7px;">- Ve</span>';
 					  }else{
 						  str+=' <span class="label label-neutral" style="margin-top: 7px;">N</span>';
-					  }
+					  }*/
 					  
 				  str+='  </div>';
 				str+='</div>';
 		   str+=' </div>';
 		}
-	}
+	//}
 	$("#involvedCandidatesCnt").html(result.length);	
 	$("#alertCandidateDataId").html(str);
 }
-function getAlertStatusCommentsTrackingDetails()
+function getAlertStatusCommentsTrackingDetails(alertId)
 {
 	$("#alertCommentsDivIdNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj={
-				alertId:3725,
+				alertId:alertId,
 				task:""
 			}
 	$.ajax({
 	  type : 'GET',
-	  url : 'getAlertStatusCommentsTrackingDetails.action',
+	  url : 'getStatusWiseCommentsTrackingAction.action',
 	  dataType : 'json',
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-		alertComments(result);		
+		if(result != null && result.length > 0)
+			alertComments(result);	
+		else
+			$("#alertCommentsDivIdNew").html("");
 	});
 	
 }
@@ -757,11 +775,11 @@ function alertComments(result)
 			}
 			if(length != i){
 				str+='<h4 class="panel-title">'+result[i].status+'';
-						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';    
+						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';    
 				str+='</h4>';
 			}else{
 				str+='<h4 class="panel-title">'+result[i].status+'';
-					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';
+					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';
 				str+='</h4>';
 			} 
 				str+='</a>';  
@@ -774,7 +792,7 @@ function alertComments(result)
 			}
 				str+='<div class="panel-body" style="padding:5px;">';
 					str+='<div class="row">';
-						for(var j in result[i].sublist2){
+						for(var j in result[i].govtDeptList){
 							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 								var date = result[i].sublist2[j].date
 								var dateArr = date.split("-");
@@ -797,18 +815,19 @@ function alertComments(result)
 								str+='<ul class="alertStatusTracking">';
 									str+='<li>';
 										str+='<div class="arrow_box_left">';
-										for(var k in result[i].sublist2[j].sublist)
-										{	
+										//for(var k in result[i].sublist2[j].sublist)
+										//{	
 											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
-												for(var l in result[i].sublist2[j].sublist[k])
-												{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
-												}
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>';
+												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+												//for(var l in result[i].govtDeptList[j].sublist[k])
+												//{
+													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>';
+												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
-												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
-												if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+												str+='<p>'+result[i].govtDeptList[j].comment+'</p>';
+												/*if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
 													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
 													str+='<ul>';
 													for(var t in result[i].sublist2[j].sublist[k][0].docList){
@@ -817,11 +836,11 @@ function alertComments(result)
 														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
 													}
 													str+='</ul>';              
-												}
-												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+												}*/
+												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].govtDeptList[j].name+'</span></p>';
 												str+='<hr style="margin-top:20px;"/>';
 											str+='</div>';   
-										}
+										//}
 										str+='</div>';    
 									str+='</li>';
 								str+='</ul>';
@@ -867,10 +886,10 @@ $(document).on("click",".alertDetailsModalClose",function(){
 		$("body").addClass("modal-open")
 	},500);
 });
-function assignedOfficersDetailsForAlert()
+function assignedOfficersDetailsForAlert(alertId)
 {
 	var jsObj = {
-		alertId : 3752
+		alertId : alertId
 	}
 	$.ajax({
       type:'GET',
@@ -929,6 +948,9 @@ $(document).on('change','#locationLevelSelectId', function(evt, params) {
 });
 function locationsBasedOnLevel(levelId)
 {
+	$("#constituencyLevelDiv").hide();
+	$("#mndlMuncLevelDiv").hide();
+	
 	var jsObj = {
 		levelId : levelId
 	}
@@ -938,22 +960,141 @@ function locationsBasedOnLevel(levelId)
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		var str='';
-		str+='<option value="0">Select Location</option>';
-		for(var i in result)
-		{
-			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		if(levelId <= 4){
+			str+='<option value="0">Select Location</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			$("#locationsId").html(str);
+			$("#locationsId").trigger("chosen:updated");
 		}
-		$("#locationId").html(str);
-		$("#locationId").trigger("chosen:updated");
+		else{
+			$("#constituencyLevelDiv").show();
+			str+='<option value="0">Select Constituency</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			$("#constLvlId").html(str);
+			$("#constLvlId").trigger("chosen:updated");
+		}
 	});
 }
-$(document).on('change','#locationId', function(evt, params) {
+$(document).on('change','#constLvlId', function() {
+	$("#mndlMuncLevelDiv").hide();
+	var levelId = $("#locationLevelSelectId").val();
+	var constId = $(this).val();
+	if(levelId == 5 || levelId == 6)
+		getMandalsByConstituency(constId,levelId);
+	else if(levelId == 7 || levelId == 8)
+		getLebsByConstituency(constId,levelId);
+});
+function getMandalsByConstituency(constId,levelId){
+	var jsObj = {
+		constituencyId : constId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getMandalsForConstituencyAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			if(levelId == 6){
+				$("#mndlMuncLevelDiv").show();
+				str+='<option value="0">Select Mandal</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#mndlMuncLvlId").html(str);
+				$("#mndlMuncLvlId").trigger("chosen:updated");
+			}
+			else{
+				str+='<option value="0">Select Location</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#locationsId").html(str);
+				$("#locationsId").trigger("chosen:updated");
+			}
+		}
+	});
+}
+
+function getLebsByConstituency(constId,levelId){
+	var jsObj = {
+		constituencyId : constId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getLebsForConstituencyAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			if(levelId == 8){
+				$("#mndlMuncLevelDiv").show();
+				str+='<option value="0">Select Muncipality</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#mndlMuncLvlId").html(str);
+				$("#mndlMuncLvlId").trigger("chosen:updated");
+			}
+			else{
+				str+='<option value="0">Select Location</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#locationsId").html(str);
+				$("#locationsId").trigger("chosen:updated");
+			}
+		}
+	});
+}
+
+$(document).on('change','#mndlMuncLvlId', function() {
+	var mandalId = $(this).val();
+	var constituencyId = $("#constLvlId").val();
+	getVillageAndWardsByMandal(mandalId,constituencyId);
+});
+
+function getVillageAndWardsByMandal(mandalId,constituencyId){
+	var jsObj = {
+		constituencyId : constituencyId,
+		mandalId : mandalId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getPanchayatsMandalIdAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			var str = '';
+			str+='<option value="0">Select Location</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			$("#locationsId").html(str);
+			$("#locationsId").trigger("chosen:updated");
+		}
+	});
+}
+
+$(document).on('change','#locationsId', function(evt, params) {
 	departmentsByAlert()
 });
 function departmentsByAlert()
 {
+	var alertId = $("#hiddenAlertId").val();
 	var jsObj = {
-		alertId : 3725
+		alertId : alertId
 	}
 	$.ajax({
       type:'GET',
@@ -1004,7 +1145,7 @@ $(document).on('change','#designationsId', function(evt, params) {
 function officersByDesignationAndLevel(designationId)
 {
 	var LevelId = $("#locationLevelSelectId").chosen().val()
-	var LevelValue = $("#locationId").chosen().val()
+	var LevelValue = $("#locationsId").chosen().val()
 	
 	var jsObj = {
 		levelId				: LevelId,
