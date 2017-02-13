@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -12,4 +13,5 @@ public interface IPartyMeetingSessionDAO extends GenericDao< PartyMeetingSession
 	public List<Object[]> getSessionDetailsForPartyMeetings(Set<Long> partyMeetingsIds);
 	public List<Object[]> getSessionDetailsForPartiMeetings(Set<Long> partyMeetingsTypeIds,List<Long> partyMeetingsIds);
 	public List<Object[]> getPartyMeetingSession(Long partyMeetingId);
+	public List<Object[]> getSessionDetailsForPartiMeetings(Set<Long> partyMeetingsTypeIds,List<Long> partyMeetingsIds,Date startDate,Date endDate);
 }
