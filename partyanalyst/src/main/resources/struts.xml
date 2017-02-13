@@ -15782,6 +15782,11 @@
 			<param name="root">govtDeptVoList</param>
 		</result>	
 	</action>
+	<action name="getAlertCountLocationWiseThenStatusWiseAction" class="cccDashboardAction"  method="getAlertCountLocationWiseThenStatusWise">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>         
+		</result>
+	</action>
 	<action name="getDistrictWiseTotalAlertsForAlertAction" class="cccDashboardAction" method="getDistrictWiseTotalAlertsForAlert">
 		<result type="json" name="success">		   
 			<param name="root">govtDeptVoList</param>
