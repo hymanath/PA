@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -59,6 +60,41 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		}
 		return null;
 	}
+	
+	public List<Object[]> getSessionDetailsForPartiMeetings(Set<Long> partyMeetingsTypeIds,List<Long> partyMeetingsIds,Date startDate,Date endDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		if(partyMeetingsTypeIds != null && partyMeetingsTypeIds.size()>0){
+			queryStr.append(" select  distinct pm.partyMeetingId, model.partyMeetingSessionId, model.sessionType.type, '' , " +
+					" model.startTime, model.endTime,model.lateTime,model.sessionType.startTime,model.sessionType.endTime,model.sessionType.lateTime," +
+					" pm.partyMeetingTypeId, pm.meetingName " +
+					"  from PartyMeetingSession model " +
+					" left join model.partyMeeting pm " +
+					" where model.isDeleted='N' and " +
+					" pm.partyMeetingTypeId in (:partyMeetingsTypeIds)  ");
+			if(partyMeetingsIds != null && partyMeetingsIds.size()>0){
+				queryStr.append(" and pm.partyMeetingId in (:partyMeetingIds) ");
+			}
+			if(startDate != null && endDate != null)
+			{
+				queryStr.append(" and date(pm.startDate) between :startDate and :endDate ");
+			}
+			queryStr.append("  order by  model.orderNo asc ");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("partyMeetingsTypeIds", partyMeetingsTypeIds);
+			if(partyMeetingsIds != null && partyMeetingsIds.size()>0){
+				query.setParameterList("partyMeetingIds",partyMeetingsIds);
+			}
+			if(startDate != null && endDate != null)
+			{
+				query.setDate("startDate",startDate);
+				query.setDate("endDate",endDate);
+			}
+			return query.list();
+		}
+		return null;
+	}
+	
 	public List<Object[]> getPartyMeetingSession(Long partyMeetingId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  distinct model.partyMeeting.partyMeetingId, " +//0
