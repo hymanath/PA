@@ -4038,6 +4038,8 @@
 		<property name="alertAssignedOfficerActionDAO" ref="alertAssignedOfficerActionDAO"></property>
 		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO" ></property>
 		<property name="govtAlertDepartmentLocationDAO" ref="govtAlertDepartmentLocationDAO" ></property>
+		<property name="boothDAO" ref="boothDAO" ></property>
+		<property name="alertCandidateDAO" ref="alertCandidateDAO" ></property>
 	</bean>
 </beans>			
 	

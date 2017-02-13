@@ -198,6 +198,43 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		
+		public String getMandalsForConstituency(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+			
+				govtDeptVoList = cccDashboardService.getMandalsForConstituency(constituencyId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getMandalsForConstituency() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getLebsForConstituency(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+			
+				govtDeptVoList = cccDashboardService.getLebsForConstituency(constituencyId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getLebsForConstituency() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getPanchayatsMandalId(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				Long mandalId = jObj.getLong("mandalId");
+			
+				govtDeptVoList = cccDashboardService.getPanchayatsMandalId(mandalId,constituencyId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getPanchayatsMandalId() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 		   
 		public String getDepartmentsByAlert(){
 		   try {
@@ -269,7 +306,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				   		inputStream = new StringBufferInputStream("success");
 		          	}
 			   if(fileNamesList != null && !fileNamesList.isEmpty()){
-				   alertAssigningVO.setDocument(fileNamesList.get(0));
+				   alertAssigningVO.setDocumentsList(fileNamesList);
 			   }
 			   
 			   successMsg = cccDashboardService.assigningAlertToOfficer(alertAssigningVO);
@@ -427,5 +464,17 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				   LOG.error("Exception Raised in getStatusWiseDistrictTotalForAlert() in CccDashboardAction",e);
 			  }
 				return Action.SUCCESS;
+		}
+		
+		public String getInvolvedMembersInAlert(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long alertId = jObj.getLong("alertId");
+				
+				govtDeptVoList = cccDashboardService.getInvolvedMembersInAlert(alertId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getInvolvedMembersInAlert() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
 		}
 }
