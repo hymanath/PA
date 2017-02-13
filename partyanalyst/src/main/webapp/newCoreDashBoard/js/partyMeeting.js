@@ -5303,8 +5303,8 @@ $(document).on("click",".specialMeetingBtnCls",function(){
 });
 $(".specialMeetingBtnCls").each(function(){
 	if($(this).attr("attr_date") == 'default'){
-		$(this).attr("attr_startDate",moment().format("DD/MM/YYYY"));
-		$(this).attr("attr_endDate",moment().format("DD/MM/YYYY"));
+		$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
+		$(this).attr("attr_endDate",moment().endOf('month').format("DD/MM/YYYY"));
 	}else if($(this).attr("attr_date") == 'thisMonth'){
 		$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
 		$(this).attr("attr_endDate",moment().endOf('month').format("DD/MM/YYYY"));
