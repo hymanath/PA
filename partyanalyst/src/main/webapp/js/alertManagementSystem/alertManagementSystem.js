@@ -282,7 +282,7 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 		var dynamicHeight;
 		$(".dynamicHeightApply"+i).each(function(){
 			dynamicHeight = $(this).find("li").length;
-			dynamicHeight = (dynamicHeight*40)+"px";
+			dynamicHeight = (dynamicHeight*36)+"px";
 		});
 		$("#departmentStatusGraph"+i).css("height",dynamicHeight);
 		var dynamicWidth = $("#departmentStatusGraph0").parent().width();
