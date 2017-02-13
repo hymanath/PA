@@ -542,7 +542,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
 	getInvolvedMembersDetilas(alertId);
-	getAlertStatusCommentsTrackingDetails(alertId)
+	getAlertStatusCommentsTrackingDetails();
 	getDepartmentLevels();
 	assignedOfficersDetailsForAlert(alertId);
 });
@@ -729,8 +729,9 @@ function buildAlertCandidateData(result,categoryId)
 	$("#involvedCandidatesCnt").html(result.length);	
 	$("#alertCandidateDataId").html(str);
 }
-function getAlertStatusCommentsTrackingDetails(alertId)
+function getAlertStatusCommentsTrackingDetails()
 {
+	var alertId = $("#hiddenAlertId").val();
 	$("#alertCommentsDivIdNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj={
 				alertId:alertId,
@@ -1172,7 +1173,7 @@ $(document).on("click","#assignOfficerId",function(){
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
-			//showMeetingsStatusDocsResult(uploadResult);
+			displayStatus(uploadResult);
 		}
 	};
 
@@ -1180,6 +1181,22 @@ $(document).on("click","#assignOfficerId",function(){
 	YAHOO.util.Connect.asyncRequest('POST','assigningAlertToOfficerAction.action',uploadHandler); 
 	
 });
+
+function displayStatus(myResult){
+	
+	var result = (String)(myResult);
+	if(result.search('success') != -1){
+		getAlertStatusCommentsTrackingDetails();
+		alert("Alert Assigned Successfully.");
+		$("#alertStatus").html('Notified');
+		/*$("#uploadClarificationFileId0").val('');
+		$("#extraClarificationUploadFileDiv").html('');
+		$(".ClearFileCls").hide();  
+		fileNo = 0;*/
+	}else{
+		alert("Please Try Again.");
+	}
+}
 /* Alert Details Modal End*/
 
 /* Departments Complete Overview Start*/
