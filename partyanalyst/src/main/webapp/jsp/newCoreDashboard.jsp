@@ -2514,7 +2514,23 @@
 					</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
                         	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-md-6 col-xs-12 col-sm-12">
+									<ul class="list-inline listIcon">
+										<li>
+											<span class="startedColor"></span>
+											Started
+										</li>
+										<li>
+											<span class="completedColor"></span>
+											Completed
+										</li>
+										<li>
+											<span class="notStartedColor"></span>
+											Not Started
+										</li>
+									</ul>
+								</div>
+                            	<div class="col-md-6 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
                                     	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
 										<li class="topFivePoorResults">Top 5 Poor</li>-->
