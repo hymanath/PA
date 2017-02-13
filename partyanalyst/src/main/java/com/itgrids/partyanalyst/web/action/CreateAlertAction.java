@@ -511,7 +511,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 		}
 		catch (Exception e) {
-			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+			LOG.error("Exception rised in getAlertsData",e);
 		}
 		return Action.SUCCESS;	
 	}
@@ -527,7 +527,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 		}
 		catch (Exception e) {
-			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+			LOG.error("Exception rised in getAlertCandidatesData",e);
 		}
 		return Action.SUCCESS;	
 	}
@@ -755,7 +755,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long editionId = jObj.getLong("editionIds");
 			alertVOs = alertService.getTotalAlertGroupByLocationThenCategory(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId);    
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getTotalAlertGroupByLocationThenCategory() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;    
 	}
@@ -777,7 +777,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long editionId = jObj.getLong("editionIds");
 			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId);    
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getTotalAlertGroupByLocationThenStatus() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}
@@ -830,7 +830,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long editionId = jObj.getLong("editionIds");
 			alertCommentVOs = alertService.getTotalAlertGroupByDist(fromDate, toDate, stateId, scopeIdList, activityMemberId,alertId,editionId);   
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getTotalAlertGroupByDist() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}
@@ -851,7 +851,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId,editionIds,isActionType,alertActionTypeId);   
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getAlertDtls() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}
@@ -919,7 +919,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			   
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getTotalAlertGroupByPubRepThenStatus() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;    
 	}
@@ -950,7 +950,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId,alertTypeId,editionTypeId);
 			
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getDesigWiseTdpCommitAlertCount() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;    
 	}
@@ -1551,7 +1551,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 		}
 		catch (Exception e) {
-			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+			LOG.error("Exception rised in getLocationLevelWiseAlertsDataForCentralMembers",e);
 		}
 		return Action.SUCCESS;	
 	}
@@ -1697,6 +1697,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAlertStatusByAlertType(){
+		try{
+			  jObj = new JSONObject(getTask());
+			  alertVOs = alertService.getAlertStatusByAlertTypeId(jObj.getLong("alertTypeId"),jObj.getLong("alertId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertStatusByAlertType() of CreateAlertAction",e);	
 		}
 		return Action.SUCCESS;
 	}

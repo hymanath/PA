@@ -76,7 +76,7 @@
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-3">
 							<select class="form-control" id="alertTypeId">
-								<option value="0">All</option>
+								<!--<option value="0">All</option>-->
 								<option value="1" selected="selected">Party</option>            
 								<option value="2">Govt</option>
 								<option value="3">Others</option>

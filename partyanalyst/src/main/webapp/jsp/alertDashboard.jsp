@@ -76,7 +76,7 @@
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-3">
 							<select class="form-control" id="alertTypeId">
-								<option value="0">All</option>
+								<!--<option value="0">All</option>-->
 								<option value="1" selected="selected">Party</option>            
 								<option value="2">Govt</option>
 								<option value="3">Others</option>
@@ -258,14 +258,14 @@
 									<div class="col-md-2 col-xs-12 col-sm-3">
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
 										<select class="form-control chosen-select" id="alertStatusId" >
-											<option value="0" selected="selected">All</option>
+											<!--<option value="0" selected="selected">All</option>
 											<option value="1">Pending</option>
 											<option value="2">Notified</option>
 											<option value="3">Action In Progess</option>
 											<option value="4">Completed</option>
 											<option value="5">Unable to Resolve</option>
 											<option value="6">Action Not Required</option>
-											<option value="7">Duplicate</option>
+											<option value="7">Duplicate</option>-->
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-3">
@@ -437,6 +437,10 @@ var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");  
 
 getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);  
+getAlertStatusByAlertType();
+$(document).on("change","#alertTypeId",function(){
+ getAlertStatusByAlertType();
+});
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
 		opens:'left',
