@@ -1692,7 +1692,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 			}
 		 }
 		 
-		 List<Object[]> partySessionsInfo = partyMeetingSessionDAO.getSessionDetailsForPartiMeetings(new HashSet<Long>(meetingTypeVOMap.keySet()),inputVO.getPartyMeetingIds());
+		 List<Object[]> partySessionsInfo = partyMeetingSessionDAO.getSessionDetailsForPartiMeetings(new HashSet<Long>(meetingTypeVOMap.keySet()),inputVO.getPartyMeetingIds(),datesList.get(0),datesList.get(1));
 		 List<Long> sessionAvailablePArtyIds = new ArrayList<Long>(0);
 		 if(commonMethodsUtilService.isListOrSetValid(partySessionsInfo)){
 			 for (Object[] param : partySessionsInfo) {
