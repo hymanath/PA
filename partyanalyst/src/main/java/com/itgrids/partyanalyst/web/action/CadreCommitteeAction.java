@@ -2449,4 +2449,7 @@ public String getSummaryDetails(){
 		
 		return Action.SUCCESS;
 	}
+	public String committeeCreationDetails(){
+		return Action.SUCCESS;
+	}
 }
