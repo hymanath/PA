@@ -4507,15 +4507,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(fromDate != null && toDate != null){ 
 			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
 		}
-		/*if(stateId != null && stateId.longValue() >= 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				sb.append(" and model.userAddress.state.stateId = 1 ");
+				sb.append(" and model.userAddress.state.stateId =:stateId ");
 			}else if(stateId.longValue() == 36L){
-				sb.append(" and model.userAddress.state.stateId = 36 ");
-			}else if(stateId.longValue() == 0L){
+				sb.append(" and model.userAddress.state.stateId =:stateId ");
+			}/*else if(stateId.longValue() == 0L){
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
-			}
-		}*/
+			}*/
+		}
 		sb.append(" group by model.govtDepartmentId, model.userAddress.district.districtId ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -4529,15 +4529,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(paperIds != null && paperIds.size() > 0 ){
 			query.setParameterList("paperIds",paperIds);
 		}
-		/*if(stateId != null && stateId.longValue() >= 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				query.setParameter("stateId", stateId);
+				query.setParameter("stateId",stateId);
 			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId",stateId);
+			}/*else if(stateId.longValue() == 0L){
 				query.setParameter("stateId", stateId);
-			}else if(stateId.longValue() == 0L){
-				query.setParameter("stateId", stateId);
-			}
-		}*/
+			}*/
+		}
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);   
@@ -4549,11 +4549,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	public List<Object[]> getStatusWiseTotalCountsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select  ASTS.alert_status_id, ASTS.alert_status, count(distinct A.alert_id),A.alert_category_id " +
-				" from alert_department_status ADS, alert_status ASTS,alert A " +
+				" from alert_department_status ADS, alert_status ASTS,user_address UA,state S,alert A " +
 				" left outer join editions E on A.edition_id=E.edition_id  ");
 	
 		sb.append(" where A.alert_status_id=ADS.alert_status_id and" +
-				"  ADS.alert_status_id=ASTS.alert_status_id" +
+				"  ADS.alert_status_id=ASTS.alert_status_id and " +
+				" A.address_id =UA.user_address_id and " +
+				" UA.state_id = S.state_id " +
 				"  and A.is_deleted='N' and " +
 				" A.alert_type_id in ("+IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID+") and ");
 		
@@ -4571,15 +4573,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(fromDate != null && toDate != null){ 
 			sb.append("  and date(A.created_time) between :fromDate and :toDate ");
 		}
-		/*if(stateId != null && stateId.longValue() >= 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				sb.append(" and model.userAddress.state.stateId = 1 ");
+				sb.append(" and S.state_id =:stateId ");
 			}else if(stateId.longValue() == 36L){
-				sb.append(" and model.userAddress.state.stateId = 36 ");
-			}else if(stateId.longValue() == 0L){
+				sb.append(" and S.state_id =:stateId ");
+			}/*else if(stateId.longValue() == 0L){
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
-			}
-		}*/
+			}*/
+		}
 		sb.append("  group by A.alert_category_id,ADS.alert_status_id ");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
@@ -4593,15 +4595,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(paperIds != null && paperIds.size() > 0 ){
 			query.setParameterList("paperIds",paperIds);
 		}
-	/*	if(stateId != null && stateId.longValue() >= 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				query.setParameter("stateId", stateId);
+				query.setParameter("stateId",stateId);
 			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId",stateId);
+			}/*else if(stateId.longValue() == 0L){
 				query.setParameter("stateId", stateId);
-			}else if(stateId.longValue() == 0L){
-				query.setParameter("stateId", stateId);
-			}
-		}*/
+			}*/
+		}
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);   
@@ -4639,15 +4641,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(fromDate != null && toDate != null){ 
 			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
 		}
-		/*if(stateId != null && stateId.longValue() >= 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				sb.append(" and model.userAddress.state.stateId = 1 ");
+				sb.append(" and model.userAddress.state.stateId =:stateId ");
 			}else if(stateId.longValue() == 36L){
-				sb.append(" and model.userAddress.state.stateId = 36 ");
-			}else if(stateId.longValue() == 0L){
+				sb.append(" and model.userAddress.state.stateId =:stateId ");
+			}/*else if(stateId.longValue() == 0L){
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
-			}
-		}*/
+			}*/
+		}
 		sb.append(" group by model.userAddress.district.districtId,model.alertStatus.alertStatusId ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -4661,15 +4663,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(paperIds != null && paperIds.size() > 0 ){
 			query.setParameterList("paperIds",paperIds);
 		}
-	/*	if(stateId != null && stateId.longValue() >= 0L){
+	if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				query.setParameter("stateId", stateId);
+				query.setParameter("stateId",stateId);
 			}else if(stateId.longValue() == 36L){
+				query.setParameter("stateId",stateId);
+			}/*else if(stateId.longValue() == 0L){
 				query.setParameter("stateId", stateId);
-			}else if(stateId.longValue() == 0L){
-				query.setParameter("stateId", stateId);
-			}
-		}*/
+			}*/
+		}
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);   
