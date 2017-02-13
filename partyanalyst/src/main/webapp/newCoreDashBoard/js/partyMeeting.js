@@ -2101,7 +2101,7 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 		$("#specialMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		partyMeetingId="0";
 	}
-	$(".specialMeetingBtnCls").each(function(){
+	$(".specialMeetingBtnClsNew").each(function(){
 		if($(this).hasClass('specialMeetingsDate'))
 		{
 			customStartDateMeetings = $(this).attr("attr_startDate")
@@ -5287,18 +5287,18 @@ function buildDocumentListDetails(result,divId){
 		});
 }
 
-$(document).on("click",".specialMeetingBtnCls",function(){
+$(document).on("click",".specialMeetingBtnClsNew",function(){
 	$(this).addClass('specialMeetingsDate');
-	$(".specialMeetingBtnCls").removeClass('btn-primary');
+	$(".specialMeetingBtnClsNew").removeClass('btn-primary');
 	$(this).addClass('btn-primary');
 	getPartySpecialMeetingsMainTypeOverview(0);
 });
-$(".specialMeetingBtnCls").each(function(){
+$(".specialMeetingBtnClsNew").each(function(){
 	if($(this).attr("attr_date") == 'default'){
 		$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
 		$(this).attr("attr_endDate",moment().endOf('month').format("DD/MM/YYYY"));
-	}else if($(this).attr("attr_date") == 'thisMonth'){
-		$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
-		$(this).attr("attr_endDate",moment().endOf('month').format("DD/MM/YYYY"));
+	}else if($(this).attr("attr_date") == 'lastMonth'){
+		$(this).attr("attr_startDate",moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY"));
+		$(this).attr("attr_endDate",moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY"));
 	}
 });
