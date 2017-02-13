@@ -96,8 +96,7 @@ $(document).on("click",".specialMeetingBtnCls",function(){
 	 // $("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
 	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
 	});
-	
-    $(document).on("click",".meetingGetDtlsBtncls",function(){
+	$(document).on("click",".meetingGetDtlsBtncls",function(){
 		var isChecked=false;
 		 $("#committeeTypeId li").each(function() {
 		  if($(this).find("input").is(":checked")){

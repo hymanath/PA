@@ -68,7 +68,7 @@
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-7 col-xs-12 col-sm-6">
+            	<div class="col-md-5 col-xs-12 col-sm-5">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
                           <a style="cursor:pointer;"><span id="mainHeadinId""> </span> 
@@ -82,7 +82,7 @@
                         </li>
                     </ul>
                 </div>
-				<div class="col-md-5 col-xs-12 col-sm-6 pull-right" style="margin-top: -10px;">
+				<div class="col-md-7 col-xs-12 col-sm-7 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
 						<li>
 							<!-- Dont Add New Classes and new functionalities for this class a click has been already initialised please use that-->
@@ -1819,7 +1819,7 @@
 								  
 								  <div class="panelBlock m_top20">
 									<div class="row">
-										<div class="col-md-7 col-xs-12 col-sm-7">
+										<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
 											<h4>
 												<span class="headingColor text-capitalize">special meetings</span>
 												<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
@@ -1833,7 +1833,14 @@
 											<button class="btn btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="thisMonth" attr_startDate="" attr_endDate="">This month</button>
 										</div>
 									</div>
-									<div class="specialMeetingDropDown " style="left:0px;">
+									<!--<h4>
+										<span class="headingColor text-capitalize">special meetings</span>
+										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
+										
+										<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
+								    </h4>-->
+								 	<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
 										</ul>
@@ -2522,23 +2529,7 @@
 					</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
                         	<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-12">
-									<ul class="list-inline listIcon">
-										<li>
-											<span class="startedColor"></span>
-											Started
-										</li>
-										<li>
-											<span class="completedColor"></span>
-											Completed
-										</li>
-										<li>
-											<span class="notStartedColor"></span>
-											Not Started
-										</li>
-									</ul>
-								</div>
-                            	<div class="col-md-6 col-xs-12 col-sm-12">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
                                     	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
 										<li class="topFivePoorResults">Top 5 Poor</li>-->
@@ -2692,7 +2683,7 @@
 							</div>-->
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
 								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
 										<ul class="activeUlCls list-inline hideCls">
 											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
 											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
@@ -4002,6 +3993,7 @@ $(document).on("click",".globalDateChange",function(){
 	globalDebateCalls(type);
 	globalPrintMediaCalls(type);
 	globalElectronicMediaCalls(type);
+	globalToursCalls(type);
 	globalMeetingsCalls(type);
 });
 /* GLobal Navbar Date Change End*/

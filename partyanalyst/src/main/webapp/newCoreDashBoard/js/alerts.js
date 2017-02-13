@@ -8,19 +8,19 @@
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment());
 			customStartDateAlert = moment().format("DD/MM/YYYY")
 			customEndDateAlert = moment().format("DD/MM/YYYY")
-			$("#alertDateHeadingId").html("TODAY"+" ( "+moment().format("DD/MM/YYYY")+"-"+moment().format("DD/MM/YYYY")+" )");
+			$("#alertDateHeadingId").html("TODAY"+"("+moment().format("DD/MM/YYYY")+"-"+moment().format("DD/MM/YYYY")+" )");
 		}else if(type == "currentMonth"){
 			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment().startOf("month"));
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment().endOf("month"));
 			customStartDateAlert = moment().startOf("month").format("DD/MM/YYYY")
 			customEndDateAlert = moment().endOf("month").format("DD/MM/YYYY")
-			$("#alertDateHeadingId").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD/MM/YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+			$("#alertDateHeadingId").html("THIS MONTH"+"("+moment().startOf("month").format("DD/MM/YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
 		}else if(type == "lastMonth"){
 			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
 			customStartDateAlert = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")
 			customEndDateAlert = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")
-			$("#alertDateHeadingId").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")+" )");
+			$("#alertDateHeadingId").html("LAST MONTH"+"("+moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")+" )");
 		}
 		$("#dateRangeIdForAlert").val(customStartDateAlert+"/"+customEndDateAlert);
 		getAlertOverviewDetails();
@@ -66,7 +66,7 @@
 	})
 	
 	var dates= $("#dateRangeIdForAlert").val();
-	$("#alertDateHeadingId").html(" Today ( "+dates+" )");
+	$("#alertDateHeadingId").html(" Today("+dates+")");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForAlert').on('apply.daterangepicker', function(ev, picker) {
