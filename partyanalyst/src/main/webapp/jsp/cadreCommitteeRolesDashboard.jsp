@@ -79,8 +79,16 @@
 		<h3 style="text-align:center"> DESIGNATION WISE CADRE COMMITTEE DASHBOARD </h3>
 		<hr style="margin-top:5px;border-color:#FC6"/>
 	</div>
-	<div class="col-md-2 col-md-offset-6 col-xs-12 col-sm-2 col-sm-offset-4">
+	<div class="col-md-2 col-xs-12 col-sm-2 col-sm-offset-4">
 		<select class="form-control" id="tdpCommitteeYearId"></select>
+	</div>
+	<div class="col-md-3 col-xs-12 col-sm-3">
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+			</span>
+			<input type="text" class="form-control" id="reportrange"/>
+		</div>
 	</div>
 	<div class="col-md-3" style="margin-top:10px;" id="buttonsDiv">
        
@@ -198,14 +206,31 @@
 var userInitialAccessType = '${pageAccessType}';
 //console.log(userInitialAccessType);
 	$(document).ready(function(){	
-			getCadreEnrollmentYears();	
+			getCadreEnrollmentYears(1);	
+			getCommitteeDetailsByEnrollement(1);
 			$('#AP').prop("checked",true);
 			if(userInitialAccessType != 'ALL')
 			{
 				$('#buttonsDiv').hide();
 			}
 	});
-	
+	$('#reportrange').val(moment().format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
+					$("#reportrange").daterangepicker({
+						startDate: moment(),
+						endDate: moment(),
+						opens: 'left',
+						format: 'MM/DD/YYYY',
+						ranges: {
+						   'Today' : [moment(), moment()],
+						   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+						   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+						   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+						   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+						   'This Month': [moment().startOf('month'), moment()],
+						   'This Year': [moment().startOf('Year'), moment()]
+						}
+					});
 	function buildRoleWiseDetailsInfo(result,divId,accessType,locationName)
 	{
 		var locatinLevelId =$('#searchLevelId').val();
@@ -593,7 +618,10 @@ var userInitialAccessType = '${pageAccessType}';
 		//console.log(radioval);
 		$('.btn-xs').removeClass("btn-success");
 		$('.btn-xs').addClass("btn-danger");
-
+	    var dates = $("#reportrange").val();
+		var dateArray = dates.split("-");
+		 fromDate=dateArray[0];
+		 toDate=dateArray[1];
 		if(levelId != 0)
 		{
 			locationLevelId = levelId;
@@ -651,7 +679,9 @@ var userInitialAccessType = '${pageAccessType}';
 			castePercentage:castePercentage,
 			searchTypeId:searchTypeId,
 			selectedRadio:selectedRadio,
-			enrollmentIdsArr:enrollmentIdsArr
+			enrollmentIdsArr:enrollmentIdsArr,
+			startDate:fromDate,
+			endDate:toDate
 		};
 		$.ajax({
           type:'GET',
@@ -694,6 +724,9 @@ var userInitialAccessType = '${pageAccessType}';
 		}		
 			
 	}
+	$(document).on("change","#tdpCommitteeYearId",function(){
+		getCommitteeDetailsByEnrollement($(this).val());
+	});
 </script>
 </body>
 </html>
