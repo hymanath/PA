@@ -41,16 +41,6 @@ function globalMeetingsCalls(type)
 }
 
 
-$(document).on("click",".specialMeetingBtnCls",function(){
-	var btnDate = $(this).attr("attr_date");
-	if(btnDate == 'default')
-	{
-		
-	}else if(btnDate == 'lastMonth'){
-		
-	}
-	
-});
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
 		 startDate: moment().subtract(1, 'month').startOf('month'),
@@ -5299,6 +5289,8 @@ function buildDocumentListDetails(result,divId){
 
 $(document).on("click",".specialMeetingBtnCls",function(){
 	$(this).addClass('specialMeetingsDate');
+	$(".specialMeetingBtnCls").removeClass('btn-primary');
+	$(this).addClass('btn-primary');
 	getPartySpecialMeetingsMainTypeOverview(0);
 });
 $(".specialMeetingBtnCls").each(function(){
