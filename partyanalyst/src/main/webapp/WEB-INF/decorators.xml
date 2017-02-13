@@ -735,6 +735,7 @@
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
 		<pattern>/cccDashboardAction*</pattern>
 		<pattern>/alertDepartmentLoginAction*</pattern>
+		<pattern>/departmentDetailsAction*</pattern>
 		<pattern>/committeeCreationDetailsAction*</pattern>
 	</decorator> 
 </decorators>
