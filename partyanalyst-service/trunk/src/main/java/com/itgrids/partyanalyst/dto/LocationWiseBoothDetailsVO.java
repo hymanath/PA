@@ -41,7 +41,11 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private Long   finalizedCount = 0l;
 	private Long   vaccancyCount = 0l;
 	
+	private Long districtId;
+	private String districtName;
 	
+	private Long constituencyId;
+	private String constituencyName;	
 	public String getDateStr() {
 		return dateStr;
 	}
@@ -250,6 +254,29 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	public void setVaccancyCount(Long vaccancyCount) {
 		this.vaccancyCount = vaccancyCount;
 	}
-	
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
 	
 }
