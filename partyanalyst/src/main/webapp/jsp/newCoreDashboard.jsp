@@ -1818,14 +1818,22 @@
 								  </div>
 								  
 								  <div class="panelBlock m_top20">
-									<h4>
-										<span class="headingColor text-capitalize">special meetings</span>
-										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
-										
-										<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-								    </h4>
-								 	<div class="specialMeetingDropDown " style="left:0px;">
+									<div class="row">
+										<div class="col-md-7 col-xs-12 col-sm-7">
+											<h4>
+												<span class="headingColor text-capitalize">special meetings</span>
+												<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+												<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
+												
+												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
+											</h4>
+										</div>
+										<div class="col-md-5 col-xs-12 col-sm-5">
+											<button class="btn btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
+											<button class="btn btn-primary text-capital btn-xs specialMeetingBtnCls" attr_date="thisMonth" attr_startDate="" attr_endDate="">This month</button>
+										</div>
+									</div>
+									<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
 										</ul>
@@ -3994,6 +4002,7 @@ $(document).on("click",".globalDateChange",function(){
 	globalDebateCalls(type);
 	globalPrintMediaCalls(type);
 	globalElectronicMediaCalls(type);
+	globalMeetingsCalls(type);
 });
 /* GLobal Navbar Date Change End*/
 
