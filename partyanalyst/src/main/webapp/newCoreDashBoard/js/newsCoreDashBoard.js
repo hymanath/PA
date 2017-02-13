@@ -7,6 +7,31 @@
 	var currentToDate = moment().format("DD-MM-YYYY");
 	var newsPaperIdsGlob = [1,2,3,10,11,12];
 	var impactScopeIdsGlob = [1,2,3,4,5,6,8];
+	function globalPrintMediaCalls(type)
+	{
+		if(type == "default"){
+			$('#dateRangeIdForNews').data('daterangepicker').setStartDate(moment());
+			$('#dateRangeIdForNews').data('daterangepicker').setEndDate(moment());
+			currentFromDate = moment().format("DD-MM-YYYY")
+			currentToDate = moment().format("DD-MM-YYYY")
+			$("#currentViewing").html("TODAY"+" ( "+moment().format("DD-MM-YYYY")+"-"+moment().format("DD-MM-YYYY")+" )");
+		}else if(type == "currentMonth"){
+			$('#dateRangeIdForNews').data('daterangepicker').setStartDate(moment().startOf("month"));
+			$('#dateRangeIdForNews').data('daterangepicker').setEndDate(moment().endOf("month"));
+			currentFromDate = moment().startOf("month").format("DD-MM-YYYY")
+			currentToDate = moment().endOf("month").format("DD-MM-YYYY")
+			$("#currentViewing").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+		}else if(type == "lastMonth"){
+			$('#dateRangeIdForNews').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+			$('#dateRangeIdForNews').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+			currentFromDate = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
+			currentToDate = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")
+			$("#currentViewing").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
+		}
+		$("#dateRangeIdForNews").val(currentFromDate+" - "+currentToDate);
+		commonNewsBasicCalls();
+	}
+
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
 			opens: 'left',

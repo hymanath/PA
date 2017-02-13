@@ -13,6 +13,39 @@ var currentToDateEmn = moment().format("DD-MM-YYYY");
 var locationLevelIdGlb = 2;
 var locationValueArrGlb=[1];
 
+function globalElectronicMediaCalls(type)
+{
+	if(type == "default"){
+		$('#dateRangeIdForEmn').data('daterangepicker').setStartDate(moment());
+		$('#dateRangeIdForEmn').data('daterangepicker').setEndDate(moment());
+		currentFromDateEmn = moment().format("DD-MM-YYYY")
+		currentToDateEmn = moment().format("DD-MM-YYYY")
+		$("#emnHeadDate").html("TODAY"+" ( "+moment().format("DD-MM-YYYY")+"-"+moment().format("DD-MM-YYYY")+" )");
+	}else if(type == "currentMonth"){
+		$('#dateRangeIdForEmn').data('daterangepicker').setStartDate(moment().startOf("month"));
+		$('#dateRangeIdForEmn').data('daterangepicker').setEndDate(moment().endOf("month"));
+		currentFromDateEmn = moment().startOf("month").format("DD-MM-YYYY")
+		currentToDateEmn = moment().endOf("month").format("DD-MM-YYYY")
+		$("#emnHeadDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+	}else if(type == "lastMonth"){
+		$('#dateRangeIdForEmn').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+		$('#dateRangeIdForEmn').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+		currentFromDateEmn = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
+		currentToDateEmn = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")
+		$("#emnHeadDate").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
+	}
+	$("#dateRangeIdForEmn").val(currentFromDateEmn+" - "+currentToDateEmn);
+	commoncalls()
+	if($('.selectEmnCate').css('display') != 'none'){
+		$(".viewsLiClassEmn").each(function(){
+			if($(this).hasClass("active")){
+				var id = $(this).attr("id");
+				$( "#"+id).trigger( "click" );
+			}
+		});
+	} 
+}
+
 $(document).ready(function(){
 	locationLevelIdGlb = globalUserAccessLevelId;
 	
