@@ -20,7 +20,7 @@
 			$('#dateRangeIdForNews').data('daterangepicker').setEndDate(moment().endOf("month"));
 			currentFromDate = moment().startOf("month").format("DD-MM-YYYY")
 			currentToDate = moment().endOf("month").format("DD-MM-YYYY")
-			$("#currentViewing").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+			$("#currentViewing").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD-MM-YYYY")+" )");
 		}else if(type == "lastMonth"){
 			$('#dateRangeIdForNews').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 			$('#dateRangeIdForNews').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));

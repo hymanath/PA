@@ -26,7 +26,7 @@ function globalElectronicMediaCalls(type)
 		$('#dateRangeIdForEmn').data('daterangepicker').setEndDate(moment().endOf("month"));
 		currentFromDateEmn = moment().startOf("month").format("DD-MM-YYYY")
 		currentToDateEmn = moment().endOf("month").format("DD-MM-YYYY")
-		$("#emnHeadDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
+		$("#emnHeadDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD-MM-YYYY")+" )");
 	}else if(type == "lastMonth"){
 		$('#dateRangeIdForEmn').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 		$('#dateRangeIdForEmn').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
