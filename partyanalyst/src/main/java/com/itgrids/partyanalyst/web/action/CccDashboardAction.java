@@ -513,6 +513,16 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		public String getLevelsByDeptId(){
+			try {
+				jObj = new JSONObject(getTask());
+		
+				govtDeptVoList = cccDashboardService.getLevelsByDeptId(jObj.getLong("departmentId"));
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getLevelsByDeptId() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 		
 		public String getGovtDeptLevelForDeptAndUser(){
 			   try {
