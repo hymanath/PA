@@ -15810,5 +15810,15 @@
 			<param name="root">alertVOs</param>
 		</result>
 	</action>
+	 <action name="getGovtDeptLevelForDeptAndUserAction" class="createAlertAction"  method="getGovtDeptLevelForDeptAndUser">
+		<result type="json" name="success">  
+			<param name="root">locationLevelList</param>
+		</result>
+	</action>
+	<action name="getDeptIdAndNameListForUserAction" class="createAlertAction"  method="getDeptIdAndNameListForUser">
+		<result type="json" name="success">  
+			<param name="root">deptList</param>
+		</result>
+	</action>
  </package>
 </struts>

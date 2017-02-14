@@ -99,6 +99,16 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style detailedBlockShow" style="display:none;">
+					<div class="panel panel-default">
+						<div class="panel-heading headingColor">
+							<h4 class="panel-title text-capital fontColor">Detailed Information</h4>
+						</div>
+						<div class="panel-body">
+							<div id="detailedInfoBlockDiv"></div>
+						</div>
+					</div>
+				</div>
 			</div>	
 		</div>
 	</section>
@@ -118,6 +128,8 @@
 /*global Function and variables Start*/
 var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
+var detailedfromDate=moment();
+var detailedtoDate=moment();
 var globalStateId = 36;  
 $("#dateRangePickerAUM").daterangepicker({
 	opens: 'left',
@@ -143,6 +155,7 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	getTotalAlertGroupByStatusForOneDept();
 	getTotalAlertGroutByDeptThenStatus();
 });
+
 var paperIdArr = [];
 var chanelIdArr = [];
 getTotalAlertGroupByStatusForOneDept();
@@ -193,7 +206,7 @@ function buildTotalAlertGroupByStatusForOneDept(result){
 				for(var i in result){
 					totalAlert+=result[i].count;
 					str+='<tr>';
-						str+='<td><span class="colorSpecify" style="background-color:#fff;"></span>'+result[i].status+'</td>';
+						str+='<td><span class="colorSpecify" style="background-color:'+result[i].color+';"></span>&nbsp;&nbsp;'+result[i].status+'</td>';
 						str+='<td>'+result[i].count+'</td>';
 						str+='<td>'+result[i].statusPercent+'</td>';
 					str+='</tr>';
@@ -209,10 +222,12 @@ function buildTotalAlertGroupByStatusForOneDept(result){
 		statusPercent = result[i].statusPercent;
 		statusName = result[i].status;
 		var cnt = result[i].count;
+		var color=result[i].color;
 		var obj = {
 			name: statusName,
 			y:statusPercent,
-			count:cnt
+			count:cnt,
+			color:color
 			
 		}
 		statusOverviewArr.push(obj);
@@ -220,7 +235,7 @@ function buildTotalAlertGroupByStatusForOneDept(result){
 	
 	$(function() {
 		var chart = new Highcharts.Chart({
-			colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
+			//colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
 			chart: {
 				renderTo: 'totalAlertGroupByStatusForOneDeptDiv',
 				type: 'pie',
@@ -378,7 +393,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 					
 					for(var j in result[i].subList1){
 						str1+='<tr>';
-							str1+='<td><span class="colorSpecify" style="background-color:#fff;"></span>'+result[i].subList1[j].category+'</td>';
+							str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
 							str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 							str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
 						str1+='</tr>';
@@ -386,7 +401,8 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				
 				}
 		str1+='</tbody>';
-		str1+='</table>';	
+		str1+='</table>';
+		str1+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv">Detailed Information</button></div>';	
 		str1+='</div>';	
 	}
 	str1+='</div>';
@@ -400,10 +416,12 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 						statusPercent = result[i].subList1[j].statusPercent;
 						statusName = result[i].subList1[j].status;
 						var cnt = result[i].subList1[j].count;
+						var color=result[i].subList1[j].color;
 						var obj = {
 							name: statusName,
 							y:statusPercent,
-							count:alertCount
+							count:alertCount,
+							color:color
 							
 						}
 						deptStatusOverviewArr.push(obj);
@@ -415,7 +433,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 	
 		$(function() {
 			var chart = new Highcharts.Chart({
-				colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
+				//colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
 				chart: {
 					renderTo: 'departmentWiseDiv'+i+'',
 					type: 'pie',
@@ -497,6 +515,69 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 }	
 
 }
+    $(document).on("click",".detailedBlockDiv",function(){
+		$(".detailedBlockShow").show();
+		
+		getAlertCountLocationWiseThenStatusWise();
+	}); 
+		
+	function getAlertCountLocationWiseThenStatusWise(){
+		
+		var str='';
+			
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="row">';
+					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
+						str+='<label>Select Department</label>';
+						str+='<select class="form-control chosen-select" id="departmentId">';
+							str+='<option value="0">Select Department</option>';
+							str+='<option value="1">Finance</option>';
+							str+='<option value="2">IAS</option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
+						str+='<label>Select District</label>';
+						str+='<select class="form-control chosen-select" id="districtId">';
+							str+='<option value="0">Select District</option>';
+							str+='<option value="1">Nellore</option>';
+							str+='<option value="2">Kavali</option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
+						str+='<div class="input-group dateRangePickerCls m_top5 pull-right">';
+							str+='<input type="text" class="form-control " style="width:180px" id="dateRangePickerDetailedBlock">';
+							str+='<span class="input-group-addon">';
+								str+='<i class="glyphicon glyphicon-calendar"></i>';
+							str+='</span>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
+						str+='<button type="button" class="btn btn-success" style="background-color:#016500; font-weight: bold;">Get Details</button>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		$("#detailedInfoBlockDiv").html(str);
+			$("#dateRangePickerDetailedBlock").daterangepicker({
+				opens: 'left',
+				startDate: detailedfromDate,
+				endDate: detailedtoDate,
+				locale: {
+				  format: 'DD/MM/YYYY'
+				},
+				ranges: {
+					'All':[moment().subtract(20, 'years').startOf('year'), moment().endOf('year')],
+					'Today' : [moment(), moment()],
+				   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+				   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+				   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+				   'This Month': [moment().startOf('month'), moment()],
+				   'This Year': [moment().startOf('Year'), moment()]
+				}
+			});
+		}
+	
 </script>
 </body>
 </html>
