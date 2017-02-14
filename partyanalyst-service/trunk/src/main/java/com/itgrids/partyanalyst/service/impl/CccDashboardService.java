@@ -911,7 +911,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		for(Object[] param : stsList){
 			stsIdAndColorMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
 		}
-		if(statusList != null && statusList.size() > 0){   
+		if(statusList != null && statusList.size() > 0){         
 			for(Object[] param : statusList){
 				alertVO = new AlertVO();
 				alertVO.setColor(commonMethodsUtilService.getStringValueForObject(stsIdAndColorMap.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
@@ -921,7 +921,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 		}
 		
-		Long totalCount = 0L;
+		Long totalCount = 0L;  
 		if(alertCountList != null && alertCountList.size() > 0){
 			for(Object[] param : alertCountList){
 				statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -1244,4 +1244,44 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return returnList;
 	}
+	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId){
+		try{
+			List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO= null;
+			userId = 1L;
+			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getGovtDeptLevelForDeptAndUser(departmentId, userId);
+			if(deptList != null && deptList.size() > 0){
+				for(Object[] param : deptList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnList.add(idAndNameVO);
+				}
+			}
+			return returnList;    
+		}catch(Exception e){
+			logger.error("Error occured getGovtDeptLevelForDeptAndUser() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getDeptIdAndNameListForUser(Long userId){
+		try{
+			List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO= null;
+			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getDeptIdAndNameListForUser(1L);
+			if(deptList != null && deptList.size() > 0){
+				for(Object[] param : deptList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnList.add(idAndNameVO);
+				}
+			}
+			return returnList;   
+		}catch(Exception e){
+			logger.error("Error occured getDeptListForUser() method of CccDashboardService",e);
+		}
+		return null;
+	}
+		
 }
