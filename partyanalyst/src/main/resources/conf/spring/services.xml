@@ -4042,6 +4042,7 @@
 		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO" ></property>
 		<property name="boothDAO" ref="boothDAO" ></property>
 		<property name="alertCandidateDAO" ref="alertCandidateDAO" ></property>
+		<property name="govtDepartmentLevelDetailsDAO" ref="govtDepartmentLevelDetailsDAO" ></property>
 	</bean>
 </beans>			
 	
