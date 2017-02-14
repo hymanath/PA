@@ -43,4 +43,5 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getAssignedDepartmentsForUser(Long userId);
 	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId);
 	public List<IdAndNameVO> getDeptIdAndNameListForUser(Long userId);
+	public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId);
 } 
