@@ -2,6 +2,75 @@
 var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
 var globalStateId = 1;  
+var globalNewsPaperIdArr = [];
+var globalChannelIdArr = [];
+var globalDepartmentIdArr = [];
+/* Global Filter Arreys Start*/
+$(".newsPaperListCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		globalNewsPaperIdArr.push($(this).attr("attr_val"));
+	}
+});
+$(".chanelListCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		globalChannelIdArr.push($(this).attr("attr_val"));
+	}
+});
+$(".departmentsCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		globalDepartmentIdArr.push($(this).attr("attr_val"));
+	}
+});
+/* Global Filter Arreys End*/
+$(document).on("click",".filtersSubmitDivId",function(){
+	globalNewsPaperIdArr = [];
+	globalChannelIdArr = [];
+	globalDepartmentIdArr = [];
+	$(".newsPaperListCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalNewsPaperIdArr.push($(this).attr("attr_val"));
+		}
+	});
+	$(".chanelListCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalChannelIdArr.push($(this).attr("attr_val"));
+		}
+	});
+	$(".departmentsCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalDepartmentIdArr.push($(this).attr("attr_val"));
+		}
+	});
+	onLoadCalls();
+});
+$(document).on("click",".selectAlldepartmentsCls",function(){
+	if($(this).prop('checked')) {
+		$(".departmentsCls").prop('checked', true);
+	}else{
+		$(".departmentsCls").prop('checked', false);
+	}
+});
+$(document).on("click",".selectAllChannelsCls",function(){
+	if($(this).prop('checked')) {
+		$(".chanelListCls").prop('checked', true);
+	}else{
+		$(".chanelListCls").prop('checked', false);
+	}
+});
+$(document).on("click",".selectAllPaperCls",function(){
+	if($(this).prop('checked')) {
+		$(".newsPaperListCls").prop('checked', true);
+	}else{
+		$(".newsPaperListCls").prop('checked', false);
+	}
+});
+
 $("#dateRangePicker").daterangepicker({
 	opens: 'left',
 	startDate: currentFromDate,
@@ -55,9 +124,10 @@ $(".scrollerBlockDepartments").mCustomScrollbar({setHeight:'300px'});
 function totalAlertGroupByStatusForGovt()
 {
 	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
-    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+	var deptIdArr = globalDepartmentIdArr;
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -213,9 +283,10 @@ function buildTotalAlertGroupByStatusForGovt(result)
 function totalAlertGroupByStatusThenDepartment()
 {
 	$("#departmentWiseStatusOvrVw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-    var deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
-    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+    var deptIdArr = globalDepartmentIdArr;
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
 	var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -402,11 +473,12 @@ $(document).on("click",".getDtlsCls",function(){
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+		deptIdArr = globalDepartmentIdArr;
 	}
 	
-    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -440,11 +512,12 @@ function getData(count, alertStatusId){
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+		deptIdArr = globalDepartmentIdArr;
 	}
 	
-    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -1311,11 +1384,11 @@ function getDistrictWiseTotalForAlertOverview(){
 	if(deptId != null){
 		deptIdArr.push(deptId);  
 	}else{
-		deptIdArr = [];
+		deptIdArr = globalDepartmentIdArr;
 	}
 	
-      var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -1325,10 +1398,10 @@ function getDistrictWiseTotalForAlertOverview(){
       newChanelIdArr : chanelIdArr    
     }
 	$.ajax({
-	  type : 'GET',
-	  url : 'getDistrictWiseTotalAlertsForAlertAction.action',
-	  dataType : 'json',
-	  data : {task:JSON.stringify(jsObj)}
+		type : 'GET',
+		url : 'getDistrictWiseTotalAlertsForAlertAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		buildStatusWiseTotalAlerts(result)
 	});
@@ -1340,8 +1413,9 @@ function getDistrictTotalForAlertStatus(id,departmentId)
 	var deptIDArr = [];
 	deptIDArr.push(departmentId)
 	
-     var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
