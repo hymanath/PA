@@ -4569,7 +4569,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStatusWiseTotalCountsForAlert(Date fromDate,Date toDate,Long stateId,List<Long> deptIds,List<Long> paperIds,List<Long> channelIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select  ASTS.alert_status_id, ASTS.alert_status, count(distinct A.alert_id),A.alert_category_id " +
+		sb.append("select  ASTS.alert_status_id, ASTS.alert_status, count(distinct A.alert_id),A.alert_category_id,A.govt_department_id " +
 				" from alert_department_status ADS, alert_status ASTS,user_address UA,state S,alert A " +
 				" left outer join editions E on A.edition_id=E.edition_id  ");
 	
@@ -4603,7 +4603,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				sb.append(" and model.userAddress.state.stateId in (1,36) ");
 			}*/
 		}
-		sb.append("  group by A.alert_category_id,ADS.alert_status_id ");
+		sb.append("  group by A.govt_department_id,A.alert_category_id,ADS.alert_status_id ");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		

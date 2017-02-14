@@ -1105,7 +1105,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 			//departmentId-0,departmentName-1,districtId-2,districtName-3,Count-4
 			distWiseAlertLst = alertDAO.getDistrictWiseTotalAlertsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
-			
+			List<Long> deptIds = new ArrayList<Long>(0);
 			if(distWiseAlertLst != null && distWiseAlertLst.size() > 0){
 				for (Object[] objects : distWiseAlertLst) {
 					GovtDepartmentVO matchedVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
@@ -1113,7 +1113,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						matchedVO = new GovtDepartmentVO();
 						matchedVO.setDepartmentId((Long)objects[0]);
 						matchedVO.setDepartment(objects[1].toString());
-						
+						deptIds.add((Long)objects[0]);
 					GovtDepartmentVO districtVO = new GovtDepartmentVO();
 						districtVO.setDepartmentId((Long)objects[2]);
 						districtVO.setDepartment(objects[3].toString());
@@ -1137,18 +1137,22 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				}
 			}
 			//statusWiseMediaTypeTotalCounts
-			//statusId-0,status-1,Count-2
-			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
- 			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
+			//statusId-0,status-1,Count-2,alertCategoryId-3,deptId-4
+			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId,deptIds, paperIdList, chanelIdList);
+			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
 				 setDataToVoList(statusWiseCntsLst,finalVOList);
 			 }
- 			 if(finalVOList.get(0).getGovtDeptList() != null && finalVOList.get(0).getGovtDeptList().size() >0){
+ 			 if(finalVOList != null && finalVOList.size() >0){
  				 for (GovtDepartmentVO mainVo : finalVOList) {
- 					 for (GovtDepartmentVO statusTotVo : finalVOList.get(0).getGovtDeptList()){
-  					 	statusTotVo.setCount(statusTotVo.getPrintCnt()+statusTotVo.getElecCnt());//statusCount
+ 					 if(mainVo.getGovtDeptList() != null && mainVo.getGovtDeptList().size() > 0){
+ 						 for (GovtDepartmentVO statusTotVo : mainVo.getGovtDeptList()){
+		  					 	statusTotVo.setCount(statusTotVo.getPrintCnt()+statusTotVo.getElecCnt());//statusCount
+		 				 }
  					 }
 				}
  			 }
+			
+			
 		} catch (Exception e) {
 			logger.error("Error occured getDistrictWiseTotalAlertsForAlert() method of CccDashboardService",e);
 		}
@@ -1165,28 +1169,45 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return null;
 	}
-	//statusId-0,status-1,Count-2,alertCategoryId-3
-	public void setDataToVoList(List<Object[]> objList,List<GovtDepartmentVO> finalVOList){
+	//statusId-0,status-1,Count-2,alertCategoryId-3,deptId-4
+	public void setDataToVoList(List<Object[]> objList,List<GovtDepartmentVO> finalList){
 		if(objList != null && objList.size() > 0){
 			for (Object[] objects : objList) {
-				GovtDepartmentVO matchedStatusVO = getmatchedDeptVo(finalVOList.get(0).getGovtDeptList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-				if(matchedStatusVO == null){
-					matchedStatusVO = new GovtDepartmentVO();
-					matchedStatusVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					matchedStatusVO.setDepartment(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				GovtDepartmentVO matchedDeptVO = getmatchedDeptVo(finalList,commonMethodsUtilService.getLongValueForObject(objects[4]));
+				if(matchedDeptVO == null){
+					matchedDeptVO = new GovtDepartmentVO();
+					matchedDeptVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					
+					GovtDepartmentVO statusVO = new GovtDepartmentVO();
+					statusVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					statusVO.setDepartment(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					
 					if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 2l){
-						matchedStatusVO.setPrintCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Print
+						statusVO.setPrintCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Print
 					}else if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 3l){
-						matchedStatusVO.setElecCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Electronic
+						statusVO.setElecCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Electronic
 					}
-					
-					finalVOList.get(0).getGovtDeptList().add(matchedStatusVO);
+					matchedDeptVO.getGovtDeptList().add(statusVO);
+					finalList.add(matchedDeptVO);
 				}else{
-					if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 2l){
-						matchedStatusVO.setPrintCnt(matchedStatusVO.getPrintCnt()+commonMethodsUtilService.getLongValueForObject(objects[2]));//printCount
-					}else if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 3l){
-						matchedStatusVO.setElecCnt(matchedStatusVO.getElecCnt()+commonMethodsUtilService.getLongValueForObject(objects[2]));//ElectCount
+					GovtDepartmentVO matchedStatusVO = getmatchedDeptVo(matchedDeptVO.getGovtDeptList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(matchedStatusVO == null){
+						matchedStatusVO = new GovtDepartmentVO();
+						matchedStatusVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						matchedStatusVO.setDepartment(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						
+						if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 2l){
+							matchedStatusVO.setPrintCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Print
+						}else if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 3l){
+							matchedStatusVO.setElecCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));//For Electronic
+						}
+						matchedDeptVO.getGovtDeptList().add(matchedStatusVO);
+					}else{
+						if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 2l){
+							matchedStatusVO.setPrintCnt(matchedStatusVO.getPrintCnt()+commonMethodsUtilService.getLongValueForObject(objects[2]));//printCount
+						}else if(commonMethodsUtilService.getLongValueForObject(objects[3]) == 3l){
+							matchedStatusVO.setElecCnt(matchedStatusVO.getElecCnt()+commonMethodsUtilService.getLongValueForObject(objects[2]));//ElectCount
+						}
 					}
 				}
 			}
@@ -1207,7 +1228,6 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 			//districtId-0,districtName-1,statusId-2,statusName-3,count-4
 			statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
-			
 			if(statusWiseDistLst != null && statusWiseDistLst.size() > 0){
 				for (Object[] objects : statusWiseDistLst) {
 					GovtDepartmentVO matchedDistVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
@@ -1215,8 +1235,8 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						matchedDistVO = new GovtDepartmentVO();
 						matchedDistVO.setDepartmentId((Long)objects[0]);
 						matchedDistVO.setDepartment(objects[1].toString());
-						
-					GovtDepartmentVO statusVO = new GovtDepartmentVO();
+					
+						GovtDepartmentVO statusVO = new GovtDepartmentVO();
 						statusVO.setDepartmentId((Long)objects[2]);
 						statusVO.setDepartment(objects[3].toString());
 						statusVO.setCount((Long)objects[4]);
@@ -1238,19 +1258,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					}
 				}
 			}
-			//statusWiseMediaTypeTotalCounts
-			//statusId-0,status-1,Count-2
-			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
-			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
-				 setDataToVoList(statusWiseCntsLst,finalVOList);
-			 }
 			 if(finalVOList != null && finalVOList.size() >0){
 				 for (GovtDepartmentVO govtDeptVo : finalVOList) {
 					 if(govtDeptVo.getGovtDepartmentVOList() != null && govtDeptVo.getGovtDepartmentVOList().size() > 0){
 						 for (GovtDepartmentVO vo2 : govtDeptVo.getGovtDepartmentVOList()) {
-							 vo2.setTotalCount(vo2.getCount());
-							 if(vo2.getTotalCount()>0l){
-								 vo2.setPercentage(caclPercantage(vo2.getCount(),vo2.getTotalCount())); 
+							 govtDeptVo.setTotalCount(govtDeptVo.getTotalCount()+vo2.getCount());
+							 if(govtDeptVo.getTotalCount()>0l){
+								 vo2.setPercentage(caclPercantage(vo2.getCount(),govtDeptVo.getTotalCount())); 
 							 }
 						}
 					 }
