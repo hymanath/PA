@@ -4187,9 +4187,9 @@ var globalImages;
 		getAllNewsPapers();
 		
 		
-	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="coreDashboardAction1")
+	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
