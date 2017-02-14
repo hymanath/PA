@@ -1304,7 +1304,6 @@ function buildDistrictWiseArticleRelatedToProblem(result){
 
 }
 /* Alert DepartMents Wise*/
-
 function getDistrictWiseTotalForAlertOverview(){
 	$("#alertDepartmentWise").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var deptIdArr = [];
@@ -1315,7 +1314,7 @@ function getDistrictWiseTotalForAlertOverview(){
 		deptIdArr = [];
 	}
 	
-     var paperIdArr = [2,8,11];
+      var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -1341,7 +1340,7 @@ function getDistrictTotalForAlertStatus(id,departmentId)
 	var deptIDArr = [];
 	deptIDArr.push(departmentId)
 	
-    var paperIdArr = [2,8,11];
+     var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
     var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
@@ -1381,7 +1380,7 @@ $(document).on("click",".activeUlCls li",function(){
 function buildStatusWiseTotalAlerts(result){
 	var totalAlerts = 0;
 	 var str='';
-	 str+='<div class="scrollerBlock">';
+ 	 str+='<div class="scrollerBlock">';
 	 for(var i in result)
 	 {
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1405,12 +1404,14 @@ function buildStatusWiseTotalAlerts(result){
 						str+='</div>';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="departmentWiseOverView'+i+'">';
 							str+='<div id="overViewGraph'+i+'" style="height:130px"></div>';
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 							str+='<table class="table table-bordered">';
 								str+='<thead>';
 									str+='<th></th>';
 									str+='<th class="bg_EE">Total</th>';
-									for(var k in result[0].govtDeptList){
-										str+='<th>'+result[0].govtDeptList[k].department+'</th>';
+									for(var k in result[i].govtDeptList){
+										str+='<th>'+result[i].govtDeptList[k].department+'</th>';
 									}
 								str+='</thead>';
 								str+='<tbody>';
@@ -1418,31 +1419,54 @@ function buildStatusWiseTotalAlerts(result){
 										str+='<td class="bg_D8">Total Alerts</td>';
 										var totalCount=0;
 										var totalElecCount =0;
-										for(var j in result[0].govtDeptList){
-											totalElecCount=totalElecCount+result[0].govtDeptList[j].elecCnt;
+										for(var j in result[i].govtDeptList){
+											totalElecCount=totalElecCount+result[i].govtDeptList[j].elecCnt;
 										}
 										var totalPrintCount =0;
-										for(var k in result[0].govtDeptList){
-											totalPrintCount = totalPrintCount+result[0].govtDeptList[k].printCnt;
+										for(var k in result[i].govtDeptList){
+											totalPrintCount = totalPrintCount+result[i].govtDeptList[k].printCnt;
 										}
 										totalCount = totalPrintCount+totalElecCount;
-										str+='<td class="bg_D8">'+totalCount+'</td>';
-										for(var i in result[0].govtDeptList){
-											str+='<th>'+result[0].govtDeptList[i].count+'</th>';
+										if(totalCount == 0 && result[i].govtDeptList[t].count ==0){
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalCount+'</span></td>';
+										for(var t in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[t].count+'</th>';
+											}
+										}else{
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalCount+'</a></span></td>';
+										for(var t in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+result[i].govtDeptList[t].count+'</a></th>';
+											}
 										}
+										
 									str+='</tr>';
 									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
-										str+='<td class="bg_EE">'+totalPrintCount+'</td>';
-										for(var k in result[0].govtDeptList){
-											str+='<th>'+result[0].govtDeptList[k].printCnt+'</th>';
+										if(totalPrintCount ==0 && result[i].govtDeptList[k].printCnt ==0){
+											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalPrintCount+'</td>';
+										for(var k in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[k].printCnt+'</th>';
+											}
+										}else{
+											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalPrintCount+'</a></td>';
+										for(var k in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+result[i].govtDeptList[k].printCnt+'</a></th>';
+											}
 										}
 									str+='</tr>';
+									
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
-										str+='<td class="bg_EE">'+totalElecCount+'</td>';
-										for(var j in result[0].govtDeptList){
-											str+='<th>'+result[0].govtDeptList[j].elecCnt+'</th>';
+										if(totalElecCount ==0 && result[i].govtDeptList[j].elecCnt ==0){
+											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalElecCount+'</td>';
+										for(var j in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'" >'+result[i].govtDeptList[j].elecCnt+'</th>';
+											}
+										}else{
+											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalElecCount+'</a></td>';
+										for(var j in result[i].govtDeptList){
+											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><a>'+result[i].govtDeptList[j].elecCnt+'</a></th>';
+											}
 										}
 									str+='</tr>'; 
 								str+='</tbody>';
@@ -1459,7 +1483,6 @@ function buildStatusWiseTotalAlerts(result){
 	{
 		$(".scrollerBlock").mCustomScrollbar({setHeight:'800px'});
 	}
-	
 	for(var i in result)
 	{		
 		var alertStatusOverviewCount = [];
@@ -1470,7 +1493,7 @@ function buildStatusWiseTotalAlerts(result){
 			alertStatusOverviewCount.push(result[i].govtDepartmentVOList[j].count)
 		}
 		$("#overViewGraph"+i).highcharts({
-				colors: ['#64C664'],
+				colors: ['#31AA74'],
 				chart: {
 					type: 'column'
 				},
@@ -1519,7 +1542,7 @@ function buildStatusWiseTotalAlerts(result){
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.percentage,1) + '%';
+									return (this.y);
 								}
 							}
 						  
@@ -1533,7 +1556,7 @@ function buildStatusWiseTotalAlerts(result){
 
 						$.each(this.points, function () {
 							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+								
 								(this.y);
 						});
 
@@ -1554,14 +1577,18 @@ function buildStatusWiseTotalAlerts(result){
 // District wise Total alerts overview and status Block Build Start
 	function buildgetUserTypeWiseNewsForTopFiveStrongResults(result,id){
 		var str='';
+		
 		if(result != null && result.length > 0){
 			str+='<div class="statusOverviewGraph">';
 				str+='<ul class="statusOverviewGraphUl">';
-				for(var i in result){
+				for(var i in result){ //district
 					str+='<li>';
-						str+='<h4 class="panel-title">'+result[i].department+'</h4>';
-						str+='<span>Statis Count 2000</span>';
-						str+='<div id="statusOverview'+i+''+id+'" style="height:130px;"></div>';
+					str+='<h4 class="panel-title">'+result[i].department+'</h4>';
+					for(var k in result[i].govtDepartmentVOList){
+						str+='<span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDepartmentVOList[k].departmentId+'" >'+result[i].totalCount+'</span>';
+					}
+					str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
+					
 					str+='</li>';
 				}
 				str+='</ul>';
@@ -1575,21 +1602,9 @@ function buildStatusWiseTotalAlerts(result){
 			for(var j in result[i].govtDepartmentVOList){
 				alertStatus.push(result[i].govtDepartmentVOList[j].department)
 				alertStatusCount.push(result[i].govtDepartmentVOList[j].percentage)
-				var width = result[i].govtDepartmentVOList.length
 			}
-			if(width == 1)
-			{
-				$("#statusOverview"+i+''+id).width('200px')
-			}else if(width > 1)
-			{
-				width = width * 75
-				$("#statusOverview"+i+''+id).width(width)
-			}else if(width > 5)
-			{
-				width = width * 60
-				$("#statusOverview"+i+''+id).width(width)
-			}
-			$("#statusOverview"+i+''+id).highcharts({
+			
+			$("#statusOverview"+result[i].departmentId+''+id).highcharts({
 				colors: ['#D33E39','#64C664'],
 				chart: {
 					type: 'column'
@@ -1948,9 +1963,9 @@ function getTotalArticledetails(articleId){
 		});    
 }
 var url = window.location.href;
-var wurl = url.substr(0,(url.indexOf(".com")+6));
+var wurl = url.substr(0,(url.indexOf(".com")+3));
 	if(wurl.length == 3){
-		wurl = url.substr(0,(url.indexOf(".in")+5));
+		wurl = url.substr(0,(url.indexOf(".in")+2));
 	}
 google.load("elements", "1", {
 	packages: "transliteration"
@@ -2075,3 +2090,44 @@ function getLocationLevels(departmentId){
 		$("#locationLevelSelectId").trigger("chosen:updated");
 	});
 }
+//District wise total alerts click action 
+$(document).on("click",".totAlertsStsCls",function(){
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	var deptIdArr = [];
+	var alertStatusId = $(this).attr("attr_status_id");
+	var deptId = $(this).attr("attr_dept_id");
+	if(deptId != null){
+		deptIdArr.push(deptId);  
+	}else{
+		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+	}
+	
+    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
+    var chanelIdArr = [1,2,3,4,5,6,7];
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : globalStateId,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr,
+	  statusId : alertStatusId       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertByStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildtotalAlertsModalTabId(result);
+		}else{
+			$("#statusOverview").html('NO DATA AVAILABLE')
+		}
+    });
+});	
+/* Departments Complete Overview End*/
