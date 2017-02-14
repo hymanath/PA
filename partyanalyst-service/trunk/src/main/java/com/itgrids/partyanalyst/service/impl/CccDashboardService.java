@@ -1266,6 +1266,104 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return returnList;
 	}
+	
+	public List<AlertVO> getStatusWiseAlertDetails(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId){
+		logger.info("Entered in getTotalAlertGroupByStatusForOneDept() method of CccDashboardService{}");
+		List<AlertVO> returnList = new ArrayList<AlertVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			if(printIdList != null && printIdList.size() > 0){
+				if(electronicIdList != null && electronicIdList.size() == 0){
+					electronicIdList.add(0L);
+				}
+			}else if(electronicIdList != null && electronicIdList.size() > 0){
+				if(printIdList != null && printIdList.size() == 0){
+					printIdList.add(0L);
+				}
+			}
+			
+			List<Long> dptIdList = new ArrayList<Long>();
+			List<Object[]> dptsList = govtAlertDepartmentLocationDAO.getDeptListForUser(userId);
+			if(dptsList != null && !dptsList.isEmpty()){
+				for (Object[] obj : dptsList) {
+					dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				}
+			}
+			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					AlertVO vo = new AlertVO();
+					
+					vo.setAlertId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setSeverity(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					vo.setSeverityStr(obj[2] != null ? obj[2].toString():"");
+					vo.setTitle(obj[3] != null ? obj[3].toString():"");
+					vo.setDate1(obj[4] != null ? obj[4].toString():"");
+					vo.setAssignedDate(obj[5] != null ? obj[5].toString():"");
+					vo.setDate2(obj[6] != null ? obj[6].toString():"");
+					vo.setStatusId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setStatus(obj[8] != null ? obj[8].toString():"");
+					vo.setNoOfDays(new DateUtilService().noOfDayBetweenDates(vo.getDate1(), vo.getDate2()));
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getInvolvedMembersInAlert() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getAlertStatusForUser(Long userId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Long> dptIdList = new ArrayList<Long>();
+			List<Object[]> dptsList = govtAlertDepartmentLocationDAO.getDeptListForUser(userId);
+			if(dptsList != null && !dptsList.isEmpty()){
+				for (Object[] obj : dptsList) {
+					dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				}
+			}
+			List<Object[]> list = alertDepartmentStatusDAO.getStatusForDepartments(dptIdList);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getAlertStatusForUser() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getAssignedDepartmentsForUser(Long userId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = govtAlertDepartmentLocationDAO.getDepartmentsForUser(userId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getAssignedDepartmentsForUser() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
 	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId){
 		try{
 			List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
