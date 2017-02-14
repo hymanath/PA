@@ -2591,6 +2591,21 @@ color: rgb(51, 122, 183);
 	top:5px;
 	color:red;
 }
+.AMS .statusOverviewGraph
+{
+	width:100%;
+	overflow-x:scroll;
+}
+.AMS .statusOverviewGraphUl
+{
+	padding:0px;
+	white-space:nowrap;
+}
+.AMS .statusOverviewGraphUl li
+{
+	list-style:none;
+	display:inline-block;
+}
 .AUMS .bg_Style{
 	background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
