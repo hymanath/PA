@@ -15815,12 +15815,12 @@
 			<param name="root">govtDeptVoList</param>
 		</result>	
 	</action>
-	 <action name="getGovtDeptLevelForDeptAndUserAction" class="createAlertAction"  method="getGovtDeptLevelForDeptAndUser">
+	 <action name="getGovtDeptLevelForDeptAndUserAction" class="cccDashboardAction"  method="getGovtDeptLevelForDeptAndUser">
 		<result type="json" name="success">  
 			<param name="root">locationLevelList</param>
 		</result>
 	</action>
-	<action name="getDeptIdAndNameListForUserAction" class="createAlertAction"  method="getDeptIdAndNameListForUser">
+	<action name="getDeptIdAndNameListForUserAction" class="cccDashboardAction"  method="getDeptIdAndNameListForUser">
 		<result type="json" name="success">  
 			<param name="root">deptList</param>
 		</result>

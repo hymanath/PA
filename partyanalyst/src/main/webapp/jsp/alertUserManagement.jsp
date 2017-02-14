@@ -128,9 +128,12 @@
 /*global Function and variables Start*/
 var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
-var detailedfromDate=moment();
-var detailedtoDate=moment();
+var detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");;
+var detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");;
+
 var globalStateId = 36;  
+var departmentIdsList="";
+var lvlValueG="";
 $("#dateRangePickerAUM").daterangepicker({
 	opens: 'left',
 	startDate: currentFromDate,
@@ -160,6 +163,7 @@ var paperIdArr = [];
 var chanelIdArr = [];
 getTotalAlertGroupByStatusForOneDept();
 getTotalAlertGroutByDeptThenStatus();
+getDeptIdAndNameListForUser();
 function getTotalAlertGroupByStatusForOneDept()
 {
 	$("#alertStatusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -402,7 +406,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				}
 		str1+='</tbody>';
 		str1+='</table>';
-		str1+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv">Detailed Information</button></div>';	
+		str1+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].statusId+'">Detailed Information</button></div>';	
 		str1+='</div>';	
 	}
 	str1+='</div>';
@@ -515,32 +519,122 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 }	
 
 }
-    $(document).on("click",".detailedBlockDiv",function(){
+
+function getDeptIdAndNameListForUser()
+{
+	
+    var jObj ={
+      userId:1,
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDeptIdAndNameListForUserAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		 if(result != null && result.length > 0){
+			departmentIdsList=result;
+		}
+    });
+}
+
+	$(document).on("click",".detailedBlockDiv",function(){
 		$(".detailedBlockShow").show();
+		var departmentId = $(this).attr("attr_department_id");
+		getGovtDeptLevelForDeptAndUser(departmentId);
+		getAlertCountLocationWiseThenStatusWise(departmentId,3);
 		
-		getAlertCountLocationWiseThenStatusWise();
-	}); 
+	});	 
+
+	$(document).on("change","#departmentId",function(){
+		var departmentId = $(this).val();
+		getGovtDeptLevelForDeptAndUser(departmentId);
+	});
+	
+function getGovtDeptLevelForDeptAndUser(departmentId)
+{
+	$('#levelId').html('');
+	var userId=1;
+    var jObj ={
+      departmentId:departmentId,
+	  userId:userId
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getGovtDeptLevelForDeptAndUserAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		var str='';
+		 if(result != null && result.length > 0){
+			str+='<option value="0">Select level</option>';
+			for(var i in result){
+				lvlValueG=result;
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			
+		}
+		$('#levelId').html(str);
+    });
+}
+	function getAlertCountLocationWiseThenStatusWise(departmentId,lvlValue){
+		$("#districtWiseDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
-	function getAlertCountLocationWiseThenStatusWise(){
+		var jObj ={
+			
+		  fromDate:detailedfromDate,
+		  toDate:detailedtoDate,
+		  stateId:globalStateId,
+		  govtDepartmentId:departmentId,
+		  lvlValue:lvlValue,
+		  paperIdArr:paperIdArr,
+		  chanelIdArr:chanelIdArr
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getAlertCountLocationWiseThenStatusWiseAction.action',
+		  data: {task :JSON.stringify(jObj)}
+		}).done(function(result){
+			$("#districtWiseDetailsBlock").html('');
+			buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue);
+			
+		});
+		
+	}
+	
+	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue){
 		
 		var str='';
-			
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="row">';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
 						str+='<label>Select Department</label>';
 						str+='<select class="form-control chosen-select" id="departmentId">';
 							str+='<option value="0">Select Department</option>';
-							str+='<option value="1">Finance</option>';
-							str+='<option value="2">IAS</option>';
+							if(departmentIdsList != null && departmentIdsList.length>0){
+								for(var s in departmentIdsList){
+									if(departmentIdsList[s].id == departmentId){
+										str+='<option value="'+departmentIdsList[s].id+'" selected="selected">'+departmentIdsList[s].name+'</option>';
+									}
+									else{
+										str+='<option value="'+departmentIdsList[s].id+'">'+departmentIdsList[s].name+'</option>';
+									}
+								}
+							}
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
-						str+='<label>Select District</label>';
-						str+='<select class="form-control chosen-select" id="districtId">';
-							str+='<option value="0">Select District</option>';
-							str+='<option value="1">Nellore</option>';
-							str+='<option value="2">Kavali</option>';
+						str+='<label>Select Level</label>';
+						str+='<select class="form-control chosen-select" id="levelId">';
+						str+='<option value="0"> Select Level </option>';
+						if(lvlValueG != null && lvlValueG.length>0){
+								for(var s in lvlValueG){
+									if(lvlValueG[s].id == lvlValue){
+										str+='<option value="'+lvlValueG[s].id+'" selected="selected">'+lvlValueG[s].name+'</option>';
+									}
+									else{
+										str+='<option value="'+lvlValueG[s].id+'">'+lvlValueG[s].name+'</option>';
+									}
+								}
+							}
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
@@ -552,11 +646,17 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
-						str+='<button type="button" class="btn btn-success" style="background-color:#016500; font-weight: bold;">Get Details</button>';
+						str+='<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+				str+='<div class="row">';
+					str+='<div id="districtWiseDetailsBlock"><div>';
+				str+='</div>';
+			str+='</div>';
 		$("#detailedInfoBlockDiv").html(str);
+		
 			$("#dateRangePickerDetailedBlock").daterangepicker({
 				opens: 'left',
 				startDate: detailedfromDate,
@@ -576,8 +676,70 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				   'This Year': [moment().startOf('Year'), moment()]
 				}
 			});
-		}
-	
+			var dates= $("#dateRangePickerDetailedBlock").val();
+			
+			if(dates == "01/01/1997 - 31/12/2017"){
+				$("#dateRangePickerDetailedBlock").val('ALL');
+			}
+			
+		 if(result != null && result.length > 0){	
+		var str1='';
+		str1+='<table class="table detailedTableStyle">';
+			str1+='<thead>';
+				str1+='<tr>';
+				str1+='<th>District Name</th>';
+				str1+='<th>Total Alerts</th>';
+					if(result[0].subList1 !=null && result[0].subList1.length>0){
+						
+						for(var j in result[0].subList1){
+							if(j != 0)
+							{
+								str1+='<th style="background-color:'+result[0].subList1[j].color+' !important;">'+result[0].subList1[j].category+'</th>';
+							}
+							
+							
+						}
+						
+					}
+				str1+='<th></th>';	
+				str1+='</tr>';
+			str1+='</thead>';
+			str1+='<tbody>';
+				for(var i in result){
+					str1+='<tr>';
+						str1+='<td>'+result[i].status+'</td>';
+						str1+='<td>'+result[i].count+'</td>';
+						if(result[i].subList1 !=null && result[i].subList1.length>0){
+							
+							for(var j in result[i].subList1){
+								if(j != 0)
+								{
+									str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+								}
+							}
+						}
+							str1+='<td><button type="button" class="btn btn-success btn-xs">View Details</button></td>';
+					str1+='</tr>';
+				}
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#districtWiseDetailsBlock").html(str1);
+	}else{
+		$("#districtWiseDetailsBlock").html("No Data Available");
+	}
+	}
+	$(document).on("click",".getDetailsClick",function(){
+		$("#districtWiseDetailsBlock").html('');
+		var departmentId = $("#departmentId").val();
+		var levelId = $("#levelId").val();
+		getAlertCountLocationWiseThenStatusWise(departmentId,levelId);
+		
+	});
+	$(document).on("click",".ranges li",function(){	
+		var selectedDay=$(this).html().trim();
+			if(selectedDay == "All")
+			$("#dateRangePickerDetailedBlock").val('ALL');
+	});
 </script>
 </body>
 </html>
