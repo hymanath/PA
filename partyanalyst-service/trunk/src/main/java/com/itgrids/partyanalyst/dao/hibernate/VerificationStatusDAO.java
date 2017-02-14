@@ -149,7 +149,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue() > 0L)
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
-			str.append(" and alertStatus.alertStatusId = :alertStatusId");
+			str.append(" and model.alertStatus.alertStatusId = :alertStatusId");
 		if(fromDate2 != null && toDate2 != null){ 
 			str.append(" and (date(vs.updatedTime) between :fromDate2 and :toDate2) ");
 		}
