@@ -232,9 +232,9 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 	{
 		if(i == 0)
 		{
-			str+='<li role="presentation" class="active text-capital"><a href="#'+result[i].status+'" aria-controls="'+result[i].status+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
+			str+='<li role="presentation" class="active text-capital"><a href="#alertStaTab'+i+'" aria-controls="alertStaTab'+i+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
 		}else{
-			str+='<li role="presentation" class="text-capital"><a href="#'+result[i].status+'" aria-controls="'+result[i].status+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
+			str+='<li role="presentation" class="text-capital"><a href="#alertStaTab'+i+'" aria-controls="alertStaTab'+i+'" role="tab" data-toggle="tab">'+result[i].status+'</a></li>';
 		}
 	}
 	str+='</ul>';
@@ -243,9 +243,9 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 	{
 		if(i == 0)
 		{
-			str+='<div role="tabpanel" class="tab-pane active" id="'+result[i].status+'">';
+			str+='<div role="tabpanel" class="tab-pane active" id="alertStaTab'+i+'">';
 		}else{
-			str+='<div role="tabpanel" class="tab-pane" id="'+result[i].status+'">';
+			str+='<div role="tabpanel" class="tab-pane" id="alertStaTab'+i+'">';
 		}
 		
 			str+='<div class="row">';
@@ -1321,6 +1321,28 @@ function getTotalAlertGroutByDeptThenStatus(){
     $.ajax({
       type:'GET',    
       url: 'getTotalAlertGroutByDeptThenStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+    });
+}
+getAlertCountLocationWiseThenStatusWise();     
+function getAlertCountLocationWiseThenStatusWise(){
+	
+    var paperIdArr = [];                      
+    var chanelIdArr = [];              
+    var jsObj ={
+      fromDate:'10/02/2017',
+      toDate:'10/02/2017',
+	  govtDepartmentId:1,   
+	  lvlValue:3,             
+      stateId : globalStateId,
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr       
+    }
+    $.ajax({
+      type:'GET',    
+      url: 'getAlertCountLocationWiseThenStatusWiseAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		
