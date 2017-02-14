@@ -3413,7 +3413,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Long> locationLevelValues = new ArrayList<Long>();
 			Date startDate = null;
 			Date endDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(startDateStr != null && !startDateStr.isEmpty() && endDateStr != null && !endDateStr.isEmpty()){
 				 startDate = sdf.parse(startDateStr);
 				 endDate = sdf.parse(endDateStr);
