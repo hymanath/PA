@@ -1,6 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -205,7 +209,7 @@
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
 			<button type="button" class="close alertDetailsModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title fontColor text-capital">Alert Title</h4>
+			<h4 class="modal-title fontColor text-capital"></h4>
 			<p id="mainTitleId"></p>
 		  </div>
 		  <div class="modal-body">
@@ -276,7 +280,7 @@
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading headingColor">
-								<h4 class="panel-title text-capital">assigned officers - 01</h4>
+								<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
 							</div>
 							<div class="panel-body">
 								<div class="row">
@@ -286,8 +290,16 @@
 								</div>
 								<div class="row">
 									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Location Level</label>
-										<div id="locationLevelId"></div>
+										<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
+										<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
+											<option></option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLvlId"></span></label>
+										<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
+											<option></option>
+										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-6" id="constituencyLevelDiv" style="display:none;">
 										<label>Constituency</label>
@@ -302,25 +314,19 @@
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Location</label>
+										<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLocationId"></span></label>
 										<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
 											<option></option>
 										</select>
 									</div>
-									<div class="col-md-2 col-xs-12 col-sm-6">
-										<label>Department</label>
-										<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
-											<option></option>
+									<div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDesgId"></span></label>
+										<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
+										<option></option>	
 										</select>
 									</div>
-									<div class="col-md-2 col-xs-12 col-sm-6">
-										<label>Designation</label>
-										<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">	
-											<option></option>
-										</select>
-									</div>
-									<div class="col-md-2 col-xs-12 col-sm-6">
-										<label>Officer Name</label>
+									<div class="col-md-3 col-xs-12 col-sm-6">
+										<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
 										<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 											<option></option>
 										</select>
@@ -339,17 +345,18 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
+										<span style="color:red;" id="errMsgCmntId"></span>
 										<label>
 											Comments
+										<span style="color:red">*</span>&nbsp;&nbsp;</label>
+										<label class="radio-inline">
+											<input type="radio" name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="Lang"/>Telugu
+											<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
 										</label>
-										<label class="radio-inline">
-											<input type="radio" name="Lang"/>English
-										</label>
-										<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments"></textarea>
-										<input type="file" name="imageForDisplay" class="form-control m_top20"/>
+										<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
+										<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
 									</div>
 									<div class="col-md-4 col-xs-12 col-sm-6">
 										<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">assign alert to designated officer</button>
@@ -368,7 +375,8 @@
 	<!-- Alert Details Modal End-->
 </div>
 <!--Main Div End-->
-
+<!-- modal  For Article -->
+<div class="modal fade" id="myModalShowNew"></div>	
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -377,6 +385,7 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <!-- Custom Script Files Data Start-->
