@@ -40,7 +40,9 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 						" where " +
 						" alertDepartmentStatus.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		queryStr.append(" and alertDepartmentStatus.govtDepartment.govtDepartmentId =:govtDepartmentId ");
-		return null;
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("govtDepartmentId", govtDepartmentId);
+		return query.list();
 	}
 		
    public List<Object[]> getAlertStatusByAlertType(Long alertTypeId){
