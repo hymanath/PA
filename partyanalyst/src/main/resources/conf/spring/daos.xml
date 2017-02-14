@@ -3749,6 +3749,8 @@
 	<bean id="govtAlertDepartmentLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtAlertDepartmentLocationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="govtDepartmentLevelDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentLevelDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
     <!-- Command Control Alerts End -->
 </beans>		
