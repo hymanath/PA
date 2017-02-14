@@ -555,7 +555,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	getAlertData(alertId);
 	getInvolvedMembersDetilas(alertId);
 	getAlertStatusCommentsTrackingDetails();
-	getDepartmentLevels();
+	departmentsByAlert();
 	assignedOfficersDetailsForAlert(alertId);
 });
 function getAlertData(alertId)
@@ -599,26 +599,26 @@ function buildAlertData(result)
 		var location ='';
 			
 		if(result[i].locationVO.stateId !=null){
-			location +='<b>'+result[i].locationVO.state+' , ';
+			location +='<b>'+result[i].locationVO.state+' ';
 		}
 		if(result[i].locationVO.districtId !=null){
-			location +=''+result[i].locationVO.districtName+' District, ';
+			location +=' , '+result[i].locationVO.districtName+' District ';
 		}
 		if(result[i].locationVO.constituencyId !=null){
-			location +=''+result[i].locationVO.constituencyName+' Constituency, ';
+			location +=' , '+result[i].locationVO.constituencyName+' Constituency ';
 		}
 		
 		if(result[i].locationVO.localEleBodyName !=null && result[i].locationVO.localEleBodyName.length>0){
-			location +=''+result[i].locationVO.localEleBodyName+' Municipality, ';
+			location +=' , '+result[i].locationVO.localEleBodyName+' Municipality ';
 		}
 		if(result[i].locationVO.tehsilName !=null && result[i].locationVO.tehsilName.length>0){
-			location +=''+result[i].locationVO.tehsilName+' Mandal, ';
+			location +=' , '+result[i].locationVO.tehsilName+' Mandal ';
 		}
 		if(result[i].locationVO.wardName !=null && result[i].locationVO.wardName.length>0){
-			location +=''+result[i].locationVO.wardName+' Ward, ';
+			location +=' , '+result[i].locationVO.wardName+' Ward ';
 		}
 		if(result[i].locationVO.villageName !=null && result[i].locationVO.villageName.length>0){
-			location +=''+result[i].locationVO.villageName+' Panchayat </b>';
+			location +=' , '+result[i].locationVO.villageName+' Panchayat </b>';
 		}
 		
 		$("#LocationId").html(''+location+'');
@@ -807,7 +807,7 @@ function alertComments(result)
 					str+='<div class="row">';
 						for(var j in result[i].govtDeptList){
 							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-								var date = result[i].sublist2[j].date
+								var date = result[i].govtDeptList[j].dateStr
 								var dateArr = date.split("-");
 								var year = dateArr[0];
 								var month = dateArr[1];
@@ -915,6 +915,7 @@ function assignedOfficersDetailsForAlert(alertId)
 function buildAssignedOfficersDetailsForAlert(result)
 {
 	var str='';
+	$("#assignedOfcrCountId").html('<span>assigned officers - '+result.length+' ');
 	str+='<ul class="assignedOfficersUl">';
 	for(var i in result)
 	{
@@ -935,7 +936,7 @@ function buildAssignedOfficersDetailsForAlert(result)
 	str+='</ul>';
 	$("#assignedOfficersId").html(str);
 }
-function getDepartmentLevels()
+/* function getDepartmentLevels()
 {
 	var jsObj = {}
 	$.ajax({
@@ -954,10 +955,10 @@ function getDepartmentLevels()
 		$("#locationLevelId").html(str);
 		$(".chosenSelect").chosen();
 	});
-}
+} */
 $(document).on('change','#locationLevelSelectId', function(evt, params) {
 	var levelId = $(this).val();
-	locationsBasedOnLevel(levelId)
+		locationsBasedOnLevel(levelId);
 });
 function locationsBasedOnLevel(levelId)
 {
@@ -1101,8 +1102,8 @@ function getVillageAndWardsByMandal(mandalId,constituencyId){
 }
 
 $(document).on('change','#locationsId', function(evt, params) {
-	departmentsByAlert()
-});
+	designationsByDepartment();
+}); 
 function departmentsByAlert()
 {
 	var alertId = $("#hiddenAlertId").val();
@@ -1115,7 +1116,7 @@ function departmentsByAlert()
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		var str='';
-		str+='<option val="0">Select Departments</option>';
+		str+='<option value="0">Select Departments</option>';
 		for(var i in result)
 		{
 			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
@@ -1126,14 +1127,15 @@ function departmentsByAlert()
 }
 $(document).on('change','#departmentsId', function(evt, params) {
 	var departmentId = $(this).val();
-	designationsByDepartment(departmentId)
+	getLocationLevels(departmentId);
 });
-function designationsByDepartment(departmentId)
+function designationsByDepartment()
 {
-	var LevelId = $("#locationLevelSelectId").chosen().val()
+	var LevelId = $("#locationLevelSelectId").chosen().val();
+	var deprtmntId = $("#departmentsId").chosen().val();
 	
 	var jsObj = {
-		departmentId	: departmentId,
+		departmentId	: deprtmntId,
 		levelId			: LevelId,
 	}
 	$.ajax({
@@ -1181,7 +1183,10 @@ function officersByDesignationAndLevel(designationId)
 	});
 }
 $(document).on("click","#assignOfficerId",function(){
-
+if(!fieldsValidation())
+	{
+		return;
+	}
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
@@ -1195,12 +1200,12 @@ $(document).on("click","#assignOfficerId",function(){
 });
 
 function displayStatus(myResult){
-	
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
 		getAlertStatusCommentsTrackingDetails();
 		alert("Alert Assigned Successfully.");
 		$("#alertStatus").html('Notified');
+		fieldsEmpty();
 		/*$("#uploadClarificationFileId0").val('');
 		$("#extraClarificationUploadFileDiv").html('');
 		$(".ClearFileCls").hide();  
@@ -1668,3 +1673,405 @@ function buildStatusWiseTotalAlerts(result){
 		
 	}
 /* Departments Complete Overview End*/
+
+$(document).on("click",".articleDetailsCls",function(){
+	var articleId= $(this).attr("attr_articleId");
+	getTotalArticledetails(articleId);
+});
+
+function getTotalArticledetails(articleId){
+	$("#myModalShowNew").modal('show');
+	$("#myModalShowNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+	}).then(function(results){
+			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+				var result = results[0];
+				var str = '';
+					str+='<div class="modal-dialog modal-lg" role="document">';
+					str+='<div class="modal-content">';
+					str+='<div class="modal-header">';
+					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					str+='<h4 class="modal-title" id="myModalLabel">';
+					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
+					str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div class="modal-body">';
+					str+='<div class="row">';
+					str+='<div class="col-md-12">';
+					str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+					str+='</div>';
+					str+='<div class="col-md-12 m_top10">';
+					str+='<h4 class="panel-title text-success">Description</h4>';
+					str+='<p class="m_0 f_14">'+result.description+'</p>';
+					str+='</div>';
+					str+='<div class="col-md-12">';
+					if( result.subList != null && result.subList.length > 0){
+						for(var i in result.subList){
+							/* Candidate*/
+							str+='<div class="row ">';
+							str+='<div class="col-md-6">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">FROM WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* From Table*/
+								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
+									for( var j in result.subList[i].fromList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].fromList[j].candidateName != null && $.trim(result.subList[i].fromList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].fromList[j].candidateName;
+										}
+										if( result.subList[i].fromList[j].designation != null && $.trim(result.subList[i].fromList[j].designation).length > 0 ){
+											candidataExist = true; 
+											str+=' ('+result.subList[i].fromList[j].designation + ")";
+										}
+										if(!candidataExist){
+											str+=' - ';
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
+											str+='<p class="m_0">Impact Level : '+result.subList[i].fromList[j].impactLevel+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Impact Level : - </p>';	
+										}
+										if(result.subList[i].fromList[j].categories != null && $.trim(result.subList[i].fromList[j].categories).length > 0){
+											str+='<p class="m_0">Category : '+result.subList[i].fromList[j].categories+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Category : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsActivity != null && $.trim(result.subList[i].fromList[j].newsActivity).length > 0){
+											str+='<p class="m_0">News Activity : '+result.subList[i].fromList[j].newsActivity+' </p>';
+										}else{ 
+											str+='<p class="m_0">News Activity : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsType != null && $.trim(result.subList[i].fromList[j].newsType).length > 0){
+											str+='<p class="m_0">News type : '+result.subList[i].fromList[j].newsType+' </p>';
+										}else{ 
+											str+='<p class="m_0">News type : - </p>';	
+										}
+										if( result.subList[i].fromList[j].newsType != null && result.subList[i].fromList[j].newsType == "Problems"){
+											if(result.subList[i].fromList[j].newsRelated != null && $.trim(result.subList[i].fromList[j].newsRelated).length > 0){
+												str+='<p class="m_0">News Related : '+result.subList[i].fromList[j].newsRelated+' </p>';
+											}else{ 
+												str+='<p class="m_0">News Related : - </p>';	
+											}
+											if(result.subList[i].fromList[j].priority != null && $.trim(result.subList[i].fromList[j].priority).length > 0){
+												str+='<p class="m_0">Priority : '+result.subList[i].fromList[j].priority+' </p>';
+											}else{ 
+												str+='<p class="m_0">Priority : - </p>';	
+											}
+											if(result.subList[i].fromList[j].solution != null && $.trim(result.subList[i].fromList[j].solution).length > 0){
+												str+='<p class="m_0">Solution : '+result.subList[i].fromList[j].solution+' </p>';
+											}else{ 
+												str+='<p class="m_0">Solution : - </p>';	
+											}
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='</table>';
+									}
+								}
+							str+='</div>';//panel-body
+							str+='</div>';//panel
+							str+='</div>';//colmd6
+							str+='<div class="col-md-6">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">TO WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* TO Table*/
+								if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
+									for( var j in result.subList[i].toList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].toList[j].organizationName != null && $.trim(result.subList[i].toList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].toList[j].candidateName != null && $.trim(result.subList[i].toList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].toList[j].candidateName;
+																			}
+																			if( result.subList[i].toList[j].designation != null && $.trim(result.subList[i].toList[j].designation).length > 0 ){
+																				candidataExist = true; 
+																				str+=' ('+result.subList[i].toList[j].designation + ")";
+																			}
+																			if(!candidataExist){
+																				str+=' - ';
+																			}
+																		   str+='</td>';
+																	str+='</tr>';
+																	str+='<tr>';
+																		str+='<td colspan="2">';
+																		    
+																			if(result.subList[i].toList[j].impactLevel != null && $.trim(result.subList[i].toList[j].impactLevel).length > 0){
+																			  str+='<p class="m_0">Impact Level : '+result.subList[i].toList[j].impactLevel+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Impact Level : - </p>';	
+																			}
+																		
+																		    if(result.subList[i].toList[j].categories != null && $.trim(result.subList[i].toList[j].categories).length > 0){
+																			  str+='<p class="m_0">Category : '+result.subList[i].toList[j].categories+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Category : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsActivity != null && $.trim(result.subList[i].toList[j].newsActivity).length > 0){
+																			  str+='<p class="m_0">News Activity : '+result.subList[i].toList[j].newsActivity+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News Activity : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsType != null && $.trim(result.subList[i].toList[j].newsType).length > 0){
+																			  str+='<p class="m_0">News type : '+result.subList[i].toList[j].newsType+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News type : - </p>';	
+																			}
+																			if( result.subList[i].toList[j].newsType != null && result.subList[i].toList[j].newsType == "Problems"){
+																				
+																				if(result.subList[i].toList[j].newsRelated != null && $.trim(result.subList[i].toList[j].newsRelated).length > 0){
+																				  str+='<p class="m_0">News Related : '+result.subList[i].toList[j].newsRelated+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">News Related : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].priority != null && $.trim(result.subList[i].toList[j].priority).length > 0){
+																				  str+='<p class="m_0">Priority : '+result.subList[i].toList[j].priority+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Priority : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].solution != null && $.trim(result.subList[i].toList[j].solution).length > 0){
+																				  str+='<p class="m_0">Solution : '+result.subList[i].toList[j].solution+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Solution : - </p>';	
+																				}
+																			}
+																		str+='</td>';
+																	str+='</tr>';
+																str+='</table>';
+															}
+														}
+														
+													str+='</div>';//panelbody
+												str+='</div>';//panel
+											str+='</div>';//colmd6
+											
+										str+='</div>';//row
+								  }
+								}
+								
+								str+='</div>';//colmd12
+							str+='</div>';//row
+								/* Article Scope Location */
+								str+='<div class="col-md-12">';
+									str+='<div class="panel panel-default panelArticleGroup">';
+										str+='<div class="panel-heading">';
+											str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<table class="table table-condensed">';
+												str+='<tr>';
+													str+='<td>Impact Scope : </td>';
+													if(result.impactScopeId!=null){
+														str+='<td>'+obj[result.impactScopeId]+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+												str+='<tr>';
+													str+='<td>Location : </td>';
+													if(result.scopeLocation!=null){
+														str+='<td>'+result.scopeLocation+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+											str+='</table>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+							str+='<div class="row">';
+							     /*Lnking*/
+								str+='<div class="col-md-6">';
+									str+='<div class="panel panel-default panelArticleGroup">';
+										str+='<div class="panel-heading">';
+											str+='<h4 class="panel-title">LINKED ARTICLES</h4>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+										     if( result.linkedList != null && result.linkedList.length > 1){
+											str+='<div class="row">';
+												for( var i in result.linkedList){
+													if(result.linkedList[i].articleId !=articleId ){
+														str+='<div class="col-md-4" style="margin-top:5px;">';
+															str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="http://mytdp.com/NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
+														str+='</div>';
+													}
+												}
+											str+='</div>';
+											}else{
+												str+="<h5> No Linked Articles Available </h5>";
+											}
+											
+										str+='</div>';
+									str+='</div>';
+								str+='</div>'; 
+							str+='</div>';
+						  str+='</div>';
+						str+='</div>';
+					 str+='</div>';
+					 
+					$("#myModalShowNew").html(str);
+		});    
+}
+var url = window.location.href;
+var wurl = url.substr(0,(url.indexOf(".com")+6));
+	if(wurl.length == 3){
+		wurl = url.substr(0,(url.indexOf(".in")+5));
+	}
+google.load("elements", "1", {
+	packages: "transliteration"
+ }); 
+ 
+var control;
+var lang;
+
+function languageChangeHandler(){
+	   var lang1 = $("input[name=Lang]:checked").val();
+		if(lang1 =="en"){
+			control.disableTransliteration();
+		}else{
+			control.enableTransliteration();
+			control.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            lang1);
+		}
+	}
+	
+google.setOnLoadCallback(onLoad);
+function onLoad() {
+	   lang = $("input[name=Lang]:checked").val();
+		var options = {
+			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+			destinationLanguage:[''+lang+''],
+			shortcutKey: 'alt+t',
+			transliterationEnabled: true
+		};
+		// Create an instance on TransliterationControl with the required options.
+		control = new google.elements.transliteration.TransliterationControl(options);
+		// Enable transliteration in the textbox with id 'descrptionId'.
+	 	if ($('#alertDescId').length){
+			control.makeTransliteratable(['alertDescId']);
+		}
+   }	
+   
+function fieldsValidation(){
+	$("#errMsgLvlId").html("");
+	$("#errMsgLocationId").html("");
+	$("#errMsgDeptId").html("");
+	$("#errMsgDesgId").html("");
+	$("#errMsgOffcrId").html("");
+	$("#errMsgCmntId").html("");
+	$("#errMsgImgId").html("");
+	
+	var deptId = $("#departmentsId").val();
+	var levelId = $("#locationLevelSelectId").val();
+	var locationId = $("#locationsId").val();
+ 	var designationId = $("#designationsId").val();
+	var offcierId = $("#officerNamesId").val(); 
+	var comments = $("#alertDescId").val();
+	//var image = $("#imageId").val();
+	
+	if(deptId == 0){
+		$("#errMsgDeptId").html("Select Department.");
+		return false;
+	}
+	if(levelId == 0 ){
+		$("#errMsgLvlId").html("Select Location Level");
+		return false;
+	}
+	if(locationId == 0){
+		$("#errMsgLocationId").html("Select Location.");
+		return false;
+	}
+	if(designationId == 0){
+		$("#errMsgDesgId").html("Select Designation.");
+		return false;
+	}
+	if(offcierId == 0){
+		$("#errMsgOffcrId").html("Select OfficerName.");
+		return false;
+	} 
+	if(comments.length == 0){
+		$("#errMsgCmntId").html("Enter Comments.");
+		return false;
+	}
+	/* if( image == null || image.length == 0 ){
+		$("#errMsgImgId").html("Attachment Required.");
+		return false;
+	} */
+	
+	return true;
+}
+
+function fieldsEmpty(){
+	$("#locationLevelSelectId").val('');
+	$("#locationLevelSelectId").trigger("chosen:updated");
+	$("#constLvlId").val('');
+	$("#constLvlId").trigger("chosen:updated");
+	$("#mndlMuncLvlId").val('');
+	$("#mndlMuncLvlId").trigger("chosen:updated");
+	$("#locationsId").val('');
+	$("#locationsId").trigger("chosen:updated");
+	$("#departmentsId").val('');
+	$("#departmentsId").trigger("chosen:updated");
+	$("#designationsId").val('');
+	$("#designationsId").trigger("chosen:updated");
+	$("#officerNamesId").val('');
+	$("#officerNamesId").trigger("chosen:updated");
+	$("#alertDescId").val('');
+	$("#imageId").val('');
+}
+
+function getLocationLevels(departmentId){
+	var jsObj = {
+		departmentId : departmentId 
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getLevelsByDeptIdAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Level</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#locationLevelSelectId").html(str);
+		$("#locationLevelSelectId").trigger("chosen:updated");
+	});
+}
