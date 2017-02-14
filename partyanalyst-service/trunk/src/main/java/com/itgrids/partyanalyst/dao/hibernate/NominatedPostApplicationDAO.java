@@ -1975,7 +1975,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       
 	    return query.list();  
 	}
-	
+
 @SuppressWarnings("unchecked")
 public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type){
 		
@@ -1996,7 +1996,8 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		}
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
-		queryStr.append(" and  model.applicationStatusId is not null " +
+		queryStr.append(" and  model.nominatedPostMember.nominatedPostMemberId = model1.nominatedPostMember.nominatedPostMemberId and " +
+				" model.applicationStatusId is not null " +
 				" and model1.isDeleted='N' and "+
 				" model1.nominatedPostMember.isDeleted='N' and "+
 				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
