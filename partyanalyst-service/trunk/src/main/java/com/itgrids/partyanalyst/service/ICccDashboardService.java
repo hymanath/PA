@@ -37,4 +37,6 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getLebsForConstituency(Long constituencyId);
 	public List<GovtDepartmentVO> getPanchayatsMandalId(Long mandalId,Long constituencyId);
 	public List<GovtDepartmentVO> getInvolvedMembersInAlert(Long alertId);
+	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId);
+	public List<IdAndNameVO> getDeptIdAndNameListForUser(Long userId);
 } 
