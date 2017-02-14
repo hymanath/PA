@@ -51,6 +51,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private List<IdAndNameVO> newsPaperList;
 	    private List<IdAndNameVO> chanelList;
 	    private List<IdAndNameVO> deptList;
+	    private List<IdAndNameVO> locationLevelList;
 	   
 	    public List<File> getImageForDisplay() {
 			return imageForDisplay;
@@ -165,6 +166,14 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	}
 	public void setAlertVOs(List<AlertVO> alertVOs) {
 		this.alertVOs = alertVOs;
+	}
+	
+	
+	public List<IdAndNameVO> getLocationLevelList() {
+		return locationLevelList;
+	}
+	public void setLocationLevelList(List<IdAndNameVO> locationLevelList) {
+		this.locationLevelList = locationLevelList;
 	}
 	//Business method
 	   public String execute(){
@@ -504,4 +513,29 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		
+		public String getGovtDeptLevelForDeptAndUser(){
+			   try {
+					jObj = new JSONObject(getTask());
+					Long departmentId = jObj.getLong("departmentId");
+					Long userId = jObj.getLong("userId");
+					
+					locationLevelList = cccDashboardService.getGovtDeptLevelForDeptAndUser(departmentId,userId);
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getGovtDeptLevelForDeptAndUser() in CccDashboardAction",e);
+				}
+				   return Action.SUCCESS;
+		}
+		public String getDeptIdAndNameListForUser(){
+			   try {
+					jObj = new JSONObject(getTask());
+					Long userId = jObj.getLong("userId");
+					
+					deptList = cccDashboardService.getDeptIdAndNameListForUser(userId);
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getDeptIdAndNameListForUser() in CccDashboardAction",e);
+				}
+				   return Action.SUCCESS;
+		}
+		
 }
