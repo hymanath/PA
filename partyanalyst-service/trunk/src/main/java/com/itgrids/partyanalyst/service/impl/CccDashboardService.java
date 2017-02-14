@@ -850,6 +850,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					
 			
 			buildAlertGroupByStatusThenDepartment(alertCountGrpByDeptList,deptIdAndCountMap,statusList,finalListNew,"true");
+			if(finalListNew != null && finalListNew.size() > 0){
+				for(AlertVO param : finalListNew){
+					param.setDeptIdList(dptIdList);
+				}
+			}
 			return finalListNew;     
 		}catch(Exception e){
 			e.printStackTrace();
