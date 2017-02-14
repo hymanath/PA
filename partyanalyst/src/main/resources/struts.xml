@@ -15810,6 +15810,11 @@
 			<param name="root">alertVOs</param>
 		</result>
 	</action>
+	<action name="getLevelsByDeptIdAction" class="cccDashboardAction" method="getLevelsByDeptId">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>
 	 <action name="getGovtDeptLevelForDeptAndUserAction" class="createAlertAction"  method="getGovtDeptLevelForDeptAndUser">
 		<result type="json" name="success">  
 			<param name="root">locationLevelList</param>
