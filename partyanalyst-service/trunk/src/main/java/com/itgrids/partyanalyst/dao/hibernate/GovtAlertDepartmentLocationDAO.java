@@ -15,7 +15,7 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 		
 	}
 	public List<Object[]> getDeptListForUser(Long userId){
-		Query query = getSession().createQuery(" select distinct " +
+ 		Query query = getSession().createQuery(" select distinct " +
 											   " model.govtDepartment.govtDepartmentId," +//0
 											   " state.stateId, " +//1
 											   " state.stateName," +//2
@@ -23,13 +23,13 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 											   " district.districtName" +//4
 											   " from " +
 											   " GovtAlertDepartmentLocation model  " +
-											   " left join model.userAddress.state state "+
-											   " left join model.userAddress.district district "+
-											   " left join model.userAddress.constituency constituency "+
-											   " left join model.userAddress.tehsil tehsil "+
-											   " left join model.userAddress.localElectionBody localElectionBody "+
-											   " left join model.userAddress.panchayat panchayat "+
-											   " left join model.userAddress.ward ward "+
+											   " left join model.address.state state "+
+											   " left join model.address.district district "+
+											   " left join model.address.constituency constituency "+
+											   " left join model.address.tehsil tehsil "+
+											   " left join model.address.localElectionBody localElectionBody "+
+											   " left join model.address.panchayat panchayat "+
+											   " left join model.address.ward ward "+
 											   " where " +
 											   " model.user.userId = :userId");  
 		query.setParameter("userId", userId);
