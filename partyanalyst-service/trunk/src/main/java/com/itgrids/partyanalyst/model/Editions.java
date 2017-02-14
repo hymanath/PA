@@ -40,6 +40,7 @@ public class Editions  extends BaseModel implements Serializable
 	
 	private State state;
 	private String downloadUrl;
+	private Long newsPaperId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -62,7 +63,7 @@ public class Editions  extends BaseModel implements Serializable
 	
 
      @ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	 @JoinColumn(name="news_paper_id")
+	 @JoinColumn(name="news_paper_id", insertable=false, updatable = false)
 	 @LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public NewsPaper getNewsPaper() {
@@ -154,6 +155,14 @@ public class Editions  extends BaseModel implements Serializable
 	}
 	public void setMaxPages(Long maxPages) {
 		this.maxPages = maxPages;
+	}
+	
+	@Column(name = "news_paper_id")
+	public Long getNewsPaperId() {
+		return newsPaperId;
+	}
+	public void setNewsPaperId(Long newsPaperId) {
+		this.newsPaperId = newsPaperId;
 	}
 	
 	
