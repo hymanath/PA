@@ -50,7 +50,13 @@ public class AlertVO {
 	private String clarificationRequired;
 	private String fileIdList;
 	private Double statusPercent = 0.0d;
-	
+	private List<Long> deptIdList = new ArrayList<Long>();
+	public List<Long> getDeptIdList() {
+		return deptIdList;
+	}
+	public void setDeptIdList(List<Long> deptIdList) {
+		this.deptIdList = deptIdList;
+	}
 	public Long getNoOfDays() {
 		return noOfDays;
 	}
