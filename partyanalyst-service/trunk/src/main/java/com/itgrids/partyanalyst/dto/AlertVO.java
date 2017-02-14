@@ -50,12 +50,27 @@ public class AlertVO {
 	private String clarificationRequired;
 	private String fileIdList;
 	private Double statusPercent = 0.0d;
+	private String severityStr;
+	private String assignedDate;
+	
 	private List<Long> deptIdList = new ArrayList<Long>();
 	public List<Long> getDeptIdList() {
 		return deptIdList;
 	}
 	public void setDeptIdList(List<Long> deptIdList) {
 		this.deptIdList = deptIdList;
+	}
+	public String getAssignedDate() {
+		return assignedDate;
+	}
+	public void setAssignedDate(String assignedDate) {
+		this.assignedDate = assignedDate;
+	}
+	public String getSeverityStr() {
+		return severityStr;
+	}
+	public void setSeverityStr(String severityStr) {
+		this.severityStr = severityStr;
 	}
 	public Long getNoOfDays() {
 		return noOfDays;

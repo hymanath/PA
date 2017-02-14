@@ -31,7 +31,8 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 											   " left join model.address.panchayat panchayat "+
 											   " left join model.address.ward ward "+
 											   " where " +
-											   " model.user.userId = :userId");  
+											   " model.user.userId = :userId" +
+											   " and model.isDeleted = 'N'");  
 		query.setParameter("userId", userId);
 		return query.list();
 	}  
@@ -56,7 +57,17 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 											   " from " +
 											   " GovtAlertDepartmentLocation model " +
 											   " where " +
-											   " model.userId = :userId");
+											   " model.userId = :userId" +
+											   " and model.isDeleted = 'N'");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	public List<Object[]> getDepartmentsForUser(Long userId){
+		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId," +
+												" model.govtDepartment.departmentName" +
+												" from GovtAlertDepartmentLocation model" +
+												" where model.user.userId = :userId" +
+												" and model.isDeleted = 'N'");
 		query.setParameter("userId", userId);
 		return query.list();
 	}

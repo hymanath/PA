@@ -312,4 +312,55 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		query.setParameter("levelValue",levelValue);
 		return query.list();
 	}
+	
+	public List<Object[]> getStatusWiseAlertDetails(Date fromDate,Date toDate,Long stateId,List<Long> printIdList,List<Long> electronicIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.alert.alertId," +
+					" model.alert.alertSeverity.alertSeverityId," +
+					" model.alert.alertSeverity.severity," +
+					" model.alert.title," +
+					" date(model.alert.createdTime)," +
+					" date(model.insertedTime)," +
+					" date(model.alert.updatedTime)," +
+					" model.alert.alertStatus.alertStatusId," +
+					" model.alert.alertStatus.alertStatus" +
+					" from AlertAssignedOfficer model");
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			sb.append(" left join model.alert.tvNewsChannel TNC" +
+						" left join model.alert.edition E");
+		}
+		sb.append(" left join model.alert.userAddress UA" +
+					" left join UA.state S");
+		
+		sb.append(" where model.alert.isDeleted = 'N'");
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L)
+				sb.append(" and S.stateId = 1");
+			else if(stateId.longValue() == 36L)
+				sb.append(" and S.state_id = 36");
+			else if(stateId.longValue() == 0L)
+				sb.append(" and S.state_id in (1,36)");
+		}
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
+			sb.append(" and ((E.newsPaperId in (:printIdList)) or (TNC.tvNewsChannelId in (:electronicIdList)))");
+		if(deptIdList != null && !deptIdList.isEmpty())
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIdList)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			query.setParameterList("printIdList", printIdList);
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		if(deptIdList != null && !deptIdList.isEmpty())
+			query.setParameterList("deptIdList", deptIdList);
+		
+		return query.list();
+	}
 }
