@@ -204,30 +204,7 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="panel panel-default panelCustom">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title fontColor"></h4>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-4 col-xs-12 col-sm-4">
-													<h4 class="panel-title text-capital">district wise total alerts</h4>
-												</div>
-												<div class="col-md-8 col-xs-12 col-sm-8">
-													<ul class="list-inline activeUlCls">
-														<li>Overview</li>
-														<li>Status</li>
-													</ul>
-												</div>
-												<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-													<div id=""></div>
-												</div>
-												<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="statusWiseTotalDiv"></div>
-											</div>
-										</div>
-									</div>
-								</div>
+								<div id="alertDepartmentWise"></div>
 							</div>
 						</div>
 					</div>
