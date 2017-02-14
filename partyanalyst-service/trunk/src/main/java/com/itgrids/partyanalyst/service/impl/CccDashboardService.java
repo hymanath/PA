@@ -787,6 +787,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				}
 			}
 			buildStatusWiseAlertCount(statusList,alertCountList,finalAlertVOs);
+			if(finalAlertVOs != null && finalAlertVOs.size() > 0){
+				for(AlertVO param : finalAlertVOs){
+					param.setDeptIdList(dptIdList);
+				}
+			}
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -850,11 +855,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					
 			
 			buildAlertGroupByStatusThenDepartment(alertCountGrpByDeptList,deptIdAndCountMap,statusList,finalListNew,"true");
-			if(finalListNew != null && finalListNew.size() > 0){
-				for(AlertVO param : finalListNew){
-					param.setDeptIdList(dptIdList);
-				}
-			}
+			
 			return finalListNew;     
 		}catch(Exception e){
 			e.printStackTrace();
