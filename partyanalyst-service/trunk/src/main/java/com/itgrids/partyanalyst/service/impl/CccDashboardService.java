@@ -750,7 +750,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		return returnList;
 	}
 	/*
-	 * Swadhin(non-Javadoc)
+	 * Swadhin(non-Javadoc) both IAS and collector
 	 */
 	public List<AlertVO> getTotalAlertGroupByStatusForOneDept(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId){
 		logger.info("Entered in getTotalAlertGroupByStatusForOneDept() method of CccDashboardService{}");
@@ -775,9 +775,15 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			//get all the alert status and build the template
 			List<Object[]> statusList = new ArrayList<Object[]>();
 			Object[] obj = null;
-			List<Long> dptIdList = govtAlertDepartmentLocationDAO.getDeptListForUser(1L);  
+			List<Long> deptList = new ArrayList<Long>();
+			List<Object[]> dptIdList = govtAlertDepartmentLocationDAO.getDeptListForUser(1L);
+			if(dptIdList != null && dptIdList.size() > 0){
+				for(Object[] param : dptIdList){
+					deptList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
 			//get alert status count and and create a map of alertStatusId and its count
-			List<Object[]> alertCountList = alertAssignedOfficerDAO.getTotalAlertGroupByStatusForGovtOneDept(fromDate,toDate,stateId,printIdList,electronicIdList,dptIdList);
+			List<Object[]> alertCountList = alertAssignedOfficerDAO.getTotalAlertGroupByStatusForGovtOneDept(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					obj = new Object[2];
@@ -789,7 +795,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			buildStatusWiseAlertCount(statusList,alertCountList,finalAlertVOs);
 			if(finalAlertVOs != null && finalAlertVOs.size() > 0){
 				for(AlertVO param : finalAlertVOs){
-					param.setDeptIdList(dptIdList);
+					param.setDeptIdList(deptList);
+					if(dptIdList.get(0) != null){
+						param.setDistrictId(commonMethodsUtilService.getLongValueForObject(dptIdList.get(0)[3]));
+						param.setLocationName(commonMethodsUtilService.getStringValueForObject(dptIdList.get(0)[4]));   
+					}
 				}
 			}
 			return finalAlertVOs; 
@@ -800,7 +810,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		return null;
 	}
 	/*
-	 * Swadhin(non-Javadoc)
+	 * Swadhin(non-Javadoc) Both IAS and collector
 	 */
 	public List<AlertVO> getTotalAlertGroutByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId){
 		logger.info("Entered in getTotalAlertGroutByDeptThenStatus() method of CccDashboardService{}");
@@ -830,8 +840,14 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			//get all the status
 			List<Object[]> statusList = new ArrayList<Object[]>();
 			Object[] obj = null;
-			List<Long> dptIdList = govtAlertDepartmentLocationDAO.getDeptListForUser(1L);  
-			List<Object[]> alertCountList = alertAssignedOfficerDAO.getTotalAlertGroupByStatusForGovtOneDept(fromDate,toDate,stateId,printIdList,electronicIdList,dptIdList);
+			List<Long> deptList = new ArrayList<Long>();
+			List<Object[]> dptIdList = govtAlertDepartmentLocationDAO.getDeptListForUser(1L);
+			if(dptIdList != null && dptIdList.size() > 0){
+				for(Object[] param : dptIdList){
+					deptList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			List<Object[]> alertCountList = alertAssignedOfficerDAO.getTotalAlertGroupByStatusForGovtOneDept(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					obj = new Object[2];
@@ -843,15 +859,15 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
 			//List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList);//old
 			
-			List<Object[]> alertCntList = alertAssignedOfficerDAO.getDepartmentWiseAlertCount(fromDate,toDate,stateId,printIdList,electronicIdList,dptIdList);
+			List<Object[]> alertCntList = alertAssignedOfficerDAO.getDepartmentWiseAlertCount(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
 			if(alertCntList != null && alertCntList.size() > 0){
-				for(Object[] param : alertCntList){
+				for(Object[] param : alertCntList){  
 					deptIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
 			}
 			
 			//List<Object[]> alertCountGrpByDeptList = alertDAO.getTotalAlertGroupByStatusThenDepartmentForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList);//old
-			List<Object[]> alertCountGrpByDeptList = alertAssignedOfficerDAO.getTotalAlertGroupByDepartmentThenStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,dptIdList);
+			List<Object[]> alertCountGrpByDeptList = alertAssignedOfficerDAO.getTotalAlertGroupByDepartmentThenStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
 					
 			
 			buildAlertGroupByStatusThenDepartment(alertCountGrpByDeptList,deptIdAndCountMap,statusList,finalListNew,"true");
