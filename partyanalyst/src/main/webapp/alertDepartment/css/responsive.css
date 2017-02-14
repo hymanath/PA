@@ -1,0 +1,333 @@
+@media (min-width: 100px) and (max-width:250px) {
+	.radio-inline
+	{
+		margin:0px !important;
+	}
+	#lastUpdatedTimeCadreId , #lastUpdatedDebateId , #lastUpdatedTimeTrainingCampId
+	{
+		font-size:12px !important;
+		top:0px !important;
+	}
+}
+@media (min-width: 100px) and (max-width:500px) {
+	#alertOverviewDetails
+	{
+		margin-top:-20px !important;
+	}
+	.img-responsive
+	{
+		margin:auto;
+		display:block;
+	}
+	.m_XsTop10
+	{
+		margin-top:10px;
+	}
+	.m_XsTop20
+	{
+		margin-top:20px;
+	}
+	.committesBlockUl li
+	{
+		width:100%;
+		display:block;
+	}
+	.dateRangePickerCls
+	{
+		margin-top:10px;
+	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:11px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:11px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:10px;
+	}
+	.label.label-default
+	{
+		margin-top:10px;
+		top:5px;
+		position:relative;
+	}
+	.headingColor
+	{
+		background:#fff;
+		color:#555;
+		border:1px solid #555;
+		padding:2px;
+	}
+	h4 .headingColor
+	{
+		font-size:11px !important;
+	}
+	.panelNewCustom .panel-heading
+	{
+		padding:3px 4px;
+	}
+	.panelNewCustom .panel-body  , .panelNew .panel-body
+	{
+		padding:5px;
+	}
+	.panelNew .panel-heading
+	{
+		padding:6px;
+	}
+	.collapseDebatesIcon:before {
+		/* symbol for "opening" panels */
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		margin-top:-4px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:#4B5763;
+		border:1px solid #4B5763;
+		padding:2px 3px;
+	}
+	.arrowChange
+	{
+		font-size:10px;
+		padding:2px 3px;
+		margin-top:-16px;
+	}
+	.collapseDebatesIcon.collapsed:before {
+		/* symbol for "collapsed" panels */
+		content:"\2b";
+	}
+	.ratingSpan
+	{
+		width:70px;
+		display:block;
+	}
+	.responsiveWidth
+	{
+		width:200px;
+		display:block;
+	}
+	.basicCommitteesBlockDropDown
+	{
+		width:250px;
+	}
+	.settingsDropDownOptionsView
+	{
+		min-width:320px !important;
+	}
+	.radioStyling li
+	{
+		width:80%;
+		font-size:12px !important;
+	}
+	.panelProfileView .panel-heading .panel-title
+	{
+		font-size:12px !important;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings , .basicCommitteesBlockDiv , .tourExpand , .cadreNotes , .cadreSettings , .cadreExpand , .cadreSettings , .cadreNotes , .emnIconExpand  , .notesIconEmn,.emnSetIcon , .attendaceIconExpand , .attendanceSetIcon , .notesIconattendance
+	{
+		font-size:10px;
+		padding:2px;
+		top:-1px;
+		margin-right:7px;
+		margin-top:5px;
+	}
+	.newsIcon
+	{
+		height:15px;
+		width:15px;
+	}
+	.dateRangePickerClsForNews
+	{
+		margin-top:20px;
+	}
+	#lastUpdatedId
+	{
+		font-size:10px !important;
+		margin-left:30px !important;
+	}
+	.newsComparisonUl
+	{
+		width:100% !important;
+		margin-top:5px !important;
+		margin-right:0px !important;
+	}
+	.panelSlick  .panel-title
+	{
+		font-size:12px;
+		font-weight:500;
+	}
+	.panelSlick .panel-heading .count
+	{
+		font-size:13px;
+		padding:2px 3px;
+		width:20px;
+	}
+}
+@media (min-width: 500px) and (max-width:767px) {
+	.committesBlockUl li
+	{
+		width:100%;
+		display:block;
+	}
+	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand
+	{
+		margin-right:5px;
+	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+}
+@media (min-width:769px) and  (max-width:991px){
+	.committesBlockUl li
+	{
+		width:47%;
+		display:inline-block;
+	}
+}
+@media (min-width:992px) and  (max-width:1199px){
+}
+@media (min-width:1200px){
+}
+@media (min-width:767px) and  (max-width:768px){
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+}
+/* Ipad Only STYLES START*/
+@media only screen and (device-width: 768px) {
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+	.committesBlockUl li
+	{
+		width:47%;
+		display:inline-block;
+	}
+	.headingColor
+	{
+		font-size:16px;
+	}
+	.activeUlCls
+	{
+		margin-top:10px;
+	}
+	.responsiveFont
+	{
+		font-size:14px !important;
+	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:15px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:13px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:11px;
+	}
+	.activeUlCls li
+	{
+		font-size:12px;
+	}
+	.activeUlCls
+	{
+		float:right;
+		margin-top:10px;
+	}
+	.basicCommitteesBlockDropDown
+	{
+		width:380px;
+	}
+	.hiddenIpad
+	{
+		display:none;
+	}
+}
+@media only screen and (device-width: 1024px) {
+	#alertDtlsTabId tr td:first-child , #alertDtlsTabId thead th:first-child
+	{
+		width:150px !important;
+	}
+	.committesBlockUl li
+	{
+		width:47%;
+		display:inline-block;
+	}
+	.responsiveFont
+	{
+		font-size:14px !important;
+	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:15px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:13px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:11px;
+	}
+	.activeUlCls li
+	{
+		font-size:12px;
+	}
+	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .basicCommitteesBlockDiv , .notesIconTraining
+	{
+		margin-right:7px;
+	}
+	.headingColor , h4.bg_49
+	{
+		font-size:14px;
+	}
+	.settingsDropDownOptionsView
+	{
+		min-width:320px !important;
+	}
+	.basicCommitteesBlockDropDown
+	{
+		width:250px !important;
+	}
+	.hiddenIpad
+	{
+		display:none;
+	}
+}
+
+/* Ipad Only STYLES END */

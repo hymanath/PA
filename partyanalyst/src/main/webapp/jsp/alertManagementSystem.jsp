@@ -7,15 +7,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Government Core DashBoard</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
-<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -89,96 +89,64 @@
 													<span class="settingsIcon pull-right">
 														<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 													</span>
-													<div class="settingsBlockDropDown settingsArrow">
-														<i class="glyphicon glyphicon-remove newsSetClose pull-right"></i>
+													<div class="settingsBlockDropDown notesArrow documentCloseClass">
+														<i class="glyphicon glyphicon-remove setClose pull-right"></i>
 														<div class="row">
 															<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
 																<ul class="nav nav-tabs navTabsSettings" role="tablist">
-																	<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="EditionsEmn" role="tab" data-toggle="tab">Print Media</a></li>
-																	<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="impactScopeEmn" role="tab" data-toggle="tab">Electronic Media</a></li>
-																	<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="impactScopeEmn" role="tab" data-toggle="tab">Department</a></li>
+																	<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
+																	<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
+																	<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
 																</ul>
 															</div>
 															<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
 																<div class="tab-content navTabsSettingsContent">
 																	<div role="tabpanel" class="tab-pane active" id="printMediaAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select News Papers</h4>
 																		<hr style ="margin-bottom:0px;" />
 																		<div class="">
-																			<ul class="settingsUlEmn" id="emnNewsChannelsUlId">
+																			<ul class="settingsUl" id="emnNewsChannelsUlId">
 																				<c:forEach items="${newsPaperList}"  var="newsPaper">
-																					<li attr_val="${newsPaper.id}">${newsPaper.name}</option></li>
+																					<li attr_val="${newsPaper.id}">
+																						<label><input type="checkbox" attr_val="${newsPaper.id}"/>
+																						${newsPaper.name}</label>
+																					</li>
 																				</c:forEach>
 																			</ul>
 																		</div>
 																	</div>
 																	<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Tv Channels</h4>
 																		<hr style ="margin-bottom:0px;" />
 																		<div class="">
-																			<ul class="settingsUlEmn">
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="0" id="impactSelectAllIdEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-																					</label>
-																				</li>
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="1" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
-																					</label>
-																				</li>
-																				<li>												
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="2" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
-																					</label>	
-																				</li>	
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="3" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-																					</label>
-																				</li>
-																				<li>
-																					<label class="checkbox-inline">
-																					<input type="checkbox" value="4" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
-																					</label>
-																				</li>	
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="5" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
-																					</label>
-																				</li>
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="6" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
-																					</label>
-																				</li>
-																				<li>
-																					<label class="checkbox-inline">
-																						<input type="checkbox" value="8" class="impactCheckClsEmn" checked>
-																						<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
-																					</label>	
-																				</li>	
+																			<ul class="settingsUl" id="emnNewsChannelsUlId">
+																				<c:forEach items="${chanelList}"  var="channels">
+																					<li attr_val="${channels.id}">
+																						<label><input type="checkbox" attr_val="${channels.id}"/>
+																						${channels.name}</label>
+																					</li>
+																				</c:forEach>
 																			</ul>
 																		</div>
 																	</div>
 																	<div role="tabpanel" class="tab-pane active" id="departmentAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
 																		<hr style ="margin-bottom:0px;" />
-																		<div class="">
-																			<ul class="settingsUlEmn" id="emnNewsChannelsUlId"></ul>
+																		<div class="scrollerBlockDepartments">
+																			<ul class="settingsUl" id="emnNewsChannelsUlId">
+																				<c:forEach items="${deptList}"  var="departments">
+																					<li>
+																						<label><input type="checkbox" attr_val="${departments.id}"/>
+																						${departments.name}</label>
+																					</li>
+																				</c:forEach>
+																			</ul>
 																		</div>
 																	</div>
 																</div>
 															  
 															</div>
-															<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+															<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
 																<button type="button" class="btn btn-success filtersSubmitDivIdEmn">Get Details</button>
 															</div>
 														</div>
@@ -409,6 +377,11 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/alertManagementSystem/alertManagementSystem.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<!-- Custom Script Files Data Start-->
+<script src="alertDepartment/js/alertManagementSystem.js" type="text/javascript"></script>
+<!-- Custom Script Files Data End-->
+
 </body>
 </html>
