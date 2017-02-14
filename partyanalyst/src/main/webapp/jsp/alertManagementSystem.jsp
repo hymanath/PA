@@ -109,10 +109,13 @@
 																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select News Papers</h4>
 																		<hr style ="margin-bottom:0px;" />
 																		<div class="">
-																			<ul class="settingsUl" id="emnNewsChannelsUlId">
+																			<ul class="settingsUl">
+																				<li>
+																					<label><input type="checkbox" class="selectAllPaperCls" checked />Select All</label>
+																				</li>
 																				<c:forEach items="${newsPaperList}"  var="newsPaper">
-																					<li attr_val="${newsPaper.id}">
-																						<label><input type="checkbox" attr_val="${newsPaper.id}"/>
+																					<li>
+																						<label><input type="checkbox" class="newsPaperListCls" checked attr_val="${newsPaper.id}"/>
 																						${newsPaper.name}</label>
 																					</li>
 																				</c:forEach>
@@ -122,25 +125,29 @@
 																	<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
 																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Tv Channels</h4>
 																		<hr style ="margin-bottom:0px;" />
-																		<div class="">
-																			<ul class="settingsUl" id="emnNewsChannelsUlId">
-																				<c:forEach items="${chanelList}"  var="channels">
-																					<li attr_val="${channels.id}">
-																						<label><input type="checkbox" attr_val="${channels.id}"/>
-																						${channels.name}</label>
-																					</li>
-																				</c:forEach>
-																			</ul>
-																		</div>
+																		<ul class="settingsUl">
+																			<li>
+																				<label><input type="checkbox" class="selectAllChannelsCls" checked />Select All</label>
+																			</li>
+																			<c:forEach items="${chanelList}"  var="channels">
+																				<li>
+																					<label><input type="checkbox" class="chanelListCls" checked attr_val="${channels.id}"/>
+																					${channels.name}</label>
+																				</li>
+																			</c:forEach>
+																		</ul>
 																	</div>
-																	<div role="tabpanel" class="tab-pane active" id="departmentAlerts">
+																	<div role="tabpanel" class="tab-pane" id="departmentAlerts">
 																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
 																		<hr style ="margin-bottom:0px;" />
 																		<div class="scrollerBlockDepartments">
-																			<ul class="settingsUl" id="emnNewsChannelsUlId">
+																			<ul class="settingsUl">
+																				<li>
+																					<label><input type="checkbox" class="selectAlldepartmentsCls" checked/>Select All</label>
+																				</li>
 																				<c:forEach items="${deptList}"  var="departments">
 																					<li>
-																						<label><input type="checkbox" attr_val="${departments.id}"/>
+																						<label><input type="checkbox" class="departmentsCls" checked attr_val="${departments.id}"/>
 																						${departments.name}</label>
 																					</li>
 																				</c:forEach>
@@ -151,7 +158,7 @@
 															  
 															</div>
 															<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
-																<button type="button" class="btn btn-success filtersSubmitDivIdEmn">Get Details</button>
+																<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
 															</div>
 														</div>
 													</div>
@@ -385,7 +392,6 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <!-- Custom Script Files Data Start-->
