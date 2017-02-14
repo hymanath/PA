@@ -1,21 +1,26 @@
-var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
-var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+//GLOBAL VARIABLES FOR DATES IN MEETINGS.
+ var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
+ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+ var globalStartDateForSpecialMeeting;
+ var globalEndDateForSpecialMeeting;
 
 function globalMeetingsCalls(type)
 {
-	if(type == "default"){
+	defaultFunctionaliySpecicalMeeting();
+	/* if(type == "default"){
 		$('#dateRangeIdForMeetings').data('daterangepicker').setStartDate(moment());
 		$('#dateRangeIdForMeetings').data('daterangepicker').setEndDate(moment());
 		customStartDateMeetings = moment().format('DD/MM/YYYY')
 		customEndDateMeetings = moment().format('DD/MM/YYYY')
 		$("#dateMeetingHeadingId").html("TODAY"+" ( "+moment().format('DD/MM/YYYY')+"-"+moment().format('DD/MM/YYYY')+" )");
-	}else if(type == "currentMonth"){
+	} */
+	if(type == "currentMonth"){
 		$('#dateRangeIdForMeetings').data('daterangepicker').setStartDate(moment().startOf("month"));
 		$('#dateRangeIdForMeetings').data('daterangepicker').setEndDate(moment().endOf("month"));
 		customStartDateMeetings = moment().startOf("month").format('DD/MM/YYYY')
 		customEndDateMeetings = moment().endOf("month").format('DD/MM/YYYY')
 		$("#dateMeetingHeadingId").html("THIS MONTH"+" ( "+moment().startOf("month").format('DD/MM/YYYY')+"-"+moment().endOf("month").format("DD/MM/YYYY")+" )");
-	}else if(type == "lastMonth"){
+	}else if(type == "lastMonth" || type == "default"){
 		$('#dateRangeIdForMeetings').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 		$('#dateRangeIdForMeetings').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
 		customStartDateMeetings = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
@@ -67,9 +72,15 @@ function globalMeetingsCalls(type)
 	$("#dateMeetingHeadingId").html(" Last MONTH ( "+dates+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
+	
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
+	  
 	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
+	  globalStartDateForSpecialMeeting = picker.startDate.format('DD/MM/YYYY');
+      globalEndDateForSpecialMeeting = picker.endDate.format('DD/MM/YYYY');
+	  
+	  
 	  singleBlockDateStart = picker.startDate.format('MMM YY');
 	  singleBlockDateEnd = picker.endDate.format('MMM YY');
 	  //$("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
@@ -86,6 +97,7 @@ function globalMeetingsCalls(type)
 	 // $("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
 	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
 	});
+	
 	$(document).on("click",".meetingGetDtlsBtncls",function(){
 		var isChecked=false;
 		 $("#committeeTypeId li").each(function() {
@@ -2068,13 +2080,20 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
 		  }
 	   });   
+	    $(".specialMeetingBtnClsNew").each(function(){
+		if($(this).hasClass('specialMeetingsDate'))
+		{
+			globalStartDateForSpecialMeeting = $(this).attr("attr_startDate");
+		    globalEndDateForSpecialMeeting = $(this).attr("attr_endDate");
+			$(this).removeClass('specialMeetingsDate');
+		}
+	}); 
 	     var state = globalState
-	   
 		var jsObj ={ 
 		             partyMeetingMainTypeId : 2,
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 				     partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingId:0
 				  }
@@ -2086,7 +2105,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		}).done(function(result){
 			$("#stateLevelMeetingBasicCnt").html(" ");
 		    if(result != null && result.length > 0){
-				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId",partyMeetingTypeArr,fromDateStr,toDateStr,state);
+				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId",partyMeetingTypeArr,globalStartDateForSpecialMeeting,globalEndDateForSpecialMeeting,state);
 			}else{
 			  $("#stateLevelMeetingBasicCnt").html("<div class='col-md-12 col-xs-12 col-sm-12'>NO DATA AVAILABLE.</div>");	
 			  $("#stateLevelMeetingBasicCnt").closest(".panelBlock").hide();
@@ -2094,21 +2113,21 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		});
 	
 }
-
+//Spacial
 function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 	if(partyMeetingId == 0){
 		$("#specialMeetingBasicCnt").closest(".panelBlock").show();
 		$("#specialMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		partyMeetingId="0";
 	}
-	$(".specialMeetingBtnClsNew").each(function(){
+	 $(".specialMeetingBtnClsNew").each(function(){
 		if($(this).hasClass('specialMeetingsDate'))
 		{
-			customStartDateMeetings = $(this).attr("attr_startDate")
-			customEndDateMeetings = $(this).attr("attr_endDate")
+			globalStartDateForSpecialMeeting = $(this).attr("attr_startDate");
+		    globalEndDateForSpecialMeeting = $(this).attr("attr_endDate");
 			$(this).removeClass('specialMeetingsDate');
 		}
-	});
+	}); 
 		var partyMeetingTypeArr=[];
 		$("#specialMeetingUlId li").each(function() {
 		  if($(this).find("input").is(":checked")){
@@ -2120,8 +2139,8 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 		var jsObj ={ 
 			 partyMeetingMainTypeId : 3,
 			 state : state,
-			 startDateString : customStartDateMeetings,
-			 endDateString : customEndDateMeetings,
+			 startDateString : globalStartDateForSpecialMeeting,
+			 endDateString : globalEndDateForSpecialMeeting,
 			 partyMeetingTypeIds:partyMeetingTypeArr,
 			 partyMeetingId:partyMeetingId
 			 
@@ -2136,10 +2155,10 @@ function getPartySpecialMeetingsMainTypeOverview(partyMeetingId){
 		   if(result != null && result.length > 0){
 			   if(partyMeetingId >0 ){//111
 				   //partyMeetingOverviewTabDiv
-				   buildOverviewPartiMeetingOverviewResustlt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,customStartDateMeetings,customEndDateMeetings,state,partyMeetingId);
+				   buildOverviewPartiMeetingOverviewResustlt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,globalStartDateForSpecialMeeting,globalEndDateForSpecialMeeting,state,partyMeetingId);
 			   }else{
 				   $("#specialMeetingBasicCnt").html(" ");
-				buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,customStartDateMeetings,customEndDateMeetings,state);
+				buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId",partyMeetingTypeArr,globalStartDateForSpecialMeeting,globalEndDateForSpecialMeeting,state);
 			   }
 		   }else{
 			$("#specialMeetingBasicCnt").html("NO DATA AVAILABLE.");	   
@@ -2484,10 +2503,10 @@ function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTyp
 		var jsObj ={ 
 		             partyMeetingMainTypeId : mainMeetingTypeId,
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr
-					 
+	
 				  }
 		$.ajax({
 			type : 'POST',
@@ -2720,10 +2739,11 @@ function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings
 	var jsObj ={ 
 				 partyMeetingMainTypeId : partyMeetingMainTypeId,
 				 state : state,
-				 startDateString : customStartDateMeetings,
-				 endDateString : customEndDateMeetings,
+				 startDateString : globalStartDateForSpecialMeeting,
+				 endDateString : globalEndDateForSpecialMeeting,
 				 partyMeetingTypeIds:partyMeetingTypeArr
 				 
+
 			  }
 	$.ajax({
 		type : 'POST',
@@ -2982,8 +3002,6 @@ function getMeetingRecentTime(){
 function setMeeingLastUpdatedTime(lastUpdatedTime){
  $("#lastMeetingUpdatedIdTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 }
-
-
 /* Meeting Comment Block Start */
 function getDistrictByState(meetingStatus,meetingLevel,isComment){
 	   var partyMeetingTypeArr=[];
@@ -2992,8 +3010,7 @@ function getDistrictByState(meetingStatus,meetingLevel,isComment){
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
 		  }
 	   });
-	   
-           var jsObj ={ 
+	       var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
 					 fromDate : customStartDateMeetings,
@@ -3832,11 +3849,10 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	var jsObj ={ 
 				 partyMeetingMainTypeId : partyMeetingMainTypeId,
 				 state : state,
-				 startDateString : customStartDateMeetings,
-				 endDateString : customEndDateMeetings,
+				 startDateString : globalStartDateForSpecialMeeting,
+				 endDateString : globalEndDateForSpecialMeeting,
 				 partyMeetingTypeIds:partyMeetingTypeArr,
 				 partyMeetingIds :partyMeetingId
-				 
 			  }
 	$.ajax({
 		type : 'POST',
@@ -4366,12 +4382,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		  }
 		});
 		var state = globalState;  
-	    
 		var jsObj ={ 
 					   partyMeetingMainTypeId : 3,  
 					   state : state,
-					   startDateString : customStartDateMeetings,
-					   endDateString : customEndDateMeetings,              
+					   startDateString : globalStartDateForSpecialMeeting,
+					   endDateString : globalEndDateForSpecialMeeting,              
 					   partyMeetingTypeIds:partyMeetingTypeArr,           
 					   partyMeetingId : partyMeetingId,   
 					   sessionId : sessionId
@@ -5163,13 +5178,13 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			type : 'POST',
 			url : 'insertDataInToPartyMeetingStatusTableAction.action',
 			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
+			data : {task:JSON.stringify()}
 		}).done(function(result){
 			$("#partyMettingStatusIdImg").hide();
 			if(result != null && result.message == "success" ){
-				$("#partyMettingStatusId").html("updated  partyMettings status")
+				//$("#partyMettingStatusId").html("updated  partyMettings status")
 			}else{
-				$("#partyMettingStatusId").html("Exception Occurred Please Try again")
+				//$("#partyMettingStatusId").html("Exception Occurred Please Try again")
 			}
 			
 		});	
@@ -5293,6 +5308,13 @@ $(document).on("click",".specialMeetingBtnClsNew",function(){
 	$(this).addClass('btn-primary');
 	getPartySpecialMeetingsMainTypeOverview(0);
 });
+defaultFunctionaliySpecicalMeeting();
+function defaultFunctionaliySpecicalMeeting(){
+$(".lastMonthSpecialCls").removeClass('btn-primary');
+$(".defalutSpecialMeetingCls").addClass('btn-primary');
+$(".lastMonthSpecialCls").removeClass("specialMeetingsDate");
+$(".defalutSpecialMeetingCls").addClass("specialMeetingsDate");
+
 $(".specialMeetingBtnClsNew").each(function(){
 	if($(this).attr("attr_date") == 'default'){
 		$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
@@ -5301,4 +5323,5 @@ $(".specialMeetingBtnClsNew").each(function(){
 		$(this).attr("attr_startDate",moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY"));
 		$(this).attr("attr_endDate",moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY"));
 	}
-});
+});	
+}
