@@ -3,8 +3,13 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -13,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +31,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -289,10 +297,10 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   session = request.getSession();
 			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			   if(regVo == null)
-				   return "input";
+				   successMsg = "failure";
 			   Long userId = regVo.getRegistrationID();
 			   alertAssigningVO.setUserId(userId);
-			   String imageName=null;
+			  /* String imageName=null;
 			   List<String> fileNamesList = new ArrayList<String>(0);
 			   
 			   for(int i=0;i<imageForDisplay.size();i++){
@@ -316,7 +324,43 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		          	}
 			   if(fileNamesList != null && !fileNamesList.isEmpty()){
 				   alertAssigningVO.setDocumentsList(fileNamesList);
-			   }
+			   }*/
+			   
+			   Map<File,String> mapfiles = new HashMap<File,String>();
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+				Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+				String fileUrl = "" ;
+				List<String> filePaths = null;
+				while(fileParams.hasMoreElements()){
+					String key = fileParams.nextElement();
+			   			
+					File[] files = multiPartRequestWrapper.getFiles(key);
+					filePaths = new ArrayList<String>();
+					if(files != null && files.length > 0)
+						for(File f : files){
+							String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+							String ext = "";
+							if(extension.length > 1){
+								ext = extension[extension.length-1];
+									mapfiles.put(f,ext);
+								}
+							}
+				}  
+				
+				List<String> fileNamesList = new ArrayList<String>();
+				
+				String destPath = saveUploadFile(mapfiles);  
+				if(destPath != null && destPath.trim().length() > 0){
+					String[] strArr = destPath.split(",");
+					if(strArr != null && strArr.length > 0){
+						for (int i = 0; i < strArr.length; i++) {
+							fileNamesList.add(strArr[i]);
+						}
+					}
+				}
+				
+				if(fileNamesList != null && !fileNamesList.isEmpty())
+					   alertAssigningVO.setDocumentsList(fileNamesList);
 			   
 			   successMsg = cccDashboardService.assigningAlertToOfficer(alertAssigningVO);
 			   
@@ -325,6 +369,108 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		
+		public String saveUploadFile(Map<File,String> mapfiles){
+			try{
+				
+				String destPath = new String();
+				String localPath = new String();
+				StringBuilder returnPath = new StringBuilder();
+				String folderName = folderCreation();
+				Calendar calendar = Calendar.getInstance();
+				int year = calendar.get(Calendar.YEAR);
+				int month = calendar.get(Calendar.MONTH);
+				
+				StringBuilder folderStr = new StringBuilder();
+				int temp = month+1;
+				String yr = String.valueOf(year); // YEAR YYYY
+				String monthText = getMonthForInt(temp);
+				folderStr.append(monthText).append(yr); 
+				String mnthYr = folderStr.toString();//November-2016
+				
+				calendar.setTime(new DateUtilService().getCurrentDateAndTime());  
+				int i = 0;
+				for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+					Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+					//DB path    
+					destPath = mnthYr+"/"+randomNumber+"."+entry.getValue();
+					//local sys path
+					localPath = folderName+"/"+randomNumber+"."+entry.getValue();  
+					if(i == 0){
+						returnPath.append(destPath);      
+					}else{
+						returnPath.append(","+destPath);  
+					}
+					i++;
+					//ActivityService activityService = new ActivityService(); 
+					//saving the file here...
+					String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),localPath);
+					 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						LOG.error(" Exception Raise in copying file");  
+							throw new ArithmeticException();
+					}
+				}  
+				return returnPath.toString();   
+			}catch(Exception e){
+				e.printStackTrace();  
+			}
+			return null;
+		}
+		
+		public static String folderCreation()
+		{
+			try {
+				LOG.debug(" in FolderForDocument ");
+		  		
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new DateUtilService().getCurrentDateAndTime());  
+				int year = calendar.get(Calendar.YEAR);
+				int month = calendar.get(Calendar.MONTH);
+				
+				String targetDirpath = IConstants.STATIC_CONTENT_FOLDER_PATH+"/"+IConstants.ALERT_DEPT_DOCUMENTS+"/"+getMonthForInt(month+1)+year;
+				
+				File requriredDir = new File(targetDirpath);
+				
+				if(!requriredDir.exists())
+					requriredDir.mkdirs();
+				
+				return requriredDir.getAbsolutePath();
+				 
+			} catch (Exception e) {
+				LOG.error(" Failed to Create");  
+				return "FAILED";
+			}
+		}
+		
+		public static String getMonthForInt(int num) {    
+			String month = "";
+			DateFormatSymbols dfs = new DateFormatSymbols();
+			String[] months = dfs.getMonths();
+			if (num >= 1 && num <= 12 ) {
+				month = months[num-1];
+			}
+			return month;  
+	    }
+		
+		public String copyFile(String sourcePath,String destinationPath){
+			 try{
+				File destFile = new File(destinationPath);
+				 if (!destFile.exists()) 
+					 destFile.createNewFile();
+				 File file = new File(sourcePath);
+				if(file.exists()){
+					FileUtils.copyFile(file,destFile);
+					LOG.error("Copy success");
+					return "success";
+				}
+			  }catch(Exception e){
+				  LOG.error("Exception raised in copyFile ", e);
+				  LOG.error("Copy error");
+				  return "error";
+			  }
+			 return "failure";
+			}
 		   
 		public String getAssignedOfficersDetailsForAlert(){
 		   try {
@@ -548,4 +694,49 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				   return Action.SUCCESS;
 		}
 		
+		public String getStatusWiseAlertDetails(){
+			   try {
+				   session = request.getSession();
+				   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				   if(regVo != null){
+					    Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						String fromDate = jObj.getString("fromDate");
+						String toDate = jObj.getString("toDate");
+						Long stateId = jObj.getLong("stateId");
+						
+						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+						List<Long> paperIdList = new ArrayList<Long>();
+						for (int i = 0; i < paperIdArr.length(); i++){
+							paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+						} 
+						
+						JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+						List<Long> chanelIdList = new ArrayList<Long>();
+						for (int i = 0; i < chanelIdArr.length(); i++){
+							chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+						}
+						
+						alertVOs = cccDashboardService.getStatusWiseAlertDetails(fromDate, toDate, stateId, paperIdList, chanelIdList, userId);
+				   }
+				   
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getStatusWiseAlertDetails() in CccDashboardAction",e);
+				}
+			   return Action.SUCCESS;
+		}
+		
+		public String getAlertStatusForUser(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   
+				Long userId = regVo.getRegistrationID();
+				
+				govtDeptVoList = cccDashboardService.getAlertStatusForUser(userId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getAlertStatusForUser() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 }
