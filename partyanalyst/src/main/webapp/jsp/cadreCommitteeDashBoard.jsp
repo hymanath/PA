@@ -959,6 +959,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                 </div>
             </div> -->
 			<div class="row">
+				<div class="col-md-3 col-md-offset-4 col-xs-12 col-sm-2 col-sm-offset-4" id="districtDiv">
+					<label>District</label>
+						<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<select id="popUpdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
+								<option value="0">All</option>
+							</select>
+				</div>
 				<div class="col-md-3 col-md-offset-4 col-xs-12 col-sm-2 col-sm-offset-4">
 					<select class="form-control" id="tdpCommitteeYearId1"></select>
 				</div>
@@ -2882,6 +2889,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
 	}
 
+	var globalDistrictNames = [];
+	var globalDistrictIds = [];
 	function buildConstiWiseSummary(result,mandalCheck,villageCheck,jObj){
 	
 	
@@ -3268,6 +3277,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
 		str+='<tbody>';
 		for(var i in result){
+			globalDistrictIds.push(result[i].districtId);
+			globalDistrictNames.push(result[i].districtName);
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
 		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
