@@ -442,10 +442,10 @@ function buildChannelAndPartyWiseDetails(result)
 			  str+='<tbody>';
 				
 					for(var i in result){
-						if(result[i].coreDebateVOList[0].name !=null){
+						if(result[i].name !=null){
 						str+='<tr>';
 							
-							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].coreDebateVOList[0].name+'</td>';
+							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].name+'</td>';
 							for(var j in result[i].coreDebateVOList){
 								
 								//Digit Adding
