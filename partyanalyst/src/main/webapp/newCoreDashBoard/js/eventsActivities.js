@@ -4520,3 +4520,30 @@ function orderTypeValue(){
      });
   return orderType;
 }
+function getEventssDetails(){
+	$("#mainEventsList").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 /* buildEventBasicCntDtls();
+	return;  */
+	var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);
+	
+	var jsObj ={ 
+				 activityMemberId : globalActivityMemberId,
+				 stateId : globalStateId,
+				 eventIds:eventIds
+				 
+			  }	
+	$.ajax({
+	 type: "POST",
+	 url: "getEventBasicCntDtlsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			buildEventBasicCntDtls(result);
+	});
+}
+function refreshEventsActivities(){
+	getEventssDetails();
+	getActivitiesDetails();
+}
