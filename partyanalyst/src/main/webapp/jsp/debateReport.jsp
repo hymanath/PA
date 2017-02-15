@@ -125,10 +125,10 @@ function generateDebateReport(result)
 			$(".subName").html(result.debateNames[m]);
 		}
 		str +='<h5><b>Channel Name</b> : '+result.channelName+'&nbsp;&nbsp;&nbsp;';
-		for(var j in result.observorsList)
+		/* for(var j in result.observorsList)
 		{
 			str +='<b>Observer</b> : '+result.observorsList[j]+'</h5>';
-		}
+		} */
 		
 		$(".debateDate").html(result.date);
 		if(result.telecastTime == 'Prime')
