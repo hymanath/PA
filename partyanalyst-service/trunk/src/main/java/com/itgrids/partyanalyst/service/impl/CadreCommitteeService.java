@@ -20070,7 +20070,7 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 					
 					SelectOptionVO committeeVO = getMatchedVO1(vo.getHamletsOfTownship(),(Long)obj[14]);
 					if(committeeVO != null){
-					LocationWiseBoothDetailsVO roleVO = getMatchedVO(committeeVO.getResult(),(Long)obj[15]);
+					LocationWiseBoothDetailsVO roleVO = getMatchedVO2(committeeVO.getResult(),(Long)obj[15]);
 						if(roleVO != null){
 							roleVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(obj[17]));
 						}
@@ -20100,7 +20100,7 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 				if(vo != null){
 					SelectOptionVO committeeVO = getMatchedVO1(vo.getHamletsOfTownship(),(Long)obj[14]);
 					if(committeeVO != null){
-					LocationWiseBoothDetailsVO roleVO = getMatchedVO(committeeVO.getResult(),(Long)obj[15]);
+					LocationWiseBoothDetailsVO roleVO = getMatchedVO2(committeeVO.getResult(),(Long)obj[15]);
 					if(roleVO != null){
 						if(obj[17] != null && obj[17].toString().equalsIgnoreCase("F")){
 							roleVO.setFinalizedCount(roleVO.getFinalizedCount()+commonMethodsUtilService.getLongValueForObject(obj[18]));
@@ -20125,7 +20125,7 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 	}
 	return returnList;
  }
-public LocationWiseBoothDetailsVO getMatchedVO(List<LocationWiseBoothDetailsVO> list,Long id)
+public LocationWiseBoothDetailsVO getMatchedVO2(List<LocationWiseBoothDetailsVO> list,Long id)
 {
 	LocationWiseBoothDetailsVO returnVO = null;
 	try {
@@ -20165,4 +20165,5 @@ public SelectOptionVO getMatchedVO1(List<SelectOptionVO> list,Long id)
 	}
 	return returnVO;
 }
+
 }
