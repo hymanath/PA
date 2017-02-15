@@ -389,6 +389,13 @@
 										<ul class="list-inline imageUrlUlCls"></ul>
 									</td>
 								</tr>
+								<tr style="display:none" id="groupArticlesId">
+									
+									<td colspan="8">
+									<p class="text-capital"><span class="text-muted ">Grouped Articles  </span> :
+										<ul class="list-inline imageUrlUlCls groupArticlesCls"></ul>
+									</td>
+								</tr>
 								<tr id="existingDocsTrId" style="display:none;">
 									<td id="existingDocsTdId" colspan="8"></td>
 								</tr>
