@@ -3021,7 +3021,7 @@ function getLocationwiseCommitteesCount()
 		}
 	}
 	var committeeEnrollmentYrIds = [];
-	if($("#tdpCommitteeYearId").val() == null){
+	if($("#tdpCommitteeYearId").val() != "" && $("#tdpCommitteeYearId").val() != null){
 		committeeEnrollmentYrIds.push($("#tdpCommitteeYearId").val());
 	}else{
 		committeeEnrollmentYrIds.push(2);
