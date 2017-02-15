@@ -1,14 +1,23 @@
 $(document).on("click",".meetingsRefresh",function(){
-	var isMeetingExpand = $(this).attr("attr_refresh_status");
+	  var isMeetingExpand = $(this).attr("attr_refresh_status");
+	  var selectedMeetingType = $(this).attr("attr_meeting_type");
+	  var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
+	  var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
 	 if(isMeetingExpand == "true"){
-		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+		 if(selectedMeetingType=="committeeMeeting"){
+		       getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();	 
+		 }else if(selectedMeetingType=="stateAndSpecialTypeMeeting"){
+		        getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);
+		 }else if(selectedMeetingType=="specailSessionTypeMeeting"){
+			    var meetingId = $(this).attr("attr_special_meeting_id");
+				var partyMeetingIdArr = [meetingId];
+				getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(mainMeetingTypeId,partymeetingtypeidsstring,partyMeetingIdArr);
+		 }
 	 }
 	getPartyMeetingBasicCountDetails();
 	getPartyMeetingsMainTypeStateLevelOverview();
 	getPartySpecialMeetingsMainTypeOverview(0); 
 });
-
-
 //GLOBAL VARIABLES FOR DATES IN MEETINGS.
  var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
  var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
@@ -664,6 +673,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".meetingsRefresh").attr("attr_refresh_status","false");
+			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
 			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
@@ -672,6 +682,7 @@ $(document).on("click",".meetingLiCls",function(){
 		}else{
 			//getUserTypeWiseTotalEligibleAndAttendedCnt();
 			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
 		}
 		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -762,12 +773,17 @@ $(document).on("click",".meetingLiCls",function(){
 		
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
+			$(".meetingsRefresh").attr("attr_refresh_status","false");
 			$(".stateLevelMeetingBlock").hide();
 			$(".dateRangePickerClsForMeetings").addClass("hide");
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+		   $(".meetingsRefresh").attr("attr_meeting_type","stateAndSpecialTypeMeeting");
+		   $(".meetingsRefresh").attr("attr_main_type_meeting_id",mainMeetingTypeId);
+	       $(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",partymeetingtypeidsstring);
 		   $(".dateRangePickerClsForMeetings").removeClass("hide");
 		   $(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 		   getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
@@ -787,7 +803,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
 		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
 		{
-			
+		
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
@@ -795,13 +811,17 @@ $(document).on("click",".meetingLiCls",function(){
 		
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
-			
+			$(".meetingsRefresh").attr("attr_refresh_status","false");
 			$(".stateLevelMeetingBlock").hide();
 			$(".dateRangePickerClsForMeetings").addClass("hide");
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+	        $(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",meetingTypeId);
+			$(".meetingsRefresh").attr("attr_meeting_type","stateAndSpecialTypeMeeting");
 			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".stateLevelMeetingBlock").show();
@@ -840,14 +860,18 @@ $(document).on("click",".meetingLiCls",function(){
 		//console.log("party_meeting_id :  123456");
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
-			
+			$(".meetingsRefresh").attr("attr_refresh_status","false");
 			$(".stateLevelMeetingBlock").hide();
 			$(".dateRangePickerClsForMeetings").addClass("hide");
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
-			
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_main_type_meeting_id",partyMeetingMainTypeId);
+	        $(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",partyMeetingTypeId);
+	        $(".meetingsRefresh").attr("attr_special_meeting_id",partyMeetingId);
+			$(".meetingsRefresh").attr("attr_meeting_type","specailSessionTypeMeeting");
 			$(".statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".stateLevelMeetingBlock").show();
@@ -877,12 +901,17 @@ $(document).on("click",".meetingLiCls",function(){
 		}
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
+			$(".meetingsRefresh").attr("attr_refresh_status","false");
 			$(".stateLevelMeetingBlock,.moreMeetingsBlocksDetailed,.meetingsHiddenBlock").hide();
 			$(".dateRangePickerClsForMeetings").addClass("hide");
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_meeting_type","stateAndSpecialTypeMeeting");
+			$(".meetingsRefresh").attr("attr_main_type_meeting_id",mainMeetingTypeId);
+	        $(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",partymeetingtypeidsstring);
 			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
 			$(".moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
