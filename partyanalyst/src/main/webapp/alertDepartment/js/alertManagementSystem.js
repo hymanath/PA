@@ -754,11 +754,19 @@ function buildAlertCandidateData(result,categoryId)
 					str+=' <img src="images/cadre_images/'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
 				str+=' </div>';
 				str+=' <div class="media-body">';
-					str+=' <p class="text-capital">Name : <b>'+result[i].name+'</b></p>';
-					str+=' <p class="text-capital">Department: <b>'+result[i].status+'</b></p>';
+					if(result[i].impactLevelId == 1)
+					{
+						str+=' <span class="label label-success pull-right" style="margin-top: 7px;">+ Ve</span>'; 
+					}else if(result[i].impactLevelId == 2){
+						str+=' <span class="label label-danger pull-right" style="margin-top: 7px;">- Ve</span>';
+					}else{
+						str+=' <span class="label label-neutral pull-right" style="margin-top: 7px;">N</span>';
+					}
+					str+=' <p class="text-capital"><span class="text-muted">Name :</span> <b>'+result[i].name+'</b></p>';
+					str+=' <p class="text-capital"><span class="text-muted">Department: </span><b>'+result[i].status+'</b></p>';
 					if(result[i].designation != null && result[i].designation != "")
 					{
-						str+='<p class="text-capital">'+result[i].designation+'</p>';
+						str+='<p class="text-capital"><span class="text-muted">Designation</span>'+result[i].designation+'</p>';
 					}
 					str+='  <p>'+result[i].source+'</p>';
 					if(result[i].dateStr !=null && result[i].dateStr.length>0){
@@ -816,15 +824,28 @@ function alertComments(result)
 			}else{
 				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
 			}
-			if(length != i){
+			if(result[i].govtDeptList != null && result[i].govtDeptList.length > 0){
+				if(length != i){
 				str+='<h4 class="panel-title">'+result[i].status+'';
 						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';    
 				str+='</h4>';
+				}else{
+					str+='<h4 class="panel-title">'+result[i].status+'';
+						str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';
+					str+='</h4>';
+				} 
 			}else{
+				if(length != i){
 				str+='<h4 class="panel-title">'+result[i].status+'';
-					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';
+						str+='<i class="glyphicon glyphicon-ok"></i>';    
 				str+='</h4>';
-			} 
+				}else{
+					str+='<h4 class="panel-title">'+result[i].status+'';
+						str+='<i class="glyphicon glyphicon-hourglass"></i>';
+					str+='</h4>';
+				} 
+			}
+			
 				str+='</a>';  
 			str+='</div>';
 			if(length == i)  
@@ -835,6 +856,8 @@ function alertComments(result)
 			}
 				str+='<div class="panel-body" style="padding:5px;">';
 					str+='<div class="row">';
+						
+					if(result[i].govtDeptList != null && result[i].govtDeptList.length > 0){
 						for(var j in result[i].govtDeptList){
 							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 								var date = result[i].govtDeptList[j].dateStr
@@ -888,7 +911,10 @@ function alertComments(result)
 									str+='</li>';
 								str+='</ul>';
 							str+='</div>';
-						}           
+						}
+					}else{
+						str+='<div class="col-md-12 col-xs-12 col-sm-12"><div  style="height:200px;background-color:#EEE"><h4 class="panel-title text-capital text-center" style="padding-top:80px !important;">please assign alert to officer</h4></div></div>';
+					}
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -988,7 +1014,8 @@ function buildAssignedOfficersDetailsForAlert(result)
 } */
 $(document).on('change','#locationLevelSelectId', function(evt, params) {
 	var levelId = $(this).val();
-		locationsBasedOnLevel(levelId);
+	locationsBasedOnLevel(levelId);
+	designationsByDepartment();	
 });
 function locationsBasedOnLevel(levelId)
 {
@@ -1131,9 +1158,9 @@ function getVillageAndWardsByMandal(mandalId,constituencyId){
 	});
 }
 
-$(document).on('change','#locationsId', function(evt, params) {
+/*$(document).on('change','#locationsId', function(evt, params) {
 	designationsByDepartment();
-}); 
+}); */
 function departmentsByAlert()
 {
 	var alertId = $("#hiddenAlertId").val();
@@ -1994,9 +2021,9 @@ function getTotalArticledetails(articleId){
 		});    
 }
 var url = window.location.href;
-var wurl = url.substr(0,(url.indexOf(".com")+3));
+var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3){
-		wurl = url.substr(0,(url.indexOf(".in")+2));
+		wurl = url.substr(0,(url.indexOf(".in")+3));
 	}
 google.load("elements", "1", {
 	packages: "transliteration"
@@ -2084,22 +2111,24 @@ function fieldsValidation(){
 }
 
 function fieldsEmpty(){
-	$("#locationLevelSelectId").val('');
-	$("#locationLevelSelectId").trigger("chosen:updated");
-	$("#constLvlId").val('');
-	$("#constLvlId").trigger("chosen:updated");
-	$("#mndlMuncLvlId").val('');
-	$("#mndlMuncLvlId").trigger("chosen:updated");
-	$("#locationsId").val('');
-	$("#locationsId").trigger("chosen:updated");
-	$("#departmentsId").val('');
+	$("#departmentsId").val(0);
 	$("#departmentsId").trigger("chosen:updated");
-	$("#designationsId").val('');
+	$("#locationLevelSelectId").val(0);
+	$("#locationLevelSelectId").trigger("chosen:updated");
+	$("#constLvlId").empty();
+	$("#constLvlId").trigger("chosen:updated");
+	$("#mndlMuncLvlId").empty();
+	$("#mndlMuncLvlId").trigger("chosen:updated");
+	$("#locationsId").empty();
+	$("#locationsId").trigger("chosen:updated");
+	$("#designationsId").empty();
 	$("#designationsId").trigger("chosen:updated");
-	$("#officerNamesId").val('');
+	$("#officerNamesId").empty();
 	$("#officerNamesId").trigger("chosen:updated");
+	$("#telugu").prop("checked", true);
 	$("#alertDescId").val('');
-	$("#imageId").val('');
+	var filerKit = $("#imageId").prop("jFiler");
+	filerKit.reset();
 }
 
 function getLocationLevels(departmentId){
