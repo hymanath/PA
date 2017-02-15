@@ -634,6 +634,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	fieldsEmpty();
 	
 	var alertId = $(this).attr("attr_alert_Id");
 	$("#hiddenAlertId").val(alertId);   //3725
@@ -751,7 +752,7 @@ function buildAlertCandidateData(result,categoryId)
 		str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10">';
 			str+='<div class="media" style="border:1px solid #ddd;padding:8px;">';
 				str+='<div class="media-left">';
-					str+=' <img src="images/cadre_images/'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
+					str+=' <img src="'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
 				str+=' </div>';
 				str+=' <div class="media-body">';
 					if(result[i].impactLevelId == 1)
@@ -762,7 +763,8 @@ function buildAlertCandidateData(result,categoryId)
 					}else{
 						str+=' <span class="label label-neutral pull-right" style="margin-top: 7px;">N</span>';
 					}
-					str+=' <p class="text-capital"><span class="text-muted">Name :</span> <b>'+result[i].name+'</b></p>';
+					if(result[i].name != null && result[i].name != "")
+						str+=' <p class="text-capital"><span class="text-muted">Name :</span> <b>'+result[i].name+'</b></p>';
 					str+=' <p class="text-capital"><span class="text-muted">Department: </span><b>'+result[i].status+'</b></p>';
 					if(result[i].designation != null && result[i].designation != "")
 					{
