@@ -499,7 +499,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border: 1px solid rgb(255, 204, 45);
     border-radius: 5px;
     color: rgb(255, 255, 255);
-    content: "−";
+    content: "\2212";
     float: left;
     font-family: "Glyphicons Halflings";
     font-size: 10px;
@@ -515,7 +515,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border: 1px solid rgb(255, 204, 45);
     border-radius: 50%;
     color: rgb(255, 204, 45);
-    content: "+";
+    content: "\2b";
     transition: background 0.5s linear 0s;
 }
 .toggleViewIcon .settingsDropDownOptions::after, .toggleViewIcon .settingsDropDownOptions::before {
@@ -602,7 +602,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-weight: bold;
     text-transform: uppercase;
 }
-.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand{
+.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh{
     background-color: rgb(254, 203, 0);
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -613,10 +613,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
     top: -3px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i{
+.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i{
     transition: all 0.2s ease-in-out 0s;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,..NewTourExpand i:hover{
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,..NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover{
     transform: scale(1.4);
 }
 .text-capital {
@@ -1275,7 +1275,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .collapseDebatesIcon::before {
     border: 1px solid rgb(75, 87, 99);
     color: rgb(75, 87, 99);
-    content: "−";
+    content: "\2212";
     float: right;
     font-family: "Glyphicons Halflings";
     font-size: 13px;
@@ -1285,7 +1285,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 3px 5px;
 }
 .collapseDebatesIcon.collapsed::before {
-    content: "+";
+    content: "\2b";
 }
 .b_right1 {
     border-right: 1px solid rgb(221, 221, 221);
@@ -2444,168 +2444,7 @@ color: rgb(51, 122, 183);
 	padding:5px 8px;
 }
 
-
-/*Alert Management System*/
-.AMS .navbarHeader {
-    background: #555555 none repeat scroll 0 0;
-    height: 60px !important;
-    margin-bottom: 0;
-}
-.AMS .navbarHeader .navbar-brand img
-{
-	display: inline-block;
-    height: 50px;
-    width: 210px;
-}
-.AMS .panel-heading.headingColor
-{
-	background-color:#4A5863 !important;
-	padding:10px 15px !important;
-}
-.AMS .panel-heading.headingColor h4.panel-title
-{
-	color:#fff !important;
-}
-.AMS .settingsBlockDropDown {
-    background: #ffffff none repeat scroll 0 0;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
-    display: none;
-    margin-top: 34px;
-    padding: 12px;
-    position: absolute;
-    right: 0;
-    top: 30px;
-    width: 550px;
-    z-index: 9999;
-}
-.AMS .alertCommentsCollapse .panel-heading {
-    background-color: #a286c0;
-    border-radius: 0;	
-}
-.AMS .alertCommentsCollapse .panel-heading a {
-    color: #333333;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-.AMS .alertCommentsCollapse .panel-heading a h4 {
-    font-weight: bold;
-}
-.AMS .alertCommentsCollapse .panel-heading a i {
-    margin-left: 8px;
-}
-.AMS .alertCommentsCollapse .panel-heading a i.glyphicon-ok {
-    color: #ffffff;
-}
-.AMS .alertCommentColapse.collapsed::before {
-    background-color: #ffffff;
-    border: 1px solid #ffffff;
-    border-radius: 5px;
-    color: #333333;
-    content: "\2b";
-    transition: background 0.5s linear 0s;
-}
-.AMS .alertCommentColapse::before {
-    background: #ffffff none repeat scroll 0 0;
-    border: 1px solid #ffffff;
-    border-radius: 5px;
-    color: #333333;
-    content: "\2212";
-    float: right;
-    font-family: "Glyphicons Halflings";
-    font-size: 10px;
-    font-weight: 400 !important;
-    margin-left: -10px;
-    margin-right: 10px;
-    margin-top: 0;
-    padding: 3px 4px;
-    transition: background 0.5s linear 0s;
-}
-.AMS .tableCategory
-{
-	background-color: #e5e5ff;
-    border-collapse: separate;
-    border-spacing: 8px;
-}
-.AMS .tableCategory tr:first-child td {
-    border-bottom: 0 none !important;
-    border-left: 0 none !important;
-    border-top: 0 none !important;
-    vertical-align: middle;
-}
-.AMS .tableCategory tr:first-child td:last-child {
-    border-right: 0 none !important;
-}
-.AMS .tableCategory tr:nth-child(2) td, .tableCategory tr:nth-child(3) td, .tableCategory tr:nth-child(4) td {
-    border-bottom: 0 none !important;
-    border-left: 0 none !important;
-    border-right: 0 none !important;
-}
-.AMS .tableCategory tr td {
-    background-color: #e5e5ff;
-    border: 1px solid #cccccc !important;
-}
-.AMS .tableCategory tr:nth-child(3) td
-{
-	border-left:0px !important;
-	border-right:0px !important;
-}
-.AMS .tableGraph thead th
-{
-	background-color:#E9F1FC;
-	padding:10px 8px !important;
-	border:0px !important;
-}
-.AMS .tableGraph tr td
-{
-	border:0px !important;
-}
-.AMS .textAlignDepartment
-{
-	padding-left:0px;
-}
-.AMS .assignedOfficersUl
-{
-	padding-left:0px;
-}
-.AMS .assignedOfficersUl li
-{
-	list-style:none;
-	border:1px solid #ddd;
-	padding:8px;
-	margin:0px 5px;
-	width:300px;
-	position:relative;
-}
-.AMS .assignedOfficersUl li .media-object
-{
-	border-radius:50%;
-	border:1px solid #ddd;
-	width:75px;
-	height:75px;
-}
-.AMS .assignedOfficersUl li .glyphicon-trash
-{
-	position:absolute;
-	cursor:pointer;
-	right:5px;
-	top:5px;
-	color:red;
-}
-.AMS .statusOverviewGraph
-{
-	width:100%;
-	overflow-x:scroll;
-}
-.AMS .statusOverviewGraphUl
-{
-	padding:0px;
-	white-space:nowrap;
-}
-.AMS .statusOverviewGraphUl li
-{
-	list-style:none;
-	display:inline-block;
-}
+/* Alert Management System*/
 .AUMS .bg_Style{
 	background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;

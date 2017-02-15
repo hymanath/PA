@@ -39,6 +39,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		}
 		
 	}
+	$(document).on("click",".toursRefresh",function(){
+		globalToursCalls('');
+	});
 	$("#tourNewDateRangePickerId").daterangepicker({
 		opens: 'left',
 	     startDate: moment().subtract(1, 'month').startOf('month'),
@@ -268,7 +271,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 	   var tursDesgntnIdsString;
 		var str='';
 		 if(overViewRslt != null){
-				   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<h4><span class="headingColor text-capital">Overall&nbsp Leaders</span></h4>';
 					str+='<div id="" class="m_top10">';
 						str+='<div class="row">';
@@ -342,6 +345,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		    }
 		
 		    if(designationWiseList != null && designationWiseList.length > 0){
+				
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+				str+='<div class="toursScroll">';
 				for(var i in designationWiseList){
 				  var designationids;
 				   if(designationWiseList[i].id==4){//organization SECRETARY and SECRETARY
@@ -371,7 +377,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					 }else{
 					  tursDesgntnIdsString = tursDesgntnIdsString+','+designationids;	
 					}
-				   str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+				   str+='<div>';
 							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
 							str+='<div class="dropup">';
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
@@ -473,9 +479,15 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 							str+='</div>';
 						str+='</div>';	
 				}
+				str+='</div>';	
+				str+='</div>';	
+				
 			}
 		    $("#tourOverviewNewDivId").html(str);  
 		   $(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
+			$(".toursScroll").mCustomScrollbar({setHeight:'600px'});
+		   
+		   
 		}
 	
 	
