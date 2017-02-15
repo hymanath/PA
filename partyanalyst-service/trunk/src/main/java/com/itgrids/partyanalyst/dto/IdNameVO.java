@@ -55,6 +55,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long statusId = 0l;
 
 	private Long constitunecyId;
+	private Long constituencyNo;
 	private Long districtId;
 	private Long cadreUserId;
 	private Long distId;
@@ -77,6 +78,14 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String remark;
 	
 	 
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
