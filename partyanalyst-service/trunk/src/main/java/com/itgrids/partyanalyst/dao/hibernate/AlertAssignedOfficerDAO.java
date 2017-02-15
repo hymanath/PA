@@ -372,7 +372,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list(); 
 	}
 	
-	public List<Object[]> getStatusWiseAlertDetails(Date fromDate,Date toDate,Long stateId,List<Long> printIdList,List<Long> electronicIdList,List<Long> deptIdList){
+	public List<Object[]> getStatusWiseAlertDetails(Date fromDate,Date toDate,Long stateId,List<Long> printIdList,List<Long> electronicIdList,List<Long> deptIdList,Long levelId,List<Long> levelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.alert.alertId," +
 					" model.alert.alertSeverity.alertSeverityId," +
@@ -389,16 +389,41 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 						" left join model.alert.edition E");
 		}
 		sb.append(" left join model.alert.userAddress UA" +
-					" left join UA.state S");
+					" left join UA.state S" +
+					" left join UA.district D" +
+					" left join UA.constituency C" +
+					" left join UA.tehsil T" +
+					" left join UA.localElectionBody LEB" +
+					" left join UA.panchayat P" +
+					" left join UA.ward W");
 		
 		sb.append(" where model.alert.isDeleted = 'N'");
+		if(levelId != null && levelId > 0l)
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevel.govtDepartmentLevelId = :levelId");
+		if(levelValues != null && !levelValues.isEmpty()){
+			if(levelId == 2l)
+				sb.append(" and S.stateId in (:levelValues)");
+			else if(levelId == 3l)
+				sb.append(" and D.districtId in (:levelValues)");
+			else if(levelId == 4l)
+				sb.append(" and C.constituencyId in (:levelValues)");
+			else if(levelId == 5l)
+				sb.append(" and T.tehsilId in (:levelValues)");
+			else if(levelId == 6l)
+				sb.append(" and P.panchayatId in (:levelValues)");
+			else if(levelId == 7l)
+				sb.append(" and LEB.localElectionBodyId in (:levelValues)");
+			else if(levelId == 8l)
+				sb.append(" and W.constituencyId in (:levelValues)");
+		}
+			
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L)
 				sb.append(" and S.stateId = 1");
 			else if(stateId.longValue() == 36L)
-				sb.append(" and S.state_id = 36");
+				sb.append(" and S.stateId = 36");
 			else if(stateId.longValue() == 0L)
-				sb.append(" and S.state_id in (1,36)");
+				sb.append(" and S.stateId in (1,36)");
 		}
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
