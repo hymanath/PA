@@ -1277,7 +1277,7 @@ public List<Constituency> getConstituenciesByStteIdStatTypeId(Long stateId,Long 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAssemblyConstituencyDetlsByDistrictIds(List<Long> districtIds) {	
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.constituencyId, model.name from Constituency model " +
+		query.append(" select model.constituencyId, model.name,model.district.districtId,model.district.districtName from Constituency model " +
 				" where model.electionScope.electionScopeId = 2" +
 				" and model.deformDate is null " +
 				" and model.district.districtId in ( :districtIds) " +
