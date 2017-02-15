@@ -1,3 +1,14 @@
+$(document).on("click",".meetingsRefresh",function(){
+	var isMeetingExpand = $(this).attr("attr_refresh_status");
+	 if(isMeetingExpand == "true"){
+		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+	 }
+	getPartyMeetingBasicCountDetails();
+	getPartyMeetingsMainTypeStateLevelOverview();
+	getPartySpecialMeetingsMainTypeOverview(0); 
+});
+
+
 //GLOBAL VARIABLES FOR DATES IN MEETINGS.
  var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
  var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
@@ -652,6 +663,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".meetingsHiddenBlock").find("i").show();
 		$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsRefresh").attr("attr_refresh_status","false");
 			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
@@ -659,6 +671,7 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".stateGeneralMeeting,.specialMeetings,.stateLevelMeetingsExpand,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
 			//getUserTypeWiseTotalEligibleAndAttendedCnt();
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
 		}
 		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
