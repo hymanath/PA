@@ -6,6 +6,7 @@ var globalNewsPaperIdArr = [];
 var globalChannelIdArr = [];
 var globalDepartmentIdArr = [];
 /* Global Filter Arreys Start*/
+
 $(".newsPaperListCls").each(function(){
 	if($(this).is(":checked"))
 	{
@@ -24,6 +25,11 @@ $(".departmentsCls").each(function(){
 		globalDepartmentIdArr.push($(this).attr("attr_val"));
 	}
 });
+/* OnLoad Calls Start*/
+onLoadCalls();
+initializeFile();
+/* OnLoad Calls ENd*/
+
 /* Global Filter Arreys End*/
 $(document).on("click",".filtersSubmitDivId",function(){
 	globalNewsPaperIdArr = [];
@@ -98,7 +104,7 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	getDistrictTotalForAlertStatus('','')
 });
 $(".chosenSelect").chosen({width:'100%'});
-onLoadCalls();
+
 function onLoadCalls()
 {
 	totalAlertGroupByStatusForGovt();
@@ -119,6 +125,12 @@ $(document).on("click",".documentCloseClass",function(e){
 	e.stopPropagation();
 });
 $(".scrollerBlockDepartments").mCustomScrollbar({setHeight:'300px'});
+
+/*Default Image*/
+function setDefaultImage(img){
+    img.src = "images/User.png";
+}
+/*Default Image*/
 /*global Function and variables End*/
 /* Status OverView Start*/
 function totalAlertGroupByStatusForGovt()
@@ -721,7 +733,12 @@ function getInvolvedMembersDetilas(alertId){
 		  url: 'getInvolvedMembersInAlertAction.action',
 		  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildAlertCandidateData(result);
+		if(result == null || result.length == 0)
+		{
+			$("#alertCandidateDataId").html('No Involved Members..');
+		}else{
+			buildAlertCandidateData(result);
+		}
 	});
 }
 function buildAlertCandidateData(result,categoryId)
@@ -729,88 +746,28 @@ function buildAlertCandidateData(result,categoryId)
 
 	var str='';
 	
-	if(result == null || result.length == 0)
+	for(var i in result)
 	{
-		$("#alertCandidateDataId").html('No Involved Members..');
-		return;
+		str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10">';
+			str+='<div class="media" style="border:1px solid #ddd;padding:8px;">';
+				str+='<div class="media-left">';
+					str+=' <img src="images/cadre_images/'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
+				str+=' </div>';
+				str+=' <div class="media-body">';
+					str+=' <p class="text-capital">Name : <b>'+result[i].name+'</b></p>';
+					str+=' <p class="text-capital">Department: <b>'+result[i].status+'</b></p>';
+					if(result[i].designation != null && result[i].designation != "")
+					{
+						str+='<p class="text-capital">'+result[i].designation+'</p>';
+					}
+					str+='  <p>'+result[i].source+'</p>';
+					if(result[i].dateStr !=null && result[i].dateStr.length>0){
+						str+='<p><a>'+result[i].dateStr+'</a></p>';
+					}
+				str+='  </div>';
+			str+='</div>';
+	   str+=' </div>';
 	}
-	
-	/*if(categoryId !=null && categoryId>1){
-		for(var i in result)
-		{
-			
-			str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10" style="padding: 3px;">';
-				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
-					str+='<div class="media-left">';						
-					if(result[i].image !=null && result[i].image.length>0){
-						str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
-					}else{
-						str+=' <img src="dist/Appointment/img/thumb.jpg"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
-					}					   					  
-				   str+=' </div>';
-				   str+=' <div class="media-body">';
-					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
-					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
-						//str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
-					str+='  <p><b class="text-capital text-danger">Designation : </b>'+result[i].committeePosition+' </p>';
-					 // str+='  <p>'+result[i].mobileNo+'</p>';
-					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
-					  if(result[i].impactId == 1)
-					  {
-						 str+=' <span class="label label-success" style="margin-top: 7px;">+ Ve</span>'; 
-					  }else if(result[i].impactId == 2){
-						  str+=' <span class="label label-danger" style="margin-top: 7px;">- Ve</span>';
-					  }else{
-						  str+=' <span class="label label-neutral" style="margin-top: 7px;">N</span>';
-					  }
-					  
-					  if(result[i].organization !=null){
-						  str+='<p><b class="text-capital text-danger">Organization</b> : '+result[i].organization+'</p>';
-					  }
-					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
-						  str+='<p><b class="text-capital text-danger">Membership No </b> : '+result[i].membershipNo+'</p>';
-					  }
-					  
-				  str+='  </div>';
-				str+='</div>';
-		   str+=' </div>';
-
-		}
-	//}else{*/
-		for(var i in result)
-		{
-			str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10" style="padding: 3px;">';
-				str+='<div class="media" style="border:1px solid #ddd;height:100px">';
-					/*str+='<div class="media-left">';
-					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-				   str+=' </div>';*/
-				   str+=' <div class="media-body">';
-					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
-					   str+=' <p class="text-capital"><b>Organization: '+result[i].status+'</b></p>';
-					   /*if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
-							str+='<b><p class="text-capital">'+result[i].electionType+" "+result[i].committeeName+' Committee '+result[i].committeePosition+'</b></p>';
-						if(result[i].designation != null && result[i].designation != "")
-							str+='<b><p class="text-capital">'+result[i].designation+'</p></b>';*/
-					  str+='  <p>'+result[i].source+'</p>';
-					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
-					  
-					  if(result[i].dateStr !=null && result[i].dateStr.length>0){
-						  str+='<p><a>'+result[i].dateStr+'</a></p>';
-					  }
-					  /*if(result[i].impactId == 1)
-					  {
-						 str+=' <span class="label label-success" style="margin-top: 7px;">+ Ve</span>'; 
-					  }else if(result[i].impactId == 2){
-						  str+=' <span class="label label-danger" style="margin-top: 7px;">- Ve</span>';
-					  }else{
-						  str+=' <span class="label label-neutral" style="margin-top: 7px;">N</span>';
-					  }*/
-					  
-				  str+='  </div>';
-				str+='</div>';
-		   str+=' </div>';
-		}
-	//}
 	$("#involvedCandidatesCnt").html(result.length);	
 	$("#alertCandidateDataId").html(str);
 }
@@ -1502,14 +1459,14 @@ function buildStatusWiseTotalAlerts(result){
 										}
 										totalCount = totalPrintCount+totalElecCount;
 										if(totalCount == 0 && result[i].govtDeptList[t].count ==0){
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalCount+'</span></td>';
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalCount+'</span></td>';
 										for(var t in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[t].count+'</th>';
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[t].count+'</span></td>';
 											}
 										}else{
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalCount+'</a></span></td>';
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalCount+'</a></span></td>';
 										for(var t in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+result[i].govtDeptList[t].count+'</a></th>';
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[t].count+'</span></td>';
 											}
 										}
 										
@@ -1517,14 +1474,14 @@ function buildStatusWiseTotalAlerts(result){
 									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
 										if(totalPrintCount ==0 && result[i].govtDeptList[k].printCnt ==0){
-											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalPrintCount+'</td>';
+											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalPrintCount+'</span></td>';
 										for(var k in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[k].printCnt+'</th>';
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[k].printCnt+'</span></td>';
 											}
 										}else{
-											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalPrintCount+'</a></td>';
+											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalPrintCount+'</span></td>';
 										for(var k in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+result[i].govtDeptList[k].printCnt+'</a></th>';
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[k].printCnt+'</span></td>';
 											}
 										}
 									str+='</tr>';
@@ -1532,14 +1489,14 @@ function buildStatusWiseTotalAlerts(result){
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
 										if(totalElecCount ==0 && result[i].govtDeptList[j].elecCnt ==0){
-											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalElecCount+'</td>';
+											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalElecCount+'</span></td>';
 										for(var j in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'" >'+result[i].govtDeptList[j].elecCnt+'</th>';
-											}
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><span class="totAlertsStsCls">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
+										}
 										}else{
-											str+='<td class="bg_EE totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalElecCount+'</a></td>';
+											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalElecCount+'</span></td>';
 										for(var j in result[i].govtDeptList){
-											str+='<th class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><a>'+result[i].govtDeptList[j].elecCnt+'</a></th>';
+											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><span class="totAlertsStsCls">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
 											}
 										}
 									str+='</tr>'; 
