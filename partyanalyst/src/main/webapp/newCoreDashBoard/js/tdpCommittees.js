@@ -414,7 +414,7 @@
 													str+='<td>';
 														str+='<p class="text-muted text-capitalize responsiveFont">Total</p>';
 														if(result.subList[i].mainVO.totalCount !=null && result.subList[i].mainVO.totalCount >0){
-															str+='<p class="responsiveFont">'+result.subList[i].mainVO.totalCount+'</p>';
+															str+='<p class="responsiveFont" >'+result.subList[i].mainVO.totalCount+'</p>';
 														}else{
 																str+='<p> - </p>';
 														}
@@ -423,7 +423,14 @@
 													str+='<td>';
 														str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
-															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+														if(result.subList[i].name == "Village")
+															str+='<p  id=\''+'villageAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'started\')" class="responsiveFont" style="cursor:pointer;">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small> <i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "Mandal")
+															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'mandalAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "District")
+															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'district'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "State")
+															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'state'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
 														}else{
 															str+='<p> - </p>';
 														}
@@ -432,7 +439,14 @@
 													str+='<td>';
 														str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
 														if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
-															str+='<p class="responsiveFont">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
+															if(result.subList[i].name == "Village")
+															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'villageAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														 if(result.subList[i].name == "Mandal")
+															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'mandalAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														 if(result.subList[i].name == "District")
+															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'district'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														 if(result.subList[i].name == "State")
+															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'state'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
 														}else{
 															str+='<p> - </p>';
 														}
@@ -525,7 +539,15 @@
 												str+='<td>';
 													str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
+														//str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
+														if(result.subList[i].name == "Village")
+															str+='<p  style="cursor:pointer;" id=\''+'villageAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "Mandal")
+															str+='<p  style="cursor:pointer;" id=\''+'mandalAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														 if(result.subList[i].name == "District")
+															str+='<p  style="cursor:pointer;" id=\''+'district'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "State")
+															str+='<p  style="cursor:pointer;" id=\''+'state'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>'; 
 													}else{
 														str+='<p> - </p>';
 													}
@@ -534,7 +556,15 @@
 												str+='<td>';
 													str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
+														//str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
+														 if(result.subList[i].name == "Village")
+															str+='<p  style="cursor:pointer;" id=\''+'villageAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "Mandal")
+															str+='<p  style="cursor:pointer;" id=\''+'mandalAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														 if(result.subList[i].name == "District")
+															str+='<p  style="cursor:pointer;" id=\''+'district'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+														if(result.subList[i].name == "State")
+															str+='<p  style="cursor:pointer;" id=\''+'state'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
 													}else{
 														str+='<p> - </p>';
 													}
@@ -2094,4 +2124,265 @@
 			var id =0; */
 			getCommitteeDetailsBiEnrollement(0);
 		});
+		$('body').on('click', function (e) {
+
+		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli')){
+			$('.clearCls').each(function () {
+				var attrId= $(this).attr("id");
+				var trgt = e.target;
+
+				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA') ) {
+				
+					$("#"+attrId).popover('hide');
+					$("#"+attrId).removeClass('clearCls');
+					$(".multiLevelLiA").popover('hide');
+					
+				}
+				
+			});
+		}
+		$('.popOverCls').each(function () {				
+				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {					
+					//$("#"+attrId).popover('hide');
+					$(this).popover('hide');
+				}
+				
+		});
+	
+	
+	});
+		function getMainCommitteeMembersCount(state,level,type,committeeId,committeeType){
 		
+		//var startDate=$(".dp_startDate").val();
+		//var endDate=$(".dp_endDate").val();
+		var dateStr = $('#dateRangeId').val();
+		var dateStrArr = dateStr.split('-');
+		var startDate = dateStrArr[0];
+		var endDate = dateStrArr[1];
+		 
+		if(startDate != null){
+			 var startDateSplitArray = startDate.split("/");
+			 startDate = startDateSplitArray[1].trim() + "/" + startDateSplitArray[0].trim() + "/" + startDateSplitArray[2].trim();
+		 }
+		 if(endDate != null){
+			 var endDateSplitArray = endDate.split("/");
+			 endDate = endDateSplitArray[1].trim() + "/" + endDateSplitArray[0].trim() + "/" + endDateSplitArray[2].trim();
+		 }
+		
+		var levelIdsArr = new Array();
+		var state = state; 
+		if(level == 'mandal')
+		{
+		   levelIdsArr.push(5);
+		}else if(level == 'town')
+		{
+		   levelIdsArr.push(7);
+		}else if(level == 'division')
+		{
+		   levelIdsArr.push(9);
+		}else if(level == 'village')
+		{
+		   levelIdsArr.push(6);
+		}else if(level == 'ward')
+		{
+		   levelIdsArr.push(8);
+		}else if(level == 'mandalAll')
+		{
+		    levelIdsArr.push(5);
+			levelIdsArr.push(7);
+			levelIdsArr.push(9);
+		}else if(level == 'villageAll')
+		{
+		    levelIdsArr.push(6);
+			levelIdsArr.push(8);
+		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+			
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
+			
+		}
+		
+		var state = state; 
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
+		var jObj = {
+			state:state,
+			levelIdsArr:levelIdsArr,
+			startDate  :startDate,
+			endDate    :endDate,
+			committeeId:committeeId,
+			committeeType:committeeType,
+			task:"mainCommitteeMemberCnt",
+			committeeSpanTypeIdsList :committeeSpanTypeIdsArr
+		}
+			//alert(222)	;	
+		$.ajax({
+          type:'GET',
+          url: 'getMembersRangeCountByLocationAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+				if(type == 'main'){
+					var str='';
+					str+='<ul class="onHoverPopUp">';
+						for(var i in result){
+							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>7-14 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount4+'</span>ABOVE 14 MEMBER COMMITTEES</li>';
+						}
+					str+='</ul>';
+					
+					$('#'+level+'Id'+state+committeeType+'').popover({
+						html: true,
+						placement: "bottom",
+						title: '',
+						content: str
+								
+					});
+					
+					if(!$('#'+level+'Id'+state+committeeType+'').hasClass("clearCls")){
+						$('#'+level+'Id'+state+committeeType+'').addClass("clearCls");
+						$('#'+level+'Id'+state+committeeType+'').popover("show");
+					}else{
+						$('#'+level+'Id'+state+committeeType+'').removeClass("clearCls");
+					}
+				}
+				else if(type == 'affl'){
+					var str='';
+					str+='<ul class="onHoverPopUp">';
+						for(var i in result){
+							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>7-14 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount4+'</span>ABOVE 14 MEMBER COMMITTEES</li>';
+						}
+					str+='</ul>';
+					var popOverSettings = { 
+						placement: 'left',
+						container: 'body',
+						html: true,
+						title : '',
+						content:"<div style='color:red'>This is your div content</div>"
+						/* content: function () {
+							return $('#popover-content').html();
+						} */
+					}
+				
+					$("#"+id).popover(popOverSettings);
+				}
+				
+					
+		});
+	}
+ function getAflCommitteeCount(state,level,committeeType){
+	//	var startDate=$(".dp_startDate").val();
+	//	var endDate=$(".dp_endDate").val();
+	var dateStr = $('#dateRangeId').val();		
+	var dateStrArr = dateStr.split('-');
+	var startDate = dateStrArr[0];
+	var endDate = dateStrArr[1];
+        if(startDate != null){
+			 var startDateSplitArray = startDate.split("/");
+			 startDate = startDateSplitArray[1].trim() + "/" + startDateSplitArray[0].trim() + "/" + startDateSplitArray[2].trim();
+		 }
+		 if(endDate != null){
+			 var endDateSplitArray = endDate.split("/");
+			 endDate = endDateSplitArray[1].trim() + "/" + endDateSplitArray[0].trim() + "/" + endDateSplitArray[2].trim();
+		 }
+
+    	
+		var levelIdsArr = new Array();
+		var state = state; 
+		if(level == 'mandal')
+		{
+		   levelIdsArr.push(5);
+		}else if(level == 'town')
+		{
+		   levelIdsArr.push(7);
+		}else if(level == 'division')
+		{
+		   levelIdsArr.push(9);
+		}else if(level == 'village')
+		{
+		   levelIdsArr.push(6);
+		}else if(level == 'ward')
+		{
+		   levelIdsArr.push(8);
+		}else if(level == 'mandalAll')
+		{
+		    levelIdsArr.push(5);
+			levelIdsArr.push(7);
+			levelIdsArr.push(9);
+		}else if(level == 'villageAll')
+		{
+		    levelIdsArr.push(6);
+			levelIdsArr.push(8);
+		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
+		}
+		var state = state; 
+		var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
+		var jObj = {
+			state:state,
+			levelIdsArr:levelIdsArr,
+			startDate  :startDate,
+			endDate    :endDate,
+			committeeType:committeeType,
+			task:"mainCommitteeMemberCnt",
+			committeeSpanTypeIdsList :committeeSpanTypeIdsArr
+		}
+			//alert(444)	;	
+		$.ajax({
+          type:'GET',
+          url: 'getStartedAffliCommitteesCountByLocation.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
+					var str1='';
+					str1+='<ul class="onHoverPopUp">';
+					//str1+='<ul multilevelul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
+					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
+					for(var i in result){ 					
+					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId='+result[i].id+' attr_commType='+committeeType+' id="'+level+'IdAffl'+state+committeeType+''+result[i].id+'" ><a  class="multilevelli" >'+result[i].name+'<span class="badge pull-right">'+result[i].afflCommittees+'</span></a></li>';
+					
+					//str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId=1 id="'+level+'IdAffl'+state+'1"><a     class="multilevelli" >'+result[i].name+' 1 <span class="pull-right badge">'+result[i].afflCommittees+'</span></a></li>';
+					} 
+					str1+='</ul>';
+					$('#'+level+'Id'+state+'Affl'+committeeType).popover({
+						
+						html: true,
+						placement: "bottom",
+						title: '',
+						content: str1
+					});
+					
+					if(!$('#'+level+'Id'+state+'Affl'+committeeType).hasClass("clearCls")){
+						$('#'+level+'Id'+state+'Affl'+committeeType).addClass("clearCls");
+						$('#'+level+'Id'+state+'Affl'+committeeType).popover("show");
+					}
+					
+		});
+	}

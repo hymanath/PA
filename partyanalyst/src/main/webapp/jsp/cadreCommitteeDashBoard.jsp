@@ -2497,7 +2497,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>7-14 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount4+'</span>ABOVE 14 MEMBER COMMITTEES</li>';
 						}
 					str+='</ul>';
 					$('#'+level+'Id'+state+committeeType+'').popover({
@@ -2522,7 +2523,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>7-14 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount4+'</span>ABOVE 14 MEMBER COMMITTEES</li>';
 						}
 					str+='</ul>';
 					var popOverSettings = { 
