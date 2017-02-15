@@ -952,4 +952,52 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			   query.setParameter("membershipNo",membershipNo.toString());
 			   return (Long)query.uniqueResult();
 		   }
+		
+		public List<Object[]> getTdpCadreDetailsByTdpCadreId(Long tdpCadreId) {
+			StringBuilder queryString=new StringBuilder();
+			queryString.append( " select model.tdpCadreId, " +//0
+								" state.stateId," +//1
+								" state.stateName," +//2
+								" district.districtId," +//3
+								" district.districtName,"+//4
+					            " constituency.constituencyId," +//5
+					            " constituency.name," +//6
+					            " tehsil.tehsilId," +//7
+					            " tehsil.tehsilName,"+//8
+								" ward.constituencyId," +//9
+								" ward.name," +//10
+								" panchayat.panchayatId," +//11
+								" panchayat.panchayatName,"+//12
+					            " localElectionBody.localElectionBodyId," +//13
+					            " localElectionBody.name ,"+ //14
+								" constituency.areaType ," +//15
+								" booth.boothId, " +//16
+								" booth.partNo, " +//17
+								" voter.voterId," +//18
+								" familyVoter.voterId, " +//19
+								" booth.publicationDate.publicationDateId, " +//20
+								" state.stateId, " +//21
+								" state.stateName " +//22
+								" from  TdpCadre  model " +
+								" left join model.familyVoter familyVoter " +
+								" left join model.voter voter " +
+								" left join model.userAddress.state state" +
+								" left join model.userAddress.district district" +
+								" left join model.userAddress.constituency constituency" +
+								" left join model.userAddress.tehsil tehsil" +
+								" left join model.userAddress.ward ward" +
+								" left join model.userAddress.panchayat panchayat" +
+								" left join model.userAddress.localElectionBody localElectionBody " +
+								" left join model.userAddress.booth booth " +
+								" left join model.userAddress.state state " +
+								" where " +
+								" model.enrollmentYear=:enrollmentYear and model.tdpCadreId=:tdpCadreId ");
+			
+				Query query=getSession().createQuery(queryString.toString());
+				query.setParameter("tdpCadreId", tdpCadreId);
+				query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+			
+			return  query.list();
+		}
+		
 }
