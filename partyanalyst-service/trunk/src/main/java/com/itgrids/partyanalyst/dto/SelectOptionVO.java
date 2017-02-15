@@ -32,7 +32,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<ConstituencyElectionResultsVO> mptcZptcList ;
 	private SelectOptionVO panchatsList;
 	private Double perc;
-	
+	private List<LocationWiseBoothDetailsVO> result = new ArrayList<LocationWiseBoothDetailsVO>(0);
 	private String percentage;
 	private String latitude;
 	private String longititude;
@@ -44,6 +44,16 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String status;
 	private String committeeMemberStatus;
 	
+	
+	
+	public List<LocationWiseBoothDetailsVO> getResult() {
+		return result;
+	}
+
+	public void setResult(List<LocationWiseBoothDetailsVO> result) {
+		this.result = result;
+	}
+
 	public String getMandalName() {
 		return mandalName;
 	}

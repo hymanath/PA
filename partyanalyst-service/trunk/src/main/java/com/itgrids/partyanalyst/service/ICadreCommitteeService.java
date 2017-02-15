@@ -187,4 +187,6 @@ public interface ICadreCommitteeService {
 	 public List<CadreCommitteeVO> getCadreEnrollmentYears();
 	 public List<CadreCommitteeVO> getCommitteeDetailsByEnrollementId(List<Long> enrollYearIds);
 	 public LocationWiseBoothDetailsVO getCommitteeMembersAvailableInfo1(Long levelId,Long levelValue,Long committeeEnrollmentId,String startDate,String endDate,Long basicCommitteetypeId);
+	 public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,
+				List<Long> committeeEnrollmntIds,Long stateId,String searchType);
 }

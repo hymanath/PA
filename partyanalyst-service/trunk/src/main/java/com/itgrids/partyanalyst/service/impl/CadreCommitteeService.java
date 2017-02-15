@@ -19904,4 +19904,265 @@ public Long getCommitteeId(Long levelId,Long levelValue,Long committeeEnrollment
 	}
 	return committeeId;
 }
+
+public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,
+		List<Long> committeeEnrollmntIds,Long stateId,String searchType){
+	
+	List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
+	try{
+		String levlValue = "";
+		List<Long> loctnLevlValues1 = new ArrayList<Long>();
+		if(locationLvlId != null && locationLvlId.longValue() ==5l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0){
+				for(Long loctnLevlValue : loctnLevlValues){
+					if(loctnLevlValue.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						loctnLevlValue = Long.valueOf(loctnLevlValue.toString().substring(1));
+						loctnLevlValues1.add(loctnLevlValue);
+						locationLvlId = 7l;
+					}else if(loctnLevlValue.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						loctnLevlValue = Long.valueOf(loctnLevlValue.toString().substring(1));
+						loctnLevlValues1.add(loctnLevlValue);
+						locationLvlId = 5l;
+					}
+				}
+			
+			}
+		}else if(locationLvlId != null && locationLvlId.longValue() ==6l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0){
+				for(Long loctnLevlValue : loctnLevlValues){
+					if(loctnLevlValue.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						loctnLevlValue = Long.valueOf(loctnLevlValue.toString().substring(1));
+						loctnLevlValues1.add(loctnLevlValue);
+						locationLvlId = 6l;
+					}else if(loctnLevlValue.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						loctnLevlValue = Long.valueOf(loctnLevlValue.toString().substring(1));
+						loctnLevlValues1.add(loctnLevlValue);
+						locationLvlId = 8l;
+					}
+				}
+			
+			}
+		}
+		
+		if(loctnLevlValues1 != null && loctnLevlValues1.size() >0){
+			loctnLevlValues.clear();
+			loctnLevlValues.addAll(loctnLevlValues1);
+		}
+		
+		List<BasicVO> roles  = getCommitteeRoles();
+		Map<Long,LocationWiseBoothDetailsVO> getMatchdMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
+		List<Object[]> locListFTot = tdpCommitteeMemberDAO.getCommitteeCreationDetails(committeeTypeId,committeeLevlIdsList,designationsList,locationLvlId,loctnLevlValues,committeeEnrollmntIds,stateId,searchType);
+		if(locListFTot != null  && locListFTot.size() >0){
+					for(Object[] obj :locListFTot){
+						LocationWiseBoothDetailsVO vo  = null;
+						if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+							vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+							 vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+						 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+							 vo = getMatchdMap.get(obj[6] != null ? (Long)obj[6] : (obj[8] != null ? (Long)obj[8] : 0l));
+						}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+							vo = getMatchdMap.get(obj[10] != null ? (Long)obj[10] : (obj[12] != null ? (Long)obj[12] : 0l));
+						}
+						
+						if(vo != null){
+							SelectOptionVO committeeVO = getMatchedVO1(vo.getHamletsOfTownship(),(Long)obj[14]);
+							if(committeeVO == null){
+								//List<LocationWiseBoothDetailsVO> committees = new ArrayList<LocationWiseBoothDetailsVO>();
+								 committeeVO = new SelectOptionVO();
+								committeeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[14]));//basiCommitteeId
+								committeeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[18]));//basiCommitteeName
+								List<LocationWiseBoothDetailsVO> tdpRoles = new ArrayList<LocationWiseBoothDetailsVO>();
+								if(commonMethodsUtilService.isListOrSetValid(roles)){
+									for(BasicVO role :roles){
+										LocationWiseBoothDetailsVO roleVo = new LocationWiseBoothDetailsVO();
+										roleVo.setId(role.getId());
+										roleVo.setName(role.getName());
+										tdpRoles.add(roleVo);
+									}
+								}
+								committeeVO.setResult(tdpRoles);
+								
+								if(vo.getHamletsOfTownship() == null){
+									List<SelectOptionVO> committees = new ArrayList<SelectOptionVO>();
+									vo.setHamletsOfTownship(committees);
+								}
+								vo.getHamletsOfTownship().add(committeeVO);
+								
+							}
+						}else{
+							//List<LocationWiseBoothDetailsVO> committees = new ArrayList<LocationWiseBoothDetailsVO>();
+									 vo = new LocationWiseBoothDetailsVO();
+								vo.setLocationId(commonMethodsUtilService.getLongValueForObject(obj[0]));//stateId
+								vo.setLocationName(commonMethodsUtilService.getStringValueForObject(obj[1]));//stateName
+								vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+								vo.setDistrictName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+								vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+								vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+								if(obj[6] != null && obj[7].toString() != null){
+									vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+									vo.setMandalName(commonMethodsUtilService.getStringValueForObject(obj[7]));
+								}else if(obj[8] != null && obj[9].toString() != null){
+									vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+									vo.setMandalName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+								}
+								
+								if(obj[10] != null && obj[11].toString() != null){
+									vo.setVillageId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+									vo.setVillageName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+								}else if(obj[12] != null && obj[13].toString() != null){
+									vo.setVillageId(commonMethodsUtilService.getLongValueForObject(obj[12]));
+									vo.setVillageName(commonMethodsUtilService.getStringValueForObject(obj[13]));
+								}
+								
+								
+								
+								SelectOptionVO committeeVO = new SelectOptionVO();
+								committeeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[14]));//basiCommitteeId
+								committeeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[18]));//basiCommitteeName
+								List<LocationWiseBoothDetailsVO> tdpRoles = new ArrayList<LocationWiseBoothDetailsVO>();
+								if(commonMethodsUtilService.isListOrSetValid(roles)){
+									for(BasicVO role :roles){
+										LocationWiseBoothDetailsVO roleVo = new LocationWiseBoothDetailsVO();
+										roleVo.setId(role.getId());
+										roleVo.setName(role.getName());
+										tdpRoles.add(roleVo);
+									}
+								}
+								committeeVO.setResult(tdpRoles);
+								
+								if(vo.getHamletsOfTownship() == null){
+									List<SelectOptionVO> committees = new ArrayList<SelectOptionVO>();
+									vo.setHamletsOfTownship(committees);
+								}
+								vo.getHamletsOfTownship().add(committeeVO);
+								if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+									getMatchdMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), vo);
+								 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+									 getMatchdMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), vo);
+								 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+									 getMatchdMap.put(commonMethodsUtilService.getLongValueForObject(obj[4]), vo);
+								 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+									 getMatchdMap.put(vo.getVillageId(), vo);
+								}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+									getMatchdMap.put(vo.getMandalId(), vo);
+								}
+						}
+					}
+				}
+		
+		if(locListFTot != null  && locListFTot.size() >0){
+			for(Object[] obj :locListFTot){
+				LocationWiseBoothDetailsVO vo  = null;
+				if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+					vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+					 vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				 }/*else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+					 vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[5]));
+				 }*/else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+					 vo = getMatchdMap.get(obj[6] != null ? (Long)obj[6] : (obj[8] != null ? (Long)obj[8] : 0l));
+				}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+					vo = getMatchdMap.get(obj[10] != null ? (Long)obj[10] : (obj[12] != null ? (Long)obj[12] : 0l));
+				}
+				
+				if(vo != null){
+					
+					SelectOptionVO committeeVO = getMatchedVO1(vo.getHamletsOfTownship(),(Long)obj[14]);
+					if(committeeVO != null){
+					LocationWiseBoothDetailsVO roleVO = getMatchedVO(committeeVO.getResult(),(Long)obj[15]);
+						if(roleVO != null){
+							roleVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(obj[17]));
+						}
+					}
+				}
+			}
+		}
+		
+		
+		List<Object[]> propsdFinlsdList = tdpCommitteeMemberDAO.getProposedAndFinalyzedCount(committeeTypeId,committeeLevlIdsList,designationsList,locationLvlId,loctnLevlValues,committeeEnrollmntIds,stateId,searchType);
+		
+		if(propsdFinlsdList != null  && propsdFinlsdList.size() >0){
+			for(Object[] obj :propsdFinlsdList){
+				LocationWiseBoothDetailsVO vo  = null;
+				if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+					vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+					 vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+					 vo = getMatchdMap.get(commonMethodsUtilService.getLongValueForObject(obj[4]));
+				 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+					 vo = getMatchdMap.get(obj[6] != null ? (Long)obj[6] : (obj[8] != null ? (Long)obj[8] : 0l));
+				}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+					vo = getMatchdMap.get(obj[10] != null ? (Long)obj[10] : (obj[12] != null ? (Long)obj[12] : 0l));
+				}
+				
+				if(vo != null){
+					SelectOptionVO committeeVO = getMatchedVO1(vo.getHamletsOfTownship(),(Long)obj[14]);
+					if(committeeVO != null){
+					LocationWiseBoothDetailsVO roleVO = getMatchedVO(committeeVO.getResult(),(Long)obj[15]);
+					if(roleVO != null){
+						if(obj[17] != null && obj[17].toString().equalsIgnoreCase("F")){
+							roleVO.setFinalizedCount(roleVO.getFinalizedCount()+commonMethodsUtilService.getLongValueForObject(obj[18]));
+						}else if(obj[17] != null && obj[17].toString().equalsIgnoreCase("P")){
+							roleVO.setProposedCount(roleVO.getProposedCount()+commonMethodsUtilService.getLongValueForObject(obj[18]));
+						}
+						
+					}
+					}
+				}
+			}
+		}
+		
+		if(commonMethodsUtilService.isMapValid(getMatchdMap)){
+			returnList.addAll(getMatchdMap.values());
+		}
+		
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception raised in getMainCommitteeIdInALocation", e);
+	}
+	return returnList;
+ }
+public LocationWiseBoothDetailsVO getMatchedVO(List<LocationWiseBoothDetailsVO> list,Long id)
+{
+	LocationWiseBoothDetailsVO returnVO = null;
+	try {
+		
+		if(list != null && list.size()>0)
+		{
+			for (LocationWiseBoothDetailsVO roleVO : list)
+			{
+				if(roleVO.getId().longValue() == id.longValue())
+				{
+					return roleVO;
+				}
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised in getMatchedVO", e);
+	}
+	return returnVO;
+}
+public SelectOptionVO getMatchedVO1(List<SelectOptionVO> list,Long id)
+{
+	SelectOptionVO returnVO = null;
+	try {
+		
+		if(list != null && list.size()>0)
+		{
+			for (SelectOptionVO committeeVO : list)
+			{
+				if(committeeVO.getId().longValue() == id.longValue())
+				{
+					return committeeVO;
+				}
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised in getMatchedVO", e);
+	}
+	return returnVO;
+}
 }

@@ -45,7 +45,13 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private String districtName;
 	
 	private Long constituencyId;
-	private String constituencyName;	
+	private String constituencyName;
+	private Long mandalId;
+	private String mandalName;
+	
+	private Long villageId;
+	private String villageName;
+	
 	public String getDateStr() {
 		return dateStr;
 	}
@@ -278,5 +284,31 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
 	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public String getVillageName() {
+		return villageName;
+	}
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+	
+	
 	
 }
