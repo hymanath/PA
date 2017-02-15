@@ -3753,4 +3753,15 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
     <!-- Command Control Alerts End -->
+    <bean id="committeeIvrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeIvrSurveyDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>  
+    
+     <bean id="committeeConfirmRuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeConfirmRuleDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>  
+    
+     <bean id="committeeConfirmRuleConditionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeConfirmRuleConditionDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 </beans>		
