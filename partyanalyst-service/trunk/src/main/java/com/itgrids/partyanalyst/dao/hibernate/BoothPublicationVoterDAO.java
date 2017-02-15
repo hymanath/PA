@@ -8408,45 +8408,42 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	    return query.list();
 	}
 	
-
-
-	public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long constituencyId,List<Long> constituencyIdsList){
-		StringBuilder str = new StringBuilder();
-		
-		//str.append(" select count(distinct model.voter.voterId) from BoothPublicationVoter model    ");
-		str.append(" select sum(model.totalVoters) from Booth model    ");
-		if(locationType.equalsIgnoreCase("constituency"))
-		  str.append(" where model.constituency.constituencyId =:locationId ");
-		else if(locationType.equalsIgnoreCase("Mandal"))
-			  str.append(" where model.tehsil.tehsilId =:locationId ");
-		
-		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" where model.panchayat.panchayatId =:locationId ");
-		
-		else if(locationType.equalsIgnoreCase("booth"))
-		 str.append(" where model.boothId = :locationId ");
-		
-		else if(locationType.equalsIgnoreCase("muncipality"))
-		  str.append(" where model.localBody.localElectionBodyId =:locationId and model.localBody is not null ");
-		
-		else if(locationType.equalsIgnoreCase("District"))
-		 str.append(" where model.constituency.district.districtId =:locationId ");
-		
-		else if(locationType.equalsIgnoreCase("Parliament"))
-		 str.append(" where model.constituency.constituencyId in (:constituencyIdsList) ");
-		
-		
-		Query query = getSession().createQuery(str.toString());
-		
-		if(!locationType.equalsIgnoreCase("Parliament"))
-		  query.setParameter("locationId", locationId);
-		
-		if(locationType.equalsIgnoreCase("Parliament"))
-		  query.setParameterList("constituencyIdsList", constituencyIdsList);
-		
-		return (Long) query.uniqueResult();
-		
-	}
+  public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long publicationDateId,Long constituencyId,List<Long> constituencyIdsList){
+	StringBuilder str = new StringBuilder();
+	
+	str.append(" select sum(model.totalVoters) from Booth model where model.publicationDate.publicationDateId=:publicationDateId ");
+	
+	if(locationType.equalsIgnoreCase("constituency"))
+	  str.append(" and model.constituency.constituencyId =:locationId ");
+	else if(locationType.equalsIgnoreCase("Mandal"))
+		  str.append(" and model.booth.tehsil.tehsilId =:locationId ");
+	
+	else if(locationType.equalsIgnoreCase("panchayat"))
+		str.append(" and model.panchayat.panchayatId =:locationId ");
+	
+	else if(locationType.equalsIgnoreCase("booth"))
+	 str.append(" and model.boothId = :locationId ");
+	
+	else if(locationType.equalsIgnoreCase("muncipality"))
+	  str.append(" and model.localBody.localElectionBodyId =:locationId and model.localBody is not null ");
+	
+	else if(locationType.equalsIgnoreCase("District"))
+	 str.append(" and model.constituency.district.districtId =:locationId ");
+	
+	else if(locationType.equalsIgnoreCase("Parliament"))
+	 str.append(" and model.constituency.constituencyId in (:constituencyIdsList) ");
+	
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("publicationDateId", publicationDateId);
+	if(!locationType.equalsIgnoreCase("Parliament"))
+	  query.setParameter("locationId", locationId);
+	
+	if(locationType.equalsIgnoreCase("Parliament"))
+	  query.setParameterList("constituencyIdsList", constituencyIdsList);
+	
+	return (Long) query.uniqueResult();
+	
+}
 
 	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo,List<Long> assignedBoothIds){
 		StringBuilder sb = new StringBuilder();
