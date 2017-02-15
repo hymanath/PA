@@ -20,6 +20,8 @@
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -283,7 +285,7 @@
 				</div>
 			</div>
 			<form id="alertAssign" name="alertAssignForm">
-				<div class="row">
+				<div class="row m_top20">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading headingColor">
@@ -363,6 +365,9 @@
 											<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
 										</label>
 										<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
+										
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 										<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
 									</div>
 									<div class="col-md-4 col-xs-12 col-sm-6">
@@ -390,10 +395,14 @@
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
+
 <!-- Custom Script Files Data Start-->
 <script src="alertDepartment/js/alertManagementSystem.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
