@@ -1774,7 +1774,7 @@
 								<span class="meetingsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
-								<span class="meetingsRefresh pull-right" attr_refresh_status="false">
+								<span class="meetingsRefresh pull-right" attr_meeting_type="committeeMeeting" attr_refresh_status="false">
 									<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							    </span>
 								<span class="input-group pull-right dateRangePickerClsForMeetings hide" style="width:200px;">
