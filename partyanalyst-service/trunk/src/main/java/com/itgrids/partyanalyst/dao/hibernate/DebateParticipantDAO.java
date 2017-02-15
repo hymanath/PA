@@ -494,7 +494,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				return query.list();
 	}
 	
-	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType){
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -513,7 +513,11 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " +
 				" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N' " );
+				" and model.debate.isDeleted = 'N' ");
+		
+		if(candidateId != null && candidateId.longValue() >0){
+			str.append(" and model.candidate.candidateId =:candidateId " );
+		}
 		
 		if(partyIds !=null && partyIds.size()>0){
 			str.append(" and model.partyId in (:partyIds) ");
@@ -526,7 +530,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");
 		}else{
-			str.append(" group by model.candidate.candidateId ");
+			str.append(" group by model.candidate.candidateId,model.debate.channel.channelId,DS.debate.debateId ");
 		}
 		//str.append(" group by DS.debate.debateId ");
 		str.append(" order by model.debate.startTime desc ");
@@ -539,6 +543,9 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		if(startDate !=null && endDate !=null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
+		}
+		if(candidateId != null && candidateId.longValue() >0){
+			query.setParameter("candidateId", candidateId);
 		}
 		
 		return query.list();

@@ -4946,7 +4946,7 @@ public String getLatestDebate(){
 	return time;		
 }
 
-public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType){
+public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId){
 	
 	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
 	try{
@@ -4973,7 +4973,7 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 		Set<Long> debateIds = new LinkedHashSet<Long>(0);
 		Map<Long,CoreDebateVO> mainMap = new LinkedHashMap<Long, CoreDebateVO>(0);
 		//0.candidateId,1.candidateName,2.debateId,3.startTime,4.endTime,5.debateObserverid,6.observer,7.channelId,8.channelName
-		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null,searchType);
+		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null,searchType,candidateId);
 		
 		if(listObj !=null && listObj.size()>0){			
 			for(Object[] obj:listObj){
