@@ -1774,6 +1774,9 @@
 								<span class="meetingsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
+								<span class="meetingsRefresh pull-right" attr_refresh_status="false">
+									<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							    </span>
 								<span class="input-group pull-right dateRangePickerClsForMeetings hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
@@ -1804,7 +1807,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
 									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
-									<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
+									<!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span>--><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>

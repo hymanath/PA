@@ -3094,7 +3094,7 @@ public String getParyMeetingMemberDtls(){
 		idNameVOs = coreDashboardPartyMeetingService.getParyMeetingMemberDtls(partyMeetingMainTypeId,partyMeetingTypeIds,meetingId,state,startDateString,endDateString,status);
 		
 }catch(Exception e){
-	LOG.error("Exception raised at getPartyMeetingsMainTypeOverViewData() method of CoreDashBoard", e);
+	LOG.error("Exception raised at getParyMeetingMemberDtls() method of CoreDashBoard", e);
 }
 return Action.SUCCESS;
 }
