@@ -229,8 +229,7 @@ function getParticipatedConstituencyId(cadreId){
 							participatedConstituencyType=" Parliament";
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}
-						getCategoryWiseStatusCount();
-												
+						getCategoryWiseStatusCount();				
 						//getCadreFamilyDetailsByCadreId();//swadhin
 						//getElectionPerformanceInCadreLocation();
 						getApprovedFinancialSupprotForCadre();
@@ -3021,15 +3020,30 @@ function getLocationwiseCommitteesCount()
 			locationId = participatedParliamentId;
 		}
 	}
+	var committeeEnrollmentYrIds = [];
+	if($("#tdpCommitteeYearId").val() == null){
+		committeeEnrollmentYrIds.push($("#tdpCommitteeYearId").val());
+	}else{
+		committeeEnrollmentYrIds.push(2);
+	}
 	
 	var locationType = $("input[name='committeeLocation']:checked").val();
 		
 	$("#committeesCountDiv").html("");
 	$("#committeesCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+	
+	var jsObj=
+			{
+				locationType : locationType,
+				tdpCadreId:globalCadreId,
+				locationId:locationId,
+				electionType:electionType,
+				committeeEnrollmentYrIds:committeeEnrollmentYrIds	
+			}
 	$.ajax({
 		type : "POST",
 		url  : "getLocationwiseCommitteesCountAction.action",
-		data : {locationType : locationType,tdpCadreId:globalCadreId,locationId:locationId,electionType:electionType}
+		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		 buildLocationwiseCommitteesCount(result);
