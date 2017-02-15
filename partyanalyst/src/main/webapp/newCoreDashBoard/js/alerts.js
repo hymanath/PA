@@ -29,7 +29,9 @@
 			defaultAlertCalls();
 		}
 	}
-
+	$(document).on("click",".alertsIconRefresh",function(){
+		globalAlertsCalls('');
+	});
 	   $(document).on("click",".alertSetClose",function(){
 			$(".specialAlertDropDown").hide(); 
 		 });

@@ -31,7 +31,10 @@
 		$("#dateRangeIdForNews").val(currentFromDate+" - "+currentToDate);
 		commonNewsBasicCalls();
 	}
-
+	
+	$(document).on("click",".newsRefresh",function(){
+		globalPrintMediaCalls('');
+	});
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
 			opens: 'left',

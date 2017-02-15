@@ -46,6 +46,10 @@ function globalElectronicMediaCalls(type)
 	} 
 }
 
+	$(document).on("click",".emnRefresh",function(){
+		globalElectronicMediaCalls('');
+	});
+
 $(document).ready(function(){
 	locationLevelIdGlb = globalUserAccessLevelId;
 	

@@ -41,7 +41,9 @@ function globalDebateCalls(type)
 	}
 }
 
-
+	$(document).on("click",".debatesRefresh",function(){
+		globalDebateCalls('');
+	});
 $(document).ready(function(){
 	
 	
