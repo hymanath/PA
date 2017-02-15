@@ -68,7 +68,7 @@ public interface ICadreDetailsService {
 	
 	public ComplaintStatusCountVO getCategoryWiseStatusCount(Long tdpCadreId);
 	
-	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId,String electionType,Long locationId);
+	public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId,String electionType,Long locationId,List<Long> committeeEnrollmentYrIds);
 	
 	public VerifierVO getDeathsAndHospitalizationDetails(Long panchayatId,Long mandalId,Long constituencyId,Long parliamentId,Long districtId);
 	

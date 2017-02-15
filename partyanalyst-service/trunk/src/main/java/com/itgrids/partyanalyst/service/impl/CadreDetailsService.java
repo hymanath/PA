@@ -4105,7 +4105,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	 public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId,String electionType,Long locationId)
+	 public List<CommitteeBasicVO> getLocationwiseCommitteesCount(String locationType,Long tdpCadreId,String electionType,Long locationId,List<Long> committeeEnrollmentYrIds)
 	 {
 		 List<CommitteeBasicVO> committeeBasicVOList = null;
 		
@@ -4153,21 +4153,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					if(electionType.trim().equalsIgnoreCase("Assembly")){
 						if(locationType.trim().equalsIgnoreCase("assemblyConstituency")){
-							return  getConstituencyCommittesCount(locationId,"assemblyConstituency");
+							return  getConstituencyCommittesCount(locationId,"assemblyConstituency",committeeEnrollmentYrIds);
 						}
 						else if(locationType.trim().equalsIgnoreCase("parliamentConstituency")){
-							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency");
+							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency",committeeEnrollmentYrIds);
 						}
 						else if(locationType.trim().equalsIgnoreCase("district")){
-							return getDistrictwiseCommitteCount(districtId,null);
+							return getDistrictwiseCommitteCount(districtId,null,committeeEnrollmentYrIds);
 						}
 					}
 					else{
 						if(locationType.trim().equalsIgnoreCase("parliamentConstituency")){
-							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency");
+							return getConstituencyCommittesCount(parliamentConId,"parliamentConstituency",committeeEnrollmentYrIds);
 						}
 						else if(locationType.trim().equalsIgnoreCase("district")){
-							return getDistrictwiseCommitteCount(districtId,null);
+							return getDistrictwiseCommitteCount(districtId,null,committeeEnrollmentYrIds);
 						}
 					}
 				
@@ -4179,7 +4179,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					if(userAddress != null)
 					{
 						if(locationType.trim().equalsIgnoreCase("district"))
-							return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId(),areaType);
+							return getDistrictwiseCommitteCount(userAddress.getDistrict().getDistrictId(),areaType,committeeEnrollmentYrIds);
 							
 						else if(locationType.trim().equalsIgnoreCase("mandal"))
 						{
@@ -4212,10 +4212,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 							
 						}
 						else if(locationType.trim().equalsIgnoreCase("assemblyConstituency"))
-							return  getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"assemblyConstituency");
+							return  getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"assemblyConstituency",committeeEnrollmentYrIds);
 						
 						else if(locationType.trim().equalsIgnoreCase("parliamentConstituency"))
-							return getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"parliamentConstituency");
+							return getConstituencyCommittesCount(userAddress.getConstituency().getConstituencyId(),"parliamentConstituency",committeeEnrollmentYrIds);
 						
 						
 					}
@@ -4231,7 +4231,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	 public List<CommitteeBasicVO> getDistrictwiseCommitteCount(Long districtId,String areaType)
+	 public List<CommitteeBasicVO> getDistrictwiseCommitteCount(Long districtId,String areaType,List<Long> committeeEnrollmentYrIds)
 	 {
 		 List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>();
 		 try{
@@ -4242,9 +4242,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 List<Long> districtIds = new ArrayList<Long>();
 			 districtIds.add(districtId);
 			 
-			 setVillageCommitteesCount(districtIds, resultList);
-			 setMandalCommitteesCount(districtIds,resultList);
-			 setDistrictCommitteesCount(districtIds,resultList);
+			 setVillageCommitteesCount(districtIds, resultList,committeeEnrollmentYrIds);
+			 setMandalCommitteesCount(districtIds,resultList,committeeEnrollmentYrIds);
+			 setDistrictCommitteesCount(districtIds,resultList,committeeEnrollmentYrIds);
 			 
 			 if(resultList !=null && resultList.size()>0){
 				 resultList.get(0).setAreaType(areaType);
@@ -4257,7 +4257,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		 
 	 }
 	 
-	 public void setDistrictCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 public void setDistrictCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList,List<Long> committeeEnrollmentYrIds)
 	 {
 		try{
 			List<Long> levelIds = new ArrayList<Long>();
@@ -4266,18 +4266,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 CommitteeBasicVO districtVO = new CommitteeBasicVO();
 			 districtVO.setLocationType("District");
 			
-			 List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null, districtIds,null);//Total Committee Members Count
+			 List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null, districtIds,committeeEnrollmentYrIds);//Total Committee Members Count
 			  setTotalCommitteeMembersCount(list, districtVO);
 			 
-		     List<Object[]> list2 = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, levelIds,null);//total committes Count
+		     List<Object[]> list2 = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, levelIds,committeeEnrollmentYrIds);//total committes Count
 		     setTotalCommitteesCount(list2, districtVO);
 		     
 		     //0committeeId,1committeeTypeid
-		     List<Object[]> stResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(levelIds, null, null, "started", districtIds); //changed
+		     List<Object[]> stResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(levelIds, null, null, "started", districtIds,committeeEnrollmentYrIds); //changed
 		     setStartedCommitteesCount(stResLst,districtVO);
 		     
 		   //0committeeId,1committeeTypeid
-			 List<Object[]> endResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(levelIds, null, null, "completed", districtIds);//changed
+			 List<Object[]> endResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(levelIds, null, null, "completed", districtIds,committeeEnrollmentYrIds);//changed
 			 setCompletedCommitteesCount(endResLst, districtVO);
 			 
 			 resultList.add(districtVO);
@@ -4287,7 +4287,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 	 }
 	 
-	 public void setMandalCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 public void setMandalCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList,List<Long> committeeEnrollmentYrIds)
 	 {
 		try{
 			CommitteeBasicVO mandalVO = new CommitteeBasicVO();
@@ -4298,18 +4298,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 			mandalMunciDivisionIds.add(7l);
 			mandalMunciDivisionIds.add(9l);
 			
-			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, null, null, districtIds,null);
+			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, null, null, districtIds,committeeEnrollmentYrIds);
 			setTotalCommitteeMembersCount(memResLst, mandalVO);
 			
-			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, mandalMunciDivisionIds,null);
+			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, mandalMunciDivisionIds,committeeEnrollmentYrIds);
 			setTotalCommitteesCount(ttlList, mandalVO);
 			
 			//0committeeId,1committeeTypeid
-			List<Object[]> stResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(mandalMunciDivisionIds, null, null, "started", districtIds);//changed
+			List<Object[]> stResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(mandalMunciDivisionIds, null, null, "started", districtIds,committeeEnrollmentYrIds);//changed
 			setStartedCommitteesCount(stResLst, mandalVO);
 			
 			//0committeeId,1committeeTypeid
-			List<Object[]> endResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(mandalMunciDivisionIds, null, null, "completed", districtIds);//changed
+			List<Object[]> endResLst = tdpCommitteeDAO.getcommitteesCountByDistrict(mandalMunciDivisionIds, null, null, "completed", districtIds,committeeEnrollmentYrIds);//changed
 			setCompletedCommitteesCount(endResLst, mandalVO);
 			
 			resultList.add(mandalVO);
@@ -4320,7 +4320,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	 public void setVillageCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList)
+	 public void setVillageCommitteesCount(List<Long> districtIds,List<CommitteeBasicVO> resultList,List<Long> committeeEnrollmentYrIds)
 	 {
 		try{
 			CommitteeBasicVO villageVO = new CommitteeBasicVO();
@@ -4330,18 +4330,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
 			
-			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, null, null, districtIds,null);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, null, null, districtIds,committeeEnrollmentYrIds);
 			setTotalCommitteeMembersCount(memResLstVill, villageVO);
 			
-			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, villageWardIds,null);
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(districtIds, villageWardIds,committeeEnrollmentYrIds);
 			setTotalCommitteesCount(ttlListVill, villageVO);
 			
 			//0committeeId,1committeeTypeid
-			List<Object[]> stResLstVill = tdpCommitteeDAO.getcommitteesCountByDistrict(villageWardIds, null, null, "started", districtIds);//changged
+			List<Object[]> stResLstVill = tdpCommitteeDAO.getcommitteesCountByDistrict(villageWardIds, null, null, "started", districtIds,committeeEnrollmentYrIds);//changged
 			setStartedCommitteesCount(stResLstVill, villageVO);
 			
 			//0committeeId,1committeeTypeid
-			List<Object[]> endResLstVill = tdpCommitteeDAO.getcommitteesCountByDistrict(villageWardIds, null, null, "completed", districtIds);//changed
+			List<Object[]> endResLstVill = tdpCommitteeDAO.getcommitteesCountByDistrict(villageWardIds, null, null, "completed", districtIds,committeeEnrollmentYrIds);//changed
 			setCompletedCommitteesCount(endResLstVill, villageVO);
 			
 			resultList.add(villageVO);
@@ -4466,7 +4466,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 	 
 	 
-	 public List<CommitteeBasicVO> getConstituencyCommittesCount(Long constituencyId ,String constituencyType)
+	 public List<CommitteeBasicVO> getConstituencyCommittesCount(Long constituencyId ,String constituencyType,List<Long> committeeEnrollmentYrIds)
 	 {
 		 List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>(); 
 		 try{
@@ -4495,8 +4495,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 			 }
 			 if(constituenyIdsList != null && constituenyIdsList.size() > 0)
 			 {
-				 setVillageCommitteesCountInConstituency(constituenyIdsList, resultList);
-				 SetMandalCommitteesCountInConstituency(constituenyIdsList, resultList);
+				 setVillageCommitteesCountInConstituency(constituenyIdsList, resultList,committeeEnrollmentYrIds);
+				 SetMandalCommitteesCountInConstituency(constituenyIdsList, resultList,committeeEnrollmentYrIds);
 			 }
 			 
 			 
@@ -4510,7 +4510,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 }
 
 	 
-	 public void setVillageCommitteesCountInConstituency(List<Long> constituenyIdsList,List<CommitteeBasicVO> resultList)
+	 public void setVillageCommitteesCountInConstituency(List<Long> constituenyIdsList,List<CommitteeBasicVO> resultList,List<Long> committeeEnrollmentYrIds)
 	 {
 		 try{
 			 
@@ -4521,18 +4521,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 				villageWardIds.add(6l);
 				villageWardIds.add(8l);
 				
-				List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, null, null, constituenyIdsList,null,null);
+				List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, null, null, constituenyIdsList,null,committeeEnrollmentYrIds);
 				setTotalCommitteeMembersCount(memResLstVill, villageCommitteeVO);
 				
-				List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constituenyIdsList, villageWardIds,null,null);
+				List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constituenyIdsList, villageWardIds,null,committeeEnrollmentYrIds);
 				setTotalCommitteesCount(ttlV, villageCommitteeVO);
 				
 				//0committeeId,1committeeTypeid
-				List<Object[]> stResLstVill = tdpCommitteeDAO.getcommitteesCountByConstituency(villageWardIds, null, null, "started", constituenyIdsList);
+				List<Object[]> stResLstVill = tdpCommitteeDAO.getcommitteesCountByConstituency(villageWardIds, null, null, "started", constituenyIdsList,committeeEnrollmentYrIds);
 				setStartedCommitteesCount(stResLstVill, villageCommitteeVO);
 				
 				//0committeeId,1committeeTypeid
-				List<Object[]> endResLstVill = tdpCommitteeDAO.getcommitteesCountByConstituency(villageWardIds, null, null, "completed", constituenyIdsList);
+				List<Object[]> endResLstVill = tdpCommitteeDAO.getcommitteesCountByConstituency(villageWardIds, null, null, "completed", constituenyIdsList,committeeEnrollmentYrIds);
 				setCompletedCommitteesCount(endResLstVill, villageCommitteeVO);
 				
 				resultList.add(villageCommitteeVO);
@@ -4542,7 +4542,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 	 }
 	 
-	 public void SetMandalCommitteesCountInConstituency(List<Long> constituencyIds,List<CommitteeBasicVO> resultList)
+	 public void SetMandalCommitteesCountInConstituency(List<Long> constituencyIds,List<CommitteeBasicVO> resultList,List<Long> committeeEnrollmentYrIds)
 	 {
 		 try{
 			   
@@ -4558,18 +4558,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(mandalIdsMap.size() > 0){
 					List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
 					
-					List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,null, null,levelValues,null,null,null);
+					List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,null, null,levelValues,null,committeeEnrollmentYrIds,null);
 					setTotalCommitteeMembersCount(totalMandalMainMembers, mandalVO);
 					
-					List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues,null,null,null);
+					List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues,null,committeeEnrollmentYrIds,null);
 					setTotalCommitteesCount(totalMandalCommittees, mandalVO);
 					
 					//0count,1locationID,2typeId
-					 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"started",null,null,null);
+					 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"started",null,committeeEnrollmentYrIds,null);
 					 setStartedCommitteesCount1(totalMandalStartedCommittees, mandalVO);
 					 
 					//0count,1locationID,2typeId
-					 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"completed",null,null,null);
+					 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,null,null,"completed",null,committeeEnrollmentYrIds,null);
 					 setCompletedCommitteesCount1(totalMandalCompletedCommittees,mandalVO);
 					
 				}
@@ -4577,19 +4577,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 
 					 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
 					//0 count,1levelId
-					 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,null,null,levelValues,null,null,null);
+					 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,null,null,levelValues,null,committeeEnrollmentYrIds,null);
 					 setTotalCommitteeMembersCount(totalLocalBodMainMembers, mandalVO);
 					 
 					 //0count,1locationID
-					 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues,null,null,null);
+					 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues,null,committeeEnrollmentYrIds,null);
 					 setTotalCommitteesCount(totalLocalBodCommittees, mandalVO);
 					 
 					//0count,1locationID,2typeId
-					 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"started",null,null,null);
+					 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"started",null,committeeEnrollmentYrIds,null);
 					 setStartedCommitteesCount1(totalLocalBodStartedCommittees, mandalVO);
 					 
 					 //0count,1locationID,2typeId
-					 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"completed",null,null,null);
+					 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,null,null,"completed",null,committeeEnrollmentYrIds,null);
 					 setCompletedCommitteesCount1(totalLocalBodCompletedCommittees,mandalVO);
 					 
 				 }
@@ -4599,19 +4599,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
 					 
 					//0 count,1levelId
-					 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,null,null,levelValues,null,null,null);
+					 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,null,null,levelValues,null,committeeEnrollmentYrIds,null);
 					 setTotalCommitteeMembersCount(totalDivisionMainMembers, mandalVO);
 					 
 					 //0count,1locationID
-					 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues,null,null,null);
+					 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues,null,committeeEnrollmentYrIds,null);
 					 setTotalCommitteesCount(totalDivisionCommittees, mandalVO);
 					 
 					//0count,1locationID,2typeId
-					 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"started",null,null,null);
+					 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"started",null,committeeEnrollmentYrIds,null);
 					 setStartedCommitteesCount1(totalDivisionStartedCommittees, mandalVO);
 					 
 					 //0count,1locationID,2typeId
-					 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"completed",null,null,null);
+					 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,null,null,"completed",null,committeeEnrollmentYrIds,null);
 					 setCompletedCommitteesCount1(totalDivisionCompletedCommittees,mandalVO);
 					 
 				 }
