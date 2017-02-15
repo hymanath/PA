@@ -1169,6 +1169,14 @@
 	                  <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocation</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentLevelDetails</value>
 	                  <!-- Command Control Alerts End -->
+	                  
+	                  <!-- COMMITTEES IVR SURVEY START -->
+	                  <value> com.itgrids.partyanalyst.model.CommitteeIvrSurvey </value>
+	                  <!-- COMMITTEES IVR SURVEY END  -->
+	                  
+	                   <value> com.itgrids.partyanalyst.model.CommitteeConfirmRule </value>
+	                   <value> com.itgrids.partyanalyst.model.CommitteeConfirmRuleCondition </value>
+	                   
 	              </list>
 			
 		</property>
