@@ -6569,6 +6569,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cv.setConstiId(Long.valueOf(obj[0].toString()));
 					cv.setName(obj[1].toString());
 					cv.setConstiNo(constiNoMap.get(Long.valueOf(obj[0].toString())));
+					cv.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					cv.setDistrictName(commonMethodsUtilService.getStringValueForObject(obj[3]));
 					constiIds.add(Long.valueOf(obj[0].toString()));
 					constiLst.add(cv);
 				}
