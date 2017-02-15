@@ -39,11 +39,34 @@ public class GovtDepartmentVO {
 	public GovtDepartmentVO  govtDepartmentVO ;
 	private Double percentage = 0.0;
 	
-	
 	private Long printCnt=0l;
 	private Long ElecCnt = 0l;
 	private Long totElecCount =0l;
 	private Long totPrintCount =0l;
+	
+	private String image;
+	private Long impactLevelId;
+	private String impactLevel;
+	
+	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public Long getImpactLevelId() {
+		return impactLevelId;
+	}
+	public void setImpactLevelId(Long impactLevelId) {
+		this.impactLevelId = impactLevelId;
+	}
+	public String getImpactLevel() {
+		return impactLevel;
+	}
+	public void setImpactLevel(String impactLevel) {
+		this.impactLevel = impactLevel;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -49,9 +49,11 @@ import com.itgrids.partyanalyst.model.AlertAssignedOfficerAction;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTracking;
 import com.itgrids.partyanalyst.model.AlertDepartmentComment;
 import com.itgrids.partyanalyst.model.AlertDepartmentDocument;
+import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CccDashboardService extends AlertService implements ICccDashboardService{
 	private static final Logger logger = Logger.getLogger(CccDashboardService.class);
@@ -593,12 +595,14 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					
 					//Documents Saving
 					if(inputvo.getDocumentsList() != null && !inputvo.getDocumentsList().isEmpty()){
-						AlertDepartmentDocument alertDepartmentDocument = new AlertDepartmentDocument();
-						alertDepartmentDocument.setDocument(inputvo.getDocument());
-						alertDepartmentDocument.setInsertedBy(inputvo.getUserId());
-						alertDepartmentDocument.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-						alertDepartmentDocument = alertDepartmentDocumentDAO.save(alertDepartmentDocument);
-						documentIds.add(alertDepartmentDocument.getAlertDepartmentDocumentId());
+						for (String path : inputvo.getDocumentsList()) {
+							AlertDepartmentDocument alertDepartmentDocument = new AlertDepartmentDocument();
+							alertDepartmentDocument.setDocument(path);
+							alertDepartmentDocument.setInsertedBy(inputvo.getUserId());
+							alertDepartmentDocument.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							alertDepartmentDocument = alertDepartmentDocumentDAO.save(alertDepartmentDocument);
+							documentIds.add(alertDepartmentDocument.getAlertDepartmentDocumentId());
+						}
 					}
 					
 					
@@ -615,7 +619,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					}
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(), inputvo.getGovtOfficerId());
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
 					
@@ -729,6 +733,25 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		List<GovtDepartmentVO> returnList = null;
 		try {
 			Map<Long,GovtDepartmentVO> statusMap = new LinkedHashMap<Long, GovtDepartmentVO>();
+			
+			/*List<Object[]> statusList = alertDepartmentStatusDAO.getAllStatus();
+			if(statusList != null && !statusList.isEmpty()){
+				for (Object[] obj : statusList) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setStatusId(statusId);
+					vo.setStatus(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(statusId, vo);
+				}
+			}*/
+			
+			AlertStatus pendingSts = alertStatusDAO.get(1l);
+			GovtDepartmentVO pendvo = new GovtDepartmentVO();
+			pendvo.setId(pendingSts.getAlertStatusId());
+			pendvo.setStatus(pendingSts.getAlertStatus());
+			statusMap.put(pendingSts.getAlertStatusId(), pendvo);
 			
 			List<Object[]> list = alertAssignedOfficerTrackingDAO.getStatusWiseTrackingComments(alertId);
 			if(list != null && !list.isEmpty()){
@@ -1294,6 +1317,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					vo.setName(obj[3] != null ? obj[3].toString():"");						//firstName
 					vo.setDateStr(obj[4] != null ? obj[4].toString():"");					//membershipNo
 					vo.setSource(obj[5] != null ? obj[5].toString():"");					//mobileNo
+					vo.setImage(obj[6] != null ? obj[6].toString():"");						//image
+					if(vo.getImage() != null && vo.getImage().trim().length() > 0)
+						vo.setImage("https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+vo.getImage());
+					vo.setImpactLevelId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setImpactLevel(obj[8] != null ? obj[8].toString():"");
 					
 					returnList.add(vo);
 				}
@@ -1326,13 +1354,18 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 			
 			List<Long> dptIdList = new ArrayList<Long>();
-			List<Object[]> dptsList = govtAlertDepartmentLocationDAO.getDeptListForUser(userId);
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			
+			List<Object[]> dptsList = govtAlertDepartmentLocationDAO.getUserAccessLevelsForUser(userId);
 			if(dptsList != null && !dptsList.isEmpty()){
 				for (Object[] obj : dptsList) {
 					dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 				}
 			}
-			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList);
+			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList,levelId,levelValues);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					AlertVO vo = new AlertVO();

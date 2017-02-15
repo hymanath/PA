@@ -17,7 +17,7 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 	}
 	public List<Object[]> getAllStatus(){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select " +
+		queryStr.append(" select distinct" +
 						" alertDepartmentStatus.alertStatus.alertStatusId, " +
 						" alertDepartmentStatus.alertStatus.alertStatus " +
 						" from " +

@@ -461,7 +461,10 @@ public List<Object[]> getInvolvedMembersInAlert(Long alertId){
 										" tdpCadre.tdpCadreId," +
 										" tdpCadre.firstname," +
 										" tdpCadre.memberShipNo," +
-										" tdpCadre.mobileNo" +
+										" tdpCadre.mobileNo," +
+										" tdpCadre.image," +
+										" model.alertImpact.alertImpactId," +
+										" model.alertImpact.impact" +
 										" from AlertCandidate model" +
 										" left join model.tdpCadre tdpCadre" +
 										" where model.alert.alertId = :alertId" +
