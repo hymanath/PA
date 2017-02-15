@@ -6354,9 +6354,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						{
 							vo.setMembersCount2(vo.getMembersCount2() +1);
 						}
-						else if(Long.valueOf(objects[0].toString()) > 6L )
+						else if(Long.valueOf(objects[0].toString()) > 6L && Long.valueOf(objects[0].toString()) <=14L)
 						{
 							vo.setMembersCount3(vo.getMembersCount3() + 1);
+						}
+						else if(Long.valueOf(objects[0].toString()) > 14L )
+						{
+							vo.setMembersCount4(vo.getMembersCount4() + 1);
 						}
 						
 					

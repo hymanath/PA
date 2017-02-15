@@ -23,6 +23,7 @@ public class CadreCommitteeReportVO {
 	private Long membersCount1 = 0L;
 	private Long membersCount2 = 0L;
 	private Long membersCount3 = 0L;
+	private Long membersCount4 =0l;
 	private Double affliatedCompletedPerc;
 	private String accessState;
 	private Long locationId;
@@ -190,6 +191,12 @@ public class CadreCommitteeReportVO {
 	}
 	public void setCommitteeSummaryVO(CadreIVRVO committeeSummaryVO) {
 		this.committeeSummaryVO = committeeSummaryVO;
+	}
+	public Long getMembersCount4() {
+		return membersCount4;
+	}
+	public void setMembersCount4(Long membersCount4) {
+		this.membersCount4 = membersCount4;
 	}
 	
 	
