@@ -145,7 +145,7 @@
 												<span class="glyphicon glyphicon-chevron-down pull-right "></span></a>
 											</h4>
 										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="col-md-3 col-xs-12 col-sm-4">
 											<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="State" checked/> State    
 											</label>
@@ -155,10 +155,17 @@
 											<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="Constituency"/> Constituency
 											</label>
-											<!--<label class="radio-inline">
-												<input class="locationCls" name="location" type="radio" value="Village"/> Village/Ward
-											</label>-->
 										</div>
+										<div class="col-md-3 col-xs-12 col-sm-12">
+											<select class="form-control chosen-select filterDistCls filterConCls" id="distIdForFilter" onChange="getDistAlertDtls();" style="margin-top: -15px;display:none;">
+												
+											</select>            
+										</div>  
+										<div class="col-md-3 col-xs-12 col-sm-12">    
+											<select class="form-control chosen-select filterConCls" id="consIdForFilter" onChange="getConsAlertDtls();" style="margin-top: -15px;display:none;">
+												<option value="0" selected="selected">All</option>
+											</select>  
+										</div>  
 									</div>
 								</div>
 								<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
@@ -294,18 +301,6 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<h4 class="panel-title text_capital"><b><u>alert details</u></b></h4>
 							<div id="locationLevelDataId" class="m_top20"></div>
-							<!--<div class="panel panel-default">
-								<div class="panel-heading panel-headingColor">
-									<div class="row">
-										<div class="col-md-3 col-xs-12 col-sm-3">
-											
-										</div>
-									</div>
-								</div>
-								<div class="panel-body bg_ff">
-									
-								</div>
-							</div>-->
 						</div>
 					</div>
 				</div>
@@ -496,8 +491,21 @@ $(document).ready(function(){
 		}
 		var	categoryId =0;
 		$("#errorId").html("");
+		$("#alertVerificationStatusId").val(0);   
+		$("#alertVerificationStatusId").trigger("chosen:updated");
+		$("#verificationDateRangePickerId").val(' ');
 		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
-		
+		//for location filter select box....
+		var locationType=$("input:radio[name=location]:checked").val();
+		if(locationType == "District"){
+			$("#distIdForFilter").val(0);   
+			$("#distIdForFilter").trigger('chosen:updated'); 
+		}else if(locationType == "Constituency"){
+			$("#distIdForFilter").val(0);   
+			$("#distIdForFilter").trigger('chosen:updated');        
+			$("#consIdForFilter").val(0);        
+			$("#consIdForFilter").trigger('chosen:updated');                   
+		}
 	});
 	
 $(document).on("change","#dateRangePickerId",function(){
@@ -579,15 +587,163 @@ function getAlertAssignedCandidate()
 		}
 		var	categoryId =0;
 		$("#errorId").html("");
+		$("#alertVerificationStatusId").val(0);   
+		$("#alertVerificationStatusId").trigger("chosen:updated");
+		$("#verificationDateRangePickerId").val(' ');
+		//for location filter select box....
+		if(stateId == 0){
+			$(".filterDistCls").hide(); 
+			$(".filterConCls").hide();       
+		}else{
+			var locationType=$("input:radio[name=location]:checked").val();
+			if(locationType == "District"){
+				getDistrictsForFilter();         
+			}else if(locationType == "Constituency"){
+				getDistrictsForFilter();
+				var str = ""; 
+				str+='<option value="0">All Constituency</option>';
+				$("#consIdForFilter").html(str);         
+				$("#consIdForFilter").trigger('chosen:updated'); 
+			}
+		}
+		
 		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
 	}); 
+	
+
 	$(document).on("click",".locationCls",function(){
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 		var locationType=$("input:radio[name=location]:checked").val();
+		if(locationType == "District"){
+			$(".filterConCls").hide(); 
+			$(".filterDistCls").show();
+			getDistrictsForFilter();    
+		}else if(locationType == "Constituency"){
+			getDistrictsForFilter();
+			$(".filterConCls").show();
+			var str = "";    
+			str+='<option value="0">All Constituency</option>';
+			$("#consIdForFilter").html(str);
+			$("#consIdForFilter").trigger('chosen:updated');                   
+		}else{
+			$(".filterDistCls").hide();
+			$(".filterConCls").hide();       
+		}
 		globalLocation = locationType;
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 		
 	});
+	
+	function getDistrictsForFilter() {
+		var sId = $("#stateId").val();
+		var jobj = {
+			stateId : sId  
+		}
+		$.ajax({     
+			type : 'GET',
+			url : 'getDistrictsForStateAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jobj)} 
+		}).done(function(result){
+			if(result != null && result.length > 0){ 
+				var str = ""; 
+				str+='<option value="0">All District</option>';    
+				for(var i in result){
+					if(result[i].id > 0)
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#distIdForFilter").html(str);
+				$("#distIdForFilter").trigger('chosen:updated');
+			}  
+		});     
+	}
+	function getDistAlertDtls(){
+		var resultArr = [];
+		var distId = $("#distIdForFilter").val();
+		for(var i in globalLocWiseAlertDtls){
+			if(distId == globalLocWiseAlertDtls[i].locationId){
+				resultArr.push(globalLocWiseAlertDtls[i]);
+			}     
+		}
+		if(globalLocation == "District"){
+			if(distId == 0){
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(globalLocWiseAlertDtls,globalLocation);
+			}else{
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(resultArr,globalLocation);
+			}            
+			
+		}else{
+			if(distId == 0){
+				var str = ""; 
+				str+='<option value="0">All Constituency</option>';
+				$("#consIdForFilter").html(str);
+				$("#consIdForFilter").trigger('chosen:updated'); 
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(globalLocWiseAlertDtls,globalLocation);
+			}else{
+				getConstituencyForFilter(distId);          
+			}
+			
+		}   
+	}
+	//globalLocWiseAlertDtls//getConstituenciesByDistrictAction
+	var gblConstIdArr = [];
+	function getConstituencyForFilter(distId) {
+		var jobj = {
+			districtId : distId  
+		}
+		$.ajax({     
+			type : 'GET',
+			url : 'getConstituenciesByDistrictAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jobj)} 
+		}).done(function(result){
+			if(result != null && result.length > 0){ 
+				var str = ""; 
+				str+='<option value="0">All Constituency</option>';
+				gblConstIdArr = [];    
+				for(var i in result){
+					if(result[i].id > 0){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+						gblConstIdArr.push(result[i].id);
+					}        	
+				}
+				$("#consIdForFilter").html(str);
+				$("#consIdForFilter").trigger('chosen:updated');
+				   
+				buildOnlyConstForSelectedDist();
+			}  
+		});
+		
+	}
+	function getConsAlertDtls(){
+		var resultArr = [];
+		var constId = $("#consIdForFilter").val();
+		if(constId == 0){        
+			buildOnlyConstForSelectedDist();    
+		}else{
+			for(var i in globalLocWiseAlertDtls){
+				if(constId == globalLocWiseAlertDtls[i].locationId){
+					resultArr.push(globalLocWiseAlertDtls[i]);
+				}                  
+			}         
+			buildTotalAlertGroupByStatusThenCategoryLocationWise(resultArr,globalLocation);
+		}
+		
+	}
+	function buildOnlyConstForSelectedDist(){       
+		var resultArr = [];
+		var constId = 0;
+		for(var i in gblConstIdArr){
+			constId = gblConstIdArr[i];
+			for(var j in globalLocWiseAlertDtls){
+				if(constId == globalLocWiseAlertDtls[j].locationId){
+					resultArr.push(globalLocWiseAlertDtls[j]);             
+				}                  
+			}  
+		}
+		       
+		buildTotalAlertGroupByStatusThenCategoryLocationWise(resultArr,globalLocation);
+	}
 	$(document).on("change","#alertTypeId",function(){      
 		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
@@ -623,6 +779,20 @@ function getAlertAssignedCandidate()
 		$("#alertStatusId").val(0);
 		$("#alertCategoryId").trigger('chosen:updated');
 		$("#alertStatusId").trigger('chosen:updated');
+		$("#alertVerificationStatusId").val(0);   
+		$("#alertVerificationStatusId").trigger("chosen:updated"); 
+		$("#verificationDateRangePickerId").val(' ');    
+		//for location filter select box....
+		var locationType=$("input:radio[name=location]:checked").val();
+		if(locationType == "District"){
+			$("#distIdForFilter").val(0);                   
+			$("#distIdForFilter").trigger('chosen:updated'); 
+		}else if(locationType == "Constituency"){
+			$("#distIdForFilter").val(0);   
+			$("#distIdForFilter").trigger('chosen:updated');        
+			$("#consIdForFilter").val(0);        
+			$("#consIdForFilter").trigger('chosen:updated');                   
+		}
 	});
 	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
@@ -816,15 +986,15 @@ function getAlertAssignedCandidate()
 		$("#locWiseAltCntId").html(str);  
 		
 	}
-	
+	var globalLocWiseAlertDtls = null;
 	function getTotalAlertGroupByStatusThenCategoryLocationWise(stateId,fromDate,toDate,globalLocation){
 		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
-			stateId : stateId,             
+			stateId : stateId,               
 			fromDate : fromDate,
 			toDate : toDate,
 			Location : globalLocation,
-			alertyTypeId : alertTypeId        
+			alertyTypeId : alertTypeId
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -834,7 +1004,8 @@ function getAlertAssignedCandidate()
 		}).done(function(result){ 
 			$("#multiLocationId").html('');
 			if(result != null && result.length > 0){
-				buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation);     
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation);
+				globalLocWiseAlertDtls = result;
 			}
 		});
 	}
@@ -842,7 +1013,7 @@ function getAlertAssignedCandidate()
 		var str = '';
 		var levelId=2;
 		
-		if(globalLocation == 'State')
+		if(globalLocation == 'State')       
 			levelId= 2;
 		else if(globalLocation == 'District')
 			levelId= 3;
@@ -850,11 +1021,16 @@ function getAlertAssignedCandidate()
 			levelId= 4;
 		else if(globalLocation == 'Village')
 			levelId= 6;
-		
+		if(result != null && result.length > 0){
 		for(var i in result){
 			str+='<table class="table b_1">';
 				str+='<thead class="bg_ff">';
+				if(globalLocation == 'Constituency'){
+					str+='<th>'+result[i].constituencyNo+'_'+result[i].locationName+'</th>';
+				}else{
 					str+='<th>'+result[i].locationName+'</th>';
+				}
+					
 					for(var l in result[0].subList2[0].subList1){
 						str+='<th class="text-center">'+result[0].subList2[0].subList1[l].category+'</th>';
 					}
@@ -884,6 +1060,10 @@ function getAlertAssignedCandidate()
 			str+='</table>';     
 		}
 		$("#multiLocationId").html(str);      
+		}else{
+			$("#multiLocationId").html("No Alerts");             
+		}
+		
 	}
 	
 	
