@@ -1609,7 +1609,7 @@ function buildVolunteersDetails(result){
 				str+='</table>';
 				$("#personalBenefitsDivId").html(str);
 			}else{
-				//$("#personalBenefitsDivId").html("No Benefits Avalilable.");
+				$("#personalBenefitsDivId").html("");
 			}
 				
 			if(familyBenefitsRsltDtls != null && familyBenefitsRsltDtls.length > 0){
@@ -1672,7 +1672,7 @@ function buildVolunteersDetails(result){
 				str1+='</table>';
 				$("#familyBenefitsDivId").html(str1);
 			}else{
-			//	$("#familyBenefitsDivId").html("No Family Member Got Benefits.");
+				$("#familyBenefitsDivId").html("");
 			}
 			}
 		});
