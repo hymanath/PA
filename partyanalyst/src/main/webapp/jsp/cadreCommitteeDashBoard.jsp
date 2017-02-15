@@ -14,6 +14,7 @@
     	<!--Bootstrap DatePicker-->
     <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
 		<!--Hover Menu-->
+	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
     <link href="css/cadreCommitee/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />
@@ -914,7 +915,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<button id="detailReportId" class="btn btn-success btn-xs" style="dispaly:inline-block">Detailed Report</button>
 					<div style="display:inline-block; margin-top:10px;text-align:center;" class="col-md-12">
                     	<h4 id="headingId" style="display:inline-block" class="text-success">DISTRICT WISE COMMITTEES</h4>
-                        <span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
+                        <span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="display:inline-block;"> Export To Excel </span>
                     </div>
               
                 </div>
@@ -1093,7 +1094,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Committee Details Report</h4>
+				<h4 class="modal-title">Committee Detailed Report</h4>
 			  </div>
 			  <div class="modal-body">
 			  <div class="row">
@@ -1107,7 +1108,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						  </div>
 						  <div class="col-md-3 col-xs-12 col-sm-3">
 							<label>Committee Level</label>
-							<select class="form-control" style="width:220px" onchange="updateAllLocLvls();" id="committeeLevelTypeId">
+							<select class="form-control" style="width:220px" id="committeeLevelTypeId">
 								<!--<option value="0">Select Committee Level</option>-->
 								<option value="1">Village/Ward</option>
 								<option value="2">Mandal/Town/Division</option>
@@ -1115,7 +1116,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								<option value="4">State</option>
 							</select>
 						  </div>
-						  <div class="col-md-3 col-xs-12 col-sm-3">
+						 <!-- <div class="col-md-3 col-xs-12 col-sm-3">
 								<label> Designation </label>
 								<select class="form-control" style="width:220px" id="committeePostitionId" >
 									<option value="0">All </option>
@@ -1129,7 +1130,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									<option value="8">Treasurer </option>
 									<option value="9">Executive Member </option>					
 								</select>
-						  </div>
+						  </div>-->
 						  <div class="col-md-3 col-xs-12 col-sm-3">
 										<label> Status </label>
 										<select class="form-control" style="width:220px" id="committeeStatusId" >
@@ -1138,11 +1139,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 											<option value="3">Not Yet Started</option>
 										</select>
 									</div>
-						 <div class="col-md-3 col-xs-12 col-sm-3" id="statedisplaydivid">
-							<label>State</label>
+									 </div>
+						
+						<div class="row m_top20">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h4 class="panel-title text-capital"><b>Location</b></h4>
+							</div>
+						</div>
+						<div class="row m_top10">
+							
+							<div class="col-md-3 col-xs-12 col-sm-3" id="statedisplaydivid">
+								<label>State</label>
 									<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
 									<select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="form-control" style="width:220px">
-										<option value="0">All</option>
+										<!--<option value="0">All</option>-->
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
@@ -1151,7 +1161,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<label>District</label>
 										<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="detsRptdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
-											<option value="0">All</option>
+											<!--<option value="0">All</option>-->
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-3" id="constitunecyDiv">
@@ -1165,19 +1175,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<label>Mandal/Muncipality/Corporation</label>
 										<span id="mandalListImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="mandalList" onchange="getPanchayatWardByMandal('',this.id);"  class="form-control" style="width:220px">
-											<option value="0"> Select Mandal/Municipality </option>
+											<!--<option value="0">All</option>-->
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-3" id="panchayatDiv">
 										<label>Village/Ward</label>
 										<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="panchaytList"  class="form-control" style="width:220px">
-											<option value="0"> Select Village/Ward </option>
+											<!--<option value="0">All</option>-->
 										</select>
 									</div>
 						  <div class="col-md-3 col-xs-12 col-sm-3" style="margin-top:25px;">
 							<button type="submit" class="btn btn-default btn-success" onclick="getRolesBasedReport();">Get Details</button>
 						  </div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="detailedReportId"></div>
+						</div>
 					</div>
 			  </div>
 			  <div class="modal-footer">
@@ -1195,6 +1210,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	<!--Circle js file-->
 	
     <script src="js/cadreCommittee/dist/js/jquery.circliful.min.js"></script>
+    <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
     <!--Bootstrap Date Picker-->
    <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
@@ -1218,6 +1234,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	<!----Bootstrap Date Range Picker Script---->
 		<script type="text/javascript">
                $(document).ready(function() {
+				   getDistrictsForStates(1,"statesDivId",'');
 				   $("#APId").prop("checked", true);
 				  // $("#districtId").prop("checked", true);
 					$("#constiRdId").prop("checked", true);
@@ -6346,5 +6363,18 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 		});
 	}
 </script>		
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
 </body>
 </html>

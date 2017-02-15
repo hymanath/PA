@@ -1,3 +1,4 @@
+
 function getDistrictsForStates(state,id,num){
 	
 	$('#districtIdImg').show();
@@ -38,16 +39,19 @@ function getDistrictsForStates(state,id,num){
 	   }
 		//$("#searchDataImgForDist").hide();
 	     //$("#districtId").append('<option value="-1">Please Select District</option>');
+		 $("#detsRptdistrictId").find('option').remove();
      for(var i in result){
 		 $("#statesDivIdImg").hide();
 		 if(id == "statesDivId"){
-			   if(result[i].id == 0){
+			// if(i>0){
+				  if(result[i].id == 0){
 				  $("#detsRptdistrictId").append('<option value='+result[i].id+'>ALL</option>');
 			   }else{
 				   if(result[i].id != 517)
 				  $("#detsRptdistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				   
 			   }
+			// }
 		 }
 	 }
 	 if(id == "statesDivId"){
@@ -112,6 +116,7 @@ function getDistrictsForStates(state,id,num){
 	   }
 	   $("#searchDataImgForConst").hide();
 	    //$("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
+		$("#detsRptConstituencyId").find('option').remove();
      for(var i in result){
 		 if(id == "detsRptdistrictId"){
 		   if(result[i].id == 0){
@@ -154,6 +159,7 @@ function getDistrictsForStates(state,id,num){
 				}).done(function(result){
 				if(result !=null)
 				{
+					$("#mandalList").find('option').remove();
 					if(id == "detsRptConstituencyId"){
 						$("#mandalListImg").hide();
 						$("#mandalList").empty();
@@ -161,10 +167,14 @@ function getDistrictsForStates(state,id,num){
 					}
 					for(var i in result)
 					{
-						if(id == "detsRptConstituencyId"){
-							if(result[i].locationId == 120 || result[i].locationId == 1124)
-								$("#mandalList").append('<option value="0">Select Mandal/Muncipality</option>');
-							$("#mandalList").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+						if(i>0){
+							if(id == "detsRptConstituencyId"){
+								if(result[i].locationId == 120 || result[i].locationId == 1124)
+									$("#mandalList").append('<option value="0">Select Mandal/Muncipality</option>');
+								$("#mandalList").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+							}
+						}else{
+							$("#mandalList").append('<option value="0">All</option>');
 						}
 					}	
 				}
@@ -201,10 +211,11 @@ function getDistrictsForStates(state,id,num){
 						$("#panchaytList").empty();
 						//$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 				}
+				$("#panchaytList").find('option').remove();
 			for(var i in result){
 				if(id == "mandalList"){
 					if(result[i].locationId == 0){
-						$("#panchaytList").append('<option value="0">Select Village/Ward</option>');
+						$("#panchaytList").append('<option value="0">All</option>');
 					}
 					else{
 					$("#panchaytList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
@@ -216,7 +227,10 @@ function getDistrictsForStates(state,id,num){
 			}
 		});	
 	}
+	
 	function getRolesBasedReport(){
+		
+		$("#detailedReportId").html("");
 		var committeeLevelIdsListArr = []; 
 		var designationIdsArr = [];
 		var committeeTypeId = $("#committeeTypeId").val();
@@ -233,18 +247,19 @@ function getDistrictsForStates(state,id,num){
 		}else if(committeeLvlId == 4){
 			committeeLevelIdsListArr.push(10);
 		}
+		if($("#committeePostitionId").val() > 0)
 		designationIdsArr.push($("#committeePostitionId").val());
 		
 		var locationLevelId =8;//region_Scopes
 		var panchayatId=$('#panchaytList').val();
 		var mandalId=$('#mandalList').val();
-		var cosntiteucnyId=$('#constituencyId').val();
-		var districtId=$('#districtId').val();
+		var cosntiteucnyId=$('#detsRptConstituencyId').val();
+		var districtId=$('#detsRptdistrictId').val();
 		var stateId=$('#statesDivId').val();
 		
 		var locationLevelValuesList = [];
 			if(panchayatId != null && panchayatId.length>0 && panchayatId>0){
-				locationLevelId =8;
+				locationLevelId =6;
 				locationLevelValuesList.push(panchayatId); 
 			}else if(mandalId != null && mandalId.length>0 && mandalId>0){
 				locationLevelId =5;
@@ -263,25 +278,134 @@ function getDistrictsForStates(state,id,num){
 		var statusId = $("#committeeStatusId").val();
 		var status;
 		if(statusId == 1){
-			status = "Started";
+			status = "started";
 		}else if(statusId == 2){
-			status = "Completed";
+			status = "completed";
 		}else if(statusId == 3){
-			status = "Not Yet Started";
+			status = "notYetStarted";
 		}	
-			
-		var obj = {
-			enrollmentYearIdsArr: [$('#tdpCommitteeYearId').val()],
-			basicCommiteeTypeId: committeeTypeId,
-			committeeLevelIdsArr: [committeeLevelIdsListArr],
-			roleIdsArr: [designationIdsArr],
-			locationLevelId: locationLevelId,
-			locationLevelValuesArr: locationLevelValuesList,
-			statId: stateId,
+				$("#detailedReportId").html('<img id="" style="width:100px;height:100px;margin-left:250px;"  src="./images/Loading-data.gif" alt="Processing Image"/>');
+		var jsObj = {
+			committeeEnrollmntIds: [$('#tdpCommitteeYearId').val()],
+			committeeTypeId: committeeTypeId,
+			committeeLevlIdsList: committeeLevelIdsListArr,
+			designationsList: [],
+			locationLvlId: locationLevelId,
+			loctnLevlValues: locationLevelValuesList,
+			stateId: stateId,
 			searchType: status
-		}
+		};
+		$.ajax({
+				type : "POST",
+				url : "getCommitteeCreationDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				if(result != null && result.length>0)
+				{
+					buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr)
+				}
+				else{
+					$("#detailedReportId").html('No Data Available');
+				}
+			});
 	}
-	
+function buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr)
+{
+	var str='';
+	str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20"><h4 class="panel-title">Committee Detailed Report<button class="btn btn-success btn-xs pull-right" id="excelReport" >Export To Excel</button></h4></div>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12" style="">';
+			str+='<div class="table-responsive m_top20">';
+				str+='<table class="table table-bordered" id="dataTableReport" style="text-transform: uppercase;">';
+					str+='<thead class="text-capital" style="background-color:#f2f2f2;font-size:11px;cursor:pointer;text-align:center;">';
+						str+='<tr>';
+						if(committeeLevelIdsListArr == '11')
+						{
+							str+='<th rowspan="2">District Name</th>';
+						}else if(committeeLevelIdsListArr == '10')
+						{
+							str+='<th rowspan="2">Constituency Name</th>';
+						}else if(committeeLevelIdsListArr.length == 2 )
+						{
+							str+='<th rowspan="2">District Name</th>';
+							str+='<th rowspan="2">Constituency Name</th>';
+							str+='<th rowspan="2">Mandal/Muncipality name</th>';
+							str+='<th rowspan="2">village/ward</th>';
+						}else if(committeeLevelIdsListArr.length == 3 )
+						{
+							str+='<th rowspan="2">District Name</th>';
+							str+='<th rowspan="2">Constituency Name</th>';
+							str+='<th rowspan="2">Mandal/muncipality name</th>';
+						}
+						str+='<th rowspan="2">Committee Name</th>';
+						
+						for(var k in result[0].hamletsOfTownship[0].result)
+						{
+							str+='<td colspan="4">'+result[0].hamletsOfTownship[0].result[k].name+'</td>';
+						}
+						str+='</tr>';
+						str+='<tr>';
+							var constant = 0;							
+							for(var k in result[0].hamletsOfTownship[0].result)
+							{
+								str+='<th  style="background:grey;" >Total</th>';
+								str+='<th  style="background:orange;" >Proposed</th>';
+								str+='<th  style="background:Green;">Finalised</th>';
+								str+='<th  style="background:red;">Vacancy</th>';
+							}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody style="font-size:12px">';
+					for(var i in result)
+					{
+						for(var j in result[i].hamletsOfTownship)
+						{
+							str+='<tr>';
+								if(committeeLevelIdsListArr == 11)
+								{
+									str+='<td>'+result[i].districtName+'</td>';
+								}else if(committeeLevelIdsListArr == 10)
+								{
+									str+='<td>'+result[i].constituencyName+'</td>';
+								}else if(committeeLevelIdsListArr.length == 2 )
+								{
+									str+='<td>'+result[i].districtName+'</td>';
+									str+='<td>'+result[i].constituencyName+'</td>';
+									str+='<td>'+result[i].mandalName+'</td>';
+									str+='<td>'+result[i].villageName+'</td>';
+								}else if(committeeLevelIdsListArr.length == 3 )
+								{
+									str+='<td>'+result[i].districtName+'</td>';
+									str+='<td>'+result[i].constituencyName+'</td>';
+									str+='<td>'+result[i].mandalName+'</td>';
+								}
+								str+='<td>'+result[i].hamletsOfTownship[j].name+'</td>';
+								for(var k in result[i].hamletsOfTownship[j].result)
+								{
+									var vacancyCount = result[i].hamletsOfTownship[j].result[k].totalCount-result[i].hamletsOfTownship[j].result[k].finalizedCount;
+									str+='<td>'+result[i].hamletsOfTownship[j].result[k].totalCount+'</td>';
+									str+='<td>'+result[i].hamletsOfTownship[j].result[k].proposedCount+'</td>';
+									str+='<td>'+result[i].hamletsOfTownship[j].result[k].finalizedCount+'</td>';
+									str+='<td>'+vacancyCount+'</td>';
+								}
+							str+='</tr>';
+						}
+					}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#detailedReportId").html(str)
+	$("#dataTableReport").dataTable({
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]],
+	});
+	$("#dataTableReport").removeClass("dataTable");
+}
+
+$(document).on("click","#excelReport",function(){
+	tableToExcel(dataTableReport, " STATE - CONSTITUENCY WISE AGE REPORT"); 
+});
 $(document).on("click","#detailReportId",function(){
 	$( "#detailedReportModalDivId" ).modal("show");
 });	
