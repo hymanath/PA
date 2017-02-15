@@ -145,18 +145,27 @@
 function getAlertData()
 {
     var jsObj =
-		     {
-			alertId  :alertId,
-			task : ""
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getAlertsDataAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					if(result != null)
-						buildAlertData(result);
-				});
+	{
+		alertId  :alertId,
+		task : ""
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAlertsDataAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null)
+		{
+			buildAlertData(result);
+			if(result[0].categoryId == 2)
+			{
+				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		}
+			
+		
+			
+	});
 }
 
 
@@ -1891,3 +1900,22 @@ $(document).on("click","#clarifiReqId",function(){
 			}
 		});
 	}
+function getGroupedArticlesInfo(articleId)
+{
+	$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+	}).then(function(result){
+		$("#groupArticlesId").show();
+		var str='';
+		if(result !=null && result.length>0){
+			for(var i in result)
+			{
+				str+='<li class="articleDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+			}
+		}
+		
+		$(".groupArticlesCls").html(str);
+	});
+}
