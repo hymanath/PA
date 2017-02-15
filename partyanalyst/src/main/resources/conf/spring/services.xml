@@ -3402,6 +3402,7 @@
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO" />
 		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />
 		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
@@ -3563,7 +3564,8 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>		
 		<property name="govtDepartmentDAO" ref="govtDepartmentDAO"></property>
 		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO"></property>
-	</bean>
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"></property>
+	</bean>            
 	<!-- Debate End -->
 	
 	<bean name="nominatedPostProfileService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostProfileService">
