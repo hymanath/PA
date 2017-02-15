@@ -1615,7 +1615,7 @@
     <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS START -->
     <bean name="tdpCadreDetailsUpdationForTodayAndTotal" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreTotalTodayWisePush" />
-    	<property name="cronExpression" value="0 0/5 * * * ?" />
+    	<property name="cronExpression" value="0 0 0/2 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreTotalTodayWisePush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1624,7 +1624,7 @@
     
       <bean name="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" />
-    	<property name="cronExpression" value="0 20 0/2 * * ?" />
+    	<property name="cronExpression" value="0 0 23 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1634,7 +1634,7 @@
     
     <bean name="tdpCadreDetailsUpdationForDateWise" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreDateWisePush" />
-    	<property name="cronExpression" value="0 0/10 * * * ?" />
+    	<property name="cronExpression" value="0 10 0/4 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreDateWisePush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1793,12 +1793,12 @@
 		    <ref bean="tdpCadreDetailsUpdationForDateWise" />   
 		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />     
 		    
-		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
+		   <!--  <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
-		    <ref bean="tdpCadreDataHourWiseByOverall" />
+		    <ref bean="tdpCadreDataHourWiseByOverall" /> -->
 		    <!-- <ref bean="locationWiseRegistrationSMSTracking"/> -->
-		    <ref bean="pushDataSourceWisetdpCadreCounts" />
+		   <!--  <ref bean="pushDataSourceWisetdpCadreCounts" /> -->
 		    
 		    <ref bean="pushGenderWiseTdpCadreCounts"/> 
 		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
