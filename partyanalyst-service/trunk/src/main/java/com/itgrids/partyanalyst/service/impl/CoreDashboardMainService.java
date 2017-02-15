@@ -3659,6 +3659,13 @@ public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,Stri
 					Map<Long, CoreDebateVO> partyMap =  channel.getValue();					
 					if(partyMap !=null){
 						partiesList = new ArrayList<CoreDebateVO>(partyMap.values());
+						if(partiesList != null && partiesList.size() > 0){
+							for (CoreDebateVO coreDebateVO : partiesList) {
+								if(coreDebateVO.getName() != null && !coreDebateVO.getName().trim().isEmpty()){
+									VO.setName(coreDebateVO.getName());
+								}
+							}
+						}
 					}					
 					VO.setCoreDebateVOList(partiesList);					
 					returnList.add(VO);
