@@ -637,7 +637,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     list-style: outside none none;
     margin: 0 6px;
     vertical-align: top;
-    width: 47%;
+    width: 47%; !important;
 }
 .bg_49 {
     background-color: rgb(73, 87, 99);
@@ -2504,4 +2504,11 @@ color: rgb(51, 122, 183);
 }
 .AUMS .buttonCustomStyle:hover {
 	background-color:#fff !important;
+}
+.onHoverPopUp{
+    margin: 0;
+    padding: 0;
+}
+.onHoverPopUp li {
+    width: 100%;
 }
