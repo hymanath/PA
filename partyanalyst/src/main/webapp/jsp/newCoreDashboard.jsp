@@ -2369,13 +2369,14 @@
 							<span class="iconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							<select id="tdpCommitteeYearId" style="width: 110px;display:inline-block;padding:2px 6px;height:25px"></select>
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-							</span>
+							</span>						
 						</div>
 					</div>
 					
@@ -2654,6 +2655,7 @@
 								<span class="eventsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
 								<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
@@ -2681,7 +2683,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventssDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
 								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
