@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IAlertVerificationUserTypeUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
@@ -71,7 +72,6 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -171,7 +171,13 @@ private IAlertTrackingDocumentsDAO alertTrackingDocumentsDAO;
 private ITdpCadreDAO tdpCadreDAO;
 private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
 private IGovtDepartmentDAO govtDepartmentDAO;
+private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 
+
+public void setDelimitationConstituencyDAO(
+		IDelimitationConstituencyDAO delimitationConstituencyDAO) {  
+	this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+}
 
 public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
 	this.govtDepartmentDAO = govtDepartmentDAO;
@@ -3068,7 +3074,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					locaionIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));    
 				}
 			}
-			
+			Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+			if(Location.equalsIgnoreCase("Constituency")){
+				List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+				if(constOrderList != null && constOrderList.size() > 0){
+					for(Object[] param : constOrderList){
+						constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+			}
 			//create a map for locationId and name 
 			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			if(locationIdAndName1 != null && locationIdAndName1.size() > 0){
@@ -3193,6 +3207,25 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 				}
 			}
+			if(superFinalList != null && superFinalList.size() > 0){
+				if(Location.equalsIgnoreCase("Constituency")){
+					for(AlertVO param : superFinalList){
+						if(constIdAndNoMap.get(param.getLocationId()) != null){
+							param.setConstituencyNo(constIdAndNoMap.get(param.getLocationId()));
+						}   
+					}
+					Collections.sort(superFinalList,new Comparator<AlertVO>() {
+						public int compare(AlertVO o1, AlertVO o2) {
+							if(o1.getConstituencyNo() != null && o1.getConstituencyNo() > 0L && o2.getConstituencyNo() != null && o2.getConstituencyNo() > 0L)
+								return o1.getConstituencyNo().compareTo(o2.getConstituencyNo());
+							else
+								return 0;
+						}
+					});
+				}
+				
+			}
+			
 			return superFinalList; 
 		}catch(Exception e){
 			e.printStackTrace();

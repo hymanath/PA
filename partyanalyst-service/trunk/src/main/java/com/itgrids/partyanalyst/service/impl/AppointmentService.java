@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
@@ -99,7 +100,6 @@ import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -181,8 +181,13 @@ public class AppointmentService implements IAppointmentService{
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	private ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
-	
-	
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {  
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 	public ImageAndStringConverter getImageAndStringConverter() {
 		return imageAndStringConverter;
 	}
@@ -4827,29 +4832,49 @@ public AppointmentScheduleVO getTdpCadreMatchVO(List<AppointmentScheduleVO> resu
 				oldConstituencyList = constituencyDAO.getConstituenciesInADistrict(districtId);
 				oldConstituencyList.removeAll(constituencyList);
 				list = constituencyDAO.getConstituenciesNamesByIds(oldConstituencyList);
-			}/*else if(districtId.longValue() == 1L){
-				constituencyList = districtConstituenciesDAO.getConstituenciesOfDistrictById(518L);
-				oldConstituencyList = constituencyDAO.getConstituenciesInADistrict(districtId);
-				oldConstituencyList.removeAll(constituencyList);
-				list = constituencyDAO.getConstituenciesNamesByIds(oldConstituencyList);
-			}*/else{  
+			}else{  
 				list = constituencyDAO.getConstituenciesByDistrictId(districtId);
 			}    
-			 
+			Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+			 List<Long> constIds = new ArrayList<Long>();
 			 if(list != null && list.size() > 0)
 			 {
+				 
 				 for(Object[] params : list)
 				 {
+					 constIds.add((Long)params[0]);  
 					 IdNameVO vo = new IdNameVO();
 					 vo.setId((Long)params[0]);
 					 vo.setName(params[1].toString());
 					 returnList.add(vo);
 				 }
+				 List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(constIds);
+				 if(constOrderList != null && constOrderList.size() > 0){
+						for(Object[] param : constOrderList){
+							constIdAndNoMap.put(param[0] != null ? (Long)param[0] : 0L, param[1] != null ? (Long)param[1] : 0L);
+						}
+				}
+				 if(returnList != null && returnList.size() > 0){
+					 for(IdNameVO param : returnList){
+						 if(constIdAndNoMap.get(param.getId()) != null){
+							 param.setConstituencyNo(constIdAndNoMap.get(param.getId()));
+						 }
+					 }       
+				 }
+				 Collections.sort(returnList,new Comparator<IdNameVO>() {
+						public int compare(IdNameVO o1, IdNameVO o2) {
+							if(o1.getConstituencyNo() != null && o1.getConstituencyNo() > 0L && o2.getConstituencyNo() != null && o2.getConstituencyNo() > 0L)
+								return o1.getConstituencyNo().compareTo(o2.getConstituencyNo());
+							else
+								return 0;      
+						}
+					});
 			 }
 		}
 		catch (Exception e) {
 			LOG.error("Exception in getConstituenciesByDistrict()",e);	
 		}
+		
 		return returnList;
 	}
 	
