@@ -1912,7 +1912,7 @@
 									<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12  specialMeetingCls" style="display:none;">
 											<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
-												<h4>Workshop - DEC - 20</h4>
+												<h4 id="headign"></h4>
 											</div>
 											<div class="col-md-6 col-xs-12 col-sm-6">
 												<div id="sessionBtnDivId"></div>
