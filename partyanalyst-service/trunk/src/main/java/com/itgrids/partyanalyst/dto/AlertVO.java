@@ -18,6 +18,7 @@ public class AlertVO {
 	private Long stateId;
 	private Long districtId;
 	private Long constituencyId;
+	private Long constituencyNo;
 	private Long tehsilId;
 	private Long localBodyId;
 	private Long panchayatId;
@@ -54,6 +55,13 @@ public class AlertVO {
 	private String assignedDate;
 	
 	private List<Long> deptIdList = new ArrayList<Long>();
+	
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
+	}
 	public List<Long> getDeptIdList() {
 		return deptIdList;
 	}
