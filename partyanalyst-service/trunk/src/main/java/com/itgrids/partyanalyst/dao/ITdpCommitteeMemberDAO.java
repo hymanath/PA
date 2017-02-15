@@ -102,4 +102,8 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public Long getCandiCountForACommitteeRoleByStatus(Long committeeRoleId , String committeeMemberStatus);
 	public List<Object[]> getStatusWiseCandiCountForACommitteeRole(Long committeeRoleId);
 	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList , Long committeeEnrollmentId);
+	public List<Object[]> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,
+			List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValue,List<Long> committeeEnrollmntIds,Long stateId,String searchType);
+	public List<Object[]> getProposedAndFinalyzedCount(Long committeeTypeId,List<Long> committeeLevlIdsList,
+			List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValue,List<Long> committeeEnrollmntIds,Long stateId,String searchType);
 }

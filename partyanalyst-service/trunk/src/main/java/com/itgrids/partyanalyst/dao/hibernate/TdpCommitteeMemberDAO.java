@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -2730,5 +2731,312 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		return query.list();
 	}//END
 	
+	public List<Object[]> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,
+			List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,List<Long> committeeEnrollmntIds,Long stateId,String searchType){
+		
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select  distinct");
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+			 sb.append(" s.state_id as sId,s.state_name as sName,'' as dId,'' as dName,'' as cId,'' as cName,'' as mId,'' as mName,'' as lId,'' as lName,'' as vId,'' as vName,'' as wId,'' as wName, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+			 sb.append(" s.state_id as sId,s.state_name as sName,d.district_id as dId ,d.district_name  as dName ,'' as cId,'' as cName,'' as mId,'' as mName,'' as lId,'' as lName,'' as vId,'' as vName,'' as wId,'' as wName,  " );
+		 }/*else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+			 sb.append(" '','','','',c.constituency_id,c.name,'','','','','','','','', " );
+		 }*/else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" s.state_id as sId,s.state_name as sName ,d.district_id as dId ,d.district_name  as dName ,c.constituency_id  as cId ,c.name as cName ,t.tehsil_id as mId ,t.tehsil_name as mName ,leb.local_election_body_id  as lId ,leb.name as lName ,p.panchayat_id as vId , " +
+					" p.panchayat_name as vName , w.constituency_id as wId ,w.name as wName , " );
+		}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" s.state_id as sId,s.state_name as sName ,d.district_id as dId ,d.district_name  as dName ,c.constituency_id  as cId ,c.name as cName,t.tehsil_id as mId,t.tehsil_name as mName,leb.local_election_body_id as lId,leb.name as lName,'' as vId,'' as vName,'' as wId,'' as wName, " );
+		}
+		
+		//14,15,16,17,18
+		sb.append(" tc.tdp_basic_committee_id as tbcId,tcr.tdp_roles_id as trId,tr.role as tRole,tcr.max_members as count,tbc.name as tbcName " );
+		
+		sb.append(" FROM tdp_committee tc,tdp_committee_role tcr,tdp_basic_committee tbc,tdp_roles tr," +
+				" user_address ua " +
+				" left join state s on ua.state_id = s.state_id " +
+				" left join district d on ua.district_id = d.district_id  " +
+				" left join constituency c on ua.constituency_id = c.constituency_id " +
+				" left join tehsil t on ua.tehsil_id = t.tehsil_id " +
+				" left join local_election_body leb on ua.local_election_body = leb.local_election_body_id " +
+				" left join panchayat p on ua.panchayat_id = p.panchayat_id " +
+				" left join constituency w on ua.ward = w.constituency_id " +
+				" where tcr.tdp_roles_id = tr.tdp_roles_id and  tc.address_id = ua.user_address_id and " +
+				" tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id and tc.tdp_committee_id = tcr.tdp_committee_id  ");
+		
+		
+		if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() > 0){
+			sb.append(" and tc.tdp_committee_enrollment_id in (:ids) ");
+		}
+		if(committeeTypeId != null && committeeTypeId.longValue() > 0l){
+			sb.append(" and tbc.tdp_committee_type_id = :id ");
+		}
+		if(designationsList != null && designationsList.size() > 0){
+			sb.append(" and  tr.tdp_roles_id in (:desg) ");
+		}
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+			sb.append(" and tc.tdp_committee_level_id in (:commLvl) ");
+		}
+		
+		if(searchType != null && searchType.equalsIgnoreCase("started")){
+			sb.append(" and tc.started_date is not null and  tc.is_committee_confirmed = 'N' ");
+		}else if(searchType != null && searchType.equalsIgnoreCase("completed")){
+			sb.append(" and tc.started_date is not null and  tc.is_committee_confirmed = 'Y' and tc.completed_date is not null ");
+		}else if(searchType != null && searchType.equalsIgnoreCase("notYetStarted")){
+			sb.append(" and tc.started_date is  null && tc.is_committee_confirmed = 'N' and tc.completed_date is  null ");
+		}
+		
+		
+		if(locationLvlId != null && locationLvlId.longValue() == 2l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and ua.state_id in (:loc)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 3l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and ua.district_id in (:loc) " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 4l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and  c.constituency_id in (:loc)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 5l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and  t.tehsil_id in (:loc)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 7l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and  leb.local_election_body_id in (:loc)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 6l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and  p.panchayat_id in (:loc)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 8l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0l)
+			sb.append(" and  w.constituency_id in (:loc)  " );
+		}
+		
+		sb.append(" group by " );
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+			 sb.append(" d.district_name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+			 sb.append(" s.state_name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+			 sb.append(" c.constituency_id,c.name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" d.district_name,c.name,t.tehsil_name ,leb.name," +
+					" p.panchayat_name, w.name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" t.tehsil_name ,leb.name, " );
+		 }
+		 
+		sb.append(" tc.tdp_basic_committee_id,tcr.tdp_roles_id  " );
+		
+		sb.append(" order by ");
+		
+		 if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+			 sb.append(" d.district_name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+			 sb.append(" s.state_name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" d.district_name,c.name,t.tehsil_name ,leb.name,tcr.tdp_roles_id, " +
+					" p.panchayat_name, w.name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" t.tehsil_name ,leb.name, tcr.tdp_roles_id " );
+		 }
+		
+		
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("sId",Hibernate.LONG)
+				.addScalar("sName",Hibernate.STRING)
+				.addScalar("dId",Hibernate.LONG)
+				.addScalar("dName",Hibernate.STRING)
+				.addScalar("cId",Hibernate.LONG)
+				.addScalar("cName",Hibernate.STRING)
+				.addScalar("mId",Hibernate.LONG)
+				.addScalar("mName",Hibernate.STRING)
+				.addScalar("lId",Hibernate.LONG)
+				.addScalar("lName",Hibernate.STRING)
+				.addScalar("vId",Hibernate.LONG)
+				.addScalar("vName",Hibernate.STRING)
+				.addScalar("wId",Hibernate.LONG)
+				.addScalar("wName",Hibernate.STRING)
+				.addScalar("tbcId",Hibernate.LONG)
+				.addScalar("trId",Hibernate.LONG)
+				.addScalar("tRole",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG)
+				.addScalar("tbcName",Hibernate.STRING);
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+			query.setParameterList("commLvl", committeeLevlIdsList);
+		}
+		if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() > 0){
+			query.setParameterList("ids", committeeEnrollmntIds);
+		}
+		if(designationsList != null && designationsList.size() > 0){
+			query.setParameterList("desg", designationsList);
+		}
+		if(loctnLevlValues != null && loctnLevlValues.size() > 0l){
+				query.setParameterList("loc", loctnLevlValues);
+		}
+		
+		if(committeeTypeId != null && committeeTypeId.longValue() > 0l){
+			query.setParameter("id", committeeTypeId);
+		}
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getProposedAndFinalyzedCount(Long committeeTypeId,List<Long> committeeLevlIdsList,
+			List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,List<Long> committeeEnrollmntIds,Long stateId,String searchType){
+		
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select  distinct");
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+			 sb.append(" s.state_id as sId,s.state_name as sName,'' as dId,'' as dName,'' as cId,'' as cName,'' as mId,'' as mName,'' as lId,'' as lName,'' as vId,'' as vName,'' as wId,'' as wName, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+			 sb.append(" s.state_id as sId,s.state_name as sName,d.district_id as dId ,d.district_name  as dName ,'' as cId,'' as cName,'' as mId,'' as mName,'' as lId,'' as lName,'' as vId,'' as vName,'' as wId,'' as wName,  " );
+		 }/*else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+			 sb.append(" '','','','',c.constituency_id,c.name,'','','','','','','','', " );
+		 }*/else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" s.state_id as sId,s.state_name as sName ,d.district_id as dId ,d.district_name  as dName ,c.constituency_id  as cId ,c.name as cName ,t.tehsil_id as mId ,t.tehsil_name as mName ,leb.local_election_body_id  as lId ,leb.name as lName ,p.panchayat_id as vId , " +
+					" p.panchayat_name as vName , w.constituency_id as wId ,w.name as wName , " );
+		}else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" s.state_id as sId,s.state_name as sName,d.district_id as dId ,d.district_name  as dName ,c.constituency_id  as cId ,c.name as cName,t.tehsil_id as mId,t.tehsil_name as mName,leb.local_election_body_id as lId,leb.name as lName,'' as vId,'' as vName,'' as wId,'' as wName, " );
+		}
+		//14,15,16,17,18
+		sb.append(" tc.tdp_basic_committee_id as tbcId,tcr.tdp_roles_id as trId,tr.role as tRole ,tcm.status as status,count(tcm.tdp_committee_member_id)  as count " );
+		
+		sb.append(" FROM tdp_committee tc,tdp_committee_role tcr,tdp_basic_committee tbc," +
+				" tdp_committee_member tcm ,tdp_roles tr," +
+				" user_address ua " +
+				" left join state s on ua.state_id = s.state_id " +
+				" left join district d on ua.district_id = d.district_id  " +
+				" left join constituency c on ua.constituency_id = c.constituency_id " +
+				" left join tehsil t on ua.tehsil_id = t.tehsil_id " +
+				" left join local_election_body leb on ua.local_election_body = leb.local_election_body_id " +
+				" left join panchayat p on ua.panchayat_id = p.panchayat_id " +
+				" left join constituency w on ua.ward = w.constituency_id " +
+				" where tcr.tdp_committee_role_id = tcm.tdp_committee_role_id and tcm.is_active='Y' and " +
+				" tcr.tdp_roles_id = tr.tdp_roles_id and  tc.address_id = ua.user_address_id and " +
+				" tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id and tc.tdp_committee_id = tcr.tdp_committee_id   ");
+		
+		if(committeeTypeId != null && committeeTypeId.longValue() > 0l){
+			sb.append(" and tbc.tdp_committee_type_id = :committeeTypeId ");
+		}
+		if(designationsList != null && designationsList.size() > 0){
+			sb.append(" and  tr.tdp_roles_id in (:designationsList) ");
+		}
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+			sb.append(" and tc.tdp_committee_level_id in (:committeeLevlIdsList) ");
+		}
+		
+		if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() > 0){
+			sb.append(" and tc.tdp_committee_enrollment_id in (:committeeEnrollmntIds) ");
+		}
+		
+		if(searchType != null && searchType.equalsIgnoreCase("started")){
+			sb.append(" and tc.started_date is not null and  tc.is_committee_confirmed = 'N' ");
+		}else if(searchType != null && searchType.equalsIgnoreCase("completed")){
+			sb.append(" and tc.started_date is not null and  tc.is_committee_confirmed = 'Y' and tc.completed_date is not null ");
+		}else if(searchType != null && searchType.equalsIgnoreCase("notYetStarted")){
+			sb.append(" and tc.started_date is  null && tc.is_committee_confirmed = 'N' and tc.completed_date is  null ");
+		}
+		
+		if(locationLvlId != null && locationLvlId.longValue() == 2l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and ua.state_id in (:loctnLevlValues)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 3l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and ua.district_id in (:loctnLevlValues) " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 4l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and  c.constituency_id in (:loctnLevlValues)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 5l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and  t.tehsil_id in (:loctnLevlValues)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 7l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and  leb.local_election_body_id in (:loctnLevlValues)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 6l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and  p.panchayat_id in (:loctnLevlValues)  " );
+		}else if(locationLvlId != null && locationLvlId.longValue() == 8l){
+			if(loctnLevlValues != null && loctnLevlValues.size() > 0)
+			sb.append(" and  w.constituency_id in (:loctnLevlValues)  " );
+		}
+		
+		sb.append(" group by " );
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(3l)){
+			 sb.append(" d.district_name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(4l)){
+			 sb.append(" c.constituency_id,c.name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" d.district_name,c.name,t.tehsil_name ,leb.name," +
+					" p.panchayat_name, w.name, " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" t.tehsil_name ,leb.name, " );
+		 }
+		 
+		sb.append(" tc.tdp_basic_committee_id,tcr.tdp_roles_id,tcm.status  " );
+		
+		sb.append(" order by ");
+		
+		 if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(11l)){
+			 sb.append(" d.district_name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 1  && committeeLevlIdsList.contains(10l)){
+			 sb.append(" s.state_name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 2 ){
+			sb.append(" d.district_name,c.name,t.tehsil_name ,leb.name,tcr.tdp_roles_id ," +
+					" p.panchayat_name, w.name,tcr.tdp_roles_id " );
+		 }else if(committeeLevlIdsList != null && committeeLevlIdsList.size() == 3 ){
+			sb.append(" t.tehsil_name ,leb.name, tcr.tdp_roles_id " );
+		 }
+		
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("sId",Hibernate.LONG)
+				.addScalar("sName",Hibernate.STRING)
+				.addScalar("dId",Hibernate.LONG)
+				.addScalar("dName",Hibernate.STRING)
+				.addScalar("cId",Hibernate.LONG)
+				.addScalar("cName",Hibernate.STRING)
+				.addScalar("mId",Hibernate.LONG)
+				.addScalar("mName",Hibernate.STRING)
+				.addScalar("lId",Hibernate.LONG)
+				.addScalar("lName",Hibernate.STRING)
+				.addScalar("vId",Hibernate.LONG)
+				.addScalar("vName",Hibernate.STRING)
+				.addScalar("wId",Hibernate.LONG)
+				.addScalar("wName",Hibernate.STRING)
+				.addScalar("tbcId",Hibernate.LONG)
+				.addScalar("trId",Hibernate.LONG)
+				.addScalar("tRole",Hibernate.STRING)
+				.addScalar("status",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+			query.setParameterList("committeeLevlIdsList", committeeLevlIdsList);
+		}
+		if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() > 0){
+			query.setParameterList("committeeEnrollmntIds", committeeEnrollmntIds);
+		}
+		if(designationsList != null && designationsList.size() > 0){
+			query.setParameterList("designationsList", designationsList);
+		}
+		
+		if(loctnLevlValues != null && loctnLevlValues.size() > 0){
+				query.setParameterList("loctnLevlValues", loctnLevlValues);
+		}
+		
+		if(committeeTypeId != null && committeeTypeId.longValue() > 0l){
+			query.setParameter("committeeTypeId", committeeTypeId);
+		}
+		
+		
+		return query.list();
+		
+	}
 	
 }
