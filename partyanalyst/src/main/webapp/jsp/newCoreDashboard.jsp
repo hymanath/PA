@@ -149,12 +149,16 @@
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
+							<span class="alertsIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
 							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:210px; margin-right: 12px; margin-top: -7px;">
 								<input type="text" id="dateRangeIdForAlert" style="width:190px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>  
+							
 						</div>     
 					</div>
 					<!--<div class="notesDropDown notesArrow " >
@@ -334,12 +338,16 @@
 								<span class="debatesIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
+								<span class="debatesRefresh pull-right">
+								   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</span>
 								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
+								
 							</div>
 						</div>
 					   <div class="notesDropDown notesArrow " >
@@ -602,12 +610,16 @@
 								<span class="newsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
+								<span class="newsRefresh pull-right">
+									<i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</span>
 								<span class="input-group pull-right dateRangePickerClsForNews hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
+								
 							</div>
 						</div>
 						
@@ -1310,12 +1322,16 @@
 							<span class="emnIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
+							<span class="emnRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							</span>
 							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:200px;">
 								<input id="dateRangeIdForEmn" style="width:180px" class="form-control" type="text">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>
+							
 						</div>
 					</div>
 					<div class="emnBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
@@ -1692,6 +1708,9 @@
 													<i class="glyphicon glyphicon-calendar"></i>
 												</span>
 											</span>
+										<span class="toursRefresh pull-right">
+											<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+										</span>
 									</div>     
 								</div>
 							</div>
