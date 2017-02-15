@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,11 +38,12 @@ public class TdpCommittee {
 	private Long districtId;
 	private District district;
 	private Long tdpCommitteeEnrollmentId;
-	
+	private Long committeeConfirmRuleId;
 	
 	private Long  userAddressId;
 	private UserAddress userAddress;
 	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
+	private CommitteeConfirmRule committeeConfirmRule;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -225,5 +227,28 @@ public class TdpCommittee {
 			TdpCommitteeEnrollment tdpCommitteeEnrollment) {
 		this.tdpCommitteeEnrollment = tdpCommitteeEnrollment;
 	}
+
+	@Column(name = "committee_confirm_rule_id")
+	public Long getCommitteeConfirmRuleId() {
+		return committeeConfirmRuleId;
+	}
+
+	public void setCommitteeConfirmRuleId(Long committeeConfirmRuleId) {
+		this.committeeConfirmRuleId = committeeConfirmRuleId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "committee_confirm_rule_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CommitteeConfirmRule getCommitteeConfirmRule() {
+		return committeeConfirmRule;
+	}
+
+	public void setCommitteeConfirmRule(CommitteeConfirmRule committeeConfirmRule) {
+		this.committeeConfirmRule = committeeConfirmRule;
+	}
+	
+	
 }
 
