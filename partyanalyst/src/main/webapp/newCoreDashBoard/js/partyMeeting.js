@@ -4594,15 +4594,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 			 partyMeetingMainTypeId : 3,
 			 state : state,
-			 startDateString : customStartDateMeetings,
-			 endDateString : customEndDateMeetings,
+			 startDateString : globalStartDateForSpecialMeeting,
+			 endDateString : globalEndDateForSpecialMeeting,
 			 partyMeetingTypeIds:partyMeetingTypeArr,
 			 partyMeetingId:partyMeetingId,
 			 sessionId : sessionId,
 			 status : status,
 			 districtId : 0  
 		};
-		
+
 		$.ajax({
 			type : 'POST',
 			url : 'getMeetingMemberDtlsAction.action',
@@ -4790,8 +4790,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 			 partyMeetingMainTypeId : 3,
 			 state : state,
-			 startDateString : customStartDateMeetings,
-			 endDateString : customEndDateMeetings,
+			 startDateString : globalStartDateForSpecialMeeting,
+			 endDateString : globalEndDateForSpecialMeeting,
 			 partyMeetingTypeIds:partyMeetingTypeArr,
 			 partyMeetingId:partyMeetingId,
 			 sessionId : sessionId,
@@ -4926,15 +4926,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
 					 categoryIds : categoryIds,
 					 location : "invited",
 					 sessionId : 0
-					 
 				  }
 		$.ajax({
 			type : 'POST',
@@ -4982,15 +4981,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
 					 categoryIds : categoryIds,
 					 location : "attended",  
 					 sessionId : sessionId       
-					 
 				  }
 		$.ajax({
 			type : 'POST',
@@ -5038,15 +5036,14 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
 					 categoryIds : categoryIds,
 					 location : "late",          
 					 sessionId : sessionId         
-					 
 				  }
 		$.ajax({
 			type : 'POST',
@@ -5093,15 +5090,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalStartDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
 					 categoryIds : categoryIds,
 					 location : "absent",            
 					 sessionId : sessionId               
-					 
+				
 				  }
 		$.ajax({
 			type : 'POST',
@@ -5149,15 +5146,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		var jsObj ={ 
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
-					 startDateString : customStartDateMeetings,
-					 endDateString : customEndDateMeetings,
+					 startDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalStartDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
 					 categoryIds : categoryIds,
 					 location : "nonInviteeAttended",                
 					 sessionId : sessionId               
-					 
+				
 				  }      
 		$.ajax({
 			type : 'POST',
