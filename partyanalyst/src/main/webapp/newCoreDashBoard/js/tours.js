@@ -536,6 +536,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var str='';
 		if(result != null && result.length > 0){
 		  var str='';
+		  
+		  str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+		  str+='<div class="scollGraphDiv">';
+		  str+='<div class="row">';
 		  for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
 				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
@@ -557,8 +561,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			  str+='<div id="designationWiseComplainceTour'+i+'" style="height:180px;"></div>';
 			str+='</div>'
 		  }
+		  str+='</div>'
+		  str+='</div>'
+		  str+='</div>'
 		}
 		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(str);
+		if(result != null && result.length > 0){
+			$(".scollGraphDiv").mCustomScrollbar({setHeight:'800px'})
+		}
 	   if(result != null && result.length > 0){
 			for(var i in result){
 				var candidateNameArray = [];
@@ -679,6 +689,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
+			  str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+			  str+='<div class="scollGraphDiv">';
+			  str+='<div class="row">';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
@@ -694,8 +707,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				str+='<div id="designationWiseComplainceTour'+i+'" style="height:180px;"></div>';
 				str+='</div>'
 			}
+			str+='</div>'
+			str+='</div>'
+			str+='</div>'
 		}
 		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html(str);
+		if(result != null && result.length > 0){
+			$(".scollGraphDiv").mCustomScrollbar({setHeight:'800px'})
+		}
 	  if(result != null && result.length > 0){
 		for(var i in result){
 				var candidateNameArray = [];
