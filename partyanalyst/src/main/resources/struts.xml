@@ -15825,5 +15825,10 @@
 			<param name="root">deptList</param>
 		</result>
 	</action>
+	<action name="getCommitteeCreationDetailsAction" class="cadreCommitteeAction" method="getCommitteeCreationDetails">
+		<result type="json" name="success">		   
+			<param name="root">locations</param>
+		</result>	
+	</action>
  </package>
 </struts>

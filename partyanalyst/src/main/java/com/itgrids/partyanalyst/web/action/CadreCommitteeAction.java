@@ -2452,4 +2452,64 @@ public String getSummaryDetails(){
 	public String committeeCreationDetails(){
 		return Action.SUCCESS;
 	}
+	
+	public String getCommitteeCreationDetails()
+	{
+		try {
+			
+			int startIndex = 0;
+			int maxIndex = 0;
+			jObj = new JSONObject(getTask());
+			Long committeeTypeId =jObj.getLong("committeeTypeId") ;
+			List<Long> committeeLevlIdsList1 = new ArrayList<Long>();
+			List<Long> designationsList1 = new ArrayList<Long>();
+			Long locationLvlId =jObj.getLong("locationLvlId") ;
+			List<Long> loctnLevlValues1 = new ArrayList<Long>();
+			List<Long> committeeEnrollmntIds1 = new ArrayList<Long>();
+			Long stateId =jObj.getLong("stateId") ;
+			String searchType =jObj.getString("searchType") ;
+			
+			
+			JSONArray committeeLevlIdsList = jObj.getJSONArray("committeeLevlIdsList");
+			if(committeeLevlIdsList != null && committeeLevlIdsList.length()>0)
+						{
+							for (int i = 0; i < committeeLevlIdsList.length(); i++)
+							{
+								committeeLevlIdsList1.add(Long.valueOf(committeeLevlIdsList.get(i).toString().trim()));
+							}
+						} 
+			JSONArray designationsList = jObj.getJSONArray("designationsList");
+			if(designationsList != null && designationsList.length()>0)
+						{
+							for (int i = 0; i < designationsList.length(); i++)
+							{
+								designationsList1.add(Long.valueOf(designationsList.get(i).toString().trim()));
+							}
+						} 
+			JSONArray loctnLevlValues = jObj.getJSONArray("loctnLevlValues");
+			if(loctnLevlValues != null && loctnLevlValues.length()>0)
+						{
+							for (int i = 0; i < loctnLevlValues.length(); i++)
+							{
+								loctnLevlValues1.add(Long.valueOf(loctnLevlValues.get(i).toString().trim()));
+							}
+						} 
+			JSONArray committeeEnrollmntIds = jObj.getJSONArray("committeeEnrollmntIds");
+			if(committeeEnrollmntIds != null && committeeEnrollmntIds.length()>0)
+						{
+							for (int i = 0; i < committeeEnrollmntIds.length(); i++)
+							{
+								committeeEnrollmntIds1.add(Long.valueOf(committeeEnrollmntIds.get(i).toString().trim()));
+							}
+						} 
+ 			
+			locations = cadreCommitteeService.getCommitteeCreationDetails(committeeTypeId,committeeLevlIdsList1,designationsList1,locationLvlId,loctnLevlValues1
+					,committeeEnrollmntIds1,stateId,searchType);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCommitteeCreationDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
