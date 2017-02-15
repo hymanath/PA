@@ -47,7 +47,7 @@ public interface ICoreDashboardMainService {
 	
 	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId);
 	public String getLatestDebate();
-	public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType);
+	public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType,Long candidateId);
 	public List<IdNameVO> getTrainingProgramMemberDtlsStatusWise(List<Long> programIdList,Long stateId,String dateStr,String status,String designation,Long designationId);
 	public List<List<IdNameVO>> getStateLevelCampDetailsDayWise(List<Long> programIdList, Long stateId, String dateStr);
 	public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId);
