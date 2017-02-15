@@ -911,7 +911,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFILIATED COMMITTEES &nbsp;&nbsp;</label>
 					</span>
                     </div>
-					<!--<button id="detailReportId" class="btn btn-success btn-xs" style="dispaly:inline-block">Detailed Report</button>-->
+					<button id="detailReportId" class="btn btn-success btn-xs" style="dispaly:inline-block">Detailed Report</button>
 					<div style="display:inline-block; margin-top:10px;text-align:center;" class="col-md-12">
                     	<h4 id="headingId" style="display:inline-block" class="text-success">DISTRICT WISE COMMITTEES</h4>
                         <span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
@@ -1123,6 +1123,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									<option value="9">Executive Member </option>					
 								</select>
 						  </div>
+						  <div class="col-md-3 col-xs-12 col-sm-3">
+										<label> Status </label>
+										<select class="form-control" style="width:220px" id="committeeStatusId" >
+											<option value="1">Started </option>
+											<option value="2">Completed </option>
+											<option value="3">Not Yet Started</option>
+										</select>
+									</div>
 						 <div class="col-md-3 col-xs-12 col-sm-3" id="statedisplaydivid">
 							<label>State</label>
 									<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
@@ -1158,14 +1166,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="panchaytList"  class="form-control" style="width:220px">
 											<option value="0"> Select Village/Ward </option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-3">
-										<label> Status </label>
-										<select class="form-control" style="width:220px" id="committeeStatusId" >
-											<option value="1">Started </option>
-											<option value="2">Completed </option>
-											<option value="3">Not Yet Started</option>
 										</select>
 									</div>
 						  <div class="col-md-3 col-xs-12 col-sm-3" style="margin-top:25px;">
