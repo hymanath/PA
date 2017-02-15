@@ -235,7 +235,7 @@ function buildScaleBasedPerformanceCohort(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
-							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
+							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="debate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
 						str+='</td>';
 						
 						str+='<td>';
@@ -445,7 +445,7 @@ function buildChannelAndPartyWiseDetails(result)
 						if(result[i].name !=null){
 						str+='<tr>';
 							
-							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].name+'</td>';
+							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].name+'</td>';
 							for(var j in result[i].coreDebateVOList){
 								
 								//Digit Adding
@@ -457,7 +457,11 @@ function buildChannelAndPartyWiseDetails(result)
 								
 								
 								str+='<td>';
-									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" alt="'+result[i].coreDebateVOList[j].candidateName+'" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
+								if(result[i].coreDebateVOList[j].candidateName == "JANASENA"){
+									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" style="height:30px;width:30px;" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
+								}else{
+									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
+								}
 									str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].coreDebateVOList[j].scalePerc+'</span>';
 								str+='</td>';
 							}
@@ -645,7 +649,7 @@ function buildRoleBasedPerformanceCohort(result)
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
 							if(result[i].coreDebateVOList[0].overAllDebateCount !=null && result[i].coreDebateVOList[0].overAllDebateCount>0){
-							  str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].coreDebateVOList[0].id+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].coreDebateVOList[0].overAllDebateCount+'</a></span></h4>';
+							  str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].coreDebateVOList[0].id+' attr_type="debate" style="cursor:pointer;"><a>'+result[i].coreDebateVOList[0].overAllDebateCount+'</a></span></h4>';
 							}
 							
 						str+='</td>';
@@ -827,7 +831,7 @@ function getRolesPerformanceOfCandidate(roleId){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>debates</p>';
-								str+='<p class="text-muted"><span class="partyWiseDebateCls" attr_partyId='+result[i].candidateId+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></p>';
+								str+='<p class="text-muted"><span class="perforamnceDebateCls" attr_partyId='+result[i].candidateId+' attr_type="debate" style="cursor:pointer;" attr_candidateId='+result[i].id+'><a>'+result[i].debateCount+'</a></span></p>';
 							str+='</td>';
 							
 							//Digit Adding
@@ -1031,70 +1035,15 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 		partyId:partyId,
 		startDate:customStartDate,
 		endDate:customEndDate,
-		searchType:type
+		searchType:type,
+		candidateId:0
 	}		
 	$.ajax({
 	 type: "POST",
 	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		var str = '';
-		if(result !=null && result.length>0){
-								
-			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
-		
-			str+= '<div class="table-responsive">';
-			str+= '<table class="table table-bordered table-condensed debateFirstBlockCls">';
-				str+= '<thead style="background:#ccc">';
-				if(type =="candidate"){
-					str+='<th>Candidate Name</th>';
-				}
-					str+='<th>Subject</th>';
-					str+='<th>Start Time</th>';
-					str+='<th>End Time</th>';
-					str+='<th>Observer</th>';
-					str+='<th>Channel</th>';
-
-				str+= '</thead>';
-				str+= '<tbody>';					
-					for(var i in result){
-						str+='<tr>';
-							var name='';
-							var subject='';
-							var candiName='';
-							if(result[i].debateSubject !=null && result[i].debateSubject.length>0){
-								for(var j in result[i].debateSubject){
-										name=name.concat(result[i].debateSubject);
-								}
-									subject=getTitleContent(name,30);
-									if(result[i].candidateName !=null && result[i].candidateName.length>0)
-										candiName=getTitleContent(result[i].candidateName,30);
-							}		
-						if(type =="candidate"){
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
-						}							
-							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
-							str+='<td>'+result[i].startTime+'</td>';
-							str+='<td>'+result[i].endTime+'</td>';
-							str+='<td>'+result[i].observerName+'</td>';
-							str+='<td>'+result[i].charecterName+'</td>';
-						str+='</tr>';						
-					}
-					
-				str+= '</tbody>';
-			str+= '</table>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '</div>';
-			
-			$(".debateModelCls").html(str);
-			$('.debateFirstBlockCls').dataTable({
-				"iDisplayLength": 15,
-				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
-			 });
-		}
-		
+		buildCoreDebatesBasicDetailsOfParty(result,type);
 	});	
 }
 
@@ -1187,3 +1136,85 @@ function buildDebateModelDetails(result,type){
 		}
 		
 }
+function buildCoreDebatesBasicDetailsOfParty(result,type){
+	var str = '';
+		if(result !=null && result.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			str+= '<div class="table-responsive">';
+			str+= '<table class="table table-bordered table-condensed debateFirstBlockCls">';
+				str+= '<thead style="background:#ccc">';
+				if(type =="candidate"){
+					str+='<th>Candidate Name</th>';
+				}
+					str+='<th>Subject</th>';
+					str+='<th>Start Time</th>';
+					str+='<th>End Time</th>';
+					str+='<th>Observer</th>';
+					str+='<th>Channel</th>';
+
+				str+= '</thead>';
+				str+= '<tbody>';					
+					for(var i in result){
+						str+='<tr>';
+							var name='';
+							var subject='';
+							var candiName='';
+							if(result[i].debateSubject !=null && result[i].debateSubject.length>0){
+								for(var j in result[i].debateSubject){
+										name=name.concat(result[i].debateSubject);
+								}
+									subject=getTitleContent(name,30);
+									if(result[i].candidateName !=null && result[i].candidateName.length>0)
+										candiName=getTitleContent(result[i].candidateName,30);
+							}		
+						if(type =="candidate"){
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+						}							
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td>'+result[i].startTime+'</td>';
+							str+='<td>'+result[i].endTime+'</td>';
+							str+='<td>'+result[i].observerName+'</td>';
+							str+='<td>'+result[i].charecterName+'</td>';
+						str+='</tr>';						
+					}
+					
+				str+= '</tbody>';
+			str+= '</table>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			
+			$(".debateModelCls").html(str);
+			$('.debateFirstBlockCls').dataTable({
+				"iDisplayLength": 15,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			 });
+		}
+		
+}
+$(document).on("click",".perforamnceDebateCls",function(){
+	$("#debateModelDivId").modal("show");
+	var partyId = $(this).attr("attr_partyId");
+	var type = $(this).attr("attr_type");
+	var candidateId = $(this).attr("attr_candidateId");
+	$(".debateModelCls").html("");	
+	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	var jsObj={
+		partyId:partyId,
+		startDate:customStartDate,
+		endDate:customEndDate,
+		searchType:type,
+		candidateId:candidateId
+	}		
+	$.ajax({
+	 type: "POST",
+	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildCoreDebatesBasicDetailsOfParty(result,type);
+	});	
+});
