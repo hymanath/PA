@@ -233,7 +233,7 @@ function buildScaleBasedPerformanceCohort(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
-							str+='<h4>'+result[i].debateCount+'</h4>';
+							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
 						str+='</td>';
 						
 						str+='<td>';
@@ -643,7 +643,7 @@ function buildRoleBasedPerformanceCohort(result)
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
 							if(result[i].coreDebateVOList[0].overAllDebateCount !=null && result[i].coreDebateVOList[0].overAllDebateCount>0){
-							  str+='<h4>'+result[i].coreDebateVOList[0].overAllDebateCount+'</h4>';
+							  str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].coreDebateVOList[0].id+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].coreDebateVOList[0].overAllDebateCount+'</a></span></h4>';
 							}
 							
 						str+='</td>';
@@ -825,7 +825,7 @@ function getRolesPerformanceOfCandidate(roleId){
 							str+='</td>';
 							str+='<td class="text-capital">';
 								str+='<p>debates</p>';
-								str+='<p class="text-muted">'+result[i].debateCount+'</p>';
+								str+='<p class="text-muted"><span class="partyWiseDebateCls" attr_partyId='+result[i].candidateId+' attr_type="candidate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></p>';
 							str+='</td>';
 							
 							//Digit Adding
