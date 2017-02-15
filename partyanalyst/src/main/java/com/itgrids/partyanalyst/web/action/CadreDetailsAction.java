@@ -915,9 +915,22 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	{
 		try{
 			
-			Long locationId=Long.parseLong(request.getParameter("locationId"));
-			String electionType=request.getParameter("electionType");
-			committeeBasicVOList =  cadreDetailsService.getLocationwiseCommitteesCount(request.getParameter("locationType"),new Long(request.getParameter("tdpCadreId")),electionType,locationId);
+			List<Long> committeeEnrollmentYrIds = new ArrayList<Long>(0);
+			
+			jObj=new JSONObject(getTask());
+			
+			Long locationId=jObj.getLong("locationId");
+			String electionType=jObj.getString("electionType");
+			
+			org.json.JSONArray arr = 	jObj.getJSONArray("committeeEnrollmentYrIds");
+			
+			if(arr !=null && arr.length()>0){
+				
+				for (int i = 0; i < arr.length(); i++) {
+					committeeEnrollmentYrIds.add(Long.parseLong(arr.get(i).toString()));
+				}
+			}
+			committeeBasicVOList =  cadreDetailsService.getLocationwiseCommitteesCount(jObj.getString("locationType"),jObj.getLong("tdpCadreId"),electionType,locationId,committeeEnrollmentYrIds);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCategoryWiseStatusCount() method, Exception - ",e);

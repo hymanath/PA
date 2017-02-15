@@ -1198,8 +1198,16 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                             <label class="radio-inline">
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="district" checked>District
                             </label>
-                        </div>
-                        <div class="table m_0-responsive m_top10 table-responsive" id="committeesCountDiv"></div>
+							<div class="col-md-2  col-xs-12 col-sm-2 pull-right">
+								<select class="form-control" id="tdpCommitteeYearId"></select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<div class="table m_0-responsive m_top10 table-responsive" id="committeesCountDiv"></div>
+							</div>
+						</div>
+                        
 						
                     </div>
                 </div>
@@ -2324,8 +2332,24 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	var isLeader = '${cadreLocationVO.isLeader}';
 	checkIsLeader(isLeader);
 	partyMeetingsDatePickerInstantiation();
+	function getCadreEnrollmentYears(){
+		 var jsObj={};
+		$.ajax({
+			type : "GET",
+			url : "getCadreEnrollmentYearsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
+				}
+			}
+		});
+	}
 	function callFunForMembership()
 	{
+		getCadreEnrollmentYears();
 		if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
 			getCadreIdByMemberShipId();
 		}
@@ -3524,6 +3548,8 @@ getCandidateAppliedPostsByCadre(0);
 /*Month & Year Picker*/
 $("#toursDatePicker").datetimepicker({format:'MM-YYYY'});
 $('#toursDatePicker').val(moment().subtract(1, 'month').format('MM-YYYY'));
+
+
 </script>
 </body>
 </html>
