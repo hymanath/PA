@@ -479,7 +479,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setFromDate(jObj.getString("fromDate"));
 			inputVO.setToDate(jObj.getString("toDate"));  
 			inputVO.setStateId(jObj.getLong("stateId"));
-			inputVO.setDistrictId(jObj.getLong("districtId"));  
+			inputVO.setDistrictId(jObj.getLong("districtId")); 
 			inputVO.setConstituencyId(jObj.getLong("constituencyId"));
 			inputVO.setTehsilId(jObj.getLong("mandalId"));
 			inputVO.setVillageId(jObj.getLong("panchayatId"));
@@ -491,7 +491,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setTask(jObj.getString("task"));
 			inputVO.setFromDate2(jObj.getString("fromDate2"));
 			inputVO.setToDate2(jObj.getString("toDate2"));
-			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
+			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"),jObj.getLong("involvedCadreId"),jObj.getLong("impactId"));
 			
 		}
 		catch (Exception e) {
@@ -674,8 +674,28 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			session = request.getSession();
 			jObj = new JSONObject(getTask());
 			Long alertId = jObj.getLong("alertId");
-			statusTrackingVOList = alertService.getAlertAssignedCandidate(alertId);
+			Long stateId = jObj.getLong("stateId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			statusTrackingVOList = alertService.getAlertAssignedCandidate(alertId,stateId,alertTypeId,fromDateStr,toDateStr);
 		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertAssignedCandidate() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	//public List<StatusTrackingVO> getAlertInvolvedCandidate(Long alertId)
+	public String getAlertInvolvedCandidate(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long cadreId = jObj.getLong("cadreId");
+			Long stateId = jObj.getLong("stateId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			statusTrackingVOList = alertService.getAlertInvolvedCandidate(cadreId,stateId,alertTypeId,fromDateStr,toDateStr);        
+		}catch(Exception e) {  
 			LOG.error("Exception occured in getAlertAssignedCandidate() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
