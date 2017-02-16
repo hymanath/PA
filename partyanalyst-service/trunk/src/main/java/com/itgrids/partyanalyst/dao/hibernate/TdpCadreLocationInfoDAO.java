@@ -1158,4 +1158,33 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		return (Long) query.uniqueResult();		
 		
 	}
+	
+	public Long getMemberShipRegistrationDtlsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct TCEY.tdpCadreId) ");
+		str.append(" from TdpCadreEnrollmentYear TCEY, TdpCadre TC, UserAddress UA" +
+				" where TCEY.tdpCadreId = TC.tdpCadreId and TC.userAddress.userAddressId = UA.userAddressId and TCEY.enrollmentYearId=:yearId and  " +
+				" TCEY.isDeleted='N' and  TC.isDeleted ='N' and TC.enrollmentYear=2014 ");
+
+			if(locationtype.equalsIgnoreCase("Mandal"))
+				 str.append(" and UA.tehsil.tehsilId =:locationId  ");
+			
+			else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append(" and UA.localElectionBody.localElectionBodyId =:locationId  ");
+			
+			if(constituencyId != null && constituencyId.longValue()>0L)
+				 str.append(" and UA.constituency.constituencyId  = :constituencyId ");
+		Query query = getSession().createQuery(str.toString()); 
+		
+		  query.setParameter("locationId", locationId);
+		  if(constituencyId != null && constituencyId.longValue()>0L)
+		  query.setParameter("constituencyId", constituencyId);  
+	   	  query.setParameter("yearId", yearId);
+	   	  
+		return (Long) query.uniqueResult();		
+		
+	}
+	
 }
