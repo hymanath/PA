@@ -2502,4 +2502,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 .addScalar("cadre_name", Hibernate.STRING);
 	     return query.list();
 	  }
+	 public String getPartyMeetingName(Long partyMeetingId){
+		 Query query = getSession().createQuery(" select model.meetingName from PartyMeeting model where model.partyMeetingId=:partyMeetingId ");
+		 query.setParameter("partyMeetingId", partyMeetingId);
+		 return (String)query.uniqueResult();
+	 }
  }
