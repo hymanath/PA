@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 public class CommitteeSummaryVO implements Serializable{
 
@@ -23,7 +24,7 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long totalCommittees;
 	private Long membersCount;
 	private Long afflMembersCount;
-	private List<CommitteeSummaryVO> districtWiseList;
+	private List<CommitteeSummaryVO> districtWiseList = new ArrayList<CommitteeSummaryVO>();
 	private Long mainStarted;
 	private Long mainCompleted;
 	private Long afflStarted;
@@ -96,6 +97,11 @@ public class CommitteeSummaryVO implements Serializable{
 	
 	private Boolean affliatedCommitteesExist;
 	private Boolean mainCommitteesExist;
+	private List<CommitteeSummaryVO> constinuncyList = new ArrayList<CommitteeSummaryVO>();
+	private Long stateId;
+	private String stateName;
+	private List<CommitteeSummaryVO> stateList = new ArrayList<CommitteeSummaryVO>();
+	
 	
 	public Long getAfflMembersCount() {
 		return afflMembersCount;
@@ -620,6 +626,30 @@ public class CommitteeSummaryVO implements Serializable{
 	}
 	public void setMainCommitteesExist(Boolean mainCommitteesExist) {
 		this.mainCommitteesExist = mainCommitteesExist;
+	}
+	public List<CommitteeSummaryVO> getConstinuncyList() {
+		return constinuncyList;
+	}
+	public void setConstinuncyList(List<CommitteeSummaryVO> constinuncyList) {
+		this.constinuncyList = constinuncyList;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public List<CommitteeSummaryVO> getStateList() {
+		return stateList;
+	}
+	public void setStateList(List<CommitteeSummaryVO> stateList) {
+		this.stateList = stateList;
 	}
 	
 
