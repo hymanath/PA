@@ -8433,6 +8433,9 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	else if(locationType.equalsIgnoreCase("Parliament"))
 	 str.append(" and model.constituency.constituencyId in (:constituencyIdsList) ");
 	
+	if(constituencyId != null && constituencyId.longValue()>0L && !locationType.equalsIgnoreCase("District") && !locationType.equalsIgnoreCase("Parliament")){
+		str.append(" and model.constituency.constituencyId =:constituencyId ");
+	}
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("publicationDateId", publicationDateId);
 	if(!locationType.equalsIgnoreCase("Parliament"))
@@ -8440,6 +8443,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	if(locationType.equalsIgnoreCase("Parliament"))
 	  query.setParameterList("constituencyIdsList", constituencyIdsList);
+	if(constituencyId != null && constituencyId.longValue()>0L && !locationType.equalsIgnoreCase("District") && !locationType.equalsIgnoreCase("Parliament"))
+		query.setParameter("constituencyId", constituencyId);
 	
 	return (Long) query.uniqueResult();
 	
