@@ -3249,8 +3249,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				totalVoters = voterInfoDAO.getVotersCountInADistrict(locationId,publicationId);
 			else if(locationType.equalsIgnoreCase("Parliament"))
 				totalVoters = voterInfoDAO.getVotersCountInAParliament(locationId,publicationId);
-			else if(locationType.equalsIgnoreCase("Muncipality"))
+			else if(locationType.equalsIgnoreCase("Muncipality")){
 				totalVoters = voterInfoDAO.getTotalVotersByReportLevelValue(5L,locationId,publicationId,constituencyId);
+			}
 			else if(locationType.equalsIgnoreCase("Mandal"))
 				totalVoters = voterInfoDAO.getTotalVotersByReportLevelValue(2L,locationId,publicationId,constituencyId);
 			
@@ -3302,7 +3303,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		Long count = 0l;
 		try{
-			count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			 if(locationType != null && locationType.equalsIgnoreCase("Muncipality") || locationType.equalsIgnoreCase("Mandal"))
+					 count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationDtlsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			 else
+				 count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
 			return (count != null?count:0l);
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setMemberShipCount() method, Exception - ",e);
@@ -3347,7 +3351,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			{
 				UserAddress userAddress = new UserAddress();
 				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-				/*BasicVO basicVO =	cadreDetailsService.getParticipatedConstituency(tdpCadreId);
+				BasicVO basicVO =	cadreDetailsService.getParticipatedConstituency(tdpCadreId);
 				if(basicVO != null && basicVO.getDistrictId() != null && basicVO.getDistrictId().longValue()>0L){
 					userAddress.setDistrict(districtDAO.get(basicVO.getDistrictId()));
 					userAddress.setConstituency(constituencyDAO.get(basicVO.getId()));
@@ -3355,9 +3359,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				else{
 					userAddress = tdpCadre.getUserAddress();
-				}*/
-				
-				 userAddress = tdpCadre.getUserAddress();
+				}
 				 
 				if(userAddress != null)
 				{
