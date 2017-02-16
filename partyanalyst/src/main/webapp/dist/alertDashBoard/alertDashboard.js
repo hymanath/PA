@@ -8,10 +8,10 @@ $(document).ready(function(){
 			if($(this).hasClass("active"))
 				levelValue = $(this).attr("attr_state_id");
 		});
-		
+		  
 		var statusId=0;
 		 var fromDate='';
-		 var toDate='';
+		 var toDate='';  
 		 var dateStr = $("#dateRangePickerId").val(); 
 			if(dateStr !=null && dateStr.length>0){
 				fromDate = dateStr.split("-")[0];
@@ -103,7 +103,7 @@ function buildLocationLevelAlert(result,jsObj){
 	{
 		var totalCnt = 0;
 		str+='<td>';
-		for(var j in result)
+		for(var j in result)   
 		{
 			var returnList=result[j].locationsList;
 			for(var k in returnList){
@@ -659,6 +659,12 @@ function getAlertStatusCommentsTrackingDetails()
 			var assignedCadreId =  $("#assignedCadreId").val();
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
+			var involvedCadreId =  $("#involvedCadreId").val();
+			if(involvedCadreId.length == 0)
+				involvedCadreId = 0;
+			var benefitId =  $("#benefitId").val();
+			if(benefitId.length == 0)
+				benefitId = 0;
 			var fromDate='';
 			var toDate='';
 			var dateStr = $("#dateRangePickerId").val(); 
@@ -685,6 +691,8 @@ function getAlertStatusCommentsTrackingDetails()
 					fromDate:fromDate,
 					toDate:toDate,
 					assignedCadreId:assignedCadreId,
+					involvedCadreId:involvedCadreId,                 
+					impactId:benefitId,         
 					categoryId:alertCategoryId,
 					actionTypeStatusId : 0,            
 					task : "",  
@@ -724,6 +732,12 @@ function getAlertStatusCommentsTrackingDetails()
 			var assignedCadreId =  $("#assignedCadreId").val();
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
+			var involvedCadreId =  $("#involvedCadreId").val();
+			if(involvedCadreId.length == 0)
+				involvedCadreId = 0;
+			var benefitId =  $("#benefitId").val();
+			if(benefitId.length == 0)
+				benefitId = 0;
 			var fromDate='';
 			var toDate='';
 			var dateStr = $("#dateRangePickerId").val(); 
@@ -758,7 +772,9 @@ function getAlertStatusCommentsTrackingDetails()
 					mandalType:mandalType,
 					fromDate:fromDate,
 					toDate:toDate,
-					assignedCadreId:assignedCadreId,    
+					assignedCadreId:assignedCadreId,
+					involvedCadreId:involvedCadreId,                 
+					impactId:benefitId,   
 					categoryId:alertCategoryId,
 					actionTypeStatusId:actionTypeStatusId,        
 					task : "verification",
@@ -791,6 +807,12 @@ function getAlertStatusCommentsTrackingDetails()
 			var assignedCadreId =  $("#assignedCadreId").val();
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
+			var involvedCadreId =  $("#involvedCadreId").val();
+			if(involvedCadreId.length == 0)
+				involvedCadreId = 0;
+			var benefitId =  $("#benefitId").val();
+			if(benefitId.length == 0)
+				benefitId = 0;
 			var fromDate='';
 			var toDate='';
 			var dateStr = $("#dateRangePickerId").val(); 
@@ -825,7 +847,9 @@ function getAlertStatusCommentsTrackingDetails()
 					mandalType:mandalType,
 					fromDate:fromDate,
 					toDate:toDate,
-					assignedCadreId:assignedCadreId,    
+					assignedCadreId:assignedCadreId,
+					involvedCadreId:involvedCadreId,                 
+					impactId:benefitId,   
 					categoryId:alertCategoryId,
 					actionTypeStatusId:actionTypeStatusId,        
 					task : "verification",
@@ -858,6 +882,12 @@ function getAlertStatusCommentsTrackingDetails()
 			var assignedCadreId =  $("#assignedCadreId").val();
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
+			var involvedCadreId =  $("#involvedCadreId").val();
+			if(involvedCadreId.length == 0)
+				involvedCadreId = 0;
+			var benefitId =  $("#benefitId").val();
+			if(benefitId.length == 0)
+				benefitId = 0;
 			var fromDate='';
 			var toDate='';
 			var dateStr = $("#dateRangePickerId").val(); 
@@ -881,25 +911,41 @@ function getAlertStatusCommentsTrackingDetails()
 					mandalId   :mandalId,
 					panchayatId:panchayatId,
 					mandalType:mandalType,  
-					fromDate:fromDate,
-					toDate:toDate,
-					assignedCadreId:assignedCadreId,
+					fromDate:fromDate,              
+					toDate:toDate,     
+					assignedCadreId:assignedCadreId,              
+					involvedCadreId:involvedCadreId,                 
+					impactId:benefitId,                                     
 					categoryId:alertCategoryId,
-					actionTypeStatusId : 0,            
+					actionTypeStatusId : 0,              
 					task : "",
 					fromDate2 : "",
 					toDate2 : ""   
 			}
 			$.ajax({
-				type:'GET',
+				type:'GET',       
 				url: 'getLocationFilterAlertDataAction.action',
 				data: {task :JSON.stringify(jsObj)}
 			}).done(function(result){
 				GlobalAlertData = result;
 				buildAlertData(result,jsObj);
-			});
-		}
-	}
+			});   
+		}        
+		$("#assignedCadreId").val(0).trigger('chosen:updated');
+		$("#involvedCadreId").val(0).trigger('chosen:updated');
+		$("#benefitId").val(0).trigger('chosen:updated');    
+		$("#stateId").val(globalStateId).trigger('chosen:updated');
+		$("#referdistrictId").val(0).trigger('chosen:updated');
+		$('#referconstituencyId').empty(); 
+		$('#referconstituencyId').append('<option value="0">All</option>'); 
+		$("#referconstituencyId").trigger('chosen:updated');
+		$('#refermandalNameId').empty(); 
+		$('#refermandalNameId').append('<option value="0">All</option>'); 
+		$("#refermandalNameId").val(0).trigger('chosen:updated');
+		$('#referpanchayatId').empty();
+		$('#referpanchayatId').append('<option value="0">All</option>'); 			
+		$("#referpanchayatId").val(0).trigger('chosen:updated');   
+	}                
 
  function getAlertStatusByAlertType(){
 	  var alertTpeId = $("#alertTypeId").val();
@@ -922,4 +968,4 @@ function getAlertStatusCommentsTrackingDetails()
 				$("#alertStatusId").html(str);
 		        $("#alertStatusId").trigger("chosen:updated");
 			});	
-	}
+	}    
