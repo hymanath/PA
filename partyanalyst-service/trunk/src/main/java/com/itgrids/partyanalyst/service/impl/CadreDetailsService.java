@@ -271,8 +271,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IGovtSchemesDAO govtSchemesDAO;
 	private IGovtSchemeBeneficiaryDetailsDAO govtSchemeBeneficiaryDetailsDAO; 
 	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
+	private ICadreDetailsService cadreDetailsService;
 	
-	
+
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
 	public IGovtSchemeBeneficiaryDetailsDAO getGovtSchemeBeneficiaryDetailsDAO() {
 		return govtSchemeBeneficiaryDetailsDAO;
 	}
@@ -2948,7 +2952,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	
 	
 	
-  public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long tdpCadreId,Long pcId,String pcType,Long yearId,Long publicationId,Long boothId)
+  public RegisteredMembershipCountVO getTotalMemberShipRegistrationsInCadreLocation(Long tdpCadreId,Long pcId,String pcType,Long yearId,Long publicationId,Long bootthId)
   {
 	 RegisteredMembershipCountVO countVO = new RegisteredMembershipCountVO();
 	  try{
@@ -3044,6 +3048,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 				Long ownVoterId = 0L;
 				Long familyVoterId = 0L;
+				Long voterBoothId =bootthId;
+				Long membershipBoothId = bootthId;
 				AddressVO userAddress1 = new AddressVO();
 				if(commonMethodsUtilService.isListOrSetValid(cadreAddressDetls)){
 					for (Object[] address : cadreAddressDetls) {
@@ -3078,8 +3084,28 @@ public class CadreDetailsService implements ICadreDetailsService{
 						familyVoterId = commonMethodsUtilService.getLongValueForObject(address[19]);
 						userAddress1.setId(commonMethodsUtilService.getLongValueForObject(address[20]));
 						
+						List<Object[]> boothsList = boothDAO.getPartNoByBoothId(commonMethodsUtilService.getLongValueForObject(address[16]));
+						if(commonMethodsUtilService.isListOrSetValid(boothsList)){
+							Object[] boothArr = boothsList.get(0);
+							if(boothArr != null && boothArr.length>0){
+								Long publicatinId = commonMethodsUtilService.getLongValueForObject(boothArr[1]);
+								if(publicationId != null && publicationId.longValue()>0L && publicatinId.longValue() != publicationId.longValue()){
+									if(publicationId != null && publicationId.longValue()>0L){
+										Long voterId = ownVoterId != null && ownVoterId.longValue()>0L?  ownVoterId : familyVoterId;
+										if(voterId != null && voterId.longValue()>0L){
+											Object[] boothObjectArr = boothPublicationVoterDAO.getBoothDetailsByVoterId(voterId.toString(),publicationId);//publication date id = 11
+											if(boothObjectArr != null && boothObjectArr.length > 0){
+												userAddress1.setBoothId(commonMethodsUtilService.getLongValueForObject(boothObjectArr[1]));
+												userAddress1.setPartNo(commonMethodsUtilService.getStringValueForObject(boothObjectArr[0]));
+												voterBoothId=userAddress1.getBoothId();
+											}
+										}
+											
+									}
+								}
+							}
+						}
 					}
-					
 				}
 				
 				//Long publicationDateId = userAddress1.getId();
@@ -3111,14 +3137,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					 if(userAddress1.getBoothId() != null && userAddress1.getBoothId() != null)
 					 {
-						if(boothId != null && boothId.longValue()>0L){
+						if(bootthId != null && bootthId.longValue()>0L){
 							//if(countVO.getBoothCount() == null ) // only we are showing 11 publication booth cadre membership perc.
 								countVO.setBoothCount(0L);
 						//	if(countVO.getBoothTotVoters() == null )
 								countVO.setBoothTotVoters(0L);
 							
-							Long membershipCount = getMemberShipCount("Booth", boothId, electionYear, constituencyId,null,yearId);
-							Long voterCount = getTotalAvailableVotersByLocationId(boothId, "booth", publicationId, constituencyId,null);
+							Long membershipCount = getMemberShipCount("Booth", membershipBoothId, electionYear, constituencyId,null,yearId);
+							Long voterCount = getTotalAvailableVotersByLocationId(voterBoothId, "booth", publicationId, constituencyId,null);
 							if(membershipCount != null && membershipCount.longValue()>0L)
 								countVO.setBoothCount(countVO.getBoothCount()+membershipCount);
 							if(voterCount != null && voterCount.longValue()>0L)
@@ -3319,8 +3345,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(tdpCadreId != null && tdpCadreId > 0L)
 			{
+				UserAddress userAddress = new UserAddress();
 				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-				UserAddress userAddress = tdpCadre.getUserAddress();
+				/*BasicVO basicVO =	cadreDetailsService.getParticipatedConstituency(tdpCadreId);
+				if(basicVO != null && basicVO.getDistrictId() != null && basicVO.getDistrictId().longValue()>0L){
+					userAddress.setDistrict(districtDAO.get(basicVO.getDistrictId()));
+					userAddress.setConstituency(constituencyDAO.get(basicVO.getId()));
+					userAddress.setParliamentConstituency(constituencyDAO.get(basicVO.getParlimentId()));
+				}
+				else{
+					userAddress = tdpCadre.getUserAddress();
+				}*/
+				
+				 userAddress = tdpCadre.getUserAddress();
+				 
 				if(userAddress != null)
 				{
 					List<Long> partyIds = new ArrayList<Long>();
