@@ -78,8 +78,12 @@ function getDistrictsForStates(state,id,num){
 			$("#mandalList").trigger("chosen:updated");
 			$("#panchaytList").trigger("chosen:updated");
 			
+	 } else if(id =="popUpdistrictId"){
+		 $("#popUpConstiesId").empty();
+		 //$("#popUpConstiesId").append('<option value="0">Select Constituency</option>');
+		 $("#popUpConstiesId").trigger("chosen:updated");
 	 }
-	
+	 
 	/* if(district == 0){
 		if(id == "districtId")
 			getConstituenciesForState($('#statesDivId').val(),'constituencyId');
@@ -124,11 +128,19 @@ function getDistrictsForStates(state,id,num){
 		   }else{
 			  $("#detsRptConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		   }
+		 }else if(id == "popUpdistrictId"){
+			if(result[i].id == 0){
+			  $("#popUpConstiesId").append('<option value='+result[i].id+'>ALL</option>');
+		   }else{
+			  $("#popUpConstiesId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   } 
 		 }
 	 }
 	 if(id == "detsRptdistrictId"){
 		$("#detsRptConstituencyId").trigger("chosen:updated");
-	 }
+	 } else if(id =="popUpdistrictId"){
+		 $("#popUpConstiesId").trigger("chosen:updated");
+	 } 
    });
   }
   
@@ -408,4 +420,5 @@ $(document).on("click","#excelReport",function(){
 });
 $(document).on("click","#detailReportId",function(){
 	$( "#detailedReportModalDivId" ).modal("show");
-});	
+});
+	
