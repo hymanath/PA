@@ -57,4 +57,5 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> notConductedMeetingsInConstituency(int month , int year);
 	public List<Object[]> getConstWiseNotConductedPartyMeetings(int month , int year);
 	public List<Object[]> getConstInchargeTeluguNames();
+	public String getPartyMeetingName(Long partyMeetingId);
 }
