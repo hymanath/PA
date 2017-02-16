@@ -1382,9 +1382,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<div id="ivrSurvysCandtCntId">
 								<ul role="tablist" class="nav nav-tabs tab-list display-style" >
 							
-								<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiParticipatedId">0</span></li>
-								<li style="padding:10px 15px;">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrSurveyOnCandiId">0</span></li>
-								<li class="active li_arr" style="padding:10px 15px;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId">0</span></li>
+								<li style="padding:10px 15px;" onclick="getTypeWiseIvrDetailsOFCadre();">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiParticipatedId" >0</span></li>
+								<li style="padding:10px 15px;" onclick="getIVRSurveysOnCandidateDetails();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrSurveyOnCandiId" >0</span></li>
+								<li class="active li_arr" style="padding:10px 15px;" onclick="getIVRSurveysOnCandidateAreaDetails();">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId" >0</span></li>
 								</ul>
 								</div>
 								<div id="ivrTypeDetailsDivId"></div>
