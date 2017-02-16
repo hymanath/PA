@@ -19989,7 +19989,9 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 			loctnLevlValues.addAll(loctnLevlValues1);
 		}
 		
-		List<BasicVO> roles  = getCommitteeRoles();
+		//List<BasicVO> roles  = getCommitteeRoles();
+		
+		List<Object[]> rolesList = tdpCommitteeRoleDAO.getTdpRoles(committeeEnrollmntIds,committeeLevlIdsList);
 		Map<Long,LocationWiseBoothDetailsVO> getMatchdMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
 		List<Object[]> locListFTot = tdpCommitteeMemberDAO.getCommitteeCreationDetails(committeeTypeId,committeeLevlIdsList,designationsList,locationLvlId,loctnLevlValues,committeeEnrollmntIds,stateId,searchType);
 		if(locListFTot != null  && locListFTot.size() >0){
@@ -20013,11 +20015,11 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 								committeeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[14]));//basiCommitteeId
 								committeeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[18]));//basiCommitteeName
 								List<LocationWiseBoothDetailsVO> tdpRoles = new ArrayList<LocationWiseBoothDetailsVO>();
-								if(commonMethodsUtilService.isListOrSetValid(roles)){
-									for(BasicVO role :roles){
+								if(commonMethodsUtilService.isListOrSetValid(rolesList)){
+									for(Object[] role :rolesList){
 										LocationWiseBoothDetailsVO roleVo = new LocationWiseBoothDetailsVO();
-										roleVo.setId(role.getId());
-										roleVo.setName(role.getName());
+										roleVo.setId(commonMethodsUtilService.getLongValueForObject(role[0]));
+										roleVo.setName(commonMethodsUtilService.getStringValueForObject(role[1]));
 										tdpRoles.add(roleVo);
 									}
 								}
@@ -20061,11 +20063,11 @@ public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committ
 								committeeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[14]));//basiCommitteeId
 								committeeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[18]));//basiCommitteeName
 								List<LocationWiseBoothDetailsVO> tdpRoles = new ArrayList<LocationWiseBoothDetailsVO>();
-								if(commonMethodsUtilService.isListOrSetValid(roles)){
-									for(BasicVO role :roles){
+								if(commonMethodsUtilService.isListOrSetValid(rolesList)){
+									for(Object[] role :rolesList){
 										LocationWiseBoothDetailsVO roleVo = new LocationWiseBoothDetailsVO();
-										roleVo.setId(role.getId());
-										roleVo.setName(role.getName());
+										roleVo.setId(commonMethodsUtilService.getLongValueForObject(role[0]));
+										roleVo.setName(commonMethodsUtilService.getStringValueForObject(role[1]));
 										tdpRoles.add(roleVo);
 									}
 								}
