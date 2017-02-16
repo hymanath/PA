@@ -31,6 +31,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -6567,6 +6568,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 			
+			Map<Long,CommitteeSummaryVO> stateMap = new HashMap<Long, CommitteeSummaryVO>();
+			Map<Long,CommitteeSummaryVO> districtsMap = new HashMap<Long, CommitteeSummaryVO>();
+			Map<Long,CommitteeSummaryVO> constuncyMap = new HashMap<Long, CommitteeSummaryVO>();
+			
 			if(constituencysList != null && constituencysList.size()>0){
 				for(Object[] obj:constituencysList){
 					CommitteeSummaryVO cv = new CommitteeSummaryVO();
@@ -6575,8 +6580,36 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cv.setConstiNo(constiNoMap.get(Long.valueOf(obj[0].toString())));
 					cv.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					cv.setDistrictName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					cv.setStateId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					cv.setStateName(commonMethodsUtilService.getStringValueForObject(obj[5]));
 					constiIds.add(Long.valueOf(obj[0].toString()));
 					constiLst.add(cv);
+					
+					CommitteeSummaryVO vo2 = stateMap.get(cv.getStateId());
+					if(vo2 == null){
+						vo2 = new CommitteeSummaryVO();
+						//vo.setConstiId(cv.getConstiId());
+						vo2.setStateId(cv.getStateId());
+						vo2.setStateName(cv.getStateName());
+						stateMap.put(cv.getStateId(), vo2);
+					}
+					
+					CommitteeSummaryVO vo = districtsMap.get(cv.getDistrictId());
+					if(vo == null){
+						vo = new CommitteeSummaryVO();
+						//vo.setConstiId(cv.getConstiId());
+						vo.setDistrictId(cv.getDistrictId());
+						vo.setDistrictName(cv.getDistrictName());
+						districtsMap.put(cv.getDistrictId(), vo);
+					}
+					
+					CommitteeSummaryVO vo1 = constuncyMap.get(cv.getConstiId());
+					if(vo1 == null){
+						vo1 =  new CommitteeSummaryVO();
+						vo1.setConstiId(cv.getConstiId());
+						vo1.setName(cv.getName());
+						constuncyMap.put(cv.getConstiId(), vo1);
+					}
 				}
 			}
 			
@@ -6934,9 +6967,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						if(totalIVRCount != null && totalIVRCount.longValue() !=0)
 							ivrDetailsVO.setTotal(totalIVRCount);
 					}
+					
 				}
+				constiLst.get(0).getDistrictWiseList().addAll(districtsMap.values());
+				constiLst.get(0).getConstinuncyList().addAll(constuncyMap.values());
+				constiLst.get(0).getStateList().addAll(stateMap.values());
 			}
-			
 		}catch (Exception e) {
 			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);
 		}
