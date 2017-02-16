@@ -1645,7 +1645,7 @@ function buildStatusWiseTotalAlerts(result){
 					str+='<li>';
 					str+='<h4 class="panel-title">'+result[i].department+'</h4>';
 					for(var k in result[i].govtDepartmentVOList){
-						str+='<span class="totAlertsStsCls" style="cursor:pointer;" attr_status_id="'+result[i].govtDepartmentVOList[k].departmentId+'" >'+result[i].totalCount+'</span>';
+						str+='<span>'+result[i].totalCount+'</span>';
 					}
 					str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
 					
