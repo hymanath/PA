@@ -2798,6 +2798,7 @@ public class ToursService implements IToursService {
 	   		    		designationVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 	   		    		designationVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
 	   		    		designationVO.setName(commonMethodsUtilService.getStringValueForObject(param[3])+" "+commonMethodsUtilService.getStringValueForObject(param[4]));
+	   		    		designationVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[2]));
 	   		    		designatinIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),designationVO);
 	   		    		resultVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[2]));
 	   		    	}
@@ -2814,8 +2815,43 @@ public class ToursService implements IToursService {
 		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnCategoryWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourCategory");
 		    		 List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getCategoryWiseLeaderTourSubmittedCnt("tourType",monthyearIds,designationIds,candiateIds);
 		    		 prepareCandiateWiseDtlsToTakeComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst,candiateDtlsMap,designationWiseTargetMap,categoryIdNameMap,"tourType");
-		    	   }   
+		    	    if((rtrnCategoryWiseComplainceOblLst == null || rtrnCategoryWiseComplainceOblLst.size() == 0) && (rtrnGovtWorkWiseComplainceOblLst == null || rtrnGovtWorkWiseComplainceOblLst.size() == 0)){
+		    	     //Prepare Template if candidate has not submitted tour 
+		    		     Map<Long,List<ToursBasicVO>> designationMap = new HashMap<Long, List<ToursBasicVO>>(0);
+		    		     prepareTemplate(designationWiseTargetMap,designationMap,categoryIdNameMap);
+		    		     if(designationMap != null && designationMap.size() > 0){
+		    		    	 for(Entry<Long,List<ToursBasicVO>> entry:designationMap.entrySet()){
+		    		    		 if(entry.getValue() != null && entry.getValue().size() > 0){
+		    		    			 for(ToursBasicVO cateogyVO:entry.getValue()){
+		    		    				 if(cateogyVO.getMonthList() != null && cateogyVO.getMonthList().size() > 0){
+		    		    					 for(ToursBasicVO monthVO:cateogyVO.getMonthList()){
+		    		    						 cateogyVO.setTargetDays(cateogyVO.getTargetDays()+monthVO.getTargetDays()); 
+		    		    					 }
+		    		    				 }
+		    		    				 
+		    		    			 }
+		    		    		 }
+		    		    	 }
+		    		     }
+		    		     if(designationMap != null && designationMap.size() > 0){
+		    		    	 for(Entry<Long,List<ToursBasicVO>> designationEntry:designationMap.entrySet()){
+		    		    		    ToursBasicVO vo = new ToursBasicVO();
+		    		    			vo.setDesignationId(designationEntry.getKey());
+	    		    				ToursBasicVO designationVO=designatinIdNameMap.get(designationEntry.getKey());
+	    		    				if(designationVO != null){
+	    		    					vo.setDesignation(designationVO.getDesignation());
+	    		    					vo.setName(designationVO.getName());
+	    		    					vo.setCandDtlsId(designationVO.getCandDtlsId());
+	    		    				}
+	    		    				
+	    		    				vo.getSubList().addAll(designationEntry.getValue());
+	    		    				resultVO.getSubList().add(vo); 
+		    		    	 }
+		    		    	 
+		    		     }
+		    	   }
 	   		   }
+	   	   }
 	   		   //calculate category wise complaice percentage
     		    calculateCategoryWiseComplaince(candiateDtlsMap);
     		    
@@ -2840,11 +2876,27 @@ public class ToursService implements IToursService {
     		    		}
     		    	}
     		    }
-      	 }catch(Exception e){
+	   	  }catch(Exception e){
 	   		 LOG.error("Exception Occured in getCadreTourDetails() in CoreDashboardToursService  : ",e);  
 	   	 }	 
 	   	 return resultVO;
 	   }
+    
+    public void prepareTemplate(Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<Long,List<ToursBasicVO>> designationMap,	Map<String,String> categoryIdNameMap){
+    	try{
+    		if(designationWiseTargetMap != null && designationWiseTargetMap.size() > 0){
+    			for(Entry<Long,Map<String,List<ToursBasicVO>>> entry:designationWiseTargetMap.entrySet()){
+    				List<ToursBasicVO> categoryList = designationMap.get(entry.getKey());
+    				if(categoryList == null){
+    					categoryList = getDesignationWiseTarget(entry.getKey(),designationWiseTargetMap,categoryIdNameMap);
+    					designationMap.put(entry.getKey(), categoryList);
+    				}
+    			}
+    		}
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in prepareTemplate() in CoreDashboardToursService  : ",e);
+    	}
+    }
     
     public ResultStatus updateDesignationWiseNewTourDetails( final ToursNewVO innerTourVo){
     	ResultStatus result = new ResultStatus();
