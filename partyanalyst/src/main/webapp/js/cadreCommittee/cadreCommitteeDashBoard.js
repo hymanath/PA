@@ -1594,9 +1594,11 @@ function getConstituency(){
 			}	
 		}
 		str+='<tbody>';
-		
+		var str1='';
+		str1+='<option value="0">All</option>';
 		for(var i in result){
 			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null || result[i].districtCommVO != null){
+			str1+='<option value="'+result[i].districtId+'">'+result[i].districtName+'</option>';
 			str += '<tr id='+result[i].districtId+' class="removeCls clearCls'+result[i].districtId+'">';
 			str+='<td class="removeCls clearClsTD'+result[i].districtId+'" style="text-align:center;">'+result[i].districtId+'';
 			str+='</td>';
@@ -3569,7 +3571,8 @@ function getConstituency(){
 	    
 		str += '</tr></tfoot></table>';		
 
-	
+		$("#popUpdistrictId").html(str1);
+		$("#popUpdistrictId").val(0);
 		$("#distSummaryBody").html(str);
 		$(".excelId").show();
 		$("#districtTableId").dataTable({
