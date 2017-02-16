@@ -36,10 +36,9 @@ public interface IAlertService {
 	public List<IdNameVO> getMemberTypesList();
 	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
 	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
-	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);
-	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId);
+	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId,Long impactId);
 	public String  setArticleDetailsIntoAlert(ActionableVO actionableVO);
-	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);
+	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);     
 	public List<AlertVO> getTotalAlertGroupByStatusThenCategory(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);
 	public List<AlertVO> getAlertCountGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);
 	public List<AlertVO> getTotalAlertGroupByStatusThenCategoryLocationWise(String fromDateStr, String toDateStr, Long stateId, String Location,Long alertTypeId);
@@ -90,4 +89,6 @@ public interface IAlertService {
     public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public String deleteAlert(Long alertId);
     public List<AlertVO> getAlertStatusByAlertTypeId(Long alertTypeId,Long alertId);
+    public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
+    public List<StatusTrackingVO> getAlertInvolvedCandidate(Long cadreId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
 }
