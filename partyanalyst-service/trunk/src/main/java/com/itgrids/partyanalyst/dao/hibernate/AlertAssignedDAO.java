@@ -33,16 +33,38 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
-	public List<Object[]> getAlertAssignedCandidate(Long alertId)
+	public List<Object[]> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,Date fromDate,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.tdpCadre.tdpCadreId, model.tdpCadre.firstname"+
-				" from AlertAssigned model where model.alert.isDeleted ='N' and model.isDeleted ='N' ");
+		str.append(" select " +
+				   " model.tdpCadre.tdpCadreId, " +
+				   " model.tdpCadre.firstname, " +
+				   " count(distinct model.alert.alertId) "+
+				   " from " +
+				   " AlertAssigned model " +
+				   " left join model.alert.userAddress.state state " +
+				   " where " +
+				   " model.alert.isDeleted ='N' and " +
+				   " model.isDeleted ='N' and " +
+				   " model.alert.alertType.alertTypeId = :alertTypeId and " +
+				   " date(model.alert.createdTime) between :fromDate and :toDate and ");
+		if(stateId != null && stateId.longValue() > 0L){
+			if(stateId.longValue() == 1L){
+				str.append(" state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				str.append(" state.stateId = 36 ");
+			}else{
+				str.append(" state.stateId in (1,36) ");
+			}
+		}
 		if(alertId != null && alertId > 0)
 			str.append(" and  model.alert.alertId = :alertId");
-		Query query = getSession().createQuery(str.toString() +" order by model.tdpCadre.firstname ");
+		Query query = getSession().createQuery(str.toString() +" group by model.tdpCadre.tdpCadreId order by model.tdpCadre.firstname ");
 		if(alertId != null && alertId > 0)
-		query.setParameter("alertId", alertId);
+			query.setParameter("alertId", alertId); 
+		query.setParameter("alertTypeId", alertTypeId); 
+		query.setDate("fromDate", fromDate); 
+		query.setDate("toDate", toDate);    
 		return query.list();
 	}
 
@@ -194,4 +216,35 @@ public List<Long> checkCadreAssignedForAlert(Long alertId)
 	query.setParameter("alertId", alertId);
 	return query.list();
 }
+public List<Long> getTotalAlertsRelatedToCadre(Long cadreId,Long stateId,Long alertTypeId,Date fromDate,Date toDate){
+	StringBuilder str = new StringBuilder();  
+	str.append("select distinct " +
+			" model.alert.alertId " +
+			" from AlertAssigned model " +
+			" left join model.alert.userAddress.state state " +
+			" where " +
+			" model.tdpCadre.tdpCadreId = :cadreId and " +
+			" model.isDeleted ='N' and " +
+			" model.tdpCadre.isDeleted = 'N' and " +
+			" model.alert.isDeleted ='N' and " +
+			" model.alert.alertType.alertTypeId = :alertTypeId and " +
+			" date(model.alert.createdTime) between :fromDate and :toDate and ");
+	if(stateId != null && stateId.longValue() > 0L){
+		if(stateId.longValue() == 1L){
+			str.append(" state.stateId = 1 ");
+		}else if(stateId.longValue() == 36L){
+			str.append(" state.stateId = 36 ");
+		}else{
+			str.append(" state.stateId in (1,36) ");
+		}
+	}
+	Query query = getSession().createQuery(str.toString());
+	
+	query.setParameter("cadreId", cadreId);
+	query.setParameter("alertTypeId", alertTypeId); 
+	query.setDate("fromDate", fromDate); 
+	query.setDate("toDate", toDate);   
+	return query.list();
+}
+
 }
