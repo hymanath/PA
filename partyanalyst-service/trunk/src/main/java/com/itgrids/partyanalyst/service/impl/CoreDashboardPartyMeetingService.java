@@ -3445,6 +3445,12 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					}  
 				}
 			}
+			//Santosh
+		      /* Adding meeting name to final list */
+		      if(finalList != null && finalList.size() > 0){
+		        String partyMeetingName = partyMeetingDAO.getPartyMeetingName(partyMeetingId);
+		        finalList.get(0).setName(partyMeetingName);
+		      }
 			return finalList;
 		}
 		catch(Exception e){	
