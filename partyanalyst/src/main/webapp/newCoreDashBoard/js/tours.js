@@ -270,10 +270,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var designationWiseList = result.subList;
 	   var tursDesgntnIdsString;
 		var str='';
+		str+='<div class="toursScroll">';
 		 if(overViewRslt != null){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<h4><span class="headingColor text-capital">Overall&nbsp Leaders</span></h4>';
-					str+='<div id="" class="m_top10">';
+					str+='<div id="" class="m_top10 ">';
 						str+='<div class="row">';
 							str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top5">';
 								str+='<div class="pad_5  bg_ED">';
@@ -346,8 +347,8 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		
 		    if(designationWiseList != null && designationWiseList.length > 0){
 				
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				str+='<div class="toursScroll">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10 ">';
+				str+='<div class="" >';
 				for(var i in designationWiseList){
 				  var designationids;
 				   if(designationWiseList[i].id==4){//organization SECRETARY and SECRETARY
@@ -377,9 +378,9 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 					 }else{
 					  tursDesgntnIdsString = tursDesgntnIdsString+','+designationids;	
 					}
-				   str+='<div>';
+				   str+='<div >';
 							str+='<h4><span class="text-capital">'+designationWiseList[i].name+'</span></h4>';
-							str+='<div class="dropup">';
+							str+='<div class="dropup findclass">';
 							str+='<span class="pull-right dropdown-toggle" style="font-size: 20px; font-weight: 600; margin-top: -16px;cursor:pointer;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
 								str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom" aria-labelledby="dropdownMenu2" style="padding:10px;">';
 									str+='<p><span style="font-size: 20px; font-weight: 600; margin-top: -16px;">&#9432; </span><i style="font-size: 17px;">Tours Days Target Per Month</i></p>';
@@ -482,10 +483,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				str+='</div>';	
 				str+='</div>';	
 				
+				
 			}
+			str+='</div>';	
 		    $("#tourOverviewNewDivId").html(str);  
-		   $(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
-			$(".toursScroll").mCustomScrollbar({setHeight:'600px'});
+			//$( ".findclass" ).first().addClass("dropdown");
+			//$( ".findclass" ).first().removeClass("dropup");
+			$(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
+			$(".toursScroll").mCustomScrollbar({setHeight:'1200px'});
 		   
 		   
 		}
