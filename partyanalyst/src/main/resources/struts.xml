@@ -15849,5 +15849,25 @@
 			<param name="root">locations</param>
 		</result>	
 	</action>
+	<action name="getAssignedDesignationsForUserAction" class="cccDashboardAction"  method="getAssignedDesignationsForUser">
+		<result type="json" name="success">    
+			<param name="root">govtDeptVoList</param>         
+		</result>
+	</action>
+	<action name="getSubLevelsForUserAction" class="cccDashboardAction"  method="getSubLevelsForUser">
+		<result type="json" name="success">    
+			<param name="root">govtDeptVoList</param>         
+		</result>
+	</action>
+	<action name="getSubOrdinatesAlertsOverViewAction" class="cccDashboardAction"  method="getSubOrdinatesAlertsOverView">
+		<result type="json" name="success">    
+			<param name="root">govtDeptVoList</param>         
+		</result>
+	</action>
+	<action name="updatingAlertInformationAction" class="cccDashboardAction"  method="updatingAlertInformation">
+		<result type="json" name="success">		   
+			<param name="root">successMsg</param>
+		</result>
+	</action>
  </package>
 </struts>
