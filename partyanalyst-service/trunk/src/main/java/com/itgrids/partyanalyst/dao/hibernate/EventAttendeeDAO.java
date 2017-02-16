@@ -1472,7 +1472,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 									" model.attendedTime" +
 									" from EventAttendee model" +
 									" where model.tdpCadreId = :cadreId" +
-									" and model.event.eventId = :eventId and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
+									" and model.event.eventId = :eventId and model.tdpCadre.isDeleted = 'N' " +
+									" and model.tdpCadre.enrollmentYear = 2014 order by date(model.attendedTime) ");
 		query.setParameter("cadreId", cadreId);
 		query.setParameter("eventId", eventId);
 		
