@@ -198,15 +198,28 @@
 										<div class="updateDropDownArrow">
 											<button type="button" class="closedropdown close"  data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
 											<div class="row">
-												<div class="col-md-3 col-xs-12 col-sm-6">
-													<label style="font-size:14px;" class="textcolor_black">Assigned Cadre</label>
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">  
+													<label style="font-size:14px;" class="textcolor_black">Assigned Leader</label>
 													<select class="form-control chosen-select" id="assignedCadreId" onChange="assignCadreDetailsAllLevel();">
-														<option value="0" selected="selected">Select Assigned Cadre</option>
-														<option value="1">Party</option>
-														<option value="2">Govt</option>
+														<option value="0" selected="selected">Select Assigned Leader</option>>
 													</select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls optionalBlockCls">
+													<label style="font-size:14px;" class="textcolor_black">Involved Leader</label>
+													<select class="form-control chosen-select" id="involvedCadreId" onChange="involvedCadreDetailsAllLevel();">
+														<option value="0" selected="selected">Select Involved Leader</option>
+												
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls optionalBlockCls">
+													<label style="font-size:14px;" class="textcolor_black">Benefit </label>
+													<select class="form-control chosen-select" id="benefitId" onChange="Benefit();">
+														<option value="0" selected="selected">None</option>
+														<option value="1">+Ve</option>      
+														<option value="2">-Ve</option>
+													</select>   
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<label style="font-size:14px;" class="textcolor_black">State</label>
 													 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
 														 <option value="0">All</option>
@@ -214,30 +227,30 @@
 														 <option value="36">Telangana</option>   
 													 </select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<label style="font-size:14px;" class="textcolor_black">District</label>
 														<select class="chosen-select " id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
 														<option value="0">Select District</option></select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<label style="font-size:14px;" class="textcolor_black">Assembly</label>
 													<select class=" form-control chosen-select " id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
 													<option value="0">All</option>
 													</select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<label style="font-size:14px;" class="textcolor_black">Mandal/Municipality</label>
 													<select class=" form-control chosen-select " id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
 														<option value="0">All</option>
 													 </select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<label style="font-size:14px;" class="textcolor_black">Panchayat/Ward</label>
 													<select class=" form-control chosen-select " id="referpanchayatId" >
 														<option value="0">All</option>
 													</select>
 												</div>
-												<div class="col-md-3 col-xs-12 col-sm-6">
+												<div class="col-md-3 col-xs-12 col-sm-6 dynamicCls">
 													<button style="margin-top: 25px;" id="searchBtnId" onclick="getAdvanceLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
 												</div>
 											</div>
@@ -429,7 +442,8 @@ $('[data-toggle="tooltip"]').tooltip()
 var globalStateId = 1;
 globalLocation = "state";  
 var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
-var currentToDate = moment().format("DD/MM/YYYY");  
+var currentToDate = moment().format("DD/MM/YYYY");
+getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate);
 
 getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate);  
 getAlertStatusByAlertType();
@@ -472,7 +486,7 @@ $(document).ready(function(){
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
-
+		getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate);
 		var levelId = 0;
 		var levelValue = 0;
 			$('.stateCls').each(function(){
@@ -521,41 +535,84 @@ $(document).on("click","#createAlertBtn",function(){
 	getAlertsource();
 	$("#apptmemberDetailsDiv").html("");
 });
-//$(".dropkickClass").dropkick();
-
-getAlertAssignedCandidate();
-function getAlertAssignedCandidate()
-{
-
-	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+//swa
+function getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate){
 	$("#assignedCadreId option").remove();
-	var jsObj={
-    			alertId:0,
-				task:""
-    		}
+	var alertTypeId = $("#alertTypeId").val();
+	var jsObj={  
+		alertId:0,
+		task:"",
+		stateId:globalStateId,
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		alertTypeId:alertTypeId
+    }
 	$.ajax({
 	  type : 'GET',
-	  url : 'getAlertAssignedCandidateAction.action',
+	  url : 'getAlertAssignedCandidateAction.action',    
 	  dataType : 'json',
 	  data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){ 
-	  //buildAlertCommentsForTracking(result,"");
-	  var str='';
-	   str+='<option value="0">All</option>';
-		if(result != null && result.length > 0){
+	}).done(function(result){
+		var str='';
+		str+='<option value="0">SELECT ONE LEADER</option>';   
+		if(result != null && result.length > 0){         
 			for(var i in result){
 				if(result[i].id > 0)
-				str+='<option value="'+result[i].id+'">'+(result[i].uname).toUpperCase()+'</option>';
-			}
+					str+='<option value="'+result[i].id+'">'+(result[i].uname).toUpperCase()+'['+result[i].count+']</option>';
+			}      
 		}
 		$("#assignedCadreId").html(str);
-		/*$("#assignedCadreId").dropkick();
-		var select1 = new Dropkick("#assignedCadreId");
-		select1.refresh();*/
 		$("#assignedCadreId").trigger('chosen:updated');
-	});
+	});         
+} 
+ 
+function getAlertInvolvedCandidate(cadreId){
+	$("#involvedCadreId option").remove();
+	var alertTypeId = $("#alertTypeId").val();
 	
-}    
+	var jsObj={
+		cadreId:cadreId,   
+		task:"",
+		stateId:globalStateId,
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		alertTypeId:alertTypeId
+    }
+	$.ajax({    
+	  type : 'GET',
+	  url : 'getAlertInvolvedCandidateAction.action',                       
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<option value="0">SELECT ONE LEADER</option>';              
+			if(result != null && result.length > 0){
+				for(var i in result){
+					if(result[i].id > 0)  
+						str+='<option value="'+result[i].id+'">'+(result[i].uname).toUpperCase()+'['+result[i].count+']</option>';       
+				}
+			}
+			$("#involvedCadreId").html(str);
+			$("#involvedCadreId").trigger('chosen:updated');
+			$(".optionalBlockCls").show();                  
+			$('.dynamicCls').each(function(){
+				if($(this).hasClass("col-md-4")){  
+					$(this).toggleClass("col-md-3").toggleClass("col-md-4");
+				}	
+			}); 
+		}else{
+			$(".optionalBlockCls").hide();
+			$('.dynamicCls').each(function(){
+				if($(this).hasClass("col-md-3")){
+					$(this).toggleClass("col-md-3").toggleClass("col-md-4");
+				}	
+			});  	
+		}
+		
+	});         
+}
+           
 	$(document).on("click",".stateCls",function(){
 		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
@@ -570,6 +627,7 @@ function getAlertAssignedCandidate()
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+		getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate);
 		var levelId = 0;
 		var levelValue = stateId;
 				
@@ -643,7 +701,7 @@ function getAlertAssignedCandidate()
 			type : 'GET',
 			url : 'getDistrictsForStateAction.action',
 			dataType : 'json',  
-			data : {task:JSON.stringify(jobj)} 
+			data : {task:JSON.stringify(jobj)}              
 		}).done(function(result){
 			if(result != null && result.length > 0){ 
 				var str = ""; 
@@ -754,6 +812,7 @@ function getAlertAssignedCandidate()
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+		getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate);
 		
 		var statusId=0;    
 		var levelId = 0;
@@ -1072,6 +1131,8 @@ function getAlertAssignedCandidate()
 	$("#alertStatusId").chosen();    
 	$("#stateId").chosen();
 	$("#assignedCadreId").chosen();
+	$("#involvedCadreId").chosen();
+	$("#benefitId").chosen();
 	$("#referdistrictId").chosen();
 	$("#referconstituencyId").chosen();
 	$("#refermandalNameId").chosen();
@@ -1080,10 +1141,10 @@ function getAlertAssignedCandidate()
 	$(".datatableId").dataTable();
 		$(document).on("click",".showfilterBlock",function(){  
 			$("#assignedCadreId").val(0).trigger('chosen:updated');
+			$("#involvedCadreId").val(0).trigger('chosen:updated');
+			$("#benefitId").val(0).trigger('chosen:updated');    
 			$("#stateId").val(globalStateId).trigger('chosen:updated');
-			//$('#referdistrictId').empty(); 
 	        $("#referdistrictId").val(0).trigger('chosen:updated');
-			//$('#referdistrictId').append('<option value="0">Select District</option>'); 
 			$('#referconstituencyId').empty(); 
 			$('#referconstituencyId').append('<option value="0">All</option>'); 
 			$("#referconstituencyId").trigger('chosen:updated');
@@ -1093,7 +1154,7 @@ function getAlertAssignedCandidate()
 			$('#referpanchayatId').empty();
             $('#referpanchayatId').append('<option value="0">All</option>'); 			
 			$("#referpanchayatId").val(0).trigger('chosen:updated');
-		$(".filterBlockDiv").toggle();  
+			$(".filterBlockDiv").toggle();  
 	});
 	$(document).on("click",".closedropdown",function(){
 		$(".filterBlockDiv").hide();
@@ -1125,22 +1186,34 @@ function getAlertAssignedCandidate()
 			}  
 		});     
 	}  
-function assignCadreDetailsAllLevel(){
-	
-            $('#referdistrictId').empty(); 
-			$('#referdistrictId').append('<option value="0">Select District</option>'); 
-			$("#referdistrictId").trigger('chosen:updated');
-			$('#refermandalNameId').empty();
-            $("#stateId").val(globalStateId).trigger('chosen:updated');			
-			$('#refermandalNameId').append('<option value="0">All</option>'); 
-			$("#refermandalNameId").trigger('chosen:updated');
-			$('#referpanchayatId').empty(); 
-			$('#referpanchayatId').append('<option value="0">All</option>'); 
-			$("#referpanchayatId").trigger('chosen:updated');
-			$('#referconstituencyId').empty(); 
-			$('#referconstituencyId').append('<option value="0">All</option>'); 
-			$("#referconstituencyId").trigger('chosen:updated');
-	
+function assignCadreDetailsAllLevel(){  
+	$('#refermandalNameId').empty();
+	$("#stateId").val(globalStateId).trigger('chosen:updated');			
+	$('#refermandalNameId').append('<option value="0">All</option>'); 
+	$("#refermandalNameId").trigger('chosen:updated');
+	$('#referpanchayatId').empty(); 
+	$('#referpanchayatId').append('<option value="0">All</option>'); 
+	$("#referpanchayatId").trigger('chosen:updated');
+	$('#referconstituencyId').empty(); 
+	$('#referconstituencyId').append('<option value="0">All</option>'); 
+	$("#referconstituencyId").trigger('chosen:updated');
+	var cadreId = $("#assignedCadreId").val();       
+	if(cadreId == 0){
+		$(".optionalBlockCls").hide();
+		$('.dynamicCls').each(function(){
+			if($(this).hasClass("col-md-3")){
+				$(this).toggleClass("col-md-3").toggleClass("col-md-4");
+			}	
+		});	
+	}else{  
+		$(".optionalBlockCls").show();          
+		$('.dynamicCls').each(function(){
+			if($(this).hasClass("col-md-4")){  
+				$(this).toggleClass("col-md-3").toggleClass("col-md-4");
+			}	
+		});    	
+		getAlertInvolvedCandidate(cadreId);
+	}
 }  
 function getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentToDate){
 	$("#alertVerificationStatusTabId").html('<img src="images/search.gif" />');
@@ -1253,7 +1326,7 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 			actionTypeId:actionTypeId,
 			actionTypeStatusId:actionTypeStatusId,
 			levelValue:levelValue,
-			fromDate :fromDate,
+			fromDate :fromDate,  
 			toDate   :toDate,
 			impactScopeId:impactScopeId,
 			statusId : statusId,
