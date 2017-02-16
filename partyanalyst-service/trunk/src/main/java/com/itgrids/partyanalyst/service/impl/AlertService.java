@@ -147,7 +147,6 @@ private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 private ICadreCommitteeService cadreCommitteeService;
 private IAlertCategoryDAO alertCategoryDAO;
 private IPanchayatDAO panchayatDAO;
-
 private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 private IParliamentAssemblyDAO parliamentAssemblyDAO; 
@@ -1180,7 +1179,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 	}
 	
-	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId)
+	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId, Long impactId)
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
 		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
@@ -1198,7 +1197,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate2 = sdf.parse(inputVO.getFromDate2());
 				toDate2 = sdf.parse(inputVO.getToDate2());
 			}
-			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2);//done
+			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2,involvedCandidateId,impactId);//done
 			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
 			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
 			 if(list2 != null && list2.size() > 0){
@@ -2149,19 +2148,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return rs;
 	}
-	
-	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId)
+	//swa.
+	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr)
 	{
-		LOG.info("Entered in getAlertAssignedCandidate() method");
+		LOG.info("Entered in getAlertAssignedCandidate() method");   
 		List<StatusTrackingVO> resultList = new ArrayList<StatusTrackingVO>(); ;
 		try{
-			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidate(alertId);
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidate(alertId,stateId,alertTypeId,fromDate,toDate);
 			 if(list !=null && list.size()>0){
 				 
 				 for (Object[] objects : list) {
 					 StatusTrackingVO vo= new StatusTrackingVO();
 					 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
 					 vo.setUname(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());//first name
+					 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));       
 					 resultList.add(vo);
 				}
 			 }				
@@ -2173,7 +2180,38 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return resultList;
 	}
-
+	public List<StatusTrackingVO> getAlertInvolvedCandidate(Long cadreId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr)
+	{
+		LOG.info("Entered in getAlertAssignedCandidate() method");
+		List<StatusTrackingVO> resultList = new ArrayList<StatusTrackingVO>(); ;
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertIdList = alertAssignedDAO.getTotalAlertsRelatedToCadre(cadreId,stateId,alertTypeId,fromDate,toDate);
+			List<Object[]> list = alertCandidateDAO.getAlertInvolvedCandidate(alertIdList,stateId,alertTypeId,fromDate,toDate);
+			 if(list !=null && list.size()>0){             
+				 
+				 for (Object[] objects : list) {
+					 StatusTrackingVO vo= new StatusTrackingVO();
+					 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
+					 vo.setUname(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());//first name
+					 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));    
+					 resultList.add(vo);
+				}
+			 }				
+				}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getAlertAssignedCandidate() method");
+		}
+		return resultList;
+	}
 	
 	public void setCurrentDesignationForCadre(List<AlertDataVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
 		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
