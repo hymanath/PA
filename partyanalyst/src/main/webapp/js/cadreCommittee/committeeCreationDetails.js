@@ -415,7 +415,7 @@ function buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr
 	str+='</div>';
 	$("#detailedReportId").html(str)
 	$("#dataTableReport").dataTable({
-		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]],
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]],
 	});
 	$("#dataTableReport").removeClass("dataTable");
 }
