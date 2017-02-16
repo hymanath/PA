@@ -1199,7 +1199,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="district" checked>District
                             </label>
 							<div class="col-md-2  col-xs-12 col-sm-2 pull-right">
-								<select class="form-control" id="tdpCommitteeYearId"></select>
+								<select class="form-control" id="tdpCommitteeYearId" onchange="getLocationwiseCommitteesCount();"></select>
 							</div>
 						</div>
 						<div class="row">
@@ -3464,7 +3464,7 @@ $(document).on('click','.showPdfCls2',function(){
 		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 	}else{
 		$("#pdfModelId").modal("show");
-		str += '<iframe src="'+wurl+'/'+filePath+'" width="100%" height="800">';    
+		str += '<iframe src="'+wurl+'/nominated_post_documents/'+filePath+'" width="100%" height="800">';    
 		str += '</iframe>';
 		$("#pdfReportDetailsId").html(str);
 	}
