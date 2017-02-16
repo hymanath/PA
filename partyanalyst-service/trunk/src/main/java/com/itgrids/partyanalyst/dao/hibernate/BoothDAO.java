@@ -702,7 +702,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		@SuppressWarnings("unchecked")
 		public List getPartNoByBoothId(Long boothId)
 		{
-		return getHibernateTemplate().find("select model.partNo from Booth model where model.boothId = ?",boothId);	
+		return getHibernateTemplate().find("select model.partNo,model.publicationDate.publicationDateId from Booth model where model.boothId = ?",boothId);	
 		}
 		
 		
