@@ -164,8 +164,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			else if(dataArr[0].toString().equalsIgnoreCase("NotStarted"))
 				str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
 			
-			
-			if(dataArr[1].toString().equalsIgnoreCase("district")){
+			if(dataArr[1].toString().equalsIgnoreCase("state")){
+				str.append( " and model.userAddress.state.stateId =:constituencyId ");
+			}else if(dataArr[1].toString().equalsIgnoreCase("district")){
 				str.append( " and model.userAddress.district.districtId =:constituencyId ");
 			}else{
 				str.append( " and model.userAddress.constituency.constituencyId =:constituencyId ");
@@ -253,7 +254,19 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(distinct TC.tdpCommitteeId),TC.completedDate  ");
 		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) ");
-		sb.append(" and  TC.userAddress.constituency.constituencyId = :constituencyId ");
+		if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("State"))
+		{
+			sb.append(" and  TC.userAddress.state.stateId = :constituencyId ");
+		}
+		else if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("District"))
+		{
+			sb.append(" and  TC.userAddress.district.districtId = :constituencyId ");
+		}
+		else if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("Constituency"))
+		{
+			sb.append(" and  TC.userAddress.constituency.constituencyId = :constituencyId ");
+		}
+		
 		if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0)
 			sb.append(" and TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(startDate != null && endDate != null){
@@ -283,7 +296,19 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select TBC.tdpBasicCommitteeId,count(*)  ");
 		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8)");
-		sb.append(" and  TC.userAddress.constituency.constituencyId = :constituencyId ");
+		if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("State"))
+		{
+			sb.append(" and  TC.userAddress.state.stateId = :constituencyId ");
+		}
+		else if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("District"))
+		{
+			sb.append(" and  TC.userAddress.district.districtId = :constituencyId ");
+		}
+		else if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("Constituency"))
+		{
+			sb.append(" and  TC.userAddress.constituency.constituencyId = :constituencyId ");
+		}
+		//sb.append(" and  TC.userAddress.constituency.constituencyId = :constituencyId ");
 		if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0)
 			sb.append(" and TC.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(startDate != null && endDate != null){
@@ -382,6 +407,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			else if(accessType != null && accessType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				str.append(" and TC.userAddress.constituency.constituencyId in (:locationIds)  ");
 			}
+			else if(accessType != null && accessType.equalsIgnoreCase(IConstants.STATE)){
+				str.append(" and TC.userAddress.state.stateId in (:locationIds)  ");
+			}
 			if(startDate != null && endDate != null){
 				//str.append( " and ( (date(TC.startedDate) between :startDate and :endDate )  OR  ( date(TC.completedDate) between :startDate and :endDate )  )" );
 			}
@@ -424,6 +452,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		else if(accessType != null && accessType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			str.append(" and TC.userAddress.constituency.constituencyId in (:locationIds)  ");
+		}
+		else if(accessType != null && accessType.equalsIgnoreCase(IConstants.STATE)){
+			str.append(" and TC.userAddress.state.stateId in (:locationIds)  ");
 		}
 		
 		if(startDate != null && endDate != null){
