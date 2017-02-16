@@ -34,6 +34,7 @@ public class GovtDepartmentDesignationOfficer extends BaseModel implements Seria
 	
 	private GovtDepartmentDesignation govtDepartmentDesignation;
 	private GovtDepartmentLevel govtDepartmentLevel;
+	private UserAddress userAddress;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -115,5 +116,16 @@ public class GovtDepartmentDesignationOfficer extends BaseModel implements Seria
 	}
 	public void setGovtDepartmentLevel(GovtDepartmentLevel govtDepartmentLevel) {
 		this.govtDepartmentLevel = govtDepartmentLevel;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
 	}
 }

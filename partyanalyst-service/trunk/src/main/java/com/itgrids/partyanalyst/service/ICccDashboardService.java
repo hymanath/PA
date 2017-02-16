@@ -44,4 +44,10 @@ public interface ICccDashboardService {
 	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId);
 	public List<IdAndNameVO> getDeptIdAndNameListForUser(Long userId);
 	public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId);
+	
+	public List<GovtDepartmentVO> getAssignedDesignationsForUser(Long userId);
+	public GovtDepartmentVO getAssignedLevelsForUser(Long userId,Long designationId);
+	public List<GovtDepartmentVO> getSubLevelsForUser(Long userId,Long designationId);
+	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate);
+	public String updatingAlertInformation(final AlertAssigningVO inputvo);
 } 

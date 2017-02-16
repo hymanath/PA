@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDetailsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
@@ -82,8 +83,17 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private IBoothDAO boothDAO;
 	private IAlertCandidateDAO alertCandidateDAO;
 	private IGovtDepartmentLevelDetailsDAO govtDepartmentLevelDetailsDAO;
+	private IPanchayatDAO panchayatDAO;
 	
 	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public void setAlertDepartmentStatusDAO(
 			IAlertDepartmentStatusDAO alertDepartmentStatusDAO) {
 		this.alertDepartmentStatusDAO = alertDepartmentStatusDAO;
@@ -1490,4 +1500,274 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return returnList;
 	}	
+
+	public List<GovtDepartmentVO> getAssignedDesignationsForUser(Long userId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			List<Object[]> list = govtDepartmentDesignationOfficerDAO.getDeptDesignationsForUser(userId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setDesignation(obj[1] != null ? obj[1].toString():"");
+					vo.setDepartmentId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setDepartment(obj[3] != null ? obj[3].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getAssignedDesignationsForUser() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public GovtDepartmentVO getAssignedLevelsForUser(Long userId,Long designationId){
+		GovtDepartmentVO returnvo = new GovtDepartmentVO();
+		try {
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			
+			List<Object[]> list = govtDepartmentDesignationOfficerDAO.getLevelsForUser(userId, designationId);
+			if(list != null&& !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					if(levelId.longValue() != id.longValue()){
+						GovtDepartmentVO vo = new GovtDepartmentVO();
+						vo.setId(id);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						returnvo.getGovtDeptList().add(vo);
+						
+						levelId = id;
+					}
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
+			if(levelId > 0l && levelValues != null && !levelValues.isEmpty()){
+				List<Object[]> locationList = new ArrayList<Object[]>();
+				if(levelId == 3l)							//District
+					 locationList = districtDAO.getDistrictDetailsByDistrictIds(levelValues);
+				else if(levelId == 4l || levelId == 8l)		//Constituency || Ward
+					locationList = constituencyDAO.getConstituenciesNamesByIds(levelValues);
+				else if(levelId == 5l)						//Mandal
+					locationList = tehsilDAO.getTehsilNameByTehsilIdsList(levelValues);
+				else if(levelId == 6l)						//Village
+					locationList = panchayatDAO.getPanchayatNamesByIds(levelValues);
+				else if(levelId == 7l)						//LocalElectionBody
+					locationList = localElectionBodyDAO.getLocalElectionBodyNames(levelValues);
+				
+				if(locationList != null && !locationList.isEmpty()){
+					for (Object[] obj : locationList) {
+						GovtDepartmentVO vo = new GovtDepartmentVO();
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						returnvo.getGovtDepartmentVOList().add(vo);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getAssignedLevelsForUser() method of CccDashboardService",e);
+		}
+		return returnvo;
+	}
+	
+	public List<GovtDepartmentVO> getSubLevelsForUser(Long userId,Long designationId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			Long levelId = 0l;
+			List<Long> list = govtDepartmentDesignationOfficerDAO.getLevelIdForDesignation(userId, designationId);
+			if(list != null && !list.isEmpty())
+				levelId = list.get(0);
+			
+			List<Object[]> levelList = govtDepartmentLevelDAO.getLowerLevelsByLevel(levelId);
+			if(levelList != null && !levelList.isEmpty()){
+				for (Object[] obj : levelList) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getSubLevelsForUser() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDate != null && endDate != null){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+			
+			List<Object[]> statusList = alertDepartmentStatusDAO.getStatusWithoutPending();
+			List<Object[]> list = alertAssignedOfficerDAO.getSubOrdinatesAlertDetails(designationId, levelId, fromDate, toDate);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(id);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setGovtDeptList(setStatusList(statusList));
+					GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
+					if(stsvo != null)
+						stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getSubOrdinatesAlertsOverView() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> setStatusList(List<Object[]> list){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured setStatusList() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public GovtDepartmentVO getMatchedVo(List<GovtDepartmentVO> list,Long id){
+		GovtDepartmentVO vo = null;
+		try {
+			if(list != null && !list.isEmpty()){
+				for (GovtDepartmentVO stsvo : list) {
+					if(stsvo.getId() != null && id != null && stsvo.getId().longValue() == id.longValue())
+						return stsvo;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Error occured getMatchedVo() method of CccDashboardService",e);
+		}
+		return vo;
+	}
+	
+	public String updatingAlertInformation(final AlertAssigningVO inputvo){
+		String status = null;
+		try {
+			status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					List<Long> documentIds = new ArrayList<Long>(0);
+					
+					//Comments Saving
+					AlertDepartmentComment alertDepartmentComment = new AlertDepartmentComment();
+					alertDepartmentComment.setComment(inputvo.getComment());
+					alertDepartmentComment.setInsertedBy(inputvo.getUserId());
+					alertDepartmentComment.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertDepartmentComment = alertDepartmentCommentDAO.save(alertDepartmentComment);
+					
+					//Documents Saving
+					if(inputvo.getDocumentsList() != null && !inputvo.getDocumentsList().isEmpty()){
+						for (String path : inputvo.getDocumentsList()) {
+							AlertDepartmentDocument alertDepartmentDocument = new AlertDepartmentDocument();
+							alertDepartmentDocument.setDocument(path);
+							alertDepartmentDocument.setInsertedBy(inputvo.getUserId());
+							alertDepartmentDocument.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							alertDepartmentDocument = alertDepartmentDocumentDAO.save(alertDepartmentDocument);
+							documentIds.add(alertDepartmentDocument.getAlertDepartmentDocumentId());
+						}
+					}
+					
+					
+					//Alert Status Updation
+					Alert alert = alertDAO.get(inputvo.getAlertId());
+					alert.setAlertStatusId(inputvo.getStatusId());
+					alert.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alert.setUpdatedBy(inputvo.getUserId());
+					alert = alertDAO.save(alert);
+					
+					Long assignedOfficerId = 0l;
+					List<Long> alertAssignIds = alertAssignedOfficerDAO.getAlertAssignedOfficerIdsForAlertByUser(inputvo.getAlertId(), inputvo.getUserId());
+					if(alertAssignIds != null && !alertAssignIds.isEmpty())
+						assignedOfficerId = alertAssignIds.get(0);
+					
+					AlertAssignedOfficer alertAssignedOfficer = alertAssignedOfficerDAO.get(assignedOfficerId);
+					
+					//Officer Assigning Tracking
+					AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
+					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerTracking.setAlertId(alertAssignedOfficer.getAlertId());
+					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(alertAssignedOfficer.getGovtDepartmentDesignationOfficerId());
+					alertAssignedOfficerTracking.setGovtOfficerId(alertAssignedOfficer.getGovtOfficerId());
+					alertAssignedOfficerTracking.setInsertedBy(alertAssignedOfficer.getInsertedBy());
+					alertAssignedOfficerTracking.setUpdatedBy(alertAssignedOfficer.getUpdatedBy());
+					alertAssignedOfficerTracking.setInsertedTime(alertAssignedOfficer.getInsertedTime());
+					alertAssignedOfficerTracking.setUpdatedTime(alertAssignedOfficer.getUpdatedTime());
+					alertAssignedOfficerTracking.setAlertStatusId(alertAssignedOfficer.getAlertStatusId());
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
+					
+					//Officer Assigning Updation
+					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(inputvo.getStatusId());
+					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
+					
+					//Alert Assigned Officer Action Saving
+					if(documentIds != null && !documentIds.isEmpty()){
+						for (int i = 0; i < documentIds.size(); i++) {
+							AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
+							alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
+							alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+							alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+							alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
+							if(i == 0)
+								alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
+								
+							alertAssignedOfficerAction.setAlertDepartmentDocumentId(documentIds.get(i));
+							alertAssignedOfficerAction.setInsertedBy(inputvo.getUserId());
+							alertAssignedOfficerAction.setUpdatedBy(inputvo.getUserId());
+							alertAssignedOfficerAction.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							alertAssignedOfficerAction.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+							alertAssignedOfficerAction.setIsDeleted("N");
+							alertAssignedOfficerAction = alertAssignedOfficerActionDAO.save(alertAssignedOfficerAction);
+						}
+					}else{
+						AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
+						alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
+						alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+						alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+						alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
+						alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
+							
+						//alertAssignedOfficerAction.setAlertDepartmentDocumentId(documentIds.get(i));
+						alertAssignedOfficerAction.setInsertedBy(inputvo.getUserId());
+						alertAssignedOfficerAction.setUpdatedBy(inputvo.getUserId());
+						alertAssignedOfficerAction.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerAction.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerAction.setIsDeleted("N");
+						alertAssignedOfficerAction = alertAssignedOfficerActionDAO.save(alertAssignedOfficerAction);
+					}
+					
+					return "success";
+				}
+			});
+		} catch (Exception e) {
+			logger.error("Error occured updatingAlertInformation() method of CccDashboardService",e);
+		}
+		return status;
+	}
 }

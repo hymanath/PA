@@ -31,6 +31,7 @@ public class AlertAssigningVO {
 	private Long userId;
 	private Long alertId;
 	private List<String> documentsList = new ArrayList<String>(0);
+	private Long statusId;
 	
 	
 	public Long getId() {
@@ -104,5 +105,11 @@ public class AlertAssigningVO {
 	}
 	public void setDocumentsList(List<String> documentsList) {
 		this.documentsList = documentsList;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 }
