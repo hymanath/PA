@@ -111,5 +111,31 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		query.setParameter("tdpCommitteeRoleId", tdpCommitteeRoleId);
 		return (String)query.uniqueResult();
 	}
+	
+	public List<Object[]> getTdpRoles(List<Long> committeeEnrollmntIds,List<Long> committeeLevlIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append( " select distinct model.tdpRoles.tdpRolesId,model.tdpRoles.role from TdpCommitteeRole model  where " );
+		
+		if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+			sb.append( " model.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:committeeLevlIdsList) ");
+		}
+		
+		if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() >0){
+			sb.append( " and model.tdpCommitteeEnrollmentId in (:committeeEnrollmntIds) " );
+		}
+				sb.append( "  order by model.tdpRoles.order " );
+				
+				Query query = getSession().createQuery(sb.toString());
+				
+				if(committeeLevlIdsList != null && committeeLevlIdsList.size() > 0){
+					query.setParameterList("committeeLevlIdsList", committeeLevlIdsList);
+				}
+				if(committeeEnrollmntIds != null && committeeEnrollmntIds.size() > 0){
+					query.setParameterList("committeeEnrollmntIds", committeeEnrollmntIds);
+				}
+				
+				return query.list();
+		
+	}
 
 }
