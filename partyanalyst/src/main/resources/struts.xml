@@ -244,6 +244,10 @@
 			<result type="redirect" name="cardPrintDispatch">cardPrintDispatchAction.action</result>
 			<result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
 			<result type="redirect" name="centralMembersAlertDashboard">centralPartyMembersAlertDashboardAction.action</result>
+			
+			<result type="redirect" name="cccDashboardAction">cccDashboardAction.action</result>
+      		<result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
+			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5707,6 +5711,11 @@
       <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
       <result type="redirect" name="alertClarificationDashboard">alertClarificationDashboardAction.action</result>
       <result type="redirect" name="centralMembersAlertDashboard">centralPartyMembersAlertDashboardAction.action</result>
+      
+
+      <result type="redirect" name="cccDashboardAction">cccDashboardAction.action</result>
+      <result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
+      
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -15700,7 +15709,7 @@
 		</result>	
 	</action>
 	  
-	<action name="alertDepartmentLoginAction" class="cccDashboardAction" method="alertDepartmentLogin">
+	<action name="govtLoginAction" class="cccDashboardAction" method="alertDepartmentLogin">
 		<result name="success">/jsp/alertDepartmentLoginPage.jsp</result>
 	</action>
 	
