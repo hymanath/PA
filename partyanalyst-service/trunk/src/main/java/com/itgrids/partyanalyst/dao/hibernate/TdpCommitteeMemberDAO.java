@@ -655,7 +655,7 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		return query.list();
 	}
 
-public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long>levelIdsList){
+public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList){
 	//0 count,1levelId
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
@@ -2058,7 +2058,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 	}*/
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(Long levelId,Long locationValue,Long constituencyId)
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValue(Long levelId,Long locationValue,Long constituencyId,List<Long> committeeEnrollmentYrIds)
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -2066,7 +2066,11 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationValue " +
 				" and model.isActive ='Y' ");
 		if(constituencyId != null && constituencyId > 0)
-		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
+		 str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
+		
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			str.append(" and model.tdpCommitteeEnrollmentId in (:committeeEnrollmentYrIds) ");
+		}
 		
 		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
@@ -2076,11 +2080,15 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		if(constituencyId != null && constituencyId > 0)
 			query.setParameter("constituencyId", constituencyId);
 		
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			query.setParameterList("committeeEnrollmentYrIds", committeeEnrollmentYrIds);
+		}
+		
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForVillage(Long levelId,Long tehsilId,Long constituencyId)
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForVillage(Long levelId,Long tehsilId,Long constituencyId,List<Long> committeeEnrollmentYrIds)
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -2091,6 +2099,10 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
 		if(tehsilId != null && tehsilId > 0)
 			str.append(" and p.tehsil.tehsilId =:tehsilId and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue = p.panchayatId");
+		
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeEnrollmentYrIds) ");
+		}
 		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
@@ -2098,17 +2110,25 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		if(constituencyId != null && constituencyId > 0)
 			query.setParameter("constituencyId", constituencyId);
 		
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			query.setParameterList("committeeEnrollmentYrIds", committeeEnrollmentYrIds);
+		}
+		
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForWards(Long levelId,Long localElectionBody,Long constituencyId)
+	public List<Object[]> getTotalCommittesCountByLevelIdAndLevelValueForWards(Long levelId,Long localElectionBody,Long constituencyId,List<Long> committeeEnrollmentYrIds)
 	{
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId  from TdpCommitteeMember model,Constituency con " +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId   " +
 				" and model.isActive ='Y' ");
+		
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeEnrollmentYrIds) ");
+		}
 		if(constituencyId != null && constituencyId > 0)
 		 str.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId");
 		if(localElectionBody != null && localElectionBody > 0)
@@ -2119,6 +2139,9 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		query.setParameter("localElectionBody", localElectionBody);
 		if(constituencyId != null && constituencyId > 0)
 			query.setParameter("constituencyId", constituencyId);
+		if(committeeEnrollmentYrIds != null && committeeEnrollmentYrIds.size()>0){
+			query.setParameterList("committeeEnrollmentYrIds", committeeEnrollmentYrIds);
+		}
 		
 		return query.list();
 	}
