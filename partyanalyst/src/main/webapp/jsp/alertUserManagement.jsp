@@ -740,6 +740,95 @@ function getGovtDeptLevelForDeptAndUser(departmentId)
 			if(selectedDay == "All")
 			$("#dateRangePickerDetailedBlock").val('ALL');
 	});
+	
+//getStatusWiseAlertDetails();
+//getAlertStatusForUser();
+//getAssignedDesignationsForUser();
+//getSubLevelsForUser();
+//getSubOrdinatesAlertsOverView();
+
+function getStatusWiseAlertDetails()
+{
+	
+	var jObj ={
+      fromDate : currentFromDate,
+      toDate : currentToDate,
+      stateId : globalStateId,
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr       
+
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getStatusWiseAlertDetailsAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		
+	});
+}
+
+function getAlertStatusForUser()
+{
+	
+	var jObj ={
+     
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getAlertStatusForUserAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		
+	});
+}
+
+function getAssignedDesignationsForUser()
+{
+	
+	var jObj ={
+     
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getAssignedDesignationsForUserAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		
+	});
+}
+
+function getSubLevelsForUser()
+{
+	
+	var jObj ={
+		designationId : 1
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getSubLevelsForUserAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		
+	});
+}
+
+function getSubOrdinatesAlertsOverView()
+{
+	
+	var jObj ={
+		designationId : 1,
+		levelId : 4,
+		fromDate : currentFromDate,
+		toDate : currentToDate
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getSubOrdinatesAlertsOverViewAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		
+	});
+}
 </script>
 </body>
 </html>

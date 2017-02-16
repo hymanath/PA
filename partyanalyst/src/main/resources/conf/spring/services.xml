@@ -4045,6 +4045,7 @@
 		<property name="boothDAO" ref="boothDAO" ></property>
 		<property name="alertCandidateDAO" ref="alertCandidateDAO" ></property>
 		<property name="govtDepartmentLevelDetailsDAO" ref="govtDepartmentLevelDetailsDAO" ></property>
+		<property name="panchayatDAO" ref="panchayatDAO" ></property>
 	</bean>
 </beans>			
 	

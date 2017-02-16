@@ -739,4 +739,106 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		
+		public String getAssignedDesignationsForUser(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   
+				Long userId = regVo.getRegistrationID();
+				
+				govtDeptVoList = cccDashboardService.getAssignedDesignationsForUser(userId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getAssignedDesignationsForUser() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getSubLevelsForUser(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   jObj = new JSONObject(getTask());
+			   Long designationId = jObj.getLong("designationId");
+				
+				govtDeptVoList = cccDashboardService.getSubLevelsForUser(userId,designationId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getSubLevelsForUser() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getSubOrdinatesAlertsOverView(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   jObj = new JSONObject(getTask());
+			   Long designationId = jObj.getLong("designationId");
+			   Long levelId = jObj.getLong("levelId");
+			   String fromDateStr = jObj.getString("fromDate");
+			   String toDateStr = jObj.getString("toDate");
+				
+				govtDeptVoList = cccDashboardService.getSubOrdinatesAlertsOverView(designationId,levelId,fromDateStr,toDateStr);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getSubOrdinatesAlertsOverView() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String updatingAlertInformation(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   if(regVo == null)
+				   successMsg = "failure";
+			   Long userId = regVo.getRegistrationID();
+			   alertAssigningVO.setUserId(userId);
+			   
+			   Map<File,String> mapfiles = new HashMap<File,String>();
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+				Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+				String fileUrl = "" ;
+				List<String> filePaths = null;
+				while(fileParams.hasMoreElements()){
+					String key = fileParams.nextElement();
+			   			
+					File[] files = multiPartRequestWrapper.getFiles(key);
+					filePaths = new ArrayList<String>();
+					if(files != null && files.length > 0)
+						for(File f : files){
+							String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+							String ext = "";
+							if(extension.length > 1){
+								ext = extension[extension.length-1];
+									mapfiles.put(f,ext);
+								}
+							}
+				}  
+				
+				List<String> fileNamesList = new ArrayList<String>();
+				
+				String destPath = saveUploadFile(mapfiles);  
+				if(destPath != null && destPath.trim().length() > 0){
+					String[] strArr = destPath.split(",");
+					if(strArr != null && strArr.length > 0){
+						for (int i = 0; i < strArr.length; i++) {
+							fileNamesList.add(strArr[i]);
+						}
+					}
+				}
+				
+				if(fileNamesList != null && !fileNamesList.isEmpty())
+					   alertAssigningVO.setDocumentsList(fileNamesList);
+			   
+			   successMsg = cccDashboardService.updatingAlertInformation(alertAssigningVO);
+			   
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updatingAlertInformation() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 }
