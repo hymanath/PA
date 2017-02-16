@@ -1202,7 +1202,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.constituencyId,model.name,model.district.districtId,model.district.districtName from Constituency model where " +
+		str.append("select distinct model.constituencyId,model.name,model.district.districtId,model.district.districtName,model.state.stateId,model.state.stateName from Constituency model where " +
 				" model.state.stateId = :stateId  and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 ");
 		if(stateTypeId.longValue() == 0L)
 		{
@@ -1277,7 +1277,7 @@ public List<Constituency> getConstituenciesByStteIdStatTypeId(Long stateId,Long 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAssemblyConstituencyDetlsByDistrictIds(List<Long> districtIds) {	
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.constituencyId, model.name,model.district.districtId,model.district.districtName from Constituency model " +
+		query.append(" select model.constituencyId, model.name,model.district.districtId,model.district.districtName,model.state.stateId,model.state.stateName from Constituency model " +
 				" where model.electionScope.electionScopeId = 2" +
 				" and model.deformDate is null " +
 				" and model.district.districtId in ( :districtIds) " +
