@@ -28,7 +28,9 @@ public class GovtDepartmentDesignationOfficerDetails extends BaseModel implement
 	private Long govtDepartmentDesignationOfficerId;
 	private Long govtOfficerId;
 	private String isDeleted;
+	private Long userId;
 	
+	private User user;
 	private GovtDepartmentDesignationOfficer govtDepartmentDesignationOfficer;
 	private GovtOfficer govtOfficer;
 	
@@ -89,5 +91,24 @@ public class GovtDepartmentDesignationOfficerDetails extends BaseModel implement
 	}
 	public void setGovtOfficer(GovtOfficer govtOfficer) {
 		this.govtOfficer = govtOfficer;
+	}
+	
+	@Column(name = "user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
