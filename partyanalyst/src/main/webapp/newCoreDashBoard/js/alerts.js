@@ -608,8 +608,13 @@
 			url: 'getAlertsDataAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#alertGroupAttachTitId,#alertGroupAttachImgId").html(' ');
 			if(result != null && result.length > 0){
 				buildAlertData(result);
+				if(result[0].categoryId == 2)
+				{
+					getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+				}
 			}    
 		});
 	}
@@ -722,6 +727,26 @@
 				
 			  ]  
 		}); 
+	}
+	function getGroupedArticlesInfo(articleId)
+	{
+		$.ajax({
+			  type : 'GET',      
+			  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+			  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		}).then(function(result){
+			$("#alertGroupAttachTitId").html("<h5 class='text-muted headingColorStyling'>GROUPED ARTICLES</h5>");
+			var str='';
+			if(result !=null && result.length>0){
+				str+='<ul class="list-inline imageUrlUlCls" style="border: 1px solid rgb(211, 211, 211); padding:5px;">';
+				for(var i in result)
+				{
+					str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+				}
+				str+='</ul>';
+			}
+			$("#alertGroupAttachImgId").html(str);
+		});
 	}
 	function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){  
 		var jsObj={
