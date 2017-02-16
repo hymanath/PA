@@ -388,7 +388,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			sb.append(" left join model.alert.tvNewsChannel TNC" +
 						" left join model.alert.edition E");
 		}
-		sb.append(" left join model.alert.userAddress UA" +
+		sb.append(" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join UA.state S" +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
@@ -444,7 +444,80 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		if(deptIdList != null && !deptIdList.isEmpty())
 			query.setParameterList("deptIdList", deptIdList);
+		if(levelId != null && levelId > 0l)
+			query.setParameter("levelId", levelId);
+		if(levelValues != null && !levelValues.isEmpty())
+			query.setParameterList("levelValues", levelValues);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getSubOrdinatesAlertDetails(Long designationId,Long levelId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct");
+		if(levelId != null && levelId == 3l)
+			sb.append(" D.districtId,D.districtName,");
+		else if(levelId != null && levelId == 4l)
+			sb.append(" C.constituencyId,C.name,");
+		else if(levelId != null && levelId == 5l)
+			sb.append(" T.tehsilId,T.tehsilName,");
+		else if(levelId != null && levelId == 6l)
+			sb.append(" P.panchayatId,P.panchayatName,");
+		else if(levelId != null && levelId == 7l)
+			sb.append(" LEB.localElectionBodyId,LEB.name,");
+		else if(levelId != null && levelId == 8l)
+			sb.append(" W.constituencyId,W.name,");
+		
+		sb.append(" model.alertStatus.alertStatusId," +
+					" model.alertStatus.alertStatus," +
+					" count(model.alert.alertId)" +
+					" from AlertAssignedOfficer model" +
+					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
+					" left join UA.district D" +
+					" left join UA.constituency C" +
+					" left join UA.tehsil T" +
+					" left join UA.localElectionBody LEB" +
+					" left join UA.panchayat P" +
+					" left join UA.ward W" +
+					" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId");
+		if(fromDate != null && toDate != null)
+			sb.append(" and (date(model.insertedTime) between :fromDate and :toDate)");
+		
+		sb.append(" group by");
+		if(levelId != null && levelId == 3l)
+			sb.append(" D.districtId,");
+		else if(levelId != null && levelId == 4l)
+			sb.append(" C.constituencyId,");
+		else if(levelId != null && levelId == 5l)
+			sb.append(" T.tehsilId,");
+		else if(levelId != null && levelId == 6l)
+			sb.append(" P.panchayatId,");
+		else if(levelId != null && levelId == 7l)
+			sb.append(" LEB.localElectionBodyId,");
+		else if(levelId != null && levelId == 8l)
+			sb.append(" W.constituencyId,");
+		sb.append(" model.alertStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("designationId", designationId);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Long> getAlertAssignedOfficerIdsForAlertByUser(Long alertId,Long userId){
+		Query query = getSession().createQuery("select distinct model.alertAssignedOfficerId" +
+												" from AlertAssignedOfficer model,GovtDepartmentDesignationOfficerDetails model1" +
+												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = model1.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+												" and model.govtOfficer.govtOfficerId = model1.govtOfficer.govtOfficerId" +
+												" and model.alert.alertId = :alertId" +
+												" and model1.user.userId = userId" +
+												" and model1.isDeleted = 'N'");
+		query.setParameter("alertId", alertId);
+		query.setParameter("userId", userId);
 		return query.list();
 	}
 }

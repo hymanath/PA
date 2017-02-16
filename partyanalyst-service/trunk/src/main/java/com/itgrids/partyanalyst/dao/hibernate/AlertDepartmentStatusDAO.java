@@ -69,4 +69,13 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 		   query.setParameterList("deptIds", deptIds);
 	   return query.list();
    }
+   
+   public List<Object[]> getStatusWithoutPending(){
+	   Query query = getSession().createQuery("select distinct model.alertStatus.alertStatusId," +
+	   											" model.alertStatus.alertStatus" +
+	   											" from AlertDepartmentStatus model" +
+	   											" where model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")" +
+	   											" and model.alertStatus.alertStatusId > 1");
+	   return query.list();
+   }
 }

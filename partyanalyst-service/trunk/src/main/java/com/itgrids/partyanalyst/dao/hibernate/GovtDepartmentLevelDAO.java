@@ -21,4 +21,13 @@ public class GovtDepartmentLevelDAO extends GenericDaoHibernate<GovtDepartmentLe
 											" from GovtDepartmentLevel model");
 		return query.list();
 	}
+	
+	public List<Object[]> getLowerLevelsByLevel(Long levelId){
+		Query query = getSession().createQuery("select model.govtDepartmentLevelId," +
+												" model.levelName" +
+												" from GovtDepartmentLevel model" +
+												" where model.govtDepartmentLevelId > :levelId");
+		query.setParameter("levelId", levelId);
+		return query.list();
+	}
 }
