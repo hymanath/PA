@@ -481,7 +481,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(involvedCadreId != null && involvedCadreId.longValue() > 0L){
 			query.setParameter("involvedCadreId", involvedCadreId);  
 		}
-		if(impactId != null && impactId.longValue() > 0L){
+		if(involvedCadreId != null && involvedCadreId.longValue() > 0L && impactId != null && impactId.longValue() > 0L){
 			query.setParameter("impactId", impactId);  
 		}
 		if(inputVO.getTehsilId() != null && inputVO.getTehsilId() > 0)
