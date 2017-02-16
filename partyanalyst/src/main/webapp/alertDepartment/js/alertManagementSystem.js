@@ -1486,46 +1486,48 @@ function buildStatusWiseTotalAlerts(result){
 										for(var k in result[i].govtDeptList){
 											totalPrintCount = totalPrintCount+result[i].govtDeptList[k].printCnt;
 										}
-										totalCount = totalPrintCount+totalElecCount;
-										if(totalCount == 0 && result[i].govtDeptList[t].count ==0){
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalCount+'</span></td>';
 										for(var t in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[t].count+'</span></td>';
+										}
+										totalCount = totalPrintCount+totalElecCount;
+										if(totalCount == 0 || result[i].govtDeptList[t].count ==0){
+											str+='<td class="bg_D8"><span>'+totalCount+'</span></td>';
+										for(var t in result[i].govtDeptList){
+											str+='<td><span>'+result[i].govtDeptList[t].count+'</span></td>';
 											}
 										}else{
 											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalCount+'</a></span></td>';
 										for(var t in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[t].count+'</span></td>';
+											str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[t].count+'</span></td>';
 											}
 										}
 										
 									str+='</tr>';
 									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
-										if(totalPrintCount ==0 && result[i].govtDeptList[k].printCnt ==0){
-											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalPrintCount+'</span></td>';
+										if(totalPrintCount ==0 || result[i].govtDeptList[k].printCnt ==0){
+											str+='<td class="bg_EE"><span>'+totalPrintCount+'</span></td>';
 										for(var k in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[k].printCnt+'</span></td>';
+											str+='<td><span>'+result[i].govtDeptList[k].printCnt+'</span></td>';
 											}
 										}else{
-											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalPrintCount+'</span></td>';
+											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalPrintCount+'</span></td>';
 										for(var k in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+result[i].govtDeptList[k].printCnt+'</span></td>';
+											str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[k].printCnt+'</span></td>';
 											}
 										}
 									str+='</tr>';
 									
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
-										if(totalElecCount ==0 && result[i].govtDeptList[j].elecCnt ==0){
-											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalElecCount+'</span></td>';
-										for(var j in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><span class="totAlertsStsCls">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
-										}
+										if(totalElecCount ==0 || result[i].govtDeptList[j].elecCnt ==0){
+											str+='<td class="bg_EE"><span>'+totalElecCount+'</span></td>';
+											for(var j in result[i].govtDeptList){
+												str+='<td><span>'+result[i].govtDeptList[j].elecCnt+'</span></td>';
+											}
 										}else{
-											str+='<td class="bg_EE" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><span class="totAlertsStsCls">'+totalElecCount+'</span></td>';
-										for(var j in result[i].govtDeptList){
-											str+='<td attr_status_id="'+result[i].govtDeptList[k].departmentId+'" ><span class="totAlertsStsCls">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
+											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalElecCount+'</span></td>';
+											for(var j in result[i].govtDeptList){
+												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
 											}
 										}
 									str+='</tr>'; 
