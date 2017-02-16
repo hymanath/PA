@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Cadre Details</title>
+<title> Leader Matrix </title>
 	<!-- Bootstrap -->
     <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<!--Bootstrap DatePicker-->
@@ -526,7 +526,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							<span class="pull-right"><span class="count-style" id="totalFamilymembersCount">0</span></span>
 						</h4>
 					</div>
-					<div class="panel-body" id="familyMemberBodyId">
+					<div class="panel-body familyMemberCls" id="familyMemberBodyId">
 					<center><img style="width: 25px; height: 25px;display:none;" src="images/icons/loading.gif" id="dataLoadingsImgForFamilyMembers"/></center>
 						<div class="family-members" id="familyMembersDiv"></div>
 					</div>

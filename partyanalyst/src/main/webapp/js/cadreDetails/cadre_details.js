@@ -774,11 +774,12 @@ var globalidentityMembershipNo = ""	;
 									if(results[i].knownList[j].eventTypeId != 2){
 										if(results[i].knownList[j].absentCount > 0){
 										str+='<td style="text-align:center;position:relative;">'+results[i].knownList[j].absentCount+'  ';
+										if(results[i].knownList[j].casteName != null && results[i].knownList[j].casteName != ""){
 											str+='<span>  <i class="glyphicon glyphicon-info-sign reasonCls" title="Click here for the reason." data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
-										if(results[i].knownList[j].casteName != null && results[i].knownList[j].casteName != "")
 											str+='<div class="rasonShowCls arrow_box4" style="display:none">'+results[i].knownList[j].casteName+'</div>';
-										else
+										}else{
 											str+='<div class="rasonShowCls arrow_box4" style="display:none">Reason Not Given</div>';
+										}
 										str+='</td>';
 											
 										}else{
@@ -846,9 +847,10 @@ var globalidentityMembershipNo = ""	;
 				if(result != null){
 					var str='';
 					str+='<div class="table-responsive">';
-					str+='<table class="table m_0 table-bordered">';
+					str+='<table class="table m_0 table-bordered" id="eventAttendanceInfoTableId">';
 					str+='<thead>';
-						str+='<th style="text-align:center;"></th>';
+						str+='<th style="text-align:center;">S.no</th>';
+						str+='<th style="text-align:center;">Day</th>';
 						str+='<th style="text-align:center;">Count</th>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -857,7 +859,8 @@ var globalidentityMembershipNo = ""	;
 						if(result[i].subList != null)
 							count = result[i].subList.length;
 						str+='<tr>';
-							str+='<td style="text-align:center;">Day - '+(parseInt(i)+1)+' ('+result[i].name+') </td>';
+							str+='<td style="text-align:center;">'+i+'</td>';
+							str+='<td style="text-align:center;">'+result[i].name+'</td>';
 							if(result[i].count > 0){
 								str+='<td class="dayWiseAttendedClass" style="text-align:center;" attr_divId="dayWiseAttendedDiv'+i+'"><a style="cursor:pointer">'+count+'</a>';
 								str+='<ul id="dayWiseAttendedDiv'+i+'" style="display:none">';
@@ -891,6 +894,10 @@ var globalidentityMembershipNo = ""	;
 				str+='</div>';
 				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
 				$("#eventAttendanceInfoBodyId").html(str);
+				$("#eventAttendanceInfoTableId").dataTable({
+					"iDisplayLength": 15,
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				 }); 
 				}
 				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
 			});
@@ -1771,13 +1778,6 @@ function getTotalComplaintsForCandidate(){
 						buildTotalComplaints(myresult,0);
 						buildInsuranceTotalComplaints(myresult,0);
 					}
-				/* else{
-					
-					$("#comaplaintCountInmgMainDivid").html("No Data Available.");
-					//$("#complaintCountDiv").html('No Data Available.');
-					//$("#complaintsDiv").html('No Data Available.');
-					
-				} */
 				});
 	}
 var nominatedResult = [];
@@ -4438,7 +4438,7 @@ function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 			url :'getCandidateAndConstituencySurveyResultAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			alert(222);
+			//alert(222);
 			if(result != null){
 				buildCandidateAndConstituencySurveyResult(result,surveyId,divId);
 				
@@ -8101,7 +8101,7 @@ function nominatedPostBuilingDetails(result){
 			   str+='<div class="panel-body">';
 					str+='<ul class="ulPost">';
 					for(var i in result.subList){
-						str+='<li>';
+						str+='<li class="nominatedPostliCls">';
 						 if(result.subList[i].applStatusId == 6 || result.subList[i].applStatusId == 7){
 							str+='<p class="labelStatus " style="background:green;width:90px;"> '+result.subList[i].status+' </p>';
 							/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
@@ -8111,6 +8111,8 @@ function nominatedPostBuilingDetails(result){
 							else{
 								str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 							}
+						 }else{
+							 $("#.nominatedPostliCls").hide();
 						 }
 					}
 				   str+='</ul>';
