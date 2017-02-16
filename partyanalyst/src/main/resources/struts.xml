@@ -13425,7 +13425,7 @@
 		<result type="json" name="success">
 			<param name="root">statusTrackingVOList</param>
 		</result>
-		</action>
+	</action>
 	<action name="getLocationFilterAlertDataAction" class="createAlertAction" method="getLocationFilterAlertData">
 			<result type="json" name="success">
 				<param name="root">alertDataList</param>
@@ -15832,6 +15832,11 @@
 	<action name="getDeptIdAndNameListForUserAction" class="cccDashboardAction"  method="getDeptIdAndNameListForUser">
 		<result type="json" name="success">  
 			<param name="root">deptList</param>
+		</result>
+	</action>
+	<action name="getAlertInvolvedCandidateAction" class="createAlertAction" method="getAlertInvolvedCandidate">
+		<result type="json" name="success">
+			<param name="root">statusTrackingVOList</param>
 		</result>
 	</action>
 	<action name="getStatusWiseAlertDetailsAction" class="cccDashboardAction"  method="getStatusWiseAlertDetails">
