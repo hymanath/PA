@@ -473,5 +473,41 @@ public List<Object[]> getInvolvedMembersInAlert(Long alertId){
 	query.setParameter("alertId", alertId);
 	query.setParameter("alertTypeId", IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID);
 	return query.list();
+}    
+public List<Object[]> getAlertInvolvedCandidate(List<Long> alertIdList,Long stateId,Long alertTypeId,Date fromDate,Date toDate)
+{
+	StringBuilder str = new StringBuilder();
+	str.append("select " +
+			   " model.tdpCadre.tdpCadreId, " +
+			   " model.tdpCadre.firstname, " +
+			   " count(distinct model.alert.alertId) "+
+			   " from " +
+			   " AlertCandidate model " +
+			   " left join model.alert.userAddress.state state " +
+			   " where " +
+			   " model.alert.isDeleted ='N' and " +
+			   " model.tdpCadre.isDeleted = 'N' and " +
+			   " model.alert.alertType.alertTypeId = :alertTypeId and " +
+			   " date(model.alert.createdTime) between :fromDate and :toDate and ");
+	if(alertIdList != null && alertIdList.size() > 0)
+		str.append("  model.alert.alertId in (:alertIdList)  and ");
+	if(stateId != null && stateId.longValue() > 0L){
+		if(stateId.longValue() == 1L){
+			str.append(" state.stateId = 1 ");
+		}else if(stateId.longValue() == 36L){
+			str.append(" state.stateId = 36 ");
+		}else{
+			str.append(" state.stateId in (1,36) ");
+		}
+	}
+	Query query = getSession().createQuery(str.toString() +" group by model.tdpCadre.tdpCadreId order by model.tdpCadre.firstname ");
+	if(alertIdList != null && alertIdList.size() > 0){
+		query.setParameterList("alertIdList", alertIdList);
+	}
+	query.setParameter("alertTypeId", alertTypeId); 
+	query.setDate("fromDate", fromDate); 
+	query.setDate("toDate", toDate);   
+	return query.list();
 }
+
 }
