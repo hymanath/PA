@@ -2679,7 +2679,7 @@ $(document).on('click','#showTourPdfId',function(){
 			
 			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
 				$("#tourDocumentModalId").modal("show");
-	       str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';
+	       str += '<iframe src="https://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';
 				str += '</iframe>';
 			}
 			if(extName.trim()=="jpg"){  
