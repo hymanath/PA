@@ -4416,6 +4416,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 }
 	function getParyMeetingDetailsDistrictWise(sessionId,partyMeetingId,position){
 		$(".specialMeetingCls").show();
+		$("#partyMeetingHeadingId").html('');
 		$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var partyMeetingTypeArr=[];  
 		$("#specialMeetingUlId li").each(function() {       
@@ -4451,6 +4452,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
   function buildParyMeetingDetailsDistrictWise(result,partyMeetingId,position){
 		$("#districtWiseSpecialMeetingsGraph").html('');
 		if(result != null && result.length > 0){
+			var meetingName = result[0].name;
+			$("#partyMeetingHeadingId").html(meetingName);
 			var str='';
 				str+='<div id="districtWiseGraphSpecialMee" class="chartLiD" style="height:300px" ></div>';
 		}
