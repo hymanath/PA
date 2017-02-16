@@ -960,17 +960,31 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                 </div>
             </div> -->
 			<div class="row">
-				<div class="col-md-3 col-md-offset-4 col-xs-12 col-sm-2 col-sm-offset-4" id="districtDiv">
-					<label>District</label>
+			<div class="col-md-2 col-xs-12 col-sm-4" id="stateDiv" style="display:none;">
+					<label>State</label>
 						<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
-							<select id="popUpdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
+							<select id="popUpStateId" class="form-control" >
 								<option value="0">All</option>
 							</select>
 				</div>
-				<div class="col-md-3 col-md-offset-4 col-xs-12 col-sm-2 col-sm-offset-4">
+				<div class="col-md-2 col-xs-12 col-sm-4" id="popUpDistrictDiv" style="display:none;">
+					<label>District</label>
+						<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<select id="popUpdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" >
+								<option value="0">All</option>
+							</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-4" id="popUpConstituencyDiv" style="display:none;">
+					<label>Constituency</label>
+						<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<select id="popUpConstiesId"  class="form-control" >
+								<option value="0">All</option>
+							</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-3" style="margin-top:25px;">
 					<select class="form-control" id="tdpCommitteeYearId1"></select>
 				</div>
-				<div class="col-md-3 col-xs-12 col-sm-3">
+				<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top:25px;">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -978,13 +992,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<input type="text" class="form-control" id="reportrange1"/>
 					</div>
 				</div>
-				<div class="col-md-2 col-xs-12 col-sm-2">
+				</div>
+				<div class="row">
+				<div class="col-md-2 col-xs-12 col-sm-2 pull-right" style="margin-top: 10px;">
 					<button class="btn btn-success" id="getDetailsId1">SUBMIT</button>
 				</div>
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<h3 style="color:#090" id="stateDistrictTitle" ></h3>
 				</div>
-			</div>
+				</div>
+				
 			<div id="districtContent">	
 			 <div class="row">
  				<div class="col-md-12">
@@ -1308,13 +1325,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	<script>
 	
 	$(document).on('click','.rangeButton',function(){
-			
+		
 					getCommitteeDetails("AP","mandalAll");
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
-					 if(userAccessType == 'AP' || userAccessType == 'TS' || userAccessType == 'ALL'){
-					 }
+					if(userAccessType == 'AP' || userAccessType == 'TS' || userAccessType == 'ALL' ){
+					 		}
+
 					//$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
 					//$('input:radio[name="select"][id="districtId"]').prop('checked', true);
 					
@@ -2844,6 +2862,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	function getConstituencyWiseCommittesSummary(){
 		var state = ''; 
+		$("#popUpdistrictId  option").remove();
+		$("#popUpConstiesId option").remove();
+		//$("#popUpConstiesId").trigger("chosen:updated");
 		$(".excelId").hide();
 		$("#distSummaryBody").html('');
 		$("#summaryAjax").show();
@@ -2907,9 +2928,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		// window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank');
 	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
 	}
-
-	var globalDistrictNames = [];
-	var globalDistrictIds = [];
+	
 	function buildConstiWiseSummary(result,mandalCheck,villageCheck,jObj){
 	
 	
@@ -2983,7 +3002,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		console.log("isConsiderAffl  :"+isConsiderAffl);
 		var str = '';
 		$("#distSummaryBody").html("");
-		
 		str+='<table class="table table-bordered table-condensed " id="constiTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
@@ -3291,13 +3309,37 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}*/
 			}
+			if(result[0].stateList != null){
+				var str3='';
+				for(var i in result[0].stateList){
+					str3+='<option value="'+result[0].stateList[i].stateId+'">'+result[0].stateList[i].stateName+'</option>';
+				}
+				$("#popUpStateId").html(str3);
+			}
+			
+			if(result[0].districtWiseList != null){
+				var str1='';
+				str1+='<option value="0">All</option>';
+				for(var i in result[0].districtWiseList){
+					str1+='<option value="'+result[0].districtWiseList[i].districtId+'">'+result[0].districtWiseList[i].districtName+'</option>';
+				}
+				$("#popUpdistrictId").html(str1);
+			}
+			if(result[0].constinuncyList != null){
+				var str2='';
+				str2+='<option value="0">All</option>';
+				for(var i in result[0].constinuncyList){
+					str2+='<option value="'+result[0].constinuncyList[i].constiId+'">'+result[0].constinuncyList[i].name+'</option>';
+					/* globalConstnciesIds.push(result[0].constinuncyList[i].constiId);
+					globalConstncyNames.push(result[0].constinuncyList[i].name); */
+				}
+				$("#popUpConstiesId").html(str2);
+			}
 			str+='</thead>';	
 		}
 		
 		str+='<tbody>';
 		for(var i in result){
-			globalDistrictIds.push(result[i].districtId);
-			globalDistrictNames.push(result[i].districtName);
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
 		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
@@ -3971,14 +4013,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				$('#mini-pie-chart-constituency'+t+'').sparkline(visitData[t], params);
 			}
 		}
-			
 	}
 	
 	
 	/* script for District */
 	var globalDistrictId =0;
-	function getPopUpForSummaryForDistrict(id,name){
+	function getPopUpForSummaryForDistrict(id,name,type){
 		globalDistrictId=id;
+		//$("#popUpdistrictId  option").remove();
+		$("#popUpConstiesId option").remove();
+		$("#popUpConstiesId").append('<option value="0">All</option>');
 	$("#districtContent").show();
 	$("#constituencyContent").hide();
 		$("#dialogSummary" ).modal("show");
@@ -3997,7 +4041,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				var dates = date.split("-");
 				fromDate = dates[0];
 				toDate = dates[1];
-		getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate);
+		getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate,"District");
 		$('.loader5').ClassyLoader({
 				speed: 10,
 				diameter: 80,
@@ -4024,7 +4068,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			});
 	}
 	
-		function getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate)
+		function getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate,reqLocationType)
 		{
 		 $("#mainCommitteDivId").html('<img id=""  class="ajximgCls" style="margin-center: 10px;width:80px;margin-left:600px;" src="images/Loading-data.gif"/>');
 		 $("#AffliCommitteDivId").html('');
@@ -4032,8 +4076,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		 $("#conformedBtn").html(""); 
          $("#stateDistrictTitle").html("");	
 		$("#cadreDetailsDiv").html("");	
-		//$("#districtContent").html('');		
-				var reqLocationType ='District';
+		//$("#districtContent").html(''		
+				var reqLocationType = reqLocationType;//'District';
 				var locationId = id;
 				var committeeLevelIdsListArr = [];
 				committeeLevelIdsListArr.push(6);
@@ -4058,7 +4102,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				url : "gettingCommitteeSummaryInfoAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				
+				var typeId = 0;
+					if(reqLocationType == "State" || reqLocationType == "Constituency"){
+						typeId = 1;
+					}
 				//NAME BUILDING
 				if(result[0].locationId == 10){
 					$("#stateDistrictTitle").html(''+result[0].locationName+'');
@@ -4080,17 +4127,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 							str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							if(result[0].startedCount != null && result[0].startedCount > 0){
-							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
 							}else{
 								str+='<td width="25%"><h2 style="display:inline;" >'+result[0].startedCount+'</h2> STARTED</td>';
 							}
 							if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0){
-							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\',\''+id+'\')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 							}else{
 								str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
 							}		
 							if(notStarted != null && notStarted > 0){
-							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 							}else{
 								str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
 							}
@@ -4119,19 +4166,19 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						  str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 						  if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0){
 		                    str1+='<td width="20%">';
-		                    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+		                    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
 						  }else{
 						    str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
 						  }
 					      if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0){
 						    str1+='<td width="20%">';
-						    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+						    str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
 						  }
 						 else{
 							str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>'; 
 						 }
 						 if(notConformed != null && notConformed > 0){
-							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\')" style="cursor:pointer;">'+notConformed+'</td>';
+							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+result[0].locationId+'\',\''+id+'\','+typeId+')" style="cursor:pointer;">'+notConformed+'</td>';
 						 }
 						 else{
 						   str1+='<td width="20%">'+notConformed+'</td>';
@@ -4168,11 +4215,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#committeeMemberDiv").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
 		if(id == 0){
-			getSummary(GlobalLocationId);
+			getSummary(GlobalLocationId,"Constituency");
 			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
 		}else{
 			GlobalLocationId = id;
-			getSummary(id);
+			getSummary(id,"Constituency");
 			getMandalMuncipalDivisonStartedCommittees(id);
 		}
 		
@@ -4204,7 +4251,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			});
 	}
 	
-	function getSummary(id){
+	function getSummary(id,reqLoctionType){
 		$("#CommitteeDetails").html(""); 
 		$("#stateDistrictTitle").html(""); 
 		$("#districtContent").hide();
@@ -4229,7 +4276,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var jObj={
 			constituencyId:Id ,
 			locationId:id,
-			reqLocationType :"constituency",
+			reqLocationType :reqLoctionType,//"constituency",
 			committeeEnrollmentId :[committeeEnrollmentId],
 			startDate : fromDate,
 			endDate   : toDate,
@@ -4251,20 +4298,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}
 				if(result!=null){
+					var typeId = 0;
+					if(reqLoctionType == "State" || reqLoctionType == "District"){
+						typeId = 1;
+					}
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
 					str+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							  if(result[0].startedCount > 0)
-							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',2,'+id+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',2,'+id+','+typeId+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
 								else
 								{
 									str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
 								}
 							  if(result[0].mainComitteesConformed > 0)
 							{
-									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',2,'+id+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',2,'+id+','+typeId+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 							}
 									else
 									{
@@ -4272,7 +4323,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									}
 									if(notStarted > 0)
 									{
-										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',2,'+id+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',2,'+id+','+typeId+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 									}
 										else
 								{
@@ -4294,7 +4345,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 							if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
 							 {
-								str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',2,'+id+')">'+result[i].affilatedStartedCount+'</a></td>';
+								str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',2,'+id+','+typeId+')">'+result[i].affilatedStartedCount+'</a></td>';
 							 }
 								else
 							 {
@@ -4303,7 +4354,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							
 							 if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
 							 {
-							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',2,'+id+')">'+result[i].affComitteesConformed+'</a></td>';
+							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',2,'+id+','+typeId+')">'+result[i].affComitteesConformed+'</a></td>';
 							 }
 							else
 							 {
@@ -4311,7 +4362,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							 }
 							 if(notConformed > 0)
 							 {
-								 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',2,'+id+')">'+notConformed+'</a></td>';
+								 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',2,'+id+','+typeId+')">'+notConformed+'</a></td>';
 							 }
 								 else
 							 {
@@ -4387,7 +4438,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							   if(result[0].startedCount != null && result[0].startedCount > 0)
 								{
-							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',1,'+id+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',1,'+id+',0)">'+result[0].startedCount+'</a></h2> STARTED</td>';
 								}
 								else
 								{
@@ -4396,7 +4447,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								}
 								if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0)
 								{
-									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',1,'+id+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',1,'+id+',0)">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 									
 								}
 								else
@@ -4405,7 +4456,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								}
 								if(notStarted != null && notStarted > 0)
 								{
-							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',1,'+id+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',1,'+id+',0)">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 								}
 								else
 								{
@@ -4428,7 +4479,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 								if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
 								 {
-								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',1,'+id+')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',1,'+id+',0)" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
 								 }
 								 else
 								 {
@@ -4436,14 +4487,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								 }
 							if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
 								 {
-								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',1,'+id+')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+								str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',1,'+id+',0)" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
 								
 								 }
 								 else
 								str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
 								 if(notConformed != null && notConformed > 0)
 								 {
-									 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',1,'+id+')" style="cursor:pointer;">'+notConformed+'</td>';
+									 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',1,'+id+',0)" style="cursor:pointer;">'+notConformed+'</td>';
 								 }
 								 else
 								 {
@@ -4484,7 +4535,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		
 		
-	function getCommitteeDetailsByStatus(basicCommitteetypeId,status,levelId,constituencyId)
+	function getCommitteeDetailsByStatus(basicCommitteetypeId,status,levelId,constituencyId,typeId)
 	{
 		//$("html,body").animate({scrollTop: $("#dialogSummary").offset().top});
 		$('#dialogSummary').animate({ scrollTop: $("#CommitteeDetails").offset().top}, 'slow');
@@ -4504,12 +4555,38 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		fromDate = dates[0];
 		toDate = dates[1];
 		
+		var stateId = $("#popUpStateId").val();
+		var districtId = $("#popUpdistrictId").val();
+		var constiencyId = $("#popUpConstiesId").val();
+		
 		var levelSlected = $("input[type='radio'][name='select']:checked").val();
 		if(levelSlected == 'district'){
-			status = status+":district";
+			if(typeId == 0){
+				status = status+":district";
+			}else if(typeId == 1){
+				if(stateId != null && stateId.length > 0 && districtId == 0 && constiencyId == 0){
+					status = status+":state";
+				}else if(districtId != null && districtId.length > 0 && constiencyId == 0 ){
+					status = status+":district";
+				}else if(constiencyId != null && constiencyId.length > 0 ){
+					status = status+":consti";
+				}
+			}
+			
 		}
 		else if(levelSlected == 'consti'){
-			status = status+":consti";
+			if(typeId == 0){
+					status = status+":consti";
+			}else if(typeId == 1){
+				if(stateId != null && stateId.length > 0 && districtId == 0 && constiencyId == 0){
+					status = status+":state";
+				}else if(districtId != null && districtId.length > 0 && constiencyId == 0 ){
+					status = status+":district";
+				}else if(constiencyId != null && constiencyId.length > 0 ){
+					status = status+":consti";
+				}
+			}
+			
 		}
 		
 		var jsObj = 
@@ -6134,7 +6211,9 @@ function onLoadcimmitteeDashboardCalls(){
 			//$("#apStateBodyTR").show();
 			$("#tsStateHeadingTR").show();
 			//$("#tsStateBodyTR").show();
-			
+			$("#stateDiv").show();
+			$("#popUpDistrictDiv").show();
+			$("#popUpConstituencyDiv").show();
 		}else if(userAccessType == 'TS'){
 			getCommitteeCountByState("TS");
 			getCommitteeDetails("TS","mandalAll");	
@@ -6152,6 +6231,9 @@ function onLoadcimmitteeDashboardCalls(){
 			//$("#tsStateBodyTR").show();
 			//getDistrictWiseCommittesSummary();
 			getConstituencyWiseCommittesSummary();
+			$("#stateDiv").show();
+			$("#popUpDistrictDiv").show();
+			$("#popUpConstituencyDiv").show();
 		}
 		else if(userAccessType == 'AP'){
 			getCommitteeCountByState("AP");
@@ -6170,6 +6252,9 @@ function onLoadcimmitteeDashboardCalls(){
 			//$("#tsStateBodyTR").hide();
 			//getDistrictWiseCommittesSummary();
 			getConstituencyWiseCommittesSummary();
+			$("#stateDiv").show();
+			$("#popUpDistrictDiv").show();
+			$("#popUpConstituencyDiv").show();
 		}else{					
 			if(userAccessType=="MP"){
 				//$("#districtCommDiv").hide();
@@ -6188,6 +6273,7 @@ function onLoadcimmitteeDashboardCalls(){
 				//$("#districtDistrictBodyTR").hide();
 
 				getConstituencyWiseCommittesSummary();
+				$("#popUpConstituencyDiv").show();
 			}else if( userAccessType.indexOf("District") >= 0){
 				//$('#areaBtnsDiv').hide();
 				//$('.areaBtnsDiv').hide();
@@ -6211,6 +6297,8 @@ function onLoadcimmitteeDashboardCalls(){
 				//$("#tsStateBodyTR").hide();
 				//getDistrictWiseCommittesSummary();
 				getConstituencyWiseCommittesSummary();
+				$("#popUpDistrictDiv").show();
+				$("#popUpConstituencyDiv").show();
 			}else {
 				getCommitteeCountByState("AP");
 				getCommitteeDetails("AP","mandalAll");
@@ -6231,6 +6319,9 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 });
  $(document).on("click","#getDetailsId1",function(){
 	var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+	var stateId = $("#popUpStateId").val();
+	var districtId = $("#popUpdistrictId").val();
+	var constituencyId = $("#popUpConstiesId").val();
 				var date =$("#reportrange1").val();
 				var fromDate;
 				var toDate;
@@ -6240,11 +6331,36 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 				
 		var levelSlected = $("input[type='radio'][name='select']:checked").val();
 		if(levelSlected == 'district'){
-			getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
+			if(stateId != null && stateId.length > 0 && districtId == 0 && constituencyId == 0){
+				getCommitteeSummaryInfo(stateId,committeeEnrollmentId,fromDate,toDate,"State");
+				//getMandalMuncipalDivisonStartedCommittees(stateId);
+			}else if(districtId != null && districtId.length > 0 && constituencyId == 0){
+				getCommitteeSummaryInfo(districtId,committeeEnrollmentId,fromDate,toDate,"District");
+				//getMandalMuncipalDivisonStartedCommittees(districtId);
+			}else if(constituencyId != null && constituencyId.length > 0 ){
+				getCommitteeSummaryInfo(constituencyId,committeeEnrollmentId,fromDate,toDate,"Constituency");
+				//getMandalMuncipalDivisonStartedCommittees(constituencyId);
+			}
+			//getCommitteeSummaryInfo(globalDistrictId,committeeEnrollmentId,fromDate,toDate);
 		}
 		else if(levelSlected == 'consti'){
-			getSummary(GlobalLocationId);
-			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
+			if(stateId != null && stateId.length > 0 && districtId == 0 && constituencyId == 0){
+				getSummary(stateId,"State");
+				getMandalMuncipalDivisonStartedCommittees(stateId);
+			}else if(districtId != null && districtId.length > 0 && constituencyId == 0){
+				getSummary(districtId,"District");
+				getMandalMuncipalDivisonStartedCommittees(districtId);
+			}else if(constituencyId != null && constituencyId.length > 0 ){
+				getSummary(constituencyId,"Constituency");
+				getMandalMuncipalDivisonStartedCommittees(constituencyId);
+			}
+				
+			/* }else{
+				getSummary(GlobalLocationId);
+				getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
+			} */
+			/* getSummary(GlobalLocationId);
+			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId); */
 		}
 });
 var slickCount = 0;
