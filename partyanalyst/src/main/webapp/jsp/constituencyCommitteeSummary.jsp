@@ -1716,6 +1716,7 @@ function getRolesBasedReport(roleId)
 	  
   }
 	getRolesBasedReport(0);
+	
  $(document).on("change","#tdpCommitteeYearId",function(){
 	getCommitteeDetailsByEnrollementForConSummary();
 });
@@ -1772,6 +1773,7 @@ function getCadreEnrollmentYearsForSummary(){
 			getUserAccessInfo();
 			getRolesBasedReport(0);
 			getConstituencySummary();
+			getCommitteeDetailsByEnrollementForConSummary();
 			
 		});
 	}
