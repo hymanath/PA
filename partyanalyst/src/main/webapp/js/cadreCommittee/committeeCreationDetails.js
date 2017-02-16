@@ -353,7 +353,7 @@ function buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr
 						
 						for(var k in result[0].hamletsOfTownship[0].result)
 						{
-							str+='<td colspan="4">'+result[0].hamletsOfTownship[0].result[k].name+'</td>';
+							str+='<td colspan="3">'+result[0].hamletsOfTownship[0].result[k].name+'</td>';
 						}
 						str+='</tr>';
 						str+='<tr>';
@@ -361,8 +361,8 @@ function buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr
 							for(var k in result[0].hamletsOfTownship[0].result)
 							{
 								str+='<th  style="background:grey;" >Total</th>';
-								str+='<th  style="background:orange;" >Proposed</th>';
-								str+='<th  style="background:Green;">Finalised</th>';
+								//str+='<th  style="background:orange;" >Proposed</th>';
+								str+='<th  style="background:Green;">Entered</th>';
 								str+='<th  style="background:red;">Vacancy</th>';
 							}
 						str+='</tr>';
@@ -394,10 +394,15 @@ function buildRolesBasedReport(result,committeeLevelIdsListArr,designationIdsArr
 								str+='<td>'+result[i].hamletsOfTownship[j].name+'</td>';
 								for(var k in result[i].hamletsOfTownship[j].result)
 								{
-									var vacancyCount = result[i].hamletsOfTownship[j].result[k].totalCount-result[i].hamletsOfTownship[j].result[k].finalizedCount;
+									var enteredCnt = result[i].hamletsOfTownship[j].result[k].proposedCount+result[i].hamletsOfTownship[j].result[k].finalizedCount;
+									if(result[i].hamletsOfTownship[j].result[k].totalCount != null && result[i].hamletsOfTownship[j].result[k].totalCount > 0){
+										var vacancyCount = result[i].hamletsOfTownship[j].result[k].totalCount-enteredCnt;
+									}else{
+										var vacancyCount =  0;
+									}
 									str+='<td>'+result[i].hamletsOfTownship[j].result[k].totalCount+'</td>';
-									str+='<td>'+result[i].hamletsOfTownship[j].result[k].proposedCount+'</td>';
-									str+='<td>'+result[i].hamletsOfTownship[j].result[k].finalizedCount+'</td>';
+									//str+='<td>'+result[i].hamletsOfTownship[j].result[k].proposedCount+'</td>';
+									str+='<td>'+enteredCnt+'</td>';
 									str+='<td>'+vacancyCount+'</td>';
 								}
 							str+='</tr>';
