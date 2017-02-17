@@ -157,6 +157,7 @@ function getAlertData()
 		if(result != null)
 		{
 			buildAlertData(result);
+			$("#groupArticlesId").hide();
 			if(result[0].categoryId == 2)
 			{
 				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
