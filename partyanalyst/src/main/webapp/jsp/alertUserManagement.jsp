@@ -415,19 +415,6 @@ function onLoad() {
 			control.makeTransliteratable(['alertDescId']);
 		}
    }
-/*global Function and variables Start*/
-var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
-var currentToDate = moment().format("DD/MM/YYYY");
-var detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-var detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");
-
-var globalStateId = 36;  
-var departmentIdsList="";
-var lvlValueGlobal="";
-var paperIdArr = [];
-var chanelIdArr = [];
-
-
 
 </script>
 </body>
