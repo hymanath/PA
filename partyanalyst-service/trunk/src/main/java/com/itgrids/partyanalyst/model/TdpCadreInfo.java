@@ -23,7 +23,7 @@ public class TdpCadreInfo {
 	private Long locationId;
 	private String type;
 	private Long count;
-	
+	private Long tdpCommitteeEnrollMentYearId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,9 +67,13 @@ public class TdpCadreInfo {
 		
 	public void setCount(Long count) {
 		this.count = count;
-	} 
-
+	}
 	
-	
-	
+	@Column(name="enrollment_year_id")
+	public Long getTdpCommitteeEnrollMentYearId() {
+		return tdpCommitteeEnrollMentYearId;
+	}
+	public void setTdpCommitteeEnrollMentYearId(Long tdpCommitteeEnrollMentYearId) {
+		this.tdpCommitteeEnrollMentYearId = tdpCommitteeEnrollMentYearId;
+	}
 }

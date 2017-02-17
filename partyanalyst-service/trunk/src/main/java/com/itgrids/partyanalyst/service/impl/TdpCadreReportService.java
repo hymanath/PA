@@ -4937,7 +4937,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	//0locationId,1count
         	  List<Object[]> registeredCountList = new ArrayList<Object[]>();
         	  if(locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency")){
-        	   registeredCountList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationNames.keySet(), locationType,constituencyId,"Registered");
+        	   registeredCountList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationNames.keySet(), locationType,constituencyId,"Registered",3L);//srishailam and teja
         	  }else{
         		  registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType,constituencyId); 
         	  }
@@ -4991,7 +4991,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  
         	   List<Object[]> cardsPrintedAndJobInfo = new ArrayList<Object[]>();
          	  if(locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency")){
-         		 cardsPrintedAndJobInfo = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(responseMap.keySet(),locationType,constituencyId,"Printed");
+         		 cardsPrintedAndJobInfo = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(responseMap.keySet(),locationType,constituencyId,"Printed",3L);//srishailam and teja
          	  }else{
          		 cardsPrintedAndJobInfo = tdpCadreDAO.getLocationWiseCadrePrintedCount(responseMap.keySet(),locationType,constituencyId); 
          	  }

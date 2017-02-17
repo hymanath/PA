@@ -10596,7 +10596,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			Set<Long> locationIdsSet = new HashSet<Long>();
 			locationIdsSet.add(Long.valueOf(locationValue));
 			
-			List<Object[]> constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
+			List<Object[]> constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
 			Long registeredCadreCount = 0L;
 			if(constituencyList != null && constituencyList.size()>0)
 			{
@@ -10645,7 +10645,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			
 			List<Long> constiteuncyIds = new ArrayList<Long>();
 			constiteuncyIds.add(Long.valueOf(locationValue.toString()));
-			Long registeredCount  = tdpCadreInfoDAO.getTdpCadreCountForLocations(IConstants.CONSTITUENCY,constiteuncyIds,"Registered","Constituency");
+			Long registeredCount  = tdpCadreInfoDAO.getTdpCadreCountForLocations(IConstants.CONSTITUENCY,constiteuncyIds,"Registered","Constituency",enrollIdsList.get(0));
 			
 			if(casteCategoryWiseCountList != null && casteCategoryWiseCountList.size()>0)
 			{
@@ -11058,7 +11058,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			String segritageQuery = null;
 			List<Long> districtIds = new ArrayList<Long>();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Date startDate = null;
 			Date endDate = null;
 			if(startDateStr != null && endDateStr != null){
@@ -11221,12 +11221,12 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					if(descriptionLevelId.longValue() == 2)
 					{
 						locationIdsSet.addAll(locationIdsList);
-						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
+						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered",enrollIdsList.get(0));
 					}
 					else if(descriptionLevelId.longValue() == 3)
 					{
 						locationIdsSet.addAll(locationIdsList);
-						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
+						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
 					}		
 					
 					Map<Long,Long> locationWiseRegisteredCount = new HashMap<Long, Long>();
@@ -11327,7 +11327,10 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 								 locationVO.setTotalPerc(castePercInTotal);
 								
 								Long registerdCadreCount = Long.valueOf(locationVO.getAvailableCadreCount().trim());
-								locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / totalRegisteredCount)));
+								if(registerdCadreCount != null && registerdCadreCount.longValue()>0L && totalRegisteredCount != null && totalRegisteredCount.longValue()>0L )
+									locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / totalRegisteredCount)));
+								else
+									locationVO.setAvailableCadrePerc(0.00d);
 							}
 						}
 						
@@ -11411,12 +11414,12 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					if(descriptionLevelId.longValue() == 2)
 					{
 						locationIdsSet.addAll(locationIdsList);
-						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
+						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered",enrollIdsList.get(0));
 					}
 					if(descriptionLevelId.longValue() == 3)
 					{
 						locationIdsSet.addAll(locationIdsList);
-						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
+						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
 					}		
 					
 					Map<Long,Long> locationWiseRegisteredCount = new HashMap<Long, Long>();
@@ -11598,12 +11601,12 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						if(descriptionLevelId.longValue() == 2)
 						{
 							locationIdsSet.addAll(locationIdsList);
-							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
+							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered",enrollIdsList.get(0));
 						}
 						else if(descriptionLevelId.longValue() == 3)
 						{
 							locationIdsSet.addAll(locationIdsList);
-							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
+							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
 						}		
 						
 						Map<Long,Long> locationWiseRegisteredCount = new TreeMap<Long, Long>();
@@ -12005,7 +12008,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			
 			}			
 			List<CadreCommitteeRolesInfoVO> roleVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
-			Long registeredCount  = tdpCadreInfoDAO.getTdpCadreCountForLocations(userAccessType,locationIdsList,"Registered","District");
+			Long registeredCount  = tdpCadreInfoDAO.getTdpCadreCountForLocations(userAccessType,locationIdsList,"Registered","District",enrollIdsList.get(0));
 			if(totalMaleCount.longValue() != 0L || totalFemaleCount.longValue() != 0L)
 			{
 				totalCount = totalMaleCount + totalFemaleCount;
@@ -12165,12 +12168,12 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			if(actuallevelId.longValue() == 2)
 			{
 				locationIdsSet.addAll(locationIdsForTotalTdpCadreCount);
-				constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
+				constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
 			}
 			if(actuallevelId.longValue() == 1)
 			{
 				locationIdsSet.addAll(locationIdsForTotalTdpCadreCount);
-				constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
+				constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered",enrollIdsList.get(0));
 			}		
 			
 			Map<Long,Long> locationWiseRegisteredCount = new HashMap<Long, Long>();

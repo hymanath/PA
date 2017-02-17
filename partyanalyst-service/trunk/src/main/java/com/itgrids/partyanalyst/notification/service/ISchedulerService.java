@@ -19,9 +19,9 @@ public interface ISchedulerService {
 	//public void fillDataForCardPrinting(String prevDate , String type);
 	public void schedularForCardPrintDataFilling(String prevDate);
 	public void runSchuduler(List<Long> districtIds);
-	public Long updateTdpCadreAgerangeInfoDetails();
-	public Long updateTdpCadreCasteInfoDetails();
-	public Long updateTdpCadreInfoDetails();
+	public Long updateTdpCadreAgerangeInfoDetails(Long enrollmentYearId);
+	public Long updateTdpCadreCasteInfoDetails(Long enrollmentYearId);
+	public Long updateTdpCadreInfoDetails(Long enrollmentYearId);
 	public String updateTrainingCampSpeakersDetails();
 	
 	public void changeApptStatusToAttended(Date fromDate,Long attendedStatusId,Long fixedStatusId);
