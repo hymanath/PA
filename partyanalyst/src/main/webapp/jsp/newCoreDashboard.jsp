@@ -3704,6 +3704,12 @@
 						<div id="alertAttachImgId"></div>  
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertGroupAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertGroupAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertInvolvedCandidates"></div>        
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
