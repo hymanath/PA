@@ -15879,5 +15879,10 @@
 			<param name="root">alertCoreDashBoardVOList</param>         
 		</result>
 	</action>
+	<action name="getTotalAlertByStatusForDeptWiseClickAction" class="createAlertAction" method="getTotalAlertByStatusForDeptWiseClick">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>
  </package>
 </struts>
