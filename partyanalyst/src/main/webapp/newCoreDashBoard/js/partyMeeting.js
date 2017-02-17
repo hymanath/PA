@@ -2123,19 +2123,13 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		  }
 	   });   
 	    $(".specialMeetingBtnClsNew").each(function(){
-		if($(this).hasClass('specialMeetingsDate'))
-		{
-			globalStartDateForSpecialMeeting = $(this).attr("attr_startDate");
-		    globalEndDateForSpecialMeeting = $(this).attr("attr_endDate");
-			$(this).removeClass('specialMeetingsDate');
-		}
-	}); 
-	     var state = globalState
+	});  
+ 	    var state = globalState
 		var jsObj ={ 
 		             partyMeetingMainTypeId : 2,
 					 state : state,
-					 startDateString : globalStartDateForSpecialMeeting,
-					 endDateString : globalEndDateForSpecialMeeting,
+					 startDateString : customStartDateMeetings,
+					 endDateString : customEndDateMeetings,
 				     partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingId:0
 				  }
@@ -2147,7 +2141,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		}).done(function(result){
 			$("#stateLevelMeetingBasicCnt").html(" ");
 		    if(result != null && result.length > 0){
-				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId",partyMeetingTypeArr,globalStartDateForSpecialMeeting,globalEndDateForSpecialMeeting,state);
+				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId",partyMeetingTypeArr,customStartDateMeetings,customEndDateMeetings,state);
 			}else{
 			  $("#stateLevelMeetingBasicCnt").html("<div class='col-md-12 col-xs-12 col-sm-12'>NO DATA AVAILABLE.</div>");	
 			  $("#stateLevelMeetingBasicCnt").closest(".panelBlock").hide();
@@ -2541,12 +2535,21 @@ function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTyp
 	 var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
 	 
 	     var state = globalState
-	    
+		 /*This ajax call is called by stateLevel And Special Meeting Also.So We are changing date based on meeting type because for special meeting different date is their like */
+			 var frmDtStr;
+			 var toDtStr;
+			if(mainMeetingTypeId == 2){
+			  frmDtStr = customStartDateMeetings;
+			  toDtStr =	customEndDateMeetings;  	
+			}else if(mainMeetingTypeId==3){
+			  frmDtStr = globalStartDateForSpecialMeeting;
+			  toDtStr =	globalEndDateForSpecialMeeting;  
+			}
 		var jsObj ={ 
 		             partyMeetingMainTypeId : mainMeetingTypeId,
 					 state : state,
-					 startDateString : globalStartDateForSpecialMeeting,
-					 endDateString : globalEndDateForSpecialMeeting,
+					 startDateString : frmDtStr,
+					 endDateString : toDtStr,
 					 partyMeetingTypeIds:partyMeetingTypeArr
 	
 				  }
@@ -2698,13 +2701,23 @@ $(document).on("click",".distDtlsMeetingCls",function(){
 	var partyMeetingTypeIdsString = $(this).attr("attr_meeting_type_ids");
 	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
 	
-	var state = globalState
+	var state = globalState;
+	 /*This ajax call is called by stateLevel And Special Meeting Also.So We are changing date based on meeting type because for special meeting different date is their like */
+	 var frmDtStr;
+	 var toDtStr;
+	if(mainMeetingTypeId == 2){
+	  frmDtStr = customStartDateMeetings;
+      toDtStr =	customEndDateMeetings;  	
+	}else if(mainMeetingTypeId==3){
+	  frmDtStr = globalStartDateForSpecialMeeting;
+      toDtStr =	globalEndDateForSpecialMeeting;  
+	}
 	
 	var jsObj ={ 
 		partyMeetingMainTypeId : mainMeetingTypeId,
 		state : state,
-		startDateString : fromDateStr,
-		endDateString : toDateStr,
+		startDateString :frmDtStr,//fromDateStr
+		endDateString : toDtStr,//toDateStr
 		partyMeetingTypeIds:partyMeetingTypeArr,
 		distId : distId  
 	}
@@ -2777,12 +2790,21 @@ function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
 	var state = globalState
-	
+     /*This ajax call is called by stateLevel And Special Meeting Also.So We are changing date based on meeting type because for special meeting different date is their like */
+	  var frmDtStr;
+	  var toDtStr;
+	if(partyMeetingMainTypeId == 2){
+	  frmDtStr = customStartDateMeetings;
+      toDtStr =	customEndDateMeetings;  	
+	}else if(partyMeetingMainTypeId==3){
+	  frmDtStr = globalStartDateForSpecialMeeting;
+      toDtStr =	globalEndDateForSpecialMeeting;  
+	}
 	var jsObj ={ 
 				 partyMeetingMainTypeId : partyMeetingMainTypeId,
 				 state : state,
-				 startDateString : globalStartDateForSpecialMeeting,
-				 endDateString : globalEndDateForSpecialMeeting,
+				 startDateString : frmDtStr,
+				 endDateString : toDtStr,
 				 partyMeetingTypeIds:partyMeetingTypeArr
 				 
 
