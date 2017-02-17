@@ -42,6 +42,10 @@
 						<!-- End -->
 
 <style type="text/css">
+.sessionInfoUl
+{
+	padding-left:10px;
+}
 .closeIconBenefit
 {
 	position:absolute;
@@ -897,7 +901,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<div class="panel-heading" role="tab" id="headingFour">
 									  <a role="button" class="collapsed accordion-toggle" data-toggle="collapse" data-parent="#accordion2323" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
 										<h4 class="panel-title">
-										  <span> ACTIVITY PARTICIPATION DETAILS</span>
+										  <span> ACTIVITY CONDUCTED DETAILS</span>
 										</h4>
 									   </a>
 									</div>
