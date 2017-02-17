@@ -3676,7 +3676,7 @@ function getPartyMeetingDetaildReprt()
 						var jsObj={
 							tdpCadreId:globalCadreId,
 							meetingTypeId:meetingTypeId
-						}	
+						}
 						$.ajax({
 								type:'POST',
 								 url: 'getPartyMeetingTypeWiseDetails.action',
@@ -3693,6 +3693,7 @@ function getPartyMeetingDetaildReprt()
 										str+='<th style=""> START DATE</th>';
 										str+='<th style=""> END DATE</th>';
 										str+='<th style=""> ATTENDED STATUS </th>';
+										str+='<th style=""> REMARKS </th>';
 										str+='</tr>';
 										str+='<thead>';
 										str+='<tbody>';
@@ -3706,10 +3707,32 @@ function getPartyMeetingDetaildReprt()
 													str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
 													str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
 													str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
-													if(result.partyMeetingVOList[k].attendedCount != null && result.partyMeetingVOList[k].attendedCount>0)
-														str+='<td> ATTENDED </td>';
-													else
+													if(result.partyMeetingVOList[k].attendedCount != null && result.partyMeetingVOList[k].attendedCount>0){
+														//str+='<td> ATTENDED </td>';
+														str+='<td> ATTENDED <br>';
+														if(result.partyMeetingVOList[k].sessionList != null && result.partyMeetingVOList[k].sessionList.length>0){
+															str+='<ul class="sessionInfoUl">';
+															for(var s in result.partyMeetingVOList[k].sessionList){
+																str+=' <li>'+result.partyMeetingVOList[k].sessionList[s].name+'  <span title="  Attended Time ">  ';
+																if(result.partyMeetingVOList[k].sessionList[s].isLate != null && result.partyMeetingVOList[k].sessionList[s].isLate =="true")
+																	str+='<span title="  Attended Time " style="color:red;"> - '+result.partyMeetingVOList[k].sessionList[s].attendedTime+' </span></li>';
+																else if(result.partyMeetingVOList[k].sessionList[s].isLate != null && result.partyMeetingVOList[k].sessionList[s].isLate =="false"){
+																	if(result.partyMeetingVOList[k].sessionList[s].requiredName =='Absent')
+																		str+='<span style="color:red;"> - '+result.partyMeetingVOList[k].sessionList[s].requiredName+' </span></li>';
+																	else
+																		str+='<span title="  Attended Time "  style="color:Green;"> - '+result.partyMeetingVOList[k].sessionList[s].attendedTime+' </span></li>';
+																}
+																
+															}
+															str+='</ul>';
+														}
+														str+='</td>';
+													}else
 														str+='<td> NOT ATTENDED </td>';
+													if(result.partyMeetingVOList[k].request.length>0)
+														str+='<td>'+result.partyMeetingVOList[k].request+' </td>';
+													else
+														str+='<td> - </td>';
 													str+='</tr>';
 												}												
 											}
