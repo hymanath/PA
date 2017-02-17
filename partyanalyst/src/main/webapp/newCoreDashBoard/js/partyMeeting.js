@@ -4706,9 +4706,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						}else{
 							str+='<th>Attendance</th>';    
 						}
-					if(status =='absent'){
+					/*if(status =='absent'){
 						str+='<th>Absent Reason</th>';    
 					}
+					*/
+					str+='<th> Remarks </th>';    
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -4758,14 +4760,19 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 										str+='<td>'+result[i].sessionList[j]+'</td>';             
 									}  
 								}
-								if(status =='absent'){
+								/*if(status =='absent'){
 									if(result[i].remark != null && result[i].remark.length > 0){
 										str+='<td>'+result[i].remark+'</td>';
 									}else{
 										str+='<td><center>-</center></td>';   
 									}
 								}
-								
+								*/
+								if(result[i].remark != null && result[i].remark.length > 0){
+										str+='<td>'+result[i].remark+'</td>';   
+								}else{
+										str+='<td><center>-</center></td>';   
+									}
 							str+='</tr>';	
 						}
 					}
@@ -4811,6 +4818,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 											str+='<td>'+result[i].sessionList[j]+'</td>';                
 										} 
 									}
+									str+='<td><center>-</center></td>';   
 								str+='</tr>';
 						}
 					}
