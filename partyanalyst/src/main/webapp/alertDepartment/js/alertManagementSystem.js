@@ -613,7 +613,7 @@ function buildtotalAlertsModalTabId(result){
 					}else{
 						str+='<td> - </td>';        
 					}
-					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'">Alert Details</button></td>';      
+					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'" attr_status_id="'+result[i].statusId+'">Alert Details</button></td>';      
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -637,6 +637,10 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	fieldsEmpty();
 	
 	var alertId = $(this).attr("attr_alert_Id");
+	var alrtStsId = $(this).attr("attr_status_id");
+	if(alrtStsId != null && alrtStsId == 1)
+		$("#alertAssign").show();
+	
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
 	getInvolvedMembersDetilas(alertId);
