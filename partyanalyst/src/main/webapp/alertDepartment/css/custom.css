@@ -12,7 +12,8 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: 0 !important;
 }
 .navbarHeader {
-    background: rgb(85, 85, 85);
+    background: #555555 none repeat scroll 0 0;
+    height: 60px !important;
     margin-bottom: 0;
 }
 .navbarHeader .navbar-brand, .navbarHeader .navbar-brand:active, .navbarHeader .navbar-brand:hover, .navbarHeader .navbar-brand:focus {
@@ -23,7 +24,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .navbarHeader .navbar-brand img {
     display: inline-block;
     height: 50px;
-    width: 70px;
+    width: 210px;
 }
 .text-capital {
     text-transform: uppercase;
