@@ -621,12 +621,12 @@ $("#titleId").html('');
 										if(reqPositionsArray.indexOf(k) == -1){
 										  reqPositionsArray.push(k);
 										}
-										str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+										str+='<th colspan=1>'+results.resultList[k].basicCommitteeName+'</th>';
 									}else{
 										 for(var c in rest.locationsList){
 											 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
 												 if(reqPositionsArray.indexOf(k) == -1){
-													  str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+													  str+='<th colspan=1>'+results.resultList[k].basicCommitteeName+'</th>';
 													  reqPositionsArray.push(k);
 													}
 											 }
@@ -645,7 +645,7 @@ $("#titleId").html('');
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 								for(var k in reqPositionsArray){
 									str+='<th> Members </th>';
-									str+='<th> Electrols </th>';
+									//str+='<th> Electrols </th>';
 								}
 								if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
 								{
@@ -675,14 +675,14 @@ $("#titleId").html('');
 													str+='<td> </td>';
 												} 
 												
-												if(rest.locationsList[j].resultList[k].electrolsCount!=null){
+												/* if(rest.locationsList[j].resultList[k].electrolsCount!=null){
 													//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'electrols\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 													//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
 													 str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 												}else{
 													str+='<td class="text-center"> </td>';
-												}
+												} */
 											  }
 											}
 											if(rest.locationsList[j].cadreIVRVO != null)
@@ -748,12 +748,12 @@ $("#titleId").html('');
 								if(reqPositionsArray.indexOf(k) == -1){
 									  reqPositionsArray.push(k);
 									}
-								str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+								str+='<th colspan=1>'+results.resultList[k].basicCommitteeName+'</th>';
 							}else{
 								 for(var c in rest.locationsList){
 									 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
 										 if(reqPositionsArray.indexOf(k) == -1){
-										      str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+										      str+='<th colspan=1>'+results.resultList[k].basicCommitteeName+'</th>';
 											  reqPositionsArray.push(k);
 											}
 									 }
@@ -770,7 +770,7 @@ $("#titleId").html('');
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						for(var k in reqPositionsArray){
 							str+='<th> Members </th>';
-							str+='<th> Electrols </th>';
+							//str+='<th> Electrols </th>';
 						}
 						if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
 						{
@@ -799,14 +799,14 @@ $("#titleId").html('');
 											str+='<td> </td>';
 										}
 										
-										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
+										/* if(rest.locationsList[j].resultList[k].electrolsCount!=null){
 											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
 										    //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols" id="location'+rest.locationsList[j].locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 										}else{
 											str+='<td> </td>';
-										}
+										} */
 									 }	
 									}
 									if(rest.locationsList[j].cadreIVRVO != null)
