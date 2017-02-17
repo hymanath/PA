@@ -33,7 +33,6 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISessionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
@@ -3118,7 +3117,8 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		LOG.error("Error occured at setDataToResultList() in CoreDashboardPartyMeetingService {}",e);
 	}
 }
-	public List<IdNameVO> getParyMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,Long meetingId,String state,String startDateString,String endDateString,String status){
+    //TODO
+	public List<IdNameVO> getParyMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,Long meetingId,String state,String startDateString,String endDateString,String status,String searchDesignation){
 		LOG.info("Entered into ");
 		try{ 
 			//creating inputVO
@@ -3149,6 +3149,11 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				absentList.removeAll(attendedList);
 				cadreIdList.addAll(absentList);    
 			}
+			
+			Map<Long , IdNameVO> publicRepresentativeDesgMap = new HashMap<Long , IdNameVO>();
+			Map<String,IdNameVO> committeeDesignationsMap = new HashMap<String , IdNameVO>();
+			
+			//Getting Members Designations.
 			Long cadreId = 0l;
 			IdNameVO idNameVO = null;
 			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
@@ -3156,42 +3161,115 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			if(cadreIdList != null && cadreIdList.size() > 0){
 				List<Object[]> membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(cadreIdList);
 				if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
-					for(Object[] obj : membersDesignationDtlsList){
+					
+					for(Object[] obj : membersDesignationDtlsList)
+					{
 						cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+						
 						idNameVO = idAndMemberDtlsMap.get(cadreId);
-						if(idNameVO != null){
-							String sts = idNameVO.getStatus();
-							if(obj[2] != null){
-								sts = sts+","+obj[2].toString();
-								idNameVO.setStatus(sts);
-								idAndMemberDtlsMap.put(cadreId, idNameVO);
-							}else{
-								if(obj[3] != null){
-									sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-									idNameVO.setStatus(sts);
-									idAndMemberDtlsMap.put(cadreId, idNameVO);
-								}
-							}  
-							
-						}else{
+						
+						if(idNameVO == null){
 							idNameVO = new IdNameVO();
 							idNameVO.setId(cadreId); //cadreId
 							idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
-							if(obj[2] != null){
-								idNameVO.setStatus(obj[2].toString());
-							}else if(obj[3] != null){
-								idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
-							}else{
-								idNameVO.setStatus("");
-							}
 							idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
-							//idNameVO.setWish("attended");
 							idAndMemberDtlsMap.put(cadreId, idNameVO); 
+						}
+						idNameVO = idAndMemberDtlsMap.get(cadreId);
+						if(obj[2] != null)//public representative desig
+						{
+							String sts = obj[2].toString();
+							if(!idNameVO.getSubList().contains(sts)){
+								
+								idNameVO.getSubList().add(sts);
+								
+								if(idNameVO.getStatus() == null){
+									idNameVO.setStatus(sts);
+								}else{
+									idNameVO.setStatus( idNameVO.getStatus() + " , " + sts);
+								}
+								
+								//desg count
+								if(publicRepresentativeDesgMap.containsKey((Long)obj[7])){
+									IdNameVO desgVO = publicRepresentativeDesgMap.get((Long)obj[7]);
+									desgVO.setCount( desgVO.getCount() + 1);
+								}else{
+									IdNameVO desgVO = new IdNameVO();
+									desgVO.setId((Long)obj[7]);
+									desgVO.setName(obj[2].toString());
+									desgVO.setCount(1L);
+									desgVO.setStatus("PublicRepresentative");
+									publicRepresentativeDesgMap.put( desgVO.getId() , desgVO);
+								}
+							}
+							
+							
+						}
+						if(obj[3]!=null)//committee desig
+						{	
+							String sts = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+							if(!idNameVO.getSubList().contains(sts)){
+								
+								idNameVO.getSubList().add(sts);
+								
+								if(idNameVO.getStatus() == null){
+									idNameVO.setStatus(sts);
+								}else{
+									idNameVO.setStatus( idNameVO.getStatus() + " , " + sts);
+								}
+								
+								//desg count
+								if(committeeDesignationsMap.containsKey(sts)){
+									IdNameVO desgVO = committeeDesignationsMap.get(sts);
+									desgVO.setCount( desgVO.getCount() + 1);
+								}else{
+									IdNameVO desgVO = new IdNameVO();
+									desgVO.setName(sts);
+									desgVO.setCount(1L);
+									desgVO.setStatus("Committee");
+									committeeDesignationsMap.put( desgVO.getName() , desgVO);
+								}
+							}
+						
 						}
 					}
 				}
 			}
 			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
+			
+			
+			//Designations
+			List<IdNameVO> finalDesgList = new ArrayList<IdNameVO>();
+			if(idNameVOs != null && idNameVOs.size() > 0){
+				IdNameVO othersVO = null;
+				for(IdNameVO obj : idNameVOs){
+					if(obj.getStatus() == null || obj.getStatus().trim().isEmpty()){
+						obj.setStatus("OTHERS");
+						obj.getSubList().add("OTHERS");
+						if(othersVO == null){
+							othersVO = new IdNameVO();
+							othersVO.setStatus("Others");
+							othersVO.setName("OTHERS");
+							othersVO.setCount(0L);
+						}
+						othersVO.setCount( othersVO.getCount() + 1);
+					}
+				}
+				
+				if(publicRepresentativeDesgMap != null && publicRepresentativeDesgMap.size() > 0){
+					finalDesgList.addAll(publicRepresentativeDesgMap.values());
+				}
+				if(committeeDesignationsMap != null && committeeDesignationsMap.size() > 0){
+					finalDesgList.addAll(committeeDesignationsMap.values());
+				}
+				Collections.sort(finalDesgList,DesgNameComparator);
+				if(othersVO != null){
+					finalDesgList.add(othersVO);
+				}
+			}
+			
+			
+			//get Member Attended Status.
 			if(status.equalsIgnoreCase("invited")){
 				for(IdNameVO nameVO : idNameVOs){
 					if(cadreIdAttendList.contains(nameVO.getId())){
@@ -3209,7 +3287,40 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					nameVO.setWish("absent");    
 				}
 			}
-		return idNameVOs;     
+			
+			List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+			
+			if(searchDesignation != null && searchDesignation.trim().length() > 0){
+				if(idNameVOs != null && idNameVOs.size() > 0){
+					for(IdNameVO VO : idNameVOs){
+						
+						if( VO.getStatus() != null && VO.getStatus().trim().length() > 0){
+							if(VO.getStatus().contains(",") ){
+								 for(String desg : VO.getStatus().split(",")){
+									 if(desg.trim().equalsIgnoreCase(searchDesignation.trim())){
+										 finalList.add(VO);
+										 break;
+									 }
+								 }
+							}else if(VO.getStatus().trim().equalsIgnoreCase(searchDesignation.trim())){
+								 finalList.add(VO);
+							}
+						}
+						
+					}
+				}
+			}else{
+				finalList = idNameVOs;
+			}
+			
+			if(finalList != null && finalList.size() > 0){
+				
+				IdNameVO firstVO = finalList.get(0);
+				if(finalDesgList != null && finalDesgList.size() > 0){
+				  firstVO.setPublicRepDesgList(finalDesgList);
+			    }
+			}
+		return finalList;     
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -3217,6 +3328,17 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		}
 		return null;
 	}
+	public static Comparator<IdNameVO> DesgNameComparator = new Comparator<IdNameVO>() {
+	     public int compare(IdNameVO emp2, IdNameVO emp1) {
+
+	        String name2 = emp2.getName().toUpperCase();
+	        String name1 =emp1.getName().toUpperCase();
+
+	        //ascending order of strings.
+	        return name2.compareTo(name1);
+	    }
+
+	  };
 	/**
 	* @param  Long partyMeetingMainTypeId
 	* @param  List<Long> partyMeetingTypeIds
