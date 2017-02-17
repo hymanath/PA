@@ -3227,6 +3227,7 @@
 		<property name="dateUtilService" ref="dateUtilService" />
 		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
+	    <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
