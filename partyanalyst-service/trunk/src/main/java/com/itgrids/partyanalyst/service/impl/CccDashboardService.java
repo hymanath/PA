@@ -1808,4 +1808,24 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return returnList;
 	}
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type){
+		logger.info("Entered in getTotalAlertByStatus() method of CccDashboardService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getTotalAlertByStatusForDeptWiseClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,type);
+			setAlertDtls(alertCoreDashBoardVOs, alertList);    
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getTotalAlertByStatus() method of CccDashboardService{}");
+		}
+		return null;
+	}
 }
