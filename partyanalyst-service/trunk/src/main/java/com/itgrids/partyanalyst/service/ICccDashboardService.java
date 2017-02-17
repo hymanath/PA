@@ -54,4 +54,6 @@ public interface ICccDashboardService {
 	public List<AlertVO> getTotalAlertByStatusForOfficer(String fromDateStr, String toDateStr,Long userId);
 	
 	public List<AlertCoreDashBoardVO> getSubOrdinateLocationWiseAlertDetails(Long designationId,Long levelId,Long levelValue,String fromDateStr,String toDateStr);
+
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type);
 } 
