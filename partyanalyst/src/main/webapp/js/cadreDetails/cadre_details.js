@@ -216,7 +216,7 @@ function getParticipatedConstituencyId(cadreId){
 						participatedConstName = result.name;
 						participatedParlName = result.parliament;
 						participatedDistName = result.district;
-						if(participatedConstName == null){
+						if(participatedConstituencyId >0){
 							$(".participatedClass").hide();
 						}
 					
@@ -2265,7 +2265,10 @@ function buildElectionPerformanceInCadreLocation(result)
 	for(var i in result)
 	{
 	
-		str += '<div class="panel panel-default">';
+
+		 if(result[i].mandalPerc == "0"){
+		 
+		 str += '<div class="panel panel-default">';
 		str += '<div class="panel-heading  bg_white" style="" role="tab" id="headingOne'+result[i].year+'">';
 		str += '<h4 class="panel-title">';
 		str += '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+result[i].year+'" ';
@@ -2290,52 +2293,94 @@ function buildElectionPerformanceInCadreLocation(result)
 		str += '<div class="col-md-12 table-responsive">';
 		str += '<ul class="performanceGraph">';
 	 //if(result[i].year != "2009" && globalVoterCardNo != "")
-		 if(result[i].year != "2009" && globalVoterCardNo != "")
-		 {
-			   str += '<li style="" >';
-			 if(result[i].boothPerc == "0"){
-				  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth -('+result[i].reasonStr+') " data-text="0%" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
-			 }
-			 else{
-				  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
-			 }
-		 
-		  
-		   str += '</li>';
-		 }else if(globalVoterCardNo == ""){
-		   str += '<li style="" >';
-		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth (No Voter ID)" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
-		   str += '</li>';
-		 } 
-	   
-	if(result[i].cadreLocation =="Mandal")
-	{
 		str += '<li>';
-        str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
-        str += '</li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+result[i].constituencyName.toUpperCase()+')"></div>';
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+result[i].parliamentName.toUpperCase()+')"></div>';
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+result[i].districtName.toUpperCase()+')"></div>';
+		str += '</li>';
+		
+	 }else{
+			
+			str += '<div class="panel panel-default">';
+			str += '<div class="panel-heading  bg_white" style="" role="tab" id="headingOne'+result[i].year+'">';
+			str += '<h4 class="panel-title">';
+			str += '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+result[i].year+'" ';
+			if(result[i].year == "2014")
+			  str += ' aria-expanded="true" ';
+			else
+			 str += ' aria-expanded="false" '; 
+		 
+			str +=' aria-controls="collapseOne'+result[i].year+'"> '+result[i].year+' PERFORMANCE';
+			//if(result[i].year == "2014")
+			str += '<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span></a>';
+			//else
+			//str += '<span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span></a>';
+			
+			str += '</h4>';
+			str += '</div>';
+			
+			str += '<div id="collapseOne'+result[i].year+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+result[i].year+'">';
+			str += '<div class="panel-body" style="padding: 0px;" >';
+			
+			str += '<div class="row ">';
+			str += '<div class="col-md-12 table-responsive">';
+			str += '<ul class="performanceGraph">';
+		 //if(result[i].year != "2009" && globalVoterCardNo != "")
+			 if(result[i].year != "2009" && globalVoterCardNo != "")
+			 {
+				   str += '<li style="" >';
+				 if(result[i].boothPerc == "0"){
+					  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth -('+result[i].reasonStr+') " data-text="0%" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+				 }
+				 else{
+					  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+				 }
+			 
+			  
+			   str += '</li>';
+			 }else if(globalVoterCardNo == ""){
+			   str += '<li style="" >';
+			   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth (No Voter ID)" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+			   str += '</li>';
+			 } 
+		   
+		if(result[i].cadreLocation =="Mandal")
+		{
+			str += '<li>';
+			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
+			str += '</li>';
+		 }
+		
+		str += '<li>';
+		if(globalTehsName != null && globalTehsName.trim().length>0)
+			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+		else  if(result[i].mandalNameStr != null && result[i].mandalNameStr.length>0){
+			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result[i].mandalNameStr.toUpperCase()+')"></div>';
+			$("#mandalId").html(result[i].mandalNameStr.toUpperCase());
+		}
+		
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
+		str += '</li>';
+	
 	 }
-	
-	str += '<li>';
-	if(globalTehsName != null && globalTehsName.trim().length>0)
-		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
-	else  if(result[i].mandalNameStr != null && result[i].mandalNameStr.length>0){
-		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result[i].mandalNameStr.toUpperCase()+')"></div>';
-		$("#mandalId").html(result[i].mandalNameStr.toUpperCase());
-	}
-	
-    str += '</li>';
-	
-	str += '<li>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
-    str += '</li>';
-	
-	str += '<li>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
-	str += '</li>';
-	
-	str += '<li>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
-    str += '</li>';
+		
 		str += '</ul>';
 		str += '</div>';
 		str += '</div>';
@@ -3676,7 +3721,7 @@ function getPartyMeetingDetaildReprt()
 						var jsObj={
 							tdpCadreId:globalCadreId,
 							meetingTypeId:meetingTypeId
-						}
+						}	 
 						$.ajax({
 								type:'POST',
 								 url: 'getPartyMeetingTypeWiseDetails.action',
