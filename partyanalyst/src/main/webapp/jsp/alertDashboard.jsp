@@ -554,7 +554,7 @@ function getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate){
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		var str='';
-		str+='<option value="0">SELECT ONE LEADER</option>';   
+		str+='<option value="0">SELECT LEADER</option>';   
 		if(result != null && result.length > 0){         
 			for(var i in result){
 				if(result[i].id > 0)
@@ -586,14 +586,14 @@ function getAlertInvolvedCandidate(cadreId){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			var str='';
-			str+='<option value="0">SELECT ONE LEADER</option>';              
+			str+='<option value="0">SELECT LEADER</option>';              
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if(result[i].id > 0)  
 						str+='<option value="'+result[i].id+'">'+(result[i].uname).toUpperCase()+'['+result[i].count+']</option>';       
 				}
 			}
-			$("#involvedCadreId").html(str);
+			$("#involvedCadreId").html(str);    
 			$("#involvedCadreId").trigger('chosen:updated');
 			$(".optionalBlockCls").show();                  
 			$('.dynamicCls').each(function(){
@@ -1141,7 +1141,9 @@ function getAlertInvolvedCandidate(cadreId){
 	$(".datatableId").dataTable();
 		$(document).on("click",".showfilterBlock",function(){  
 			$("#assignedCadreId").val(0).trigger('chosen:updated');
-			$("#involvedCadreId").val(0).trigger('chosen:updated');
+			$('#involvedCadreId').empty();
+			$('#involvedCadreId').append('<option value="0">SELECT LEADER</option>');
+			$("#involvedCadreId").trigger('chosen:updated');        
 			$("#benefitId").val(0).trigger('chosen:updated');    
 			$("#stateId").val(globalStateId).trigger('chosen:updated');
 	        $("#referdistrictId").val(0).trigger('chosen:updated');
