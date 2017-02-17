@@ -3230,6 +3230,7 @@
 				
 			</div> 
 			</div>
+			
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="table-responsive" id="memberId">  
 				  
@@ -3237,6 +3238,7 @@
 				<div id="processingImgId" style="display:none;"></div>    
 				<div id="processingImgAttendId"></div>    
 			</div>
+			
 		</div>
       </div>
       <div class="modal-footer">
@@ -3247,6 +3249,11 @@
 </div>
 
 <!--model end -->
+
+<!-- Modal -->
+
+<!--model end -->
+
 <!-- Modal -->
 <div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
   <div class="modal-dialog modal-lg" role="document" style="width:85%">
