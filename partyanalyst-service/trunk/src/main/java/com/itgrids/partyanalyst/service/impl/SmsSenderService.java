@@ -534,25 +534,40 @@ public class SmsSenderService implements ISmsSenderService{
 			return (long)ResultCodeMapper.FAILURE;
 		}
 	}
-
-	
-	/*private class ConsumeMessage implements Runnable 
+	public boolean sendSmsForAssignedLeader(String message,String mobilenumber)  
 	{
-
-		
-		public void run() {
-			LOG.info("Entered in run()");
-			try{
-				
-				sendSmsFromAdmin();
-				
-			}
-			catch (Exception e) {
-				LOG.error(e);
-			}
-			
-		}
-		
-	}*/
-
+	    
+	    try {
+		    	 if(mobilenumber.trim().length() > 0)
+		    	 {
+		    		 if(mobilenumber.endsWith(","))
+		    		 	mobilenumber = mobilenumber.substring(0,mobilenumber.length()-1);
+		    		 
+		    		 HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+		    		 client.getHttpConnectionManager().getParams().setConnectionTimeout(Integer.parseInt("30000"));
+					
+		    		 PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+		    		 
+		    		 post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+		    		 post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+		    		 post.addParameter("mobilenumber", "7207785117");
+		    		 post.addParameter("message", message);
+		    		 post.addParameter("mtype", "N");
+		    		 post.addParameter("DR", "Y");
+					
+					int statusCode = client.executeMethod(post);
+					
+					if (statusCode != HttpStatus.SC_OK) {
+						LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+					     return false;
+					}
+					else
+						return true;
+		    	}
+		    	 else
+		    		 return false;
+	    } catch (Exception e) {
+	    	 return false;
+	    }
+	  }
 }
