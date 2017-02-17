@@ -66,7 +66,10 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName,PMA.partyMeeting.partyMeetingLevelId,PMA.partyMeeting.partyMeetingLevel.level, " +
 				" PMA.partyMeeting.locationValue ,PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type," +
-				" date(PMA.partyMeeting.startDate),date(PMA.partyMeeting.endDate),  count(distinct PMA.attendance.tdpCadreId),PMA.partyMeeting.meetingAddress.localArea  from PartyMeetingAttendance PMA ");
+				" date(PMA.partyMeeting.startDate),date(PMA.partyMeeting.endDate),  count(distinct PMA.attendance.tdpCadreId),PMA.partyMeeting.meetingAddress.localArea ," +
+				" partyMeetingSession.partyMeetingSessionId,partyMeetingSession.sessionType.type,partyMeetingSession.lateTime,PMA.attendance.attendedTime,partyMeetingSession.startTime " +
+				" from PartyMeetingAttendance PMA " +
+				" left join PMA.partyMeetingSession partyMeetingSession  ");
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
 			queryStr.append(" where PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
 			isSetWhere = true;
@@ -81,7 +84,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		if(todayDate != null )
 			queryStr.append(" and date(PMA.partyMeeting.startDate) <=:todayDate ");
 		
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingId,PMA.attendance.tdpCadreId order by PMA.partyMeeting.partyMeetingId ");
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId,partyMeetingSession.partyMeetingSessionId,PMA.attendance.tdpCadreId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
