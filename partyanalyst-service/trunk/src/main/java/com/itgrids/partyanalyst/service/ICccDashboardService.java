@@ -38,7 +38,7 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getPanchayatsMandalId(Long mandalId,Long constituencyId);
 	public List<GovtDepartmentVO> getInvolvedMembersInAlert(Long alertId);
 	
-	public List<AlertVO> getStatusWiseAlertDetails(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId);
+	public List<AlertVO> getStatusWiseAlertDetails(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId, Long statusId);
 	public List<GovtDepartmentVO> getAlertStatusForUser(Long userId);
 	public List<GovtDepartmentVO> getAssignedDepartmentsForUser(Long userId);
 	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId);
@@ -50,4 +50,6 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getSubLevelsForUser(Long userId,Long designationId);
 	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate);
 	public String updatingAlertInformation(final AlertAssigningVO inputvo);
+	
+	public List<AlertCoreDashBoardVO> getSubOrdinateLocationWiseAlertDetails(Long designationId,Long levelId,Long levelValue,String fromDateStr,String toDateStr);
 } 

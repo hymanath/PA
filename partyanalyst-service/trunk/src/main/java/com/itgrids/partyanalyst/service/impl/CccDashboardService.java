@@ -1342,7 +1342,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		return returnList;
 	}
 	
-	public List<AlertVO> getStatusWiseAlertDetails(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId){
+	public List<AlertVO> getStatusWiseAlertDetails(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId, Long statusId){
 		logger.info("Entered in getTotalAlertGroupByStatusForOneDept() method of CccDashboardService{}");
 		List<AlertVO> returnList = new ArrayList<AlertVO>();
 		try {
@@ -1375,7 +1375,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 				}
 			}
-			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList,levelId,levelValues);
+			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList,levelId,levelValues,statusId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					AlertVO vo = new AlertVO();
@@ -1601,6 +1601,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
+			Map<Long,GovtDepartmentVO> locationMap = new LinkedHashMap<Long, GovtDepartmentVO>();
 			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1616,17 +1617,32 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					
-					GovtDepartmentVO vo = new GovtDepartmentVO();
-					vo.setId(id);
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setGovtDeptList(setStatusList(statusList));
-					GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
-					if(stsvo != null)
-						stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
-					
-					returnList.add(vo);
+					GovtDepartmentVO vo = locationMap.get(id);
+					if(vo == null){
+						vo = new GovtDepartmentVO();
+						
+						vo.setId(id);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						vo.setGovtDeptList(setStatusList(statusList));
+						GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
+						if(stsvo != null){
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setCount(vo.getCount()+stsvo.getCount());
+						}
+						locationMap.put(id, vo);	
+					}
+					else{
+						GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
+						if(stsvo != null){
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setCount(vo.getCount()+stsvo.getCount());
+						}
+					}
 				}
 			}
+			
+			if(locationMap != null)
+				returnList = new ArrayList<GovtDepartmentVO>(locationMap.values());
 			
 		} catch (Exception e) {
 			logger.error("Error occured getSubOrdinatesAlertsOverView() method of CccDashboardService",e);
@@ -1771,5 +1787,25 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			logger.error("Error occured updatingAlertInformation() method of CccDashboardService",e);
 		}
 		return status;
+	}
+	
+	public List<AlertCoreDashBoardVO> getSubOrdinateLocationWiseAlertDetails(Long designationId,Long levelId,Long levelValue,String fromDateStr,String toDateStr){
+		List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> alertList = alertAssignedOfficerDAO.getSubOrdinateLevelWiseAlertsDetails(designationId, levelId, levelValue, fromDate, toDate);
+			setAlertDtls(returnList, alertList);
+			
+		} catch (Exception e) {
+			logger.error("Error occured getSubOrdinateLocationWiseAlertDetails() method of CccDashboardService",e);
+		}
+		return returnList;
 	}
 }
