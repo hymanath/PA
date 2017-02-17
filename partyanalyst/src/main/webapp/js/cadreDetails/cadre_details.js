@@ -2265,9 +2265,7 @@ function buildElectionPerformanceInCadreLocation(result)
 	for(var i in result)
 	{
 	
-
 		 if(result[i].mandalPerc == "0"){
-		 
 		 str += '<div class="panel panel-default">';
 		str += '<div class="panel-heading  bg_white" style="" role="tab" id="headingOne'+result[i].year+'">';
 		str += '<h4 class="panel-title">';
@@ -3721,7 +3719,7 @@ function getPartyMeetingDetaildReprt()
 						var jsObj={
 							tdpCadreId:globalCadreId,
 							meetingTypeId:meetingTypeId
-						}	 
+						}
 						$.ajax({
 								type:'POST',
 								 url: 'getPartyMeetingTypeWiseDetails.action',
