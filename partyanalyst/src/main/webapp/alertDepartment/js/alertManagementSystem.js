@@ -1492,47 +1492,50 @@ function buildStatusWiseTotalAlerts(result){
 										}
 										for(var t in result[i].govtDeptList){
 										}
+										
 										totalCount = totalPrintCount+totalElecCount;
-										if(totalCount == 0 || result[i].govtDeptList[t].count ==0){
-											str+='<td class="bg_D8"><span>'+totalCount+'</span></td>';
-										for(var t in result[i].govtDeptList){
-											str+='<td><span>'+result[i].govtDeptList[t].count+'</span></td>';
-											}
+										if(totalCount != null && totalCount!= 0){
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+'>'+totalCount+'</span></td>';
 										}else{
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'"><a>'+totalCount+'</a></span></td>';
+											str+='<td class="bg_D8">'+totalCount+'</td>';
+										}
 										for(var t in result[i].govtDeptList){
-											str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[t].count+'</span></td>';
+											if(result[i].govtDeptList[t].count != null && result[i].govtDeptList[t].count != 0){
+												str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+result[i].govtDeptList[t].count+'</span></td>';	
+											}else{
+												str+='<td>'+result[i].govtDeptList[t].count+'</td>';
 											}
 										}
-										
 									str+='</tr>';
 									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
-										if(totalPrintCount ==0 || result[i].govtDeptList[k].printCnt ==0){
-											str+='<td class="bg_EE"><span>'+totalPrintCount+'</span></td>';
-										for(var k in result[i].govtDeptList){
-											str+='<td><span>'+result[i].govtDeptList[k].printCnt+'</span></td>';
-											}
+										if(totalPrintCount != null && totalPrintCount!= 0){
+											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="PMedia" >'+totalPrintCount+'</span></td>';
 										}else{
-											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalPrintCount+'</span></td>';
+											str+='<td class="bg_EE">'+totalPrintCount+'</td>';
+										}	
 										for(var k in result[i].govtDeptList){
-											str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[k].printCnt+'</span></td>';
+											if( result[i].govtDeptList[k].printCnt != null && result[i].govtDeptList[k].printCnt != 0){
+													str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="PMedia" >'+result[i].govtDeptList[k].printCnt+'</span></td>';
+											}else{
+												str+='<td>'+result[i].govtDeptList[k].printCnt+'</td>';
 											}
 										}
 									str+='</tr>';
 									
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
-										if(totalElecCount ==0 || result[i].govtDeptList[j].elecCnt ==0){
-											str+='<td class="bg_EE"><span>'+totalElecCount+'</span></td>';
-											for(var j in result[i].govtDeptList){
-												str+='<td><span>'+result[i].govtDeptList[j].elecCnt+'</span></td>';
-											}
+										if(totalElecCount != null && totalElecCount !=0){
+											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="electronic">'+totalElecCount+'</span></td>';
 										}else{
-											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+totalElecCount+'</span></td>';
-											for(var j in result[i].govtDeptList){
-												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[k].departmentId+'">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
-											}
+											str+='<td class="bg_EE">'+totalElecCount+'</td>';
+										}
+										for(var j in result[i].govtDeptList){
+											if(result[i].govtDeptList[j].elecCnt != null && result[i].govtDeptList[j].elecCnt !=0){
+												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[j].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="electronic">'+result[i].govtDeptList[j].elecCnt+'</span></td>';
+											}else{
+												str+='<td>'+result[i].govtDeptList[j].elecCnt+'</td>';
+											}	
 										}
 									str+='</tr>'; 
 								str+='</tbody>';
@@ -2167,16 +2170,20 @@ $(document).on("click",".totAlertsStsCls",function(){
 		backdrop: 'static'
 	});
 	var deptIdArr = [];
+	var paperIdArr = [];
+	var chanelIdArr = [];
 	var alertStatusId = $(this).attr("attr_status_id");
 	var deptId = $(this).attr("attr_dept_id");
-	if(deptId != null){
 		deptIdArr.push(deptId);  
-	}else{
-		deptIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
+	var type = $(this).attr("attr_type");
+	if(type == "PMedia"){
+		paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
+	}else if(type == "electronic"){
+		chanelIdArr = [1,2,3,4,5,6,7];
+	}else if(type == "Totals"){
+		paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
+		chanelIdArr = [1,2,3,4,5,6,7];
 	}
-	
-    var paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-    var chanelIdArr = [1,2,3,4,5,6,7];
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -2184,11 +2191,12 @@ $(document).on("click",".totAlertsStsCls",function(){
       deptIdArr : deptIdArr,  
       paperIdArr : paperIdArr,
       chanelIdArr : chanelIdArr,
-	  statusId : alertStatusId       
+	  statusId : alertStatusId ,
+	type:type      
     }
     $.ajax({
       type:'GET',
-      url: 'getTotalAlertByStatusAction.action',
+      url: 'getTotalAlertByStatusForDeptWiseClickAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
