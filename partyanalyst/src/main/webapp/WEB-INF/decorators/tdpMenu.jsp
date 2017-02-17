@@ -1003,16 +1003,13 @@
 									</li>
 									</c:if> -->
 									
-							<!--<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD') || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT') || not fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
-								<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
-								<li>
-									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
-								</li>
-								 <li>
-									<a href="cadreDemographicReportsAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Cadre Demographic Reports</span></a>
-								</li> 
-							<!--</c:if>
-							</c:if> -->
+							
+						<c:if test="${fn:contains(sessionScope.USER.entitlements,'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
+							<li>
+								<a href="cadreRegistrationDetailsAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
+							</li>
+						</c:if>
+
 							<c:if test="${sessionScope.USER.isAdmin != 'true'}">
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'PARTY_MEETING_THIRD_PARTY_UPDATION_ADMIN_ENTITLEMENT')}">
 									<li>
@@ -1021,10 +1018,18 @@
 								</c:if>
 							</c:if>
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
-								<li>
-									<a target="_blank" href="partyLeadersDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
-								</li>
+								<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
+									<li>
+										<a target="_blank" href="partyLeadersDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
+									</li>
+								</c:if>
 							</c:if>
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
+									<li>
+										<a href="partyLeadersDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Core Dashboard </span></a>
+									</li>
+							</c:if>
+							
 							<!--
 							<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 							<!--- Card Printing DashBoard 2016 start 
