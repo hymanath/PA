@@ -3089,9 +3089,9 @@ public String getParyMeetingMemberDtls(){
 		String startDateString = jObj.getString("startDateString");
 		String endDateString   = jObj.getString("endDateString");    
 		String status   = jObj.getString("status");
+		String searchDesignation = jObj.getString("searchDesignation");
 		
-		
-		idNameVOs = coreDashboardPartyMeetingService.getParyMeetingMemberDtls(partyMeetingMainTypeId,partyMeetingTypeIds,meetingId,state,startDateString,endDateString,status);
+		idNameVOs = coreDashboardPartyMeetingService.getParyMeetingMemberDtls(partyMeetingMainTypeId,partyMeetingTypeIds,meetingId,state,startDateString,endDateString,status,searchDesignation);
 		
 }catch(Exception e){
 	LOG.error("Exception raised at getParyMeetingMemberDtls() method of CoreDashBoard", e);
