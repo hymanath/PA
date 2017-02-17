@@ -1397,13 +1397,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	}
 	public List<Object[]> getMembersDetails(List<Long> attendedCadreIds){
 	    StringBuilder queryString = new StringBuilder();
-	       queryString.append(" SELECT TC.tdp_cadre_id," +//0
-	                   " TC.first_name," +//1
-	                   " PRT.position," +//2
-	                   " TR.role," +//3
-	                   " TCL.tdp_committee_level," +//4
-	                   " TC.mobile_no, " +//5
-	                   " D.district_name "+//6
+	       queryString.append(" SELECT TC.tdp_cadre_id,TC.first_name,PRT.position,TR.role,TCL.tdp_committee_level,TC.mobile_no,  D.district_name , PRT.public_representative_type_id" +//
 	                   " FROM tdp_cadre TC "+
 	                   " LEFT OUTER JOIN tdp_cadre_candidate TCC ON TC.tdp_cadre_id = TCC.tdp_cadre_id "+
 	                   " LEFT OUTER JOIN public_representative  PR ON TCC.candidate_id = PR.candidate_id "+
@@ -1426,7 +1420,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	           .addScalar("role", Hibernate.STRING)
 	           .addScalar("tdp_committee_level", Hibernate.STRING)
 	           .addScalar("mobile_no", Hibernate.STRING)
-	           .addScalar("district_name", Hibernate.STRING);
+	           .addScalar("district_name", Hibernate.STRING)
+	           .addScalar("public_representative_type_id", Hibernate.LONG);
+	           
 	       query.setParameterList("attendedCadreIds", attendedCadreIds);
 	        
 	       return query.list(); 
