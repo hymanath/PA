@@ -91,8 +91,8 @@
 				   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
 				   <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
 				</div>
-				
-				<c:if test="${pageAccessType == 'ALL'}">	
+				<c:set var="pageAccess" value="${pageAccessType}"/>
+				<c:if test="${pageAccessType == 'ALL' || pageAccessType == 'MP' || fn:containsIgnoreCase(pageAccess, 'District')}">	
 				<div class="row m_top20">				
 					<img id="imgajax" src="images/icons/search.gif" alt="Processing Image" style="display:none;width:17px;height:11px;"/>
 					<div class="col-md-2 col-md-offset-3">
@@ -135,7 +135,7 @@
 				</div>	
 				
 			</c:if>	
-			<c:if test="${pageAccessType != 'ALL'}">
+			<c:if test="${pageAccessType != 'ALL' && pageAccessType != 'MP' && not fn:containsIgnoreCase(pageAccess, 'District')}">
 			<div  class="row m_top20 form-inline">
 				<div class="col-md-4 col-md-offset-4">
 					<label>Select Committee Type</label>
@@ -1779,7 +1779,8 @@ function getCadreEnrollmentYearsForSummary(){
 	}
 </script>
 <script>
- <c:if test="${pageAccessType == 'ALL'}">
+<c:set var="pageAccess" value="${pageAccessType}"/>
+<c:if test="${pageAccessType == 'ALL' || pageAccessType == 'MP' || fn:contains(pageAccess, 'District')}">
 		getUserAccessInfo();
 </c:if>
 
