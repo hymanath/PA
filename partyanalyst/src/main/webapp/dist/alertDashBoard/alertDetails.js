@@ -1912,7 +1912,10 @@ function getGroupedArticlesInfo(articleId)
 		if(result !=null && result.length>0){
 			for(var i in result)
 			{
-				str+='<li class="articleDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+				if(articleId != result[i].id){
+					str+='<li class="articleDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+				}
+				
 			}
 		}
 		
