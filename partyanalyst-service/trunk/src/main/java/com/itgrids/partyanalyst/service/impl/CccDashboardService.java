@@ -1389,6 +1389,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					vo.setDate2(obj[6] != null ? obj[6].toString():"");
 					vo.setStatusId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 					vo.setStatus(obj[8] != null ? obj[8].toString():"");
+					vo.setColor(obj[9] != null ? obj[9].toString():"");
 					vo.setNoOfDays(new DateUtilService().noOfDayBetweenDates(vo.getDate1(), vo.getDate2()));
 					
 					returnList.add(vo);
@@ -1641,6 +1642,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 					GovtDepartmentVO vo = new GovtDepartmentVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setColor(obj[2] != null ? obj[2].toString():"");
 					returnList.add(vo);
 				}
 			}

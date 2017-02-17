@@ -72,7 +72,8 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
    
    public List<Object[]> getStatusWithoutPending(){
 	   Query query = getSession().createQuery("select distinct model.alertStatus.alertStatusId," +
-	   											" model.alertStatus.alertStatus" +
+	   											" model.alertStatus.alertStatus," +
+	   											" model.alertStatus.color" +
 	   											" from AlertDepartmentStatus model" +
 	   											" where model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")" +
 	   											" and model.alertStatus.alertStatusId > 1");
