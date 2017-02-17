@@ -382,7 +382,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" date(model.insertedTime)," +
 					" date(model.alert.updatedTime)," +
 					" model.alert.alertStatus.alertStatusId," +
-					" model.alert.alertStatus.alertStatus" +
+					" model.alert.alertStatus.alertStatus," +
+					" model.alert.alertStatus.color" +
 					" from AlertAssignedOfficer model");
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
 			sb.append(" left join model.alert.tvNewsChannel TNC" +

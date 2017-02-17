@@ -47,8 +47,15 @@ public class GovtDepartmentVO {
 	private String image;
 	private Long impactLevelId;
 	private String impactLevel;
+	private String color;
 	
 	
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
 	public String getImage() {
 		return image;
 	}
