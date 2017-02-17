@@ -50,6 +50,8 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getSubLevelsForUser(Long userId,Long designationId);
 	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate);
 	public String updatingAlertInformation(final AlertAssigningVO inputvo);
+	public List<AlertVO> getTotalAlertByDeptForOfficer(String fromDateStr, String toDateStr,Long userId);
+	public List<AlertVO> getTotalAlertByStatusForOfficer(String fromDateStr, String toDateStr,Long userId);
 	
 	public List<AlertCoreDashBoardVO> getSubOrdinateLocationWiseAlertDetails(Long designationId,Long levelId,Long levelValue,String fromDateStr,String toDateStr);
 } 
