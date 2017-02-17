@@ -753,7 +753,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 					point: {
 					  events: {
 						click: function () {
-						  getArticlesForPartyDetailedDistEdiPartiesOverView(this.extra);
+						  getArticlesForPartyDetailedDistEdiPartiesOverViewElectronic(this.extra);
 						}
 					  }
 					}
@@ -784,7 +784,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 	}
 	
 }
-function getArticlesForPartyDetailedDistEdiPartiesOverView(val){
+function getArticlesForPartyDetailedDistEdiPartiesOverViewElectronic(val){
 	  var t = val.split("-");
 	  var orgId =" ";
 	  if(t[0] !=null && t[0] !=0){
