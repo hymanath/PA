@@ -3532,6 +3532,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		RegisteredMembershipCountVO countVO = new RegisteredMembershipCountVO();
 		try{
+			
+			countVO.setDistrictName(userAddress.getDistrict().getDistrictName());
+			countVO.setConstituencyName(userAddress.getConstituency().getName());
+			countVO.setParliamentName(userAddress.getParliamentConstituency().getName());
+			
 			Long electionId = 258l;//2014 Assembly
 			if(year.longValue() == 2009l)
 				electionId = 38l;
