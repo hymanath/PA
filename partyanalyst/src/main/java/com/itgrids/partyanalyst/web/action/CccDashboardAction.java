@@ -852,6 +852,46 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		public String getTotalAlertByStatusForOfficer(){
+			   try {
+				   session = request.getSession();
+				   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				   if(regVo != null){
+					    Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						String fromDate = jObj.getString("fromDate");
+						String toDate = jObj.getString("toDate");
+						
+						
+						alertVOs = cccDashboardService.getTotalAlertByStatusForOfficer(fromDate, toDate, userId);
+				   }
+				   
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getStatusWiseAlertDetails() in CccDashboardAction",e);
+				}
+			   return Action.SUCCESS;
+		}
+		public String getTotalAlertByDeptForOfficer(){
+			   try {
+				   session = request.getSession();
+				   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				   if(regVo != null){
+					    Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						String fromDate = jObj.getString("fromDate");
+						String toDate = jObj.getString("toDate");
+						
+						
+						alertVOs = cccDashboardService.getTotalAlertByDeptForOfficer(fromDate, toDate, userId);
+				   }
+				   
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getStatusWiseAlertDetails() in CccDashboardAction",e);
+				}
+			   return Action.SUCCESS;
+		}
+		//public List<AlertVO> getTotalAlertByDeptForOfficer(String fromDateStr, String toDateStr,Long userId)
+		//public List<AlertVO> getTotalAlertByStatusForOfficer(String fromDateStr, String toDateStr,Long userId)
 		
 		public String getSubOrdinateLocationWiseAlertDetails(){
 		   try {
