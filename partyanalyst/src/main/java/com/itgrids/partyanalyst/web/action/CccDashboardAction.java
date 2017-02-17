@@ -23,6 +23,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
@@ -60,8 +61,17 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private List<IdAndNameVO> chanelList;
 	    private List<IdAndNameVO> deptList;
 	    private List<IdAndNameVO> locationLevelList;
+	    private List<AlertCoreDashBoardVO> alertCoreDashBoardVOList;
+	    
 	   
-	    public List<File> getImageForDisplay() {
+	    public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOList() {
+			return alertCoreDashBoardVOList;
+		}
+		public void setAlertCoreDashBoardVOList(
+				List<AlertCoreDashBoardVO> alertCoreDashBoardVOList) {
+			this.alertCoreDashBoardVOList = alertCoreDashBoardVOList;
+		}
+		public List<File> getImageForDisplay() {
 			return imageForDisplay;
 		}
 		public void setImageForDisplay(List<File> imageForDisplay) {
@@ -704,6 +714,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 						String fromDate = jObj.getString("fromDate");
 						String toDate = jObj.getString("toDate");
 						Long stateId = jObj.getLong("stateId");
+						Long statusId = jObj.getLong("statusId");
 						
 						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 						List<Long> paperIdList = new ArrayList<Long>();
@@ -717,7 +728,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 							chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 						}
 						
-						alertVOs = cccDashboardService.getStatusWiseAlertDetails(fromDate, toDate, stateId, paperIdList, chanelIdList, userId);
+						alertVOs = cccDashboardService.getStatusWiseAlertDetails(fromDate, toDate, stateId, paperIdList, chanelIdList, userId, statusId);
 				   }
 				   
 			   } catch (Exception e) {
@@ -838,6 +849,26 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   
 			} catch (Exception e) {
 				LOG.error("Exception Raised in updatingAlertInformation() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+		
+		public String getSubOrdinateLocationWiseAlertDetails(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   jObj = new JSONObject(getTask());
+			   Long designationId = jObj.getLong("designationId");
+			   Long levelId = jObj.getLong("levelId");
+			   Long levelValue = jObj.getLong("levelValue");
+			   String fromDateStr = jObj.getString("fromDate");
+			   String toDateStr = jObj.getString("toDate");
+				
+			   alertCoreDashBoardVOList = cccDashboardService.getSubOrdinateLocationWiseAlertDetails(designationId,levelId,levelValue,fromDateStr,toDateStr);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getSubOrdinateLocationWiseAlertDetails() in CccDashboardAction",e);
 			}
 			   return Action.SUCCESS;
 		}

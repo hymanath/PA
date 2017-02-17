@@ -54,16 +54,7 @@
 </head>
 <body>
 <div  class="AMS AUMS">
-	<!--<header>
-		<nav class="navbar navbar-default navbarHeader">
-		  <div class="container">
-			<!-- Brand and toggle get grouped for better mobile display 
-			<div class="navbar-header">
-			  <a class="navbar-brand" href="#"><img src="newCoreDashBoard/img/APLOGO.jpg" class="img-responsive"/></a>
-			</div>
-		  </div><!-- /.container-fluid 
-		</nav>
-	</header>-->
+	
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
@@ -870,8 +861,8 @@ function getStatusWiseAlertDetails()
       toDate : currentToDate,
       stateId : globalStateId,
       paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr       
-
+      chanelIdArr : chanelIdArr,  
+	  statusId : 0
     }
     $.ajax({
       type:'GET',
