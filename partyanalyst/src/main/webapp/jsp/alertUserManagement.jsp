@@ -1,20 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Government Core DashBoard</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
-<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -109,6 +115,106 @@
 						</div>
 					</div>
 				</div>
+				<form id="alertAssign" name="alertAssignForm">
+					<!--<div class="row m_top20">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="assignedOfficersId"></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
+											<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLvlId"></span></label>
+											<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6" id="constituencyLevelDiv" style="display:none;">
+											<label>Constituency</label>
+											<select class="chosenSelect" id="constLvlId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6" id="mndlMuncLevelDiv" style="display:none;">
+											<label>Mandal/Muncipality</label>
+											<select class="chosenSelect" id="mndlMuncLvlId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLocationId"></span></label>
+											<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDesgId"></span></label>
+											<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
+											<option></option>	
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
+											<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>-->
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital">update alert information</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<span style="color:red;" id="errMsgCmntId"></span>
+											<label>
+												Comments
+											<span style="color:red">*</span>&nbsp;&nbsp;</label>
+											<label class="radio-inline">
+												<input type="radio" name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+											</label>
+											<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
+											
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<label>Change Status</label>
+											<select class="chosenSelect" id="changeStatusId"></select>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6">
+											<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">update alert </button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>-->
+				</form>
 			</div>	
 		</div>
 	</section>
@@ -122,9 +228,17 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/alertManagementSystem/alertUserManagementSystem.js" type="text/javascript"></script>
+
+<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+initializeFile();
+$(".chosenSelect").chosen({width:'100%'});
+
 /*global Function and variables Start*/
 var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");
@@ -740,9 +854,10 @@ function getGovtDeptLevelForDeptAndUser(departmentId)
 			if(selectedDay == "All")
 			$("#dateRangePickerDetailedBlock").val('ALL');
 	});
-	
-//getStatusWiseAlertDetails();
-//getAlertStatusForUser();
+
+getAlertStatusForUser();
+getStatusWiseAlertDetails();
+
 //getAssignedDesignationsForUser();
 //getSubLevelsForUser();
 //getSubOrdinatesAlertsOverView();
@@ -778,8 +893,19 @@ function getAlertStatusForUser()
       url: 'getAlertStatusForUserAction.action',
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
-		
+		if(result != null && result.length > 0)
+			buildDeptWiseStatus(result);
 	});
+}
+function buildDeptWiseStatus(result){
+	var str = '';
+	str+='<option value="0">Select Status</option>';
+	for(var i in result){
+		if(result[i].id != null && result[i].id > 1)
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}
+	$("#changeStatusId").html(str);
+	$("#changeStatusId").trigger("chosen:updated");
 }
 
 function getAssignedDesignationsForUser()
@@ -829,6 +955,42 @@ function getSubOrdinatesAlertsOverView()
 		
 	});
 }
+
+google.load("elements", "1", {
+	packages: "transliteration"
+ }); 
+ 
+var control;
+var lang;
+
+function languageChangeHandler(){
+	   var lang1 = $("input[name=Lang]:checked").val();
+		if(lang1 =="en"){
+			control.disableTransliteration();
+		}else{
+			control.enableTransliteration();
+			control.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            lang1);
+		}
+	}
+	
+google.setOnLoadCallback(onLoad);
+function onLoad() {
+	   lang = $("input[name=Lang]:checked").val();
+		var options = {
+			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+			destinationLanguage:[''+lang+''],
+			shortcutKey: 'alt+t',
+			transliterationEnabled: true
+		};
+		// Create an instance on TransliterationControl with the required options.
+		control = new google.elements.transliteration.TransliterationControl(options);
+		// Enable transliteration in the textbox with id 'descrptionId'.
+	 	if ($('#alertDescId').length){
+			control.makeTransliteratable(['alertDescId']);
+		}
+   }	
 </script>
 </body>
 </html>
