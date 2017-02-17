@@ -137,7 +137,7 @@
 	{
 		padding-right:15px;
 	}
-	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings , .basicCommitteesBlockDiv , .tourExpand , .cadreNotes , .cadreSettings , .cadreExpand , .cadreSettings , .cadreNotes , .emnIconExpand  , .notesIconEmn,.emnSetIcon , .attendaceIconExpand , .attendanceSetIcon , .notesIconattendance
+	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh{
 	{
 		font-size:10px;
 		padding:2px;
