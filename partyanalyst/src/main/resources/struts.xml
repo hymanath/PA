@@ -15874,5 +15874,10 @@
 			<param name="root">successMsg</param>
 		</result>
 	</action>
+	<action name="getSubOrdinateLocationWiseAlertDetailsAction" class="cccDashboardAction"  method="getSubOrdinateLocationWiseAlertDetails">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOList</param>         
+		</result>
+	</action>
  </package>
 </struts>
