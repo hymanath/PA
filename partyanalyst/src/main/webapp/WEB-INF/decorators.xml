@@ -733,9 +733,11 @@
 		<pattern>/finalizedPartyMeetingConductedAction*</pattern>
 		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
-		<pattern>/cccDashboardAction*</pattern>
-		<pattern>/govtLoginAction*</pattern>
-		<pattern>/departmentDetailsAction*</pattern>
 		<pattern>/committeeCreationDetailsAction*</pattern>
-	</decorator> 
+	</decorator>
+	<decorator name="districtLayout" page="govtLayout.jsp">
+		<pattern>/govtLoginAction*</pattern>
+		<pattern>/cccDashboardAction*</pattern>
+		<pattern>/departmentDetailsAction*</pattern>
+	 </decorator>
 </decorators>
