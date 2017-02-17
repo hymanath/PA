@@ -62,7 +62,14 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String mobileNo;
 	private List<String> docmentsList = new ArrayList<String>();
 	
+	private List<PartyMeetingsDataVO> sessionList = new ArrayList<PartyMeetingsDataVO>(0);
 	
+	public List<PartyMeetingsDataVO> getSessionList() {
+		return sessionList;
+	}
+	public void setSessionList(List<PartyMeetingsDataVO> sessionList) {
+		this.sessionList = sessionList;
+	}
 	
 	public String getPath() {
 		return path;

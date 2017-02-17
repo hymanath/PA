@@ -53,6 +53,22 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Long allSessionNonInviteeAttendedCnt=0l;
 	private Double allSessionNonInviteeAttendedPer=0.0d;
 	
+	private String isLate;
+	private String attendedTime;
+	
+	
+	public String getIsLate() {
+		return isLate;
+	}
+	public void setIsLate(String isLate) {
+		this.isLate = isLate;
+	}
+	public String getAttendedTime() {
+		return attendedTime;
+	}
+	public void setAttendedTime(String attendedTime) {
+		this.attendedTime = attendedTime;
+	}
 	public Long getNonInviteeCount() {
 		return nonInviteeCount;
 	}
