@@ -301,9 +301,9 @@ public class Scheduler {
 	{
 		try {
 			
-			Long cadreInfoCount = schedulerService.updateTdpCadreInfoDetails();
-			Long cadreCasteInfoCount = schedulerService.updateTdpCadreCasteInfoDetails();
-			Long cadreAgeRangeInfoCount =  schedulerService.updateTdpCadreAgerangeInfoDetails();
+			Long cadreInfoCount = schedulerService.updateTdpCadreInfoDetails(4L);
+			Long cadreCasteInfoCount = schedulerService.updateTdpCadreCasteInfoDetails(4L);
+			Long cadreAgeRangeInfoCount =  schedulerService.updateTdpCadreAgerangeInfoDetails(4L);
 			
 			String message ="TdpCadreInfo : "+cadreInfoCount+"\n TdpCadreCasteInfo : "+cadreCasteInfoCount+"\nTdpCadreAgeRangeInfo : "+cadreAgeRangeInfoCount+"";
 			log.debug(message);

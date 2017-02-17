@@ -7,7 +7,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TdpCadreCasteInfo;
 
 public interface ITdpCadreCasteInfoDAO extends GenericDao<TdpCadreCasteInfo, Long>{
-	public int deleteTdpCadreCasteInfoTableBeforeUpdate();
-	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType);
-	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId);
+	public int deleteTdpCadreCasteInfoTableBeforeUpdate( Long enrollmentYearId);
+	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType, Long enrollmentYearId);
+	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId, Long enrollmentYearId);
 }

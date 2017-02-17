@@ -15,18 +15,19 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		super(TdpCadreCasteInfo.class);
 	}
 
-	public int deleteTdpCadreCasteInfoTableBeforeUpdate()
+	public int deleteTdpCadreCasteInfoTableBeforeUpdate( Long enrollmentYearId)
 	{
-		Query query = getSession().createSQLQuery(" delete from tdp_cadre_caste_info ");		
+		Query query = getSession().createSQLQuery(" delete from tdp_cadre_caste_info where tdp_cadre_enrollment_id=:enrollmentYearId ");
+		query.setParameter("enrollmentYearId", enrollmentYearId);
 		int c = query.executeUpdate();		
 		return c;
 	}
 	
-	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType)
+	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType, Long enrollmentYearId)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append("  insert into tdp_cadre_caste_info (location_type,location_id,caste_state_id,count,caste_category_id)  ");
+		queryStr.append("  insert into tdp_cadre_caste_info (location_type,location_id,caste_state_id,count,caste_category_id,tdp_cadre_enrollment_id)  ");
 		
 		if(locationType != null && !locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
 		{
@@ -61,10 +62,10 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		{
 			queryStr.append(" UA.local_election_body, ");
 		}
-		queryStr.append(" CS.caste_state_id,count(CS.caste_state_id),CC.caste_category_id from tdp_cadre TC, user_address UA, caste_state CS, caste_category_group CCG, caste_category CC " +
+		queryStr.append(" CS.caste_state_id,count(CS.caste_state_id),CC.caste_category_id ,"+enrollmentYearId+"  from  tdp_cadre_enrollment_year TC1,tdp_cadre TC, user_address UA, caste_state CS, caste_category_group CCG, caste_category CC " +
 				" where TC.address_id = UA.user_address_id and TC.caste_state_id = CS.caste_state_id and CS.caste_category_group_id = CCG.caste_category_group_id and " +
 				" CCG.caste_category_id = CC.caste_category_id " +
-				" and TC.enrollment_year = 2014 and TC.is_deleted = 'N' ");
+				" and TC.enrollment_year = 2014 and TC.is_deleted = 'N' and TC1.tdp_cadre_id = TC.tdp_cadre_id and TC1.is_deleted='N' ");
 		
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
@@ -90,12 +91,14 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		{
 			queryStr.append(" and UA.local_election_body  is not null group by CS.caste_state_id,UA.local_election_body order by UA.local_election_body,CC.caste_category_id   ");
 		}
+		queryStr.append(" and TC1.enrollment_year_id=:enrollmentYearId ");
 		Query query = getSession().createSQLQuery(queryStr.toString());
+		query.setParameter("enrollmentYearId", enrollmentYearId);
 		int c = query.executeUpdate();
 		return c;
 	}
 	
-	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId)
+	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId, Long enrollmentYearId)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		boolean isStateWise = false;

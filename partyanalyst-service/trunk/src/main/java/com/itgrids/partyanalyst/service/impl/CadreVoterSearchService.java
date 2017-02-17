@@ -291,19 +291,19 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						if(casteStateId == null || casteStateId.longValue() == 0L)
 						{
 							if(locationType != null)
-								tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+								tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList,3L);//Srishilam  and Teja
 							
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
-								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
+								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,3L);
 							}
 						}
 						else
 						{
-							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
+							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId,3L);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
-								wardOrMuncipalityList = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId);
+								wardOrMuncipalityList = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId,3L);
 							}
 						}
 					}				

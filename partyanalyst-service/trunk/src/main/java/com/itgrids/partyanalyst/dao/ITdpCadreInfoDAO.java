@@ -11,13 +11,13 @@ import com.itgrids.partyanalyst.model.TdpCadreInfo;
 
 public interface ITdpCadreInfoDAO extends GenericDao<TdpCadreInfo, Long>{
 	
-	public Integer updateTdpCadreInfoTableByScheduler(String cadreType, String locationType);
+	public Integer updateTdpCadreInfoTableByScheduler(String cadreType, String locationType,Long enrollmentYearId);
 	
-	public Integer deleteTdpCadreInfoTableBeforeUpdate();
+	public Integer deleteTdpCadreInfoTableBeforeUpdate(Long enrollmentYearId);
 	
-	public List<Object[]> getLocationWiseCadreRegisterCount(Set<Long> locationIds,String locationType,Long constituencyId,String type);
+	public List<Object[]> getLocationWiseCadreRegisterCount(Set<Long> locationIds,String locationType,Long constituencyId,String type,Long tdpCommitteeEnrollMentYearId);
 
-	public Long getTdpCadreCountForLocations(String userAccessType,List<Long> locationIdsList,String type,String locationType);
+	public Long getTdpCadreCountForLocations(String userAccessType,List<Long> locationIdsList,String type,String locationType,Long tdpCommitteeEnrollMentYearId);
 	
-	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList);
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList,Long tdpCommitteeEnrollMentYearId);
 }

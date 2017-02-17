@@ -2258,7 +2258,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
 		 }
 		 
-	     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
+	     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered",3L);
 	 
 	    if(votersCount != null && votersCount.size() > 0){ 
 			 for(Object[] obj :votersCount){

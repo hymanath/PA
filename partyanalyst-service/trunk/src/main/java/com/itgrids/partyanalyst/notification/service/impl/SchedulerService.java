@@ -806,7 +806,7 @@ public class SchedulerService implements ISchedulerService{
 		}
 	}
 	
-	public Long updateTdpCadreInfoDetails()
+	public Long updateTdpCadreInfoDetails(final Long enrollmentYearId)
 	{
 		LOG.info("\n\n entered updation for TdpCadreInfo Table \n" );
 		Long effectedCount = 0L;
@@ -815,19 +815,19 @@ public class SchedulerService implements ISchedulerService{
 			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
 					
-					tdpCadreInfoDAO.deleteTdpCadreInfoTableBeforeUpdate();
+					tdpCadreInfoDAO.deleteTdpCadreInfoTableBeforeUpdate(enrollmentYearId);
 					
 					
-					int effectedCount1 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","District");
-					int effectedCount2 = tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Constituency");
-					int effectedCount3 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Tehsil");
-					int effectedCount4 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Localbody");
-					int effectedCount5 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Ward");
-					int effectedCount6 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Panchayat");
+					int effectedCount1 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","District",enrollmentYearId);
+					int effectedCount2 = tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Constituency",enrollmentYearId);
+					int effectedCount3 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Tehsil",enrollmentYearId);
+					int effectedCount4 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Localbody",enrollmentYearId);
+					int effectedCount5 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Ward",enrollmentYearId);
+					int effectedCount6 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Panchayat",enrollmentYearId);
 					
 				
-					int effectedCount7 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","District");
-					int effectedCount8 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Constituency");
+					int effectedCount7 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","District",enrollmentYearId);
+					int effectedCount8 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Constituency",enrollmentYearId);
 					//int effectedCount9 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Tehsil");
 					//int effectedCount10 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Localbody");
 					//int effectedCount11 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Ward");
@@ -854,21 +854,21 @@ public class SchedulerService implements ISchedulerService{
 		return effectedCount;
 	}
 	
-	public Long updateTdpCadreCasteInfoDetails()
+	public Long updateTdpCadreCasteInfoDetails(final Long enrollmentYearId)
 	{
 		Long effectedCount = 0L;
 		try {
 			LOG.info("\n\n entered updation for TdpCadreCasteInfo Table \n" );
 			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
-					tdpCadreCasteInfoDAO.deleteTdpCadreCasteInfoTableBeforeUpdate();
+					tdpCadreCasteInfoDAO.deleteTdpCadreCasteInfoTableBeforeUpdate(enrollmentYearId);
 					
-					int effectedCount1 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Constituency");
-					int effectedCount2 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("District");
-					int effectedCount3 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Panchayat");
-					int effectedCount4 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Ward");
-					int effectedCount5 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Tehsil");
-					int effectedCount6 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION);	
+					int effectedCount1 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Constituency",enrollmentYearId);
+					int effectedCount2 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("District",enrollmentYearId);
+					int effectedCount3 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Panchayat",enrollmentYearId);
+					int effectedCount4 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Ward",enrollmentYearId);
+					int effectedCount5 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Tehsil",enrollmentYearId);
+					int effectedCount6 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION,enrollmentYearId);	
 					String totalCount  = String.valueOf(effectedCount1 + effectedCount2 + effectedCount3 + effectedCount4 + effectedCount5 + effectedCount6);
 					Long effectedCount = Long.valueOf(totalCount);
 					
@@ -885,21 +885,21 @@ public class SchedulerService implements ISchedulerService{
 		return effectedCount;
 	}
 	
-	public Long updateTdpCadreAgerangeInfoDetails()
+	public Long updateTdpCadreAgerangeInfoDetails(final Long enrollmentYearId)
 	{
 		Long effectedCount = 0L;
 		try {
 			LOG.info("\n\n entered updation for TdpCadreAgeRangeInfo Table \n" );
 			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
-					tdpCadreAgerangeInfoDAO.deleteTdpCadreReageRangeInfoTableBeforeUpdate();
+					tdpCadreAgerangeInfoDAO.deleteTdpCadreReageRangeInfoTableBeforeUpdate(enrollmentYearId);
 					
-					int effectedCount1 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Constituency");
-					int effectedCount2 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("District");
-					int effectedCount3 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Panchayat");
-					int effectedCount4 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Ward");
-					int effectedCount5 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Tehsil");
-					int effectedCount6 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION);	
+					int effectedCount1 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Constituency",enrollmentYearId);
+					int effectedCount2 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("District",enrollmentYearId);
+					int effectedCount3 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Panchayat",enrollmentYearId);
+					int effectedCount4 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Ward",enrollmentYearId);
+					int effectedCount5 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Tehsil",enrollmentYearId);
+					int effectedCount6 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION,enrollmentYearId);	
 					String totalCount  = String.valueOf(effectedCount1 + effectedCount2 + effectedCount3 + effectedCount4 + effectedCount5 + effectedCount6);
 					Long effectedCount = Long.valueOf(totalCount);
 					
