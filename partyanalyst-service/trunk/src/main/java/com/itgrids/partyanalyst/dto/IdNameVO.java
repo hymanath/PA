@@ -77,6 +77,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<String> attendedDateList;
 	private String remark;
 	
+	private List<IdNameVO> publicRepDesgList;
+	private List<IdNameVO> committeeDesgList;
 	 
 	public Long getConstituencyNo() {
 		return constituencyNo;
@@ -576,5 +578,21 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setSessionLevel(List<String> sessionLevel) {
 		this.sessionLevel = sessionLevel;
 	}
-	
+
+	public List<IdNameVO> getPublicRepDesgList() {
+		return publicRepDesgList;
+	}
+
+	public void setPublicRepDesgList(List<IdNameVO> publicRepDesgList) {
+		this.publicRepDesgList = publicRepDesgList;
+	}
+
+	public List<IdNameVO> getCommitteeDesgList() {
+		return committeeDesgList;
+	}
+
+	public void setCommitteeDesgList(List<IdNameVO> committeeDesgList) {
+		this.committeeDesgList = committeeDesgList;
+	}
+    	
 }
