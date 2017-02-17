@@ -660,11 +660,11 @@ function getAlertStatusCommentsTrackingDetails()
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
 			var involvedCadreId =  $("#involvedCadreId").val();
-			if(involvedCadreId.length == 0)
+			if(involvedCadreId == null || involvedCadreId.length == 0)
 				involvedCadreId = 0;
 			var benefitId =  $("#benefitId").val();
-			if(benefitId.length == 0)
-				benefitId = 0;
+			if(benefitId == null || benefitId.length == 0)
+				benefitId = 0;       
 			var fromDate='';
 			var toDate='';
 			var dateStr = $("#dateRangePickerId").val(); 
@@ -733,10 +733,10 @@ function getAlertStatusCommentsTrackingDetails()
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
 			var involvedCadreId =  $("#involvedCadreId").val();
-			if(involvedCadreId.length == 0)
+			if(involvedCadreId == null || involvedCadreId.length == 0)
 				involvedCadreId = 0;
 			var benefitId =  $("#benefitId").val();
-			if(benefitId.length == 0)
+			if(benefitId == null || benefitId.length == 0)
 				benefitId = 0;
 			var fromDate='';
 			var toDate='';
@@ -808,10 +808,10 @@ function getAlertStatusCommentsTrackingDetails()
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
 			var involvedCadreId =  $("#involvedCadreId").val();
-			if(involvedCadreId.length == 0)
+			if(involvedCadreId == null || involvedCadreId.length == 0)
 				involvedCadreId = 0;
 			var benefitId =  $("#benefitId").val();
-			if(benefitId.length == 0)
+			if(benefitId == null || benefitId.length == 0)
 				benefitId = 0;
 			var fromDate='';
 			var toDate='';
@@ -883,10 +883,10 @@ function getAlertStatusCommentsTrackingDetails()
 			if(assignedCadreId.length == 0)
 				assignedCadreId =0;
 			var involvedCadreId =  $("#involvedCadreId").val();
-			if(involvedCadreId.length == 0)
+			if(involvedCadreId == null || involvedCadreId.length == 0)
 				involvedCadreId = 0;
 			var benefitId =  $("#benefitId").val();
-			if(benefitId.length == 0)
+			if(benefitId == null || benefitId.length == 0)
 				benefitId = 0;
 			var fromDate='';
 			var toDate='';
