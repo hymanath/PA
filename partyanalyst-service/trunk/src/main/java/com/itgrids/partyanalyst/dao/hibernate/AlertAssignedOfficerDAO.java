@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -9,6 +10,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerDAO;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOfficer, Long> implements IAlertAssignedOfficerDAO{
 
@@ -514,7 +516,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	}
 	
 	public List<Long> getAlertAssignedOfficerIdsForAlertByUser(Long alertId,Long userId){
-		Query query = getSession().createQuery("select distinct model.alertAssignedOfficerId" +
+		Query query = getSession().createQuery(" select distinct model.alertAssignedOfficerId" +
 												" from AlertAssignedOfficer model,GovtDepartmentDesignationOfficerDetails model1" +
 												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = model1.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
 												" and model.govtOfficer.govtOfficerId = model1.govtOfficer.govtOfficerId" +
@@ -523,6 +525,82 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 												" and model1.isDeleted = 'N'");
 		query.setParameter("alertId", alertId);
 		query.setParameter("userId", userId);
+		return query.list();
+	}
+	public List<Object[]> getAlertIdAndDeptDesigOfficerIdAndGovtOfficerIdList(Date fromDate,Date toDate, List<Long> deptIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct " +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
+						" model.govtOfficer.govtOfficerId, " +
+						" model.alert.alertId " +
+						" from " +
+						" AlertAssignedOfficer model " +
+						" where " +
+						" model.alert.isDeleted = 'N' and" +
+						" date(model.insertedTime) between :fromDate and :toDate and " +
+						" model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and " +
+						" model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIdList) ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		query.setParameterList("deptIdList", deptIdList);
+		return query.list();
+	}
+	public List<Object[]> getTotalAlertGroupByStatusForAlertList(Set<Long> alertIdSet){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		queryStr.append(" ALTS.alert_status_id as alertStatusId, ");
+		queryStr.append(" ALTS.alert_status as alertStatus, ");
+		queryStr.append(" count(distinct AAO.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert_assigned_officer AAO, alert_status ALTS, alert A ");
+		queryStr.append(" where ");
+		queryStr.append(" AAO.alert_status_id = ALTS.alert_status_id and ");
+		queryStr.append(" AAO.alert_id = A.alert_id and ");
+		queryStr.append(" A.is_deleted = 'N' and ");
+		queryStr.append(" AAO.alert_id in (:alertIdSet) ");
+		queryStr.append(" group by ");
+		queryStr.append(" ALTS.alert_status_id ");
+		queryStr.append(" order by ");
+		queryStr.append(" ALTS.status_order; ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+									.addScalar("alertStatusId", Hibernate.LONG)
+									.addScalar("alertStatus", Hibernate.STRING)
+									.addScalar("count", Hibernate.LONG);
+		query.setParameterList("alertIdSet", alertIdSet);
+		return query.list();
+	}
+	public List<Object[]> getTotalAlertGroupByDeptForAlertList(Set<Long> alertIdSet){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		queryStr.append(" GD.govt_department_id as govtDepartmentId, ");
+		queryStr.append(" GD.department_name as departmentName, ");
+		queryStr.append(" count(distinct AAO.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert_assigned_officer AAO, ");
+		queryStr.append(" govt_department_designation_officer GDDO, ");
+		queryStr.append(" govt_department_designation GDD, ");
+		queryStr.append(" govt_department GD, ");
+		queryStr.append(" alert A ");
+		queryStr.append(" where ");
+		queryStr.append(" AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id and ");
+		queryStr.append(" GDDO.govt_department_designation_id = GDD.govt_department_designation_id and ");
+		queryStr.append(" GDD.govt_department_id = GD.govt_department_id and ");
+		//queryStr.append(" GD.govt_department_id in (:deptIdList) and ");
+		queryStr.append(" AAO.alert_id = A.alert_id and ");
+		queryStr.append(" A.is_deleted = 'N' and ");
+		queryStr.append(" AAO.alert_id in (:alertIdSet) ");
+		queryStr.append(" group by ");
+		queryStr.append(" GD.govt_department_id; ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+									.addScalar("govtDepartmentId", Hibernate.LONG)
+									.addScalar("departmentName", Hibernate.STRING)
+									.addScalar("count", Hibernate.LONG);
+		query.setParameterList("alertIdSet", alertIdSet);
+		//query.setParameterList("deptIdList", deptIdList);
 		return query.list();
 	}
 	
