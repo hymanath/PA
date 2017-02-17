@@ -284,7 +284,7 @@
 					<div id="alertCommentsDivIdNew"></div>
 				</div>
 			</div>
-			<form id="alertAssign" name="alertAssignForm">
+			<form id="alertAssign" name="alertAssignForm" style="display:none;">
 				<div class="row m_top20">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="panel panel-default">
