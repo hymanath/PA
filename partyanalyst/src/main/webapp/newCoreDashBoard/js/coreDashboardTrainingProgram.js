@@ -577,6 +577,9 @@ function stateLevelCampDetails(){
 	$("#stateLevelCampId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var programIdArr = [6,7];
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	if(dateStr == undefined || dateStr== null){ // Stopping default call when user has no training access.
+		return;
+	}
 	var jsObj={
 		programIdArr : programIdArr,
 		stateId : globalStateId,
