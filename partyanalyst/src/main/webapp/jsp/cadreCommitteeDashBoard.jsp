@@ -4794,7 +4794,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
 		if(result[i].status != "Y"){
 			
-				//str+='<div class="pull-right  btn btn-default btn-sm deleteCls" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+				str+='<div class="pull-right  btn btn-default btn-sm deleteCls deleteCls'+i+'" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\',\'deleteCls'+i+'\');"></i></div>';
 			
 		}
 		str+='</td>';
@@ -4895,7 +4895,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	   });
 		}
 	}
-	function deleteCadreRole(tdpCommitteeMemberId)
+	function deleteCadreRole(tdpCommitteeMemberId,className)
 	{
 		var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
 		var date =$("#reportrange1").val();
@@ -4915,7 +4915,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		toDate :toDate,
 		task:"deleterole"
 	}
-	alert(3333);
+	
 	$.ajax({
           type:'GET',
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
@@ -4929,11 +4929,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 			  if(result != null){
 				  {
-					  if(result[0].status == "Removed")
-				alert("Removed Successfully..")
-						  else
-					alert("Committee Already Confirmed")
-				
+					if(result[0].status == "Removed"){
+						alert("Removed Successfully..")
+						$('.'+className+'').hide();
+					}else
+						alert("Committee Already Confirmed")
 				  }
 				
 			}
