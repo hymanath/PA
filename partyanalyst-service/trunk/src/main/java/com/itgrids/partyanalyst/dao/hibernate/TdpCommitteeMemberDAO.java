@@ -941,7 +941,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		Long enrollId =enrollIdsList != null && enrollIdsList.size()>0 ?enrollIdsList.get(0):0L;
-		quertyStr.append(" select distinct TC.tdpCadre.gender , count(TC.tdpCadre.gender) ");
+		quertyStr.append(" select distinct TC.tdpCadre.gender , count(distinct TC.tdpCadreId) ");
 		
 		if(descriptionLevelId != null && descriptionLevelId.longValue() == 2L) // districtWise
 		{
@@ -1096,7 +1096,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		Long enrollId = 0l;
-		quertyStr.append(" select VAR.voterAgeRangeId ,VAR.ageRange,TC.tdpCadre.gender , count(TC.tdpCadre.gender) ");
+		quertyStr.append(" select VAR.voterAgeRangeId ,VAR.ageRange,TC.tdpCadre.gender , count(TC.tdpCadreId) ");
 		quertyStr.append(" from TdpCadreEnrollmentYear TC, TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR , TdpCommittee TCO,TdpBasicCommittee TBC,VoterAgeRange VAR ");
 		quertyStr.append(" where ");
 		quertyStr.append(" TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and TCM.tdpCadreId = TC.tdpCadre.tdpCadreId and TC.tdpCadre.voterAgeRangeId = VAR.voterAgeRangeId and  ");
@@ -1231,7 +1231,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		
-		quertyStr.append(" select CS.casteStateId ,C.casteName,TC.tdpCadre.gender , count(TC.tdpCadre.gender) ");
+		quertyStr.append(" select CS.casteStateId ,C.casteName,TC.tdpCadre.gender , count(TC.tdpCadreId) ");
 		quertyStr.append(" from TdpCadreEnrollmentYear TC, TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR , TdpCommittee TCO,TdpBasicCommittee TBC , ");
 		quertyStr.append(" CasteState CS, Caste C ");
 		quertyStr.append(" where ");
@@ -1364,7 +1364,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	{
 		StringBuilder quertyStr = new StringBuilder();
 		//Long enrollId = 0l;
-		quertyStr.append(" select distinct CC.casteCategoryId ,CC.categoryName,TC.tdpCadre.gender , count(TC.tdpCadre.gender) ");
+		quertyStr.append(" select distinct CC.casteCategoryId ,CC.categoryName,TC.tdpCadre.gender , count(TC.tdpCadreId) ");
 		quertyStr.append(" from TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR, TdpCadreEnrollmentYear TC, CasteState CS, Caste C, CasteCategoryGroup CCG,CasteCategory CC ");
 		quertyStr.append(" , TdpCommittee TCO,TdpBasicCommittee TBC where TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and ");
 		quertyStr.append(" TCM.tdpCadreId = TC.tdpCadre.tdpCadreId and ");

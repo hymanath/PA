@@ -302,10 +302,10 @@ public class Scheduler {
 		try {
 			
 			Long cadreInfoCount = schedulerService.updateTdpCadreInfoDetails(4L);
-			Long cadreCasteInfoCount = schedulerService.updateTdpCadreCasteInfoDetails(4L);
-			Long cadreAgeRangeInfoCount =  schedulerService.updateTdpCadreAgerangeInfoDetails(4L);
+			//Long cadreCasteInfoCount = schedulerService.updateTdpCadreCasteInfoDetails(4L);
+			//Long cadreAgeRangeInfoCount =  schedulerService.updateTdpCadreAgerangeInfoDetails(4L);
 			
-			String message ="TdpCadreInfo : "+cadreInfoCount+"\n TdpCadreCasteInfo : "+cadreCasteInfoCount+"\nTdpCadreAgeRangeInfo : "+cadreAgeRangeInfoCount+"";
+			String message ="TdpCadreInfo : "+cadreInfoCount+"\n TdpCadreCasteInfo : ";//+cadreCasteInfoCount+"\nTdpCadreAgeRangeInfo : "+cadreAgeRangeInfoCount+"";
 			log.debug(message);
 			mobileService.sendSmsToUserForUpdations(message,"9581434970");
 			
