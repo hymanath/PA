@@ -629,7 +629,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " model.alert.createdTime, " +//1
 			        " model.alert.updatedTime, " +//2
 			        " model.alert.alertStatus.alertStatusId, " +//3
-			        " model.alert.alertStatus, " +//4
+			        " model.alert.alertStatus.alertStatus, " +//4
 			        " model.alert.alertCategory.alertCategoryId, " +//5
 			        " model.alert.alertCategory.category as category, " +//6
 			        " model.alert.alertImpactScope.alertImpactScopeId, " +//7
@@ -647,9 +647,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " TNC.channelName"); //19
 		
 		sb.append(" from AlertAssignedOfficer model" +
+					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
-					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
 					" left join UA.tehsil T" +
