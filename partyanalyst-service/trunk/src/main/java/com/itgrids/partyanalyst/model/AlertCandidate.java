@@ -30,7 +30,7 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private TdpCadre tdpCadre;
 	private AlertImpact alertImpact;
 	private Long candidateId;
-	
+	private Candidate candidate;
 	//News Portal Data Adding
 	private Long newsCandidateId;
 	private String newsCandidate;
@@ -180,6 +180,17 @@ public class AlertCandidate extends BaseModel implements Serializable {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "candidate_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)   
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 	
 	
