@@ -4552,7 +4552,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(deptIds != null && deptIds.size() > 0 ){
 			sb.append(" and model.govtDepartment.govtDepartmentId in(:deptIds) ");
 		}
-		if(paperIds != null && paperIds.size() > 0 && channelIds != null && channelIds.size() > 0){
+		if(paperIds != null && paperIds.size() > 0){
 			sb.append(" and ((edition.newsPaper.newsPaperId in(:paperIds)) ");
 		}
 		if(channelIds != null && channelIds.size() > 0){ 
