@@ -3659,7 +3659,7 @@
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
 <div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog">
- <div class="modal-dialog modal-lg" role="document">   
+ <div class="modal-dialog" role="document" style="width:85%;">   
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
