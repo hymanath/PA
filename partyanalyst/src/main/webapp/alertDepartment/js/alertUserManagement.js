@@ -35,7 +35,20 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	getTotalAlertGroutByDeptThenStatus();
 	getTotalAlertByDeptForOfficer();
 });
-
+$('#dateRangePickerSubOrdinateBlock').on('apply.daterangepicker', function(ev, picker) {
+	detailedfromDate =  picker.startDate.format('DD/MM/YYYY')
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePickerSubOrdinateBlock").val('ALL');
+	}
+	
+});
+$("#dateRangePickerDistrictAlertBlock").on('apply.daterangepicker', function(ev, picker) {
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePickerDistrictAlertBlock").val('ALL');
+	}
+});
 $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").daterangepicker({
 	opens: 'left',
 	startDate: detailedfromDate,
@@ -44,7 +57,7 @@ $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").datera
 	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
-		'All':[moment().subtract(20, 'years').startOf('year'), moment().endOf('year')],
+		'All':[moment(),moment()],
 		'Today' : [moment(), moment()],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
@@ -56,20 +69,11 @@ $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").datera
 	}
 });
 var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").val();
-
-if(dates == "01/01/1997 - 31/12/2017"){
+var pickerDates = detailedfromDate+' - '+detailedtoDate
+if(dates == pickerDates)
+{
 	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").val('ALL');
 }
-
-$(document).on("click",".ranges li",function(){	
-	var selectedDay=$(this).html().trim();
-		if(selectedDay == "All"){
-			$("#dateRangePickerDetailedBlock").val('ALL');
-			$("#dateRangePickerDistrictAlertBlock").val('ALL');
-			$("#dateRangePickerSubOrdinateBlock").val('ALL');
-		}
-			
-});
 
 
 //getTotalAlertGroupByStatusForOneDept();
@@ -478,13 +482,17 @@ function buildTotalAlertByDeptForOfficer(result){
 		str+='<p style="font-size:20px;text-align:center">Hi Officer</p>';
 		str+='<p style="font-size:20px;text-align:center">You Have <span style="font-size:30px;">'+totalAlertCount+'</span> New Alerts</p>';
 	str+='</div>';
-	str+='<div class="m_top10">';
+	str+='<div class="m_top10 alertScroll">';
 		str+='<table class="table tableBorLefRig">';
 			str+='<tbody>';
 			for(var j in result){
 				str+='<tr>';
-					str+='<th>'+result[j].status+'</th>';
-					str+='<th style="text-align:center"><span class="colorStyleAlert">'+result[j].count+'</span></th>';
+					if(result[j].status !=null && result[j].status.length>15){
+						str+='<td><span data-toggle="tooltip" data-placement="top" title="'+result[j].status+'">'+result[j].status.substring(0,15)+'..</span></td>';
+					}else{
+						str+='<td>'+result[j].status+'</td>';
+					}
+					str+='<td style="text-align:center"><span class="colorStyleAlert">'+result[j].count+'</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -492,48 +500,53 @@ function buildTotalAlertByDeptForOfficer(result){
 	str+='</div>';
 	
 	$("#overDepartmentWiseAlertOverview").html(str);
+	if(result.length > 5){
+		$(".alertScroll").mCustomScrollbar({setHeight:'200px'})
+	}
 }
 function buildTotalAlertGroutByDeptThenStatus(result){	
 	var str1 = '';
 	str1+='<div class="row">';
-	for(var i in result){
-		 if($(window).width() < 500){
-			 str1+='<div class="col-md-4 col-xs-12 col-sm-12 thumbnail" style="margin-left: 10px;">';
-		 }else{
-			  str1+='<div class="col-md-4 col-xs-12 col-sm-12 thumbnail" style="margin-left: 10px;width:32%">';
-		 }
-		
-		str1+='<h4 style="text-align:center;color:#777;">'+result[i].status+'</h4>';
-		str1+='<div id="departmentWiseDiv'+i+'"  ></div>';
-		str1+='<div id="TotalAlertsDepView'+i+'"></div>';	
-		str1+='<table class="table tableGraph">';
-			str1+='<thead>';
-				str1+='<tr>';
-					str1+='<th style="font-size: 16px;"><b>Status</b></th>';
-					str1+='<th style="font-size: 16px;"><b>Total</b></th>';
-					str1+='<th style="font-size: 16px;"><b>%</b></th>';
-				str1+='</tr>';
-			str1+='</thead>';
-			str1+='<tbody>';
-				if(result[i].subList1 !=null && result[i].subList1.length>0){
+		for(var i in result){
+			str1+='<div class="col-md-4 col-xs-12 col-sm-12">';
+				str1+='<div class="panel panel-default">';
+					str1+='<div class="panel-body">';
+						if(result[i].status !=null && result[i].status.length>20){
+							str1+='<h4 style="text-align:center;color:#777;" data-toggle="tooltip" data-placement="top" title="'+result[i].status+'" >'+result[i].status.substring(0,20)+'..</h4>';
+						}else{
+							str1+='<h4 style="text-align:center;color:#777;">'+result[i].status+'</h4>';
+						}
 					
-					for(var j in result[i].subList1){
-						str1+='<tr>';
-							str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
-							str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
-							str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
-						str1+='</tr>';
-					}
-				
-				}
-		str1+='</tbody>';
-		str1+='</table>';
-		str1+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].statusId+'">Detailed Information</button></div>';	
-		str1+='</div>';	
-	}
+						str1+='<div id="departmentWiseDiv'+i+'"  ></div>';
+						str1+='<div id="TotalAlertsDepView'+i+'"></div>';	
+						str1+='<table class="table tableGraph">';
+							str1+='<thead>';
+								str1+='<tr>';
+									str1+='<th style="font-size: 16px;"><b>Status</b></th>';
+									str1+='<th style="font-size: 16px;"><b>Total</b></th>';
+									str1+='<th style="font-size: 16px;"><b>%</b></th>';
+								str1+='</tr>';
+							str1+='</thead>';
+							str1+='<tbody>';
+								if(result[i].subList1 !=null && result[i].subList1.length>0){
+									for(var j in result[i].subList1){
+										str1+='<tr>';
+											str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
+											str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+											str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
+										str1+='</tr>';
+									}
+								}
+						str1+='</tbody>';
+						str1+='</table>';
+						str1+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].statusId+'">Detailed Information</button></div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';	
+		}
 	str1+='</div>';
 	$("#departmentWiseAlertGraphDiv").html(str1);
-	
+	$('[data-toggle="tooltip"]').tooltip();
 	for(var i in result){
 		var deptStatusOverviewArr =[];
 		var alertCount = result[i].count;
@@ -624,8 +637,8 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 			},
 		
 			function(chart) { // on complete
-				var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
-				var textY = chart.plotTop  + (chart.plotHeight * 0.5);
+				var textX = chart.plotLeft + (chart.plotWidth  * 0.6);
+				var textY = chart.plotTop  + (chart.plotHeight * 0.6);
 
 				var span = '<span id="pieChartInfoText1'+i+'" style="position:absolute; text-align:center;">';
 				span += '<span style="font-size: 18px">TOTAL</span><br>';
@@ -1392,4 +1405,3 @@ function getMonth(month){
 		return "Dec"
 	}  
 }
-  
