@@ -1270,6 +1270,15 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(endDateStr);
 			}
+			if(paperIdList != null && paperIdList.size() > 0){
+		        if(chanelIdList != null && chanelIdList.size() == 0){
+		        	chanelIdList.add(0L);
+		        }
+		      }else if(chanelIdList != null && chanelIdList.size() > 0){
+		        if(paperIdList != null && paperIdList.size() == 0){
+		        	paperIdList.add(0L);
+		        }
+		      }
 			//districtId-0,districtName-1,statusId-2,statusName-3,count-4
 			statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
 			if(statusWiseDistLst != null && statusWiseDistLst.size() > 0){
