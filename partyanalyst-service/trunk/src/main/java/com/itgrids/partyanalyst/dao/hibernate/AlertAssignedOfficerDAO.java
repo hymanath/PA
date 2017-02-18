@@ -49,9 +49,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" alert_assigned_officer AAO, ");
 		queryStr.append(" govt_department_designation_officer GDDO, ");
 		queryStr.append(" govt_department_designation GDD, ");
-		queryStr.append(" govt_department GD ");
+		queryStr.append(" govt_department GD, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT ");
 		queryStr.append(" where ");
 		queryStr.append(" A.alert_id = AAO.alert_id and ");
+		queryStr.append(" A.alert_category_id = ALTC.alert_category_id and ");
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		queryStr.append(" A.alert_type_id = ALTT.alert_type_id and ");
+		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
@@ -109,9 +115,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" alert_assigned_officer AAO, ");
 		queryStr.append(" govt_department_designation_officer GDDO, ");
 		queryStr.append(" govt_department_designation GDD, ");
-		queryStr.append(" govt_department GD ");
+		queryStr.append(" govt_department GD, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT ");
 		queryStr.append(" where ");
 		queryStr.append(" A.alert_id = AAO.alert_id and ");
+		queryStr.append(" A.alert_category_id = ALTC.alert_category_id and ");
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		queryStr.append(" A.alert_type_id = ALTT.alert_type_id and ");
+		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
@@ -171,9 +183,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" alert_assigned_officer AAO, ");
 		queryStr.append(" govt_department_designation_officer GDDO, ");
 		queryStr.append(" govt_department_designation GDD, ");
-		queryStr.append(" govt_department GD ");
+		queryStr.append(" govt_department GD, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT ");
 		queryStr.append(" where ");
 		queryStr.append(" A.alert_id = AAO.alert_id and ");
+		queryStr.append(" A.alert_category_id = ALTC.alert_category_id and ");
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		queryStr.append(" A.alert_type_id = ALTT.alert_type_id and ");
+		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
