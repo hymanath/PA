@@ -553,7 +553,6 @@ public class SmsSenderService implements ISmsSenderService{
 		    		 post.addParameter("mobilenumber", mobilenumber);
 		    		 post.addParameter("message", message);
 		    		 post.addParameter("mtype", isEnglish ? "N" : "OL");
-		    		 post.addParameter("mtype", "N");
 		    		 post.addParameter("DR", "Y");
 					
 					int statusCode = client.executeMethod(post);
