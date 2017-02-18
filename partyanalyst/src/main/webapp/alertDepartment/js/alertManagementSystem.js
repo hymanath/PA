@@ -1495,13 +1495,13 @@ function buildStatusWiseTotalAlerts(result){
 										
 										totalCount = totalPrintCount+totalElecCount;
 										if(totalCount != null && totalCount!= 0){
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+'>'+totalCount+'</span></td>';
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="">'+totalCount+'</span></td>';
 										}else{
 											str+='<td class="bg_D8">'+totalCount+'</td>';
 										}
 										for(var t in result[i].govtDeptList){
 											if(result[i].govtDeptList[t].count != null && result[i].govtDeptList[t].count != 0){
-												str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+result[i].govtDeptList[t].count+'</span></td>';	
+												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[t].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+result[i].govtDeptList[t].count+'</span></td>';	
 											}else{
 												str+='<td>'+result[i].govtDeptList[t].count+'</td>';
 											}
@@ -2192,7 +2192,7 @@ $(document).on("click",".totAlertsStsCls",function(){
       paperIdArr : paperIdArr,
       chanelIdArr : chanelIdArr,
 	  statusId : alertStatusId ,
-	type:type      
+		type   :  type   
     }
     $.ajax({
       type:'GET',
