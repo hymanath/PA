@@ -116,6 +116,16 @@
 								</div>
 							</c:if>
 				
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT' ) }">
+							
+							<div>
+							
+							Swadhin
+							
+							</div>
+							
+							</c:if>
+				
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT' ) }">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="panel panel-default">
@@ -189,6 +199,7 @@
 									</div>
 								</div>
 								</c:if>
+								
 							</div>
 						</div>
 					</div>
