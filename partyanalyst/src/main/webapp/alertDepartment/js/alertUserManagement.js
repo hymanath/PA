@@ -30,8 +30,10 @@ $("#dateRangePickerAUM").daterangepicker({
 $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDate = picker.startDate.format('DD/MM/YYYY');
 	currentToDate = picker.endDate.format('DD/MM/YYYY');
-	getTotalAlertGroupByStatusForOneDept();
+	//getTotalAlertGroupByStatusForOneDept();
+	getTotalAlertByStatusForOfficer();  
 	getTotalAlertGroutByDeptThenStatus();
+	getTotalAlertByDeptForOfficer();
 });
 
 $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").daterangepicker({
@@ -70,9 +72,10 @@ $(document).on("click",".ranges li",function(){
 });
 
 
-getTotalAlertGroupByStatusForOneDept();
+//getTotalAlertGroupByStatusForOneDept();
+getTotalAlertByStatusForOfficer();       
 getTotalAlertGroutByDeptThenStatus();
-
+getTotalAlertByDeptForOfficer();
 getDeptIdAndNameListForUser();
 
 getAlertStatusForUser();
@@ -242,7 +245,8 @@ function getSubLevelsForUser(designnationId)
 		$("#subOrdianatelevelId").trigger("chosen:updated");
 	});
 }
-function getTotalAlertGroupByStatusForOneDept()
+//first block ias
+/* function getTotalAlertGroupByStatusForOneDept()
 {
 	$("#alertStatusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
@@ -265,10 +269,29 @@ function getTotalAlertGroupByStatusForOneDept()
 			$("#alertStatusOverview").html('NO DATA AVAILABLE')
 		} 
     });
+} */
+  
+function getTotalAlertByStatusForOfficer()
+{ 
+    var jsObj ={     
+      fromDate:currentFromDate,     
+      toDate:currentToDate       
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertByStatusForOfficerAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		$("#alertStatusOverview").html('');
+		 if(result != null && result.length > 0){
+			buildTotalAlertByStatusForOfficer(result);
+		}else{
+			$("#alertStatusOverview").html('NO DATA AVAILABLE')
+		} 
+    });  
 }
 
-
-function buildTotalAlertGroupByStatusForOneDept(result){
+function buildTotalAlertByStatusForOfficer(result){
 	var str='';
 	var totalAlert = 0;
 		str+='<div class="col-md-5 col-xs-12 col-sm-12">';
@@ -396,7 +419,28 @@ function buildTotalAlertGroupByStatusForOneDept(result){
 		});
 	});	
 }
-
+ 
+function getTotalAlertByDeptForOfficer()
+{ 
+    var jsObj ={
+      fromDate:'01/01/2017',     
+      toDate:'20/02/2017'    
+    }
+    $.ajax({
+      type:'GET',       
+      url: 'getTotalAlertByDeptForOfficerAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		$("#overDepartmentWiseAlertOverview").html('');
+		$("#departmentWiseAlertGraphDiv").html('');
+		if(result != null && result.length > 0){
+			buildTotalAlertByDeptForOfficer(result);  
+		}else{
+			$("#overDepartmentWiseAlertOverview").html('NO DATA AVAILABLE');
+			$("#departmentWiseAlertGraphDiv").html('NO DATA AVAILABLE');
+		} 
+    });
+}
 function getTotalAlertGroutByDeptThenStatus()
 {
 	$("#overDepartmentWiseAlertOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -414,17 +458,15 @@ function getTotalAlertGroutByDeptThenStatus()
       url: 'getTotalAlertGroutByDeptThenStatusAction.action',
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
-		$("#overDepartmentWiseAlertOverview").html('');
 		$("#departmentWiseAlertGraphDiv").html('');
 		if(result != null && result.length > 0){
 			buildTotalAlertGroutByDeptThenStatus(result);
 		}else{
-			$("#overDepartmentWiseAlertOverview").html('NO DATA AVAILABLE');
 			$("#departmentWiseAlertGraphDiv").html('NO DATA AVAILABLE');
 		} 
     });
 }
-function buildTotalAlertGroutByDeptThenStatus(result){
+function buildTotalAlertByDeptForOfficer(result){
 	
 	var str='';
 	var str1='';
@@ -450,7 +492,9 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 	str+='</div>';
 	
 	$("#overDepartmentWiseAlertOverview").html(str);
-	
+}
+function buildTotalAlertGroutByDeptThenStatus(result){	
+	var str1 = '';
 	str1+='<div class="row">';
 	for(var i in result){
 		 if($(window).width() < 500){
@@ -1240,3 +1284,4 @@ function getMonth(month){
 		return "Dec"
 	}  
 }
+  
