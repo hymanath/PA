@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>TDP Party's Election Analysis &amp; Management Platform</title>
+<title>Government Login</title>
 <link rel="icon" type="image/png"  href="alertDepartment/img/GOVT.png">
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/bootstrap.min.css" media="screen" />
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/custom.css" media="screen" />
