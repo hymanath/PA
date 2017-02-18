@@ -3,7 +3,7 @@ var currentToDate = moment().format("DD/MM/YYYY");
 var detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");
 
-var globalStateId = 36;  
+var globalStateId = 1;  
 var departmentIdsList="";
 var lvlValueGlobal="";
 var paperIdArr = [];
@@ -945,7 +945,7 @@ function getSubOrdinatesAlertsOverView(designnationId,levelId,levelText)
 										str1+='<td style="background-color:'+result[i].govtDeptList[j].color+' !important;">'+result[i].govtDeptList[j].count+'</td>';
 								}
 							}
-								str1+='<td><button type="button" class="btn btn-success btn-xs">View Details</button></td>';
+								str1+='<td><button type="button" class="btn btn-success btn-xs subOrdinateWiseAlertDetails" attr_location_id="'+result[i].id+'">View Details</button></td>';
 						str1+='</tr>';
 					}
 				str1+='</tbody>';
@@ -956,6 +956,114 @@ function getSubOrdinatesAlertsOverView(designnationId,levelId,levelText)
 		}
 	}
 
+$(document).on("click",".subOrdinateWiseAlertDetails",function(){
+	var locationVal = $(this).attr("attr_location_id");
+	var designnationId = $("#designationDivId").val();
+	var levelId = $("#subOrdianatelevelId").val();
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	
+	getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationVal);
+});
+
+function getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationVal){
+	var jObj ={
+		designationId : designnationId,
+		levelId : levelId,
+		levelValue : locationVal,
+		fromDate : detailedfromDate,
+		toDate : detailedtoDate
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getSubOrdinateLocationWiseAlertDetailsAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildSubOrdinateLocationWiseAlertDetails(result);
+		}
+		
+	});
+}
+	
+function buildSubOrdinateLocationWiseAlertDetails(result){
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var str='';
+	if($(window).width() < 500)
+	{
+		str+='<div class="table-responsive" >';
+	}
+		str+='<table class="table table-condensed" style="border:1px solid #ddd" id="dataTableTotalAlerts">';
+			str+='<thead>';
+				str+='<th>Alert Source</th>';
+				str+='<th>Alert Title</th>';
+				str+='<th>Created Date</th>';
+				str+='<th>Last Updated Date</th>';
+				str+='<th>Current Status</th>'	 
+				str+='<th>LAG Days</th>';
+				str+='<th>Alert Level</th>';
+				str+='<th>Location</th>';
+				str+='<th></th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					if(result[i].source != null && result[i].source.length > 0){
+						str+='<td><strong>'+result[i].source+'</strong></td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].title != null && result[i].title.length > 0){
+						str+='<td><strong>'+result[i].title+'</strong></td>';         
+					}else{
+						str+='<td> - </td>';     
+					}
+					if(result[i].createdDate != null && result[i].createdDate.length > 0){
+						str+='<td>'+result[i].createdDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].updatedDate != null && result[i].updatedDate.length > 0){
+						str+='<td>'+result[i].updatedDate+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].status != null && result[i].status.length > 0){
+						str+='<td>'+result[i].status+'</td>';      
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].interval != null){
+						str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';            
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].alertLevel != null && result[i].alertLevel.length > 0){
+						str+='<td>'+result[i].alertLevel+'</td>';               
+					}else{
+						str+='<td> - </td>';  
+					}
+					if(result[i].location != null && result[i].location.length > 0){
+						str+='<td>'+result[i].location+'</td>';        
+					}else{
+						str+='<td> - </td>';        
+					}
+					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'" attr_status_id="'+result[i].statusId+'">Alert Details</button></td>';      
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+	if($(window).width() < 500)
+	{
+		str+='</div>';
+	}
+	$("#totalAlertsModalTabId").html(str);
+	$("#dataTableTotalAlerts").dataTable();
+	$("#dataTableTotalAlerts").removeClass("dataTable");
+}
 	/* Alert Details Modal Start*/
 $(document).on("click",".alertDetailsModalCls",function(){
 	$("#alertDetailsModal").modal({
