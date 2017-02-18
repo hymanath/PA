@@ -3032,6 +3032,7 @@
 		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
 		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
 		     <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />
+		     //<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
 			<!-- <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />	 -->		 
     </bean>
 	
@@ -3567,6 +3568,7 @@
 		<property name="govtDepartmentDAO" ref="govtDepartmentDAO"></property>
 		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO"></property>
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"></property>
+		<property name="smsSenderService" ref="smsSenderService"></property>
 	</bean>            
 	<!-- Debate End -->
 	
