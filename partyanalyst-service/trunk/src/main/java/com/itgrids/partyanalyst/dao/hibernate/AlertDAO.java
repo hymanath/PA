@@ -4798,8 +4798,6 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}else if(type.equalsIgnoreCase("Totals")){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList) or TNC.tv_news_channel_id in (:electronicIdList) )  ");
-		}else{
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList) or TNC.tv_news_channel_id in (:electronicIdList) )  ");
 		}
 		
 		if(statusId != null && statusId.longValue() > 0L){
