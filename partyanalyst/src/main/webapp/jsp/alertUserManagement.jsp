@@ -64,135 +64,142 @@
 						<i class="glyphicon glyphicon-calendar"></i>
 					</span>
 				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style">
-					<div class="col-md-9 col-xs-12 col-sm-4">
-						<div class="panel panel-default">
-							<div class="panel-heading headingColor">
-								<h4 class="panel-title text-capital fontColor">My Alerts - Status Overview</h4>
-							</div>
-							<div class="panel-body">
-								<div id="alertStatusOverview"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 col-xs-12 col-sm-4">
-						<div class="panel panel-default">
-							<div class="panel-body" style="height: 370px;">
-								<div style="text-align: center; margin-top: 40px;">
-									<img src="newCoreDashBoard/img/govtAlertBill.png"/>
-								</div>
-								<div id="overDepartmentWiseAlertOverview"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-			<!-- 1st Screen -->
-			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT' ) }">
-				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style">
-					<div class="panel panel-default">
-						<div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">Department Wise Alert Status</h4>
-						</div>
-						<div class="panel-body">
-							<div id="departmentWiseAlertGraphDiv"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style detailedBlockShow" style="display:none;">
-					<div class="panel panel-default">
-						<div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">Detailed Information</h4>
-						</div>
-						<div class="panel-body">
-							<div id="detailedInfoBlockDiv"></div>
-						</div>
-					</div>
-				</div> 
-				</c:if>
-				
-			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT' ) }">
-				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style">
+				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<div class="row">
-									<div class="col-md-3 col-xs-12 col-sm-4">
-										<select class="form-control" id="alertStatusDivId" attr_type="alertStatus">
-											<option value="0">Show All (Notified/Progress/Completed...)</option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-12">
-										<div class="input-group dateRangePickerCls m_top5">
-												<input type="text" class="form-control" style="width:230px;" id="dateRangePickerDistrictAlertBlock">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="row">
+										<div class="col-md-9 col-xs-12 col-sm-4">
+											<div class="panel panel-default">
+												<div class="panel-heading headingColor">
+													<h4 class="panel-title text-capital fontColor">My Alerts - Status Overview</h4>
+												</div>
+												<div class="panel-body">
+													<div id="alertStatusOverview"></div>
+												</div>
 											</div>
-									</div>
-									<div class="col-md-3 col-xs-12 col-xs-6">
-										<button type="button" class="btn btn-success getDetailsForDistrictWiseAlerts" style="background-color:#016500; font-weight: bold;">Get Details</button>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-4">
+											<div class="panel panel-default">
+												<div class="panel-body" style="height: 370px;">
+													<div class="alertImage">
+														<img src="newCoreDashBoard/img/govtAlertBill.png" alt="govt alerts"/>
+													</div>
+													<div id="overDepartmentWiseAlertOverview"></div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-								<div class="row">
-									<div id="districtAlertStatusInfo" ></div>
+							<!-- 1st Screen -->
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT' ) }">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">Department Wise Alert Status</h4>
+										</div>
+										<div class="panel-body">
+											<div id="departmentWiseAlertGraphDiv"></div>
+										</div>
+									</div>
 								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 detailedBlockShow" style="display:none;">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">Detailed Information</h4>
+										</div>
+										<div class="panel-body">
+											<div id="detailedInfoBlockDiv"></div>
+										</div>
+									</div>
+								</div>
+							</c:if>
+				
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT' ) }">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="row">
+													<div class="col-md-3 col-xs-12 col-sm-4">
+														<select class="chosenSelect" id="alertStatusDivId" attr_type="alertStatus">
+															<option value="0">Show All (Notified/Progress/Completed...)</option>
+														</select>
+													</div>
+													<div class="col-md-3 col-xs-12 col-sm-12">
+														<div class="input-group">
+															<input type="text" class="form-control" id="dateRangePickerDistrictAlertBlock">
+															<span class="input-group-addon">
+																<i class="glyphicon glyphicon-calendar"></i>
+															</span>
+														</div>
+													</div>
+													<div class="col-md-3 col-xs-12 col-xs-6">
+														<button type="button" class="btn btn-success getDetailsForDistrictWiseAlerts" style="background-color:#016500; font-weight: bold;">Get Details</button>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div class="row">
+													<div id="districtAlertStatusInfo" ></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">Subordinate - Alerts Overview</h4>
+										</div>
+										<div class="panel-body">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="row">
+												<div class="col-md-3 col-xs-12 col-xs-6">
+													<label>Select Designation</label>
+													<select class="chosenSelect" id="designationDivId">
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-xs-6">
+													<label>Select Level</label>
+													<select class="chosenSelect" id="subOrdianatelevelId">
+													<option value="0">Select Level</option>
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
+													<div class="input-group m_top5 pull-right">
+														<input type="text" class="form-control" id="dateRangePickerSubOrdinateBlock">
+														<span class="input-group-addon">
+															<i class="glyphicon glyphicon-calendar"></i>
+														</span>
+													</div>
+												</div>
+												<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
+													<button type="button" class="btn btn-success getDetailsForSubOrdinate" style="background-color:#016500; font-weight: bold;">Get Details</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="row">
+												<div id="mandalWiseDetailsSubOrdBlock"></div>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style ">
-					<div class="panel panel-default">
-						<div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">Subordinate - Alerts Overview</h4>
-						</div>
-						<div class="panel-body">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-3 col-xs-12 col-xs-6">
-									<label>Select Designation</label>
-									<select class="form-control chosen-select" id="designationDivId">
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-xs-6">
-									<label>Select Level</label>
-									<select class="form-control chosen-select" id="subOrdianatelevelId">
-									<option value="0">Select Level</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-									<div class="input-group dateRangePickerCls m_top5 pull-right">
-										<input type="text" class="form-control " style="width:180px" id="dateRangePickerSubOrdinateBlock">
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
-									</div>
-								</div>
-								<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-									<button type="button" class="btn btn-success getDetailsForSubOrdinate" style="background-color:#016500; font-weight: bold;">Get Details</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-							<div class="row">
-								<div id="mandalWiseDetailsSubOrdBlock"></div>
-							</div>
-						</div>
-						</div>
-					</div>
-				</div>
-				
-			</c:if>
-				
 			</div>	
 		</div>
 	</section>
 <!--Main Div End-->
-
+</div>
 <!-- Alert Details Modal Start-->
-	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
+	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
@@ -368,23 +375,7 @@
 	  </div>
 	</div>
 	<!-- Alert Details Modal End-->
-	<div class="modal fade" id="totalAlertsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document" style="width:85%">
-		<div class="modal-content">
-		  <div class="modal-header bg_CC">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital">Total alerts</h4>   
-		  </div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div id="totalAlertsModalTabId"></div>
-					</div>
-				</div>
-			</div>
-		</div> 
-	  </div>
-	</div>
+	
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -393,17 +384,19 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-
-<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/alertUserManagement.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 initializeFile();
 $(".chosenSelect").chosen({width:'100%'});
+$(document).on("click",function(){
+	$(".ranges ul li:first-child").hasClass("active")
+});
 google.load("elements", "1", {
 	packages: "transliteration"
  }); 
@@ -439,9 +432,7 @@ function onLoad() {
 			control.makeTransliteratable(['alertDescId']);
 		}
    }
-function setDefaultImage(img){
-    img.src = "images/User.png";
-}
+
 </script>
 </body>
 </html>
