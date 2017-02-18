@@ -6602,22 +6602,44 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		//collect locaionId and today count
 		if(list2 != null && list2.size() > 0){
 			for(Object[] param : list2){
-				if(param[0] != null && (Long)param[0] != 13l)
-				locationIdAndTodayCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[3] != null ? param[3].toString():"0"));
+				
+				if(locationScopeId.longValue() == 3l){//district
+					if(param[0] != null && (Long)param[0] != 13l){
+						locationIdAndTodayCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[3] != null ? param[3].toString():"0"));
+					}
+				}else{
+					if(param[0] != null){
+						locationIdAndTodayCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[3] != null ? param[3].toString():"0"));
+					}
+				}
 			}
 		}
 		//create a map for locationId and man power count
 		if(list3 != null && list3.size() > 0){
 			for(Object[] param : list3){
-				if(param[0] != null && (Long)param[0] != 13l)
-				locationIdAndManPowerCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+				if(locationScopeId.longValue() == 3l){//district
+					if(param[0] != null && (Long)param[0] != 13l){
+						locationIdAndManPowerCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));	
+					}
+				}else{
+					if(param[0] != null ){
+						locationIdAndManPowerCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));	
+					}
+				}
 			}
 		}
 		//create a map for constid and const name
 		if(list4 != null  && list.size() > 0){
 			for(Object[] param : list4){
-				if(param[0] != null && (Long)param[0] != 13l)
-				locIdAndLocNoMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+				if(locationScopeId.longValue() == 3l){//district
+					if(param[0] != null && (Long)param[0] != 13l){
+						locIdAndLocNoMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					}
+				}else{
+					if(param[0] != null){
+						locIdAndLocNoMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					}
+				}
 			}
 		}
 		
@@ -6625,65 +6647,79 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			for(Object[] param : totalList){
 				CadreDashboardVO vo = new CadreDashboardVO();
 				Long id = Long.valueOf(commonMethodsUtilService.getLongValueForObject(param[0]));
-				if( id.longValue() != 13l){
-				vo.setId(id);
-				vo.setCount2014(commonMethodsUtilService.getLongValueForObject(param[1]));
-				vo.setTotalRenewal(commonMethodsUtilService.getLongValueForObject(param[7]));
-				vo.setTotalRenPerc(commonMethodsUtilService.getStringValueForObject(param[8]));
-				
-				locationWise2014CountMap.put(id, vo);
-			}
+				if(locationScopeId.longValue() == 3l){//district
+					if(id.longValue() != 13l){
+						vo.setId(id);
+						vo.setCount2014(commonMethodsUtilService.getLongValueForObject(param[1]));
+						vo.setTotalRenewal(commonMethodsUtilService.getLongValueForObject(param[7]));
+						vo.setTotalRenPerc(commonMethodsUtilService.getStringValueForObject(param[8]));
+						locationWise2014CountMap.put(id, vo);
+				    }
+				}else{
+						vo.setId(id);
+						vo.setCount2014(commonMethodsUtilService.getLongValueForObject(param[1]));
+						vo.setTotalRenewal(commonMethodsUtilService.getLongValueForObject(param[7]));
+						vo.setTotalRenPerc(commonMethodsUtilService.getStringValueForObject(param[8]));
+						locationWise2014CountMap.put(id, vo);
+				}
 			}
 		}
 		
 		if(list != null && !list.isEmpty()){
 	 		for (Object[] obj : list) {
 	 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-	 			if(id.longValue() != 13l){
-				CadreDashboardVO vo = new CadreDashboardVO();
-				vo.setId(id);
-				if(locationWise2014CountMap.get(id) != null){
-					CadreDashboardVO vo1 = locationWise2014CountMap.get(id);
-					if(vo1 != null){
-						vo.setCount2014(vo1.getCount2014());
-						vo.setTotalRenewal(vo1.getTotalRenewal());
-						String perc = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(vo1.getTotalRenewal()*100.00/vo1.getCount2014());
-						vo.setTotalRenPerc(perc);
+	 			boolean stopflag = false;
+	 			if(locationScopeId.longValue() == 3l && id.longValue() == 13l){
+	 				stopflag = true;
+	 			}
+	 			if(!stopflag){
+	 				
+	 				CadreDashboardVO vo = new CadreDashboardVO();
+					vo.setId(id);
+					if(locationWise2014CountMap.get(id) != null){
+						CadreDashboardVO vo1 = locationWise2014CountMap.get(id);
+						if(vo1 != null){
+							vo.setCount2014(vo1.getCount2014());
+							vo.setTotalRenewal(vo1.getTotalRenewal());
+							String perc = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(vo1.getTotalRenewal()*100.00/vo1.getCount2014());
+							vo.setTotalRenPerc(perc);
+						}
 					}
-				}
-				else					
-					vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-				
-				vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
-				vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-				vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
-				vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
-				vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
-				vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-				vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
-				vo.setLocationScopeId(locationScopeId);
-				vo.setType(type);
-				
-				//Long count2014=vo.getCount2014();
-				//Long renewal2016 = (count2014 - vo.getRenewalCount());
-				
-				
-				locationIds.add(id);
-				
-				returnList.add(vo);
-	 		}
+					else					
+						vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					
+					vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
+					vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
+					vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
+					vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
+					vo.setLocationScopeId(locationScopeId);
+					vo.setType(type);
+					locationIds.add(id);
+					returnList.add(vo);
+	 			}
 			}
 	 	}
+		
+		
 		//push today count to vo
 		if(list2 != null && list2.size() > 0 && returnList != null && returnList.size() > 0){
 			for(CadreDashboardVO param : returnList){
 				Long locId = param.getId();
-				if(locationIdAndTodayCountMap.get(locId) != null  && locId.longValue() != 13l){
-					param.setCount2016Today(locationIdAndTodayCountMap.get(locId));
+				if(locationScopeId.longValue() == 3l){
+					if(locationIdAndTodayCountMap.get(locId) != null  && locId.longValue() != 13l){
+						param.setCount2016Today(locationIdAndTodayCountMap.get(locId));
+					}
+				}else{
+					if(locationIdAndTodayCountMap.get(locId) != null){
+						param.setCount2016Today(locationIdAndTodayCountMap.get(locId));
+					}
 				}
 			}
-			
 		}
+		
 	 	//push manpower count
 		if(list3 != null && list3.size() > 0 && returnList != null && returnList.size() > 0){
 			for(CadreDashboardVO param : returnList){
@@ -6723,18 +6759,22 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	 		for (Object[] obj : list1) {
 	 			
 				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-				if(id.longValue() != 13l){
-				String name = null;
-				 if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
-					 name = obj[1] != null ? obj[1].toString():"";
-				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
-						String t = obj[1] != null ? obj[1].toString():""; //consName
-						String t1 = obj[2] != null ? obj[2].toString():"";//distName
-						Long t3 = Long.valueOf(obj[3] != null ? obj[3].toString():"0");//districtId
-						name = t+"-"+t1+"-"+t3;
+				boolean stopflag = false;
+				if(locationScopeId.longValue() == 3l && id.longValue() == 13l){
+					stopflag = true;
 				}
-				 
-				locationNameMap.put(id, name);
+				if(!stopflag){
+					String name = null;
+					 if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
+						 name = obj[1] != null ? obj[1].toString():"";
+					}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
+							String t = obj[1] != null ? obj[1].toString():""; //consName
+							String t1 = obj[2] != null ? obj[2].toString():"";//distName
+							Long t3 = Long.valueOf(obj[3] != null ? obj[3].toString():"0");//districtId
+							name = t+"-"+t1+"-"+t3;
+					}
+					 
+					locationNameMap.put(id, name);
 				}
 			}
 	 	}
@@ -6762,8 +6802,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			for (Object[] obj : targrtLst) {
 				Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 				Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-				if(locaId.longValue() != 13l)
-				targetMap.put(locaId, count);
+				if(locationScopeId.longValue() == 3l){
+					if(locaId.longValue() != 13l){
+						targetMap.put(locaId, count);	
+					}
+				}else{
+					targetMap.put(locaId, count);
+				}
 			}
 		}
 	 		
