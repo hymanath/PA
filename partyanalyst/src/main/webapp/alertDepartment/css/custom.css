@@ -332,6 +332,16 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border-width: 11px;
 	margin-top: -11px;
 }
+.alertImage img
+{
+	display: block;
+	margin: auto;
+	background-color: #f1f1f1;
+	border-radius: 50%;
+	padding: 30px;
+	height: 130px;
+	width: 130px;
+}
 .AMS .navbarHeader {
     background: #555555 none repeat scroll 0 0;
     height: 60px !important;
