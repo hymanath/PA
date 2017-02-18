@@ -246,5 +246,21 @@ public List<Long> getTotalAlertsRelatedToCadre(Long cadreId,Long stateId,Long al
 	query.setDate("toDate", toDate);   
 	return query.list();
 }
-
+public List<Object[]> getLeaderDtls(Long assignedId){
+	Query query = getSession().createQuery("select distinct model.alert.alertId," +
+			" model.alert.description," +
+			" model.tdpCadre.mobileNo " +
+			" from AlertAssigned model " +
+			"  where model.alertAssignedId = :assignedId " +
+			"  and model.isDeleted ='N' and model.smsStatus ='N' ");
+	query.setParameter("assignedId", assignedId);
+	return query.list();
+	
+}
+public int updateAlertSmsStatus(Long assignedId){
+	Query query = getSession().createQuery(" update AlertAssigned model set model.smsStatus ='Y' where " +
+			"  model.alertAssignedId =:assignedId ");
+	query.setParameter("assignedId", assignedId);
+	return query.executeUpdate();
+}
 }

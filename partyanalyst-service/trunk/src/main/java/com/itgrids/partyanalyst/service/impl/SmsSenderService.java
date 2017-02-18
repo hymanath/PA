@@ -534,7 +534,7 @@ public class SmsSenderService implements ISmsSenderService{
 			return (long)ResultCodeMapper.FAILURE;
 		}
 	}
-	public boolean sendSmsForAssignedLeader(String message,String mobilenumber)  
+	public boolean sendSmsForAssignedLeader(String message, boolean isEnglish,String mobilenumber)  
 	{
 	    
 	    try {
@@ -550,8 +550,9 @@ public class SmsSenderService implements ISmsSenderService{
 		    		 
 		    		 post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
 		    		 post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-		    		 post.addParameter("mobilenumber", "7207785117");
+		    		 post.addParameter("mobilenumber", mobilenumber);
 		    		 post.addParameter("message", message);
+		    		 post.addParameter("mtype", isEnglish ? "N" : "OL");
 		    		 post.addParameter("mtype", "N");
 		    		 post.addParameter("DR", "Y");
 					

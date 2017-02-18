@@ -34,6 +34,7 @@ public class AlertAssigned extends BaseModel implements Serializable {
 	private User user;
 	private Long createdBy;
 	private String isDeleted;
+	private String smsStatus;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_assigned_id", unique = true, nullable = false)
@@ -115,5 +116,13 @@ public class AlertAssigned extends BaseModel implements Serializable {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@Column(name="sms_status")
+	public String getSmsStatus() {
+		return smsStatus;
+	}
+	public void setSmsStatus(String smsStatus) {
+		this.smsStatus = smsStatus;
+	}
+	
 		
 }
