@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -171,7 +172,7 @@ private ITdpCadreDAO tdpCadreDAO;
 private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
 private IGovtDepartmentDAO govtDepartmentDAO;
 private IDelimitationConstituencyDAO delimitationConstituencyDAO;
-
+private SmsSenderService smsSenderService;
 
 public void setDelimitationConstituencyDAO(
 		IDelimitationConstituencyDAO delimitationConstituencyDAO) {  
@@ -478,6 +479,15 @@ public void setAlertDepartmentStatusDAO(
 	this.alertDepartmentStatusDAO = alertDepartmentStatusDAO;
 }
 
+
+public SmsSenderService getSmsSenderService() {
+	return smsSenderService;
+}
+
+public void setSmsSenderService(SmsSenderService smsSenderService) {
+	this.smsSenderService = smsSenderService;
+}
+
 public List<BasicVO> getCandidatesByName(String candidateName){
 	List<BasicVO> list = new ArrayList<BasicVO>();
 	 List<Object[]> candidate=null;
@@ -583,7 +593,44 @@ public String createAlert(final AlertVO inputVO,final Long userId, final Map<Fil
 													alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
 													alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
 													alertAssigned.setIsDeleted("N");
-													alertAssignedDAO.save(alertAssigned);
+													alertAssigned.setSmsStatus("N");
+													alertAssigned = alertAssignedDAO.save(alertAssigned);
+													Long alertId = 0l;
+													String description = " ";
+													String mobilenumber =" ";
+													boolean smsStatus = true;
+													if(alertAssigned != null){
+														Long assignedId = alertAssigned.getAlertAssignedId();
+														List<Object[]> leaderDtls = alertAssignedDAO.getLeaderDtls(assignedId);
+														if(leaderDtls != null && leaderDtls.size()>0){
+															for(Object[] param :leaderDtls){
+																alertId =commonMethodsUtilService.getLongValueForObject(param[0]);
+																description =commonMethodsUtilService.getStringValueForObject(param[1]);
+																mobilenumber=commonMethodsUtilService.getStringValueForObject(param[2]);
+															}
+															
+														}
+														String message = "Alert is assigned to you, please follow up and resolve\nDescription:\n"+description;
+														
+														//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
+														if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
+															    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
+														}else{
+															 smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
+														}	 
+														 if(smsStatus == true){
+															 LOG.error(" Sms Status sending successfully ");
+															 LOG.error( description );
+															 LOG.error( mobilenumber );
+														 alertAssignedDAO.updateAlertSmsStatus(assignedId);
+														 }else if(smsStatus == false){
+															 LOG.error(" Sms Status failed ");
+															 LOG.error(description);
+															 LOG.error(mobilenumber);
+														 }
+														
+													}
+													
 								 	}
 							 }
 				 	}
@@ -1901,7 +1948,45 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
 							alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
 							alertAssigned.setIsDeleted("N");
-							alertAssignedDAO.save(alertAssigned);
+							alertAssigned.setSmsStatus("N");
+							alertAssigned = alertAssignedDAO.save(alertAssigned);
+						    Long alertId = 0l;
+							String description = " ";
+							String mobilenumber =" ";
+							boolean smsStatus = true;
+							if(alertAssigned != null){
+								Long assignedId = alertAssigned.getAlertAssignedId();
+								List<Object[]> leaderDtls = alertAssignedDAO.getLeaderDtls(assignedId);
+								if(leaderDtls != null && leaderDtls.size()>0){
+									for(Object[] param :leaderDtls){
+										alertId =commonMethodsUtilService.getLongValueForObject(param[0]);
+										description =commonMethodsUtilService.getStringValueForObject(param[1]);
+										mobilenumber=commonMethodsUtilService.getStringValueForObject(param[2]);
+									}
+									
+								}
+								String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
+								
+								//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
+								if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
+									    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
+								   }else{
+									    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
+								      }
+								
+								 if(smsStatus == true){
+									 LOG.error(" Sms Status sending successfully  ");
+									 LOG.error(description);
+									 LOG.error(mobilenumber);
+									 alertAssignedDAO.updateAlertSmsStatus(assignedId);
+								 }else if(smsStatus == false){
+									 LOG.error("Sms Status failed");
+									 LOG.error( description);
+									 LOG.error(mobilenumber);
+								 }
+								
+							}
+							
 						 }
 					 }
 				 }
@@ -7297,8 +7382,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
 	{
 		
-	    String resultStatus = (String) transactionTemplate
-			   .execute(new TransactionCallback() {
+	    String resultStatus = (String) transactionTemplate .execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {
 					String rs = new String();
 					try {
@@ -7414,7 +7498,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 }
 				 }
 				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
-				 List<Long> existingCadreIds = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
+				 List<Long> existingCadres = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
+				 List<Long> existingCadreIds = new ArrayList<Long>();
+				 if(existingCadres != null && existingCadres.size()>0){
+					 for(Long param : existingCadres){
+						 if(param != null){
+							 existingCadreIds.add(param);
+						 }
+						 
+					 }
+					 
+				 }
+				
 				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0){
 					Map<Long,Long> candidateAneImpactMap = new HashMap<Long,Long>();
 					List<Long> newCandidateList = new ArrayList<Long>();
@@ -7505,7 +7600,41 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
 									alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
 									alertAssigned.setIsDeleted("N");
-									alertAssignedDAO.save(alertAssigned);
+									alertAssigned.setSmsStatus("N");
+									alertAssigned = alertAssignedDAO.save(alertAssigned);
+									String description = " ";
+									String mobilenumber =" ";
+									boolean smsStatus = true;
+									if(alertAssigned != null){
+										Long assignedId = alertAssigned.getAlertAssignedId();
+										List<Object[]> leaderDtls = alertAssignedDAO.getLeaderDtls(assignedId);
+										if(leaderDtls != null && leaderDtls.size()>0){
+											for(Object[] param :leaderDtls){
+												description =commonMethodsUtilService.getStringValueForObject(param[1]);
+												mobilenumber=commonMethodsUtilService.getStringValueForObject(param[2]);
+											}
+											
+										}
+										String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
+										
+										//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
+										if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
+										    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
+									     }else{
+										    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
+									      }
+										 if(smsStatus == true){
+											 LOG.error(" Sms Status sending successfully ");
+											 LOG.error(description);
+											 LOG.error( mobilenumber );
+											 alertAssignedDAO.updateAlertSmsStatus(assignedId);
+										 }else if(smsStatus == false){
+											 LOG.error(" Sms Status failed ");
+											 LOG.error(description);
+											 LOG.error(mobilenumber);
+										 }
+										
+									}
 								}
 							}
 							
@@ -7519,7 +7648,42 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 										alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
 										alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
 										alertAssigned.setIsDeleted("N");
-										alertAssignedDAO.save(alertAssigned);
+										alertAssigned.setSmsStatus("N");
+										alertAssigned = alertAssignedDAO.save(alertAssigned);
+										String description = " ";
+										String mobilenumber =" ";
+										 boolean smsStatus = true;
+										if(alertAssigned != null){
+											Long assignedId = alertAssigned.getAlertAssignedId();
+											List<Object[]> leaderDtls = alertAssignedDAO.getLeaderDtls(assignedId);
+											if(leaderDtls != null && leaderDtls.size()>0){
+												for(Object[] param :leaderDtls){
+													description =commonMethodsUtilService.getStringValueForObject(param[1]);
+													mobilenumber=commonMethodsUtilService.getStringValueForObject(param[2]);
+												}
+												
+											}
+											String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
+											
+											//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
+											if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
+											    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
+										      }else{
+											    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
+										      }
+											 if(smsStatus == true){
+												 LOG.error(" Sms Status sending successfully ");
+												 LOG.error( description );
+												 LOG.error(mobilenumber);
+												 alertAssignedDAO.updateAlertSmsStatus(assignedId);
+											 }else if(smsStatus == false){
+												 LOG.error(" Sms Status failed ");
+												 LOG.error( description);
+												 LOG.error(mobilenumber);
+											 }
+											
+										}
+										
 								 }
 								 
 							 }
