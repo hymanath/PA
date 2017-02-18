@@ -866,7 +866,8 @@ public interface IConstants {
     		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction",
     		 "coreDashboardAction1","updateTransactionTrackingDtalsAction","tdpMembershipPerformanceForAPAction.action","tdpMembershipPerformanceForTSAction.action",
     		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action",
-    		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction"};
+    		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction",
+    		 "govtLoginAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
