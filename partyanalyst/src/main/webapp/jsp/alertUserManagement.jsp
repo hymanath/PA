@@ -118,11 +118,33 @@
 				
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT' ) }">
 							
-							<div>
-							
-							Swadhin
-							
-							</div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">District Level - Departments Wise Overview</h4>
+										</div>
+										<div class="panel-body">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="row">
+													<div class="col-md-3 col-xs-12 col-sm-12">
+														<div class="input-group">
+															<input type="text" class="form-control" id="dateRangePickerDistrictLevelDeptBlock">
+															<span class="input-group-addon">
+																<i class="glyphicon glyphicon-calendar"></i>
+															</span>
+														</div>
+													</div>
+													<div class="col-md-3 col-xs-12 col-xs-6">
+														<button type="button" class="btn btn-success getDetailsForDistrictLevelDeptAlerts" style="background-color:#016500; font-weight: bold;">Get Details</button>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div id="districtLevelDeptOverview" ></div>
+											</div>
+										</div>
+									</div>
+								</div>
 							
 							</c:if>
 				
