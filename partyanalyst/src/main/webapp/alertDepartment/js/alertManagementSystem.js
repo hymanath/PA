@@ -1653,9 +1653,7 @@ function buildStatusWiseTotalAlerts(result){
 				for(var i in result){ //district
 					str+='<li>';
 					str+='<h4 class="panel-title">'+result[i].department+'</h4>';
-					for(var k in result[i].govtDepartmentVOList){
-						str+='<span>'+result[i].totalCount+'</span>';
-					}
+					str+='<span>'+result[i].totalCount+'</span>';
 					str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
 					
 					str+='</li>';
@@ -1670,7 +1668,7 @@ function buildStatusWiseTotalAlerts(result){
 			var alertStatus=[];
 			for(var j in result[i].govtDepartmentVOList){
 				alertStatus.push(result[i].govtDepartmentVOList[j].department)
-				alertStatusCount.push(result[i].govtDepartmentVOList[j].percentage)
+				alertStatusCount.push(result[i].govtDepartmentVOList[j].count)
 			}
 			
 			$("#statusOverview"+result[i].departmentId+''+id).highcharts({
@@ -1716,14 +1714,14 @@ function buildStatusWiseTotalAlerts(result){
 						
 				plotOptions: {
 					column: {
-						stacking: 'percent',
+						stacking: 'normal',
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.percentage,1) + '%';
+									return (this.y);
 								}
 							}
 						  
@@ -1737,7 +1735,6 @@ function buildStatusWiseTotalAlerts(result){
 
 						$.each(this.points, function () {
 							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
 								(this.y);
 						});
 
@@ -1747,7 +1744,7 @@ function buildStatusWiseTotalAlerts(result){
 				},
 
 				series: [{
-					name: 'Positive',
+					name: '',
 					data: alertStatusCount,
 					
 				}],
