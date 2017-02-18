@@ -49,7 +49,13 @@ $("#dateRangePickerDistrictAlertBlock").on('apply.daterangepicker', function(ev,
 		$("#dateRangePickerDistrictAlertBlock").val('ALL');
 	}
 });
-$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").daterangepicker({
+$("#dateRangePickerDistrictLevelDeptBlock").on('apply.daterangepicker', function(ev, picker) {
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePickerDistrictAlertBlock").val('ALL');
+	}
+});
+$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").daterangepicker({
 	opens: 'left',
 	startDate: detailedfromDate,
 	endDate: detailedtoDate,
@@ -68,11 +74,11 @@ $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").datera
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
-var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").val();
+var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val();
 var pickerDates = detailedfromDate+' - '+detailedtoDate
 if(dates == pickerDates)
 {
-	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock").val('ALL');
+	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val('ALL');
 }
 
 
@@ -81,7 +87,7 @@ getTotalAlertByStatusForOfficer();
 getTotalAlertGroutByDeptThenStatus();
 getTotalAlertByDeptForOfficer();
 getDeptIdAndNameListForUser();
-
+getTotalAlertGroutByDeptThenStatusDistritLevel();
 getAlertStatusForUser();
 getStatusWiseAlertDetails(0);
 getAssignedDesignationsForUser();
@@ -91,7 +97,9 @@ $(document).on("click",".getDetailsForDistrictWiseAlerts",function(){
 	getStatusWiseAlertDetails(statusId);
 			
 });
-
+$(document).on("click",".getDetailsForDistrictLevelDeptAlerts",function(){	
+	getTotalAlertGroutByDeptThenStatusDistritLevel();
+});
 
 $(document).on("change","#designationDivId",function(){	
 	var designnationId=$("#designationDivId").val();
@@ -100,9 +108,9 @@ $(document).on("change","#designationDivId",function(){
 });
 $(document).on("click",".getDetailsForSubOrdinate",function(){	
 	var designnationId=$("#designationDivId").val();
-	var levelId=$("#subOrdianatelevelId").val();
-	var levelText=$("#subOrdianatelevelId option:selected").html();
-	getSubOrdinatesAlertsOverView(designnationId,levelId,levelText);
+	var subOrdianatelevelId=$("#subOrdianatelevelId").val();
+	var subOrdianatelevelText=$("#subOrdianatelevelId option:selected").html();
+	getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrdianatelevelText);
 			
 });
 
@@ -135,7 +143,6 @@ function getDeptIdAndNameListForUser(){
 }	
 function getGovtDeptLevelForDeptAndUser(departmentId)
 {
-	$('#levelId').html('');
 	var userId=1;
     var jObj ={
       departmentId:departmentId,
@@ -148,14 +155,10 @@ function getGovtDeptLevelForDeptAndUser(departmentId)
     }).done(function(result){
 		var str='';
 		 if(result != null && result.length > 0){
-			str+='<option value="0">Select level</option>';
-			for(var i in result){
-				lvlValueGlobal=result;
-				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-			}
+			lvlValueGlobal=result;
 			
 		}
-		$('#levelId').html(str);
+		
     });
 }
 
@@ -449,6 +452,7 @@ function getTotalAlertGroutByDeptThenStatus()
 {
 	$("#overDepartmentWiseAlertOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$("#departmentWiseAlertGraphDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
 	var jObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -702,9 +706,11 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 					str+='</div>';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
 						str+='<label>Select Level</label>';
-						str+='<select class="form-control chosen-select" id="levelId">';
+						str+='<select class="form-control chosen-select" id="levelDepartmentId">';
 						str+='<option value="0"> Select Level </option>';
-						if(lvlValueGlobal != null && lvlValueGlobal.length>0){
+						str+='<option value="3">District</option>';
+						str+='<option value="4">Constituency</option>';
+						/* if(lvlValueGlobal != null && lvlValueGlobal.length>0){
 								for(var s in lvlValueGlobal){
 									if(lvlValueGlobal[s].id == lvlValue){
 										str+='<option value="'+lvlValueGlobal[s].id+'" selected="selected">'+lvlValueGlobal[s].name+'</option>';
@@ -713,7 +719,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 										str+='<option value="'+lvlValueGlobal[s].id+'">'+lvlValueGlobal[s].name+'</option>';
 									}
 								}
-							}
+							} */
 						str+='</select>';
 					str+='</div>';
 					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
@@ -810,7 +816,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 	$(document).on("click",".getDetailsClick",function(){
 		$("#districtWiseDetailsBlock").html('');
 		var departmentId = $("#departmentId").val();
-		var levelId = $("#levelId").val();
+		var levelId = $("#levelDepartmentId").val();
 		getAlertCountLocationWiseThenStatusWise(departmentId,levelId);
 		
 	});
@@ -907,12 +913,12 @@ function buildStatusWiseAlertDetails(result){
 }
 
 
-function getSubOrdinatesAlertsOverView(designnationId,levelId,levelText)
+function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrdianatelevelText)
 {
 	$("#mandalWiseDetailsSubOrdBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
 		designationId : designnationId,
-		levelId : levelId,
+		levelId : subOrdianatelevelId,
 		fromDate : detailedfromDate,
 		toDate : detailedtoDate
     }
@@ -922,19 +928,19 @@ function getSubOrdinatesAlertsOverView(designnationId,levelId,levelText)
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
 		$("#mandalWiseDetailsSubOrdBlock").html('');
-		buildSubOrdinatesAlertsOverView(result,levelText);
+		buildSubOrdinatesAlertsOverView(result,subOrdianatelevelText);
 	});
 }
 
 
-	function buildSubOrdinatesAlertsOverView(result,levelText){
+	function buildSubOrdinatesAlertsOverView(result,subOrdianatelevelText){
 		
 		if(result != null && result.length > 0){	
 			var str1='';
 			str1+='<table class="table detailedTableStyle">';
 				str1+='<thead>';
 					str1+='<tr>';
-					str1+='<th>'+levelText+'</th>';
+					str1+='<th>'+subOrdianatelevelText+'</th>';
 					str1+='<th>Total Alerts</th>';
 						if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
 							
@@ -1404,4 +1410,78 @@ function getMonth(month){
 	}else if(month=="12"){  
 		return "Dec"
 	}  
+}
+
+function getTotalAlertGroutByDeptThenStatusDistritLevel()
+{
+	
+	$("#districtLevelDeptOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	var jObj ={
+		fromDate : detailedfromDate,
+		toDate : detailedtoDate,
+		stateId : globalStateId,
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr       
+
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertGroutByDeptThenStatusAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		$("#districtLevelDeptOverview").html('');
+			buildDistrictLevelDepartmentDetails(result);
+		
+    });
+}
+
+function buildDistrictLevelDepartmentDetails(result){
+	
+	if(result != null && result.length > 0){	
+		var str1='';
+		str1+='<table class="table detailedTableStyle">';
+			str1+='<thead>';
+				str1+='<tr>';
+				str1+='<th>Department Name</th>';
+				str1+='<th>Total Alerts</th>';
+					if(result[0].subList1 !=null && result[0].subList1.length>0){
+						
+						for(var j in result[0].subList1){
+							if(j != 0)
+							{
+								str1+='<th style="background-color:'+result[0].subList1[j].color+' !important;">'+result[0].subList1[j].category+'</th>';
+							}
+							
+							
+						}
+						
+					}
+				str1+='<th></th>';	
+				str1+='</tr>';
+			str1+='</thead>';
+			str1+='<tbody>';
+				for(var i in result){
+					str1+='<tr>';
+						str1+='<td>'+result[i].status+'</td>';
+						str1+='<td>'+result[i].count+'</td>';
+						if(result[i].subList1 !=null && result[i].subList1.length>0){
+							
+							for(var j in result[i].subList1){
+								if(j != 0)
+								{
+									str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+								}
+							}
+						}
+							str1+='<td><button type="button" class="btn btn-success btn-xs">View Details</button></td>';
+					str1+='</tr>';
+				}
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#districtLevelDeptOverview").html(str1);
+	}else{
+		$("#districtLevelDeptOverview").html("No Data Available");
+	}
+	
 }
