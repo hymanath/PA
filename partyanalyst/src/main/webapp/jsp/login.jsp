@@ -139,6 +139,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 /*$("#submit").live("click",function(){
 	$("#wrappermiddle").css("height","257px");
 });*/
+
+var url = window.location.href;
+
+if(url.indexOf("mydepartments.in")  == 0 ){
+	window.location.href="https://www.mydepartments.in/govtLoginAction.action";
+}
+
 var userip = "";
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
