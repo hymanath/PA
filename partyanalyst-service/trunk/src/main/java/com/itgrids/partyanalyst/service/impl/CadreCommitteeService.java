@@ -4021,6 +4021,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					locationVo.setName(locationName);
 					locationVo.setStatus(params[1].toString());
 					locationVo.setLevel((Long)params[2]);
+					locationVo.setCasteName(params[3]!= null?params[3].toString():"");
+					locationVo.setVoterName(params[4]!= null?params[4].toString():"");
+					
 					resultList.add(locationVo);
 					List<Long> levelValuesList = levelValuesMap.get((Long)params[2]);
 					List<CadreCommitteeMemberVO> levelVosList = levelVosMap.get((Long)params[2]);
