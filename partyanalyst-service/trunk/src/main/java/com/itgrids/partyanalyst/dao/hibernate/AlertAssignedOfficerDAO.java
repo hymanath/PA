@@ -124,7 +124,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
 		queryStr.append(" A.alert_type_id = ALTT.alert_type_id and ");
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") and ");
-		if(stateId != null && stateId.longValue() >= 0L){
+		/*if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
 			}else if(stateId.longValue() == 36L){
@@ -132,7 +132,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			}else if(stateId.longValue() == 0L){
 				queryStr.append(" S.state_id in (1,36) and ");
 			}
-		}
+		}*/
 		queryStr.append(" AAO.is_approved = 'Y' and ");
 		queryStr.append(" AAO.alert_status_id = ALTS.alert_status_id and ");
 		queryStr.append(" AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id and ");
@@ -192,7 +192,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
 		queryStr.append(" A.alert_type_id = ALTT.alert_type_id and ");
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") and ");
-		if(stateId != null && stateId.longValue() >= 0L){
+		/*if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
 			}else if(stateId.longValue() == 36L){
@@ -200,7 +200,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			}else if(stateId.longValue() == 0L){
 				queryStr.append(" S.state_id in (1,36) and ");
 			}
-		}
+		}*/
 		queryStr.append(" AAO.is_approved = 'Y' and ");
 		queryStr.append(" AAO.alert_status_id = ALTS.alert_status_id and ");
 		queryStr.append(" AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id and ");
