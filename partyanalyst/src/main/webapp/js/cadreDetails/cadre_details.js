@@ -849,9 +849,9 @@ var globalidentityMembershipNo = ""	;
 					str+='<div class="table-responsive">';
 					str+='<table class="table m_0 table-bordered" id="eventAttendanceInfoTableId">';
 					str+='<thead>';
-						str+='<th style="text-align:center;">S.no</th>';
-						str+='<th style="text-align:center;">Day</th>';
-						str+='<th style="text-align:center;">Count</th>';
+						str+='<th style="text-align:center;">S.NO</th>';
+						str+='<th style="text-align:center;">DATE</th>';
+						str+='<th style="text-align:center;">COUNT</th>';
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
@@ -859,7 +859,7 @@ var globalidentityMembershipNo = ""	;
 						if(result[i].subList != null)
 							count = result[i].subList.length;
 						str+='<tr>';
-							str+='<td style="text-align:center;">'+i+'</td>';
+							str+='<td style="text-align:center;">'+(parseInt(i)+1)+'</td>';
 							str+='<td style="text-align:center;">'+result[i].name+'</td>';
 							if(result[i].count > 0){
 								str+='<td class="dayWiseAttendedClass" style="text-align:center;" attr_divId="dayWiseAttendedDiv'+i+'"><a style="cursor:pointer">'+count+'</a>';
