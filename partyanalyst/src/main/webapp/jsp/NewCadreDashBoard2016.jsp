@@ -389,11 +389,11 @@ table.dataTable tr.odd {
 				</h4>
 			
 				<div style="padding:5px;">
-					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="today" checked="true" style="margin-top:0px;"/>
+					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="today"  style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> TODAY</span>
 					<!--<input type="radio" class="" id="" name="compareC" value="asoftoday" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> AS OF TODAY </span>-->
-					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="total" style="margin-top:0px;"/>
+					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="total" style="margin-top:0px;" checked="true"/>
 					<span style="margin-right:10px;"> OVER ALL </span>
 					<button class="btn btn-success btn-xs" id="distExcelExpBtnId" attr_tab_user_type="Tab">Export To Excel</button>
 					<div class="btn-group pull-right">     
@@ -412,11 +412,11 @@ table.dataTable tr.odd {
 				<h4 style="color:green"> CONSTITUENCY  TARGET VS REGISTERED CADRE </h4>
 				
 				<div style="padding:5px;">
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="todayconstituencyValue" name="compareD" value="today" checked="true" style="margin-top:0px;"/>
+					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="todayconstituencyValue" name="compareD" value="today" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> TODAY</span>
 					<!--<input type="radio" class="typeRd" id="" name="compareD" value="asoftoday" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> AS OF TODAY</span>-->
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
+					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total"  checked="true" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> OVER ALL</span>      
 					<button class="btn btn-success btn-xs" id="constExcelExpBtnId" attr_tab_user_type="Tab" >Export To Excel</button>
 					<div class="btn-group pull-right">  
@@ -596,10 +596,10 @@ $(document).on("click",".radiobuttonSelectedConsWise",function(){
 });
 
  get2016LocationWiseRegisteredCounts("total");
- get2016LocationWiseRegisteredCounts("today");
+ get2016LocationWiseRegisteredCounts("total");
  //getDataSourceTypeWiseRegisteredDetails();
- get2016LocationWiseRegisteredCountsDistrictWise("today",3,"AP");
- get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"AP");
+ get2016LocationWiseRegisteredCountsDistrictWise("total",3,"AP");
+ get2016LocationWiseRegisteredCountsConstituencyWise("total",4,"AP");
 
 function get2016LocationWiseRegisteredCounts(typeId){
 
