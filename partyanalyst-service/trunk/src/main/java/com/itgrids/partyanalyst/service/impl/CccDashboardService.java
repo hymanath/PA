@@ -920,14 +920,14 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				for(Object[] param : dptIdList){
 					deptList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
-			}
-			List<Object[]> alertCountList = alertAssignedOfficerDAO.getTotalAlertGroupByStatusForGovtOneDept(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
+			}//getStatusForDepartments
+			List<Object[]> alertCountList = alertDepartmentStatusDAO.getStatusForDepartments(deptList);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					obj = new Object[2];
 					obj[0] = param[0];
 					obj[1] = param[1];
-					statusList.add(obj);
+					statusList.add(obj);      
 				}
 			}  
 			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
@@ -938,7 +938,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				for(Object[] param : alertCntList){  
 					deptIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
-			}
+			}  
 			
 			//List<Object[]> alertCountGrpByDeptList = alertDAO.getTotalAlertGroupByStatusThenDepartmentForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList);//old
 			List<Object[]> alertCountGrpByDeptList = alertAssignedOfficerDAO.getTotalAlertGroupByDepartmentThenStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptList);
@@ -1098,7 +1098,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 							param.setCategoryCount(0l);      
 						}
 					}
-					innerListAlertVO.setSubList1(alertVOs);
+					innerListAlertVO.setSubList1(alertVOs);  
 					if(statusIdAndNameMap.get(entry.getKey()) != null){
 						innerListAlertVO.setStatusId(entry.getKey());
 						innerListAlertVO.setColor(commonMethodsUtilService.getStringValueForObject(stsIdAndColorMap.get(commonMethodsUtilService.getLongValueForObject(entry.getKey()))));
