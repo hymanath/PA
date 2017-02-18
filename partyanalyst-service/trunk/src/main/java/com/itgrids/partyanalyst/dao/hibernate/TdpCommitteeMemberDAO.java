@@ -377,18 +377,19 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	public Integer deleteCadreRole(Long Id,List<Long> committeeEnrollmentIdsLst,Date stDate, Date edDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id  and " +
-				" model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
+		str.append("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id ");// and " +
+				/*" model.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		if(stDate != null && edDate != null){
 			str.append( " and ( ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :stDate and :edDate )  OR  ( date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :stDate and :edDate ) ) ");
-		}
+		}*/
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
-		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+		/*query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
 		if(stDate != null && edDate != null){
 			query.setParameter("stDate", stDate);
 		    query.setParameter("edDate", edDate);
-		}
+		}*/
+		
 		return query.executeUpdate();	
 	}
 	
