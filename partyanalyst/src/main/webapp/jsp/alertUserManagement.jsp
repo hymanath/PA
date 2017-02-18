@@ -86,6 +86,9 @@
 						</div>
 					</div>
 				</div>
+				
+			<!-- 1st Screen -->
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT' ) }">
 				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style">
 					<div class="panel panel-default">
 						<div class="panel-heading headingColor">
@@ -105,7 +108,10 @@
 							<div id="detailedInfoBlockDiv"></div>
 						</div>
 					</div>
-				</div>
+				</div> 
+				</c:if>
+				
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT' ) }">
 				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style">
 					<div class="panel panel-default">
 						<div class="panel-body">
@@ -137,7 +143,7 @@
 						</div>
 					</div>
 				</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 bg_Style ">
+				<div class="col-md-12 col-xs-12 col-sm-12 bg_Style ">
 					<div class="panel panel-default">
 						<div class="panel-heading headingColor">
 							<h4 class="panel-title text-capital fontColor">Subordinate - Alerts Overview</h4>
@@ -177,6 +183,8 @@
 						</div>
 					</div>
 				</div>
+				
+			</c:if>
 				
 			</div>	
 		</div>
