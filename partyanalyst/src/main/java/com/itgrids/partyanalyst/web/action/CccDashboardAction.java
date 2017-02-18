@@ -522,6 +522,8 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		public String getTotalAlertGroutByDeptThenStatus(){
 			try{
 				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");
@@ -538,7 +540,6 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				for (int i = 0; i < chanelIdArr.length(); i++){
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
-				Long userId =null;
 				alertVOs = cccDashboardService.getTotalAlertGroutByDeptThenStatus(fromDate, toDate, stateId, paperIdList, chanelIdList,userId);
 			}catch(Exception e){
 				LOG.error("Exception occured in getTotalAlertGroutByDeptThenStatus() of CccDashboardAction",e);
