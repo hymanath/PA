@@ -490,7 +490,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			//$( ".findclass" ).first().addClass("dropdown");
 			//$( ".findclass" ).first().removeClass("dropup");
 			$(".overAllTourCls").attr("attr_dsgntn_ids",tursDesgntnIdsString);  
-			$(".toursScroll").mCustomScrollbar({setHeight:'1200px'});
+			if(designationWiseList.length > 3)
+			{
+				$(".toursScroll").mCustomScrollbar({setHeight:'1200px'});
+			}
+			
 		   
 		   
 		}
