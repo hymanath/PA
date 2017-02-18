@@ -683,9 +683,11 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		
 		public String getGovtDeptLevelForDeptAndUser(){
 			   try {
+				   session = request.getSession();
+				   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long userId = regVo.getRegistrationID();
 					jObj = new JSONObject(getTask());
 					Long departmentId = jObj.getLong("departmentId");
-					Long userId = jObj.getLong("userId");
 					
 					locationLevelList = cccDashboardService.getGovtDeptLevelForDeptAndUser(departmentId,userId);
 			   } catch (Exception e) {
