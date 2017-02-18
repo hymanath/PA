@@ -1485,7 +1485,6 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		try{
 			List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 			IdAndNameVO idAndNameVO= null;
-			userId = 1L;
 			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getGovtDeptLevelForDeptAndUser(departmentId, userId);
 			if(deptList != null && deptList.size() > 0){
 				for(Object[] param : deptList){
