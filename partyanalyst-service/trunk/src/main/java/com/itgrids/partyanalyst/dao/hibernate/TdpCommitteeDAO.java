@@ -145,7 +145,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	{
 		String[] dataArr = status.split(":");
 		StringBuilder str = new StringBuilder();
-		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
+		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId ," +		
+				" model.district.districtName ," +
+				" model.constituency.name " +
+				" from TdpCommittee model where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId in(:levelIds) and " +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId =:committeTypeId  " +
 				" and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
