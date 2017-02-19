@@ -1540,6 +1540,10 @@ function buildStatusWiseTotalAlerts(result){
 									str+='</tr>'; 
 								str+='</tbody>';
 							str+='</table>';
+							str+='<button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedInfoBlockDiv pull-right" attr_departmentId="'+result[i].departmentId+'">Detailed Information</button>';
+						str+='</div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+							str+='<div id="designationDetailedReport'+result[i].departmentId+'"></div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -2203,3 +2207,76 @@ $(document).on("click",".totAlertsStsCls",function(){
     });
 });	
 /* Departments Complete Overview End*/
+
+$(document).on("click",".detailedInfoBlockDiv ",function(){
+	var departmentId= $(this).attr("attr_departmentId");
+	getDesigAndStatusWiseAlertsCounts(departmentId);
+});	
+
+function getDesigAndStatusWiseAlertsCounts(departmentId){
+	
+	
+	
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
+    var jsObj ={
+	  departmentId:departmentId,	
+	  stateId : globalStateId,
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr    
+    }
+	$.ajax({
+		type : 'GET',
+		url : 'getDesigAndStatusWiseAlertsCountsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		buildDesigAndStatusWiseAlertsCounts(result,departmentId);
+	});
+	
+}
+function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
+{
+	if(result != null && result.length > 0){	
+		var str1='';
+		str1+='<table class="table detailedTableStyle" style="border:1px solid #ddd">';
+			str1+='<thead>';
+				str1+='<tr>';
+				str1+='<th>Designation</th>';
+				str1+='<th style="background-color:#f3f3f3">Total</th>';
+					if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
+						for(var j in result[0].govtDeptList){
+							
+								str1+='<th>'+result[0].govtDeptList[j].name+'</th>';
+							
+						}
+					}
+				str1+='<th></th>';	
+				str1+='</tr>';
+			str1+='</thead>';
+			str1+='<tbody>';
+				for(var i in result){
+					
+					str1+='<tr>';
+						str1+='<td>'+result[i].name+'</td>';
+						str1+='<td style="background-color:#f3f3f3">'+result[i].count+'</td>';
+						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
+							for(var j in result[i].govtDeptList){
+								
+									str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
+								
+							}
+						}
+					str1+='</tr>';
+					
+				}
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#designationDetailedReport"+departmentId).html(str1);
+	}else{
+		$("#designationDetailedReport"+departmentId).html("No Data Available");
+	}
+}
