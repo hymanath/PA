@@ -14,5 +14,6 @@ public interface IGovtAlertDepartmentLocationDAO extends GenericDao<GovtAlertDep
 	public List<Object[]> getDeptIdAndNameListForUser(Long userId);
 	
 	public List<Object[]> getUserAccessLevelsForUser(Long userId);
+	public List<Object[]> getUserAccessLevels(Long userId);
 	public List<Object[]> getAccessDeptsAndLvlsForUserAndDept(Long userId,Long departmentId);
 }
