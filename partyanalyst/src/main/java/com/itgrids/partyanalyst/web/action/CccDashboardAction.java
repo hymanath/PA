@@ -915,4 +915,35 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		
+		public String getDesigAndStatusWiseAlertsCounts(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   jObj = new JSONObject(getTask());
+			   Long departmentId = jObj.getLong("departmentId");
+			   Long stateId = jObj.getLong("stateId");
+			   String fromDateStr = jObj.getString("fromDate");
+			   String toDateStr = jObj.getString("toDate");
+			   
+			   JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				
+			   govtDeptVoList = cccDashboardService.getDesigAndStatusWiseAlertsCounts(departmentId, stateId, fromDateStr, toDateStr, paperIdList, chanelIdList, userId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getDesigAndStatusWiseAlertsCounts() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 }
