@@ -95,4 +95,14 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 		query.setParameter("userId", userId);
 		return query.list();
 	}
-}
+	public List<Object[]> getUserAccessLevels(Long userId){
+		Query query = getSession().createQuery(" select distinct " +  
+												" model.govtDepartmentLevel.govtDepartmentLevelId," +
+												" model.levelValue" +
+												" from GovtAlertDepartmentLocation model" +
+												" where model.user.userId = :userId" +
+												" and model.isDeleted = 'N'");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+}//

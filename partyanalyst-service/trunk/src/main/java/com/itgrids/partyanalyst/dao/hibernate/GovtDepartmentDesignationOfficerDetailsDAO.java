@@ -43,19 +43,36 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		query.setParameter("officerId", officerId);
 		return query.list();
 	}
-	public List<Object[]> getDeptDesigOfficerIdAndGovtOfficerIdForUserId(Long userId,List<Long> deptIdList){
+	public List<Object[]> getDeptDesigOfficerIdAndGovtOfficerIdForUserId(Long userId,List<Long> deptIdList, Long locValue, List<Long> locIdList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
 						" model.govtOfficer.govtOfficerId " +
 						" from " +
 						" GovtDepartmentDesignationOfficerDetails model " +
-						" where model.user.userId = :userId and " +
+						" where " +
+						" model.user.userId = :userId and " +
 						" model.isDeleted = 'N' and " +
-						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIdList) ");
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIdList) and ");
+		if(locValue != null && locValue.longValue() == 2L){
+			queryStr.append("  model.govtDepartmentDesignationOfficer.userAddress.state.stateId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 3L){
+			queryStr.append("  model.govtDepartmentDesignationOfficer.userAddress.district.districtId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 4l){
+			queryStr.append("  model.govtDepartmentDesignationOfficer.userAddress.constituency.constituencyId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 5l){
+			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 6l){
+			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 7l){
+			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId in (:locIdList) ");
+		}else if(locValue != null && locValue.longValue() == 8l){
+			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId in (:locIdList)");
+		}		
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("userId",userId);
+		query.setParameter("userId",userId);   
 		query.setParameterList("deptIdList",deptIdList);
+		query.setParameterList("locIdList", locIdList);
 		return query.list();
 	}
 }
