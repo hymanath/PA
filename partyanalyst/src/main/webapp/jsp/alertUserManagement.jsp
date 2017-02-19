@@ -232,7 +232,7 @@
 <!--Main Div End-->
 </div>
 <!-- Alert Details Modal Start-->
-	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
@@ -408,6 +408,25 @@
 	  </div>
 	</div>
 	<!-- Alert Details Modal End-->
+	<!-- TOtal Alerts Modal Start-->
+	<div class="modal fade" id="totalAlertsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:80%">
+		<div class="modal-content">
+		  <div class="modal-header bg_CC">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title text-capital">Total alerts</h4>   
+		  </div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="totalAlertsModalTabId"></div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	  </div>
+	</div>
+	<!-- TOtal Alerts Modal End-->
 	
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -465,6 +484,10 @@ function onLoad() {
 			control.makeTransliteratable(['alertDescId']);
 		}
    }
+   
+function setDefaultImage(img){
+    img.src = "images/User.png";
+}
 
 </script>
 </body>

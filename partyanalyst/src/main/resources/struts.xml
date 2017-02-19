@@ -15894,5 +15894,10 @@
 		    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
   	</action>
+  	<action name="getDesigAndStatusWiseAlertsCountsAction" class="cccDashboardAction"  method="getDesigAndStatusWiseAlertsCounts">
+		<result type="json" name="success">    
+			<param name="root">govtDeptVoList</param>         
+		</result>
+	</action>
  </package>
 </struts>
