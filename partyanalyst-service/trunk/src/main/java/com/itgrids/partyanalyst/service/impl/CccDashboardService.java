@@ -2006,4 +2006,78 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return null;
 	}
+	
+	public List<GovtDepartmentVO> getDesigAndStatusWiseAlertsCounts(Long departmentId,Long stateId,String fromDateStr,String toDateStr,List<Long> printIdsList,List<Long> electronicIdsList,Long userId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			Map<Long,GovtDepartmentVO> designationMap = new LinkedHashMap<Long, GovtDepartmentVO>();
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			if(printIdsList != null && printIdsList.size() > 0){  
+				if(electronicIdsList != null && electronicIdsList.size() == 0){
+					electronicIdsList.add(0L);
+				}
+			}else if(electronicIdsList != null && electronicIdsList.size() > 0){
+				if(printIdsList != null && printIdsList.size() == 0){
+					printIdsList.add(0L);
+				}
+			}
+			
+			List<Long> dptIdList = new ArrayList<Long>();
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getAccessDeptsAndLvlsForUserAndDept(userId, departmentId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] obj : accessList) {
+					dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
+			List<Object[]> statusList = alertDepartmentStatusDAO.getStatusWithoutPending();
+			
+			List<Object[]> list = alertAssignedOfficerDAO.getDesigAndStatusWiseAlertsCounts(dptIdList, levelId, levelValues, stateId, fromDate, toDate, printIdsList, electronicIdsList);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long designationId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					GovtDepartmentVO vo = designationMap.get(designationId);
+					if(vo == null){
+						vo = new GovtDepartmentVO();
+						vo.setId(designationId);
+						vo.setName(obj[1] != null ? obj[1].toString():"0");
+						vo.setGovtDeptList(setStatusList(statusList));
+						GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
+						if(stsvo != null){
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setCount(vo.getCount()+stsvo.getCount());
+						}
+						designationMap.put(designationId, vo);	
+					}
+					else{
+						GovtDepartmentVO stsvo = getMatchedVo(vo.getGovtDeptList(), statusId);
+						if(stsvo != null){
+							stsvo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setCount(vo.getCount()+stsvo.getCount());
+						}
+					}
+				}
+			}
+			
+			if(designationMap != null)
+				returnList = new ArrayList<GovtDepartmentVO>(designationMap.values());
+			
+		} catch (Exception e) {
+			logger.error("Error occured getDesigAndStatusWiseAlertsCounts() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
 }

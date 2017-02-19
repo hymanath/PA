@@ -24,4 +24,6 @@ public interface IAlertAssignedOfficerDAO extends GenericDao<AlertAssignedOffice
 	public List<Object[]> getTotalAlertGroupByDeptForAlertList(Set<Long> alertIdSet);
 	
 	public List<Object[]> getSubOrdinateLevelWiseAlertsDetails(Long designationId,Long levelId,Long levelValue,Date fromDate,Date toDate);
+	
+	public List<Object[]> getDesigAndStatusWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList);
 }
