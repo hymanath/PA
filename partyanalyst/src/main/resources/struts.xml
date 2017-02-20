@@ -15899,5 +15899,10 @@
 			<param name="root">govtDeptVoList</param>         
 		</result>
 	</action>
+	<action name="getTotalAlertDtlsAction" class="cccDashboardAction" method="getTotalAlertDtls">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>
  </package>
 </struts>
