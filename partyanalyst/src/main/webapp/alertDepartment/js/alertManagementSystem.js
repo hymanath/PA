@@ -661,10 +661,13 @@ function getAlertData(alertId)
 			  url: 'getAlertsDataAction.action',
 			  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		if(result != null)
-		{
+		if(result != null && result.length > 0){
 			buildAlertData(result);
-		}
+			if(result[0].categoryId == 2)
+			{
+				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		} 
 	});
 }
 function buildAlertData(result)
@@ -728,7 +731,29 @@ function buildAlertData(result)
 		//buildAlertCandidateData(result[i].subList,result[i].categoryId);
 	}
 }
-
+function getGroupedArticlesInfo(articleId)
+{
+	$.ajax({
+		  type : 'GET',      
+		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+	}).then(function(result){
+		
+		var str='';
+		if(result !=null && result.length>0){
+			$("#alertGroupAttachId").show();
+			str+='<ul class="list-inline">';
+			for(var i in result)
+			{
+				if(articleId != result[i].id){
+					str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+				}
+			}
+			str+='</ul>';
+			$("#alertGroupAttachUlId").html(str);
+		}
+	});
+}
 function getInvolvedMembersDetilas(alertId){
 	var jsObj ={
 		alertId  :alertId
@@ -1540,9 +1565,9 @@ function buildStatusWiseTotalAlerts(result){
 									str+='</tr>'; 
 								str+='</tbody>';
 							str+='</table>';
-							str+='<button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedInfoBlockDiv pull-right" attr_departmentId="'+result[i].departmentId+'">Detailed Information</button>';
+							str+='<button type="button" class="btn btn-default btn-sm m_top10 buttonCustomStyle detailedInfoBlockDiv pull-right" attr_departmentId="'+result[i].departmentId+'">Detailed Information</button>';
 						str+='</div>';
-						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 							str+='<div id="designationDetailedReport'+result[i].departmentId+'"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -2208,15 +2233,15 @@ $(document).on("click",".totAlertsStsCls",function(){
 });	
 /* Departments Complete Overview End*/
 
-$(document).on("click",".detailedInfoBlockDiv ",function(){
+$(document).on("click",".detailedInfoBlockDiv",function(){
 	var departmentId= $(this).attr("attr_departmentId");
 	getDesigAndStatusWiseAlertsCounts(departmentId);
 });	
 
 function getDesigAndStatusWiseAlertsCounts(departmentId){
-	
-	
-	
+	$("#designationDetailedReport"+departmentId).html(' ');
+	$("#designationDetailedReport"+departmentId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
 	
@@ -2242,7 +2267,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 {
 	if(result != null && result.length > 0){	
 		var str1='';
-		str1+='<table class="table detailedTableStyle" style="border:1px solid #ddd">';
+		str1+='<table class="table detailedTableStyle  m_top20" style="border:1px solid #ddd">';
 			str1+='<thead>';
 				str1+='<tr>';
 				str1+='<th>Designation</th>';
@@ -2254,24 +2279,45 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 							
 						}
 					}
-				str1+='<th></th>';	
 				str1+='</tr>';
 			str1+='</thead>';
 			str1+='<tbody>';
+				var totalCount = 0
+				var Notified = 0;
+				var ActionInProgess = 0;
+				var Completed = 0;
+				var UnabletoResolve = 0;
+				var ActionNotRequired = 0;
+				var Duplicate = 0
+				str1+='<tr>';
+					for(var i in result){
+						totalCount = totalCount + result[i].count;
+						Notified = Notified + result[i].govtDeptList[0].count
+						ActionInProgess = ActionInProgess + result[i].govtDeptList[1].count
+						Completed = Completed + result[i].govtDeptList[2].count
+						UnabletoResolve = UnabletoResolve + result[i].govtDeptList[3].count
+						ActionNotRequired = ActionNotRequired + result[i].govtDeptList[4].count
+						Duplicate = Duplicate + result[i].govtDeptList[5].count
+					}
+					str1+='<td style="background-color:#eee">TOTAL</td>';
+					str1+='<td style="background-color:#eee">'+totalCount+'</td>';
+					str1+='<td style="background-color:#eee">'+Notified+'</td>';
+					str1+='<td style="background-color:#eee">'+ActionInProgess+'</td>';
+					str1+='<td style="background-color:#eee">'+Completed+'</td>';
+					str1+='<td style="background-color:#eee">'+UnabletoResolve+'</td>';
+					str1+='<td style="background-color:#eee">'+ActionNotRequired+'</td>';
+					str1+='<td style="background-color:#eee">'+Duplicate+'</td>';
+				str1+='</tr>';
 				for(var i in result){
-					
 					str1+='<tr>';
 						str1+='<td>'+result[i].name+'</td>';
 						str1+='<td style="background-color:#f3f3f3">'+result[i].count+'</td>';
 						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
 							for(var j in result[i].govtDeptList){
-								
-									str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
-								
+								str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
 							}
 						}
 					str1+='</tr>';
-					
 				}
 			str1+='</tbody>';
 		str1+='</table>';

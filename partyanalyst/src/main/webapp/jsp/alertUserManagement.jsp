@@ -283,10 +283,13 @@
 							</td>
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
-							
-							<td colspan="8">
-							<p class="text-capital"><span class="text-muted ">Article  </span> :
-								<ul class="list-inline imageUrlUlCls"></ul>
+							<td colspan="2">
+								<p class="text-capital"><span class="text-muted ">Article  </span> :
+								<ul class="list-inline imageUrlUlCls" style="border-right: 1px solid #ccc"></ul>
+							</td>
+							<td colspan="6" style="display:none" id="alertGroupAttachId">
+								<p class="text-capital"><span class="text-muted ">Grouped Articles  </span> :
+								<div id="alertGroupAttachUlId"></div>
 							</td>
 						</tr>
 					</table>
