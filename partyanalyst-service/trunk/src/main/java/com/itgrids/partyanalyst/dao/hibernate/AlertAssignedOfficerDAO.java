@@ -630,7 +630,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		query.setParameter("userId", userId);
 		return query.list();
 	}
-	public List<Object[]> getAlertIdAndDeptDesigOfficerIdAndGovtOfficerIdList(Date fromDate,Date toDate, List<Long> deptIdList, Long locValue, List<Long> locIdList){
+	public List<Object[]> getAlertIdAndDeptDesigOfficerIdAndGovtOfficerIdList(Date fromDate,Date toDate, List<Long> deptIdList, Long locValue, List<Long> locIdList,Long statusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
@@ -658,7 +658,10 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId in (:locIdList) ");
 		}else if(locValue != null && locValue.longValue() == 8l){
 			queryStr.append(" model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId in (:locIdList)");
-		}			
+		}
+		if(statusId != null && statusId.longValue() > 0L){
+			queryStr.append(" and model.alert.alertStatus.alertStatusId = :statusId ");
+		}
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
@@ -666,6 +669,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		query.setParameterList("deptIdList", deptIdList);
 		query.setParameterList("locIdList", locIdList);
+		if(statusId != null && statusId.longValue() > 0L){
+			query.setParameter("statusId",statusId);
+		}
 		return query.list();
 	}
 	
