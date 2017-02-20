@@ -43,6 +43,9 @@
 		<div class="navbar-header">
 		  <a class="navbar-brand" href="#"><img src="newCoreDashBoard/img/APLOGO.jpg" class="img-responsive"/></a>
 		</div>
+		<div class="navbar-right">
+			<a class="pull-right" href="#" style="margin-top: 18px;color: #fff;">LOGOUT</a>
+		</div>
 	  </div><!-- /.container-fluid -->
 	</nav>
 </header>
