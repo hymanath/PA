@@ -1210,7 +1210,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 								matchedDistVO = new GovtDepartmentVO();
 								matchedDistVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
 								matchedDistVO.setDepartment(objects[3] != null ? objects[3].toString():"");
-								matchedDistVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+								matchedDistVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 								
 							matchedVO.getGovtDepartmentVOList().add(matchedDistVO);
 						}else{
@@ -1298,7 +1298,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 	}
 	public List<GovtDepartmentVO> getStatusWiseDistrictTotalForAlert(String startDateStr,String endDateStr,Long stateId,
-			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList ){
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId){
 		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
 		try {
 			Date fromDate = null;
@@ -1319,20 +1319,34 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		        	paperIdList.add(0L);
 		        }
 		      }
+			
+			//List<Long> dptIdList = new ArrayList<Long>();
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getUserAccessLevelsForUser(userId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] obj : accessList) {
+					//dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
 			//districtId-0,districtName-1,statusId-2,statusName-3,count-4
-			statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			//statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			statusWiseDistLst = alertAssignedOfficerDAO.getDistWiseTotalAlertsStatusForAlert(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList);
 			if(statusWiseDistLst != null && statusWiseDistLst.size() > 0){
 				for (Object[] objects : statusWiseDistLst) {
 					GovtDepartmentVO matchedDistVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
 					if(matchedDistVO == null){
 						matchedDistVO = new GovtDepartmentVO();
-						matchedDistVO.setDepartmentId((Long)objects[0]);
-						matchedDistVO.setDepartment(objects[1].toString());
+						matchedDistVO.setDepartmentId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						matchedDistVO.setDepartment(objects[1] != null ? objects[1].toString():"");
 					
 						GovtDepartmentVO statusVO = new GovtDepartmentVO();
-						statusVO.setDepartmentId((Long)objects[2]);
-						statusVO.setDepartment(objects[3].toString());
-						statusVO.setCount((Long)objects[4]);
+						statusVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+						statusVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+						statusVO.setCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 							
 							matchedDistVO.getGovtDepartmentVOList().add(statusVO);	
 						finalVOList.add(matchedDistVO);
@@ -1340,13 +1354,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						GovtDepartmentVO matchedStatusVO = getmatchedDeptVo(matchedDistVO.getGovtDepartmentVOList(), (Long)objects[2]);
 						if(matchedStatusVO == null){
 							matchedStatusVO = new GovtDepartmentVO();
-							matchedStatusVO.setDepartmentId((Long)objects[2]);
-							matchedStatusVO.setDepartment(objects[3].toString());
-							matchedStatusVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+							matchedStatusVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+							matchedStatusVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+							matchedStatusVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 								
 							matchedDistVO.getGovtDepartmentVOList().add(matchedStatusVO);
 						}else{
-							matchedStatusVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+							matchedStatusVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 						}
 					}
 				}
@@ -2029,7 +2043,8 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return returnList;
 	}
-	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type){
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList,
+			List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type,Long userId){
 		logger.info("Entered in getTotalAlertByStatus() method of CccDashboardService{}");
 		try{
 			Date fromDate = null;
@@ -2039,8 +2054,21 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getUserAccessLevelsForUser(userId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] obj : accessList) {
+					//dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Object[]> alertList = alertDAO.getTotalAlertByStatusForDeptWiseClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,type);
+			//List<Object[]> alertList = alertDAO.getTotalAlertByStatusForDeptWiseClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,type);
+			List<Object[]> alertList = alertAssignedOfficerDAO.getTotalAlertByStatusForDeptWiseClick(deptIdList, levelId, levelValues, stateId, fromDate, toDate, printIdList, electronicIdList, type, statusId);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);    
 			return alertCoreDashBoardVOs;
 		}catch(Exception e){
@@ -2143,6 +2171,49 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDesigAndStatusWiseAlertsCounts() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<AlertCoreDashBoardVO> getDesigAndStatusWiseAlertDetails(Long departmentId,Long stateId,String fromDateStr,String toDateStr,List<Long> printIdsList,
+			List<Long> electronicIdsList,Long userId,Long designationId,Long statusId){
+		List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			if(printIdsList != null && printIdsList.size() > 0){  
+				if(electronicIdsList != null && electronicIdsList.size() == 0){
+					electronicIdsList.add(0L);
+				}
+			}else if(electronicIdsList != null && electronicIdsList.size() > 0){
+				if(printIdsList != null && printIdsList.size() == 0){
+					printIdsList.add(0L);
+				}
+			}
+			
+			List<Long> dptIdList = new ArrayList<Long>();
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getAccessDeptsAndLvlsForUserAndDept(userId, departmentId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] obj : accessList) {
+					dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
+			List<Object[]> alertList = alertAssignedOfficerDAO.getDesigAndStatusWiseAlertDetails(dptIdList, levelId, levelValues, stateId, fromDate, toDate, printIdsList, electronicIdsList, designationId, statusId);
+			setAlertDtls(returnList, alertList);
+			
+		} catch (Exception e) {
+			logger.error("Error occured getDesigAndStatusWiseAlertDetails() method of CccDashboardService",e);
 		}
 		return returnList;
 	}
