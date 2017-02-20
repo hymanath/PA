@@ -1150,8 +1150,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	/*
 	 * Author: Teja
 	 *  getDistrictWiseTotalAlerts Strip */
-	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,
-			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId){
+	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId){
 		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
 		try {
 			Date fromDate = null;
@@ -2185,7 +2184,9 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("toDay")){
 				fromDate = dateUtilService.getCurrentDateAndTime();
 				toDate = dateUtilService.getCurrentDateAndTime();
-				dptIdList.add(deptId);
+				if(deptId != null && deptId.longValue() > 0L){
+					dptIdList.add(deptId);
+				}
 			}else{
 				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 					fromDate = sdf.parse(fromDateStr);
