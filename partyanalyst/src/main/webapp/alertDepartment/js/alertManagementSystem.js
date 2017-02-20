@@ -2357,7 +2357,6 @@ function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-		console.log(result);
 		buildtotalAlertsModalTabId(result);
 	});
 	
