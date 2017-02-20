@@ -86,13 +86,13 @@
 								</div>
 								<div class="col-md-8 col-xs-12 col-sm-8">
 									<div class="panel panel-default panelCustom">
-										<div class="panel-heading headingColor">
+										<div class="panel-heading headingColor" style="padding:5px !important">
 											<div class="row">
 												<div class="col-md-7 col-xs-12 col-sm-7">
 													<h4 class="panel-title text-capital fontColor m_top5">department wise status overview</h4>
 												</div>
 												<div class="col-md-5 col-xs-12 col-sm-5">
-													<span class="settingsIcon pull-right">
+													<span class="settingsIcon pull-right" style="margin-top:7px;">
 														<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 													</span>
 													<div class="settingsBlockDropDown notesArrow documentCloseClass">
@@ -264,10 +264,13 @@
 							</td>
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
-							
-							<td colspan="8">
-							<p class="text-capital"><span class="text-muted ">Article  </span> :
-								<ul class="list-inline imageUrlUlCls"></ul>
+							<td colspan="2">
+								<p class="text-capital"><span class="text-muted ">Article  </span> :
+								<ul class="list-inline imageUrlUlCls" style="border-right: 1px solid #ccc"></ul>
+							</td>
+							<td colspan="6" style="display:none" id="alertGroupAttachId">
+								<p class="text-capital"><span class="text-muted ">Grouped Articles  </span> :
+								<div id="alertGroupAttachUlId"></div>
 							</td>
 						</tr>
 					</table>

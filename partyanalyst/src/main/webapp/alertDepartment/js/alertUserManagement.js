@@ -319,11 +319,10 @@ function buildTotalAlertByStatusForOfficer(result){
 					totalAlert+=result[i].count;
 					str+='<tr>';
 						str+='<td><span class="colorSpecify" style="background-color:'+result[i].color+';"></span>&nbsp;&nbsp;'+result[i].status+'</td>';
-						str+='<td>'+result[i].count+'</td>';
+						str+='<td><span class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="today">'+result[i].count+'</span></td>';
 						str+='<td>'+result[i].statusPercent+'</td>';
 					str+='</tr>';
 				}
-					
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
@@ -416,7 +415,7 @@ function buildTotalAlertByStatusForOfficer(result){
 
 			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
 			span += '<span style="font-size: 18px">TOTAL</span><br>';
-			span += '<span style="font-size: 14px;" >'+totalAlert+'</span>';
+			span += '<span style="font-size: 14px;" class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="overall">'+totalAlert+'</span>';
 			span += '</span>';
 
 			$("#TotalAlertsView").append(span);
@@ -484,7 +483,7 @@ function buildTotalAlertByDeptForOfficer(result){
 	}
 	str+='<div class="m_top10">';
 		str+='<p style="font-size:20px;text-align:center">Hi Officer</p>';
-		str+='<p style="font-size:20px;text-align:center">You Have <span style="font-size:30px;">'+totalAlertCount+'</span> New Alerts</p>';
+		str+='<p style="font-size:20px;text-align:center">You Have <span style="font-size:30px;" class="totalAlertDetails" attr_status_id="0" attr_department_id="0" attr_type="overall">'+totalAlertCount+'</span> New Alerts</p>';
 	str+='</div>';
 	str+='<div class="m_top10 alertScroll">';
 		str+='<table class="table tableBorLefRig">';
@@ -496,7 +495,7 @@ function buildTotalAlertByDeptForOfficer(result){
 					}else{
 						str+='<td>'+result[j].status+'</td>';
 					}
-					str+='<td style="text-align:center"><span class="colorStyleAlert">'+result[j].count+'</span></td>';
+					str+='<td style="text-align:center"><span class="colorStyleAlert totalAlertDetails" attr_status_id="0" attr_department_id="'+result[i].id+'" attr_type="overall">'+result[j].count+'</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -534,11 +533,15 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 							str1+='<tbody>';
 								if(result[i].subList1 !=null && result[i].subList1.length>0){
 									for(var j in result[i].subList1){
-										str1+='<tr>';
-											str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
-											str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
-											str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
-										str1+='</tr>';
+										if(result[i].subList1[j].categoryId != 1)
+										{
+											str1+='<tr>';
+												str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
+												str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+												str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
+											str1+='</tr>';
+										}
+										
 									}
 								}
 						str1+='</tbody>';
@@ -1116,10 +1119,13 @@ function getAlertData(alertId)
 			  url: 'getAlertsDataAction.action',
 			  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		if(result != null)
-		{
+		if(result != null && result.length > 0){
 			buildAlertData(result);
-		}
+			if(result[0].categoryId == 2)
+			{
+				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		} 
 	});
 }
 function buildAlertData(result)
@@ -1484,4 +1490,60 @@ function buildDistrictLevelDepartmentDetails(result){
 		$("#districtLevelDeptOverview").html("No Data Available");
 	}
 	
+}
+$(document).on("click",".totalAlertDetails",function(){
+	var statusId = $(this).attr("attr_status_id");
+	var departmentId = $(this).attr("attr_department_id");
+	var typeId = $(this).attr("attr_type");
+
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	getTotalAlertDtls(statusId,departmentId,typeId);
+});
+
+function getTotalAlertDtls(statusId,departmentId,typeId)
+{
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jObj ={
+		fromDate : detailedfromDate,
+		toDate : detailedtoDate,
+		statusId : statusId,
+		deptId : departmentId,
+		type : typeId      
+
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertDtlsAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		buildSubOrdinateLocationWiseAlertDetails(result)
+    });
+}
+
+function getGroupedArticlesInfo(articleId)
+{
+	$.ajax({
+		  type : 'GET',      
+		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+	}).then(function(result){
+		
+		var str='';
+		if(result !=null && result.length>0){
+			$("#alertGroupAttachId").show();
+			str+='<ul class="list-inline">';
+			for(var i in result)
+			{
+				if(articleId != result[i].id){
+					str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+				}
+			}
+			str+='</ul>';
+			$("#alertGroupAttachUlId").html(str);
+		}
+	});
 }
