@@ -893,10 +893,16 @@
 					  //}
 					  if(members[i].committeeMemberStatus != null && members[i].committeeMemberStatus.trim().length > 0){
 						  if(members[i].committeeMemberStatus == 'F'){//Finalized
-							  str+='<td> Finalized </td>';
+							  str+='<td > Finalized ';
 						  }else{
-							   str+='<td> Proposed </td>';
+							   str+='<td style="background-color:orange; "> Proposed ';
 						  }
+						  
+						  if(result.locationName == 'N')
+							str+='<div class="pull-right  btn btn-default btn-sm deleteCls deleteCls'+i+'" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+members[i].id+'\',\'deleteCls'+i+'\');"></i></div> ';
+						
+						  str+=' </td> ';
+						  
 					  }else{
 						   str+='<td> - </td>';
 					  }
@@ -1535,7 +1541,54 @@
             WinPrint.print();
             //WinPrint.close();
         }
-        
+      
+function deleteCadreRole(tdpCommitteeMemberId,className)
+	{
+		//var committeeEnrollmentId =$("#tdpCommitteeYearId1").val();
+		var date =$("#reportrange1").val();
+		//var fromDate;
+		//var toDate;
+	//	var dates = date.split("-");
+		//fromDate = dates[0];
+		//toDate = dates[1];
+	var r=confirm("Are You Sure To Remove ?");
+		if(r)
+		{
+	var jsObj = 
+	{
+		tdpcommitteeMemberId:tdpCommitteeMemberId,
+		committeeEnrollmentId :["2"],
+		fromDate :'01/01/2017',
+		toDate :'01/01/2019',
+		task:"deleterole"
+	}
+	
+	$.ajax({
+          type:'GET',
+          url: 'getCommitteeDetailsByStatusPopUpAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+     	  }).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+			  if(result != null){
+				  {
+					if(result[0].status == "Removed"){
+						alert("Removed Successfully..")
+						$('.'+className+'').hide();
+					}else
+						alert("Committee Already Confirmed")
+				  }
+				
+			}
+	   });
+		}
+	
+	}
+	
 	</script>
   </body>
 </html>
