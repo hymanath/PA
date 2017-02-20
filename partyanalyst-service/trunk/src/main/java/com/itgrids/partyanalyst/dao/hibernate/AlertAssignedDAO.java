@@ -33,7 +33,7 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
-	public List<Object[]> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,Date fromDate,Date toDate)
+	public List<Object[]> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,Date fromDate,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select " +
@@ -67,7 +67,18 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 		query.setDate("toDate", toDate);    
 		return query.list();
 	}
-
+	public List<Object[]> getAlertAssignedCandidate(Long alertId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCadre.tdpCadreId, model.tdpCadre.firstname"+
+				" from AlertAssigned model where model.alert.isDeleted ='N' and model.isDeleted ='N' ");
+		if(alertId != null && alertId > 0)
+			str.append(" and  model.alert.alertId = :alertId");
+		Query query = getSession().createQuery(str.toString() +" order by model.tdpCadre.firstname ");
+		if(alertId != null && alertId > 0)  
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
 	/*
 	 * Author 	: 	Srishailam Pittala
 	 * Date 	:	29th Dec,2016
