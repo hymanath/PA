@@ -1185,7 +1185,7 @@ public List<Object[]> getWithoutCommitteeWiseInvitteeAttendedCadreCountForMeetin
 			"           join tdp_committee        tc   on tcr.tdp_committee_id = tc.tdp_committee_id " +
 			"           join tdp_committee_level  tcl  on tc.tdp_committee_level_id = tcl.tdp_committee_level_id " +
 			" where     pmmt.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-			"           cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y' ");
+			"           cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y' and pma.party_meeting_session_id is null  ");
 	
 	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 		 sb.append(" and date(pm.start_date) between :startDate and :endDate ");	 
@@ -1376,7 +1376,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     			"             join public_representative pr on c.candidate_id = pr.candidate_id " +
     			"             join public_representative_type prt on pr.public_representative_type_id = prt.public_representative_type_id " +
     			"   where     pmmt.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-    			"             cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y' ");
+    			"             cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y' and pma.party_meeting_session_id is null  ");
     	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
     		 sb.append(" and date(pm.start_date) between :startDate and :endDate ");	 
     	}
