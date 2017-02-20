@@ -2232,7 +2232,31 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return rs;
 	}
 	//swa.
-	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr)
+	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId)
+	{
+		LOG.info("Entered in getAlertAssignedCandidate() method");
+		List<StatusTrackingVO> resultList = new ArrayList<StatusTrackingVO>(); ;
+		try{
+			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidate(alertId);
+			 if(list !=null && list.size()>0){
+				 
+				 for (Object[] objects : list) {
+					 StatusTrackingVO vo= new StatusTrackingVO();
+					 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
+					 vo.setUname(commonMethodsUtilService.getStringValueForObject(objects[1]).toString());//first name
+					 resultList.add(vo);
+				}
+			 }				
+				}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getAlertAssignedCandidate() method");
+		}
+		return resultList;
+	}
+	
+	public List<StatusTrackingVO> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr)
 	{
 		LOG.info("Entered in getAlertAssignedCandidate() method");   
 		List<StatusTrackingVO> resultList = new ArrayList<StatusTrackingVO>(); ;
@@ -2244,8 +2268,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidate(alertId,stateId,alertTypeId,fromDate,toDate);
-			 if(list !=null && list.size()>0){
+			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidateForDashBoard(alertId,stateId,alertTypeId,fromDate,toDate);
+			 if(list !=null && list.size()>0){  
 				 
 				 for (Object[] objects : list) {
 					 StatusTrackingVO vo= new StatusTrackingVO();
@@ -2341,7 +2365,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId){
 		LOG.info("Entered in getTotalAlertGroupByStatus() method of AlertService{}");
 		try{
-			Date fromDate = null;
+			Date fromDate = null;      
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
