@@ -280,7 +280,7 @@ function getSubLevelsForUser(designnationId)
   
 function getTotalAlertByStatusForOfficer()
 { 
-    var jsObj ={     
+	var jsObj ={     
       fromDate:currentFromDate,     
       toDate:currentToDate       
     }
@@ -1094,11 +1094,12 @@ $(document).on("click",".alertDetailsModalCls",function(){
 		backdrop: 'static'
 	});
 	
+	fieldsEmpty();
 	
 	var alertId = $(this).attr("attr_alert_Id");
 	var alrtStsId = $(this).attr("attr_status_id");
 	if(alrtStsId != null && alrtStsId == 1)
-		$("#alertAssign").show();
+		$("#alerAssignDivId").show();
 	
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
@@ -1546,4 +1547,66 @@ function getGroupedArticlesInfo(articleId)
 			$("#alertGroupAttachUlId").html(str);
 		}
 	});
+}
+$(document).on("click",".notMyDepartment",function(){
+	if($(this).is(":checked"))
+	{
+		$("#changeStatusId").val('8').trigger("chosen:updated")
+	}else{
+		$("#changeStatusId").val('0').trigger("chosen:updated")
+	}
+	$("#changeStatusId").parent('.col-md-12').toggle();
+});
+
+$(document).on("click","#assignOfficerId",function(){
+	var notMyDepartment = $(".notMyDepartment").is(':checked');
+	var comments = $("#alertDescId").val();
+	var updateStatusId = $("#changeStatusId").val();
+	
+	if(comments.length == 0){
+		$("#errMsgCmntId").html("Enter Comments.");
+		return;
+	}
+	if(!(notMyDepartment)){
+		if(updateStatusId == 0){
+			$("#errMsgStsId").html("Select Status.");
+			return;
+		}
+	}
+
+	var uploadHandler = {
+		upload: function(o) {
+			uploadResult = o.responseText;
+			displayStatus(uploadResult);
+		}
+	};
+
+	YAHOO.util.Connect.setForm('alertAssignForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','updatingAlertInformationAction.action',uploadHandler); 
+	
+});
+
+function displayStatus(myResult){
+	var result = (String)(myResult);
+	if(result.search('success') != -1){
+		//getAlertStatusCommentsTrackingDetails();
+		alert("Alert Assigned Successfully.");
+		//$("#alertStatus").html('Notified');
+		fieldsEmpty();
+		/*$("#uploadClarificationFileId0").val('');
+		$("#extraClarificationUploadFileDiv").html('');
+		$(".ClearFileCls").hide();  
+		fileNo = 0;*/
+	}else{
+		alert("Please Try Again.");
+	}
+}
+
+function fieldsEmpty(){
+	$("#changeStatusId").val(0);
+	$("#changeStatusId").trigger("chosen:updated");
+	
+	$("#alertDescId").val('');
+	var filerKit = $("#imageId").prop("jFiler");
+	filerKit.reset();
 }
