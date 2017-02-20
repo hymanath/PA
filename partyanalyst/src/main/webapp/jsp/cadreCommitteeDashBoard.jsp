@@ -2258,7 +2258,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			  
 			  
 			}
-		
+			var enrollmentYearId=$("#tdpCommitteeYearId").val();
+			if(enrollmentYerId == 1){
+				$(".ivrdetails").show();
+			}else if(enrollmentYerId == 2)
+		$(".ivrdetails").hide();
 		});
 	}
 	function getCommitteeCountByState(state){
