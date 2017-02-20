@@ -796,9 +796,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" model.alertStatus.alertStatus," +
 					" count(distinct model.alert.alertId)");
 		sb.append(" from AlertAssignedOfficer model" +
-					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
+					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join UA.state S" +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
@@ -867,9 +867,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" D.districtName," +
 					" count(distinct model.alert.alertId)");
 		sb.append(" from AlertAssignedOfficer model" +
-					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
+					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join UA.state S" +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
@@ -938,9 +938,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" model.alert.alertCategoryId," +
 					" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId");
 		sb.append(" from AlertAssignedOfficer model" +
-					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
+					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join UA.state S" +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
