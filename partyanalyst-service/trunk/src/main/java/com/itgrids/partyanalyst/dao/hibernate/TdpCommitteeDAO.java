@@ -797,16 +797,20 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
+	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String stateId,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
 
 		StringBuilder str = new StringBuilder();
-
+		if(stateId.trim().equalsIgnoreCase("AP")){
+			stateId="1";
+		}else if(stateId.trim().equalsIgnoreCase("TS")){
+			stateId="36";
+		}
 		str.append("select count(distinct model.tdpCommitteeId), " +
 		" model.tdpBasicCommittee.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
 		" from TdpCommittee model where ");
-		str.append(" model.state= :state ");
+		//str.append(" model.state= :state ");
 		if(startDate !=null && endDate !=null){
-			str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate ) ");
+			str.append("  ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate ) ");
 		}
 		if(locationlevelValueList != null && locationlevelValueList.size()>0)
 		{
@@ -819,6 +823,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" and model.districtId in (:districtIds) ");
+		}else if(stateId != null)
+		{
+			str.append(" and model.userAddress.state.stateId= :stateId ");
 		}
 		str.append("and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and" +
@@ -829,7 +836,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append("group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
 		
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("state", state);		
+		//query.setParameter("state", state);		
 		query.setParameterList("levelIds", levelIds);
 		if(startDate != null && endDate !=null){
 			query.setParameter("startDate", startDate);
@@ -846,6 +853,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
+		}else if(stateId != null)
+		{
+			query.setParameter("stateId", Long.valueOf(stateId));
 		}
 		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0){
 			query.setParameterList("committeeSpanTypeIdsLsit", committeeSpanTypeIdsLsit);
@@ -853,17 +863,21 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
+	public List<Object[]> getStartedAffliCommitteesCountByLocation(String stateId,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
 
 		StringBuilder str = new StringBuilder();
-
+		if(stateId.trim().equalsIgnoreCase("AP")){
+			stateId="1";
+		}else if(stateId.trim().equalsIgnoreCase("TS")){
+			stateId="36";
+		}
 		str.append("select count(distinct model.tdpCommitteeId), " +
 		" model.tdpBasicCommittee.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
 		" from TdpCommittee model where ");
-		str.append(" model.state= :state ");
+		//str.append(" model.state= :state ");
 		if(startDate !=null && endDate !=null){
 			
-			str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate ) ");
+			str.append("  ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate ) ");
 		}
 		if(locationlevelValueList != null && locationlevelValueList.size()>0)
 		{
@@ -876,6 +890,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" and model.districtId in (:districtIds) ");
+		} else if(stateId != null)
+		{
+			str.append(" and model.userAddress.state.stateId= :stateId ");
 		}
 		str.append("and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and" +
@@ -885,7 +902,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		str.append("group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("state", state);		
+		
+		//query.setParameter("state", state);		
 		query.setParameterList("levelIds", levelIds);
 		if(startDate != null && endDate !=null){
 			query.setParameter("startDate", startDate);
@@ -902,6 +920,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
+		}
+		else if(stateId != null)
+		{
+			query.setParameter("stateId", Long.valueOf(stateId));
 		}
 		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0){
 			query.setParameterList("committeeSpanTypeIdsLsit", committeeSpanTypeIdsLsit);

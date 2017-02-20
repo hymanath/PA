@@ -31,7 +31,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -285,7 +284,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private INominationPostCandidateDAO nominationPostCandidateDAO;    
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
-	
+	private CoreDashboardGenericService coreDashboardGenericService;
 	
 	
 	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
@@ -724,6 +723,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public void setTdpCommitteeEnrollmentDAO(
 			ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
+	}
+     
+	
+	public CoreDashboardGenericService getCoreDashboardGenericService() {
+		return coreDashboardGenericService;
+	}
+
+	public void setCoreDashboardGenericService(
+			CoreDashboardGenericService coreDashboardGenericService) {
+		this.coreDashboardGenericService = coreDashboardGenericService;
 	}
 
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
@@ -6217,7 +6226,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 endDate =sdf.parse(endDateStr);
 				 
 			 }
-			
+			 Long accessTypelist = null;
+			 if(accessValue == null){
+				 accessTypelist=Long.valueOf(accessType);
+				 List<Object[]> activityLocationValue = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersIdForOrganization(userId); 
+		          if(activityLocationValue != null && activityLocationValue.size()>0 ){
+		        	   for(Object[] param : activityLocationValue){
+		        		   if(commonMethodsUtilService.getLongValueForObject(param[0]) == 5l){
+		        			   assemblyIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+		        		   }else if(commonMethodsUtilService.getLongValueForObject(param[0]) == 3l){
+		        			   districtIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+		        		   }
+		        		   }
+		        		   
+		        	   }
+		          } 
 			List<Object[]>  startedCount = null;
 			if(committeeType.equalsIgnoreCase("started")){
 				startedCount=tdpCommitteeDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
@@ -6334,7 +6357,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 endDate =sdf.parse(endDateStr);
 				 
 			 }
-			 
+			 Long accessTypelist = null;
+			 if(accessValue == null){
+				 accessTypelist=Long.valueOf(accessType);
+				 List<Object[]> activityLocationValue = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersIdForOrganization(userId); 
+		          if(activityLocationValue != null && activityLocationValue.size()>0 ){
+		        	   for(Object[] param : activityLocationValue){
+		        		   if(commonMethodsUtilService.getLongValueForObject(param[0]) == 5l){
+		        			   assemblyIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+		        		   }else if(commonMethodsUtilService.getLongValueForObject(param[0]) == 3l){
+		        			   districtIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+		        		   }
+		        		   }
+		        		   
+		        	   }
+		          } 
 			List<Object[]> membersCount = null; 
 			if(committeeType.equalsIgnoreCase("started")){
 				membersCount = tdpCommitteeMemberDAO.getStartedCommitteesMembersCountByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues,committeeSpanTypeIdsLsit);
