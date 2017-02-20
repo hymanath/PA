@@ -4306,7 +4306,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
 		queryStr.append(" where ");
-		queryStr.append(" A.is_deleted='N' and ");
+		queryStr.append(" A.is_deleted='N' and A.alert_status_id = 1 and ");
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
 		queryStr.append(" A.govt_department_id in (:deptIdList) and ");
 		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
@@ -4366,7 +4366,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" A.is_deleted='N' and ");
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
 		queryStr.append(" A.govt_department_id in (:deptIdList) and ");
-		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and A.alert_status_id = 1 and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
