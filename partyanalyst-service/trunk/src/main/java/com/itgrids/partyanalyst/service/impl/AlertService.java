@@ -1969,7 +1969,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								}
 								String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve \n\nDescription:\n" +StringEscapeUtils.unescapeHtml(description));
 								smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
-								
+								//smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, "7207785117");
+
 								
 								 if(smsStatus == true){
 									 LOG.error(" Sms Status sending successfully  ");
@@ -1978,7 +1979,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 alertAssignedDAO.updateAlertSmsStatus(assignedId);
 								 }else if(smsStatus == false){
 									 LOG.error("Sms Status failed");
-									 LOG.error( description);
+									 LOG.error( description);   
 									 LOG.error(mobilenumber);
 								 }
 								
