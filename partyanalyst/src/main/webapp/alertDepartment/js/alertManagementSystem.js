@@ -2274,9 +2274,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 				str1+='<th style="background-color:#f3f3f3">Total</th>';
 					if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
 						for(var j in result[0].govtDeptList){
-							
-								str1+='<th>'+result[0].govtDeptList[j].name+'</th>';
-							
+							str1+='<th>'+result[0].govtDeptList[j].name+'</th>';
 						}
 					}
 				str1+='</tr>';
@@ -2300,21 +2298,21 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 						Duplicate = Duplicate + result[i].govtDeptList[5].count
 					}
 					str1+='<td style="background-color:#eee">TOTAL</td>';
-					str1+='<td style="background-color:#eee">'+totalCount+'</td>';
-					str1+='<td style="background-color:#eee">'+Notified+'</td>';
-					str1+='<td style="background-color:#eee">'+ActionInProgess+'</td>';
-					str1+='<td style="background-color:#eee">'+Completed+'</td>';
-					str1+='<td style="background-color:#eee">'+UnabletoResolve+'</td>';
-					str1+='<td style="background-color:#eee">'+ActionNotRequired+'</td>';
-					str1+='<td style="background-color:#eee">'+Duplicate+'</td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+totalCount+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="2" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Notified+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="3" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+ActionInProgess+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="4" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Completed+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="5" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+UnabletoResolve+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="6" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+ActionNotRequired+'</span></td>';
+					str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="7" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Duplicate+'</span></td>';
 				str1+='</tr>';
 				for(var i in result){
 					str1+='<tr>';
 						str1+='<td>'+result[i].name+'</td>';
-						str1+='<td style="background-color:#f3f3f3">'+result[i].count+'</td>';
+						str1+='<td style="background-color:#f3f3f3"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].count+'</span></td>';
 						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
 							for(var j in result[i].govtDeptList){
-								str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
+								str1+='<td><span class="totalAlertsOnDetInfo" attr_status_id="'+result[i].govtDeptList[j].id+'" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].govtDeptList[j].count+'</span></td>';
 							}
 						}
 					str1+='</tr>';
@@ -2325,4 +2323,42 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 	}else{
 		$("#designationDetailedReport"+departmentId).html("No Data Available");
 	}
+}
+$(document).on("click",".totalAlertsOnDetInfo",function(){
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	var statusId = $(this).attr("attr_status_id");
+	var designationId = $(this).attr("attr_designation_id");
+	var departmentId = $(this).attr("attr_departmentId");
+	getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId);
+});
+function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
+{
+	var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
+    var jsObj ={
+		departmentId:	departmentId,	
+		stateId : 		globalStateId,
+		fromDate:		currentFromDate,
+		toDate:			currentToDate,
+		paperIdArr : 	paperIdArr,
+		chanelIdArr : 	chanelIdArr,
+		statusId:	  	statusId,
+		designationId:	designationId
+    }
+	$.ajax({
+		type : 'GET',
+		url : 'getDesigAndStatusWiseAlertDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		console.log(result);
+		buildtotalAlertsModalTabId(result);
+	});
+	
 }
