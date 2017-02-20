@@ -348,7 +348,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="background-color: #ccc;padding-top: 20px;box-shadow: 0px 0px 25px rgba(0,0,0,0.8);">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading headingColor">

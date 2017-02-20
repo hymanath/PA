@@ -2311,7 +2311,10 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 			   count = count +1;
 			   
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				 str+='<h4 attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+'  class="text-capital meetingTypeCls">'+result[i].name+'<span class="stateGeneralMeeting" attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+' style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
+				 str+='<h4 attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+'  class="text-capital meetingTypeCls">'+result[i].name+'';
+				 str+='</h4>';
+				 //<span class="stateGeneralMeeting" attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+' style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+				 
 				//if($(window).width() < 300)
 				//{
 					str+='<div class="table-responsive">';
