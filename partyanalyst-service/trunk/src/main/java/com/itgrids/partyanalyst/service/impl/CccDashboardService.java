@@ -1195,13 +1195,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					GovtDepartmentVO matchedVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
 					if(matchedVO == null){
 						matchedVO = new GovtDepartmentVO();
-						matchedVO.setDepartmentId((Long)objects[0]);
-						matchedVO.setDepartment(objects[1].toString());
+						matchedVO.setDepartmentId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						matchedVO.setDepartment(objects[1] != null ? objects[1].toString():"");
 						deptIds.add((Long)objects[0]);
 					GovtDepartmentVO districtVO = new GovtDepartmentVO();
-						districtVO.setDepartmentId((Long)objects[2]);
-						districtVO.setDepartment(objects[3].toString());
-							districtVO.setCount((Long)objects[4]);
+						districtVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+						districtVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+							districtVO.setCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 							
 						matchedVO.getGovtDepartmentVOList().add(districtVO);	
 						finalVOList.add(matchedVO);
@@ -1209,13 +1209,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						GovtDepartmentVO matchedDistVO = getmatchedDeptVo(matchedVO.getGovtDepartmentVOList(), (Long)objects[2]);
 						if(matchedDistVO == null){
 								matchedDistVO = new GovtDepartmentVO();
-								matchedDistVO.setDepartmentId((Long)objects[2]);
-								matchedDistVO.setDepartment(objects[3].toString());
+								matchedDistVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+								matchedDistVO.setDepartment(objects[3] != null ? objects[3].toString():"");
 								matchedDistVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
 								
 							matchedVO.getGovtDepartmentVOList().add(matchedDistVO);
 						}else{
-							matchedDistVO.setCount(matchedDistVO.getCount()+(Long)objects[4]);
+							matchedDistVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 						}
 					}
 				}
@@ -2118,7 +2118,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			if(designationMap != null)
 				returnList = new ArrayList<GovtDepartmentVO>(designationMap.values());
 			
-			if(returnList != null && !returnList.isEmpty()){
+			/*if(returnList != null && !returnList.isEmpty()){
 				for (GovtDepartmentVO designvo : returnList) {
 					if(designvo.getGovtDeptList() != null && !designvo.getGovtDeptList().isEmpty()){
 						for (GovtDepartmentVO stsvo : designvo.getGovtDeptList()) {
@@ -2139,7 +2139,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 						}
 					}
 				}
-			}
+			}*/
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDesigAndStatusWiseAlertsCounts() method of CccDashboardService",e);

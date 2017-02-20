@@ -49,57 +49,7 @@ public class GovtDepartmentVO {
 	private String impactLevel;
 	private String color;
 	
-	private Long pendingTotal = 0l;
-	private Long notifiedTotal = 0l;
-	private Long ActionInprgsTtl = 0l;
-	private Long completedTotal = 0l;
-	private Long UnablToRslveTtl = 0l;
-	private Long atnNotRqdTtl = 0l;
-	private Long duplicateTotal = 0l;
 	
-	
-	public Long getPendingTotal() {
-		return pendingTotal;
-	}
-	public void setPendingTotal(Long pendingTotal) {
-		this.pendingTotal = pendingTotal;
-	}
-	public Long getNotifiedTotal() {
-		return notifiedTotal;
-	}
-	public void setNotifiedTotal(Long notifiedTotal) {
-		this.notifiedTotal = notifiedTotal;
-	}
-	public Long getActionInprgsTtl() {
-		return ActionInprgsTtl;
-	}
-	public void setActionInprgsTtl(Long actionInprgsTtl) {
-		ActionInprgsTtl = actionInprgsTtl;
-	}
-	public Long getCompletedTotal() {
-		return completedTotal;
-	}
-	public void setCompletedTotal(Long completedTotal) {
-		this.completedTotal = completedTotal;
-	}
-	public Long getUnablToRslveTtl() {
-		return UnablToRslveTtl;
-	}
-	public void setUnablToRslveTtl(Long unablToRslveTtl) {
-		UnablToRslveTtl = unablToRslveTtl;
-	}
-	public Long getAtnNotRqdTtl() {
-		return atnNotRqdTtl;
-	}
-	public void setAtnNotRqdTtl(Long atnNotRqdTtl) {
-		this.atnNotRqdTtl = atnNotRqdTtl;
-	}
-	public Long getDuplicateTotal() {
-		return duplicateTotal;
-	}
-	public void setDuplicateTotal(Long duplicateTotal) {
-		this.duplicateTotal = duplicateTotal;
-	}
 	public String getColor() {
 		return color;
 	}
