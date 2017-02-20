@@ -610,15 +610,9 @@ public String createAlert(final AlertVO inputVO,final Long userId, final Map<Fil
 															}
 															
 														}
-														String message = "Alert is assigned to you, please follow up and resolve\nDescription:\n"+description;
-														
-														//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
-														if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
-															    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
-														}else{
-															 smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
-														}	 
-														 if(smsStatus == true){
+														String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve \n\nDescription:\n" +StringEscapeUtils.unescapeHtml(description));
+														smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
+														 if(smsStatus == true){     
 															 LOG.error(" Sms Status sending successfully ");
 															 LOG.error( description );
 															 LOG.error( mobilenumber );
@@ -1898,12 +1892,20 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		
 	}
-	// Service Changed by Santosh
 	public ResultStatus saveAlertAssignedUser(final AlertVO inputVO,final Long userId)
 	{
 		final ResultStatus rs = new ResultStatus();
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				/*protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				Alert alert = alertDAO.get(inputVO.getAlertTypeId()); 
+	        	String mobilenumber ="9581434970";
+	        	boolean smsStatus =false;
+				String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve \nDescription:\n" +StringEscapeUtils.unescapeHtml(alert.getTitle()));
+				smsStatus =	smsSenderService.sendSmsForAssignedLeader(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
+				System.out.println(smsStatus);
+			}*/
+			
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 		        	  // Changing Alert Status Pending to Notified first time When Candidate is going to assigned for that alert 
 					if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue() > 0l){
@@ -1951,8 +1953,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertAssigned.setSmsStatus("N");
 							alertAssigned = alertAssignedDAO.save(alertAssigned);
 						    Long alertId = 0l;
-							String description = " ";
-							String mobilenumber =" ";
+							String description = "";
+							String mobilenumber ="";
 							boolean smsStatus = true;
 							if(alertAssigned != null){
 								Long assignedId = alertAssigned.getAlertAssignedId();
@@ -1965,14 +1967,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									}
 									
 								}
-								String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
+								String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve \n\nDescription:\n" +StringEscapeUtils.unescapeHtml(description));
+								smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
 								
-								//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
-								if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
-									    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
-								   }else{
-									    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
-								      }
 								
 								 if(smsStatus == true){
 									 LOG.error(" Sms Status sending successfully  ");
@@ -7615,14 +7612,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 											}
 											
 										}
-										String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
-										
-										//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
-										if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
-										    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
-									     }else{
-										    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
-									      }
+										String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve \n\nDescription:\n" +StringEscapeUtils.unescapeHtml(description));
+										smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
 										 if(smsStatus == true){
 											 LOG.error(" Sms Status sending successfully ");
 											 LOG.error(description);
@@ -7663,14 +7654,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 												}
 												
 											}
-											String message = "Alert is assigned to you,please follow up and resolve\nDescription:\n" +description;
-											
-											//boolean smsStatus =	smsSenderService.sendSmsForAssignedLeader(message,mobilenumber);
-											if(Pattern.matches(".*[a-zA-Z]+.*", description)) { 
-											    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, true, mobilenumber);
-										      }else{
-											    smsStatus =	smsSenderService.sendSmsForAssignedLeader( message, false, mobilenumber);
-										      }
+											String message = commonMethodsUtilService.escapeUnicode("Alert is assigned to you,please follow up and resolve\n\nDescription:\n" +StringEscapeUtils.unescapeHtml(description));
+											smsStatus =	smsSenderService.sendSmsForAssignedLeaderInTelugu(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(message)), false, mobilenumber);
 											 if(smsStatus == true){
 												 LOG.error(" Sms Status sending successfully ");
 												 LOG.error( description );
