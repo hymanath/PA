@@ -10,5 +10,5 @@ public interface ISmsSenderService {
 	//public ResultStatus sendSmsToCadre(Integer startIndex,Integer maxIndex);
 	public String sendSMSForTrainingCampFeedBackMember(Long userId,String moduleName ,boolean isEnglish,String message,String phoneNumbers);
 	public SmsHistory sendSMS(Long userId,String moduleName ,boolean isEnglish, String messageStr,String mobileNos);
-	public boolean sendSmsForAssignedLeader(String message, boolean isEnglish,String mobilenumber);
+	public boolean sendSmsForAssignedLeaderInTelugu(String message, boolean isEnglish,String mobilenumber);
 }
