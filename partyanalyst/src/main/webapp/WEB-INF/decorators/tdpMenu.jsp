@@ -258,7 +258,7 @@
 						
 					   <c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP' ) ||  fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
 						 <li>
-								<a href="#"><i class="fa fa-archive ico-white"></i><span>&nbsp;&nbsp;Cadre Search</span></a>
+								<a href="#"><i class="fa fa-archive ico-white"></i><span>&nbsp;&nbsp;Cadre Search / Registration DashBoard</span></a>
 								 <h2><i class="glyphicon glyphicon-tree-deciduous ico-white line_heightDiv"></i>&nbsp;&nbsp;Cadre Search</h2>
 								 <ul>
 								 <c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH') || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT') ||  fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ENT') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}"> 
@@ -400,14 +400,17 @@
 
 </c:if>
 </c:if>
+          <li>
+	<a href="newCadreDashBoard2016Action.action"><i class="fa fa-book"></i><span>&nbsp;&nbsp; Cadre Dashboard (AP/TS)</span></a>
+				</li>
 								<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREDASHBOARD' )}">
 								<li>
-									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Cadre Dashboard</span></a>
-									 <h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Cadre Dashoard</h2>
+									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Cadre Dashboard (Other States)</span></a>
+									 <h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Cadre Dashoard (Other States)</h2>
 									 <ul>
-									 <li>
+									 <!--<li>
 									<a href="cadreDashBoardAction.action"><i class="fa fa-book"></i><span>&nbsp;&nbsp;Andhra Pradesh/Telangana</span></a>
-									  </li>
+									  </li>-->
 									<li>
 									<a href="cadredashBoardAction.action?stateId=12"><i class="fa fa-book"></i><span>&nbsp;&nbsp;Karnataka</span></a>
 									</li>
