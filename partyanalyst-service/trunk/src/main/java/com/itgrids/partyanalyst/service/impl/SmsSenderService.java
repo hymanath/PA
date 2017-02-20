@@ -1,5 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -534,38 +540,42 @@ public class SmsSenderService implements ISmsSenderService{
 			return (long)ResultCodeMapper.FAILURE;
 		}
 	}
-	public boolean sendSmsForAssignedLeader(String message, boolean isEnglish,String mobilenumber)  
+	public boolean sendSmsForAssignedLeaderInTelugu(String message, boolean isEnglish,String mobilenumber)  
 	{
 	    
 	    try {
-		    	 if(mobilenumber.trim().length() > 0)
-		    	 {
-		    		 if(mobilenumber.endsWith(","))
-		    		 	mobilenumber = mobilenumber.substring(0,mobilenumber.length()-1);
-		    		 
-		    		 HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
-		    		 client.getHttpConnectionManager().getParams().setConnectionTimeout(Integer.parseInt("30000"));
-					
-		    		 PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
-		    		 
-		    		 post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
-		    		 post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-		    		 post.addParameter("mobilenumber", mobilenumber);
-		    		 post.addParameter("message", message);
-		    		 post.addParameter("mtype", isEnglish ? "N" : "OL");
-		    		 post.addParameter("DR", "Y");
-					
-					int statusCode = client.executeMethod(post);
-					
-					if (statusCode != HttpStatus.SC_OK) {
-						LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
-					     return false;
-					}
-					else
-						return true;
-		    	}
-		    	 else
-		    		 return false;
+	    	
+	    	if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+	    		return false;
+	    	
+	    	String postData="";
+			String retval = "";
+			//give all Parameters In String String User ="User_Name";
+			String passwd = IConstants.ADMIN_PASSWORD_FOR_SMS;
+			//String mobilenumber = mobileNo;
+			//String message = msg;
+			String sid = IConstants.ADMIN_SENDERID_FOR_SMS;
+			String mtype = "OL";
+			String DR = "Y";
+			postData += "User=" + URLEncoder.encode(IConstants.ADMIN_USERNAME_FOR_SMS,"UTF-8") + "&passwd=" + passwd + "&mobilenumber=" + mobilenumber + "&message=" + URLEncoder.encode(message,"UTF-8") + "&sid=" + sid + "&mtype=" + mtype + "&DR=" + DR;
+			URL url = new URL("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			//URL url = new URL("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+			urlconnection.setRequestMethod("POST");
+			urlconnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+			urlconnection.setDoOutput(true);
+			OutputStreamWriter out = new OutputStreamWriter(urlconnection.getOutputStream());
+			out.write(postData);
+			out.close();
+			BufferedReader in = new BufferedReader( new InputStreamReader(urlconnection.getInputStream()));
+			String decodedString;
+			while ((decodedString = in.readLine()) != null) {
+			retval += decodedString;
+			}
+			in.close();
+			System.out.println(retval);
+			return true;
+			
 	    } catch (Exception e) {
 	    	 return false;
 	    }
