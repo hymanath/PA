@@ -1244,6 +1244,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			else if(electronicIdsList != null && !electronicIdsList.isEmpty())
 				sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
 		}
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
 		
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L)
