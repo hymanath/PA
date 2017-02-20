@@ -1520,7 +1520,7 @@ function buildStatusWiseTotalAlerts(result){
 										
 										totalCount = totalPrintCount+totalElecCount;
 										if(totalCount != null && totalCount!= 0){
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="">'+totalCount+'</span></td>';
+											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+totalCount+'</span></td>';
 										}else{
 											str+='<td class="bg_D8">'+totalCount+'</td>';
 										}

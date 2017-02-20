@@ -15899,6 +15899,11 @@
 			<param name="root">govtDeptVoList</param>         
 		</result>
 	</action>
+	<action name="getDesigAndStatusWiseAlertDetailsAction" class="cccDashboardAction"  method="getDesigAndStatusWiseAlertDetails">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOList</param>         
+		</result>
+	</action>
 	<action name="getTotalAlertDtlsAction" class="cccDashboardAction" method="getTotalAlertDtls">
   	  	<result type="json" name="success">		   
 		    	<param name="root">alertCoreDashBoardVOList</param>
