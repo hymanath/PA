@@ -549,7 +549,7 @@ function getAlertAssignedCandidate(globalStateId,currentFromDate,currentToDate){
     }
 	$.ajax({
 	  type : 'GET',
-	  url : 'getAlertAssignedCandidateAction.action',    
+	  url : 'getAlertAssignedCandidateForDashboardAction.action',    
 	  dataType : 'json',
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
