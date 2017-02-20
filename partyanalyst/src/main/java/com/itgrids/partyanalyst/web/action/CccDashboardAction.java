@@ -949,4 +949,26 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
+		public String getTotalAlertDtls(){
+			   try {
+				   session = request.getSession();
+				   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				   Long userId = regVo.getRegistrationID();
+				   
+				   jObj = new JSONObject(getTask());
+				  
+				   String fromDateStr = jObj.getString("fromDate");
+				   String toDateStr = jObj.getString("toDate");
+				   Long statusId = jObj.getLong("statusId");
+				   Long deptId = jObj.getLong("deptId");
+				   String type = jObj.getString("type");
+					
+				   alertCoreDashBoardVOList = cccDashboardService.getTotalAlertDtls(fromDateStr, toDateStr, userId, statusId, deptId, type);
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getDesigAndStatusWiseAlertsCounts() in CccDashboardAction",e);
+				}
+				   return Action.SUCCESS;
+			}
+		
 }
+//public List<AlertCoreDashBoardVO> getTotalAlertDtls(String fromDateStr, String toDateStr,Long userId,Long statusId,Long deptId,String type)
