@@ -13426,6 +13426,11 @@
 			<param name="root">statusTrackingVOList</param>
 		</result>
 	</action>
+	<action name="getAlertAssignedCandidateForDashboardAction" class="createAlertAction" method="getAlertAssignedCandidateForDashboard">
+		<result type="json" name="success">
+			<param name="root">statusTrackingVOList</param>
+		</result>  
+	</action>
 	<action name="getLocationFilterAlertDataAction" class="createAlertAction" method="getLocationFilterAlertData">
 			<result type="json" name="success">
 				<param name="root">alertDataList</param>
