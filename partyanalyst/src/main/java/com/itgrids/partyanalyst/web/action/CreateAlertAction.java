@@ -1732,6 +1732,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getTotalAlertByStatusForDeptWiseClick(){
 		try{
 			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
@@ -1756,7 +1758,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 			}
 			String type = jObj.getString("type");
-			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatusForDeptWiseClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,type);
+			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatusForDeptWiseClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,type,userId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
