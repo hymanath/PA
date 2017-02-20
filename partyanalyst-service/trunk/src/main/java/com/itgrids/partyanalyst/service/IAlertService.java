@@ -89,6 +89,7 @@ public interface IAlertService {
     public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public String deleteAlert(Long alertId);
     public List<AlertVO> getAlertStatusByAlertTypeId(Long alertTypeId,Long alertId);
-    public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
+    public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);  
     public List<StatusTrackingVO> getAlertInvolvedCandidate(Long cadreId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
+    public List<StatusTrackingVO> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
 }
