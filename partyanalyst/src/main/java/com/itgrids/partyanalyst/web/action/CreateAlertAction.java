@@ -674,11 +674,22 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			session = request.getSession();
 			jObj = new JSONObject(getTask());
 			Long alertId = jObj.getLong("alertId");
+			statusTrackingVOList = alertService.getAlertAssignedCandidate(alertId);  
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertAssignedCandidate() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAlertAssignedCandidateForDashboard(){     
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
 			Long stateId = jObj.getLong("stateId");
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
-			statusTrackingVOList = alertService.getAlertAssignedCandidate(alertId,stateId,alertTypeId,fromDateStr,toDateStr);
+			statusTrackingVOList = alertService.getAlertAssignedCandidateForDashBoard(alertId,stateId,alertTypeId,fromDateStr,toDateStr);
 		}catch(Exception e) {
 			LOG.error("Exception occured in getAlertAssignedCandidate() of CreateAlertAction",e);
 		}
@@ -703,12 +714,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getTotalAlertGroupByStatus(){
 		try{
 			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			Long stateId = jObj.getLong("stateId");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			Long alertyTypeId = jObj.getLong("alertyTypeId");
-			alertVOs = alertService.getTotalAlertGroupByStatus(fromDate, toDate, stateId,alertyTypeId);
+			alertVOs = alertService.getTotalAlertGroupByStatus(fromDate, toDate, stateId,alertyTypeId);    
 		}catch(Exception e) {
 			LOG.error("Exception occured in getTotalAlertGroupByStatus() of CreateAlertAction",e);
 		}
@@ -1626,6 +1639,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getTotalAlertGroupByStatusForGovt(){
 		try{
 			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
@@ -1649,7 +1664,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 			}
 			
-			alertVOs = cccDashboardService.getTotalAlertGroupByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList);
+			alertVOs = cccDashboardService.getTotalAlertGroupByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
@@ -1658,6 +1673,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getTotalAlertGroupByStatusThenDepartment(){
 		try{
 			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
@@ -1681,7 +1698,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 			}
 			
-			alertVOs = cccDashboardService.getTotalAlertGroupByStatusThenDepartment(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList);
+			alertVOs = cccDashboardService.getTotalAlertGroupByStatusThenDepartment(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
@@ -1690,6 +1707,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getTotalAlertByStatus(){
 		try{
 			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
@@ -1711,10 +1730,28 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 			List<Long> chanelIdList = new ArrayList<Long>();
 			for (int i = 0; i < chanelIdArr.length(); i++){
-				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+			}
+			if(statusId != null && statusId.longValue() == 1L){//pending
+				alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
+			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
+				alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId);
+			}else{
+				alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L);
+				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
+				if(alertCoreDashBoardVOs != null){
+					list1.addAll(alertCoreDashBoardVOs);
+				}
+				alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId);
+				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
+				if(alertCoreDashBoardVOs != null ){
+					list2.addAll(alertCoreDashBoardVOs);
+				}
+				alertCoreDashBoardVOs.clear();
+				alertCoreDashBoardVOs.addAll(list1);
+				alertCoreDashBoardVOs.addAll(list2);     
 			}
 			
-			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
