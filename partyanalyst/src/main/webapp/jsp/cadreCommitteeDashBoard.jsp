@@ -2744,7 +2744,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			endDate    :endDate,
 			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
-			committeeSpanTypeIdsList :committeeSpanTypeIdsArr
+			committeeSpanTypeIdsList :committeeSpanTypeIdsArr,
+			activityMemberId : 0,
+	        userTypeId : 0
 		}
 			//alert(444)	;	
 		$.ajax({

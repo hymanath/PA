@@ -1553,5 +1553,77 @@ public String getAllConstituencysForADistrict(){
 		}		
 		return Action.SUCCESS;
 	}
+	public String getMembersRangeCountByLocation1(){
+		try{
+			//RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
+			List<Long> levelIds = new ArrayList<Long>();
+				
+			if(levelIdsArr !=null && levelIdsArr.length() >0){
+				for(int i=0; i<levelIdsArr.length(); i++ ){
+					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
+				}
+			}
+			String state =jObj.getString("state");
+			Long committeeId = jObj.getLong("committeeId");
+			String startdate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			String committeeType = jObj.getString("committeeType");
+			List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeSpanTypeIdsList");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeSpanTypeIdsLsit.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			String userTypeId = jObj.getString("userTypeId");
+			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,userTypeId,null,activityMemberId,committeeType,committeeSpanTypeIdsLsit);
+		
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getStartedAffliCommitteesCountByLocation1(){
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
+			List<Long> levelIds = new ArrayList<Long>();
+			//RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			//if(regVO != null)
+			{
+				//String accessType = regVO.getAccessType();
+				//Long accessValue = Long.valueOf(regVO.getAccessValue());
+					
+			if(levelIdsArr !=null && levelIdsArr.length() >0){
+				for(int i=0; i<levelIdsArr.length(); i++ ){
+					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
+				}
+			}
+			String state =jObj.getString("state");
+			String startdate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			String committeeType = jObj.getString("committeeType");
+			List<Long> committeeSpanTypeIdsLsit = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeSpanTypeIdsList");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeSpanTypeIdsLsit.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			String userTypeId = jObj.getString("userTypeId");
+			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,userTypeId,null,activityMemberId,committeeType,committeeSpanTypeIdsLsit);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
+		}
+		return Action.SUCCESS;
+	}
+
 	
 }

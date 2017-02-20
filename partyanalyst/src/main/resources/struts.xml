@@ -15904,5 +15904,15 @@
 		    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
   	</action>
+	<action name="getMembersRangeCountByLocationAction1" class="committeeDashBoardAction" method="getMembersRangeCountByLocation1">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeReportVOList</param>
+			</result>
+		</action>
+		<action name="getStartedAffliCommitteesCountByLocation" class="committeeDashBoardAction" method="getStartedAffliCommitteesCountByLocation1">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeReportVOList</param>
+			</result>
+		</action>
  </package>
 </struts>
