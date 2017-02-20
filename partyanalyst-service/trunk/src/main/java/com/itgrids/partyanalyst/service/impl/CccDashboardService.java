@@ -1151,7 +1151,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	 * Author: Teja
 	 *  getDistrictWiseTotalAlerts Strip */
 	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,
-			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList ){
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId){
 		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
 		try {
 			Date fromDate = null;
@@ -1172,8 +1172,23 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		        	paperIdList.add(0L);
 		        }
 		      }
+			
+			//Srav
+			//List<Long> dptIdList = new ArrayList<Long>();
+			Long levelId = 0l;
+			List<Long> levelValues = new ArrayList<Long>();
+			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getUserAccessLevelsForUser(userId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] obj : accessList) {
+					//dptIdList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					levelId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
 			//departmentId-0,departmentName-1,districtId-2,districtName-3,Count-4
-			distWiseAlertLst = alertDAO.getDistrictWiseTotalAlertsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			//distWiseAlertLst = alertDAO.getDistrictWiseTotalAlertsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
+			distWiseAlertLst = alertAssignedOfficerDAO.getDepartmentAndDistrictWiseAlertsCounts(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList);
 			List<Long> deptIds = new ArrayList<Long>(0);
 			if(distWiseAlertLst != null && distWiseAlertLst.size() > 0){
 				for (Object[] objects : distWiseAlertLst) {
@@ -1207,7 +1222,8 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 			//statusWiseMediaTypeTotalCounts
 			//statusId-0,status-1,Count-2,alertCategoryId-3,deptId-4
-			statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId,deptIds, paperIdList, chanelIdList);
+			//statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId,deptIds, paperIdList, chanelIdList);
+			statusWiseCntsLst = alertAssignedOfficerDAO.getStatusWiseTotalCountsForAlert(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList);
 			 if(statusWiseCntsLst != null && statusWiseCntsLst.size() > 0){
 				 setDataToVoList(statusWiseCntsLst,finalVOList);
 			 }
@@ -2101,6 +2117,29 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			
 			if(designationMap != null)
 				returnList = new ArrayList<GovtDepartmentVO>(designationMap.values());
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (GovtDepartmentVO designvo : returnList) {
+					if(designvo.getGovtDeptList() != null && !designvo.getGovtDeptList().isEmpty()){
+						for (GovtDepartmentVO stsvo : designvo.getGovtDeptList()) {
+							if(stsvo != null && stsvo.getId() == 1l)
+								designvo.setPendingTotal(designvo.getPendingTotal()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 2l)
+								designvo.setNotifiedTotal(designvo.getNotifiedTotal()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 3l)
+								designvo.setActionInprgsTtl(designvo.getActionInprgsTtl()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 4l)
+								designvo.setCompletedTotal(designvo.getCompletedTotal()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 5l)
+								designvo.setUnablToRslveTtl(designvo.getUnablToRslveTtl()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 6l)
+								designvo.setAtnNotRqdTtl(designvo.getAtnNotRqdTtl()+stsvo.getCount());
+							else if(stsvo != null && stsvo.getId() == 7l)
+								designvo.setDuplicateTotal(designvo.getDuplicateTotal()+stsvo.getCount());
+						}
+					}
+				}
+			}
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDesigAndStatusWiseAlertsCounts() method of CccDashboardService",e);
