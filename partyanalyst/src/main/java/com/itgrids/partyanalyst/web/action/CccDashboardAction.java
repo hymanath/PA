@@ -596,6 +596,9 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		}
 		public String getDistrictWiseTotalAlertsForAlert(){
 		   try {
+			   session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
@@ -620,7 +623,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
 			
-				govtDeptVoList = cccDashboardService.getDistrictWiseTotalAlertsForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList);
+				govtDeptVoList = cccDashboardService.getDistrictWiseTotalAlertsForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList,userId);
 		  } catch (Exception e) {
 			   LOG.error("Exception Raised in getDistrictWiseTotalAlertsForAlert() in CccDashboardAction",e);
 		  }
