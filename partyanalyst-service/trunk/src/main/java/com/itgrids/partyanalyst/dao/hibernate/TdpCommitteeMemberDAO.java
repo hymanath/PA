@@ -536,16 +536,20 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	
 	
-	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
+	public List<Object[]> getMembersCountInCommitteeByLocation(String stateId,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit){
 		
 		StringBuilder str = new StringBuilder();
-		
+		if(stateId.trim().equalsIgnoreCase("AP")){
+			stateId="1";
+		}else if(stateId.trim().equalsIgnoreCase("TS")){
+			stateId="36";
+		}		
 		str.append("select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +				
 				" from TdpCommitteeMember model where ");
-		if(state != null)
+		if(stateId != null)
 		{
-			str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
+			str.append(" model.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId= :stateId ");
 		}
 		if(startDate !=null && endDate !=null){
 			
@@ -565,7 +569,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		}
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = :committeeId" +
-				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' "); 
+				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' " +
+				" and model.tdpCommitteeRole.tdpCommittee.completedDate is not null and model.tdpCommitteeRole.tdpCommittee.startedDate is not null"); 
 		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
 			str.append(" and  model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeSpanTypeIdsLsit) ");
 		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
@@ -573,10 +578,6 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		
        			
 		Query query = getSession().createQuery(str.toString());
-		if(state != null)
-		{
-			query.setParameter("state", state);
-		}
 		if(startDate != null && endDate !=null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
@@ -594,6 +595,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
+		}
+	  if(stateId != null)
+		{
+			query.setParameter("stateId", Long.valueOf(stateId));
 		}
 		if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
 		{
@@ -867,9 +872,15 @@ public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRol
 }
 
 
-public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit ){
+public List<Object[]> getStartedCommitteesMembersCountByLocation(String stateId,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList,List<Long> committeeSpanTypeIdsLsit ){
 	
 	StringBuilder str = new StringBuilder();
+	
+	if(stateId.trim().equalsIgnoreCase("AP")){
+		stateId="1";
+	}else if(stateId.trim().equalsIgnoreCase("TS")){
+		stateId="36";
+	}
 	
 	str.append("select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
 			" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +				
@@ -887,9 +898,9 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	{
 		str.append(" model.tdpCommitteeRole.tdpCommittee.districtId in (:districtIds)  ");
 	}
-	else if(state != null)
+	else if(stateId != null)
 	{
-		str.append("  model.tdpCommitteeRole.tdpCommittee.state= :state ");
+		str.append(" model.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId= :stateId ");
 	}
 	
 	if(startDate !=null && endDate !=null){
@@ -907,10 +918,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	
 	
 	Query query = getSession().createQuery(str.toString());
-	if(state != null)
-	{
-		query.setParameter("state", state);
-	}
+	
 	if(startDate != null && endDate !=null){
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -928,6 +936,10 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 	else if(districtIds != null && districtIds.size()>0)
 	{
 		query.setParameterList("districtIds", districtIds);
+	}
+	else if(stateId != null)
+	{
+		query.setParameter("stateId", Long.valueOf(stateId));
 	}
 	if(committeeSpanTypeIdsLsit != null && committeeSpanTypeIdsLsit.size()>0)
 	{

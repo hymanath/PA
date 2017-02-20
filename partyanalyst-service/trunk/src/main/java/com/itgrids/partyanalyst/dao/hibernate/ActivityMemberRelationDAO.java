@@ -15,8 +15,8 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 	}
 	
 	public List<Object[]> getChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIds){
-	
-	Query query = getSession().createQuery("" +
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("" +
     " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.memberName," +//2
     "         amat.userType.userTypeId, amat.userType.type," +//4
     "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
@@ -24,9 +24,13 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
     " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
     " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
     "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
-    "        rel.parentMemberId = :parentActivityMemberId and amat.userType.userTypeId in (:childUserTypeIds) and " +
+    "        rel.parentMemberId = :parentActivityMemberId and " +
     "        rel.isActive = 'Y' and amat.isActive = 'Y' and amal.isActive = 'Y' ");
-	query.setParameter("parentActivityMemberId", parentActivityMemberId);
+		if(childUserTypeIds != null && childUserTypeIds.size()>0){
+			queryStr.append(" and amat.userType.userTypeId in (:childUserTypeIds) ");
+		}
+	Query query = getSession().createQuery(queryStr.toString());
+	  query.setParameter("parentActivityMemberId", parentActivityMemberId);
 	if(childUserTypeIds != null && childUserTypeIds.size() >0)
 	query.setParameterList("childUserTypeIds", childUserTypeIds);
 	return query.list();
