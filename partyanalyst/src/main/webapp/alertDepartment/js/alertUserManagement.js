@@ -1638,3 +1638,26 @@ function getTotalAlertDetailsGroupByDeptThenStatus()
 		console.log(result);
     });
 }
+getAlertCountDetailsLocationWiseThenStatusWise();
+function getAlertCountDetailsLocationWiseThenStatusWise()
+{
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jObj ={
+		fromDate:detailedfromDate,
+		  toDate:detailedtoDate,
+		  stateId:globalStateId,
+		  govtDepartmentId:1,    
+		  statusId:2,          
+		  lvlValue:3,
+		  paperIdArr:paperIdArr,
+		  chanelIdArr:chanelIdArr,
+		  locId:18                
+    }  
+    $.ajax({
+      type:'GET',
+      url: 'getAlertCountDetailsLocationWiseThenStatusWiseAction.action',
+      data: {task :JSON.stringify(jObj)}   
+    }).done(function(result){
+		console.log(result);
+    });
+}
