@@ -15915,14 +15915,19 @@
 	  	</result>	
   	</action>
 	<action name="getMembersRangeCountByLocationAction1" class="committeeDashBoardAction" method="getMembersRangeCountByLocation1">
-			<result type="json" name="success">
-				<param name="root">cadreCommitteeReportVOList</param>
-			</result>
-		</action>
-		<action name="getStartedAffliCommitteesCountByLocation" class="committeeDashBoardAction" method="getStartedAffliCommitteesCountByLocation1">
-			<result type="json" name="success">
-				<param name="root">cadreCommitteeReportVOList</param>
-			</result>
-		</action>
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeReportVOList</param>
+		</result>
+	</action>
+	<action name="getStartedAffliCommitteesCountByLocation" class="committeeDashBoardAction" method="getStartedAffliCommitteesCountByLocation1">
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeReportVOList</param>
+		</result>
+	</action>
+	<action name="getTotalAlertDetailsGroupByDeptThenStatusAction" class="cccDashboardAction" method="getTotalAlertDetailsGroupByDeptThenStatus">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOList</param>
+	  	</result>	
+  	</action>
  </package>
 </struts>
