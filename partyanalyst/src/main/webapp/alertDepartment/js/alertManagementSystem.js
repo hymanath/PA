@@ -254,8 +254,8 @@ function buildTotalAlertGroupByStatusForGovt(result)
 					}
 				},
 				pie: {
-					innerSize: 130,
-					depth: 100,
+					innerSize: 180,
+					depth: 180,
 					dataLabels:{
 						enabled: false,
 						  formatter: function() {
@@ -345,23 +345,25 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 		
 			str+='<div class="row">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-					str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
-					str+='<div class="row">';
-						str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
-							for(var j in result[i].subList1)
-							{
-								if(result[i].subList1[j].category !=null && result[i].subList1[j].category.length > 40){
-									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';  
-								}else{//swadhin
-									str+='<li>'+result[i].subList1[j].category+'  <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';
-								}
-								
-							}//class="getDtlsCls" attr_status_id="'+result[i].statusId+'"
-							str+='</ul>';
-						str+='</div>';
-						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-							str+='<div id="departmentStatusGraph'+i+'"></div>';
+					str+='<h4 class="panel-title">DEPARTMENTS WISE</h4>';
+					str+='<div class="departmentScroll">';
+						str+='<div class="row">';
+							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
+								for(var j in result[i].subList1)
+								{
+									if(result[i].subList1[j].category !=null && result[i].subList1[j].category.length > 40){
+										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';  
+									}else{//swadhin
+										str+='<li>'+result[i].subList1[j].category+'  <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';
+									}
+									
+								}//class="getDtlsCls" attr_status_id="'+result[i].statusId+'"
+								str+='</ul>';
+							str+='</div>';
+							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+								str+='<div id="departmentStatusGraph'+i+'"></div>';
+							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -371,13 +373,20 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 	str+='</div>';
 	$("#departmentWiseStatusOvrVw").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
+	for(var i in result)
+	{
+		if(result[i].subList1.length > 15)
+		{
+			$(".departmentScroll").mCustomScrollbar({setHeight:'450px'})
+		}
+	}
 	
 	for(var i in result)
 	{
 		var dynamicHeight;
 		$(".dynamicHeightApply"+i).each(function(){
 			dynamicHeight = $(this).find("li").length;
-			dynamicHeight = (dynamicHeight*36)+"px";
+			dynamicHeight = (dynamicHeight*31)+"px";
 		});
 		$("#departmentStatusGraph"+i).css("height",dynamicHeight);
 		var dynamicWidth = $("#departmentStatusGraph0").parent().width();
@@ -1427,9 +1436,13 @@ function getDistrictWiseTotalForAlertOverview(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-		buildStatusWiseTotalAlerts(result)
+		if(result != null && result.length > 0)
+		{
+			buildStatusWiseTotalAlerts(result);
+		}else{
+			$("#alertDepartmentWise").html("NO DATA AVAILABLE")
+		}
 	});
-	
 }
 function getDistrictTotalForAlertStatus(id,departmentId)
 {
@@ -1482,8 +1495,8 @@ function buildStatusWiseTotalAlerts(result){
 	 for(var i in result)
 	 {
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div class="panel panel-default panelCustom">';
-				str+='<div class="panel-heading headingColor">';
+			str+='<div class="panel panel-default panelCustomNew">';
+				str+='<div class="panel-heading">';
 					str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
 				str+='</div>';
 				str+='<div class="panel-body">';
@@ -1505,9 +1518,9 @@ function buildStatusWiseTotalAlerts(result){
 						str+='</div>';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 							str+='<table class="table table-bordered">';
-								str+='<thead>';
+								str+='<thead class="bg_dd">';
 									str+='<th></th>';
-									str+='<th class="bg_EE">Total</th>';
+									str+='<th class="bg_dd">Total</th>';
 									for(var k in result[i].govtDeptList){
 										str+='<th>'+result[i].govtDeptList[k].department+'</th>';
 									}
@@ -1544,9 +1557,9 @@ function buildStatusWiseTotalAlerts(result){
 									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
 										if(totalPrintCount != null && totalPrintCount!= 0){
-											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="PMedia" >'+totalPrintCount+'</span></td>';
+											str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="PMedia" >'+totalPrintCount+'</span></td>';
 										}else{
-											str+='<td class="bg_EE">'+totalPrintCount+'</td>';
+											str+='<td>'+totalPrintCount+'</td>';
 										}	
 										for(var k in result[i].govtDeptList){
 											if( result[i].govtDeptList[k].printCnt != null && result[i].govtDeptList[k].printCnt != 0){
@@ -1560,9 +1573,9 @@ function buildStatusWiseTotalAlerts(result){
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
 										if(totalElecCount != null && totalElecCount !=0){
-											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="electronic">'+totalElecCount+'</span></td>';
+											str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="electronic">'+totalElecCount+'</span></td>';
 										}else{
-											str+='<td class="bg_EE">'+totalElecCount+'</td>';
+											str+='<td>'+totalElecCount+'</td>';
 										}
 										for(var j in result[i].govtDeptList){
 											if(result[i].govtDeptList[j].elecCnt != null && result[i].govtDeptList[j].elecCnt !=0){
@@ -1577,6 +1590,7 @@ function buildStatusWiseTotalAlerts(result){
 							str+='<button type="button" class="btn btn-default btn-sm m_top10 buttonCustomStyle detailedInfoBlockDiv pull-right" attr_departmentId="'+result[i].departmentId+'">Detailed Information</button>';
 						str+='</div>';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+							
 							str+='<div id="designationDetailedReport'+result[i].departmentId+'"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -1586,9 +1600,9 @@ function buildStatusWiseTotalAlerts(result){
 	 }
 	str+='</div>';
 	$("#alertDepartmentWise").html(str);
-	if(result.length > 5)
+	if(result.length > 4)
 	{
-		$(".scrollerBlock").mCustomScrollbar({setHeight:'1300px'});
+		$(".scrollerBlock").mCustomScrollbar({setHeight:'1500px'});
 	}
 	for(var i in result)
 	{		
@@ -1681,6 +1695,10 @@ function buildStatusWiseTotalAlerts(result){
 
 	}
 } 
+$(document).on("click",".departmentCloseIcon",function(){
+	var id = $(this).attr("attr_id");
+	$('#designationDetailedReport'+id).html(' ');
+});
 // District wise Total alerts overview and status Block Build Start
 	function buildgetUserTypeWiseNewsForTopFiveStrongResults(result,id){
 		var str='';
@@ -2276,6 +2294,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 {
 	if(result != null && result.length > 0){	
 		var str1='';
+		str1+='<i class="glyphicon glyphicon-remove departmentCloseIcon" attr_id="'+departmentId+'"></i>';
 		str1+='<table class="table detailedTableStyle  m_top20" style="border:1px solid #ddd">';
 			str1+='<thead>';
 				str1+='<tr>';

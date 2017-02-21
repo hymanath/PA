@@ -54,23 +54,16 @@
 </head>
 <body>
 <div  class="AMS">
-	<!--<header>
-		<nav class="navbar navbar-default navbarHeader">
-		  <div class="container">
-			<!-- Brand and toggle get grouped for better mobile display 
-			<div class="navbar-header">
-			  <a class="navbar-brand" href="#"><img src="newCoreDashBoard/img/APLOGO.jpg" class="img-responsive"/></a>
-			</div>
-		  </div><!-- /.container-fluid 
-		</nav>
-	</header>-->
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
-							<h4></h4>
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
+								department wise Alerts 
+							</h4>
 						</div>
 						<div class="panel-body">
 							<div class="row">
@@ -185,7 +178,18 @@
 								</div>
 							</div>
 							<div class="row">
-								<div id="alertDepartmentWise"></div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">departments wise overview</h4>
+										</div>
+										<div class="panel-body">
+											<div class="row">
+												<div id="alertDepartmentWise"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

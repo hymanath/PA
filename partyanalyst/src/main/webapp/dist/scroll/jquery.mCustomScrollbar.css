@@ -94,10 +94,9 @@ y-axis
 	.mCSB_scrollTools a + .mCSB_draggerContainer{ margin: 20px 0; }
 
 	.mCSB_scrollTools .mCSB_draggerRail{
-		width: 6px;
+		width: 7px;
 		height: 100%;
 		margin: 0 auto;
-		-webkit-border-radius: 16px; -moz-border-radius: 16px; border-radius: 16px;
 	}
 
 	.mCSB_scrollTools .mCSB_dragger{ /* the draggable element */
@@ -109,10 +108,9 @@ y-axis
 
 	.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{ /* the dragger element */
 		position: relative;
-		width: 4px;
+		width: 7px;
 		height: 100%;
 		margin: 0 auto;
-		-webkit-border-radius: 16px; -moz-border-radius: 16px; border-radius: 16px;
 		text-align: center;
 	}
 	
@@ -454,14 +452,12 @@ yx-axis
 	.mCS-dark-2.mCSB_scrollTools .mCSB_draggerRail{
 		width: 4px;
 		background-color: #fff; background-color: rgba(255,255,255,0.1);
-		-webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px;
 	}
 
 	.mCS-light-2.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, 
 	.mCS-dark-2.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
 		width: 4px;
 		background-color: #fff; background-color: rgba(255,255,255,0.75);
-		-webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px;
 	}
 
 	.mCS-light-2.mCSB_scrollTools_horizontal .mCSB_draggerRail, 
@@ -491,12 +487,10 @@ yx-axis
 
 	.mCS-dark-2.mCSB_scrollTools .mCSB_draggerRail{
 		background-color: #000; background-color: rgba(0,0,0,0.1);
-		-webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px;
 	}
 
 	.mCS-dark-2.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
 		background-color: #000; background-color: rgba(0,0,0,0.75);
-		-webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px;
 	}
 
 	.mCS-dark-2.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar{ background-color: #000; background-color: rgba(0,0,0,0.85); }
@@ -522,14 +516,12 @@ yx-axis
 	.mCS-dark-thick.mCSB_scrollTools .mCSB_draggerRail{
 		width: 4px;
 		background-color: #fff; background-color: rgba(255,255,255,0.1);
-		-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
 	}
 
 	.mCS-light-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, 
 	.mCS-dark-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
 		width: 6px;
 		background-color: #fff; background-color: rgba(255,255,255,0.75);
-		-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
 	}
 
 	.mCS-light-thick.mCSB_scrollTools_horizontal .mCSB_draggerRail, 
@@ -564,12 +556,10 @@ yx-axis
 	
 	.mCS-dark-thick.mCSB_scrollTools .mCSB_draggerRail{
 		background-color: #000; background-color: rgba(0,0,0,0.1);
-		-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
 	}
 
 	.mCS-dark-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
 		background-color: #000; background-color: rgba(0,0,0,0.75);
-		-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
 	}
 
 	.mCS-dark-thick.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar{ background-color: #000; background-color: rgba(0,0,0,0.85); }
@@ -822,10 +812,6 @@ yx-axis
 		filter: "alpha(opacity=30)"; -ms-filter: "alpha(opacity=30)"; 
 	}
 	
-	.mCS-3d.mCSB_scrollTools .mCSB_draggerRail, 
-	.mCS-3d.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, 
-	.mCS-3d-dark.mCSB_scrollTools .mCSB_draggerRail, 
-	.mCS-3d-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{ -webkit-border-radius: 16px; -moz-border-radius: 16px; border-radius: 16px; }
 	
 	.mCS-3d.mCSB_scrollTools .mCSB_draggerRail, 
 	.mCS-3d-dark.mCSB_scrollTools .mCSB_draggerRail{
@@ -899,13 +885,6 @@ yx-axis
 		filter: "alpha(opacity=30)"; -ms-filter: "alpha(opacity=30)"; 
 	}
 	
-	.mCS-3d-thick.mCSB_scrollTools, 
-	.mCS-3d-thick-dark.mCSB_scrollTools, 
-	.mCS-3d-thick.mCSB_scrollTools .mCSB_draggerContainer, 
-	.mCS-3d-thick-dark.mCSB_scrollTools .mCSB_draggerContainer{ -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
-	
-	.mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, 
-	.mCS-3d-thick-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{ -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 	
 	.mCSB_inside + .mCS-3d-thick.mCSB_scrollTools_vertical, 
 	.mCSB_inside + .mCS-3d-thick-dark.mCSB_scrollTools_vertical{ right: 1px; }
