@@ -1802,7 +1802,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String accessType = regVO.getAccessType();
 			Long accessValue = Long.valueOf(regVO.getAccessValue());
 			
-			cadreRegisterInfo = cadreRegistrationService.getConstsByStateWiseAction(stateId);
+			cadreRegisterInfo = cadreRegistrationService.getConstsByStateWiseAction(stateId,regVO);
 			//cadreRegisterInfo = cadreRegistrationService.getConstituenciesByStateBasedOnAccess(stateId,accessType,accessValue);
 		}
 		catch (Exception e) {
