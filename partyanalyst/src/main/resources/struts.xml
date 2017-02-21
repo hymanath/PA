@@ -15899,7 +15899,7 @@
 		    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
   	</action>
-  	<action name="getDesigAndStatusWiseAlertsCountsAction" class="cccDashboardAction"  method="getDesigAndStatusWiseAlertsCounts">
+  		<action name="getDesigAndStatusWiseAlertsCountsAction" class="cccDashboardAction"  method="getDesigAndStatusWiseAlertsCounts">
 		<result type="json" name="success">    
 			<param name="root">govtDeptVoList</param>         
 		</result>
@@ -15914,7 +15914,7 @@
 		    	<param name="root">alertCoreDashBoardVOList</param>
 	  	</result>	
   	</action>
-	<action name="getMembersRangeCountByLocationAction1" class="committeeDashBoardAction" method="getMembersRangeCountByLocation1">
+  	<action name="getMembersRangeCountByLocationAction1" class="committeeDashBoardAction" method="getMembersRangeCountByLocation1">
 		<result type="json" name="success">
 			<param name="root">cadreCommitteeReportVOList</param>
 		</result>
@@ -15934,5 +15934,15 @@
 		    	<param name="root">alertCoreDashBoardVOList</param>
 	  	</result>	
   	</action>
+  		<action name="getDistrictListByStateIdAction" class="createAlertAction"  method="getDistrictListByStateId">
+			<result type="json" name="success">    
+				<param name="root">resultList</param>
+			</result>
+	   </action>
+	   <action name="getConstituencyListByDistrictIdAction" class="createAlertAction"  method="getConstituencyListByDistrictId">
+			<result type="json" name="success">    
+				<param name="root">resultList</param>
+			</result>
+	   </action>
  </package>
 </struts>

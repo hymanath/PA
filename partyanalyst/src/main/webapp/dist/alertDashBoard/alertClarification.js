@@ -100,6 +100,7 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 		     alert("Please Enter Comments");
              return;			 
 		 }
+		 $("#updateVerificationStatusBtnId").attr('disabled','disabled');
 	 	var uploadHandler = {
 				upload: function(o) {
 				    uploadResult = o.responseText;
@@ -122,7 +123,9 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 			$("#extraClarificationUploadFileDiv").html('');
 		    $(".ClearFileCls").hide();  
 			fileNo = 0;
+			$("#updateVerificationStatusBtnId").removeAttr('disabled');
 		}else{
+			$("#updateVerificationStatusBtnId").removeAttr('disabled');
 			alert("Please Try Again.");
 		}
 	}

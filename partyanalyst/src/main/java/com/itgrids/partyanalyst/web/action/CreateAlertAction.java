@@ -808,7 +808,13 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			Long alertId = jObj.getLong("alertIds");
 			Long editionId = jObj.getLong("editionIds");
-			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId);    
+			String filterType = jObj.getString("filterType");
+			JSONArray districtArray = jObj.getJSONArray("districtArr");
+			List<Long> districtIdList = new ArrayList<Long>();
+			for (int i = 0; i < districtArray.length(); i++){
+				districtIdList.add(Long.parseLong(districtArray.getString(i)));
+			}
+			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId,filterType,districtIdList);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByLocationThenStatus() of CreateAlertAction",e);
 		}
@@ -915,7 +921,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}  
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionTypeId = jObj.getLong("editionTypeId");
-			resultList = alertService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionTypeId);   
+			Long districtId = jObj.getLong("districtId");
+			resultList = alertService.getAssignGroupTypeAlertDtlsByImpactLevelWise(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionTypeId,districtId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAssignGroupTypeAlertDtlsByImpactLevelWise() of CreateAlertAction",e);
 		}
@@ -945,10 +952,11 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long editionTypeId = jObj.getLong("editionTypeId");
 			
 			String groupAssignType = jObj.getString("groupAssignType");
+			Long districtId = jObj.getLong("districtId");
 			if(groupAssignType.equalsIgnoreCase("Party Committee")){
-				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,commitLvlIdList,groupAssignType,"",null,alertTypeId,editionTypeId);
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,commitLvlIdList,groupAssignType,"",null,alertTypeId,editionTypeId,districtId);
 			}else{
-				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,null,groupAssignType,"",null,alertTypeId,editionTypeId);
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,null,groupAssignType,"",null,alertTypeId,editionTypeId,districtId);
 			}
 			   
 		}catch(Exception e) {  
@@ -980,7 +988,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String position = jObj.getString("position");
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionTypeId = jObj.getLong("editionTypeId");
-			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId,alertTypeId,editionTypeId);
+			Long districtId = jObj.getLong("districtId");
+			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId,alertTypeId,editionTypeId,districtId);
 			
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getDesigWiseTdpCommitAlertCount() of CreateAlertAction",e);
@@ -1018,7 +1027,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}  
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionTypeId = jObj.getLong("editionTypeId");
-			resultList = alertService.getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList,resultType,alertTypeId,editionTypeId);   
+			Long districtId = jObj.getLong("districtId");
+			resultList = alertService.getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList,resultType,alertTypeId,editionTypeId,districtId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getOtherAndPrgrmCmmtteeTypeAlertCndtDtls() of CreateAlertAction",e);
 		}
@@ -1065,8 +1075,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionTypeId = jObj.getLong("editionTypeId");
-			
-			alertCoreDashBoardVOs = alertService.getAlertDtlsForPubRep(fromDate,toDate,stateId,scopeIdList,activityMemberId,publicRepresentativeTypeId,cadreId,statusId,alertTypeId,editionTypeId);   
+			Long districtId = jObj.getLong("districtId");
+			alertCoreDashBoardVOs = alertService.getAlertDtlsForPubRep(fromDate,toDate,stateId,scopeIdList,activityMemberId,publicRepresentativeTypeId,cadreId,statusId,alertTypeId,editionTypeId,districtId);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getAlertDtlsForPubRep() of CreateAlertAction",e);
 		}
@@ -1091,7 +1101,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String resultType = jObj.getString("resultType");
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionTypeId = jObj.getLong("editionTypeId");
-			alertCoreDashBoardVOs = alertService.getAlertDetailsTdpCadreWise(fromDate,toDate,stateId,scopeIdList,activityMemberId,cadreId,statusId,resultType,alertTypeId,editionTypeId);   
+			Long districtId = jObj.getLong("districtId");
+			alertCoreDashBoardVOs = alertService.getAlertDetailsTdpCadreWise(fromDate,toDate,stateId,scopeIdList,activityMemberId,cadreId,statusId,resultType,alertTypeId,editionTypeId,districtId);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getAlertDetailsTdpCadreWise() of CreateAlertAction",e);
 		}
@@ -1105,7 +1116,11 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			Long activityMemberId = jObj.getLong("activityMemberId");
-			Long districtId = jObj.getLong("districtId");
+			List<Long> districtIds = new ArrayList<Long>(0);
+			JSONArray distArr = jObj.getJSONArray("districtIdArr");
+			for (int i = 0; i < distArr.length(); i++){
+				districtIds.add(Long.parseLong(distArr.getString(i)));
+			} 
 			Long catId = jObj.getLong("catId");
 			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
 			
@@ -1115,7 +1130,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			} 
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionId = jObj.getLong("editionId");
-			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtId,catId,alertTypeId,editionId);   
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long alertStatusId = jObj.getLong("alertStatusId");
+			String locationLevel = jObj.getString("locationLevel");
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusId,locationLevel);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
 		}
@@ -1145,7 +1163,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionId = jObj.getLong("editionTypeId");
-			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,alertTypeId,editionId);   
+			Long districtId = jObj.getLong("districtId");
+			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,alertTypeId,editionId,districtId);   
 		}catch(Exception e) {      
 			LOG.error("Exception occured in getMemForPartyCommitDesg() of CreateAlertAction",e);  
 		}
@@ -1176,9 +1195,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}      
 			Long alertTypeId = jObj.getLong("alertTypeId");
 			Long editionId = jObj.getLong("editionTypeId");
-			alertCoreDashBoardVOs = alertService.getAlertDtlsAssignedByPartyCommite(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,cadreId,statusId,alertTypeId,editionId);   
+			Long districtId = jObj.getLong("districtId");
+			alertCoreDashBoardVOs = alertService.getAlertDtlsAssignedByPartyCommite(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,cadreId,statusId,alertTypeId,editionId,districtId);   
 		}catch(Exception e) {        
-			LOG.error("Exception occured in getAlertDtlsForPubRep() of CreateAlertAction",e);  
+			LOG.error("Exception occured in getAlertDtlsAssignedByPartyCommite() of CreateAlertAction",e);  
 		}
 		return Action.SUCCESS;    
 	}
@@ -1798,6 +1818,30 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatusForDeptWiseClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,type,userId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictListByStateId(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long userTypeId = jObj.getLong("userTypeId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			resultList = alertService.getDistrictListByStateId(stateId,activityMemberId,userTypeId,fromDateStr,toDateStr);
+		}catch(Exception e){
+			LOG.error("Exception occured in getDistrictListByStateId() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getConstituencyListByDistrictId(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long districtId = jObj.getLong("districtId");
+			resultList = alertService.getConstituencyListByDistrictId(districtId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getConstituencyListByDistrictId() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
 	}

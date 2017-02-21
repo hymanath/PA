@@ -217,10 +217,15 @@
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">   
+										<div class="col-md-3 col-xs-12 col-sm-3">   
 											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span></h4>
 										</div>
-										<div class="col-md-8 col-xs-12 col-sm-8">
+										<div class="col-md-2 col-xs-12 col-sm-2">   
+											 <!--<label class="text-centre;">District</label>--> 
+												<select class="form-control districtSelectBoxCls" style="display:none;" id="dstrctSlctBxId">
+												</select>
+										</div>
+										<div class="col-md-7 col-xs-12 col-sm-7">
 											<ul class="activeUlCls alertFilterCls list-inline pull-right">
 												<li class="active optionsCls" attr_id="1">Overview</li>
 												<li class="optionsCls" attr_id="2">Categories</li>  
@@ -302,6 +307,22 @@
 									  <div class="col-md-12 col-xs-12 col-sm-12">
 											<div id="districtWiseAlertCountId"></div>     
 										</div>
+									</div>
+									<div class="row districtAlertCls" style="display:none;">
+									    <div class="col-md-12 col-xs-12 col-sm-12">   
+											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span></h4>
+										</div>
+									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<div id="districtSummaryAlertDivId"></div>     
+										</div>
+									</div>
+									<div class="row constituencyAlertCls" style="display:none;">
+									  <div class="col-md-12 col-xs-12 col-sm-12">   
+											<h4 class="panel-title"><span class="headingColor text-capital">Constitency Wise Alerts</span></h4>
+									  </div>
+									   <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<div id="constituencyAlertDivId"></div>     
+									   </div>
 									</div>
 									<div class="row m_top20">
 										<div class="col-md-12 col-xs-12 col-sm-12">
