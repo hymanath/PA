@@ -100,26 +100,28 @@
   {
 	  $("#distdisplaydivid").hide();
 	  $("#constdisplaydivid").hide();
-   var level =  $("#committeLevel").val();
-   if(level == 2)
+	var level =  $("#committeLevel").val();
+	
+	 if(level == 2)
 	  {
-	    getDistrictsForStates(0);
+		getDistrictsForStates(0);
 	  }
 	  else
 	  {
 		  if(accessType == "DISTRICT")
-		getAssemblyParlConstituencies(accessValue,"Assembly");
-		//getConstituenciesUWS();
+				getAssemblyParlConstituencies(accessValue,"Assembly");
+		  else
+			getConstituenciesUWS();
 	  }
 
   }
   	function getConstituenciesUWS(){
 		
-		$("#displayconstbox").html("");
-		
+		$("#displayconstbox").html("");//ajaxImgId
+		$("#ajaxImgId").show();
 		var jObj ={
 			stateid:0,				  
-			task:"getConstituenciesForUWS"             
+			task:"getConstituencieForUWS"            
 		}	
 		$.ajax({
 			type : "POST",
@@ -132,6 +134,7 @@
 			}
 			$("#displayconstbox").html(str);
 			$("#constdisplaydivid").show();
+			$("#ajaxImgId").hide();
 		});
 	}
 
@@ -199,10 +202,22 @@
 				}		
 	   });		
 	}
-	</script>
-	<script>
-	handlechange();
 	
+	function buildOoptions(){
+		$('#committeLevel').find('option').remove();
+		if(accessType == 'STATE'){
+			$('#committeLevel').append('<option value="3" > MANDAL/TOWN/DIVISION </option>');
+			$('#committeLevel').append('<option value="4" selected="true" > VILLAGE/WARD </option>');
+		}else{
+			$('#committeLevel').append('<option value="2" selected="true" > DISTRICT </option>');
+			$('#committeLevel').append('<option value="3"> MANDAL/TOWN/DIVISION </option>');
+			$('#committeLevel').append('<option value="4"> VILLAGE/WARD </option>');
+		}
+		
+		handlechange();
+	}
+	
+	 buildOoptions();
 	</script>
   </body>
 </html>
