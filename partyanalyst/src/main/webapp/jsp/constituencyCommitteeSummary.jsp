@@ -145,6 +145,15 @@
 						<option value="2"> Affiliated </option>
 					</select>
 				</div>
+				<div class="col-md-3 col-xs-12 col-sm-3">
+						<label>Date</label>
+						<div class="input-group">
+							  <span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+							  </span>
+							  <input type="text" class="form-control" id="reportrange"/>
+						</div>
+					</div>
 			</div>
 			</c:if>
 			<div class="row">
