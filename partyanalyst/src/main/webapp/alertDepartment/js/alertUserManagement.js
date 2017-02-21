@@ -1614,3 +1614,27 @@ function fieldsEmpty(){
 	var filerKit = $("#imageId").prop("jFiler");
 	filerKit.reset();
 }
+
+getTotalAlertDetailsGroupByDeptThenStatus();
+function getTotalAlertDetailsGroupByDeptThenStatus()
+{
+	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var jObj ={
+		fromDate:detailedfromDate,
+		  toDate:detailedtoDate,
+		  stateId:globalStateId,
+		  deptId:1,    
+		  statusId:0,         
+		  paperIdArr:paperIdArr,
+		  chanelIdArr:chanelIdArr,
+		type : "total"        
+
+    }  
+    $.ajax({
+      type:'GET',
+      url: 'getTotalAlertDetailsGroupByDeptThenStatusAction.action',
+      data: {task :JSON.stringify(jObj)}   
+    }).done(function(result){
+		console.log(result);
+    });
+}
