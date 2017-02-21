@@ -1556,4 +1556,94 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		return query.list(); 
 	}
+	public List<Long> getLocationWiseThenStatusWiseAlertCountDetails(Date fromDate,Date toDate,Long stateId,List<Long> printIdList,List<Long> electronicIdList,Long deptId,Long levelValue,Long locId,Long statusId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct AAO.alert_id as alertId ");
+		queryStr.append(" from ");    
+		queryStr.append(" alert A ");
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
+			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
+		}
+		queryStr.append(" ,govt_department_designation_officer GDDO,  user_address UA, state S ");
+		if(levelValue != null && levelValue.longValue() == 3L){
+			queryStr.append("  ,district D ");
+		}else if(levelValue != null && levelValue.longValue() == 4l){
+			queryStr.append("  ,constituency C ");
+		}else if(levelValue != null && levelValue.longValue() == 5l){
+			queryStr.append("  ,tehsil T ");
+		}else if(levelValue != null && levelValue.longValue() == 6l){
+			queryStr.append("  ,panchayat P ");
+		}else if(levelValue != null && levelValue.longValue() == 7l){
+			queryStr.append("  ,local_election_body LEB ");
+		}else if(levelValue != null && levelValue.longValue() == 8l){
+			queryStr.append("  ,constituency CON ");
+		}		
+		
+		queryStr.append(" , alert_assigned_officer AAO, ");
+		queryStr.append(" govt_department_designation GDD, ");
+		queryStr.append(" govt_department_level GDL, ");
+		queryStr.append(" govt_department GD, ");
+		queryStr.append(" alert_status ALTS  ");
+		queryStr.append(" where ");
+		queryStr.append(" A.alert_id = AAO.alert_id and ");
+		
+		queryStr.append(" AAO.is_approved = 'Y' and ");
+		queryStr.append(" AAO.alert_status_id = ALTS.alert_status_id and ");
+		queryStr.append(" AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id and GDDO.address_id = UA.user_address_id and");
+		queryStr.append(" GDDO.govt_department_designation_id = GDD.govt_department_designation_id and ");
+		queryStr.append(" GDDO.govt_department_level_id = GDL.govt_department_level_id and ");
+		queryStr.append(" GDD.govt_department_id = GD.govt_department_id and ");
+		queryStr.append(" GD.govt_department_id =:deptId and ");
+		queryStr.append(" GDL.govt_department_level_id = :levelValue and ");
+		queryStr.append(" date(AAO.inserted_time) between :fromDate and :toDate ");
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		}
+		if(statusId != null && statusId.longValue() > 0L){
+			queryStr.append(" and ALTS.alert_status_id = :statusId ");
+		}
+		if(levelValue != null && levelValue.longValue() == 2L){
+			queryStr.append(" and S.state_id = UA.state_id and S.state_id = :locId and");
+		}else if(levelValue != null && levelValue.longValue() == 3L){  
+			queryStr.append(" and D.district_id = UA.district_id and  D.district_id = :locId and ");
+		}else if(levelValue != null && levelValue.longValue() == 4l){
+			queryStr.append(" and C.constituency_id = UA.constituency_id and C.constituency_id = :locId and ");
+		}else if(levelValue != null && levelValue.longValue() == 5l){
+			queryStr.append(" and T.tehsil_id = UA.tehsil_id and T.tehsil_id = :locId and ");
+		}else if(levelValue != null && levelValue.longValue() == 6l){
+			queryStr.append(" and P.panchayat_id = UA.panchayat_id and P.panchayat_id = :locId and ");
+		}else if(levelValue != null && levelValue.longValue() == 7l){
+			queryStr.append(" and LEB.local_election_body_id = UA.local_election_body and LEB.local_election_body_id = :locId and ");
+		}else if(levelValue != null && levelValue.longValue() == 8l){
+			queryStr.append(" and CON.constituency_id = UA.ward and CON.constituency_id = :locId and ");
+		}      
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" S.state_id = UA.state_id and S.state_id = 1  ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" S.state_id = UA.state_id and S.state_id = 36  ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" S.state_id = UA.state_id and S.state_id in (1,36)  ");
+			}
+		}
+		
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alertId", Hibernate.LONG);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);  
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("printIdList", printIdList);  
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		query.setParameter("deptId", deptId);
+		query.setParameter("levelValue",levelValue);
+		query.setParameter("locId",locId);
+		if(statusId != null && statusId.longValue() > 0L){
+			query.setParameter("statusId", statusId);
+		}
+		return query.list();
+	}
 }
