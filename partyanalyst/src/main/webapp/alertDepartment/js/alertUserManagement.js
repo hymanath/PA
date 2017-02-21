@@ -897,7 +897,7 @@ function buildStatusWiseAlertDetails(result){
 							str1+='<td>'+result[i].date2+'</td>';
 							str1+='<td>'+result[i].noOfDays+'</td>';
 							str1+='<td><span class="colorSpecify" style="background-color:'+result[i].color+'"></span> '+result[i].status+'</td>';
-							str1+='<td><button type="button" class="btn btn-success btn-xs alertDetailsModalCls" attr_alert_Id="'+result[i].alertId+'" attr_status_id="'+result[i].statusId+'">Alert Details</button></td>';
+							str1+='<td><button type="button" class="btn btn-success btn-xs alertDetailsModalCls" attr_alert_Id="'+result[i].alertId+'" attr_status_id="'+result[i].statusId+'" attr_update="show">Alert Details</button></td>';
 						str1+='</tr>';
 					}
 						
@@ -1005,13 +1005,13 @@ function getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationV
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildSubOrdinateLocationWiseAlertDetails(result);
+			buildSubOrdinateLocationWiseAlertDetails(result,"hide");
 		}
 		
 	});
 }
 	
-function buildSubOrdinateLocationWiseAlertDetails(result){
+function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var str='';
 	if($(window).width() < 500)
@@ -1073,7 +1073,7 @@ function buildSubOrdinateLocationWiseAlertDetails(result){
 					}else{
 						str+='<td> - </td>';        
 					}
-					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'" attr_status_id="'+result[i].statusId+'">Alert Details</button></td>';      
+					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'" attr_status_id="'+result[i].statusId+'" attr_update="'+updateBlock+'">Alert Details</button></td>';      
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -1088,6 +1088,9 @@ function buildSubOrdinateLocationWiseAlertDetails(result){
 }
 	/* Alert Details Modal Start*/
 $(document).on("click",".alertDetailsModalCls",function(){
+	$("#errMsgCmntId").html("");
+	$("#errMsgStsId").html("");
+	
 	$("#alertDetailsModal").modal({
 		show: true,
 		keyboard: false,
@@ -1098,8 +1101,11 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	
 	var alertId = $(this).attr("attr_alert_Id");
 	var alrtStsId = $(this).attr("attr_status_id");
-	if(alrtStsId != null && alrtStsId == 1)
+	var updateBlk = $(this).attr("attr_update");
+	if(updateBlk != null && updateBlk == "show")
 		$("#alerAssignDivId").show();
+	else
+		$("#alerAssignDivId").hide();
 	
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
@@ -1521,7 +1527,7 @@ function getTotalAlertDtls(statusId,departmentId,typeId)
       url: 'getTotalAlertDtlsAction.action',
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
-		buildSubOrdinateLocationWiseAlertDetails(result)
+		buildSubOrdinateLocationWiseAlertDetails(result,"show");
     });
 }
 
@@ -1559,6 +1565,9 @@ $(document).on("click",".notMyDepartment",function(){
 });
 
 $(document).on("click","#assignOfficerId",function(){
+	$("#errMsgCmntId").html("");
+	$("#errMsgStsId").html("");
+	
 	var notMyDepartment = $(".notMyDepartment").is(':checked');
 	var comments = $("#alertDescId").val();
 	var updateStatusId = $("#changeStatusId").val();
@@ -1590,7 +1599,7 @@ function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
 		//getAlertStatusCommentsTrackingDetails();
-		alert("Alert Assigned Successfully.");
+		alert("Alert Updated Successfully.");
 		//$("#alertStatus").html('Notified');
 		fieldsEmpty();
 		/*$("#uploadClarificationFileId0").val('');

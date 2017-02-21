@@ -287,102 +287,104 @@
 					<div id="alertCommentsDivIdNew"></div>
 				</div>
 			</div>
-			<form id="alertAssign" name="alertAssignForm" style="display:none;">
-				<div class="row m_top20">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div class="panel panel-default">
-							<div class="panel-heading headingColor">
-								<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
-							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<div id="assignedOfficersId"></div>
-									</div>
+			<div id="alertAssignFormDivId" style="display:none;">
+				<form id="alertAssign" name="alertAssignForm">
+					<div class="row m_top20">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
 								</div>
-								<div class="row">
-									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
-										<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
-											<option></option>
-										</select>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="assignedOfficersId"></div>
+										</div>
 									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLvlId"></span></label>
-										<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
-											<option></option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6" id="constituencyLevelDiv" style="display:none;">
-										<label>Constituency</label>
-										<select class="chosenSelect" id="constLvlId">	
-											<option></option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6" id="mndlMuncLevelDiv" style="display:none;">
-										<label>Mandal/Muncipality</label>
-										<select class="chosenSelect" id="mndlMuncLvlId">	
-											<option></option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLocationId"></span></label>
-										<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
-											<option></option>
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDesgId"></span></label>
-										<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
-										<option></option>	
-										</select>
-									</div>
-									<div class="col-md-3 col-xs-12 col-sm-6">
-										<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
-										<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
-											<option></option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="background-color: #ccc;padding-top: 20px;box-shadow: 0px 0px 25px rgba(0,0,0,0.8);">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div class="panel panel-default">
-							<div class="panel-heading headingColor">
-								<h4 class="panel-title text-capital">update alert information</h4>
-							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<span style="color:red;" id="errMsgCmntId"></span>
-										<label>
-											Comments
-										<span style="color:red">*</span>&nbsp;&nbsp;</label>
-										<label class="radio-inline">
-											<input type="radio" name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-										</label>
-										<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
-										
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-										<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
-									</div>
-									<div class="col-md-4 col-xs-12 col-sm-6">
-										<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">assign alert to designated officer</button>
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
+											<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLvlId"></span></label>
+											<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6" id="constituencyLevelDiv" style="display:none;">
+											<label>Constituency</label>
+											<select class="chosenSelect" id="constLvlId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6" id="mndlMuncLevelDiv" style="display:none;">
+											<label>Mandal/Muncipality</label>
+											<select class="chosenSelect" id="mndlMuncLvlId">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLocationId"></span></label>
+											<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
+												<option></option>
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDesgId"></span></label>
+											<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
+											<option></option>	
+											</select>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6">
+											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
+											<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+												<option></option>
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>
-			</form>
+					<div class="row" style="background-color: #ccc;padding-top: 20px;box-shadow: 0px 0px 25px rgba(0,0,0,0.8);">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital">update alert information</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<span style="color:red;" id="errMsgCmntId"></span>
+											<label>
+												Comments
+											<span style="color:red">*</span>&nbsp;&nbsp;</label>
+											<label class="radio-inline">
+												<input type="radio" name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+											</label>
+											<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
+											
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6">
+											<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">assign alert to designated officer</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>
+				</form>
+			</div>
 		  </div>
 		</div>
 	  </div>

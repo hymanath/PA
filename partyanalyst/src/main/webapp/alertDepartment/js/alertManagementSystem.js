@@ -634,12 +634,21 @@ $(document).on("click",".alertDetailsModalCls",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#errMsgLvlId").html("");
+	$("#errMsgLocationId").html("");
+	$("#errMsgDeptId").html("");
+	$("#errMsgDesgId").html("");
+	$("#errMsgOffcrId").html("");
+	$("#errMsgCmntId").html("");
+	$("#errMsgImgId").html("");
+	
 	fieldsEmpty();
+	$("#alertAssignFormDivId").hide();
 	
 	var alertId = $(this).attr("attr_alert_Id");
 	var alrtStsId = $(this).attr("attr_status_id");
 	if(alrtStsId != null && alrtStsId == 1)
-		$("#alertAssign").show();
+		$("#alertAssignFormDivId").show();
 	
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
