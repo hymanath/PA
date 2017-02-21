@@ -1468,7 +1468,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		try {
 			Date fromDate = null;
 			Date toDate = null;
+			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date todayDate = new DateUtilService().getCurrentDateAndTime();
+			String todayDateStr = myFormat.format(todayDate);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
@@ -1510,7 +1514,10 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					vo.setStatusId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 					vo.setStatus(obj[8] != null ? obj[8].toString():"");
 					vo.setColor(obj[9] != null ? obj[9].toString():"");
-					vo.setNoOfDays(new DateUtilService().noOfDayBetweenDates(vo.getDate1(), vo.getDate2()));
+					if(vo.getStatusId() != null && (vo.getStatusId() == 4l || vo.getStatusId() == 5l || vo.getStatusId() == 6l || vo.getStatusId() == 7l))
+						vo.setNoOfDays(new DateUtilService().noOfDayBetweenDates(vo.getDate1(), vo.getDate2()));
+					else
+						vo.setNoOfDays(new DateUtilService().noOfDayBetweenDates(vo.getDate1(), todayDateStr));
 					
 					returnList.add(vo);
 				}
