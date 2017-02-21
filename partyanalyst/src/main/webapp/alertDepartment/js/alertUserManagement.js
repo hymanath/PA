@@ -115,11 +115,10 @@ $(document).on("click",".getDetailsForSubOrdinate",function(){
 });
 
 $(document).on("click",".detailedBlockDiv",function(){
-	$(".detailedBlockShow").show();
+	$(".detailedBlockShow").show();	
 	var departmentId = $(this).attr("attr_department_id");
 	getGovtDeptLevelForDeptAndUser(departmentId);
 	getAlertCountLocationWiseThenStatusWise(departmentId,3);
-	
 });	 
 
 $(document).on("change","#departmentId",function(){
@@ -712,7 +711,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 						str+='<label>Select Level</label>';
 						str+='<select class="form-control chosen-select" id="levelDepartmentId">';
 						str+='<option value="0"> Select Level </option>';
-						str+='<option value="3">District</option>';
+						str+='<option value="3" selected>District</option>';
 						str+='<option value="4">Constituency</option>';
 						/* if(lvlValueGlobal != null && lvlValueGlobal.length>0){
 								for(var s in lvlValueGlobal){
@@ -797,13 +796,19 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				for(var i in result){
 					str1+='<tr>';
 						str1+='<td>'+result[i].status+'</td>';
-						str1+='<td>'+result[i].count+'</td>';
+						str1+='<td><span class="detaiedTotalAlerts" attr_status_id="0" attr_location_id="'+result[i].statusId+'">'+result[i].count+'</span></td>';
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							
 							for(var j in result[i].subList1){
 								if(j != 0)
 								{
-									str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+									if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
+									{
+										str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;"><span class="detaiedTotalAlerts" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_location_id="'+result[i].statusId+'">'+result[i].subList1[j].categoryCount+'</span></td>';
+									}else{
+										str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+									}
+									
 								}
 							}
 						}
@@ -1005,6 +1010,7 @@ function getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationV
       url: 'getSubOrdinateLocationWiseAlertDetailsAction.action',
       data: {task :JSON.stringify(jObj)}
     }).done(function(result){
+		
 		if(result !=null && result.length>0){
 			buildSubOrdinateLocationWiseAlertDetails(result,"hide");
 		}
@@ -1653,8 +1659,20 @@ function getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId)
 		}
     });
 }
-getAlertCountDetailsLocationWiseThenStatusWise();
-function getAlertCountDetailsLocationWiseThenStatusWise()
+
+$(document).on("click",".detaiedTotalAlerts",function(){
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	var locationId = $(this).attr("attr_location_id");
+	var locaValue = $("#levelDepartmentId").val();
+	var statusId = $(this).attr("attr_status_id");
+	getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId);
+});
+
+function getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId)
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
@@ -1662,17 +1680,19 @@ function getAlertCountDetailsLocationWiseThenStatusWise()
 		  toDate:detailedtoDate,
 		  stateId:globalStateId,
 		  govtDepartmentId:1,    
-		  statusId:2,          
-		  lvlValue:3,
+		  statusId:statusId,          
+		  lvlValue:locaValue,
 		  paperIdArr:paperIdArr,
 		  chanelIdArr:chanelIdArr,
-		  locId:18                
+		  locId:locationId                
     }  
     $.ajax({
       type:'GET',
       url: 'getAlertCountDetailsLocationWiseThenStatusWiseAction.action',
       data: {task :JSON.stringify(jObj)}   
     }).done(function(result){
-		console.log(result);
+		if(result !=null && result.length>0){
+			buildSubOrdinateLocationWiseAlertDetails(result,"hide");
+		}
     });
 }
