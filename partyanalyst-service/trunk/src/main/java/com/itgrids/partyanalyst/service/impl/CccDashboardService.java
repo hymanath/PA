@@ -943,7 +943,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			if(printIdList != null && printIdList.size() > 0){
+			/*if(printIdList != null && printIdList.size() > 0){
 				if(electronicIdList != null && electronicIdList.size() == 0){
 					electronicIdList.add(0L);
 				}
@@ -951,7 +951,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}
+			}*/
 			
 			Map<Long,Long> deptIdAndCountMap = new HashMap<Long,Long>();
 			List<AlertVO> finalListNew = new ArrayList<AlertVO>();
@@ -1208,7 +1208,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(endDateStr);
 			}
-			if(paperIdList != null && paperIdList.size() > 0){
+			/*if(paperIdList != null && paperIdList.size() > 0){
 		        if(chanelIdList != null && chanelIdList.size() == 0){
 		        	chanelIdList.add(0L);
 		        }
@@ -1216,7 +1216,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		        if(paperIdList != null && paperIdList.size() == 0){
 		        	paperIdList.add(0L);
 		        }
-		      }
+		      }*/
 			
 			//Srav
 			//List<Long> dptIdList = new ArrayList<Long>();
@@ -1477,7 +1477,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			if(printIdList != null && printIdList.size() > 0){
+			/*if(printIdList != null && printIdList.size() > 0){
 				if(electronicIdList != null && electronicIdList.size() == 0){
 					electronicIdList.add(0L);
 				}
@@ -1485,7 +1485,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}
+			}*/
 			
 			List<Long> dptIdList = new ArrayList<Long>();
 			Long levelId = 0l;
@@ -1499,7 +1499,18 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					levelValues.add(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 				}
 			}
-			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList,levelId,levelValues,statusId);
+			
+			Long designationOffId = 0l;
+			Long govtOffId = 0l;
+			List<Object[]> myList = govtDepartmentDesignationOfficerDetailsDAO.getDeptDesigOfficerIdAndGovtOfficerIdForUserId(userId, dptIdList, levelId, levelValues);
+			if(myList != null && !myList.isEmpty()){
+				for (Object[] obj : myList) {
+					designationOffId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					govtOffId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				}
+			}
+			
+			List<Object[]> list = alertAssignedOfficerDAO.getStatusWiseAlertDetails(fromDate, toDate, stateId, printIdList, electronicIdList, dptIdList,levelId,levelValues,statusId,designationOffId,govtOffId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					AlertVO vo = new AlertVO();
@@ -2145,7 +2156,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				toDate = sdf.parse(toDateStr);
 			}
 			
-			if(printIdsList != null && printIdsList.size() > 0){  
+			/*if(printIdsList != null && printIdsList.size() > 0){  
 				if(electronicIdsList != null && electronicIdsList.size() == 0){
 					electronicIdsList.add(0L);
 				}
@@ -2153,7 +2164,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				if(printIdsList != null && printIdsList.size() == 0){
 					printIdsList.add(0L);
 				}
-			}
+			}*/
 			
 			List<Long> dptIdList = new ArrayList<Long>();
 			Long levelId = 0l;
@@ -2242,7 +2253,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				toDate = sdf.parse(toDateStr);
 			}
 			
-			if(printIdsList != null && printIdsList.size() > 0){  
+			/*if(printIdsList != null && printIdsList.size() > 0){  
 				if(electronicIdsList != null && electronicIdsList.size() == 0){
 					electronicIdsList.add(0L);
 				}
@@ -2250,7 +2261,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				if(printIdsList != null && printIdsList.size() == 0){
 					printIdsList.add(0L);
 				}
-			}
+			}*/
 			
 			List<Long> dptIdList = new ArrayList<Long>();
 			Long levelId = 0l;
