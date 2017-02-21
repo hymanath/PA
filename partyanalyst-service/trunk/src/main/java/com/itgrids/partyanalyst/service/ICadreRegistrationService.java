@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -115,7 +116,7 @@ public interface ICadreRegistrationService {
 	public List<CasteDetailsVO> getAllCastes();
 	public List<Long> getVoterIdByVoterCard(String voterCardId);
 	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId);
-	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);
+	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId,RegistrationVO userVO);
 	
 	public List<CadrePrintVO> getSelectedLevelCadreDetailsBySelection(CadrePrintInputVO input);
 	

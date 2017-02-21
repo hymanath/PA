@@ -115,6 +115,7 @@ import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
 import com.itgrids.partyanalyst.dao.ITwoWayMessageDAO;
 import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -155,6 +156,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.PaymentTransactionVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
@@ -340,6 +342,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private ICadreRegistrationAllowAreasDAO cadreRegistrationAllowAreasDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
@@ -352,6 +356,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
 	
+	
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
 	public void setCadreTabRecordsStatusDAO(
 			ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO) {
 		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
@@ -5569,13 +5579,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 	}
 	
-	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId)
+	@SuppressWarnings("unchecked")
+	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId,RegistrationVO userVO)
 	{
 		List<CadreRegisterInfo> cadreRegisterInfoList=null;
 		List<Object[]> returnList = null;
 		//Long distId;
 		try {
-				returnList = tdpCadreDAO.getConstsByStateWiseAction(stateId);
+				if(userVO == null)
+					returnList = tdpCadreDAO.getConstsByStateWiseAction(stateId);
+				else{
+					returnList = (List<Object[]>)userConstituencyAccessInfoDAO.findByElectionScopeUserState(2L,userVO.getRegistrationID(),1L);
+				}
 				if(returnList !=null && returnList.size()>0)
 				{
 					cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>();
