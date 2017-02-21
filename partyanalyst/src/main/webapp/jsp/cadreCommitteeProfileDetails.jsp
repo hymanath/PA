@@ -775,6 +775,8 @@
                             </c:forEach>*/
    </script>
 	<script>		
+		var reqlocationId ='${param.locationId}';
+		
 		var isSmartPhone = '${cadreCommitteeVO.isSmartPhone}';
 		var mobnum,refid;
 		var areaType = '${task}';
