@@ -1578,11 +1578,11 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 				  {
 					if(result[0].status == "Removed"){
 						alert("Removed Successfully..")
+						getCommitteMembersInfo();
 						$('.'+className+'').hide();
 					}else
-						alert("Committee Already Confirmed")
+						alert("Committee Already Confirmed");
 				  }
-				
 			}
 	   });
 		}
