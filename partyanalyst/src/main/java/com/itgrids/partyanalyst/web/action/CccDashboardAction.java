@@ -1034,5 +1034,33 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			return Action.SUCCESS;
 		}
+		public String getAlertCountDetailsLocationWiseThenStatusWise(){
+			try{
+				session = request.getSession();  
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long lvlValue = jObj.getLong("lvlValue");
+				Long locId = jObj.getLong("locId");
+				Long statusId = jObj.getLong("statusId");
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				alertCoreDashBoardVOList = cccDashboardService.getAlertCountDetailsLocationWiseThenStatusWise(fromDate, toDate, stateId, paperIdList, chanelIdList,govtDepartmentId,lvlValue,locId,statusId);
+			}catch(Exception e){
+				LOG.error("Exception occured in getTotalAlertGroupByStatusForOneDept() of CccDashboardAction",e);
+			}
+			return Action.SUCCESS;
+		}
 		
 }
