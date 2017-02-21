@@ -15929,5 +15929,10 @@
 		    	<param name="root">alertCoreDashBoardVOList</param>
 	  	</result>	
   	</action>
+  	<action name="getAlertCountDetailsLocationWiseThenStatusWiseAction" class="cccDashboardAction" method="getAlertCountDetailsLocationWiseThenStatusWise">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOList</param>
+	  	</result>	
+  	</action>
  </package>
 </struts>
