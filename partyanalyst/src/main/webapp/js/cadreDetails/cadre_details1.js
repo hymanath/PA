@@ -154,7 +154,7 @@ function buildIVRSurveysOnCandidateAreaDetails(resultList)
 var result = resultList.verifierVOList;
 		var str = '';
 	if(result != null && result.length >0){
-	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+	str+='<div class="panel-group" style="margin-top:20px" id="accordion1211212" role="tablist" aria-multiselectable="true">';
 			str+='<div class="table-responsive">';
 			str+='<table id="ivrStatusDataTable">';
 			str+='<thead><th style="text-align:right;">sort by date<i style="background: rgb(221, 221, 221) none repeat scroll 0% 0%; border-radius: 50%; padding: 9px; float: right;" class="glyphicon glyphicon-sort-by-attributes"></i></th></thead>';
@@ -162,15 +162,15 @@ var result = resultList.verifierVOList;
 			str+='<tr>';
 			str+='<td>';
 			 str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
-						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+					str+='<div class="panel-heading" role="tab" id="headingOne1121212'+i+'">';
+						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1211212" href="#collapseOne1121212'+i+'" aria-expanded="true" aria-controls="collapseOne1121212'+i+'">';
 							str+='<h4 class="panel-title">';
 								str+='<span class="resWidth">'+result[i].date+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="resWidth">'+result[i].name+'</span>';
 							str+='</h4>';
 						str+='</a>';
 					str+='</div>';
 					
-					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					str+='<div id="collapseOne1121212'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1121212'+i+'">';
 						str+='<div class="panel-body">';
 						str+='<div class="table-responsive">';
 				
