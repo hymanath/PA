@@ -26,11 +26,10 @@
 			<div class="form-group col-md-3 col-md-offset-3  col-sm-3 col-xs-3">
 				<label for="">Select Level <span style="color:red">*</span></label>
 				<select id="committeLevel" class="form-control" onchange="handlechange();">
-				<option value="2">District</option>
-				<option value="3"> MANDAL/TOWN/DIVISION</option>
-				<option value="4"> VILLAGE / WARD </option>
-				</select>
-				
+					<option value="2"> DISTRICT </option>
+					<option value="3"> MANDAL/TOWN/DIVISION </option>
+					<option value="4"> VILLAGE/WARD </option>
+				</select>				
 		</div>
 		<div><img src="images/icons/search.gif" id="ajaxImgId"/></div>
 		
@@ -128,7 +127,8 @@
 			url : "getConstsAction.action",
 			data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-			var str = "<option value='0'>Select Constituency</option>";
+			var str='';
+			//var str = "<option value='0'>Select Constituency</option>";
 		   for(var i in result){
 				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			}
