@@ -567,7 +567,9 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				for (int i = 0; i < chanelIdArr.length(); i++){
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
-				alertVOs = cccDashboardService.getAlertCountLocationWiseThenStatusWise(fromDate, toDate, stateId, paperIdList, chanelIdList,govtDepartmentId,lvlValue);
+				List<Long> govtDptIdList = new ArrayList<Long>();
+				govtDptIdList.add(govtDepartmentId);
+				alertVOs = cccDashboardService.getAlertCountLocationWiseThenStatusWise(fromDate, toDate, stateId, paperIdList, chanelIdList,govtDptIdList,lvlValue);
 			}catch(Exception e){
 				LOG.error("Exception occured in getTotalAlertGroupByStatusForOneDept() of CccDashboardAction",e);
 			}
@@ -1056,7 +1058,9 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				for (int i = 0; i < chanelIdArr.length(); i++){
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
-				alertCoreDashBoardVOList = cccDashboardService.getAlertCountDetailsLocationWiseThenStatusWise(fromDate, toDate, stateId, paperIdList, chanelIdList,govtDepartmentId,lvlValue,locId,statusId);
+				List<Long> govtDptIdList = new ArrayList<Long>();  
+				govtDptIdList.add(govtDepartmentId);
+				alertCoreDashBoardVOList = cccDashboardService.getAlertCountDetailsLocationWiseThenStatusWise(fromDate, toDate, stateId, paperIdList, chanelIdList,govtDptIdList,lvlValue,locId,statusId);
 			}catch(Exception e){
 				LOG.error("Exception occured in getTotalAlertGroupByStatusForOneDept() of CccDashboardAction",e);
 			}
