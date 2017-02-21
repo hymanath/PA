@@ -421,34 +421,38 @@
 														
 												   str+='</td>';
 													str+='<td>';
-														str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
+														str+='<p class="text-muted text-capitalize responsiveFont">Started';
 														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
-														if(result.subList[i].name == "Village")
-															str+='<p  id=\''+'villageAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'started\')" class="responsiveFont" style="cursor:pointer;">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign"></i></p>';
-														if(result.subList[i].name == "Mandal")
-															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'mandalAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
-														if(result.subList[i].name == "District")
-															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'district'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
-														if(result.subList[i].name == "State")
-															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'state'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'started\')">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															if(result.subList[i].name == "Village")
+																str+='<i  id=\''+'villageAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'started\')" style="cursor:pointer;margin-left:3px" class="glyphicon glyphicon-info-sign"></i></p>';
+															if(result.subList[i].name == "Mandal")
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+															if(result.subList[i].name == "District")
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															if(result.subList[i].name == "State")
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPstarted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
+														
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
 														}else{
-															str+='<p> - </p>';
+															str+='</p><p> - </p>';
 														}
 														
 													str+='</td>';
 													str+='<td>';
-														str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
+														str+='<p class="text-muted text-capitalize responsiveFont">Completed';
 														if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
 															if(result.subList[i].name == "Village")
-															str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'villageAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
-														 if(result.subList[i].name == "Mandal")
-															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'mandalAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
-														 if(result.subList[i].name == "District")
-															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'district'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
-														 if(result.subList[i].name == "State")
-															 str+='<p class="responsiveFont" style="cursor:pointer;" id=\''+'state'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'completed\')">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+																str+='<i style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'villageAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															if(result.subList[i].name == "Mandal")
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'mandalAll\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+															 if(result.subList[i].name == "District")
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'district\',\'main\','+1+'\,\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
+															 if(result.subList[i].name == "State")
+																 str+='<i style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPcompleted\' onClick="getMainCommitteeMembersCount(\''+globalState+'\',\'state\',\'main\','+1+'\,\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+														
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
 														}else{
-															str+='<p> - </p>';
+															str+='</p><p> - </p>';
 														}
 														
 													str+='</td>';
@@ -537,36 +541,38 @@
 												
 										   str+='</td>';
 												str+='<td>';
-													str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
+													str+='<p class="text-muted text-capitalize responsiveFont">Started';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
-														//str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 														if(result.subList[i].name == "Village")
-															str+='<p  style="cursor:pointer;" id=\''+'villageAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "Mandal")
-															str+='<p  style="cursor:pointer;" id=\''+'mandalAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														 if(result.subList[i].name == "District")
-															str+='<p  style="cursor:pointer;" id=\''+'district'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'started\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "State")
-															str+='<p  style="cursor:pointer;" id=\''+'state'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'started\')">'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>'; 
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'started\')" class="glyphicon glyphicon-info-sign "></i></p>'; 
+													
+														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
-														str+='<p> - </p>';
+														str+='</p><p> - </p>';
 													}
 													
 												str+='</td>';
 												str+='<td>';
-													str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
+													str+='<p class="text-muted text-capitalize responsiveFont">Completed';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
-														//str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 														 if(result.subList[i].name == "Village")
-															str+='<p  style="cursor:pointer;" id=\''+'villageAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'villageAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'villageAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "Mandal")
-															str+='<p  style="cursor:pointer;" id=\''+'mandalAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'mandalAll'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'mandalAll\',\'completed\')"  class="glyphicon glyphicon-info-sign "></i></p>';
 														 if(result.subList[i].name == "District")
-															str+='<p  style="cursor:pointer;" id=\''+'district'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'district'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'district\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
 														if(result.subList[i].name == "State")
-															str+='<p  style="cursor:pointer;" id=\''+'state'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'completed\')">'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small><i class="glyphicon glyphicon-info-sign "></i></p>';
+															str+='<i  style="cursor:pointer;margin-left:3px" id=\''+'state'+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+globalState+'\',\'state\',\'completed\')" class="glyphicon glyphicon-info-sign "></i></p>';
+													
+														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 													}else{
-														str+='<p> - </p>';
+														str+='</p><p> - </p>';
 													}
 													
 												str+='</td>';
