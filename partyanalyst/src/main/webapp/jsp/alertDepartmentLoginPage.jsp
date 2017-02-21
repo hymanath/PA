@@ -40,31 +40,42 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
 	<!-- YUI Dependency files (End) -->
-	
+	<style type="text/css">
+		header
+		{
+			display:none;
+		}
+	</style>
 </head>
 <body>
-<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
-	<div class="container" style="margin-top:50px;">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-primary">
-					<div class="panel-body" style="padding:40px;">
-						<label>Username</label>
-						<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
-						<label>Password</label>
-						<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
-						<input type="submit" class="signin btn btn-primary" id="submit1" value="SIGN IN" style="margin-top:20px;"/>
+<div class="backgroundLoginHeader"></div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+		<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
+			<div class="loginBox">
+				<div class="row">
+					<div class="col-md-7 col-xs-12 col-sm-7">
+						<img src="alertDepartment/img/APLOGINLOGO.png"/>
 					</div>
-					<div id="ajaxcallimage"  style="display:none;">
-						<font  style="font-size:small;">Sending Your Request. Please wait...</font>
-						<img src="images/icons/loading.gif" width="18" height="11"/>
+					<div class="col-md-5 col-xs-12 col-sm-5">
+						<div class="loginFormBox">
+							<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
+							<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
+							<input type="submit" class="signin btn btn-success btn-block" id="submit1" value="LOGIN" style="margin-top:20px;"/>
+							<div id="ajaxcallimage"  style="display:none;margin-top:10px">
+								<font  style="font-size:small;">Sending Your Request. Please wait...</font>
+								<img src="images/icons/loading.gif" width="18" height="11"/>
+							</div>
+							<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
+						</div>
 					</div>
-					<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
 				</div>
 			</div>
+		</form>
 		</div>
 	</div>
-</form>
+</div>
 <script>
 var userip = "";
 </script>

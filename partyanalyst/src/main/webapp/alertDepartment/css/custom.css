@@ -11,6 +11,49 @@ body {
 h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: 0 !important;
 }
+.backgroundLoginHeader
+{
+	background-color:#9A999F;
+	height:30vh;
+}
+.loginBox
+{
+	background-color:#fff;
+	box-shadow:0px 0px 17px rgba(0,0,0,0.4);
+	padding:20px;
+	position:relative;
+	top:-10vh;
+}
+.loginBox img
+{
+	display:block;
+	margin:auto;
+}
+.loginFormBox
+{
+	padding:13vh 30px;
+	border-left:1px solid #eee;
+}
+.loginFormBox .form-control
+{
+	border-top:0px;
+	border-left:0px;
+	border-right:0px;
+	box-shadow:none;
+	border-radius:0px;
+	color:#5cb85c;
+	margin-top:20px;
+}
+
+.loginFormBox .form-control:active ,.loginFormBox .form-control:hover ,.loginFormBox .form-control:focus 
+{
+	border-top:0px;
+	border-left:0px;
+	border-right:0px;
+	box-shadow:none;
+	border-bottom:1px solid #5cb85c;
+	border-radius:0px;
+}
 .navbarHeader {
     background: #555555 none repeat scroll 0 0;
     height: 60px !important;
@@ -25,6 +68,23 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: inline-block;
     height: 50px;
     width: 210px;
+}
+.panelCustomNew
+{
+	border-radius:0px;
+}
+.departmentCloseIcon
+{
+	background-color:#ccc;
+	border-radius:50%;
+	padding:4px 5px 4px 6px;
+	float:right;
+	cursor:pointer;
+}
+.panelCustomNew .panel-heading
+{
+	background-color:#fff !important;
+	border-radius:0px;
 }
 .text-capital {
     text-transform: uppercase;
@@ -134,10 +194,9 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     list-style: outside none none;
 }
 .textAlignDepartment li {
-    font-size: 14px;
-    line-height: 35px;
+    font-size: 12px;
+    line-height: 30px;
 }
-
 .panelNewCustom {
     border: 2px solid rgb(255, 194, 31);
     border-radius: 0;
@@ -175,6 +234,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .navTabsSettings {
     border-right: 1px solid rgb(85, 85, 85);
+	border-bottom:0px;
 }
 .navTabsSettings > li {
     width: 100%;
@@ -188,6 +248,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     right: -3px;
+	border-bottom-color:#ddd
 }
 .settingsUl {
     padding: 0;
@@ -201,6 +262,18 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .settingsUl li label{
 	cursor:pointer;
+	font-weight:400;
+}
+.settingsUl li input{
+	margin-right:10px;
+}
+.bg_dd
+{
+	background-color:#ddd;
+}
+.bg_EE
+{
+	background-color:#eee;
 }
 .activeUlCls li {
     background: rgb(255, 255, 255);
@@ -275,7 +348,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 4px;
     z-index: 99;
 }
-.totalAlertDetails , .totalAlertsOnDetInfo
+.totalAlertDetails , .totalAlertsOnDetInfo , .totalDepartment
 {
 	cursor:pointer;
 	color:#337ab7;

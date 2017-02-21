@@ -384,8 +384,8 @@ function buildTotalAlertByStatusForOfficer(result){
 					} */
 				},
 				pie: {
-					innerSize: 130,
-					depth: 95,
+					innerSize: 180,
+					depth: 180,
 					dataLabels:{
 						enabled: false,
 						  formatter: function() {
@@ -532,7 +532,13 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 										{
 											str1+='<tr>';
 												str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
-												str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+												if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
+												{
+													str1+='<td><span class="totalDepartment" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_department_id="'+result[i].statusId+'">'+result[i].subList1[j].categoryCount+'</span></td>';
+												}else{
+													str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+												}
+												
 												str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
 											str1+='</tr>';
 										}
@@ -591,7 +597,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				subtitle: {
 					text: null
 				},
-				 tooltip: {
+				tooltip: {
 					useHTML: true,
 					backgroundColor: '#FCFFC5', 
 					formatter: function() {
@@ -644,7 +650,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 
 				var span = '<span id="pieChartInfoText1'+i+'" style="position:absolute; text-align:center;">';
 				span += '<span style="font-size: 18px">TOTAL</span><br>';
-				span += '<span style="font-size: 14px;" >'+alertCount+'</span>';
+				span += '<span style="font-size: 14px;" class="totalDepartment" attr_status_id="0" attr_department_id="'+result[i].statusId+'">'+alertCount+'</span>';
 				span += '</span>';
 
 				$("#TotalAlertsDepView"+i).append(span);
@@ -1614,28 +1620,37 @@ function fieldsEmpty(){
 	var filerKit = $("#imageId").prop("jFiler");
 	filerKit.reset();
 }
-
-getTotalAlertDetailsGroupByDeptThenStatus();
-function getTotalAlertDetailsGroupByDeptThenStatus()
+$(document).on("click",".totalDepartment",function(){
+	$("#totalAlertsModal").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});	
+	var departmentId = $(this).attr("attr_department_id");
+	var statusId  = $(this).attr("attr_status_id");
+	getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId);
+});
+function getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId)
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
-		fromDate:detailedfromDate,
-		  toDate:detailedtoDate,
-		  stateId:globalStateId,
-		  deptId:1,    
-		  statusId:0,         
-		  paperIdArr:paperIdArr,
-		  chanelIdArr:chanelIdArr,
-		type : "total"        
-
-    }  
+			fromDate:	detailedfromDate,
+			toDate:		detailedtoDate,
+			stateId:	globalStateId,
+			deptId:		departmentId,    
+			statusId:	statusId,         
+			paperIdArr:	paperIdArr,
+			chanelIdArr:chanelIdArr,
+			type : 		"total"        
+		}
     $.ajax({
       type:'GET',
       url: 'getTotalAlertDetailsGroupByDeptThenStatusAction.action',
       data: {task :JSON.stringify(jObj)}   
     }).done(function(result){
-		console.log(result);
+		if(result !=null && result.length>0){
+			buildSubOrdinateLocationWiseAlertDetails(result,"hide");
+		}
     });
 }
 getAlertCountDetailsLocationWiseThenStatusWise();
