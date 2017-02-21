@@ -275,7 +275,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 4px;
     z-index: 99;
 }
-.totalAlertDetails
+.totalAlertDetails , .totalAlertsOnDetInfo
 {
 	cursor:pointer;
 	color:#337ab7;
@@ -560,35 +560,30 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 5px;
 }
 
-.AUMS .detailedTableStyle  thead tr th{
+.detailedTableStyle  thead tr th{
 	border-top:1px solid #ddd !important;
 	padding: 20px 8px !important;
 	background-color:#EDEEF0;
 	font-size:14px;
-	
-	  
-	
 }
-.AUMS .detailedTableStyle  thead tr th:first-child{
+.detailedTableStyle  thead tr th:first-child{
 	border-left:1px solid #ddd !important;
 }
-.AUMS .detailedTableStyle  thead tr th:last-child{
+.detailedTableStyle  thead tr th:last-child{
 	border-right:1px solid #ddd !important;
 }
-.AUMS .detailedTableStyle  tbody tr td{
-	padding: 15px !important;
+.detailedTableStyle  tbody tr td{
+	padding: 15px 8px !important;
 	border-bottom:1px solid #ddd !important;
-	font-size:16px;
-	
-	
+	font-size:14px;
 }
-.AUMS .detailedTableStyle  tbody tr td:first-child{
+.detailedTableStyle  tbody tr td:first-child{
 	border-left:1px solid #ddd !important;
 }
-.AUMS .detailedTableStyle  tbody tr td:last-child{
+.detailedTableStyle  tbody tr td:last-child{
 	border-right:1px solid #ddd !important;
 }
-.AUMS .buttonCustomStyle {
+.buttonCustomStyle {
 	border: 1px solid green;
 	color: green;
 	font-size: 14px;

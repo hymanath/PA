@@ -301,31 +301,26 @@ function getTotalAlertByStatusForOfficer()
 function buildTotalAlertByStatusForOfficer(result){
 	var str='';
 	var totalAlert = 0;
-		str+='<div class="col-md-5 col-xs-12 col-sm-12">';
-			str+='<div id="totalAlertGroupByStatusForOneDeptDiv"></div>';
-			str+='<div id="TotalAlertsView"></div>';						
-		str+='</div>';
-		str+='<div class="col-md-6 col-xs-12 col-sm-4" style="margin-top:25px;">';
-			str+='<table class="table tableGraph">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th style="font-size: 16px;"><b>Status</b></th>';
-						str+='<th style="font-size: 16px;"><b>Total</b></th>';
-						str+='<th style="font-size: 16px;"><b>%</b></th>';
-					str+='</tr>';
-				str+='</thead>';
-				str+='<tbody>';
-				for(var i in result){
-					totalAlert+=result[i].count;
-					str+='<tr>';
-						str+='<td><span class="colorSpecify" style="background-color:'+result[i].color+';"></span>&nbsp;&nbsp;'+result[i].status+'</td>';
-						str+='<td><span class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="today">'+result[i].count+'</span></td>';
-						str+='<td>'+result[i].statusPercent+'</td>';
-					str+='</tr>';
-				}
-				str+='</tbody>';
-			str+='</table>';
-		str+='</div>';
+	str+='<table class="table tableGraph">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th style="font-size: 16px;"><b>Status</b></th>';
+				str+='<th style="font-size: 16px;"><b>Total</b></th>';
+				str+='<th style="font-size: 16px;"><b>%</b></th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			totalAlert+=result[i].count;
+			str+='<tr>';
+				str+='<td><span class="colorSpecify" style="background-color:'+result[i].color+';"></span>&nbsp;&nbsp;'+result[i].status+'</td>';
+				str+='<td><span class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="today">'+result[i].count+'</span></td>';
+				str+='<td>'+result[i].statusPercent+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+		
 	$("#alertStatusOverview").html(str);
 	var statusOverviewArr =[];
 	for(var i in result)

@@ -76,7 +76,17 @@
 													<h4 class="panel-title text-capital fontColor">My Alerts - Status Overview</h4>
 												</div>
 												<div class="panel-body">
-													<div id="alertStatusOverview"></div>
+													<div class="row">
+														<div class="col-md-5 col-xs-12 col-sm-12">
+															<div id="totalAlertGroupByStatusForOneDeptDiv"></div>
+															<div id="TotalAlertsView"></div>	
+														</div>
+														<div class="col-md-6 col-xs-12 col-sm-4" style="margin-top:25px;">
+															<div id="alertStatusOverview"></div>
+														</div>
+													</div>
+													
+													
 												</div>
 											</div>
 										</div>
