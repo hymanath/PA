@@ -35,6 +35,7 @@ public class AlertAssignedOfficer extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isApproved;
+	private String isDeleted;
 	
 	private Alert alert;
 	private GovtDepartmentDesignationOfficer govtDepartmentDesignationOfficer;
@@ -167,5 +168,13 @@ public class AlertAssignedOfficer extends BaseModel implements Serializable{
 	}
 	public void setAlertStatus(AlertStatus alertStatus) {
 		this.alertStatus = alertStatus;
+	}
+	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }
