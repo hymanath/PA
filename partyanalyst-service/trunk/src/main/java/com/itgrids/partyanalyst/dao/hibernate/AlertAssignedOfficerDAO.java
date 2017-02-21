@@ -1388,11 +1388,11 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			if(printIdsList != null && !printIdsList.isEmpty()){
 				sb.append(" and EDS.newsPaperId in (:printIdsList)");
 			}
-		}else if(typeStr != null && !typeStr.trim().equalsIgnoreCase("electronic")){
+		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("electronic")){
 			if(electronicIdsList !=null && electronicIdsList.size() > 0){
 				sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
 			}
-		}else if(typeStr != null && !typeStr.trim().equalsIgnoreCase("Totals")){
+		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("Totals")){
 			if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 				sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
 			else if(printIdsList != null && !printIdsList.isEmpty())
@@ -1439,11 +1439,11 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			if(printIdsList != null && !printIdsList.isEmpty()){
 				query.setParameterList("printIdsList", printIdsList);
 			}
-		}else if(typeStr != null && !typeStr.trim().equalsIgnoreCase("electronic")){
+		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("electronic")){
 			if(electronicIdsList !=null && electronicIdsList.size() > 0){
 				query.setParameterList("electronicIdsList", electronicIdsList);
 			}
-		}else if(typeStr != null && !typeStr.trim().equalsIgnoreCase("Totals")){
+		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("Totals")){
 			if(printIdsList != null && !printIdsList.isEmpty())
 				query.setParameterList("printIdsList", printIdsList);
 			if(electronicIdsList != null && !electronicIdsList.isEmpty())
