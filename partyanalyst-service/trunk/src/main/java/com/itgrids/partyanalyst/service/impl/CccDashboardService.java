@@ -1868,6 +1868,8 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
 					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficer.setAlertStatusId(inputvo.getStatusId());
+					if(inputvo.getStatusId() != null && inputvo.getStatusId() == 8l)
+						alertAssignedOfficer.setIsApproved("N");
 					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Alert Assigned Officer Action Saving
