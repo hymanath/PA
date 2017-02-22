@@ -98,10 +98,10 @@ $("#dateRangePicker").daterangepicker({
 $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDate = picker.startDate.format('DD/MM/YYYY');
 	currentToDate = picker.endDate.format('DD/MM/YYYY');
-	totalAlertGroupByStatusForGovt()
-	totalAlertGroupByStatusThenDepartment()
-	getDistrictWiseTotalForAlertOverview()
-	getDistrictTotalForAlertStatus('','')
+	totalAlertGroupByStatusForGovt();
+	totalAlertGroupByStatusThenDepartment();
+	getDistrictWiseTotalForAlertOverview();
+	getDistrictTotalForAlertStatus('',0);  
 });
 $(".chosenSelect").chosen({width:'100%'});
 
@@ -1449,7 +1449,11 @@ function getDistrictTotalForAlertStatus(id,departmentId)
 {
 	
 	var deptIDArr = [];
-	deptIDArr.push(departmentId)
+	if(departmentId == 0 && departmentId == null){  
+		deptIDArr = [];     
+	}else{
+		deptIDArr.push(departmentId);         
+	}
 	
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
