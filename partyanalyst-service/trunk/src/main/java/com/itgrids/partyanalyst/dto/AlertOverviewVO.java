@@ -58,6 +58,9 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> totalOtherList;
 	private List<AlertOverviewVO> actionTypeList;
 	
+	private String publicationId;
+	private String publicationName;
+	
 	
 	
 	public Long getGovtAlertCnt() {
@@ -305,5 +308,16 @@ public class AlertOverviewVO {
 		}
 		return actionTypeList;
 	}
-   	
+	public String getPublicationId() {
+		return publicationId;
+	}
+	public void setPublicationId(String publicationId) {
+		this.publicationId = publicationId;
+	}
+	public String getPublicationName() {
+		return publicationName;
+	}
+	public void setPublicationName(String publicationName) {
+		this.publicationName = publicationName;
+	}
 }                                                          

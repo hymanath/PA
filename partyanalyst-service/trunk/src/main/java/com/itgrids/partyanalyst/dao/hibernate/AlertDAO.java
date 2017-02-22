@@ -959,7 +959,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(requiredLevel != null && requiredLevel.equalsIgnoreCase("State")){
 		   queryStr.append(" and district.districtId is null ");
 		}else if(requiredLevel != null && requiredLevel.equalsIgnoreCase("District")){
-		   queryStr.append(" and constituency.constituencyId is null ");	
+		   //queryStr.append(" and constituency.constituencyId is null ");	
 		}
 		
 		if(scopeIdList != null && scopeIdList.size() > 0){
@@ -2809,8 +2809,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	    
 	    if(locationLevel != null && locationLevel.equalsIgnoreCase("State Level")){
 	    	queryStr.append(" and district.districtId is null ");
-	    }else if(locationLevel != null && locationLevel.equalsIgnoreCase("District Level")){
-	    	queryStr.append(" and constituency.constituencyId is null ");
+	    }else if(locationLevel != null && locationLevel.equalsIgnoreCase("District/GMC CORP Impact Level")){
+	    	//queryStr.append(" and constituency.constituencyId is null ");
 	    }
 	
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -5098,5 +5098,112 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		Query query = getSession().createQuery("select model.stateId,model.stateName from State model where model.stateId=:stateId");
 		query.setParameter("stateId", stateId);
 		return (Object[])query.uniqueResult();
+	}
+	
+	public List<Object[]> getPublicationWiseAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,List<Long> districtIds,String requiredLevel,Long alertStatusId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select ");
+		if(filterType != null && filterType.equalsIgnoreCase("District")){
+			queryStr.append(" district.districtId, " +//0
+					       " district.districtName, ");//1
+		}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" constituency.constituencyId, " +//0
+							" constituency.name, ");//1
+		}
+		if(publicationType.equalsIgnoreCase("tvChannel")){
+			queryStr.append(" tvNewsChannel.tvNewsChannelId,");//2
+		}else if(publicationType.equalsIgnoreCase("newsPaper")){
+			queryStr.append(" edition.newsPaper.newsPaperId,");//2	
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //3 
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency");
+		
+		if(publicationType.equalsIgnoreCase("TvChannel")){
+			queryStr.append(" ,TvNewsChannel tvNewsChannel where tvNewsChannel.tvNewsChannelId = model.tvNewsChannelId ");//3
+		}else if(publicationType.equalsIgnoreCase("NewsPaper")){
+		   queryStr.append(" ,Editions  edition where edition.editionId = model.edition.editionId ");//3
+		}
+		queryStr.append(" and model.isDeleted ='N'");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+		}
+		 if(stateId != null && stateId.longValue() > 0l){
+			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+		 }
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		if(requiredLevel != null && requiredLevel.equalsIgnoreCase("District")){
+		   queryStr.append(" and constituency.constituencyId is null ");	
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		if(alertTypeList != null && alertTypeList.size() > 0){
+			queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");
+		}
+		if(editionList != null && editionList.size() > 0){
+			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		}
+		if(districtIds != null && districtIds.size() > 0){
+			queryStr.append(" and district.districtId in (:districtIds)");
+		}
+		if(alertStatusId != null && alertStatusId.longValue() > 0){
+			queryStr.append(" and model.alertStatus.alertStatusId =:alertStatusId");	
+		}
+		if(filterType != null && filterType.equalsIgnoreCase("District")){
+			queryStr.append(" group by district.districtId ");//1
+		}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" group by constituency.constituencyId  ");//1
+		}
+		if(publicationType.equalsIgnoreCase("tvChannel")){
+			queryStr.append(" ,tvNewsChannel.tvNewsChannelId ");//3
+		}else if(publicationType.equalsIgnoreCase("newsPaper")){
+		   queryStr.append(" ,edition.newsPaper.newsPaperId ");//3
+		}
+		if(filterType != null && filterType.equalsIgnoreCase("District")){
+			queryStr.append(" order by district.districtId ");//1
+		}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" order by constituency.constituencyId  ");//1
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(stateId != null && stateId.longValue() > 0){
+		  query.setParameter("stateId", stateId);
+		}
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}    
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);  
+		}
+		if(alertTypeList != null && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);  
+		}
+		if(editionList != null && editionList.size() > 0){
+			query.setParameterList("editionList", editionList);  
+		}
+		if(districtIds != null && districtIds.size() > 0){
+			query.setParameterList("districtIds", districtIds);	
+		}
+		if(alertStatusId != null && alertStatusId.longValue() > 0){
+			query.setParameter("alertStatusId", alertStatusId);	
+		}
+		return query.list();   
 	}
 }

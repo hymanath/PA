@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -61,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
+import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -68,11 +68,13 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -173,6 +175,8 @@ private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
 private IGovtDepartmentDAO govtDepartmentDAO;
 private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 private SmsSenderService smsSenderService;
+private INewsPaperDAO newsPaperDAO;
+private ITvNewsChannelDAO tvNewsChannelDAO;
 
 public void setDelimitationConstituencyDAO(
 		IDelimitationConstituencyDAO delimitationConstituencyDAO) {  
@@ -486,6 +490,12 @@ public SmsSenderService getSmsSenderService() {
 
 public void setSmsSenderService(SmsSenderService smsSenderService) {
 	this.smsSenderService = smsSenderService;
+}
+public void setNewsPaperDAO(INewsPaperDAO newsPaperDAO) {
+	this.newsPaperDAO = newsPaperDAO;
+}
+public void setTvNewsChannelDAO(ITvNewsChannelDAO tvNewsChannelDAO) {
+	this.tvNewsChannelDAO = tvNewsChannelDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -3748,8 +3758,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				List<AlertVO> stateDataList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,group,alertTypeId,editionId,"State",districtIds,"State");
 				setResultToFinalList(stateDataList,finalResultList,"State Level");
 			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
-				List<AlertVO> districtDataList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,group,alertTypeId,editionId,"District",districtIds,"District");
-				setResultToFinalList(districtDataList,finalResultList,"District Level");
+				List<Long> scopeIds = new ArrayList<Long>();
+				scopeIds.add(2l);
+				scopeIds.add(8l);
+				List<AlertVO> districtDataList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIds,activityMemberId,group,alertTypeId,editionId,"District",districtIds,"District");
+				setResultToFinalList(districtDataList,finalResultList,"District/GMC CORP Impact Level");
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -5926,6 +5939,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAccessLevelValues.clear();          
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
+			if(locationLevel != null && locationLevel.equalsIgnoreCase("District/GMC CORP Impact Level")){
+				impactLevelIds.clear();
+				impactLevelIds.add(2l);
+				impactLevelIds.add(8l);
+			}
 			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusId,locationLevel);
@@ -7879,13 +7897,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return resultList;
 	}
-	public List<AlertOverviewVO> getConstituencyListByDistrictId(Long districtId){
+	public List<AlertOverviewVO> getAlertStatus(){
 		List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 		try{
-			List<Object[]> rtrnConstituencyObjLst = constituencyDAO.getConstituencyListByDistrictId(districtId);
-			setRequiredDataToList(rtrnConstituencyObjLst,resultList);
+			List<Object[]> statusObjLst = alertStatusDAO.getAllStatus();
+			setRequiredDataToList(statusObjLst,resultList);
 		}catch(Exception e){
-			LOG.error("Error occured getConstituencyListByDistrictId() method of AlertService{}",e);		
+			LOG.error("Error occured getAlertStatus() method of AlertService{}",e);		
 		}
 		return resultList;
 	}
@@ -7903,6 +7921,247 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured setRequiredDataToList() method of AlertService{}",e);	
 		}
    }
-	
+	/*
+	 * Author :Santosh
+	 * Date : 22-02-2017
+	 * @Description : This service is used to get publication wise alert count;
+	 */
+	public List<AlertOverviewVO> getPublicationWiseAlert(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long alertStatusId,Long alertTypeId,Long editionId,String filterType,List<Long> districtIds){
+		List<AlertOverviewVO> finalResultList = new ArrayList<AlertOverviewVO>(0);
+		try{
+			List<AlertOverviewVO> publicationList = new ArrayList<AlertOverviewVO>(0);
+			List<Object[]> rtrnNewsPaperObjList = newsPaperDAO.getNewPaperList();
+			List<Object[]> rtrnTvChannelObjLst = tvNewsChannelDAO.getChannelList();
+			preparePublicationTemplate(rtrnTvChannelObjLst,publicationList,"TvChannel");
+			preparePublicationTemplate(rtrnNewsPaperObjList,publicationList,"NewsPaper");
+			List<AlertOverviewVO> resultList = getLocationLevelWisePublicationData(publicationList,fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,alertStatusId,alertTypeId,editionId,filterType,districtIds,"");
+			    finalResultList.addAll(resultList);
+		    if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+				List<AlertOverviewVO> districtDataList = getLocationLevelWisePublicationData(publicationList,fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,alertStatusId,alertTypeId,editionId,"District",districtIds,"District");
+				setPublicationRsltToFnalList(districtDataList,finalResultList,"District Level");
+			}
+		    removePublicationHasNoData(finalResultList);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getPublicationWiseAlert() method of AlertService{}");	
+		}
+		return finalResultList;
+	} 	
+ 	public void setPublicationRsltToFnalList(List<AlertOverviewVO> list,List<AlertOverviewVO> finalResultList,String level){
+		try{
+			if(list != null && list.size() > 0){
+				AlertOverviewVO resutVO = new AlertOverviewVO();
+				boolean flag = true;
+				for(AlertOverviewVO locationVO:list){
+					if(flag){
+						resutVO.setId(0l);
+						resutVO.setName(level);
+						resutVO.setAlertCnt(0l);
+						if(locationVO != null && locationVO.getSubList().size() > 0){
+							for(AlertOverviewVO publiactionVO:locationVO.getSubList()){
+								AlertOverviewVO VO = new AlertOverviewVO();
+								VO.setPublicationId(publiactionVO.getPublicationId());
+								VO.setPublicationName(publiactionVO.getPublicationName());
+								resutVO.getSubList().add(VO);
+								
+							}
+						}
+					}
+					resutVO.setAlertCount(resutVO.getAlertCnt()+locationVO.getAlertCount());
+					if(resutVO.getSubList() != null && resutVO.getSubList().size() > 0){
+						for(AlertOverviewVO publiationVO:resutVO.getSubList()){
+							AlertOverviewVO publicationMatchVO = getPublicationMatchVO(publiationVO.getPublicationId(),locationVO.getSubList());
+							 if(publicationMatchVO != null){
+								 publiationVO.setAlertCnt(publiationVO.getAlertCnt()+publicationMatchVO.getAlertCnt());
+							 }
+						}
+					}
+					flag = false;
+				}
+				finalResultList.add(resutVO);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setPublicationRsltToFnalList() method of AlertService{}");	
+		}
+	}
+   public void removePublicationHasNoData(List<AlertOverviewVO> finalResultList){
+	   try{
+		   if(finalResultList != null && finalResultList.size() > 0){
+			   List<String> publicationIdList = new ArrayList<String>();
+			   for(AlertOverviewVO locationVO:finalResultList){
+				   if(locationVO.getSubList() != null && locationVO.getSubList().size() > 0){
+					   for(AlertOverviewVO publicationVO:locationVO.getSubList()){
+						    if(publicationVO.getAlertCnt()>0l){
+						    	publicationIdList.add(publicationVO.getPublicationId());//getting publication id which has no alert cnt
+						    }
+					   }
+				   }
+			   }
+			   //remove publication which has no alert cnt
+			   for(AlertOverviewVO locationVO:finalResultList){
+				   if(locationVO.getSubList() != null && locationVO.getSubList().size() > 0){
+					   for(AlertOverviewVO publicationVO:locationVO.getSubList()){
+						    if(!publicationIdList.contains(publicationVO.getPublicationId())){
+						    	locationVO.getSubList().remove(publicationVO);
+						    }
+					   }
+				   }
+			   }
+		   }
+	   }catch(Exception e){
+		   e.printStackTrace();
+			LOG.error("Error occured removePublicationHasNoData() method of AlertService{}");	   
+	   }
+   }
+ public void preparePublicationTemplate(List<Object[]> objList,List<AlertOverviewVO> publicationList,String publicationType){
+ 		try{
+ 			if(objList != null && objList.size() > 0){
+ 				for(Object[] param:objList){
+ 					AlertOverviewVO publicationVO = new AlertOverviewVO();
+ 					String publicationIdStr = commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(param[0]));
+ 					if(publicationType.equalsIgnoreCase("TvChannel")){
+ 						publicationIdStr = "1"+publicationIdStr;//We are appending 1 value for TvChannel and 2 for newspaper because their primary key value is same to identify purpose.
+ 					}else if(publicationType.equalsIgnoreCase("NewsPaper")){
+ 						publicationIdStr = "2"+publicationIdStr;
+ 					}
+ 					publicationVO.setPublicationId(publicationIdStr.trim());
+ 					publicationVO.setPublicationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 					publicationList.add(publicationVO);
+ 				}
+ 			}
+ 		}catch(Exception e){
+ 			LOG.error("Error occured preparePublicationTemplate() method of AlertService{}");	
+ 		}
+ 	}
+ 	public List<AlertOverviewVO> getLocationLevelWisePublicationData(List<AlertOverviewVO> publicationList,String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long alertStatusId,Long alertTypeId,Long editionId,String filterType,List<Long> districtIds,String requiredLevel){
+		LOG.info("Entered in getLocationLevelWisePublicationData() method of AlertService{}");
+		List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
+		Map<Long,AlertOverviewVO> locationWisAlertCntMap = new HashMap<Long, AlertOverviewVO>(0);
+			try{  
+			Date fromDate = null;        
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertTypeList = new ArrayList<Long>();
+			List<Long> editionList = new ArrayList<Long>();
+			if(alertTypeId != null){
+				if(alertTypeId.longValue() != 0L){
+					alertTypeList.add(alertTypeId);
+				}
+			}
+			if(editionId != null){
+			   if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
+			}
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			//convert parliament into constituency.
+			if(userAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
+				userAccessLevelId = 5L;
+				userAccessLevelValues.clear();
+				userAccessLevelValues.addAll(parliamentAssemlyIds);      
+			}
+			List<Object[]> rtrnTvChannelArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "TvChannel", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, districtIds, requiredLevel,alertStatusId);
+			List<Object[]> rtrnTvNwsPprArtcntObjLst = alertDAO.getPublicationWiseAlertCnt(fromDate, toDate, stateId, scopeIdList, "NewsPaper", userAccessLevelId, userAccessLevelValues, alertTypeList, editionList, filterType, districtIds, requiredLevel,alertStatusId);
+			setPublicationWiseAlertCnt(rtrnTvChannelArtcntObjLst,locationWisAlertCntMap,publicationList,"TvChannel");
+			setPublicationWiseAlertCnt(rtrnTvNwsPprArtcntObjLst,locationWisAlertCntMap,publicationList,"NewsPaper");
+			
+			//Calculation location wise overAll Alert Cnt.
+			if(locationWisAlertCntMap != null && locationWisAlertCntMap.size() > 0){
+				for(Entry<Long,AlertOverviewVO> locationEntry:locationWisAlertCntMap.entrySet()){
+					if(locationEntry.getValue().getSubList() != null && locationEntry.getValue().getSubList().size()>0){
+						for(AlertOverviewVO publicationVO:locationEntry.getValue().getSubList()){
+							locationEntry.getValue().setAlertCnt(locationEntry.getValue().getAlertCnt()+publicationVO.getAlertCount());
+						}
+					}
+					
+				}
+				resultList.addAll(locationWisAlertCntMap.values());
+				locationWisAlertCntMap.clear();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getLocationLevelWisePublicationData() method of AlertService{}");
+		}
+		return resultList;
+	}
+ 	public void setPublicationWiseAlertCnt(List<Object[]> objList,Map<Long,AlertOverviewVO> locationWisAlertCntMap,List<AlertOverviewVO> publicationList,String publicationType){
+ 		try{
+ 			if(objList != null && objList.size() > 0){
+ 				for(Object[] param:objList){
+ 					AlertOverviewVO locationVO = locationWisAlertCntMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 					 if(locationVO == null){
+ 						locationVO = new AlertOverviewVO();
+ 						locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 						locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 						locationVO.getSubList().addAll(getPublicationList(publicationList));
+ 						locationWisAlertCntMap.put(locationVO.getId(), locationVO);
+ 					 }
+ 					 String publicationIdStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+ 					 if(publicationType.equalsIgnoreCase("TvChannel")){
+ 						publicationIdStr = "1"+publicationIdStr;
+ 					 }else if(publicationType.equalsIgnoreCase("NewsPaper")){
+ 						publicationIdStr = "2"+publicationIdStr;
+ 					 }
+ 					 Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[3]);
+ 					 AlertOverviewVO publicationMatchVO = getPublicationMatchVO(publicationIdStr,locationVO.getSubList());
+ 					 if(publicationMatchVO != null){
+ 						publicationMatchVO.setAlertCnt(alertCnt);
+ 					 }
+ 				}
+ 			}
+ 		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setPublicationWiseAlertCnt() method of AlertService{}");
+ 		}
+ 	}
+ 	public List<AlertOverviewVO> getPublicationList(List<AlertOverviewVO> publicationList){
+ 		List<AlertOverviewVO> rtrnPublctnLst = new ArrayList<AlertOverviewVO>(0);
+ 		try{
+ 			if(publicationList != null && publicationList.size() > 0){
+ 				for(AlertOverviewVO publicationVO:publicationList){
+ 					AlertOverviewVO VO = new AlertOverviewVO();
+ 					VO.setPublicationId(publicationVO.getPublicationId());
+ 					VO.setPublicationName(publicationVO.getPublicationName());
+ 					rtrnPublctnLst.add(VO);
+ 				}
+ 			}
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+			LOG.error("Error occured getPublicationList() method of AlertService{}");
+ 		}
+ 		return  rtrnPublctnLst;
+ 	}
+ 	public AlertOverviewVO getPublicationMatchVO(String publicationIdStr,List<AlertOverviewVO> publicationList){
+ 		try{
+ 			if(publicationList == null || publicationList.size() == 0)
+ 				return null;
+ 			for(AlertOverviewVO publicationVO:publicationList){
+ 				if(publicationVO.equals(publicationIdStr)){
+ 					return publicationVO;
+ 				}
+ 			}
+		}catch(Exception e){
+ 			e.printStackTrace();
+			LOG.error("Error occured getPublicationList() method of AlertService{}");	
+ 		}
+ 		return null;
+ 	}
 }
 
