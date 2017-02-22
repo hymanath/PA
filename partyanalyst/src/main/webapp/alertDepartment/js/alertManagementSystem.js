@@ -305,7 +305,8 @@ function totalAlertGroupByStatusThenDepartment()
       stateId : globalStateId,
       deptIdArr : deptIdArr,  
       paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr
+      chanelIdArr : chanelIdArr,
+      sortingType : "dsc"
     }
     $.ajax({
       type:'GET',
