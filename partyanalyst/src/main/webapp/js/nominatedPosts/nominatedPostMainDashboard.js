@@ -36,12 +36,14 @@ $(document).ready(function(){
 	getPositionList();
 	getLocationLevelList();
 	getDepartmentList(2);  
-	 	
+	getDistrictsForState();	
 	//getBoardList(0,2);
 	//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
     //getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	//getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
 	//getCasteWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
+	 $(".constituenyCls").hide();
+	 $(".districtLvlCls").hide();
 });
 $(document).on("click",".castePositionCls",function(){
 		$('.selectCls').removeClass('active');
@@ -2228,28 +2230,66 @@ function getLocationAndBoardLevelWisePostsData(){
 $(document).on("click",".radioBtnCls",function(){
 	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
 		if(searchType1 == "1" ){
+			     $(".constituenyCls").hide();
+				 $(".districtLvlCls").hide();
 			getLocationAndBoardLevelWisePostsData();
 		 }else if(searchType1 == "2"){
-			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+			 var inerSerchTyeId = $('input[name=checkBoxName]:checked').val();
+			//alert(inerSerchTyeId)  //srujana
+			   if(inerSerchTyeId == "district"){
+					$(".constituenyCls").hide();
+					$(".districtLvlCls").show();
+			   }else if(inerSerchTyeId =="constituency"){
+					$(".districtLvlCls").show();
+					$(".constituenyCls").show();
+			   }
+			//getLocationAndBoardLevelWiseCasteCatgryPostsData();
 		 }	 
 	 });
-	 $(document).on("click",".radioBtnCls1",function(){
-		var searchType1  = $('input[name=checkBoxName1]:checked').val();
-		if(searchType1 == "1" ){
-			getLocationAndBoardLevelWisePostsData();
-		 }else if(searchType1 == "2"){
+	
+		$(document).on("click",".radioBtnCls1",function(){
+		 var searchType1  = $('input[name=checkBoxName1]:checked').val();
+				if(searchType1 == "1" ){
+						$(".constituenyCls").hide();
+						$(".districtLvlCls").hide();
+					getLocationAndBoardLevelWisePostsData();
+		   }else if(searchType1 == "2"){
+			var inerSerchTyeId = $('input[name=checkBoxName]:checked').val();
+			   if(inerSerchTyeId == "district"){
+					$(".constituenyCls").hide();
+					$(".districtLvlCls").show();
+			   }else if(inerSerchTyeId =="constituency"){
+				     $("#districtSelectBoxId").val('');
+                     $("#districtSelectBoxId").trigger("chosen:updated");
+					 $("#consLevelId").val('');
+                     $("#consLevelId").trigger("chosen:updated");
+					 $(".districtLvlCls").show();
+					 $(".constituenyCls").show();	 					
+			   }
 			getLocationAndBoardLevelWiseCasteCatgryPostsData();
 		 }
-		});
- function getLocationAndBoardLevelWiseCasteCatgryPostsData(){
+		});	
+ function getLocationAndBoardLevelWiseCasteCatgryPostsData(){    
 	$("#loctnLvlCntId").html('');
- $(".loctnLvlCntDivCls").show();
-   $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
-	var locationIds = [];
+    $(".loctnLvlCntDivCls").show();
+    $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
+	var distIdArr = [];
 	//locationIds.push(19);
 	//locationIds.push(23);
-  var searchType  = $('input[name=checkBoxName]:checked').val();
-  var jObj={
+     
+	 var subType  = $('input[name=checkBoxName]:checked').val();	     
+		   if(subType == "district"){
+			 distIdArr = $("#districtSelectBoxId").val();	 
+		   }else{
+			   distIdArr =$("#consLevelId").val();
+		   }
+	  
+	  if(distIdArr == null){
+		  distIdArr = [];
+	  }
+	 
+          
+  var jObj ={
         postLevelId : 0,
 		casteGrpId   :0,
 		casteId      : 0,
@@ -2257,8 +2297,8 @@ $(document).on("click",".radioBtnCls",function(){
 		positionId:0,
 		gender:0,
 		stateId:globalStateId,
-		searchType:searchType,
-		locationIdsList :locationIds,
+		searchType:subType,
+		locationIdsList :distIdArr,
 		dataType:"casteCategory"
 		
     
@@ -2270,22 +2310,22 @@ $(document).on("click",".radioBtnCls",function(){
          data: {task:JSON.stringify(jObj)}
       }).done(function(result){
 		if(result != null && result.length > 0){
-        builddata(result,searchType);   
-      }else{
+         builddata(result,subType);   
+        }else{
        $("#loctnLvlCntId1").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>"); 
       } 
     });
  }
- function builddata(result,searchType){
+ function builddata(result,subType){
 	
 		var str='';
 		str+='<table class="table table-bordered dataTableCandLocCatgry">';
 		str+='<thead class="bg_ef ">';
 		str+='<tr>';
 		
-		if(searchType == "district")
+		if(subType == "district")
 			str+='<th rowspan="2">District</th>';
-		if(searchType == "constituency")
+		if(subType == "constituency")
 			str+='<th rowspan="2">Constituency</th>';
 		str+='<th rowspan="2">Caste Group</th>';
 		if(result[0].positinsList[0].applicatnStatsList != null && result[0].positinsList[0].applicatnStatsList.length > 0){
@@ -2375,4 +2415,117 @@ $(document).on("click",".radioBtnCls",function(){
 		//$(".dataTableCandLocCatgry").dataTable({});
  }
  
+ $(document).on('click','.radioBtnCls',function(){
+	 $("#loctnLvlCntId1").html(""); //srujana
+	 var searchType  = $('input[name=checkBoxName]:checked').val();
+	 if(searchType =='district'){
+		 getDistrictsForState();		
+	 }else{
+		 getDistrictsForState();
+		 getConstituenciesForAllDistricts();
+	 }	 
+ }); 
+ function getDistrictsForState(){
+	  var distIdArr=[];
+	 var state = globalStateId;
+     var jsObj = {				
+	   stateId:state
+							
+	  }
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsListForStateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  if(result != null){
+		var str='';
+		str+='<select class="multiSel distIdsCls" multiple id="districtSelectBoxId">';
+		//str+='<option value="0">All</option>';
+		for(var i in result)
+		{
+			
+			str+='<option value="'+result[i].id+'"  >'+result[i].name+'</option>';
+			distIdArr.push(result[i].id);
+		}
+		str+='</select>';
+		$("#distcsLevelId").html(str)
+		$(".multiSel").chosen();
+		//$('#distcsLevelId').multiselect('refresh');
+	  } 
+	 
+	 var searchType  = $('input[name=checkBoxName]:checked').val();
+	 if(searchType =='constituency'){
+		 getConstituenciesForDistricts(distIdArr);
+		
+	 }
+ });
+ }
+ 
+  function getConstituenciesForAllDistricts(){ 
+    var state = globalStateId;
+	   var jsObj=
+	   {				
+		 stateId:state
+								
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForStateAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null){
+		var str='';
+		str+='<select class="multiSelect " multiple id="allConstituencySelectBoxId">';
+		//str+='<option value="0">All</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'" >'+result[i].name+'</option>';
+			//alert('+result[i].id+');
+		}
+		str+='<select>';
+		$("#consLevelId").html(str)
+		$("#consLevelId").chosen();
+		$("#consLevelId").trigger("chosen:updated");
+	  } 
+ });
+  }
+ function getConstituenciesForDistricts(distIdArr){ 
+    var state = globalStateId;
+	   var jsObj=
+	   {				
+		 distIdArr:distIdArr
+								
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituencyDetailsInDistrictsAtion1.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result.surveyTransactionVOList != null){
+		var str='';
+		str+='<select class="multiSelect " multiple id="constituencySelectBoxId">';
+		//str+='<option value="0">All</option>';
+		for(var i in result.surveyTransactionVOList)
+		{
+			str+='<option value="'+result.surveyTransactionVOList[i].id+'" >'+result.surveyTransactionVOList[i].name+'</option>';
+			//alert('+result[i].id+');
+		}
+		str+='<select>';
+		$("#consLevelId").html(str)
+		$("#consLevelId").chosen();
+		$("#consLevelId").trigger("chosen:updated");
+	  } 
+ });
+  }
+$(document).on('change','#districtSelectBoxId',function(){    
+	var distIdArr=[];
+   $('#distcsLevelId :selected').each(function(){
+	 var seletedDistId = $(this).val();
+	 distIdArr.push(seletedDistId);            
+    });
+	getConstituenciesForDistricts(distIdArr);
+});  
  

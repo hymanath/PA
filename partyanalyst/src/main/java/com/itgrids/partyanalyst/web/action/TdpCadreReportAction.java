@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -1188,5 +1189,28 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	public String getConstituenciesForDistricts(){ 
+		try{
+			jobj = new JSONObject(getTask());
+		
+			JSONArray distIdsArry = jobj.getJSONArray("distIdArr");
+			
+			List<Long> districtIdList = new ArrayList<Long>(0);
+			if(distIdsArry !=null && distIdsArry.length()>0){
+				for (int i = 0; i < distIdsArry.length(); i++) {
+					Long locId = Long.valueOf(distIdsArry.get(i).toString());
+					districtIdList.add(locId);
+				}
+			}
+			
+			surveyTransactionVO =	tdpCadreReportService.getConstituencyDetailsInDistricts(districtIdList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Entered into getConstituenciesForDistricts method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+
 	
 }
