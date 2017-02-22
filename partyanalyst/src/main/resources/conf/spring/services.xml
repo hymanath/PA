@@ -3570,6 +3570,8 @@
 		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO"></property>
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"></property>
 		<property name="smsSenderService" ref="smsSenderService"></property>
+		<property name="newsPaperDAO" ref="newsPaperDAO"></property>
+		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	

@@ -15939,11 +15939,17 @@
 				<param name="root">resultList</param>
 			</result>
 	   </action>
-	   <action name="getConstituencyListByDistrictIdAction" class="createAlertAction"  method="getConstituencyListByDistrictId">
+	 <action name="getAlertStatusAction" class="createAlertAction"  method="getAlertStatus">
 			<result type="json" name="success">    
 				<param name="root">resultList</param>
 			</result>
-	   </action>
+	 </action>
+	  <action name="getPublicationWiseAlertAction" class="createAlertAction"  method="getPublicationWiseAlert">
+			<result type="json" name="success">    
+				<param name="root">resultList</param>
+			</result>
+	  </action>
+	   
 		<action name="getConstituencyDetailsInDistrictsAtion1" class="tdpCadreReportAction" method="getConstituenciesForDistricts" >
 			<result type="json" name="success">
 				<param name="root">surveyTransactionVO</param>

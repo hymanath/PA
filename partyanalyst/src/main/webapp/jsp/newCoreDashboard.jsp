@@ -247,7 +247,7 @@
 															</label>
 														</li>
 													   <li>
-														 <label class="checkbox-inline">
+														 <!--<label class="checkbox-inline">
 															<input type="checkbox" attr_scope_type="National" class="alertImpactCheckCls" checked>
 															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">NATIONAL</h5></div>
 														 </label>
@@ -269,7 +269,7 @@
 																<input type="checkbox" attr_scope_type="Parliament" class="alertImpactCheckCls" checked>
 																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">PARLIAMENT</h5></div>
 															</label>
-														</li>
+														</li>-->
 														<li>
 															<label class="checkbox-inline">
 																<input type="checkbox" attr_scope_type="District" class="alertImpactCheckCls" checked>
@@ -284,14 +284,20 @@
 														</li>	
 														<li>
 															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="MuncipalityGMC" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">MUNICIPAL-CORP-GMC</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
 																<input type="checkbox" attr_scope_type="mandalMuncipality" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/Municipality</h5></div>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
 															</label>
 														</li>
 														<li>
 															<label class="checkbox-inline">
 															<input type="checkbox" attr_scope_type="VillageWard"  class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward</h5></div>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
 															</label>
 														</li>	
 													</ul>
@@ -316,9 +322,52 @@
 											<div id="districtSummaryAlertDivId"></div>     
 										</div>
 									</div>
-									<div class="row constituencyAlertCls" style="display:none;">
-									  <div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Alerts</span></h4>
+									<div class="row constituencyAlertCls" style="display:none;margin-top: 20px;" >
+									  <div class="col-md-12 col-xs-12 col-sm-12"> 
+										<div class="row">
+											 <div class="col-md-8 col-xs-12 col-sm-12"> 
+												<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Alerts</span>
+												<span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertConstSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span>
+												</h4>
+											 </div>
+											  <div class="specialAlertDropDownAlertCons" style="right:13px;top:30px;display:none;z-index:999">  
+												<i class="glyphicon glyphicon-remove alertSetCloseCons pull-right" style="cursor:pointer;"></i>
+													<div role="tabpanel" class="tab-pane" id="alertImpactScopeCons">
+														<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
+														<hr style ="margin-bottom:0px;" />
+														<div class="">
+															<ul class="alertConsSettingsUl" style="list-style:none;">
+																<li>
+																	<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="All" class="alertConImpactCheckCls" id="alertImpactSelectAllIdCons" checked>
+																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+																	</label>
+																</li>
+															  <li>												
+																	<label class="checkbox-inline">
+																		<input type="checkbox" attr_scope_type="Constituency" class="alertConImpactCheckCls" checked>
+																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+																	</label>	
+																</li>	
+																<li>
+																	<label class="checkbox-inline">
+																		<input type="checkbox" attr_scope_type="mandal" class="alertConImpactCheckCls" checked>
+																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+																	</label>
+																</li>
+																<li>
+																	<label class="checkbox-inline">
+																	<input type="checkbox" attr_scope_type="VillageWard"  class="alertConImpactCheckCls" checked>
+																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
+																	</label>
+																</li>	
+															</ul>
+														</div>
+													<button type="button" class="btn btn-success alertConstDtlsBtnCls btn-sm pull-right">Get Details</button> 
+												   </div>
+											   </div>
+										</div>
+											
 									  </div>
 									   <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<div id="constituencyAlertDivId"></div>     

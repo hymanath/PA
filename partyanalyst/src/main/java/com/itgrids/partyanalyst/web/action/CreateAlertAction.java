@@ -1835,14 +1835,41 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	public String getConstituencyListByDistrictId(){
+	public String getAlertStatus(){
 		try{
 			jObj = new JSONObject(getTask());
-			Long districtId = jObj.getLong("districtId");
-			resultList = alertService.getConstituencyListByDistrictId(districtId);
+			resultList = alertService.getAlertStatus();
 		}catch(Exception e){
-			LOG.error("Exception occured in getConstituencyListByDistrictId() of CreateAlertAction",e);
+			LOG.error("Exception occured in getAlertStatus() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getPublicationWiseAlert(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long alertStatusId = jObj.getLong("alertStatusId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			String filterType = jObj.getString("filterType");
+			JSONArray districtArray = jObj.getJSONArray("districtArr");
+			List<Long> districtIdList = new ArrayList<Long>();
+			for (int i = 0; i < districtArray.length(); i++){
+				districtIdList.add(Long.parseLong(districtArray.getString(i)));
+			}
+			resultList = alertService.getPublicationWiseAlert(fromDate, toDate, stateId, scopeIdList, activityMemberId,alertStatusId,alertId,editionId,filterType,districtIdList);    
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getPublicationWiseAlert() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
 	}
 }//getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)

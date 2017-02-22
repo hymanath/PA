@@ -659,7 +659,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .panelNewCustom .panel-heading {
     position: relative;
 }
-.notesDropDown, .settingsDropDown, .settingsStateLevelMeetingDropDown, .specialMeetingDropDown, .specialCadreDropDown, .specialAlertDropDown {
+.notesDropDown, .settingsDropDown, .settingsStateLevelMeetingDropDown, .specialMeetingDropDown, .specialCadreDropDown, .specialAlertDropDown, .specialAlertDropDownAlertCons {
     background: rgb(255, 255, 255);
     border: 1px solid rgb(255, 194, 31);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
@@ -670,6 +670,20 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     right: 0;
     width: 300px;
     z-index: 99;
+}
+.specialAlertDropDownAlertCons {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 194, 31);
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
+    display: none;
+    margin-top: 10px;
+    padding: 12px;
+    position: absolute;
+    right: 0;
+    width: 300px;
+    z-index: 99;
+	left: 15px;
+	top: 23px;
 }
 .notesDropDownOptionsView {
     background: rgb(255, 255, 255);
@@ -827,6 +841,14 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .activeUlCls li.active {
     background-color: rgb(74, 88, 99);
     color: rgb(255, 255, 255);
+}
+.alertConsDropDownStyles{
+	background: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 8px;
+    text-transform: capitalize;
 }
 .panelNew {
     border-color: rgb(221, 221, 221);
