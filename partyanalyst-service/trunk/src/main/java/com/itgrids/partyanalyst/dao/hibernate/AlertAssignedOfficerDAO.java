@@ -826,7 +826,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		
 		if(statusId != null && statusId.longValue() > 0L){
-			queryStr.append(" and model.alert.alertStatus.alertStatusId = :statusId ");
+			queryStr.append(" and model.alertStatus.alertStatusId = :statusId ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
