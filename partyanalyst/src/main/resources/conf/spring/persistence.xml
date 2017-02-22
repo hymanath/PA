@@ -1168,6 +1168,8 @@
 	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerUser</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocation</value>
 	                  <value>com.itgrids.partyanalyst.model.GovtDepartmentLevelDetails</value>
+	                  
+	                  <value>com.itgrids.partyanalyst.model.AlertRegionScopes</value>
 	                  <!-- Command Control Alerts End -->
 	                  
 	                  <!-- COMMITTEES IVR SURVEY START -->
