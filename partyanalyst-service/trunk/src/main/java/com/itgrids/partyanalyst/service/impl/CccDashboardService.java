@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,7 +42,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
+import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;  
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
@@ -297,7 +299,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
 	 */
-	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,String sortingType){
 		logger.info("Entered in getTotalAlertGroupByStatusThenDepartment() method of CccDashboardService{}");
 		try{
 			Date fromDate = null;
@@ -359,6 +361,20 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				totalAlertCountGrpByDeptList.addAll(alertCountGrpByDeptList2);
 			}
 			buildAlertGroupByStatusThenDepartment(totalAlertCountGrpByDeptList,statusIdAndCountMap,deptList,finalListNew,"true");
+			if(sortingType != null && !sortingType.trim().isEmpty() &&  sortingType.equalsIgnoreCase("asc")){
+				if(finalListNew != null && finalListNew.size() > 0){
+					for(AlertVO alertVO : finalListNew){
+						Collections.sort(alertVO.getSubList1(),departmentWiseAlertsSortAsc);
+					}
+				}
+			}else{
+				if(finalListNew != null && finalListNew.size() > 0){
+					for(AlertVO alertVO : finalListNew){
+						Collections.sort(alertVO.getSubList1(),departmentWiseAlertsSortDsc);
+					}
+				}
+			}
+			
 			return finalListNew;     
 		}catch(Exception e){
 			e.printStackTrace();
@@ -366,6 +382,19 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return null;
 	}
+	
+	public static Comparator<AlertVO> departmentWiseAlertsSortDsc = new Comparator<AlertVO>(){
+		public int compare(AlertVO obj1, AlertVO obj2)
+		{
+			return (obj2.getCategoryCount().intValue()) - (obj1.getCategoryCount().intValue());
+		}
+	};
+	public static Comparator<AlertVO> departmentWiseAlertsSortAsc = new Comparator<AlertVO>(){
+		public int compare(AlertVO obj1, AlertVO obj2)
+		{
+			return (obj1.getCategoryCount().intValue()) - (obj2.getCategoryCount().intValue());
+		}
+	};
 	/*
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)

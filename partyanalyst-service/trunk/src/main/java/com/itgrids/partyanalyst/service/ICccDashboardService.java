@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 
 public interface ICccDashboardService {   
 	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
-	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
+	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,String sortingType);
 	
 	public List<GovtDepartmentVO> getDepartmentLevels();
 	public List<GovtDepartmentVO> getLocationsBasedOnLevel(Long levelId);
