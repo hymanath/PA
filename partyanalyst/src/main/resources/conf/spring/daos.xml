@@ -3764,4 +3764,8 @@
      <bean id="committeeConfirmRuleConditionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeConfirmRuleConditionDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    
+    <bean id="alertRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertRegionScopesDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 </beans>		
