@@ -970,7 +970,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}  
 			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
 			//List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList);//old
-			List<Long> lvlIdList = new ArrayList<Long>();
+			List<Long> lvlIdList = new ArrayList<Long>();  
 			Long lvlValue = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationDAO.getUserAccessLevels(userId);
 			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
@@ -987,7 +987,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}  
 			//getTotalAlertGroupByDepartmentThenStatusForGovt
 			//List<Object[]> alertCountGrpByDeptList = alertDAO.getTotalAlertGroupByStatusThenDepartmentForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList);//old
-			List<Object[]> alertCountGrpByDeptList = alertAssignedOfficerDAO.getTotalAlertGroupByDepartmentThenStatusForGovt(fromDate,toDate,stateId,printIdList,electronicIdList,deptList,lvlValue,lvlIdList);
+			List<Object[]> alertCountGrpByDeptList = alertAssignedOfficerDAO.getDepartmentWiseAlertCount(fromDate,toDate,stateId,printIdList,electronicIdList,deptList,lvlValue,lvlIdList,"status");
 					
 			
 			buildAlertGroupByStatusThenDepartment(alertCountGrpByDeptList,deptIdAndCountMap,statusList,finalListNew,"false");  
