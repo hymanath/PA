@@ -2344,6 +2344,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 				fromDate = dateUtilService.getCurrentDateAndTime();
 				toDate = dateUtilService.getCurrentDateAndTime();
 				if(deptId != null && deptId.longValue() > 0L){
+					dptIdList.clear();
 					dptIdList.add(deptId);
 				}
 			}else{
