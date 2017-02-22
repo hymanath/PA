@@ -381,23 +381,15 @@
                         <li><span class="positionCls">All Positions</span></li>
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
-                    </ul>-->					
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
-                    	<label>Position</label>
-                        <select class="chosenSelect" id="positonId">
-                        	<option value="0">ALL</option>
-                        </select>
-                    </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 pull-right">
-                    	<label>
-						Position Level : </label>
-                        <select class="chosenSelect" id="locationsLevelId">
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12 pull-right">					
+                    </ul>-->	
+					<div class="col-md-12 col-sm-4 col-xs-12">
+                    	<input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1 hideshowchkbxCls"/><span> Overall View </span>
+                       <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
+                   </div>	
+					<div class="col-md-3 col-sm-4 col-xs-12 m_top10">					
 						<div>
-							<label style="margin-left: 30px;"> Geographical View : </label>
-							<span class="btn btn-success btn-xs form-inline" style="margin-left: 33px;">
+							<label> Geographical View : </label>
+							<span class="btn btn-success btn-xs form-inline">
 								<label>
 									<input  type="radio" name="checkBoxName" checked="true"  style="" value="district" class="radioBtnCls"/><span>District View</span>
 								</label>
@@ -407,10 +399,36 @@
 							</span>
 						</div>
 					 </div>
-					<div class="col-md-4 col-sm-4 col-xs-12 pull-right" style="left: 50px; margin-top: 26px;">
-                    	<input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1"/><span> Overall View </span>
-                       <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
-                   </div>
+					<div class="col-md-3 col-sm-4 col-xs-12 m_top10 districtLvlCls">
+                    	<label>
+						District Level : </label>
+						
+						<div id="distcsLevelId"></div> 
+                    </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 m_top10 constituenyCls">
+                    	<label>
+						Constituency Level : </label> 
+						<div>
+							<select  id="consLevelId" class="chosenSelect form-control" multiple></select>
+						</div> 
+                    </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 m_top10">
+                    	<label>
+						Position Level : </label>
+                        <select class="chosenSelect" id="locationsLevelId">
+                        </select>
+                    </div>
+					<div class="col-md-2 col-sm-4 col-xs-12 m_top10">
+                    	<label>Position</label>
+                        <select class="chosenSelect" id="positonId">
+                        	<option value="0">ALL</option>
+                        </select>
+                    </div>
+					<div class="row">
+					<div class=" m_top10 pull-right" style="margin-left: 0px; margin-right: 31px;margin-top: 18px;"> 
+                    	<button type="button" value="getDetailsVal" class="btn btn-success m_top10" onclick="getLocationAndBoardLevelWiseCasteCatgryPostsData();" id="">SUBMIT</button>
+					</div>
+					</div>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
