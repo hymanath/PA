@@ -313,7 +313,7 @@ function buildTotalAlertByStatusForOfficer(result){
 			totalAlert+=result[i].count;
 			str+='<tr>';
 				str+='<td><span class="colorSpecify" style="background-color:'+result[i].color+';"></span>&nbsp;&nbsp;'+result[i].status+'</td>';
-				str+='<td><span class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="today">'+result[i].count+'</span></td>';
+				str+='<td><span class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="overall">'+result[i].count+'</span></td>';     
 				str+='<td>'+result[i].statusPercent+'</td>';
 			str+='</tr>';
 		}
@@ -409,7 +409,7 @@ function buildTotalAlertByStatusForOfficer(result){
 
 			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
 			span += '<span style="font-size: 18px">TOTAL</span><br>';
-			span += '<span style="font-size: 14px;" class="totalAlertDetails" attr_status_id="'+result[i].statusId+'" attr_department_id="0" attr_type="overall">'+totalAlert+'</span>';
+			span += '<span style="font-size: 14px;" class="totalAlertDetails" attr_status_id="0"       attr_department_id="0" attr_type="overall">'+totalAlert+'</span>';
 			span += '</span>';
 
 			$("#TotalAlertsView").append(span);
@@ -477,7 +477,7 @@ function buildTotalAlertByDeptForOfficer(result){
 	}
 	str+='<div class="m_top10">';
 		str+='<p style="font-size:20px;text-align:center">Hi Officer</p>';
-		str+='<p style="font-size:20px;text-align:center">You Have <span style="font-size:30px;" class="totalAlertDetails" attr_status_id="0" attr_department_id="0" attr_type="overall">'+totalAlertCount+'</span> New Alerts</p>';
+		str+='<p style="font-size:20px;text-align:center">You Have <span style="font-size:30px;" class="totalAlertDetails" attr_status_id="0" attr_department_id="0" attr_type="toDay">'+totalAlertCount+'</span> New Alerts</p>';    
 	str+='</div>';
 	str+='<div class="m_top10 alertScroll">';
 		str+='<table class="table tableBorLefRig">';
@@ -487,9 +487,9 @@ function buildTotalAlertByDeptForOfficer(result){
 					if(result[j].status !=null && result[j].status.length>15){
 						str+='<td><span data-toggle="tooltip" data-placement="top" title="'+result[j].status+'">'+result[j].status.substring(0,15)+'..</span></td>';
 					}else{
-						str+='<td>'+result[j].status+'</td>';
+						str+='<td>'+result[j].status+'</td>';  
 					}
-					str+='<td style="text-align:center"><span class="colorStyleAlert totalAlertDetails" attr_status_id="0" attr_department_id="'+result[i].id+'" attr_type="overall">'+result[j].count+'</span></td>';
+					str+='<td style="text-align:center"><span class="colorStyleAlert totalAlertDetails"     attr_status_id="0" attr_department_id="'+result[i].id+'" attr_type="toDay">'+result[j].count+'</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
