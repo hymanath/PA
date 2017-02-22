@@ -72,8 +72,8 @@
 	$('#dateRangeIdForAlert').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDateAlert = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateAlert = picker.endDate.format('DD/MM/YYYY');
-	  var scopeIdsArr = [];
-		scopeIdsArr.push(2);  
+	  var scopeIdsArr = [2,3,8,5,7,9,6];
+		/* scopeIdsArr.push(2);  
 		scopeIdsArr.push(3);  
 		scopeIdsArr.push(6);  
 		scopeIdsArr.push(7);  
@@ -83,7 +83,7 @@
 		scopeIdsArr.push(10);  
 		scopeIdsArr.push(11);  
 		scopeIdsArr.push(1);  
-		scopeIdsArr.push(4);  
+		scopeIdsArr.push(4);   */
 		
 		//hide district and constituency div
 		 $(".districtAlertCls").hide();
@@ -92,6 +92,7 @@
 		 $("#dstrctSlctBxId").val(0);
 	 
 	  $(".alertImpactCheckCls").prop('checked', true); //checked all scope level
+	  $(".alertConImpactCheckCls").prop('checked', true); //checked all scope level
 	  $(".alertFilterCls li").removeClass("active");
 	  $(".alertFilterCls li:first-child").addClass("active");
 	 $("#alertTypeHiddenId").attr("attr_alert_id",0);
@@ -110,7 +111,8 @@
 	function defaultAlertCalls()
 	{
 		$(".alertImpactCheckCls").prop('checked', true);
-		var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];
+		//var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];
+		var scopeIdsArr = [2,3,8,5,7,9,6];
 		$("#districtSummaryAlertDivId").html(" ");
 		$("#constituencyAlertDivId").html("");
 		$(".constituencyAlertCls").hide();
@@ -212,12 +214,13 @@
 				scopeIdsArr.push(3);
 			}else if(selectionType == "mandalMuncipality"){
 				scopeIdsArr.push(5);  
-				scopeIdsArr.push(8);
 			}else if(selectionType == "VillageWard"){
 				scopeIdsArr.push(7);  
 				scopeIdsArr.push(9);	
 				scopeIdsArr.push(6);	
-			}else if(selectionType == "National"){
+			}else if(selectionType == "MuncipalityGMC"){
+			   scopeIdsArr.push(8);
+			}/* else if(selectionType == "National"){
 				scopeIdsArr.push(10);  	
 			}else if(selectionType == "International"){
 				scopeIdsArr.push(11);  
@@ -225,7 +228,7 @@
 				scopeIdsArr.push(1);	
 			}else if(selectionType == "Parliament"){
 				scopeIdsArr.push(4);	
-			}
+			} */
 		  }
 	   });
 	  var locVal ='';
@@ -254,7 +257,24 @@
 			$(".constituencyAlertCls").show();
 			$(".districtSelectBoxCls").show();
 			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
-			getTotalAlertConstituencyWise(scopeIdsArr);
+			
+			$(".alertConImpactCheckCls").prop('checked', true);//select all constituency impact scope
+			var consScopeIdsArr = [];
+		 $(".alertConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				consScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				consScopeIdsArr.push(5);  
+			}else if(selectionType == "VillageWard"){
+				consScopeIdsArr.push(7);  
+				consScopeIdsArr.push(9);	
+				consScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+		getTotalAlertConstituencyWise(consScopeIdsArr);
 		}
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	});     
@@ -271,17 +291,18 @@
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
 				 if(selectionType == "District"){
-					scopeIdsArr.push(2);
+				scopeIdsArr.push(2);
 				}else if(selectionType == "Constituency"){
 					scopeIdsArr.push(3);
 				}else if(selectionType == "mandalMuncipality"){
 					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
 				}else if(selectionType == "VillageWard"){
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
-					scopeIdsArr.push(6);  	
-				}else if(selectionType == "National"){
+					scopeIdsArr.push(6);	
+				}else if(selectionType == "MuncipalityGMC"){
+				   scopeIdsArr.push(8);
+				}/* else if(selectionType == "National"){
 				   scopeIdsArr.push(10);  	
 			    }else if(selectionType == "International"){
 				   scopeIdsArr.push(11);  
@@ -289,7 +310,7 @@
 				   scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				   scopeIdsArr.push(4);	
-			    }
+			    } */
 			  }
 		   });
 		if(option == "1"){
@@ -309,8 +330,25 @@
 			$(".constituencyAlertCls").show();
 			$(".districtSelectBoxCls").show();			
 			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
-			getTotalAlertConstituencyWise(scopeIdsArr);
+			
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
+			
+		 var consScopeIdsArr = [];
+		 $(".alertConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				consScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				consScopeIdsArr.push(5);  
+			}else if(selectionType == "VillageWard"){
+				consScopeIdsArr.push(7);  
+				consScopeIdsArr.push(9);	
+				consScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   getTotalAlertConstituencyWise(consScopeIdsArr);
 		}
 	});
 	function getTotalAlertGroupByDist(scopeIdsArr,location){ 
@@ -423,7 +461,7 @@
 									var districtId = this.extra;
 									var totalAlertCnt = this.y;
 									var districtIdArr=[districtId];
-									buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district");
+									buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","");
 								}
 							}
 						}  
@@ -1820,18 +1858,19 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 		  $(".alertSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				 if(selectionType == "District"){
-					scopeIdsArr.push(2);
+				if(selectionType == "District"){
+				scopeIdsArr.push(2);
 				}else if(selectionType == "Constituency"){
 					scopeIdsArr.push(3);
 				}else if(selectionType == "mandalMuncipality"){
 					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
 				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					scopeIdsArr.push(6);	
+				}else if(selectionType == "MuncipalityGMC"){
+				   scopeIdsArr.push(8);
+				}/* else if(selectionType == "National"){
 				   scopeIdsArr.push(10);  	
 			    }else if(selectionType == "International"){
 				   scopeIdsArr.push(11);  
@@ -1839,7 +1878,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 				   scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				   scopeIdsArr.push(4);	
-			    }
+			    } */
 			  }
 		   });
 		  if(groupAssignType == "Public Representative"){
@@ -2077,18 +2116,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		  	$(".alertSettingsUl li").each(function() {
 				if($(this).find("input").is(":checked")){
 					var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-					if(selectionType == "District"){
-						scopeIdsArr.push(2);
+					 if(selectionType == "District"){
+					scopeIdsArr.push(2);
 					}else if(selectionType == "Constituency"){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
-						scopeIdsArr.push(8);
 					}else if(selectionType == "VillageWard"){
-						scopeIdsArr.push(6);  
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
-					}else if(selectionType == "National"){
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				        scopeIdsArr.push(10);  	
 			        }else if(selectionType == "International"){
 				       scopeIdsArr.push(11);  
@@ -2096,7 +2136,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				       scopeIdsArr.push(1);	
 				    }else if(selectionType == "Parliament"){
 				       scopeIdsArr.push(4);	
-			      }
+			      } */
 			}
 			});
 			var commitLvlIdArr = [];
@@ -2172,18 +2212,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		  	$(".alertSettingsUl li").each(function() {
 				if($(this).find("input").is(":checked")){
 					var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-					if(selectionType == "District"){
-						scopeIdsArr.push(2);
+					 if(selectionType == "District"){
+					scopeIdsArr.push(2);
 					}else if(selectionType == "Constituency"){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
-						scopeIdsArr.push(8);
 					}else if(selectionType == "VillageWard"){
-						scopeIdsArr.push(6);  
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
-					}else if(selectionType == "National"){
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				        scopeIdsArr.push(10);  	
 			        }else if(selectionType == "International"){
 				       scopeIdsArr.push(11);  
@@ -2191,7 +2232,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				       scopeIdsArr.push(1);	
 				    }else if(selectionType == "Parliament"){
 				      scopeIdsArr.push(4);	
-			      }
+			      } */
 				}
 			});  
 			getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId);
@@ -2323,18 +2364,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
 				var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				if(selectionType == "District"){
+				  if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 			    }else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -2342,7 +2384,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				    scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				    scopeIdsArr.push(4);	
-			    }
+			    } */
 			}
 		});
 		getAlertDtlsAssignedByPartyCommite(scopeIdsArr,commitTypeId,designationId,commitLvlIdArr,cadreId,statusId);  
@@ -2395,18 +2437,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$(".alertSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				 if(selectionType == "District"){
+				  if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 				}else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -2414,7 +2457,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				    scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				    scopeIdsArr.push(4);	
-				}
+				} */
 			  }
 		   });
 		var commitLvlIdArr = [];
@@ -2452,18 +2495,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		  $(".alertSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				 if(selectionType == "District"){
+				    if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 				}else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -2471,7 +2515,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				    scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				    scopeIdsArr.push(4);	
-				}
+				} */
 			  }
 		   });
 		
@@ -2531,18 +2575,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
 				var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				if(selectionType == "District"){
+				   if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 				}else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -2550,7 +2595,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				    scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				    scopeIdsArr.push(4);	
-				}
+				} */
 			}
 		});
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
@@ -2958,18 +3003,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$(".alertSettingsUl li").each(function() {
 			if($(this).find("input").is(":checked")){
 				var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				if(selectionType == "District"){
+				 if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);  
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 				}else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -2977,7 +3023,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				    scopeIdsArr.push(1);	
 				}else if(selectionType == "Parliament"){
 				    scopeIdsArr.push(4);	
-				}
+				} */
 			}
 		});
 		
@@ -3023,40 +3069,58 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		var districtId = $(this).attr("attr_district_id");
 		var totalAlertCnt = $(this).attr("attr_alert_count");
 		var districtIdArr=[districtId];
-		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district");
+		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","");
 	}); 	
-	function buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel){
+	function buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,locationType){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
 		$("#tourDocumentId").modal("show");
 		var dates=$("#dateRangeIdForAlert").val();
-		var scopeIdsArr = [];		
-		$(".alertSettingsUl li").each(function() {
-			if($(this).find("input").is(":checked")){
-				var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				if(selectionType == "District"){
-					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
+		var scopeIdsArr = [];	
+         if(locationType != null && locationType=="Constituency"){
+			$(".alertConsSettingsUl li").each(function() {
+			  if($(this).find("input").is(":checked")){
+				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+				 if(selectionType == "Constituency"){
 					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
+				}else if(selectionType == "mandal"){
 					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
 				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(6);   
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
-				}else if(selectionType == "National"){
-				    scopeIdsArr.push(10);  	
-				}else if(selectionType == "International"){
-				    scopeIdsArr.push(11);  
-				}else if(selectionType == "State"){
-				    scopeIdsArr.push(1);	
-				}else if(selectionType == "Parliament"){
-				    scopeIdsArr.push(4);	
+					scopeIdsArr.push(6);	
 				}
-			}
-		});
+			  }
+		    }); 
+		 }else{
+			$(".alertSettingsUl li").each(function() {
+				if($(this).find("input").is(":checked")){
+					var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					  if(selectionType == "District"){
+						scopeIdsArr.push(2);
+						}else if(selectionType == "Constituency"){
+							scopeIdsArr.push(3);
+						}else if(selectionType == "mandalMuncipality"){
+							scopeIdsArr.push(5);  
+						}else if(selectionType == "VillageWard"){
+							scopeIdsArr.push(7);  
+							scopeIdsArr.push(9);	
+							scopeIdsArr.push(6);	
+						}else if(selectionType == "MuncipalityGMC"){
+						   scopeIdsArr.push(8);
+						}/* else if(selectionType == "National"){
+						scopeIdsArr.push(10);  	
+					}else if(selectionType == "International"){
+						scopeIdsArr.push(11);  
+					}else if(selectionType == "State"){
+						scopeIdsArr.push(1);	
+					}else if(selectionType == "Parliament"){
+						scopeIdsArr.push(4);	
+					} */
+				}	 
+		  });
+		 }	
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
@@ -3845,18 +3909,19 @@ function getTotalArticledetails(articleId){
 			 $(".alertSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				 if(selectionType == "District"){
+				   if(selectionType == "District"){
 					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
-					scopeIdsArr.push(6);	
-				}else if(selectionType == "National"){
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				    scopeIdsArr.push(10);  	
 				}else if(selectionType == "International"){
 				    scopeIdsArr.push(11);  
@@ -3876,7 +3941,7 @@ function getTotalArticledetails(articleId){
 					scopeIdsArr.push(11);  
 					scopeIdsArr.push(1);  
 					scopeIdsArr.push(4);  
-				}
+				} */
 			  }
 		   });
 		  var locVal ='';
@@ -3900,7 +3965,23 @@ function getTotalArticledetails(articleId){
 				$(".districtAlertCls").show();
 			    $(".constituencyAlertCls").show();	
 				getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
-				getTotalAlertConstituencyWise(scopeIdsArr);
+				
+				 var consScopeIdsArr = [];
+				 $(".alertConsSettingsUl li").each(function() {
+				  if($(this).find("input").is(":checked")){
+					 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					 if(selectionType == "Constituency"){
+						consScopeIdsArr.push(3);
+					}else if(selectionType == "mandal"){
+						consScopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						consScopeIdsArr.push(7);  
+						consScopeIdsArr.push(9);	
+						consScopeIdsArr.push(6);	
+					}
+				  }
+			   });
+				getTotalAlertConstituencyWise(consScopeIdsArr);
 			}
 		}
 		      
@@ -4040,20 +4121,7 @@ function getTotalArticledetails(articleId){
 			}
 		});  
 	}
-	//getConstituencyListByDistrict(11);
-	function getConstituencyListByDistrict(districtId){
-		var jsObj = { 
-			districtId :districtId            
-		}                  
-		$.ajax({
-			type : 'POST',        
-			url : 'getConstituencyListByDistrictIdAction.action',
-			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}    
-		}).done(function(result){
-			//console.log(result);
-		});  
-	}
+	
 	 $(document).on("click",".locationAlertCls",function(){
 		var locationIdStr = $(this).attr("attr_location_id");
 		var totalAlertCnt = $(this).attr("attr_alert_count");
@@ -4063,7 +4131,7 @@ function getTotalArticledetails(articleId){
 		var districtIdArr =[];
 		var constituencyId = 0;
 		if(loctionType=="Constituency"){
-		  if(locationLevel=="District Level"){
+		  if(locationLevel=="District/GMC CORP Impact Level"){
 			 districtIdArr= locationIdStr.split(",");
 		  }else{
 			constituencyId = locationIdStr;  
@@ -4075,7 +4143,7 @@ function getTotalArticledetails(articleId){
 		}
 		//console.log(districtIdArr);
 	
-		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel);
+		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType);
 	}); 
 	$(document).on("change","#dstrctSlctBxId",function(){
 		 var locVal ='';
@@ -4094,18 +4162,19 @@ function getTotalArticledetails(articleId){
 		 $(".alertSettingsUl li").each(function() {
 		  if($(this).find("input").is(":checked")){
 			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-		     if(selectionType == "District"){
-				scopeIdsArr.push(2);
-			}else if(selectionType == "Constituency"){
-				scopeIdsArr.push(3);
-			}else if(selectionType == "mandalMuncipality"){
-				scopeIdsArr.push(5);  
-				scopeIdsArr.push(8);
-			}else if(selectionType == "VillageWard"){
-				scopeIdsArr.push(7);  
-				scopeIdsArr.push(9);	
-				scopeIdsArr.push(6);	
-			}else if(selectionType == "National"){
+		          if(selectionType == "District"){
+					scopeIdsArr.push(2);
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}else if(selectionType == "MuncipalityGMC"){
+					   scopeIdsArr.push(8);
+					}/* else if(selectionType == "National"){
 				scopeIdsArr.push(10);  	
 			}else if(selectionType == "International"){
 				scopeIdsArr.push(11);  
@@ -4113,10 +4182,26 @@ function getTotalArticledetails(articleId){
 				scopeIdsArr.push(1);	
 			}else if(selectionType == "Parliament"){
 				scopeIdsArr.push(4);	
-			}
+			} */
 		  }
 	   }); 
-	   getTotalAlertConstituencyWise(scopeIdsArr);
+	   
+			var consScopeIdsArr = [];
+			 $(".alertConsSettingsUl li").each(function() {
+			  if($(this).find("input").is(":checked")){
+				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+				 if(selectionType == "Constituency"){
+					consScopeIdsArr.push(3);
+				}else if(selectionType == "mandal"){
+					consScopeIdsArr.push(5);  
+				}else if(selectionType == "VillageWard"){
+					consScopeIdsArr.push(7);  
+					consScopeIdsArr.push(9);	
+					consScopeIdsArr.push(6);	
+				}
+			  }
+		   });
+	   getTotalAlertConstituencyWise(consScopeIdsArr);
 	   getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 	   getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	});
@@ -4230,4 +4315,98 @@ function getTotalArticledetails(articleId){
 		   });   	
 		   }
 		}
+		getAlertStatus();
+	function getAlertStatus(){
+		var jsObj = { 
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getAlertStatusAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			//console.log(result);
+		});  
+	}
+	//getPublicationWiseAlert()
+	function getPublicationWiseAlert(){
+		var scopeIdsArr = [2,3,4,5,6,7,8];
+		$(".districtAlertCls").show();
+		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#districtSummaryAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+        var districtArr=[];
+		if($("#dstrctSlctBxId").is(":visible")){
+			var districtId = $("#dstrctSlctBxId").val();
+			if(districtId > 0){
+				districtArr.push(districtId);
+			}
+		}
+		var jsObj = { 
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			group : 			"",
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			filterType : 	"District",
+			districtArr : districtArr,
+			alertStatusId : 0
+			
+			
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getPublicationWiseAlertAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+		   console.log(result);
+		});  
+	}
 	
+	$(document).on('click','#alertConstSettingsId',function(){
+		$(".specialAlertDropDownAlertCons").toggle();            
+	});
+	 $(document).on("click",".alertSetCloseCons",function(){
+			$(".specialAlertDropDownAlertCons").hide(); 
+	 });
+	 $(document).on("click","#alertImpactSelectAllIdCons",function(){
+			 if ($(this).prop('checked')) {
+				$(".alertConImpactCheckCls").prop('checked', true);
+			} else {
+				$(".alertConImpactCheckCls").prop('checked', false);
+			}
+	});
+	$(document).on("click",".alertConstDtlsBtnCls",function(){
+		$(".specialAlertDropDownAlertCons").toggle(); 
+		var consScopeIdsArr = [];
+		 $(".alertConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				consScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				consScopeIdsArr.push(5);  
+			}else if(selectionType == "VillageWard"){
+				consScopeIdsArr.push(7);  
+				consScopeIdsArr.push(9);	
+				consScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   if(consScopeIdsArr.length == 0){
+			alert("Please select atleast one option");
+			return;  
+		}
+	 	getTotalAlertConstituencyWise(consScopeIdsArr);
+	});  
