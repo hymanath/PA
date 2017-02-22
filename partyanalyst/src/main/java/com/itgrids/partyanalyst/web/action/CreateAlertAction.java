@@ -1699,7 +1699,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			Long stateId = jObj.getLong("stateId");
-			
+			String sortingType = jObj.getString("sortingType");
 			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
 			List<Long> deptIdList = new ArrayList<Long>();
 			for (int i = 0; i < deptIdArr.length(); i++){
@@ -1718,7 +1718,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 			}
 			
-			alertVOs = cccDashboardService.getTotalAlertGroupByStatusThenDepartment(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+			alertVOs = cccDashboardService.getTotalAlertGroupByStatusThenDepartment(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,sortingType);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
