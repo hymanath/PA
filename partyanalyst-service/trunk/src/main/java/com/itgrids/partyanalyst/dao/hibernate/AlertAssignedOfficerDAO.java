@@ -1321,11 +1321,11 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	          " left join UA.localElectionBody LEB" +
 	          " left join UA.panchayat P" +
 	          " left join UA.ward W");
-	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N'" +
+	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and  " +
 	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
 	    		  " model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
 	    if(statusId != null && statusId.longValue() > 0L){
-	    	sb.append(" and  model.alert.alertStatus.alertStatusId = :statusId ");
+	    	sb.append(" and  model.alertStatus.alertStatusId = :statusId ");
 	    }
 	    if(departmentIds != null && departmentIds.size()>0){
 	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
