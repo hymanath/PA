@@ -318,7 +318,7 @@
 									</div>
 									<div class="row constituencyAlertCls" style="display:none;">
 									  <div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">Constitency Wise Alerts</span></h4>
+											<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Alerts</span></h4>
 									  </div>
 									   <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<div id="constituencyAlertDivId"></div>     
