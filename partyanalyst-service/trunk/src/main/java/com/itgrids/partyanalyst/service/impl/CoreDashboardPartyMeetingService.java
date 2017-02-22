@@ -3605,7 +3605,9 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 	/*
 	 *  @author Swadhin 
 	 */
-	public List<IdNameVO> getMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, final Long partyMeetingId, Long sessionId, String status, Long districtId){
+	//TODO1
+	@SuppressWarnings("unused")
+	public List<IdNameVO> getMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, final Long partyMeetingId, Long sessionId, String status, Long districtId ,boolean isNonInvitee){
 		try{
 			Set<Long> locationIdSet = null;    
 			Set<Long> uniqueCadreList = null;
@@ -3853,47 +3855,44 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 			//create a map to maintain status
 			Map<Long,String> statusIdAndStausMap = null;
+			
+			
+			Map<String,IdNameVO>  designationsMap = new HashMap<String,IdNameVO>();
 			//status comes from UI.  
 			if(status.equalsIgnoreCase("attended")){
+				
 				if(filterIdSet != null && filterIdSet.size() > 0){
 					membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(filterIdSet));
 					if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
-						for(Object[] obj : membersDesignationDtlsList){
+						
+						for(Object[] obj : membersDesignationDtlsList)
+						{	
+							cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+							idNameVO = idAndMemberDtlsMap.get(cadreId);
+							if(idNameVO == null){
+								idNameVO = new IdNameVO();
+								idNameVO.setId(cadreId); //cadreId
+								idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+								idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : ""); 
+								idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+								idAndMemberDtlsMap.put(cadreId, idNameVO); 
+							}
+							idNameVO = idAndMemberDtlsMap.get(cadreId);
+							if(obj[2] != null || obj[3]!=null){
+								if(obj[2] != null){
+									String sts = obj[2].toString();
+									setStatusToVO( sts , idNameVO);
+								}
+								if(obj[3] != null){
+									String sts = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+									setStatusToVO( sts , idNameVO);
+								}
+							}
+							
 							attendedTimeList = new ArrayList<String>();
 							attendedDateList = new ArrayList<String>();
 							noOfPresent = 0L;
 							statusIdAndStausMap = new HashMap<Long,String>();
-							cadreId = obj[0] != null ? (Long)obj[0] : 0l;
-							idNameVO = idAndMemberDtlsMap.get(cadreId);
-							if(idNameVO != null){
-								String sts = idNameVO.getStatus();
-								if(obj[2] != null){
-									sts = sts+","+obj[2].toString();
-									idNameVO.setStatus(sts);
-									idAndMemberDtlsMap.put(cadreId, idNameVO);
-								}else{
-									if(obj[3] != null){
-										sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-										idNameVO.setStatus(sts);
-										idAndMemberDtlsMap.put(cadreId, idNameVO);
-									}
-								}  
-								
-							}else{
-								idNameVO = new IdNameVO();
-								idNameVO.setId(cadreId); //cadreId
-								idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
-								idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : "");  
-								if(obj[2] != null){
-									idNameVO.setStatus(obj[2].toString());
-								}else if(obj[3] != null){
-									idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
-								}else{
-									idNameVO.setStatus("");
-								}
-								idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
-								idAndMemberDtlsMap.put(cadreId, idNameVO); 
-							}
 							//push session wise attendance here by taking cadre Id  
 							if(sessionIdList != null && sessionIdList.size() > 0){
 								for(Long sesId : sessionIdList){
@@ -3947,8 +3946,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						}
 					}
 					idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
-				}
-				
+				}	
 			}else if(status.equalsIgnoreCase("late")){
 				//create a map which will contain only late cadre ids is a map.
 				Map<Long,Set<Long>> sessionIdAndLateCadresList = new HashMap<Long,Set<Long>>();
@@ -3992,42 +3990,36 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						if(lateCadres != null && lateCadres.size() > 0){
 							membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(filterIdSet));
 							if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
+								
 								for(Object[] obj : membersDesignationDtlsList){
+									
+									cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+									idNameVO = idAndMemberDtlsMap.get(cadreId);
+									if(idNameVO == null){
+										idNameVO = new IdNameVO();
+										idNameVO.setId(cadreId); //cadreId
+										idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+										idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : ""); 
+										idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+										idAndMemberDtlsMap.put(cadreId, idNameVO); 
+									}
+									idNameVO = idAndMemberDtlsMap.get(cadreId);
+									if(obj[2] != null || obj[3]!=null){
+										if(obj[2] != null){
+											String sts = obj[2].toString();
+											setStatusToVO( sts , idNameVO);
+										}
+										if(obj[3] != null){
+											String sts = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+											setStatusToVO( sts , idNameVO);
+										}
+									}
+									
 									attendedTimeList = new ArrayList<String>();
 									attendedDateList = new ArrayList<String>();
 									noOfPresent = 0L;
 									statusIdAndStausMap = new HashMap<Long,String>();
-									cadreId = obj[0] != null ? (Long)obj[0] : 0l;
-									idNameVO = idAndMemberDtlsMap.get(cadreId);
-									if(idNameVO != null){
-										String sts = idNameVO.getStatus();
-										if(obj[2] != null){
-											sts = sts+","+obj[2].toString();
-											idNameVO.setStatus(sts);
-											idAndMemberDtlsMap.put(cadreId, idNameVO);
-										}else{
-											if(obj[3] != null){
-												sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-												idNameVO.setStatus(sts);
-												idAndMemberDtlsMap.put(cadreId, idNameVO);
-											}
-										}  
-										
-									}else{
-										idNameVO = new IdNameVO();
-										idNameVO.setId(cadreId); //cadreId
-										idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
-										idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : "");  
-										if(obj[2] != null){
-											idNameVO.setStatus(obj[2].toString());
-										}else if(obj[3] != null){
-											idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
-										}else{
-											idNameVO.setStatus("");
-										}
-										idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
-										idAndMemberDtlsMap.put(cadreId, idNameVO); 
-									}
+									
 									//push session wise attendance here by taking cadre Id  
 									if(sessionIdList != null && sessionIdList.size() > 0){
 										for(Long sesId : sessionIdList){
@@ -4095,41 +4087,34 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 						membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(totalInviteesCadreList));
 						if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
 							for(Object[] obj : membersDesignationDtlsList){
+								
+								cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+								idNameVO = idAndMemberDtlsMap.get(cadreId);
+								if(idNameVO == null){
+									idNameVO = new IdNameVO();
+									idNameVO.setId(cadreId); //cadreId
+									idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+									idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : ""); 
+									idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+									idAndMemberDtlsMap.put(cadreId, idNameVO); 
+								}
+								idNameVO = idAndMemberDtlsMap.get(cadreId);
+								if(obj[2] != null || obj[3]!=null){
+									if(obj[2] != null){
+										String sts = obj[2].toString();
+										setStatusToVO( sts , idNameVO);
+									}
+									if(obj[3] != null){
+										String sts = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+										setStatusToVO( sts , idNameVO);
+									}
+								}
+								
 								attendedTimeList = new ArrayList<String>();
 								attendedDateList = new ArrayList<String>();
 								noOfPresent = 0L;
 								statusIdAndStausMap = new HashMap<Long,String>();  
-								cadreId = obj[0] != null ? (Long)obj[0] : 0l;
-								idNameVO = idAndMemberDtlsMap.get(cadreId);
-								if(idNameVO != null){
-									String sts = idNameVO.getStatus();
-									if(obj[2] != null){
-										sts = sts+","+obj[2].toString();
-										idNameVO.setStatus(sts);
-										idAndMemberDtlsMap.put(cadreId, idNameVO);
-									}else{
-										if(obj[3] != null){
-											sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-											idNameVO.setStatus(sts);
-											idAndMemberDtlsMap.put(cadreId, idNameVO);
-										}
-									}  
-									
-								}else{
-									idNameVO = new IdNameVO();
-									idNameVO.setId(cadreId); //cadreId
-									idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
-									idNameVO.setDistrictName(obj[6] != null ? obj[6].toString() : "");  
-									if(obj[2] != null){
-										idNameVO.setStatus(obj[2].toString());
-									}else if(obj[3] != null){
-										idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
-									}else{
-										idNameVO.setStatus("");
-									}
-									idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
-									idAndMemberDtlsMap.put(cadreId, idNameVO); 
-								}
+								
 								//push session wise attendance here by taking cadre Id  
 								if(sessionIdList != null && sessionIdList.size() > 0){
 									for(Long sesId : sessionIdList){
@@ -4198,6 +4183,17 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 					}
 				}
 			}
+			
+			  //GET FINALLIST AND DESIGNATIONS COUNT LIST
+			  if(isNonInvitee){
+			      designationsMap.clear();
+				  idNameVOs = getOnlyNonInvitteeAttendedMembers(idNameVOs,designationsMap);
+			  }
+			  else{
+				  designationsMap.clear();
+				  idNameVOs = getOnlyInvitedRelatedMembers(idNameVOs,designationsMap);
+			  }
+			
 			return idNameVOs;  
 		}catch(Exception e){
 			e.printStackTrace();
@@ -4205,6 +4201,155 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		}
 		return null;    
 	}
+	
+	public List<IdNameVO> getOnlyNonInvitteeAttendedMembers(List<IdNameVO> idNameVOs ,  Map<String, IdNameVO> designationsMap ){
+		 List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+	   try{
+		    
+		     if(idNameVOs != null && idNameVOs.size() > 0)
+		     {
+		    	 for(IdNameVO VO : idNameVOs)
+		    	 {
+		    		 if(VO != null && VO.getIsInvitee() != null && VO.getIsInvitee().equalsIgnoreCase("false"))
+		    		 {
+		    			 finalList.add(VO);
+		    			 
+		    			 //collect designations count.
+		    			 if(VO.getSubList() != null && VO.getSubList().size() > 0)
+		    			 {
+		    				 for(String sts : VO.getSubList())
+		    				 {
+		    					 if(designationsMap.containsKey(sts)){
+										IdNameVO desgVO = designationsMap.get(sts);
+										desgVO.setCount( desgVO.getCount() + 1);
+								 }else{
+									IdNameVO desgVO = new IdNameVO();
+									desgVO.setName(sts);
+									desgVO.setCount(1L);
+									designationsMap.put( desgVO.getName() , desgVO);
+								 }
+		    				 }
+		    			 }
+		    			 
+		    		 }
+		    	 }
+		     }
+		     if(finalList != null && finalList.size() > 0){
+		    	 alignAllDesignations( finalList , designationsMap);
+		     }
+		   
+	   }catch(Exception e){
+		   LOG.error("exception occurred in getOnlyNonInvitteeAttendedMembers()", e);
+	   }
+	   return finalList;
+	}
+	public List<IdNameVO> getOnlyInvitedRelatedMembers(List<IdNameVO> idNameVOs ,  Map<String, IdNameVO> designationsMap ){
+		 List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			 if(idNameVOs != null && idNameVOs.size() > 0)
+		     {
+		    	 for(IdNameVO VO : idNameVOs)
+		    	 {
+		    		 if(VO != null && VO.getIsInvitee() != null && VO.getIsInvitee().equalsIgnoreCase("true"))
+		    		 {
+		    			 finalList.add(VO);
+		    			 
+		    			 //collect designations count.
+		    			 if(VO.getSubList() != null && VO.getSubList().size() > 0)
+		    			 {
+		    				 for(String sts : VO.getSubList())
+		    				 {
+		    					 if(designationsMap.containsKey(sts)){
+										IdNameVO desgVO = designationsMap.get(sts);
+										desgVO.setCount( desgVO.getCount() + 1);
+								 }else{
+									IdNameVO desgVO = new IdNameVO();
+									desgVO.setName(sts);
+									desgVO.setCount(1L);
+									designationsMap.put( desgVO.getName() , desgVO);
+								 }
+		    				 }
+		    			 }
+		    			 
+		    		 }
+		    	 }
+		     }
+			 if(finalList != null && finalList.size() > 0){
+		    	 alignAllDesignations( finalList , designationsMap);
+		     }
+		}catch(Exception e){
+			 LOG.error("exception occurred in getOnlyInvitedRelatedMembers()", e);
+		}
+		return finalList;
+	}
+	
+	
+	@SuppressWarnings("unused")
+	public void alignAllDesignations(List<IdNameVO> idNameVOs ,  Map<String, IdNameVO> designationsMap ){
+		try{
+			
+			if(idNameVOs != null && idNameVOs.size() > 0){
+				List<IdNameVO> designationsList = null;
+				if(designationsMap != null && designationsMap.size() > 0){
+					designationsList = new ArrayList<IdNameVO>(designationsMap.values());
+					Collections.sort(designationsList,DesgNameComparator);
+				}
+				 
+				IdNameVO othersVO = findNotDesignatedMembers(idNameVOs);
+				if(othersVO != null){
+					if(designationsList == null){
+						designationsList = new ArrayList<IdNameVO>();
+					}
+					designationsList.add(othersVO);
+				}
+				idNameVOs.get(0).setPublicRepDesgList(designationsList);
+			}
+		}catch(Exception e){
+			LOG.error("exception occurred in alignAllDesignations()", e);
+		}
+	}
+	public void setStatusToVO(String sts , IdNameVO idNameVO){
+		try{
+			
+			if(!idNameVO.getSubList().contains(sts)){
+				
+				idNameVO.getSubList().add(sts);
+				if(idNameVO.getStatus() == null){
+					idNameVO.setStatus(sts);
+				}else{
+					idNameVO.setStatus( idNameVO.getStatus() + " , " + sts);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("exception occurred in setStatusToVO()", e);
+		}
+	}
+	public IdNameVO findNotDesignatedMembers(List<IdNameVO> idNameVOs ){
+	    IdNameVO othersVO = null;
+		try{
+			if(idNameVOs != null && idNameVOs.size() > 0){
+				for(IdNameVO obj : idNameVOs){
+					if(obj.getStatus() == null || obj.getStatus().trim().isEmpty()){
+						obj.setStatus("OTHERS");
+						obj.getSubList().add("OTHERS");
+						if(othersVO == null){
+							othersVO = new IdNameVO();
+							othersVO.setStatus("Others");
+							othersVO.setName("OTHERS");
+							othersVO.setCount(0L);
+						}
+						othersVO.setCount( othersVO.getCount() + 1);
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("exception occurred in findNotDesignatedMembers()", e);
+		}
+		return othersVO;
+	}
+	
 	public void getDistrictWiseDtls(List<IdNameVO> finalList,
 									Set<Long> filterIdSet, 
 									List<Long> sessionIdList, 
