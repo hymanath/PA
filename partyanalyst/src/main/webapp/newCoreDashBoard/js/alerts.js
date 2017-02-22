@@ -1294,13 +1294,14 @@
 				for(var i in result){
 					if(result[i].statusId == 0)
 					  continue;
-				//	var districtName;
-				//	districtName = (result[i].status).toUpperCase()+"-"+result[i].count+"";
+			
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var countAlert = [];
 						var count = [];
 						for(var j in result[i].subList1){
+							if(result[i].subList1[j].categoryId == 5)  
+								continue;    
 							var uniqCnt = {};
 							categoryName.push(result[i].subList1[j].category);
 							countAlert.push(result[i].subList1[j].categoryCount);
@@ -2842,10 +2843,13 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				   for(var i in result){
 					  totalAlertCnt = totalAlertCnt+parseInt(result[i].alertCount);
 					}
-					if(totalAlertCnt == 0){
+					if(totalAlertCnt == 0){  
 						return;
 					}
-					for(var i in result){
+					for(var i in result){    
+						if(result[i].name == "Unable to Resolve"){
+							continue;
+						}
 								 var uniqCnt = {};
 									statusNameArr.push(result[i].name);
 									alertCnt.push(result[i].alertCount);
@@ -3614,6 +3618,9 @@ function getTotalArticledetails(articleId){
 						str+='</div>';
 						for(var i in result.statusList)     
 						{
+							if(result.statusList[i].statusType == "Unable to Resolve"){
+								continue;           
+							}
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
 								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
@@ -3720,7 +3727,7 @@ function getTotalArticledetails(articleId){
 								}
 							}
 					} 
-					
+				    
 					for(var i in result.categoryList)
 					{
 						str+='<div class="row">';
@@ -3758,23 +3765,23 @@ function getTotalArticledetails(articleId){
 									{
 										str+='<div class="table-responsive">';
 									}
-								}
+								}  
 									
 									str+='<table class="table">';
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											if(result.categoryList[i].statusList[j].statusTypeId == 7)
-												continue;
+											if(result.categoryList[i].statusList[j].statusTypeId == 5)
+												continue;       
 											str+='<td>';
 												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusType+'</p>';
 											str+='</td>';
 										}
-										str+='</tr>';
+										str+='</tr>';   
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											if(result.categoryList[i].statusList[j].statusTypeId == 7)
+											if(result.categoryList[i].statusList[j].statusTypeId == 5)
 												continue;
 											str+='<td>';
 												if(result.categoryList[i].statusList[j].statusCnt == 0){
