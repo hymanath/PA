@@ -503,14 +503,21 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+			
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				Long userId = null;
 				alertVOs = cccDashboardService.getTotalAlertGroupByStatusForOneDept(fromDate, toDate, stateId, paperIdList, chanelIdList,userId);
@@ -531,14 +538,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				alertVOs = cccDashboardService.getTotalAlertGroutByDeptThenStatus(fromDate, toDate, stateId, paperIdList, chanelIdList,userId);
 			}catch(Exception e){
@@ -558,14 +569,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				List<Long> govtDptIdList = new ArrayList<Long>();
 				govtDptIdList.add(govtDepartmentId);
@@ -609,20 +624,28 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				
 				JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
 				List<Long> deptIdList = new ArrayList<Long>();
-				for (int i = 0; i < deptIdArr.length(); i++){
-					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
-				}  
+				if(deptIdArr !=null && deptIdArr.length()>0){
+					for (int i = 0; i < deptIdArr.length(); i++){
+						deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+					}
+				}
 				
 				JSONArray paperIdArr = jObj.getJSONArray("newsPaperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					}
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("newChanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 			
 				govtDeptVoList = cccDashboardService.getDistrictWiseTotalAlertsForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList,userId);
@@ -644,21 +667,30 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 					
 					JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
 					List<Long> deptIdList = new ArrayList<Long>();
-					for (int i = 0; i < deptIdArr.length(); i++){
-						deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
-					}  
+					if(deptIdArr !=null && deptIdArr.length()>0){
+						for (int i = 0; i < deptIdArr.length(); i++){
+							deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+						} 
+					}
+					 
 					
 					JSONArray paperIdArr = jObj.getJSONArray("newsPaperIdArr");  
 					List<Long> paperIdList = new ArrayList<Long>();
-					for (int i = 0; i < paperIdArr.length(); i++){
-						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-					} 
+					if(paperIdArr !=null && paperIdArr.length()>0){
+						for (int i = 0; i < paperIdArr.length(); i++){
+							paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+						} 
+					}
 					
 					JSONArray chanelIdArr = jObj.getJSONArray("newChanelIdArr");  
 					List<Long> chanelIdList = new ArrayList<Long>();
-					for (int i = 0; i < chanelIdArr.length(); i++){
-						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					
+					if(chanelIdArr !=null && chanelIdArr.length()>0){
+						for (int i = 0; i < chanelIdArr.length(); i++){
+							chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+						}
 					}
+					
 				
 					govtDeptVoList = cccDashboardService.getStatusWiseDistrictTotalForAlert(fromDate,toDate,stateId,deptIdList,paperIdList,chanelIdList,userId);
 			  } catch (Exception e) {
@@ -729,14 +761,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 						
 						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 						List<Long> paperIdList = new ArrayList<Long>();
-						for (int i = 0; i < paperIdArr.length(); i++){
-							paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-						} 
+						if(paperIdArr !=null && paperIdArr.length()>0){
+							for (int i = 0; i < paperIdArr.length(); i++){
+								paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+							} 
+						}
 						
 						JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 						List<Long> chanelIdList = new ArrayList<Long>();
-						for (int i = 0; i < chanelIdArr.length(); i++){
-							chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+						if(chanelIdArr !=null && chanelIdArr.length()>0){
+							for (int i = 0; i < chanelIdArr.length(); i++){
+								chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+							}
 						}
 						
 						alertVOs = cccDashboardService.getStatusWiseAlertDetails(fromDate, toDate, stateId, paperIdList, chanelIdList, userId, statusId);
@@ -938,14 +974,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   
 			   JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					}
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				
 			   govtDeptVoList = cccDashboardService.getDesigAndStatusWiseAlertsCounts(departmentId, stateId, fromDateStr, toDateStr, paperIdList, chanelIdList, userId);
@@ -970,15 +1010,19 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   Long statusId = jObj.getLong("statusId");
 			   
 			   JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
-				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				List<Long> paperIdList = new ArrayList<Long>();				
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				
 				alertCoreDashBoardVOList = cccDashboardService.getDesigAndStatusWiseAlertDetails(departmentId, stateId, fromDateStr, toDateStr, paperIdList, chanelIdList, userId, designationId, statusId);
@@ -1021,14 +1065,18 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				String type = jObj.getString("type");
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				alertCoreDashBoardVOList = cccDashboardService.getTotalAlertDetailsGroupByDeptThenStatus(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,deptId,statusId);
 			}catch(Exception e){
@@ -1049,14 +1097,19 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				Long statusId = jObj.getLong("statusId");
 				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 				List<Long> paperIdList = new ArrayList<Long>();
-				for (int i = 0; i < paperIdArr.length(); i++){
-					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-				} 
+				if(paperIdArr !=null && paperIdArr.length()>0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
 				
 				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 				List<Long> chanelIdList = new ArrayList<Long>();
-				for (int i = 0; i < chanelIdArr.length(); i++){
-					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				if(chanelIdArr !=null && chanelIdArr.length()>0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
 				}
 				List<Long> govtDptIdList = new ArrayList<Long>();  
 				govtDptIdList.add(govtDepartmentId);
