@@ -91,14 +91,14 @@
 		</div>-->
 		<div class="container">
 		<div class="row ">
-		
-			<div class="row" style="margin-top:20px;">
-				 <div class="container breadcrumb">
+		<div class="col-md-12 col-xs-12 col-sm-12 "><h4><i class="glyphicon glyphicon-home pull-right redirectHomePage" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Click here to Home Page"  style="cursor:pointer;"></i></h4></div>
+			<div class="row" style="margin-top:30px;">
+				 <div class="container breadcrumb" >
 					   <i>For any Technical Support, please contact : <b> +91-7032818783 / 8499912198</b> , @email: tdpparty.helpdesk@gmail.com </i></p>
 				</div>
 			</div>
 			
-		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3>
+		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
 				     
@@ -444,6 +444,7 @@
 		 mandalNewId ='${mandalId}';
 		
 		$('document').ready(function(){
+			
 			$('#committeeTypeId').val(commityTypeId);
 			if(commityTypeId ==1)
 			{
@@ -1588,6 +1589,11 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		}
 	
 	}
+	
+	$(document).on("click",".redirectHomePage",function(){
+	
+		window.location.replace('committeeInfoAction.action');
+	});
 	
 	</script>
   </body>

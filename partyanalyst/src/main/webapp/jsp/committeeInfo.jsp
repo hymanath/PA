@@ -151,7 +151,7 @@
 			var distId = $("#districtsDispalyId").val();
 			url = "committeeManagementAction.action?locationId="+distId+"& reqLocationType=district";
 		}
-		window.open(url,'_blank');
+		window.location.replace(url,'_blank');
 	}
 	
 
