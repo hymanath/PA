@@ -348,7 +348,7 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<span style="color:red;" id="errMsgStsId"></span>
 											<label>Change Status</label>
-											<select class="chosenSelect" id="changeStatusId" attr_type="changeStatus"><option value="0">Select Status</option></select>
+											<select class="chosenSelect" id="changeStatusId" attr_type="changeStatus" name="alertAssigningVO.statusId"><option value="0">Select Status</option></select>
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
