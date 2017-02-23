@@ -425,7 +425,7 @@
                         </select>
                     </div>
 					<div class="row">
-					<div class=" m_top10 pull-right" style="margin-left: 0px; margin-right: 31px;margin-top: 18px;"> 
+					<div class=" m_top10 pull-right" style="margin-left: 0px; margin-right: 31px;margin-top: 18px;display:none;" id="getDetailsId"> 
                     	<button type="button" value="getDetailsVal" class="btn btn-success m_top10" onclick="getLocationAndBoardLevelWiseCasteCatgryPostsData();" id="">SUBMIT</button>
 					</div>
 					</div>
