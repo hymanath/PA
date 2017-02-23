@@ -4436,8 +4436,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and A.alert_status_id = 1 and ");
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
-		queryStr.append(" A.govt_department_id in (:deptIdList) and ");
-		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		if(deptIdList != null && deptIdList.size() > 0)
+			queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
@@ -4501,8 +4503,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and ");
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
-		queryStr.append(" A.govt_department_id in (:deptIdList) and ");
-		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and A.alert_status_id = 1 and ");
+		if(deptIdList != null && deptIdList.size() > 0)
+			queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and A.alert_status_id = 1 and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");
@@ -4596,8 +4600,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and ");
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
-		queryStr.append(" A.govt_department_id in (:deptIdList) and ");
-		queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		if(deptIdList != null && deptIdList.size() > 0)
+			queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" S.state_id = 1 and ");

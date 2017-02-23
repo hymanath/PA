@@ -74,7 +74,7 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 	
 	public List<Object[]> getUserAccessLevelsForUser(Long userId){
 		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId," +
-												" model.govtDepartmentLevel.govtDepartmentLevelId," +
+												" model.govtDepartmentLevel.alertRegionScopes.alertRegionScopesId," +
 												" model.levelValue" +
 												" from GovtAlertDepartmentLocation model" +
 												" where model.user.userId = :userId" +
@@ -85,7 +85,7 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 	
 	public List<Object[]> getAccessDeptsAndLvlsForUserAndDept(Long userId,Long departmentId){
 		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId," +
-												" model.govtDepartmentLevel.govtDepartmentLevelId," +
+												" model.govtDepartmentLevel.alertRegionScopes.alertRegionScopesId," +
 												" model.levelValue" +
 												" from GovtAlertDepartmentLocation model" +
 												" where model.user.userId = :userId" +
@@ -97,7 +97,7 @@ public class GovtAlertDepartmentLocationDAO extends GenericDaoHibernate<GovtAler
 	}
 	public List<Object[]> getUserAccessLevels(Long userId){
 		Query query = getSession().createQuery(" select distinct " +  
-												" model.govtDepartmentLevel.govtDepartmentLevelId," +
+												" model.govtDepartmentLevel.alertRegionScopes.alertRegionScopesId," +
 												" model.levelValue" +
 												" from GovtAlertDepartmentLocation model" +
 												" where model.user.userId = :userId" +

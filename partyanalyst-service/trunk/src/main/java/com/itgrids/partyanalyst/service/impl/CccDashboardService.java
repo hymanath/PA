@@ -1214,7 +1214,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 	}
 	/*
-	 * Author: Teja
+	 * Author: Sravanth
 	 *  getDistrictWiseTotalAlerts Strip */
 	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId){
 		List<GovtDepartmentVO> finalVOList = new ArrayList<GovtDepartmentVO>();
@@ -1768,6 +1768,12 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			}
 			
 			List<Object[]> statusList = alertDepartmentStatusDAO.getStatusWithoutPending();
+			
+			List<Long> levelIds = govtDepartmentLevelDAO.getlevelIdsForLevel(levelId);
+			if(levelIds != null && !levelIds.isEmpty()){
+				levelId = levelIds.get(0);
+			}
+			
 			List<Object[]> list = alertAssignedOfficerDAO.getSubOrdinatesAlertDetails(designationId, levelId, fromDate, toDate);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
@@ -2121,6 +2127,11 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			if(fromDateStr != null && toDateStr != null){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Long> levelIds = govtDepartmentLevelDAO.getlevelIdsForLevel(levelId);
+			if(levelIds != null && !levelIds.isEmpty()){
+				levelId = levelIds.get(0);
 			}
 			
 			List<Object[]> alertList = alertAssignedOfficerDAO.getSubOrdinateLevelWiseAlertsDetails(designationId, levelId, levelValue, fromDate, toDate);
