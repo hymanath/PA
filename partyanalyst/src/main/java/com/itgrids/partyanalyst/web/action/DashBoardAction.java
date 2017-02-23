@@ -726,7 +726,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			else if(entitlements.contains("OTHER_STATE_DELEGATE_REG".trim())){
 				return "otherStateTempararyCardsPrinting";
 			}
-			else if(entitlements.contains("COMMITTEE_MGT".trim())){
+			else if(entitlements.contains("COMMITTEE_MGT".trim()) || entitlements.contains("COMMITTEE_MANAGEMENT_MULTIPLE_AREAS_ENTITLEMENT".trim())){
 				return "committeemgt";
 			}
 			else if(entitlements.contains("TRAINING_CAMP_CALLER_ADMIN".trim())){
