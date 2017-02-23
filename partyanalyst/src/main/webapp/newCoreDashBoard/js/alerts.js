@@ -3,6 +3,8 @@
 	
 	function globalAlertsCalls(type)
 	{
+		$("#alertTypeHiddenId").attr("attr_alert_id","0");
+		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id","0");
 		if(type == "default"){
 			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment());
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment());
@@ -30,8 +32,6 @@
 		}
 	}
 	$(document).on("click",".alertsIconRefresh",function(){
-		$("#alertTypeHiddenId").attr("attr_alert_id","0");
-		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id","0");
 		globalAlertsCalls('');
 	});
 	   $(document).on("click",".alertSetClose",function(){
