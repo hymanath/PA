@@ -3028,13 +3028,14 @@
 		   <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		   <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
 		 
-		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
+		    <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
 		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
 		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
 		     <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />
 		     <property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
 			<!-- <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />	 -->		 
+   			<property name="committeeConfirmRuleConditionDAO" ref="committeeConfirmRuleConditionDAO" /> 
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
