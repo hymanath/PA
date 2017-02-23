@@ -2234,20 +2234,22 @@ $(document).on("click",".radioBtnCls",function(){
 				 $(".districtLvlCls").hide();
 			getLocationAndBoardLevelWisePostsData();
 		 }else if(searchType1 == "2"){
-			 var inerSerchTyeId = $('input[name=checkBoxName]:checked').val();
-			//alert(inerSerchTyeId)  //srujana
+			 var inerSerchTyeId = $('input[name=checkBoxName]:checked').val();		
 			   if(inerSerchTyeId == "district"){
 					$(".constituenyCls").hide();
 					$(".districtLvlCls").show();
+					$("#getDetailsId").show(); 
 			   }else if(inerSerchTyeId =="constituency"){
 					$(".districtLvlCls").show();
 					$(".constituenyCls").show();
+					$("#getDetailsId").show(); 
 			   }
 			//getLocationAndBoardLevelWiseCasteCatgryPostsData();
 		 }	 
 	 });
 	
 		$(document).on("click",".radioBtnCls1",function(){
+			 $("#getDetailsId").hide();
 		 var searchType1  = $('input[name=checkBoxName1]:checked').val();
 				if(searchType1 == "1" ){
 						$(".constituenyCls").hide();
@@ -2258,13 +2260,17 @@ $(document).on("click",".radioBtnCls",function(){
 			   if(inerSerchTyeId == "district"){
 					$(".constituenyCls").hide();
 					$(".districtLvlCls").show();
+					$("#districtSelectBoxId").val('');
+                    $("#districtSelectBoxId").trigger("chosen:updated");
+					$("#getDetailsId").show();
 			   }else if(inerSerchTyeId =="constituency"){
 				     $("#districtSelectBoxId").val('');
                      $("#districtSelectBoxId").trigger("chosen:updated");
 					 $("#consLevelId").val('');
                      $("#consLevelId").trigger("chosen:updated");
 					 $(".districtLvlCls").show();
-					 $(".constituenyCls").show();	 					
+					 $(".constituenyCls").show();
+                     $("#getDetailsId").show();					 
 			   }
 			getLocationAndBoardLevelWiseCasteCatgryPostsData();
 		 }
@@ -2416,7 +2422,7 @@ $(document).on("click",".radioBtnCls",function(){
  }
  
  $(document).on('click','.radioBtnCls',function(){
-	 $("#loctnLvlCntId1").html(""); //srujana
+	 $("#loctnLvlCntId1").html("");
 	 var searchType  = $('input[name=checkBoxName]:checked').val();
 	 if(searchType =='district'){
 		 getDistrictsForState();		
