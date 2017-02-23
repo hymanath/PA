@@ -44,7 +44,7 @@
 		  <a class="navbar-brand" href="#"><img src="newCoreDashBoard/img/APLOGO.jpg" class="img-responsive"/></a>
 		</div>
 		<div class="navbar-right">
-			<a class="pull-right" href="#" style="margin-top: 18px;color: #fff;">LOGOUT</a>
+			<!-- <a class="pull-right" href="#" style="margin-top: 18px;color: #fff;">LOGOUT</a> -->    
 		</div>
 	  </div><!-- /.container-fluid -->
 	</nav>
@@ -55,7 +55,7 @@
 <footer>
 	<div class="row-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-			&copy; GOVERNMENT
+			All &copy; Andhra pradesh Government  
 		<div>
 	<div>	
 </footer>
