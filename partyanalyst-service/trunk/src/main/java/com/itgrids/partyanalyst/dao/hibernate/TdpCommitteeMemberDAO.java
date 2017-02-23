@@ -3093,5 +3093,14 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		return query.list();
 		
 	}
-	
+	public List<Object[]> getRoleWiseCommitteeMembersCount(Long tdpCommitteeId){
+		Query query = getSession().createQuery("" +
+	    " select model.tdpCommitteeRole.tdpRoles.tdpRolesId , model.tdpCommitteeRole.tdpRoles.role , count(model.tdpCommitteeMemberId)  " +
+	    " from   TdpCommitteeMember model " +
+	    " where  model.tdpCommitteeRole.tdpCommitteeId = :tdpCommitteeId " +
+	    " group by model.tdpCommitteeRole.tdpRoles.tdpRolesId " +
+	    " order by model.tdpCommitteeRole.tdpRoles.tdpRolesId ");
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return query.list();
+	}
 }

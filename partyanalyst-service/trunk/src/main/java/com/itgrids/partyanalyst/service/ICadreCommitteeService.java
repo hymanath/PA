@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
+import com.itgrids.partyanalyst.dto.CommitteeResultVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
@@ -63,7 +64,7 @@ public interface ICadreCommitteeService {
 	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String accessType,Long accessValue,List<Long> enrollmentIdsList,String startDateStr,String endDateStr);
 	
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
-	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
+	public CommitteeResultVO setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
 	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate);
 	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
 	public String updateCommitteePosCount(final Long roleId, final Long maxCount, final String type, final Long increasedPosId, final Long approveCount);

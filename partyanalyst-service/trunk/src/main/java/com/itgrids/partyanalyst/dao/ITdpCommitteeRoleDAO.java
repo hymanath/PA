@@ -18,4 +18,5 @@ public interface ITdpCommitteeRoleDAO  extends GenericDao<TdpCommitteeRole, Long
 	public List<Object[]> getAllAffiliCommitteeRoles(List<Long> affiliIds);
 	public String getTdpCommitteeRoleType(Long tdpCommitteeRoleId);
 	public List<Object[]> getTdpRoles(List<Long> committeeEnrollmntIds,List<Long> committeeLevlIdsList);
+	public List<Object[]> getAllRolesInACommittee(Long tdpCommitteeId);
 }

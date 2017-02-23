@@ -137,5 +137,15 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 				return query.list();
 		
 	}
-
+	
+	public List<Object[]> getAllRolesInACommittee(Long tdpCommitteeId){
+		Query query = getSession().createQuery("" +
+		" select  model.tdpRoles.tdpRolesId , model.tdpRoles.role ,model.tdpCommittee.committeeConfirmRuleId , model.maxMembers " +
+		" from    TdpCommitteeRole model " +
+		" where   model.tdpCommitteeId = :tdpCommitteeId  " +
+		" order by model.tdpRoles.tdpRolesId ");
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return query.list();
+		
+	}
 }
