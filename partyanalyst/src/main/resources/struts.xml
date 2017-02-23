@@ -15961,5 +15961,9 @@
 				<param name="root">surveyTransactionVO</param>
 			</result>
 	   </action>
+	   
+	    <action name="govtLogoutAction" class="newLogoutAction" method="govtLogout">
+        </action>
+        
  </package>
 </struts>
