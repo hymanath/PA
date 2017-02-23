@@ -1968,6 +1968,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
+						if(result[0].subList1[i].categoryId == 5)
+							continue;
 						str+='<th>'+result[0].subList1[i].category+'</th>';
 					}  
 				}
@@ -1990,6 +1992,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 					   
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
+							if(result[i].subList1[j].categoryId == 5)
+							            continue;
 						if(result[i].subList1[j].categoryCount == 0){
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
@@ -2074,6 +2078,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			   str+='<th>Total Alerts</th>';
 			   if(result[0].subList1 != null && result[0].subList1.length > 0){
 				   for(var i in result[0].subList1){
+					   if(result[0].subList1[i].statusTypeId==5)
+						   continue;
 					   str+='<th>'+result[0].subList1[i].statusType+'</th>';
 				   }  
 			   }
@@ -2089,6 +2095,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				   }
 					 if(result[i].subList1 != null && result[i].subList1.length > 0){
 						 for(var j in result[i].subList1){
+							  if(result[i].subList1[j].statusTypeId==5)
+						             continue;
 							    if(result[i].subList1[j].statusCnt > 0){
 								str+='<td class="prgrmCmmttAndOthrCls" attr_selected_type=\''+groupAssignType+'\' attr_alert_count="'+result[i].subList1[j].statusCnt+'" attr_cadre_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" style="cursor:pointer;">'+result[i].subList1[j].statusCnt+'</td>';		
 								}else{
@@ -2293,6 +2301,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
+						if(result[0].subList1[i].categoryId == 5)
+							continue;
 						str+='<th>'+result[0].subList1[i].category+'</th>';
 					}  
 				}
@@ -2310,6 +2320,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					   
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
+						if(result[i].subList1[j].categoryId == 5)
+							continue;
 						if(result[i].subList1[j].categoryCount == 0){
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
