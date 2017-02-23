@@ -7251,16 +7251,20 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								//update NPCID in NP
 								for (Entry<Long, Long> entry : postMap.entrySet()) {
-									NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
-									nogo.setNominatedPostId(entry.getKey());
-									nogo.setGovtOrderId(govtOrder.getGovtOrderId());
-									nogo.setInsertedBy(userId);
-									nogo.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-									nogo.setUpdatedBy(userId);
-									nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									nogo.setIsDeleted("N");
-									nogo.setIsExpired("N");
-									nominatedPostGovtOrderDAO.save(nogo);
+									
+									NominatedPost np = nominatedPostDAO.get(entry.getKey());
+									if(np != null && np.getIsExpired() != null && np.getIsExpired().equalsIgnoreCase("Y")){
+										NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
+										nogo.setNominatedPostId(entry.getKey());
+										nogo.setGovtOrderId(govtOrder.getGovtOrderId());
+										nogo.setInsertedBy(userId);
+										nogo.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										nogo.setUpdatedBy(userId);
+										nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										nogo.setIsDeleted("N");
+										nogo.setIsExpired("N");
+										nominatedPostGovtOrderDAO.save(nogo);
+									}
 									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
 								}
