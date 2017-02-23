@@ -30,6 +30,8 @@
 		}
 	}
 	$(document).on("click",".alertsIconRefresh",function(){
+		$("#alertTypeHiddenId").attr("attr_alert_id","0");
+		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id","0");
 		globalAlertsCalls('');
 	});
 	   $(document).on("click",".alertSetClose",function(){
