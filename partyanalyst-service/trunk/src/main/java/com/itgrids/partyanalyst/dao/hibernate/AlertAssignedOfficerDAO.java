@@ -172,9 +172,14 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		queryStr.append(" AAO.alert_status_id = ALTS.alert_status_id and ");
 		queryStr.append(" AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id and ");
 		queryStr.append(" GDDO.govt_department_designation_id = GDD.govt_department_designation_id and ");
-		queryStr.append(" GDD.govt_department_id = GD.govt_department_id and ");
-		queryStr.append(" GD.govt_department_id in (:deptIdList) and ");
-		queryStr.append(" date(AAO.inserted_time) between :fromDate and :toDate ");
+		queryStr.append(" GDD.govt_department_id = GD.govt_department_id  ");
+		if(deptIdList != null && deptIdList.size() > 0){
+			queryStr.append(" and GD.govt_department_id in (:deptIdList)  ");
+		}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+		}
+		
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
 			queryStr.append(" and ( (EDS.newsPaperId in (:printIdList))  or (TNC.tvNewsChannelId in (:electronicIdList)) ) ");
@@ -185,7 +190,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		queryStr.append(" group by GD.govt_department_id " );
 		if(type != null && type.equalsIgnoreCase("status")){
-			queryStr.append(",ALTS.alert_status_id " );
+			queryStr.append(", ALTS.alert_status_id " );
 		}
 		
 		queryStr.append(" order by GD.department_name; ");

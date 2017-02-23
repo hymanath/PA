@@ -64,4 +64,5 @@ public interface ICccDashboardService {
 	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId);
 	public List<AlertCoreDashBoardVO> getTotalAlertDetailsGroupByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId,Long deptId, Long statusId);
 	public List<AlertCoreDashBoardVO> getAlertCountDetailsLocationWiseThenStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> govtDepartmentId,Long lvlValue,Long locId,Long statusId);
+	public List<IdAndNameVO> getDeptListForUser(Long userId);
 } 
