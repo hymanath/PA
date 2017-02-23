@@ -4715,7 +4715,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  AlertOverviewVO mandalMuncipalityVO = new AlertOverviewVO();
 					  AlertOverviewVO villageWardVO = new AlertOverviewVO();
 					  AlertOverviewVO mandalVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 5l);
-					  AlertOverviewVO MuncipalityVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 8l);
+					  AlertOverviewVO MuncipalityVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 12l);
 					  mergeRequiredData(mandalMuncipalityVO,mandalVO,4l,"Mandal/Muncipality");
 					  mergeRequiredData(mandalMuncipalityVO,MuncipalityVO,4l,"Mandal/Muncipality");
 					  AlertOverviewVO villageVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 7l);
@@ -4789,9 +4789,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  }
 			  
 			  if(overAllAlrtDtlsMap != null && overAllAlrtDtlsMap.size() > 0){
+				  AlertOverviewVO corpGhmcVO = null;
+				  if(overAllAlrtDtlsMap.containsKey(8l)){
+					  corpGhmcVO = overAllAlrtDtlsMap.get(8l);//corp ghmc Id
+					  overAllAlrtDtlsMap.remove(8l);//remove corpGhmc  
+				  }
+				
 				  AlertOverviewVO overAllAlertVO = new AlertOverviewVO();
 				  overAllAlertVO.setName("All Categories Alerts");
 				  List<AlertOverviewVO> overAllAlertCntList = new ArrayList<AlertOverviewVO>(overAllAlrtDtlsMap.values());
+				  if(overAllAlertCntList.size() > 0){
+					  overAllAlertCntList.add(2, corpGhmcVO);
+				  }
 				  overAllAlertVO.getSubList().addAll(overAllAlertCntList);
 				  resultList.add(0, overAllAlertVO);
 				  overAllAlrtDtlsMap.clear();
@@ -7890,6 +7899,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
+			     //convert parliament into constituency.
+				if(locationAccessLevelId.longValue() == 4L){
+					List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+					locationAccessLevelId = 5L;
+					locationValues.clear();
+					locationValues.addAll(parliamentAssemlyIds);      
+				}
 			  List<Object[]> rtrnDistObjLst = alertDAO.getDistrictIdAndNameByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
 			  setRequiredDataToList(rtrnDistObjLst,resultList); 
 		}catch(Exception e){
@@ -8153,7 +8169,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  			if(publicationList == null || publicationList.size() == 0)
  				return null;
  			for(AlertOverviewVO publicationVO:publicationList){
- 				if(publicationVO.equals(publicationIdStr)){
+ 				if(publicationVO.getPublicationId().equals(publicationIdStr.trim())){
  					return publicationVO;
  				}
  			}
