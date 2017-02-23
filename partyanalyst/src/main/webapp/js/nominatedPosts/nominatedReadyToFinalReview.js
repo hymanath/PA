@@ -909,7 +909,10 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 	var str="";
 	if(globalLocationLevelValueArr != null && globalLocationLevelValueArr.length > 0){
 		for(var i in globalLocationLevelValueArr){
-			str=str+','+globalLocationLevelValueArr[i];
+			if(str == "")
+				str=globalLocationLevelValueArr[i];
+			else
+				str=str+','+globalLocationLevelValueArr[i];
 		}
 	}
 	$("#locationLevelValuesHidden").val(str);
@@ -918,8 +921,11 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 	var applicationIds = "";
 	if(nominatedPostCandidateId == 0){
 		$(".candiCheckBoxCls").each(function(){
-			if($(this).is(":checked")){alert($(this).attr("attr_nominatedPostApplicationId"));
-				applicationIds = applicationIds+","+$(this).attr("attr_nominatedPostApplicationId");
+			if($(this).is(":checked")){
+				if(applicationIds == "")
+					applicationIds = $(this).attr("attr_nominatedPostApplicationId");
+				else
+					applicationIds = applicationIds+","+$(this).attr("attr_nominatedPostApplicationId");
 			}
 		});
 	}else{
@@ -1470,7 +1476,11 @@ $(document).on("click",".boardHrfCls",function(){
 		var str="";
 		if(globalLocationLevelValueArr != null && globalLocationLevelValueArr.length > 0){
 			for(var i in globalLocationLevelValueArr){
-				str=str+','+globalLocationLevelValueArr[i];
+				if(str == "")
+					str=globalLocationLevelValueArr[i];
+				else
+					str=str+','+globalLocationLevelValueArr[i];
+				
 			}
 		}
 		$("#locationLevelValuesHidden").val(str);
