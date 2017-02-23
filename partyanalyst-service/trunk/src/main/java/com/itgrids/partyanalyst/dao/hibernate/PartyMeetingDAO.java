@@ -356,7 +356,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    {
 	        StringBuilder sb = new StringBuilder();
 	        sb.append(" select distinct PM.partyMeetingId, PM.meetingName, PM.partyMeetingLevel.level, PM.partyMeetingType.type,PM.meetingAddress.localArea  from PartyMeeting PM where PM.partyMeetingId in (:patyMeetingIdsList) " +
-	        		" and date(PM.startDate) <= :toDayDate ");
+	        		" and date(PM.startDate) <= :toDayDate and PM.isActive='Y' ");
 	        Query query = getSession().createQuery(sb.toString());
 	        query.setDate("toDayDate", toDayDate);
 	        if(patyMeetingIdsList!=null && patyMeetingIdsList.size()>0){
@@ -370,7 +370,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		//public List<Long> getPartyMeetingIdsByLevelAndLocation(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,Long locationValue)
 	    public List<Long> getPartyMeetingIdsByLevelAndLocation(Long partyMeetingLevelId,Date fromDate,Date toDate,Long partyMeetingTypeId,Long locationLevelId,List<Long> stateList,List<Long> districtList,List<Long> constituencyList,List<Long> mandalList,List<Long> townList,List<Long> divisonList,List<Long> villageList,List<Long> wardList)
 	    {
-	    	StringBuilder sb = new StringBuilder("SELECT model.partyMeetingId FROM PartyMeeting model where  date(model.startDate) between date(:fromDate) and date(:toDate) and date(model.endDate) between date(:fromDate) and date(:toDate)");
+	    	StringBuilder sb = new StringBuilder("SELECT model.partyMeetingId FROM PartyMeeting model where ( date(model.startDate) between date(:fromDate) and date(:toDate) )and (date(model.endDate) between date(:fromDate) and date(:toDate) ) " +
+	    			"  and model.isActive='Y'  ");
 	    	//StringBuilder sb = new StringBuilder("SELECT model.partyMeetingId FROM PartyMeeting model where model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and date(model.startDate) between date(:fromDate) and date(:toDate) and date(model.endDate) between date(:fromDate) and date(:toDate)");
 	    	
 	    	if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() != 0)
@@ -656,7 +657,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					if(committeeLevelId.longValue() == IConstants.VILLAGE_COMMITTEE_LEVEL_ID)
 					{ 
 						queryStr.append(", T.tehsilId, T.tehsilName,P.panchayatName,model.startDate from PartyMeeting model ," +
-								"   Booth B left join B.panchayat P    left join B.tehsil T where  model.locationValue = P.panchayatId  " +
+								"   Booth B left join B.panchayat P    left join B.tehsil T where  model.locationValue = P.panchayatId  and model.isActive='Y'  " +
 								" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  ");
 						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.VILLAGE_PARTY_MEETING_LEVEL_ID+" and  model.partyMeetingTypeId = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+"  ");
 					}
@@ -2503,7 +2504,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	     return query.list();
 	  }
 	 public String getPartyMeetingName(Long partyMeetingId){
-		 Query query = getSession().createQuery(" select model.meetingName from PartyMeeting model where model.partyMeetingId=:partyMeetingId ");
+		 Query query = getSession().createQuery(" select model.meetingName from PartyMeeting model where model.partyMeetingId=:partyMeetingId  and model.isActive='Y'  ");
 		 query.setParameter("partyMeetingId", partyMeetingId);
 		 return (String)query.uniqueResult();
 	 }
