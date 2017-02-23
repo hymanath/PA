@@ -60,6 +60,24 @@ public class NewLogoutAction extends ActionSupport implements ServletContextAwar
 		}
 		return SUCCESS;
 	}
+	
+	public String govtLogout(){
+		try {
+			
+			session = request.getSession();
+			
+			session.invalidate();
+			try{
+				response.sendRedirect("govtLoginAction.action");
+			}catch (Exception e) {
+			}
+			return SUCCESS;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 
 	
 
