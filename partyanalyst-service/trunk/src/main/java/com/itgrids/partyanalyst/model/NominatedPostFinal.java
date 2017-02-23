@@ -43,6 +43,7 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	private ApplicationStatus applicationStatus;
 	private NominatedPost nominatedPost;
 	private NominatedPostApplication nominatedPostApplication;
+	private String  isExpired;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -195,6 +196,14 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	public void setNominatedPostApplication(
 			NominatedPostApplication nominatedPostApplication) {
 		this.nominatedPostApplication = nominatedPostApplication;
+	}
+	
+	@Column(name="is_expired")
+	public String getIsExpired() {
+		return isExpired;
+	}
+	public void setIsExpired(String isExpired) {
+		this.isExpired = isExpired;
 	}
 	
 }

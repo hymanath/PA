@@ -51,6 +51,7 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	private ApplicationStatus applicationStatus;
 	private PostType postType;
 	private NominatedPostMember nominatedPostMember;
+	private String  isExpired;
 	
 	
 	@Id
@@ -276,6 +277,14 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	}
 	public void setNominatedPostMember(NominatedPostMember nominatedPostMember) {
 		this.nominatedPostMember = nominatedPostMember;
+	}
+	
+	@Column(name="is_expired")
+	public String getIsExpired() {
+		return isExpired;
+	}
+	public void setIsExpired(String isExpired) {
+		this.isExpired = isExpired;
 	}
 	
 	

@@ -1949,4 +1949,47 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			    	query.setParameterList("searchLevelValue", searchLevelValue);
 	    return query.list();
  }
+   
+   public List<Long> getNominatedPostIdsForBoardLevelId(Long boardLevelId,Long levelValue,Long departmentId,Long boardId,Long positionId){
+	   StringBuilder str = new StringBuilder(); 
+	   str.append(" select model.nominatedPostId from NominatedPost model" +
+		   		" where model.isDeleted ='N'  and model.nominationPostCandidate.nominationPostCandidateId is null " +
+		   		" and model.nominatedPostStatusId in (1,2) ");
+	   
+		   		if(boardLevelId != null && boardLevelId.longValue() >0l){
+		   			str.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId " );
+		   		}
+		   		if(levelValue != null && levelValue.longValue() >0l){
+		   			str.append(" and model.nominatedPostMember.locationValue = :levelValue " );
+		   		}
+		   		if(departmentId != null && departmentId.longValue() >0l){
+		   			str.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :departmentId " );
+		   		}
+		   		if(boardId != null && boardId.longValue() >0l){
+		   			str.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId " );
+		   		}
+		   		if(positionId != null && positionId.longValue() >0l){
+		   			str.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId " );
+		   		}
+		   	 Query query = getSession().createQuery(str.toString());
+		   		
+		   	if(boardLevelId != null && boardLevelId.longValue() >0l){
+		   		query.setParameter("boardLevelId", boardLevelId);
+	   		}
+	   		if(levelValue != null && levelValue.longValue() >0l){
+	   			query.setParameter("levelValue", levelValue);
+	   		}
+	   		if(departmentId != null && departmentId.longValue() >0l){
+	   			query.setParameter("departmentId", departmentId);
+	   		}
+	   		if(boardId != null && boardId.longValue() >0l){
+	   			query.setParameter("boardId", boardId);
+	   		}
+	   		if(positionId != null && positionId.longValue() >0l){
+	   			query.setParameter("positionId", positionId);
+	   		}
+		    
+	   return query.list();	
+		
+   }
 }
