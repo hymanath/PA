@@ -73,6 +73,11 @@ $(document).on("click",".emnIconExpand",function(){
 		$(".dateRangePickerClsForEmn").removeClass("hide");
 		$(".moreBlockEMN,.moreEmnBlocksIcon").show();
 		getEMMDetailedPartyMediaProgramsOnPartyProgramsWise("top","program");
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".electronicMediaBlock").offset().top},
+			'slow');
+		},500);
 	}else{
 		//after expand	
 		$(".dateRangePickerClsForEmn").addClass("hide");

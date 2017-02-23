@@ -729,7 +729,17 @@ $(document).on("click",".programSkillsCls",function(){
 		$(".trainingIconExpand").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	}else if($(".trainingsBlockExpand").hasClass("col-md-6")){
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".trainingsBlock").offset().top},
+			'slow');
+		},500);
 	}else{
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".trainingsBlock").offset().top},
+			'slow');
+		},500);
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -814,6 +824,11 @@ $(document).on("click",".trainingIconExpand",function(){
 		$(".programSkillsCls").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	}else{
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".trainingsBlock").offset().top},
+			'slow');
+		},500);
 	}
 	if( !$(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreBlocks").hide();

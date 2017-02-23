@@ -7,6 +7,11 @@
 		$(".dateRangePickerClsForAttendance").toggleClass("hide")
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			//getUserTypeWiseNewsCounts(1);
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".attendanceBlock").offset().top},
+				'slow');
+			},500);
 		}else{
 			$(".newsHiddenMoreBlock,.moreAttBlocks").hide();
 		}

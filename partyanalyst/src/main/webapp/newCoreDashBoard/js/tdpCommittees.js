@@ -1966,6 +1966,11 @@
 				
 			}else{
 				getUserTypeWiseCommitteesCompletedCounts1();
+				setTimeout(function(){
+					$('html,body').animate({
+						scrollTop: $(".committeesBlock").offset().top},
+					'slow');
+				},500);
 			}
 			if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 				$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");

@@ -683,6 +683,11 @@ $(document).on("click",".meetingLiCls",function(){
 			//getUserTypeWiseTotalEligibleAndAttendedCnt();
 			$(".meetingsRefresh").attr("attr_refresh_status","true");
 			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".meetingsBlock").offset().top},
+				'slow');
+			},500);
 		}
 		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
