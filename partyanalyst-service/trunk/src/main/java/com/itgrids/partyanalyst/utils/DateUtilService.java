@@ -360,7 +360,7 @@ public class DateUtilService {
         String noOfMonth="";
         String noOfDay="";
     long millisSecond = ((toDate.getTime())-(formDate.getTime()))/86400000;
-      if(millisSecond <= 0l){
+      if(millisSecond < 0l){
         returnDate="All Ready Expired";
       }else{
         System.out.println(millisSecond);
@@ -409,10 +409,12 @@ public class DateUtilService {
           day = millisSecond;
           if(day > 1 ){
             noOfDay="Days";
+            returnDate =day.toString()+" "+noOfDay;
           }else{
-            noOfDay="Day";
+           // noOfDay="Day";
+            returnDate ="Today";
           }
-          returnDate =day.toString()+" "+noOfDay;
+          //returnDate =day.toString()+" "+noOfDay;
         }
       }
     return returnDate;

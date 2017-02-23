@@ -36,6 +36,7 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	
 	private NominatedPost nominatedPost;
 	private GovtOrder govtOrder;
+	private String  isExpired;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -123,5 +124,13 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="is_expired")
+	public String getIsExpired() {
+		return isExpired;
+	}
+	public void setIsExpired(String isExpired) {
+		this.isExpired = isExpired;
 	}
 }

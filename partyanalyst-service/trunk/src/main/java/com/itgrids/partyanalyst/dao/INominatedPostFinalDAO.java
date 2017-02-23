@@ -62,11 +62,12 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public int updateApllicationStatusToReject(Long memberId,final Long userId);
 	 public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds);
 	 public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds);
-	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId);
+	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId,Long nominatePostApplicationId);
 	 public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 	 public List<Object[]> getPositionDetaislOfEveryApplicationnStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);
 	 public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType);
 	 public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,
 			 Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,List<Long> locationIds,String type,String casteType);
+	 public List<Long> getNominatedPostFinalIdsByMemberOfFinalReview(Long memberId,List<Long> status);
 	 
 }

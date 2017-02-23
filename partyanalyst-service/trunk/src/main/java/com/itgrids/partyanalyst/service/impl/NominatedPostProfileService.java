@@ -1127,7 +1127,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal.setIsDeleted("N");
-						
+						nominatedPostFinal.setIsExpired("N");
 						nominatedPostFinal.setIsPrefered("N");
 						
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
@@ -1510,6 +1510,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setIsDeleted("N");
+		nominatedPostApplication.setIsExpired("N");
 		nominatedPostApplication.setApplicationStatusId(1l);
 		nominatedPostApplication.setAddressId(nominatedPostAddress.getUserAddressId());
 		nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
@@ -4984,7 +4985,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal.setIsDeleted("N");
 						nominatedPostFinal.setIsPrefered("N");
-						
+						nominatedPostFinal.setIsExpired("N");
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(applicationId);
@@ -5567,11 +5568,12 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							}												
 						}
 					}
-					
+					List<Long> statusIds = new ArrayList<Long>();
+					statusIds.add(3l);
 					int count =0;
 					if(levelId.equals(5l)){
 						if(mandalList !=null && mandalList.size()>0){
-							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,5l,mandalList,userId);   //updateApplicationStatusToFinal();
+							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,5l,mandalList,userId,statusIds);   //updateApplicationStatusToFinal();
 							
 							if(finalIds !=null && finalIds.size()>0){
 								int count1=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);
@@ -5580,7 +5582,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							
 						}
 						if(townList !=null && townList.size()>0){
-							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,6l,townList,userId); //updateApplicationStatusToFinal(deptId,boardId,positions,6l,townList,userId);
+							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,6l,townList,userId,statusIds); //updateApplicationStatusToFinal(deptId,boardId,positions,6l,townList,userId);
 							
 							if(finalIds !=null && finalIds.size()>0){
 								int count2=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);
@@ -5590,7 +5592,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					}else{
 						
 						//Shortlisted And Applied applications moved into FinalReview. 
-						List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,levelId,searchLevelValues,userId); //updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
+						List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,levelId,searchLevelValues,userId,statusIds); //updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
 						
 						if(finalIds !=null && finalIds.size()>0){
 							count=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);	
@@ -6003,7 +6005,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 									
-									changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
+									changingApplicationsToRejectStatus(nominatedPostFinal.getNominatedPostMemberId(),userId,postApplicationId);
 								}
 								else{
 									
@@ -6106,14 +6108,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	 * @return void
 	 * description  { If all positions are filled out then remaining applications of same position are making to reject status  }
 	 */
-	public void changingApplicationsToRejectStatus(NominatedPostFinal nominatedPostFinal,final Long userId,final Long postApplicationId){
+	public void changingApplicationsToRejectStatus(Long memberId,final Long userId,final Long postApplicationId){
 		try {
-			Long openPositions = nominatedPostDAO.getOpenedPositions(nominatedPostFinal.getNominatedPostMemberId());
+			Long openPositions = nominatedPostDAO.getOpenedPositions(memberId);
 			
 			if(openPositions == null || openPositions.longValue() ==0l){
-				int updateCnt = nominatedPostApplicationDAO.updateApllicationStatusToReject(nominatedPostFinal.getNominatedPostMemberId(), userId);
-					updateCnt = nominatedPostFinalDAO.updateApllicationStatusToReject(nominatedPostFinal.getNominatedPostMemberId(), userId);
-				List<NominatedPostApplication> nominatedPostApplications = nominatedPostApplicationDAO.getApplicationIdsByMemberId(nominatedPostFinal.getNominatedPostMemberId());
+				int updateCnt = nominatedPostApplicationDAO.updateApllicationStatusToReject(memberId, userId);
+					updateCnt = nominatedPostFinalDAO.updateApllicationStatusToReject(memberId, userId);
+				List<NominatedPostApplication> nominatedPostApplications = nominatedPostApplicationDAO.getApplicationIdsByMemberId(memberId);
 				if(commonMethodsUtilService.isListOrSetValid(nominatedPostApplications)){
 					for(NominatedPostApplication nominatedPostApplication : nominatedPostApplications){
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,4l,userId);
@@ -7118,6 +7120,51 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 return resultStatus;
 	 } 
 	 
+	 public ResultStatus rejectApplications(Long departmentId,Long boardId,Long boardLevelId,Long positionId,Long levelValue){
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 List<Long> positionIds = null ;
+			 if(positionId != null && positionId.longValue() > 0l){
+				  positionIds = new ArrayList<Long>();
+				 positionIds.add(positionId);
+			 }
+			 List<Long> levelValues = new ArrayList<Long>();
+			 levelValues.add(levelValue);
+			 List<Long> status = new ArrayList<Long>();
+			 status.add(1l);
+			 status.add(3l);
+			 status.add(6l);
+			Long memberId = nominatedPostMemberDAO.getNominatedPostMemberId(boardLevelId,levelValue,departmentId,boardId,positionId);
+			List<Long> applicationIds = nominatedPostApplicationDAO.getApplicationIds(departmentId,boardId,positionIds,boardLevelId,levelValues,null,status);
+			//List<Long> nominatedPostFinalIds = nominatedPostFinalDAO.getNominatedPostFinalIdsByMemberOfFinalReview(memberId,status);
+			List<Long> nominatedPostIds = nominatedPostDAO.getNominatedPostIdsForBoardLevelId(boardLevelId,levelValue,departmentId,boardId,positionId);
+			
+			//Long openPostCount = nominatedPostDAO.getOpenedPositions(memberId);
+			if(nominatedPostIds != null && nominatedPostIds.size() >0){}
+			else{
+				if(applicationIds != null && applicationIds.size() >0){
+				nominatedPostFinalDAO.updateStatusToGOPassed(applicationIds,dateUtilService.getCurrentDateAndTime(),IConstants.rejectedInFinalized);
+				
+				for(Long long1 : applicationIds){
+					NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
+					savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
+					
+					nominatedPostApplication.setApplicationStatusId(IConstants.rejectedInFinalized);
+					//nominatedPostApplication.setUpdatedBy(userId);
+					nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					nominatedPostApplicationDAO.save(nominatedPostApplication);
+				}
+			}
+			}
+			 
+			resultStatus.setExceptionMsg("SUCCESS");
+		 }catch (Exception e) {
+				resultStatus.setExceptionMsg("FAIL");
+				e.printStackTrace();
+				LOG.error("Exception riased at rejectApplications",e);
+			}
+			 return resultStatus;
+	 }
 	 public ResultStatus assginGOToNominationPostCandidate(final GovtOrderVO goVO,final Long userId,final Map<File,String> mapfiles){
 		 final ResultStatus rs = new ResultStatus();
 		 try {
@@ -7212,6 +7259,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nogo.setUpdatedBy(userId);
 									nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									nogo.setIsDeleted("N");
+									nogo.setIsExpired("N");
 									nominatedPostGovtOrderDAO.save(nogo);
 									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
@@ -7219,6 +7267,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 							}
 							
+							//changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
+							//rejectApplications(goVO.getDepartmentId(),goVO.getBoardId(),goVO.getLocationLevelId(),Long.valueOf(goVO.getPositionIdsString()),Long.valueOf(goVO.getLocationLevelValuesStr()));
+							//rejectApplications(goVO.getDepartmentId(),goVO.getBoardId(),goVO.getLocationLevelId(),null,Long.valueOf(goVO.getLocationLevelValuesStr()));
+							//rejectApplications(goVO.getDepartmentId(),null,goVO.getLocationLevelId(),null,Long.valueOf(goVO.getLocationLevelValuesStr()));
 							if(mapfiles.size() > 0){
 								String status1 = saveGODocuments(govtOrder.getGovtOrderId(),mapfiles,userId);
 								//rs.setExceptionMsg("GO Issued Succesfully.");
@@ -7527,7 +7579,7 @@ public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Lon
 	String status = "Not Shortlisted";
 	try {
 		Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
-		Long nominatedPostFinalId = nominatedPostFinalDAO.getIsApplicationShortlistedOrNot(nominatedPostMemberId,candId);
+		Long nominatedPostFinalId = nominatedPostFinalDAO.getIsApplicationShortlistedOrNot(nominatedPostMemberId,candId,nominatePostApplicationId);
 	
 		if(nominatedPostFinalId != null && nominatedPostFinalId.longValue() > 0l){
 			status = "Shortlisted";
