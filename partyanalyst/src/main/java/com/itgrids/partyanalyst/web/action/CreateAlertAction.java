@@ -1737,21 +1737,28 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
 			List<Long> deptIdList = new ArrayList<Long>();
-			for (int i = 0; i < deptIdArr.length(); i++){
-				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
-			}  
-			
+			if(deptIdArr != null && deptIdArr.length() > 0){
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				} 
+			}
+			 
 			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
 			List<Long> paperIdList = new ArrayList<Long>();
-			for (int i = 0; i < paperIdArr.length(); i++){
-				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
-			} 
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
 			
 			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
 			List<Long> chanelIdList = new ArrayList<Long>();
-			for (int i = 0; i < chanelIdArr.length(); i++){
-				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}
 			}
+			
 			if(statusId != null && statusId.longValue() == 1L){//pending
 				alertCoreDashBoardVOs = cccDashboardService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
