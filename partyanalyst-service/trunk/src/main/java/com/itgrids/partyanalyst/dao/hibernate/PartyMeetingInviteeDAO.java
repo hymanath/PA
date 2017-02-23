@@ -26,7 +26,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMI.partyMeeting.partyMeetingLevel.level," +
 				" PMI.partyMeeting.partyMeetingType.partyMeetingTypeId,  PMI.partyMeeting.partyMeetingType.type, count( distinct  PMI.partyMeeting.partyMeetingId)  from PartyMeetingInvitee PMI where " +
-				" date(PMI.partyMeeting.startDate) <= :toDayDate  ");
+				" date(PMI.partyMeeting.startDate) <= :toDayDate and PMI.partyMeeting.isActive='Y' ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append(" and  PMI.tdpCadreId in (:tdpCadreIdsList) ");
 		queryStr.append(" group by PMI.partyMeeting.partyMeetingType.partyMeetingTypeId ,  PMI.tdpCadreId order by PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
@@ -76,7 +76,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingId,PMI.partyMeeting.meetingName,PMI.partyMeeting.partyMeetingLevelId,PMI.partyMeeting.partyMeetingLevel.level," +
 				" PMI.partyMeeting.locationValue ,PMI.partyMeeting.partyMeetingType.partyMeetingTypeId, PMI.partyMeeting.partyMeetingType.type," +
 				" date(PMI.partyMeeting.startDate),date(PMI.partyMeeting.endDate),count(PMI.tdpCadreId),PMI.partyMeeting.meetingAddress.localArea ,PMI.absenteeRemark   from PartyMeetingInvitee PMI where ");
-		queryStr.append(" date(PMI.partyMeeting.startDate) <= :todayDate ");
+		queryStr.append(" date(PMI.partyMeeting.startDate) <= :todayDate and PMI.partyMeeting.isActive='Y' ");
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
 			queryStr.append(" and  PMI.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
 			isSetWhere = true;
@@ -103,7 +103,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	public List<String> getPartyMeetingInvittees(Long partyMeetingId)
 	{
 		Query query = getSession().createQuery("SELECT DISTINCT model.tdpCadre.memberShipNo FROM PartyMeetingInvitee model where model.partyMeeting.partyMeetingId = :partyMeetingId  " +
-				" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
+				" and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear="+IConstants.CADRE_ENROLLMENT_NUMBER+" and model.partyMeeting.isActive='Y' ");
 		query.setParameter("partyMeetingId",partyMeetingId);
 		return query.list();
 	}
@@ -123,7 +123,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 				" where " +
 				" model.partyMeeting.partyMeetingId in(:partyMeetingIds) " +
 				" and model.tdpCadre.isDeleted='N'" +
-				" and model.tdpCadre.enrollmentYear=:enrollmentYear " +
+				" and model.tdpCadre.enrollmentYear=:enrollmentYear and model.partyMeeting.isActive='Y' " +
 				" group by model.partyMeeting.partyMeetingId " +
 				" order by model.partyMeeting.partyMeetingId desc ");
 		
@@ -136,7 +136,8 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	public List<Object[]> getInviteesForPartyMeetings(List<Long> partyMeetingsList)
 	{
 		if(partyMeetingsList != null && partyMeetingsList.size()>0){
-		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model where model.partyMeeting.partyMeetingId in(:partyMeetingsList) " +
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model where model.partyMeeting.partyMeetingId in(:partyMeetingsList)" +
+				" and model.partyMeeting.isActive='Y' " +
 				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
 		
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
@@ -149,7 +150,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	public List<Object[]> getPublicRepresentativeInviteesForPartyMeetings(List<Long> partyMeetingsList)
 	{
 		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model,TdpCadreCandidate model2 where " +
-				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) " +
+				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) and model.partyMeeting.isActive='Y' " +
 				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
 		
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
@@ -160,7 +161,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	public List<Object[]> getCommitteeMemberInviteesForPartyMeetings(List<Long> partyMeetingsList)
 	{
 		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId from PartyMeetingInvitee model,TdpCommitteeMember model2 where " +
-				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) and model2.isActive = 'Y'" +
+				" model.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in(:partyMeetingsList) and model2.isActive = 'Y' and model.partyMeeting.isActive='Y' " +
 				" group by model.partyMeeting.partyMeetingId,model.tdpCadre.tdpCadreId");
 		
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
@@ -171,7 +172,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		
 		Query query = getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId " +
 						" from PartyMeetingInvitee model " +
-						" where model.partyMeeting.partyMeetingId = :partyMeetingId and  model.tdpCadre.isDeleted='N' and  model.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
+						" where model.partyMeeting.partyMeetingId = :partyMeetingId and model.partyMeeting.isActive='Y' and  model.tdpCadre.isDeleted='N' and  model.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
 		query.setParameter("partyMeetingId", partyMeetingId);
 		
 		return query.list();
@@ -562,7 +563,7 @@ public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingTypeIds(PartyMee
 				  "        TC.address_id = UA.user_address_id and " +
 				  "        UA.district_id = D.district_id and " +
 				  "        PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-				  "        TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
+				  "        TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' ");
 		if(status.equalsIgnoreCase("details")){
 			sb.append(" and  D.district_id = (:distId) ");
 		}
@@ -639,7 +640,7 @@ public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds
 			  " TC.address_id = UA.user_address_id and " +///
 			  " UA.district_id = D.district_id and " +
 			  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-			  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 " );
+			  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' " );
 	if(status.equalsIgnoreCase("details")){
 		sb.append(" and  D.district_id = (:distId) ");  
 	}
@@ -790,7 +791,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 				  " PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
 				  " TC.address_id = UA.user_address_id and " +
 				  " UA.district_id = D.district_id and " +
-				  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+				  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and PM.is_active='Y' and " +
 				  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
 		
 		/*if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
@@ -852,7 +853,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		sb.append(" PM.party_meeting_type_id = PMT.party_meeting_type_id and ");
 		sb.append(" PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and ");
 		sb.append(" TC.address_id = UA.user_address_id and ");
-		sb.append(" UA.district_id = D.district_id and ");
+		sb.append(" UA.district_id = D.district_id and PM.is_active='Y' and  ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
 		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
@@ -902,7 +903,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		sb.append(" PM.party_meeting_type_id = PMT.party_meeting_type_id and ");
 		sb.append(" PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and ");
 		sb.append(" TC.address_id = UA.user_address_id and ");
-		sb.append(" UA.district_id = D.district_id and ");
+		sb.append(" UA.district_id = D.district_id and PM.is_active='Y' and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
 		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
@@ -958,7 +959,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		sb.append(" UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" (date(PM.start_date) between :fromDate and :toDate) and ");
+		sb.append(" (date(PM.start_date) between :fromDate and :toDate) and PM.is_active='Y' and ");
 		if(inputVO.getStateId().longValue() == 1L){
 			sb.append(" D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and ");
 		}else{
@@ -1008,7 +1009,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 		sb.append(" UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" (date(PM.start_date) between :fromDate and :toDate) and ");
+		sb.append(" (date(PM.start_date) between :fromDate and :toDate) and PM.is_active='Y' and ");
 		if(inputVO.getStateId().longValue() == 1L){
 			sb.append(" D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and ");
 		}else{
@@ -1437,7 +1438,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				  " TC.address_id = UA.user_address_id and " +
 				  " UA.district_id = D.district_id and " +
 				  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-				  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
+				  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' and ");
 	
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
@@ -1504,7 +1505,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
+		sb.append(" date(PM.start_date) between :fromDate and :toDate and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1567,7 +1568,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
+		sb.append(" date(PM.start_date) between :fromDate and :toDate and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1629,7 +1630,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
+		sb.append(" date(PM.start_date) between :fromDate and :toDate and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1694,7 +1695,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" date(PM.start_date) between :fromDate and :toDate and ");
+		sb.append(" date(PM.start_date) between :fromDate and :toDate and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1759,7 +1760,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" ( date(PM.start_date) between :fromDate and :toDate) and ");
+		sb.append(" ( date(PM.start_date) between :fromDate and :toDate) and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1820,7 +1821,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		sb.append(" TC.address_id = UA.user_address_id and UA.district_id = D.district_id and ");
 		sb.append(" PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and ");
 		sb.append(" TC.is_deleted = 'N' and TC.enrollment_year = 2014 and ");
-		sb.append(" ( date(PM.start_date) between :fromDate and :toDate ) and ");
+		sb.append(" ( date(PM.start_date) between :fromDate and :toDate ) and PM.is_active='Y' and ");
 		if(inputVO.getDistId().longValue() > 0L){
 			sb.append(" D.district_id = :districtId ");
 			if(inputVO.getStateId().longValue()==1l){
@@ -1860,7 +1861,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     @SuppressWarnings("unchecked")
     public List<Object[]> getObsentReasonList(Long partyMeetingId){
         StringBuilder sb = new StringBuilder();
-        sb.append("select distinct model.tdpCadreId, model.absenteeRemark from PartyMeetingInvitee model where model.partyMeetingId = :partyMeetingId");
+        sb.append("select distinct model.tdpCadreId, model.absenteeRemark from PartyMeetingInvitee model where model.partyMeetingId = :partyMeetingId and model.PartyMeeting.isActive='Y'");
         Query query = getSession().createQuery(sb.toString());
         query.setParameter("partyMeetingId", partyMeetingId);
         return query.list();
