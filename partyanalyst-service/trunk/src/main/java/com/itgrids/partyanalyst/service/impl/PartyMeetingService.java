@@ -586,7 +586,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			Map<Long ,PartyMeetingVO> meetingWisedetlsMap = new LinkedHashMap<Long, PartyMeetingVO>(0);
 			List<Object[]> mettingWiseInvitationcountsList = partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList, partyMeetingTypeId,toDayDate);
 			List<Long> partyMeetingsList = new ArrayList<Long>(0);
-			
+			Map<Long,PartyMeetingsDataVO> defualtSessinMap = new HashMap<Long, PartyMeetingsDataVO>(0);
 			if(mettingWiseInvitationcountsList != null && mettingWiseInvitationcountsList.size()>0)
 			{
 				for (Object[] meeting : mettingWiseInvitationcountsList) {
@@ -620,6 +620,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 					partyMeetingVO.setInvitedCount(invitationCount);
 					partyMeetingVO.setRequest(commonMethodsUtilService.getStringValueForObject(meeting[11]));//absent reason
 					meetingWisedetlsMap.put(meetingId, partyMeetingVO);
+					
+					
+					PartyMeetingsDataVO sessionVO = new PartyMeetingsDataVO();
+					sessionVO.setPartyMeetingId(meetingId);
+					sessionVO.setId(0L);
+					sessionVO.setName("ATTENDENCE");
+					defualtSessinMap.put(meetingId, sessionVO);
+					
 					
 				}
 			}
@@ -673,7 +681,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					Long meetingId = commonMethodsUtilService.getLongValueForObject(meeting[0]);
 					//String meetingName = commonMethodsUtilService.getStringValueForObject(meeting[1]);
 					Long attendedCount = commonMethodsUtilService.getLongValueForObject(meeting[9]);
-					
+					String attendedTime = commonMethodsUtilService.getStringValueForObject(meeting[14]);
 					partyMeetingsList.remove(meetingId);
 					PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 					if(meetingWisedetlsMap.get(meetingId) != null)
@@ -685,7 +693,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					sessionsList = partyMeetingVO.getSessionList();
 					if(commonMethodsUtilService.isListOrSetValid(sessionsList)){
 						Long sessionId = commonMethodsUtilService.getLongValueForObject(meeting[11]);
-						String attendedTime = commonMethodsUtilService.getStringValueForObject(meeting[14]);
+						
 						for (PartyMeetingsDataVO vo : sessionsList) {
 							if(vo != null && vo.getId().longValue()==sessionId.longValue()){
 								vo.setRequiredName("present");
@@ -700,7 +708,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 									vo.setIsLate("true");
 								else
 									vo.setIsLate("false");
+							}else if (vo != null && vo.getId().longValue() ==0L){
+								vo.setRequiredName("present");
+								vo.setAttendedTime(attendedTime.substring(11,16));
 							}
+						}
+					}else{
+						if(commonMethodsUtilService.isMapValid(defualtSessinMap)){
+							PartyMeetingsDataVO sessionVO  = defualtSessinMap.get(meetingId);
+							sessionVO.setRequiredName("present");
+							sessionVO.setAttendedTime(attendedTime.substring(11,16));
+							partyMeetingVO.getSessionList().add(sessionVO);
 						}
 					}
 					
