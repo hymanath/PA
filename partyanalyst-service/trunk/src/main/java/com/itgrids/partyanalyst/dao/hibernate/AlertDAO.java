@@ -980,7 +980,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
 				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
 			}else if(filterType != null && filterType.equalsIgnoreCase("State")){
-				queryStr.append(" group by state.stateId");
+				queryStr.append(" group by state.stateId order by state.stateId");
 			}
 		}else{
 			if(filterType != null && filterType.equalsIgnoreCase("District")){
@@ -988,9 +988,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
 				queryStr.append(" group by constituency.constituencyId,model.alertStatus.alertStatusId order by constituency.constituencyId ");
 			}else if(filterType != null && filterType.equalsIgnoreCase("State")){
-			    queryStr.append(" group by state.stateId order by state.stateId");	
+			    queryStr.append(" group by state.stateId,model.alertStatus.alertStatusId order by state.stateId");	
 			}
-			queryStr.append(",model.alertStatus.alertStatusId ");
 		}  
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -5140,7 +5139,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
 		}
 		 if(stateId != null && stateId.longValue() > 0l){
-			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		 }
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
