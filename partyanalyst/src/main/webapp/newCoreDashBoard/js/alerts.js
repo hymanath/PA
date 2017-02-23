@@ -4253,6 +4253,10 @@ function getTotalArticledetails(articleId){
 	}
 	function buildAlertDetailsInDebularFormat(result,divId,locationType){
 	 var str='';
+	  if($(window).width() < 800)
+		{
+			str+='<div class="table-responsive">';
+		}
 	 if(divId=="constituencyAlertDivId"){
 		  str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="constituencyAlertDataTblId">'; 
 	 }else if(divId=="districtSummaryAlertDivId"){
@@ -4301,6 +4305,10 @@ function getTotalArticledetails(articleId){
 			 str+='</tbody>';
 			 str+='</table>';
 	      $("#"+divId).html(str);
+		  if($(window).width() < 800)
+		{
+			str+='</div>';
+		}
 		   if(divId=="constituencyAlertDivId"){
 			 $("#constituencyAlertDataTblId").dataTable({
 			"aaSorting": [],
