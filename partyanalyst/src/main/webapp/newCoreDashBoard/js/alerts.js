@@ -72,7 +72,7 @@
 	$('#dateRangeIdForAlert').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDateAlert = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateAlert = picker.endDate.format('DD/MM/YYYY');
-	  var scopeIdsArr = [2,3,8,5,7,9,6];
+	  var scopeIdsArr = [2,3,8,5,7,9,6,12];
 		/* scopeIdsArr.push(2);  
 		scopeIdsArr.push(3);  
 		scopeIdsArr.push(6);  
@@ -112,7 +112,7 @@
 	{
 		$(".alertImpactCheckCls").prop('checked', true);
 		//var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];
-		var scopeIdsArr = [2,3,8,5,7,9,6];
+		var scopeIdsArr = [2,3,8,5,7,9,6,12];
 		$("#districtSummaryAlertDivId").html(" ");
 		$("#constituencyAlertDivId").html("");
 		$(".constituencyAlertCls").hide();
@@ -219,6 +219,7 @@
 				scopeIdsArr.push(3);
 			}else if(selectionType == "mandalMuncipality"){
 				scopeIdsArr.push(5);  
+				scopeIdsArr.push(12);  
 			}else if(selectionType == "VillageWard"){
 				scopeIdsArr.push(7);  
 				scopeIdsArr.push(9);	
@@ -272,6 +273,7 @@
 				consScopeIdsArr.push(3);
 			}else if(selectionType == "mandal"){
 				consScopeIdsArr.push(5);  
+				consScopeIdsArr.push(12);  
 			}else if(selectionType == "VillageWard"){
 				consScopeIdsArr.push(7);  
 				consScopeIdsArr.push(9);	
@@ -301,6 +303,7 @@
 					scopeIdsArr.push(3);
 				}else if(selectionType == "mandalMuncipality"){
 					scopeIdsArr.push(5);  
+					scopeIdsArr.push(12);  
 				}else if(selectionType == "VillageWard"){
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
@@ -346,6 +349,7 @@
 				consScopeIdsArr.push(3);
 			}else if(selectionType == "mandal"){
 				consScopeIdsArr.push(5);  
+				consScopeIdsArr.push(12);  
 			}else if(selectionType == "VillageWard"){
 				consScopeIdsArr.push(7);  
 				consScopeIdsArr.push(9);	
@@ -894,7 +898,9 @@
 				var alertCntArr = [];
 			  if(result[i].subList !=null && result[i].subList.length>0){
 					for(var j in result[i].subList){
-						locationNameArr.push(result[i].subList[j].locationType);
+						if(result[i].subList[j].locationType != null){
+						 locationNameArr.push(result[i].subList[j].locationType.toUpperCase());	
+						}
 						//alertCntArr.push(result[i].subList[j].alertCount);
 						alertCntArr.push({"y":result[i].subList[j].alertCount,"extra":result[i].name,"id":result[i].subList[j].locationTypeId,"catId":result[i].id});   
 					}
@@ -1038,11 +1044,13 @@
 			scopeIdsArr.push(3);
 		}else if(locationId == 4){
 			scopeIdsArr.push(5);  
-			scopeIdsArr.push(8);	
+			scopeIdsArr.push(12);	
 		}else if(locationId == 5){
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9);
 			scopeIdsArr.push(6);
+		}else if(locationId==8){
+			scopeIdsArr.push(8);
 		}
 		var districtIdArr = [];
 		var jsObj = { 
@@ -1708,6 +1716,9 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 	 	var districtId = 0;
 		if($("#dstrctSlctBxId").is(":visible")){
 			districtId = $("#dstrctSlctBxId").val();
+			if(districtId==null){
+				districtId =0;
+			}
 		}
 		
 		var jsObj = { 
@@ -1869,6 +1880,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 					scopeIdsArr.push(3);
 				}else if(selectionType == "mandalMuncipality"){
 					scopeIdsArr.push(5);  
+					scopeIdsArr.push(12);  
 				}else if(selectionType == "VillageWard"){
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
@@ -2135,6 +2147,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -2231,6 +2244,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -2387,6 +2401,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -2460,6 +2475,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -2518,6 +2534,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -2598,6 +2615,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -3026,6 +3044,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -3103,6 +3122,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(3);
 				}else if(selectionType == "mandal"){
 					scopeIdsArr.push(5);  
+					scopeIdsArr.push(12);  
 				}else if(selectionType == "VillageWard"){
 					scopeIdsArr.push(7);  
 					scopeIdsArr.push(9);	
@@ -3120,6 +3140,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 							scopeIdsArr.push(3);
 						}else if(selectionType == "mandalMuncipality"){
 							scopeIdsArr.push(5);  
+							scopeIdsArr.push(12);  
 						}else if(selectionType == "VillageWard"){
 							scopeIdsArr.push(7);  
 							scopeIdsArr.push(9);	
@@ -3916,7 +3937,7 @@ function getTotalArticledetails(articleId){
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		
 		if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			var scopeIdsArr = [2,3,6,7,9,5,8,10,11,1,4];          
+			var scopeIdsArr = [2,3,8,5,7,9,6,12]; 
 			getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 			getStateImpactLevelAlertDtlsCnt("other"); 
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
@@ -3931,7 +3952,8 @@ function getTotalArticledetails(articleId){
 					}else if(selectionType == "Constituency"){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
-						scopeIdsArr.push(5);  
+						scopeIdsArr.push(5); 
+						scopeIdsArr.push(12); 
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -3991,6 +4013,7 @@ function getTotalArticledetails(articleId){
 						consScopeIdsArr.push(3);
 					}else if(selectionType == "mandal"){
 						consScopeIdsArr.push(5);  
+						consScopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						consScopeIdsArr.push(7);  
 						consScopeIdsArr.push(9);	
@@ -4185,6 +4208,7 @@ function getTotalArticledetails(articleId){
 						scopeIdsArr.push(3);
 					}else if(selectionType == "mandalMuncipality"){
 						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
 					}else if(selectionType == "VillageWard"){
 						scopeIdsArr.push(7);  
 						scopeIdsArr.push(9);	
@@ -4211,6 +4235,7 @@ function getTotalArticledetails(articleId){
 					consScopeIdsArr.push(3);
 				}else if(selectionType == "mandal"){
 					consScopeIdsArr.push(5);  
+					consScopeIdsArr.push(12);  
 				}else if(selectionType == "VillageWard"){
 					consScopeIdsArr.push(7);  
 					consScopeIdsArr.push(9);	
@@ -4426,6 +4451,7 @@ function getTotalArticledetails(articleId){
 				consScopeIdsArr.push(3);
 			}else if(selectionType == "mandal"){
 				consScopeIdsArr.push(5);  
+				consScopeIdsArr.push(12);  
 			}else if(selectionType == "VillageWard"){
 				consScopeIdsArr.push(7);  
 				consScopeIdsArr.push(9);	

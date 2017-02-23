@@ -285,13 +285,13 @@
 														<li>
 															<label class="checkbox-inline">
 																<input type="checkbox" attr_scope_type="MuncipalityGMC" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">MUNICIPAL-CORP-GMC</h5></div>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">CORP-GMC</h5></div>
 															</label>
 														</li>
 														<li>
 															<label class="checkbox-inline">
 																<input type="checkbox" attr_scope_type="mandalMuncipality" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
 															</label>
 														</li>
 														<li>
@@ -352,7 +352,7 @@
 																<li>
 																	<label class="checkbox-inline">
 																		<input type="checkbox" attr_scope_type="mandal" class="alertConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
 																	</label>
 																</li>
 																<li>
