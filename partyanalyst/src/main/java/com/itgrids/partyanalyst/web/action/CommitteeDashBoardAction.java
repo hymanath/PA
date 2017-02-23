@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CommitteeResultVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -86,9 +87,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<IdNameVO>  castes;
 	private List<GenericVO>						genericVOList;
 	private List<CadreCommitteeVO> 				committeeVoList;
-	
-	
-	
+	private CommitteeResultVO committeeResultVO;
 	
 	
 	public List<CadreCommitteeVO> getCommitteeVoList() {
@@ -341,6 +340,12 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		this.activitiesVOList = activitiesVOList;
 	}
 	
+	public CommitteeResultVO getCommitteeResultVO() {
+		return committeeResultVO;
+	}
+	public void setCommitteeResultVO(CommitteeResultVO committeeResultVO) {
+		this.committeeResultVO = committeeResultVO;
+	}
 	public String execute(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
@@ -764,20 +769,46 @@ public String getCommitteeDetailsByStatusPopUp(){
 			}
 			String startDate = jObj.getString("fromDate");
 			String endDate = jObj.getString("toDate");
-			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
-			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate);
-			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
+			if(jObj.getString("task").equalsIgnoreCase("memberCnt")){
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),jObj.getString("constituencyId"),committeeEnrollmentIdsLst,startDate,endDate);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("memberInfo")){
 				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"),committeeEnrollmentIdsLst,startDate,endDate);
-			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
+			}
+			/*else if(jObj.getString("task").equalsIgnoreCase("committeComplete")){
 				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst,startDate,endDate);
-			else if(jObj.getString("task").equalsIgnoreCase("deleterole"))
+			}*/
+			else if(jObj.getString("task").equalsIgnoreCase("deleterole")){
 				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"),committeeEnrollmentIdsLst,startDate,endDate);
+			}
+				
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
 	}
+
+   public String committeeConfirmation(){
+	   
+	   try{
+		   
+		   jObj = new JSONObject(getTask());
+			List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+			JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentId");
+			if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+				for( int i=0;i<committeeEnrollmentIds.length();i++){
+					committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+				}
+			}
+			String startDate = jObj.getString("fromDate");
+			String endDate = jObj.getString("toDate");
+			committeeResultVO = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),committeeEnrollmentIdsLst,startDate,endDate);
+	  }catch (Exception e) {
+		  LOG.error("Exception occured in committeeConfirmation() At CadreCommitteeAction ",e);
+	  }
+	   return Action.SUCCESS;
+   }
 
 public String constituencyCommitteeSummaryAction()
 {
