@@ -2240,9 +2240,9 @@ public String getSummaryDetails(){
 		if(regVO==null){
 			return "input";
 		}
-		if(regVO != null && regVO.getEntitlements().contains("COMMITTEE_MGT"))
+		if(regVO != null && !(regVO.getEntitlements().contains("COMMITTEE_MGT") || regVO.getEntitlements().contains("COMMITTEE_MANAGEMENT_MULTIPLE_AREAS_ENTITLEMENT")))
 		{
-			return Action.SUCCESS;
+			return Action.ERROR;
 		}
 			return Action.SUCCESS;
 		
