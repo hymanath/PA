@@ -20,6 +20,11 @@
 		
 		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".eventsBlock").offset().top},
+			'slow');
+		},500);
 	}else{
 		$("#activtyBlckDivId").hide();
 		$(".activitesExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");

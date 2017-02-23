@@ -122,7 +122,12 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			getDesignationWiseMembersDtls();
 			$(".NewToursHiddenBlock").show();
-	        $(".hideShowNewToursDateRangeCls").show();			
+	        $(".hideShowNewToursDateRangeCls").show();	
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".NewToursBlock").offset().top},
+				'slow');
+			},500);
 		}else{
 			$(this).attr("isExpand","false");
 			$(".NewTourExpandCls").hide();

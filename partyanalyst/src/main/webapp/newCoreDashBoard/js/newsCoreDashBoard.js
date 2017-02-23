@@ -115,6 +115,11 @@
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".editionWiseBlock").show();
 			getUserTypeWiseNewsCounts(1);
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".newsBlock").offset().top},
+				'slow');
+			},500);
 		}else{
 			$(".newsHiddenMoreBlock").hide();
 			$(".editionWiseBlock").hide();

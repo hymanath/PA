@@ -139,8 +139,13 @@
 			defaultAlertCalls();
 			
 			$(".districtAltCtnCls").toggle();
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".alertsBlock").offset().top},
+				'slow');
+			},500);
 		}else{
-			console.log("closing")
+			//console.log("closing")
 			$("#districtWiseAlertCountId").html("");    
 			$(".districtAltCtnCls").toggle();     
             $(".alertLocationDiv").hide();  			

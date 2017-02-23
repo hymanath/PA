@@ -699,11 +699,17 @@ $(document).on("click",".debatesIconExpand",function(){
 	setTimeout(function(){
 		$(".debatesHiddenBlock,.moreMeetingsBlocksIcon").toggle();
 		getSpokesPersonWiseDebate("top");
+		
 	},800);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".debatesMoreHiddenBlock").hide();	
 	}else{
 		getSpokesPersonWiseDebate("top");
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".debatesBlock").offset().top},
+			'slow');
+		},500);
 	}
 	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");

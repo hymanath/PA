@@ -68,7 +68,11 @@ $(document).on("click",".cadreExpand",function(){
 			$(".moreCadreBlock,.moreBlocksCadreIcon,.showTabUserWiseDetails").hide();
 		},1000);		
 	}else{
-		
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $(".cadreBlock").offset().top},
+			'slow');
+		},500);
 		//getSpokesPersonWiseDebate("top");
 	}
 	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
