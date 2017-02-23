@@ -680,7 +680,27 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return null;
 	}
-	
+	public List<IdAndNameVO> getDeptListForUser(Long userId){   
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			//List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getDeptIdAndNameForUser(userId);
+			if(deptList != null && deptList.size() > 0){  
+				for(Object[] param : deptList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
 	public String assigningAlertToOfficer(final AlertAssigningVO inputvo){
 		String status = null;
 		try {
@@ -961,7 +981,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	/*
 	 * Swadhin(non-Javadoc) Both IAS and collector
 	 */
-	//swa
+	//third
 	public List<AlertVO> getTotalAlertGroutByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId){
 		logger.info("Entered in getTotalAlertGroutByDeptThenStatus() method of CccDashboardService{}");
 		try{
@@ -1028,7 +1048,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return null;
 	}
-	/*
+	/*fourth
 	 * Swadhin(non-Javadoc)
 	 */
 	public List<AlertVO> getAlertCountLocationWiseThenStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> govtDepartmentIds,Long lvlValue){
@@ -1953,7 +1973,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return status;
 	}
-	/*
+	/* first
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertByStatusForOfficer(String fromDateStr, String toDateStr,Long userId)
 	 * IAS Officer
@@ -2042,7 +2062,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return null;
 	}
-	/*
+	/* second
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertByDeptForOfficer(String fromDateStr, String toDateStr,Long userId)
 	 * IAS Officer
@@ -2316,14 +2336,14 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return returnList;
 	}
-	/*
+	/*first click
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICccDashboardService#getTotalAlertDtls(String fromDateStr, String toDateStr,Long userId,Long statusId,Long deptId,String type)
 	 * IAS Officer
 	 */
 	public List<AlertCoreDashBoardVO> getTotalAlertDtls(String fromDateStr, String toDateStr,Long userId,Long statusId,Long deptId,String type){
 		logger.info("Entered in getTotalAlertDtls() method of CccDashboardService{}");
-		try{
+		try{  
 			
 			DateUtilService dateUtilService = new DateUtilService();
 			
@@ -2384,7 +2404,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 							if(deptDesigOfficerId2.longValue() > 0L && officerId2.longValue() > 0L){
 								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
-								}
+								}         
 							}
 						}
 					}
@@ -2440,7 +2460,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return null;  
 	}
-	/*
+	/*second click
 	 * Swadhin(non-Javadoc) Both IAS and collector
 	 */
 	//getTotalAlertGroutByDeptThenStatus
@@ -2503,7 +2523,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 		}
 		return null;
 	}
-	/*
+	/*third click
 	 * Swadhin(non-Javadoc)
 	 */
 	//getLocationWiseThenStatusWiseAlertCountDetails
