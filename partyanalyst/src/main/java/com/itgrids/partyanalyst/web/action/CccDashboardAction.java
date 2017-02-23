@@ -60,6 +60,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private List<IdAndNameVO> newsPaperList;
 	    private List<IdAndNameVO> chanelList;
 	    private List<IdAndNameVO> deptList;
+	    private List<IdAndNameVO> deptListNew;
 	    private List<IdAndNameVO> locationLevelList;
 	    private List<AlertCoreDashBoardVO> alertCoreDashBoardVOList;
 	    
@@ -179,7 +180,13 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		   this.deptList = deptList;
 	   }
 	   
-	   public List<AlertVO> getAlertVOs() {
+	   public List<IdAndNameVO> getDeptListNew() {
+		return deptListNew;
+	}
+	public void setDeptListNew(List<IdAndNameVO> deptListNew) {
+		this.deptListNew = deptListNew;
+	}
+	public List<AlertVO> getAlertVOs() {
 		return alertVOs;
 	}
 	public void setAlertVOs(List<AlertVO> alertVOs) {
@@ -195,12 +202,16 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	}
 	//Business method
 	   public String execute(){
+		    session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			newsPaperList = cccDashboardService.getNewsPapaerList();
 			chanelList = cccDashboardService.getChannelList();
-			deptList = cccDashboardService.getDeptList();  
+			deptListNew = cccDashboardService.getDeptList(); 
+			deptList = cccDashboardService.getDeptListForUser(userId); 
 		    return Action.SUCCESS;
 	   }
-	   public String alertDepartmentLogin(){
+	   public String alertDepartmentLogin(){  
 		   return Action.SUCCESS;
 	   }
 	   public String getDepartmentLevels(){
@@ -222,7 +233,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				govtDeptVoList = cccDashboardService.getLocationsBasedOnLevel(levelId);
 		   } catch (Exception e) {
 			   LOG.error("Exception Raised in getLocationsBasedOnLevel() in CccDashboardAction",e);
-			}
+		}
 			   return Action.SUCCESS;
 		}
 		
