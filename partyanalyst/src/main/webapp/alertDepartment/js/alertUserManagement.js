@@ -1481,16 +1481,16 @@ function buildDistrictLevelDepartmentDetails(result){
 				str1+='</tr>';
 			str1+='</thead>';
 			str1+='<tbody>';
-				for(var i in result){
+				for(var i in result){  
 					str1+='<tr>';
 						str1+='<td>'+result[i].status+'</td>';
-						str1+='<td>'+result[i].count+'</td>';
+						str1+='<td attr_department_id="'+result[i].statusId+'" attr_status_id="0" class="totalDepartment">'+result[i].count+'</td>';
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							
 							for(var j in result[i].subList1){
 								if(j != 0)
-								{
-									str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+								{  
+									str1+='<td attr_department_id="'+result[i].statusId+'" attr_status_id="'+result[i].subList1[j].categoryId+'" class="totalDepartment"style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
 								}
 							}
 						}
@@ -1633,7 +1633,7 @@ $(document).on("click",".totalDepartment",function(){
 		backdrop: 'static'
 	});	
 	var departmentId = $(this).attr("attr_department_id");
-	var statusId  = $(this).attr("attr_status_id");
+	var statusId  = $(this).attr("attr_status_id");  
 	getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId);
 });
 function getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId)
