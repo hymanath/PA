@@ -4269,6 +4269,8 @@ function getTotalArticledetails(articleId){
 		       if(result != null && result.length > 0){
 				    if(result[0].subList1 != null && result[0].subList1.length > 0){
 						 for(var k in result[0].subList1){
+							 if(result[0].subList1[k].categoryId == 5)
+								 continue;
 							str+='<th>'+result[0].subList1[k].category+'</th>';		 
 						 }
 					}
@@ -4289,6 +4291,8 @@ function getTotalArticledetails(articleId){
 				} 
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
+						if(result[i].subList1[j].categoryId == 5)
+									continue;
 							if(result[i].subList1[j].categoryCount > 0){
 								if(result[i].statusId==0){
 								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" attr_location_type='+locationType+' attr_alert_count='+result[i].subList1[j].categoryCount+' attr_location_level="'+result[i].status+'" attr_location_id = '+result[i].deptIdList+' attr_alert_status_id='+result[i].subList1[j].categoryId+'>'+result[i].subList1[j].categoryCount+'</td>';  	
