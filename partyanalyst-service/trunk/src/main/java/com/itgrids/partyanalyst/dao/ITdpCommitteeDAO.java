@@ -79,6 +79,7 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	 public List<Long> getTdpCommitteeId(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue,Long tdpCommitteeEnrollmentId);
 	 public List<Object[]> getTdpCommitteeDetailsByEnrollmentId(List<Long> enrollmentIds);
 	 public List<Long> getCommitteeIds(Long levelId,Long levelValue,Long committeeEnrollmentId,Date startDate,Date endDate,Long basicCommitteetypeId);
-	public List<Object[]> getLocationsWiseMandalDetails(List<Long> locationIds, List<Long> committeeLevelIdsList,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate, String  accessType , List<Long> mainOrAfflCommitteIds );
-	public List<Object[]> getLocationsWiseMandalStartedDetails(List<Long> locationIds, List<Long> committeeLevelIdsList,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate,String  accessType , List<Long> mainOrAfflCommitteIds );
+	 public List<Object[]> getLocationsWiseMandalDetails(List<Long> locationIds, List<Long> committeeLevelIdsList,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate, String  accessType , List<Long> mainOrAfflCommitteIds );
+	 public List<Object[]> getLocationsWiseMandalStartedDetails(List<Long> locationIds, List<Long> committeeLevelIdsList,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate,String  accessType , List<Long> mainOrAfflCommitteIds );
+     public Long getCommitteeConfirmRuleIdByCommitteeId(Long tdpCommitteeId);
 }

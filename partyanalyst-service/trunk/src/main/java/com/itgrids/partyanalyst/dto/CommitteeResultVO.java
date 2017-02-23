@@ -10,6 +10,7 @@ public class CommitteeResultVO implements Serializable{
 	private String message;
     private Long tdpRolesId;
     private String role;
+    private Long   totalCount;
 	private Long  minCount;
     private Long  occupiedCount;
     private Long tdpCommitteeId;
@@ -88,6 +89,14 @@ public class CommitteeResultVO implements Serializable{
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
 	}
     	
 }

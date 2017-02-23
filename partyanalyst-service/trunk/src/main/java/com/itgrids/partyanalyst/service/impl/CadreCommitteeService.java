@@ -72,6 +72,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrDistrictDetailDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrTotalDetailDAO;
+import com.itgrids.partyanalyst.dao.ICommitteeConfirmRuleConditionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -133,6 +134,7 @@ import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
+import com.itgrids.partyanalyst.dto.CommitteeResultVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
@@ -285,7 +287,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	private CoreDashboardGenericService coreDashboardGenericService;
-	
+	private ICommitteeConfirmRuleConditionDAO committeeConfirmRuleConditionDAO;
 	
 	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
 		return activityMemberAccessLevelDAO;
@@ -734,7 +736,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			CoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	}
+	
+	public ICommitteeConfirmRuleConditionDAO getCommitteeConfirmRuleConditionDAO() {
+		return committeeConfirmRuleConditionDAO;
+	}
 
+	public void setCommitteeConfirmRuleConditionDAO(
+			ICommitteeConfirmRuleConditionDAO committeeConfirmRuleConditionDAO) {
+		this.committeeConfirmRuleConditionDAO = committeeConfirmRuleConditionDAO;
+	}
+	
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -4185,54 +4196,189 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> setCommitteConfirmation(final Long basicCommitteeTypeId,final Long locationId,final Long levelId,final List<Long> committeeEnrollmentIdsLst,final String startDate,final String endDate)
+	
+	public CommitteeResultVO setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
-		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
-		try{
-			CadreCommitteeMemberVO resultVo = new CadreCommitteeMemberVO();
-			resultVo = (CadreCommitteeMemberVO) transactionTemplate.execute(new TransactionCallback() {
-				 public Object doInTransaction(TransactionStatus resultVo) {
-					 List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
-					 CadreCommitteeMemberVO returnVo = new CadreCommitteeMemberVO();
-						DateUtilService date = new DateUtilService();
-						SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
-						Date stDate = null;
-						Date edDate = null;
-						try{
-						 stDate = (Date)format.parse(startDate);
-						 edDate = (Date)format.parse(endDate);
-						}catch (Exception e) {
-							LOG.error("Exception raised in setCommitteConfirmation () of parsing dates", e);	
-						}
-						List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
-						for(Long id : tdpcommitteIds)
-						{
+		CommitteeResultVO resultVO = null;
+		SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+		try{	
+				Date stDate = null;
+				Date edDate = null;
+				if(startDate != null && endDate != null){
+					stDate = format.parse(startDate);
+					edDate = (Date)format.parse(endDate);
+				}
+				
+				List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId,committeeEnrollmentIdsLst,stDate,edDate);
+                Long tdpCommitteeId = null;					
+				if(tdpcommitteIds != null && tdpcommitteIds.size() > 0){
+					tdpCommitteeId = tdpcommitteIds.get(0);
+				}else{
+					resultVO = new CommitteeResultVO();
+					resultVO.setErrorCode(0L);
+					resultVO.setMessage("This Committee Does Not Have Members..");
+					return resultVO;
+				}
+				
+				if(tdpCommitteeId != null && tdpCommitteeId.longValue() > 0l){
+					
+					resultVO = validateCommitteeRolesMinPositions(tdpCommitteeId);
+					if(resultVO != null){
+						if(resultVO.isErrorStatus()){
+							resultVO.setErrorCode(1l);
+							resultVO.setMessage("Committee Role Positions Counts Not Matched..");
+							resultVO.setTdpCommitteeId(tdpCommitteeId);
+							return resultVO;
+						}else{
+							
 							CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
-							TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
-							tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
+							TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteeId);
+							tdpCommittee.setCompletedDate(dateUtilService.getCurrentDateAndTime());
 							tdpCommittee.setIsCommitteeConfirmed("Y");
 							tdpCommitteeDAO.save(tdpCommittee);
-							vo.setStatus("Updated");
-							returnList.add(vo);	
+							
+							resultVO.setErrorCode(2l);
+							resultVO.setMessage(" Entry Finished Successfully..");
+							resultVO.setTdpCommitteeId(tdpCommitteeId);
+							return resultVO;
 						}
+					}
+					
+				}
 			
-				if(returnList != null && returnList.size() > 0){
-					returnVo = returnList.get(0);
-				}
-				return returnVo;
-				}
-			});
-		
-			if(resultVo != null && resultVo.getStatus().equalsIgnoreCase("Updated")){
-				resultList.add(resultVo);
-			}
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception raised in setCommitteConfirmation", e);	
+			if(resultVO == null){
+				resultVO = new CommitteeResultVO();
+			}
+			resultVO.setErrorCode(3l);
+			resultVO.setMessage("Exception Occurred...");
+			return resultVO;
 		}
-		return resultList;
+		return resultVO;
 	}
+	
+	@SuppressWarnings("unused")
+	public CommitteeResultVO validateCommitteeRolesMinPositions(Long tdpCommitteeId){
+		
+		CommitteeResultVO finalVO = new CommitteeResultVO();
+		try{
+			 
+			 
+			    Long  committeeConfirmRuleId = null;
+				 
+				//1. get all roles to this committees and push role wise members count.
+				 Map<Long , CommitteeResultVO> allRolesMap = new LinkedHashMap<Long, CommitteeResultVO>();
+				 
+				 List<Object[]> allRoles = tdpCommitteeRoleDAO.getAllRolesInACommittee(tdpCommitteeId);
+				 
+				 if(allRoles != null && allRoles.size() > 0){
+					 for(Object[] obj : allRoles){
+						 if(obj[0] != null){
+							 CommitteeResultVO roleVO = new  CommitteeResultVO();
+							 roleVO.setTdpRolesId((Long)obj[0]);
+							 roleVO.setRole(obj[1]!= null ? obj[1].toString() : "");
+							 roleVO.setOccupiedCount(0l);
+							 roleVO.setTotalCount(obj[3]!= null ? (Long)obj[3] : 0l);
+							 allRolesMap.put( roleVO.getTdpRolesId() , roleVO);
+							 
+							 if(committeeConfirmRuleId == null && obj[2]!= null){
+								 committeeConfirmRuleId = (Long)obj[2];
+							 }
+						 }
+					 }
+				 }
+				
+				 List<Object[]> roleWiseCountList = tdpCommitteeMemberDAO.getRoleWiseCommitteeMembersCount(tdpCommitteeId);
+				 if(roleWiseCountList != null && roleWiseCountList.size() > 0){
+					 for(Object[] obj : roleWiseCountList){
+						 if(obj[0] != null){
+							 CommitteeResultVO rolesVO = allRolesMap.get((Long)obj[0]);
+							 if(rolesVO != null){
+								 rolesVO.setOccupiedCount(obj[2] != null ? (Long)obj[2] : 0l);
+							 }
+						 }
+					 }
+				 }
+				 
+				 if(committeeConfirmRuleId != null && committeeConfirmRuleId.longValue() > 0l){
+					 
+					 //2.get Each Role Min positions count.
+					 Map<Long,Long> tdpRolesMinPositionsMap = getCommitteeRolesMinPositions(committeeConfirmRuleId);
+					 
+					 //validation
+					 boolean errorFlag = false;
+					 List<CommitteeResultVO> errorMsgList = new ArrayList<CommitteeResultVO>();
+					 
+					 if(allRolesMap != null && allRolesMap.size() > 0 && tdpRolesMinPositionsMap != null && tdpRolesMinPositionsMap.size() > 0)
+					 {
+						 for(Map.Entry<Long, CommitteeResultVO> roleEntry : allRolesMap.entrySet())
+						 {
+							 Long roleId = roleEntry.getKey();
+							 CommitteeResultVO roleVO = roleEntry.getValue();
+							 
+							 if(tdpRolesMinPositionsMap.containsKey(roleId))
+							 {
+								 Long minCount = tdpRolesMinPositionsMap.get(roleId);
+								 Long occupiedCount = roleVO.getOccupiedCount();
+								 
+								 if(occupiedCount.longValue() < minCount.longValue()){
+									 errorFlag = true;
+									 
+									 CommitteeResultVO errorRoleVO = new CommitteeResultVO();
+									 errorRoleVO.setTdpRolesId(roleVO.getTdpRolesId()); 
+									 errorRoleVO.setRole(roleVO.getRole());
+									 errorRoleVO.setMinCount(minCount);
+									 errorRoleVO.setOccupiedCount(occupiedCount);
+									 errorRoleVO.setTotalCount(roleVO.getTotalCount());
+									 errorMsgList.add(errorRoleVO);
+									 
+								 }
+							 }
+						 }
+					 }
+					 
+					 finalVO.setErrorStatus(errorFlag);
+					 if(errorFlag){
+						 finalVO.setSubList(errorMsgList);
+					 }
+				 }
+				
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in validateCommitteeRolesMinPositions", e);	
+		}
+		return finalVO;
+	}
+	
+	 
+	public Map<Long,Long> getCommitteeRolesMinPositions(Long committeeConfirmRuleId)
+	{
+		 Map<Long,Long> tdpRolesMinPositionsMap = new HashMap<Long, Long>();
+		try
+		{	 
+			 List<Object[]> rolesList =  committeeConfirmRuleConditionDAO.getRolesMinPositionsByRule(committeeConfirmRuleId);
+			 
+			 if(rolesList != null && rolesList.size() > 0)
+			 {
+				 for(Object[] obj : rolesList)
+				 {
+				   	 if(obj[0] != null && obj[1] != null)
+				   	 {
+				   		tdpRolesMinPositionsMap.put((Long)obj[0], (Long)obj[1]);
+				   	 }
+				 }
+			 }
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getCommitteeRolesMinPositions", e);	
+		}
+		return tdpRolesMinPositionsMap;
+	}
+		
 	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId,List<Long> committeeEnrollmentIdsLst,String startDate,String endDate)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
@@ -19998,6 +20144,8 @@ public Long getCommitteeId(Long levelId,Long levelValue,Long committeeEnrollment
 	}
 	return committeeId;
 }
+
+
 
 public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,
 		List<Long> committeeEnrollmntIds,Long stateId,String searchType){

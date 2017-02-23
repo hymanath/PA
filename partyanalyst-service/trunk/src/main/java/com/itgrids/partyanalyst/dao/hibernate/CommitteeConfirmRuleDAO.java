@@ -10,5 +10,5 @@ public class CommitteeConfirmRuleDAO extends GenericDaoHibernate<CommitteeConfir
 	public CommitteeConfirmRuleDAO() {
 		super(CommitteeConfirmRule.class);
 	}
-
+    
 }

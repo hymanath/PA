@@ -2665,4 +2665,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	
+	public Long getCommitteeConfirmRuleIdByCommitteeId(Long tdpCommitteeId){
+		Query query = getSession().createQuery(" select model.committeeConfirmRuleId  from TdpCommittee model where model.tdpCommitteeId = :tdpCommitteeId");
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return (Long)query.uniqueResult();
+	}
 }

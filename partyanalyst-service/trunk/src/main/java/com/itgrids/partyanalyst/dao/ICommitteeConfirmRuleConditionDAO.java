@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface ICommitteeConfirmRuleConditionDAO {
+import java.util.List;
 
+public interface ICommitteeConfirmRuleConditionDAO {
+	
+	public List<Object[]> getRolesMinPositionsByRule(Long committeeConfirmRuleId);
 }
