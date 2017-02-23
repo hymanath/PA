@@ -47,7 +47,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		queryStr.append(" pm.party_meeting_level_id = pml.party_meeting_level_id and  ");
 		queryStr.append(" pma.attendance_id = a.attendance_id and  ");
 		queryStr.append(" a.tdp_cadre_id in (:tdpCadreIdsList) and  ");
-		queryStr.append(" pm.party_meeting_id = pma.party_meeting_id   ");
+		queryStr.append(" pm.party_meeting_id = pma.party_meeting_id   and pm.is_active='Y' ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append(" and date(pm.start_date)  <= :toDayDate ");
 		queryStr.append(" group  by pm.party_meeting_type_id ");
@@ -67,9 +67,10 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName,PMA.partyMeeting.partyMeetingLevelId,PMA.partyMeeting.partyMeetingLevel.level, " +
 				" PMA.partyMeeting.locationValue ,PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type," +
 				" date(PMA.partyMeeting.startDate),date(PMA.partyMeeting.endDate),  count(distinct PMA.attendance.tdpCadreId),PMA.partyMeeting.meetingAddress.localArea ," +
-				" partyMeetingSession.partyMeetingSessionId,partyMeetingSession.sessionType.type,partyMeetingSession.lateTime,PMA.attendance.attendedTime,partyMeetingSession.startTime " +
+				" partyMeetingSession.partyMeetingSessionId,sessionType.type,partyMeetingSession.lateTime,PMA.attendance.attendedTime,partyMeetingSession.startTime " +
 				" from PartyMeetingAttendance PMA " +
-				" left join PMA.partyMeetingSession partyMeetingSession  ");
+				" left join PMA.partyMeetingSession partyMeetingSession " +
+				" left join partyMeetingSession.sessionType sessionType  ");
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L){
 			queryStr.append(" where PMA.partyMeeting.partyMeetingType.partyMeetingTypeId=:partyMeetingTypeId ");
 			isSetWhere = true;
@@ -84,7 +85,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		if(todayDate != null )
 			queryStr.append(" and date(PMA.partyMeeting.startDate) <=:todayDate ");
 		
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingId,partyMeetingSession.partyMeetingSessionId,PMA.attendance.tdpCadreId order by PMA.partyMeeting.partyMeetingId ");
+		queryStr.append(" and PMA.partyMeeting.isActive='Y' group by PMA.partyMeeting.partyMeetingId,partyMeetingSession.partyMeetingSessionId,PMA.attendance.tdpCadreId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
@@ -107,7 +108,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append(" and  PMA.attendance.tdpCadreId in (:tdpCadreIdsList)  ");
 		
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		queryStr.append(" and PMA.partyMeeting.isActive='Y' group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
@@ -121,7 +122,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMA.partyMeeting.partyMeetingId, PMA.partyMeeting.meetingName, count(PMA.attendance.tdpCadreId) " +
 				" from PartyMeetingAttendance PMA where PMA.attendance.tdpCadreId =:tdpCadreId and date(PMA.partyMeeting.startDate) <= :todayDate ");
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		queryStr.append("  and PMA.partyMeeting.isActive='Y'  group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("tdpCadreId", tdpCadreId);	
 		query.setDate("todayDate", todayDate);
@@ -143,7 +144,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" from PartyMeetingAttendance model" +
 				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
 				" and model.attendance.tdpCadre.isDeleted='N'" +
-				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear   " +
+				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear and  model.partyMeeting.isActive='Y'  " +
 				" group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
@@ -167,7 +168,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" and model.attendance.tdpCadreId = model1.tdpCadre.tdpCadreId " +
 				" and model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
 				" and model.attendance.tdpCadre.isDeleted='N' " +
-				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear " +
+				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear and  model.partyMeeting.isActive='Y'  " +
 				" group by model.partyMeeting.partyMeetingId");
 		
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
@@ -180,7 +181,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	public List<Object[]> getAttendanceForMeetings(List<Long> partyMeetingsList)
 	{
 		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
- 		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
+ 		" and  model.partyMeeting.isActive='Y' group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
 	}
@@ -189,7 +190,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	public List<Object[]> getCandidateAttendanceForMeetings(List<Long> partyMeetingsList)
 	{
 		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model,TdpCadreCandidate model2 where " +
-				"model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
+				" model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.partyMeeting.isActive='Y'  "+
  		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
@@ -199,7 +200,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	public List<Object[]> getCommitteeMemberAttendanceForMeetings(List<Long> partyMeetingsList)
 	{
 		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId FROM PartyMeetingAttendance model,TdpCommitteeMember model2 where " +
-				"model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model2.isActive = 'Y' and model.partyMeeting.partyMeetingId in (:partyMeetingsList) "+
+				"model.attendance.tdpCadre.tdpCadreId = model2.tdpCadre.tdpCadreId and model2.isActive = 'Y' and model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.partyMeeting.isActive='Y'  "+
  		" group by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId order by model.partyMeeting.partyMeetingId,model.attendance.tdpCadre.tdpCadreId ");
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
@@ -208,7 +209,8 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	@SuppressWarnings("unchecked")
 	public List<Long> getConductedMeetings(List<Long> partyMeetingsList)
 	{
-		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.attendance.tdpCadre is not null group by model.partyMeeting.partyMeetingId");
+		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.attendance.tdpCadre is not null and " +
+				" model.partyMeeting.isActive='Y' group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
 	}
@@ -350,7 +352,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	    	
 	    	Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId " +
 	    						" from PartyMeetingAttendance model " +
-	    						" where model.partyMeeting.partyMeetingId = :partyMeetingId  and  model.attendance.tdpCadre.isDeleted='N' and " +
+	    						" where model.partyMeeting.partyMeetingId = :partyMeetingId  and  model.attendance.tdpCadre.isDeleted='N' and model.partyMeeting.isActive='Y'  and " +
 	    						"  model.attendance.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
 	    	query.setParameter("partyMeetingId", partyMeetingId);
 	    	
@@ -368,7 +370,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 					 "          A.tdp_cadre_id = TC.tdp_cadre_id and " +
 					 "          PMA.party_meeting_id = PM.party_meeting_id and " +
 					 "          PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
-					 "          PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
+					 "          PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and PM.is_active='Y' and " +
 					 "          PM.meeting_address_id = UA.user_address_id and " +//////
 					 "          PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
 					 "          TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
@@ -423,7 +425,7 @@ public List<Object[]> getDistrictWiseAttendedCountForPartyMeetingTypeIds(PartyMe
 					 "          PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
 					 "          TC.address_id = UA.user_address_id and " +//////
 					 "          UA.district_id = D.district_id and " +
-					 "          PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+					 "          PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and PM.is_active='Y' and " +
 					 "          TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
 
 	 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
@@ -569,7 +571,7 @@ public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
 			 "          PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
 			 "          PM.meeting_address_id = UA.user_address_id and " +//////
 			 "          PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-			 "          TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
+			 "          TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' ");
 
 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 		 sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
@@ -896,7 +898,7 @@ public List<Object[]> getSpecialMeetingsSessionWiseAttendence(List<Long> partyMe
 			" pma.party_meeting_id = pm.party_meeting_id and  "+
 			" a.attendance_id = pma.attendance_id and  "+
 			" pms.session_type_id = st.session_type_id   "+
-			" and pmmt.party_meeting_main_type_id = :mainTypeId  ");
+			" and pmmt.party_meeting_main_type_id = :mainTypeId and pm.is_active='Y'  ");
 	
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		queryStr.append(" and pm.party_meeting_id in (:partyMeetingIds) ");
@@ -936,7 +938,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 			" pma.party_meeting_id = pm.party_meeting_id and  "+
 			" a.attendance_id = pma.attendance_id and  "+
 			//" pms.session_type_id = st.session_type_id   "+
-			"  pmmt.party_meeting_main_type_id = :mainTypeId   ");
+			"  pmmt.party_meeting_main_type_id = :mainTypeId  and pm.is_active='Y'  ");
 	
 	if(partyMeetingIdsList != null && partyMeetingIdsList.size()>0){
 		queryStr.append(" and pm.party_meeting_id in (:partyMeetingIds) ");
