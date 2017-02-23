@@ -9785,7 +9785,13 @@
 			</result>
 		</action>
 		
-		<action name="constituencyCommitteeSummaryAction" class="committeeDashBoardAction" method="constituencyCommitteeSummaryAction">
+		<action name="committeeConfirmationAction" class="committeeDashBoardAction" method="committeeConfirmation">
+			<result type="json" name="success">
+				<param name="root">committeeResultVO</param>
+			</result>
+		</action>
+		
+        <action name="constituencyCommitteeSummaryAction" class="committeeDashBoardAction" method="constituencyCommitteeSummaryAction">
 			<result name="success">/jsp/constituencyCommitteeSummary.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=constituencyCommitteeSummaryAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
