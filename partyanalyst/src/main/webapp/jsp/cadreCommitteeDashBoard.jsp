@@ -1218,6 +1218,21 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div>
+		
+	<!-- POP UP FOR Committee entry Finished -->
+	<div id="entryFinishedpopUpId" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button aria-label="Close" data-dismiss="modal" class="close modalCloseBtn" type="button"><span aria-hidden="true">x</span></button>
+					<div id="entryFinishedpopUpBodyId"></div>
+					<button class="btn btn-primary btn-sm pull-right modalCloseBtn" aria-label="Close" data-dismiss="modal">Close</button>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+    </div>
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
@@ -4847,8 +4862,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    var dates = date.split("-");
 		    fromDate = dates[0];
 		    toDate = dates[1];
-	$("#presGenSecrErrDivId").html("");
-		if(levelId == 6 || levelId == 8){
+	    $("#presGenSecrErrDivId").html("");
+		
+		/* if(levelId == 6 || levelId == 8){
 			if(isPresidentAvail == false && isGenSecAvail == false){
 				$("#presGenSecrErrDivId").html("Please add President and General Secretary details to confirm the Committee...");
 				return;
@@ -4861,44 +4877,97 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				$("#presGenSecrErrDivId").html("Please add General Secretary details to confirm the Committee...");
 				return;
 			}
-		}
-	var r=confirm("Are you sure want to confirm ?");
-		if(r)
-		{
-	var jsObj = 
-	{
-		basicCommitteetypeId:basicCommitteetypeId,
-		levelId:levelId,
-		locationId:locationId,
-		committeeEnrollmentId :[committeeEnrollmentId],
-		fromDate :fromDate,
-		toDate :toDate,
-		task:"committeComplete"
-	}
-	
-	$.ajax({
-          type:'GET',
-          url: 'getCommitteeDetailsByStatusPopUpAction.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){
-			  if(typeof result == "string"){
-					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-					  location.reload(); 
-					}
-			  }
-			  if(result != null){
-				  {
-				alert("Successfully Committee Confirmed")
-				$("#conformedBtn").html('');
-				$("#presGenSecrErrDivId").html("");
-				$(".deleteCls,.confirmBtnCls").remove(); 
-				//getSummary(constituencyId);
-				//getMandalMuncipalDivisonStartedCommittees(constituencyId);
-				  }
-				
+		} */
+		
+	    var r=confirm("Are you sure want to confirm ?");
+		if(r){
+		    
+			$("#entryFinishedpopUpId").modal('show');
+		    $('#entryFinishedpopUpBodyId').html('<center><img style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+			
+			var jsObj = 
+			{
+				basicCommitteetypeId:basicCommitteetypeId,
+				levelId:levelId,
+				locationId:locationId,
+				committeeEnrollmentId :[committeeEnrollmentId],
+				fromDate :fromDate,
+				toDate :toDate,
+				task:"committeComplete"
 			}
-	   });
+	     
+		$.ajax({
+			  type:'GET',
+			  url: 'committeeConfirmationAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)},
+			  }).done(function(result){
+				   if(typeof result == "string"){
+						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						  location.reload(); 
+						}
+				  } 
+				  if(result != null){
+					 if(result.errorCode != null){
+						  if(result.errorCode  == 0){
+							  $('#entryFinishedpopUpBodyId').html('<p> This Committee Does Not Have members.</p>');
+						  }
+						  if(result.errorCode  == 1){
+							   if(result.subList != null && result.subList.length > 0){
+								    var str = '';
+									str+='<h4 class="panel-title text-center" style="color:red" ><b> Entry Not Finished </b></h4>';
+									/* str+='<ol>';
+								   for( var i in result.subList){
+									   str+='<li> '+result.subList[i].role+' Role Should Have Atleast <b>'+result.subList[i].minCount+'</b> Members But Having Only <b>'+result.subList[i].occupiedCount+' </b>Members</li>'
+								   }
+								   str+='</ol>'; */
+								   str+='<table class="table table-bordered">';
+								   str+='<thead>';
+								     str+='<tr>';
+									   str+='<th>SNO</th>';
+									   str+='<th>Role</th>';
+									   str+='<th>Total Members</th>';
+									   str+='<th>Added Members</th>';
+									   str+='<th>Minimum Members Required</th>';
+								     str+='</tr>';
+								   str+='</thead>';
+								   str+='<tbody>';
+								    for(var i in result.subList){
+										
+										str+='<tr>';
+										var count = parseInt(i) + 1;
+										  str+='<td>'+count+'</td>';
+										  str+='<td>'+result.subList[i].role+'</td>';
+										  if(result.subList[i].totalCount > 0){
+											   str+='<td>'+result.subList[i].totalCount+'</td>';
+										  }else{
+											  str+='<td> -  </td>';
+										  }
+										  str+='<td>'+result.subList[i].occupiedCount+'</td>';
+										  str+='<td>'+result.subList[i].minCount+'</td>';
+										str+='</tr>';
+								    } 
+								   str+='</tbody>';
+								   str+='</table>';
+								   $('#entryFinishedpopUpBodyId').html(str);
+							   }
+						  }
+						  if(result.errorCode  == 2){
+							  $('#entryFinishedpopUpBodyId').html('<h4 class="panel-title text-center" style="color:green;" ><b> Entry Finished Successfully </b></h4>');
+							  $("#conformedBtn").html('');
+							  $("#presGenSecrErrDivId").html("");
+							  $(".deleteCls,.confirmBtnCls").remove(); 
+						  }
+						  if(result.errorCode  == 3){
+							   $('#entryFinishedpopUpBodyId').html('<h4 class="panel-title text-center" style="color:red;" ><b> exception occurred.. try Later..</b></h4>');
+						  }
+					  }
+					
+					
+					//getSummary(constituencyId);
+					//getMandalMuncipalDivisonStartedCommittees(constituencyId);
+				}
+		   });
 		}
 	}
 	function deleteCadreRole(tdpCommitteeMemberId,className)
@@ -6486,6 +6555,11 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 			   $('#variable-width'+slickCount).find(".slick-track").css("width",getSlickWidth);*/
 		});
 	}
+	$(document).on("click",".modalCloseBtn",function(){
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},500)
+	});
 </script>		
 <script>
 var tableToExcel = (function() {
