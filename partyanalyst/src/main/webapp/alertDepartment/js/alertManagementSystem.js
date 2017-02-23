@@ -2304,7 +2304,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 			str1+='<thead>';
 				str1+='<tr>';
 				str1+='<th>Designation</th>';
-				str1+='<th style="background-color:#f3f3f3">Total</th>';
+				str1+='<th style="background-color:#f3f3f3" >Total</th>';
 					if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
 						for(var j in result[0].govtDeptList){
 							str1+='<th>'+result[0].govtDeptList[j].name+'</th>';
@@ -2323,14 +2323,24 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 				str1+='<tr>';
 					for(var i in result){
 						totalCount = totalCount + result[i].count;
-						Notified = Notified + result[i].govtDeptList[0].count
-						ActionInProgess = ActionInProgess + result[i].govtDeptList[1].count
-						Completed = Completed + result[i].govtDeptList[2].count
-						UnabletoResolve = UnabletoResolve + result[i].govtDeptList[3].count
-						ActionNotRequired = ActionNotRequired + result[i].govtDeptList[4].count
-						Duplicate = Duplicate + result[i].govtDeptList[5].count
+						str1+='<td style="background-color:#eee">Total Alerts</td>';
+						str1+='<td style="background-color:#eee">'+totalCount+'</td>';
+						if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
+						for(var j in result[0].govtDeptList){
+							str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+result[0].govtDeptList[j].count+'</span></td>';
+						}
 					}
-					str1+='<td style="background-color:#eee">TOTAL</td>';
+						/* Notified = Notified + result[i].govtDeptList[0].count;
+						ActionInProgess = ActionInProgess + result[i].govtDeptList[1].count;
+						Completed = Completed + result[i].govtDeptList[2].count;
+						UnabletoResolve = UnabletoResolve + result[i].govtDeptList[3].count;
+						ActionNotRequired = ActionNotRequired + result[i].govtDeptList[4].count; */
+						/* if(result[i].govtDeptList[5].count !=null){
+							Duplicate = Duplicate + result[i].govtDeptList[5].count;
+						} */
+						
+					}
+					/* str1+='<td style="background-color:#eee">TOTAL</td>';
 					if(totalCount != null && totalCount > 0)
 					{
 						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+totalCount+'</span></td>';
@@ -2372,7 +2382,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="7" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Duplicate+'</span></td>';
 					}else{
 						str1+='<td style="background-color:#eee">'+Duplicate+'</td>';
-					}
+					} */
 					
 				str1+='</tr>';
 				for(var i in result){

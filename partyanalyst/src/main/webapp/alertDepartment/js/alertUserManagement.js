@@ -772,7 +772,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 			
 		 if(result != null && result.length > 0){	
 		var str1='';
-		str1+='<table class="table detailedTableStyle">';
+		str1+='<table class="table detailedTableStyle" id="districtWiseDetailsBlockdataTable">';
 			str1+='<thead>';
 				str1+='<tr>';
 				str1+='<th>District Name</th>';
@@ -804,7 +804,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 								{
 									if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
 									{
-										str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;"><span class="detaiedTotalAlerts" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_location_id="'+result[i].statusId+'">'+result[i].subList1[j].categoryCount+'</span></td>';
+										str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;cursor:pointer;"><span class="detaiedTotalAlerts" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_location_id="'+result[i].statusId+'">'+result[i].subList1[j].categoryCount+'</span></td>';
 									}else{
 										str1+='<td style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
 									}
@@ -821,6 +821,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 	}else{
 		$("#districtWiseDetailsBlock").html("No Data Available");
 	}
+		$("#districtWiseDetailsBlockdataTable").dataTable();
 	}
 	$(document).on("click",".getDetailsClick",function(){
 		$("#districtWiseDetailsBlock").html('');
@@ -857,7 +858,7 @@ function buildStatusWiseAlertDetails(result){
 	if(result != null && result.length > 0){
 		var str1='';
 			str1+='<div class="table-responsive">';
-			str1+='<table class="table detailedTableStyle">';
+			str1+='<table class="table detailedTableStyle" id="districtAlertStatusInfodataTable">';
 				str1+='<thead>';
 					str1+='<tr>';
 						str1+='<th>Alert Severity</th>';
@@ -913,7 +914,7 @@ function buildStatusWiseAlertDetails(result){
 			str1+='</div>';
 		
 		$("#districtAlertStatusInfo").html(str1);	
-		
+		$("#districtAlertStatusInfodataTable").dataTable();
 	}else{
 		$("#districtAlertStatusInfo").html("No Data Available");	
 	}
@@ -946,7 +947,7 @@ function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrd
 		
 		if(result != null && result.length > 0){	
 			var str1='';
-			str1+='<table class="table detailedTableStyle">';
+			str1+='<table class="table detailedTableStyle" id="mandalWiseDetailsSubOrdBlockdataTable">';
 				str1+='<thead>';
 					str1+='<tr>';
 					str1+='<th>'+subOrdianatelevelText+'</th>';
@@ -957,7 +958,6 @@ function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrd
 									str1+='<th style="background-color:'+result[0].govtDeptList[j].color+' !important;">'+result[0].govtDeptList[j].name+'</th>';
 								
 							}
-							
 						}
 					str1+='<th></th>';	
 					str1+='</tr>';
@@ -979,6 +979,7 @@ function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrd
 				str1+='</tbody>';
 			str1+='</table>';
 			$("#mandalWiseDetailsSubOrdBlock").html(str1);
+			$("#mandalWiseDetailsSubOrdBlockdataTable").dataTable();
 		}else{
 			$("#mandalWiseDetailsSubOrdBlock").html("No Data Available");
 		}
@@ -1460,7 +1461,7 @@ function buildDistrictLevelDepartmentDetails(result){
 	
 	if(result != null && result.length > 0){	
 		var str1='';
-		str1+='<table class="table detailedTableStyle">';
+		str1+='<table class="table detailedTableStyle" id="districtLevelDeptOverviewdataTable">';
 			str1+='<thead>';
 				str1+='<tr>';
 				str1+='<th>Department Name</th>';
@@ -1490,7 +1491,7 @@ function buildDistrictLevelDepartmentDetails(result){
 							for(var j in result[i].subList1){
 								if(j != 0)
 								{  
-									str1+='<td attr_department_id="'+result[i].statusId+'" attr_status_id="'+result[i].subList1[j].categoryId+'" class="totalDepartment"style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
+									str1+='<td attr_department_id="'+result[i].statusId+'" attr_status_id="'+result[i].subList1[j].categoryId+'" class="totalDepartment" style="background-color:'+result[i].subList1[j].color+' !important;">'+result[i].subList1[j].categoryCount+'</td>';
 								}
 							}
 						}
@@ -1500,6 +1501,7 @@ function buildDistrictLevelDepartmentDetails(result){
 			str1+='</tbody>';
 		str1+='</table>';
 		$("#districtLevelDeptOverview").html(str1);
+		$("#districtLevelDeptOverviewdataTable").dataTable();
 	}else{
 		$("#districtLevelDeptOverview").html("No Data Available");
 	}
