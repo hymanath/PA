@@ -212,7 +212,12 @@ public class GovtDepartmentVO {
 	public void setTotPrintCount(Long totPrintCount) {
 		this.totPrintCount = totPrintCount;
 	}
-	
+	public Long getRegionScopeId() {
+		return regionScopeId;
+	}
+	public void setRegionScopeId(Long regionScopeId) {
+		this.regionScopeId = regionScopeId;
+	}
 	
 	
 }
