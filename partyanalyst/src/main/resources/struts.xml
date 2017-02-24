@@ -15965,5 +15965,10 @@
 	    <action name="govtLogoutAction" class="newLogoutAction" method="govtLogout">
         </action>
         
+        <action name="getAlertCategoryByAlertAction" class="cccDashboardAction" method="getAlertCategoryByAlert">
+			<result type="json" name="success">		   
+				<param name="root">categoryStr</param>
+			</result>	
+		</action>
  </package>
 </struts>

@@ -1034,7 +1034,7 @@ function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
 				str+='<th>Last Updated Date</th>';
 				str+='<th>Current Status</th>'	 
 				str+='<th>LAG Days</th>';
-				str+='<th>Alert Level</th>';
+				str+='<th>Impact Level</th>';
 				str+='<th>Location</th>';
 				str+='<th></th>';
 			str+='</thead>';
@@ -1119,8 +1119,24 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	getAlertData(alertId);
 	getInvolvedMembersDetilas(alertId);
 	getAlertStatusCommentsTrackingDetails(alertId);
-	
+	getAlertCategortByAlert(alertId);
 });
+
+function getAlertCategortByAlert(alertId){
+	var jsObj =
+	{
+		alertId  :alertId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getAlertCategoryByAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			$("#categoryId").html('<b>'+result+'</b>');
+	});
+}
+
 function getAlertData(alertId)
 {
 	$("#alertCandidateDataId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');

@@ -292,6 +292,12 @@
 								<p><span  id="descriptionId"></span></p>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="8">
+								<p class="text-capital"><span class="text-muted "><b>category</b></span></p>
+								<p><span  id="categoryId"></span></p>
+							</td>
+						</tr>
 						<tr style="display:none" id="imageUrlTrId">
 							<td colspan="2">
 								<p class="text-capital"><span class="text-muted ">Article  </span> :
