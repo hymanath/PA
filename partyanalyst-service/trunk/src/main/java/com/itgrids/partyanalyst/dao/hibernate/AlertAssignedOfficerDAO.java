@@ -1082,6 +1082,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" left join UA.ward W");
 		sb.append(" where model.alert.isDeleted = 'N' and model.isDeleted = 'N'" +
 					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
+					//" and D.districtId is not null");
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
@@ -1529,7 +1530,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" left join UA.panchayat P" +
 					" left join UA.ward W");
 		sb.append(" where model.alert.isDeleted = 'N'" +
-					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
+					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")" +
+					" and D.districtId is not null");
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");

@@ -29,6 +29,7 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 											" and model.alertAssignedOfficerId = model1.alertAssignedOfficerId" +
 											" and model.alertId = :alertId" +
 											" and model1.isDeleted = 'N'" +
+											" and model.alertAssignedOfficer.isDeleted = 'N'" +
 											" group by model.alertStatusId,date(model1.alertDepartmentComment.insertedTime)" +
 											" order by model.alertStatusId,date(model1.alertDepartmentComment.insertedTime)");
 		query.setParameter("alertId", alertId);
