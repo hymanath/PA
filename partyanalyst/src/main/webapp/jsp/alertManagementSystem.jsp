@@ -380,6 +380,7 @@
 										</div>
 										<div class="col-md-4 col-xs-12 col-sm-6">
 											<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">assign alert to designated officer</button>
+											<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">
 										</div>
 									</div>
 								</div>

@@ -665,7 +665,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	getInvolvedMembersDetilas(alertId);
 	getAlertStatusCommentsTrackingDetails();
 	departmentsByAlert();
-	assignedOfficersDetailsForAlert(alertId);
+	assignedOfficersDetailsForAlert();
 });
 function getAlertData(alertId)
 {
@@ -1005,8 +1005,9 @@ $(document).on("click",".alertDetailsModalClose",function(){
 		$("body").addClass("modal-open")
 	},500);
 });
-function assignedOfficersDetailsForAlert(alertId)
+function assignedOfficersDetailsForAlert()
 {
+	var alertId = $("#hiddenAlertId").val();
 	var jsObj = {
 		alertId : alertId
 	}
@@ -1294,6 +1295,7 @@ if(!fieldsValidation())
 	{
 		return;
 	}
+	$("#assiningLdngImg").show();
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
@@ -1309,7 +1311,9 @@ if(!fieldsValidation())
 function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
+		$("#assiningLdngImg").hide();
 		getAlertStatusCommentsTrackingDetails();
+		assignedOfficersDetailsForAlert();
 		alert("Alert Assigned Successfully.");
 		$("#alertStatus").html('Notified');
 		fieldsEmpty();
@@ -1506,6 +1510,7 @@ function buildStatusWiseTotalAlerts(result){
 				str+='</div>';
 				str+='<div class="panel-body">';
 					str+='<div class="row">';
+					if(result[i].govtDepartmentVOList != null && result[i].govtDepartmentVOList.length > 0){
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<h4 class="panel-title text-capital">district wise total alerts</h4>';
 						str+='</div>';
@@ -1521,6 +1526,7 @@ function buildStatusWiseTotalAlerts(result){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="departmentWiseOverView'+i+'">';
 							str+='<div id="overViewGraph'+i+'" style="height:130px"></div>';
 						str+='</div>';
+					}
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 							str+='<table class="table table-bordered">';
 								str+='<thead class="bg_dd">';
@@ -1613,11 +1619,13 @@ function buildStatusWiseTotalAlerts(result){
 	{		
 		var alertStatusOverviewCount = [];
 		var alertStatusOverview=[];
+		if(result[i].govtDepartmentVOList != null && result[i].govtDepartmentVOList.length > 0){
 		for(var j in result[i].govtDepartmentVOList)
 		{
 			alertStatusOverview.push(result[i].govtDepartmentVOList[j].department)
 			alertStatusOverviewCount.push(result[i].govtDepartmentVOList[j].count)
 		}
+		
 		$("#overViewGraph"+i).highcharts({
 				colors: ['#31AA74'],
 				chart: {
@@ -1697,7 +1705,7 @@ function buildStatusWiseTotalAlerts(result){
 				}],
 			 
 			});
-
+		}
 	}
 } 
 $(document).on("click",".departmentCloseIcon",function(){
