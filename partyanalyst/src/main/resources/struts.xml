@@ -15970,5 +15970,13 @@
 				<param name="root">categoryStr</param>
 			</result>	
 		</action>
+		
+		<action name="getRegionScopeIdBylevelAction" class="cccDashboardAction" method="getRegionScopeIdBylevel">
+			<result type="json" name="success">		   
+				<param name="root">levelId</param>
+			</result>	
+		</action>
+		
+		
  </package>
 </struts>

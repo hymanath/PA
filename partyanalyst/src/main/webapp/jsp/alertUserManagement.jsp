@@ -368,7 +368,7 @@
 							</div>
 						</div>
 					</div>
-					<!--<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>-->
+					<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>
 				</form>
 			</div>
 		  </div>
