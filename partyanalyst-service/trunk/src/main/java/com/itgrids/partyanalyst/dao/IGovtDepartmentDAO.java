@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.GovtDepartment;
 public interface IGovtDepartmentDAO extends GenericDao<GovtDepartment, Long>{
 	public List<Object[]> getAllDepartment();
 	public List<Long> getGovtDepartmentIdsOfNewsDept(List<Long> newsDepartmentIds);
+	public Long getCNPGovtDepartmentIdForGovtDepartment(Long govtDepartmentId);
 }

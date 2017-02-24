@@ -36,7 +36,8 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 											" where model.govtDepartmentDesignationOfficer.govtDepartmentLevelId = :levelId" +
 											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
 											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId" +
-											" and model.govtOfficer.govtOfficerId = :officerId");
+											" and model.govtOfficer.govtOfficerId = :officerId" +
+											" and model.isDeleted = 'N'");
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
 		query.setParameter("designationId", designationId);

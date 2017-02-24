@@ -5211,4 +5211,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();   
 	}
+	
+	public Long getGovtDepartmentIdForAlert(Long alertId){
+		Query query = getSession().createQuery("select model.govtDepartment.govtDepartmentId" +
+												" from Alert model" +
+												" where model.isDeleted = 'N'" +
+												" and model.alertId = :alertId");
+		query.setParameter("alertId", alertId);
+		return (Long) query.uniqueResult();
+	}
 }

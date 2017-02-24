@@ -26,4 +26,12 @@ public class GovtDepartmentDAO extends GenericDaoHibernate<GovtDepartment, Long>
 		
 		return query.list();
 	}
+	
+	public Long getCNPGovtDepartmentIdForGovtDepartment(Long govtDepartmentId){
+		Query query = getSession().createQuery("select model.cnpGovtDepartmentId" +
+												" from GovtDepartment model" +
+												" where model.govtDepartmentId = :govtDepartmentId");
+		query.setParameter("govtDepartmentId", govtDepartmentId);
+		return (Long) query.uniqueResult();
+	}
 }

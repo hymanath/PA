@@ -510,4 +510,17 @@ public List<Object[]> getAlertInvolvedCandidate(List<Long> alertIdList,Long stat
 	return query.list();
 }
 
+public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDeptId){
+	Query query = getSession().createQuery("select model.category" +
+											" from AlertCandidate model" +
+											" where model.alert.alertId = :alertId" +
+											" and model.newsOrganizationId = :cnpDeptId" +
+											" and model.isDepartment = 'Y'" +
+											" and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")" +
+											" and model.alert.isDeleted = 'N'" +
+											" order by model.alertCandidateId desc");
+	query.setParameter("alertId", alertId);
+	query.setParameter("cnpDeptId", cnpDeptId);
+	return query.list();
+}
 }
