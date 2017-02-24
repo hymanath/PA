@@ -452,6 +452,9 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
 			List<Object[]> list = new ArrayList<Object[]>();
+			Long regionscopeId = govtDepartmentLevelDAO.getRegionScopeIdBylevel(levelId);
+			if(regionscopeId != null && regionscopeId.longValue() > 0l)
+				levelId = regionscopeId;
 			
 			if(levelId != null && levelId > 0l){
 				if(levelId == 2l)							//State
