@@ -449,7 +449,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	}
 	
 	public List<GovtDepartmentVO> getLocationsBasedOnLevel(Long levelId){
-		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>(0);
 		try {
 			List<Object[]> list = new ArrayList<Object[]>();
 			Long regionscopeId = govtDepartmentLevelDAO.getRegionScopeIdBylevel(levelId);
@@ -480,6 +480,12 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						returnList.add(vo);
 					}
 				}
+				
+				if(returnList !=null && returnList.size()>0){
+					returnList.get(0).setRegionScopeId(regionscopeId); 
+				}
+				
+				
 			}
 		} catch (Exception e) {
 			logger.error("Error occured getLocationsBasedOnLevel() method of CccDashboardService",e);
@@ -1915,7 +1921,15 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 					if(alertAssignIds != null && !alertAssignIds.isEmpty())
 						assignedOfficerId = alertAssignIds.get(0);
 					
-					AlertAssignedOfficer alertAssignedOfficer = alertAssignedOfficerDAO.get(assignedOfficerId);
+					AlertAssignedOfficer alertAssignedOfficer = alertAssignedOfficerDAO.get(assignedOfficerId);					
+					
+					//Officer Assigning Updation
+					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(inputvo.getStatusId());
+					if(inputvo.getStatusId() != null && inputvo.getStatusId() == 8l)
+						alertAssignedOfficer.setIsApproved("N");
+					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Officer Assigning Tracking
 					AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
@@ -1929,14 +1943,6 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 					alertAssignedOfficerTracking.setUpdatedTime(alertAssignedOfficer.getUpdatedTime());
 					alertAssignedOfficerTracking.setAlertStatusId(alertAssignedOfficer.getAlertStatusId());
 					alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
-					
-					//Officer Assigning Updation
-					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
-					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-					alertAssignedOfficer.setAlertStatusId(inputvo.getStatusId());
-					if(inputvo.getStatusId() != null && inputvo.getStatusId() == 8l)
-						alertAssignedOfficer.setIsApproved("N");
-					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Alert Assigned Officer Action Saving
 					if(documentIds != null && !documentIds.isEmpty()){
@@ -2588,4 +2594,13 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		}
 		return category;
 	}
+	public Long getRegionScopeIdBylevel(Long levelId){
+		try {
+			return govtDepartmentLevelDAO.getRegionScopeIdBylevel(levelId);
+		} catch (Exception e) {
+			logger.error("Error occured getRegionScopeIdBylevel() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	
 }

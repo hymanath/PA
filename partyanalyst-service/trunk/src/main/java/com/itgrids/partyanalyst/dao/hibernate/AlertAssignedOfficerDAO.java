@@ -779,7 +779,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = model1.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
 												" and model.govtOfficer.govtOfficerId = model1.govtOfficer.govtOfficerId" +
 												" and model.alert.alertId = :alertId" +
-												" and model1.user.userId = userId" +
+												" and model1.user.userId = :userId" +
 												" and model1.isDeleted = 'N'");
 		query.setParameter("alertId", alertId);
 		query.setParameter("userId", userId);
