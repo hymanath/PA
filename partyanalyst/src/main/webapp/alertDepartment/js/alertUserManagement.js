@@ -39,20 +39,20 @@ $('#dateRangePickerSubOrdinateBlock').on('apply.daterangepicker', function(ev, p
 	detailedfromDate =  picker.startDate.format('DD/MM/YYYY')
 	if(picker.chosenLabel == 'All')
 	{
-		$("#dateRangePickerSubOrdinateBlock").val('ALL');
+		$("#dateRangePickerSubOrdinateBlock").val('All');
 	}
 	
 });
 $("#dateRangePickerDistrictAlertBlock").on('apply.daterangepicker', function(ev, picker) {
 	if(picker.chosenLabel == 'All')
 	{
-		$("#dateRangePickerDistrictAlertBlock").val('ALL');
+		$("#dateRangePickerDistrictAlertBlock").val('All');
 	}
 });
 $("#dateRangePickerDistrictLevelDeptBlock").on('apply.daterangepicker', function(ev, picker) {
 	if(picker.chosenLabel == 'All')
 	{
-		$("#dateRangePickerDistrictAlertBlock").val('ALL');
+		$("#dateRangePickerDistrictLevelDeptBlock").val('All');
 	}
 });
 $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").daterangepicker({
@@ -78,7 +78,7 @@ var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlo
 var pickerDates = detailedfromDate+' - '+detailedtoDate
 if(dates == pickerDates)
 {
-	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val('ALL');
+	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val('All');
 }
 
 
