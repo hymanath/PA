@@ -48,7 +48,7 @@ public class GovtDepartmentVO {
 	private Long impactLevelId;
 	private String impactLevel;
 	private String color;
-	
+	private Long regionScopeId;
 	
 	public String getColor() {
 		return color;
