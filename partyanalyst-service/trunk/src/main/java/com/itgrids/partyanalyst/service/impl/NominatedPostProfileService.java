@@ -7414,24 +7414,24 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 @SuppressWarnings("deprecation")
 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String fromDateStr, String expireDate, String status){ 
 	 try{
-		 Date fromDate = null;
-		 Date expDate = null;
+		 Date fromDate1 = null;
+		 Date expDate1 = null;
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy"); 
 		 
 		 if(fromDateStr !=null && fromDateStr.trim().length()>0 && expireDate != null &&  expireDate.trim().length()>0 ){
-			 fromDate = sdf2.parse(fromDateStr);
-			 expDate = sdf2.parse(expireDate); 
+			 fromDate1 = sdf2.parse(fromDateStr);
+			 expDate1 = sdf2.parse(expireDate); 
 			 //expDate.setMonth( expDate.getMonth() + 1 );     
 		 } 
 		 
 		 DateUtilService dateUtilService = new DateUtilService();
 		 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
 		 NomintedPostMemberVO nominatedPostMemberVO = null;
-		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate, expDate, status);
+		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate1, expDate1, status);
 		 
-		 fromDate = null;
-		 expDate = null;
+		 Date fromDate = null;
+		 Date expDate = null;
 		 
 		 if(candidateList != null && candidateList.size() > 0){
 			 for(Object[] candidate : candidateList){
@@ -7484,7 +7484,16 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 				 if(tempToDateStr.length() > 10){
 					 tempToDateStr = tempToDateStr.substring(0, 10);
 					 lastDate = sdf.parse(tempToDateStr);
-					 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
+					 String expairStr = " All Ready Expired";
+					 //String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
+					 //if(fromDate1 == null || lastDate.after(fromDate1)){
+						 List<String> dates =  dateUtilService.getDaysBetweenDatesStringFormat(frmDate, lastDate);
+						 if(dates != null && dates.size() > 0){
+							 expairStr = setExpireString(dates,sdf.format(dateUtilService.getCurrentDateAndTime())); 
+						}
+					// }
+					
+					
 					 nominatedPostMemberVO.setExpireDate(expairStr);
 				 }
 				 
@@ -7524,6 +7533,82 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 		 LOG.error("Exception riased at getFinalReviewCandidateCountForLocation() ",e);
 	 }
 	 return null; 
+}
+
+public String setExpireString(List<String> dates,String todayDate){
+	
+		 String returnDate = "";
+	        Long year=0l;
+	        Long month=0l;
+	        Long day=0l;
+	        Long remenderValue=0l;
+	        String noOfYear="";
+	        String noOfMonth="";
+	        String noOfDay="";
+	        long  numberOfDaysCount =dates.size();
+	      //  long diff = (toDate.getTime())-(fromDate.getTime());
+	        //long numberOfDaysCount =   TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	      if(numberOfDaysCount < 0l){
+	        returnDate=" All Ready Expired";
+	      }else{
+	       //System.out.println(numberOfDaysCount);
+	        if(numberOfDaysCount > 365L){
+	          year = numberOfDaysCount /365L;
+	          remenderValue = numberOfDaysCount %365;
+	          if(remenderValue > 30L){
+	             month = remenderValue/30;
+	             day = remenderValue%30;
+	           }else {
+	             day=remenderValue;
+	           }
+	          if(year>1){
+	            noOfYear="Years";  
+	          }else{
+	            noOfYear="Year";    
+	          }
+	          if(month >1){
+	            noOfMonth="Months";
+	          }else{
+	            noOfMonth="Month";
+	          }
+	          if(day > 1 ){
+	            noOfDay="Days";
+	          }else{
+	            noOfDay="Day";
+	          }
+	          returnDate = year.toString()+" "+noOfYear+" "+month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
+	        }else if(numberOfDaysCount > 30L){
+	          month = numberOfDaysCount /30L;
+	          remenderValue = numberOfDaysCount%30;
+	          day = remenderValue;
+	          if(month >1){
+	            noOfMonth="Months";
+	          }else{
+	            noOfMonth="Month";
+	          }
+	          if(day > 1 ){
+	            noOfDay="Days";
+	          }else{
+	            noOfDay="Day";
+	          }
+	           returnDate =month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
+	            
+	        }else{
+	          day = numberOfDaysCount;
+	          if(day > 1 ){
+	            noOfDay="Days";
+	            returnDate =day.toString()+" "+noOfDay;
+	          }else{
+	        	  if(dates.contains(todayDate))
+	        		  	returnDate ="Today";
+	        	  else
+	        		  	returnDate =" All Ready Expired";
+	          }
+	          //returnDate =day.toString()+" "+noOfDay;
+	        }
+	      }
+	    return returnDate;
+	
 }
 
 /**
