@@ -1591,7 +1591,7 @@ $(document).on("click","#assignOfficerId",function(){
 			return;
 		}
 	}
-
+	$("#assiningLdngImg").show();
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
@@ -1607,6 +1607,7 @@ $(document).on("click","#assignOfficerId",function(){
 function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
+		$("#assiningLdngImg").hide();
 		//getAlertStatusCommentsTrackingDetails();
 		alert("Alert Updated Successfully.");
 		//$("#alertStatus").html('Notified');
