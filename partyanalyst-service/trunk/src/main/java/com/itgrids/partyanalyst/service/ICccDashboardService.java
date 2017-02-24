@@ -43,7 +43,7 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getAssignedDepartmentsForUser(Long userId);
 	public List<IdAndNameVO> getGovtDeptLevelForDeptAndUser(Long departmentId,Long userId);
 	public List<IdAndNameVO> getDeptIdAndNameListForUser(Long userId);
-	public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId);
+	public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId);
 	
 	public List<GovtDepartmentVO> getAssignedDesignationsForUser(Long userId);
 	public GovtDepartmentVO getAssignedLevelsForUser(Long userId,Long designationId);
@@ -65,4 +65,6 @@ public interface ICccDashboardService {
 	public List<AlertCoreDashBoardVO> getTotalAlertDetailsGroupByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId,Long deptId, Long statusId);
 	public List<AlertCoreDashBoardVO> getAlertCountDetailsLocationWiseThenStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> govtDepartmentId,Long lvlValue,Long locId,Long statusId);
 	public List<IdAndNameVO> getDeptListForUser(Long userId);
+	
+	public String getAlertCategoryByAlert(Long alertId);
 } 

@@ -1666,10 +1666,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		}
 		return null;
 	}
-public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
+public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
-			List<Object[]> list = govtDepartmentLevelDetailsDAO.getLocationNamesByDepmntId(departmentId);
+			//List<Object[]> list = govtDepartmentLevelDetailsDAO.getLocationNamesByDepmntId(departmentId);
+			List<Object[]> list = govtDepartmentDesignationOfficerDAO.getLevelsForUserAndDepartment(userId, departmentId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					GovtDepartmentVO vo = new GovtDepartmentVO();
@@ -2564,5 +2565,24 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId){
 			logger.error("Error occured getAlertCountLocationWiseThenStatusWise() method of CccDashboardService{}");
 		}
 		return null;
+	}
+	
+	public String getAlertCategoryByAlert(Long alertId){
+		String category = null;
+		try {
+			Long govtDeptId = alertDAO.getGovtDepartmentIdForAlert(alertId);
+			if(govtDeptId != null && govtDeptId.longValue() > 0l){
+				Long cnpDeptId = govtDepartmentDAO.getCNPGovtDepartmentIdForGovtDepartment(govtDeptId);
+				if(cnpDeptId != null && cnpDeptId.longValue() > 0l){
+					List<String> categoryList = alertCandidateDAO.getCategoryListForAlertAndDepartment(alertId, cnpDeptId);
+					if(categoryList != null && !categoryList.isEmpty())
+						category = categoryList.get(0);
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getAlertCategoryByAlert() method of CccDashboardService",e);
+		}
+		return category;
 	}
 }
