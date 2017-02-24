@@ -756,6 +756,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficer.setAlertStatusId(2l);
+					alertAssignedOfficer.setIsDeleted("N");
 					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Officer Assigning Tracking
@@ -1283,24 +1284,28 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						matchedVO.setDepartmentId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						matchedVO.setDepartment(objects[1] != null ? objects[1].toString():"");
 						deptIds.add((Long)objects[0]);
-					GovtDepartmentVO districtVO = new GovtDepartmentVO();
-						districtVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
-						districtVO.setDepartment(objects[3] != null ? objects[3].toString():"");
-							districtVO.setCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
-							
-						matchedVO.getGovtDepartmentVOList().add(districtVO);	
+						if(objects[2] != null){
+							GovtDepartmentVO districtVO = new GovtDepartmentVO();
+							districtVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+							districtVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+								districtVO.setCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
+								
+							matchedVO.getGovtDepartmentVOList().add(districtVO);
+						}
 						finalVOList.add(matchedVO);
 					}else{
-						GovtDepartmentVO matchedDistVO = getmatchedDeptVo(matchedVO.getGovtDepartmentVOList(), (Long)objects[2]);
-						if(matchedDistVO == null){
-								matchedDistVO = new GovtDepartmentVO();
-								matchedDistVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
-								matchedDistVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+						if(objects[2] != null){
+							GovtDepartmentVO matchedDistVO = getmatchedDeptVo(matchedVO.getGovtDepartmentVOList(), (Long)objects[2]);
+							if(matchedDistVO == null){
+									matchedDistVO = new GovtDepartmentVO();
+									matchedDistVO.setDepartmentId(Long.valueOf(objects[2] != null ? objects[2].toString():"0"));
+									matchedDistVO.setDepartment(objects[3] != null ? objects[3].toString():"");
+									matchedDistVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
+									
+								matchedVO.getGovtDepartmentVOList().add(matchedDistVO);
+							}else{
 								matchedDistVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
-								
-							matchedVO.getGovtDepartmentVOList().add(matchedDistVO);
-						}else{
-							matchedDistVO.setCount(matchedDistVO.getCount()+Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
+							}
 						}
 					}
 				}
