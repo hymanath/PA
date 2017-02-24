@@ -1099,36 +1099,61 @@ function locationsBasedOnLevel(levelId)
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		var str='';
-		if(levelId <= 4){
-			str+='<option value="0">Select Location</option>';
-			for(var i in result)
-			{
-				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		if(result !=null && result.length>0){
+			if(result[0].regionScopeId <= 4){
+				str+='<option value="0">Select Location</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#locationsId").html(str);
+				$("#locationsId").trigger("chosen:updated");
 			}
-			$("#locationsId").html(str);
-			$("#locationsId").trigger("chosen:updated");
-		}
-		else{
-			$("#constituencyLevelDiv").show();
-			str+='<option value="0">Select Constituency</option>';
-			for(var i in result)
-			{
-				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			else{
+				$("#constituencyLevelDiv").show();
+				str+='<option value="0">Select Constituency</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#constLvlId").html(str);
+				$("#constLvlId").trigger("chosen:updated");
 			}
-			$("#constLvlId").html(str);
-			$("#constLvlId").trigger("chosen:updated");
 		}
+		
 	});
 }
 $(document).on('change','#constLvlId', function() {
 	$("#mndlMuncLevelDiv").hide();
 	var levelId = $("#locationLevelSelectId").val();
+	
+	//balu	
+	var regionScopeId = getRegionScopeIdByLevel(levelId);
+	
 	var constId = $(this).val();
-	if(levelId == 5 || levelId == 6)
-		getMandalsByConstituency(constId,levelId);
-	else if(levelId == 7 || levelId == 8)
-		getLebsByConstituency(constId,levelId);
+	if(regionScopeId == 5 || regionScopeId == 6){
+		getMandalsByConstituency(constId,regionScopeId);
+	}else if(regionScopeId == 7 || regionScopeId == 8){
+		getLebsByConstituency(constId,regionScopeId);
+	}
+
 });
+
+function getRegionScopeIdByLevel(levelId){
+	var jsObj = {
+		levelId : levelId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getRegionScopeIdBylevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result>0){
+			return result; 
+		}
+    });		
+}
+
 function getMandalsByConstituency(constId,levelId){
 	var jsObj = {
 		constituencyId : constId

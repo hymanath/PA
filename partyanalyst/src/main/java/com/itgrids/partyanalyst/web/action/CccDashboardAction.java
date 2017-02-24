@@ -65,8 +65,16 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private List<AlertCoreDashBoardVO> alertCoreDashBoardVOList;
 	    private String categoryStr;
 	    
+	    private Long levelId;
 	   
-	    public String getCategoryStr() {
+	    
+	    public Long getLevelId() {
+			return levelId;
+		}
+		public void setLevelId(Long levelId) {
+			this.levelId = levelId;
+		}
+		public String getCategoryStr() {
 			return categoryStr;
 		}
 		public void setCategoryStr(String categoryStr) {
@@ -1156,5 +1164,19 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   LOG.error("Exception Raised in getAlertCategoryByAlert() in CccDashboardAction",e);
 			}
 		return Action.SUCCESS;
+		}
+		
+		public String getRegionScopeIdBylevel(){
+			  try {
+				   jObj = new JSONObject(getTask());
+				  
+				   Long levelId = jObj.getLong("levelId");
+				   
+				   levelId = cccDashboardService.getRegionScopeIdBylevel(levelId);
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getAlertCategoryByAlert() in CccDashboardAction",e);
+				}
+			  
+			  return Action.SUCCESS;
 		}
 }
