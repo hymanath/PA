@@ -350,7 +350,7 @@ public class DateUtilService {
 	/*
 	 * Santosh
 	 */
-	public  String getDayMonthAndYearsBetweenTwoDates(Date formDate,Date toDate){
+	public  String getDayMonthAndYearsBetweenTwoDates(Date fromDate,Date toDate){
         String returnDate = "";
         Long year=0l;
         Long month=0l;
@@ -359,15 +359,16 @@ public class DateUtilService {
         String noOfYear="";
         String noOfMonth="";
         String noOfDay="";
-    long millisSecond = ((toDate.getTime())-(formDate.getTime()))/86400000;
-      if(millisSecond < 0l){
-        returnDate="All Ready Expired";
+        long diff = (toDate.getTime())-(fromDate.getTime());
+        long numberOfDaysCount =   TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+      if(numberOfDaysCount < 0l){
+        returnDate=" All Ready Expired";
       }else{
-        System.out.println(millisSecond);
-        if(millisSecond > 365){
-          year = millisSecond /365l;
-          remenderValue = millisSecond %365l;
-          if(remenderValue > 30){
+       //System.out.println(numberOfDaysCount);
+        if(numberOfDaysCount > 365L){
+          year = numberOfDaysCount /365L;
+          remenderValue = numberOfDaysCount %365;
+          if(remenderValue > 30L){
              month = remenderValue/30;
              day = remenderValue%30;
            }else {
@@ -389,9 +390,9 @@ public class DateUtilService {
             noOfDay="Day";
           }
           returnDate = year.toString()+" "+noOfYear+" "+month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
-        }else if(millisSecond > 30){
-          month = millisSecond /30;
-          remenderValue = millisSecond%30;
+        }else if(numberOfDaysCount > 30L){
+          month = numberOfDaysCount /30L;
+          remenderValue = numberOfDaysCount%30;
           day = remenderValue;
           if(month >1){
             noOfMonth="Months";
@@ -406,7 +407,7 @@ public class DateUtilService {
            returnDate =month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
             
         }else{
-          day = millisSecond;
+          day = numberOfDaysCount;
           if(day > 1 ){
             noOfDay="Days";
             returnDate =day.toString()+" "+noOfDay;
