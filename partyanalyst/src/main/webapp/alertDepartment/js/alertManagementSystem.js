@@ -1841,6 +1841,7 @@ function getTotalArticledetails(articleId){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 		var result = results[0];
 		var str = '';
+		var heading = '';
 		heading+='<h4 class="modal-title" id="myModalLabel">';
 			heading+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
 			heading+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
@@ -2313,76 +2314,52 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 				str1+='</tr>';
 			str1+='</thead>';
 			str1+='<tbody>';
-				var totalCount = 0
-				var Notified = 0;
-				var ActionInProgess = 0;
-				var Completed = 0;
-				var UnabletoResolve = 0;
-				var ActionNotRequired = 0;
-				var Duplicate = 0
+				
 				str1+='<tr>';
+				var totalCount =0;
+				var notifiedCount=0;
+				var actionInProgessCount=0;
+				var completedCount=0;
+				var actionNotRequiredCount=0;
+				var duplicateCount=0;
 					for(var i in result){
 						totalCount = totalCount + result[i].count;
-						str1+='<td style="background-color:#eee">Total Alerts</td>';
-						str1+='<td style="background-color:#eee">'+totalCount+'</td>';
-						if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
-						for(var j in result[0].govtDeptList){
-							str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+result[0].govtDeptList[j].count+'</span></td>';
+						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
+							for(var j in result[i].govtDeptList){
+								if(result[i].govtDeptList[j].name == "Notified"){
+									notifiedCount = notifiedCount + result[i].govtDeptList[j].count;
+								}if(result[i].govtDeptList[j].name == "Action In Progess"){
+									actionInProgessCount = actionInProgessCount + result[i].govtDeptList[j].count;
+								}if(result[i].govtDeptList[j].name == "Completed"){
+									completedCount = completedCount + result[i].govtDeptList[j].count;
+								}if(result[i].govtDeptList[j].name == "Action Not Required"){
+									actionNotRequiredCount = actionNotRequiredCount + result[i].govtDeptList[j].count;
+								}if(result[i].govtDeptList[j].name == "Duplicate"){
+									duplicateCount = duplicateCount + result[i].govtDeptList[j].count;
+								}
+								
+								
+							}
 						}
 					}
-						/* Notified = Notified + result[i].govtDeptList[0].count;
-						ActionInProgess = ActionInProgess + result[i].govtDeptList[1].count;
-						Completed = Completed + result[i].govtDeptList[2].count;
-						UnabletoResolve = UnabletoResolve + result[i].govtDeptList[3].count;
-						ActionNotRequired = ActionNotRequired + result[i].govtDeptList[4].count; */
-						/* if(result[i].govtDeptList[5].count !=null){
-							Duplicate = Duplicate + result[i].govtDeptList[5].count;
-						} */
-						
+					str1+='<td style="background-color:#eee">Total Alerts</td>';
+					str1+='<td style="background-color:#eee">'+totalCount+'</td>';
+					if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
+						for(var j in result[0].govtDeptList){
+							if(result[0].govtDeptList[j].name == "Notified"){
+								str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+notifiedCount+'</span></td>';
+							}if(result[0].govtDeptList[j].name == "Action In Progess"){
+								str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+actionInProgessCount+'</span></td>';
+							}if(result[0].govtDeptList[j].name == "Completed"){
+								str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+completedCount+'</span></td>';
+							}if(result[0].govtDeptList[j].name == "Action Not Required"){
+								str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+actionNotRequiredCount+'</span></td>';
+							}if(result[0].govtDeptList[j].name == "Duplicate"){
+								str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="'+result[0].govtDeptList[j].id+'" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+duplicateCount+'</span></td>';
+							}
+							
+						}
 					}
-					/* str1+='<td style="background-color:#eee">TOTAL</td>';
-					if(totalCount != null && totalCount > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+totalCount+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+totalCount+'</td>';
-					}
-					if(Notified != null && Notified > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="2" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Notified+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+Notified+'</td>';
-					}
-					if(ActionInProgess != null && ActionInProgess > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="3" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+ActionInProgess+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+ActionInProgess+'</td>';
-					}
-					if(Completed != null && Completed > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="4" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Completed+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+Completed+'</td>';
-					}
-					if(UnabletoResolve != null && UnabletoResolve > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="5" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+UnabletoResolve+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+UnabletoResolve+'</td>';
-					}
-					if(ActionNotRequired != null && ActionNotRequired > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="6" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+ActionNotRequired+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+ActionNotRequired+'</td>';
-					}
-					if(Duplicate != null && Duplicate > 0)
-					{
-						str1+='<td style="background-color:#eee"><span class="totalAlertsOnDetInfo" attr_status_id="7" attr_designation_id="0" attr_departmentId="'+departmentId+'">'+Duplicate+'</span></td>';
-					}else{
-						str1+='<td style="background-color:#eee">'+Duplicate+'</td>';
-					} */
 					
 				str1+='</tr>';
 				for(var i in result){
