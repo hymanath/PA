@@ -11,4 +11,5 @@ public interface IGovtDepartmentLevelDAO extends GenericDao<GovtDepartmentLevel,
 	public List<Object[]> getDepartmentLevels();
 	public List<Object[]> getLowerLevelsByLevel(Long levelId);
 	public List<Long> getlevelIdsForLevel(Long levelId);
+	public Long getRegionScopeIdBylevel(Long levelId);
 }
