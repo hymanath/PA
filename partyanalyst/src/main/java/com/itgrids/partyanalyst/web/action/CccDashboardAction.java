@@ -63,9 +63,16 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private List<IdAndNameVO> deptListNew;
 	    private List<IdAndNameVO> locationLevelList;
 	    private List<AlertCoreDashBoardVO> alertCoreDashBoardVOList;
+	    private String categoryStr;
 	    
 	   
-	    public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOList() {
+	    public String getCategoryStr() {
+			return categoryStr;
+		}
+		public void setCategoryStr(String categoryStr) {
+			this.categoryStr = categoryStr;
+		}
+		public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOList() {
 			return alertCoreDashBoardVOList;
 		}
 		public void setAlertCoreDashBoardVOList(
@@ -724,8 +731,11 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		public String getLevelsByDeptId(){
 			try {
 				jObj = new JSONObject(getTask());
-		
-				govtDeptVoList = cccDashboardService.getLevelsByDeptId(jObj.getLong("departmentId"));
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				
+				govtDeptVoList = cccDashboardService.getLevelsByDeptId(jObj.getLong("departmentId"),userId);
 			} catch (Exception e) {
 				LOG.error("Exception Raised in getLevelsByDeptId() in CccDashboardAction",e);
 			}
@@ -1131,4 +1141,20 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			return Action.SUCCESS;
 		}
 		
+		public String getAlertCategoryByAlert(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   jObj = new JSONObject(getTask());
+			  
+			   Long alertId = jObj.getLong("alertId");
+			   
+			   categoryStr = cccDashboardService.getAlertCategoryByAlert(alertId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getAlertCategoryByAlert() in CccDashboardAction",e);
+			}
+		return Action.SUCCESS;
+		}
 }
