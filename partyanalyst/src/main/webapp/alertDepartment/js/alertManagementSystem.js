@@ -662,7 +662,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	
 	$("#hiddenAlertId").val(alertId);   //3725
 	getAlertData(alertId);
-	getInvolvedMembersDetilas(alertId);
+	getInvolvedMembersDetilas();
 	getAlertStatusCommentsTrackingDetails();
 	departmentsByAlert();
 	assignedOfficersDetailsForAlert();
@@ -670,6 +670,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 });
 
 function getAlertCategortByAlert(alertId){
+	$("#categoryId").html('');
 	var jsObj =
 	{
 		alertId  :alertId
@@ -790,7 +791,8 @@ function getGroupedArticlesInfo(articleId)
 		}
 	});
 }
-function getInvolvedMembersDetilas(alertId){
+function getInvolvedMembersDetilas(){
+	var alertId = $("#hiddenAlertId").val();
 	var jsObj ={
 		alertId  :alertId
 	}
@@ -807,7 +809,7 @@ function getInvolvedMembersDetilas(alertId){
 		}
 	});
 }
-function buildAlertCandidateData(result,categoryId)
+function buildAlertCandidateData(result)
 {
 
 	var str='';
@@ -816,9 +818,9 @@ function buildAlertCandidateData(result,categoryId)
 	{
 		str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10">';
 			str+='<div class="media" style="border:1px solid #ddd;padding:8px;">';
-				str+='<div class="media-left">';
+				/*str+='<div class="media-left">';
 					str+=' <img src="'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
-				str+=' </div>';
+				str+=' </div>';*/
 				str+=' <div class="media-body">';
 					if(result[i].impactLevelId == 1)
 					{
@@ -1045,13 +1047,13 @@ function buildAssignedOfficersDetailsForAlert(result)
 	{
 		str+='<li>';
 			str+='<div class="media">';
-				str+='<div class="media-left">';
+				/*str+='<div class="media-left">';
 					str+='<img src="" alt="" class="media-object"/>';
-				str+='</div>';
+				str+='</div>';*/
 				str+='<div class="media-body">';
-					str+='<p><b>'+result[i].name+'</b></p>';
+					//str+='<p><b>'+result[i].name+'</b></p>';
 					str+='<p><b><i>'+result[i].department+'</i></b></p>';
-					str+='<p>'+result[i].mobileNo+'</p>';
+					//str+='<p>'+result[i].mobileNo+'</p>';
 					str+='<p>'+result[i].designation+'</p>';
 				str+='</div>';
 			str+='</div>';
@@ -1129,19 +1131,20 @@ function locationsBasedOnLevel(levelId)
 		
 	});
 }
+
+var globalRegionScope=0;
 $(document).on('change','#constLvlId', function() {
 	$("#mndlMuncLevelDiv").hide();
-	var levelId = $("#locationLevelSelectId").val();
-	
-	//balu	
-	var regionScopeId = getRegionScopeIdByLevel(levelId);
-	
+	var levelId = $("#locationLevelSelectId").val();		
+	getRegionScopeIdByLevel(levelId);
 	var constId = $(this).val();
-	if(regionScopeId == 5 || regionScopeId == 6){
-		getMandalsByConstituency(constId,regionScopeId);
-	}else if(regionScopeId == 7 || regionScopeId == 8){
-		getLebsByConstituency(constId,regionScopeId);
-	}
+	 setTimeout(function(){
+		if(globalRegionScope == 5 || globalRegionScope == 6){		
+			getMandalsByConstituency(constId,getRegionScopeIdByLevel(levelId));
+		}else if(globalRegionScope == 7 || globalRegionScope == 8){
+			getLebsByConstituency(constId,getRegionScopeIdByLevel(levelId));
+		}
+	 }, 3000);
 
 });
 
@@ -1154,8 +1157,8 @@ function getRegionScopeIdByLevel(levelId){
       url: 'getRegionScopeIdBylevelAction.action',
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		if(result !=null && result>0){
-			return result; 
+		if(result !=null && parseInt(result)>0){
+			globalRegionScope = parseInt(result);
 		}
     });		
 }
@@ -1368,9 +1371,11 @@ function displayStatus(myResult){
 	if(result.search('success') != -1){
 		$("#assiningLdngImg").hide();
 		getAlertStatusCommentsTrackingDetails();
+		//getInvolvedMembersDetilas();
 		assignedOfficersDetailsForAlert();
 		alert("Alert Assigned Successfully.");
 		$("#alertStatus").html('Notified');
+		location.reload();
 		fieldsEmpty();
 		/*$("#uploadClarificationFileId0").val('');
 		$("#extraClarificationUploadFileDiv").html('');
@@ -1378,6 +1383,7 @@ function displayStatus(myResult){
 		fileNo = 0;*/
 	}else{
 		alert("Please Try Again.");
+		$("#assiningLdngImg").hide();
 		$("#assignOfficerId").show();
 	}
 }

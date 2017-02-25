@@ -1123,6 +1123,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 });
 
 function getAlertCategortByAlert(alertId){
+	$("#categoryId").html('');
 	var jsObj =
 	{
 		alertId  :alertId
@@ -1624,9 +1625,10 @@ function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
 		$("#assiningLdngImg").hide();
-		//getAlertStatusCommentsTrackingDetails();
+		getAlertStatusCommentsTrackingDetails();
 		alert("Alert Updated Successfully.");
 		//$("#alertStatus").html('Notified');
+		location.reload();
 		fieldsEmpty();
 		/*$("#uploadClarificationFileId0").val('');
 		$("#extraClarificationUploadFileDiv").html('');

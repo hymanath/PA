@@ -275,7 +275,7 @@
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
 							<td colspan="2">
-								<p class="text-capital"><span class="text-muted ">Article  </span> :
+								<p class="text-capital"><span class="text-muted ">Attachments  </span> :
 								<ul class="list-inline imageUrlUlCls"></ul>
 							</td>
 							<td colspan="6" style="display:none" id="alertGroupAttachId">
@@ -288,7 +288,7 @@
 			</div>
 			<div class="row m_top10">
 				<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
-					<h4 class="panel-title text-capital"><b>involved members in this alert</b>
+					<h4 class="panel-title text-capital"><b>involved departments in this alert</b>
 					<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
 					<div class="involvedMembersUl" id="alertCandidateDataId"></div>  
 				</div>  

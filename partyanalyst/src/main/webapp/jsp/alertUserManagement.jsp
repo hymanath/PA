@@ -301,7 +301,7 @@
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
 							<td colspan="2">
-								<p class="text-capital"><span class="text-muted ">Article  </span> :
+								<p class="text-capital"><span class="text-muted ">Attachments  </span> :
 								<ul class="list-inline imageUrlUlCls"></ul>
 							</td>
 							<td colspan="6" style="display:none" id="alertGroupAttachId">
@@ -333,11 +333,11 @@
 								</div>
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
+										<!--<div class="col-md-12 col-xs-12 col-sm-12">
 											<label class="checkbox-inline">
 												<input type="checkbox" class="notMyDepartment"/>This Alert is not releated to my department
 											</label>
-										</div>
+										</div>-->
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 											<span style="color:red;" id="errMsgCmntId"></span>
 											<label>
