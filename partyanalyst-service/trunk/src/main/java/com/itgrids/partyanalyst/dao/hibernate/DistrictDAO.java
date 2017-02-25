@@ -458,7 +458,7 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			str.append("select distinct model.districtId," +
 							" model.districtName" +
 		    				" from District model" +
-		    				" where model.districtId <= 23 or model.districtId in (517,518)");
+		    				" where model.districtId between 11 and 23 or model.districtId = 517");
 			str.append(" order by  model.districtName ");
 			  
 			Query query = getSession().createQuery(str.toString());
