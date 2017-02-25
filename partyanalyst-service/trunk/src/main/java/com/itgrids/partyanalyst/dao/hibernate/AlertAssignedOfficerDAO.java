@@ -630,8 +630,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
 		if(desigOffcId != null && desigOffcId.longValue() > 0l)
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :desigOffcId");
-		if(govtOffcId != null && govtOffcId.longValue() > 0l)
-			sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcId");
+		//if(govtOffcId != null && govtOffcId.longValue() > 0l)
+			//sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcId");
 		
 		//if(levelId != null && levelId > 0l)
 			//sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevel.govtDepartmentLevelId = :levelId");
@@ -694,8 +694,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		if(desigOffcId != null && desigOffcId.longValue() > 0l)
 			query.setParameter("desigOffcId", desigOffcId);
-		if(govtOffcId != null && govtOffcId.longValue() > 0l)
-			query.setParameter("govtOffcId", govtOffcId);
+		//if(govtOffcId != null && govtOffcId.longValue() > 0l)
+			//query.setParameter("govtOffcId", govtOffcId);
 		
 		if(levelValues != null && !levelValues.isEmpty())
 			query.setParameterList("levelValues", levelValues);

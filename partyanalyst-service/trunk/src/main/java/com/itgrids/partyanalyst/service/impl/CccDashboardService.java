@@ -751,7 +751,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					}
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(), inputvo.getGovtOfficerId());
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
 					
@@ -759,7 +759,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
 					alertAssignedOfficer.setAlertId(inputvo.getAlertId());
 					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId());
+					//alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId());
 					alertAssignedOfficer.setInsertedBy(inputvo.getUserId());
 					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
 					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
@@ -773,7 +773,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
 					alertAssignedOfficerTracking.setAlertId(inputvo.getAlertId());
 					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
+					//alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
 					alertAssignedOfficerTracking.setInsertedBy(inputvo.getUserId());
 					alertAssignedOfficerTracking.setUpdatedBy(inputvo.getUserId());
 					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
@@ -787,7 +787,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 							AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 							alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 							alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-							alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+							//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 							alertAssignedOfficerAction.setAlertStatusId(2l);
 							if(i == 0)
 								alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
@@ -804,7 +804,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 						alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 						alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-						alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+						//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 						alertAssignedOfficerAction.setAlertStatusId(2l);
 						alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
 							
@@ -1560,7 +1560,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			if(myList != null && !myList.isEmpty()){
 				for (Object[] obj : myList) {
 					designationOffId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					govtOffId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					//govtOffId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 				}
 			}
 			
@@ -1950,7 +1950,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 							AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 							alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 							alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-							alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+							//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 							alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
 							if(i == 0)
 								alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
@@ -1967,7 +1967,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 						AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 						alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 						alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-						alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+						//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 						alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
 						alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
 							

@@ -208,7 +208,7 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	}
 	
 	public List<Object[]> getTeluguStates(){
-		Query query = getSession().createQuery("select model.stateId , model.stateName from State model where model.stateId in (1,36)");
+		Query query = getSession().createQuery("select model.stateId , model.stateName from State model where model.stateId in (1)");
 		
 		return query.list();
 	}
