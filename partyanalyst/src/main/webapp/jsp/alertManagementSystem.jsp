@@ -297,20 +297,36 @@
 					<div id="alertCommentsDivIdNew"></div>
 				</div>
 			</div>
+			<div class="row m_top20">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading headingColor">
+						<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="assignedOfficersId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
 			<div id="alertAssignFormDivId" style="display:none;">
 				<form id="alertAssign" name="alertAssignForm">
 					<div class="row m_top20">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading headingColor">
-									<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
+									<h4 class="panel-title text-capital">assign alert</h4>
 								</div>
 								<div class="panel-body">
-									<div class="row">
+									<!--<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div id="assignedOfficersId"></div>
 										</div>
-									</div>
+									</div>-->
 									<div class="row">
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
@@ -348,12 +364,12 @@
 											<option></option>	
 											</select>
 										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
+										<!--<div class="col-md-3 col-xs-12 col-sm-6">
 											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
 											<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 												<option></option>
 											</select>
-										</div>
+										</div>-->
 									</div>
 								</div>
 							</div>

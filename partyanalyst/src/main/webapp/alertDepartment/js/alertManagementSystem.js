@@ -651,7 +651,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	$("#errMsgOffcrId").html("");
 	$("#errMsgCmntId").html("");
 	$("#errMsgImgId").html("");
-	
+	$("#assignOfficerId").show();
 	fieldsEmpty();
 	$("#alertAssignFormDivId").hide();
 	
@@ -1087,6 +1087,12 @@ $(document).on('change','#locationLevelSelectId', function(evt, params) {
 });
 function locationsBasedOnLevel(levelId)
 {
+	$("#locationsId").empty();
+	$("#locationsId").trigger("chosen:updated");
+	$("#designationsId").empty();
+	$("#designationsId").trigger("chosen:updated");
+	//$("#officerNamesId").empty();
+	//$("#officerNamesId").trigger("chosen:updated");
 	$("#constituencyLevelDiv").hide();
 	$("#mndlMuncLevelDiv").hide();
 	
@@ -1281,6 +1287,10 @@ $(document).on('change','#departmentsId', function(evt, params) {
 });
 function designationsByDepartment()
 {
+	$("#designationsId").empty();
+	$("#designationsId").trigger("chosen:updated");
+	//$("#officerNamesId").empty();
+	//$("#officerNamesId").trigger("chosen:updated");
 	var LevelId = $("#locationLevelSelectId").chosen().val();
 	var deprtmntId = $("#departmentsId").chosen().val();
 	
@@ -1303,12 +1313,14 @@ function designationsByDepartment()
 		$("#designationsId").trigger("chosen:updated");
 	});
 }
-$(document).on('change','#designationsId', function(evt, params) {
+/*$(document).on('change','#designationsId', function(evt, params) {
 	var designationId = $(this).val();
 	officersByDesignationAndLevel(designationId)
-});
-function officersByDesignationAndLevel(designationId)
+});*/
+/*function officersByDesignationAndLevel(designationId)
 {
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
 	var LevelId = $("#locationLevelSelectId").chosen().val()
 	var LevelValue = $("#locationsId").chosen().val()
 	
@@ -1331,13 +1343,14 @@ function officersByDesignationAndLevel(designationId)
 		$("#officerNamesId").html(str);
 		$("#officerNamesId").trigger("chosen:updated");
 	});
-}
+}*/
 $(document).on("click","#assignOfficerId",function(){
 if(!fieldsValidation())
 	{
 		return;
 	}
 	$("#assiningLdngImg").show();
+	$("#assignOfficerId").hide();
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
@@ -1365,6 +1378,7 @@ function displayStatus(myResult){
 		fileNo = 0;*/
 	}else{
 		alert("Please Try Again.");
+		$("#assignOfficerId").show();
 	}
 }
 /* Alert Details Modal End*/
@@ -2185,7 +2199,7 @@ function fieldsValidation(){
 	$("#errMsgLocationId").html("");
 	$("#errMsgDeptId").html("");
 	$("#errMsgDesgId").html("");
-	$("#errMsgOffcrId").html("");
+	//$("#errMsgOffcrId").html("");
 	$("#errMsgCmntId").html("");
 	$("#errMsgImgId").html("");
 	
@@ -2193,7 +2207,7 @@ function fieldsValidation(){
 	var levelId = $("#locationLevelSelectId").val();
 	var locationId = $("#locationsId").val();
  	var designationId = $("#designationsId").val();
-	var offcierId = $("#officerNamesId").val(); 
+	//var offcierId = $("#officerNamesId").val(); 
 	var comments = $("#alertDescId").val();
 	//var image = $("#imageId").val();
 	
@@ -2213,10 +2227,10 @@ function fieldsValidation(){
 		$("#errMsgDesgId").html("Select Designation.");
 		return false;
 	}
-	if(offcierId == 0){
+	/*if(offcierId == 0){
 		$("#errMsgOffcrId").html("Select OfficerName.");
 		return false;
-	} 
+	} */
 	if(comments.length == 0){
 		$("#errMsgCmntId").html("Enter Comments.");
 		return false;
@@ -2242,8 +2256,8 @@ function fieldsEmpty(){
 	$("#locationsId").trigger("chosen:updated");
 	$("#designationsId").empty();
 	$("#designationsId").trigger("chosen:updated");
-	$("#officerNamesId").empty();
-	$("#officerNamesId").trigger("chosen:updated");
+	//$("#officerNamesId").empty();
+	//$("#officerNamesId").trigger("chosen:updated");
 	$("#telugu").prop("checked", true);
 	$("#alertDescId").val('');
 	var filerKit = $("#imageId").prop("jFiler");
@@ -2251,6 +2265,15 @@ function fieldsEmpty(){
 }
 
 function getLocationLevels(departmentId){
+	$("#locationLevelSelectId").empty();
+	$("#locationLevelSelectId").trigger("chosen:updated");
+	$("#locationsId").empty();
+	$("#locationsId").trigger("chosen:updated");
+	$("#designationsId").empty();
+	$("#designationsId").trigger("chosen:updated");
+	//$("#officerNamesId").empty();
+	//$("#officerNamesId").trigger("chosen:updated");
+	
 	var jsObj = {
 		departmentId : departmentId 
 	}
