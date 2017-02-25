@@ -749,12 +749,11 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			}
 			   return Action.SUCCESS;
 		}
-		
 		public String getGovtDeptLevelForDeptAndUser(){
 			   try {
 				   session = request.getSession();
 				   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-					Long userId = regVo.getRegistrationID();
+					Long userId = regVo.getRegistrationID();  
 					jObj = new JSONObject(getTask());
 					Long departmentId = jObj.getLong("departmentId");
 					
@@ -766,8 +765,9 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 		}
 		public String getDeptIdAndNameListForUser(){
 			   try {
-					jObj = new JSONObject(getTask());
-					Long userId = jObj.getLong("userId");
+				   session = request.getSession();
+				   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				   Long userId = regVo.getRegistrationID();
 					
 					deptList = cccDashboardService.getDeptIdAndNameListForUser(userId);
 			   } catch (Exception e) {
