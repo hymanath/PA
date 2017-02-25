@@ -2107,7 +2107,7 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	{
 		Query query = getSession().createQuery(" select distinct model.constituencyId,model.name from Constituency model " +
 				" where model.state.stateId = 1 and model.deformDate is null and model.electionScope.electionType.electionTypeId =2" +
-				" and model.district.districtId between 11 and 23 or model.districtId = 517 order by model.name ");
+				" and model.district.districtId between 11 and 23 or model.district.districtId = 517 order by model.name ");
 		
 		
 		return query.list();

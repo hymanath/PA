@@ -21,9 +21,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 
 	public List<Object[]> getAssignedOfficersForAlert(Long alertId){
 		Query query = getSession().createQuery("select distinct model.alertAssignedOfficerId," +
-											" model.govtOfficer.officerName," +
+											" ''," +
 											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-											" model.govtOfficer.mobileNo," +
+											" ''," +
 											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
 											" from AlertAssignedOfficer model" +
 											" where model.alert.alertId = :alertId");
@@ -777,7 +777,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		Query query = getSession().createQuery(" select distinct model.alertAssignedOfficerId" +
 												" from AlertAssignedOfficer model,GovtDepartmentDesignationOfficerDetails model1" +
 												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = model1.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
-												" and model.govtOfficer.govtOfficerId = model1.govtOfficer.govtOfficerId" +
+												//" and model.govtOfficer.govtOfficerId = model1.govtOfficer.govtOfficerId" +
 												" and model.alert.alertId = :alertId" +
 												" and model1.user.userId = :userId" +
 												" and model1.isDeleted = 'N'");
