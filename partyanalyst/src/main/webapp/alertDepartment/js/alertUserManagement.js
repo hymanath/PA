@@ -796,7 +796,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				for(var i in result){
 					str1+='<tr>';
 						str1+='<td>'+result[i].status+'</td>';
-						str1+='<td><span class="detaiedTotalAlerts" attr_status_id="0" attr_location_id="'+result[i].statusId+'">'+result[i].count+'</span></td>';
+						str1+='<td><span style="cursor:pointer;" class="detaiedTotalAlerts" attr_status_id="0" attr_location_id="'+result[i].statusId+'">'+result[i].count+'</span></td>';
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							
 							for(var j in result[i].subList1){
@@ -812,7 +812,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 								}
 							}
 						}
-							str1+='<td><button type="button" class="btn btn-success btn-xs">View Details</button></td>';
+							str1+='<td><button  type="button" class="btn btn-success btn-xs detaiedTotalAlerts" attr_status_id="0" attr_location_id="'+result[i].statusId+'">View Details</button></td>';  
 					str1+='</tr>';
 				}
 			str1+='</tbody>';
@@ -1688,17 +1688,18 @@ $(document).on("click",".detaiedTotalAlerts",function(){
 	var locationId = $(this).attr("attr_location_id");
 	var locaValue = $("#levelDepartmentId").val();
 	var statusId = $(this).attr("attr_status_id");
-	getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId);
-});
+	var govtDepartmentId = $("#departmentId").val();    
+	getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId,govtDepartmentId);
+});  
 
-function getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId)
+function getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,statusId,govtDepartmentId)
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
 		fromDate:detailedfromDate,
 		  toDate:detailedtoDate,
 		  stateId:globalStateId,
-		  govtDepartmentId:1,    
+		  govtDepartmentId:govtDepartmentId,                 
 		  statusId:statusId,          
 		  lvlValue:locaValue,
 		  paperIdArr:paperIdArr,
