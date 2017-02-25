@@ -27,6 +27,7 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 											" from AlertAssignedOfficerTracking model,AlertAssignedOfficerAction model1" +
 											" where model.alertId = model1.alertId" +
 											" and model.alertAssignedOfficerId = model1.alertAssignedOfficerId" +
+											" and model.alertStatus.alertStatusId = model1.alertStatus.alertStatusId" +
 											" and model.alertId = :alertId" +
 											" and model1.isDeleted = 'N'" +
 											" and model.alertAssignedOfficer.isDeleted = 'N'" +

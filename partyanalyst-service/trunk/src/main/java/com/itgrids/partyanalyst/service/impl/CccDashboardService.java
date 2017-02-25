@@ -848,9 +848,9 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					GovtDepartmentVO vo = new GovtDepartmentVO();
 					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
+					//vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setDepartment(obj[2] != null ? obj[2].toString():"");
-					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+					//vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
 					vo.setDesignation(obj[4] != null ? obj[4].toString():"");
 					
 					returnList.add(vo);
