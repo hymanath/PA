@@ -2314,12 +2314,12 @@ $(document).on("click",".totAlertsStsCls",function(){
 		deptIdArr.push(deptId);  
 	var type = $(this).attr("attr_type");
 	if(type == "PMedia"){
-		paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
+		paperIdArr = globalNewsPaperIdArr;
 	}else if(type == "electronic"){
-		chanelIdArr = [1,2,3,4,5,6,7];
+		chanelIdArr = globalChannelIdArr;
 	}else if(type == "Totals"){
-		paperIdArr = [1,2,3,4,5,7,8,10,11,12,13,14,15,16,17,18];
-		chanelIdArr = [1,2,3,4,5,6,7];
+		paperIdArr = globalNewsPaperIdArr;
+		chanelIdArr = globalChannelIdArr;
 	}
     var jsObj ={
       fromDate:currentFromDate,
