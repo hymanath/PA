@@ -48,7 +48,8 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct" +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
-						//" ,model.govtOfficer.govtOfficerId " +
+						//" , model.govtOfficer.govtOfficerId " +
+						" , '0' " +
 						" from " +
 						" GovtDepartmentDesignationOfficerDetails model" +
 						" left join model.govtDepartmentDesignationOfficer.userAddress UA" +

@@ -789,7 +789,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
-						" model.govtOfficer.govtOfficerId, " +
+						" '0', " +
 						" model.alert.alertId " +
 						" from " +
 						" AlertAssignedOfficer model " +
