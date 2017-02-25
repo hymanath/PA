@@ -93,6 +93,7 @@
 										<div class="col-md-3 col-xs-12 col-sm-4">
 											<div class="panel panel-default">
 												<div class="panel-body" style="height: 370px;">
+													<div>Today</div>
 													<div class="alertImage">
 														<img src="newCoreDashBoard/img/govtAlertBill.png" alt="govt alerts"/>
 													</div>
