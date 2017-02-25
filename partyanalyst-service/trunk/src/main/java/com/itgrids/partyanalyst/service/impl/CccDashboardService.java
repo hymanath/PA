@@ -1660,7 +1660,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 		try{
 			List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 			IdAndNameVO idAndNameVO= null;
-			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getDeptIdAndNameListForUser(1L);
+			List<Object[]> deptList = govtAlertDepartmentLocationDAO.getDeptIdAndNameListForUser(userId);
 			if(deptList != null && deptList.size() > 0){
 				for(Object[] param : deptList){
 					idAndNameVO = new IdAndNameVO();
@@ -2025,19 +2025,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();
 			Long deptDesigOfficerId = null;
-			Long officerId = null;
+			//Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			Long officerId2 = null;
+			//Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					if(deptDesigOfficerId.longValue() > 0L && officerId.longValue() > 0L){
+					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L && officerId2.longValue() > 0L){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
+							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2.longValue() > 0L ){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2)){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}
 							}
@@ -2112,19 +2112,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();    
 			Long deptDesigOfficerId = null;
-			Long officerId = null;
+			//Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			Long officerId2 = null;
+			//Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					if(deptDesigOfficerId.longValue() > 0L && officerId.longValue() > 0L){
+					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L && officerId2.longValue() > 0L){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
+							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2.longValue() > 0L){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2) ){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}  
 							}
@@ -2405,19 +2405,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();
 			Long deptDesigOfficerId = null;
-			Long officerId = null;
+			//Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			Long officerId2 = null;
+			//Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
-					if(deptDesigOfficerId.longValue() > 0L && officerId.longValue() > 0L){
+					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L && officerId2.longValue() > 0L){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
+							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2.longValue() > 0L ){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2) ){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}         
 							}
