@@ -15973,7 +15973,7 @@
 		
 		<action name="getRegionScopeIdBylevelAction" class="cccDashboardAction" method="getRegionScopeIdBylevel">
 			<result type="json" name="success">		   
-				<param name="root">levelId</param>
+				<param name="root">level</param>
 			</result>	
 		</action>
 		
