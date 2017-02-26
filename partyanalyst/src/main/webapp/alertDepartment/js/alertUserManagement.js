@@ -1182,26 +1182,26 @@ function buildAlertData(result)
 		var location ='';
 			
 		if(result[i].locationVO.stateId !=null){
-			location +='<b>'+result[i].locationVO.state+' ';
+			location +='<b>'+result[i].locationVO.state.toUpperCase()+' ';
 		}
 		if(result[i].locationVO.districtId !=null){
-			location +=' , '+result[i].locationVO.districtName+' District ';
+			location +=' , '+result[i].locationVO.districtName.toUpperCase()+' District ';
 		}
 		if(result[i].locationVO.constituencyId !=null){
-			location +=' , '+result[i].locationVO.constituencyName+' Constituency ';
+			location +=' , '+result[i].locationVO.constituencyName.toUpperCase()+' Constituency ';
 		}
 		
 		if(result[i].locationVO.localEleBodyName !=null && result[i].locationVO.localEleBodyName.length>0){
-			location +=' , '+result[i].locationVO.localEleBodyName+' Municipality ';
+			location +=' , '+result[i].locationVO.localEleBodyName.toUpperCase()+' Municipality ';
 		}
 		if(result[i].locationVO.tehsilName !=null && result[i].locationVO.tehsilName.length>0){
-			location +=' , '+result[i].locationVO.tehsilName+' Mandal ';
+			location +=' , '+result[i].locationVO.tehsilName.toUpperCase()+' Mandal ';
 		}
 		if(result[i].locationVO.wardName !=null && result[i].locationVO.wardName.length>0){
-			location +=' , '+result[i].locationVO.wardName+' Ward ';
+			location +=' , '+result[i].locationVO.wardName.toUpperCase()+' Ward ';
 		}
 		if(result[i].locationVO.villageName !=null && result[i].locationVO.villageName.length>0){
-			location +=' , '+result[i].locationVO.villageName+' Panchayat </b>';
+			location +=' , '+result[i].locationVO.villageName.toUpperCase()+' Panchayat </b>';
 		}
 		
 		$("#LocationId").html(''+location+'');
@@ -1383,11 +1383,11 @@ function alertComments(result)
 										//for(var k in result[i].sublist2[j].sublist)
 										//{	
 											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>';
+												/* str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; */
 												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
 												//for(var l in result[i].govtDeptList[j].sublist[k])
 												//{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>';
+													/* str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>'; */
 												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
