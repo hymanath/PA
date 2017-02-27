@@ -4452,10 +4452,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
 			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
-		else if(printIdList != null && !printIdList.isEmpty())
+		
+		/*else if(printIdList != null && !printIdList.isEmpty())
 			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
 		else if(electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
 			
 		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id; ");
@@ -4519,10 +4520,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
 			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
-		else if(printIdList != null && !printIdList.isEmpty())
+		/*else if(printIdList != null && !printIdList.isEmpty()) 
 			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
 		else if(electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
 		
 		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		queryStr.append(" group by ALTS.alert_status_id,A.govt_department_id order by ALTS.alert_status_id,A.govt_department_id; ");

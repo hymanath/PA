@@ -1091,10 +1091,10 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
-		else if(printIdsList != null && !printIdsList.isEmpty())
+		/*else if(printIdsList != null && !printIdsList.isEmpty())
 			sb.append(" and EDS.newsPaperId in (:printIdsList)");
 		else if(electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
+			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");*/    
 		
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
@@ -1171,14 +1171,14 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
-		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
 		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
 		else if(printIdsList != null && !printIdsList.isEmpty())
 			sb.append(" and EDS.newsPaperId in (:printIdsList)");
 		else if(electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
+			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");*/
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
 		
@@ -1260,13 +1260,13 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	    
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
-	    }else if(printIdsList != null && !printIdsList.isEmpty()){
+	   /* }else if(printIdsList != null && !printIdsList.isEmpty()){
 	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
 	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
 	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
-	    }        
+	    }  */      
 	      
 	    if(fromDate != null && toDate != null)
 	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
