@@ -11,6 +11,20 @@ body {
 h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: 0 !important;
 }
+.navbarHeader .profileDropDown img {
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+.navbarHeader .profileDropDown .caret {
+    color: rgb(255, 204, 45);
+}
+.profileDropDown.open .dropdown-toggle
+{
+	color:#000 !important;
+	min-width:120px;
+}
 .backgroundLoginHeader
 {
 	background-color:#9A999F;
