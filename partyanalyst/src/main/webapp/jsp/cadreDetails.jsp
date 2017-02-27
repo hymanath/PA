@@ -3660,12 +3660,14 @@ $('#toursDatePicker').val(moment().subtract(1, 'month').format('MM-YYYY'));
 	var filePath = $(this).attr("filePath");
 	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 		$("#pdfModelId1").modal("hide");
-		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		//window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		window.open(filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 	}else{
 		$("#pdfModelId1").modal("show");
 		//str += '<iframe src="'+wurl+'/nominated_post_documents/'+filePath+'" width="100%" height="800">';
-		str += '<iframe src="'+wurl+'/GO_documents/'+filePath+'" width="100%" height="800">';
-		//str += '<iframe src="GO_documents/'+filePath+'" width="100%" height="800">';	
+		//str += '<iframe src="'+wurl+'/GO_documents/'+filePath+'" width="100%" height="800">';
+		//str += '<iframe src="GO_documents/'+filePath+'" width="100%" height="800">';
+        str += '<iframe src="'+filePath+'" width="100%" height="800">';		
 		str += '</iframe>';
 		$("#documentDetailsId").html(str);
 		
