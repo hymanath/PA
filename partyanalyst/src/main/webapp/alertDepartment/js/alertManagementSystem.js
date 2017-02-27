@@ -53,6 +53,22 @@ $(document).on("click",".filtersSubmitDivId",function(){
 			globalDepartmentIdArr.push($(this).attr("attr_val"));
 		}
 	});
+	var newsPaperIdLen = globalNewsPaperIdArr.length;
+	if(newsPaperIdLen == 0){
+		alert("Please Select Atleast One Newspaper.");
+		return;
+	}
+	var channelIdLen = globalChannelIdArr.length;
+	if(channelIdLen == 0){
+		alert("Please Select Atleast One Channel.");
+		return;
+	}
+	var departmentIdLen = globalDepartmentIdArr.length;
+	if(departmentIdLen == 0){
+		alert("Please Select Atleast One Department.");
+		return;
+	}      
+	//alert(newsPaperIdLen+":"+channelIdLen+":"+departmentIdLen);
 	onLoadCalls();
 });
 $(document).on("click",".selectAlldepartmentsCls",function(){
