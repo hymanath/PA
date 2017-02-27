@@ -928,6 +928,16 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				for (Object[] obj : list) {
 					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					GovtDepartmentVO vo = statusMap.get(statusId);
+					
+					String timeStr = null;
+					String dateTime = obj[10] != null ? obj[10].toString():"";
+					if(dateTime != null && dateTime.toString().trim().length() > 0){
+						String[] dateTimeArr = dateTime.split(" ");
+						String ttlTime = dateTimeArr[1];
+						String[] ttlTimeArr = ttlTime.split(":");
+						timeStr = ttlTimeArr[0]+":"+ttlTimeArr[1];
+					}
+					
 					if(vo == null){
 						vo = new GovtDepartmentVO();
 						vo.setStatusId(statusId);
@@ -942,6 +952,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						datevo.setSource(obj[7] != null ? obj[7].toString():"");
 						datevo.setDocumentId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 						datevo.setDocument(obj[9] != null ? obj[9].toString():"");
+						datevo.setTimeStr(timeStr);
 						vo.getGovtDeptList().add(datevo);
 						
 						statusMap.put(statusId, vo);
@@ -956,6 +967,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						datevo.setSource(obj[7] != null ? obj[7].toString():"");
 						datevo.setDocumentId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 						datevo.setDocument(obj[9] != null ? obj[9].toString():"");
+						datevo.setTimeStr(timeStr);
 						vo.getGovtDeptList().add(datevo);
 					}
 				}

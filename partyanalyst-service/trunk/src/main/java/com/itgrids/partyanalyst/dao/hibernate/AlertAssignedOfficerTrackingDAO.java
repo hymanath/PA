@@ -47,7 +47,8 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 											" date(model.alertDepartmentComment.insertedTime)," +
 											" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
 											" ADD.alertDepartmentDocumentId," +
-											" ADD.document" +
+											" ADD.document," +
+											" model.alertDepartmentComment.insertedTime" +
 											" from AlertAssignedOfficerAction model" +
 											" left join model.alertDepartmentDocument ADD" +
 											" where model.alert.alertId = :alertId" +
