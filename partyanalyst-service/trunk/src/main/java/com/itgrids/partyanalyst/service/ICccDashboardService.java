@@ -68,5 +68,6 @@ public interface ICccDashboardService {
 	
 	public String getAlertCategoryByAlert(Long alertId);
 	public Long getRegionScopeIdBylevel(Long levelId);
+	public List<IdAndNameVO> getChannelListForUser(Long userId);
 	public String getDesignationForUser(Long userId);
 } 
