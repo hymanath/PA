@@ -36,4 +36,35 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
+	
+	public List<Object[]> getStatusWiseTrackingCommentsNew(Long alertId){
+		Query query = getSession().createQuery("select model.alertStatus.alertStatusId," +
+											" model.alertStatus.alertStatus," +
+											" model.alertDepartmentComment.alertDepartmentCommentId," +
+											" model.alertDepartmentComment.comment," +
+											" model.alertDepartmentComment.insertedUser.userId," +
+											" model.alertDepartmentComment.insertedUser.userName," +
+											" date(model.alertDepartmentComment.insertedTime)," +
+											" model.alert.alertSource.source" +
+											" from AlertAssignedOfficerAction model" +
+											" where model.alert.alertId = :alertId" +
+											" and model.isDeleted = 'N'" +
+											" and model.alertAssignedOfficer.isDeleted = 'N'" +
+											" group by model.alertStatusId,date(model.alertDepartmentComment.insertedTime)" +
+											" order by model.alertStatusId,date(model.alertDepartmentComment.insertedTime)");
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
+	
+	public List<String> getLatestStatusForAlertTracking(Long alertId){
+		Query query = getSession().createQuery("select model.alertStatus.alertStatus" +
+												" from AlertAssignedOfficerAction model" +
+												" where model.alert.alertId = :alertId" +
+												" and model.isDeleted = 'N'" +
+												" and model.alertAssignedOfficer.isDeleted = 'N'" +
+												" order by model.alertAssignedOfficerActionId desc");
+		query.setParameter("alertId", alertId);
+		return query.list();
+		
+	}
 }
