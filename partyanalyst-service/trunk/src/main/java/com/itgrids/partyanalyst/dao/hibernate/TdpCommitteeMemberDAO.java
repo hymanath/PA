@@ -1198,6 +1198,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String stateId,
 				enrollId = 4l;
 			}
 			quertyStr.append(" and TCO.tdpCommitteeEnrollmentId = :enrollId ");
+			//quertyStr.append(" and TCO.tdpCommitteeEnrollmentId in (:enrollIdsList) ");
 		}
 			
 		
@@ -1780,8 +1781,6 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String stateId,
 		{
 			quertyStr.append(" and TCAGE.tdp_cadre_enrollment_id in (:enrollIdsList) ");
 		}
-		if(enrollIdsList != null && enrollIdsList.size() > 0l)
-			quertyStr.append(" and TCAGE.tdp_cadre_enrollment_id in (:enrollIdsList)");
 		
 		Query query = getSession().createSQLQuery(quertyStr.toString());
 		
