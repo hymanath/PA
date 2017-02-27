@@ -300,7 +300,7 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 	public List<Object[]> getAllLocalBodiesInAConstituency(Long constituencyId) {
 		Object[] params = {constituencyId};
 		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId,concat(model.localElectionBody.name,' ',model.localElectionBody.electionType.electionType)  from AssemblyLocalElectionBody model " +
-				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)",params);
+				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2) order by model.localElectionBody.name ",params);
 	}
 	
 	public List<Object[]> getGreaterCitiesConstituencies(){ //GHMC, GVMC, BZA
