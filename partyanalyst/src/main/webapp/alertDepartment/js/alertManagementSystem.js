@@ -193,7 +193,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 					{	
 						totalAlert+=result[i].count;
 						str+='<tr>';
-							str+='<td>'+result[i].status+'</td>';
+							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
 							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].statusId+'">'+result[i].count+'</td>';
 							str+='<td>'+result[i].statusPercent+'%</td>';
 						str+='</tr>';
@@ -210,20 +210,22 @@ function buildTotalAlertGroupByStatusForGovt(result)
 		statusName = result[i].status;
 		var cnt = result[i].count;
 		var stsId = result[i].statusId;
+		var colorsId = result[i].color
 		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
 		
 		var obj = {
 			name: statusName,
 			y:statusPercent,
 			count:cnt,   
-			sts:stsId
+			sts:stsId,
+			color:colorsId
 		}
 		statusOverviewArr.push(obj);
 	}
 	
 	$(function() {
 		var chart = new Highcharts.Chart({
-			colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
+			//colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
 			chart: {
 				renderTo: 'totalAlertGroupByStatusForGovt',
 				type: 'pie',
@@ -238,18 +240,18 @@ function buildTotalAlertGroupByStatusForGovt(result)
 			subtitle: {
 				text: null
 			},
-			 tooltip: {
+			tooltip: {
 				useHTML: true,
 				backgroundColor: '#FCFFC5', 
 				formatter: function() {
 					var cnt = this.point.count;
-					return "Total Alerts - "+cnt+"";
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+cnt+"("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
 				}  
 			}, 
 			plotOptions: {
 				series: {
 					dataLabels: {
-						enabled: true,
+						enabled: false,
 						formatter: function() {
 							return Math.round(this.percentage*100)/100 + ' %';
 						},
@@ -290,8 +292,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 			var textY = chart.plotTop  + (chart.plotHeight * 0.5);
 
 			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
-			span += '<span style="font-size: 18px">TOTAL</span><br>';
-			span += '<span style="font-size: 14px;cursor:pointer;" class="getDtlsCls" attr_status_id="0">'+totalAlert+'</span>';
+			span += '<span style="font-size: 18px">TOTAL - '+totalAlert+'</span>';
 			span += '</span>';
 
 			$("#statusOverViewTotal").append(span);
@@ -357,8 +358,7 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 		
 			str+='<div class="row">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-					str+='<h4 class="panel-title">DEPARTMENTS WISE</h4>';
-					str+='<div class="departmentScroll">';
+					str+='<div class="departmentScroll'+i+'">';
 						str+='<div class="row">';
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
@@ -366,11 +366,10 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 								{
 									if(result[i].subList1[j].category !=null && result[i].subList1[j].category.length > 40){
 										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subList1[j].category+'">'+result[i].subList1[j].category.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';  
-									}else{//swadhin
+									}else{
 										str+='<li>'+result[i].subList1[j].category+'  <span style="cursor:pointer;" class="pull-right getDtlsCls" attr_status_id="'+result[i].statusId+'" attr_dept_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</span></li>';
 									}
-									
-								}//class="getDtlsCls" attr_status_id="'+result[i].statusId+'"
+								}
 								str+='</ul>';
 							str+='</div>';
 							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
@@ -389,7 +388,7 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 	{
 		if(result[i].subList1.length > 15)
 		{
-			$(".departmentScroll").mCustomScrollbar({setHeight:'450px'})
+			$(".departmentScroll"+i).mCustomScrollbar({setHeight:'450px'})
 		}
 	}
 	
@@ -398,8 +397,16 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 		var dynamicHeight;
 		$(".dynamicHeightApply"+i).each(function(){
 			dynamicHeight = $(this).find("li").length;
-			dynamicHeight = (dynamicHeight*31)+"px";
+			if(result[i].subList1.length == 1){
+				dynamicHeight = (dynamicHeight*60)+"px";
+			}else if(result[i].subList1.length < 5){
+				dynamicHeight = (dynamicHeight*42)+"px";
+			}else{
+				dynamicHeight = (dynamicHeight*31)+"px";
+			}
+			
 		});
+		
 		$("#departmentStatusGraph"+i).css("height",dynamicHeight);
 		var dynamicWidth = $("#departmentStatusGraph0").parent().width();
 		$("#departmentStatusGraph"+i).css("width",dynamicWidth)
@@ -451,6 +458,7 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 				}
 			},
 			tooltip: {
+				enabled:false,
 				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
 			},
 			plotOptions: {
@@ -965,39 +973,20 @@ function alertComments(result)
 								str+='<ul class="alertStatusTracking">';
 									str+='<li>';
 										str+='<div class="arrow_box_left">';
-										//for(var k in result[i].sublist2[j].sublist)
-										//{	
 											str+='<div>';
-												/* str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; */
-												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
-												//for(var l in result[i].govtDeptList[j].sublist[k])
-												//{
-													/* str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>'; */
-												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 												str+='<p>'+result[i].govtDeptList[j].comment+'</p>';
-												/*if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
-													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
-													str+='<ul>';
-													for(var t in result[i].sublist2[j].sublist[k][0].docList){
-														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
-														extName = docName.split("/");
-														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
-													}
-													str+='</ul>';              
-												}*/
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].govtDeptList[j].name+'</span></p>';
 												str+='<hr style="margin-top:20px;"/>';
 											str+='</div>';   
-										//}
 										str+='</div>';    
 									str+='</li>';
 								str+='</ul>';
 							str+='</div>';
 						}
 					}else{
-						str+='<div class="col-md-12 col-xs-12 col-sm-12"><div  style="height:200px;background-color:#EEE"><h4 class="panel-title text-capital text-center" style="padding-top:80px !important;">please assign alert to officer</h4></div></div>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12"><div  style="background-color:#EEE;padding:10px"><h4 class="panel-title text-capital text-center">please assign alert to officer</h4></div></div>';
 					}
 					str+='</div>';
 				str+='</div>';
@@ -1582,16 +1571,16 @@ function buildStatusWiseTotalAlerts(result){
 	 {
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<div class="panel panel-default panelCustomNew">';
-				str+='<div class="panel-heading">';
+				str+='<div class="panel-heading" style="background-color:#f3f3f3 !important">';
 					str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
 				str+='</div>';
 				str+='<div class="panel-body">';
 					str+='<div class="row">';
 					if(result[i].govtDepartmentVOList != null && result[i].govtDepartmentVOList.length > 0){
-						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-							str+='<h4 class="panel-title text-capital">district wise total alerts</h4>';
+						str+='<div class="col-md-9 col-xs-12 col-sm-9">';
+							str+='<h4 class="panel-title text-capital m_top5">district alerts</h4>';
 						str+='</div>';
-						str+='<div class="col-md-8 col-xs-12 col-sm-8">';
+						str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 							str+='<ul class="list-inline activeUlCls ">';
 								str+='<li class="active" attr_id='+i+'  attr_value="overview">Overview</li>';
 								str+='<li attr_id='+i+' attr_dept_id='+result[i].departmentId+' attr_value="status">Status</li>';
@@ -1607,42 +1596,26 @@ function buildStatusWiseTotalAlerts(result){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 							str+='<table class="table table-bordered">';
 								str+='<thead class="bg_dd">';
-									str+='<th></th>';
+									str+='<th>Alert Category</th>';
 									str+='<th class="bg_dd">Total</th>';
 									for(var k in result[i].govtDeptList){
 										str+='<th>'+result[i].govtDeptList[k].department+'</th>';
 									}
 								str+='</thead>';
 								str+='<tbody>';
+									var totalCount=0;
+									var totalElecCount =0;
+									for(var j in result[i].govtDeptList){
+										totalElecCount=totalElecCount+result[i].govtDeptList[j].elecCnt;
+									}
+									var totalPrintCount =0;
+									for(var k in result[i].govtDeptList){
+										totalPrintCount = totalPrintCount+result[i].govtDeptList[k].printCnt;
+									}
+									for(var t in result[i].govtDeptList){
+									}
+									
 									str+='<tr>';
-										str+='<td class="bg_D8">Total Alerts</td>';
-										var totalCount=0;
-										var totalElecCount =0;
-										for(var j in result[i].govtDeptList){
-											totalElecCount=totalElecCount+result[i].govtDeptList[j].elecCnt;
-										}
-										var totalPrintCount =0;
-										for(var k in result[i].govtDeptList){
-											totalPrintCount = totalPrintCount+result[i].govtDeptList[k].printCnt;
-										}
-										for(var t in result[i].govtDeptList){
-										}
-										
-										totalCount = totalPrintCount+totalElecCount;
-										if(totalCount != null && totalCount!= 0){
-											str+='<td class="bg_D8"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+totalCount+'</span></td>';
-										}else{
-											str+='<td class="bg_D8">'+totalCount+'</td>';
-										}
-										for(var t in result[i].govtDeptList){
-											if(result[i].govtDeptList[t].count != null && result[i].govtDeptList[t].count != 0){
-												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[t].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+result[i].govtDeptList[t].count+'</span></td>';	
-											}else{
-												str+='<td>'+result[i].govtDeptList[t].count+'</td>';
-											}
-										}
-									str+='</tr>';
-									 str+='<tr>';
 										str+='<td>Print Media Alerts</td>';
 										if(totalPrintCount != null && totalPrintCount!= 0){
 											str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="PMedia" >'+totalPrintCount+'</span></td>';
@@ -1657,7 +1630,7 @@ function buildStatusWiseTotalAlerts(result){
 											}
 										}
 									str+='</tr>';
-									
+									if(totalElecCount != null && totalElecCount !=0){
 									str+='<tr>';
 										str+='<td>Electronic Media Alerts</td>';
 										if(totalElecCount != null && totalElecCount !=0){
@@ -1673,6 +1646,25 @@ function buildStatusWiseTotalAlerts(result){
 											}	
 										}
 									str+='</tr>'; 
+									}
+									str+='<tr>';
+										str+='<td class="bg_EE">Total Alerts</td>';
+										
+										
+										totalCount = totalPrintCount+totalElecCount;
+										if(totalCount != null && totalCount!= 0){
+											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+totalCount+'</span></td>';
+										}else{
+											str+='<td class="bg_EE">'+totalCount+'</td>';
+										}
+										for(var t in result[i].govtDeptList){
+											if(result[i].govtDeptList[t].count != null && result[i].govtDeptList[t].count != 0){
+												str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[t].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+result[i].govtDeptList[t].count+'</span></td>';	
+											}else{
+												str+='<td class="bg_EE">'+result[i].govtDeptList[t].count+'</td>';
+											}
+										}
+									str+='</tr>';
 								str+='</tbody>';
 							str+='</table>';
 							str+='<button type="button" class="btn btn-default btn-sm m_top10 buttonCustomStyle detailedInfoBlockDiv pull-right" attr_departmentId="'+result[i].departmentId+'">Detailed Information</button>';
@@ -1721,11 +1713,11 @@ function buildStatusWiseTotalAlerts(result){
 					categories: alertStatusOverview,
 					type: 'category',
 					labels: {
-								formatter: function() {
-									return this.value.toString().substring(0, 10)+'...';
-								},
-								
-							}
+						formatter: function() {
+							return this.value.toString().substring(0, 10)+'...';
+						},
+						
+					}
 					
 				},
 				yAxis: {
@@ -1761,9 +1753,9 @@ function buildStatusWiseTotalAlerts(result){
 					}
 				},
 
-				 tooltip: {
+				tooltip: {
 					formatter: function () {
-						var s = '<b>' + this.x + '</b>';
+						var s = '';
 
 						$.each(this.points, function () {
 							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
@@ -1777,7 +1769,7 @@ function buildStatusWiseTotalAlerts(result){
 				},
 
 				series: [{
-					//name: 'Positive',
+					name: 'Number Of Alerts',
 					data: alertStatusOverviewCount,
 				}],
 			 
@@ -1798,10 +1790,8 @@ $(document).on("click",".departmentCloseIcon",function(){
 				str+='<ul class="statusOverviewGraphUl">';
 				for(var i in result){ //district
 					str+='<li>';
-					str+='<h4 class="panel-title">'+result[i].department+'</h4>';
-					str+='<span>'+result[i].totalCount+'</span>';
-					str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
-					
+						str+='<h4 class="panel-title">'+result[i].department+' - '+result[i].totalCount+'</h4>';
+						str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
 					str+='</li>';
 				}
 				str+='</ul>';
@@ -1812,9 +1802,15 @@ $(document).on("click",".departmentCloseIcon",function(){
 		for(var i in result){
 			var alertStatusCount = [];
 			var alertStatus=[];
+			
 			for(var j in result[i].govtDepartmentVOList){
 				alertStatus.push(result[i].govtDepartmentVOList[j].department)
-				alertStatusCount.push(result[i].govtDepartmentVOList[j].count)
+				//alertStatusCount.push(result[i].govtDepartmentVOList[j].count)
+				var obj = {
+					name: result[i].department,
+					y:result[i].govtDepartmentVOList[j].count,
+				}
+				alertStatusCount.push(obj);
 			}
 			
 			$("#statusOverview"+result[i].departmentId+''+id).highcharts({
@@ -1835,11 +1831,11 @@ $(document).on("click",".departmentCloseIcon",function(){
 					categories: alertStatus,
 					type: 'category',
 					labels: {
-								formatter: function() {
-									return this.value.toString().substring(0, 10)+'...';
-								},
-								
-							}
+						formatter: function() {
+							return this.value.toString().substring(0, 10)+'...';
+						},
+						
+					}
 					
 				},
 				yAxis: {
@@ -1880,8 +1876,8 @@ $(document).on("click",".departmentCloseIcon",function(){
 						var s = '<b>' + this.x + '</b>';
 
 						$.each(this.points, function () {
-							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								(this.y);
+							s += '<br/><b style="color:'+this.series.color+'">' + this.point.name + ': ' +
+								(this.y)+'</b> ';
 						});
 
 						return s;
@@ -1890,9 +1886,7 @@ $(document).on("click",".departmentCloseIcon",function(){
 				},
 
 				series: [{
-					name: '',
 					data: alertStatusCount,
-					
 				}],
 			 
 			});
@@ -2395,8 +2389,8 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 {
 	if(result != null && result.length > 0){	
 		var str1='';
-		str1+='<i class="glyphicon glyphicon-remove departmentCloseIcon" attr_id="'+departmentId+'"></i>';
-		str1+='<table class="table detailedTableStyle  m_top20" style="border:1px solid #ddd">';
+		str1+='<i class="glyphicon glyphicon-remove departmentCloseIcon m_top10" title="Close" attr_id="'+departmentId+'"></i>';
+		str1+='<table id="dataTablesId'+departmentId+'" class="table detailedTableStyle  m_top20" style="border:1px solid #ddd">';
 			str1+='<thead>';
 				str1+='<tr>';
 				str1+='<th>Designation</th>';
@@ -2410,6 +2404,24 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 			str1+='</thead>';
 			str1+='<tbody>';
 				
+				
+				for(var i in result){
+					str1+='<tr>';
+						str1+='<td>'+result[i].name+'</td>';
+						str1+='<td style="background-color:#f3f3f3"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].count+'</span></td>';
+						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
+							for(var j in result[i].govtDeptList){
+								if(result[i].govtDeptList[j].count != null && result[i].govtDeptList[j].count > 0)
+								{
+									str1+='<td><span class="totalAlertsOnDetInfo" attr_status_id="'+result[i].govtDeptList[j].id+'" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].govtDeptList[j].count+'</span></td>';
+								}else{
+									str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
+								}
+								
+							}
+						}
+					str1+='</tr>';
+				}
 				str1+='<tr>';
 				var totalCount =0;
 				var notifiedCount=0;
@@ -2457,26 +2469,17 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 					}
 					
 				str1+='</tr>';
-				for(var i in result){
-					str1+='<tr>';
-						str1+='<td>'+result[i].name+'</td>';
-						str1+='<td style="background-color:#f3f3f3"><span class="totalAlertsOnDetInfo" attr_status_id="0" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].count+'</span></td>';
-						if(result[i].govtDeptList !=null && result[i].govtDeptList.length>0){
-							for(var j in result[i].govtDeptList){
-								if(result[i].govtDeptList[j].count != null && result[i].govtDeptList[j].count > 0)
-								{
-									str1+='<td><span class="totalAlertsOnDetInfo" attr_status_id="'+result[i].govtDeptList[j].id+'" attr_departmentId="'+departmentId+'" attr_designation_id="'+result[i].id+'">'+result[i].govtDeptList[j].count+'</span></td>';
-								}else{
-									str1+='<td>'+result[i].govtDeptList[j].count+'</td>';
-								}
-								
-							}
-						}
-					str1+='</tr>';
-				}
 			str1+='</tbody>';
 		str1+='</table>';
 		$("#designationDetailedReport"+departmentId).html(str1);
+		$("#dataTablesId"+departmentId).dataTable({
+			"order": [[ 1, "asc" ]],
+			"paging": false,
+			"dom": "lfrti",
+			"lengthChange": false,
+			"info":false
+		});
+		$(".departmentCloseIcon").tooltip();
 	}else{
 		$("#designationDetailedReport"+departmentId).html("No Data Available");
 	}
