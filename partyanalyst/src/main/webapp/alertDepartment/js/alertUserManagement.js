@@ -1512,7 +1512,7 @@ function buildDistrictLevelDepartmentDetails(result){
 								}
 							}
 						}
-							str1+='<td><button type="button" class="btn btn-success btn-xs">View Details</button></td>';
+							str1+='<td><button attr_department_id="'+result[i].statusId+'" attr_status_id="0"  type="button" class="btn btn-success btn-xs totalDepartment">View Details</button></td>';
 					str1+='</tr>';
 				}
 			str1+='</tbody>';
