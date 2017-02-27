@@ -716,6 +716,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}else{
 						if(commonMethodsUtilService.isMapValid(defualtSessinMap)){
 							PartyMeetingsDataVO sessionVO  = defualtSessinMap.get(meetingId);
+							if(sessionVO == null)
+								sessionVO = new PartyMeetingsDataVO();
+							
 							sessionVO.setRequiredName("present");
 							sessionVO.setAttendedTime(attendedTime.substring(11,16));
 							partyMeetingVO.getSessionList().add(sessionVO);
