@@ -1385,11 +1385,11 @@ function alertComments(result)
 										//for(var k in result[i].sublist2[j].sublist)
 										//{	
 											str+='<div>';
-												/* str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; */
+												 str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; 
 												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
 												//for(var l in result[i].govtDeptList[j].sublist[k])
 												//{
-													/* str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>'; */
+													 str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>';
 												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
