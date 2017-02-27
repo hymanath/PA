@@ -900,7 +900,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			pendvo.setStatus(pendingSts.getAlertStatus());
 			statusMap.put(pendingSts.getAlertStatusId(), pendvo);
 			
-			List<Object[]> list = alertAssignedOfficerTrackingDAO.getStatusWiseTrackingComments(alertId);
+			List<Object[]> list = alertAssignedOfficerTrackingDAO.getStatusWiseTrackingCommentsNew(alertId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -931,6 +931,17 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						datevo.setSource(obj[7] != null ? obj[7].toString():"");
 						vo.getGovtDeptList().add(datevo);
 					}
+				}
+			}
+			
+			String latestStatus = null;
+			List<String> statusList = alertAssignedOfficerTrackingDAO.getLatestStatusForAlertTracking(alertId);
+			if(statusList != null && !statusList.isEmpty())
+				latestStatus = statusList.get(0);
+			if(statusMap != null){
+				for(Entry<Long,GovtDepartmentVO> entry : statusMap.entrySet()){
+					GovtDepartmentVO vo = entry.getValue();
+					vo.setLatestStatus(latestStatus);
 				}
 			}
 			

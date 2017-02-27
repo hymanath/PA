@@ -49,7 +49,15 @@ public class GovtDepartmentVO {
 	private String impactLevel;
 	private String color;
 	private Long regionScopeId;
+	private String latestStatus;
 	
+	
+	public String getLatestStatus() {
+		return latestStatus;
+	}
+	public void setLatestStatus(String latestStatus) {
+		this.latestStatus = latestStatus;
+	}
 	public String getColor() {
 		return color;
 	}
