@@ -54,21 +54,16 @@ $(document).on("click",".filtersSubmitDivId",function(){
 		}
 	});
 	var newsPaperIdLen = globalNewsPaperIdArr.length;
-	if(newsPaperIdLen == 0){
-		alert("Please Select Atleast One Newspaper.");
-		return;
-	}
 	var channelIdLen = globalChannelIdArr.length;
-	if(channelIdLen == 0){
-		alert("Please Select Atleast One Channel.");
+	if(newsPaperIdLen == 0 && channelIdLen == 0){
+		alert("Please Select Atleast One Newspaper or Channel.");   
 		return;
 	}
 	var departmentIdLen = globalDepartmentIdArr.length;
 	if(departmentIdLen == 0){
 		alert("Please Select Atleast One Department.");
 		return;
-	}      
-	//alert(newsPaperIdLen+":"+channelIdLen+":"+departmentIdLen);
+	}    
 	onLoadCalls();
 });
 $(document).on("click",".selectAlldepartmentsCls",function(){
@@ -973,11 +968,11 @@ function alertComments(result)
 										//for(var k in result[i].sublist2[j].sublist)
 										//{	
 											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>';
+												/* str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; */
 												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
 												//for(var l in result[i].govtDeptList[j].sublist[k])
 												//{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>';
+													/* str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>'; */
 												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
@@ -1160,9 +1155,9 @@ $(document).on('change','#constLvlId', function() {
 	var constId = $(this).val();
 	 setTimeout(function(){
 		if(globalRegionScope == 5 || globalRegionScope == 6){		
-			getMandalsByConstituency(constId,globalRegionScope);
+			getMandalsByConstituency(constId,getRegionScopeIdByLevel(levelId));
 		}else if(globalRegionScope == 7 || globalRegionScope == 8){
-			getLebsByConstituency(constId,globalRegionScope);
+			getLebsByConstituency(constId,getRegionScopeIdByLevel(levelId));
 		}
 	 }, 3000);
 
