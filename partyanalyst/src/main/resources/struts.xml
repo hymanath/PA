@@ -15964,7 +15964,11 @@
 	   
 	    <action name="govtLogoutAction" class="newLogoutAction" method="govtLogout">
         </action>
-        
+	<action name="getUserwiseDetailsListAction" class="committeeDashBoardAction" method="getUserWiseDetails">
+	    <result type="json" name="success">		   
+		    <param name="root">basicVOList</param>
+		</result>
+	</action>
         <action name="getAlertCategoryByAlertAction" class="cccDashboardAction" method="getAlertCategoryByAlert">
 			<result type="json" name="success">		   
 				<param name="root">categoryStr</param>
