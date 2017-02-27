@@ -22,6 +22,7 @@
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -181,7 +182,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">departments wise overview</h4>
+											<h4 class="panel-title text-capital fontColor">departments overview</h4>
 										</div>
 										<div class="panel-body">
 											<div class="row">
@@ -232,50 +233,50 @@
 						<tr>
 							<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;type</b></span></p>
-								<p><span  id="typeId"></span></p>
+								<p class="text-capital"><span  id="typeId"></span></p>
 							</td>
 							<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;created&nbsp;date</b></span></p>
-								<p><span  id="createdDate"></span></p>
+								<p class="text-capital"><span  id="createdDate"></span></p>
 							</td>
 							<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted"><b>Alert&nbsp;status</b></span></p>
-								<p><span id="alertStatus"></span></p>
+								<p class="text-capital"><span id="alertStatus"></span></p>
 							</td>
 							<td id="severityTdId" style="vertical-align: top;display:none;">
 								<p class="text-capital"><span class="text-muted"><b>severity</b></span></p>
-								<p><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
+								<p class="text-capital"><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
 							</td>
 							<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;impact&nbsp;level</b></span></p>
-								<p style="text-transform: lowercase;"><span  id="levelId"></span></p>
+								<p class="text-capital"><span  id="levelId"></span></p>
 							</td>
 							<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;location</b></span></p>
-								<p><span  id="LocationId"></span></p>
+								<p class="text-capital"><span  id="LocationId"></span></p>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>Title</b></span></p>
-								<p><span  id="titleId"></span></p>
+								<p class="text-capital"><span  id="titleId"></span></p>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>description</b></span></p>
-								<p><span  id="descriptionId"></span></p>
+								<p class="text-capital"><span  id="descriptionId"></span></p>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>category</b></span></p>
-								<p><span  id="categoryId"></span></p>
+								<p class="text-capital"><span  id="categoryId"></span></p>
 							</td>
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
 							<td colspan="2">
-								<p class="text-capital"><span class="text-muted ">Attachments  </span> :
+								<p class="text-capital"><span class="text-muted ">Article Attachments  </span> :
 								<ul class="list-inline imageUrlUlCls"></ul>
 							</td>
 							<td colspan="6" style="display:none" id="alertGroupAttachId">
@@ -447,7 +448,7 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
-
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <!-- Custom Script Files Data Start-->
 <script src="alertDepartment/js/alertManagementSystem.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->

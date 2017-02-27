@@ -408,8 +408,7 @@ function buildTotalAlertByStatusForOfficer(result){
 			var textY = chart.plotTop  + (chart.plotHeight * 0.5);
 
 			var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
-			span += '<span style="font-size: 18px">TOTAL</span><br>';
-			span += '<span style="font-size: 14px;" class="totalAlertDetails" attr_status_id="0"       attr_department_id="0" attr_type="overall">'+totalAlert+'</span>';
+			span += '<span style="font-size: 18px"  class="totalAlertDetails" attr_status_id="0"       attr_department_id="0" attr_type="overall">TOTAL - '+totalAlert+'</span><br>';
 			span += '</span>';
 
 			$("#TotalAlertsView").append(span);
@@ -436,8 +435,8 @@ function getTotalAlertByDeptForOfficer()
 		if(result != null && result.length > 0){
 			buildTotalAlertByDeptForOfficer(result);  
 		}else{
-			$("#overDepartmentWiseAlertOverview").html('NO DATA AVAILABLE');
-			$("#departmentWiseAlertGraphDiv").html('NO DATA AVAILABLE');
+			$("#overDepartmentWiseAlertOverview").html('NO ALERTS AVAILABLE');
+			$("#departmentWiseAlertGraphDiv").html('NO ALERTS AVAILABLE');
 		} 
     });
 }
@@ -530,15 +529,13 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 										if(result[i].subList1[j].categoryId != 1)
 										{
 											str1+='<tr>';
-												str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
+												
 												if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
 												{
+													str1+='<td><span class="colorSpecify" style="background-color:'+result[i].subList1[j].color+';"></span>&nbsp;&nbsp;'+result[i].subList1[j].category+'</td>';
 													str1+='<td><span class="totalDepartment" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_department_id="'+result[i].statusId+'">'+result[i].subList1[j].categoryCount+'</span></td>';
-												}else{
-													str1+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+													str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
 												}
-												
-												str1+='<td>'+result[i].subList1[j].statusPercent+'</td>';
 											str1+='</tr>';
 										}
 										
@@ -559,18 +556,23 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		var alertCount = result[i].count;
 			if(result[i].subList1 !=null && result[i].subList1.length>0){
 					for(var j in result[i].subList1){
-						statusPercent = result[i].subList1[j].statusPercent;
-						statusName = result[i].subList1[j].status;
-						var cnt = result[i].subList1[j].count;
-						var color=result[i].subList1[j].color;
-						var obj = {
-							name: statusName,
-							y:statusPercent,
-							count:alertCount,
-							color:color
-							
+						if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
+						{
+							statusPercent = result[i].subList1[j].statusPercent;
+							statusName = result[i].subList1[j].status;
+							var cnt = result[i].subList1[j].count;
+							var color=result[i].subList1[j].color;
+							var obj = {
+								name: statusName,
+								y:statusPercent,
+								count:alertCount,
+								color:color
+								
+							}
+							deptStatusOverviewArr.push(obj);
 						}
-						deptStatusOverviewArr.push(obj);
+						
+						
 			
 					}
 			
@@ -689,53 +691,52 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue){
 		
 		var str='';
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<div class="row">';
-					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
-						str+='<label>Select Department</label>';
-						str+='<select class="form-control chosen-select" id="departmentId">';
-							str+='<option value="0">Select Department</option>';
-							if(departmentIdsList != null && departmentIdsList.length>0){
-								for(var s in departmentIdsList){
-									if(departmentIdsList[s].id == departmentId){
-										str+='<option value="'+departmentIdsList[s].id+'" selected="selected">'+departmentIdsList[s].name+'</option>';
-									}
-									else{
-										str+='<option value="'+departmentIdsList[s].id+'">'+departmentIdsList[s].name+'</option>';
-									}
+			
+			str+='<div class="row">';
+				str+='<div class="col-md-3 col-xs-12 col-xs-6">';
+					str+='<label>Select Department</label>';
+					str+='<select class="form-control chosen-select" id="departmentId">';
+						str+='<option value="0">Select Department</option>';
+						if(departmentIdsList != null && departmentIdsList.length>0){
+							for(var s in departmentIdsList){
+								if(departmentIdsList[s].id == departmentId){
+									str+='<option value="'+departmentIdsList[s].id+'" selected="selected">'+departmentIdsList[s].name+'</option>';
+								}
+								else{
+									str+='<option value="'+departmentIdsList[s].id+'">'+departmentIdsList[s].name+'</option>';
 								}
 							}
-						str+='</select>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-xs-6">';
-						str+='<label>Select Level</label>';
-						str+='<select class="form-control chosen-select" id="levelDepartmentId">';
-						str+='<option value="0"> Select Level </option>';
-						str+='<option value="3" selected>District</option>';
-						str+='<option value="4">Constituency</option>';
-						/* if(lvlValueGlobal != null && lvlValueGlobal.length>0){
-								for(var s in lvlValueGlobal){
-									if(lvlValueGlobal[s].id == lvlValue){
-										str+='<option value="'+lvlValueGlobal[s].id+'" selected="selected">'+lvlValueGlobal[s].name+'</option>';
-									}
-									else{
-										str+='<option value="'+lvlValueGlobal[s].id+'">'+lvlValueGlobal[s].name+'</option>';
-									}
+						}
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-xs-6">';
+					str+='<label>Select Level</label>';
+					str+='<select class="form-control chosen-select" id="levelDepartmentId">';
+					str+='<option value="0"> Select Level </option>';
+					str+='<option value="3" selected>District</option>';
+					str+='<option value="4">Constituency</option>';
+					/* if(lvlValueGlobal != null && lvlValueGlobal.length>0){
+							for(var s in lvlValueGlobal){
+								if(lvlValueGlobal[s].id == lvlValue){
+									str+='<option value="'+lvlValueGlobal[s].id+'" selected="selected">'+lvlValueGlobal[s].name+'</option>';
 								}
-							} */
-						str+='</select>';
+								else{
+									str+='<option value="'+lvlValueGlobal[s].id+'">'+lvlValueGlobal[s].name+'</option>';
+								}
+							}
+						} */
+					str+='</select>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
+					str+='<div class="input-group pull-right">';
+						str+='<input type="text" class="form-control " id="dateRangePickerDetailedBlock">';
+						str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-calendar"></i>';
+						str+='</span>';
 					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
-						str+='<div class="input-group dateRangePickerCls m_top5 pull-right">';
-							str+='<input type="text" class="form-control " style="width:180px" id="dateRangePickerDetailedBlock">';
-							str+='<span class="input-group-addon">';
-								str+='<i class="glyphicon glyphicon-calendar"></i>';
-							str+='</span>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
-						str+='<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>';
-					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
+					str+='<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
@@ -775,7 +776,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		str1+='<table class="table detailedTableStyle" id="districtWiseDetailsBlockdataTable">';
 			str1+='<thead>';
 				str1+='<tr>';
-				str1+='<th>District Name</th>';
+				str1+='<th>District</th>';
 				str1+='<th>Total Alerts</th>';
 					if(result[0].subList1 !=null && result[0].subList1.length>0){
 						
@@ -1321,24 +1322,24 @@ function alertComments(result)
 		statusId = result[i].statusId;
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
-			if(length == i)    
+			if(result[i].status != result[i].latestStatus)   
 			{
-				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
-			}else{
 				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
+			}else{
+				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
 			}
 			if(result[i].govtDeptList != null && result[i].govtDeptList.length > 0){
-				if(length != i){
-				str+='<h4 class="panel-title">'+result[i].status+'';
-						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';    
-				str+='</h4>';
+				if(result[i].status != result[i].latestStatus){
+					str+='<h4 class="panel-title">'+result[i].status+'';
+							str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';    
+					str+='</h4>';
 				}else{
 					str+='<h4 class="panel-title">'+result[i].status+'';
 						str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].govtDeptList[0].dateStr+'</span>';
 					str+='</h4>';
 				} 
 			}else{
-				if(length != i){
+				if(result[i].status != result[i].latestStatus){
 				str+='<h4 class="panel-title">'+result[i].status+'';
 						str+='<i class="glyphicon glyphicon-ok"></i>';    
 				str+='</h4>';
@@ -1351,11 +1352,11 @@ function alertComments(result)
 			
 				str+='</a>';  
 			str+='</div>';
-			if(length == i)  
+			if(result[i].status != result[i].latestStatus)
 			{
-				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-			}else{
 				str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+			}else{
+				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}
 				str+='<div class="panel-body" style="padding:5px;">';
 					str+='<div class="row">';

@@ -259,6 +259,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 3px 6px;
 	font-weight:400;
 	font-size:14px;
+	text-transform:uppercase;
 }
 .settingsUl li label{
 	cursor:pointer;
@@ -508,7 +509,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .tableCategory tr:first-child td:last-child {
     border-right: 0 none !important;
 }
-.tableCategory tr:nth-child(2) td, .tableCategory tr:nth-child(3) td, .tableCategory tr:nth-child(4) td {
+.tableCategory tr:nth-child(2) td, .tableCategory tr:nth-child(3) td, .tableCategory tr:nth-child(4) td  ,.tableCategory tr:nth-child(5) td  ,.tableCategory tr:nth-child(6) td {
     border-bottom: 0 none !important;
     border-left: 0 none !important;
     border-right: 0 none !important;
@@ -521,6 +522,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 {
 	border-left:0px !important;
 	border-right:0px !important;
+}
+.tableCategory tr td
+{
+	text-transform:uppercase;
 }
 .AMS .tableGraph thead th
 {

@@ -58,11 +58,13 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="input-group dateRangePickerCls m_top5 pull-right">
-					<input type="text" class="form-control " style="width:180px" id="dateRangePickerAUM">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-calendar"></i>
-					</span>
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="input-group dateRangePickerCls m_top5 pull-right">
+						<input type="text" class="form-control " style="width:180px" id="dateRangePickerAUM">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+					</div>
 				</div>
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default">
@@ -93,7 +95,7 @@
 										<div class="col-md-3 col-xs-12 col-sm-4">
 											<div class="panel panel-default">
 												<div class="panel-body" style="height: 370px;">
-													<div>Today</div>
+													<div class="text-right">Today</div>
 													<div class="alertImage">
 														<img src="newCoreDashBoard/img/govtAlertBill.png" alt="govt alerts"/>
 													</div>
@@ -108,7 +110,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">Department Wise Alert Status</h4>
+											<h4 class="panel-title text-capital fontColor">Department Alert Status</h4>
 										</div>
 										<div class="panel-body">
 											<div id="departmentWiseAlertGraphDiv"></div>
@@ -132,7 +134,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">District Level - Departments Wise Overview</h4>
+											<h4 class="panel-title text-capital fontColor">District Level - Departments Overview</h4>
 										</div>
 										<div class="panel-body">
 											<div class="col-md-12 col-xs-12 col-sm-12">
@@ -301,7 +303,7 @@
 						</tr>
 						<tr style="display:none" id="imageUrlTrId">
 							<td colspan="2">
-								<p class="text-capital"><span class="text-muted ">Attachments  </span> :
+								<p class="text-capital"><span class="text-muted ">Article Attachments  </span> :
 								<ul class="list-inline imageUrlUlCls"></ul>
 							</td>
 							<td colspan="6" style="display:none" id="alertGroupAttachId">
@@ -314,7 +316,7 @@
 			</div>
 			<div class="row m_top10">
 				<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
-					<h4 class="panel-title text-capital"><b>involved members in this alert</b>
+					<h4 class="panel-title text-capital"><b>involved departments in this alert</b>
 					<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
 					<div class="involvedMembersUl" id="alertCandidateDataId"></div>  
 				</div>  
@@ -354,7 +356,7 @@
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<span style="color:red;" id="errMsgStsId"></span>
-											<label>Change Status<span style="color:red">*</span>&nbsp;&nbsp;</label>
+											<label>Change Status</label>
 											<select class="chosenSelect" id="changeStatusId" attr_type="changeStatus" name="alertAssigningVO.statusId"><option value="0">Select Status</option></select>
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
