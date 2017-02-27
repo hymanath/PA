@@ -10,18 +10,21 @@ import com.itgrids.partyanalyst.model.UserDistrictAccessInfo;
 
 public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictAccessInfo, Long> implements IUserDistrictAccessInfoDAO{
 
+	private static final String GET_DISTRICT_ID_DISTRICT_NAME=" distinct model.district.districtId, model.district.districtName";
+	private static final String GET_DISTRICT_ID = " distinct model.district.districtId";
+	
 	public UserDistrictAccessInfoDAO() {
 		super(UserDistrictAccessInfo.class);
 	}
 	
 	public List findByUser(Long userId){
-		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName " +
-				"from UserDistrictAccessInfo model where model.user.userId = ?", userId);
+		return getHibernateTemplate().find("select  "+GET_DISTRICT_ID_DISTRICT_NAME+"" +
+				" from UserDistrictAccessInfo model where model.user.userId = ? order by model.district.districtName ", userId);
 	}
 	public List findByUserAndState(Long stateId,Long userId){
 		Object[] parameters = {userId,stateId};
-		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName " +
-				"from UserDistrictAccessInfo model where model.user.userId = ? "+
+		return getHibernateTemplate().find("select "+GET_DISTRICT_ID_DISTRICT_NAME+"" +
+				" from UserDistrictAccessInfo model where model.user.userId = ? "+
 				"  and model.district.state.stateId = ? order by model.district.districtName  ", parameters);
 	}
 	
@@ -38,7 +41,7 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 	public void deleteDistrictAccessByUserIdStateId(Long userId,Long stateId){
 		Object[] parameters = {userId,stateId};
 		List<Long> result = getHibernateTemplate().find("select model.userDistrictAccessInfoId from UserDistrictAccessInfo model " +
-				"where model.user.userId = ? "+
+				" where model.user.userId = ? "+
 				"  and model.district.state.stateId = ? ", parameters);
 		
 		for(Long o: result){
@@ -82,9 +85,17 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 		}
 		public List<Object[]> getLocationIdList(Long userId){
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select model.district.districtId, model.district.districtName from UserDistrictAccessInfo model where " +
+			queryStr.append(" select " +GET_DISTRICT_ID_DISTRICT_NAME+""+
+			 " from UserDistrictAccessInfo model where " +
 							" model.userId = :userId ");
 			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("userId", userId);
+			return query.list();
+		}
+		public List<Long> getDistrictIdsByUsrId(Long userId){
+			Query query = getSession().createQuery("select " +GET_DISTRICT_ID+"" +
+					" from UserDistrictAccessInfo model " +
+					" where model.user.userId = :userId");
 			query.setParameter("userId", userId);
 			return query.list();
 		}
