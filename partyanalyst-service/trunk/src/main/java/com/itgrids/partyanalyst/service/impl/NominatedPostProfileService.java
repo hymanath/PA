@@ -2935,7 +2935,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			,String searchType,List<Long> applicationIds){
 		try{
 			
-			
+			List<Long> condidates = null;
 			if(appCandList!= null && appCandList.size() >0){
 				for (Object[] obj : appCandList) {
 					NomintedPostMemberVO Vo = new NomintedPostMemberVO();
@@ -2949,10 +2949,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
 						if(!Vo.getLevel().equalsIgnoreCase("Central")){
 						List<Object[]> list = nominationPostCandidateDAO.getLevelName(Vo.getLevel().toString(),tdpCadreId, searchType,(Long)obj[11]);
+					     condidates = nominationPostCandidateDAO.getNominatedPostCondidates(tdpCadreId);
 						for(Object[] levl : list){
 						Vo.setLevelId(commonMethodsUtilService.getLongValueForObject(levl[0]));
 						Vo.setLevelName(commonMethodsUtilService.getStringValueForObject(levl[1]));
-						}
+						}					
 						}
 						if(obj[5] != null){
 							Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));//deptName
@@ -2973,6 +2974,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
 						
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positionId
+						Vo.setNominatedPostCandidateId(condidates.get(0));
 						
 						subList.add(Vo);
 					}
@@ -2984,7 +2986,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
 						if(!Vo.getLevel().equalsIgnoreCase("Central")){
 						List<Object[]> list = nominationPostCandidateDAO.getLevelName(Vo.getLevel().toString(),tdpCadreId, searchType,(Long)obj[11]);
-						
+						condidates = nominationPostCandidateDAO.getNominatedPostCondidates(tdpCadreId);
 						for(Object[] levl : list){
 						Vo.setLevelId(commonMethodsUtilService.getLongValueForObject(levl[0]));
 						Vo.setLevelName(commonMethodsUtilService.getStringValueForObject(levl[1]));
@@ -3011,11 +3013,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
 						//Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						Vo.setNominatedPostCandidateId(condidates.get(0));
 						subList1.add(Vo);
 					}
 					
-				}
+				}				
 			}
+			getGovtOrderDocumentsPath(subList);
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exceptionr riased at setAppliedCandidatePostsByCadre", e);
@@ -7284,7 +7288,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 										nogo.setIsDeleted("N");
 										nogo.setIsExpired("N");
 										nominatedPostGovtOrderDAO.save(nogo);
-									}
+										}
 									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
 								}
@@ -7862,5 +7866,39 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 		}
 		return rs;
 	}
-	
+
+	public List<NomintedPostMemberVO> getGovtOrderDocumentsPath(List<NomintedPostMemberVO> subList)
+	{
+		List<NomintedPostMemberVO> returnList = new ArrayList<NomintedPostMemberVO>();
+	try{				
+		NomintedPostMemberVO returnVo = null;
+		List<Long> govtOrderIds = new ArrayList<Long>();
+		//Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId		 
+		for(NomintedPostMemberVO Vo : subList){
+			Long nominateCandId = Vo.getNominatedPostCandidateId();
+			Long nominatedPostMemberId =nominatedPostMemberDAO.getNominatedPostMemberId(Vo.getId(),Vo.getLevelId(),Vo.getDeptId(),Vo.getDeptBoardId(),Vo.getDeptBoardPostnId());
+			Long nominatedPostId = nominatedPostDAO.getOfNominatedPostCondidates(nominateCandId,nominatedPostMemberId);
+			List<Object[]> goPassedDates = nominatedPostGovtOrderDAO.gettingGoPassedDates(nominatedPostId);
+			if(goPassedDates != null && goPassedDates.size()>0){
+				for(Object[] level : goPassedDates){
+					Vo.setNominatedPostId(commonMethodsUtilService.getLongValueForObject(level[0]));
+					Vo.setFromDate(commonMethodsUtilService.getStringValueForObject(level[1]));
+					Vo.setToDate(commonMethodsUtilService.getStringValueForObject(level[2]));
+					Vo.setGovtOrderId(commonMethodsUtilService.getLongValueForObject(level[3]));
+				}
+			}
+		List<Object[]> pathList = govtOrderDocumentsDAO.getGovtOrderDocumentsPath(Vo.getGovtOrderId());
+		 if(pathList != null && pathList.size()>0){
+			 for(Object[] path :pathList){
+				 Vo.setPath(commonMethodsUtilService.getStringValueForObject(path[1]));
+				 if(Vo.getPath() != null)
+					 Vo.setPath("http://mytdp.com/GO_documents/"+Vo.getPath());
+			 }
+		 }
+		}
+	}catch(Exception e){
+		LOG.error("Exception Occured in getGovtOrderDocumentsPath()", e);
+	}
+	return returnList;
+}
 }

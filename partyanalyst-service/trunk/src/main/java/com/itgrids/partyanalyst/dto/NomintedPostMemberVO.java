@@ -75,6 +75,7 @@ public class NomintedPostMemberVO {
 	
 	private String uiFromDateStr;
 	private String uiToDateStr;
+	private String path;
 	
 	
 	public String getUiFromDateStr() {
@@ -426,5 +427,12 @@ public class NomintedPostMemberVO {
 	public void setExpireDate(String expireDate) {
 		this.expireDate = expireDate;
 	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
 	
 }
