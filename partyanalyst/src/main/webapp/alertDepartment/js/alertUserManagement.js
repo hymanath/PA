@@ -55,7 +55,13 @@ $("#dateRangePickerDistrictLevelDeptBlock").on('apply.daterangepicker', function
 		$("#dateRangePickerDistrictLevelDeptBlock").val('All');
 	}
 });
-$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").daterangepicker({
+$("#dateRangePickerDetailedBlock").on('apply.daterangepicker', function(ev, picker) {
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePickerDetailedBlock").val('All');
+	}
+});
+$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").daterangepicker({
 	opens: 'left',
 	startDate: detailedfromDate,
 	endDate: detailedtoDate,
@@ -74,11 +80,11 @@ $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRa
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
-var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val();
+var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").val();
 var pickerDates = detailedfromDate+' - '+detailedtoDate
 if(dates == pickerDates)
 {
-	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock").val('All');
+	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").val('All');
 }
 
 
@@ -117,8 +123,18 @@ $(document).on("click",".getDetailsForSubOrdinate",function(){
 $(document).on("click",".detailedBlockDiv",function(){
 	$(".detailedBlockShow").show();	
 	var departmentId = $(this).attr("attr_department_id");
+	var detailedfromDate = "";
+		var detailedtoDate = "";
+		var dates = $("#dateRangePickerAUM").val();
+		
+		if(dates != null && dates.length > 0){
+			var datesArr = dates.split("-");
+			detailedfromDate = datesArr[0].trim();
+			detailedtoDate = datesArr[1].trim();
+		}
+		
 	getGovtDeptLevelForDeptAndUser(departmentId);
-	getAlertCountLocationWiseThenStatusWise(departmentId,3);
+	getAlertCountLocationWiseThenStatusWise(departmentId,3,detailedfromDate,detailedtoDate);
 });	 
 
 $(document).on("change","#departmentId",function(){
@@ -663,7 +679,8 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 }	
 
 }
-	function getAlertCountLocationWiseThenStatusWise(departmentId,lvlValue){
+	function getAlertCountLocationWiseThenStatusWise(departmentId,lvlValue,detailedfromDate,detailedtoDate){
+		
 		$("#districtWiseDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		var jObj ={
@@ -682,95 +699,40 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			$("#districtWiseDetailsBlock").html('');
-			buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue);
+			buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue,detailedfromDate,detailedtoDate);
 			
 		});
 		
 	}
-	
-	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue){
+	var levelDepartmentArray =[{"id":3,"name":"District"},{"id":4,"name":"Constituency"}]
+	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue,detailedfromDate,detailedtoDate){
 		
-		var str='';
-			
-			str+='<div class="row">';
-				str+='<div class="col-md-3 col-xs-12 col-xs-6">';
-					str+='<label>Select Department</label>';
-					str+='<select class="form-control chosen-select" id="departmentId">';
-						str+='<option value="0">Select Department</option>';
-						if(departmentIdsList != null && departmentIdsList.length>0){
-							for(var s in departmentIdsList){
-								if(departmentIdsList[s].id == departmentId){
-									str+='<option value="'+departmentIdsList[s].id+'" selected="selected">'+departmentIdsList[s].name+'</option>';
-								}
-								else{
-									str+='<option value="'+departmentIdsList[s].id+'">'+departmentIdsList[s].name+'</option>';
-								}
-							}
-						}
-					str+='</select>';
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-xs-6">';
-					str+='<label>Select Level</label>';
-					str+='<select class="form-control chosen-select" id="levelDepartmentId">';
-					str+='<option value="0"> Select Level </option>';
-					str+='<option value="3" selected>District</option>';
-					str+='<option value="4">Constituency</option>';
-					/* if(lvlValueGlobal != null && lvlValueGlobal.length>0){
-							for(var s in lvlValueGlobal){
-								if(lvlValueGlobal[s].id == lvlValue){
-									str+='<option value="'+lvlValueGlobal[s].id+'" selected="selected">'+lvlValueGlobal[s].name+'</option>';
-								}
-								else{
-									str+='<option value="'+lvlValueGlobal[s].id+'">'+lvlValueGlobal[s].name+'</option>';
-								}
-							}
-						} */
-					str+='</select>';
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
-					str+='<div class="input-group pull-right">';
-						str+='<input type="text" class="form-control " id="dateRangePickerDetailedBlock">';
-						str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-calendar"></i>';
-						str+='</span>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-xs-6 m_top20">';
-					str+='<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>';
-				str+='</div>';
-			str+='</div>';
-			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				str+='<div class="row">';
-					str+='<div id="districtWiseDetailsBlock"><div>';
-				str+='</div>';
-			str+='</div>';
-		$("#detailedInfoBlockDiv").html(str);
+		$('#levelDepartmentId').html('');
+		$('#departmentId').html('');
 		
-			$("#dateRangePickerDetailedBlock").daterangepicker({
-				opens: 'left',
-				startDate: detailedfromDate,
-				endDate: detailedtoDate,
-				locale: {
-				  format: 'DD/MM/YYYY'
-				},
-				ranges: {
-					'All':[moment().subtract(20, 'years').startOf('year'), moment().endOf('year')],
-					'Today' : [moment(), moment()],
-				   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-				   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-				   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-				   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-				   'This Month': [moment().startOf('month'), moment()],
-				   'This Year': [moment().startOf('Year'), moment()]
+			if(departmentIdsList != null && departmentIdsList.length>0){
+				for(var s in departmentIdsList){
+					if(departmentIdsList[s].id == departmentId){
+						
+						$('#departmentId').append('<option value="'+departmentIdsList[s].id+'" selected="selected">'+departmentIdsList[s].name+'</option>');
+					}
+					else{
+						$('#departmentId').append('<option value="'+departmentIdsList[s].id+'">'+departmentIdsList[s].name+'</option>');
+					}
 				}
-			});
-			var dates= $("#dateRangePickerDetailedBlock").val();
-			
-			if(dates == "01/01/1997 - 31/12/2017"){
-				$("#dateRangePickerDetailedBlock").val('ALL');
 			}
-			
+			 if(levelDepartmentArray != null && levelDepartmentArray.length>0){
+				for(var s in levelDepartmentArray){
+					if(levelDepartmentArray[s].id == lvlValue){
+						
+						$('#levelDepartmentId').append('<option value="'+levelDepartmentArray[s].id+'" selected="selected">'+levelDepartmentArray[s].name+'</option>');
+					}
+					else{
+						
+						$('#levelDepartmentId').append('<option value="'+levelDepartmentArray[s].id+'">'+levelDepartmentArray[s].name+'</option>');
+					}
+				}
+			} 
 		 if(result != null && result.length > 0){	
 		var str1='';
 		str1+='<table class="table detailedTableStyle" id="districtWiseDetailsBlockdataTable">';
@@ -819,16 +781,37 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 			str1+='</tbody>';
 		str1+='</table>';
 		$("#districtWiseDetailsBlock").html(str1);
+		
 	}else{
 		$("#districtWiseDetailsBlock").html("No Data Available");
 	}
 		$("#districtWiseDetailsBlockdataTable").dataTable();
+		var detailedfromToDate =""+detailedfromDate+" - "+detailedtoDate+" ";
+		if(detailedfromToDate !="All"){
+			 $('#dateRangePickerDetailedBlock').val(detailedfromToDate);
+		}else{
+			$('#dateRangePickerDetailedBlock').val("All");
+		}
+		
 	}
 	$(document).on("click",".getDetailsClick",function(){
+		var detailedfromDate = "";
+		var detailedtoDate = "";
+		var dates = $("#dateRangePickerDetailedBlock").val();
+		if(dates == "All"){
+			detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+			detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");
+		}
+		
+		if(dates != "All" && dates != null && dates.length > 0){
+			var datesArr = dates.split("-");
+			detailedfromDate = datesArr[0].trim();
+			detailedtoDate = datesArr[1].trim();
+		}
 		$("#districtWiseDetailsBlock").html('');
 		var departmentId = $("#departmentId").val();
 		var levelId = $("#levelDepartmentId").val();
-		getAlertCountLocationWiseThenStatusWise(departmentId,levelId);
+		getAlertCountLocationWiseThenStatusWise(departmentId,levelId,detailedfromDate,detailedtoDate);
 		
 	});
 	

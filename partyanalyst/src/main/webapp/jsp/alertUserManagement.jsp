@@ -123,7 +123,38 @@
 											<h4 class="panel-title text-capital fontColor">Detailed Information</h4>
 										</div>
 										<div class="panel-body">
-											<div id="detailedInfoBlockDiv"></div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="row">
+													<div class="col-md-3 col-xs-12 col-xs-6">
+														<label>Select Department</label>
+														<select class="form-control chosen-select" id="departmentId">
+															<option value="0">Select Department</option>
+														</select>
+													</div>
+													<div class="col-md-3 col-xs-12 col-xs-6">
+														<label>Select Level</label>
+														<select class="form-control chosen-select" id="levelDepartmentId">
+														<option value="0"> Select Level </option>
+														</select>
+													</div>
+													<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
+														<div class="input-group dateRangePickerCls m_top5 pull-right">
+															<input type="text" class="form-control " style="width:180px" id="dateRangePickerDetailedBlock">
+															<span class="input-group-addon">
+																<i class="glyphicon glyphicon-calendar"></i>
+															</span>
+														</div>
+													</div>
+													<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
+														<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div class="row">
+													<div id="districtWiseDetailsBlock"><div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
