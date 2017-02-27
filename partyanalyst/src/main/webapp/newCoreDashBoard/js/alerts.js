@@ -75,19 +75,9 @@
 	  customStartDateAlert = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateAlert = picker.endDate.format('DD/MM/YYYY');
 	  var scopeIdsArr = [2,3,8,5,7,9,6,12];
-		/* scopeIdsArr.push(2);  
-		scopeIdsArr.push(3);  
-		scopeIdsArr.push(6);  
-		scopeIdsArr.push(7);  
-		scopeIdsArr.push(9); 
-		scopeIdsArr.push(5); 
-		scopeIdsArr.push(8);  
-		scopeIdsArr.push(10);  
-		scopeIdsArr.push(11);  
-		scopeIdsArr.push(1);  
-		scopeIdsArr.push(4);   */
-		
 		//hide district and constituency div
+		  $(".districtPublicationCls").hide();
+		  $(".constituencyPublicationCls").hide();
 		 $(".districtAlertCls").hide();
 		 $(".constituencyAlertCls").hide();
 		 $(".districtSelectBoxCls").hide();
@@ -95,6 +85,7 @@
 	 
 	  $(".alertImpactCheckCls").prop('checked', true); //checked all scope level
 	  $(".alertConImpactCheckCls").prop('checked', true); //checked all scope level
+	  $(".alertPubConImpactCheckCls").prop('checked', true); //checked all scope level
 	  $(".alertFilterCls li").removeClass("active");
 	  $(".alertFilterCls li:first-child").addClass("active");
 	 $("#alertTypeHiddenId").attr("attr_alert_id",0);
@@ -119,6 +110,10 @@
 		$("#constituencyAlertDivId").html("");
 		$(".constituencyAlertCls").hide();
 		$(".districtAlertCls").hide();
+		$("#dstrctWsPublctnAlrtCntSmmryDvId").html("");
+		$("#cnsttncyWsPublctnAlrtCntSmmryDvId").html("");
+		$(".districtPublicationCls").hide();
+		$(".constituencyPublicationCls").hide();
 		$("#dstrctSlctBxId").val(0);
 		$(".districtSelectBoxCls").hide();
 		getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
@@ -127,7 +122,6 @@
 		$(".alertFilterCls li:first-child").addClass("active");
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 		getStateImpactLevelAlertDtlsCnt("other");
-		//santosh
 	}
 	$(document).on("click",".alertsIconExpand",function(){
 		$(".dateRangePickerClsForAlert").toggleClass("hide");
@@ -267,8 +261,9 @@
 			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 			
 			$(".alertConImpactCheckCls").prop('checked', true);//select all constituency impact scope
+			$(".alertPubConImpactCheckCls").prop('checked', true);//select all constituency impact scope
 			var consScopeIdsArr = [];
-		 $(".alertConsSettingsUl li").each(function() {
+		  $(".alertConsSettingsUl li").each(function() {
 		  if($(this).find("input").is(":checked")){
 			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
 		     if(selectionType == "Constituency"){
@@ -283,7 +278,28 @@
 			}
 		  }
 	   });
+	   
+	    // Publication Impact Constituency
+	     var pubConsScopeIdsArr = [];
+	     $(".alertPubConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				pubConsScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				pubConsScopeIdsArr.push(5);  
+				pubConsScopeIdsArr.push(12);  
+			}else if(selectionType == "VillageWard"){
+				pubConsScopeIdsArr.push(7);  
+				pubConsScopeIdsArr.push(9);	
+				pubConsScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   
 		getTotalAlertConstituencyWise(consScopeIdsArr);
+		getDistrictWisePublicationAlert(scopeIdsArr);
+	    getConstituencyWisePublicationAlert(pubConsScopeIdsArr);
 		}
 		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	});     
@@ -328,19 +344,24 @@
 			$(".districtAlertCls").hide();
 			$(".constituencyAlertCls").hide();	
 			$(".districtSelectBoxCls").hide();
+			$(".districtPublicationCls").hide();
+		    $(".constituencyPublicationCls").hide();
 			getTotalAlertGroupByDist(scopeIdsArr,"other");
 		}else if(option == "2"){
 			$("#dstrctSlctBxId").val(0);
 			$(".districtAlertCls").hide();
 			$(".constituencyAlertCls").hide();
-            $(".districtSelectBoxCls").hide();			
+            $(".districtSelectBoxCls").hide();
+			$(".districtPublicationCls").hide();
+		    $(".constituencyPublicationCls").hide();
 			getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
 		}else{
 			$(".districtAlertCls").show();
 			$(".constituencyAlertCls").show();
-			$(".districtSelectBoxCls").show();			
+			$(".districtSelectBoxCls").show();	
+			$(".districtPublicationCls").show();
+		    $(".constituencyPublicationCls").show();
 			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
-			
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 			
 		 var consScopeIdsArr = [];
@@ -359,6 +380,25 @@
 			}
 		  }
 	   });
+	    // Publication Impact Constituency
+	     var pubConsScopeIdsArr = [];
+	     $(".alertPubConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				pubConsScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				pubConsScopeIdsArr.push(5);  
+				pubConsScopeIdsArr.push(12);  
+			}else if(selectionType == "VillageWard"){
+				pubConsScopeIdsArr.push(7);  
+				pubConsScopeIdsArr.push(9);	
+				pubConsScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   	getDistrictWisePublicationAlert(scopeIdsArr);
+	    getConstituencyWisePublicationAlert(pubConsScopeIdsArr);
 	   getTotalAlertConstituencyWise(consScopeIdsArr);
 		}
 	});
@@ -472,7 +512,7 @@
 									var districtId = this.extra;
 									var totalAlertCnt = this.y;
 									var districtIdArr=[districtId];
-									buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","");
+									buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","","false",0);
 								}
 							}
 						}  
@@ -961,7 +1001,15 @@
 							 var obj = locationList.filter(function ( obj ) {
 									return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
 								})[0];
-							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"<br/>Duplicate - "+obj.duplicatesStatusCnt+"";     
+								
+							 var statusList = obj.statusList;
+							 var str='';
+							  str+='Total Alerts - '+obj.alertCount+" ";
+							 var obj2 = statusList.filter(function ( obj2 ) {
+									return str+="<br/>"+obj2.statusType+" - "+obj2.alertCount+" ";
+								});
+							return str;
+                        	/* return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"<br/>Duplicate - "+obj.duplicatesStatusCnt+"";  */    
 						}
 					},
 					plotOptions: {
@@ -1067,7 +1115,9 @@
 			editionId : 		editionIds,
 			constituencyId : 0 ,
 			alertStatusId : 0,
-			locationLevel : "District"
+			locationLevel : "",
+			isPublication:"false",
+			publicationId:0			
 		
 		}                  
 		$.ajax({   
@@ -1278,6 +1328,8 @@
 	//getTotalAlertGroupByLocationThenStatusAction  
 	function getTotalAlertGroupByLocationThenStatus(scopeIdsArr){
 		$(".districtAlertCls").show();
+		$(".hideShowCls").collapse('show');
+	    $(".alertExpandCls").removeClass("glyphicon-plus").addClass("glyphicon-minus");
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#districtSummaryAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
@@ -1331,8 +1383,8 @@
 			str+='<div class="col-md-12 col-xs-12 col-ms-12">';
 			str+='<ul class="distWiseSlickApply">';
 			for(var i in result){
-				if(result[i].statusId == 0)
-					continue;
+				/* if(result[i].statusId == 0)
+					continue; */
 				str+='<li style="border-right:1px solid #ccc">';
 				str+='<h5 class="districtcls text-capital" attr_alert_count="'+result[i].count+'" attr_district_id='+result[i].statusId+' style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)">'+result[i].status+" - "+result[i].count+'</h5>';
 				str+='<div id="distwisegraph'+i+'"  style="height:300px;width:250px"></div>';
@@ -1345,16 +1397,16 @@
 		$("#districtWiseAlertCountId").html(str);
 			if(result !=null && result.length >0){
 				for(var i in result){
-					if(result[i].statusId == 0)
-					  continue;
+					/* if(result[i].statusId == 0)
+					  continue; */
 			
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var countAlert = [];
 						var count = [];
 						for(var j in result[i].subList1){
-							if(result[i].subList1[j].categoryId == 5)  
-								continue;    
+							/* if(result[i].subList1[j].categoryId == 5)  
+								continue;     */
 							var uniqCnt = {};
 							categoryName.push(result[i].subList1[j].category);
 							countAlert.push(result[i].subList1[j].categoryCount);
@@ -1987,8 +2039,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
-						if(result[0].subList1[i].categoryId == 5)
-							continue;
+						/* if(result[0].subList1[i].categoryId == 5)
+							continue; */
 						str+='<th>'+result[0].subList1[i].category+'</th>';
 					}  
 				}
@@ -2011,8 +2063,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 					   
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
-							if(result[i].subList1[j].categoryId == 5)
-							            continue;
+							/* if(result[i].subList1[j].categoryId == 5)
+							            continue; */
 						if(result[i].subList1[j].categoryCount == 0){
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
@@ -2097,8 +2149,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			   str+='<th>Total Alerts</th>';
 			   if(result[0].subList1 != null && result[0].subList1.length > 0){
 				   for(var i in result[0].subList1){
-					   if(result[0].subList1[i].statusTypeId==5)
-						   continue;
+					  /*  if(result[0].subList1[i].statusTypeId==5)
+						   continue; */
 					   str+='<th>'+result[0].subList1[i].statusType+'</th>';
 				   }  
 			   }
@@ -2114,8 +2166,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				   }
 					 if(result[i].subList1 != null && result[i].subList1.length > 0){
 						 for(var j in result[i].subList1){
-							  if(result[i].subList1[j].statusTypeId==5)
-						             continue;
+							 /*  if(result[i].subList1[j].statusTypeId==5)
+						             continue; */
 							    if(result[i].subList1[j].statusCnt > 0){
 								str+='<td class="prgrmCmmttAndOthrCls" attr_selected_type=\''+groupAssignType+'\' attr_alert_count="'+result[i].subList1[j].statusCnt+'" attr_cadre_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" style="cursor:pointer;">'+result[i].subList1[j].statusCnt+'</td>';		
 								}else{
@@ -2322,8 +2374,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				str+='<th>Total Alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
-						if(result[0].subList1[i].categoryId == 5)
-							continue;
+						/* if(result[0].subList1[i].categoryId == 5)
+							continue; */
 						str+='<th>'+result[0].subList1[i].category+'</th>';
 					}  
 				}
@@ -2341,8 +2393,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					   
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
-						if(result[i].subList1[j].categoryId == 5)
-							continue;
+						/* if(result[i].subList1[j].categoryId == 5)
+							continue; */
 						if(result[i].subList1[j].categoryCount == 0){
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
@@ -2929,9 +2981,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						return;
 					}
 					for(var i in result){    
-						if(result[i].name == "Unable to Resolve"){
+						/* if(result[i].name == "Unable to Resolve"){
 							continue;
-						}
+						} */
 								 var uniqCnt = {};
 									statusNameArr.push(result[i].name);
 									alertCnt.push(result[i].alertCount);
@@ -3107,17 +3159,34 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		var districtId = $(this).attr("attr_district_id");
 		var totalAlertCnt = $(this).attr("attr_alert_count");
 		var districtIdArr=[districtId];
-		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","");
+		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","","false",0);
 	}); 	
-	function buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,locationType){
+	function buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,locationType,isPublication,publicationValue){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
 		$("#tourDocumentId").modal("show");
 		var dates=$("#dateRangeIdForAlert").val();
 		var scopeIdsArr = [];	
-         if(locationType != null && locationType=="Constituency"){
-			$(".alertConsSettingsUl li").each(function() {
+		 if(locationType != null && locationType=="Constituency"){
+			if(isPublication != null && isPublication=="true"){
+				 $(".alertPubConsSettingsUl li").each(function() {
+				  if($(this).find("input").is(":checked")){
+					 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					 if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandal"){
+						scopeIdsArr.push(5);  
+						scopeIdsArr.push(12);  
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+						scopeIdsArr.push(6);	
+					}
+				  }
+			   });
+			}else{
+			  $(".alertConsSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
 				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
 				 if(selectionType == "Constituency"){
@@ -3131,7 +3200,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					scopeIdsArr.push(6);	
 				}
 			  }
-		    }); 
+		       }); 	
+			}
 		 }else{
 			$(".alertSettingsUl li").each(function() {
 				if($(this).find("input").is(":checked")){
@@ -3181,7 +3251,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			editionId : editionIds,
 			constituencyId:constituencyId,
 			alertStatusId : alertStatusId,
-			locationLevel : locationLevel
+			locationLevel : locationLevel,
+			isPublication:isPublication,
+			publicationId:publicationValue
 		
 		}                  
 		$.ajax({
@@ -3229,7 +3301,9 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			editionId : editionIds,
 			constituencyId : 0,
             alertStatusId :0,
-            locationLevel : "district"			
+            locationLevel : "",
+			isPublication:"false",
+			publicationId:0			
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -3722,9 +3796,9 @@ function getTotalArticledetails(articleId){
 						str+='</div>';
 						for(var i in result.statusList)     
 						{
-							if(result.statusList[i].statusType == "Unable to Resolve"){
+							/* if(result.statusList[i].statusType == "Unable to Resolve"){
 								continue;           
-							}
+							} */
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
 								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
@@ -3875,8 +3949,8 @@ function getTotalArticledetails(articleId){
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											if(result.categoryList[i].statusList[j].statusTypeId == 5)
-												continue;       
+											/* if(result.categoryList[i].statusList[j].statusTypeId == 5)
+												continue;   */     
 											str+='<td>';
 												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusType+'</p>';
 											str+='</td>';
@@ -3885,8 +3959,8 @@ function getTotalArticledetails(articleId){
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											if(result.categoryList[i].statusList[j].statusTypeId == 5)
-												continue;
+											/* if(result.categoryList[i].statusList[j].statusTypeId == 5)
+												continue; */
 											str+='<td>';
 												if(result.categoryList[i].statusList[j].statusCnt == 0){
 													str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
@@ -4185,7 +4259,7 @@ function getTotalArticledetails(articleId){
 		}
 		//console.log(districtIdArr);
 	
-		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType);
+		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,"false",0);
 	}); 
 	$(document).on("change","#dstrctSlctBxId",function(){
 		 var locVal ='';
@@ -4245,6 +4319,25 @@ function getTotalArticledetails(articleId){
 				}
 			  }
 		   });
+		  // Publication Impact Constituency
+	     var pubConsScopeIdsArr = [];
+	     $(".alertPubConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				pubConsScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				pubConsScopeIdsArr.push(5);  
+				pubConsScopeIdsArr.push(12);  
+			}else if(selectionType == "VillageWard"){
+				pubConsScopeIdsArr.push(7);  
+				pubConsScopeIdsArr.push(9);	
+				pubConsScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   getDistrictWisePublicationAlert(scopeIdsArr);
+	   getConstituencyWisePublicationAlert(pubConsScopeIdsArr);
 	   getTotalAlertConstituencyWise(consScopeIdsArr);
 	   getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 	   getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
@@ -4253,6 +4346,8 @@ function getTotalArticledetails(articleId){
 	
 	function getTotalAlertConstituencyWise(scopeIdsArr){
 		$(".constituencyAlertCls").show();
+		$(".hideShowCls").collapse('show');
+	    $(".alertExpandCls").removeClass("glyphicon-plus").addClass("glyphicon-minus");
 		$("#constituencyAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -4313,8 +4408,8 @@ function getTotalArticledetails(articleId){
 		       if(result != null && result.length > 0){
 				    if(result[0].subList1 != null && result[0].subList1.length > 0){
 						 for(var k in result[0].subList1){
-							 if(result[0].subList1[k].categoryId == 5)
-								 continue;
+							 /* if(result[0].subList1[k].categoryId == 5)
+								 continue; */
 							str+='<th>'+result[0].subList1[k].category+'</th>';		 
 						 }
 					}
@@ -4331,20 +4426,20 @@ function getTotalArticledetails(articleId){
 					str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" attr_location_level="'+result[i].status+'" attr_location_type='+locationType+' attr_alert_count='+result[i].count+' attr_location_id = '+result[i].statusId+' attr_alert_status_id="0">'+result[i].count+'</td>'; 
 					}
 					}else{
-				  str+='<td>-</td>';      		
+				  str+='<td class="text-center">-</td>';      		
 				} 
 				if(result[i].subList1 != null && result[i].subList1.length > 0){
 					for(var j in result[i].subList1){
-						if(result[i].subList1[j].categoryId == 5)
-									continue;
+						/* if(result[i].subList1[j].categoryId == 5)
+									continue; */
 							if(result[i].subList1[j].categoryCount > 0){
 								if(result[i].statusId==0){
-								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" attr_location_type='+locationType+' attr_alert_count='+result[i].subList1[j].categoryCount+' attr_location_level="'+result[i].status+'" attr_location_id = '+result[i].deptIdList+' attr_alert_status_id='+result[i].subList1[j].categoryId+'>'+result[i].subList1[j].categoryCount+'</td>';  	
+								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls"  attr_location_type='+locationType+' attr_alert_count='+result[i].subList1[j].categoryCount+' attr_location_level="'+result[i].status+'" attr_location_id = '+result[i].deptIdList+' attr_alert_status_id='+result[i].subList1[j].categoryId+'>'+result[i].subList1[j].categoryCount+'</td>';  	
 								}else{
 								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" attr_location_type='+locationType+' attr_alert_count='+result[i].subList1[j].categoryCount+' attr_location_level="'+result[i].status+'" attr_location_id = '+result[i].statusId+' attr_alert_status_id='+result[i].subList1[j].categoryId+'>'+result[i].subList1[j].categoryCount+'</td>';      	
 								}
 							}else{
-								str+='<td>-</td>';      	
+								str+='<td class="text-center">-</td>';      	
 							} 
 					 }	
 				}
@@ -4371,65 +4466,6 @@ function getTotalArticledetails(articleId){
 		   });   	
 		   }
 		}
-		getAlertStatus();
-	function getAlertStatus(){
-		var jsObj = { 
-		}                  
-		$.ajax({
-			type : 'POST',        
-			url : 'getAlertStatusAction.action',
-			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}    
-		}).done(function(result){
-			//console.log(result);
-		});  
-	}
-	//getPublicationWiseAlert()
-	function getPublicationWiseAlert(){
-		var scopeIdsArr = [2,3,4,5,6,7,8];
-		$(".districtAlertCls").show();
-		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$("#districtSummaryAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
-		if(alertId == undefined){
-			alertId = 0;
-		}
-		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
-		if(editionId == undefined){
-			editionId = 0;
-		}
-        var districtArr=[];
-		if($("#dstrctSlctBxId").is(":visible")){
-			var districtId = $("#dstrctSlctBxId").val();
-			if(districtId > 0){
-				districtArr.push(districtId);
-			}
-		}
-		var jsObj = { 
-			stateId : 			globalStateId,             
-			fromDate : 			customStartDateAlert,      
-			toDate : 			customEndDateAlert,  
-			scopeIdsArr : 		scopeIdsArr,              
-			activityMemberId : 	globalActivityMemberId,       
-			group : 			"",
-			alertIds : 			alertId,
-			editionIds : 		editionId,
-			filterType : 	"District",
-			districtArr : districtArr,
-			alertStatusId : 0
-			
-			
-		}                  
-		$.ajax({
-			type : 'POST',        
-			url : 'getPublicationWiseAlertAction.action',
-			dataType : 'json',      
-			data : {task:JSON.stringify(jsObj)}    
-		}).done(function(result){
-		   console.log(result);
-		});  
-	}
-	
 	$(document).on('click','#alertConstSettingsId',function(){
 		$(".specialAlertDropDownAlertCons").toggle();            
 	});
@@ -4466,4 +4502,260 @@ function getTotalArticledetails(articleId){
 			return;  
 		}
 	 	getTotalAlertConstituencyWise(consScopeIdsArr);
+	});  
+	
+  /* Publication Wise script */
+  
+   $(document).on("click","#alertImpactSelectAllIdPubCons",function(){
+			 if ($(this).prop('checked')) {
+				$(".alertPubConImpactCheckCls").prop('checked', true);
+			} else {
+				$(".alertPubConImpactCheckCls").prop('checked', false);
+			}
+	});
+	
+	getAlertStatus();
+	function getAlertStatus(){
+		var jsObj = { 
+		  alertTypeId:0
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getAlertStatusAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			//console.log(result);
+		});  
+	}
+	function getDistrictWisePublicationAlert(scopeIdsArr){
+		$(".districtPublicationCls").show();
+		$(".hideShowCls").collapse('show');
+		$(".alertExpandCls").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		$("#dstrctWsPublctnAlrtCntSmmryDvId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+    	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+        var districtArr=[];
+		if($("#dstrctSlctBxId").is(":visible")){
+			var districtId = $("#dstrctSlctBxId").val();
+			if(districtId > 0){
+				districtArr.push(districtId);
+			}
+		}
+		var jsObj = { 
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			filterType : 	"District",
+			districtArr : districtArr,
+			alertStatusId : 0
+			
+			
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getPublicationWiseAlertAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			$("#dstrctWsPublctnAlrtCntSmmryDvId").html('');
+		   if(result != null && result.length > 0){
+			buildLocationWisePublicationRslt(result,"dstrctWsPublctnAlrtCntSmmryDvId","District");   
+		   }else{
+			 $("#dstrctWsPublctnAlrtCntSmmryDvId").html("NO DATA AVAILABLE.");  
+		   }
+		});  
+	}
+	
+	function getConstituencyWisePublicationAlert(scopeIdsArr){
+		$(".constituencyPublicationCls").show();
+		$(".hideShowCls").collapse('show');
+	    $(".alertExpandCls").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		$("#cnsttncyWsPublctnAlrtCntSmmryDvId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+    	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+        var districtArr=[];
+		if($("#dstrctSlctBxId").is(":visible")){
+			var districtId = $("#dstrctSlctBxId").val();
+			if(districtId > 0){
+				districtArr.push(districtId);
+			}
+		}
+		var jsObj = { 
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		scopeIdsArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			filterType : 	"Constituency",
+			districtArr : districtArr,
+			alertStatusId : 0
+			
+			
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getPublicationWiseAlertAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			$("#cnsttncyWsPublctnAlrtCntSmmryDvId").html('');
+		   if(result != null && result.length > 0){
+			buildLocationWisePublicationRslt(result,"cnsttncyWsPublctnAlrtCntSmmryDvId","Constituency");   
+		   }else{
+			 $("#cnsttncyWsPublctnAlrtCntSmmryDvId").html("NO DATA AVAILABLE.");  
+		   }
+		});  
+	}
+	   function buildLocationWisePublicationRslt(result,divId,locationType){
+	 var str='';
+	  str+='<div class="table-responsive">';
+	 if(divId=="cnsttncyWsPublctnAlrtCntSmmryDvId"){
+		  str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="cnsttncyWsPublctnAlrtCntSmmryDataTblId">'; 
+	 }else if(divId=="dstrctWsPublctnAlrtCntSmmryDvId"){
+		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="dstrctWsPublctnAlrtCntSmmryDataTblId">';
+	 }
+	 
+		 str+='<thead>';
+		       str+='<th></th>';
+			   str+='<th>Total</th>';
+		       if(result != null && result.length > 0){
+				    if(result[0].subList != null && result[0].subList.length > 0){
+						 for(var k in result[0].subList){
+							str+='<th>'+result[0].subList[k].publicationName+'</th>';		 
+						 }
+					}
+			   }
+	   str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				 if(result[i].alertCnt > 0){
+					if(result[i].id==0){
+					str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="publicationCls" attr_location_level="'+result[i].name+'" attr_location_type='+locationType+' attr_alert_count='+result[i].alertCnt+' attr_location_id = '+result[i].locationIdList+' attr_alert_publication_id="0">'+result[i].alertCnt+'</td>'; 
+					}else{
+					str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="publicationCls" attr_location_level="'+result[i].name+'" attr_location_type='+locationType+' attr_alert_count='+result[i].alertCnt+' attr_location_id = '+result[i].id+' attr_alert_publication_id="0">'+result[i].alertCnt+'</td>'; 
+					}
+				}else{
+				  str+='<td class="text-center">-</td>';      		
+				} 
+				if(result[i].subList != null && result[i].subList.length > 0){
+					for(var j in result[i].subList){
+							if(result[i].subList[j].alertCnt > 0){
+								if(result[i].id==0){
+								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="publicationCls" attr_location_type='+locationType+' attr_alert_count='+result[i].subList[j].alertCnt+' attr_location_level="'+result[i].name+'" attr_location_id = '+result[i].locationIdList+' attr_alert_publication_id='+result[i].subList[j].publicationId+'>'+result[i].subList[j].alertCnt+'</td>';  	
+								}else{
+								str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="publicationCls" attr_location_type='+locationType+' attr_alert_count='+result[i].subList[j].alertCnt+' attr_location_level="'+result[i].name+'" attr_location_id = '+result[i].id+' attr_alert_publication_id='+result[i].subList[j].publicationId+'>'+result[i].subList[j].alertCnt+'</td>';      	
+								}
+							}else{
+								str+='<td class="text-center">-</td>';      	
+							} 
+					 }	
+				}
+				str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+	      $("#"+divId).html(str);
+		  str+='</div>';
+		   if(divId=="cnsttncyWsPublctnAlrtCntSmmryDvId"){
+			 $("#cnsttncyWsPublctnAlrtCntSmmryDataTblId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 15,
+			"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]			
+		   });   	
+		   }else if(divId == "dstrctWsPublctnAlrtCntSmmryDvId"){
+			 $("#dstrctWsPublctnAlrtCntSmmryDataTblId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 15,
+			"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
+		   });   	
+		   }
+		}
+		
+   $(document).on("click",".publicationCls",function(){
+		var locationIdStr = $(this).attr("attr_location_id");
+		var totalAlertCnt = $(this).attr("attr_alert_count");
+		var loctionType = $(this).attr("attr_location_type");
+		var locationLevel = $(this).attr("attr_location_level");
+		var publicationId = $(this).attr("attr_alert_publication_id");
+		var districtIdArr =[];
+		var constituencyId = 0;
+		if(loctionType=="Constituency"){
+		  if(locationLevel=="District/GMC CORP Impact Level"){
+			 districtIdArr= locationIdStr.split(",");
+		  }else{
+			constituencyId = locationIdStr;  
+		  }
+		}else if(loctionType=="District"){
+			if(locationLevel!="State Level"){
+			  districtIdArr = locationIdStr.split(",");	
+			}
+		}
+		var alertStatusId = 0;
+		var isPublication = "true";
+		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,isPublication,publicationId);
+	}); 
+	$(".hideShowCls").collapse('show');
+   $(document).on("click",".alertExpandCls",function(){
+	   if($(this).hasClass('glyphicon-plus'))
+	   {
+		   $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		   
+	   }else{
+		   $(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+	   }
+		
+		$(this).closest(".row").find(".hideShowCls").collapse('toggle');
+	});
+	
+	$(document).on('click','#alertPubConstSettingsId',function(){
+		$(".publicationAlertDropDownAlertCons").toggle();            
+	});
+	 $(document).on("click",".alertSetClosePubCons",function(){
+		$(".publicationAlertDropDownAlertCons").hide(); 
+	 }); 
+	 
+	 $(document).on("click",".alertPubConstDtlsBtnCls",function(){
+		$(".publicationAlertDropDownAlertCons").toggle(); 
+		var pubConsScopeIdsArr = [];
+		 $(".alertPubConsSettingsUl li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+		     if(selectionType == "Constituency"){
+				pubConsScopeIdsArr.push(3);
+			}else if(selectionType == "mandal"){
+				pubConsScopeIdsArr.push(5);  
+				pubConsScopeIdsArr.push(12);  
+			}else if(selectionType == "VillageWard"){
+				pubConsScopeIdsArr.push(7);  
+				pubConsScopeIdsArr.push(9);	
+				pubConsScopeIdsArr.push(6);	
+			}
+		  }
+	   });
+	   if(pubConsScopeIdsArr.length == 0){
+			alert("Please select at least one option");
+			return;  
+		}
+	 	getConstituencyWisePublicationAlert(pubConsScopeIdsArr);
 	});  

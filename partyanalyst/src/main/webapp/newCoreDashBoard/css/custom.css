@@ -659,7 +659,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .panelNewCustom .panel-heading {
     position: relative;
 }
-.notesDropDown, .settingsDropDown, .settingsStateLevelMeetingDropDown, .specialMeetingDropDown, .specialCadreDropDown, .specialAlertDropDown, .specialAlertDropDownAlertCons {
+.notesDropDown, .settingsDropDown, .settingsStateLevelMeetingDropDown, .specialMeetingDropDown, .specialCadreDropDown, .specialAlertDropDown, .specialAlertDropDownAlertCons, .publicationAlertDropDownAlertCons {
     background: rgb(255, 255, 255);
     border: 1px solid rgb(255, 194, 31);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
@@ -1972,7 +1972,7 @@ assignedCandidatesUl1 li:last-child
 {
   background-color: #D89795
 }
-.expandIcon
+.expandIcon , .alertExpandCls
 {
   background-color: #CBCBCB;
   float: right;
@@ -2465,7 +2465,10 @@ color: rgb(51, 122, 183);
 	list-style:none;
 	padding:5px 8px;
 }
-
+#cnsttncyWsPublctnAlrtCntSmmryDataTblId thead th , #dstrctWsPublctnAlrtCntSmmryDataTblId thead th
+{
+	min-width:50px !important;
+}
 /* Alert Management System*/
 .AUMS .bg_Style{
 	background: #fff none repeat scroll 0 0;

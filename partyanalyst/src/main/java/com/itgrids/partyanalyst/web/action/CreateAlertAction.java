@@ -1133,7 +1133,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long constituencyId = jObj.getLong("constituencyId");
 			Long alertStatusId = jObj.getLong("alertStatusId");
 			String locationLevel = jObj.getString("locationLevel");
-			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusId,locationLevel);   
+			String isPublication = jObj.getString("isPublication");
+			String publicationIdStr = jObj.getString("publicationId");
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusId,locationLevel,isPublication,publicationIdStr);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
 		}
@@ -1845,7 +1847,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getAlertStatus(){
 		try{
 			jObj = new JSONObject(getTask());
-			resultList = alertService.getAlertStatus();
+			resultList = alertService.getAlertStatus(jObj.getLong("alertTypeId"));
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertStatus() of CreateAlertAction",e);
 		}
