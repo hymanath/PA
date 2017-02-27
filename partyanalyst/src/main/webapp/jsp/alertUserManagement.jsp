@@ -382,8 +382,8 @@
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital">Total alerts</h4>   
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>      
+			<h4 class="modal-title text-capital">Total alerts - <span id="alertCountId"></span></h4>   
 		  </div>
 			<div class="modal-body">
 				<div class="row">
