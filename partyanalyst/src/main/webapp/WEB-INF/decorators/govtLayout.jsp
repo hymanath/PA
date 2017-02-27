@@ -43,9 +43,17 @@
 		<div class="navbar-header">
 		  <a class="navbar-brand" href="#"><img src="newCoreDashBoard/img/APLOGO.jpg" class="img-responsive"/></a>
 		</div>
-		<div class="navbar-right">
-			 <a class="pull-right" href="govtLogoutAction.action" style="margin-top: 18px;color: #fff;">LOGOUT</a>     
-		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+          	<li class="dropdown profileDropDown">
+              <a class="dropdown-toggle" style="color:#fff;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> ${sessionScope.userDesignation}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="govtLogoutAction.action">LOGOUT</a>  </li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 </header>

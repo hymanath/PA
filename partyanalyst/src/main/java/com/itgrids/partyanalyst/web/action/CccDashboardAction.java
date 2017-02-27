@@ -639,6 +639,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				Long userId = regVo.getRegistrationID();
 				
 				userDesignation = cccDashboardService.getDesignationForUser(userId);
+				session.setAttribute("userDesignation", userDesignation);
 				
 			}catch(Exception e){
 				e.printStackTrace();
