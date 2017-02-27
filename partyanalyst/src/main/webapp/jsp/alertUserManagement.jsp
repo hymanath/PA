@@ -248,7 +248,7 @@
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
 			<button type="button" class="close alertDetailsModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title fontColor text-capital"></h4>
+			<h4 class="modal-title fontColor text-capital">alert title</h4>    
 			<p id="mainTitleId"></p>
 		  </div>
 		  <div class="modal-body" style="padding-bottom:0px;">
