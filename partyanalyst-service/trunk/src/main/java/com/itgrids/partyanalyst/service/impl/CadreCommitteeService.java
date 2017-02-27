@@ -10788,7 +10788,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			Set<Long> locationIdsSet = new HashSet<Long>();
 			locationIdsSet.add(Long.valueOf(locationValue));
 			
-			List<Object[]> constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollIdsList.get(0));
+			List<Object[]> constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered",enrollmentId);
 			Long registeredCadreCount = 0L;
 			if(constituencyList != null && constituencyList.size()>0)
 			{
@@ -20409,5 +20409,75 @@ public SelectOptionVO getMatchedVO1(List<SelectOptionVO> list,Long id)
 	}
 	return returnVO;
 }
-
+public List<BasicVO> userWiseDetailsForDashBoard(Long userId, String accessType, String accessValue){
+	//String userAccessValue = "ALL";
+	List<BasicVO> returnList =  new ArrayList<BasicVO>();
+	try {
+		List<Long> distrctIds = new ArrayList<Long>();
+		if(accessType.equalsIgnoreCase("MP"))
+		{	
+			List<Object[]> assmblyList = userConstituencyAccessInfoDAO.findByUser(userId);
+			if(assmblyList.isEmpty()){
+				assmblyList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(Long.valueOf(accessValue));
+			}
+			
+			if(assmblyList != null && assmblyList.size() > 0){
+				for (Object[] objects : assmblyList) {
+					BasicVO vo = new BasicVO();
+					vo.setParlimentId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setParliament(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					//vo.setAccessType(accessType);
+					returnList.add(vo);
+					
+				}
+			}
+		}
+		else if(accessType.equalsIgnoreCase("DISTRICT")){
+			List<Long> districtsList = userDistrictAccessInfoDAO.getDistrictIdsByUsrId(userId);
+						distrctIds.addAll(districtsList);
+			List<Object[]> constList = constituencyDAO.getConstituencyListByDistrictIdsList(distrctIds);
+			if(constList != null && constList.size() > 0){
+				for (Object[] objects : constList) {
+					BasicVO vo = new BasicVO();
+					vo.setParlimentId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setParliament(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+			}
+		}
+		else
+		{
+			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+			if(accessDistrictsList != null && accessDistrictsList.size()>0)
+			{
+				for (Object[] objects : accessDistrictsList) {
+					BasicVO vo =  new BasicVO();
+					vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					//vo.setAccessType(accessType);
+					returnList.add(vo);
+					//districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				}
+				
+				/*if(districtIds != null && districtIds.size() == 1)
+				{
+					Long districtId = districtIds.get(0).longValue();
+					if(districtId != 0L)
+						userAccessValue =  districtDAO.get(districtId).getDistrictName()+" District";
+				}
+				else if(districtIds != null && districtIds.contains(1L)) // Adilabad
+				{
+					userAccessValue = "TS";
+				}
+				else if(districtIds != null && districtIds.contains(11L))//Srikakulam
+				{
+					userAccessValue = "AP";
+				}*/
+			}	
+		}
+	} catch (Exception e) {
+		LOG.error("Exception raised in userAccessTypeDetailsForDashBoard", e);
+	}
+	return returnList;
+}
 }
