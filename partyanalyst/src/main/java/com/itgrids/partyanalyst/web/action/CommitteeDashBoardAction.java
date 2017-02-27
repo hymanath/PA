@@ -1656,5 +1656,20 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 
-	
+	public String getUserWiseDetails()
+	{
+		try{
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+
+		basicVOList = cadreCommitteeService.userWiseDetailsForDashBoard(user.getRegistrationID(),user.getAccessType(),user.getAccessValue());
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured In getUserWiseDetails method " +e);
+		}
+		return Action.SUCCESS;
+	}
 }
