@@ -99,4 +99,13 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		
 		return query.list();
 	}
+	
+	public List<String> getDesignationsForUser(Long userId){
+		Query query = getSession().createQuery("select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+												" from GovtDepartmentDesignationOfficerDetails model" +
+												" where model.user.userId = :userId" +
+												" and model.isDeleted = 'N'");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

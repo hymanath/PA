@@ -68,4 +68,5 @@ public interface ICccDashboardService {
 	
 	public String getAlertCategoryByAlert(Long alertId);
 	public Long getRegionScopeIdBylevel(Long levelId);
+	public String getDesignationForUser(Long userId);
 } 

@@ -917,6 +917,8 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						datevo.setName(obj[5] != null ? obj[5].toString():"");
 						datevo.setDateStr(obj[6] != null ? obj[6].toString():"");
 						datevo.setSource(obj[7] != null ? obj[7].toString():"");
+						datevo.setDocumentId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+						datevo.setDocument(obj[9] != null ? obj[9].toString():"");
 						vo.getGovtDeptList().add(datevo);
 						
 						statusMap.put(statusId, vo);
@@ -929,6 +931,8 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						datevo.setName(obj[5] != null ? obj[5].toString():"");
 						datevo.setDateStr(obj[6] != null ? obj[6].toString():"");
 						datevo.setSource(obj[7] != null ? obj[7].toString():"");
+						datevo.setDocumentId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+						datevo.setDocument(obj[9] != null ? obj[9].toString():"");
 						vo.getGovtDeptList().add(datevo);
 					}
 				}
@@ -2633,4 +2637,15 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		return null;
 	}
 	
+	public String getDesignationForUser(Long userId){
+		String designation = null;
+		try {
+			List<String> desginationList = govtDepartmentDesignationOfficerDetailsDAO.getDesignationsForUser(userId);
+			if(desginationList != null && !desginationList.isEmpty())
+				designation = desginationList.get(0);
+		} catch (Exception e) {
+			logger.error("Error occured getDesignationForUser() method of CccDashboardService",e);
+		}
+		return designation;
+	}
 }
