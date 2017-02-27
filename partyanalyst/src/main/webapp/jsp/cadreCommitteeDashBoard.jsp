@@ -1174,11 +1174,18 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<option value="36">Telangana</option>
 									</select>
 							</div>
-									<div class="col-md-3 col-xs-12 col-sm-3" id="districtDiv">
+									<div class="col-md-3 col-xs-12 col-sm-3" id="allDistrictDiv">
 										<label>District</label>
 										<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="detsRptdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
 											<!--<option value="0">All</option>-->
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="usrWisedistrictDiv" style="display:none;">
+										<label>District</label>
+										<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="distUsrdistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="form-control" style="width:220px">
+											<option value="0">All</option>
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-3" id="constitunecyDiv">
@@ -1186,6 +1193,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<span id="constituencyIdImg"><img src="images/search.gif" style="display:none;"/></span>
 										<select id="detsRptConstituencyId" onchange="getMandalCorporationsByConstituency('',this.id);" class="form-control" style="width:220px">
 											<option value="0">All</option>
+										</select>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3" id="usrConstitunecyDiv" style="display:none;">
+										<label>Constituency</label>
+										<span id="constituencyIdImg"><img src="images/search.gif" style="display:none;"/></span>
+										<select id="assblyConstituencyId" onchange="getMandalCorporationsByConstituency('',this.id);" class="form-control" style="width:220px">
+											<option value="0">Select Constituency</option>
 										</select>
 									</div>
 									<div class="col-md-3 col-xs-12 col-sm-3" id="mandalDiv">
@@ -6309,6 +6323,10 @@ function onLoadcimmitteeDashboardCalls(){
 			$("#stateDiv").show();
 			$("#popUpDistrictDiv").show();
 			$("#popUpConstituencyDiv").show();
+			$("#usrWisedistrictDiv").show();
+			$("#allDistrictDiv").hide();
+			$("#usrConstitunecyDiv").hide();
+			$("#statedisplaydivid").hide();
 		}
 		else if(userAccessType == 'AP'){
 			getCommitteeCountByState("AP");
@@ -6330,6 +6348,10 @@ function onLoadcimmitteeDashboardCalls(){
 			$("#stateDiv").show();
 			$("#popUpDistrictDiv").show();
 			$("#popUpConstituencyDiv").show();
+			$("#usrWisedistrictDiv").show();
+			$("#allDistrictDiv").hide();
+			$("#usrConstitunecyDiv").hide();
+			$("#statedisplaydivid").hide();
 		}else{					
 			if(userAccessType=="MP"){
 				//$("#districtCommDiv").hide();
@@ -6349,6 +6371,11 @@ function onLoadcimmitteeDashboardCalls(){
 
 				getConstituencyWiseCommittesSummary();
 				$("#popUpConstituencyDiv").show();
+				$("#usrConstitunecyDiv").show();
+				$("#usrWisedistrictDiv").hide();
+				$("#allDistrictDiv").hide();
+				$("#statedisplaydivid").hide();
+				$("#constitunecyDiv").hide();
 			}else if( userAccessType.indexOf("District") >= 0){
 				//$('#areaBtnsDiv').hide();
 				//$('.areaBtnsDiv').hide();
@@ -6374,6 +6401,11 @@ function onLoadcimmitteeDashboardCalls(){
 				getConstituencyWiseCommittesSummary();
 				$("#popUpDistrictDiv").show();
 				$("#popUpConstituencyDiv").show();
+				$("#usrConstitunecyDiv").show();
+				$("#usrWisedistrictDiv").hide();
+				$("#allDistrictDiv").hide();
+				$("#statedisplaydivid").hide();
+				$("#constitunecyDiv").hide();
 			}else {
 				getCommitteeCountByState("AP");
 				getCommitteeDetails("AP","mandalAll");
@@ -6560,6 +6592,7 @@ function getCommitteeMembersAvailableInfo(basicCommitteetypeId,levelId,levelValu
 			$("body").addClass("modal-open");
 		},500)
 	});
+getUserWiseDetails();	
 </script>		
 <script>
 var tableToExcel = (function() {
