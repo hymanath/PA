@@ -994,7 +994,7 @@ $(document).on("click",".subOrdinateWiseAlertDetails",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
-	
+	$("#alertCountId").html(' ');
 	getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationVal);
 });
 
@@ -1020,6 +1020,7 @@ function getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationV
 }
 	
 function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
+	var len = result.length;
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var str='';
 	if($(window).width() < 500)
@@ -1091,6 +1092,7 @@ function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
 		str+='</div>';
 	}
 	$("#totalAlertsModalTabId").html(str);
+	$("#alertCountId").html(len);
 	$("#dataTableTotalAlerts").dataTable();
 	$("#dataTableTotalAlerts").removeClass("dataTable");
 }
@@ -1534,6 +1536,7 @@ $(document).on("click",".totalAlertDetails",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#alertCountId").html(' ');    
 	getTotalAlertDtls(statusId,departmentId,typeId);
 });
 
@@ -1653,6 +1656,7 @@ $(document).on("click",".totalDepartment",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});	
+	$("#alertCountId").html(' ');
 	var departmentId = $(this).attr("attr_department_id");
 	var statusId  = $(this).attr("attr_status_id");  
 	getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId);
@@ -1687,6 +1691,7 @@ $(document).on("click",".detaiedTotalAlerts",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#alertCountId").html(' ');
 	var locationId = $(this).attr("attr_location_id");
 	var locaValue = $("#levelDepartmentId").val();
 	var statusId = $(this).attr("attr_status_id");
