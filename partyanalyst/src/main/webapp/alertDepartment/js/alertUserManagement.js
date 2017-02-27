@@ -1236,9 +1236,9 @@ function buildAlertCandidateData(result,categoryId)
 	{
 		str+='<div class="col-md-12 col-xs-12 col-sm-4 m_top10">';
 			str+='<div class="media" style="border:1px solid #ddd;padding:8px;">';
-				str+='<div class="media-left">';
+				/*str+='<div class="media-left">';
 					str+=' <img src="'+result[i].image+'" class="media-object img-circle"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;height:50px;"/>';
-				str+=' </div>';
+				str+=' </div>';*/
 				str+=' <div class="media-body">';
 					if(result[i].impactLevelId == 1)
 					{
@@ -1371,7 +1371,7 @@ function alertComments(result)
 										//for(var k in result[i].sublist2[j].sublist)
 										//{	
 											str+='<div>';
-												 str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span><br>'; 
+												 str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE: '+result[i].govtDeptList[j].timeStr+'</span><br>'; 
 												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
 												//for(var l in result[i].govtDeptList[j].sublist[k])
 												//{

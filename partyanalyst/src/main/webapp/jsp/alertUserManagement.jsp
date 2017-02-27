@@ -314,12 +314,12 @@
 								<p><span  id="LocationId"></span></p>
 							</td>
 						</tr>
-						<tr>
+						<!--<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>Title</b></span></p>
 								<p><span  id="titleId"></span></p>
 							</td>
-						</tr>
+						</tr>-->
 						<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>description</b></span></p>

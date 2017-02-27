@@ -974,6 +974,12 @@ function alertComments(result)
 									str+='<li>';
 										str+='<div class="arrow_box_left">';
 											str+='<div>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE: '+result[i].govtDeptList[j].timeStr+'</span><br>';
+												//str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+												//for(var l in result[i].govtDeptList[j].sublist[k])
+												//{
+													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].govtDeptList[j].source+'<br>';
+												//}
 												str+='</p>';
 												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 												str+='<p>'+result[i].govtDeptList[j].comment+'</p>';
