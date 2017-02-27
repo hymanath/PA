@@ -5221,4 +5221,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("alertId", alertId);
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getChannelListForUser(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.tvNewsChannel.tvNewsChannelId, model.tvNewsChannel.channelName " +
+				  " from " +
+				  " Alert model " +
+				  " where " +
+				  " model.isDeleted = 'N' " +
+				  " and model.tvNewsChannel.isDeleted = 'N' ");
+		Query query = getSession().createQuery(sb.toString());
+		return query.list();
+	}
 }

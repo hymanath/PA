@@ -14,7 +14,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOfficer, Long> implements IAlertAssignedOfficerDAO{
 
-	public AlertAssignedOfficerDAO() {
+	public AlertAssignedOfficerDAO() {  
 		super(AlertAssignedOfficer.class);
 		  
 	}
@@ -2083,4 +2083,5 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		return query.list();
 	*/}
+	
 }
