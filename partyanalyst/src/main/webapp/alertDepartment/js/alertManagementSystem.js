@@ -489,6 +489,7 @@ $(document).on("click",".getDtlsCls",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#alertCountId").html(' ');
 	var deptIdArr = [];
 	var alertStatusId = $(this).attr("attr_status_id");
 	var deptId = $(this).attr("attr_dept_id");
@@ -529,6 +530,7 @@ function getData(count, alertStatusId){
 		keyboard: false,
 		backdrop: 'static'  
 	});
+	$("#alertCountId").html(' ');
 	var deptIdArr = [];
 	var deptId = $(this).attr("attr_dept_id");
 	if(deptId != null){
@@ -562,6 +564,7 @@ function getData(count, alertStatusId){
     });
 }	
 function buildtotalAlertsModalTabId(result){
+	var len = result.length;
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var str='';
 	if($(window).width() < 500)
@@ -628,11 +631,12 @@ function buildtotalAlertsModalTabId(result){
 			}
 			str+='</tbody>';
 		str+='</table>';
-	if($(window).width() < 500)
+	if($(window).width() < 500)  
 	{
 		str+='</div>';
 	}
-	$("#totalAlertsModalTabId").html(str);
+	$("#totalAlertsModalTabId").html(str);  
+	$("#alertCountId").html(len);   
 	$("#dataTableTotalAlerts").dataTable();
 }
 /* Total Alerts Modal End CLick Based*/
@@ -2306,6 +2310,7 @@ $(document).on("click",".totAlertsStsCls",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#alertCountId").html(' ');
 	var deptIdArr = [];
 	var paperIdArr = [];
 	var chanelIdArr = [];
@@ -2472,6 +2477,7 @@ $(document).on("click",".totalAlertsOnDetInfo",function(){
 		keyboard: false,
 		backdrop: 'static'
 	});
+	$("#alertCountId").html(' ');
 	var statusId = $(this).attr("attr_status_id");
 	var designationId = $(this).attr("attr_designation_id");
 	var departmentId = $(this).attr("attr_departmentId");
