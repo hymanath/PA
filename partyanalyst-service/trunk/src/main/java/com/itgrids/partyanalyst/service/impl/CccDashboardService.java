@@ -264,6 +264,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
+			}else{
+				electronicIdList.add(0L);
+				printIdList.add(0L);
+			}
+			
+			if(deptIdList != null && deptIdList.size() == 0){
+				deptIdList.add(0L);  
 			}
 			//get all the alert status and build the template
 			List<Object[]> statusList = alertStatusDAO.getAllStatus();
@@ -322,7 +329,14 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
+			}else{
+				electronicIdList.add(0L);
+				printIdList.add(0L);
 			}
+			
+			if(deptIdList != null && deptIdList.size() == 0){
+				deptIdList.add(0L);  
+			}                  
 			
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
@@ -1258,18 +1272,23 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(endDateStr);
 			}
-			/*if(paperIdList != null && paperIdList.size() > 0){
+			if(paperIdList != null && paperIdList.size() > 0){
 		        if(chanelIdList != null && chanelIdList.size() == 0){
 		        	chanelIdList.add(0L);
 		        }
-		      }else if(chanelIdList != null && chanelIdList.size() > 0){
+		     }else if(chanelIdList != null && chanelIdList.size() > 0){
 		        if(paperIdList != null && paperIdList.size() == 0){
 		        	paperIdList.add(0L);
 		        }
-		      }*/
+		     }else{
+		    	 chanelIdList.add(0L);
+				paperIdList.add(0L);
+			}
+				
+			if(deptIdList != null && deptIdList.size() == 0){
+				deptIdList.add(0L);  
+			}       
 			
-			//Srav
-			//List<Long> dptIdList = new ArrayList<Long>();
 			Long levelId = 0l;
 			List<Long> levelValues = new ArrayList<Long>();
 			List<Object[]> accessList = govtAlertDepartmentLocationDAO.getUserAccessLevelsForUser(userId);
