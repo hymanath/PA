@@ -1612,6 +1612,7 @@ $(document).on("click","#assignOfficerId",function(){
 		}
 	}
 	$("#assiningLdngImg").show();
+	$("#assignOfficerId").hide();
 	var uploadHandler = {
 		upload: function(o) {
 			uploadResult = o.responseText;
@@ -1639,6 +1640,8 @@ function displayStatus(myResult){
 		fileNo = 0;*/
 	}else{
 		alert("Please Try Again.");
+		$("#assiningLdngImg").hide();
+		$("#assignOfficerId").show();
 	}
 }
 
