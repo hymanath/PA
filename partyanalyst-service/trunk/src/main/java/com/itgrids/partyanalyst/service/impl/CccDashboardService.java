@@ -683,6 +683,29 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	/*
 	 * Swadhin(non-Javadoc)
 	 */
+	public List<IdAndNameVO> getChannelListForUser(Long userId){
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			List<Object[]> channelList = alertDAO.getChannelListForUser();
+			if(channelList != null && channelList.size() > 0){  
+				for(Object[] param : channelList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 */
 	public List<IdAndNameVO> getDeptList(){
 		try{
 			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
