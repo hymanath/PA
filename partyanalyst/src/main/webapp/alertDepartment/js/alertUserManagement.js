@@ -1122,6 +1122,8 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	getInvolvedMembersDetilas(alertId);
 	getAlertStatusCommentsTrackingDetails(alertId);
 	getAlertCategortByAlert(alertId);
+	$("#changeStatusId").val(alrtStsId);
+	$("#changeStatusId").trigger("chosen:updated");
 });
 
 function getAlertCategortByAlert(alertId){
@@ -1629,7 +1631,7 @@ function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
 		$("#assiningLdngImg").hide();
-		getAlertStatusCommentsTrackingDetails();
+		//getAlertStatusCommentsTrackingDetails();
 		alert("Alert Updated Successfully.");
 		//$("#alertStatus").html('Notified');
 		location.reload();
