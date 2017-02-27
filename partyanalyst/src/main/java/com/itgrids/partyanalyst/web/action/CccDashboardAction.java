@@ -59,6 +59,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	   
 	    private List<IdAndNameVO> newsPaperList;
 	    private List<IdAndNameVO> chanelList;
+	    private List<IdAndNameVO> chanelListNew;
 	    private List<IdAndNameVO> deptList;
 	    private List<IdAndNameVO> deptListNew;
 	    private List<IdAndNameVO> locationLevelList;
@@ -195,7 +196,14 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	   public void setChanelList(List<IdAndNameVO> chanelList) {
 		   this.chanelList = chanelList;
 	   }
-	   public List<IdAndNameVO> getDeptList() {
+	   
+	   public List<IdAndNameVO> getChanelListNew() {
+		return chanelListNew;
+	}
+	public void setChanelListNew(List<IdAndNameVO> chanelListNew) {
+		this.chanelListNew = chanelListNew;
+	}
+	public List<IdAndNameVO> getDeptList() {
 		   return deptList;
 	   }
 	   public void setDeptList(List<IdAndNameVO> deptList) {
@@ -228,9 +236,10 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			Long userId = regVo.getRegistrationID();
 			newsPaperList = cccDashboardService.getNewsPapaerList();
-			chanelList = cccDashboardService.getChannelList();
+			chanelListNew = cccDashboardService.getChannelList();
+			chanelList = cccDashboardService.getChannelListForUser(userId);  
 			deptListNew = cccDashboardService.getDeptList(); 
-			deptList = cccDashboardService.getDeptListForUser(userId); 
+			deptList = cccDashboardService.getDeptListForUser(userId);   
 		    return Action.SUCCESS;
 	   }
 	   public String alertDepartmentLogin(){  
