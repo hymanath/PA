@@ -60,7 +60,7 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long userId);
 	 public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);
 	 public int updateApllicationStatusToReject(Long memberId,final Long userId);
-	 public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds);
+	 public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds,Long statusId);
 	 public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds);
 	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId,Long nominatePostApplicationId);
 	 public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);

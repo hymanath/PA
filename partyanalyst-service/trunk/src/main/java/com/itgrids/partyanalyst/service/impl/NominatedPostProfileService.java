@@ -2898,10 +2898,44 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		List<NomintedPostMemberVO> subList = new ArrayList<NomintedPostMemberVO>();
 		List<NomintedPostMemberVO> subList1 = new ArrayList<NomintedPostMemberVO>();
 		try {
-			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName,10.postTypeId,11.applicationId
-			List<Object[]> appCandList = nominatedPostApplicationDAO.getCandidateAppliedPostsByCadre(tdpCadreId, searchType,nominateCandId);
 			
 			List<Long> applicationIds = new ArrayList<Long>();
+			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName,10.postTypeId,11.applicationId
+			List<Object[]> appCandList = nominatedPostApplicationDAO.getCandidateAppliedPostsByCadre(tdpCadreId, searchType,nominateCandId,null);
+			
+			setAppliedCandidatePostsByCadre(subList, subList1, appCandList, tdpCadreId
+					, searchType,applicationIds);
+			List<Object[]> appCandList1 = nominatedPostApplicationDAO.getCandidateAppliedPostsByCadre(tdpCadreId, searchType,nominateCandId,9l);
+			
+			setAppliedCandidatePostsByCadre(subList, subList1, appCandList1, tdpCadreId
+					, searchType,applicationIds);
+			
+			returnVo.getSubList().addAll(subList);
+			returnVo.getSubList1().addAll(subList1);
+			
+			if(applicationIds != null && applicationIds.size() >0){
+				if(returnVo.getSubList() != null && returnVo.getSubList().size() >0){
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList(),null);
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList(),9l);
+				}
+				if(returnVo.getSubList1() != null && returnVo.getSubList1().size() >0){
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList1(),null);
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList(),9l);
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getAppliedCandidatePostsByCadre", e);
+		}
+		return returnVo;
+	}
+	
+	public void setAppliedCandidatePostsByCadre(List<NomintedPostMemberVO> subList,List<NomintedPostMemberVO> subList1,List<Object[]> appCandList,Long tdpCadreId
+			,String searchType,List<Long> applicationIds){
+		try{
+			
+			
 			if(appCandList!= null && appCandList.size() >0){
 				for (Object[] obj : appCandList) {
 					NomintedPostMemberVO Vo = new NomintedPostMemberVO();
@@ -2982,27 +3016,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 			}
-			returnVo.getSubList().addAll(subList);
-			returnVo.getSubList1().addAll(subList1);
-			
-			if(applicationIds != null && applicationIds.size() >0){
-				if(returnVo.getSubList() != null && returnVo.getSubList().size() >0){
-					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList());
-				}
-				if(returnVo.getSubList1() != null && returnVo.getSubList1().size() >0){
-					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList1());
-				}
-			}
-			
-			
-		} catch (Exception e) {
-			LOG.error("Exceptionr riased at getAppliedCandidatePostsByCadre", e);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exceptionr riased at setAppliedCandidatePostsByCadre", e);
 		}
-		return returnVo;
 	}
-	
-	public void anyPositionLinkedApplicationsUpdation(List<Long> applicationIds, List<NomintedPostMemberVO> list){
-		List<Object[]> upadatedAppltns = nominatedPostFinalDAO.getApplicationDataByApplctnIds(applicationIds);
+	public void anyPositionLinkedApplicationsUpdation(List<Long> applicationIds, List<NomintedPostMemberVO> list,Long goExpiredStatusId){
+		List<Object[]> upadatedAppltns = nominatedPostFinalDAO.getApplicationDataByApplctnIds(applicationIds,goExpiredStatusId);
 		
 		if(upadatedAppltns != null && upadatedAppltns.size() >0){
 			for(Object[] obj : upadatedAppltns){
@@ -3478,7 +3498,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								
 			}
 			
-			List<Object[]> postnLinkedData = nominatedPostFinalDAO.getApplicationDataByApplctnIds(apllicationIds);
+			List<Object[]> postnLinkedData = nominatedPostFinalDAO.getApplicationDataByApplctnIds(apllicationIds,null);
 			if(postnLinkedData != null && postnLinkedData.size() > 0){
 				for (Object[] obj : postnLinkedData) {
 					NominatedPostVO VO = getMatchedVOForMember(returnVoList,(Long)obj[0]);
@@ -7489,7 +7509,11 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 					 //if(fromDate1 == null || lastDate.after(fromDate1)){
 						 List<String> dates =  dateUtilService.getDaysBetweenDatesStringFormat(frmDate, lastDate);
 						 if(dates != null && dates.size() > 0){
-							 expairStr = setExpireString(dates,sdf.format(dateUtilService.getCurrentDateAndTime())); 
+							 if(dates.contains(sdf.format(dateUtilService.getCurrentDateAndTime()))){
+								 expairStr = setExpireString(dates,sdf.format(dateUtilService.getCurrentDateAndTime())); 
+							 }else{
+								 expairStr = " All Ready Expired";
+							 }
 						}
 					// }
 					

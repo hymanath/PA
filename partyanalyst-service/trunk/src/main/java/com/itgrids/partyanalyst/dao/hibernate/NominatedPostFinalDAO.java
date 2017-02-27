@@ -2146,7 +2146,7 @@ public int updateApllicationStatusToReject(Long memberId,final Long userId){
 	return query.executeUpdate();
 }
 
-public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
+public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds,Long goExpiredStatusId){
 	StringBuilder queryStr = new StringBuilder();
 	
 	queryStr.append(" select model.nominatedPostApplication.nominatedPostApplicationId , model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
@@ -2154,14 +2154,23 @@ public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
 			" model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId, " +
 			" model.nominatedPostMember.nominatedPostPosition.position.positionName,model.nominatedPostApplication.postType.postTypeId from NominatedPostFinal model where " +
 			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' " +
-			" and  model.isExpired = 'N' and "+
+			"  and "+
 				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPostApplication.isExpired = 'N' ");
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
 	
+	if(goExpiredStatusId != null && goExpiredStatusId.longValue() ==9l){
+		queryStr.append(" and model.nominatedPostApplication.isExpired = 'Y'  and model.applicationStatus.applicationStatusId = :statusId  and  model.isExpired = 'Y' " );
+	}else{
+		queryStr.append(" and model.nominatedPostApplication.isExpired = 'N' and  model.isExpired = 'N' " );
+	}
 	Query query = getSession().createQuery(queryStr.toString());
 	if(applicationIds !=null && applicationIds.size()>0){
 		query.setParameterList("applicationIds",applicationIds);
 	}
+	
+	if(goExpiredStatusId != null){
+    	query.setParameter("statusId", goExpiredStatusId);
+    }
 	
 	return query.list();
 	

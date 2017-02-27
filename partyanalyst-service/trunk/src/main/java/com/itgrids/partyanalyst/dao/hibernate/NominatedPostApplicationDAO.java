@@ -848,7 +848,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	}
 	
 	
-	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId){
+	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId,Long statusId){
 		StringBuilder str = new StringBuilder();
 		
 		if(nominateCandId != null && nominateCandId.longValue()>0L)
@@ -858,7 +858,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        " departments.deptName,board.boardId,board.boardName,position.positionId," +
 	        " position.positionName,model.postType.postTypeId,model.nominatedPostApplicationId " +
 	        " from NominatedPostApplication model left join model.position position left join model.departments departments " +
-	        " left join model.board  board  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.isExpired = 'N'  ");
+	        " left join model.board  board  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'   ");
+		
+			if(statusId != null && statusId.longValue() == 9l){
+				str.append(" and model.isExpired = 'Y' and model.applicationStatus.applicationStatusId = :statusId " );
+			}else{
+				str.append(" and model.isExpired = 'N' " );
+			}
+			
 	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
 	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
 	        }
@@ -881,6 +888,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        	  query.setParameter("nominateCandId", nominateCandId);
 	        }
 	      
+	        if(statusId != null){
+	        	query.setParameter("statusId", statusId);
+	        }
 	        return query.list();
 	  }
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
