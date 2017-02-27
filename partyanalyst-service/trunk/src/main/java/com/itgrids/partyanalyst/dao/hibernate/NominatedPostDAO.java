@@ -1992,4 +1992,25 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   return query.list();	
 		
    }
+
+ public List<Long> getNominatedPostIds(Long nominateCandId){
+		Query query = getSession().createQuery("select distinct model.nominatedPostId " +
+				   							   " from NominatedPost model " +
+				   							   " where  model.nominationPostCandidate.nominationPostCandidateId =:nominateCandId and " +
+				   							   " model.nominatedPostStatus.nominatedPostStatusId = 4 and " +
+				   							   " model.isDeleted = 'N' ");
+		query.setParameter("nominateCandId", nominateCandId);
+		return query.list();
+	}
+ public Long getOfNominatedPostCondidates(Long nominateCandId,Long nominatedPostMemberId){
+	   Query query = getSession().createQuery("select distinct model.nominatedPostId " +
+				   " from NominatedPost model " +
+				   " where  model.nominationPostCandidate.nominationPostCandidateId =:nominateCandId and model.nominatedPostMember.nominatedPostMemberId =:nominatedPostMemberId " +
+				   " and model.nominatedPostStatus.nominatedPostStatusId = 4 and " +
+				   " model.isDeleted = 'N' ");
+query.setParameter("nominateCandId", nominateCandId);
+query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
+return (Long) query.uniqueResult();
+	   
+   }
 }
