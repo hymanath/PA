@@ -50,8 +50,22 @@ public class GovtDepartmentVO {
 	private String color;
 	private Long regionScopeId;
 	private String latestStatus;
+	private Long documentId;
+	private String document;
 	
 	
+	public Long getDocumentId() {
+		return documentId;
+	}
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
+	}
+	public String getDocument() {
+		return document;
+	}
+	public void setDocument(String document) {
+		this.document = document;
+	}
 	public String getLatestStatus() {
 		return latestStatus;
 	}
