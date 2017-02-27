@@ -1227,8 +1227,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        	}
 	        	else
 	        	{
-	        		if(count==1)
-	        			locationsList.clear();
+	        		/*if(count==1)
+	        			locationsList.clear();*/
 	        		
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
