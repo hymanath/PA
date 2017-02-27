@@ -1385,9 +1385,9 @@ function displayStatus(myResult){
 	var result = (String)(myResult);
 	if(result.search('success') != -1){
 		$("#assiningLdngImg").hide();
-		getAlertStatusCommentsTrackingDetails();
+		//getAlertStatusCommentsTrackingDetails();
 		//getInvolvedMembersDetilas();
-		assignedOfficersDetailsForAlert();
+		//assignedOfficersDetailsForAlert();
 		alert("Alert Assigned Successfully.");
 		$("#alertStatus").html('Notified');
 		location.reload();
