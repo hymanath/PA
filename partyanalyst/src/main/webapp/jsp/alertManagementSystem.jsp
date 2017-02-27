@@ -256,12 +256,12 @@
 								<p class="text-capital"><span  id="LocationId"></span></p>
 							</td>
 						</tr>
-						<tr>
+						<!--<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>Title</b></span></p>
 								<p class="text-capital"><span  id="titleId"></span></p>
 							</td>
-						</tr>
+						</tr>-->
 						<tr>
 							<td colspan="8">
 								<p class="text-capital"><span class="text-muted "><b>description</b></span></p>
