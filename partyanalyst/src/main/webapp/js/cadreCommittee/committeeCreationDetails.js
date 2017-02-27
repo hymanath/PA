@@ -505,7 +505,7 @@ var globalAssbConstIdsArr = [];
 var globalDistrIdsArr = [];
 function getUserWiseDetails(){
 	$("#distUsrdistrictId").find('option').remove();
-	$("#distUsrdistrictId").append('<option value="0">Select District</option>');
+	$("#distUsrdistrictId").append('<option value="0">All</option>');
 	$("#distUsrdistrictId").trigger("chosen:updated");
 	$("#assblyConstituencyId").empty();
 	$("#assblyConstituencyId").append('<option value="0">All</option>');
