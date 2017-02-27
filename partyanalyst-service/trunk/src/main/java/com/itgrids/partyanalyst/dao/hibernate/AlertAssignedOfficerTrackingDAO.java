@@ -23,7 +23,7 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 											" model1.alertDepartmentComment.insertedUser.userId," +
 											" model1.alertDepartmentComment.insertedUser.userName," +
 											" date(model1.alertDepartmentComment.insertedTime)," +
-											" model.alert.alertSource.source" +
+											" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
 											" from AlertAssignedOfficerTracking model,AlertAssignedOfficerAction model1" +
 											" where model.alertId = model1.alertId" +
 											" and model.alertAssignedOfficerId = model1.alertAssignedOfficerId" +
@@ -45,7 +45,7 @@ public class AlertAssignedOfficerTrackingDAO extends GenericDaoHibernate<AlertAs
 											" model.alertDepartmentComment.insertedUser.userId," +
 											" model.alertDepartmentComment.insertedUser.userName," +
 											" date(model.alertDepartmentComment.insertedTime)," +
-											" model.alert.alertSource.source" +
+											" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
 											" from AlertAssignedOfficerAction model" +
 											" where model.alert.alertId = :alertId" +
 											" and model.isDeleted = 'N'" +
