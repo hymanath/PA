@@ -8016,11 +8016,21 @@ function buildCandidateAppliedPostByCadreDetails(result){
 													
 													/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
 													if(result.subList[i].levelName != null){
-														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"";
+												     if(result.subList[i].path != null && result.subList[i].status == "GO Passed"){	
+								                        str+=':<i id="" class="glyphicon glyphicon-list-alt remove-icon showPdfCls5" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#pdfModelId1" filePath="'+result.subList[i].path+'"></i></br>';
+								                        str+=' Duration : '+" "+result.subList[i].fromDate+" - "+result.subList[i].toDate+"";
+								                          }
+								                         str+='</li>';
 													}
 													else{
-														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
-													}
+														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"";
+												     if(result.subList[i].path != null && result.subList[i].status == "GO Passed"){	
+								                       str+=':<i id="" class="glyphicon glyphicon-list-alt remove-icon showPdfCls5" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#pdfModelId1" filePath="'+result.subList[i].path+'"></i></br>';
+								                       str+='Duration : '+" "+result.subList[i].fromDate+" - "+result.subList[i].toDate+"";
+								                         }
+								                       str+='</li>';
+												}			
 											}
                                            str+='</ul>';
                                         str+='</div>';
@@ -8092,10 +8102,20 @@ function nominatedPostBuilingDetails(result){
 							str+='<p class="labelStatus " style="background:green;width:90px;"> '+result.subList[i].status+' </p>';
 							/* str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>'; */
 							if(result.subList[i].levelName != null){
-								str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'<br>↓<br/>  Dept-'+ result.subList[i].cadreName+"<br>↓<br/>  Board- "+result.subList[i].subCaste+" <br>↓<br/>  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+								str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'<br>↓<br/>  Dept-'+ result.subList[i].cadreName+"<br>↓<br/>  Board- "+result.subList[i].subCaste+" <br>↓<br/>  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+" ";
+								if(result.subList[i].path != null && result.subList[i].status == "GO Passed"){	
+								str+=':<i id="" class="glyphicon glyphicon-list-alt remove-icon showPdfCls5" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#pdfModelId1" filePath="'+result.subList[i].path+'"></i>';
+								str+='Duration : '+" "+result.subList[i].fromDate+" - "+result.subList[i].toDate+"";
+								}
+								str+='</li>';
 							}
 							else{
-								str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+								str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+" ";
+								if(result.subList[i].path != null && result.subList[i].status == "GO Passed"){	
+								str+=':<i id="" class="glyphicon glyphicon-list-alt remove-icon showPdfCls5" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#pdfModelId1" filePath="'+result.subList[i].path+'"></i>';
+								str+='Duration : '+" "+result.subList[i].fromDate+" - "+result.subList[i].toDate+"";
+								}
+								str+='</li>';
 							}
 						 }else{
 							 $("#.nominatedPostliCls").hide();

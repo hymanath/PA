@@ -2235,6 +2235,22 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		 </div>  
 	</div>    
  <!-- End -->
+ <!--srujana-->
+ <div class="modal fade" tabindex="-1" id="pdfModelId1" role="dialog">  
+			<div class="modal-dialog" style="width:80%;">      
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE DOCUMENTS </h4>
+					</div>
+					<div class="modal-body" id="documentDetailsId">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+	</div>
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -3636,7 +3652,26 @@ getCandidateAppliedPostsByCadre(0);
 /*Month & Year Picker*/
 $("#toursDatePicker").datetimepicker({format:'MM-YYYY'});
 $('#toursDatePicker').val(moment().subtract(1, 'month').format('MM-YYYY'));
-
+//srujana
+	$(document).on('click','.showPdfCls5',function(){  
+     
+	var str = '';
+	
+	var filePath = $(this).attr("filePath");
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#pdfModelId1").modal("hide");
+		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	}else{
+		$("#pdfModelId1").modal("show");
+		//str += '<iframe src="'+wurl+'/nominated_post_documents/'+filePath+'" width="100%" height="800">';
+		str += '<iframe src="'+wurl+'/GO_documents/'+filePath+'" width="100%" height="800">';
+		//str += '<iframe src="GO_documents/'+filePath+'" width="100%" height="800">';	
+		str += '</iframe>';
+		$("#documentDetailsId").html(str);
+		
+	}
+	
+}); 
 
 </script>
 </body>
