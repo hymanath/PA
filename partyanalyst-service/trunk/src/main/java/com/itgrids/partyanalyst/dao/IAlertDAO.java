@@ -52,7 +52,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getMemForPartyCommitDesg(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long tdpBasicCommitteeId, Long designationId, String step,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId);
 	public List<Object[]> getAlertDtlsAssignedByPartyCommite(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long cadreId, Long tdpBasicCommitteeId, Long designationId,Long statusId,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId);
 	public List<Object[]> getAlertDetailsByCadreWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long tdpCadreId,Long statusId,String resultType,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId);
-	public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,List<Long> districtIdList,Long catId,List<Long> alertTypeList,List<Long> editionList,Long constituencyId,Long alertStatusId,String locationLevel);
+	public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,List<Long> districtIdList,Long catId,List<Long> alertTypeList,List<Long> editionList,Long constituencyId,Long alertStatusId,String locationLevel,String publicationType,Long publicationId);
 	public Date getAlertLastUpdatedTime();
 	public Long getAlertStatusOfArticle(Long articleId);
 	public List<Object[]> getAlertCreatedDate(Long alertCategoryTypeId);
@@ -103,7 +103,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDistrictIdAndNameByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public Object[] getStateByStateId(Long stateId);
 	public List<Object[]> getPublicationWiseAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,List<Long> districtIds,String requiredLevel,Long alertStatusId);
-	
 	public Long getGovtDepartmentIdForAlert(Long alertId);
+	
 	public List<Object[]> getChannelListForUser();
 }

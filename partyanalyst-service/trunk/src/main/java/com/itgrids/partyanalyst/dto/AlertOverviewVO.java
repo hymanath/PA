@@ -60,7 +60,7 @@ public class AlertOverviewVO {
 	
 	private String publicationId;
 	private String publicationName;
-	
+	private List<Long> locationIdList;
 	
 	
 	public Long getGovtAlertCnt() {
@@ -319,5 +319,11 @@ public class AlertOverviewVO {
 	}
 	public void setPublicationName(String publicationName) {
 		this.publicationName = publicationName;
+	}
+	public List<Long> getLocationIdList() {
+		return locationIdList;
+	}
+	public void setLocationIdList(List<Long> locationIdList) {
+		this.locationIdList = locationIdList;
 	}
 }                                                          
