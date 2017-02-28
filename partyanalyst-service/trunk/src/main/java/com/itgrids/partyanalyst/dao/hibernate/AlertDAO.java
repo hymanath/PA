@@ -5100,7 +5100,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list(); 
 	}
-	public List<Object[]> getDistrictIdAndNameByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> getDistrictIdAndNameByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionList){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select distinct model.userAddress.district.districtId,model.userAddress.district.districtName " +
 		  				  " from Alert model " +
@@ -5115,6 +5115,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		  if(fromDate !=null && toDate !=null){
 			  queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		 }
+		  if(alertTypeList != null && alertTypeList.size() > 0){
+		    	queryStr.append(" and model.alertType.alertTypeId in (:alertTypeList) ");  
+		    }
+		    if(editionList != null && editionList.size() > 0){
+		    	queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
+		    }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 			      queryStr.append(" and model.userAddress.state.stateId in (:userAccessLevelValues)");  
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -5127,6 +5133,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setDate("startDate", fromDate);
 			query.setDate("endDate", toDate);
 		}
+		if(alertTypeList != null && alertTypeList.size() > 0){
+			query.setParameterList("alertTypeList", alertTypeList);
+	    }
+	    if(editionList != null && editionList.size() > 0){
+	    	query.setParameterList("editionList", editionList);
+	    }
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
