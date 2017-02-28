@@ -2394,4 +2394,21 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	return query.list();
 	
 }
+	
+	public int updateApplicationExpiredByApplns(List<Long> nominatedPostApplciationIdsLsit, Long userId,Date currentDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("  update NominatedPostApplication model set  model.applicationStatusId = 9, model.isExpired='Y' ,model.updatedTime =:currentDate");
+		if(userId != null && userId.longValue()>0L)
+			queryStr.append(" , model.updatedBy=:userId ");
+		
+		queryStr.append("  where model.nominatedPostApplicationId in (:nominatedPostApplciationIdsLsit) ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(userId != null && userId.longValue()>0L)
+			 query.setParameter("userId", userId);
+		 query.setParameterList("nominatedPostApplciationIdsLsit", nominatedPostApplciationIdsLsit);
+		 query.setParameter("currentDate", currentDate);
+		 int count = query.executeUpdate();
+		 return count;
+	}
+	
 }
