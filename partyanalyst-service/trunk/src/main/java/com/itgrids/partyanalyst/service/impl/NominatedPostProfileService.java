@@ -7277,7 +7277,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								for (Entry<Long, Long> entry : postMap.entrySet()) {
 									
 									NominatedPost np = nominatedPostDAO.get(entry.getKey());
-									if(np != null && np.getIsExpired() != null && np.getIsExpired().equalsIgnoreCase("Y")){
+									if(np != null && np.getIsExpired() != null ){
 										NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
 										nogo.setNominatedPostId(entry.getKey());
 										nogo.setGovtOrderId(govtOrder.getGovtOrderId());
@@ -7901,4 +7901,42 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 	}
 	return returnList;
 }
+	public String UpdateExpiredAppicationsInNominatedPosts(final Long userId){
+		try {
+			//if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			//	return "";
+			
+			String status = (String) transactionTemplate.execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					int count1 =0;
+					int count2 =0;
+					int count3 =0;
+					int count4 =0;
+					
+					Date currentDate = dateUtilService.getCurrentDateAndTime();
+					List<Long> nominatedPostIdsLsist = nominatedPostGovtOrderDAO.getExpiredNominatedPostIdsLsit(currentDate);
+					if(commonMethodsUtilService.isListOrSetValid(nominatedPostIdsLsist))
+					{
+						List<Long> applciationIdsList = nominatedPostFinalDAO.getNominatedPostApplicationIdsByPostIds(nominatedPostIdsLsist);
+						if(commonMethodsUtilService.isListOrSetValid(applciationIdsList)){
+							count1 = nominatedPostFinalDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,userId,currentDate);
+							count2 = nominatedPostApplicationDAO.updateApplicationExpiredByApplns(applciationIdsList,userId,currentDate);
+						}
+						count3 = nominatedPostGovtOrderDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,currentDate,userId);
+						count4 = nominatedPostDAO.updatePoststoOpenByPostIds(nominatedPostIdsLsist,currentDate,userId);
+					}
+					
+					LOG.error ("Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ");	
+					return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
+				}
+			});
+			return status;
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPanchayatOrWardsByMandalOrMuncId() method, Exception - ",e);
+		}
+		return "failure";
+	}
+	
 }
