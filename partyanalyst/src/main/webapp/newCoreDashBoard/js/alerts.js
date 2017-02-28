@@ -4080,6 +4080,7 @@ function getTotalArticledetails(articleId){
 				$(".districtAlertCls").show();
 			    $(".constituencyAlertCls").show();	
 				getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
+				getDistrictWisePublicationAlert(scopeIdsArr);
 				
 				 var consScopeIdsArr = [];
 				 $(".alertConsSettingsUl li").each(function() {
@@ -4097,7 +4098,25 @@ function getTotalArticledetails(articleId){
 					}
 				  }
 			   });
-				getTotalAlertConstituencyWise(consScopeIdsArr);
+			   // Publication Impact Constituency
+				 var pubConsScopeIdsArr = [];
+				 $(".alertPubConsSettingsUl li").each(function() {
+				  if($(this).find("input").is(":checked")){
+					 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					 if(selectionType == "Constituency"){
+						pubConsScopeIdsArr.push(3);
+					}else if(selectionType == "mandal"){
+						pubConsScopeIdsArr.push(5);  
+						pubConsScopeIdsArr.push(12);  
+					}else if(selectionType == "VillageWard"){
+						pubConsScopeIdsArr.push(7);  
+						pubConsScopeIdsArr.push(9);	
+						pubConsScopeIdsArr.push(6);	
+					}
+				  }
+			   });
+		        getConstituencyWisePublicationAlert(pubConsScopeIdsArr);
+			 	getTotalAlertConstituencyWise(consScopeIdsArr);
 			}
 		}
 		      
