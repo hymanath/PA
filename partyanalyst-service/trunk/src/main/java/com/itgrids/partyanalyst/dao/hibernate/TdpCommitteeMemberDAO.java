@@ -3094,9 +3094,9 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 	}
 	public List<Object[]> getRoleWiseCommitteeMembersCount(Long tdpCommitteeId){
 		Query query = getSession().createQuery("" +
-	    " select model.tdpCommitteeRole.tdpRoles.tdpRolesId , model.tdpCommitteeRole.tdpRoles.role , count(model.tdpCommitteeMemberId)  " +
+	    " select model.tdpCommitteeRole.tdpRoles.tdpRolesId , model.tdpCommitteeRole.tdpRoles.role , count(distinct model.tdpCommitteeMemberId)  " +
 	    " from   TdpCommitteeMember model " +
-	    " where  model.tdpCommitteeRole.tdpCommitteeId = :tdpCommitteeId " +
+	    " where  model.tdpCommitteeRole.tdpCommitteeId = :tdpCommitteeId and model.isActive = 'Y' " +
 	    " group by model.tdpCommitteeRole.tdpRoles.tdpRolesId " +
 	    " order by model.tdpCommitteeRole.tdpRoles.tdpRolesId ");
 		query.setParameter("tdpCommitteeId", tdpCommitteeId);
