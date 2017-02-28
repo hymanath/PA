@@ -91,7 +91,7 @@ public interface IAlertService {
     public List<AlertVO> getAlertStatusByAlertTypeId(Long alertTypeId,Long alertId);
     public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);  
     public List<StatusTrackingVO> getAlertInvolvedCandidate(Long cadreId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
-    public List<AlertOverviewVO> getDistrictListByStateId(Long stateId,Long activityMemberId,Long userTypeId,String fromDateStr,String toDateStr);
+    public List<AlertOverviewVO> getDistrictListByStateId(Long stateId,Long activityMemberId,Long userTypeId,String fromDateStr,String toDateStr,Long alertTypeId,Long editionId);
     public List<AlertOverviewVO> getAlertStatus(Long alertTypeId);
     public List<StatusTrackingVO> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
     public List<AlertOverviewVO> getPublicationWiseAlert(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long alertStatusId,Long alertTypeId,Long editionId,String filterType,List<Long> districtIds);

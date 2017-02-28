@@ -7957,7 +7957,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return statusList;
 		
 	}
-	public List<AlertOverviewVO> getDistrictListByStateId(Long stateId,Long activityMemberId,Long userTypeId,String fromDateStr,String toDateStr){
+	public List<AlertOverviewVO> getDistrictListByStateId(Long stateId,Long activityMemberId,Long userTypeId,String fromDateStr,String toDateStr,Long alertTypeId,Long editionTypeId){
 		List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 		Set<Long> locationValues = new HashSet<Long>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -7969,7 +7969,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				   fromDate = sdf.parse(fromDateStr);
 				   toDate = sdf.parse(toDateStr);
 			 }
-			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 List<Long> alertTypeList = new ArrayList<Long>();
+		     List<Long> editionList = new ArrayList<Long>();
+			     if(alertTypeId != null){
+			    	 if(alertTypeId.longValue()!= 0L){
+			    		 alertTypeList.add(alertTypeId);
+			    	 }
+			     }
+			     if(editionTypeId != null){
+			    	 if(editionTypeId.longValue() == 1L){
+			    		 editionList.add(editionTypeId);
+			    	 }else if(editionTypeId.longValue() == 2L){  
+			    		 editionList.add(editionTypeId);
+			    		 editionList.add(3L);
+			    	 }
+			     }
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
 				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
@@ -7983,7 +7998,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					locationValues.clear();
 					locationValues.addAll(parliamentAssemlyIds);      
 				}
-			  List<Object[]> rtrnDistObjLst = alertDAO.getDistrictIdAndNameByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+			  List<Object[]> rtrnDistObjLst = alertDAO.getDistrictIdAndNameByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,alertTypeList,editionList);
 			  setRequiredDataToList(rtrnDistObjLst,resultList); 
 		}catch(Exception e){
 			LOG.error("Error occured getDistrictListByStateId() method of AlertService{}",e);	
