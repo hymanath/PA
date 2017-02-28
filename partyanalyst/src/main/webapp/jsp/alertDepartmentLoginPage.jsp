@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>Government Login</title>
 <link rel="icon" type="image/png"  href="alertDepartment/img/GOVT.png">
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/bootstrap.min.css" media="screen" />
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/custom.css" media="screen" />
+<link href="alertDepartment/css/animate.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="alertDepartment/js/alertDepartmentLoginPage.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -29,7 +31,6 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
@@ -45,6 +46,10 @@
 		{
 			display:none;
 		}
+		.loginBox
+		{
+			display:none;
+		}
 	</style>
 </head>
 <body>
@@ -56,12 +61,23 @@
 			<div class="loginBox">
 				<div class="row">
 					<div class="col-md-7 col-xs-12 col-sm-7">
-						<img src="alertDepartment/img/APLOGINLOGO.png"/>
+						<img src="alertDepartment/img/APLOGINLOGO.png" class="image"/>
 					</div>
 					<div class="col-md-5 col-xs-12 col-sm-5">
 						<div class="loginFormBox">
-							<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
-							<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-user"></i>
+								</span>
+								<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
+							</div>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-lock"></i>
+								</span>
+								<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
+							</div>
+							
 							<input type="submit" class="signin btn btn-success btn-block" id="submit1" value="LOGIN" style="margin-top:20px;"/>
 							<div id="ajaxcallimage"  style="display:none;margin-top:10px">
 								<font  style="font-size:small;">Sending Your Request. Please wait...</font>
@@ -78,6 +94,14 @@
 </div>
 <script>
 var userip = "";
+setTimeout(function(){	
+	$(".loginBox").show();
+	$(".loginBox").addClass('animated fadeInUp');
+},200);
+setTimeout(function(){	
+	$(".image").addClass("animated fadeInLeft");
+	$(".loginFormBox").addClass("animated fadeInRight");
+},300);
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
 </body>

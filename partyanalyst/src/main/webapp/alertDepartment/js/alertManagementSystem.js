@@ -335,7 +335,7 @@ function totalAlertGroupByStatusThenDepartment()
 function buildtotalAlertGroupByStatusThenDepartment(result)
 {
 	var str='';
-	str+='<ul class="nav nav-tabs" role="tablist">';
+	str+='<ul class="nav nav-tabs navTabs" role="tablist">';
 	for(var i in result)
 	{
 		if(i == 0)
@@ -1573,15 +1573,33 @@ function buildStatusWiseTotalAlerts(result){
 	var totalAlerts = 0;
 	 var str='';
  	 str+='<div class="scrollerBlock">';
-	 for(var i in result)
-	 {
-		 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div class="panel panel-default panelCustomNew">';
-				str+='<div class="panel-heading" style="background-color:#f3f3f3 !important">';
-					str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="panel-group" id="departmentOverview" role="tablist" aria-multiselectable="true">';
+			for(var i in result)
+			{
+			  str+='<div class="panel panel-default panelCustomNew">';
+				str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+				if(i == 0)
+				{
+					str+='<a role="button" class="collapseIcon" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+					  str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
+					str+='</a>';
+				}else{
+					str+='<a role="button" class="collapsed collapseIcon" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+					  str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
+					str+='</a>';
+				}
+					
 				str+='</div>';
-				str+='<div class="panel-body">';
-					str+='<div class="row">';
+				if(i == 0)
+				{
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+				}else{
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+				}
+				
+				  str+='<div class="panel-body">';
+					 str+='<div class="row">';
 					if(result[i].govtDepartmentVOList != null && result[i].govtDepartmentVOList.length > 0){
 						str+='<div class="col-md-9 col-xs-12 col-sm-9">';
 							str+='<h4 class="panel-title text-capital m_top5">district alerts</h4>';
@@ -1680,13 +1698,15 @@ function buildStatusWiseTotalAlerts(result){
 							str+='<div id="designationDetailedReport'+result[i].departmentId+'"></div>';
 						str+='</div>';
 					str+='</div>';
+				  str+='</div>';
 				str+='</div>';
+			  str+='</div>';
+			}
 			str+='</div>';
 		str+='</div>';
-	 }
 	str+='</div>';
 	$("#alertDepartmentWise").html(str);
-	if(result.length > 4)
+	if(result.length > 10)
 	{
 		$(".scrollerBlock").mCustomScrollbar({setHeight:'1500px'});
 	}

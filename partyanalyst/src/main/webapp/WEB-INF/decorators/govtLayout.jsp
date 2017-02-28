@@ -63,7 +63,7 @@
 <footer>
 	<div class="row-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-			All &copy; Andhra pradesh Government  
+			All &copy; Government Of Andhra Pradesh
 		<div>
 	<div>	
 </footer>
