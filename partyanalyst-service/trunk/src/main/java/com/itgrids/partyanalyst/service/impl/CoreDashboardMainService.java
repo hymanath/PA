@@ -1070,6 +1070,16 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,nameForLocationMap);
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		    	 // Santosh
+		    	 //Remove those candidate.Which location has not committee.
+		    	   List<UserTypeVO> filterCandidateList = new ArrayList<UserTypeVO>();
+				    for(UserTypeVO candiateVO:activityMembersList){
+				    	 if(candiateVO.getTotalCount()>0l){
+				    		 filterCandidateList.add(candiateVO);
+				    	 }
+				    }
+				    activityMembersList.clear();
+				    activityMembersList.addAll(filterCandidateList);
 		    	 //sorting in descending order of completed percantages.
 		    	 Collections.sort(activityMembersList,ActivityMemberCompletedCountPercDesc);
 		     }
@@ -1244,7 +1254,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 //calculating percantage.
 		    	  setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
-		    	  
+		    	  // Santosh
+		    	  //Remove those candidate.Which location has not committee.
+		    	   List<UserTypeVO> filterCandidateList = new ArrayList<UserTypeVO>();
+				    for(UserTypeVO candiateVO:activityMembersList){
+				    	 if(candiateVO.getTotalCount()>0l){
+				    		 filterCandidateList.add(candiateVO);
+				    	 }
+				    }
+				    activityMembersList.clear();
+				    activityMembersList.addAll(filterCandidateList);
+				    
 		    	//sorting in descending order of completed percantages.
 			      Collections.sort(activityMembersList,ActivityMemberCompletedCountPercDesc);
 		     }
