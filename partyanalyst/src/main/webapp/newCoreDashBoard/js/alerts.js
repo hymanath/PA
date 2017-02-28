@@ -4009,6 +4009,7 @@ function getTotalArticledetails(articleId){
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
 	     getDistrictListByStateId(globalActivityMemberId,globalUserTypeId);
+		 $("#dstrctSlctBxId").val(0);
 		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		
