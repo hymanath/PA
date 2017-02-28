@@ -1950,6 +1950,22 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	    return query.list();
  }
    
+   public int updatePoststoOpenByPostIds(List<Long> nominatedPostIdsLsist, Date currentDate,Long userId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("update NominatedPost model set model.nominationPostCandidateId = null ,model.updatedTime=:currentDate,model.nominatedPostStatusId = 1  ");
+		if(userId != null && userId.longValue()>0L)
+			queryStr.append(" ,model.updatedBy=:updatedBy ");
+		queryStr.append(" where date(model.NominatedPostId) <:currentDate and model.isDeleted='N'  ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setDate("currentDate", currentDate);
+		if(userId != null && userId.longValue()>0L)
+			query.setParameter("updatedBy", userId);
+		
+		return query.executeUpdate();
+	}
+   
    public List<Long> getNominatedPostIdsForBoardLevelId(Long boardLevelId,Long levelValue,Long departmentId,Long boardId,Long positionId){
 	   StringBuilder str = new StringBuilder(); 
 	   str.append(" select model.nominatedPostId from NominatedPost model" +
