@@ -1364,7 +1364,7 @@
 		<property name="mahaNaduService" ref="mahaNaduService"/>
 		<property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew"/>
 		<property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService"/>
-		
+		<property name="nominatedPostProfileService" ref="nominatedPostProfileService"/>
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
