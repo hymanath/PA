@@ -992,7 +992,7 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 									if (this.y === 0) {
 										return null;
 									} else {
-										return Highcharts.numberFormat(this.percentage,1) + '%';
+										return Highcharts.numberFormat(this.y,1) + '%';
 									}
 								}
 							  
@@ -1001,7 +1001,7 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 					},
 
 					 tooltip: {
-						 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+						 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
 						/* formatter: function () {
 							var s = '<b>' + this.x + '</b>';
 
@@ -1125,7 +1125,7 @@ function buildSelectedEventDetails(result)
 					}
 				},
 				tooltip: {
-					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
 					shared: true
 				},
 				legend: {
