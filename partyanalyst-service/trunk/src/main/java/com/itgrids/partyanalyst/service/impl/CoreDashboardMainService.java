@@ -1070,7 +1070,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,nameForLocationMap);
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
-		    	 // Santosh
+		    	
 		    	 //Remove those candidate.Which location has not committee.
 		    	   List<UserTypeVO> filterCandidateList = new ArrayList<UserTypeVO>();
 				    for(UserTypeVO candiateVO:activityMembersList){
@@ -1132,7 +1132,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	                }
 		     }
 			   activityMembersList.addAll(childActivityMembersMap.values());
-        }
+	        }
 		   return activityMembersList;
     }
    
@@ -1254,7 +1254,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 //calculating percantage.
 		    	  setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
-		    	  // Santosh
+		    	
 		    	  //Remove those candidate.Which location has not committee.
 		    	   List<UserTypeVO> filterCandidateList = new ArrayList<UserTypeVO>();
 				    for(UserTypeVO candiateVO:activityMembersList){
