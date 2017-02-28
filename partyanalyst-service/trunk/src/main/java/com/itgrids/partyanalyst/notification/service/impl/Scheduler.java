@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -33,10 +34,15 @@ public class Scheduler {
 	private ResultStatus rs;
     private IMahaNaduService mahaNaduService;
     private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
-    
+    private INominatedPostProfileService nominatedPostProfileService;
     private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
     
     
+	public void setNominatedPostProfileService(
+			INominatedPostProfileService nominatedPostProfileService) {
+		this.nominatedPostProfileService = nominatedPostProfileService;
+	}
+
 	public void setCoreDashboardCadreRegistrationService(
 			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
 		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
@@ -749,5 +755,18 @@ public class Scheduler {
 			log.fatal("\n\n pushCadreCountsLocationWiseByCasteStateByLowLevel() "); 
 		}
 		return rs;  
+	}
+	
+	public void UpdateExpiredAppicationsInNominatedPosts(){
+		
+		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			log.error(" Entered In To -  UpdateExpiredAppicationsInNominatedPosts.. "); 
+			try{  
+				nominatedPostProfileService.UpdateExpiredAppicationsInNominatedPosts(null);
+				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed "); 
+			}catch(Exception e){
+				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed with error "); 
+			}
+		}
 	}
 }
