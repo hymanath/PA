@@ -1838,7 +1838,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long userTypeId = jObj.getLong("userTypeId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
-			resultList = alertService.getDistrictListByStateId(stateId,activityMemberId,userTypeId,fromDateStr,toDateStr);
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long editionId = jObj.getLong("editionId");
+			resultList = alertService.getDistrictListByStateId(stateId,activityMemberId,userTypeId,fromDateStr,toDateStr,alertTypeId,editionId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getDistrictListByStateId() of CreateAlertAction",e);
 		}

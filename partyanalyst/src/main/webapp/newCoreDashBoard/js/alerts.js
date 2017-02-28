@@ -4008,7 +4008,7 @@ function getTotalArticledetails(articleId){
 	function getEditioDtls(alertTypeStr,alertEdition){
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
-	
+	     getDistrictListByStateId(globalActivityMemberId,globalUserTypeId);
 		//alert($("#alertTypeHiddenId").attr("attr_alert_id"));
 		//alert($("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
 		
@@ -4232,12 +4232,23 @@ function getTotalArticledetails(articleId){
       });	
 	}
 	function getDistrictListByStateId(globalActivityMemberId,globalUserTypeId){
+		
+		var alertTypeId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertTypeId == undefined){
+			alertTypeId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
 		var jsObj = { 
 			stateId :globalStateId,
             activityMemberId:globalActivityMemberId,
 			userTypeId:globalUserTypeId,
 			fromDate : customStartDateAlert,      
-			toDate : customEndDateAlert
+			toDate : customEndDateAlert,
+			alertTypeId:alertTypeId,
+			editionId:editionId,
 		}                  
 		$.ajax({
 			type : 'POST',        
