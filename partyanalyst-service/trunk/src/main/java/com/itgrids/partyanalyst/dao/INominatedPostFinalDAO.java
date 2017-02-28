@@ -69,5 +69,6 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,
 			 Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,List<Long> locationIds,String type,String casteType);
 	 public List<Long> getNominatedPostFinalIdsByMemberOfFinalReview(Long memberId,List<Long> status);
-	 
+	 public List<Long> getNominatedPostApplicationIdsByPostIds(List<Long> nominatedPostIdsLsit);
+	 public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Long userId,Date currentDate);
 }
