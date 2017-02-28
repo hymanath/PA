@@ -8,7 +8,7 @@
 	$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		
+		$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");
 		var eventIdsString="7,30";
 		
 		$(".moreEventsBlocksIcon").attr("attr_type","event");
@@ -337,7 +337,7 @@ $(document).on("click",".eventStrngPrCls",function(){
 });
 
 $(document).on("click",".eventsListExpandIcon",function(){
-	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
+	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");	
 	$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
 	$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
 	$("#eventsDistWiseCohort1,#eventsGraphBlock1").html(' ');
