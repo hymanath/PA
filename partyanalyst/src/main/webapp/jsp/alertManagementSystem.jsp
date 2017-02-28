@@ -330,13 +330,13 @@
 									</div>-->
 									<div class="row">
 										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDeptId"></span></label>
+											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>
 											<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	
 												<option></option>
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLvlId"></span></label>
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>
 											<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
 												<option></option>
 											</select>
@@ -354,19 +354,19 @@
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgLocationId"></span></label>
+											<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLocationId"></span></label>
 											<select class="chosenSelect" id="locationsId" name="alertAssigningVO.levelValue">	
 												<option></option>
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgDesgId"></span></label>
+											<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>
 											<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
 											<option></option>	
 											</select>
 										</div>
 										<!--<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:red;" id="errMsgOffcrId"></span></label>
+											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>
 											<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 												<option></option>
 											</select>
