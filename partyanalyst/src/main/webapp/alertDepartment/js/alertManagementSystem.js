@@ -1,6 +1,6 @@
 /*global Function and variables Start*/
-var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
-var currentToDate = moment().format("DD/MM/YYYY");
+var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalStateId = 1;  
 var globalNewsPaperIdArr = [];
 var globalChannelIdArr = [];
@@ -96,6 +96,7 @@ $("#dateRangePicker").daterangepicker({
 	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
+		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
 		'Today' : [moment(), moment()],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
@@ -106,9 +107,20 @@ $("#dateRangePicker").daterangepicker({
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
+var dates= $("#dateRangePicker").val();
+var pickerDates = currentFromDate+' - '+currentToDate
+if(dates == pickerDates)
+{
+	$("#dateRangePicker").val('All');
+}
+
 $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDate = picker.startDate.format('DD/MM/YYYY');
 	currentToDate = picker.endDate.format('DD/MM/YYYY');
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePicker").val('All');
+	}
 	totalAlertGroupByStatusForGovt();
 	totalAlertGroupByStatusThenDepartment();
 	getDistrictWiseTotalForAlertOverview();
@@ -1816,8 +1828,8 @@ $(document).on("click",".departmentCloseIcon",function(){
 				str+='<ul class="statusOverviewGraphUl">';
 				for(var i in result){ //district
 					str+='<li>';
-						str+='<h4 class="panel-title">'+result[i].department+' - '+result[i].totalCount+'</h4>';
-						str+='<div id="statusOverview'+result[i].departmentId+''+id+'" style="height:130px;width:250px;"></div>';
+						str+='<h4 class="panel-title" style="text-align:center">'+result[i].department+' - '+result[i].totalCount+'</h4>';
+						str+='<div id="statusOverview'+i+'" style="height:130px;width:380px;" class="m_top10"></div>';
 					str+='</li>';
 				}
 				str+='</ul>';
@@ -1826,95 +1838,94 @@ $(document).on("click",".departmentCloseIcon",function(){
 		$("#districtWiseOverViewAndStatusDiv"+id).html(str);
 		
 		for(var i in result){
-			var alertStatusCount = [];
-			var alertStatus=[];
-			
+			var categoryName =[];
+			var countAlert = [];
+			var count = [];
+						
+		
 			for(var j in result[i].govtDepartmentVOList){
-				alertStatus.push(result[i].govtDepartmentVOList[j].department)
-				//alertStatusCount.push(result[i].govtDepartmentVOList[j].count)
-				var obj = {
-					name: result[i].department,
-					y:result[i].govtDepartmentVOList[j].count,
-				}
-				alertStatusCount.push(obj);
+				
+				var uniqCnt = {};
+				categoryName.push(result[i].govtDepartmentVOList[j].department);
+				countAlert.push(result[i].govtDepartmentVOList[j].count);
+				var uniqCnt = {y:parseInt(result[i].totalCount)-parseInt(result[i].govtDepartmentVOList[j].count),color:"#D3D3D3"};
+				count.push(uniqCnt);
 			}
 			
-			$("#statusOverview"+result[i].departmentId+''+id).highcharts({
-				colors: ['#D33E39','#64C664'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				subtitle: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: alertStatus,
-					type: 'category',
-					labels: {
-						formatter: function() {
-							return this.value.toString().substring(0, 10)+'...';
-						},
-						
-					}
-					
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
+			$(function () {
+				$('#statusOverview'+i+'').highcharts({
+					colors: ['#A185BF','#0166FF','#32CCFE','#019966','#FF6600','#CC0001'], 
+					chart: {
+						type: 'column'
+					},
 					title: {
 						text: ''
 					},
-					labels: {
-						enabled:false
-					}
-				},
-				legend: {
-					enabled: false
-				},
-				
-						
-				plotOptions: {
-					column: {
-						stacking: 'normal',
-						dataLabels: {
-							enabled: true,
-							 formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return (this.y);
-								}
+				   
+					xAxis: {
+						 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+							 categories: categoryName,
+						labels: {
+								//rotation: -25,
+								style: {
+									fontSize: '11px',
+									fontFamily: 'Verdana, sans-serif'
+								},
 							}
-						  
-						}
-					}
-				},
-
-				 tooltip: {
-					formatter: function () {
-						var s = '<b>' + this.x + '</b>';
-
-						$.each(this.points, function () {
-							s += '<br/><b style="color:'+this.series.color+'">' + this.point.name + ': ' +
-								(this.y)+'</b> ';
-						});
-
-						return s;
 					},
-					shared: true
-				},
+					yAxis: {
+						min: 0,
+							   gridLineWidth: 0,
+								minorGridLineWidth: 0,
+						title: {
+							text: ''
+						}
+					},
+					tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
 
-				series: [{
-					data: alertStatusCount,
-				}],
-			 
+							$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+									(this.y);
+							});
+
+							return s;
+						},
+						shared: true
+					},
+					legend: {   
+											
+							enabled: false,				
+											
+						},   				
+					plotOptions: {
+						column: {
+							stacking: 'percent',  
+							dataLabels:{    
+								enabled: true,      
+								formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										//return Highcharts.numberFormat(this.y,0);
+									}
+								}
+							}  
+						}
+					},      
+					series: [{
+						data: count  
+					}, {
+						name: "Number of alerts",
+						data: countAlert,
+						colorByPoint: true
+					}]
+				});
 			});
 		}
 		
