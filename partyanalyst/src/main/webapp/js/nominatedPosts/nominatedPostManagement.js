@@ -713,7 +713,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 				str+='<table class="table table-bordered tableCollapse">';
 					str+='<thead>';
 							str+='<th>Position</th>';					
-							str+='<th>Total Posts</th>';					
+							str+='<th>Total Posts<a href="javascript:{}" style="margin-left:10px;" class="btn appleNewPostBtn">Apply For Post</a></th>';					
 							
 					str+='</thead>';
 					
@@ -1720,3 +1720,4 @@ $(document).on("click",".anyDeptBrdCls",function(){
 		deptId = deptsId;
 	window.location.replace("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"&stN="+globalStatus+"");
 });
+

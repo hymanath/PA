@@ -2272,13 +2272,14 @@ $(document).on("click",".radioBtnCls",function(){
 					 $(".constituenyCls").show();
                      $("#getDetailsId").show();					 
 			   }
-			getLocationAndBoardLevelWiseCasteCatgryPostsData();
+			//getLocationAndBoardLevelWiseCasteCatgryPostsData();
 		 }
 		});	
  function getLocationAndBoardLevelWiseCasteCatgryPostsData(){    
 	$("#loctnLvlCntId").html('');
     $(".loctnLvlCntDivCls").show();
-    $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
+	 $("#errMsgId").html("");
+    
 	var distIdArr = [];
 	//locationIds.push(19);
 	//locationIds.push(23);
@@ -2293,8 +2294,23 @@ $(document).on("click",".radioBtnCls",function(){
 	  if(distIdArr == null){
 		  distIdArr = [];
 	  }
-	 
-          
+	  
+	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
+	 if(searchType1 == "2" ){
+		 var subType  = $('input[name=checkBoxName]:checked').val();	     
+		   if(subType == "district"){
+		 if($("#districtSelectBoxId").val() == null || $("#districtSelectBoxId").val() == ""){
+			 $("#errMsgId").html("Please select district");
+			 return;
+		 }
+		   }else {
+			   if($("#consLevelId").val() == null || $("#consLevelId").val() == ""){
+			 $("#errMsgId").html("Please select constituency");
+			 return;
+			   }
+		 }
+	 }
+    $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');      
   var jObj ={
         postLevelId : 0,
 		casteGrpId   :0,
