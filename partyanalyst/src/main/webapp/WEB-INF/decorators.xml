@@ -686,6 +686,7 @@
 	   <pattern>/partyLeadersDashboardAction*</pattern>
 	   <pattern>/partyAndLeaderActivitiesAndPerformanceTracking*</pattern>
 	   <pattern>/dailyMonthlyPartyActivities*</pattern>
+	   <pattern>/committeesMonitoringAction*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
 		<pattern>/birthDayAction*</pattern>
 		<pattern>/govtOrderIssuedAction*</pattern> 
