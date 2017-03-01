@@ -1629,11 +1629,12 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';  
 			for(var i in result)
 			{
-				
-				if(length != i){
-					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok  pull-right" style="font-size: 22px;color: #777 !important;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
+				//if(length != i){
+			   if(result[i].currentSts == result[i].status)  
+			   {  
+					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
 				}else{
-					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-hourglass pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
 				}        
 				
 			}
@@ -1641,11 +1642,12 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 			str+='<div class="tab-content alertComment">';
 				for(var i in result)
 				{
-					if(length != i)
+					//if(length != i)
+				   if(result[i].currentSts == result[i].status)  
 					{
-						str+='<div role="tabpanel" class="tab-pane " id="commentStatus'+i+'">';
-					}else{
 						str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+					}else{
+						str+='<div role="tabpanel" class="tab-pane " id="commentStatus'+i+'">';
 					}
 					for(var j in result[i].sublist2)
 					{
