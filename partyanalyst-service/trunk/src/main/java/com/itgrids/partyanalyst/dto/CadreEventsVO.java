@@ -39,10 +39,11 @@ public class CadreEventsVO {
 	public void setLateCount(Long lateCount) {
 		this.lateCount = lateCount;
 	}
-	public Long getAttendedTime() {
+	public String getAttendedTime() {
 		return attendedTime;
 	}
-	public void setAttendedTime(Long attendedTime) {
+	public void setAttendedTime(String attendedTime) {
 		this.attendedTime = attendedTime;
 	}
+	
 }
