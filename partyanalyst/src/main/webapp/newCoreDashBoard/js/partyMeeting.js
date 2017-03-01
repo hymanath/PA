@@ -5065,8 +5065,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}else if(id==1 || id==2 || id==12 || id==21 ){
 			category = "Representative";      
 		}else{
-			category = "other"; 
-			return;
+			category = "other";
 		}
 		$("#meetingMemDetailsId").modal("show");     
 		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
@@ -5109,7 +5108,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				partyMeetingTypeArr.push($(this).find("input").attr("id"));
 			}
 		}); 
-		var state = globalState;  
+		var state = globalState;     
 	   
 		var partyMeetingIdArr = [];    
 		partyMeetingIdArr.push(partyMeetingId);  
@@ -5121,7 +5120,6 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			category = "Representative";      
 		}else{
 			category = "other";
-			return;			
 		}
 		$("#meetingMemDetailsId").modal("show");     
 		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
@@ -5176,7 +5174,6 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			category = "Representative";      
 		}else{
 			category = "other";
-			return;     
 		}
 		$("#meetingMemDetailsId").modal("show");     
 		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
@@ -5230,7 +5227,6 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			category = "Representative";      
 		}else{
 			category = "other";
-			return;
 		}
 		$("#meetingMemDetailsId").modal("show");     
 		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
@@ -5244,7 +5240,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
 					 startDateString : globalStartDateForSpecialMeeting,
-					 endDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
@@ -5285,8 +5281,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		}else if(id==1 || id==2 || id==12 || id==21 ){      
 			category = "Representative";      
 		}else{
-			category = "other";
-			return;
+			category = "other";  
 		}
 		$("#meetingMemDetailsId").modal("show");     
 		$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
@@ -5300,7 +5295,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					 partyMeetingMainTypeId : 3,                  
 					 state : state,
 					 startDateString : globalStartDateForSpecialMeeting,
-					 endDateString : globalStartDateForSpecialMeeting,
+					 endDateString : globalEndDateForSpecialMeeting,
 					 partyMeetingTypeIds:partyMeetingTypeArr,
 					 partyMeetingIds :partyMeetingIdArr,  
 					 category : category,
@@ -5357,7 +5352,7 @@ $(document).on("click",".updationDetailsCls",function(){
 		$("#mdlHeadingId").html("<span>"+levelType+ " wise Party Meeting Conflicts");
 		var jsObj ={ 
 		             levelId : locationLevel,
-					 startDate : customStartDateMeetings,
+					 startDate : customStartDateMeetings,   
 					 endDate : customEndDateMeetings
 				  }
 		$.ajax({
