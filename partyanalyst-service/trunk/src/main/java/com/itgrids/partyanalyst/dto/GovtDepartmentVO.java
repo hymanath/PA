@@ -53,6 +53,7 @@ public class GovtDepartmentVO {
 	private Long documentId;
 	private String document;
 	private String timeStr;
+	private String shortName;
 	
 	public String getTimeStr() {
 		return timeStr;
@@ -245,6 +246,12 @@ public class GovtDepartmentVO {
 	}
 	public void setRegionScopeId(Long regionScopeId) {
 		this.regionScopeId = regionScopeId;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 	
 	
