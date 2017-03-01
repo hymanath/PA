@@ -4377,13 +4377,13 @@ var globalImages;
 		   $(".profileSelection").hide();
 		   $(".debatesBlock,.newsBlock,.meetingsBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.NewToursBlock").remove();
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
-		  $(".iconExpand").hide();
+		 // $(".iconExpand").hide();
 		  setTimeout(function(){
+			   passRequiredUrl(finalURL);
 			  $(".iconExpand").trigger('click');
 			  //$(".moreBlocksIcon").trigger('click');
 			  $(".moreBlocksIcon").show();
 			  $(".moreBlocksDetailAndComp").show();
-			  passRequiredUrl(finalURL);
 			  $(".comparisionBlock ").trigger("click");
 		  },1000)
 	  }
