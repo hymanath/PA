@@ -803,6 +803,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficer.setAlertStatusId(2l);
 					alertAssignedOfficer.setIsDeleted("N");
+					alertAssignedOfficer.setIsApproved("Y");
 					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Officer Assigning Tracking
@@ -900,7 +901,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	}
 	
 	public List<GovtDepartmentVO> getStatusWiseCommentsTracking(Long alertId){
-		List<GovtDepartmentVO> returnList = null;
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
 			Map<Long,GovtDepartmentVO> statusMap = new LinkedHashMap<Long, GovtDepartmentVO>();
 			
@@ -919,12 +920,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			
 			AlertStatus pendingSts = alertStatusDAO.get(1l);
 			GovtDepartmentVO pendvo = new GovtDepartmentVO();
-			pendvo.setId(pendingSts.getAlertStatusId());
+			pendvo.setStatusId(pendingSts.getAlertStatusId());
 			pendvo.setStatus(pendingSts.getAlertStatus());
-			statusMap.put(pendingSts.getAlertStatusId(), pendvo);
+			//statusMap.put(pendingSts.getAlertStatusId(), pendvo);
+			returnList.add(pendvo);
 			
 			List<Object[]> list = alertAssignedOfficerTrackingDAO.getStatusWiseTrackingCommentsNew(alertId);
-			if(list != null && !list.isEmpty()){
+			/*if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					GovtDepartmentVO vo = statusMap.get(statusId);
@@ -971,9 +973,42 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						vo.getGovtDeptList().add(datevo);
 					}
 				}
+			}*/
+			String latestStatus = null;
+			List<String> statusList = alertAssignedOfficerTrackingDAO.getLatestStatusForAlertTracking(alertId);
+			if(statusList != null && !statusList.isEmpty())
+				latestStatus = statusList.get(0);
+			
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					String timeStr = null;
+					String dateTime = obj[10] != null ? obj[10].toString():"";
+					if(dateTime != null && dateTime.toString().trim().length() > 0){
+						String[] dateTimeArr = dateTime.split(" ");
+						String ttlTime = dateTimeArr[1];
+						String[] ttlTimeArr = ttlTime.split(":");
+						timeStr = ttlTimeArr[0]+":"+ttlTimeArr[1];
+					}
+					
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setStatus(obj[1] != null ? obj[1].toString():"");
+					vo.setCommentId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setComment(obj[3] != null ? obj[3].toString():"");
+					vo.setId(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+					vo.setName(obj[5] != null ? obj[5].toString():"");
+					vo.setDateStr(obj[6] != null ? obj[6].toString():"");
+					vo.setSource(obj[7] != null ? obj[7].toString():"");
+					vo.setDocumentId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					vo.setDocument(obj[9] != null ? obj[9].toString():"");
+					vo.setTimeStr(timeStr);
+					vo.setLatestStatus(latestStatus);
+					
+					returnList.add(vo);
+				}
 			}
 			
-			String latestStatus = null;
+			/*String latestStatus = null;
 			List<String> statusList = alertAssignedOfficerTrackingDAO.getLatestStatusForAlertTracking(alertId);
 			if(statusList != null && !statusList.isEmpty())
 				latestStatus = statusList.get(0);
@@ -985,7 +1020,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			}
 			
 			if(statusMap != null)
-				returnList = new ArrayList<GovtDepartmentVO>(statusMap.values());
+				returnList = new ArrayList<GovtDepartmentVO>(statusMap.values());*/
 			
 		} catch (Exception e) {
 			logger.error("Error occured getStatusWiseCommentsTracking() method of CccDashboardService",e);
