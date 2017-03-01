@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
@@ -74,8 +75,10 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ImageCheckVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.TdpCadreSmsStatusVO;
@@ -134,7 +137,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
 	private IIvrCampaignDAO ivrCampaignDAO;
 	private IIvrCampaignOptionsDAO ivrCampaignOptionsDAO;
+	private ITdpCommitteeDAO tdpCommitteeDAO;
 	
+	
+	public ITdpCommitteeDAO getTdpCommitteeDAO() {
+		return tdpCommitteeDAO;
+	}
+	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
+		this.tdpCommitteeDAO = tdpCommitteeDAO;
+	}
 	public IIvrCampaignOptionsDAO getIvrCampaignOptionsDAO() {
 		return ivrCampaignOptionsDAO;
 	}
@@ -6084,6 +6095,31 @@ public class TdpCadreReportService implements ITdpCadreReportService{
     		}
     		return returnVO;
     	}
-    	
-       
+    	public List<BasicVO> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId){
+    		List<BasicVO> returnList = new ArrayList<BasicVO>();
+    		BasicVO vo = null;
+    		try{
+    		    List<Object[]> mandalList = tdpCommitteeDAO.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId);
+    		    List<Object[]> localBodiesList = tdpCommitteeDAO.getTdpCommitteeLocalBodiesByConstituency(constituencyId, enrollmentId);
+    			if(mandalList != null && mandalList.size() > 0){
+    				 for(Object[] obj:mandalList){
+    	    				vo = new BasicVO();
+    	    				vo.setId(Long.valueOf("2"+obj[0].toString()));
+    	    				vo.setName(obj[1].toString()+" Mandal");
+    	    				returnList.add(vo);
+    	    			}
+    			}
+    			if(localBodiesList != null && localBodiesList.size() > 0){
+    				for (Object[] objects : localBodiesList) {
+    					vo = new BasicVO();
+    		        	vo.setId(Long.valueOf("1"+objects[0].toString()));
+    		        	vo.setName(objects[1].toString()+" Municipality ");
+    		        	returnList.add(vo);
+					}
+    			}
+            }catch(Exception e){
+            	LOG.error("Exception rised in getTdpCommitteeMandalByConstituency",e);
+    		}
+    		return returnList;
+    	}
 }

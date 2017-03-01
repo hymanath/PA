@@ -39,6 +39,7 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 	private Set<PanchayatHamlet> panchayatHamlets = new HashSet<PanchayatHamlet>(0);
 	private Set<Booth> booths = new HashSet<Booth>(0);
 	private String localName;
+	private String isDeleted;
 	public Panchayat()
 	{}
 	
@@ -107,6 +108,14 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 
 	public void setLocalName(String localName) {
 		this.localName = localName;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	

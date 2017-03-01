@@ -191,4 +191,5 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getCommitteeCreationDetails(Long committeeTypeId,List<Long> committeeLevlIdsList,List<Long> designationsList,Long locationLvlId,List<Long> loctnLevlValues,
 				List<Long> committeeEnrollmntIds,Long stateId,String searchType);
 	 public List<BasicVO> userWiseDetailsForDashBoard(Long userId, String accessType, String accessValue);
+	 public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(String mandalId,Long constituencyId,Long enrollmentId);
 }
