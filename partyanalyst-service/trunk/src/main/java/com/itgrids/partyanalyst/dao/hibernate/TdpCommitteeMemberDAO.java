@@ -293,6 +293,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}
 	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate)
 	{
+		String[] dataArr = status.split(":");
 		StringBuilder str = new StringBuilder();
 		//19tehsilId, 20localElectionBodyId 21constituencyId
 		str.append("select model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image," +
@@ -316,10 +317,14 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		else 
 			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId != 1 ");
 		
-		if(status.equalsIgnoreCase("Conform"))
+		if(dataArr[0].toString().equalsIgnoreCase("Conform")){
 			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
-		
-		if(startDate != null && endDate != null){
+		}else if(dataArr[0].toString().equalsIgnoreCase("Started")){
+			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.tdpCommitteeRole.tdpCommittee.completedDate is  null and model.tdpCommitteeRole.tdpCommittee.startedDate is not null ");
+		}else if(dataArr[0].toString().equalsIgnoreCase("NotStarted")){
+			str.append("  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.tdpCommitteeRole.tdpCommittee.completedDate is  null and model.tdpCommitteeRole.tdpCommittee.startedDate is  null ");
+		}
+		if(startDate != null && endDate != null && !dataArr[0].toString().equalsIgnoreCase("NotStarted")){
 			str.append( " and (" +
 					" (date(model.tdpCommitteeRole.tdpCommittee.startedDate) between :startDate and :endDate )  OR  (date(model.tdpCommitteeRole.tdpCommittee.completedDate) between :startDate and :endDate ) " +
 					" )" );
@@ -333,7 +338,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		if(committeeTypeId.longValue() !=0L)
 			query.setParameter("committeeTypeId", committeeTypeId);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
-		if(startDate != null && endDate != null){
+		if(startDate != null && endDate != null && !dataArr[0].toString().equalsIgnoreCase("NotStarted")){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
 		}

@@ -8,5 +8,6 @@ import com.itgrids.partyanalyst.model.GovtOrderDocuments;
 
 public interface IGovtOrderDocumentsDAO extends GenericDao<GovtOrderDocuments, Long>{
 	public List<Object[]> getGovtOrderDocumentsPath(Long govtOrderId);
+	public List<Object[]> getGoPassedDocuments(List<Long> postIds);
 
 }

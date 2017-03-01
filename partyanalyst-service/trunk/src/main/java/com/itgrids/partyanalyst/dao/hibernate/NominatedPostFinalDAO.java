@@ -2444,31 +2444,53 @@ public List<Long> getNominatedPostFinalIdsByMemberOfFinalReview(Long memberId,Li
 	return query.list();
 }
 
-	public List<Long> getNominatedPostApplicationIdsByPostIds(List<Long> nominatedPostIdsLsit){
-		Query query = getSession().createQuery(" select distinct model.nominatedPostApplicationId from NominatedPostFinal model " +
-		 		" where  model.isDeleted = 'N'  and model.nominatedPostApplication.isDeleted ='N'  and "+
-				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  model.isExpired = 'N' " +
-				" and model.nominatedPostApplication.isExpired ='N' and model.nominatedPostId in (:nominatedPostIdsLsit)  ");
-		
-		 query.setParameterList("nominatedPostIdsLsit", nominatedPostIdsLsit);
-		 
-		return query.list();
-	}
+public List<Long> getNominatedPostApplicationIdsByPostIds(List<Long> nominatedPostIdsLsit){
+	Query query = getSession().createQuery(" select distinct model.nominatedPostApplicationId from NominatedPostFinal model " +
+	 		" where  model.isDeleted = 'N'  and model.nominatedPostApplication.isDeleted ='N'  and "+
+			" model.nominatedPostMember.isDeleted='N' and "+
+			" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  model.isExpired = 'N' " +
+			" and model.nominatedPostApplication.isExpired ='N' and model.nominatedPostId in (:nominatedPostIdsLsit)  ");
 	
-	public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Long userId,Date currentDate){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("  update NominatedPostFinal model set  model.applicationStatusId = 9, model.isExpired='Y' ,model.updatedTime =:currentDate");
-		if(userId != null && userId.longValue()>0L)
-			queryStr.append(" , model.updatedBy=:userId ");
-		
-		queryStr.append(" where model.nominatedPostId in (:nominatedPostIdsLsit) ");
-		Query query = getSession().createQuery(queryStr.toString());
-		if(userId != null && userId.longValue()>0L)
-			 query.setParameter("userId", userId);
-		 query.setParameterList("nominatedPostIdsLsit", nominatedPostIdsLsit);
-		 query.setDate("currentDate", currentDate);
-		 int count = query.executeUpdate();
-		 return count;
-	}	
+	 query.setParameterList("nominatedPostIdsLsit", nominatedPostIdsLsit);
+	 
+	return query.list();
+}
+
+public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Long userId,Date currentDate){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("  update NominatedPostFinal model set  model.applicationStatusId = 9, model.isExpired='Y' ,model.updatedTime =:currentDate");
+	if(userId != null && userId.longValue()>0L)
+		queryStr.append(" , model.updatedBy=:userId ");
+	
+	queryStr.append(" where model.nominatedPostId in (:nominatedPostIdsLsit) ");
+	Query query = getSession().createQuery(queryStr.toString());
+	if(userId != null && userId.longValue()>0L)
+		 query.setParameter("userId", userId);
+	 query.setParameterList("nominatedPostIdsLsit", nominatedPostIdsLsit);
+	 query.setDate("currentDate", currentDate);
+	 int count = query.executeUpdate();
+	 return count;
+}	
+
+public List<Long> getNominatedPostIds(Long nominateCandId,Long applicationId,Long statusId){
+	
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" select model.nominatedPostId from NominatedPostFinal model where model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId " +
+			" and model.nominatedPostApplication.nominatedPostApplicationId = :applicationId and model.applicationStatus.applicationStatusId = :statusId " +
+			" and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N'  and model.nominationPostCandidate.isDeleted = 'N' ");
+	
+	if(statusId != null && statusId.longValue() == 9l){
+		queryStr.append("  and model.isExpired = 'Y' and model.nominatedPostApplication.isExpired = 'Y'  " );
+	}else if(statusId != null && statusId.longValue() == 7l){
+		queryStr.append("  and model.isExpired = 'N' and model.nominatedPostApplication.isExpired = 'N'  " );
+	}
+	 Query query = getSession().createQuery(queryStr.toString());
+	 
+	 query.setParameter("nominateCandId", nominateCandId);
+	 query.setParameter("applicationId", applicationId);
+	 query.setParameter("statusId", statusId);
+	 
+	 return query.list();
+	 
+}
 }

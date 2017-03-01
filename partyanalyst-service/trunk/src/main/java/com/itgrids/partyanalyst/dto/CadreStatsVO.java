@@ -15,8 +15,16 @@ public class CadreStatsVO implements java.io.Serializable{
 	private String panchayatORWardPerc;
 	private String boothPerc;
 	private String boothInfuPerc;
+	private String year;
 	private List<CadreStatsVO> subList = new ArrayList<CadreStatsVO>(0);
 	
+	
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
 	public Long getId() {
 		return id;
 	}

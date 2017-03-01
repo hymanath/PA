@@ -6669,7 +6669,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	    }
 	
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck,
-			String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long>levelIdsList){  
+			String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList){  
 		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
 		List<CommitteeSummaryVO> constiLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -7107,7 +7107,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				constiLst.get(0).setAccessState(accessState);
 			}
 			
-			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1 && committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.get(0) == 1l ){
 				
 				getAllIvrDetailsForCampaind(constiLst,2l,"constituency");
 			}

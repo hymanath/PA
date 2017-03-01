@@ -32,6 +32,7 @@ public class TdpCommittee {
 	private Long tdpCommitteeLevelValue;
 	private String isCommitteeConfirmed;
 	private String state;
+	private Long constituencyId;
 	private Constituency constituency;
 	private Date startedDate;
 	private Date completedDate;
@@ -248,6 +249,16 @@ public class TdpCommittee {
 	public void setCommitteeConfirmRule(CommitteeConfirmRule committeeConfirmRule) {
 		this.committeeConfirmRule = committeeConfirmRule;
 	}
+
+	@Column(name = "constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
 	
 	
 }

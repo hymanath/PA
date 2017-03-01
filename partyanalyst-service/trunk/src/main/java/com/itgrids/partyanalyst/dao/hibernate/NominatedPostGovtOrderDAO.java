@@ -25,7 +25,7 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		return query.list();
 	}
 
-	
+
 	private static final String NOMINATED_POST_ID =" model.nominatedPostId ";
 	public List<Long> getExpiredNominatedPostIdsLsit(Date currentDate){
 		Query query = getSession().createQuery(" select distinct "+NOMINATED_POST_ID+" from NominatedPostGovtOrder model where date(model.govtOrder.toDate) <:currentDate " +
@@ -50,4 +50,19 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		
 		return query.executeUpdate();
 	}
+	public List<Long> getNominatedPostGovtOrderByPostId(Long postId){
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.nominatedPostGovtOrderId from  NominatedPostGovtOrder model where model.nominatedPost.nominatedPostId = :postId and " +
+				" model.isDeleted = 'N' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(postId != null && postId.longValue() > 0l){
+	    	query.setParameter("postId", postId);
+	    }
+		
+		return query.list();
+	}
+	
+	
 }

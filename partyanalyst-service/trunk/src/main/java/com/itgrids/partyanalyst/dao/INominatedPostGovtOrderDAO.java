@@ -11,4 +11,5 @@ public interface INominatedPostGovtOrderDAO extends GenericDao<NominatedPostGovt
 	public List<Object[]> gettingGoPassedDates(Long nominatedPostId);
 	public List<Long> getExpiredNominatedPostIdsLsit(Date currentDate);
 	public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsist, Date currentDate,Long userId);
+	public List<Long> getNominatedPostGovtOrderByPostId(Long postId);
 }
