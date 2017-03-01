@@ -1599,8 +1599,8 @@ function buildStatusWiseTotalAlerts(result){
 					str+='<a role="button" class="collapseIcon" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 					str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
 					for(var s in result[i].govtDeptList){    
-						tot = tot + parseInt(result[i].govtDeptList[s].count);
-						str+='<span>'+result[i].govtDeptList[s].shortName+'-'+result[i].govtDeptList[s].count+': </span>';
+						tot = tot + parseInt(result[i].govtDeptList[s].count);   
+						str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span>-:'+result[i].govtDeptList[s].count+' </span>';
 					} 
 					str+='<span>Total-'+tot+'</span>';
 					  str+='</h4>';
@@ -1610,7 +1610,7 @@ function buildStatusWiseTotalAlerts(result){
 					  str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
 					  for(var s in result[i].govtDeptList){ 
 							tot = tot + parseInt(result[i].govtDeptList[s].count);
-							str+='<span>'+result[i].govtDeptList[s].shortName+'-'+result[i].govtDeptList[s].count+': </span>';
+							str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span>-:'+result[i].govtDeptList[s].count+' </span>';
 					  }  
 						str+='<span>Total-'+tot+'</span>';
 					  str+='</h4>';
