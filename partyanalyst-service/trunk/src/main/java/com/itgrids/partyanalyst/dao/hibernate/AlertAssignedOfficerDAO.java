@@ -1061,14 +1061,20 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getDepartmentAndDistrictWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList){
+	public List<Object[]> getDepartmentAndDistrictWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
-					" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-					" D.districtId," +
-					" D.districtName," +
-					" count(distinct model.alert.alertId)");
+					" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " );
+		
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" ,S.stateId " +
+					" , S.stateName " );
+		}else{
+			sb.append(" ,D.districtId " +  
+					" ,D.districtName " );
+		}
+		sb.append(" ,count(distinct model.alert.alertId)");
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
@@ -1081,8 +1087,14 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" left join UA.panchayat P" +
 					" left join UA.ward W");
 		sb.append(" where model.alert.isDeleted = 'N' and model.isDeleted = 'N'" +
-					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
-					//" and D.districtId is not null");
+					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") " +
+					" and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevelId =:levelId ");
+		}else{
+			sb.append(" and D.districtId is not null");   
+		}
+		
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
@@ -1123,7 +1135,16 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 8l)
 			sb.append(" and W.constituencyId in (:levelValues)");
 		
-		sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId,D.districtId");
+		
+		sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId" );
+		
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" ,S.stateId ");
+		}else{
+			sb.append(" ,D.districtId");
+		}
+		
+		
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(departmentIds != null && !departmentIds.isEmpty())
@@ -1143,7 +1164,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty())
 			query.setParameterList("levelValues", levelValues);
-			
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			query.setParameter("levelId", levelId);
+		}
 		return query.list();
 	}
 	
@@ -1167,7 +1190,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" left join UA.panchayat P" +
 					" left join UA.ward W");
 		sb.append(" where model.alert.isDeleted = 'N' and model.isDeleted = 'N'" +
-					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
+					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and " +
+					" model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
@@ -1510,14 +1534,20 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getDistWiseTotalAlertsStatusForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList){
+	public List<Object[]> getDistWiseTotalAlertsStatusForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList, String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct ");
-		sb.append(" D.districtId," +
-					" D.districtName," +
-					" model.alertStatus.alertStatusId," +
-					" model.alertStatus.alertStatus," +
-					" count(distinct model.alert.alertId)");
+		if(type != null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" S.stateId " +
+					  " ,S.stateName");  
+		}else{
+			sb.append(" D.districtId" +
+					  " , D.districtName");
+		}
+		
+		sb.append(" ,model.alertStatus.alertStatusId " +
+				  " ,model.alertStatus.alertStatus" +
+				  " ,count(distinct model.alert.alertId)");
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
@@ -1530,9 +1560,13 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" left join UA.panchayat P" +
 					" left join UA.ward W");
 		sb.append(" where model.alert.isDeleted = 'N'" +
-					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")" +
-					" and D.districtId is not null");
-		
+				  " and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") " +
+				  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevelId =:levelId ");
+		}else{
+			sb.append(" and D.districtId is not null");   
+		}  
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
@@ -1563,8 +1597,12 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			sb.append(" and LEB.localElectionBodyId in (:levelValues)");
 		else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 8l)
 			sb.append(" and W.constituencyId in (:levelValues)");
-		
-		sb.append(" group by D.districtId,model.alertStatusId");
+		if(type != null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			sb.append(" group by S.stateId ");
+		}else{
+			sb.append(" group by D.districtId ");
+		}
+		sb.append(" ,model.alertStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(departmentIds != null && !departmentIds.isEmpty())
@@ -1573,13 +1611,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			query.setParameterList("printIdList", printIdsList);
 			query.setParameterList("electronicIdList", electronicIdsList);
 		}
-		if(fromDate != null && toDate != null){
+		if(fromDate != null && toDate != null){  
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty())
 			query.setParameterList("levelValues", levelValues);
-			
+		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
+			query.setParameter("levelId", levelId);
+		}
 		return query.list();
 	}
 	
