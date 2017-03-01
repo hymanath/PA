@@ -12960,6 +12960,11 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="getCadreDetailedReportAction" class="nominatedPostProfileAction" method="getCadreDetailsReport">
+		<result type="json" name="success">
+   			<param name="root">cadrePerformanceVO</param>
+   		</result>
+	</action>
 	<action name="getDepartmentsAction" class="nominatedPostProfileAction" method="getDepartments">
 		<result type="json" name="success">
    			<param name="root">idNameVOList</param>
