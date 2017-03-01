@@ -61,7 +61,7 @@ $("#dateRangePickerDetailedBlock").on('apply.daterangepicker', function(ev, pick
 $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	if(picker.chosenLabel == 'All')
 	{
-		$("#dateRangePickerDetailedBlock").val('All');
+		$("#dateRangePickerAUM").val('All');
 	}
 	$(".detailedBlockShow").hide();
 	currentFromDate = picker.startDate.format('DD/MM/YYYY');
@@ -120,7 +120,11 @@ $(document).on("click",".detailedBlockDiv",function(){
 			currentFromDate = datesArr[0].trim();
 			currentToDate = datesArr[1].trim();
 		} 
-		
+		if(dates !="All"){
+			 $('#dateRangePickerDetailedBlock').val(dates);
+		}else{
+			$('#dateRangePickerDetailedBlock').val("All");
+		} 	
 	getGovtDeptLevelForDeptAndUser(departmentId);
 	getAlertCountLocationWiseThenStatusWise(departmentId,3,currentFromDate,currentToDate);
 });	 
@@ -729,7 +733,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		var str1='';
 		str1+='<table class="table detailedTableStyle" id="districtWiseDetailsBlockdataTable">';
 			str1+='<thead>';
-				str1+='<tr>';
+				str1+='<tr class="text-capital">';
 				str1+='<th>District</th>';
 				str1+='<th>Total Alerts</th>';
 					if(result[0].subList1 !=null && result[0].subList1.length>0){
@@ -778,12 +782,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		$("#districtWiseDetailsBlock").html("No Data Available");
 	}
 		$("#districtWiseDetailsBlockdataTable").dataTable();
-		 var fromToDateVal = $("#dateRangePickerAUM").val();
-		if(fromToDateVal !="All"){
-			 $('#dateRangePickerDetailedBlock').val(fromToDateVal);
-		}else{
-			$('#dateRangePickerDetailedBlock').val("All");
-		} 
+		
 		
 	}
 	$(document).on("click",".getDetailsClick",function(){
@@ -800,7 +799,11 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 			currentFromDate = datesArr[0].trim();
 			currentToDate = datesArr[1].trim();
 		}
-		
+		if(dates !="All"){
+			 $('#dateRangePickerDetailedBlock').val(dates);
+		}else{
+			$('#dateRangePickerDetailedBlock').val("All");
+		} 	
 		$("#districtWiseDetailsBlock").html('');
 		var departmentId = $("#departmentId").val();
 		var levelId = $("#levelDepartmentId").val();
@@ -837,7 +840,7 @@ function buildStatusWiseAlertDetails(result){
 			str1+='<div class="table-responsive">';
 			str1+='<table class="table detailedTableStyle" id="districtAlertStatusInfodataTable">';
 				str1+='<thead>';
-					str1+='<tr>';
+					str1+='<tr class="text-capital">';
 						str1+='<th>Alert Severity</th>';
 						str1+='<th>Alert Title</th>';
 						str1+='<th>Alert Created Date</th>';
@@ -926,7 +929,7 @@ function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrd
 			var str1='';
 			str1+='<table class="table detailedTableStyle" id="mandalWiseDetailsSubOrdBlockdataTable">';
 				str1+='<thead>';
-					str1+='<tr>';
+					str1+='<tr class="text-capital">';
 					str1+='<th>'+subOrdianatelevelText+'</th>';
 					str1+='<th>Total Alerts</th>';
 						if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
@@ -1006,6 +1009,7 @@ function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
 	}
 		str+='<table class="table table-condensed" style="border:1px solid #ddd" id="dataTableTotalAlerts">';
 			str+='<thead>';
+				str+='<tr class="text-capital">';
 				str+='<th>Alert Source</th>';
 				str+='<th>Alert Title</th>';
 				str+='<th>Created Date</th>';
@@ -1015,6 +1019,7 @@ function buildSubOrdinateLocationWiseAlertDetails(result,updateBlock){
 				str+='<th>Impact Level</th>';
 				str+='<th>Location</th>';
 				str+='<th></th>';
+				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
@@ -1462,7 +1467,7 @@ function buildDistrictLevelDepartmentDetails(result){
 		var str1='';
 		str1+='<table class="table detailedTableStyle" id="districtLevelDeptOverviewdataTable">';
 			str1+='<thead>';
-				str1+='<tr>';
+				str1+='<tr class="text-capital">';
 				str1+='<th>Department Name</th>';
 				str1+='<th>Total Alerts</th>';
 					if(result[0].subList1 !=null && result[0].subList1.length>0){
