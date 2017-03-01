@@ -1909,9 +1909,9 @@
 					$(".addactive").addClass("active");
 				}
 			});
-			if(finalGlobalUrl!="committeesMonitoringAction"){
 			   getUserTypeWiseCommitteesCompletedCounts1();	
-			}
+			
+
 		}
 		
 		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
@@ -1977,7 +1977,9 @@
 				$(".moreBlocksDetailAndComp").hide();
 				
 			}else{
-				getUserTypeWiseCommitteesCompletedCounts1();
+				if(finalGlobalUrl.trim()!="committeesMonitoringAction"){
+				  getUserTypeWiseCommitteesCompletedCounts1();	
+				}
 				setTimeout(function(){
 					$('html,body').animate({
 						scrollTop: $(".committeesBlock").offset().top},
