@@ -108,8 +108,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private String startDate;
 	private String endDate;
 	private List<CadreCommitteeVO>  cadreCommitteeList;
+	private Long locationValue;
 	
 	
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
 	public List<CadreCommitteeVO> getCadreCommitteeList() {
 		return cadreCommitteeList;
 	}
@@ -634,6 +643,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 		List<BasicVO> accLoc = getUserAccessConstituencies();
 		finalStatus = accLoc.get(0).getName();
+		locationValue = accLoc.get(0).getId();
 		if(panchayatId == null) //default values for prepopulate fields
 		{
 			panchayatId = "0";
@@ -2512,4 +2522,31 @@ public String getSummaryDetails(){
 		
 		return Action.SUCCESS;
 	}
+	public String getTdpCommitteeMandalByConstituency(){
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("locationId");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+				constituencies = tdpCadreReportService.getTdpCommitteeMandalByConstituency(constituencyId,enrollmentId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getTdpCommitteeMandalByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getTdpCommitteePanchayatWardByMandal(){
+		try{
+			jObj = new JSONObject(getTask());
+			String mandalId = jObj.getString("mandalId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+			locations = cadreCommitteeService.getTdpCommitteePanchayatWardByMandal(mandalId,constituencyId,enrollmentId);
+			
+		}catch(Exception e){	
+			LOG.error("Exception occured in getTdpCommitteePanchayatWardByMandal() method ",e);
+		}
+		return Action.SUCCESS;
+	}	
 }

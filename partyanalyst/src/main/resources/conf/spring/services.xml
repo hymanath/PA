@@ -2829,6 +2829,7 @@
           <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />         
           <property name="ivrCampaignDAO" ref="ivrCampaignDAO" />
           <property name="ivrCampaignOptionsDAO" ref="ivrCampaignOptionsDAO" />
+          <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO" />
      </bean>
      
      <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">

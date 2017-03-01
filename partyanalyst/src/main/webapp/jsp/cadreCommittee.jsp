@@ -122,7 +122,7 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getMandalCorporationsByConstituency();" checked="true" value="1" id="villageId"> Village / Ward
+				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getTdpCommitteeMandalCorporationsByConstituency();" checked="true" value="1" id="villageId"> Village / Ward
 				  </label>
 			    </div>
 			</div>
@@ -1269,7 +1269,7 @@
 				}
 			});
 	}
-	function getMandalCorporationsByConstituency()
+	/*function getMandalCorporationsByConstituency()
 	{		
 		var id = 0;
 		if(reqlocationId != null && reqlocationId > 0)
@@ -1329,9 +1329,9 @@
 				});
 			}
 	
-	}
+	}*/
 	
-	function getPanchayatWardByMandal(){
+	/*function getPanchayatWardByMandal(){
 		     $('#cadreDetailsDiv').html('');
 			 $('#cadreDetailsDiv,#step3Id').hide();
 			 $('#designationDivId').hide();
@@ -1417,7 +1417,7 @@
 		
 		});	
 			
-	}
+	}*/
 	
 	 function getAllCommitteeMembersInfoInALoc(){
 		  $("#viewMembrsBtn").hide();
@@ -1526,7 +1526,9 @@
 				});
 	 }
 	//getCommitteeLocations();
-	getMandalCorporationsByConstituency();
+	//getMandalCorporationsByConstituency();
+	  getTdpCommitteeMandalCorporationsByConstituency();
+	
 	
 	if(reqlocationId != null && reqlocationId !='')
 	getUserLocation1(reqlocationId);
@@ -1594,7 +1596,63 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 	
 		window.location.replace('committeeInfoAction.action');
 	});
-	
+	function getTdpCommitteeMandalCorporationsByConstituency()
+	{
+	$("#dataLoadingImgForMandal").show();
+		var jsObj = {
+			locationId :'${locationValue}',
+			enrollmentId : 2,
+			task:""
+		}
+		 $.ajax({
+			type : "POST",
+			url : "getTdpCommitteeMandalCorporationsByConstituencyAction.action",
+			data : {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#dataLoadingImgForMandal").hide();
+				var str='';
+				if(result !=null){
+						str+='<select id="panchayatWardByMandal" class="form-control">';
+						str+='<option value="0">Select Location</option>';
+						for(var i in result)
+						{
+							str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+						}
+						str+='</select>';	
+				}
+				$("#mandalDivId").html(str);
+		});
+	}
+$(document).on("change","#panchayatWardByMandal",function(){
+	getTdpCommitteePanchayatWardByMandal($(this).val());
+});		
+			
+	function getTdpCommitteePanchayatWardByMandal(mandalId){
+		    $("#committeeLocationId  option").remove();
+			var jsObj={
+				mandalId:mandalId,
+				constituencyId:'${locationValue}',
+				enrollmentId:2
+			}
+		$("#dataLoadingsImg").show();
+		$("#dataLoadingImg").show();
+			$.ajax({
+				type : "POST",
+				url : "getTdpCommitteePanchayatWardByMandalAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+		$("#dataLoadingsImg").hide();
+		$("#dataLoadingImg").hide();
+			if(result != null){
+					$("#committeeLocationId").append('<option value="0">Select Location</option>');
+				for(var i in result){
+						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+			}
+			
+		});	
+			
+	}
 	</script>
   </body>
 </html>
