@@ -523,4 +523,15 @@ public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDe
 	query.setParameter("cnpDeptId", cnpDeptId);
 	return query.list();
 }
+	
+	public List<Object[]> getInvolvedAlertsSummary(List<Long> cadreIds){
+		Query query = getSession().createQuery(" select model.tdpCadreId,count(distinct model.alertId) " +
+				" from AlertCandidate model " +
+				" where model.alert.isDeleted = 'N' " +
+				" and model.tdpCadreId in (:cadreIds) ");
+		
+		query.setParameterList("cadreIds", cadreIds);
+		
+		return query.list();
+	}
 }

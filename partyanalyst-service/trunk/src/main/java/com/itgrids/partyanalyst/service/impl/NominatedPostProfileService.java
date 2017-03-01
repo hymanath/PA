@@ -28,6 +28,8 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardDAO;
@@ -41,6 +43,8 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDocumentsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -56,17 +60,22 @@ import com.itgrids.partyanalyst.dao.INominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -146,9 +155,85 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IGovtOrderDocumentsDAO govtOrderDocumentsDAO;
 	private INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO;
 	private IEducationalQualificationsDAO educationalQualificationsDAO;
+	private IEventInviteeDAO eventInviteeDAO;
+	private IEventAttendeeDAO eventAttendeeDAO;
+	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
+	private IPartyMeetingInviteeDAO partyMeetingInviteeDAO; 
+	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO; 
+	private IAlertAssignedDAO alertAssignedDAO;
+	private IAlertCandidateDAO alertCandidateDAO;
 	
 	
 	
+	public IAlertCandidateDAO getAlertCandidateDAO() {
+		return alertCandidateDAO;
+	}
+
+	public void setAlertCandidateDAO(IAlertCandidateDAO alertCandidateDAO) {
+		this.alertCandidateDAO = alertCandidateDAO;
+	}
+
+	public IAlertAssignedDAO getAlertAssignedDAO() {
+		return alertAssignedDAO;
+	}
+
+	public void setAlertAssignedDAO(IAlertAssignedDAO alertAssignedDAO) {
+		this.alertAssignedDAO = alertAssignedDAO;
+	}
+
+	public IPartyMeetingAttendanceDAO getPartyMeetingAttendanceDAO() {
+		return partyMeetingAttendanceDAO;
+	}
+
+	public void setPartyMeetingAttendanceDAO(
+			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
+		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
+	}
+
+	public IPartyMeetingInviteeDAO getPartyMeetingInviteeDAO() {
+		return partyMeetingInviteeDAO;
+	}
+
+	public void setPartyMeetingInviteeDAO(
+			IPartyMeetingInviteeDAO partyMeetingInviteeDAO) {
+		this.partyMeetingInviteeDAO = partyMeetingInviteeDAO;
+	}
+
+	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
+		return trainingCampAttendanceDAO;
+	}
+
+	public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
+	}
+
+	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
+		return trainingCampBatchAttendeeDAO;
+	}
+
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
+	}
+
+	public IEventAttendeeDAO getEventAttendeeDAO() {
+		return eventAttendeeDAO;
+	}
+
+	public void setEventAttendeeDAO(IEventAttendeeDAO eventAttendeeDAO) {
+		this.eventAttendeeDAO = eventAttendeeDAO;
+	}
+
+	public IEventInviteeDAO getEventInviteeDAO() {
+		return eventInviteeDAO;
+	}
+
+	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
+		this.eventInviteeDAO = eventInviteeDAO;
+	}
+
 	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
 		return educationalQualificationsDAO;
 	}
@@ -7950,4 +8035,147 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		return "failure";
 	}
 	
+	public List<CadreEventsVO> getCadresEventsSummary(List<Long> cadreIds){
+		List<CadreEventsVO> voList = new ArrayList<CadreEventsVO>(0);
+		try {
+			Map<Long,List<CadreEventsVO>> finalMap = new HashMap<Long, List<CadreEventsVO>>(0);
+			if(cadreIds != null && cadreIds.size() > 0){
+				//get mahanadu invitee and attendence details
+				//0-eventId,1-cadreId
+				List<Object[]> objList = eventInviteeDAO.getEventInviteeDetails(cadreIds,IConstants.MAHANADUEVENTIDS);
+				
+				if(objList != null && objList.size() > 0){
+					for (Object[] objects : objList) {
+						List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
+						CadreEventsVO voIn = new CadreEventsVO();
+						voIn.setId((Long)objects[0]);
+						if((Long)objects[0] == 7l){//2015 mahanadu
+							voIn.setName("Mahanadu - 2015");
+						}else if((Long)objects[0] == 30l){//2016 mahanadu
+							voIn.setName("Mahanadu - 2016");
+						}
+						voIn.setInvitedCount(1l);
+						tempList.add(voIn);
+						finalMap.put((Long)objects[1],tempList);						
+					}
+				}
+				
+				List<Object[]> objList1 = eventAttendeeDAO.getEventAttendeeSummary(cadreIds,IConstants.MAHANADUEVENTIDS);
+				if(objList1 != null && objList1.size() > 0){
+					for (Object[] objects : objList1) {
+						if(finalMap.get((Long)objects[1]) == null){
+							List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
+							CadreEventsVO voIn = new CadreEventsVO();
+							voIn.setId((Long)objects[0]);
+							if((Long)objects[0] == 7l){//2015 mahanadu
+								voIn.setName("Mahanadu - 2015");
+							}else if((Long)objects[0] == 30l){//2016 mahanadu
+								voIn.setName("Mahanadu - 2016");
+							}
+							voIn.setAttendedCount(1l);
+							tempList.add(voIn);
+							finalMap.put((Long)objects[1], tempList);
+						}else{
+							CadreEventsVO matchedEventVO = getMatchedEventVO((Long)objects[0],finalMap.get((Long)objects[1]));
+							if(matchedEventVO != null)
+								matchedEventVO.setAttendedCount(1l);
+						}
+					}
+				}
+				
+				//get training invitee and attendence details
+				//0-tdpCadreId,1-count
+				List<Object[]> objList2 = trainingCampBatchAttendeeDAO.getTrainingCampInviteeSummary(cadreIds);
+				if(objList2 != null && objList2.size() > 0){
+					setInviteeCounts(finalMap,objList2,"Training");
+				}
+				
+				List<Object[]> objList3 = trainingCampAttendanceDAO.getTrainingCampAttendanceSummary(cadreIds);
+				if(objList3 != null && objList3.size() > 0){
+					setAttendeeCount(finalMap,objList3,"Training");
+				}
+				
+				//get partyMeetings attendee and invitee summary
+				List<Object[]> objList4 = partyMeetingInviteeDAO.getPartyMeetingInviteeSummary(cadreIds);
+				if(objList4 != null && objList4.size() > 0){
+					setInviteeCounts(finalMap,objList4,"PartyMeetings");
+				}
+
+				List<Object[]> objList5 = partyMeetingAttendanceDAO.getPartyMeetingAttendanceSummary(cadreIds);
+				if(objList5 != null && objList5.size() > 0){
+					setAttendeeCount(finalMap,objList5,"PartyMeetings");
+				}
+				
+				//get involved and assigned alerts summary
+				List<Object[]> objList6 = alertCandidateDAO.getInvolvedAlertsSummary(cadreIds);
+				if(objList6 != null && objList6.size() > 0){
+					setInviteeCounts(finalMap,objList6,"Alert");
+				}
+				
+				List<Object[]> objList7 = alertAssignedDAO.getAssignedAlertsSummary(cadreIds);
+				if(objList7 != null && objList7.size() > 0){
+					setAttendeeCount(finalMap,objList7,"Alert");
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadresEventsSummary", e);
+		}
+		return voList;
+	}
+	
+	public CadreEventsVO getMatchedEventVO(Long eventId,List<CadreEventsVO> voList){
+		if(voList != null && voList.size() > 0){
+			for (CadreEventsVO cadreEventsVO : voList) {
+				if(cadreEventsVO.getId().equals(eventId))
+					return cadreEventsVO;
+			}
+		}
+		return null;
+	}
+	
+	public CadreEventsVO getMatchedEventVO(List<CadreEventsVO> voList,String type){
+		if(voList != null && voList.size() > 0){
+			for (CadreEventsVO cadreEventsVO : voList) {
+				if(cadreEventsVO.getName().equalsIgnoreCase(type))
+					return cadreEventsVO;
+			}
+		}
+		return null;
+	}
+	
+	public void setInviteeCounts(Map<Long,List<CadreEventsVO>> finalMap,List<Object[]> objList,String type){
+		for (Object[] objects : objList) {
+			if(finalMap.get((Long)objects[0]) == null){
+				List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
+				finalMap.put((Long)objects[0], tempList);
+			}
+			CadreEventsVO voIn = new CadreEventsVO();
+			voIn.setName(type);
+			voIn.setInvitedCount((Long)objects[1]);
+			finalMap.get((Long)objects[0]).add(voIn);
+		}
+	}
+	
+	public void setAttendeeCount(Map<Long,List<CadreEventsVO>> finalMap,List<Object[]> objList,String type){
+		for (Object[] objects : objList) {
+			if(finalMap.get((Long)objects[0]) == null){
+				List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
+				CadreEventsVO voIn = new CadreEventsVO();
+				voIn.setName(type);
+				voIn.setAttendedCount((Long)objects[1]);
+				tempList.add(voIn);
+				finalMap.put((Long)objects[0], tempList);
+			}else{
+				CadreEventsVO matchedEventVO = getMatchedEventVO(finalMap.get((Long)objects[0]),type);
+				if(matchedEventVO == null){
+					matchedEventVO = new CadreEventsVO();
+					matchedEventVO.setName(type);
+					matchedEventVO.setAttendedCount((Long)objects[1]);
+					finalMap.get((Long)objects[0]).add(matchedEventVO);
+				}else{
+					matchedEventVO.setAttendedCount((Long)objects[1]);
+				}
+			}
+		}
+	}
 }

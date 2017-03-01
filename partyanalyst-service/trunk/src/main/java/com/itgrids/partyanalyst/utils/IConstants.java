@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.utils;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 
 public interface IConstants {
 	public static final String DATE_PATTERN = "dd/MM/yyyy";
@@ -1266,4 +1268,5 @@ public interface IConstants {
 	public static final String GOVT_ALERT_TYPE_ID="2";
 	
 	public static final String ALERT_DEPT_DOCUMENTS ="alert_documents";
+	public static final List<Long> MAHANADUEVENTIDS = Arrays.asList(7l,30l);
 }

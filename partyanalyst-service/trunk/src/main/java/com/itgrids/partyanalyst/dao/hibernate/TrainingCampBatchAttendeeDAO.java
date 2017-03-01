@@ -822,4 +822,16 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 		return query.list();       
 		
 	}
+   
+   public List<Object[]> getTrainingCampInviteeSummary(List<Long> cadreIds){
+	   Query query = getSession().createQuery(" select model.tdpCadreId,count(distinct trainingCampBatchId) " +
+	   		" from TrainingCampBatchAttendee model " +
+	   		" where model.isDeleted='false' " +
+	   		" and model.tdpCadreId in (:cadreIds) " +
+	   		" group by model.tdpCadreId ");
+	   
+	   query.setParameterList("cadreIds", cadreIds);
+	   
+	   return query.list();
+   } 
 }

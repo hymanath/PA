@@ -1871,4 +1871,14 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	return query.list();*/	
     }
     
+    public List<Object[]> getPartyMeetingInviteeSummary(List<Long> cadreIds){
+    	Query query = getSession().createQuery(" select model.tdpCadreId, count(distinct model.partyMeetingId) " +
+    			" from PartyMeetingInvitee model " +
+    			" where model.tdpCadreId in (:cadreIds) " +
+    			" group by model.tdpCadreId ");
+    	
+    	query.setParameterList("cadreIds", cadreIds);
+    	
+    	return query.list();
+    }
 }  

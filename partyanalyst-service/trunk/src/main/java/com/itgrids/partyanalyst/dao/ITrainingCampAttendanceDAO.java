@@ -68,4 +68,5 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getMlaMpInchargeTrngPrgAttendedDtlsPubRep(Long campId, List<Long> programIdList, Long stateId, Date toDate, List<Long> designationIdList);
 	public List<Object[]> getDestictWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate);
 	public List<Object[]> getDayWisePresent(List<Long> programIdList,Long stateId,List<String> dateList);
+	public List<Object[]> getTrainingCampAttendanceSummary(List<Long> cadreIds);
 }
