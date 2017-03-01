@@ -90,7 +90,9 @@
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
 					<div class="panel-heading" style="background-color:#CCC">
-						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small></h4>
+						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small>
+							<i class="fa fa-youtube pull-right youtubeVideo"></i>
+						</h4>
 					</div>
 					<div class="panel-body">
 						<div id="debateDetails"></div>
@@ -99,7 +101,22 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="youtubeVideoModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-body" style="padding:0px;">
+			<iframe width="100%" height="315" class="youtubeIframe" src="" frameborder="0" allowfullscreen></iframe>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 <script>
+$(document).on("click",".youtubeVideo",function(){
+	$("#youtubeVideoModal").modal('show')
+});
 var debateId = '${debateId}';
 
 getSelectedDebate();
@@ -120,6 +137,11 @@ function getSelectedDebate()
 function generateDebateReport(result)
 {
 	var str = '';
+	
+	var youtubeUrlttl = result.youtubeUrl;
+	var yutbArr = youtubeUrlttl.split("=");
+	var finalUrl = yutbArr[1];
+	$(".youtubeIframe").attr("src","https://www.youtube-nocookie.com/embed/"+finalUrl+"?rel=0&amp;controls=0&amp;showinfo=0");
 		for(var m in result.debateNames)
 		{
 			$(".subName").html(result.debateNames[m]);
