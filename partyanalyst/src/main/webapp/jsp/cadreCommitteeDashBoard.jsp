@@ -894,10 +894,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                     <div style="display:inline-block; margin-right: 15px;">
                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true" >&nbsp; VILLAGE / WARD &nbsp;</label>
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true"  >&nbsp; VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" disabled>&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" >&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
@@ -1030,8 +1030,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<!--FIrst Block END-->
 					<!--Second Block Start-->
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-12" style="display:none;" id="villageDivId">
 							<h3 style="color:#090" >VILLAGE / WARD</h2>
+						</div>
+						<div class="col-md-12" style="display:none;" id="mandalDivId">
+							<h3 style="color:#090" >MANDAL / TOWN / DIVISION</h2>
 						</div>
 					</div>
 					</div>
@@ -2912,17 +2915,29 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		if (selected.length > 0) {
 			state = selected.val();
 		}
-		
+		var committeeLevelIdsListArr = [];
 		//var startDate = $(".dp_startDate").val();
 		//var endDate=$(".dp_endDate").val();	
 			var dateStr = $('#reportrange').val();		
 			var dateStrArr = dateStr.split('-');
 			var startDate = dateStrArr[0];
 			var endDate = dateStrArr[1];
-			
-			var committeeLevelIdsListArr = [];
+			if(mandalCheck == "true" && villageCheck == "true"){
+				committeeLevelIdsListArr.push(5);
+				committeeLevelIdsListArr.push(7);
+				committeeLevelIdsListArr.push(9);
 				committeeLevelIdsListArr.push(6);
 				committeeLevelIdsListArr.push(8);
+			}else if(villageCheck == "true"){
+				committeeLevelIdsListArr.push(6);
+				committeeLevelIdsListArr.push(8);
+			}else if(mandalCheck == "true"){
+				committeeLevelIdsListArr.push(5);
+				committeeLevelIdsListArr.push(7);
+				committeeLevelIdsListArr.push(9);
+			}
+			
+				
 				
 				var mainOrAfflCommitteIdsArr = []; 
 				mainOrAfflCommitteIdsArr.push(1);
@@ -3037,6 +3052,32 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		console.log("isConsiderAffl  :"+isConsiderAffl);
 		var str = '';
 		$("#distSummaryBody").html("");
+		if(result[0].stateList != null){
+				var str3='';
+				for(var i in result[0].stateList){
+					str3+='<option value="'+result[0].stateList[i].stateId+'">'+result[0].stateList[i].stateName+'</option>';
+				}
+				$("#popUpStateId").html(str3);
+			}
+			
+			if(result[0].districtWiseList != null){
+				var str1='';
+				str1+='<option value="0">All</option>';
+				for(var i in result[0].districtWiseList){
+					str1+='<option value="'+result[0].districtWiseList[i].districtId+'">'+result[0].districtWiseList[i].districtName+'</option>';
+				}
+				$("#popUpdistrictId").html(str1);
+			}
+			if(result[0].constinuncyList != null){
+				var str2='';
+				str2+='<option value="0">All</option>';
+				for(var i in result[0].constinuncyList){
+					str2+='<option value="'+result[0].constinuncyList[i].constiId+'">'+result[0].constinuncyList[i].name+'</option>';
+					/* globalConstnciesIds.push(result[0].constinuncyList[i].constiId);
+					globalConstncyNames.push(result[0].constinuncyList[i].name); */
+				}
+				$("#popUpConstiesId").html(str2);
+			}
 		str+='<table class="table table-bordered table-condensed " id="constiTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
@@ -3344,7 +3385,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}*/
 			}
-			if(result[0].stateList != null){
+			/* if(result[0].stateList != null){
 				var str3='';
 				for(var i in result[0].stateList){
 					str3+='<option value="'+result[0].stateList[i].stateId+'">'+result[0].stateList[i].stateName+'</option>';
@@ -3367,9 +3408,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str2+='<option value="'+result[0].constinuncyList[i].constiId+'">'+result[0].constinuncyList[i].name+'</option>';
 					/* globalConstnciesIds.push(result[0].constinuncyList[i].constiId);
 					globalConstncyNames.push(result[0].constinuncyList[i].name); */
-				}
+				/*}
 				$("#popUpConstiesId").html(str2);
-			}
+			} */
 			str+='</thead>';	
 		}
 		
@@ -3386,7 +3427,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 			if(result[i].townMandalDivisionVO!=null){				
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center" ><span style="cursor: pointer;color:green;"  onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'mandal\');">'+result[i].townMandalDivisionVO.totalCommittees+'</span></td>';
 					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -3765,7 +3806,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
-					str += '<td style="text-align:center"  >'+result[i].villageWardVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center"  ><span style="cursor: pointer;color:green;"  onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'village\');">'+result[i].villageWardVO.totalCommittees+'</span></td>';
 					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -4241,7 +4282,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	/* Script For Summary POpUP  */
 	
 	var GlobalLocationId = 0;
-	function getPopUpForSummary(id,name){
+	function getPopUpForSummary(id,name,levelType){
 	//	$("#districtContent").hide();
 		$("#constituencyContent").show();
 		$( "#dialogSummary" ).modal("show");
@@ -4249,13 +4290,23 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$("#CommitteeDetails").html(""); 
 		$("#committeeMemberDiv").html("");
 		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
+		var committeeLevelIdListArr = [];
+			
+		if(levelType == "mandal"){
+			committeeLevelIdListArr.push(5);
+			committeeLevelIdListArr.push(7);
+			committeeLevelIdListArr.push(9);
+		}else if(levelType == "village"){
+			committeeLevelIdListArr.push(6);
+			committeeLevelIdListArr.push(8);
+		}
 		if(id == 0){
-			getSummary(GlobalLocationId,"Constituency");
-			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId);
+			getSummary(GlobalLocationId,"Constituency",committeeLevelIdListArr);
+			getMandalMuncipalDivisonStartedCommittees(GlobalLocationId,committeeLevelIdListArr);
 		}else{
 			GlobalLocationId = id;
-			getSummary(id,"Constituency");
-			getMandalMuncipalDivisonStartedCommittees(id);
+			getSummary(id,"Constituency",committeeLevelIdListArr);
+			getMandalMuncipalDivisonStartedCommittees(id,committeeLevelIdListArr);
 		}
 		
 		
@@ -4285,8 +4336,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				
 			});
 	}
-	
-	function getSummary(id,reqLoctionType){
+	var glblSummeryCommitteeLvlIds = [];
+	function getSummary(id,reqLoctionType,committeeLevelIdListArr){
+		$("#villageDivId").hide();
+		$("#mandalDivId").hide();
+		glblSummeryCommitteeLvlIds=committeeLevelIdListArr;
 		$("#CommitteeDetails").html(""); 
 		$("#stateDistrictTitle").html(""); 
 		$("#districtContent").hide();
@@ -4298,11 +4352,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		 var dateStrArr = dateStr.split('-');
 		 var fromDate = dateStrArr[0];
 		var toDate = dateStrArr[1];
-			
-						
-		var committeeLevelIdListArr = [];
-			committeeLevelIdListArr.push(6);
-			committeeLevelIdListArr.push(8);
 			
 			var mainOrAfflCommitteIdsArr = []; 
 			mainOrAfflCommitteIdsArr.push(1);
@@ -4332,6 +4381,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					  location.reload(); 
 					}
 				}
+				var levelId  = 0;
+				if(committeeLevelIdListArr.length == 2){
+					$("#villageDivId").show();
+					levelId  = 2;
+				}else if(committeeLevelIdListArr.length == 3){
+					$("#mandalDivId").show();
+					levelId  = 1;
+				}else{
+					levelId = committeeLevelIdListArr[0];
+				}
 				if(result!=null){
 					var typeId = 0;
 					if(reqLoctionType == "State" || reqLoctionType == "District"){
@@ -4343,14 +4402,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							  if(result[0].startedCount > 0)
-							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',2,'+id+','+typeId+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+							  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+levelId+'\','+id+','+typeId+')">'+result[0].startedCount+'</a></h2> STARTED</td>';
 								else
 								{
 									str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
 								}
 							  if(result[0].mainComitteesConformed > 0)
 							{
-									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',2,'+id+','+typeId+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+levelId+'\','+id+','+typeId+')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 							}
 									else
 									{
@@ -4358,7 +4417,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									}
 									if(notStarted > 0)
 									{
-										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',2,'+id+','+typeId+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+levelId+'\','+id+','+typeId+')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 									}
 										else
 								{
@@ -4380,7 +4439,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 							if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
 							 {
-								str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',2,'+id+','+typeId+')">'+result[i].affilatedStartedCount+'</a></td>';
+								str1+='<td width="20%"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+levelId+'\','+id+','+typeId+')">'+result[i].affilatedStartedCount+'</a></td>';
 							 }
 								else
 							 {
@@ -4389,7 +4448,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							
 							 if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
 							 {
-							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',2,'+id+','+typeId+')">'+result[i].affComitteesConformed+'</a></td>';
+							 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+levelId+'\','+id+','+typeId+')">'+result[i].affComitteesConformed+'</a></td>';
 							 }
 							else
 							 {
@@ -4397,7 +4456,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							 }
 							 if(notConformed > 0)
 							 {
-								 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',2,'+id+','+typeId+')">'+notConformed+'</a></td>';
+								 str1+='<td width="20%"> <a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+levelId+'\','+id+','+typeId+')">'+notConformed+'</a></td>';
 							 }
 								 else
 							 {
@@ -4422,7 +4481,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				});
 		} */
 	
-		function getMandalMuncipalDivisonStartedCommittees(id){
+		function getMandalMuncipalDivisonStartedCommittees(id,committeeLevelIdsListArr){
 			$("#CommitteeDetails").html(""); 
 			$("#committeeMemberDiv").html("");
 			var Id = id;
@@ -4432,10 +4491,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			var dateStrArr = dateStr.split('-');
 			var fromDate = dateStrArr[0];
 			var toDate = dateStrArr[1];
-			
-			var committeeLevelIdsListArr = [];
-				committeeLevelIdsListArr.push(6);
-				committeeLevelIdsListArr.push(8);
 				
 				var mainOrAfflCommitteIdsArr = []; 
 				mainOrAfflCommitteIdsArr.push(1);
@@ -4465,7 +4520,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					  location.reload(); 
 					}
 				}
-				if(result!=null){
+				if(result!=null && result.length >0){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
 					str+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
@@ -4628,7 +4683,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	{
 		basicCommitteetypeId:basicCommitteetypeId,
 		status:status,
-		levelId:2,
+		levelId:levelId,
 		constituencyId : constituencyId,
 		committeeEnrollmentId :[committeeEnrollmentId],
 		fromDate :fromDate,
@@ -5451,7 +5506,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center" ><span style="cursor: pointer;color:green;" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'mandal\');">'+result[i].townMandalDivisionVO.totalCommittees+'<span></td>';
 					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -5578,7 +5633,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
-					str += '<td style="text-align:center" >'+result[i].villageWardVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center" ><span style="cursor: pointer;color:green;"  onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'village\');">'+result[i].villageWardVO.totalCommittees+'</span></td>';
 					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center"> - </td>';
@@ -5993,7 +6048,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td style="text-align:center" >'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center" ><span style="cursor: pointer;color:green;"  onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'mandal\');">'+result[i].townMandalDivisionVO.totalCommittees+'</span></td>';
 					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -6047,7 +6102,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
-					str += '<td style="text-align:center"  >'+result[i].villageWardVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center"  ><span style="cursor: pointer;color:green;"  onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\'village\');">'+result[i].villageWardVO.totalCommittees+'</span></td>';
 					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
 					str += '<td style="text-align:center" > - </td>';
@@ -6452,14 +6507,14 @@ $(document).on("change","#tdpCommitteeYearId1",function(){
 		}
 		else if(levelSlected == 'consti'){
 			if(stateId != null && stateId.length > 0 && districtId == 0 && constituencyId == 0){
-				getSummary(stateId,"State");
-				getMandalMuncipalDivisonStartedCommittees(stateId);
+				getSummary(stateId,"State",glblSummeryCommitteeLvlIds);
+				getMandalMuncipalDivisonStartedCommittees(stateId,glblSummeryCommitteeLvlIds);
 			}else if(districtId != null && districtId.length > 0 && constituencyId == 0){
-				getSummary(districtId,"District");
-				getMandalMuncipalDivisonStartedCommittees(districtId);
+				getSummary(districtId,"District",glblSummeryCommitteeLvlIds);
+				getMandalMuncipalDivisonStartedCommittees(districtId,glblSummeryCommitteeLvlIds);
 			}else if(constituencyId != null && constituencyId.length > 0 ){
-				getSummary(constituencyId,"Constituency");
-				getMandalMuncipalDivisonStartedCommittees(constituencyId);
+				getSummary(constituencyId,"Constituency",glblSummeryCommitteeLvlIds);
+				getMandalMuncipalDivisonStartedCommittees(constituencyId,glblSummeryCommitteeLvlIds);
 			}
 				
 			/* }else{

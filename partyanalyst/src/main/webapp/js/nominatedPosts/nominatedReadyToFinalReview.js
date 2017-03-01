@@ -893,10 +893,12 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 		alert("Please Select Status.");
 		return;
 	}
-		
-	var startDate = $('input:text[name=daterangepicker_start]').val();
-	var endDate = $('input:text[name=daterangepicker_end]').val();
-		
+		var date = $(".dateR").val();
+		var dates=date.split('-');
+		var startDate = dates[0];
+		var endDate = dates[1];
+	//var startDate = $('input:text[name=daterangepicker_start]').val();
+	//var endDate = $('input:text[name=daterangepicker_end]').val();	
 	$("#fromDateHidden").val(startDate);
 	$("#toDateHidden").val(endDate);
 		
@@ -939,7 +941,6 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 	
 	
 	$("#applicationIdsHidden").val(applicationIds);
-	
 	
 	var uploadHandler = {
 		upload: function(o) {
@@ -1536,6 +1537,8 @@ $(document).on("click",".boardHrfCls",function(){
 			   
 			   getReferralCandidateDetails(globalLocationLevelId,levelValue,globalDepartmentId,glFinalyeboardId,glFinalyePositionId,''); 		   
 			}
+		}else if(result.indexOf("AlreadyPassed") > -1){
+			alert("Already this post issued someone else....");
 		}else {
 			alert("Something goes wrong, Please try again....");
 		}
