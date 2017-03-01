@@ -41,6 +41,12 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	private String summary;
 	private Date createdDate;
 	private String summaryUnicode;
+	private String youtubeUrl;
+	
+	private Date insertedTime;
+	private Date updatedTime;
+	private Long insertedBy;
+	private Long updatedBy;
 	
 	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
 	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
@@ -152,6 +158,46 @@ public class Debate extends BaseModel implements java.io.Serializable{
 
 	public void setSummaryUnicode(String summaryUnicode) {
 		this.summaryUnicode = summaryUnicode;
+	}
+
+	@Column(name="youtube_url")
+	public String getYoutubeUrl() {
+		return youtubeUrl;
+	}
+	public void setYoutubeUrl(String youtubeUrl) {
+		this.youtubeUrl = youtubeUrl;
+	}
+
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+	@Column(name="inserted_by")
+	public Long getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(Long insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+	@Column(name="updated_by")
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "debate")
