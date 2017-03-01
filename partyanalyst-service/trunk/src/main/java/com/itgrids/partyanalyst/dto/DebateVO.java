@@ -41,6 +41,15 @@ public class DebateVO implements Serializable {
 	private Long totalDebates;
 	private Long candidateId;
 	
+	private String youtubeUrl;
+	
+	
+	public String getYoutubeUrl() {
+		return youtubeUrl;
+	}
+	public void setYoutubeUrl(String youtubeUrl) {
+		this.youtubeUrl = youtubeUrl;
+	}
 	public Long getDebateId() {
 		return debateId;
 	}

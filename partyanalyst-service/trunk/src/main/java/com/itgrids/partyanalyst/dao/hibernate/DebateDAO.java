@@ -20,7 +20,7 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 	{
 		return getHibernateTemplate().find("select model.debateId,model.startTime,model.endTime," +
 				" model.channel.channelId,model.channel.channelName , " +
-				" model.summary from Debate model " +
+				" model.summary,model.youtubeUrl from Debate model " +
 				" where model.debateId = ? and model.isDeleted = 'N'",debateId);
 	}
 	
