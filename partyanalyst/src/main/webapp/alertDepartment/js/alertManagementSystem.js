@@ -1600,9 +1600,9 @@ function buildStatusWiseTotalAlerts(result){
 					str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
 					for(var s in result[i].govtDeptList){    
 						tot = tot + parseInt(result[i].govtDeptList[s].count);   
-						str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span>-:'+result[i].govtDeptList[s].count+' </span>';
+						str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span> - '+result[i].govtDeptList[s].count+' </span>';
 					} 
-					str+='<span>Total-'+tot+'</span>';
+					str+='<span>Total - '+tot+'</span>';
 					  str+='</h4>';
 					str+='</a>';
 				}else{
@@ -1610,9 +1610,9 @@ function buildStatusWiseTotalAlerts(result){
 					  str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
 					  for(var s in result[i].govtDeptList){ 
 							tot = tot + parseInt(result[i].govtDeptList[s].count);
-							str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span>-:'+result[i].govtDeptList[s].count+' </span>';
+							str+='<span style="color:'+result[i].govtDeptList[s].color+'">'+result[i].govtDeptList[s].shortName+'</span><span> - '+result[i].govtDeptList[s].count+' </span>';
 					  }  
-						str+='<span>Total-'+tot+'</span>';
+						str+='<span>Total - '+tot+'</span>';
 					  str+='</h4>';
 					str+='</a>';
 				}
@@ -1630,8 +1630,8 @@ function buildStatusWiseTotalAlerts(result){
 					if(result[i].govtDepartmentVOList != null && result[i].govtDepartmentVOList.length > 0){
 						str+='<div class="col-md-9 col-xs-12 col-sm-9">';
 						var tooltipMsg = "statestate"
-					str+='<h4 class="panel-title text-capital m_top5">Geographic Alerts Assigned View <i  class="glyphicon glyphicon-info-sign" style="cursor:pointer;margin-left:3px" data-toggle="tooltip" data-placement="top" title="(i).State Level Alerts included in state block.';
-						str+=' (ii).District/Division/Sub Division/Mandal Alerts included in District block." ></i></h4>';
+					str+='<h4 class="panel-title text-capital m_top5">Geographic Alerts Assigned View <i  class="glyphicon glyphicon-info-sign" style="cursor:pointer;margin-left:3px" data-toggle="tooltip" data-placement="top" title="(i) State Level Alerts included in state block.';
+						str+=' (ii) District and Below level Alerts included in District block." ></i></h4>';
 						str+='</div>';
 						str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 							str+='<ul class="list-inline activeUlCls ">';
