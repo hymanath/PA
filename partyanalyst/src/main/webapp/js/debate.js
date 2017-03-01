@@ -427,14 +427,15 @@ function submitForm(type)
 	}
 }
 
-function saveDetails(type){
+function saveDetails(type){ 
 	$("#loadingImgForSaveId").show();
 var debateDetails={
 			endTime : '',
 			startTime : '',
 			channelId : '',
 			telecastTimeId : '',
-			debetSummery : ''
+			debetSummery : '',
+			youtubeUrl : ''
 			}; 
 			var  observer = new Array();
 			var  subjectArray = new Array();
@@ -515,6 +516,7 @@ var debateDetails={
 			});
 			//console.log(smsPole);
 			debateDetails.debetSummery = $('#debetSum').val();
+			debateDetails.youtubeUrl = $('#youtubeUrl').val();
 				var jsObj = {
 						debateDetails :debateDetails,
 						participant   : participant,

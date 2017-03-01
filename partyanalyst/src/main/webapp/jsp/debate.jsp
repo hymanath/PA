@@ -510,7 +510,14 @@ window.location.href = uri + base64(format(template, ctx))
 				<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Option" onClick="addMorePole();"><i class="icon-plus"></i></a>
 				</div>
 
-				
+				<div class="row">
+					<div class="span12" >
+						<label>
+						<strong>Youtube : </strong>
+						</label>
+						<input type="text" Class="selectWidth smsOptin span12" id="youtubeUrl"/>
+					</div>
+				</div>
 				<div id="debateSummery" class="row-fluid m_top10">
 					<legend class="boxHeading">Summary :<font class="requiredFont">*</font><span id="debetSumErr" class="errDiv clearErrCls"></span></legend>
 					<div class="control-group form-horizontal">
