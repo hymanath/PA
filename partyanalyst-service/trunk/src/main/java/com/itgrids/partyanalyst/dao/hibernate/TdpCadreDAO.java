@@ -9472,10 +9472,10 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   
 		   StringBuilder queryStr = new StringBuilder();
 			
-			queryStr.append(" select tc1.tdp_cadre_id,tc.first_name,tc.membership_id," +
-					" tc.image,tc.mobile_no,tc.caste_state_id,ey.enrollment_year_id," +
-					" ey.year ,date(tc1.inserted_date)," +
-					" c.caste_name,cc.category_name ");
+			queryStr.append(" select tc1.tdp_cadre_id as tdp_cadre_id,tc.first_name as first_name ,tc.membership_id as membership_id," +
+					" tc.image as image,tc.mobile_no as mobile_no ,tc.caste_state_id as caste_state_id ,ey.enrollment_year_id as enrollment_year_id ," +
+					" ey.year as year  ,date(tc1.inserted_date) as inserted_date," +
+					" c.caste_name as caste_name ,cc.category_name as category_name ");
 			
 			queryStr.append(" from tdp_cadre tc,tdp_cadre_enrollment_year tc1," +
 					" enrollment_year ey,caste c,caste_state cs,caste_category cc," +
@@ -9493,7 +9493,18 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			}
 			queryStr.append("order by tc1.enrollment_year_id ");
 			
-			Query query = getSession().createSQLQuery(queryStr.toString());
+			Query query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("tdp_cadre_id", Hibernate.LONG)
+					.addScalar("first_name", Hibernate.STRING)
+					.addScalar("membership_id", Hibernate.STRING)
+					.addScalar("image", Hibernate.STRING)
+					.addScalar("mobile_no", Hibernate.STRING)
+					.addScalar("caste_state_id", Hibernate.LONG)
+					.addScalar("enrollment_year_id", Hibernate.LONG)
+					.addScalar("year", Hibernate.STRING)
+					.addScalar("inserted_date", Hibernate.STRING)
+					.addScalar("caste_name", Hibernate.STRING)
+					.addScalar("category_name", Hibernate.STRING);
 			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
 				query.setParameterList("tdpCadreIds", tdpCadreIds);
 			}
