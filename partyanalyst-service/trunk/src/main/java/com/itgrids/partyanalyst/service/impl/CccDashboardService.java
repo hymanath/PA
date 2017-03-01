@@ -1426,6 +1426,26 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
  						}
  					}
  				}
+ 			Map<Long,String> stsIdAndColorMap = new HashMap<Long,String>();
+ 			Map<Long,String> stsIdAndShortNameMap = new HashMap<Long,String>();
+ 			List<Object[]> stsList = alertStatusDAO.getAllStatus();  
+ 			for(Object[] param : stsList){
+ 				stsIdAndColorMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+ 				stsIdAndShortNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[3]));
+ 			}
+ 			List<GovtDepartmentVO> stsLst = new ArrayList<GovtDepartmentVO>();
+ 			if(finalVOList != null && finalVOList.size() > 0){
+ 				for(GovtDepartmentVO param : finalVOList){
+ 					stsLst = param.getGovtDeptList();
+ 					if(stsLst != null && stsLst.size() > 0){
+ 						for(GovtDepartmentVO obj : stsLst){
+ 							obj.setColor(stsIdAndColorMap.get(obj.getDepartmentId()));
+ 							obj.setShortName(stsIdAndShortNameMap.get(obj.getDepartmentId()));
+ 						}  
+ 					}
+ 					
+ 				}
+ 			}
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDistrictWiseTotalAlertsForAlert() method of CccDashboardService",e);
@@ -1576,7 +1596,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			Long ttlCnt = 0L;
  			List<GovtDepartmentVO> temp = new ArrayList<GovtDepartmentVO>(0);
  			
- 			if(stateWiseDistLst != null && stateWiseDistLst.size() > 0 && finalVOList != null && finalVOList.size() > 0){//[3, AGRICULTURE & CO-OPERATION DEPARTMENT, 1, Andhra Pradesh, 24]
+ 			if(stateWiseDistLst != null && stateWiseDistLst.size() > 0 && finalVOList != null ){//[3, AGRICULTURE & CO-OPERATION DEPARTMENT, 1, Andhra Pradesh, 24]
 				for(Object[] param : stateWiseDistLst){
 					GovtDepartmentVO govtDptVo = new GovtDepartmentVO();
 					govtDptVo.setDepartmentId(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -1599,9 +1619,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			logger.error("Error occured getStatusWiseDistrictTotalForAlert() method of CccDashboardService",e);
 		}
 		Map<Long,String> stsIdAndColorMap = new HashMap<Long,String>();
+		Map<Long,String> stsIdAndShortNameMap = new HashMap<Long,String>();
 		List<Object[]> stsList = alertStatusDAO.getAllStatus();  
 		for(Object[] param : stsList){
 			stsIdAndColorMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+			stsIdAndShortNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[3]));
 		}
 		List<GovtDepartmentVO> stsLst = new ArrayList<GovtDepartmentVO>(0);
 		if(finalVOList != null && finalVOList.size() > 0){
@@ -1610,6 +1632,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 				if(stsLst != null && stsLst.size() > 0){
 					for(GovtDepartmentVO obj : stsLst){
 						obj.setColor(stsIdAndColorMap.get(obj.getDepartmentId()));
+						obj.setShortName(stsIdAndShortNameMap.get(obj.getDepartmentId()));
 					}
 				}
 			}
