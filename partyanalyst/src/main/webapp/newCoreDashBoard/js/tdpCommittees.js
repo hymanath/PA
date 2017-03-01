@@ -1975,11 +1975,10 @@
 				$(".moreBlocksDistrictlevel").hide();
 				$(".moreBlocks1").hide();
 				$(".moreBlocksDetailAndComp").hide();
-				
 			}else{
-				if(finalGlobalUrl.trim()!="committeesMonitoringAction"){
+				//if(finalGlobalUrl.trim()!="committeesMonitoringAction"){
 				  getUserTypeWiseCommitteesCompletedCounts1();	
-				}
+				//}
 				setTimeout(function(){
 					$('html,body').animate({
 						scrollTop: $(".committeesBlock").offset().top},
@@ -2046,10 +2045,10 @@
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			}
 	
-			setTimeout(function(){
+			 setTimeout(function(){
 				$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 				//initialiseGraph();
-			},500);
+			},500); 
 		});
 		
 		function getCadreEnrolmentYears(){
