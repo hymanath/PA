@@ -22,6 +22,23 @@ public class DebateDetailsVO implements Serializable {
 	private List<SelectOptionVO> smaOptionsList;
 	private String type;
 	
+	private String youtubeUrl;
+	private Long userId;
+	
+	
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getYoutubeUrl() {
+		return youtubeUrl;
+	}
+	public void setYoutubeUrl(String youtubeUrl) {
+		this.youtubeUrl = youtubeUrl;
+	}
 	public Long getDebateId() {
 		return debateId;
 	}

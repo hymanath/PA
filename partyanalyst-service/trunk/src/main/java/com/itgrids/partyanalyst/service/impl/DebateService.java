@@ -276,6 +276,16 @@ public class DebateService implements IDebateService{
 					  debate.setIsDeleted("N");
 					  DateUtilService currentDate = new DateUtilService();
 					  debate.setCreatedDate(currentDate.getCurrentDateAndTime());
+					  
+					  debate.setYoutubeUrl(debateDetailsVO.getYoutubeUrl() !=null && !debateDetailsVO.getYoutubeUrl().isEmpty() ? 
+							  debateDetailsVO.getYoutubeUrl():null);
+					  
+					  debate.setInsertedTime(currentDate.getCurrentDateAndTime());
+					  debate.setUpdatedTime(currentDate.getCurrentDateAndTime());
+					  debate.setInsertedBy(debateDetailsVO.getUserId());
+					  debate.setUpdatedBy(debateDetailsVO.getUserId());
+					  
+					  
 					  debate=debateDAO.save(debate);
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
