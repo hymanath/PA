@@ -349,10 +349,10 @@
         <div class="col-md-12 col-xs-12 col-sm-12 geographicCls" style="display:none;">
         	<div class="row m_top10">
             	<div class="col-md-12 col-xs-12 col-sm-12">
-                	<h3 class="headingColor text-capitalize">Geographic Positions Overview (Posts Location Wise)<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
+                	<h3 class="headingColor text-capitalize">Geographic Positions Overview (Posts Location Wise)<span class="pull-right plusIconCircle geoGraphicOver2"><i class="glyphicon glyphicon-minus "></i></span></h3>
 					<div style="margin-top:25px">
-                    <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4></div>
-                    <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow" style="font-size:15px;">
+                    <h4 class="showingResult geoGraphicOverHideShow2 m_top10">showing results</h4></div>
+                    <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow2" style="font-size:15px;">
                         <li><span class="locationCls">State</span> </li>
                         <li><span class="departmentCls">All department</span></li>
                         <li><span class="corporationCls">All corporation</span></li>
@@ -361,7 +361,7 @@
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>
                 </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
+                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow2">
                 	<div class="pad_10 bg_ff" id="tableschrollId">
                     	<div class="table-responsive" id="statePositionId"></div>
                     </div>
@@ -382,23 +382,24 @@
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>-->	
-					<div class="col-md-12 col-sm-4 col-xs-12">
+					<div class="col-md-3 col-sm-4 col-xs-12 geoGraphicOverHideShow">
                     	<input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1 hideshowchkbxCls"/><span> Overall View </span>
                        <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
                    </div>	
-					<div class="col-md-3 col-sm-4 col-xs-12 m_top10">					
+					<div class="col-md-9 col-sm-8 col-xs-12 geoGraphicOverHideShow">					
 						<div>
-							<label> Geographical View : </label>
-							<span class="btn btn-success btn-xs form-inline">
+							<label><b> Geographical View : </b></label>
+							<span class="form-inline" style="margin-left:10px;">
 								<label>
-									<input  type="radio" name="checkBoxName" checked="true"  style="" value="district" class="radioBtnCls"/><span>District View</span>
+									<input  type="radio" name="checkBoxName" checked="true"  style="" value="district" class="radioBtnCls radioBtnClsDist"/><span>District View</span>
 								</label>
-								<label>
+								<label style="margin-left:10px;">
 									<input  type="radio" name="checkBoxName" style="" value="constituency" class="radioBtnCls"/><span> Constituency View </span>
 								</label>
 							</span>
 						</div>
-					 </div>
+					</div>
+					<div id="errMsgId" style="color:red;"></div>
 					<div class="col-md-3 col-sm-4 col-xs-12 m_top10 districtLvlCls">
                     	<label>
 						District Level : </label>
@@ -412,19 +413,19 @@
 							<select  id="consLevelId" class="chosenSelect form-control" multiple></select>
 						</div> 
                     </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 m_top10">
+					<div class="col-md-2 col-sm-4 col-xs-12 m_top10 geoGraphicOverHideShow">
                     	<label>
 						Position Level : </label>
                         <select class="chosenSelect" id="locationsLevelId">
                         </select>
                     </div>
-					<div class="col-md-2 col-sm-4 col-xs-12 m_top10">
+					<div class="col-md-2 col-sm-4 col-xs-12 m_top10 geoGraphicOverHideShow">
                     	<label>Position</label>
                         <select class="chosenSelect" id="positonId">
                         	<option value="0">ALL</option>
                         </select>
                     </div>
-					<div class="row">
+					<div class="col-md-2 col-sm-4 col-xs-12" style="margin-top: 5px">
 					<div class=" m_top10 pull-right" style="margin-left: 0px; margin-right: 31px;margin-top: 18px;display:none;" id="getDetailsId"> 
                     	<button type="button" value="getDetailsVal" class="btn btn-success m_top10" onclick="getLocationAndBoardLevelWiseCasteCatgryPostsData();" id="">SUBMIT</button>
 					</div>
@@ -496,8 +497,15 @@ $(document).on("click",".demoGraphicsCls",function(){
 });
 $(document).on("click",".geoGraphicOver",function(){
 	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	$(".hideshowchkbxCls,.radioBtnClsDist").trigger('click');
 	$(".geoGraphicOverHideShow").toggle();
+	$(".constituenyCls,.districtLvlCls,#getDetailsId").hide();
 });
+$(document).on("click",".geoGraphicOver2",function(){
+	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	$(".geoGraphicOverHideShow2").toggle();
+});
+
 $(document).on("click",".changeIconClass",function(){
 	$(".changeIconClass").toggleClass("glyphicon-plus");
 	$(this).closest('tr').next('tr.tableStrOuterCls').toggle();

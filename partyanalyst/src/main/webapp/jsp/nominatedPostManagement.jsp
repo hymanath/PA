@@ -132,7 +132,16 @@
 			<!--<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i></button>-->
 		
 </div>
-
+<div class="modal fade" tabindex="-1" id="newApplyPost" role="dialog">  
+	<div class="modal-dialog" style="width:80%;">      
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" onclick="refreshingPage();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 <iframe  style="width:100%;border:0px" class="newPostApplyPopup"></iframe> 
+			</div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" tabindex="-1" id="readyToFinalReviewDiv" role="dialog">  
 	<div class="modal-dialog" style="width:60%;">      
 		<div class="modal-content">
@@ -160,7 +169,20 @@ var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
 var globalStatus='${param.sts}';
 var globalLvlTxt='${param.levelTxt}';
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/nominatedPostManagementAction")));
+wurl = wurl.replace("/PartyAnalyst","");
 
+var getHeight = $(window).height();
+getHeight = (getHeight -( ( getHeight/100 ) * 10));
+
+$(".newPostApplyPopup").css("height",getHeight)
+$(document).on("click",".appleNewPostBtn",function(){
+	$(".newPostApplyPopup").attr("src",wurl+"/nominatedPostProfileAction.action?status=openedInPopup");
+	setTimeout(function(){
+		$("#newApplyPost").modal('show');
+	}, 1000);
+});
 if(globalStatus !=null && globalStatus.trim().length>0){	
 	$(document).prop('title', capitalizeFirstLetter(globalStatus.toLowerCase())+" nominated post management");
 }
