@@ -355,6 +355,22 @@
 					<div id="alertCommentsDivIdNew"></div>
 				</div>
 			</div>
+			<div class="row m_top20">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading headingColor">
+							<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="assignedOfficersId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div id="alerAssignDivId" style="display:none;">
 				<form id="alertAssign" name="alertAssignForm">
 					<div class="row" style="background-color: #ccc;padding-top: 20px;box-shadow: 0px 0px 25px rgba(0,0,0,0.8);">
