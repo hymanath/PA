@@ -2974,6 +2974,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
 						
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positionId
+						if(condidates != null && condidates.size() >0)
 						Vo.setNominatedPostCandidateId(condidates.get(0));
 						
 						subList.add(Vo);
@@ -3013,6 +3014,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
 						//Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						if(condidates != null && condidates.size() >0)
 						Vo.setNominatedPostCandidateId(condidates.get(0));
 						subList1.add(Vo);
 					}
@@ -7228,57 +7230,47 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						if(goVO.getStatus() != null && goVO.getStatus() == 1l){//go issue
 							
-							GovtOrder govtOrder = new GovtOrder();
-							govtOrder.setOrderName(goVO.getGoName());
-							govtOrder.setOrderCode(goVO.getGoCode());
 							
-							try {
-								govtOrder.setFromDate(sdf.parse(goVO.getFromDate()));
-								govtOrder.setToDate(sdf.parse(goVO.getToDate()));
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-							
-							govtOrder.setRemarks(goVO.getRemarks());
-							govtOrder.setInsertedBy(userId);
-							govtOrder.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							govtOrder.setUpdatedBy(userId);
-							govtOrder.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							govtOrder.setIsDeleted("N");
-							
-							govtOrder = govtOrderDAO.save(govtOrder);
-							
-							if(applicationIds != null && applicationIds.size() > 0){
-								
-								//update status to go-passed
-								nominatedPostFinalDAO.updateStatusToGOPassed(applicationIds,dateUtilService.getCurrentDateAndTime(),7l);
-								
-							/*	//get nominated postids for applications
-								List<Object[]> objList = nominatedPostFinalDAO.getNPCAndNpForApplication(applicationIds);//NPID,NPCID
-								
-								Map<Long,Long> map = new HashMap<Long, Long>(0);//NPID,NPCID
-								if(objList != null && objList.size() > 0){
-									for (Object[] obj : objList) {
-										map.put((Long)obj[0], (Long)obj[1]);
-									}
-								}*/
-								
-								for(Long long1 : applicationIds){
-									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
-									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
-									
-									nominatedPostApplication.setApplicationStatusId(7l);
-									nominatedPostApplication.setUpdatedBy(userId);
-									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									nominatedPostApplicationDAO.save(nominatedPostApplication);
-								}
-								
-								//update NPCID in NP
 								for (Entry<Long, Long> entry : postMap.entrySet()) {
 									
-									NominatedPost np = nominatedPostDAO.get(entry.getKey());
-									if(np != null && np.getIsExpired() != null ){
-										NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
+									//NominatedPost np = nominatedPostDAO.get(entry.getKey());
+									List<Long> data = nominatedPostGovtOrderDAO.getNominatedPostGovtOrderByPostId(entry.getKey());
+									if(data == null || data.size() ==0){
+										GovtOrder govtOrder = new GovtOrder();
+										govtOrder.setOrderName(goVO.getGoName());
+										govtOrder.setOrderCode(goVO.getGoCode());
+										
+										try {
+											govtOrder.setFromDate(sdf.parse(goVO.getFromDate()));
+											govtOrder.setToDate(sdf.parse(goVO.getToDate()));
+										} catch (ParseException e) {
+											e.printStackTrace();
+										}
+										
+										govtOrder.setRemarks(goVO.getRemarks());
+										govtOrder.setInsertedBy(userId);
+										govtOrder.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										govtOrder.setUpdatedBy(userId);
+										govtOrder.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										govtOrder.setIsDeleted("N");
+										
+										govtOrder = govtOrderDAO.save(govtOrder);
+										
+										if(applicationIds != null && applicationIds.size() > 0){
+											
+											//update status to go-passed
+											nominatedPostFinalDAO.updateStatusToGOPassed(applicationIds,dateUtilService.getCurrentDateAndTime(),7l);
+										
+											for(Long long1 : applicationIds){
+												NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
+												savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
+												
+												nominatedPostApplication.setApplicationStatusId(7l);
+												nominatedPostApplication.setUpdatedBy(userId);
+												nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												nominatedPostApplicationDAO.save(nominatedPostApplication);
+											}
+											NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
 										nogo.setNominatedPostId(entry.getKey());
 										nogo.setGovtOrderId(govtOrder.getGovtOrderId());
 										nogo.setInsertedBy(userId);
@@ -7291,20 +7283,19 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 										}
 									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
-								}
+									
+									if(mapfiles.size() > 0){
+										String status1 = saveGODocuments(govtOrder.getGovtOrderId(),mapfiles,userId);
+										//rs.setExceptionMsg("GO Issued Succesfully.");
+										rs.setExceptionMsg("SUCCESS");
+									}
+									rs.setExceptionMsg("SUCCESS");
+									}else{
+										rs.setExceptionMsg("AlreadyPassed");
+									}
 								
 							}
-							
-							//changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
-							//rejectApplications(goVO.getDepartmentId(),goVO.getBoardId(),goVO.getLocationLevelId(),Long.valueOf(goVO.getPositionIdsString()),Long.valueOf(goVO.getLocationLevelValuesStr()));
-							//rejectApplications(goVO.getDepartmentId(),goVO.getBoardId(),goVO.getLocationLevelId(),null,Long.valueOf(goVO.getLocationLevelValuesStr()));
-							//rejectApplications(goVO.getDepartmentId(),null,goVO.getLocationLevelId(),null,Long.valueOf(goVO.getLocationLevelValuesStr()));
-							if(mapfiles.size() > 0){
-								String status1 = saveGODocuments(govtOrder.getGovtOrderId(),mapfiles,userId);
-								//rs.setExceptionMsg("GO Issued Succesfully.");
-								rs.setExceptionMsg("SUCCESS");
-							}
-							
+								
 						}else if(goVO.getStatus() != null && goVO.getStatus() == 2l){//go reject
 							if(applicationIds != null && applicationIds.size() > 0){
 								
@@ -7331,6 +7322,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						}
 					}
 			 });
+			 
 		} catch (Exception e) {
 			LOG.error("Exception raised at assginGOToNominationPostCandidate", e);
 			//rs.setExceptionMsg("Error Occured Please Try Again.");
@@ -7514,7 +7506,8 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 						 List<String> dates =  dateUtilService.getDaysBetweenDatesStringFormat(frmDate, lastDate);
 						 if(dates != null && dates.size() > 0){
 							 if(dates.contains(sdf.format(dateUtilService.getCurrentDateAndTime()))){
-								 expairStr = setExpireString(dates,sdf.format(dateUtilService.getCurrentDateAndTime())); 
+								 List<String> dates1 =  dateUtilService.getDaysBetweenDatesStringFormat(dateUtilService.getCurrentDateAndTime(), lastDate);
+								 expairStr = setExpireString(dates1,sdf.format(dateUtilService.getCurrentDateAndTime())); 
 							 }else{
 								 expairStr = " All Ready Expired";
 							 }
@@ -7733,32 +7726,50 @@ public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,Lis
 	return resultVO;
 }
 
-public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId){
+public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId,Long statusId){
 	List<IdAndNameVO> retrurnList = new ArrayList<IdAndNameVO>();
 	try{
-		List<Object[]> applnDocs = applicationDocumentDAO.getApplicationDocuments(tdpCadreId, searchType, nominateCandId, applicationId);
+		if(statusId != null && statusId.longValue() == 0l || statusId.longValue() == 7l || statusId.longValue() == 9l){
+			List<Long> postIds = nominatedPostFinalDAO.getNominatedPostIds(nominateCandId,applicationId,statusId);
+			List<Object[]> goDocuments = govtOrderDocumentsDAO.getGoPassedDocuments(postIds);
+			setDocuments(retrurnList,goDocuments,"godocuments");
+		}
+		if(statusId != null && statusId.longValue() == 0l || statusId.longValue() == 1l || statusId.longValue() == 2l ||
+				statusId.longValue() == 3l || statusId.longValue() == 4l || statusId.longValue() == 5l || statusId.longValue() == 6l || statusId.longValue() == 8l ){	
+			List<Object[]> applnDocs = applicationDocumentDAO.getApplicationDocuments(tdpCadreId, searchType, nominateCandId, applicationId);
+			setDocuments(retrurnList,applnDocs,"appDocs");
+		}
 		
-		if(commonMethodsUtilService.isListOrSetValid(applnDocs)){
-			for(Object[] param :applnDocs){
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in getApplicationDocuments()", e);
+	}
+	return retrurnList;
+}
+
+public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,String type){
+	try{
+		if(commonMethodsUtilService.isListOrSetValid(documents)){
+			for(Object[] param :documents){
 				IdAndNameVO vo = new IdAndNameVO();
 				
 				vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				vo.setImagePathStr(commonMethodsUtilService.getStringValueForObject(param[1]));
 				vo.setStartTime(commonMethodsUtilService.getStringValueForObject(param[2]));
-				vo.setApTotal(commonMethodsUtilService.getLongValueForObject(param[3]));// nominated Post Application Id
-				vo.setAttenteeCount(commonMethodsUtilService.getLongValueForObject(param[4]));//nominated Post candidate Id
+				if(type != null && !type.equalsIgnoreCase("godocuments")){
+					vo.setApTotal(commonMethodsUtilService.getLongValueForObject(param[3]));// nominated Post Application Id
+					vo.setAttenteeCount(commonMethodsUtilService.getLongValueForObject(param[4]));//nominated Post candidate Id
+				}
 				retrurnList.add(vo);
 				
 				
 			}
 		}
-		
 	}catch(Exception e){
-		
+		e.printStackTrace();
+		LOG.error("Exception Occured in setDocuments()", e);
 	}
-	return retrurnList;
 }
-
 	public List<IdAndNameVO> getAllAgeRangesByOrder(){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {

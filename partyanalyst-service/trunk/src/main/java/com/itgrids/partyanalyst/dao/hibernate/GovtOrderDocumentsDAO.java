@@ -22,5 +22,23 @@ public class GovtOrderDocumentsDAO extends GenericDaoHibernate<GovtOrderDocument
 		query.setParameter("govtOrderId", govtOrderId);
 		return query.list();
 	}
+	
+public List<Object[]> getGoPassedDocuments(List<Long> postIds){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model1.govtOrderDocumentsId,model1.path,date(model1.insertedTime),model1.govtOrderId from  NominatedPostGovtOrder model,GovtOrderDocuments model1 where   " +
+				"  model1.govtOrderId = model.govtOrder.govtOrderId and  model.isDeleted = 'N' ");
+		if(postIds != null && postIds.size() > 0){
+			queryStr.append(" and model.nominatedPost.nominatedPostId in (:postIds) " );
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(postIds != null && postIds.size() > 0){
+	    	query.setParameterList("postIds", postIds);
+	    }
+		
+		return query.list();
+	}
 
 }

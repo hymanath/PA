@@ -26,7 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GovtOrderDocuments extends BaseModel implements Serializable{
 	
-	private Long GovtOrderDocumentsId;
+	private Long govtOrderDocumentsId;
 	private Long govtOrderId;
 	private String path;
 	private String isDeleted;
@@ -45,16 +45,17 @@ public class GovtOrderDocuments extends BaseModel implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "govt_order_documents_id", unique = true, nullable = false)
 	public Long getGovtOrderDocumentsId() {
-		return GovtOrderDocumentsId;
+		return govtOrderDocumentsId;
 	}
 	public void setGovtOrderDocumentsId(Long govtOrderDocumentsId) {
-		GovtOrderDocumentsId = govtOrderDocumentsId;
+		this.govtOrderDocumentsId = govtOrderDocumentsId;
 	}
 	
 	@Column(name="govt_order_id")
 	public Long getGovtOrderId() {
 		return govtOrderId;
 	}
+	
 	public void setGovtOrderId(Long govtOrderId) {
 		this.govtOrderId = govtOrderId;
 	}

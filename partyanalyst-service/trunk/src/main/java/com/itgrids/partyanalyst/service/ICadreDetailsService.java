@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
+import com.itgrids.partyanalyst.dto.CadreStatsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
@@ -152,4 +153,5 @@ public interface ICadreDetailsService {
 	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue);
 	public List<BenefitVO> getAllConstBenefitDetailsForADist(Long distId);
 	public Map<Long,CadreBasicPerformaceVO> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds);
+	public Map<Long,List<CadreStatsVO>> getElectionPerformanceDetailsForCadreLocations(List<Long> tdpCadreIds);
 }

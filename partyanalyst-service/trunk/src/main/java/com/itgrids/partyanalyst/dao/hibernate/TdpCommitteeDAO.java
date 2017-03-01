@@ -192,27 +192,33 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	{
 		String[] dataArr = status.split(":");
 		StringBuilder str = new StringBuilder();
-		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
+		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId ," +		
+				" model.district.districtName ," +
+				" c.name from TdpCommittee model left join model.constituency c where " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and " +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId =:committeTypeId and model.tdpCommitteeLevelValue in(:locationValues) " +
 				" and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId in(:committeeEnrollmentIdsLst) ");
 		 
-		if(dataArr[0].toString().equalsIgnoreCase("Conform"))
+		if(dataArr[0].toString().equalsIgnoreCase("Conform")){
 		str.append(" and  model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
-		else if(dataArr[0].toString().equalsIgnoreCase("Started"))
-			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
-		else if(dataArr[0].toString().equalsIgnoreCase("NotStarted"))
-		str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
-		 if(stDate != null && edDate != null){
+		if(stDate != null && edDate != null){
 			 str.append( " and ( (date(model.startedDate) between :stDate and :edDate )  OR  ( date(model.completedDate) between :stDate and :edDate )  )" );
 		 }
+		}else if(dataArr[0].toString().equalsIgnoreCase("Started")){
+			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			if(stDate != null && edDate != null){
+				 str.append( " and ( (date(model.startedDate) between :stDate and :edDate )  OR  ( date(model.completedDate) between :stDate and :edDate )  )" );
+			 }
+		}else if(dataArr[0].toString().equalsIgnoreCase("NotStarted"))
+		str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		 
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("committeTypeId", committeTypeId);
 		query.setParameterList("locationValues", locationValues);
 		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
-		if(stDate != null && edDate != null){
+		if(stDate != null && edDate != null && !dataArr[0].toString().equalsIgnoreCase("NotStarted")){
 			query.setParameter("stDate", stDate);
 		    query.setParameter("edDate", edDate);
 		}
@@ -256,7 +262,11 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				*/
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(distinct TC.tdpCommitteeId),TC.completedDate  ");
-		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) ");
+		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  ");
+		
+		if(levelIdsLsit != null && levelIdsLsit.size() > 0){
+			sb.append(" and TC.tdpCommitteeLevelId in (:levelIdsLsit) " );
+		}
 		if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("State"))
 		{
 			sb.append(" and  TC.userAddress.state.stateId = :constituencyId ");
@@ -285,6 +295,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			//query.setParameter("startDate", startDate);
 			//query.setParameter("endDate", endDate);
 		}
+		if(levelIdsLsit != null && levelIdsLsit.size() > 0){
+			query.setParameterList("levelIdsLsit", levelIdsLsit);
+		}
 		return query.list();
 	}
 	 //getting started 
@@ -298,7 +311,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		*/
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select TBC.tdpBasicCommitteeId,count(*)  ");
-		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8)");
+		sb.append(" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  ");
+		if(levelIdsLsit != null && levelIdsLsit.size() > 0){
+			sb.append(" and TC.tdpCommitteeLevelId in (:levelIdsLsit) " );
+		}
 		if(reqLocationType != null && reqLocationType.trim().equalsIgnoreCase("State"))
 		{
 			sb.append(" and  TC.userAddress.state.stateId = :constituencyId ");
@@ -326,6 +342,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
+		}
+		if(levelIdsLsit != null && levelIdsLsit.size() > 0){
+			query.setParameterList("levelIdsLsit", levelIdsLsit);
 		}
 		return query.list();
 	}

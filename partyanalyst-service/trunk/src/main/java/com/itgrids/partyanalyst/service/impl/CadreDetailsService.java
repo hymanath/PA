@@ -118,6 +118,7 @@ import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
+import com.itgrids.partyanalyst.dto.CadreStatsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintScanCopyVO;
@@ -12168,5 +12169,93 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 		}
 		return returnMap;
 		
+	}
+	
+	public Map<Long,List<CadreStatsVO>> getElectionPerformanceDetailsForCadreLocations(List<Long> tdpCadreIds){
+		
+		Map<Long,List<CadreStatsVO>> tdpCadresMap = new HashMap<Long,List<CadreStatsVO>>();
+		try{
+			
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0)
+			{
+				for(Long tdpCadreId :tdpCadreIds){
+				UserAddress userAddress = new UserAddress();
+				List<CadreStatsVO> yrsWiseList = new ArrayList<CadreStatsVO>();
+				if(tdpCadresMap.get(tdpCadreId) == null || tdpCadresMap.get(tdpCadreId).size() == 0){
+					tdpCadresMap.put(tdpCadreId,yrsWiseList);
+				}
+				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+				BasicVO basicVO =	cadreDetailsService.getParticipatedConstituency(tdpCadreId);
+				if(basicVO != null && basicVO.getDistrictId() != null && basicVO.getDistrictId().longValue()>0L){
+					userAddress.setDistrict(districtDAO.get(basicVO.getDistrictId()));
+					userAddress.setConstituency(constituencyDAO.get(basicVO.getId()));
+					userAddress.setParliamentConstituency(constituencyDAO.get(basicVO.getParlimentId()));
+				}
+				else{
+					userAddress = tdpCadre.getUserAddress();
+				}
+				 
+				if(userAddress != null)
+				{
+					List<Long> partyIds = new ArrayList<Long>();
+					partyIds.add(872l);//TDP partyId
+					partyIds.add(163l);//BJP partyId
+					
+					if(userAddress != null)
+					{
+						
+						RegisteredMembershipCountVO countVO = null;
+						Booth booth = userAddress.getBooth();
+						Long publicationDateId = booth != null ?booth.getPublicationDate().getPublicationDateId():0L;
+						if(publicationDateId != null && publicationDateId.longValue()>11){
+							Long voterId = tdpCadre.getVoterId() != null ?  tdpCadre.getVoterId() :  tdpCadre.getFamilyVoterId();
+							Object[] boothObjectArr = boothPublicationVoterDAO.getBoothDetailsByVoterId(voterId.toString(),11l);//publication date id = 11
+							
+							Long boothId = commonMethodsUtilService.getLongValueForObject(boothObjectArr[1]);
+							if(boothId != null && boothId.longValue()>0L)
+								countVO = setElectionPerformanceDetailsInCadreLocation(2014l, userAddress, partyIds,boothId);
+						}
+						else
+							countVO = setElectionPerformanceDetailsInCadreLocation(2014l, userAddress, partyIds,null);
+						if(countVO != null){
+							CadreStatsVO cadreStatsVO = setDataToVO(countVO);
+							yrsWiseList.add(cadreStatsVO);
+						}
+						
+						countVO = setElectionPerformanceDetailsInCadreLocation(2009l, userAddress, partyIds,null);
+						if(countVO != null){
+							CadreStatsVO cadreStatsVO = setDataToVO(countVO);
+							yrsWiseList.add(cadreStatsVO);
+						}
+						
+					}
+				}
+				
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAllConstBenefitDetailsForADist() Method, Exception is - ",e);
+		}
+		return tdpCadresMap;
+	}
+	
+	public CadreStatsVO setDataToVO(RegisteredMembershipCountVO vo){
+		CadreStatsVO cadreStatsVO = new CadreStatsVO();
+		try{
+			cadreStatsVO.setBoothPerc(vo.getBoothPerc() != null ? vo.getBoothPerc() : "0.0");
+			cadreStatsVO.setAssemblyPerc(vo.getConstiPerc() != null ? vo.getConstiPerc() : "0.0");
+			cadreStatsVO.setParliamenPerc(vo.getParConsPerc() != null ? vo.getParConsPerc() : "0.0");
+			cadreStatsVO.setDistrictPerc(vo.getDistrictPerc() != null ? vo.getDistrictPerc() : "0.0");
+			cadreStatsVO.setMandalORMuncORUrbanPerc(vo.getMandalPerc() != null ? vo.getMandalPerc() : "0.0");
+			cadreStatsVO.setPanchayatORWardPerc(vo.getPanchPerc() != null ? vo.getPanchPerc() : "0.0");
+			cadreStatsVO.setYear(vo.getYear()  != null ? vo.getYear() : "");// Year			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in setDataToVO() Method, Exception is - ",e);
+		}
+		
+		return cadreStatsVO;
 	}
 }
