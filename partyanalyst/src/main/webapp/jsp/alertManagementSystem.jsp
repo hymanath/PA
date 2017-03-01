@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Government Core DashBoard</title>
-<link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
+<link rel="SHORTCUT ICON" type="image/x-icon" href="govtCo#18A75AashBoard/img/fevicon.png">
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
