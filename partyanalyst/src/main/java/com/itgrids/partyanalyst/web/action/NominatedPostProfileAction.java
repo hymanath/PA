@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
@@ -80,8 +81,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long nominationPostCandidateId;
 	private Long tdpCadreId;
 	private Long applicationId;
+	private CadrePerformanceVO cadrePerformanceVO;
 	
 	
+	public CadrePerformanceVO getCadrePerformanceVO() {
+		return cadrePerformanceVO;
+	}
+	public void setCadrePerformanceVO(CadrePerformanceVO cadrePerformanceVO) {
+		this.cadrePerformanceVO = cadrePerformanceVO;
+	}
 	public GovtOrderVO getGovtOrderVO() {
 		return govtOrderVO;
 	}
@@ -2058,4 +2066,31 @@ public String execute()
 		return Action.SUCCESS;
 	}
 
+	public String getCadreDetailsReport(){
+		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			jObj = new JSONObject(getTask());
+			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+			JSONArray tdpCadreIds = jObj.getJSONArray("tdpCadreIds");
+			
+			if(tdpCadreIds !=null && tdpCadreIds.length()>0){
+				for (int i = 0; i < tdpCadreIds.length(); i++) {
+					Long locId = Long.valueOf(tdpCadreIds.get(i).toString());
+					tdpCadreIdsList.add(locId);
+				}
+			}
+			
+			cadrePerformanceVO = nominatedPostProfileService.getCadrePeoplePerformanceDetails(tdpCadreIdsList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Entered into getCadreDetailsReport method of NominatedPostProfileAction ",e);
+		}
+	
+		return Action.SUCCESS;
+		
+	}
 }
