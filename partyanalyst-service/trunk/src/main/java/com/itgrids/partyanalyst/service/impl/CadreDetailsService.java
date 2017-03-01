@@ -112,6 +112,7 @@ import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BenefitVO;
+import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
@@ -12132,5 +12133,40 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 			LOG.error("Exception Occured in getAllConstBenefitDetailsForADist() Method, Exception is - ",e);
 		}
 		return benefitVOList;
+	}
+	public Map<Long,CadreBasicPerformaceVO> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds){
+		Map<Long,CadreBasicPerformaceVO> returnMap = new HashMap<Long, CadreBasicPerformaceVO>(0);
+		try {
+			//0-tdpCadreId,1-firstName,2-membershipId,3-image,4-mobileNo,5-TC.casteStateId,6-enrollmentYearId,7-year
+			//8-insertedDate,9-casteName,10-categoryName
+			List<Object[]> cadreCasteList = tdpCadreDAO.getCadreCasteDetailsByTdpCadreIds(tdpCadreIds);
+			if(cadreCasteList != null && cadreCasteList.size() > 0){
+				for (Object[] objects : cadreCasteList) {
+					CadreBasicPerformaceVO vo = new CadreBasicPerformaceVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					vo.setImagePath(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					vo.setCasteStateId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+					
+					CadreBasicPerformaceVO subVo = new CadreBasicPerformaceVO();
+						subVo.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+						subVo.setYear(commonMethodsUtilService.getLongValueForObject(objects[7]));
+						subVo.setRegDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+						
+						vo.getSubList().add(subVo);
+						
+					vo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[9]));
+					vo.setCasteGroup(commonMethodsUtilService.getStringValueForObject(objects[10]));
+					
+					returnMap.put((Long)objects[0], vo);
+				}
+			}
+		} catch (Exception e){
+			LOG.error(" Exception Occured in getCadreCasteDetailsByTdpCadreIds() Method, Exception is - ",e);
+		}
+		return returnMap;
+		
 	}
 }
