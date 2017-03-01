@@ -15,7 +15,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><decorator:title default="Government"/></title>
-<link rel="icon" type="image/png"  href="alertDepartment/img/GOVT.png">
+<link rel="icon" type="image/png"  href="alertDepartment/img/Fevicon.png">
 <style type="text/css">
 .navbarHeader {
    background: #555555 none repeat scroll 0 0;
