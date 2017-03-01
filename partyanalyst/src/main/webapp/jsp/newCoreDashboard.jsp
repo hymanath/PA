@@ -1965,7 +1965,10 @@
 										<div id="stateLevelMeetingBasicCnt"></div>
 									 </div>
 								  </div>
-								  
+								  <div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 25px;">
+											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
+										<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
+										</div>
 								  <div class="panelBlock m_top20">
 									<div class="row">
 										<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
@@ -1977,10 +1980,7 @@
 												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 											</h4>
 										</div>
-										<div class="col-md-5 col-xs-12 col-sm-5">
-											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">Default</button>
-										<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
-										</div>
+										
 									</div>
 									<!--<h4>
 										<span class="headingColor text-capitalize">special meetings</span>
