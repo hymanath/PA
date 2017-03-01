@@ -274,4 +274,16 @@ public int updateAlertSmsStatus(Long assignedId){
 	query.setParameter("assignedId", assignedId);
 	return query.executeUpdate();
 }
+
+	public List<Object[]> getAssignedAlertsSummary(List<Long> cadreIds){
+		Query query = getSession().createQuery(" select model.tdpCadreId,count(distinct model.alertId) " +
+				" from AlertAssigned model " +
+				" where model.isDeleted='N' and model.alert.isDeleted='N' " +
+				" and model.tdpCadreId in (:cadreIds) " +
+				" group by model.tdpCadreId ");
+		
+		query.setParameterList("cadreIds", cadreIds);
+		
+		return query.list();
+	}
 }

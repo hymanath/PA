@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 public class CadreEventsVO {
 	public Long id;
-	public String name;
+	public String name="";
 	public Long invitedCount;
 	public Long attendedCount;
 	public Long lateCount;

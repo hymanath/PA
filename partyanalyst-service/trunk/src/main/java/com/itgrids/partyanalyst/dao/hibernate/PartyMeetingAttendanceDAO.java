@@ -955,5 +955,15 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	query.setParameter("mainTypeId",mainTypeId);
 	return query.list();
 }
-
+	
+	public List<Object[]> getPartyMeetingAttendanceSummary(List<Long> cadreIds){
+		Query query = getSession().createQuery(" select model.attendance.tdpCadreId,count(distinct model.partyMeetingId) " +
+				" from PartyMeetingAttendance model " +
+				" where model.attendance.tdpCadreId in (:cadreIds) " +
+				" group by model.attendance.tdpCadreId ");
+		
+		query.setParameterList("cadreIds", cadreIds);
+		
+		return query.list();
+	}
 }

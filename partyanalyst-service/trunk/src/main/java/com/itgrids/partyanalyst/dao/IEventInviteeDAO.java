@@ -51,4 +51,5 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> getLocationWiseEventInviteedCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds);
 	public List<Object[]> getEventInviteeCntByEventAndLocationBasedOnUserType(Long userType,Long stateId,List<Long> eventIds,Long userAccessLevelId,List<Long> userAccessLevelValues,String levelType);
 	public List<Object[]> getLocationWiseEventInviteedCntBasedOnUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds,String locationType);
+	public List<Object[]> getEventInviteeDetails(List<Long> cadreIds,List<Long> eventIds);
 }

@@ -2778,4 +2778,16 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		 }
 		return sqlQuery.list();
 		}
+	
+	public List<Object[]> getEventAttendeeSummary(List<Long> cadreIds,List<Long> eventIds){
+		Query query = getSession().createQuery(" select model.eventId,model.tdpCadreId " +
+				" from EventAttendee model " +
+				" where model.eventId in (:eventIds) " +
+				" and model.tdpCadreId in (:cadreIds) ");
+		
+		query.setParameterList("eventIds", eventIds);
+		query.setParameterList("cadreIds", cadreIds);
+		
+		return query.list();
+	}
 }
