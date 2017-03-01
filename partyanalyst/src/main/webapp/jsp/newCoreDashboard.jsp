@@ -4276,6 +4276,7 @@ var globalImages;
 		
 	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
+		 $(".profileSelection").show();
 		//ALL BLOCKS
 		$("#mainHeadinId").html("KALA VENKATA RAO");
 		getRescentArticleTime();		
@@ -4333,6 +4334,7 @@ var globalImages;
 	  }
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
+		  $(".profileSelection").show();
 		  $("#mainHeadinId").html("KALA VENKATA RAO");
 		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -4353,6 +4355,7 @@ var globalImages;
 		
 	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
+		  $(".profileSelection").show();
 		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -4369,66 +4372,80 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		getAlertOverviewDetails();
+	  }else if(finalURL =="committeesMonitoringAction")
+	  {
+		   $(".profileSelection").hide();
+		   $(".debatesBlock,.newsBlock,.meetingsBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.NewToursBlock").remove();
+		   $("#mainHeadinId").html("KALA VENKATA RAO");
+		  $(".iconExpand").hide();
+		  setTimeout(function(){
+			  $(".iconExpand").trigger('click');
+			  //$(".moreBlocksIcon").trigger('click');
+			  $(".moreBlocksIcon").show();
+			  $(".moreBlocksDetailAndComp").show();
+			  passRequiredUrl(finalURL);
+			  $(".comparisionBlock ").trigger("click");
+		  },1000)
 	  }
 	  else{
-		 $("#mainHeadinId").html("KALA VENKATA RAO");
-		//ALL BLOCKS
-		getRescentArticleTime();		
-		//committeeBasicCall();
-		
-		//training program call
-		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
-		var programIdArr = [];
-		var arr = idStr.split(","); 
-		for(var i in arr){
-			programIdArr.push(arr[i]);
-		} 
-		console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
-		stateLevelCampDetails();
-		stateLevelCampDetailsRepresentativeWise(programIdArr);
-		getStateLevelCampCount(programIdArr); */   
-		getTrainingCampBasicDetailsCntOverview();   
-		//getTrainingCampProgramOverviewDtls();   
-		//Meeting
-		getPartyMeetingTypeByPartyMeetingMainType();
-		getStateLevelMeetingsByMeetingType();
-		getSpecialMeetingsByMeetingType();
-		//events
-		getEventBasicCntDtls();
-		//news please dont remove
-		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-		//getNewsBasicCounts();
-		commonNewsBasicCalls();
-		getAllNewsPapers();
-		//getPaperWiseNewsBasicCounts();
-		//Debates
-		getPartyWiseTotalDebateDetails();      
-        //cadreRegistration
-		cadreRegistrationBasicCall(globalActivityMemberId);
-		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
-        /* Tours Default Call */
-       // getToursBasicOverviewCountDetails();     
-		//getDesigWiseMemberDtls();  
-		/*New Tours implementation Default Call */
-		getToursBasicOverviewDtls();
-     	/*Electronic Media Calls*/
-		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
-		getAllTvChannels();
-		getRescentNewsBulletinTime();
-		/* Alert Default Call */
-		getAlertOverviewDetails();  
-		/* Activities Default Call */
-		getActivitiesDetails();
-		getAttendanceOverViewForPartyOffice();
-		getAttendanceOverViewForPartyOfficeWise();
-		getSettingActivities();
-		getSettingEvents();
-		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
-		$("#attendanceId").html('TODAY ('+datStr+')');
+		    $(".profileSelection").show();
+			$("#mainHeadinId").html("KALA VENKATA RAO");
+			//ALL BLOCKS
+			getRescentArticleTime();		
+			//committeeBasicCall();
+			
+			//training program call
+			/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
+			var programIdArr = [];
+			var arr = idStr.split(","); 
+			for(var i in arr){
+				programIdArr.push(arr[i]);
+			} 
+			console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
+			stateLevelCampDetails();
+			stateLevelCampDetailsRepresentativeWise(programIdArr);
+			getStateLevelCampCount(programIdArr); */   
+			getTrainingCampBasicDetailsCntOverview();   
+			//getTrainingCampProgramOverviewDtls();   
+			//Meeting
+			getPartyMeetingTypeByPartyMeetingMainType();
+			getStateLevelMeetingsByMeetingType();
+			getSpecialMeetingsByMeetingType();
+			//events
+			getEventBasicCntDtls();
+			//news please dont remove
+			$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+			//getNewsBasicCounts();
+			commonNewsBasicCalls();
+			getAllNewsPapers();
+			//getPaperWiseNewsBasicCounts();
+			//Debates
+			getPartyWiseTotalDebateDetails();      
+			//cadreRegistration
+			cadreRegistrationBasicCall(globalActivityMemberId);
+			//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
+			/* Tours Default Call */
+		   // getToursBasicOverviewCountDetails();     
+			//getDesigWiseMemberDtls();  
+			/*New Tours implementation Default Call */
+			getToursBasicOverviewDtls();
+			/*Electronic Media Calls*/
+			getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+			getAllTvChannels();
+			getRescentNewsBulletinTime();
+			/* Alert Default Call */
+			getAlertOverviewDetails();  
+			/* Activities Default Call */
+			getActivitiesDetails();
+			getAttendanceOverViewForPartyOffice();
+			getAttendanceOverViewForPartyOfficeWise();
+			getSettingActivities();
+			getSettingEvents();
+			var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+			$("#attendanceId").html('TODAY ('+datStr+')');
 	  }
 	}
 	$(document).on("click",".userStructureClass",function(){
-		
 		$("#directChildActivityMemberDiv").html('');
 		$("#topPoorPerformanceDiv").html('');
 		$("#topPoorLocationsDiv").html(''); 

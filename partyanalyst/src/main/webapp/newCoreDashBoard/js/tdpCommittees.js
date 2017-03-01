@@ -1,4 +1,7 @@
-	
+    var finalGlobalUrl='';
+     function passRequiredUrl(finalURL){
+		  finalGlobalUrl = finalURL; 
+	  }	
 	function getLevelWiseBasicCommitteesArray(){
 		
 		var levelWiseBasicCommitteesArray = new Array();
@@ -945,8 +948,14 @@
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDiv").html(str);
-		$(".comparisonSelect li:first-child").addClass("active")
-		
+		if(finalGlobalUrl=="committeesMonitoringAction"){
+			var lengthSize = result.length;
+			firstChildUserTypeIdString = result[lengthSize-1].shortName; 
+			userType = result[lengthSize-1].userType;
+		 $(".comparisonSelect li:last-child").addClass("active");	
+		}else{
+		 $(".comparisonSelect li:first-child").addClass("active");	
+		}
 		getSelectedChildUserTypeMembers(firstChildUserTypeIdString,userType);
 		
 	}
@@ -1311,7 +1320,8 @@
 			}
 			
 		}else{
-			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
+			//$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
+			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("");
 		}
 		
 	}
@@ -1899,7 +1909,9 @@
 					$(".addactive").addClass("active");
 				}
 			});
-			getUserTypeWiseCommitteesCompletedCounts1();
+			if(finalGlobalUrl!="committeesMonitoringAction"){
+			   getUserTypeWiseCommitteesCompletedCounts1();	
+			}
 		}
 		
 		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
