@@ -4382,7 +4382,7 @@ var globalImages;
 			   passRequiredUrl(finalURL);
 			  $(".iconExpand").trigger('click');
 			  //$(".moreBlocksIcon").trigger('click');
-			  $(".moreBlocksIcon").show();
+			 // $(".moreBlocksIcon").show();
 			  $(".moreBlocksDetailAndComp").show();
 			  $(".comparisionBlock ").trigger("click");
 		  },1000)
