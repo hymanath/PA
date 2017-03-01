@@ -80,6 +80,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 	{
 		try{
 		request = ServletActionContext.getRequest();
+		String host = request.getHeader("host");
 		HttpSession session = request.getSession();
 		String url = request.getRequestURL().toString();
 		
@@ -102,6 +103,9 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 			//if(arr[arr.length-1].toString().trim().equalsIgnoreCase("unionSearchRegiststrationAction.action"))
 			if(!(Arrays.asList(IConstants.LOGIN_SKIP_URLS_LIST).contains(arr[arr.length-1].toString().trim())))
 			{
+				if(registrationVO == null && host.contains("mydepartments.in"))
+					return "apGovtLoginPage";
+				
 				if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
 					return "tdpLoginPage";
 				else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("login.action"))
