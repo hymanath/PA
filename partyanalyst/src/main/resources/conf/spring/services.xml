@@ -3621,6 +3621,15 @@
 		<property name="govtOrderDocumentsDAO" ref="govtOrderDocumentsDAO"></property>
 		<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO"></property>
 		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
+		<property name="cadreDetailsService" ref="cadreDetailsService"></property>
+		<property name="eventInviteeDAO" ref="eventInviteeDAO"></property>
+		<property name="eventAttendeeDAO" ref="eventAttendeeDAO"></property>
+		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"></property>
+		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"></property>
+		<property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO"></property>
+		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO"></property>
+		<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
+		<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
