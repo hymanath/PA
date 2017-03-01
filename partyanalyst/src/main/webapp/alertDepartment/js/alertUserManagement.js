@@ -1,15 +1,12 @@
-var currentFromDate = moment().subtract(1,"month").format("DD/MM/YYYY");
-var currentToDate = moment().format("DD/MM/YYYY");
-var detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-var detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");
-
+var currentFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var currentToDate = moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalStateId = 1;  
 var departmentIdsList="";
 var lvlValueGlobal="";
 var paperIdArr = [];
 var chanelIdArr = [];
 
-$("#dateRangePickerAUM").daterangepicker({
+$("#dateRangePickerAUM,#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").daterangepicker({
 	opens: 'left',
 	startDate: currentFromDate,
 	endDate: currentToDate,
@@ -17,7 +14,8 @@ $("#dateRangePickerAUM").daterangepicker({
 	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
-		'Today' : [moment(), moment()],
+		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+	    'Today' : [moment(), moment()],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
@@ -27,14 +25,12 @@ $("#dateRangePickerAUM").daterangepicker({
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
-$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-	currentFromDate = picker.startDate.format('DD/MM/YYYY');
-	currentToDate = picker.endDate.format('DD/MM/YYYY');
-	//getTotalAlertGroupByStatusForOneDept();
-	getTotalAlertByStatusForOfficer();  
-	getTotalAlertGroutByDeptThenStatus();
-	getTotalAlertByDeptForOfficer();
-});
+var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock, #dateRangePickerAUM").val();
+var pickerDates = currentFromDate+' - '+currentToDate
+if(dates == pickerDates)
+{
+	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock, #dateRangePickerAUM").val('All');
+}
 $('#dateRangePickerSubOrdinateBlock').on('apply.daterangepicker', function(ev, picker) {
 	detailedfromDate =  picker.startDate.format('DD/MM/YYYY')
 	if(picker.chosenLabel == 'All')
@@ -61,32 +57,20 @@ $("#dateRangePickerDetailedBlock").on('apply.daterangepicker', function(ev, pick
 		$("#dateRangePickerDetailedBlock").val('All');
 	}
 });
-$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").daterangepicker({
-	opens: 'left',
-	startDate: detailedfromDate,
-	endDate: detailedtoDate,
-	locale: {
-	  format: 'DD/MM/YYYY'
-	},
-	ranges: {
-		'All':[moment(),moment()],
-		'Today' : [moment(), moment()],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-	   'This Month': [moment().startOf('month'), moment()],
-	   'This Year': [moment().startOf('Year'), moment()]
-	}
-});
-var dates= $("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").val();
-var pickerDates = detailedfromDate+' - '+detailedtoDate
-if(dates == pickerDates)
-{
-	$("#dateRangePickerSubOrdinateBlock, #dateRangePickerDistrictAlertBlock, #dateRangePickerDistrictLevelDeptBlock, #dateRangePickerDetailedBlock").val('All');
-}
 
+$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+	if(picker.chosenLabel == 'All')
+	{
+		$("#dateRangePickerDetailedBlock").val('All');
+	}
+	$(".detailedBlockShow").hide();
+	currentFromDate = picker.startDate.format('DD/MM/YYYY');
+	currentToDate = picker.endDate.format('DD/MM/YYYY');
+	//getTotalAlertGroupByStatusForOneDept();
+	getTotalAlertByStatusForOfficer();  
+	getTotalAlertGroutByDeptThenStatus();
+	getTotalAlertByDeptForOfficer();
+});
 
 //getTotalAlertGroupByStatusForOneDept();
 getTotalAlertByStatusForOfficer();       
@@ -123,18 +107,22 @@ $(document).on("click",".getDetailsForSubOrdinate",function(){
 $(document).on("click",".detailedBlockDiv",function(){
 	$(".detailedBlockShow").show();	
 	var departmentId = $(this).attr("attr_department_id");
-	var detailedfromDate = "";
-		var detailedtoDate = "";
+	 var currentFromDate = "";
+		var currentToDate = "";
 		var dates = $("#dateRangePickerAUM").val();
-		
-		if(dates != null && dates.length > 0){
-			var datesArr = dates.split("-");
-			detailedfromDate = datesArr[0].trim();
-			detailedtoDate = datesArr[1].trim();
+		if(dates == "All"){
+			currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+			currentToDate=moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
 		}
 		
+		if(dates != "All" && dates != null && dates.length > 0){
+			var datesArr = dates.split("-");
+			currentFromDate = datesArr[0].trim();
+			currentToDate = datesArr[1].trim();
+		} 
+		
 	getGovtDeptLevelForDeptAndUser(departmentId);
-	getAlertCountLocationWiseThenStatusWise(departmentId,3,detailedfromDate,detailedtoDate);
+	getAlertCountLocationWiseThenStatusWise(departmentId,3,currentFromDate,currentToDate);
 });	 
 
 $(document).on("change","#departmentId",function(){
@@ -295,6 +283,7 @@ function getSubLevelsForUser(designnationId)
   
 function getTotalAlertByStatusForOfficer()
 { 
+	$("#alertStatusOverview,#graphDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj ={     
       fromDate:currentFromDate,     
       toDate:currentToDate       
@@ -304,7 +293,7 @@ function getTotalAlertByStatusForOfficer()
       url: 'getTotalAlertByStatusForOfficerAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		$("#alertStatusOverview").html('');
+		$("#alertStatusOverview,#totalAlertGroupByStatusForOneDeptDiv,#TotalAlertsView,#pieChartInfoText,#graphDiv").html('');
 		 if(result != null && result.length > 0){
 			buildTotalAlertByStatusForOfficer(result);
 		}else{
@@ -314,8 +303,12 @@ function getTotalAlertByStatusForOfficer()
 }
 
 function buildTotalAlertByStatusForOfficer(result){
+	
 	var str='';
+	var str1='';
 	var totalAlert = 0;
+	str1+='<div id="totalAlertGroupByStatusForOneDeptDiv"></div>';
+	str1+='<div id="TotalAlertsView"></div>';
 	str+='<table class="table tableGraph">';
 		str+='<thead>';
 			str+='<tr>';
@@ -337,6 +330,7 @@ function buildTotalAlertByStatusForOfficer(result){
 	str+='</table>';
 		
 	$("#alertStatusOverview").html(str);
+	$("#graphDiv").html(str1)
 	var statusOverviewArr =[];
 	for(var i in result)
 	{
@@ -354,7 +348,7 @@ function buildTotalAlertByStatusForOfficer(result){
 		statusOverviewArr.push(obj);
 	}
 	
-	$(function() {
+	
 		var chart = new Highcharts.Chart({
 			//colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
 			chart: {
@@ -417,9 +411,7 @@ function buildTotalAlertByStatusForOfficer(result){
 			series: [{
 				data: statusOverviewArr
 			}]
-		},
-	
-		function(chart) { // on complete
+		},function(chart) { // on complete
 			var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
 			var textY = chart.plotTop  + (chart.plotHeight * 0.5);
 
@@ -432,7 +424,7 @@ function buildTotalAlertByStatusForOfficer(result){
 			span.css('left', textX + (span.width() * -0.5));
 			span.css('top', textY + (span.height() * -0.5));
 		});
-	});	
+	
 }
  
 function getTotalAlertByDeptForOfficer()
@@ -679,14 +671,14 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 }	
 
 }
-	function getAlertCountLocationWiseThenStatusWise(departmentId,lvlValue,detailedfromDate,detailedtoDate){
+	function getAlertCountLocationWiseThenStatusWise(departmentId,lvlValue,currentFromDate,currentToDate){
 		
 		$("#districtWiseDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		var jObj ={
 			
-		  fromDate:detailedfromDate,
-		  toDate:detailedtoDate,
+		  fromDate:currentFromDate,     
+		  toDate:currentToDate,       
 		  stateId:globalStateId,
 		  govtDepartmentId:departmentId,
 		  lvlValue:lvlValue,
@@ -699,13 +691,13 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			$("#districtWiseDetailsBlock").html('');
-			buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue,detailedfromDate,detailedtoDate);
+			buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue);
 			
 		});
 		
 	}
 	var levelDepartmentArray =[{"id":3,"name":"District"},{"id":4,"name":"Constituency"}]
-	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue,detailedfromDate,detailedtoDate){
+	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue){
 		
 		$('#levelDepartmentId').html('');
 		$('#departmentId').html('');
@@ -786,32 +778,33 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		$("#districtWiseDetailsBlock").html("No Data Available");
 	}
 		$("#districtWiseDetailsBlockdataTable").dataTable();
-		var detailedfromToDate =""+detailedfromDate+" - "+detailedtoDate+" ";
-		if(detailedfromToDate !="All"){
-			 $('#dateRangePickerDetailedBlock').val(detailedfromToDate);
+		 var fromToDateVal = $("#dateRangePickerAUM").val();
+		if(fromToDateVal !="All"){
+			 $('#dateRangePickerDetailedBlock').val(fromToDateVal);
 		}else{
 			$('#dateRangePickerDetailedBlock').val("All");
-		}
+		} 
 		
 	}
 	$(document).on("click",".getDetailsClick",function(){
-		var detailedfromDate = "";
-		var detailedtoDate = "";
+		var currentFromDate = "";
+		var currentToDate = "";
 		var dates = $("#dateRangePickerDetailedBlock").val();
 		if(dates == "All"){
-			detailedfromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-			detailedtoDate=moment().endOf('year').format("DD/MM/YYYY");
+			currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+			currentToDate=moment().endOf('year').format("DD/MM/YYYY");
 		}
 		
 		if(dates != "All" && dates != null && dates.length > 0){
 			var datesArr = dates.split("-");
-			detailedfromDate = datesArr[0].trim();
-			detailedtoDate = datesArr[1].trim();
+			currentFromDate = datesArr[0].trim();
+			currentToDate = datesArr[1].trim();
 		}
+		
 		$("#districtWiseDetailsBlock").html('');
 		var departmentId = $("#departmentId").val();
 		var levelId = $("#levelDepartmentId").val();
-		getAlertCountLocationWiseThenStatusWise(departmentId,levelId,detailedfromDate,detailedtoDate);
+		getAlertCountLocationWiseThenStatusWise(departmentId,levelId,currentFromDate,currentToDate);
 		
 	});
 	
@@ -819,8 +812,8 @@ function getStatusWiseAlertDetails(statusId){
 	$("#districtAlertStatusInfo").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	var jObj ={
-      fromDate : detailedfromDate,
-      toDate : detailedtoDate,
+      fromDate:currentFromDate,
+		  toDate:currentToDate,
       stateId : globalStateId,
       paperIdArr : paperIdArr,
       chanelIdArr : chanelIdArr,
@@ -913,8 +906,8 @@ function getSubOrdinatesAlertsOverView(designnationId,subOrdianatelevelId,subOrd
 	var jObj ={
 		designationId : designnationId,
 		levelId : subOrdianatelevelId,
-		fromDate : detailedfromDate,
-		toDate : detailedtoDate
+		 fromDate:currentFromDate,
+		  toDate:currentToDate,
     }
     $.ajax({
       type:'GET',
@@ -987,8 +980,8 @@ function getSubOrdinateLocationWiseAlertDetails(designnationId,levelId,locationV
 		designationId : designnationId,
 		levelId : levelId,
 		levelValue : locationVal,
-		fromDate : detailedfromDate,
-		toDate : detailedtoDate
+		 fromDate:currentFromDate,
+		  toDate:currentToDate,
     }
     $.ajax({
       type:'GET',
@@ -1444,8 +1437,8 @@ function getTotalAlertGroutByDeptThenStatusDistritLevel()
 	$("#districtLevelDeptOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	var jObj ={
-		fromDate : detailedfromDate,
-		toDate : detailedtoDate,
+		 fromDate:currentFromDate,
+		  toDate:currentToDate,
 		stateId : globalStateId,
 		paperIdArr : paperIdArr,
 		chanelIdArr : chanelIdArr       
@@ -1530,8 +1523,8 @@ function getTotalAlertDtls(statusId,departmentId,typeId)
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
-		fromDate : detailedfromDate,
-		toDate : detailedtoDate,
+		 fromDate:currentFromDate,
+		  toDate:currentToDate,
 		statusId : statusId,
 		deptId : departmentId,
 		type : typeId      
@@ -1654,8 +1647,8 @@ function getTotalAlertDetailsGroupByDeptThenStatus(departmentId,statusId)
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
-			fromDate:	detailedfromDate,
-			toDate:		detailedtoDate,
+			 fromDate:currentFromDate,
+			toDate:currentToDate,
 			stateId:	globalStateId,
 			deptId:		departmentId,    
 			statusId:	statusId,         
@@ -1692,8 +1685,8 @@ function getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,sta
 {
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jObj ={
-		fromDate:detailedfromDate,
-		  toDate:detailedtoDate,
+		  fromDate:currentFromDate,
+		  toDate:currentToDate,
 		  stateId:globalStateId,
 		  govtDepartmentId:govtDepartmentId,                 
 		  statusId:statusId,          
