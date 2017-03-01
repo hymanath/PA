@@ -1840,7 +1840,7 @@ public String execute()
 		try
 		{
 			jObj = new JSONObject(getTask());
-			idAndNameVOList = nominatedPostProfileService.getApplicationDocuments(jObj.getLong("globalCadreId"),jObj.getString("searchType"),jObj.getLong("nominateCandId"),jObj.getLong("applicationId"));
+			idAndNameVOList = nominatedPostProfileService.getApplicationDocuments(jObj.getLong("globalCadreId"),jObj.getString("searchType"),jObj.getLong("nominateCandId"),jObj.getLong("applicationId"),jObj.getLong("statusId"));
 		}catch(Exception e)
 		{
 			LOG.error("Exception Occured in getApplicationDocuments() in NominatedPostProfileAction ",e);
