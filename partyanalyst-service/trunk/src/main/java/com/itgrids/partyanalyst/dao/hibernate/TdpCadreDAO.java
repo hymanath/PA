@@ -9467,4 +9467,38 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameterList("tdpCadreIds", tdpCadreIds);
 		   return query.list();
 	   }
+	   
+	  public List<Object[]> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds){
+		   
+		   StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select tc1.tdp_cadre_id,tc.first_name,tc.membership_id," +
+					" tc.image,tc.mobile_no,tc.caste_state_id,ey.enrollment_year_id," +
+					" ey.year ,date(tc1.inserted_date)," +
+					" c.caste_name,cc.category_name ");
+			
+			queryStr.append(" from tdp_cadre tc,tdp_cadre_enrollment_year tc1," +
+					" enrollment_year ey,caste c,caste_state cs,caste_category cc," +
+					" caste_category_group ccg,user_address ua,constituency C1,district d " );
+			
+			queryStr.append(" where cs.caste_category_group_id = ccg.caste_category_group_id " +
+					" and ccg.caste_category_id = cc.caste_category_id and tc.caste_state_id = cs.caste_state_id " +
+					" and cs.caste_id = c.caste_id and tc.address_id = ua.user_address_id " +
+					" and ua.constituency_id = C1.constituency_id and ua.district_id = d.district_id " +
+					" and tc1.tdp_cadre_id = tc.tdp_cadre_id and tc1.is_deleted='N' " +
+					" and tc.is_deleted='N' and tc1.enrollment_year_id = ey.enrollment_year_id ");
+			
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+				queryStr.append( " and tc1.tdp_cadre_id in (:tdpCadreIds) ");
+			}
+			queryStr.append("order by tc1.enrollment_year_id ");
+			
+			Query query = getSession().createSQLQuery(queryStr.toString());
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+				query.setParameterList("tdpCadreIds", tdpCadreIds);
+			}
+		   return query.list();  
+	   }
+	   
+	   
 }
