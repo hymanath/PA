@@ -60,7 +60,7 @@
 			<div class="row">
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="input-group dateRangePickerCls m_top5 pull-right">
-						<input type="text" class="form-control " style="width:180px" id="dateRangePickerAUM">
+						<input type="text" class="form-control " style="width:180px;height: 35px;" id="dateRangePickerAUM">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
@@ -138,7 +138,7 @@
 													</div>
 													<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
 														<div class="input-group dateRangePickerCls m_top5 pull-right">
-															<input type="text" class="form-control " style="width:180px" id="dateRangePickerDetailedBlock">
+															<input type="text" class="form-control " style="width:180px;height: 35px;" id="dateRangePickerDetailedBlock">
 															<span class="input-group-addon">
 																<i class="glyphicon glyphicon-calendar"></i>
 															</span>
@@ -171,7 +171,7 @@
 												<div class="row pull-right">
 													<div class="col-md-8 col-xs-12 col-sm-12">
 														<div class="input-group">
-															<input type="text" class="form-control" id="dateRangePickerDistrictLevelDeptBlock">
+															<input type="text" class="form-control" style="width:180px;height: 35px;" id="dateRangePickerDistrictLevelDeptBlock">
 															<span class="input-group-addon">
 																<i class="glyphicon glyphicon-calendar"></i>
 															</span>
@@ -204,7 +204,7 @@
 													</div>
 													<div class="col-md-3 col-xs-12 col-sm-12">
 														<div class="input-group">
-															<input type="text" class="form-control" id="dateRangePickerDistrictAlertBlock">
+															<input type="text" class="form-control" style="width:180px;height: 35px;" id="dateRangePickerDistrictAlertBlock">
 															<span class="input-group-addon">
 																<i class="glyphicon glyphicon-calendar"></i>
 															</span>
@@ -244,7 +244,7 @@
 												</div>
 												<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
 													<div class="input-group m_top5 pull-right">
-														<input type="text" class="form-control" id="dateRangePickerSubOrdinateBlock">
+														<input type="text" class="form-control" style="width:180px;height: 35px;" id="dateRangePickerSubOrdinateBlock">
 														<span class="input-group-addon">
 															<i class="glyphicon glyphicon-calendar"></i>
 														</span>

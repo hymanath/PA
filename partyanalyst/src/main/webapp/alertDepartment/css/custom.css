@@ -694,7 +694,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .detailedTableStyle  thead tr th{
 	border-top:1px solid #ddd !important;
 	padding: 20px 8px !important;
-	background-color:#EDEEF0;
+	background-color:#ddd;
 	font-size:14px;
 }
 .detailedTableStyle  thead tr th:first-child{
@@ -706,7 +706,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .detailedTableStyle  tbody tr td{
 	padding: 15px 8px !important;
 	border-bottom:1px solid #ddd !important;
-	font-size:14px;
+	font-size:12px;
 }
 .detailedTableStyle  tbody tr td:first-child{
 	border-left:1px solid #ddd !important;
@@ -733,4 +733,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border-radius: 50%;
 	width: 16px;
 	height: 16px;
+}
+.tooltip-inner {
+    max-width: 381px;
+    /* If max-width does not work, try using width instead */
+    width: 380px; 
+	text-align:left;
+	font-size:14px;
 }
