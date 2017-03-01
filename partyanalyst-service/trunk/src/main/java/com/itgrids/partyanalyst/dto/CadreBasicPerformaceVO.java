@@ -18,8 +18,29 @@ public class CadreBasicPerformaceVO implements java.io.Serializable{
 	private String casteName;
 	private String regDate;
 	private List<CadreBasicPerformaceVO> subList = new ArrayList<CadreBasicPerformaceVO>(0);
+	private Long casteStateId;
+	private Long enrollmentYearId;
+	private Long year;
 	
 	
+	public Long getEnrollmentYearId() {
+		return enrollmentYearId;
+	}
+	public void setEnrollmentYearId(Long enrollmentYearId) {
+		this.enrollmentYearId = enrollmentYearId;
+	}
+	public Long getYear() {
+		return year;
+	}
+	public void setYear(Long year) {
+		this.year = year;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
 	public Long getId() {
 		return id;
 	}
