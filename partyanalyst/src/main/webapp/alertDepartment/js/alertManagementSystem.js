@@ -1589,16 +1589,29 @@ function buildStatusWiseTotalAlerts(result){
 			str+='<div class="panel-group" id="departmentOverview" role="tablist" aria-multiselectable="true">';
 			for(var i in result)
 			{
+				var tot = 0;
 			  str+='<div class="panel panel-default panelCustomNew">';
 				str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
 				if(i == 0)
 				{
 					str+='<a role="button" class="collapseIcon" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
-					  str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
+					str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
+					for(var s in result[i].govtDeptList){    
+						tot = tot + parseInt(result[i].govtDeptList[s].count);
+						str+='<span>'+result[i].govtDeptList[s].shortName+'-'+result[i].govtDeptList[s].count+': </span>';
+					} 
+					str+='<span>Total-'+tot+'</span>';
+					  str+='</h4>';
 					str+='</a>';
 				}else{
 					str+='<a role="button" class="collapsed collapseIcon" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
-					  str+='<h4 class="panel-title fontColor">'+result[i].department+'</h4>';
+					  str+='<h4 class="panel-title fontColor">'+result[i].department+'<span style="margin-left:20px"></span>';
+					  for(var s in result[i].govtDeptList){ 
+							tot = tot + parseInt(result[i].govtDeptList[s].count);
+							str+='<span>'+result[i].govtDeptList[s].shortName+'-'+result[i].govtDeptList[s].count+': </span>';
+					  }  
+						str+='<span>Total-'+tot+'</span>';
+					  str+='</h4>';
 					str+='</a>';
 				}
 					
