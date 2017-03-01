@@ -2780,12 +2780,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		}
 	
 	public List<Object[]> getEventAttendeeSummary(List<Long> cadreIds,List<Long> eventIds){
-		Query query = getSession().createQuery(" select model.eventId,model.tdpCadreId " +
+		Query query = getSession().createQuery(" select model.eventId-1,model.tdpCadreId " +
 				" from EventAttendee model " +
-				" where model.eventId in (:eventIds) " +
-				" and model.tdpCadreId in (:cadreIds) ");
+				" where model.eventId in (8,31) " +
+				" and model.tdpCadreId in (:cadreIds) " +
+				" group by  model.eventId  ");
 		
-		query.setParameterList("eventIds", eventIds);
+		//query.setParameterList("eventIds", eventIds);
 		query.setParameterList("cadreIds", cadreIds);
 		
 		return query.list();
