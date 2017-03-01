@@ -2671,4 +2671,41 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		query.setParameter("tdpCommitteeId", tdpCommitteeId);
 		return (Long)query.uniqueResult();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId){
+		Query query = getSession().createQuery(" select  distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName " +
+				" from TdpCommittee model " +
+				" where model.constituency.constituencyId = :constituencyId " +
+				" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.tehsil.tehsilName ");
+	
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("enrollmentId", enrollmentId);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTdpCommitteeAllPanchayatsInMandals(List<Long> ids,Long enrollmentId)
+	{
+		String queryString = "select distinct model.userAddress.panchayat.panchayatId," +
+				" model.userAddress.panchayat.panchayatName " +
+				" from TdpCommittee model " +
+				" where model.userAddress.tehsil.tehsilId in (:ids) " +
+				" and model.tdpCommitteeEnrollmentId = :enrollmentId and model.userAddress.panchayat.isDeleted = 'N' " +
+				" order by model.userAddress.panchayat.panchayatName ";
+		
+		Query query = getSession().createQuery(queryString);
+		query.setParameterList("ids", ids);
+		query.setParameter("enrollmentId", enrollmentId);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTdpCommitteeLocalBodiesByConstituency(Long constituencyId,Long enrollmentId){
+		Query query = getSession().createQuery(" select  distinct model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name " +
+				" from TdpCommittee model " +
+				" where model.constituency.constituencyId = :constituencyId " +
+				" and model.tdpCommitteeEnrollmentId = :enrollmentId order by model.userAddress.localElectionBody.name ");
+	
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("enrollmentId", enrollmentId);
+		return query.list();
+	}
 }
