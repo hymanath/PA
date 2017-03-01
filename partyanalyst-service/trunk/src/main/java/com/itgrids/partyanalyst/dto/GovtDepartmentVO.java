@@ -54,7 +54,6 @@ public class GovtDepartmentVO {
 	private String document;
 	private String timeStr;
 	
-	
 	public String getTimeStr() {
 		return timeStr;
 	}
