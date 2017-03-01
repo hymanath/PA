@@ -27,6 +27,7 @@ public class AlertStatus extends BaseModel implements Serializable {
 	private String alertStatus;
 	private Long statusOrder;
 	private String color;
+	private String shortName;
 	
 	/*private Long alertTypeId;
 	private Long govtDepartmentId;
@@ -70,6 +71,15 @@ public class AlertStatus extends BaseModel implements Serializable {
 	public void setStatusOrder(Long statusOrder) {
 		this.statusOrder = statusOrder;
 	}
+	@Column(name = "short_name")
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	
 /*
 	@Column(name = "alert_type_id")
 	public Long getAlertTypeId() {
