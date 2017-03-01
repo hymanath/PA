@@ -1352,7 +1352,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			
 			//departmentId-0,departmentName-1,districtId-2,districtName-3,Count-4
 			//distWiseAlertLst = alertDAO.getDistrictWiseTotalAlertsForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
-			distWiseAlertLst = alertAssignedOfficerDAO.getDepartmentAndDistrictWiseAlertsCounts(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList);
+			distWiseAlertLst = alertAssignedOfficerDAO.getDepartmentAndDistrictWiseAlertsCounts(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList,null);
 			List<Long> deptIds = new ArrayList<Long>(0);
 			if(distWiseAlertLst != null && distWiseAlertLst.size() > 0){
 				for (Object[] objects : distWiseAlertLst) {
@@ -1388,6 +1388,11 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					}
 				}
 			}
+			
+			List<Object[]> stateWiseAlertLst = null;  
+			if(levelId != null && levelId ==2l){
+				stateWiseAlertLst = alertAssignedOfficerDAO.getDepartmentAndDistrictWiseAlertsCounts(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList,"state");
+			}
 			//statusWiseMediaTypeTotalCounts
 			//statusId-0,status-1,Count-2,alertCategoryId-3,deptId-4
 			//statusWiseCntsLst = alertDAO.getStatusWiseTotalCountsForAlert(fromDate, toDate, stateId,deptIds, paperIdList, chanelIdList);
@@ -1404,11 +1409,28 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
  					 }
 				}
  			 }
-			
+ 			Long deptId = 0L;
+ 			List<GovtDepartmentVO> temp = new ArrayList<GovtDepartmentVO>(0);
+ 			if(stateWiseAlertLst != null && stateWiseAlertLst.size() > 0 && finalVOList != null && finalVOList.size() > 0){//[3, AGRICULTURE & CO-OPERATION DEPARTMENT, 1, Andhra Pradesh, 24]
+ 					for(Object[] param : stateWiseAlertLst){
+ 						deptId = commonMethodsUtilService.getLongValueForObject(param[0]);
+ 						for(GovtDepartmentVO obj : finalVOList){
+ 							if(obj.getDepartmentId().equals(deptId)){
+ 								temp = obj.getGovtDepartmentVOList();
+ 								GovtDepartmentVO govtDptVo = new GovtDepartmentVO();
+ 								govtDptVo.setDepartmentId(commonMethodsUtilService.getLongValueForObject(param[2]));
+ 								govtDptVo.setDepartment(commonMethodsUtilService.getStringValueForObject(param[3]));
+ 								govtDptVo.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+ 								temp.add(0,govtDptVo);  
+ 							}
+ 						}
+ 					}
+ 				}
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDistrictWiseTotalAlertsForAlert() method of CccDashboardService",e);
 		}
+		
 		return finalVOList;
 	}
 
@@ -1503,7 +1525,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			
 			//districtId-0,districtName-1,statusId-2,statusName-3,count-4
 			//statusWiseDistLst = alertDAO.getDistWiseTotalAlertsStatusForAlert(fromDate, toDate, stateId, deptIdList, paperIdList, chanelIdList);
-			statusWiseDistLst = alertAssignedOfficerDAO.getDistWiseTotalAlertsStatusForAlert(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList);
+			statusWiseDistLst = alertAssignedOfficerDAO.getDistWiseTotalAlertsStatusForAlert(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList,null);
 			if(statusWiseDistLst != null && statusWiseDistLst.size() > 0){
 				for (Object[] objects : statusWiseDistLst) {
 					GovtDepartmentVO matchedDistVO = getmatchedDeptVo(finalVOList,(Long)objects[0]);
@@ -1545,9 +1567,52 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						}
 					 }
 				}
+			 }//modify
+			 List<Object[]> stateWiseDistLst = null;
+			 if(levelId != null && levelId ==2l){//[1, Andhra Pradesh, 2, Notified, 24]
+				 stateWiseDistLst = alertAssignedOfficerDAO.getDistWiseTotalAlertsStatusForAlert(deptIdList, levelId, levelValues, stateId, fromDate, toDate, paperIdList, chanelIdList,"state");
 			 }
+			
+			Long ttlCnt = 0L;
+ 			List<GovtDepartmentVO> temp = new ArrayList<GovtDepartmentVO>(0);
+ 			
+ 			if(stateWiseDistLst != null && stateWiseDistLst.size() > 0 && finalVOList != null && finalVOList.size() > 0){//[3, AGRICULTURE & CO-OPERATION DEPARTMENT, 1, Andhra Pradesh, 24]
+				for(Object[] param : stateWiseDistLst){
+					GovtDepartmentVO govtDptVo = new GovtDepartmentVO();
+					govtDptVo.setDepartmentId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					govtDptVo.setDepartment(commonMethodsUtilService.getStringValueForObject(param[3]));
+					govtDptVo.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					temp.add(govtDptVo);
+					ttlCnt = ttlCnt + commonMethodsUtilService.getLongValueForObject(param[4]);
+				}
+ 			}
+ 			if(temp != null && temp.size() > 0){
+ 				GovtDepartmentVO govtDpt = new GovtDepartmentVO();
+ 				govtDpt.setDepartmentId(commonMethodsUtilService.getLongValueForObject(stateWiseDistLst.get(0)[0]));
+ 				govtDpt.setDepartment(commonMethodsUtilService.getStringValueForObject(stateWiseDistLst.get(0)[1]));
+ 				govtDpt.setTotalCount(ttlCnt);
+ 				govtDpt.setGovtDepartmentVOList(temp);  
+ 				finalVOList.add(0,govtDpt);
+ 			}
+ 			
 		} catch (Exception e) {
 			logger.error("Error occured getStatusWiseDistrictTotalForAlert() method of CccDashboardService",e);
+		}
+		Map<Long,String> stsIdAndColorMap = new HashMap<Long,String>();
+		List<Object[]> stsList = alertStatusDAO.getAllStatus();  
+		for(Object[] param : stsList){
+			stsIdAndColorMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+		}
+		List<GovtDepartmentVO> stsLst = new ArrayList<GovtDepartmentVO>(0);
+		if(finalVOList != null && finalVOList.size() > 0){
+			for(GovtDepartmentVO param : finalVOList){
+				stsLst = param.getGovtDepartmentVOList();
+				if(stsLst != null && stsLst.size() > 0){
+					for(GovtDepartmentVO obj : stsLst){
+						obj.setColor(stsIdAndColorMap.get(obj.getDepartmentId()));
+					}
+				}
+			}
 		}
 		return finalVOList;
 	}
