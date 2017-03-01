@@ -635,6 +635,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 smsOptionsList.add(selectOptionVO);
 			 }
 			 debateDetailsVO.setSmaOptionsList(smsOptionsList);
+			 debateDetailsVO.setUserId(regVO.getRegistrationID());
+			 debateDetailsVO.setYoutubeUrl(debateObj.getString("youtubeUrl"));
 			 resultStatus = debateService.saveDebateDetails(debateDetailsVO);
 		} 
 		catch (Exception e)
