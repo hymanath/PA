@@ -14,7 +14,7 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		super(AlertStatus.class);
 	}
 	public List<Object[]> getAllStatus(){
-		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus, model.color from AlertStatus model order by model.statusOrder asc ");
+		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus, model.color,model.shortName from AlertStatus model order by model.statusOrder asc ");
 		return query.list();
 	}
 

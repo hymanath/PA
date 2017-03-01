@@ -1091,9 +1091,10 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevelId =:levelId ");
-		}else{
-			sb.append(" and D.districtId is not null");   
 		}
+		/*else{
+			sb.append(" and D.districtId is not null");   
+		}*/
 		
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
