@@ -117,6 +117,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
+import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreStatsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -12143,25 +12144,37 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 			List<Object[]> cadreCasteList = tdpCadreDAO.getCadreCasteDetailsByTdpCadreIds(tdpCadreIds);
 			if(cadreCasteList != null && cadreCasteList.size() > 0){
 				for (Object[] objects : cadreCasteList) {
-					CadreBasicPerformaceVO vo = new CadreBasicPerformaceVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-					vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[2]));
-					vo.setImagePath(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
-					vo.setCasteStateId(commonMethodsUtilService.getLongValueForObject(objects[5]));
-					
-					CadreBasicPerformaceVO subVo = new CadreBasicPerformaceVO();
-						subVo.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
-						subVo.setYear(commonMethodsUtilService.getLongValueForObject(objects[7]));
-						subVo.setRegDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+					CadreBasicPerformaceVO vo =  null;
+					if(returnMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])) != null){
+						vo = returnMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						CadreBasicPerformaceVO subVo = new CadreBasicPerformaceVO();
+							subVo.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+							subVo.setYear(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							subVo.setRegDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							
+							vo.getSubList().add(subVo);
+					}
+					else{
+						vo =  new CadreBasicPerformaceVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						vo.setImagePath(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
+						vo.setCasteStateId(commonMethodsUtilService.getLongValueForObject(objects[5]));
 						
-						vo.getSubList().add(subVo);
+						vo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[9]));
+						vo.setCasteGroup(commonMethodsUtilService.getStringValueForObject(objects[10]));
 						
-					vo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[9]));
-					vo.setCasteGroup(commonMethodsUtilService.getStringValueForObject(objects[10]));
-					
-					returnMap.put((Long)objects[0], vo);
+						CadreBasicPerformaceVO subVo = new CadreBasicPerformaceVO();
+							subVo.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+							subVo.setYear(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							subVo.setRegDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							
+							vo.getSubList().add(subVo);
+							
+						returnMap.put((Long)objects[0], vo);
+					}
 				}
 			}
 		} catch (Exception e){
@@ -12258,4 +12271,5 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 		
 		return cadreStatsVO;
 	}
+	
 }

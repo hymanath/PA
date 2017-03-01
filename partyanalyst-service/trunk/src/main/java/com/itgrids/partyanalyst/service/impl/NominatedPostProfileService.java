@@ -74,8 +74,11 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreEventsVO;
+import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
+import com.itgrids.partyanalyst.dto.CadreStatsVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -100,6 +103,7 @@ import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -163,9 +167,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO; 
 	private IAlertAssignedDAO alertAssignedDAO;
 	private IAlertCandidateDAO alertCandidateDAO;
+	private ICadreDetailsService cadreDetailsService;
 	
-	
-	
+
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
+
 	public IAlertCandidateDAO getAlertCandidateDAO() {
 		return alertCandidateDAO;
 	}
@@ -8035,10 +8043,10 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		return "failure";
 	}
 	
-	public List<CadreEventsVO> getCadresEventsSummary(List<Long> cadreIds){
-		List<CadreEventsVO> voList = new ArrayList<CadreEventsVO>(0);
+	public Map<Long,List<CadreEventsVO>> getCadresEventsSummary(List<Long> cadreIds){
+		Map<Long,List<CadreEventsVO>> finalMap = new HashMap<Long, List<CadreEventsVO>>(0);
 		try {
-			Map<Long,List<CadreEventsVO>> finalMap = new HashMap<Long, List<CadreEventsVO>>(0);
+			
 			if(cadreIds != null && cadreIds.size() > 0){
 				//get mahanadu invitee and attendence details
 				//0-eventId,1-cadreId
@@ -8072,7 +8080,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 							}else if((Long)objects[0] == 30l){//2016 mahanadu
 								voIn.setName("Mahanadu - 2016");
 							}
-							voIn.setAttendedCount(1l);
+							voIn.setAttendedCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
 							tempList.add(voIn);
 							finalMap.put((Long)objects[1], tempList);
 						}else{
@@ -8120,7 +8128,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCadresEventsSummary", e);
 		}
-		return voList;
+		return finalMap;
 	}
 	
 	public CadreEventsVO getMatchedEventVO(Long eventId,List<CadreEventsVO> voList){
@@ -8178,4 +8186,50 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 			}
 		}
 	}
+	
+	public CadrePerformanceVO getCadrePeoplePerformanceDetails(List<Long> tdpCadreIdsList){
+		CadrePerformanceVO returnVO = new CadrePerformanceVO();
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(tdpCadreIdsList)){
+				Map<Long,CadreBasicPerformaceVO> cadreBasicMap =  cadreDetailsService.getCadreCasteDetailsByTdpCadreIds(tdpCadreIdsList);
+				Map<Long,CadrePerformanceVO> cadresMap =  new HashMap<Long, CadrePerformanceVO>(0);
+				if(commonMethodsUtilService.isMapValid(cadreBasicMap)){
+					for (Long cadreId : cadreBasicMap.keySet()) {
+						CadrePerformanceVO cadreVO = new CadrePerformanceVO();
+						cadreVO.setCadreBasicPerformaceVO(cadreBasicMap.get(cadreId));
+						cadresMap.put(cadreId, cadreVO);
+					}
+					
+					Map<Long,List<CadreStatsVO>> cadreElectionMap = cadreDetailsService.getElectionPerformanceDetailsForCadreLocations(tdpCadreIdsList);
+					if(commonMethodsUtilService.isMapValid(cadreElectionMap)){
+						for (Long cadreid : cadreElectionMap.keySet()) {
+							CadrePerformanceVO vo = cadresMap.get(cadreid);
+							
+							CadreStatsVO electionVO = new CadreStatsVO();
+							electionVO.getSubList().addAll(cadreElectionMap.get(cadreid));
+							vo.setCadreStatsVO(electionVO);
+						}
+					}
+					Map<Long, List<CadreEventsVO>> eventsMap =  getCadresEventsSummary(tdpCadreIdsList);
+					if(commonMethodsUtilService.isMapValid(eventsMap)){
+						for (Long cadreId : eventsMap.keySet()) {
+							CadrePerformanceVO vo = cadresMap.get(cadreId);							
+							CadreEventsVO eventsVO = new CadreEventsVO();
+							eventsVO.getSubList().addAll( eventsMap.get(cadreId));
+							vo.setCadreEventsVO(eventsVO);
+						}
+					}
+					
+					if(commonMethodsUtilService.isMapValid(eventsMap)){
+						returnVO.getSubList().addAll(cadresMap.values());
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getCadrePeoplePerformanceDetails() Method, Exception is - ",e);
+		}
+		return returnVO;
+	}
+	
 }
