@@ -1744,8 +1744,8 @@ function getActivitiesDetails(){
 	  var toDateStr=dateArray[1];
 	
 	var jsObj={
-		fromDate: fromDateStr,//customStartDateActivities,
-		toDate: toDateStr //customEndDateActivities
+		fromDate: '01/01/2014',//customStartDateActivities,
+		toDate: '01/01/2020'  //customEndDateActivities
 	}	
 	$.ajax({
 	 type: "POST",
@@ -4396,8 +4396,8 @@ function getSettingActivities(){
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
 	var jsObj={
-		fromDate: fromDateStr,//customStartDateActivities,
-		toDate: toDateStr //customEndDateActivities
+		fromDate: '01/01/2014',//customStartDateActivities,
+		toDate: '01/01/2020' //customEndDateActivities
 	}	
 	$.ajax({
 	 type: "POST",
