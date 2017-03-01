@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.BenefitCandidateVO;
 import com.itgrids.partyanalyst.dto.BenefitVO;
+import com.itgrids.partyanalyst.dto.CadreBasicPerformaceVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
@@ -149,4 +151,5 @@ public interface ICadreDetailsService {
 	public List<BenefitVO> getLocalityBasedBenefitSchemesDetails(Long cadreId);
 	public List<BenefitCandidateVO> getBenefitSchemesMembersDetails(Long locationLevelId,Long benefitId,Integer minValue,Integer maxValue);
 	public List<BenefitVO> getAllConstBenefitDetailsForADist(Long distId);
+	public Map<Long,CadreBasicPerformaceVO> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds);
 }
