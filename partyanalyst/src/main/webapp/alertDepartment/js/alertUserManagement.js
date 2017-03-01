@@ -1099,6 +1099,7 @@ $(document).on("click",".alertDetailsModalCls",function(){
 	getInvolvedMembersDetilas(alertId);
 	getAlertStatusCommentsTrackingDetails(alertId);
 	getAlertCategortByAlert(alertId);
+	assignedOfficersDetailsForAlert();
 	$("#changeStatusId").val(alrtStsId);
 	$("#changeStatusId").trigger("chosen:updated");
 });
@@ -1704,4 +1705,43 @@ function getAlertCountDetailsLocationWiseThenStatusWise(locationId,locaValue,sta
 			buildSubOrdinateLocationWiseAlertDetails(result,"hide");
 		}
     });
+}
+
+function assignedOfficersDetailsForAlert()
+{
+	var alertId = $("#hiddenAlertId").val();
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getAssignedOfficersDetailsForAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildAssignedOfficersDetailsForAlert(result);
+	});
+}
+function buildAssignedOfficersDetailsForAlert(result)
+{
+	var str='';
+	$("#assignedOfcrCountId").html('<span>assigned officers - '+result.length+' ');
+	str+='<ul class="assignedOfficersUl">';
+	for(var i in result)
+	{
+		str+='<li>';
+			str+='<div class="media">';
+				/*str+='<div class="media-left">';
+					str+='<img src="" alt="" class="media-object"/>';
+				str+='</div>';*/
+				str+='<div class="media-body">';
+					//str+='<p><b>'+result[i].name+'</b></p>';
+					str+='<p><b><i>'+result[i].department+'</i></b></p>';
+					//str+='<p>'+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].designation+'</p>';
+				str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	}
+	str+='</ul>';
+	$("#assignedOfficersId").html(str);
 }

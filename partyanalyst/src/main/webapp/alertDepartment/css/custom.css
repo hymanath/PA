@@ -473,28 +473,28 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	height: 130px;
 	width: 130px;
 }
-.AMS .navbarHeader {
+.navbarHeader {
     background: #555555 none repeat scroll 0 0;
     height: 60px !important;
     margin-bottom: 0;
 }
-.AMS .navbarHeader .navbar-brand img
+.navbarHeader .navbar-brand img
 {
 	display: inline-block;
     height: 50px;
     width: 210px;
 }
-.AMS .panel-heading.headingColor
+.panel-heading.headingColor
 {
 	background-color:#4A5863 !important;
 	padding:10px 15px !important;
 }
-.AMS .panel-heading.headingColor h4.panel-title
+.panel-heading.headingColor h4.panel-title
 {
 	color:#fff !important;
 	font-size:18px;
 }
-.AMS .settingsBlockDropDown {
+.settingsBlockDropDown {
     background: #ffffff none repeat scroll 0 0;
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
     display: none;
@@ -580,25 +580,25 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 {
 	text-transform:uppercase;
 }
-.AMS .tableGraph thead th
+.tableGraph thead th
 {
 	background-color:#E9F1FC;
 	padding:10px 8px !important;
 	border:0px !important;
 }
-.AMS .tableGraph tr td
+.tableGraph tr td
 {
 	border:0px !important;
 }
-.AMS .textAlignDepartment
+.textAlignDepartment
 {
 	padding-left:0px;
 }
-.AMS .assignedOfficersUl
+.assignedOfficersUl
 {
 	padding-left:0px;
 }
-.AMS .assignedOfficersUl li
+.assignedOfficersUl li
 {
 	list-style:none;
 	border:1px solid #ddd;
@@ -607,14 +607,14 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	width:300px;
 	position:relative;
 }
-.AMS .assignedOfficersUl li .media-object
+.assignedOfficersUl li .media-object
 {
 	border-radius:50%;
 	border:1px solid #ddd;
 	width:75px;
 	height:75px;
 }
-.AMS .assignedOfficersUl li .glyphicon-trash
+.assignedOfficersUl li .glyphicon-trash
 {
 	position:absolute;
 	cursor:pointer;
@@ -622,30 +622,30 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	top:5px;
 	color:red;
 }
-.AMS .statusOverviewGraph
+.statusOverviewGraph
 {
 	width:100%;
 	overflow-x:scroll;
 }
-.AMS .statusOverviewGraphUl
+.statusOverviewGraphUl
 {
 	padding:0px;
 	white-space:nowrap;
 }
-.AMS .statusOverviewGraphUl li
+.statusOverviewGraphUl li
 {
 	list-style:none;
 	display:inline-block;
 }
-.AMS .settingsIcon
+.settingsIcon
 {
 	background-color:transparent;
 	color:#fff;
 }
-.AMS .notesArrow {
+.notesArrow {
     margin-top: 10px;
 }
-.AMS .notesArrow::after,.AMS  .notesArrow::before {
+.notesArrow::after, .notesArrow::before {
     border: medium solid rgba(0, 0, 0, 0);
     bottom: 100%;
     content: " ";
@@ -655,12 +655,12 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     right: 15px;
     width: 0;
 }
-.AMS .notesArrow::after {
+.notesArrow::after {
     border-color: rgba(136, 183, 213, 0) rgba(136, 183, 213, 0) #fff;
     border-width: 11px;
     margin-left: -11px;
 }
-.AMS .notesArrow::before {
+.notesArrow::before {
     border-color: rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #fff;
     border-width: 12px;
     margin-left: -12px;
