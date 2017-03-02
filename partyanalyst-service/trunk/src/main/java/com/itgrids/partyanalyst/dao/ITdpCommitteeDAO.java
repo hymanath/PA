@@ -83,6 +83,7 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	 public List<Object[]> getLocationsWiseMandalStartedDetails(List<Long> locationIds, List<Long> committeeLevelIdsList,List<Long> committeeEnrollmentIdsLst,Date startDate,Date endDate,String  accessType , List<Long> mainOrAfflCommitteIds );
      public Long getCommitteeConfirmRuleIdByCommitteeId(Long tdpCommitteeId);
      public List<Object[]> getTdpCommitteeMandalByConstituency(Long constituencyId,Long enrollmentId);
-     public List<Object[]> getTdpCommitteeAllPanchayatsInMandals(List<Long> ids,Long enrollmentId);
+     public List<Object[]> getTdpCommitteeAllPanchayatsInMandals(List<Long> ids,Long enrollmentId,Long constituencyId);
      public List<Object[]> getTdpCommitteeLocalBodiesByConstituency(Long constituencyId,Long enrollmentId);
+     public List<Object[]> getTdpCommitteeWardsInLocalElectionBody(List<Long> localBodyIds,Long constituencyId);
 }
