@@ -3415,12 +3415,18 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		
 		str+='<tbody>';
+		var level = "";
+		if(mandalCheck == "true"){
+			level= "mandal";
+		}else if(villageCheck == "true"){
+			level ="village";
+		}	
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
 		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
 			str += '<td ><a onclick="getConstituencyWiseCommittesSummaryForMandal(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].constiId+'\',\''+result[i].name+'\');" style="color:#333333;font-weight:bold;cursor:pointer;"><span style="font-size: 12px;">'+result[i].name+'</span></a>';
-				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
+				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\''+level+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
 			str += '</td>';
 			if(mandalCheck == "true"){
@@ -5494,12 +5500,18 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		}
 		
 		str+='<tbody>';
+		var level = "";
+		if(mandalCheck == "true"){
+			level= "mandal";
+		}else if(villageCheck == "true"){
+			level ="village";
+		}
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
 		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
 			str += '<td ><a onclick="getConstituencyWiseCommittesSummaryForMandal(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].constiId+'\',\''+result[i].name+'\');" style="color:#333333;font-weight:bold;cursor:pointer;"><span style="font-size: 12px;">'+result[i].name+'</span></a>';
-				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
+				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\',\''+level+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
 			str += '</td>';
 			if(mandalCheck == "true"){
