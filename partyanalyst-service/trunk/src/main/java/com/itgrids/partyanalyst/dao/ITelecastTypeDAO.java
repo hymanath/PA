@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.TelecastType;
 public interface ITelecastTypeDAO extends GenericDao<TelecastType, Long>{
 
 	public List<TelecastType> getTelecastTimeDetails();
+	public List<Object[]> getTelecastTimeDetailsNew();
 }

@@ -11,4 +11,5 @@ public interface IObserverDAO extends GenericDao<Observer, Long>{
 	public List<Observer> getObserverDetails();
 	
 	 public Long checkForExists(String name);
+	 public List<Object[]> getObserverDetailsNew();
 }

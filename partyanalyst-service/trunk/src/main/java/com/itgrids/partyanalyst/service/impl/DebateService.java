@@ -873,14 +873,14 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> channelDetails = null;
 		SelectOptionVO selectOptionVO;
-		List<Channel> channelDetail = channelDAO.getChannelDetails();
+		List<Object[]> channelDetail = channelDAO.getChannelDetailsNew();
 		if(channelDetail != null && channelDetail.size() > 0)
 		{
 			channelDetails = new ArrayList<SelectOptionVO>();
-			for(Channel param:channelDetail){
+			for(Object[] param:channelDetail){
 				selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId(new Long(param.getChannelId()));
-				selectOptionVO.setName(param.getChannelName());
+				selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+				selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 				channelDetails.add(selectOptionVO);
 			}
 		}
@@ -898,11 +898,11 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> telecastDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<TelecastType> telecastTimeDetails = telecastTypeDAO.getTelecastTimeDetails();
-		for(TelecastType param:telecastTimeDetails){
+		List<Object[]> telecastTimeDetails = telecastTypeDAO.getTelecastTimeDetailsNew();
+		for(Object[] param:telecastTimeDetails){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getTelecastTypeId()));
-			selectOptionVO.setName(param.getName());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			telecastDetails.add(selectOptionVO);
 		}
 		return telecastDetails;
@@ -918,11 +918,11 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> observerDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<Observer> observerDetailsVal = observerDAO.getObserverDetails();
-		for(Observer param:observerDetailsVal){
+		List<Object[]> observerDetailsVal = observerDAO.getObserverDetailsNew();
+		for(Object[] param:observerDetailsVal){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getObserverId()));
-			selectOptionVO.setName(param.getObserverName());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			observerDetails.add(selectOptionVO);
 		}
 		return observerDetails;
