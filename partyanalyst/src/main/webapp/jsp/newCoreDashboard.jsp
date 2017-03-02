@@ -2515,14 +2515,14 @@
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
 							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-								<li role="presentation" class="active text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<li role="presentation" class="text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
 								<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation"  class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+								<li role="presentation"  class="active text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
 							  </ul>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
 							  <div class="tab-content navTabsSettingsContent">
-								<div role="tabpanel" class="tab-pane active" id="home">
+								<div role="tabpanel" class="tab-pane" id="home">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
 									<div class="basicCommitteeDetailsDiv">
@@ -2531,7 +2531,7 @@
 									   <c:if test="${basicCommittee.id == 1}">
 										<li>
 											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}"><!--checked-->
 												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
 										</li>	
@@ -2539,15 +2539,15 @@
 									</c:forEach>
 									   <li>
 											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId"  checked>
+											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId">
 											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
+										   </label><!--checked-->
 										</li> 
 										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
 											<c:if test="${basicCommittee.id != 1}">
 											<li>
 											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}"><!--checked-->
 												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 											   </label>
 											</li>   
@@ -2566,7 +2566,7 @@
 									   <c:if test="${basicCommittee.id == 1}">
 										 <li>
 										   <label class="checkbox-inline">
-											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}"><!--checked-->
 											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
 										 </li>
@@ -2592,7 +2592,7 @@
 												<c:otherwise>
 													<li>
 													  <label class="checkbox-inline">
-														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" ><!--checked-->
 														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 													   </label>
 													 </li> 
@@ -2604,7 +2604,7 @@
 									</ul>
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane" id="messages">
+								<div role="tabpanel" class="tab-pane active" id="messages">
 									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
 									<hr style ="margin-bottom:0px;" />
 									<div class="basicCommitteeDetailsDiv">
