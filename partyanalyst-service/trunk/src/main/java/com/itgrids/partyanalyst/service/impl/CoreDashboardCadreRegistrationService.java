@@ -1537,7 +1537,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,activityMemberId,"District");// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+	     	  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 3l,null,null);// 2014 target 
 			setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 4l,null,null);// 2016 target 
@@ -1551,7 +1552,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					     }else{
 					    	 locationValue = new ArrayList<Long>(entry.getValue());	
 					     }
-						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.get2014TotalCadreCountBasedOnUserType(locationValue, userTypeId,activityMemberId);
+					 	List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.get2014TotalCadreCountBasedOnUserType(locationValue, userTypeId,activityMemberId);
 						set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap,locationIdAndNameMap);
 						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountBasedOnUserType(locationValue, fromDate, toDate, userTypeId,activityMemberId);
 						set2016CadreCountToMap(rtrnCadreDtlsObjLst,locationWiseCadreDetaislMap);

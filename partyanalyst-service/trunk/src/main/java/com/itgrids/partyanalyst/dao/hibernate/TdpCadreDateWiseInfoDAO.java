@@ -123,14 +123,15 @@ return query.list();
 	
 		        StringBuilder queryStr = new StringBuilder();  
 		        queryStr.append("select distinct ");
-    		   if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+    		    if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 					 	  if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
 					  		 queryStr.append(" model1.district.districtId, ");; 
 					  	  }else{
 					  		 queryStr.append(" model2.districtId, ");
 					  	  }  
 			   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-				|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+				|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+				|| userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 					   if(activityMemberId != null && activityMemberId.longValue()==53l){
 			      		  queryStr.append(" model4.constituencyId,");	  
 			           }else{
@@ -139,7 +140,7 @@ return query.list();
 			   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 				     queryStr.append(" model3.assemblyId,") ; 
 			   }
-		       queryStr.append(" sum(model.cadre2016) from TdpCadreLocationInfo model ");
+    		    	queryStr.append(" sum(model.cadre2016) from TdpCadreLocationInfo model ");
 		      if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 			   	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
 			      		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
@@ -147,7 +148,8 @@ return query.list();
 			      		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
 			      	  }  
 		      }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-			  || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+			  || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+			  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 			    	  if(activityMemberId != null && activityMemberId.longValue()==53l){//53 ActivityMemberId person is one District President.He has access some constituencies Those Constituencies has mapped in this Table.
 			        	  queryStr.append(" ,DistrictConstituencies model4 where model4.constituencyId=model.locationValue and model.locationScopeId=4 ");
 			          }else{
@@ -156,7 +158,7 @@ return query.list();
 		      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 		         	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
 		      }
-		     if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+		      if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
 		     	  if(locationValue != null && locationValue.size() > 0){
 			     		 if(activityMemberId != null && activityMemberId.longValue()==53l){
 		           			 queryStr.append("  and model4.districtId in (:locationValue) ");
@@ -167,11 +169,13 @@ return query.list();
 		     	 if(activityMemberId != null && activityMemberId.longValue()==50l){//50 ActivityMemberId person is one District President.He has Access only this constituency(354,355,356,357,358,368).so that we are removing remaining constituencies
 			    	  queryStr.append(" and model1.constituencyId not in (133,134,135,136,137,138,140,141,359)");
 			     }
-			 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+			  }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 				 if(locationValue != null && locationValue.size() > 0){
 					 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
 				 } 
-			 }else if(locationValue != null && locationValue.size() > 0){
+			 }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID && locationValue != null && locationValue.size() > 0){
+	         		queryStr.append(" and model1.district.districtId in (:locationValue) ");
+	         }else if(locationValue != null && locationValue.size() > 0){
 		 	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
 		 	 }
 		     queryStr.append(" and model.type='Total' ");
@@ -185,7 +189,9 @@ return query.list();
 		   		 queryStr.append(" group by model2.districtId ");
 			     }   
 		   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+		     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+		     || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+		     || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 			    if(activityMemberId != null && activityMemberId.longValue()==53l){
 				 queryStr.append("  group by model4.constituencyId ");
 			    }else{
@@ -215,7 +221,9 @@ return query.list();
            		 queryStr.append(" model2.districtId, ");
            	  }   
          }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-   	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+   	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+   	     || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+   	     || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
         	 if(activityMemberId != null && activityMemberId.longValue()==53l){
          		  queryStr.append(" model4.constituencyId,");	  
               }else{
@@ -232,7 +240,9 @@ return query.list();
          		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
          	  }
          }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-   	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+   	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+   	      || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+   	      || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
         	 if(activityMemberId != null && activityMemberId.longValue()==53l){//53 ActivityMemberId person is one District President.He has access some constituencies Those Constituencies has mapped in this Table.
            	  queryStr.append(" ,DistrictConstituencies model4 where model4.constituencyId=model.locationValue and model.locationScopeId=4 ");
              }else{
@@ -256,7 +266,9 @@ return query.list();
 			 if(locationValue != null && locationValue.size() > 0){
 				 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
 			 } 
-		 }else if(locationValue != null && locationValue.size() > 0){
+		 }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID && locationValue != null && locationValue.size() > 0){
+      		queryStr.append(" and model1.district.districtId in (:locationValue) ");
+      	 }else if(locationValue != null && locationValue.size() > 0){
 		 	    queryStr.append(" and model.locationValue in (:locationValue)");  
 		 }
           queryStr.append(" and model.type='Total' ");
@@ -270,7 +282,9 @@ return query.list();
 		      		 queryStr.append(" group by model2.districtId ");
 		      	  }   
 		 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID 
+	      || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+	      || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 			    if(activityMemberId != null && activityMemberId.longValue()==53l){
 		  			 queryStr.append("  group by model4.constituencyId ");
 		  		 }else{
