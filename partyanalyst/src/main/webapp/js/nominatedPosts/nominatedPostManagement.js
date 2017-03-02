@@ -343,9 +343,14 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							for(var j in result[i].idnameList){
 							 str+='<div class="panel panel-default">';
 								
-								str+='<div class="panel-heading boardWiseDetailsCls panel_heading_color" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
-								
-									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon " data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
+								str+='<div class="panel-heading boardWiseDetailsCls panel_heading_color" role="tab" id="headingOne'+i+''+j+''+result[i].id+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+result[i].id+''+i+''+j+'" attr_searchId="boardDivBodySearchId'+result[i].id+''+i+''+j+'">';
+								if(globalStatus == "running" && i==0 && j==0){
+									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon collapsed" data-parent="#accordion'+i+'" href="#collapseOne'+i+''+j+''+result[i].id+'" aria-expanded="true" aria-controls="collapseOne'+i+''+j+''+result[i].id+'">';
+								}
+								else{
+									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon " data-parent="#accordion'+i+'" href="#collapseOne'+i+''+j+''+result[i].id+'" aria-expanded="true" aria-controls="collapseOne'+i+''+j+''+result[i].id+'">';
+								}
+									
 										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+' ';
 										if(globalStatus=="notYet"){
 											if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
@@ -366,18 +371,21 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								str+='</div>';
 
 								if(globalStatus == "running" && i==0 && j==0){
-									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" aria-expanded="true" >';
+									str+='<div id="collapseOne'+i+''+j+''+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+''+j+''+result[i].id+'" aria-expanded="true" >';
 								}
 								else
-									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
+								{
+									str+='<div id="collapseOne'+i+''+j+''+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+''+result[i].id+'" >';
+								}
+									
 								  str+='<div class="panel-body pad_0">';
-										str+='<div class="table-responsive"  id="boardDivBodyId'+i+''+j+'">';
-											str+='<center><img src="images/Loading-data.gif" id="boardDivBodySearchId'+i+''+j+'" style="display:none;width:50px;height:50px; "/></center>';
+										str+='<div class="table-responsive"  id="boardDivBodyId'+result[i].id+''+i+''+j+'">';
+											str+='<center><img src="images/Loading-data.gif" id="boardDivBodySearchId'+result[i].id+''+i+''+j+'" style="display:none;width:50px;height:50px; "/></center>';
 										str+='</div>';
 								  str+='</div>';
 								str+='</div>';
 							  str+='</div>';
-							 
+							  							
 							}
 						}
 						
@@ -897,7 +905,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 		}
 		
 		$("#"+bodyId).html(str);
-	
+		
 	}	
 }
 
