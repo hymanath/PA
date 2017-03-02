@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
@@ -164,7 +165,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private List<MeetingDtlsVO> meetingDtlsVOs;
 	private List<IdNameVO> idNameVOs;
+	private MeetingDetailsInfoVO meetingDetailsInfoVO;
 	
+	public MeetingDetailsInfoVO getMeetingDetailsInfoVO() {
+		return meetingDetailsInfoVO;
+	}
+	public void setMeetingDetailsInfoVO(MeetingDetailsInfoVO meetingDetailsInfoVO) {
+		this.meetingDetailsInfoVO = meetingDetailsInfoVO;
+	}
 	public List<IdNameVO> getIdNameVOs() {
 		return idNameVOs;
 	}
@@ -3261,6 +3269,28 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   	    }
   	  }
 		return Action.SUCCESS;
+	}
+public String getMeetingDtls(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			String state = jobj.getString("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");
+			
+			meetingDetailsInfoVO = coreDashboardPartyMeetingService.getMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+			
+	}catch(Exception e){
+		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
 	}
 }
 
