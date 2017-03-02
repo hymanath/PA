@@ -61,4 +61,7 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getWithoutSessionPublicRepresentativeWiseInvitteeAttendedCadreCountForMeetings(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getObsentReasonList(Long  partyMeetingId);
 	public List<Object[]> getPartyMeetingInviteeSummary(List<Long> cadreIds);
+	
+	
+	public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO);
 }
