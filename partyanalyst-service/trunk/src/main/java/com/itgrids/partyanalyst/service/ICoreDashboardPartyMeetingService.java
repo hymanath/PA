@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -38,4 +39,5 @@ public interface ICoreDashboardPartyMeetingService {
 	public List<IdNameVO> getMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long partyMeetingId, Long sessionId, String status,Long distId,boolean isNonInvitee);
 	public List<IdNameVO> getPartyMeetingSession(Long partyMeetingId);
 	public List<IdNameVO> getPublicRepAndcommitteeInviteeDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString,List<Long> partyMeetingIds,String category, List<Long> categoryIds,String location, Long sessionId);
+	public MeetingDetailsInfoVO getMeetingDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString);
 }
