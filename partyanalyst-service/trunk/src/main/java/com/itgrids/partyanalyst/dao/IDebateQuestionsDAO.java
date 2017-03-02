@@ -11,4 +11,5 @@ public interface IDebateQuestionsDAO extends GenericDao<DebateQuestions	, Long>{
 	public List<DebateQuestions> getDebateQuestionDetails();
 	
 	 public Long checkForExists(String name);
+	 public List<Object[]> getDebateQuestionDetailsNew();
 }

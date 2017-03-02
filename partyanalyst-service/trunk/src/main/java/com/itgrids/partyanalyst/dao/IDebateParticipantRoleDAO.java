@@ -10,4 +10,5 @@ public interface IDebateParticipantRoleDAO extends GenericDao<DebateParticipantR
 
 	public List<Object[]> getParticepentRoles(Long debateId);
 	public List<DebateParticipantRole> getDebateParticipantRoleDetails();
+	public List<Object[]> getDebateParticipantRoleDetailsNew();
 }

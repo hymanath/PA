@@ -11,4 +11,5 @@ public interface ICharacteristicsDAO extends GenericDao<Characteristics, Long>{
 	public List<Characteristics> getCharacteristicsDetails();
 	
 	public Long checkForExists(String name);
+	public List<Object[]> getCharacteristicsDetailsNew();
 }

@@ -29,4 +29,11 @@ public class DebateParticipantRoleDAO extends GenericDaoHibernate<DebateParticip
 		 
 		return query.list();
 	 }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebateParticipantRoleDetailsNew(){
+		Query query = getSession().createQuery("select model.debateParticipantRoleId,model.debateRoles.name from DebateParticipantRole model");
+		 
+		return query.list();
+	 }
 }

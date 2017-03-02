@@ -938,11 +938,11 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> debateDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<DebateQuestions> debateDetailsVal = debateQuestionsDAO.getDebateQuestionDetails();
-		for(DebateQuestions param:debateDetailsVal){
+		List<Object[]> debateDetailsVal = debateQuestionsDAO.getDebateQuestionDetailsNew();
+		for(Object[] param:debateDetailsVal){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getDebateQuestionsId()));
-			selectOptionVO.setName(param.getQuestion());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			debateDetails.add(selectOptionVO);
 		}
 		return debateDetails;
@@ -954,11 +954,11 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> debateSmsDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<DebateSmsQuestion> debateSmsDetailsVal = debateSmsQuestionDAO.getDebateSmsQuestionDetails();
-		for(DebateSmsQuestion param:debateSmsDetailsVal){
+		List<Object[]> debateSmsDetailsVal = debateSmsQuestionDAO.getDebateSmsQuestionDetailsNew();
+		for(Object[] param:debateSmsDetailsVal){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getDebateSmsQuestionId()));
-			selectOptionVO.setName(param.getQuestion());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			debateSmsDetails.add(selectOptionVO);
 		}
 		return debateSmsDetails;
@@ -970,11 +970,11 @@ public class DebateService implements IDebateService{
 	{
 		List<SelectOptionVO> debateParticipantRoleDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<DebateParticipantRole> debateParticipantRoleDetailsVal = debateParticipantRoleDAO.getDebateParticipantRoleDetails();
-		for(DebateParticipantRole param:debateParticipantRoleDetailsVal){
+		List<Object[]> debateParticipantRoleDetailsVal = debateParticipantRoleDAO.getDebateParticipantRoleDetailsNew();
+		for(Object[] param:debateParticipantRoleDetailsVal){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getDebateParticipantRoleId()));
-			selectOptionVO.setName(param.getDebateRoles().getName());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			debateParticipantRoleDetails.add(selectOptionVO);
 		}
 		return debateParticipantRoleDetails;
@@ -1190,11 +1190,11 @@ public class DebateService implements IDebateService{
 	 {
 	 	List<SelectOptionVO> CharacteristicsDetails = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO;
-		List<Characteristics> CharacteristicsDetailsVal = characteristicsDAO.getCharacteristicsDetails();
-		for(Characteristics param:CharacteristicsDetailsVal){
+		List<Object[]> CharacteristicsDetailsVal = characteristicsDAO.getCharacteristicsDetailsNew();
+		for(Object[] param:CharacteristicsDetailsVal){
 			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getCharacteristicsId()));
-			selectOptionVO.setName(param.getName());
+			selectOptionVO.setId(param[0] !=null ? (Long)param[0]:0l);
+			selectOptionVO.setName(param[1] !=null ? param[1].toString():"");
 			CharacteristicsDetails.add(selectOptionVO);
 		}
 		return CharacteristicsDetails;

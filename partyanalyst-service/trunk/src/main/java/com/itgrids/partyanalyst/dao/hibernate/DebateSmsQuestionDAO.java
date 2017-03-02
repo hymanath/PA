@@ -21,4 +21,10 @@ public class DebateSmsQuestionDAO extends GenericDaoHibernate<DebateSmsQuestion,
 			 
 			return query.list();
 		 }
+	 
+	 public List<Object[]> getDebateSmsQuestionDetailsNew(){
+			Query query = getSession().createQuery("select model.debateSmsQuestionId,model.question from DebateSmsQuestion model where model.isDeleted !='Y'");
+			 
+			return query.list();
+		 }
 }
