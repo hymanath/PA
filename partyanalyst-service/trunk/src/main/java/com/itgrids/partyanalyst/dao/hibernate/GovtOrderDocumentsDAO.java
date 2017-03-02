@@ -28,7 +28,7 @@ public List<Object[]> getGoPassedDocuments(List<Long> postIds){
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select model1.govtOrderDocumentsId,model1.path,date(model1.insertedTime),model1.govtOrderId from  NominatedPostGovtOrder model,GovtOrderDocuments model1 where   " +
-				"  model1.govtOrderId = model.govtOrder.govtOrderId and  model.isDeleted = 'N' ");
+				"  model1.govtOrderId = model.govtOrder.govtOrderId and  model.isDeleted = 'N' and model.isExpired = 'N' ");
 		if(postIds != null && postIds.size() > 0){
 			queryStr.append(" and model.nominatedPost.nominatedPostId in (:postIds) " );
 		}
