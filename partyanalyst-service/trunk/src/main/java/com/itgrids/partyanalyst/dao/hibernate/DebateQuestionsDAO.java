@@ -28,4 +28,10 @@ public class DebateQuestionsDAO extends GenericDaoHibernate<DebateQuestions, Lon
 			query.setParameter("name", name);
 			return (Long)query.uniqueResult();
 		}
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getDebateQuestionDetailsNew(){
+			Query query = getSession().createQuery("select model.debateQuestionsId,model.question from DebateQuestions model where model.isDeleted = 'N'");
+			 
+			return query.list();
+		 }
 }
