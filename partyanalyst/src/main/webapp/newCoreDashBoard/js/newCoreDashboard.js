@@ -297,7 +297,7 @@ function MainPart(result){
 									str+='</ul>';
 								str+='</div>';
 						}else{
-								str+='<div class="panel-body dottedLine" style="float:left;padding-top:0px;padding-bottom:0px;">';
+								str+='<div class="panel-body dottedLine col-md-12 col-sm-12 col-xs-12" style="float:left;padding-top:0px;padding-bottom:0px;">';
 								str+=' <ul class="radioStyling">';
 									str+=' <li>';
 									str+='<input type="radio" id="'+i+''+j+'" name="selector">';
@@ -348,7 +348,7 @@ function MainPart(result){
 											str+='</ul>';
 										str+='</div>';
 									}else{
-										str+='<div class="panel-body" style="padding-top:0px;padding-bottom:0px;">';
+										str+='<div class="panel-body col-md-12 col-sm-12 col-xs-12" style="padding-top:0px;padding-bottom:0px;">';
 										str+='<ul class="radioStyling" style="float:left;">';
 											str+=' <li class=" dottedLine">';
 												str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
@@ -398,7 +398,7 @@ function MainPart(result){
 											str+='</ul>';
 										str+='</div>';
 									}else{
-										str+='<div class="panel-body" style="padding-top:0px;padding-bottom:0px;">';
+										str+='<div class="panel-body col-md-12 col-sm-12 col-xs-12" style="padding-top:0px;padding-bottom:0px;">';
 										str+='<ul class="radioStyling">';
 											str+=' <li class=" dottedLine">';
 												str+='<input type="radio" id="'+i+''+j+''+k+''+l+''+m+''+n+'" name="selector">';

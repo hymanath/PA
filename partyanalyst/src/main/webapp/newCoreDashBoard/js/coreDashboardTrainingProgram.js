@@ -985,7 +985,7 @@ $(document).on("click",".unExpandTrainingBlock",function(){
 	});
   function getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram(){
 	     
-		 $("#childActivityMemberDivId").html(' ');
+		 $("#trainingChildActivityMemberDivId").html(' ');
 		 $("#userTypeWiseChildDtlsTabId").html(' ');
 		 $("#poorPerformancTrainingPrograLocationsDivId").html('');
 		 
@@ -1027,7 +1027,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		//getTrainingProgramPoorCompletedLocationDtls();
 	}
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString,childUserType){
-	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#trainingChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
@@ -1047,17 +1047,17 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		   $("#childActivityMemberDivId").html(' ');
+		   $("#trainingChildActivityMemberDivId").html(' ');
 		   $("#userTypeWiseChildDtlsTabId").html(' ');
 		  if(result != null && result.length > 0){
 			  buildChildTypeMembersForTrainingReslt(result,childUserType);
 		  }else{
-			  $("#childActivityMemberDivId").html("NO DATA AVAILABLE");
+			  $("#trainingChildActivityMemberDivId").html("NO DATA AVAILABLE");
 		  }
 		});
  }
  function buildChildTypeMembersForTrainingReslt(result,childUserType){
-	 //$('html,body').animate({scrollTop: $("#childActivityMemberDivId").offset().top}, 'slow');
+	 //$('html,body').animate({scrollTop: $("#trainingChildActivityMemberDivId").offset().top}, 'slow');
 	  var userTypeId = result[0].userTypeId;
 	  var activityMemberId = result[0].activityMemberId;
 	  var selectedMemberName = result[0].name;
@@ -1094,7 +1094,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			}
 			 str+='</tbody>';
 			 str+='</table>';
-	    $("#childActivityMemberDivId").html(str);
+	    $("#trainingChildActivityMemberDivId").html(str);
 		$("#trainingMembersDtlsDataTblId").dataTable({
 			"aaSorting": [],
 			"iDisplayLength" : 5	
@@ -1141,7 +1141,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
     str+=' </li> ';  
 	rank=rank+1;
    }
-   $("#childActivityMemberDivId").html(str);
+   $("#trainingChildActivityMemberDivId").html(str);
 	$(".slickPanelSliderTraining").slick({
 			 slide: 'li',
 			 slidesToShow: 3,
