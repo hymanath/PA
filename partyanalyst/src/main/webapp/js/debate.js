@@ -516,7 +516,11 @@ var debateDetails={
 			});
 			//console.log(smsPole);
 			debateDetails.debetSummery = $('#debetSum').val();
-			debateDetails.youtubeUrl = $('#youtubeUrl').val();
+			var youtubeLink = $('#youtubeUrl').val();
+			if(youtubeLink != null && youtubeLink !="undefined" && youtubeLink.length > 0)
+				debateDetails.youtubeUrl = $('#youtubeUrl').val();
+			else
+				debateDetails.youtubeUrl = "";
 				var jsObj = {
 						debateDetails :debateDetails,
 						participant   : participant,

@@ -82,6 +82,9 @@
 {
 	margin-left:5px;
 }
+.youtubeVideo{
+	cursor:pointer !important;
+}
 
   </style>
  <body>
