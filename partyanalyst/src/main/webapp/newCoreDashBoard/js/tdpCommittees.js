@@ -361,7 +361,7 @@
 				
 				   //MAIN
 				   if(result.mainVO != null){
-					 if(globalBasicCommitteeIdsArray.length == 1){
+					 if(result.mainVO == null || result.affliatedVO == null){
 						 str+='<li style="width:100%;">';
 					 }else{
 						 str+='<li>';
@@ -1913,7 +1913,12 @@
 			
 
 		}
-		
+		var URLArr = windowUrl.split('/');
+		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
+		if(finalURL =="committeesMonitoringAction")
+		{
+			getUserTypeWiseCommitteesCompletedCounts1();	
+		}
 		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
 			if($(".detailedBlock").hasClass("active")){
 				$("#levelWiseBasicCommittees").html('');
@@ -2096,7 +2101,6 @@
 			}).done(function(result){
 				
 				if(result != null && result.length > 0){
-					console.log(result);
 					for(var i in result){
 						
 						var fromDate = result[i].fromDate.split('-');
