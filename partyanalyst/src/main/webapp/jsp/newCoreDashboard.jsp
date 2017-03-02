@@ -3310,7 +3310,7 @@
 									<div class="panel-body">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
-											 <div id="childActivityMemberDivId"> </div>
+											 <div id="trainingChildActivityMemberDivId"> </div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12">
 												<div class="bg_ED pad_15 m_top20"> 
@@ -4234,8 +4234,8 @@ var globalImages;
       initialiseDatePicker();
 	  initialiseDatePickerForTrainingProgram();
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
-	   
-	  
+		   
+		   
 	  if(loggedInUserId == null || loggedInUserId == '')
 		  loggedInUserId = 1;
 		  
