@@ -4372,20 +4372,6 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		getAlertOverviewDetails();
-	  }else if(finalURL =="committeesMonitoringAction")
-	  {
-		   $(".profileSelection").hide();
-		   $(".debatesBlock,.newsBlock,.meetingsBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.NewToursBlock").remove();
-		   $("#mainHeadinId").html("KALA VENKATA RAO");
-		 // $(".iconExpand").hide();
-		  setTimeout(function(){
-			   passRequiredUrl(finalURL);
-			  $(".iconExpand").trigger('click');
-			  //$(".moreBlocksIcon").trigger('click');
-			 // $(".moreBlocksIcon").show();
-			  $(".moreBlocksDetailAndComp").show();
-			  $(".comparisionBlock ").trigger("click");
-		  },1000)
 	  }
 	  else{
 		    $(".profileSelection").show();

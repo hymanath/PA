@@ -13239,7 +13239,7 @@
 		<result name="error" type="redirect">loginAction.action</result>
 	</action>
 	<action name="committeesMonitoringAction" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
-		<result name="success">/jsp/newCoreDashboard.jsp</result>
+		<result name="success">/jsp/newCoreDashboardCommittees.jsp</result>
 		<result name="input" type="redirect">loginAction.action</result>
 		<result name="error" type="redirect">loginAction.action</result>
 	</action>
