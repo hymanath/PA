@@ -28,4 +28,12 @@ public class ChannelDAO extends GenericDaoHibernate<Channel, Long> implements IC
 			query.setParameter("name", name);
 			return (Long)query.uniqueResult();
 		}
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getChannelDetailsNew(){
+			Query query = getSession().createQuery("select model.channelId,model.channelName from Channel model " +
+					" where model.isDeleted ='N' ");
+			 
+			return query.list();
+		 }
 }

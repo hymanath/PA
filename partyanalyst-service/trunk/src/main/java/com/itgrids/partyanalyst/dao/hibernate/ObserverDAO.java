@@ -28,4 +28,12 @@ public class ObserverDAO extends GenericDaoHibernate<Observer, Long> implements 
 		query.setParameter("name", name);
 		return (Long)query.uniqueResult();
 	}
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getObserverDetailsNew(){
+			Query query = getSession().createQuery("select model.observerId,model.observerName from Observer model " +
+					" where model.isDeleted ='N' ");
+			 
+			return query.list();
+		 }
 }

@@ -22,4 +22,12 @@ public class TelecastTypeDAO extends GenericDaoHibernate<TelecastType, Long> imp
 		 
 		return query.list();
 	 }
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getTelecastTimeDetailsNew(){
+			Query query = getSession().createQuery("select model.telecastTypeId,model.name from TelecastType model " +
+					" where model.isDeleted='N' ");
+			 
+			return query.list();
+		 }
 }

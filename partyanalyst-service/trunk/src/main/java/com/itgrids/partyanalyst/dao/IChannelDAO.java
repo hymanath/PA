@@ -10,4 +10,5 @@ public interface IChannelDAO extends GenericDao<Channel, Long>{
 	public List<Channel> getChannelDetails();
 	
 	 public Long checkForExists(String name);
+	 public List<Object[]> getChannelDetailsNew();
 }
