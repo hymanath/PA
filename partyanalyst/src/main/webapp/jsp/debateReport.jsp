@@ -82,9 +82,6 @@
 {
 	margin-left:5px;
 }
-.youtubeVideo{
-	cursor:pointer !important;
-}
 
   </style>
  <body>
@@ -94,7 +91,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="background-color:#CCC">
 						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small>
-							<i class="fa fa-youtube pull-right youtubeVideo"></i>
+							<i class="fa fa-youtube pull-right youtubeVideo" style="cursor:pointer;display:none;"></i>
 						</h4>
 					</div>
 					<div class="panel-body">
@@ -142,6 +139,8 @@ function generateDebateReport(result)
 	var str = '';
 	
 	var youtubeUrlttl = result.youtubeUrl;
+	if(youtubeUrlttl != null && youtubeUrlttl.length > 0)
+		$(".youtubeVideo").show();
 	var yutbArr = youtubeUrlttl.split("=");
 	var finalUrl = yutbArr[1];
 	$(".youtubeIframe").attr("src","https://www.youtube-nocookie.com/embed/"+finalUrl+"?rel=0&amp;controls=0&amp;showinfo=0");
