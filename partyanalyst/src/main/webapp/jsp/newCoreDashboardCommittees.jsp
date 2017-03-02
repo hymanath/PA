@@ -570,11 +570,11 @@ var globalImages;
 		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 		$(".dateRangePickerCls").toggleClass("hide");
 	     $(".profileSelection").hide();
+		 passRequiredUrl(finalURL);
 		 getCadreEnrolmentYears();
 		  setTimeout(function(){
-			   passRequiredUrl(finalURL);
 			  $(".moreBlocksDetailAndComp").show();
-			  $(".comparisionBlock ").trigger("click");
+			 // $(".comparisionBlock ").trigger("click");
 		  },1000)
 	  
 	}

@@ -1981,9 +1981,7 @@
 				$(".moreBlocks1").hide();
 				$(".moreBlocksDetailAndComp").hide();
 			}else{
-				//if(finalGlobalUrl.trim()!="committeesMonitoringAction"){
-				  getUserTypeWiseCommitteesCompletedCounts1();	
-				//}
+				 getUserTypeWiseCommitteesCompletedCounts1();	
 				setTimeout(function(){
 					$('html,body').animate({
 						scrollTop: $(".committeesBlock").offset().top},
@@ -2074,6 +2072,9 @@
 						else
 							$("#tdpCommitteeYearId").append('<option value='+result[i].id+'>'+result[i].electionYear+'</option>');
 					}
+				}
+				if(finalGlobalUrl=="committeesMonitoringAction"){
+				    $(".comparisionBlock ").trigger("click");
 				}
 				getCommitteeDetailsBiEnrollement(2);
 			});
