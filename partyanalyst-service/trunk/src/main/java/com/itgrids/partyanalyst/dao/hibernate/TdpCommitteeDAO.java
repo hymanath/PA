@@ -2702,18 +2702,20 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTdpCommitteeAllPanchayatsInMandals(List<Long> ids,Long enrollmentId)
+	public List<Object[]> getTdpCommitteeAllPanchayatsInMandals(List<Long> ids,Long enrollmentId,Long constituencyId)
 	{
 		String queryString = "select distinct model.userAddress.panchayat.panchayatId," +
-				" model.userAddress.panchayat.panchayatName " +
+				" model.userAddress.panchayat.panchayatName,model.userAddress.tehsil.tehsilName " +
 				" from TdpCommittee model " +
 				" where model.userAddress.tehsil.tehsilId in (:ids) " +
-				" and model.tdpCommitteeEnrollmentId = :enrollmentId and model.userAddress.panchayat.isDeleted = 'N' " +
+				" and model.tdpCommitteeEnrollmentId = :enrollmentId " +
+				" and model.userAddress.constituency.constituencyId =:constituencyId " +
 				" order by model.userAddress.panchayat.panchayatName ";
 		
 		Query query = getSession().createQuery(queryString);
-		query.setParameterList("ids", ids);
-		query.setParameter("enrollmentId", enrollmentId);
+			query.setParameterList("ids", ids);
+			query.setParameter("enrollmentId", enrollmentId);
+			query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
@@ -2725,6 +2727,34 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("enrollmentId", enrollmentId);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTdpCommitteeWardsInLocalElectionBody(List<Long> localBodyIds,Long constituencyId){
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT distinct TC.constituency_id,C1.name,CONCAT(LEB.name, ' ', ET.election_type) FROM ");
+		
+		str.append(" tdp_committee TC,constituency C,constituency C1,user_address UA,local_election_body LEB,election_type ET ");
+		
+		str.append(" WHERE TC.constituency_id = C.constituency_id " +
+				" AND TC.address_id = UA.user_address_id " +
+				" AND UA.local_election_body = LEB.local_election_body_id " +
+				" AND LEB.election_type_id = ET.election_type_id" );
+		
+		str.append(" AND LEB.local_election_body_id=C1.local_election_body_id AND UA.constituency_id = C.constituency_id ");
+		
+		str.append(" AND UA.local_election_body IN (:localBodyIds) " );
+		if(constituencyId != null)
+			str.append(" AND UA.constituency_id = :constituencyId " );
+		
+		str.append(" ORDER BY C1.constituency_id,C1.name ");
+		
+		Query query = getSession().createSQLQuery(str.toString());
+		
+		query.setParameterList("localBodyIds", localBodyIds);
+		if(constituencyId != null)
+			query.setParameter("constituencyId", constituencyId);
+		
 		return query.list();
 	}
 }
