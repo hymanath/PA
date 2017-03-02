@@ -893,6 +893,11 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 		alert("Please Select Status.");
 		return;
 	}
+	var imageId = $('#filer_input').val();
+	if(imageId == null || imageId.length == 0){
+		alert("Please Select image.");
+		return;
+	} 
 		var date = $(".dateR").val();
 		var dates=date.split('-');
 		var startDate = dates[0];
