@@ -20499,11 +20499,11 @@ public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(Str
 	
 	if(mandalIds.size()>0){
     	//0panchayatId,1panchayatName
-    	List<Object[]> panchayatsList = tdpCommitteeDAO.getTdpCommitteeAllPanchayatsInMandals(mandalIds,enrollmentId);
+    	List<Object[]> panchayatsList = tdpCommitteeDAO.getTdpCommitteeAllPanchayatsInMandals(mandalIds,enrollmentId,constituencyId);
     	for(Object[] panchayat:panchayatsList){
     		vo = new LocationWiseBoothDetailsVO();
         	vo.setLocationId(Long.valueOf("1"+(Long)panchayat[0]));
-        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[1].toString()+")");
+        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
         	locationsList.add(vo);
     	}
     }
@@ -20513,11 +20513,11 @@ public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(Str
 		   if(constituencyId == null || constituencyId.longValue() == 0L)
 			   localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
 		   else
-			   localBodyList = assemblyLocalElectionBodyWardDAO.getWardsInLocalElectionBody(localBodyIds, constituencyId);
+			   localBodyList = tdpCommitteeDAO.getTdpCommitteeWardsInLocalElectionBody(localBodyIds, constituencyId);
 		   
         	for(Object[] localBody:localBodyList){
         		vo = new LocationWiseBoothDetailsVO();
-	        	vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
+	        	vo.setLocationId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(localBody[0])));
 	        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
 	        	locationsList.add(vo);
         	}
