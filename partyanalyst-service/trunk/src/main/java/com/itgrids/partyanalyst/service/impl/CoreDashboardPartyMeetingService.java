@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
@@ -53,7 +54,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 
 	private final static Logger LOG = Logger.getLogger(CoreDashboardPartyMeetingService.class);
 	
-	 private IPartyMeetingDAO partyMeetingDAO;
+	 private IPartyMeetingDAO partyMeetingDAO; 
 	 private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	 private CommonMethodsUtilService commonMethodsUtilService;
 	 private ICoreDashboardGenericService coreDashboardGenericService;
@@ -6549,5 +6550,167 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			LOG.error("Error occured at getLvelWiseUpdationCount() in CoreDashboardPartyMeetingService {}",e);
 		}
 		return lvelWiseUpdationCountMap;
+	}
+	public MeetingDetailsInfoVO getMeetingDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){  
+		try{
+			MeetingDetailsInfoVO detailsInfoVO = new MeetingDetailsInfoVO();
+			PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+			inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+			inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+			List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+			inputVO.setStartDate(datesList.get(0));
+			inputVO.setEndDate(datesList.get(1));
+			Long stateId = Long.parseLong(state);
+			inputVO.setStateId(stateId);
+			List<Object[]> inviteeCadreList = partyMeetingInviteeDAO.meetingWiseInviteeCadreList(inputVO);
+			List<Object[]> attendedCadreList = partyMeetingAttendanceDAO.getAttendedCadresMeetingWise(inputVO);
+			
+			Map<Long, Set<Long>> totalInviteesMap = new HashMap<Long, Set<Long>>();
+			Map<Long, Set<Long>> totalAttendenceMap = new HashMap<Long, Set<Long>>();
+			Map<Long,Set<Long>> totalInviteeAttendenceMap = new HashMap<Long,Set<Long>>();
+			Map<Long, Set<Long>> totalNonInviteesMap = new HashMap<Long, Set<Long>>();
+			Map<Long,Set<Long>> totalLateAttendedMap = new HashMap<Long,Set<Long>>();
+			prepairCompleteMapForPartyMeeting(inviteeCadreList,attendedCadreList,totalInviteesMap,totalAttendenceMap,totalInviteeAttendenceMap,totalNonInviteesMap,totalLateAttendedMap);
+			detailsInfoVO.setTotalInviteesMap(totalInviteesMap);
+			detailsInfoVO.setTotalAttendenceMap(totalAttendenceMap);
+			detailsInfoVO.setTotalInviteeAttendenceMap(totalInviteeAttendenceMap);
+			detailsInfoVO.setTotalNonInviteesMap(totalNonInviteesMap);
+			detailsInfoVO.setTotalLateAttendedMap(totalLateAttendedMap);
+			return detailsInfoVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured at getMeetingDtls() in CoreDashboardPartyMeetingService {}",e);
+		}
+		return null;  
+	}
+	public void prepairCompleteMapForPartyMeeting(List<Object[]> inviteeCadreList, List<Object[]> attendedCadreList,
+			Map<Long, Set<Long>> totalInviteesMap,
+			Map<Long, Set<Long>> totalAttendenceMap,
+			Map<Long,Set<Long>> totalInviteeAttendenceMap,
+			Map<Long, Set<Long>> totalNonInviteesMap,
+			Map<Long,Set<Long>> totalLateAttendedMap){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			//total invited
+			Set<Long> inviteesCadreIdSet = null;
+			//Map<Long, Set<Long>> totalInviteesMap = new HashMap<Long, Set<Long>>();
+			if(inviteeCadreList != null && inviteeCadreList.size() > 0){
+				for(Object[] param : inviteeCadreList){
+					inviteesCadreIdSet = totalInviteesMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(inviteesCadreIdSet == null){
+						inviteesCadreIdSet = new HashSet<Long>();
+						totalInviteesMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), inviteesCadreIdSet);
+					}
+					inviteesCadreIdSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			
+			//total attended
+			Set<Long> attendedCadreIdSet = null;
+			//Map<Long, Set<Long>> totalAttendenceMap = new HashMap<Long, Set<Long>>();
+			
+			if(attendedCadreList != null && attendedCadreList.size() > 0){
+				for(Object[] param : attendedCadreList){
+					attendedCadreIdSet = totalAttendenceMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(attendedCadreIdSet == null){
+						attendedCadreIdSet = new HashSet<Long>();
+						totalAttendenceMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), attendedCadreIdSet);
+					}
+					attendedCadreIdSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			
+			//total invite attended
+			//Map<Long,Set<Long>> totalInviteeAttendenceMap = new HashMap<Long,Set<Long>>();
+			if(totalInviteesMap != null && totalInviteesMap.size() > 0){
+				for(Entry<Long,Set<Long>> enter : totalInviteesMap.entrySet()){
+					Long meetingId = enter.getKey();
+					Set<Long> totalCrd = totalAttendenceMap.get(meetingId);
+					if(totalCrd != null && totalCrd.size() > 0){
+						Set<Long> inviteeAttended = new HashSet<Long>();
+						inviteeAttended.addAll(enter.getValue());
+						inviteeAttended.retainAll(totalCrd);  
+						totalInviteeAttendenceMap.put(meetingId, inviteeAttended);
+					}else{
+						totalInviteeAttendenceMap.put(meetingId, new HashSet<Long>(0));
+					}
+				}
+			}
+			//total non-invitiees cadre
+			//Map<Long, Set<Long>> totalNonInviteesMap = new HashMap<Long, Set<Long>>();
+			if(totalAttendenceMap != null && totalAttendenceMap.size() > 0){
+				for(Entry<Long,Set<Long>> enter : totalAttendenceMap.entrySet()){
+					Long meetingId = enter.getKey();
+					Set<Long> totalCrd = totalInviteesMap.get(meetingId);
+					if(totalCrd != null && totalCrd.size() > 0){
+						Set<Long> nonInviteeAttended = new HashSet<Long>();
+						nonInviteeAttended.addAll(enter.getValue());
+						nonInviteeAttended.removeAll(totalCrd);
+						totalNonInviteesMap.put(meetingId, nonInviteeAttended);
+					}else{
+						Set<Long> nonInviteeAttended = enter.getValue();
+						totalNonInviteesMap.put(meetingId, nonInviteeAttended);
+					}
+				}
+			}
+			//late attended
+			Set<Long> meetingIds = new HashSet<Long>();
+			meetingIds.addAll(totalInviteesMap.keySet());
+			meetingIds.addAll(totalAttendenceMap.keySet());
+			List<Object[]> meetingLateTimeList = null;
+			if(meetingIds != null && meetingIds.size() > 0){
+				meetingLateTimeList = partyMeetingSessionDAO.getLateTimeList(meetingIds);
+			}
+			
+			Set<Long> sessionIds = null;
+			Map<Long,Set<Long>> meetingIdAndsessionIdMap = new HashMap<Long,Set<Long>>();
+			Map<Long,String> sessionIdAndLateTimeMap = new HashMap<Long,String>();
+			//{513359=[25, 24]}
+			//{25=14:00:00, 24=10:00:00}
+			if(meetingLateTimeList != null && meetingLateTimeList.size() > 0){
+				for(Object[] param : meetingLateTimeList){
+					sessionIds = meetingIdAndsessionIdMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sessionIds == null){
+						sessionIds = new HashSet<Long>();
+						meetingIdAndsessionIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sessionIds);
+					}
+					sessionIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sessionIdAndLateTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}
+			}
+			Set<Long> lateCadreSet = null;
+			//Map<Long,Set<Long>> totalLateAttendedMap = new HashMap<Long,Set<Long>>();
+			if(attendedCadreList != null && attendedCadreList.size() > 0){
+				for(Object[] param : attendedCadreList){
+					Long meetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Set<Long> sessionSet = meetingIdAndsessionIdMap.get(meetingId);  
+					for(Long sessionId : sessionSet){
+						if((sessionId.longValue() != commonMethodsUtilService.getLongValueForObject(param[2]))){
+							continue;
+						}
+						String attTime = commonMethodsUtilService.getStringValueForObject(param[6]);
+						String ltTime = sessionIdAndLateTimeMap.get(sessionId);
+						Date attendedTime = sdf.parse(attTime);
+						Date lateTime = sdf.parse(ltTime);
+						Long attTimeMilis = attendedTime.getTime();
+						Long ltTimeMilis = lateTime.getTime();
+						if(attTimeMilis >= ltTimeMilis){//true -> late
+							lateCadreSet = totalLateAttendedMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(lateCadreSet == null){  
+								lateCadreSet = new HashSet<Long>();
+								totalLateAttendedMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),lateCadreSet);
+							}
+							lateCadreSet.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+						}
+					}
+				}
+			}
+			
+			
+			System.out.println("hi");
+		}catch(Exception e){
+			e.printStackTrace(); 
+			LOG.error("Error occured at prepairCompleteMapForPartyMeeting() in CoreDashboardPartyMeetingService {}",e);
+		}
 	}
 }
