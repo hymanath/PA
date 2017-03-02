@@ -7824,8 +7824,10 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 	try{
 		if(statusId != null && statusId.longValue() == 0l || statusId.longValue() == 7l || statusId.longValue() == 9l){
 			List<Long> postIds = nominatedPostFinalDAO.getNominatedPostIds(nominateCandId,applicationId,statusId);
+			if(postIds != null && postIds.size() >0){
 			List<Object[]> goDocuments = govtOrderDocumentsDAO.getGoPassedDocuments(postIds);
 			setDocuments(retrurnList,goDocuments,"godocuments");
+			}
 		}
 		if(statusId != null && statusId.longValue() == 0l || statusId.longValue() == 1l || statusId.longValue() == 2l ||
 				statusId.longValue() == 3l || statusId.longValue() == 4l || statusId.longValue() == 5l || statusId.longValue() == 6l || statusId.longValue() == 8l ){	
@@ -8153,19 +8155,23 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	
 	public void setInviteeCounts(Map<Long,List<CadreEventsVO>> finalMap,List<Object[]> objList,String type){
 		for (Object[] objects : objList) {
+			if((Long)objects[0] != null){
 			if(finalMap.get((Long)objects[0]) == null){
 				List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
 				finalMap.put((Long)objects[0], tempList);
 			}
+			
 			CadreEventsVO voIn = new CadreEventsVO();
 			voIn.setName(type);
 			voIn.setInvitedCount((Long)objects[1]);
 			finalMap.get((Long)objects[0]).add(voIn);
+			}
 		}
 	}
 	
 	public void setAttendeeCount(Map<Long,List<CadreEventsVO>> finalMap,List<Object[]> objList,String type){
 		for (Object[] objects : objList) {
+			if((Long)objects[0] != null){
 			if(finalMap.get((Long)objects[0]) == null){
 				List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
 				CadreEventsVO voIn = new CadreEventsVO();
@@ -8173,7 +8179,8 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				voIn.setAttendedCount((Long)objects[1]);
 				tempList.add(voIn);
 				finalMap.put((Long)objects[0], tempList);
-			}else{
+			}
+			else{
 				CadreEventsVO matchedEventVO = getMatchedEventVO(finalMap.get((Long)objects[0]),type);
 				if(matchedEventVO == null){
 					matchedEventVO = new CadreEventsVO();
@@ -8183,6 +8190,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				}else{
 					matchedEventVO.setAttendedCount((Long)objects[1]);
 				}
+			}
 			}
 		}
 	}
