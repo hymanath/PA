@@ -966,4 +966,51 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		
 		return query.list();
 	}
+	public List<Object[]> getAttendedCadresMeetingWise(PartyMeetingsInputVO inputVO){  
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct " +
+				" model.partyMeeting.partyMeetingId, " +
+				" model.partyMeeting.meetingName, " +
+				" model.partyMeetingSession.partyMeetingSessionId, " +
+				" model.attendance.tdpCadre.tdpCadreId, " +
+				" model.attendance.attendedTime, " +
+				" date(model.attendance.attendedTime), " +
+				" min(time(model.attendance.attendedTime)) " +
+				" from " +
+				" PartyMeetingAttendance model " +
+				" where " +
+				" model.attendance.tdpCadre.isDeleted = 'N' " +
+				" and model.partyMeeting.isActive = 'Y' " +
+				" and model.partyMeetingSession.isDeleted = 'N' ");
+		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
+    	}  
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) " );
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
+    	}
+		queryStr.append(" group by model.partyMeeting.partyMeetingId,model.partyMeetingSession.partyMeetingSessionId,model.attendance.tdpCadre.tdpCadreId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+    	
+    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+    		query.setParameter("partyMeetingMainTypeId", inputVO.getPartyMeetingMainTypeId());
+    	}
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		query.setParameterList("partyMeetingTypeIdList", inputVO.getPartyMeetingTypeIds());
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		query.setDate("startDate",inputVO.getStartDate());
+    		query.setDate("endDate",inputVO.getEndDate());
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		query.setParameter("stateId", inputVO.getStateId());
+    	}
+    	return query.list();
+	}
 }
