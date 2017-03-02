@@ -131,6 +131,6 @@ $(document).ready(function() {
         }
 		
 });
-	/*var filerKit = $("#filer_input3").prop("jFiler");
-	filerKit.reset();*/    
+	var filerKit = $("#filer_input3").prop("jFiler");
+	filerKit.reset();   
 });
