@@ -2178,7 +2178,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		    queryStr.append("model.tdpCadre.userAddress.district.districtId,");
 		    queryStr.append("model.tdpCadre.userAddress.district.districtName,"); 
 	      }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+		   || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		 	 queryStr.append("model.tdpCadre.userAddress.constituency.constituencyId,");
 	    	 queryStr.append("model.tdpCadre.userAddress.constituency.name,"); 
 	     }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
@@ -2225,7 +2225,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		     queryStr.append(" ,model.tdpCadre.userAddress.district.districtId");
 	    }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+		   || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		 	 queryStr.append(" ,model.tdpCadre.userAddress.constituency.constituencyId");
 	   }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 		     if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
@@ -2254,7 +2254,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		    queryStr.append("model.tdpCadre.userAddress.district.districtId,");
 		    queryStr.append("model.tdpCadre.userAddress.district.districtName,"); 
 	      }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+		   || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		 	 queryStr.append("model.tdpCadre.userAddress.constituency.constituencyId,");
 	    	 queryStr.append("model.tdpCadre.userAddress.constituency.name,"); 
 	     }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
@@ -2302,7 +2302,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		          queryStr.append(" ,model.tdpCadre.userAddress.district.districtId");
 	    }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+		   || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		 	      queryStr.append(" ,model.tdpCadre.userAddress.constituency.constituencyId");
 	   }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 		     if(levelType != null && levelType.equalsIgnoreCase("tehsil")){

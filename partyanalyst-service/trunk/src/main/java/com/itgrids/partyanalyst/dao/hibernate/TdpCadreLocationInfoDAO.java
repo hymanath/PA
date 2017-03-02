@@ -61,7 +61,8 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 	              		 queryStr.append(" model2.districtId,");
 	              	  }   
               }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-        	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+        	   || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+        	   || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 	            	  if(activityMemberId != null && activityMemberId.longValue()==53l){
 	             		  queryStr.append(" model4.constituencyId,");	  
 	                  }else{
@@ -78,7 +79,8 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 	           		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
 	           	  }
              }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-       	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+       	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+       	     || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 	              if(activityMemberId != null && activityMemberId.longValue()==53l){//53 ActivityMemberId person is one District President.He has access some constituencies Those Constituencies has mapped in this Table.
 	            	  queryStr.append(" ,DistrictConstituencies model4 where model4.constituencyId=model.locationValue and model.locationScopeId=4 ");
 	              }else{
@@ -102,8 +104,10 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
          		 if(locationValue != null && locationValue.size() > 0){
          			 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
          		 } 
+         	 }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID && locationValue != null && locationValue.size() > 0){
+         		queryStr.append(" and model1.district.districtId in (:locationValue) ");
          	 }else if(locationValue != null && locationValue.size() > 0){
-          	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
+          	 	queryStr.append(" and model.locationValue in (:locationValue)");  
           	 }
               queryStr.append(" and model.type='Total' ");
          	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
@@ -113,7 +117,8 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
                		 queryStr.append(" group by model2.districtId ");
                	  }   
         	 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-            	|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+            	|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+            	|| userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
         		 if(activityMemberId != null && activityMemberId.longValue()==53l){
         			 queryStr.append("  group by model4.constituencyId ");
         		 }else{
