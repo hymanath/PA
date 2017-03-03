@@ -1105,7 +1105,7 @@ public List<Object[]> getCommitteeWiseInvitteeAttendedCadreCountForMeeting(Party
 	StringBuilder sb = new StringBuilder();
 	
 	sb.append(" select  distinct tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,st.session_type_id as sessionTypeId" +
-			"             ,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) as attendedTime " +
+			"             ,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) as attendedTime " +
 			"   from    party_meeting_attendance pma  " +
 			"           join attendance a on pma.attendance_id = a.attendance_id " +
 			"           join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
@@ -1170,7 +1170,7 @@ public List<Object[]> getWithoutCommitteeWiseInvitteeAttendedCadreCountForMeetin
 	StringBuilder sb = new StringBuilder();
 	
 	sb.append(" select  distinct tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,0 as sessionTypeId" +
-			"             ,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) as attendedTime " +
+			"             ,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) as attendedTime " +
 			"   from    party_meeting_attendance pma  " +
 			"           join attendance a on pma.attendance_id = a.attendance_id " +
 			"           join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
@@ -1297,7 +1297,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select    prt.public_representative_type_id as representativeTypeId ,prt.position as position," +
 			"             st.session_type_id as sessionTypeId," +
-			"             cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) as attendedTime " +
+			"             cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) as attendedTime " +
 			"   from      party_meeting_attendance pma " +
 			"             join attendance a on pma.attendance_id = a.attendance_id " +
 			"             join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
@@ -1359,7 +1359,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	StringBuilder sb = new StringBuilder();
     	sb.append(" select    prt.public_representative_type_id as representativeTypeId ,prt.position as position," +
     			"             pma.party_meeting_session_id as sessionTypeId," +
-    			"             cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) as attendedTime " +
+    			"             cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) as attendedTime " +
     			"   from      party_meeting_attendance pma " +
     			"             join attendance a on pma.attendance_id = a.attendance_id " +
     			"             join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +

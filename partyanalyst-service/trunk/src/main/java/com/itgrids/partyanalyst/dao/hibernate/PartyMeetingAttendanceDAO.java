@@ -604,7 +604,7 @@ public List<Object[]> getCommitteeWiseAttendedCadreCountForMeeting(PartyMeetings
 	
 	StringBuilder sb = new StringBuilder();
 	
-	sb.append("select tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,st.session_type_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) attendedTime " +
+	sb.append("select tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,st.session_type_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) attendedTime " +
 			 " from   party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id  " +
 			 "        join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
 			 "        join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
@@ -675,7 +675,7 @@ public List<Object[]> getWithoutSessionCommitteeWiseAttendedCadreCountForMeeting
 	
 	StringBuilder sb = new StringBuilder();
 	
-	sb.append("select tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,pma.party_meeting_session_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) attendedTime " +
+	sb.append("select tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel,pma.party_meeting_session_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) attendedTime " +
 			 " from   party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id  " +
 			 "        join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
 			 "        join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
@@ -743,7 +743,7 @@ public List<Object[]> getWithoutSessionCommitteeWiseAttendedCadreCountForMeeting
 public List<Object[]> getPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO){
 	 StringBuilder sb = new StringBuilder();
 	 
-	 sb.append(" select   prt.public_representative_type_id as representativeTypeId,prt.position as position ,st.session_type_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) attendedTime " +
+	 sb.append(" select   prt.public_representative_type_id as representativeTypeId,prt.position as position ,st.session_type_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) attendedTime " +
 	 		"    from     party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id " +
 	 		"             join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
 	 		"             join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
@@ -813,7 +813,7 @@ public List<Object[]> getPublicRepresentativeWiseAttendedCadreCountForMeeting(Pa
 public List<Object[]> getWithioutPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO){
 	 StringBuilder sb = new StringBuilder();
 	 
-	 sb.append(" select   prt.public_representative_type_id as representativeTypeId,prt.position as position ,pma.party_meeting_session_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,time(a.attended_time) attendedTime " +
+	 sb.append(" select   prt.public_representative_type_id as representativeTypeId,prt.position as position ,pma.party_meeting_session_id as sessionTypeId,cadre.tdp_cadre_id as tdpCadre,min(time(a.attended_time)) attendedTime " +
 	 		"    from     party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id " +
 	 		"             join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
 	 		"             join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
