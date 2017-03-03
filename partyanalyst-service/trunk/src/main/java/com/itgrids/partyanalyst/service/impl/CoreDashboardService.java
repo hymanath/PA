@@ -48,10 +48,6 @@ import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-/**
- * @author Srujana
- *
- */
 public class CoreDashboardService implements ICoreDashboardService{
 	
 	private final static Logger LOG = Logger.getLogger(CoreDashboardService.class);
