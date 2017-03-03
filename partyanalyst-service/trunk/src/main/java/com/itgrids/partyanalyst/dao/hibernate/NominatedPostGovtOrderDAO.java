@@ -39,7 +39,7 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("update NominatedPostGovtOrder model set model.isExpired='Y',model.updatedTime=:currentDate ");
 		if(userId != null && userId.longValue()>0L)
-			queryStr.append(" ,model.updatedBy=:updatedBy ");
+			queryStr.append(" ,model.updatedBy=:userId ");
 		queryStr.append(" where model.isDeleted='N' and model.nominatedPostId in (:nominatedPostIdsLsist) and model.isExpired='N' ");
 		
 		Query query = getSession().createQuery(queryStr.toString());

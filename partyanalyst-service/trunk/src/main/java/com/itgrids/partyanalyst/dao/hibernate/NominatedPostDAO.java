@@ -1956,10 +1956,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append("update NominatedPost model set model.nominationPostCandidateId = null ,model.updatedTime=:currentDate,model.nominatedPostStatusId = 1  ");
 		if(userId != null && userId.longValue()>0L)
 			queryStr.append(" ,model.updatedBy=:updatedBy ");
-		queryStr.append(" where date(model.NominatedPostId) <:currentDate and model.isDeleted='N'  ");
+		queryStr.append(" where model.isDeleted='N' and model.nominatedPostId in (:nominatedPostIdsLsist)  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setDate("currentDate", currentDate);
+		query.setParameterList("nominatedPostIdsLsist", nominatedPostIdsLsist);
 		if(userId != null && userId.longValue()>0L)
 			query.setParameter("updatedBy", userId);
 		

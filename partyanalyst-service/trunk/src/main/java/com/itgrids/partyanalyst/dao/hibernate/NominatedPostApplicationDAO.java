@@ -2401,7 +2401,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		if(userId != null && userId.longValue()>0L)
 			queryStr.append(" , model.updatedBy=:userId ");
 		
-		queryStr.append("  where model.nominatedPostApplicationId in (:nominatedPostApplciationIdsLsit) ");
+		queryStr.append("  where model.nominatedPostApplicationId in (:nominatedPostApplciationIdsLsit) and model.isDeleted='N' and model.isExpired='N' ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(userId != null && userId.longValue()>0L)
 			 query.setParameter("userId", userId);
