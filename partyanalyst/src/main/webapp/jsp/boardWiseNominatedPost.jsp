@@ -11,6 +11,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
@@ -37,6 +38,16 @@
 	padding:3px 6px;
 	text-align:left;
 	font-weight:bold;
+}
+#detailRepTableId thead th ,#detailRepTableId tr td
+{
+	min-width:100px;
+}
+#detailRepTableId thead th:first-child ,#detailRepTableId tr td:first-child,
+#detailRepTableId thead th::nth-child(2) ,#detailRepTableId tr td:nth-child(2),
+#detailRepTableId thead th::nth-child(3) ,#detailRepTableId tr td:nth-child(3)
+{
+	width:75px;
 }
 </style>
 </head>
@@ -152,7 +163,7 @@
 </div>
 
 <div class="modal fade" tabindex="-1" id="detailedReprot" role="dialog">  
-	<div class="modal-dialog" style="width:60%;">      
+	<div class="modal-dialog" style="width:85%;">      
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -173,6 +184,8 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 var windowUrl = window.location.href;
@@ -324,7 +337,7 @@ function getBoardWiseNominatedPostMemberDetails(){
 		   buildNominatedPostMemberDetails(result,type,parseInt('${deptId}'),parseInt('${boardId}'),parseInt('${positionId}'));
    });
 }
-
+var globalCadreIds = [];
 function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positionId){
 	var str='';
 	
@@ -381,6 +394,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				str+=' </td>';
 				
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					globalCadreIds.push(result.subList[i].tdpCadreId);
 					//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
 					str+='<td>'+result.subList[i].cadreMobile+'</td>';
 					str+='<td>'+result.subList[i].cadreAge+'</td>';
@@ -1337,11 +1351,13 @@ function tableResponsive()
    
 	
 function getCadreDetailsReport(){
+	$("#detailedDiv1").html("");
+	$('#detailedReprot').modal('show');
 	var tdpCadreIdsArr  = [];
 	tdpCadreIdsArr.push(5161592);
 	
 	var jsObj={
-		tdpCadreIds:tdpCadreIdsArr	
+		tdpCadreIds:globalCadreIds	
 	}
 	$.ajax({
           type:'GET',
@@ -1349,23 +1365,27 @@ function getCadreDetailsReport(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  //$('#detailedReprot').show();
+	  
 	 if(result.subList != null && result.subList.length>0){
 		  buildCadreDetailedReport(result);
 	  }else{
-		$("#detailedDiv").html("<center>NO DATA AVAILABLE</center>");  
+		$("#detailedDiv1").html("<center>NO DATA AVAILABLE</center>");  
 	  }
    }); 
 }
-
+function exportToExcel()
+{
+	tableToExcel('detailRepTableId', 'District Wise Committees');
+}
 function buildCadreDetailedReport(result){
 	var str='';
 	if(result.subList != null && result.subList.length>0){
-			str+='<table class="table table-bordered table-condensed">';
+		str+='<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="display:inline-block;"> Export To Excel </span>';
+			str+='<table id="detailRepTableId" class="table table-bordered table-condensed">';
 			
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="2"> SNO </th>';
+			str+='<th rowspan="2" > SNO </th>';
 			str+='<th rowspan="2"> PHOTO </th>';
 			str+='<th rowspan="2"> NAME  </th>';
 			str+='<th rowspan="2"> DISTRICT  </th>';
@@ -1377,10 +1397,12 @@ function buildCadreDetailedReport(result){
 			str+='<th rowspan="2"> CASTE NAME  </th>';
 			str+='<th rowspan="2"> SUB CASTE NAME  </th>';
 			str+='<th colspan="4"> MEMBERSHIP </th>';
-			str+='<th colspan="5"> 2014 Election Performance </th>';
-			str+='<th colspan="5"> 2014 Membership Enrollment </th>';
+			str+='<th colspan="6"> 2009 Election Performance </th>';
+			str+='<th colspan="6"> 2014 Election Performance </th>';
+			str+='<th rowspan="2"> 2014 Membership Enrollment </th>';
+			//str+='<th rowspan="2"> 2009 Membership Enrollment </th>';
 			str+='<th colspan="5"> 2016 Membership Enrollment </th>';
-			str+='<th rowspan="2"> 2015 Mahanadu Attendance </th>';
+			 str+='<th rowspan="2"> 2015 Mahanadu Attendance </th>';
 			str+='<th rowspan="2"> 2016 Mahanadu Attendance </th>';
 			str+='<th rowspan="2"> Training Attendance </th>';
 			str+='<th rowspan="2"> Invited Party Meetings </th>';
@@ -1396,23 +1418,18 @@ function buildCadreDetailedReport(result){
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
+			str+='<th> Own Parliament%  </th>';
 			str+='<th> Booth Influence%  </th>';
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
-			str+='<th> Booth Influence%  </th>';
-			str+='<th> Constituency%  </th>';
-			str+='<th> Own Mandal/Own Muncipality%  </th>';
-			str+='<th> Own Panchayat/Own Ward%  </th>';
-			str+='<th> Own Booth%  </th>';
+			str+='<th> Own Parliament%  </th>';
 			str+='<th> Booth Influence%  </th>';
 			str+='</tr>';
 			
 			str+='</thead>';
 			str+='<tbody>';
-			
-			str+='</tbody>';
 			for(var i in result.subList){
 				str+='<tr>';
 					str+='<td>'+(parseInt(i)+1)+'</td>';
@@ -1428,7 +1445,7 @@ function buildCadreDetailedReport(result){
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteName+' </td>';
 					if(result.subList[i].cadreBasicPerformaceVO.subList != null && result.subList[i].cadreBasicPerformaceVO.subList.length>0){
 						for(var j in result.subList[i].cadreBasicPerformaceVO.subList){
-							str+='<td> '+result.subList[i].cadreBasicPerformaceVO.subList[j].year+' </td>';
+							str+='<td> '+result.subList[i].cadreBasicPerformaceVO.subList[j].status+' </td>';
 						}
 					}
 					str+='<td> - </td>';
@@ -1436,16 +1453,17 @@ function buildCadreDetailedReport(result){
 					str+='<td> - </td>';
 					str+='<td> - </td>';
 					str+='<td> - </td>';
-					if(result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
+					if(result.subList[i].cadreStatsVO != null && result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
 						for(var j in result.subList[i].cadreStatsVO.subList){
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc+'</td>';
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc+'</td>';
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].boothPerc+'</td>';
+							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].parliamenPerc+'</td>';
 							str+='<td> - </td>';
 						}
 					}
-					if(result.subList[i].cadreEventsVO.subList != null && result.subList[i].cadreEventsVO.subList.length>0){
+					if(result.subList[i].cadreEventsVO != null && result.subList[i].cadreEventsVO.subList != null && result.subList[i].cadreEventsVO.subList.length>0){
 						for(var j in result.subList[i].cadreEventsVO.subList){
 							if(result.subList[i].cadreEventsVO.subList[j].name =='PartyMeetings' || result.subList[i].cadreEventsVO.subList[j].name =='Alert'){
 								if(result.subList[i].cadreEventsVO.subList[j].invitedCount != null && result.subList[i].cadreEventsVO.subList[j].invitedCount>0)
@@ -1463,12 +1481,29 @@ function buildCadreDetailedReport(result){
 					}
 				str+='</tr>';
 			}
-			
+			str+='</tbody>';
 			str+='</table>';
 	}
-	$("#detailedDiv").html(str);
+	$("#detailedDiv1").html(str);
+	$("#detailRepTableId").dataTable({
+			"iDisplayLength": 50,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
 }
 
+</script>
+<script>
+var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 </script>
 </body>
 </html>
