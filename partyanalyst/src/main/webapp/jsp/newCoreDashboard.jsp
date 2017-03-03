@@ -110,6 +110,10 @@
         </div>
     </div>
 </header>
+<div class="scrollTopHtml hide">
+	<i class="glyphicon glyphicon-chevron-up"></i>
+	Top
+</div>
 <!-- Error Msg For Committee  Start--->
 	<div class="modal fade alerttop" id="committeeErrMsg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="z-index:9999">
 		<div class="modal-dialog modal-sm">
@@ -4161,7 +4165,23 @@ $(document).on("click",".globalDateChange",function(){
 	globalMeetingsCalls(type);
 });
 /* GLobal Navbar Date Change End*/
-
+/*Scroll Top Start*/
+$(window).scroll(function(){
+	var windowScrollTop = $(window).scrollTop();
+	if (windowScrollTop>200) {
+		$(".scrollTopHtml").removeClass("hide");
+	} else {
+		$(".scrollTopHtml").addClass("hide");
+	}
+});
+$(document).on("click",".scrollTopHtml",function(){
+	setTimeout(function(){
+		$('html,body').animate({
+			scrollTop: $(".navbarHeader").offset().top
+		},'slow');
+	},100);
+});
+/*Scroll Top Start*/
 var globallocationScope;
 var globallocationValue;
 var globallocationName;
