@@ -6577,6 +6577,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			prepairCompleteMapForPartyMeeting(inviteeCadreList,attendedCadreList,
 					totalInviteesMap,
 					totalAttendenceMap,
@@ -6585,7 +6586,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					totalLateAttendedMap,
 					totalMeetingWiseThenSessionWiseAttendenceMap,
 					totalMeetingWiseThenSessionWiseInviteeAttendenceMap,
-					totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap);
+					totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap,
+					totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap);
 			detailsInfoVO.setTotalInviteesMap(totalInviteesMap);
 			detailsInfoVO.setTotalAttendenceMap(totalAttendenceMap);
 			detailsInfoVO.setTotalInviteeAttendenceMap(totalInviteeAttendenceMap);
@@ -6593,7 +6595,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			detailsInfoVO.setTotalLateAttendedMap(totalLateAttendedMap);
 			detailsInfoVO.setTotalMeetingWiseThenSessionWiseAttendenceMap(totalMeetingWiseThenSessionWiseAttendenceMap);
 			detailsInfoVO.setTotalMeetingWiseThenSessionWiseInviteeAttendenceMap(totalMeetingWiseThenSessionWiseInviteeAttendenceMap);
-			detailsInfoVO.setTotalMeetingWiseThenSessionWiseNonInviteeAttendenceMap(totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap);  
+			detailsInfoVO.setTotalMeetingWiseThenSessionWiseNonInviteeAttendenceMap(totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap);
+			detailsInfoVO.setTotalMeetingWiseThenSessionWiseLateInviteeAttendenceMap(totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap);
 			return detailsInfoVO;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -6612,7 +6615,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			Map<Long,Set<Long>> totalLateAttendedMap,
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseAttendenceMap,
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap,
-			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap){
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap,
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 			//total invited
@@ -6643,7 +6647,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			}
 			
 			//total invite attended
-			if(totalInviteesMap != null && totalInviteesMap.size() > 0){
+			if(totalInviteesMap != null && totalInviteesMap.size() > 0){  
 				for(Entry<Long,Set<Long>> enter : totalInviteesMap.entrySet()){
 					Long meetingId = enter.getKey();
 					Set<Long> totalCrd = totalAttendenceMap.get(meetingId);
@@ -6743,6 +6747,29 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					sessionCadresList.add(commonMethodsUtilService.getLongValueForObject(param[3]));
 				}
 			}
+			
+			//for future use only
+			//session wise attended count
+			Map<Long,Map<Long,Set<String>>> totalMeetingWiseThenSessionWiseAttendenceTimeMap = new HashMap<Long,Map<Long,Set<String>>>();
+			Map<Long,Set<String>> sessionWiseAttendenceTimeMap = new HashMap<Long,Set<String>>();
+			Set<String> sessionCadresTimeList = null;
+			if(attendedCadreList != null && attendedCadreList.size() > 0){
+				for(Object[] param : attendedCadreList){
+					sessionWiseAttendenceTimeMap = totalMeetingWiseThenSessionWiseAttendenceTimeMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sessionWiseAttendenceTimeMap == null){
+						sessionWiseAttendenceTimeMap = new HashMap<Long,Set<String>>();
+						totalMeetingWiseThenSessionWiseAttendenceTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sessionWiseAttendenceTimeMap);
+					}
+					sessionCadresTimeList = sessionWiseAttendenceTimeMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(sessionCadresTimeList == null){
+						sessionCadresTimeList = new HashSet<String>();
+						sessionWiseAttendenceTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[2]),sessionCadresTimeList);
+					}
+					sessionCadresTimeList.add(commonMethodsUtilService.getStringValueForObject(param[3])+"_"+commonMethodsUtilService.getStringValueForObject(param[6]));
+				}
+			}
+			//for future use only
+			
 			//{513359={25=[10874216, 6839898, 5163001, 10846935, 9290202, 10846509], 24=[10874216, 6839898, 5163001, 10846935, 9290202, 10846509]}}
 			//session wise invite attended count
 			//Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
@@ -6772,6 +6799,48 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 							cadersSet.removeAll(inviteesCadreList);      
 						}
 					}
+				}
+			}
+			//totalMeetingWiseThenSessionWiseAttendenceTimeMap
+			//session wise late invite attended cadre
+			Set<Long> newInviteCadreSet = null;
+			//Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
+			if(totalMeetingWiseThenSessionWiseInviteeAttendenceMap != null && totalMeetingWiseThenSessionWiseInviteeAttendenceMap.size() > 0){
+				createDuplicateMap(totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap,totalMeetingWiseThenSessionWiseInviteeAttendenceMap);
+				for(Entry<Long,Map<Long,Set<Long>>> outerEntry : totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap.entrySet()){
+					Long meetingId = outerEntry.getKey();
+					for(Entry<Long,Set<Long>> innerEntry : outerEntry.getValue().entrySet()){//for each session start
+						newInviteCadreSet = new HashSet<Long>();
+						Long sessionId = innerEntry.getKey();
+						Set<Long> inviteeCadreSet = innerEntry.getValue();
+						if(inviteeCadreSet != null && inviteeCadreSet.size() > 0){
+							for(Long cdrId : inviteeCadreSet){
+								Set<String> totalAttCadreSet = totalMeetingWiseThenSessionWiseAttendenceTimeMap.get(meetingId).get(sessionId);
+								if(totalAttCadreSet != null && totalAttCadreSet.size() > 0){
+									for(String cadreIdTime : totalAttCadreSet){
+										Long cadreId = Long.parseLong(cadreIdTime.split("_")[0]);
+										String attTime = cadreIdTime.split("_")[1];
+										if(cdrId.equals(cadreId)){
+											String ltTime = sessionIdAndLateTimeMap.get(sessionId);
+											Date attendedTime = sdf.parse(attTime);
+											Date lateTime = sdf.parse(ltTime);
+											Long attTimeMilis = attendedTime.getTime();
+											Long ltTimeMilis = lateTime.getTime();
+											if(attTimeMilis >= ltTimeMilis){//true -> late
+												newInviteCadreSet.add(cadreId);
+											}
+										}
+										
+									}
+								}
+							}//[9290202_13:30:00, 5163001_14:30:00, 10874216_13:30:00, 10846509_13:30:00, 6839898_13:30:00, 10846935_13:30:00]
+						}//{513359={25=[6839898, 5163001, 9290202], 24=[6839898, 5163001, 9290202]}}
+						inviteeCadreSet.clear();
+						if(newInviteCadreSet != null && newInviteCadreSet.size() > 0){
+							inviteeCadreSet.addAll(newInviteCadreSet);
+						}
+						
+					}//for each session end
 				}
 			}
 			System.out.println("hi");
