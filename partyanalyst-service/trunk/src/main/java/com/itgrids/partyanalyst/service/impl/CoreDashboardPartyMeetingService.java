@@ -6707,7 +6707,6 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			
 			//{513359={25=[10874216, 6839898, 5163001, 10846935, 9290202, 10846509], 24=[10874216, 6839898, 5163001, 10846935, 9290202, 10846509]}}
 			//session wise invite attended count
-			//Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			if(totalMeetingWiseThenSessionWiseAttendenceMap != null && totalMeetingWiseThenSessionWiseAttendenceMap.size() > 0){
 				createDuplicateMap(totalMeetingWiseThenSessionWiseInviteeAttendenceMap,totalMeetingWiseThenSessionWiseAttendenceMap);
 				for(Entry<Long,Map<Long,Set<Long>>> outerEntry : totalMeetingWiseThenSessionWiseInviteeAttendenceMap.entrySet()){
@@ -6722,7 +6721,6 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				}
 			}
 			//session wise non invite attended.
-			//Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			if(totalMeetingWiseThenSessionWiseAttendenceMap != null && totalMeetingWiseThenSessionWiseAttendenceMap.size() > 0){
 				createDuplicateMap(totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap,totalMeetingWiseThenSessionWiseAttendenceMap);
 				for(Entry<Long,Map<Long,Set<Long>>> outerEntry : totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap.entrySet()){     
@@ -6736,10 +6734,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					}
 				}
 			}
-			//totalMeetingWiseThenSessionWiseAttendenceTimeMap
 			//session wise late invite attended cadre
 			Set<Long> newInviteCadreSet = null;
-			//Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			if(totalMeetingWiseThenSessionWiseInviteeAttendenceMap != null && totalMeetingWiseThenSessionWiseInviteeAttendenceMap.size() > 0){
 				createDuplicateMap(totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap,totalMeetingWiseThenSessionWiseInviteeAttendenceMap);
 				for(Entry<Long,Map<Long,Set<Long>>> outerEntry : totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap.entrySet()){
@@ -6816,7 +6812,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					duplicateMap.put(outerEntry.getKey(), innerMap);
 				}
 			}
-		}catch(Exception e){
+		}catch(Exception e){ 
 			e.printStackTrace();
 		}
 	}
