@@ -2510,7 +2510,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	 }
 	 public List<Long> getPartyMeetingIdList(){
 		 Query query = getSession().createQuery(" select distinct model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId from PartyMeeting model where model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId > 3 " +
-		 		" model.isActive = 'Y' and model.partyMeetingType.isActive = 'Y' ");
+		 		" and model.isActive = 'Y' and model.partyMeetingType.isActive = 'Y' ");
 		 return query.list();
 	 }
  }
