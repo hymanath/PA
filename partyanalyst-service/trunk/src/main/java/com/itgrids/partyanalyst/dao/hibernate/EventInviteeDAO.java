@@ -1179,7 +1179,7 @@ public List<Object[]> getLocationWiseEventInviteedCntBasedOnUserType(Long userAc
 				" from EventInvitee model " +
 				" where model.eventId in (:eventIds) " +
 				" and model.tdpCadreId in (:cadreIds)  and model.event.isActive ='true' " +
-				" group by model.eventId  ");
+				" group by model.eventId,model.tdpCadreId  ");
 		
 		query.setParameterList("cadreIds", cadreIds);
 		query.setParameterList("eventIds", eventIds);

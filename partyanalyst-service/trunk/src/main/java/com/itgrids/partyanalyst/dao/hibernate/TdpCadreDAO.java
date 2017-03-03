@@ -9510,6 +9510,28 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			}
 		   return query.list();  
 	   }
-	   
+	  public List<Object[]> getCadreLocationIdsByTdpCadreIds(List<Long> tdpCadreIds){
+		  
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select model.tdpCadreId,district.districtId,district.districtName," +
+		   		"constituency.constituencyId,constituency.name,constituency.areaType" +
+		   		",parliamentConstituency.constituencyId,parliamentConstituency.name " +
+		   		",booth.boothId,localElectionBody.localElectionBodyId" +
+		   		",panc.panchayatId,tehsil.tehsilId" +
+		   		",booth.publicationDate.publicationDateId" +
+		   		",model.voterId,model.familyVoterId " +
+		   		"from TdpCadre model left join model.userAddress userAddress left join userAddress.panchayat panc ");
+			queryStr.append(" left join userAddress.tehsil tehsil ");
+			queryStr.append(" left join userAddress.constituency constituency ");
+			queryStr.append(" left join userAddress.localElectionBody localElectionBody ");
+			queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency ");
+			queryStr.append(" left join userAddress.district district "); 
+			queryStr.append(" left join userAddress.booth booth ");
+			queryStr.append(" where model.isDeleted='N' and model.tdpCadreId in (:tdpCadreIds) ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+		   query.setParameterList("tdpCadreIds", tdpCadreIds);
+		   return query.list();
+	   }
 	   
 }
