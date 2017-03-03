@@ -3755,6 +3755,7 @@
 	    <property name="districtDAO" ref="districtDAO" />
 	    <property name="partyMeetingStatusTempDAO" ref="partyMeetingStatusTempDAO" />
 	    <property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
+	    <property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
 	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
