@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -1881,7 +1882,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	
     	return query.list();
     }
-    public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO){
+    public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select distinct " +
     			" model.partyMeeting.partyMeetingId, model.tdpCadre.tdpCadreId " +
@@ -1902,7 +1903,18 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
     	}
-    	
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
+    	}
     	Query query = getSession().createQuery(queryStr.toString());
     	
     	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
@@ -1917,6 +1929,9 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	}
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		query.setParameter("stateId", inputVO.getStateId());
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
+    		query.setParameterList("locationValuesSet",locationValuesSet);
     	}
     	return query.list();
     }  
