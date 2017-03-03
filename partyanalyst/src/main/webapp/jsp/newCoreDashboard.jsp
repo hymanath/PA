@@ -4157,12 +4157,24 @@
 /* GLobal Navbar Date Change Start*/
 $(document).on("click",".globalDateChange",function(){
 	var type = $(this).attr("attr_type");
-	globalAlertsCalls(type);
-	globalDebateCalls(type);
-	globalPrintMediaCalls(type);
-	globalElectronicMediaCalls(type);
-	globalToursCalls(type);
-	globalMeetingsCalls(type);
+	 var URLArray = windowUrl.split('/');
+	 var fnlURL = URLArray[parseInt(URLArray.length) - 1].replace('.action','');
+	 if(fnlURL =="partyAndLeaderActivitiesAndPerformanceTracking"){
+	 	  globalPrintMediaCalls(type);
+		  globalToursCalls(type);
+		  globalMeetingsCalls(type);  
+	  }else if(fnlURL =="partyLeadersDashboardAction"){
+		  globalPrintMediaCalls(type);
+		  globalToursCalls(type);
+		  globalMeetingsCalls(type);  
+	  }else{
+		globalAlertsCalls(type);
+		globalDebateCalls(type);
+		globalPrintMediaCalls(type);
+		globalElectronicMediaCalls(type);
+		globalToursCalls(type);
+		globalMeetingsCalls(type);  
+	  }
 });
 /* GLobal Navbar Date Change End*/
 /*Scroll Top Start*/
