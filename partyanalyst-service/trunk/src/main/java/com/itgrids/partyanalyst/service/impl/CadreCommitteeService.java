@@ -20518,7 +20518,7 @@ public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(Str
         	for(Object[] localBody:localBodyList){
         		vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(localBody[0])));
-	        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+	        	vo.setLocationName(localBody[1].toString()+" ("+localBody[2].toString()+")");
 	        	locationsList.add(vo);
         	}
         }
