@@ -3275,9 +3275,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 public String getMeetingDtls(){
 		try{
+			jobj = new JSONObject(getTask());
 			String state = jobj.getString("state");
 			String startDateString = jobj.getString("startDateString");
-			String endDateString   = jobj.getString("endDateString");    
+			String endDateString   = jobj.getString("endDateString");  
 			Long activityMemberId = jobj.getLong("activityMemberId");
 			meetingDetailsInfoVO = coreDashboardPartyMeetingService.getMeetingListDtls(activityMemberId,state,startDateString,endDateString);
 			
