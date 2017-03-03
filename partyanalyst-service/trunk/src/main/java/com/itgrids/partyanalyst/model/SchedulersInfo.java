@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +26,8 @@ public class SchedulersInfo {
 	private Long schedulersInfoId;
 	private String name;
 	private String description;
-	private Long schedulerTime; 
+	private Date schedulerStartTime; 
+	private Date schedulerEndTime; 
 	private String status;
 	private Long userId;
 	
@@ -60,13 +63,22 @@ public class SchedulersInfo {
 		this.description = description;
 	}
 
-	@Column(name = "scheduler_time")
-	public Long getSchedulerTime() {
-		return schedulerTime;
+	@Column(name = "scheduler_start_time")
+	public Date getSchedulerStartTime() {
+		return schedulerStartTime;
 	}
 
-	public void setSchedulerTime(Long schedulerTime) {
-		this.schedulerTime = schedulerTime;
+	public void setSchedulerStartTime(Date schedulerStartTime) {
+		this.schedulerStartTime = schedulerStartTime;
+	}
+
+	@Column(name = "scheduler_end_time")
+	public Date getSchedulerEndTime() {
+		return schedulerEndTime;
+	}
+
+	public void setSchedulerEndTime(Date schedulerEndTime) {
+		this.schedulerEndTime = schedulerEndTime;
 	}
 
 	@Column(name = "status")
