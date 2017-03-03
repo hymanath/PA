@@ -2001,7 +2001,14 @@
 										<button type="button" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
 									</div>
 									 <div class="row">
-										<div id="specialMeetingBasicCnt"></div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="specialMeetingBasicCnt"></div>
+										</div>
+									 </div>
+									 <div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="customMeetingsDiv"></div>
+										</div>
 									 </div>
 								   </div>
 								</div>
