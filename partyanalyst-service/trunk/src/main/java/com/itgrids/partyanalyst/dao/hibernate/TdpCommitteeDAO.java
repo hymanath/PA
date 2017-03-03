@@ -2731,8 +2731,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getTdpCommitteeWardsInLocalElectionBody(List<Long> localBodyIds,Long constituencyId){
-		StringBuilder str = new StringBuilder();
-		str.append("SELECT distinct TC.constituency_id,C1.name,CONCAT(LEB.name, ' ', ET.election_type) FROM ");
+		StringBuilder strQuery = new StringBuilder();
+		/*str.append("SELECT distinct C1.constituency_id,C1.name,CONCAT(LEB.name, ' ', ET.election_type) FROM ");
 		
 		str.append(" tdp_committee TC,constituency C,constituency C1,user_address UA,local_election_body LEB,election_type ET ");
 		
@@ -2747,11 +2747,30 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(constituencyId != null)
 			str.append(" AND UA.constituency_id = :constituencyId " );
 		
-		str.append(" ORDER BY C1.constituency_id,C1.name ");
+		str.append(" ORDER BY C1.constituency_id,C1.name ");*/
 		
-		Query query = getSession().createSQLQuery(str.toString());
+		strQuery.append(" SELECT distinct w.constituency_id,w.`name`, CONCAT(leb.`name`,'-',et.election_type) from  ");
+		strQuery.append(" tdp_committee tc,  ");
+		strQuery.append(" user_address ua, ");
+		strQuery.append(" constituency w, ");
+		strQuery.append(" local_election_body leb , ");
+		strQuery.append(" election_type et ");
+		strQuery.append(" where  ");
+		strQuery.append(" ua.local_election_body = leb.local_election_body_id AND ");
+		strQuery.append(" leb.election_type_id = et.election_type_id and ");
+		strQuery.append(" ua.ward = w.constituency_id   ");
+		if(localBodyIds != null && localBodyIds.size()>0)
+			strQuery.append(" and ua.local_election_body in (:localBodyIds)   ");
+		strQuery.append(" and tc.address_id = ua.user_address_id   ");
+		if(constituencyId != null && constituencyId.longValue()>0L)
+			strQuery.append("and  ua.constituency_id = :constituencyId   ");
+		strQuery.append(" and tc.tdp_committee_enrollment_id = 2   ");
+		strQuery.append(" and tc.tdp_committee_level_id in (8)  ");//9 is tdp_committee_Level_id
 		
-		query.setParameterList("localBodyIds", localBodyIds);
+		Query query = getSession().createSQLQuery(strQuery.toString());
+		
+		if(localBodyIds != null && localBodyIds.size()>0)
+			query.setParameterList("localBodyIds", localBodyIds);
 		if(constituencyId != null)
 			query.setParameter("constituencyId", constituencyId);
 		
