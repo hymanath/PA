@@ -8175,22 +8175,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return returnList;
 	}
 	
-	public VerifierVO getSurveysOnCandidateCount(Long candidateId){
+	public VerifierVO getSurveysOnCandidateCount(Long candidateId,Long cadreId){
 		VerifierVO verifierVO = new VerifierVO();
 		
-			Long count = ivrSurveyCandidateQuestionDAO.getIvrSurveyCountByCandiate(candidateId);
+			Long count = ivrSurveyCandidateQuestionDAO.getIvrSurveyCountByCandiate(candidateId,cadreId);
 			if(count != null && count.longValue() > 0){
 				verifierVO.setTotalCount(count);
 			}
 		return verifierVO;
 	}
 	
-	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId)
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId,Long cadreId)
 	{
 		List<QuestionAnswerVO> returnList = new ArrayList<QuestionAnswerVO>();
 		List<Long> questionIds = new ArrayList<Long>();
 		try{
-			questionIds =ivrSurveyCandidateQuestionDAO.getIvrSurveyQuestionsByCandiate(candidateId);
+			questionIds =ivrSurveyCandidateQuestionDAO.getIvrSurveyQuestionsByCandiate(candidateId,cadreId);
 			if(questionIds != null && questionIds.size() > 0)
 			{
 				 List<Object[]> list = ivrSurveyAnswerDAO.getOptionsCountByQuestionIds(questionIds);

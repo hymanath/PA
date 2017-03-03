@@ -31,11 +31,14 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	private String isLocationScope;
 	private Long locationScopeId;
 	private Long locationValue;
+	private Long tdpCadreId;
+	private Long addressId;
 	
 	private Candidate  candidate;
 	private IvrOption  ivrOption;
 	private IvrSurveyQuestion ivrSurveyQuestion;
-	
+	private TdpCadre tdpCadre;
+	private UserAddress userAddress;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -121,4 +124,41 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 		this.ivrSurveyQuestion = ivrSurveyQuestion;
 	}
 	
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
+	@Column(name = "address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
 }

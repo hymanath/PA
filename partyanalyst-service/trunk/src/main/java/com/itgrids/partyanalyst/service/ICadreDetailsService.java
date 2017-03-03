@@ -101,9 +101,9 @@ public interface ICadreDetailsService {
 	public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails(Long districtId,Long assemblyId,Long parliamentId);
 	public GrievanceDetailsVO getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation(Long panchayatId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId);
 	public List<GrievanceDetailsVO> getComplaintsDetailsByLocationAndStatus(Long locationId,String locationType,Long insuranceStatId,String issueType);
-	public VerifierVO getSurveysOnCandidateCount(Long candidateId);
+	public VerifierVO getSurveysOnCandidateCount(Long candidateId,Long cadreId);
 	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId);
-	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId,Long cadreId);
 	//public List<GrievanceDetailsVO> getAllStatusDetailsForComplaint(Long complaintId);
 		public GrievanceSimpleVO getAllStatusDetailsByComplaint(Long complaintId);
 		public GrievanceSimpleVO getStatusTrackingDetailsOfInsuranceByComplaint(Long complaintId);
