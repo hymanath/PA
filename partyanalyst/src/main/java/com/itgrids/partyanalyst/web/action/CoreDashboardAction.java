@@ -3685,5 +3685,20 @@ public String getCandidateWiseDebateDetailsOfCore(){
 	}
 	return Action.SUCCESS;
 }
-
+public String getCustomPartyMeetingsMainTypeOverViewDataDetails(){
+	  try{
+			LOG.info("Entered into getCustomPartyMeetingsMainTypeOverViewDataDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long partyMeetingMAinTypeId = jObj.getLong("partyMeetingMAinTypeId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+	
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getCustomPartyMeetingsMainTypeOverViewData(activityMemberId,partyMeetingMAinTypeId,stateId,fromDate,toDate);
+		}catch(Exception e){
+			LOG.error("Exception raised at getCustomPartyMeetingsMainTypeOverViewDataDetails() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+}
 }
