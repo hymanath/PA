@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -63,5 +64,5 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getPartyMeetingInviteeSummary(List<Long> cadreIds);
 	
 	
-	public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO);
+	public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
 }

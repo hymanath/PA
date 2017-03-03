@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -41,5 +42,5 @@ public interface IPartyMeetingAttendanceDAO extends GenericDao<PartyMeetingAtten
 	public List<Object[]> getWithoutSessionCommitteeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getWithioutPublicRepresentativeWiseAttendedCadreCountForMeeting(PartyMeetingsInputVO inputVO);
 	public List<Object[]> getPartyMeetingAttendanceSummary(List<Long> cadreIds);
-	public List<Object[]> getAttendedCadresMeetingWise(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getAttendedCadresMeetingWise(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
 }
