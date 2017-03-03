@@ -6469,16 +6469,13 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){  
 		try{
 			
-			
+			Set<Long> locationValuesSet = new java.util.HashSet<Long>();
+			Long locationId = 0L;
 			Map<Long,Set<Long>> locationAccessLevelMap =  new HashMap<Long,Set<Long>>();
 			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
 			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
-				   Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
-				   if(locationValuesSet == null){
-					 locationValuesSet = new java.util.HashSet<Long>();
-					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
-				   }
+				   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
 			   }
 		    } 
