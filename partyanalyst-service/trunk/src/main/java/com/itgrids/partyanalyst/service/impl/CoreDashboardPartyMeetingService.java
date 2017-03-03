@@ -3909,7 +3909,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											Long ltTimeMilis = lateTime.getTime();
 											
 											
-											if(attTimeMilis >= ltTimeMilis){//true -> late
+											if(attTimeMilis > ltTimeMilis){//true -> late
 												statusIdAndStausMap.put(sesId, "late");
 												attendedTimeList.add(attTime); 
 												attendedDateList.add(attDate); 
@@ -3969,7 +3969,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 								Date lateTime = sdf.parse(ltTime);
 								Long attTimeMilis = attendedTime.getTime();
 								Long ltTimeMilis = lateTime.getTime();
-								if(attTimeMilis >= ltTimeMilis){//true -> late
+								if(attTimeMilis > ltTimeMilis){//true -> late
 									lateCadres.add(param);
 								}    
 							}
@@ -4432,7 +4432,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 										Long ltTimeMilis = lateTime.getTime();
 										
 										
-										if(attTimeMilis >= ltTimeMilis){//true -> late
+										if(attTimeMilis > ltTimeMilis){//true -> late
 											statusIdAndStausMap.put(sesId, "late");
 											attendedTimeList.add(attTime); 
 											attendedDateList.add(attDate); 
@@ -4875,7 +4875,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 											Long ltTimeMilis = lateTime.getTime();
 											
 											
-											if(attTimeMilis >= ltTimeMilis){//true -> late
+											if(attTimeMilis > ltTimeMilis){//true -> late
 												statusIdAndStausMap.put(sesId, "late");
 												attendedTimeList.add(attTime); 
 												attendedDateList.add(attDate); 
@@ -5069,7 +5069,7 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 												Long ltTimeMilis = lateTime.getTime();
 												
 												
-												if(attTimeMilis >= ltTimeMilis){//true -> late
+												if(attTimeMilis > ltTimeMilis){//true -> late
 													statusIdAndStausMap.put(sesId, "late");
 													attendedTimeList.add(attTime); 
 													attendedDateList.add(attDate); 
@@ -6644,7 +6644,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						Date lateTime = sdf.parse(ltTime);
 						Long attTimeMilis = attendedTime.getTime();
 						Long ltTimeMilis = lateTime.getTime();
-						if(attTimeMilis >= ltTimeMilis){//true -> late
+						if(attTimeMilis > ltTimeMilis){//true -> late
 							lateCadreSet = totalLateAttendedMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 							if(lateCadreSet == null){  
 								lateCadreSet = new HashSet<Long>();
@@ -6753,7 +6753,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 											Date lateTime = sdf.parse(ltTime);
 											Long attTimeMilis = attendedTime.getTime();
 											Long ltTimeMilis = lateTime.getTime();
-											if(attTimeMilis >= ltTimeMilis){//true -> late
+											if(attTimeMilis > ltTimeMilis){//true -> late
 												newInviteCadreSet.add(cadreId);
 											}
 										}
@@ -6796,9 +6796,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	/*
 	 * Swadhin Lenka
 	 */
-	public List<MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String state,String startDateString,String endDateString){
+	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String state,String startDateString,String endDateString){
 		try{
-			List<MeetingDetailsInfoVO> meetingList = new ArrayList<MeetingDetailsInfoVO>();
+			Map<Long,MeetingDetailsInfoVO> meetingMap = new HashMap<Long,MeetingDetailsInfoVO>();
 			List<Long> mainMeetingIdsList = partyMeetingDAO.getPartyMeetingIdList();
 			List<Object[]> meetingTypeIdsList = null;
 			if(mainMeetingIdsList != null && mainMeetingIdsList.size() > 0){
@@ -6820,10 +6820,10 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			if(mainMeetingIdAndMeetingTypeIdListMap != null && mainMeetingIdAndMeetingTypeIdListMap.size() > 0){
 				for(Entry<Long,Set<Long>> entry : mainMeetingIdAndMeetingTypeIdListMap.entrySet()){
 					MeetingDetailsInfoVO detailsInfoVO = getMeetingDtls(activityMemberId,entry.getKey(),new ArrayList<Long>(entry.getValue()),state,startDateString,endDateString);
-					meetingList.add(detailsInfoVO);
+					meetingMap.put(entry.getKey(),detailsInfoVO);
 				}
 			}
-			return meetingList;
+			return meetingMap;
 			
 		}catch(Exception e){
 			e.printStackTrace();
