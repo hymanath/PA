@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ISchedulersInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.SchedulersInfo;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
@@ -36,8 +38,13 @@ public class Scheduler {
     private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
     private INominatedPostProfileService nominatedPostProfileService;
     private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+    private ISchedulersInfoDAO schedulersInfoDAO;
     
     
+	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
+		this.schedulersInfoDAO = schedulersInfoDAO;
+	}
+
 	public void setNominatedPostProfileService(
 			INominatedPostProfileService nominatedPostProfileService) {
 		this.nominatedPostProfileService = nominatedPostProfileService;
@@ -759,14 +766,34 @@ public class Scheduler {
 	
 	public void UpdateExpiredAppicationsInNominatedPosts(){
 		
+		String schedulerStatus ="";
 		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+		
+			SchedulersInfo schedulersInfo = new SchedulersInfo();
+			schedulersInfo.setName("UpdateExpiredAppicationsInNominatedPosts");
+			schedulersInfo.setSchedulerStartTime(dateUtilService.getCurrentDateAndTime());
+		
 			log.error(" Entered In To -  UpdateExpiredAppicationsInNominatedPosts.. "); 
 			try{  
-				nominatedPostProfileService.UpdateExpiredAppicationsInNominatedPosts(null);
+				
+				schedulerStatus = nominatedPostProfileService.UpdateExpiredAppicationsInNominatedPosts(IConstants.JOB_SCHEDULER_USER_ID);
+				if(schedulerStatus != null && !schedulerStatus.trim().isEmpty() && !schedulerStatus.trim().equalsIgnoreCase("success")){
+					if(!schedulerStatus.trim().equalsIgnoreCase("failure")){
+						schedulersInfo.setDescription(schedulerStatus);
+						schedulersInfo.setStatus("success");
+					}else
+						schedulersInfo.setStatus("failure");
+					
+					schedulersInfo.setUserId(IConstants.JOB_SCHEDULER_USER_ID);
+				}
+					
 				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed "); 
 			}catch(Exception e){
+				schedulersInfo.setStatus("Exception");
 				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed with error "); 
 			}
+			schedulersInfo.setSchedulerEndTime(dateUtilService.getCurrentDateAndTime());
+			schedulersInfoDAO.save(schedulersInfo);
 		}
 	}
 }
