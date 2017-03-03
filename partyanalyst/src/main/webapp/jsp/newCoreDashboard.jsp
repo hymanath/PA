@@ -4276,7 +4276,6 @@ var globalImages;
 		
 	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
-		 $(".profileSelection").show();
 		//ALL BLOCKS
 		$("#mainHeadinId").html("KALA VENKATA RAO");
 		getRescentArticleTime();		
@@ -4334,8 +4333,7 @@ var globalImages;
 	  }
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
-		  $(".profileSelection").show();
-		  $("#mainHeadinId").html("KALA VENKATA RAO");
+	    $("#mainHeadinId").html("KALA VENKATA RAO");
 		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -4355,7 +4353,6 @@ var globalImages;
 		
 	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
-		  $(".profileSelection").show();
 		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -4374,8 +4371,7 @@ var globalImages;
 		getAlertOverviewDetails();
 	  }
 	  else{
-		    $(".profileSelection").show();
-			$("#mainHeadinId").html("KALA VENKATA RAO");
+		   $("#mainHeadinId").html("KALA VENKATA RAO");
 			//ALL BLOCKS
 			getRescentArticleTime();		
 			//committeeBasicCall();
