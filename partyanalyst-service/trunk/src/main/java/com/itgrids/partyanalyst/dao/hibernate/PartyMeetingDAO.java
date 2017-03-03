@@ -2513,4 +2513,32 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 		" and model.isActive = 'Y' and model.partyMeetingType.isActive = 'Y' ");
 		 return query.list();
 	 }
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getCustomPartyMeetingsMainTypeOverViewData(Date startDate, Date endDate){
+		 StringBuilder sb = new StringBuilder();
+	        
+		 sb.append(" select distinct model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId," +
+		 		" model.partyMeeting.partyMeetingType.partyMeetingMainType.meetingType," +
+		 		" model.partyMeeting.partyMeetingType.partyMeetingTypeId," +
+		 		" model.partyMeeting.partyMeetingType.type," +
+		 		" model.partyMeeting.partyMeetingId,model.partyMeeting.meetingName," +
+		 		" model.partyMeetingSessionId," +
+		 		" model.sessionType.type ");
+		 
+		 sb.append(" from PartyMeetingSession model " +
+		 		" where ");
+		 
+	     sb.append(" model.partyMeeting.partyMeetingType.partyMeetingMainTypeId > 3 ");//after 3 will buildin meeting main types
+	     if(startDate != null && endDate != null){
+	    	 sb.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate ");
+	     }
+	    // sb.append(" and model.partyMeeting.partyMeetingType.isActive ='Y' and  model.partyMeeting.isActive  = 'Y' ");
+	     
+		 Query query = getSession().createQuery(sb.toString());
+		 if(startDate != null && endDate != null){
+			 query.setDate("startDate",startDate);
+			 query.setDate("endDate",endDate);
+	     }
+		 return query.list();
+	 }
  }

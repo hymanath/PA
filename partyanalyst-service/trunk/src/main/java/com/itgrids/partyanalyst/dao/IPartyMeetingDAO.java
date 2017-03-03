@@ -59,4 +59,5 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getConstInchargeTeluguNames();
 	public String getPartyMeetingName(Long partyMeetingId);
 	public List<Long> getPartyMeetingIdList();
+	public List<Object[]> getCustomPartyMeetingsMainTypeOverViewData(Date startDate, Date endDate);
 }
