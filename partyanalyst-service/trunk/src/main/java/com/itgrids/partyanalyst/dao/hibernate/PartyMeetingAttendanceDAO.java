@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -966,7 +967,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		
 		return query.list();
 	}
-	public List<Object[]> getAttendedCadresMeetingWise(PartyMeetingsInputVO inputVO){  
+	public List<Object[]> getAttendedCadresMeetingWise(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet){  
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 				" model.partyMeeting.partyMeetingId, " +
@@ -994,6 +995,18 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
     	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
+    	}
 		queryStr.append(" group by model.partyMeeting.partyMeetingId,model.partyMeetingSession.partyMeetingSessionId,model.attendance.tdpCadre.tdpCadreId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -1010,6 +1023,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	}
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		query.setParameter("stateId", inputVO.getStateId());
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
+    		query.setParameterList("locationValuesSet",locationValuesSet);
     	}
     	return query.list();
 	}

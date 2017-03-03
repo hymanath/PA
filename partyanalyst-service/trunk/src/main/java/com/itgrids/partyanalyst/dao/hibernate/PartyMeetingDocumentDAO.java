@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 
 public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDocument,Long> implements IPartyMeetingDocumentDAO{
@@ -138,6 +140,61 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 				" where model.isDeleted='N' and model.partyMeeting.partyMeetingId in (:meetingIds) and model.documentType=:type ");
 		query.setParameterList("meetingIds", meetingIds);
 		query.setParameter("type", type);
+		return query.list();
+	}
+	public List<Object[]> getPartyMeetingdocList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct " +
+				" model.partyMeeting.partyMeetingId, " +
+				" model.partyMeetingSession.partyMeetingSessionId," +
+				" model.partyMeetingDocumentId " +
+				" from PartyMeetingDocument model where " +
+				" model.isDeleted = 'N' " +
+				" and model.partyMeeting.isActive = 'Y' " +
+				" and model.partyMeetingSession.isDeleted = 'N' ");
+		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
+    	}  
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) " );
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+    		query.setParameter("partyMeetingMainTypeId", inputVO.getPartyMeetingMainTypeId());
+    	}
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		query.setParameterList("partyMeetingTypeIdList", inputVO.getPartyMeetingTypeIds());
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		query.setDate("startDate",inputVO.getStartDate());
+    		query.setDate("endDate",inputVO.getEndDate());
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		query.setParameter("stateId", inputVO.getStateId());
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
+    		query.setParameterList("locationValuesSet",locationValuesSet);  
+    	}
 		return query.list();
 	}
 }
