@@ -6578,16 +6578,16 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
-			prepairCompleteMapForPartyMeeting(inviteeCadreList,attendedCadreList,
-					totalInviteesMap,
-					totalAttendenceMap,
-					totalInviteeAttendenceMap,
-					totalNonInviteesMap,
-					totalLateAttendedMap,
-					totalMeetingWiseThenSessionWiseAttendenceMap,
-					totalMeetingWiseThenSessionWiseInviteeAttendenceMap,
-					totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap,
-					totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap);
+			prepairCompleteMapForPartyMeeting(inviteeCadreList,	attendedCadreList,
+																totalInviteesMap,
+																totalAttendenceMap,
+																totalInviteeAttendenceMap,
+																totalNonInviteesMap,
+																totalLateAttendedMap,
+																totalMeetingWiseThenSessionWiseAttendenceMap,
+																totalMeetingWiseThenSessionWiseInviteeAttendenceMap,
+																totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap,
+																totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap);
 			detailsInfoVO.setTotalInviteesMap(totalInviteesMap);
 			detailsInfoVO.setTotalAttendenceMap(totalAttendenceMap);
 			detailsInfoVO.setTotalInviteeAttendenceMap(totalInviteeAttendenceMap);
