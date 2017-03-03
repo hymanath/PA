@@ -38,12 +38,6 @@ public class Scheduler {
     private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
     private INominatedPostProfileService nominatedPostProfileService;
     private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
-    private ISchedulersInfoDAO schedulersInfoDAO;
-    
-    
-	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
-		this.schedulersInfoDAO = schedulersInfoDAO;
-	}
 
 	public void setNominatedPostProfileService(
 			INominatedPostProfileService nominatedPostProfileService) {
@@ -767,33 +761,14 @@ public class Scheduler {
 	public void UpdateExpiredAppicationsInNominatedPosts(){
 		
 		String schedulerStatus ="";
-		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
-		
-			SchedulersInfo schedulersInfo = new SchedulersInfo();
-			schedulersInfo.setName("UpdateExpiredAppicationsInNominatedPosts");
-			schedulersInfo.setSchedulerStartTime(dateUtilService.getCurrentDateAndTime());
-		
+		//if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
 			log.error(" Entered In To -  UpdateExpiredAppicationsInNominatedPosts.. "); 
 			try{  
-				
-				schedulerStatus = nominatedPostProfileService.UpdateExpiredAppicationsInNominatedPosts(IConstants.JOB_SCHEDULER_USER_ID);
-				if(schedulerStatus != null && !schedulerStatus.trim().isEmpty() && !schedulerStatus.trim().equalsIgnoreCase("success")){
-					if(!schedulerStatus.trim().equalsIgnoreCase("failure")){
-						schedulersInfo.setDescription(schedulerStatus);
-						schedulersInfo.setStatus("success");
-					}else
-						schedulersInfo.setStatus("failure");
-					
-					schedulersInfo.setUserId(IConstants.JOB_SCHEDULER_USER_ID);
-				}
-					
+				nominatedPostProfileService.UpdateExpiredAppicationsInNominatedPosts(IConstants.JOB_SCHEDULER_USER_ID);
 				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed "); 
 			}catch(Exception e){
-				schedulersInfo.setStatus("Exception");
 				log.error("\n\n UpdateExpiredAppicationsInNominatedPosts() completed with error "); 
 			}
-			schedulersInfo.setSchedulerEndTime(dateUtilService.getCurrentDateAndTime());
-			schedulersInfoDAO.save(schedulersInfo);
-		}
+		//}
 	}
 }
