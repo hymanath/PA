@@ -84,9 +84,9 @@
                 </div>
 				<div class="col-md-7 col-xs-12 col-sm-7 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
-						<li>
+						<!--<li>
 							<!-- Dont Add New Classes and new functionalities for this class a click has been already initialised please use that-->
-							<label style="color:green;" class="radio-inline">
+							<!--<label style="color:green;" class="radio-inline">
 							  <input type="radio" attr_type="default" class="globalDateChange" name="optradio" checked>Default</input>
 							 </label>
 							<label style="color:green;" class="radio-inline">
@@ -95,9 +95,9 @@
 							<label style="color:green;"  class="radio-inline">
 							  <input type="radio" attr_type="lastMonth"  class="globalDateChange" name="optradio">Last Month</input>
 							</label>
-						</li> 
+						</li>--> 
 						<li class="active" >
-                        	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
+                        	<a  style="cursor:pointer;text-decoration:none;margin-left:200px;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
 						<!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
@@ -152,7 +152,7 @@
 							<span class="iconExpand pull-right" style="display:none">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+					<span class="cadreSettings pull-right refreshCadreCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
 							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
@@ -569,7 +569,7 @@ var globalImages;
 		var URLArr = windowUrl.split('/');
 		var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 		$(".dateRangePickerCls").toggleClass("hide");
-	     $(".profileSelection").hide();
+	     //$(".profileSelection").hide();
 		 passRequiredUrl(finalURL);
 		 getCadreEnrolmentYears();
 		  setTimeout(function(){
@@ -609,7 +609,12 @@ var globalImages;
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-	
+	/* Refresh Block */
+	$(document).on("click",".refreshCadreCls",function(){
+		getCommitteesBasicCountReport();
+		getUserTypeWiseCommitteesCompletedCounts1();
+		getAllItsSubUserTypeIdsByParentUserTypeId();
+	});
 	 
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
