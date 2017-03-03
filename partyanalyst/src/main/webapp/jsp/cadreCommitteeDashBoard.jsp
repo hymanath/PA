@@ -4988,14 +4988,26 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							  $('#entryFinishedpopUpBodyId').html('<p> This Committee Does Not Have members.</p>');
 						  }
 						  if(result.errorCode  == 1){
-							   if(result.subList != null && result.subList.length > 0){
+							  
+							  if(levelId == 6 || levelId == 8){//village/ward conmmittees
+								 var str = '';
+								 str+='<h4 class="panel-title text-center" style="color:red" ><b> Entry Not Finished </b></h4>';
+								 
+								 if(!result.presidentExist){
+									 str+='<p><b> President </b> Should Be Added To this Committee</p>';
+								 }
+								 if(!result.generalSecreteryExist){
+									 str+='<p><b> General Secretery </b> Should Be Added To this Committee</p>';
+								 }
+								 if(!result.totalMembersExist){
+									 str+='<p>Committee Should Have Atleast <b>14</b>  Members But Having Only <b>'+result.totalCount+' </b>Members</p>';
+								 }
+                                 $('#entryFinishedpopUpBodyId').html(str);
+								 
+							  }else{//mandal/Town/Division committtees
+								    if(result.subList != null && result.subList.length > 0){
 								    var str = '';
 									str+='<h4 class="panel-title text-center" style="color:red" ><b> Entry Not Finished </b></h4>';
-									/* str+='<ol>';
-								   for( var i in result.subList){
-									   str+='<li> '+result.subList[i].role+' Role Should Have Atleast <b>'+result.subList[i].minCount+'</b> Members But Having Only <b>'+result.subList[i].occupiedCount+' </b>Members</li>'
-								   }
-								   str+='</ol>'; */
 								   str+='<table class="table table-bordered">';
 								   str+='<thead>';
 								     str+='<tr>';
@@ -5022,10 +5034,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										  str+='<td>'+result.subList[i].minCount+'</td>';
 										str+='</tr>';
 								    } 
-								   str+='</tbody>';
-								   str+='</table>';
-								   $('#entryFinishedpopUpBodyId').html(str);
+								    str+='</tbody>';
+								    str+='</table>';
+								    $('#entryFinishedpopUpBodyId').html(str);
 							   }
+								  
+							  } 
 						  }
 						  if(result.errorCode  == 2){
 							  $('#entryFinishedpopUpBodyId').html('<h4 class="panel-title text-center" style="color:green;" ><b> Entry Finished Successfully </b></h4>');
