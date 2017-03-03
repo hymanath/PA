@@ -18,9 +18,12 @@ function buildIVRSurveyTabs(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-
 		$("#IvrcandiParticipatedId").html('<a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >'+result.totalCount+'</a>');
-	
+		globalIvrCandidateParticipatedCount = result.totalCount;
+		if(globalIvrSurveyOnCandidateCount == 0){
+			$("#IvrcandiParticipatedId").closest("li").addClass("active li_arr");
+			getTypeWiseIvrDetailsOFCadre();
+		}
 	}
 	else{	
 	
@@ -33,7 +36,8 @@ function getSurveysOnCandidateCount(){
 	$("#IvrSurveyOnCandiId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 	
-		candidateId:globalCandidateId
+		candidateId:globalCandidateId,
+		cadreId : memberCadreId
 	}
 	
 	$.ajax({
@@ -45,12 +49,18 @@ function getSurveysOnCandidateCount(){
 				buildIVRSurveysOnCandidateCount(result);
 			});
 }
+
+var globalIvrSurveyOnCandidateCount = 0;
+var globalIvrCandidateParticipatedCount = 0;
+//var globalIvrSurveyInCandidteAreaCount = 0;
 function buildIVRSurveysOnCandidateCount(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-		$("#IvrSurveyOnCandiId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" '+result.totalCount+'</a>');
-	
+		$("#IvrSurveyOnCandiId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;"> '+result.totalCount+'</a>');
+		globalIvrSurveyOnCandidateCount = result.totalCount;
+		$("#IvrSurveyOnCandiId").closest("li").addClass("active li_arr");
+		getIVRSurveysOnCandidateDetails();
 	}
 	else{	
 	
@@ -92,12 +102,14 @@ function buildIVRSurveysOnCandidateAreaCount(result){
 
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-		
-	
-	$("#IvrcandiAreaId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >'+result.totalCount+'</a>');
+		$("#IvrcandiAreaId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >'+result.totalCount+'</a>');
+		if(globalIvrSurveyOnCandidateCount == 0 && globalIvrCandidateParticipatedCount == 0){
+			$("#IvrcandiAreaId").closest("li").addClass("active li_arr");
+			getIVRSurveysOnCandidateAreaDetails();
+		}
 	}
 	else
-		$("#IvrSurveyOnCandiId").html('0');
+		$("#IvrcandiAreaId").html('0');
 	
 }
 
@@ -250,6 +262,7 @@ function getIVRSurveysOnCandidateDetails()
 	$("#ivrDetailsBodyId").html("");
 	var jsObj={
 			candidateId:globalCandidateId,
+			cadreId : memberCadreId,
 			task:""
 	}
 	$('#ivrsurveyDataLoadoing').show();

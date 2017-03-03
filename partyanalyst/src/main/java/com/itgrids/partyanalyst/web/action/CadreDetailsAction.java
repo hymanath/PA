@@ -1341,7 +1341,9 @@ public String updateLeaderShip(){
 		try{
 			jObj=new JSONObject(getTask());
 			Long candidateId=jObj.getLong("candidateId");
-			verifierVO=cadreDetailsService.getSurveysOnCandidateCount(candidateId);
+			Long cadreId = jObj.getLong("cadreId");
+			
+			verifierVO=cadreDetailsService.getSurveysOnCandidateCount(candidateId,cadreId);
 		}catch(Exception e){
 			LOG.error("Exception Occured in getSurveysOnCandidateCount() in CadreDetailsAction ",e);
 		}
@@ -1352,7 +1354,9 @@ public String updateLeaderShip(){
 		try{
 			jObj=new JSONObject(getTask());
 			Long candidateId=jObj.getLong("candidateId");
-			finalList=cadreDetailsService.getSurveysOnCandidateDetails(candidateId);
+			Long cadreId = jObj.getLong("cadreId");
+			
+			finalList=cadreDetailsService.getSurveysOnCandidateDetails(candidateId,cadreId);
 		}catch(Exception e){
 			LOG.error("Exception Occured in getSurveysOnCandidateDetails() in CadreDetailsAction ",e);
 		}
