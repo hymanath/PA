@@ -8009,8 +8009,8 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 }
 	public String UpdateExpiredAppicationsInNominatedPosts(final Long userId){
 		try {
-			//if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
-			//	return "";
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return "failure";
 			
 			String status = (String) transactionTemplate.execute(new TransactionCallback() {
 				@Override
@@ -8019,22 +8019,29 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					int count2 =0;
 					int count3 =0;
 					int count4 =0;
-					
+					//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 					Date currentDate = dateUtilService.getCurrentDateAndTime();
+					/*try {
+						currentDate = sdf.parse("01/12/2001 11:12:12 ");
+					} catch (Exception e) {}*/
+					
 					List<Long> nominatedPostIdsLsist = nominatedPostGovtOrderDAO.getExpiredNominatedPostIdsLsit(currentDate);
+					List<Long> applciationIdsList = null;
 					if(commonMethodsUtilService.isListOrSetValid(nominatedPostIdsLsist))
 					{
-						List<Long> applciationIdsList = nominatedPostFinalDAO.getNominatedPostApplicationIdsByPostIds(nominatedPostIdsLsist);
+						applciationIdsList = nominatedPostFinalDAO.getNominatedPostApplicationIdsByPostIds(nominatedPostIdsLsist);
 						if(commonMethodsUtilService.isListOrSetValid(applciationIdsList)){
 							count1 = nominatedPostFinalDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,userId,currentDate);
 							count2 = nominatedPostApplicationDAO.updateApplicationExpiredByApplns(applciationIdsList,userId,currentDate);
 						}
 						count3 = nominatedPostGovtOrderDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,currentDate,userId);
 						count4 = nominatedPostDAO.updatePoststoOpenByPostIds(nominatedPostIdsLsist,currentDate,userId);
+						LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  Total :"+count2+" Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
+						return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
 					}
+					LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  No Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
+					return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" No Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
 					
-					LOG.error ("Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ");	
-					return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
 				}
 			});
 			return status;
