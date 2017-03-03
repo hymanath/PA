@@ -19,7 +19,7 @@ public class MeetingDetailsInfoVO implements Serializable {
 	Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 	Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 	Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
-	Map<Long,Map<Long,Set<Long>>> totalSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
+	Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
 	
 	public Map<Long, Set<Long>> getTotalInviteesMap() { 
 		return totalInviteesMap;    
@@ -75,12 +75,13 @@ public class MeetingDetailsInfoVO implements Serializable {
 			Map<Long, Map<Long, Set<Long>>> totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap) {
 		this.totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap = totalMeetingWiseThenSessionWiseNonInviteeAttendenceMap;
 	}
-	public Map<Long, Map<Long, Set<Long>>> getTotalSessionWiseLateInviteeAttendenceMap() {
-		return totalSessionWiseLateInviteeAttendenceMap;
+	public Map<Long, Map<Long, Set<Long>>> getTotalMeetingWiseThenSessionWiseLateInviteeAttendenceMap() {
+		return totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap;
 	}
-	public void setTotalSessionWiseLateInviteeAttendenceMap(
-			Map<Long, Map<Long, Set<Long>>> totalSessionWiseLateInviteeAttendenceMap) {
-		this.totalSessionWiseLateInviteeAttendenceMap = totalSessionWiseLateInviteeAttendenceMap;
+	public void setTotalMeetingWiseThenSessionWiseLateInviteeAttendenceMap(
+			Map<Long, Map<Long, Set<Long>>> totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap) {
+		this.totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap = totalMeetingWiseThenSessionWiseLateInviteeAttendenceMap;
 	}
+	
 	
 }
