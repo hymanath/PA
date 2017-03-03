@@ -2953,6 +2953,7 @@
 		  <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
 		  <property name="activityMemberAccessTypeDAO" ref="activityMemberAccessTypeDAO" />
 		  <property name="cadreDetailsService" ref="cadreDetailsService" />
+		  <property name="enrollmentYearDAO" ref="enrollmentYearDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
