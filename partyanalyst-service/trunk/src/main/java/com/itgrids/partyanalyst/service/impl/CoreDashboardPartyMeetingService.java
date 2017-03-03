@@ -6551,12 +6551,29 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		return lvelWiseUpdationCountMap;
 	}
+	
 	/*
 	 * Swadhin Lenka
 	 * @see com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService#getMeetingDtls(java.lang.Long, java.util.List, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public MeetingDetailsInfoVO getMeetingDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){  
+	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){  
 		try{
+			
+			
+			Map<Long,Set<Long>> locationAccessLevelMap =  new HashMap<Long,Set<Long>>();
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				   Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				   if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				   }
+				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			   }
+		    } 
+			
+			
 			MeetingDetailsInfoVO detailsInfoVO = new MeetingDetailsInfoVO();
 			PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
 			inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
@@ -6865,5 +6882,43 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	/*
+	 * Swadhin Lenka
+	 */
+	public List<MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String state,String startDateString,String endDateString){
+		try{
+			List<MeetingDetailsInfoVO> meetingList = new ArrayList<MeetingDetailsInfoVO>();
+			List<Long> mainMeetingIdsList = partyMeetingDAO.getPartyMeetingIdList();
+			List<Object[]> meetingTypeIdsList = null;
+			if(mainMeetingIdsList != null && mainMeetingIdsList.size() > 0){
+				meetingTypeIdsList = partyMeetingTypeDAO.getPartyMeetingTypeIds(mainMeetingIdsList);
+			}
+			
+			Set<Long> meetingTypeIds = null;
+			Map<Long,Set<Long>> mainMeetingIdAndMeetingTypeIdListMap = new HashMap<Long,Set<Long>>();
+			if(meetingTypeIdsList != null && meetingTypeIdsList.size() > 0){
+				for(Object[] param : meetingTypeIdsList){
+					meetingTypeIds = mainMeetingIdAndMeetingTypeIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(meetingTypeIds == null){
+						meetingTypeIds = new HashSet<Long>();
+						mainMeetingIdAndMeetingTypeIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), meetingTypeIds);
+					}
+					meetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			if(mainMeetingIdAndMeetingTypeIdListMap != null && mainMeetingIdAndMeetingTypeIdListMap.size() > 0){
+				for(Entry<Long,Set<Long>> entry : mainMeetingIdAndMeetingTypeIdListMap.entrySet()){
+					MeetingDetailsInfoVO detailsInfoVO = getMeetingDtls(activityMemberId,entry.getKey(),new ArrayList<Long>(entry.getValue()),state,startDateString,endDateString);
+					meetingList.add(detailsInfoVO);
+				}
+			}
+			return meetingList;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured at getMeetingListDtls() in CoreDashboardPartyMeetingService {}",e);
+		}
+		return null;
 	}
 }
