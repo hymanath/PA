@@ -82,6 +82,7 @@ public interface IConstants {
 	public static final String USER = "USER";
 	public static final String EXTERNAL_PERSON = "EXTERNAL PERSON"; 
 	public static final String PRESENT_YEAR = "2010";	
+	public static final Long   JOB_SCHEDULER_USER_ID = 7951l;
 	
 	public final static String ZPTC_ELECTION_TYPE = "ZPTC";
 	public final static String MPTC_ELECTION_TYPE = "MPTC";
