@@ -965,7 +965,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				" count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position" +
 				" WHERE " +
-				" model.isDeleted = 'N' " );
+				" model.isDeleted = 'N'  and model.isExpired = 'N' " );
 		
 		if(boardLevelId !=null && boardLevelId>0){
 			//if(boardLevelId.longValue() != 5L)
