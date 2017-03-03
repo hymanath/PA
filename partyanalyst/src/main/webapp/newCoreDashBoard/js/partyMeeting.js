@@ -15,6 +15,7 @@ $(document).on("click",".meetingsRefresh",function(){
 		 }
 	 }
 	getPartyMeetingBasicCountDetails();
+	//getCustomPartyMeetingsMainTypeOverViewDataDetails();
 	getPartyMeetingsMainTypeStateLevelOverview();
 	getPartySpecialMeetingsMainTypeOverview(0); 
 });
@@ -49,6 +50,7 @@ function globalMeetingsCalls(type)
 	}
 	$("#dateRangeIdForMeetings").val(customStartDateMeetings+" - "+customEndDateMeetings);
 	getPartyMeetingBasicCountDetails();
+	//getCustomPartyMeetingsMainTypeOverViewDataDetails();
 	getPartySpecialMeetingsMainTypeOverview(0);
 	getPartyMeetingsMainTypeStateLevelOverview();
 	if($(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -110,6 +112,7 @@ function globalMeetingsCalls(type)
 	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings, .statelevelSessionMeeting").find('i').removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 	  $(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 	  getPartyMeetingBasicCountDetails();
+	  //getCustomPartyMeetingsMainTypeOverViewDataDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	  getPartySpecialMeetingsMainTypeOverview(0);
 	  getPartyMeetingsMainTypeStateLevelOverview();
@@ -128,6 +131,7 @@ function globalMeetingsCalls(type)
 	    if(isChecked){
 		$("#committeeMeetingErrorId").html(' ');	
 		getPartyMeetingBasicCountDetails();
+		//getCustomPartyMeetingsMainTypeOverViewDataDetails();
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 		$(".settingsDropDown").hide();
 		$("#committeeTypeDivId").hide(); 
@@ -152,6 +156,7 @@ function globalMeetingsCalls(type)
 				buildCommitteeTypes(result);
 			}
 			getPartyMeetingBasicCountDetails();
+			//getCustomPartyMeetingsMainTypeOverViewDataDetails();
 		});
 	}
  function buildCommitteeTypes(result){
@@ -191,7 +196,7 @@ $(document).on("click",".selectAll",function(){
 		  }
 	   });
 	    
-		var jsObj ={ 
+		var jsObj ={
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
 					 fromDate : customStartDateMeetings,
@@ -5469,4 +5474,161 @@ $(".specialMeetingBtnClsNew").each(function(){
 		$(this).attr("attr_endDate",moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY"));
 	}
 });	
+}
+function getCustomPartyMeetingsMainTypeOverViewDataDetails(){
+
+		var jsObj ={ partyMeetingMAinTypeId:4,
+		             activityMemberId : globalActivityMemberId,
+					 stateId : globalStateId,
+					 fromDate : '01/01/2017',
+					 toDate : '01/02/2018'
+				  }
+			$.ajax({
+				type : 'POST',
+				url : 'getCustomPartyMeetingsMainTypeOverViewDataDetailsAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildCustomPartyMeetingsMainTypeOverViewData(result);
+			 
+		});	
+	}
+function buildCustomPartyMeetingsMainTypeOverViewData(result){
+	var str='';
+	str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+	str+='<div class="panel panel-default panelNew">';
+		str+='<div class="panel-heading" role="tab" id="headingOne">';
+			str+='<a role="button" data-toggle="collapse" class="collapseDebatesIcon" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+				str+='<h4 class="panel-title"><span class="headingColor">'+result[0].name+'</span> <i class="glyphicon glyphicon-fullscreen"></i></h4>';
+			str+='</a>';
+		str+='</div>';
+		
+		str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
+			str+='<div class="panel-body">';
+				str+='<h4 class="panel-title"><span class="headingColor">'+result[0].subList1[0].name+'</span> <i class="glyphicon glyphicon-fullscreen"></i></h4>';
+				str+='<div class="bg_ED m_top20 pad_5">';
+					/*str+='<div class="row">';
+						str+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							str+='<h4>'+result[0].subList1[0].subList1.length+'</h4>';
+							str+='<p class="text-muted text-capital">total meetings</p>';
+						str+='</div>';
+						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+							str+='<h4>55</h4>';
+							str+='<p class="text-muted text-capital">invited</p>';
+						str+='</div>';
+					str+='</div>';*/
+					str+='<span class="headingColor">'+result[0].subList1[0].subList1[0].name+'</span> <i class="glyphicon glyphicon-fullscreen"></i>';
+					str+='<table class="table tableTraining bg_ED">';
+						str+='<tr>';
+							str+='<td>';
+								str+='<p>Planned</p>';
+								str+='<h4>1000</h4>';
+							str+='</td>';
+							str+='<td class="bg_D8">';
+								str+='<p>Conducted</p>';
+								str+='<h4>1000</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p>Not Conducted</p>';
+								str+='<h4>1000</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p>Images Covered</p>';
+								str+='<h4>1000</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p>Images</p>';
+								str+='<h4>1000</h4>';
+							str+='</td>';
+						str+='</tr>';
+						str+='<tr class="bg_D8">';
+							str+='<td>';
+								str+='<p>INVITED</p>';
+								str+='<h4>'+result[0].subList1[0].subList1[0].invitedCount+'</h4>';
+							str+='</td>';
+							str+='<td class="bg_D8">';
+								str+='<p>ATTENDED</p>';
+								str+='<h4>'+result[0].subList1[0].subList1[0].attendedCount+'</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p>LATE</p>';
+								str+='<h4>'+result[0].subList1[0].subList1[0].lateAttendedCnt+'</h4>';
+							str+='</td>';
+							 str+='<td>';
+								str+='<p>ABSENT</p>';
+								var absentCnt = parseInt(result[0].subList1[0].subList1[0].invitedCount) - parseInt(result[0].subList1[0].subList1[0].attendedCount);
+								str+='<h4>'+absentCnt+'</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p>NON-INVITEE</p>';
+								str+='<h4>'+result[0].subList1[0].subList1[0].nonInviteeCount+'</h4>';
+							str+='</td>';
+						str+='</tr>';
+ 					str+='</table>';
+					str+='<ul class="customMeetingsList m_top20">';
+						for(var i in result[0].subList1[0].subList1[0].subList1){
+							str+='<li>';
+							str+='<div class="panel panel-default panelNew">';
+								str+='<div class="panel-heading" role="tab" id="headingOne">';
+									str+='<h4 class="panel-title"><span class="headingColor">'+result[0].subList1[0].subList1[0].subList1[i].name+'</span> <i class="glyphicon glyphicon-fullscreen"></i></h4>';
+								str+='</div>';
+								str+='<div class="panel-body">';
+									str+='<table class="table tableTraining bg_ED" style="border:1px solid #333;border-radius:3px">';
+										str+='<tr>';
+											str+='<td>';
+												str+='<p>Planned</p>';
+												str+='<h4>1000</h4>';
+											str+='</td>';
+											str+='<td class="bg_D8">';
+												str+='<p>Conducted</p>';
+												str+='<h4>1000</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>Not Conducted</p>';
+												str+='<h4>1000</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>Images Covered</p>';
+												str+='<h4>1000</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>Images</p>';
+												str+='<h4>1000</h4>';
+											str+='</td>';
+										str+='</tr>';
+										str+='<tr class="bg_D8">';
+											str+='<td>';
+												str+='<p>INVITED</p>';
+												str+='<h4>'+result[0].subList1[0].subList1[0].subList1[i].invitedCount+'</h4>';
+											str+='</td>';
+											str+='<td class="bg_D8">';
+												str+='<p>ATTENDED</p>';
+												str+='<h4>'+result[0].subList1[0].subList1[0].subList1[i].attendedCount+'</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>LATE</p>';
+												str+='<h4>'+result[0].subList1[0].subList1[0].subList1[i].lateAttendedCnt+'</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>ABSENT</p>';
+												var absentCount = parseInt(result[0].subList1[0].subList1[0].subList1[i].invitedCount) - parseInt(result[0].subList1[0].subList1[0].subList1[i].attendedCount);
+												str+='<h4>'+absentCount+'</h4>';
+											str+='</td>';
+											str+='<td>';
+												str+='<p>NON-INVITEE</p>';
+												str+='<h4>'+result[0].subList1[0].subList1[0].subList1[i].nonInviteeCount+'</h4>';
+											str+='</td>';
+										str+='</tr>';
+									str+='</table>';
+								str+='</div>';
+							str+='</div>';
+						str+='</li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+str+='</div>';
+$("#customMeetingsDiv").html(str);
 }
