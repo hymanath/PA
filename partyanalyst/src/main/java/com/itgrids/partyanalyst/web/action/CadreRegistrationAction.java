@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -165,12 +166,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private List<MeetingDtlsVO> meetingDtlsVOs;
 	private List<IdNameVO> idNameVOs;
-	private MeetingDetailsInfoVO meetingDetailsInfoVO;
+	private Map<Long,MeetingDetailsInfoVO> meetingDetailsInfoVO;
 	
-	public MeetingDetailsInfoVO getMeetingDetailsInfoVO() {
+	
+	public Map<Long, MeetingDetailsInfoVO> getMeetingDetailsInfoVO() {
 		return meetingDetailsInfoVO;
 	}
-	public void setMeetingDetailsInfoVO(MeetingDetailsInfoVO meetingDetailsInfoVO) {
+	public void setMeetingDetailsInfoVO(
+			Map<Long, MeetingDetailsInfoVO> meetingDetailsInfoVO) {
 		this.meetingDetailsInfoVO = meetingDetailsInfoVO;
 	}
 	public List<IdNameVO> getIdNameVOs() {
@@ -3272,20 +3275,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 public String getMeetingDtls(){
 		try{
-			jobj = new JSONObject(getTask());
-			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
-			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
-			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
-			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
-				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
-					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
-				}
-			}
 			String state = jobj.getString("state");
 			String startDateString = jobj.getString("startDateString");
-			String endDateString   = jobj.getString("endDateString");
-			
-			meetingDetailsInfoVO = coreDashboardPartyMeetingService.getMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+			String endDateString   = jobj.getString("endDateString");    
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			meetingDetailsInfoVO = coreDashboardPartyMeetingService.getMeetingListDtls(activityMemberId,state,startDateString,endDateString);
 			
 	}catch(Exception e){
 		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
