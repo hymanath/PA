@@ -63,6 +63,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
+import com.itgrids.partyanalyst.dao.ISchedulersInfoDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -101,6 +102,7 @@ import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.model.NominatedPostGovtOrder;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
+import com.itgrids.partyanalyst.model.SchedulersInfo;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -168,7 +170,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IAlertAssignedDAO alertAssignedDAO;
 	private IAlertCandidateDAO alertCandidateDAO;
 	private ICadreDetailsService cadreDetailsService;
-	
+	private ISchedulersInfoDAO schedulersInfoDAO;
+	    
+	    
+	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
+		this.schedulersInfoDAO = schedulersInfoDAO;
+	}
 
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
@@ -8007,19 +8014,24 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	return returnList;
 }
 	public String UpdateExpiredAppicationsInNominatedPosts(final Long userId){
+		SchedulersInfo schedulersInfo = new SchedulersInfo();
 		try {
 			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 				return "failure";
 			
-			String status = (String) transactionTemplate.execute(new TransactionCallback() {
+			schedulersInfo.setName("UpdateExpiredAppicationsInNominatedPosts");
+			schedulersInfo.setSchedulerStartTime(dateUtilService.getCurrentDateAndTime());
+			
+			String schedulerStatus = (String) transactionTemplate.execute(new TransactionCallback() {
 				@Override
 				public Object doInTransaction(TransactionStatus arg0) {
 					int count1 =0;
 					int count2 =0;
 					int count3 =0;
 					int count4 =0;
-					//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+					
 					Date currentDate = dateUtilService.getCurrentDateAndTime();
+					//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 					/*try {
 						currentDate = sdf.parse("01/12/2001 11:12:12 ");
 					} catch (Exception e) {}*/
@@ -8036,18 +8048,33 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 						count3 = nominatedPostGovtOrderDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,currentDate,userId);
 						count4 = nominatedPostDAO.updatePoststoOpenByPostIds(nominatedPostIdsLsist,currentDate,userId);
 						LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  Total :"+count2+" Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
-						return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
+						return " Total :"+count4+" Posts Expired,  Total :"+count2+" Applciations Expired ,  Total : "+count3+" GO Orders  Expired ";
 					}
 					LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  No Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
-					return " Total :"+count4+" Posts Expired, \n  Total :"+count2+" No Applciations Expired , \n Total : "+count3+" GO Orders  Expired ";
+					return " Total :"+count4+" Posts Expired,  Total :"+count2+" No Applciations Expired , Total : "+count3+" GO Orders  Expired ";
 					
 				}
 			});
-			return status;
 			
+			if(schedulerStatus != null && !schedulerStatus.trim().isEmpty() && !schedulerStatus.trim().equalsIgnoreCase("success")){
+				if(!schedulerStatus.trim().equalsIgnoreCase("failure")){
+					schedulersInfo.setDescription(schedulerStatus);
+					schedulersInfo.setStatus("success");
+				}else
+					schedulersInfo.setStatus("failure");
+				
+				schedulersInfo.setUserId(IConstants.JOB_SCHEDULER_USER_ID);
+			}
+			schedulersInfo.setSchedulerEndTime(dateUtilService.getCurrentDateAndTime());
+			schedulersInfoDAO.save(schedulersInfo);
+			
+			return schedulerStatus;
 		} catch (Exception e) {
+			schedulersInfo.setStatus("failure :  "+e.getMessage());
 			LOG.error("Exception Occured in getPanchayatOrWardsByMandalOrMuncId() method, Exception - ",e);
 		}
+		schedulersInfo.setSchedulerEndTime(dateUtilService.getCurrentDateAndTime());
+		schedulersInfoDAO.save(schedulersInfo);
 		return "failure";
 	}
 	
