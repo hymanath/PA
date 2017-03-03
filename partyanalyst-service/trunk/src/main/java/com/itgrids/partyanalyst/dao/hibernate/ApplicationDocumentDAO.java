@@ -46,7 +46,8 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 		if(nominateCandId != null && nominateCandId.longValue()>0L)
 			searchType="Not Cadre";
 		
-		str.append(" select model.applicationDocumentId,model.filePath,date(model.insertedDate),model.nominatedPostApplication.nominatedPostApplicationId,model.nominationPostCandidate.nominationPostCandidateId from ApplicationDocument model  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+		str.append(" select model.applicationDocumentId,model.filePath,date(model.insertedDate),model.nominatedPostApplication.nominatedPostApplicationId,model.nominationPostCandidate.nominationPostCandidateId from ApplicationDocument model  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+				" and model.nominatedPostApplication.isExpired ='N' and model.nominatedPostApplication.isDeleted ='N' ");
 	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
 	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
 	        }
