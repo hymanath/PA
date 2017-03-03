@@ -15990,7 +15990,12 @@
 			<result type="json" name="success">		   
 				<param name="root">level</param>
 			</result>	
-		</action>
+		</action>		
+		<action name="updateExpiredAppicationsAction" class="nominatedPostProfileAction" method="updateExpiredAppications">
+			<result type="json" name="success">		   
+				<param name="root">sts</param>
+			</result>	
+		</action>	
 		<action name="getTdpCommitteeMandalCorporationsByConstituencyAction" class="cadreCommitteeAction" method="getTdpCommitteeMandalByConstituency">
 			<result type="json" name="success">		   
 				<param name="root">constituencies</param>
