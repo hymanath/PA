@@ -2508,4 +2508,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 query.setParameter("partyMeetingId", partyMeetingId);
 		 return (String)query.uniqueResult();
 	 }
+	 public List<Long> getPartyMeetingIdList(){
+		 Query query = getSession().createQuery(" select model.partyMeetingId from PartyMeeting model where model.partyMeetingId > 3");
+		 return query.list();
+	 }
  }
