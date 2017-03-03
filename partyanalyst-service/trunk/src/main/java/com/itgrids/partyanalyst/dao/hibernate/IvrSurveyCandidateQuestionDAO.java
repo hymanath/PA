@@ -15,19 +15,21 @@ public class IvrSurveyCandidateQuestionDAO extends GenericDaoHibernate<IvrSurvey
     	super(IvrSurveyCandidateQuestion.class);
     }
     
-	public Long getIvrSurveyCountByCandiate(Long candidateId){
+	public Long getIvrSurveyCountByCandiate(Long candidateId,Long cadreId){
 		Query query = getSession().createQuery(" select count(distinct model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId) from IvrSurveyCandidateQuestion model " +
-				" where model.candidate.candidateId = :candidateId " +
+				" where (model.candidate.candidateId = :candidateId OR model.tdpCadre.tdpCadreId = :cadreId)" +
 				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' ");
 		query.setParameter("candidateId", candidateId);
+		query.setParameter("cadreId", cadreId);
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Long> getIvrSurveyQuestionsByCandiate(Long candidateId){
+	public List<Long> getIvrSurveyQuestionsByCandiate(Long candidateId,Long cadreId){
 		Query query = getSession().createQuery(" select distinct model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId from IvrSurveyCandidateQuestion model " +
-				" where model.candidate.candidateId = :candidateId " +
+				" where (model.candidate.candidateId = :candidateId OR model.tdpCadre.tdpCadreId = :cadreId)" +
 				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'");
 		query.setParameter("candidateId", candidateId);
+		query.setParameter("cadreId", cadreId);
 		return  query.list();
 	}
 	
