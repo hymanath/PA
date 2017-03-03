@@ -15,8 +15,10 @@ public class CommitteeResultVO implements Serializable{
     private Long  occupiedCount;
     private Long tdpCommitteeId;
     private List<CommitteeResultVO>  subList;
+	private boolean isPresidentExist;
+	private boolean isGeneralSecreteryExist;
+    private boolean isTotalMembersExist;
 	
-
 	public Long getMinCount() {
 		return minCount;
 	}
@@ -98,5 +100,30 @@ public class CommitteeResultVO implements Serializable{
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
+
+	public boolean isPresidentExist() {
+		return isPresidentExist;
+	}
+
+	public void setPresidentExist(boolean isPresidentExist) {
+		this.isPresidentExist = isPresidentExist;
+	}
+
+	public boolean isGeneralSecreteryExist() {
+		return isGeneralSecreteryExist;
+	}
+
+	public void setGeneralSecreteryExist(boolean isGeneralSecreteryExist) {
+		this.isGeneralSecreteryExist = isGeneralSecreteryExist;
+	}
+
+	public boolean isTotalMembersExist() {
+		return isTotalMembersExist;
+	}
+
+	public void setTotalMembersExist(boolean isTotalMembersExist) {
+		this.isTotalMembersExist = isTotalMembersExist;
+	}
     	
+	
 }
