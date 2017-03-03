@@ -1369,7 +1369,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						  <!-- Nav tabs -->
 						  <ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#tabsurvey" aria-controls="tabsurvey" role="tab" data-toggle="tab">TAB SURVEY</a></li>
-							<li role="presentation"><a href="#ivrsurvey" aria-controls="ivrsurvey" role="tab" data-toggle="tab" onclick="getSurveysOnCandidateCount(); getCandidateParticipatedSurveyCnt();getIVRSurveysOnCandidateAreaCount();getIVRSurveysOnCandidateAreaDetails();">IVR SURVEY</a></li>
+							<li role="presentation"><a href="#ivrsurvey" aria-controls="ivrsurvey" role="tab" data-toggle="tab" onclick="getSurveysOnCandidateCount(); getCandidateParticipatedSurveyCnt();getIVRSurveysOnCandidateAreaCount();">IVR SURVEY</a></li>
 						  </ul>
 
 						  <!-- Tab panes -->
@@ -1388,7 +1388,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 							
 								<li style="padding:10px 15px;" onclick="getTypeWiseIvrDetailsOFCadre();">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiParticipatedId" >0</span></li>
 								<li style="padding:10px 15px;" onclick="getIVRSurveysOnCandidateDetails();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrSurveyOnCandiId" >0</span></li>
-								<li class="active li_arr" style="padding:10px 15px;" onclick="getIVRSurveysOnCandidateAreaDetails();">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId" >0</span></li>
+								<li style="padding:10px 15px;" onclick="getIVRSurveysOnCandidateAreaDetails();">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId" >0</span></li>
 								</ul>
 								</div>
 								<div id="ivrTypeDetailsDivId"></div>
