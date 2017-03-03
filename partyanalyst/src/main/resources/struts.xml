@@ -16011,5 +16011,10 @@
 				<param name="root">meetingDetailsInfoVO</param>  
 			</result>
 		</action>
+		<action name="getCustomPartyMeetingsMainTypeOverViewDataDetailsAction" class="coreDashboardAction" method="getCustomPartyMeetingsMainTypeOverViewDataDetails">
+			<result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
  </package>
 </struts>
