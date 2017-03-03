@@ -2427,12 +2427,15 @@ function populateFields(result){
   }
   function buildCandidateAppliedPostByCadreDetails(result,cadreId,candiId){
 	 var str = '';
+	 var applicationStatus = "applicationStatus";
+	 var goPassedStatus =  "goPassedStatus";
+	 var singleGoPassedStatus ="";
 	 if(result.subList.length > 0 || result.subList1.length > 0){
 		 $("#appliedPostForSelectedId").show();
 	 if(result.subList != null && result.subList.length > 0){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
                     str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);" id="appliedPostId">';
-                        	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE <i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for all application" onclick="getApplicationDocuments('+cadreId+','+candiId+',0,0);"></i></h4>';
+                        	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE <i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for all application" onclick="getApplicationDocuments('+cadreId+','+candiId+',0,0,\''+applicationStatus+'\');"></i><i class="glyphicon glyphicon-list-alt pull-right" style="cursor: pointer; right: 12px;color:#008000;" title="View documents for Go application" onclick="getApplicationDocuments('+cadreId+','+candiId+',0,0,\''+goPassedStatus+'\');"></i></h4>';
                            str+='<div class="row">';
                             str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
                                 	str+='<div class="panel panel-default panelPost">';
@@ -2454,12 +2457,20 @@ function populateFields(result){
 												else
 													str+='<p class="labelStatus " style="background:green;">'+result.subList[i].status+' </p>';
 												
-													str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+','+result.subList[i].applStatusId+');"></i>';
+													str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+','+result.subList[i].applStatusId+',\''+singleGoPassedStatus+'\');"></i>';
 													if(result.subList[i].levelName != null){
-														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</br>";
+												if(result.subList[i].status == "GO Passed" && result.subList[i].fromDate != null && result.subList[i].toDate != null){
+													     str+='<b>Duration : '+" <span style='color: #008000;'> "+result.subList[i].fromDate+"</span> <span style='color: #FFA500;'> to </span> <span style='color: #008000;'>"+result.subList[i].toDate+"</span></b>"; 
+													    }
+													 str+='</li>';
 													}else{
-														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
-													}
+														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</br>";
+												if(result.subList[i].status == "GO Passed" && result.subList[i].fromDate != null && result.subList[i].toDate != null){
+													     str+='<b>Duration : '+" <span style='color: #008000;'> "+result.subList[i].fromDate+"</span> <span style='color: #FFA500;'> to </span> <span style='color: #008000;'>"+result.subList[i].toDate+"</span></b>"; 
+													    }
+													 str+='</li>';
+													}			
 											}
                                            str+='</ul>';
                                         str+='</div>';
@@ -3147,7 +3158,7 @@ $(document).on("click",".searchTypeCls1",function(){
 		$("#searchById").attr("maxLength","10");
 });
 
-function getApplicationDocuments(cadreId,candiId,applicationId,statusId){
+function getApplicationDocuments(cadreId,candiId,applicationId,statusId,applicationType){
 
 	 var type = $("input[type='radio']:checked").val();
 	 //var cadreId = candiId>0?0:globalCadreId;
@@ -3156,7 +3167,8 @@ function getApplicationDocuments(cadreId,candiId,applicationId,statusId){
 				searchType:type,
 				nominateCandId:candiId,//3423
 				applicationId:applicationId,
-				statusId:statusId
+				statusId:statusId,
+				applicationType :applicationType
 		}
 		$.ajax({
 			type:"POST",
