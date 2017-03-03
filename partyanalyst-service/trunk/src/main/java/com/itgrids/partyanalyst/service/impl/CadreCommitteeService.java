@@ -4220,13 +4220,46 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					return resultVO;
 				}
 				
-				if(tdpCommitteeId != null && tdpCommitteeId.longValue() > 0l){
-					
-					resultVO = validateCommitteeRolesMinPositions(tdpCommitteeId);
-					if(resultVO != null){
-						if(resultVO.isErrorStatus()){
+				if(tdpCommitteeId != null && tdpCommitteeId.longValue() > 0l)
+				{	
+					if(levelId.longValue() == 6l || levelId.longValue() == 8l)////village/ward committees
+					{	
+						resultVO = new CommitteeResultVO();
+						
+						Long totalMembersCount = 0l;
+						List<Object[]> roleWiseMembersCountList = tdpCommitteeMemberDAO.getRoleWiseCommitteeMembersCount(tdpCommitteeId);
+						if(roleWiseMembersCountList != null && roleWiseMembersCountList.size() > 0)
+						{
+							for(Object[] obj : roleWiseMembersCountList)
+							{	
+								if(obj[0] != null)
+								{	
+									totalMembersCount = totalMembersCount + (Long)obj[2];
+									
+									if(((Long)obj[0]).longValue() == 1l)//president
+									{
+										if(((Long)obj[2]).longValue() >= 1l){
+											resultVO.setPresidentExist(true);
+										}
+									}
+                                    if(((Long)obj[0]).longValue() == 3l)//general secretery.
+                                    {
+                                    	if(((Long)obj[2]).longValue() >= 1l){
+											resultVO.setGeneralSecreteryExist(true);
+										}
+									}
+								}
+							}
+						}
+						
+						if(totalMembersCount.longValue() >= 14l){
+							resultVO.setTotalMembersExist(true);
+						}
+						
+						if(!resultVO.isPresidentExist() || !resultVO.isGeneralSecreteryExist() || !resultVO.isTotalMembersExist()){
+							resultVO.setTotalCount(totalMembersCount);
 							resultVO.setErrorCode(1l);
-							resultVO.setMessage("Committee Role Positions Counts Not Matched..");
+							resultVO.setMessage("Counts Are Not Matching..");
 							resultVO.setTdpCommitteeId(tdpCommitteeId);
 							return resultVO;
 						}else{
@@ -4241,9 +4274,34 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							resultVO.setMessage(" Entry Finished Successfully..");
 							resultVO.setTdpCommitteeId(tdpCommitteeId);
 							return resultVO;
+							
 						}
+						
+					}else{// Mandal/Town/Division committees
+						
+							resultVO = validateCommitteeRolesMinPositions(tdpCommitteeId);
+							if(resultVO != null){
+								if(resultVO.isErrorStatus()){
+									resultVO.setErrorCode(1l);
+									resultVO.setMessage("Committee Role Positions Counts Not Matched..");
+									resultVO.setTdpCommitteeId(tdpCommitteeId);
+									return resultVO;
+								}else{
+									
+									CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+									TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteeId);
+									tdpCommittee.setCompletedDate(dateUtilService.getCurrentDateAndTime());
+									tdpCommittee.setIsCommitteeConfirmed("Y");
+									tdpCommitteeDAO.save(tdpCommittee);
+									
+									resultVO.setErrorCode(2l);
+									resultVO.setMessage(" Entry Finished Successfully..");
+									resultVO.setTdpCommitteeId(tdpCommitteeId);
+									return resultVO;
+								}
+							}
+						
 					}
-					
 				}
 			
 		}
