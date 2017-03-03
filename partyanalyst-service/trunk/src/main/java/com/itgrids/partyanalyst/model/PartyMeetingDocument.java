@@ -40,7 +40,11 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private Long updatedById;
 	private String isDeleted;
 	private String documentName;
+	private Long partyMeetingSessionId;
+	private Long addressId;
 	
+	private PartyMeetingSession partyMeetingSession;
+	private UserAddress userAddres;  
 	public PartyMeetingDocument(){}
 
 	@Id
@@ -170,6 +174,44 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 
 	public void setDocumentName(String documentName) {
 		this.documentName = documentName;
+	}
+	@Column(name="party_meeting_session_id")
+	public Long getPartyMeetingSessionId() {
+		return partyMeetingSessionId;
+	}
+
+	public void setPartyMeetingSessionId(Long partyMeetingSessionId) {
+		this.partyMeetingSessionId = partyMeetingSessionId;
+	}
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_meeting_session_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingSession getPartyMeetingSession() {
+		return partyMeetingSession;
+	}
+	
+	public void setPartyMeetingSession(PartyMeetingSession partyMeetingSession) {
+		this.partyMeetingSession = partyMeetingSession;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddres() {
+		return userAddres;
+	}
+
+	public void setUserAddres(UserAddress userAddres) {
+		this.userAddres = userAddres;
 	}
 	
 	
