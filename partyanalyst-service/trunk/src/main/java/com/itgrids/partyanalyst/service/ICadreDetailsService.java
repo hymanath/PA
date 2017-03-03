@@ -154,4 +154,5 @@ public interface ICadreDetailsService {
 	public List<BenefitVO> getAllConstBenefitDetailsForADist(Long distId);
 	public Map<Long,CadreBasicPerformaceVO> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds);
 	public Map<Long,List<CadreStatsVO>> getElectionPerformanceDetailsForCadreLocations(List<Long> tdpCadreIds);
+	//public List<CadreStatsVO> getTotalMemberShipRegsInCadresLocations(List<Long> tdpCadreIds);
 }
