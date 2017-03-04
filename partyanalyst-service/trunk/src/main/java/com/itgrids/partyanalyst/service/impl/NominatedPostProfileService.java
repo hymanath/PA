@@ -8048,10 +8048,10 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 						count3 = nominatedPostGovtOrderDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,currentDate,userId);
 						count4 = nominatedPostDAO.updatePoststoOpenByPostIds(nominatedPostIdsLsist,currentDate,userId);
 						LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  Total :"+count2+" Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
-						return " Total :"+count4+" Posts Expired,  Total :"+count2+" Applciations Expired ,  Total : "+count3+" GO Orders  Expired ";
+						return "Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  Total :"+count2+" Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ";
 					}
 					LOG.error ("Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  No Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ");	
-					return " Total :"+count4+" Posts Expired,  Total :"+count2+" No Applciations Expired , Total : "+count3+" GO Orders  Expired ";
+					return "Total :"+count4+" Posts Expired ("+nominatedPostIdsLsist+"), \n  Total :"+count2+" Applciations Expired ("+applciationIdsList+") , \n Total : "+count3+" GO Orders  Expired ";
 					
 				}
 			});
