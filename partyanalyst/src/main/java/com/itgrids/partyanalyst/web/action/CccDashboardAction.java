@@ -1201,4 +1201,49 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			  
 			  return Action.SUCCESS;
 		}
+		
+		
+public String getDepartmentAndDistrictWiseAlertsCountsAlerts(){
+	try {
+		session = request.getSession();  
+		jObj = new JSONObject(getTask());
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long stateId = jObj.getLong("stateId");
+		Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+		Long levelId = jObj.getLong("levelId");
+		Long locId = jObj.getLong("locId");
+		Long statusId = jObj.getLong("statusId");
+		JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+		List<Long> paperIdList = new ArrayList<Long>();
+		if(paperIdArr !=null && paperIdArr.length()>0){
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+		}
+		JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+		List<Long> chanelIdList = new ArrayList<Long>();
+		if(chanelIdArr !=null && chanelIdArr.length()>0){
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+		}
+		String type = jObj.getString("type");
+		
+		int startIndex = jObj.getInt("stIndex");
+		int endIndex = jObj.getInt("endIndex");
+		
+		List<Long> govtDptIdList = new ArrayList<Long>(0);  
+		List<Long> regionScopeValues = new ArrayList<Long>(0);  
+		govtDptIdList.add(govtDepartmentId);
+		regionScopeValues.add(locId);
+		//String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long levelId,
+		//List<Long> regionScopeValues,String type,int startIndex,int endIndex
+		alertCoreDashBoardVOList = cccDashboardService.getDepartmentAndDistrictWiseAlertsCountsAlerts(fromDate, toDate, stateId,govtDptIdList,paperIdList, chanelIdList,levelId,regionScopeValues
+				,type,statusId,startIndex,endIndex);
+	} catch (Exception e) {
+		LOG.error("Exception Raised in getDepartmentAndDistrictWiseAlertsCountsAlerts() in CccDashboardAction",e);
+	}
+	return Action.SUCCESS;
+	}
 }

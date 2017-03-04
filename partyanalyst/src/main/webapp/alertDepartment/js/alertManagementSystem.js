@@ -2697,3 +2697,46 @@ function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
 	});
 	
 }
+getDepartmentAndDistrictWiseAlertsCountsAlerts();
+function getDepartmentAndDistrictWiseAlertsCountsAlerts()
+{
+	var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
+    var jsObj ={
+		/* fromDate:			currentFromDate,
+		toDate:				currentToDate,
+		stateId : 			globalStateId,
+		govtDepartmentId:	govtDepartmentId,					
+		levelId : 			levelId,
+		locId : 			locId,
+		statusId:	  		statusId,
+		paperIdArr : 		paperIdArr,
+		chanelIdArr : 		chanelIdArr,
+		type		:		type,
+		stIndex		:		stIndex,
+		endIndex	:		endIndex */
+		fromDate:			currentFromDate,
+		toDate:				currentToDate,
+		stateId : 			globalStateId,
+		govtDepartmentId:	8,					
+		levelId : 			3,
+		locId : 			19,
+		statusId:	  		3,
+		paperIdArr : 		["1","2","17","11","3","10","7","8","12","5"],
+		chanelIdArr : 		["1","2","3","4","5","6","7"],
+		type		:		"district",
+		stIndex		:		0,
+		endIndex	:		6
+		
+    }
+	$.ajax({
+		type : 'GET',
+		url : 'getDepartmentAndDistrictWiseAlertsCountsAlertsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		
+	});
+	
+}

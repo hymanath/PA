@@ -16016,5 +16016,11 @@
 				<param name="root">partyMeetingDataVOList</param>
 			</result>
 		</action>
+		<action name="getDepartmentAndDistrictWiseAlertsCountsAlertsAction" class="cccDashboardAction" method="getDepartmentAndDistrictWiseAlertsCountsAlerts">
+			<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOList</param>  
+			</result>
+		</action>
+		
  </package>
 </struts>
