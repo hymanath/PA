@@ -1177,6 +1177,9 @@ function assignedOfficersDetailsForAlert()
 }
 function buildAssignedOfficersDetailsForAlert(result)
 {
+	$("#assignedOfficersId").html('');
+	$("#assignedOfcrCountId").html('');
+	
 	var str='';
 	$("#assignedOfcrCountId").html('<span>assigned officers - '+result.length+' ');
 	str+='<ul class="assignedOfficersUl">';
@@ -2740,3 +2743,40 @@ function getDepartmentAndDistrictWiseAlertsCountsAlerts()
 	});
 	
 }
+
+$(document).on('change','#designationsId', function(evt, params) {
+	var designationId = $("#designationsId option:selected").text();
+	var departmentval = $("#departmentsId option:selected").text();
+	
+	$("#assignedOfficersId").html('');
+	$("#assignedOfcrCountId").html('');
+	var str='';
+	str+='<ul class="assignedOfficersUl">';
+		
+		str+='<li>';
+			str+='<span class="glyphicon glyphicon-remove pull-right removeSelectedDepartment" style="margin-top: -7px; margin-right: -6px; background: #ddd; padding: 1px;cursor:pointer;"></span>';
+			str+='<div class="media">';
+				/*str+='<div class="media-left">';
+					str+='<img src="" alt="" class="media-object"/>';
+				str+='</div>';*/
+				str+='<div class="media-body">';
+					//str+='<p><b>'+result[i].name+'</b></p>';
+					str+='<p><b><i>'+departmentval+'</i></b></p>';
+					//str+='<p>'+result[i].mobileNo+'</p>';
+					str+='<p>'+designationId+'</p>';
+				str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	
+	str+='</ul>';
+	$("#assignedOfficersId").html(str);
+		$(".assignedOfficersUl").each(function(){
+			var countlength = $(this).find("li").length;
+			alert(countlength)
+			$("#assignedOfcrCountId").html('<span>assigned officers - '+countlength+'</span> ');
+		});
+	//officersByDesignationAndLevel(designationId)
+});
+$(document).on('click','.removeSelectedDepartment', function() {
+	$("#assignedOfficersId").html('');
+});
