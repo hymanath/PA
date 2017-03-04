@@ -3771,5 +3771,8 @@
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
+     <bean id="schedulersInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SchedulersInfoDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     
 </beans>		
