@@ -3177,12 +3177,12 @@ function getApplicationDocuments(cadreId,candiId,applicationId,statusId,applicat
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   //if(result !=null && result.length > 0){
-			  buildUploadedDocuments(result,statusId);
+			  buildUploadedDocuments(result,statusId,applicationType);
 		   //}   
    });	
   }
   
-  function buildUploadedDocuments(result,statusId){
+  function buildUploadedDocuments(result,statusId,applicationType){
   $("#applicationDocsModelId").modal("show");
   if(result !=null && result.length > 0){
   $('#uploadedDopcumentsDivId').html(' ');
@@ -3196,9 +3196,9 @@ function getApplicationDocuments(cadreId,candiId,applicationId,statusId,applicat
 								//buildStr+='<div class="" style="width: 800px;">';
 								var indexOdfDot = result[i].imagePathStr.indexOf(".");
 								var fileExt = result[i].imagePathStr.substring(indexOdfDot+1,result[i].imagePathStr.length);
-								if(statusId == 9 || statusId == 7 || statusId == 0){
+								if((statusId == 9 || statusId == 7 || statusId == 0 ) && (applicationType == "goPassedStatus" || applicationType == "")){
 									buildStr += '<iframe src="https://mytdp.com/GO_documents/'+result[i].imagePathStr+'"   height="800" width="1000px">'; 
-								}else if(statusId == 1 || statusId == 2 || statusId == 0 || statusId == 3 || statusId == 4 || statusId == 0 || statusId == 5 || statusId == 6 || statusId == 8){
+								}else if((statusId == 1 || statusId == 2 || statusId == 3 || statusId == 4 || statusId == 0 || statusId == 5 || statusId == 6 || statusId == 8) && (applicationType == "applicationStatus" || applicationType == "")){
 									buildStr += '<iframe src="https://mytdp.com/nominated_post_documents/'+result[i].imagePathStr+'"   height="800" width="1000px">'; 
 								}
 								buildStr += '</iframe>';
