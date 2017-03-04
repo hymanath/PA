@@ -3330,6 +3330,8 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
         var meetingStatus = $(this).attr("attr_meeting_status");
 	    var meetingLevel = $(this).attr("attr_level_type");
 		var isComment = $(this).attr("attr_comment");
+	    var reportTypeId = $("#commentFilterSelectBoxId").val();
+	    var reportType;
 	
 	 if(reportTypeId == 0){
 		reportType = "District"; 
