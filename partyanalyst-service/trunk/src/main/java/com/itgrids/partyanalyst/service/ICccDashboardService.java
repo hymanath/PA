@@ -70,4 +70,6 @@ public interface ICccDashboardService {
 	public Long getRegionScopeIdBylevel(Long levelId);
 	public List<IdAndNameVO> getChannelListForUser(Long userId);
 	public String getDesignationForUser(Long userId);
+	public List<AlertCoreDashBoardVO> getDepartmentAndDistrictWiseAlertsCountsAlerts(String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long levelId,
+			List<Long> regionScopeValues,String type,Long statusId,int startIndex,int endIndex);
 } 
