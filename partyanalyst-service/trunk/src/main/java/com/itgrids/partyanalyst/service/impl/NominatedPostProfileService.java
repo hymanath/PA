@@ -7828,7 +7828,7 @@ public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,Lis
 public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId,Long statusId,String applicationType){
 	List<IdAndNameVO> retrurnList = new ArrayList<IdAndNameVO>();
 	try{
-		if(statusId != null && (applicationType.equalsIgnoreCase("goPassedStatus") || applicationType.equalsIgnoreCase(" ") ) && (statusId.longValue() == 0l || statusId.longValue() == 7l || statusId.longValue() == 9l)){
+		if(statusId != null && (applicationType.equalsIgnoreCase("goPassedStatus") || applicationType.equalsIgnoreCase("") ) && (statusId.longValue() == 0l || statusId.longValue() == 7l || statusId.longValue() == 9l)){
 			List<Long> postIds = nominatedPostFinalDAO.getNominatedPostIds(nominateCandId,applicationId,statusId);
 			if(postIds != null && postIds.size() >0){
 			List<Object[]> goDocuments = govtOrderDocumentsDAO.getGoPassedDocuments(postIds);
