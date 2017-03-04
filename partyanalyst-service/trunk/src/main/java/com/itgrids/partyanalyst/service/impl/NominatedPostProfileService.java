@@ -8082,6 +8082,59 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		Map<Long,List<CadreEventsVO>> finalMap = new HashMap<Long, List<CadreEventsVO>>(0);
 		try {
 			
+			
+			if(commonMethodsUtilService.isListOrSetValid(cadreIds)){
+				for (Long id : cadreIds) {
+					List<CadreEventsVO> tempList2 = new ArrayList<CadreEventsVO>();
+					CadreEventsVO voIn2 = new CadreEventsVO();
+					voIn2.setId(7L);
+					voIn2.setName("Mahanadu - 2015");
+					voIn2.setInvitedCount(0l);
+					voIn2.setAttendedCount(0l);
+					tempList2.add(voIn2);
+					
+					//finalMap.put(id,tempList2);
+					
+					CadreEventsVO voIn1 = new CadreEventsVO();
+					voIn1.setId(30L);
+					voIn1.setName("Mahanadu - 2016");
+					voIn1.setInvitedCount(0l);
+					voIn1.setAttendedCount(0l);
+					tempList2.add(voIn1);
+					
+					//finalMap.put(id,tempList2);
+					
+					CadreEventsVO voIn = new CadreEventsVO();
+					voIn.setName("Training");
+					voIn.setInvitedCount(0L);
+					voIn.setAttendedCount(0L);
+					tempList2.add(voIn);
+					
+					//finalMap.put(id,tempList2);
+					
+					
+
+					CadreEventsVO vo = new CadreEventsVO();
+					vo.setName("PartyMeetings");
+					vo.setInvitedCount(0L);
+					vo.setAttendedCount(0L);
+					tempList2.add(vo);
+					
+					//finalMap.put(id,tempList2);
+					
+					CadreEventsVO vo1 = new CadreEventsVO();
+					vo1.setName("Alert");
+					vo1.setInvitedCount(0L);
+					vo1.setAttendedCount(0L);
+					tempList2.add(vo1);
+					
+					finalMap.put(id,tempList2);
+					
+				}
+			}
+			
+			
+			
 			if(cadreIds != null && cadreIds.size() > 0){
 				//get mahanadu invitee and attendence details
 				//0-eventId,1-cadreId
@@ -8089,8 +8142,11 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				
 				if(objList != null && objList.size() > 0){
 					for (Object[] objects : objList) {
-						List<CadreEventsVO> tempList = new ArrayList<CadreEventsVO>();
-						CadreEventsVO voIn = new CadreEventsVO();
+						CadreEventsVO voIn = getMatchedEventVO((Long)objects[0],finalMap.get((Long)objects[1]));
+						if(voIn != null)
+							voIn.setInvitedCount(1l);
+						
+						/*CadreEventsVO voIn = new CadreEventsVO();
 						voIn.setId((Long)objects[0]);
 						if((Long)objects[0] == 7l){//2015 mahanadu
 							voIn.setName("Mahanadu - 2015");
@@ -8099,7 +8155,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 						}
 						voIn.setInvitedCount(1l);
 						tempList.add(voIn);
-						finalMap.put((Long)objects[1],tempList);						
+						finalMap.put((Long)objects[1],tempList);	*/					
 					}
 				}
 				
@@ -8197,7 +8253,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 			CadreEventsVO voIn = new CadreEventsVO();
 			voIn.setName(type);
 			voIn.setInvitedCount((Long)objects[1]);
-			finalMap.get((Long)objects[0]).add(voIn);
+			//finalMap.get((Long)objects[0]).add(voIn);
 			}
 		}
 	}
@@ -8211,7 +8267,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				voIn.setName(type);
 				voIn.setAttendedCount((Long)objects[1]);
 				tempList.add(voIn);
-				finalMap.put((Long)objects[0], tempList);
+				//finalMap.put((Long)objects[0], tempList);
 			}
 			else{
 				CadreEventsVO matchedEventVO = getMatchedEventVO(finalMap.get((Long)objects[0]),type);
@@ -8219,7 +8275,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					matchedEventVO = new CadreEventsVO();
 					matchedEventVO.setName(type);
 					matchedEventVO.setAttendedCount((Long)objects[1]);
-					finalMap.get((Long)objects[0]).add(matchedEventVO);
+					//finalMap.get((Long)objects[0]).add(matchedEventVO);
 				}else{
 					matchedEventVO.setAttendedCount((Long)objects[1]);
 				}
@@ -8242,15 +8298,18 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					}
 					
 					Map<Long,List<CadreStatsVO>> cadreElectionMap = cadreDetailsService.getElectionPerformanceDetailsForCadreLocations(tdpCadreIdsList);
+					Map<Long,List<CadreStatsVO>> cadreMemberShipMap = cadreDetailsService.getTotalMemberShipRegsInCadresLocations(tdpCadreIdsList);
 					if(commonMethodsUtilService.isMapValid(cadreElectionMap)){
 						for (Long cadreid : cadreElectionMap.keySet()) {
 							CadrePerformanceVO vo = cadresMap.get(cadreid);
 							
 							CadreStatsVO electionVO = new CadreStatsVO();
 							electionVO.getSubList().addAll(cadreElectionMap.get(cadreid));
+							electionVO.getSubList().addAll(cadreMemberShipMap.get(cadreid));
 							vo.setCadreStatsVO(electionVO);
 						}
 					}
+					
 					Map<Long, List<CadreEventsVO>> eventsMap =  getCadresEventsSummary(tdpCadreIdsList);
 					if(commonMethodsUtilService.isMapValid(eventsMap)){
 						for (Long cadreId : eventsMap.keySet()) {
