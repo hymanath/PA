@@ -444,7 +444,22 @@
 	  </div>
 	</div>
 	<!-- TOtal Alerts Modal End-->
-	
+	<!-- modal  For Article -->
+	<div class="modal fade" id="myModalShowNew" style="z-index:9999">
+		<div class="modal-dialog" role="document" style="width:80%">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close closeArticlePopup" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div id="linkedDocHeader"></div>
+				</div>
+				<div class="modal-body">
+					<div id="linkedDocBody"></div>
+				</div>
+			</div>
+		</div>
+				
+	</div>	
+
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
