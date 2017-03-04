@@ -2772,11 +2772,11 @@ $(document).on('change','#designationsId', function(evt, params) {
 	$("#assignedOfficersId").html(str);
 		$(".assignedOfficersUl").each(function(){
 			var countlength = $(this).find("li").length;
-			alert(countlength)
 			$("#assignedOfcrCountId").html('<span>assigned officers - '+countlength+'</span> ');
 		});
 	//officersByDesignationAndLevel(designationId)
 });
 $(document).on('click','.removeSelectedDepartment', function() {
 	$("#assignedOfficersId").html('');
+	$("#assignedOfcrCountId").html('<span>assigned officers - 0</span> ');
 });
