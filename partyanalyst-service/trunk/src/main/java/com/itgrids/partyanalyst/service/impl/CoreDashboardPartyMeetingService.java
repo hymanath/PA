@@ -6832,8 +6832,10 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	/*
 	 * Swadhin Lenka
 	 */
-	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,Long state,String startDateString,String endDateString){
+	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String stateStr,String startDateString,String endDateString){
 		try{
+			Long state = Long.valueOf(stateStr);
+			
 			Map<Long,MeetingDetailsInfoVO> meetingMap = new HashMap<Long,MeetingDetailsInfoVO>();
 			List<Long> mainMeetingIdsList = partyMeetingDAO.getPartyMeetingIdList();
 			List<Object[]> meetingTypeIdsList = null;
@@ -6887,7 +6889,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 		List<Object[]> customMeetingList = partyMeetingDAO.getCustomPartyMeetingsMainTypeOverViewData(fromDate, toDate);
 	 		if(customMeetingList != null && customMeetingList.size() > 0){
 	 			//Result of counts
-	 			Map<Long,MeetingDetailsInfoVO> countResultMap = getMeetingListDtls(activityMemberId,state,startDateString,endDateString);
+	 			Map<Long,MeetingDetailsInfoVO> countResultMap = getMeetingListDtls(activityMemberId,state.toString(),startDateString,endDateString);
 	 				
 	 			for (Object[] objects : customMeetingList) {
 	 				if(tempMap.get((Long)objects[0]) == null){
