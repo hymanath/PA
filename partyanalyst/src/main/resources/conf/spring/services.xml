@@ -1754,6 +1754,16 @@
 	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByCasteStateByLowLevel"/> 
 	</bean>
 	
+		
+	<bean name="UpdateExpirdAppicationsInNominatedPosts" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="UpdateExpiredAppicationsInNominatdPosts" />
+    	<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>	
+	<bean name="UpdateExpiredAppicationsInNominatdPosts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="UpdateExpiredAppicationsInNominatedPosts" /> 
+	</bean>	
+	
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1806,6 +1816,7 @@
 		   <!--  <ref bean="pushAgeWiseTdpCadreCountsByLowLevel"/> 
 		    <ref bean="pushGenderWiseTdpCadreCountsByLowLevel"/>
 		    <ref bean="pushCasteStateWiseTdpCadreCountsByLowLevel"/> -->
+			<ref bean="UpdateExpirdAppicationsInNominatedPosts" />
         </list>
     	</property>
 	</bean>
@@ -3631,6 +3642,7 @@
 		<property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO"></property>
 		<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
 		<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
+		<property name="schedulersInfoDAO" ref="schedulersInfoDAO"/>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
