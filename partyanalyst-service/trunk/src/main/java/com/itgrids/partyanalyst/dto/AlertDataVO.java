@@ -50,6 +50,8 @@ public class AlertDataVO {
 	private String verificationStatus;
 	private String designation="";
 	
+	private String department;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -284,6 +286,12 @@ public class AlertDataVO {
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 	
 }

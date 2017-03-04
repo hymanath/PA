@@ -54,6 +54,7 @@ public class AlertVO {
 	private String severityStr;
 	private String assignedDate;
 	
+	
 	private List<Long> deptIdList = new ArrayList<Long>();
 	
 	public Long getConstituencyNo() {
@@ -334,6 +335,5 @@ public class AlertVO {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	
 	
 }

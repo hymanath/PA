@@ -215,6 +215,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				  " model.alertCategory.category," + //27-28
 				  " model.imageUrl, " +
 				  " model.alertCategoryTypeId ");//29-30
+		str.append(",govtDepartment.departmentName ");
+		
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
@@ -227,7 +229,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.alertSource alertSource ");
 		str.append(" left join model.alertSeverity alertSeverity ");
 		str.append(" left join model.alertStatus alertStatus" +
-					" left join model.alertImpactScope alertImpactScope ");
+					" left join model.alertImpactScope alertImpactScope " +
+					" left join model.govtDepartment govtDepartment ");
 		str.append(" where model.isDeleted ='N' and model.alertId=:alertId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("alertId", alertId);

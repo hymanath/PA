@@ -1095,6 +1095,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setCategory(params[28] != null ? params[28].toString() : "");
 					 alertVO.setImageUrl(params[29] != null ? params[29].toString() : "");
 					 alertVO.setAlertCategoryTypeId(params[30] != null ? (Long)params[30] : null);
+					 alertVO.setDepartment(params[31] != null ? params[31].toString() : null);
 					 
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
