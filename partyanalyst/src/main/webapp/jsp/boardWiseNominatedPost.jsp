@@ -342,7 +342,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	var str='';
 	
 	if(result.subList != null && result.subList.length > 0){
-		//str+='<div class="pull-right"> <button class="btn btn-xs btn-mini btn-success"  onclick="getCadreDetailsReport()"> Detailed Report </button></div>'
+		str+='<div class="pull-right"> <button class="btn btn-xs btn-mini btn-success"  onclick="getCadreDetailsReport()"> Detailed Report </button></div>'
 		str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead style="background-color:#f8f8f8" class="text-capital">';
 			str+='<th>Name</th>';
@@ -1348,13 +1348,14 @@ function tableResponsive()
 	   window.location.reload();
    }
    
-   
+   </script>
+   <script>
 	
 function getCadreDetailsReport(){
 	$("#detailedDiv1").html("");
 	$('#detailedReprot').modal('show');
+	$('#detailedDiv1').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset" src="images/search.gif">');
 	var tdpCadreIdsArr  = [];
-	tdpCadreIdsArr.push(5161592);
 	
 	var jsObj={
 		tdpCadreIds:globalCadreIds	
@@ -1385,29 +1386,32 @@ function buildCadreDetailedReport(result){
 			
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="2" > SNO </th>';
+			//str+='<th rowspan="2" > SNO </th>';
 			str+='<th rowspan="2"> PHOTO </th>';
 			str+='<th rowspan="2"> NAME  </th>';
 			str+='<th rowspan="2"> DISTRICT  </th>';
 			str+='<th rowspan="2"> CONSTITUENCY  </th>';
-			str+='<th rowspan="2"> PARTY DESIGNATION  </th>';
-			str+='<th rowspan="2"> GOVT DESIGNATION  </th>';
+			//str+='<th rowspan="2"> PARTY DESIGNATION  </th>';
+			//str+='<th rowspan="2"> GOVT DESIGNATION  </th>';
 			str+='<th rowspan="2"> CELL NO  </th>';
 			str+='<th rowspan="2"> MEMBERSHIP NO  </th>';
 			str+='<th rowspan="2"> CASTE NAME  </th>';
 			str+='<th rowspan="2"> SUB CASTE NAME  </th>';
 			str+='<th colspan="4"> MEMBERSHIP </th>';
-			str+='<th colspan="6"> 2009 Election Performance </th>';
+			//str+='<th colspan="6"> 2009 Election Performance </th>';
 			str+='<th colspan="6"> 2014 Election Performance </th>';
-			str+='<th rowspan="2"> 2014 Membership Enrollment </th>';
-			//str+='<th rowspan="2"> 2009 Membership Enrollment </th>';
-			str+='<th colspan="5"> 2016 Membership Enrollment </th>';
+			str+='<th colspan="6"> 2014 Membership Enrollment </th>';
+			str+='<th colspan="6"> 2016 Membership Enrollment </th>';
+			//str+='<th colspan="5"> 2016 Membership Enrollment </th>';
+			
 			 str+='<th rowspan="2"> 2015 Mahanadu Attendance </th>';
 			str+='<th rowspan="2"> 2016 Mahanadu Attendance </th>';
+			
 			str+='<th rowspan="2"> Training Attendance </th>';
 			str+='<th rowspan="2"> Invited Party Meetings </th>';
 			str+='<th rowspan="2"> Attended Party Meetings </th>';
-			str+='<th rowspan="2"> Involved Alerts </th>';
+			//str+='<th rowspan="2"> Involved Alerts </th>';
+			
 			str+='</tr>';
 			str+='<tr>';
 			str+='<th> 2010  </th>';
@@ -1420,6 +1424,14 @@ function buildCadreDetailedReport(result){
 			str+='<th> Own Booth%  </th>';
 			str+='<th> Own Parliament%  </th>';
 			str+='<th> Booth Influence%  </th>';
+			
+			str+='<th> Constituency%  </th>';
+			str+='<th> Own Mandal/Own Muncipality%  </th>';
+			str+='<th> Own Panchayat/Own Ward%  </th>';
+			str+='<th> Own Booth%  </th>';
+			str+='<th> Own Parliament%  </th>';
+			str+='<th> Booth Influence%  </th>';
+			
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
@@ -1432,27 +1444,23 @@ function buildCadreDetailedReport(result){
 			str+='<tbody>';
 			for(var i in result.subList){
 				str+='<tr>';
-					str+='<td>'+(parseInt(i)+1)+'</td>';
+					//str+='<td>'+(parseInt(i)+1)+'</td>';
 					str+='<td> <img style="width:50px;height:50px;" src="https://www.mytdp.com/images/cadre_images/'+result.subList[i].cadreBasicPerformaceVO.imagePath+'"/></td>';
 					str+='<td>'+result.subList[i].cadreBasicPerformaceVO.name+'</td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.districtName+' </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.constituencyName+' </td>';
+					//str+='<td> - </td>';
+					//str+='<td> - </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.mobileNO+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.membershipNo+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteGroup+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteName+' </td>';
+					
 					if(result.subList[i].cadreBasicPerformaceVO.subList != null && result.subList[i].cadreBasicPerformaceVO.subList.length>0){
 						for(var j in result.subList[i].cadreBasicPerformaceVO.subList){
 							str+='<td> '+result.subList[i].cadreBasicPerformaceVO.subList[j].status+' </td>';
 						}
 					}
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
 					if(result.subList[i].cadreStatsVO != null && result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
 						for(var j in result.subList[i].cadreStatsVO.subList){
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
@@ -1463,6 +1471,7 @@ function buildCadreDetailedReport(result){
 							str+='<td> - </td>';
 						}
 					}
+					
 					if(result.subList[i].cadreEventsVO != null && result.subList[i].cadreEventsVO.subList != null && result.subList[i].cadreEventsVO.subList.length>0){
 						for(var j in result.subList[i].cadreEventsVO.subList){
 							if(result.subList[i].cadreEventsVO.subList[j].name =='PartyMeetings' || result.subList[i].cadreEventsVO.subList[j].name =='Alert'){
@@ -1479,6 +1488,7 @@ function buildCadreDetailedReport(result){
 							}
 						}
 					}
+					
 				str+='</tr>';
 			}
 			str+='</tbody>';
