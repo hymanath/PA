@@ -12151,17 +12151,9 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 		try {
 			//0-tdpCadreId,1-firstName,2-membershipId,3-image,4-mobileNo,5-TC.casteStateId,6-enrollmentYearId,7-year
 			//8-insertedDate,9-casteName,10-categoryName
-			List<CadreBasicPerformaceVO> yearsList = new ArrayList<CadreBasicPerformaceVO>(); 
+			
 			List<EnrollmentYear> registeredYrs = enrollmentYearDAO.getAll();
-			if(commonMethodsUtilService.isListOrSetValid(registeredYrs)){
-				for(EnrollmentYear year :registeredYrs){
-					CadreBasicPerformaceVO vo = new CadreBasicPerformaceVO();
-					vo.setId(year.getEnrollmentYearId());
-					vo.setYear(year.getYear());
-					vo.setStatus("NO");
-					yearsList.add(vo);
-				}
-			}
+			
 			List<Object[]> cadreCasteList = tdpCadreDAO.getCadreCasteDetailsByTdpCadreIds(tdpCadreIds);
 			if(cadreCasteList != null && cadreCasteList.size() > 0){
 				for (Object[] objects : cadreCasteList) {
@@ -12185,13 +12177,26 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 						
 						vo.setCasteName(commonMethodsUtilService.getStringValueForObject(objects[9]));
 						vo.setCasteGroup(commonMethodsUtilService.getStringValueForObject(objects[10]));
+						
+						List<CadreBasicPerformaceVO> yearsList = new ArrayList<CadreBasicPerformaceVO>();
+						if(commonMethodsUtilService.isListOrSetValid(registeredYrs)){
+							for(EnrollmentYear year :registeredYrs){
+								CadreBasicPerformaceVO vo6 = new CadreBasicPerformaceVO();
+								vo6.setId(year.getEnrollmentYearId());
+								vo6.setYear(year.getYear());
+								vo6.setStatus("NO");
+								yearsList.add(vo6);
+							}
+						}
+						
 						vo.getSubList().addAll(yearsList);
 						CadreBasicPerformaceVO subVo = getMatchedVOForEnrollmentYrId(vo.getSubList(),commonMethodsUtilService.getLongValueForObject(objects[6]));
 						if(subVo != null){
 							subVo.setRegDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
 							subVo.setStatus("YES");
 						}
-							
+						vo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[11]));
+						vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[12]));
 						returnMap.put((Long)objects[0], vo);
 					}
 				}
@@ -12285,11 +12290,11 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 									yrsWiseList.add(cadreStatsVO);
 								}
 								
-								countVO = setElectionPerformanceDetailsForCadreLocation(2009l, locatiosVo, partyIds,null);
+								/*countVO = setElectionPerformanceDetailsForCadreLocation(2009l, locatiosVo, partyIds,null);
 								if(countVO != null){
 									CadreStatsVO cadreStatsVO = setDataToVO(countVO,"2009");
 									yrsWiseList.add(cadreStatsVO);
-								}
+								}*/
 								
 							}
 						}
@@ -12322,7 +12327,7 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 		return cadreStatsVO;
 	}
 	
-/*public List<CadreStatsVO> getTotalMemberShipRegsInCadresLocations(List<Long> tdpCadreIds){
+public Map<Long,List<CadreStatsVO>> getTotalMemberShipRegsInCadresLocations(List<Long> tdpCadreIds){
 		
 		Map<Long,List<CadreStatsVO>> tdpCadresMap = new HashMap<Long,List<CadreStatsVO>>();
 		List<CadreStatsVO> list = new ArrayList<CadreStatsVO>();
@@ -12349,7 +12354,7 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 			}
 			
 			
-			if(commonMethodsUtilService.isMapValid(tdpCadresMap)){
+			/*if(commonMethodsUtilService.isMapValid(tdpCadresMap)){
 				for(Map.Entry<Long, List<CadreStatsVO>> entry : tdpCadresMap.entrySet()){
 					Long tdpCadreId = entry.getKey();
 					CadreStatsVO vo = new CadreStatsVO();
@@ -12357,12 +12362,12 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 					vo.setSubList(entry.getValue());
 					list.add(vo);
 				}
-			}
+			}*/
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getTotalMemberShipRegsInCadresLocations() Method, Exception is - ",e);
 		}
-		return list;
+		return tdpCadresMap;
 	}
 
 public RegisteredMembershipCountVO getMembershipDetails(Long tdpCadreId,Long yearId,Long publicationId,Long bootthId){
@@ -12558,7 +12563,7 @@ public RegisteredMembershipCountVO getMembershipDetails(Long tdpCadreId,Long yea
 		
 	}
 	return countVO;
-}*/
+}
 public RegisteredMembershipCountVO setElectionPerformanceDetailsForCadreLocation(Long year,LocationsVO locationsVO,List<Long> partyIds,Long boothId_2014)
 {
 	RegisteredMembershipCountVO countVO = new RegisteredMembershipCountVO();

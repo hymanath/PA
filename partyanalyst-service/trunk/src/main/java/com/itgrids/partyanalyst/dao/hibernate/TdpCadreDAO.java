@@ -9475,18 +9475,25 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			queryStr.append(" select tc1.tdp_cadre_id as tdp_cadre_id,tc.first_name as first_name ,tc.membership_id as membership_id," +
 					" tc.image as image,tc.mobile_no as mobile_no ,tc.caste_state_id as caste_state_id ,ey.enrollment_year_id as enrollment_year_id ," +
 					" ey.year as year  ,date(tc1.inserted_date) as inserted_date," +
-					" c.caste_name as caste_name ,cc.category_name as category_name ");
+					" c.caste_name as caste_name ,cc.category_name as category_name ,d.district_name as district_name ,C1.name as cname ");
 			
 			queryStr.append(" from tdp_cadre tc,tdp_cadre_enrollment_year tc1," +
 					" enrollment_year ey,caste c,caste_state cs,caste_category cc," +
 					" caste_category_group ccg,user_address ua,constituency C1,district d " );
 			
-			queryStr.append(" where cs.caste_category_group_id = ccg.caste_category_group_id " +
-					" and ccg.caste_category_id = cc.caste_category_id and tc.caste_state_id = cs.caste_state_id " +
-					" and cs.caste_id = c.caste_id and tc.address_id = ua.user_address_id " +
-					" and ua.constituency_id = C1.constituency_id and ua.district_id = d.district_id " +
-					" and tc1.tdp_cadre_id = tc.tdp_cadre_id and tc1.is_deleted='N' " +
-					" and tc.is_deleted='N' and tc1.enrollment_year_id = ey.enrollment_year_id ");
+			queryStr.append(" where " +
+					" cs.caste_category_group_id = ccg.caste_category_group_id " +
+					" and ccg.caste_category_id = cc.caste_category_id " +
+					" and tc.caste_state_id = cs.caste_state_id " +
+					" and cs.caste_id = c.caste_id " +
+					" and tc.address_id = ua.user_address_id " +
+					" and ua.constituency_id = C1.constituency_id " +
+					" and ua.district_id = d.district_id " +
+					" and tc1.tdp_cadre_id = tc.tdp_cadre_id " +
+					" and tc1.is_deleted='N' " +
+					" and tc.is_deleted='N' " +
+					" and tc1.enrollment_year_id = ey.enrollment_year_id " +
+					"  ");
 			
 			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
 				queryStr.append( " and tc1.tdp_cadre_id in (:tdpCadreIds) ");
@@ -9504,7 +9511,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 					.addScalar("year", Hibernate.STRING)
 					.addScalar("inserted_date", Hibernate.STRING)
 					.addScalar("caste_name", Hibernate.STRING)
-					.addScalar("category_name", Hibernate.STRING);
+					.addScalar("category_name", Hibernate.STRING)
+					.addScalar("district_name", Hibernate.STRING)
+					.addScalar("cname", Hibernate.STRING);;
 			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
 				query.setParameterList("tdpCadreIds", tdpCadreIds);
 			}

@@ -22,9 +22,22 @@ public class CadreBasicPerformaceVO implements java.io.Serializable{
 	private Long enrollmentYearId;
 	private Long year;
 	private String status;
+	private String constituencyName;
+	private String districtName;
 	
 	
-	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
 	public String getStatus() {
 		return status;
 	}
