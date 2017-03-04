@@ -320,7 +320,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading headingColor">
-									<h4 class="panel-title text-capital">Assigned alert officer</h4>
+									<h4 class="panel-title text-capital">Assigned alert to officer</h4>
 								</div>
 								<div class="panel-body">
 									<!--<div class="row">
