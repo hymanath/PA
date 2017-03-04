@@ -115,10 +115,8 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 	var type = $(this).attr("attr_type");
 	if(type == 'events')
 	{
-		//alert('events')
 		if(typeId == 1)
 		{
-			//alert('events detailed')
 			$(".detailedBlockEvents").show();
 			$(".comparisonBlockEvents,.comparisonBlockActivities").hide();
 			//var type=$(this).attr("attr_type");
@@ -127,7 +125,6 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 			getSelectedEventDetails(attrEventIdsString);	
 		}else if(typeId == 2)
 		{
-			//alert('events comparison')
 			$(".comparisonBlockEvents").show();
 			$(".detailedBlockEvents").hide();
 			//var type=$(this).attr("attr_type");
@@ -136,7 +133,6 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 		}
 	}else if(type == 'activities')
 	{
-		//alert('activites')
 		if(typeId == 1)
 		{
 			//$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
@@ -158,7 +154,6 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 					$("#evntCmpBLockId,.comparisonBlockActivities").hide();
 						
 		}else if(typeId == 2){
-			//alert('activities comparison')
 			$("#childEvnetMemberDivId").html(' ');
 			$("#directChildMemberForEventDivId").html(' ');
 			$("#evntCmpBLockId").hide();
@@ -184,7 +179,6 @@ $(document).on("click",".activitesExpandIcon",function(){
 		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
 		{
 			//block opened
-			//alert("block open")	
 		}else{
 			//block closed
 			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
@@ -192,7 +186,6 @@ $(document).on("click",".activitesExpandIcon",function(){
 			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			
 		}
-		//alert("open"); 
 		var searchType = $(this).attr("attr_search_type");
 		$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","activities");
 		$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attr_search_type",searchType);
@@ -448,8 +441,8 @@ $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
 
 function getEventBasicCntDtls(){
 	$("#mainEventsList").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	buildEventBasicCntDtls();
-	return;
+	//buildEventBasicCntDtls();
+	//return;
 	var eventIds=[];
 	eventIds.push(7);
 	eventIds.push(30);
@@ -467,18 +460,19 @@ function getEventBasicCntDtls(){
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0 ){
-		 buildEventBasicCntDtls(result);	
+		 buildEventBasicCntDtls(result);
+		 buildActivityEventSettings(result,"events");		 
 		}else{
 		 $("#mainEventsList").html("NO DATA AVAILABLE.");	
 		}
 	});
 }
-function buildEventBasicCntDtls()
+function buildEventBasicCntDtls(result)
 { 
 	var eventIdsString;
 	var str=' ';
 	//str+='<div class="panel-group m_top10" id="accordionEvents" role="tablist" aria-multiselectable="true">';
-	/*	for(var i in result)
+		for(var i in result)
 		{
 			if(i== 0){
 			eventIdsString = result[i].id;	
@@ -488,7 +482,7 @@ function buildEventBasicCntDtls()
 			str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab" id="headingEvents'+i+'">';
 					str+='<h4 class="panel-title">'+result[i].name+'';
-						str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+						str+='<span attr_event_idsString='+result[i].id+' attr_event_name="'+result[i].name+'" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 					str+='</h4>';
 					
 				
@@ -507,16 +501,20 @@ function buildEventBasicCntDtls()
 						str+='</h4>';
 					} */
 					
-			//	str+='</div>';
+				str+='</div>';
 				/* if(i == 0)
 				{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
 				}else{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
 				} */
-					/*str+='<div class="panel-body pad_5">';
+					str+='<div class="panel-body pad_5">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								if($(window).width() < 300)
+								{
+									str+='<div class="table-responsive">';
+								}
 								str+='<table class="table tableTraining bg_ED">';
 									str+='<tr>';
 										str+='<td>';
@@ -535,6 +533,10 @@ function buildEventBasicCntDtls()
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
+								if($(window).width() < 300)
+								{
+									str+='</div>';
+								}
 							str+='</div>';
 						str+='</div>';
 						
@@ -543,10 +545,10 @@ function buildEventBasicCntDtls()
 			str+='</div>';
 		}
 	//str+='</div>';
-	//$("#eventIds").attr("attr_event_idsString",eventIdsString);*/
+	$("#eventIds").attr("attr_event_idsString",eventIdsString);
 	
 	
-	     str+='<div class="panel panel-default panelNewEvents">';
+	     /*str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab"">';
 					str+='<h4 class="panel-title">Mahanadu 2016';
 						str+='<span attr_event_idsString="30" class="eventsListExpandIcon eventCls" attr_event_name="Mahanadu 2016" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
@@ -624,7 +626,7 @@ function buildEventBasicCntDtls()
 				str+='</div>';
 			str+='</div>';
 	str+='';
-	$("#eventIds").attr("attr_event_idsString","7,30"); 
+	$("#eventIds").attr("attr_event_idsString","7,30"); */
 	$("#mainEventsList").html(str)
 }
 
@@ -4434,7 +4436,7 @@ function buildActivityEventSettings(result,typeVal){
 		else if(typeVal == "events")
 			$(".evntsSettingsUl").html(str);
 }
-function getSettingEvents(){
+/*  function getSettingEvents(){
 	var eventIds=[];
 	eventIds.push(7);
 	eventIds.push(30);
@@ -4455,7 +4457,7 @@ function getSettingEvents(){
 			buildActivityEventSettings(result,type);	
 		}
 	});
-}
+} */
 $(document).on("click",".getDetailsOfSetingCls",function(){
 	var type=$(this).attr("attr_type");
 	var evntActitiesIds = [];
@@ -4525,30 +4527,7 @@ function orderTypeValue(){
      });
   return orderType;
 }
-function getEventssDetails(){
-	$("#mainEventsList").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 /* buildEventBasicCntDtls();
-	return;  */
-	var eventIds=[];
-	eventIds.push(7);
-	eventIds.push(30);
-	
-	var jsObj ={ 
-				 activityMemberId : globalActivityMemberId,
-				 stateId : globalStateId,
-				 eventIds:eventIds
-				 
-			  }	
-	$.ajax({
-	 type: "POST",
-	 url: "getEventBasicCntDtlsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0)
-			buildEventBasicCntDtls(result);
-	});
-}
 function refreshEventsActivities(){
-	getEventssDetails();
+	getEventBasicCntDtls();
 	getActivitiesDetails();
 }

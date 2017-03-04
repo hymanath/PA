@@ -2824,7 +2824,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventssDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
 								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
@@ -4366,7 +4366,7 @@ var globalImages;
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
 		getSettingActivities();
-		getSettingEvents();
+		//getSettingEvents();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
 	  }
@@ -4461,7 +4461,7 @@ var globalImages;
 			getAttendanceOverViewForPartyOffice();
 			getAttendanceOverViewForPartyOfficeWise();
 			getSettingActivities();
-			getSettingEvents();
+			//getSettingEvents();
 			var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 			$("#attendanceId").html('TODAY ('+datStr+')');
 	  }
