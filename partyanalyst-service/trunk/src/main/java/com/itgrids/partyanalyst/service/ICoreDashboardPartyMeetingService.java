@@ -41,6 +41,6 @@ public interface ICoreDashboardPartyMeetingService {
 	public List<IdNameVO> getPartyMeetingSession(Long partyMeetingId);
 	public List<IdNameVO> getPublicRepAndcommitteeInviteeDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString,List<Long> partyMeetingIds,String category, List<Long> categoryIds,String location, Long sessionId);
 	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,Long state,String startDateString,String endDateString);
-//	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String state,String startDateString,String endDateString);
+	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,Long state,String startDateString,String endDateString);
 	public List<PartyMeetingsDataVO> getCustomPartyMeetingsMainTypeOverViewData(Long activitymemberId,Long partyMeetingMainTypeId,Long state,String startDateString, String endDateString);
 }
