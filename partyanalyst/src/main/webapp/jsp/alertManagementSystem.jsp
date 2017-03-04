@@ -289,7 +289,7 @@
 			</div>
 			<div class="row m_top10">
 				<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
-					<h4 class="panel-title text-capital"><b>involved departments in this alert</b>
+					<h4 class="panel-title text-capital"><b>involved members in this alert</b>
 					<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
 					<div class="involvedMembersUl" id="alertCandidateDataId"></div>  
 				</div>  
@@ -320,7 +320,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading headingColor">
-									<h4 class="panel-title text-capital">assign alert</h4>
+									<h4 class="panel-title text-capital">Assigned alert officer</h4>
 								</div>
 								<div class="panel-body">
 									<!--<div class="row">
