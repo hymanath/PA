@@ -23,6 +23,7 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -50,6 +51,10 @@
 .eventsheader
 {
 	display:none;
+}
+.prev, .next{
+	 height: 33px !important;
+	 width: 47px !important;
 }
 </style>
 </head>
@@ -218,12 +223,12 @@
 	</div>
 	<!-- TOtal Alerts Modal End-->
 	<!-- Alert Details Modal Start-->
-	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
 	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header bg_CC">
 			<button type="button" class="close alertDetailsModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title fontColor text-capital">alert title</h4>   
+			<h4 class="modal-title fontColor text-capital"><span id="alertCategoryId"> </span> alert title</h4>   
 			<p id="mainTitleId"></p>
 		  </div>
 		  <div class="modal-body">
@@ -231,16 +236,16 @@
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<table class="table table-bordered tableCategory">
 						<tr>
-							<td style="vertical-align: top;">
+							<!--<td style="vertical-align: top;">
 								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;type</b></span></p>
 								<p class="text-capital"><span  id="typeId"></span></p>
-							</td>
+							</td>-->
 							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;created&nbsp;date</b></span></p>
+								<p class="text-capital"><span class="text-muted "><b>&nbsp;created&nbsp;date</b></span></p>
 								<p class="text-capital"><span  id="createdDate"></span></p>
 							</td>
 							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted"><b>Alert&nbsp;status</b></span></p>
+								<p class="text-capital"><span class="text-muted"><b>&nbsp;status</b></span></p>
 								<p class="text-capital"><span id="alertStatus"></span></p>
 							</td>
 							<td id="severityTdId" style="vertical-align: top;display:none;">
@@ -248,7 +253,11 @@
 								<p class="text-capital"><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
 							</td>
 							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;impact&nbsp;level</b></span></p>
+								<p class="text-capital"><span class="text-muted "><b>&nbsp;Department</b></span></p>
+								<p class="text-capital"><span  id="departmentTypeId"></span></p>
+							</td>
+							<td style="vertical-align: top;">
+								<p class="text-capital"><span class="text-muted "><b>&nbsp;impact&nbsp;level</b></span></p>
 								<p class="text-capital"><span  id="levelId"></span></p>
 							</td>
 							<td style="vertical-align: top;">
@@ -421,7 +430,7 @@
 </div>
 <!--Main Div End-->
 <!-- modal  For Article -->
-<div class="modal fade" id="myModalShowNew">
+<div class="modal fade" id="myModalShowNew" style="z-index:9999">
 	<div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -435,6 +444,30 @@
 	</div>
 			
 </div>	
+<!-- TOtal Alerts Modal Start-->
+	<div class="modal fade" id="totalAlertsModalGraphClick" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:80%">
+		<div class="modal-content">
+		  <div class="modal-header bg_CC">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title text-capital">Total alerts - <span id="alertCountGrphClickId"></span></h4>   
+		  </div>
+			<div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="totalAlertsModalTabGraphClickId"></div>
+						<div class="row ">
+							<div class="col-md-10 col-md-offset-5 m_top20">
+								<div class="paginationId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	  </div>
+	</div>
+	<!-- TOtal Alerts Modal End-->
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -452,6 +485,6 @@
 <!-- Custom Script Files Data Start-->
 <script src="alertDepartment/js/alertManagementSystem.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
-
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 </body>
 </html>
