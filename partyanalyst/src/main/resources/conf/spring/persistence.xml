@@ -1179,6 +1179,8 @@
 	                   <value> com.itgrids.partyanalyst.model.CommitteeConfirmRule </value>
 	                   <value> com.itgrids.partyanalyst.model.CommitteeConfirmRuleCondition </value>
 	                   <value> com.itgrids.partyanalyst.model.SchedulersInfo</value>
+	                   <value> com.itgrids.partyanalyst.model.PartyMeetingGroup</value>
+	                   <value> com.itgrids.partyanalyst.model.PartyMeetingGroupsMappingInfo</value>
 	              </list>
 			
 		</property>
