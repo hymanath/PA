@@ -3770,8 +3770,13 @@
     <bean id="newsPaperDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsPaperDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-    
-     <bean id="schedulersInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SchedulersInfoDAO">
+    <bean id="schedulersInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SchedulersInfoDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="partyMeetingGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingGroupDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="partyMeetingGroupsMappingInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingGroupsMappingInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
