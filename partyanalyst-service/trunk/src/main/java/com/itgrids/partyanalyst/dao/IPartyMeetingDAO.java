@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -59,5 +60,6 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getConstInchargeTeluguNames();
 	public String getPartyMeetingName(Long partyMeetingId);
 	public List<Long> getPartyMeetingIdList();
+	public List<Object[]> plannedMeetingIdAndName(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
 	public List<Object[]> getCustomPartyMeetingsMainTypeOverViewData(Date startDate, Date endDate);
 }
