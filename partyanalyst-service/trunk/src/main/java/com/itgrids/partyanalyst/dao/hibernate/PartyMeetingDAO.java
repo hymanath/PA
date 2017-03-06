@@ -2582,7 +2582,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 		" model.partyMeeting.partyMeetingType.type," +
 		 		" model.partyMeeting.partyMeetingId,model.partyMeeting.meetingName," +
 		 		" model.partyMeetingSessionId," +
-		 		" model.sessionType.type ");
+		 		" model.sessionType.type,model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
 		 
 		 sb.append(" from PartyMeetingSession model " +
 		 		" where ");
