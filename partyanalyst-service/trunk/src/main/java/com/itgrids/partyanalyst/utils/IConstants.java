@@ -1272,4 +1272,6 @@ public interface IConstants {
 	
 	public static final String ALERT_DEPT_DOCUMENTS ="alert_documents";
 	public static final List<Long> MAHANADUEVENTIDS = Arrays.asList(7l,30l);
+	
+	public static final String TAB_ATTENDANCE_ACCEPT_CARDS_YEAR = "All";//"2014-2016","2016-2018"
 }
