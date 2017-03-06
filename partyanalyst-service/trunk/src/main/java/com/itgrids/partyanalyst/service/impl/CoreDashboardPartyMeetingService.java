@@ -63,7 +63,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private ICoreDashboardGenericService coreDashboardGenericService;
 	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	 private IPartyMeetingTypeDAO partyMeetingTypeDAO;
-	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;
+	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;  
 	 private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	 private TransactionTemplate transactionTemplate;
 	 private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
@@ -6487,7 +6487,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 * Swadhin Lenka
 	 * @see com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService#getMeetingDtls(java.lang.Long, java.util.List, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){  
+	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,Long state,String startDateString,String endDateString){  
 		try{
 			
 			Set<Long> locationValuesSet = new java.util.HashSet<Long>();
@@ -6508,8 +6508,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
 			inputVO.setStartDate(datesList.get(0));
 			inputVO.setEndDate(datesList.get(1));
-			Long stateId = Long.parseLong(state);
-			inputVO.setStateId(stateId);
+			inputVO.setStateId(state);
 			List<Object[]> inviteeCadreList = partyMeetingInviteeDAO.meetingWiseInviteeCadreList(inputVO,locationId,locationValuesSet);
 			List<Object[]> attendedCadreList = partyMeetingAttendanceDAO.getAttendedCadresMeetingWise(inputVO,locationId,locationValuesSet);
 			List<Object[]> imageList = partyMeetingDocumentDAO.getPartyMeetingdocList(inputVO,locationId,locationValuesSet);
@@ -6628,7 +6627,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	/*
 	 * Swadhin Lenka
 	 */
-	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,String state,String startDateString,String endDateString){
+	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,Long state,String startDateString,String endDateString){
 		try{
 			Map<Long,MeetingDetailsInfoVO> meetingMap = new HashMap<Long,MeetingDetailsInfoVO>();
 			List<Long> mainMeetingIdsList = partyMeetingDAO.getPartyMeetingIdList();  
@@ -7141,7 +7140,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 		List<Object[]> customMeetingList = partyMeetingDAO.getCustomPartyMeetingsMainTypeOverViewData(fromDate, toDate);
 	 		if(customMeetingList != null && customMeetingList.size() > 0){
 	 			//Result of counts
-	 			Map<Long,MeetingDetailsInfoVO> countResultMap = getMeetingListDtls(activityMemberId,state.toString(),startDateString,endDateString);
+	 			Map<Long,MeetingDetailsInfoVO> countResultMap = getMeetingListDtls(activityMemberId,state,startDateString,endDateString);
 	 				
 	 			for (Object[] objects : customMeetingList) {
 	 				if(tempMap.get((Long)objects[0]) == null){
@@ -7285,14 +7284,5 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 		LOG.error("exception occurred in getCustomPartyMeetingsMainTypeOverViewData()", e);
 	 	}
 	 	return finalList;
-	   }
-
-	@Override    
-	public MeetingDetailsInfoVO getMeetingDtls(Long activityMemberId,
-			Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,
-			Long state, String startDateString, String endDateString) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	   }      
 }
