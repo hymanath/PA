@@ -2475,22 +2475,31 @@ public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Lo
 public List<Long> getNominatedPostIds(Long nominateCandId,Long applicationId,Long statusId){
 	
 	StringBuilder queryStr = new StringBuilder();
-	queryStr.append(" select model.nominatedPostId from NominatedPostFinal model where model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId " +
-			" and model.nominatedPostApplication.nominatedPostApplicationId = :applicationId and model.applicationStatus.applicationStatusId = :statusId " +
-			" and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N'  and model.nominationPostCandidate.isDeleted = 'N' ");
-	
+	queryStr.append(" select model.nominatedPostId from NominatedPostFinal model where model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId ");
+	if(applicationId != null && applicationId.longValue() >0){
+	     	queryStr.append(" and model.nominatedPostApplication.nominatedPostApplicationId = :applicationId ");
+	    }
+	if(statusId != null && statusId.longValue() >0){
+			queryStr.append(" and model.applicationStatus.applicationStatusId = :statusId " );
+			}
+	queryStr.append(" and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N'  and model.nominationPostCandidate.isDeleted = 'N' ");
 	if(statusId != null && statusId.longValue() == 9l){
-		queryStr.append("  and model.isExpired = 'Y' and model.nominatedPostApplication.isExpired = 'Y'  " );
+		queryStr.append("  and model.isExpired = 'Y' and model.nominatedPostApplication.isExpired = 'Y' " );
 	}else if(statusId != null && statusId.longValue() == 7l){
-		queryStr.append("  and model.isExpired = 'N' and model.nominatedPostApplication.isExpired = 'N'  " );
+		queryStr.append("  and model.isExpired = 'N' and model.nominatedPostApplication.isExpired = 'N' " );
 	}
 	 Query query = getSession().createQuery(queryStr.toString());
 	 
 	 query.setParameter("nominateCandId", nominateCandId);
+	if(applicationId != null && applicationId.longValue() >0){
 	 query.setParameter("applicationId", applicationId);
+	 }
+	if(statusId != null && statusId.longValue() >0){
 	 query.setParameter("statusId", statusId);
+	 }
 	 
 	 return query.list();
 	 
 }
+
 }
