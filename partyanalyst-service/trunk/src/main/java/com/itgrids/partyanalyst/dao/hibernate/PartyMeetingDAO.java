@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -2513,6 +2514,64 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 		" and model.isActive = 'Y' and model.partyMeetingType.isActive = 'Y' ");
 		 return query.list();
 	 }
+	 public List<Object[]> plannedMeetingIdAndName(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet){
+	    	StringBuilder queryStr = new StringBuilder();
+	    	queryStr.append(" select distinct " +
+	    			" model.partyMeetingId, model.meetingName " +
+	    			" from PartyMeeting model " +
+	    			" where " +
+	    			" model.isActive = 'Y' " +
+	    			" and model.partyMeetingType.isActive = 'Y' ");
+	    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+	    		queryStr.append(" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId ");
+	    	}
+	    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+	    		queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) ");
+	    	}
+	    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+	    		queryStr.append(" and date(model.startDate) between :startDate and :endDate ");
+	    	}
+	    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+	    		queryStr.append(" and model.meetingAddress.state.stateId = :stateId ");
+	    	}
+	    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
+	    		queryStr.append(" and model.meetingAddress.state.stateId in (:locationValuesSet) ");
+	    	}
+	    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
+	    		queryStr.append(" and model.meetingAddress.district.districtId in (:locationValuesSet) ");
+	    	}
+	    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
+	    		queryStr.append(" and model.meetingAddress.constituency.constituencyId in (:locationValuesSet) ");
+	    	}
+	    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
+	    		queryStr.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
+	    	}
+	    	if(inputVO.getCategoryIdList() != null && inputVO.getCategoryIdList().size() > 0){
+	    		queryStr.append(" and model.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds) ");
+	    	}        
+	    	Query query = getSession().createQuery(queryStr.toString());
+	    	
+	    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+	    		query.setParameter("partyMeetingMainTypeId", inputVO.getPartyMeetingMainTypeId());
+	    	}
+	    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+	    		query.setParameterList("partyMeetingTypeIdList", inputVO.getPartyMeetingTypeIds());
+	    	}
+	    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+	    		query.setDate("startDate",inputVO.getStartDate());
+	    		query.setDate("endDate",inputVO.getEndDate());
+	    	}
+	    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+	    		query.setParameter("stateId", inputVO.getStateId());
+	    	}
+	    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
+	    		query.setParameterList("locationValuesSet",locationValuesSet);
+	    	}
+	    	if(inputVO.getCategoryIdList() != null && inputVO.getCategoryIdList().size() > 0){
+	    		query.setParameterList("partyMeetingLevelIds",inputVO.getCategoryIdList());
+	    	}
+	    	return query.list();
+	    }  
 	 @SuppressWarnings("unchecked")
 	public List<Object[]> getCustomPartyMeetingsMainTypeOverViewData(Date startDate, Date endDate){
 		 StringBuilder sb = new StringBuilder();
