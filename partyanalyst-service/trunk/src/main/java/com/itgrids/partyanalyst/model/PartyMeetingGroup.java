@@ -19,7 +19,7 @@ public class PartyMeetingGroup extends BaseModel implements Serializable{
 	
 	private Long partyMeetingGroupId;
 	private String groupName;
-	private String orderNo;
+	private Long orderNo;
 	private String isDeleted;
 	
 	@Id
@@ -39,10 +39,10 @@ public class PartyMeetingGroup extends BaseModel implements Serializable{
 		this.groupName = groupName;
 	}
 	@Column(name = "order_no")
-	public String getOrderNo() {
+	public Long getOrderNo() {
 		return orderNo;
 	}
-	public void setOrderNo(String orderNo) {
+	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
 	@Column(name = "is_deleted")
