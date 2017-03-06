@@ -390,7 +390,8 @@ $(document).on("click",".stateCls",function(){
 		getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 		getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
 		getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
-		getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+		getNominatdPostsOverview("villageORWardWiseOverviewId",7,"Panchayat");
 });
 $('document').ready(function(){
 	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
@@ -398,7 +399,8 @@ $('document').ready(function(){
 	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
 	getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
-	getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+	//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+	getNominatdPostsOverview("villageORWardWiseOverviewId",7,"Panchayat");
 		
 	});
 </script>
