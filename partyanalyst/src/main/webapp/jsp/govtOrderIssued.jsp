@@ -218,7 +218,6 @@ if(globalLocationLevelId == 2){
 		}
 		});
 		*/
-			$("#bodyId").html('<img id="" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;margin-left:500px;"/>'); 
 			var deptIds = [];			
 			var boardIds = [];
 			var positionIs = [];
@@ -285,6 +284,7 @@ if(globalLocationLevelId == 2){
 			var locationsArr=[];
 			if(levelId == globalLocationLevelId)
 				locationsArr = globalLocationLevelValueArr;
+			$("#bodyId").html('<img id="" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;margin-left:500px;"/>'); 
 			jsObj = {
 			LocationLevelId : levelId, 
 			locationLevelValueArr : locationsArr,              
@@ -296,8 +296,6 @@ if(globalLocationLevelId == 2){
 			status : status
 			};
 		}
-			
-
 			$.ajax({
 			  type:'GET',
 			  url: 'getFinalReviewCandidateCountForLocationFilterAction.action',    
@@ -464,6 +462,10 @@ if(globalLocationLevelId == 2){
 	$("#corporationId").empty();
 	$("#corporationId").trigger("chosen:updated");	
 		 //$("#bodyId").html('');
+	if(deptsId == 0){
+			var deptsId = [];
+		}
+		
 var levelId = $("#boardsLevelId").val(); 
 		var jsObj={
 			
@@ -528,14 +530,14 @@ var levelId = $("#boardsLevelId").val();
 	*/
 	$(document).on('change','#departmentId',function(){
 		$("#bodyId").html('');
-		var departmentId = $("#departmentId").val();  
+		var departmentId = $("#departmentId").val();
 		var levelId = $("#boardsLevelId").val();  
 		$("#corporationId").empty();
 		$("#corporationId").trigger("chosen:updated");
 		$("#positionId").empty();
-		$('#positionId').html('<option value="0" selected="seleted">All</option>');
+		//$('#positionId').html('<option value="0" selected="seleted">All</option>');
 		$("#positionId").trigger("chosen:updated"); 
-		$("#bodyId").html("");
+		$("#bodyId").html("");		
 		if(departmentId != null)
 			getBoardList(departmentId,levelId);
 	});
@@ -547,9 +549,7 @@ var levelId = $("#boardsLevelId").val();
 		$("#positionId").empty();
 		$("#positionId").trigger("chosen:updated");
 		$("#bodyId").html("");
-		
-		
-		if(boardId != null)
+		if(boardId != null && departmentId != null)
 			getDepartmentBoardPositions(departmentId,bardId);
 	
 	});
@@ -631,6 +631,15 @@ var levelId = $("#boardsLevelId").val();
 var locationsArr=[];
 	if(levelId == globalLocationLevelId)
 		locationsArr = globalLocationLevelValueArr;
+	 if(boardId == null){
+		 return;
+	 }
+	if(deptId == 0){
+		var deptId =[];
+	}
+	if(boardId == 0){
+		var boardId =[];
+	}
 	var jsObj = {
 		
 		deptId : deptId,
