@@ -30,6 +30,15 @@ public class UserPartyMeetingVO implements Serializable{
 	private String attendanceStartTime;
 	private List<UserPartyMeetingVO> subList = new ArrayList<UserPartyMeetingVO>(0);
 	
+	private String cardsYear;
+	
+	
+	public String getCardsYear() {
+		return cardsYear;
+	}
+	public void setCardsYear(String cardsYear) {
+		this.cardsYear = cardsYear;
+	}
 	public String getAttendanceStartTime() {
 		return attendanceStartTime;
 	}
