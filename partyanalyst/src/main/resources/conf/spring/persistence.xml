@@ -1181,6 +1181,8 @@
 	                   <value> com.itgrids.partyanalyst.model.SchedulersInfo</value>
 	                   <value> com.itgrids.partyanalyst.model.PartyMeetingGroup</value>
 	                   <value> com.itgrids.partyanalyst.model.PartyMeetingGroupsMappingInfo</value>
+	                   <value> com.itgrids.partyanalyst.model.ElectionResultInfo </value>
+	                   <value> com.itgrids.partyanalyst.model.TdpCadreRegistraionInfo </value>
 	              </list>
 			
 		</property>
