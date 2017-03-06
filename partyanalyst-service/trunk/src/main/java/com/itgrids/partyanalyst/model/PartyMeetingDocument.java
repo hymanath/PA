@@ -42,6 +42,7 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private String documentName;
 	private Long partyMeetingSessionId;
 	private Long addressId;
+	private Date updatedTime;
 	
 	private PartyMeetingSession partyMeetingSession;
 	private UserAddress userAddres;  
@@ -213,9 +214,12 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	public void setUserAddres(UserAddress userAddres) {
 		this.userAddres = userAddres;
 	}
-	
-	
-	
-	
-	
+
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
 }
