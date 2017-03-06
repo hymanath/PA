@@ -3779,6 +3779,15 @@
     <bean id="partyMeetingGroupsMappingInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingGroupsMappingInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="selfAppraisalProgramDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalProgramDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="selfAppraisalDesignationProgramTargetDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalDesignationProgramTargetDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+    <bean id="selfAppraisalCandidateProgramDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateProgramDetailsDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
     <bean id="electionResultInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionResultInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>

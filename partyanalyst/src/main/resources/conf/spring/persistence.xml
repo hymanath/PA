@@ -1183,6 +1183,10 @@
 	                   <value> com.itgrids.partyanalyst.model.PartyMeetingGroupsMappingInfo</value>
 	                   <value> com.itgrids.partyanalyst.model.ElectionResultInfo </value>
 	                   <value> com.itgrids.partyanalyst.model.TdpCadreRegistraionInfo </value>
+	            
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalProgram</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalDesignationProgramTarget</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateProgramDetails</value>
 	              </list>
 			
 		</property>
