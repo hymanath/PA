@@ -3779,5 +3779,11 @@
     <bean id="partyMeetingGroupsMappingInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingGroupsMappingInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="electionResultInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionResultInfoDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     
+    <bean id="tdpCadreRegistraionInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreRegistraionInfoDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 </beans>		
