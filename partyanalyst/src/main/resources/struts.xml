@@ -16022,5 +16022,30 @@
 			</result>
 		</action>
 		
+		<action name="getDistrictsForCustomMeetingImgesAction" class="coreDashboardAction" method="getDistrictsForCustomMeetingImgesLst">
+		  <result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
+		<action name="getConstByDistrictIdForWiseCustomPartyMeetingsAction" class="coreDashboardAction" method="getConstByDistrictIdForWiseCustomPartyMeetings">
+		  <result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
+		<action name="getMandOrMuncByconstituencyIdForWiseCustomPartyMeetingsAction" class="coreDashboardAction" method="getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings">
+		  <result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
+		<action name="getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetingsAction" class="coreDashboardAction" method="getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings">
+		  <result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
+		<action name="getCustomWisePartyMeetingDocumentsAction" class="coreDashboardAction" method="getCustomWisePartyMeetingDocuments">
+			<result type="json" name="success">
+				<param name="root">partyMeetingDataVOList</param>
+			</result>
+		</action>
  </package>
 </struts>
