@@ -19,6 +19,15 @@ public class UserTrainingCampScheduleVO implements Serializable{
 	private Long scheduleStatusId;
 	private List<UserTrainingCampBatchVO> batchList;
 	
+	private String cardsYear;
+	
+	
+	public String getCardsYear() {
+		return cardsYear;
+	}
+	public void setCardsYear(String cardsYear) {
+		this.cardsYear = cardsYear;
+	}
 	public List<UserTrainingCampBatchVO> getBatchList() {
 		return batchList;
 	}
