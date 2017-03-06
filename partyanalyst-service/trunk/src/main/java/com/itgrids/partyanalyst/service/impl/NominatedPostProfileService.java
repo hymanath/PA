@@ -7942,7 +7942,6 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		}
 		return returnList;
 	}
-	//srujana
 	public List<IdNameVO> getDepartmentBoardPositions1(List<Long> deptIds,List<Long> boardIds,Long boardLevelId,List<Long> searchLevelValueIds,Long searchLevelId,Long nominatedPostCandId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		

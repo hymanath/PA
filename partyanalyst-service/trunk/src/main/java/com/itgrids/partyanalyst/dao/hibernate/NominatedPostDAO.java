@@ -1867,7 +1867,6 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
       }
        return query.list();
   }
-   //srujana
    public List<Object[]> getLevelWiseDepartmentsBoardPosition1(List<Long> departmentId,List<Long> boardId,Long boardLevelId,List<Long> searchLevelValue){
 	   
 	   StringBuilder queryStr = new StringBuilder();
