@@ -3205,6 +3205,8 @@
 		<property name="activityService" ref="activityService"></property>
 		<property name="activityTabUserAnswerDAO" ref="activityTabUserAnswerDAO"></property>
 		<property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"></property>
+		<property name="partyMeetingDAO" ref="partyMeetingDAO"></property>
+		<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO"></property>
 	</bean>
 	
 	<bean name="partyMeetingService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingService">

@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
 import com.itgrids.partyanalyst.dto.MeetingsVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
@@ -2570,4 +2571,33 @@ public class WebServiceHandler {
 			return finalList;
 		}
 		
+		@POST
+		@Path("/updateManualAttendanceDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String updateManualAttendanceDetails(ManualAttendanceVO inputVo){
+			try{
+				return attendanceService.updateManualAttendanceDetails(inputVo);
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in updateManualAttendanceDetails() Method - ",e);
+				return null;
+			}
+		}
+		
+		@POST
+		@Path("/savingPartyMeetingImages")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String savingPartyMeetingImages(ManualAttendanceVO inputVo){
+			try{
+				return attendanceService.savingPartyMeetingImages(inputVo);
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception Occured in savingPartyMeetingImages() Method - ",e);
+				return null;
+			}
+		}
 }
