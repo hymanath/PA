@@ -1935,6 +1935,16 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	}
     	return query.list();
     }  
+    
+    public List<PartyMeetingInvitee> getInviteesByPartyMeetingAndCadreId(Long partyMeetingId,Long tdpCadreId){
+    	Query query = getSession().createQuery("select model" +
+    											" from PartyMeetingInvitee model" +
+    											" where model.partyMeeting.partyMeetingId = :partyMeetingId" +
+    											" and model.tdpCadre.tdpCadreId = :tdpCadreId");
+    	query.setParameter("partyMeetingId", partyMeetingId);
+    	query.setParameter("tdpCadreId", tdpCadreId);
+    	return query.list();
+    }
     public List<Object[]> plannedMeetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select distinct " +
