@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -3700,5 +3701,76 @@ public String getCustomPartyMeetingsMainTypeOverViewDataDetails(){
 			LOG.error("Exception raised at getCustomPartyMeetingsMainTypeOverViewDataDetails() method of CoreDashBoardAction", e);
 		}
 		return Action.SUCCESS;
+}
+public String getDistrictsForCustomMeetingImgesLst(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		    Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+			String startDateStr = jObj.getString("fromDate");
+			String endDateStr = jObj.getString("toDate");
+			Long meetingId = jObj.getLong("meetingId");
+			Long meetingGrpId = jObj.getLong("meetingGrpId");
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getDistrictsForCustomMeetingImgesLst(activityMemberId,stateId,partyMeetingLevelId,startDateStr,endDateStr,meetingId,meetingGrpId);
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getDistrictsForCustomMeetingImgesLst()", e);
+	 }
+	 return Action.SUCCESS;
+}
+public String getConstByDistrictIdForWiseCustomPartyMeetings(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 partyMeetingDataVOList = coreDashboardPartyMeetingService.getConstByDistrictIdForWiseCustomPartyMeetings(jObj.getLong("partyMeetingLevelId"),jObj.getLong("districtId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getConstByDistrictIdForWiseCustomPartyMeetings()", e);
+	 }
+	 return Action.SUCCESS;
+}
+public String getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 partyMeetingDataVOList = coreDashboardPartyMeetingService.getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings(jObj.getLong("partyMeetingLevelId"),jObj.getLong("constituencyId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings()", e);
+	 }
+	 return Action.SUCCESS;
+}
+public String getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings(){
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 partyMeetingDataVOList = coreDashboardPartyMeetingService.getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings(jObj.getLong("partyMeetingLevelId"),jObj.getLong("mandalOrMuncipalityId"));
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings()", e);
+	 }
+	 return Action.SUCCESS;
+}
+public String getCustomWisePartyMeetingDocuments()
+{
+	try {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		int startIndex = jObj.getInt("startIndex");
+		int maxIndex = jObj.getInt("maxIndex");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		Long meetingId = jObj.getLong("meetingId");
+		Long meetingGrpId = jObj.getLong("meetingGrpId");
+		partyMeetingDataVOList = coreDashboardPartyMeetingService.getCustomWisePartyMeetingDocuments(fromDateStr,toDateStr,startIndex,maxIndex,activityMemberId,stateId,partyMeetingLevelId,meetingId,meetingGrpId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getCustomWisePartyMeetingDocuments ",e);
+	}
+	return Action.SUCCESS;
 }
 }
