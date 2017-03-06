@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
@@ -166,15 +167,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private List<MeetingDtlsVO> meetingDtlsVOs;
 	private List<IdNameVO> idNameVOs;
-	private Map<Long,MeetingDetailsInfoVO> meetingDetailsInfoVO;
+	private List<MeetingBasicDetailsVO> basicDetailsVOs;
 	
 	
-	public Map<Long, MeetingDetailsInfoVO> getMeetingDetailsInfoVO() {
-		return meetingDetailsInfoVO;
+	
+	public List<MeetingBasicDetailsVO> getBasicDetailsVOs() {
+		return basicDetailsVOs;
 	}
-	public void setMeetingDetailsInfoVO(
-			Map<Long, MeetingDetailsInfoVO> meetingDetailsInfoVO) {
-		this.meetingDetailsInfoVO = meetingDetailsInfoVO;
+	public void setBasicDetailsVOs(List<MeetingBasicDetailsVO> basicDetailsVOs) {
+		this.basicDetailsVOs = basicDetailsVOs;
 	}
 	public List<IdNameVO> getIdNameVOs() {
 		return idNameVOs;
@@ -3273,14 +3274,34 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   	  }
 		return Action.SUCCESS;
 	}
-public String getMeetingDtls(){
+  	public String locationWiseMeetingDetails(){
 		try{
 			jobj = new JSONObject(getTask());
-			String state = jobj.getString("state");
+			Long state = jobj.getLong("state");
 			String startDateString = jobj.getString("startDateString");
 			String endDateString   = jobj.getString("endDateString");  
 			Long activityMemberId = jobj.getLong("activityMemberId");
-			meetingDetailsInfoVO = coreDashboardPartyMeetingService.getMeetingListDtls(activityMemberId,state,startDateString,endDateString);
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			
+			List<Long> locLevelIdList = new ArrayList<Long>();
+			JSONArray locLevelIdsArray=jobj.getJSONArray("locLevelIdList");
+			if(locLevelIdsArray!=null &&  locLevelIdsArray.length()>0){
+				for( int i=0;i<locLevelIdsArray.length();i++){
+					locLevelIdList.add(Long.valueOf(locLevelIdsArray.getString(i)));
+				}
+			}
+			
+			
+			basicDetailsVOs = coreDashboardPartyMeetingService.locationWiseMeetingDetails(activityMemberId, partyMeetingMainTypeId, partyMeetingTypeIds, locLevelIdList,  state, startDateString,  endDateString);
 			
 	}catch(Exception e){
 		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
