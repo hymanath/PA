@@ -45,4 +45,9 @@ public interface ICoreDashboardPartyMeetingService {
 	public Map<Long,MeetingDetailsInfoVO> getMeetingListDtls(Long activityMemberId,Long state,String startDateString,String endDateString);  
 	public List<MeetingBasicDetailsVO> locationWiseMeetingDetails(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,List<Long> locLevelIdList, Long state,String startDateString, String endDateString);
 	public List<PartyMeetingsDataVO> getCustomPartyMeetingsMainTypeOverViewData(Long activitymemberId,Long partyMeetingMainTypeId,Long state,String startDateString, String endDateString);
+	public List<PartyMeetingsDataVO> getConstByDistrictIdForWiseCustomPartyMeetings(Long partyMeetinglevelId,Long districtId);
+	public List<PartyMeetingsDataVO> getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long mandalOrMuncId);
+	public List<PartyMeetingsDataVO> getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long constituencyId);
+	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId);
+	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
 }
