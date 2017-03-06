@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -23,6 +26,8 @@ import com.itgrids.partyanalyst.dao.IAttendanceErrorDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceTabUserDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -35,8 +40,10 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingLocationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
@@ -51,6 +58,8 @@ import com.itgrids.partyanalyst.model.Attendance;
 import com.itgrids.partyanalyst.model.AttendanceError;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAttendance;
+import com.itgrids.partyanalyst.model.PartyMeetingDocument;
+import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
 import com.itgrids.partyanalyst.model.TrainingCampSchedule;
@@ -59,6 +68,9 @@ import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class AttendanceService implements IAttendanceService{
 
@@ -85,9 +97,28 @@ public class AttendanceService implements IAttendanceService{
 	private IActivityTabUserAnswerDAO activityTabUserAnswerDAO; 
 	private IPartyMeetingSessionDAO partyMeetingSessionDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IPartyMeetingDAO partyMeetingDAO;
+	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
 	
 	
 	
+	public IPartyMeetingDocumentDAO getPartyMeetingDocumentDAO() {
+		return partyMeetingDocumentDAO;
+	}
+
+	public void setPartyMeetingDocumentDAO(
+			IPartyMeetingDocumentDAO partyMeetingDocumentDAO) {
+		this.partyMeetingDocumentDAO = partyMeetingDocumentDAO;
+	}
+
+	public IPartyMeetingDAO getPartyMeetingDAO() {
+		return partyMeetingDAO;
+	}
+
+	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
+		this.partyMeetingDAO = partyMeetingDAO;
+	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -437,6 +468,8 @@ public class AttendanceService implements IAttendanceService{
 						userPartyMeetingVO.setPartyMeetingStatusId(1l);
 						userPartyMeetingVO.setIsSessionsAvailable("false");//default no sessions available
 						
+						userPartyMeetingVO.setCardsYear(IConstants.TAB_ATTENDANCE_ACCEPT_CARDS_YEAR);
+						
 						if(partyMeeting.getMeetingAddress() != null)
 						{
 							PartyMeetingLocationVO locationVO = setLocationDetailsByUserAddress(partyMeeting.getMeetingAddress());
@@ -559,6 +592,8 @@ public class AttendanceService implements IAttendanceService{
 						scheduleVO.setScheduleEndDate(dateUtilService.getDateInStringFormatByDate(trainingCampSchedule.getToDate(),"yyyy-MM-dd"));
 						scheduleVO.setScheduleStatusId(1l);
 						scheduleVO.setBatchList(getTrainingCampBatchesOfScheduleForTabUser(trainingCampSchedule.getTrainingCampScheduleId(),userId));
+						
+						scheduleVO.setCardsYear(IConstants.TAB_ATTENDANCE_ACCEPT_CARDS_YEAR);
 					}catch(Exception e)
 					{
 						LOG.error(e);
@@ -955,5 +990,192 @@ public class AttendanceService implements IAttendanceService{
 			LOG.error("Exception raised at saveActivityQuestionAnswer", e);
 		}
 		return rs;
+	}
+	
+	public String updateManualAttendanceDetails(final ManualAttendanceVO inputvo){
+		String status = null;
+		try {
+			status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					String folderName = folderCreation();
+					 
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(new Date());
+					 int year = calendar.get(Calendar.YEAR);
+					 int month = calendar.get(Calendar.MONTH);
+					 int day = calendar.get(Calendar.DAY_OF_MONTH);
+					 int temp = month+1;
+					 
+					 StringBuilder pathBuilder = new StringBuilder();
+					 StringBuilder str = new StringBuilder();
+					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+						
+					String destPath = folderName+"/"+randomNumber+".jpg";
+					pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".").append("jpg");
+					str.append(randomNumber).append(".").append("jpg");
+					
+					ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+					imageAndStringConverter.convertBase64StringToImage(inputvo.getBase64ImageStr(), destPath);
+					
+					Attendance attendance = new Attendance();
+					attendance.setTdpCadreId(inputvo.getTdpCadreId());
+					attendance.setImageStr(inputvo.getBase64ImageStr());
+					attendance.setImgPath(pathBuilder.toString());
+					attendance.setAttendedTime(dateUtilService.getCurrentDateAndTime());
+					attendance.setImei(inputvo.getImeiNo());
+					attendance.setUniqueKey(inputvo.getUniqueKey());
+					attendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					attendance.setLatitude(inputvo.getLatitute());
+					attendance.setLongitude(inputvo.getLongitude());
+					attendance.setTabUserId(inputvo.getUserId());
+					attendance.setCurrentTabUserId(inputvo.getUserId());
+					attendance.setSyncSource("WS");
+					attendance.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+					attendance = attendanceDAO.save(attendance);
+					
+					PartyMeetingAttendance partyMeetingAttendance = new PartyMeetingAttendance();
+					partyMeetingAttendance.setPartyMeetingId(inputvo.getPartyMeetingId());
+					partyMeetingAttendance.setPartyMeetingSessionId(inputvo.getPartyMeetingSessionId());
+					partyMeetingAttendance.setAttendanceId(attendance.getAttendanceId());
+					partyMeetingAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					partyMeetingAttendance = partyMeetingAttendanceDAO.save(partyMeetingAttendance);
+					
+					List<PartyMeetingInvitee> list = partyMeetingInviteeDAO.getInviteesByPartyMeetingAndCadreId(inputvo.getPartyMeetingId(), inputvo.getTdpCadreId());
+					if(list != null && !list.isEmpty()){
+						PartyMeetingInvitee partyMeetingInvitee = list.get(0);
+						partyMeetingInvitee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						partyMeetingInvitee.setUpdatedById(inputvo.getUserId());
+						partyMeetingInvitee.setAbsenteeRemark(inputvo.getRemarks());
+						partyMeetingInvitee = partyMeetingInviteeDAO.save(partyMeetingInvitee);
+					}
+					
+					return "success";
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateManualAttendanceDetails in AttendanceService", e);
+		}
+		return status;
+	}
+	
+	public static String folderCreation(){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+	  		
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			 int day = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String activityDocDir = createFolder(staticPath+IConstants.PARTY_MEETINGS);
+			 
+			 String yr = String.valueOf(year); // YEAR YYYY
+			 String yrDir = staticPath+IConstants.PARTY_MEETINGS+"/"+yr;
+			 
+			 String yrFldrSts = createFolder(yrDir);
+			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 StringBuilder str = new StringBuilder();
+			 int temp = month+1;
+			 str.append(temp).append("-").append(day);
+			 
+			 
+			 String mnth = str.toString();
+			 String mnthDir = staticPath+IConstants.PARTY_MEETINGS+"/"+yr+"/"+mnth;
+			 String mnthDirSts = createFolder(mnthDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+IConstants.PARTY_MEETINGS+"/"+yr+"/"+mnth;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+	}
+	
+	public static String createFolder(String dir){
+	 	try {
+			File theDir = new File(dir);
+			  // if the directory does not exist, create it
+			  if (!theDir.exists()) {
+			    boolean result = false;
+			    try{
+			        theDir.mkdir();
+			        result = true;
+			     } catch(SecurityException se){
+			        //handle it
+			     }        
+			     if(result) {    
+			      LOG.debug("DIR With Name "+dir+" created");  
+			     }
+			  }else{
+				  LOG.debug("DIR With Name "+dir+" EXISTS");
+			  }
+			  return "SUCCESS";
+		} catch (Exception e) {
+			LOG.error(dir+" Failed to Create");
+			return "FAILED";
+		}
+	}
+	
+	public String savingPartyMeetingImages(final ManualAttendanceVO inputvo){
+		String status = null;
+		try {
+			status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					String folderName = folderCreation();
+					 
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(new Date());
+					 int year = calendar.get(Calendar.YEAR);
+					 int month = calendar.get(Calendar.MONTH);
+					 int day = calendar.get(Calendar.DAY_OF_MONTH);
+					 int temp = month+1;
+					 
+					 StringBuilder pathBuilder = new StringBuilder();
+					 StringBuilder str = new StringBuilder();
+					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+						
+					String destPath = folderName+"/"+randomNumber+".jpg";
+					pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".").append("jpg");
+					str.append(randomNumber).append(".").append("jpg");
+					
+					ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+					imageAndStringConverter.convertBase64StringToImage(inputvo.getBase64ImageStr(), destPath);
+					
+					PartyMeeting partyMeeting = partyMeetingDAO.get(inputvo.getPartyMeetingId());
+					
+					PartyMeetingDocument partyMeetingDocument = new PartyMeetingDocument();
+					partyMeetingDocument.setPartyMeetingId(inputvo.getPartyMeetingId());
+					partyMeetingDocument.setPartyMeetingSessionId(inputvo.getPartyMeetingSessionId());
+					partyMeetingDocument.setAddressId(partyMeeting.getMeetingAddressId());
+					partyMeetingDocument.setPath(pathBuilder.toString());
+					partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
+					partyMeetingDocument.setDocumentType("MINUTE");
+					partyMeetingDocument.setDocumentFormat("IMAGE");
+					partyMeetingDocument.setUploadedById(inputvo.getUserId());
+					partyMeetingDocument.setUpdatedById(inputvo.getUserId());
+					partyMeetingDocument.setUploadedTime(dateUtilService.getCurrentDateAndTime());
+					partyMeetingDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					partyMeetingDocument.setIsDeleted("N");
+					partyMeetingDocument = partyMeetingDocumentDAO.save(partyMeetingDocument);
+					
+					return "success";
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Exception raised at savingPartyMeetingImages in AttendanceService", e);
+		}
+		return status;
 	}
 }
