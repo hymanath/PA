@@ -16006,9 +16006,9 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
-		<action name="getMeetingDtlsAction" class="cadreRegistrationAction" method="getMeetingDtls">
+		<action name="locationWiseMeetingDetailsAction" class="cadreRegistrationAction" method="locationWiseMeetingDetails">
 			<result type="json" name="success">
-				<param name="root">meetingDetailsInfoVO</param>  
+				<param name="root">basicDetailsVOs</param>     
 			</result>
 		</action>
 		<action name="getCustomPartyMeetingsMainTypeOverViewDataDetailsAction" class="coreDashboardAction" method="getCustomPartyMeetingsMainTypeOverViewDataDetails">
