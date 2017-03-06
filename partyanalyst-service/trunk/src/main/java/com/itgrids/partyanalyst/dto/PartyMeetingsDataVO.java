@@ -57,8 +57,51 @@ public class PartyMeetingsDataVO implements Serializable{
 	
 	private String isLate;
 	private String attendedTime;
+	private Long districtId;
+	private Long count = 0l;
+	private Long constituencyId;
+	private Long mandalId;
+	private Long panchayatId;
+	private String path;
+	private Long levelId;
 	
 	
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public String getIsLate() {
 		return isLate;
 	}
@@ -312,5 +355,12 @@ public class PartyMeetingsDataVO implements Serializable{
 	}
 	public void setSubList3(List<PartyMeetingsDataVO> subList3) {
 		this.subList3 = subList3;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
 	} 
+	
 }
