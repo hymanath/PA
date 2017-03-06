@@ -50,6 +50,9 @@ public class Attendance extends BaseModel implements Serializable{
 	private Long activityLocationPublicAttendanceId;
 	private ActivityLocationPublicAttendance activityLocationPublicAttendance;
 	
+	private String imageStr;
+	private String imgPath;
+	
 	public Attendance(){}
 
 	@Id
@@ -269,5 +272,20 @@ public class Attendance extends BaseModel implements Serializable{
 			ActivityLocationPublicAttendance activityLocationPublicAttendance) {
 		this.activityLocationPublicAttendance = activityLocationPublicAttendance;
 	}
-	
+
+	@Column(name="image_str")
+	public String getImageStr() {
+		return imageStr;
+	}
+	public void setImageStr(String imageStr) {
+		this.imageStr = imageStr;
+	}
+
+	@Column(name="img_path")
+	public String getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
 }
