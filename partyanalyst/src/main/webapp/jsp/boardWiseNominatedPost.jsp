@@ -15,6 +15,18 @@
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
+.enrolled-mem li.yes {
+    background-color: #d7f0db;
+}
+.enrolled-mem li {
+    border: 1px solid #666;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 3px;
+}
+.enrolled-mem li.no {
+    background-color: #e3c5c7;
+}
 .tableShort thead th:nth-child(1)
 {
 	width:10% !important
@@ -39,16 +51,7 @@
 	text-align:left;
 	font-weight:bold;
 }
-#detailRepTableId thead th ,#detailRepTableId tr td
-{
-	min-width:100px;
-}
-#detailRepTableId thead th:first-child ,#detailRepTableId tr td:first-child,
-#detailRepTableId thead th::nth-child(2) ,#detailRepTableId tr td:nth-child(2),
-#detailRepTableId thead th::nth-child(3) ,#detailRepTableId tr td:nth-child(3)
-{
-	width:75px;
-}
+
 </style>
 </head>
 <body>
@@ -1391,8 +1394,8 @@ function buildCadreDetailedReport(result){
 			str+='<th rowspan="2"> NAME  </th>';
 			str+='<th rowspan="2"> DISTRICT  </th>';
 			str+='<th rowspan="2"> CONSTITUENCY  </th>';
-			//str+='<th rowspan="2"> PARTY DESIGNATION  </th>';
-			//str+='<th rowspan="2"> GOVT DESIGNATION  </th>';
+			str+='<th rowspan="2"> PARTY DESIGNATION  </th>';
+			str+='<th rowspan="2"> GOVT DESIGNATION  </th>';
 			str+='<th rowspan="2"> CELL NO  </th>';
 			str+='<th rowspan="2"> MEMBERSHIP NO  </th>';
 			str+='<th rowspan="2"> CASTE NAME  </th>';
@@ -1423,21 +1426,21 @@ function buildCadreDetailedReport(result){
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
 			str+='<th> Own Parliament%  </th>';
-			str+='<th> Booth Influence%  </th>';
+			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
 			str+='<th> Own Parliament%  </th>';
-			str+='<th> Booth Influence%  </th>';
+			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
 			str+='<th> Own Parliament%  </th>';
-			str+='<th> Booth Influence%  </th>';
+			//str+='<th> Booth Influence%  </th>';
 			str+='</tr>';
 			
 			str+='</thead>';
@@ -1449,8 +1452,17 @@ function buildCadreDetailedReport(result){
 					str+='<td>'+result.subList[i].cadreBasicPerformaceVO.name+'</td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.districtName+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.constituencyName+' </td>';
-					//str+='<td> - </td>';
-					//str+='<td> - </td>';
+					
+					if(result.subList[i].cadreBasicPerformaceVO.designation != null)
+						str+='<td> '+result.subList[i].cadreBasicPerformaceVO.designation+' </td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result.subList[i].cadreBasicPerformaceVO.partyPosition != null)
+						str+='<td> '+result.subList[i].cadreBasicPerformaceVO.partyPosition+' </td>';
+					else
+						str+='<td> - </td>';
+					
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.mobileNO+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.membershipNo+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteGroup+' </td>';
@@ -1458,9 +1470,24 @@ function buildCadreDetailedReport(result){
 					
 					if(result.subList[i].cadreBasicPerformaceVO.subList != null && result.subList[i].cadreBasicPerformaceVO.subList.length>0){
 						for(var j in result.subList[i].cadreBasicPerformaceVO.subList){
-							str+='<td> '+result.subList[i].cadreBasicPerformaceVO.subList[j].status+' </td>';
+						
+								str+='<td> ';
+								if(result.subList[i].cadreBasicPerformaceVO.subList[j].status =='YES')	{								
+								str+='<ul class="enrolled-mem">';
+									str+='<li class="yes">'+result.subList[i].cadreBasicPerformaceVO.subList[j].year+'<span></span></li>&nbsp;';
+									str+=' </ul> ';
+								}
+								else{
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="no">'+result.subList[i].cadreBasicPerformaceVO.subList[j].year+'<span></span></li>&nbsp;';
+									str+=' </ul> ';
+								}
+									str+='</td> ';								
+							
+						
 						}
 					}
+					
 					if(result.subList[i].cadreStatsVO != null && result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
 						for(var j in result.subList[i].cadreStatsVO.subList){
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
@@ -1468,7 +1495,7 @@ function buildCadreDetailedReport(result){
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc+'</td>';
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].boothPerc+'</td>';
 							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].parliamenPerc+'</td>';
-							str+='<td> - </td>';
+							//str+='<td> - </td>';
 						}
 					}
 					
@@ -1481,10 +1508,20 @@ function buildCadreDetailedReport(result){
 									str+='<td> '+result.subList[i].cadreEventsVO.subList[j].attendedCount+' </td>';
 							
 							}else{
-								if(result.subList[i].cadreEventsVO.subList[j].attendedCount != null && result.subList[i].cadreEventsVO.subList[j].attendedCount>0)
-									str+='<td> YES </td>';
-								else
-									str+='<td> NO </td>';
+								if(result.subList[i].cadreEventsVO.subList[j].attendedCount != null && result.subList[i].cadreEventsVO.subList[j].attendedCount>0){
+									str+='<td>  ';
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="yes"> YES <span></span></li>&nbsp;';
+									str+=' </ul> </td> ';
+									
+								}else{
+									//str+='<td> NO </td>';
+									str+='<td>  ';
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="no"> NO <span></span></li>&nbsp;';
+									str+=' </ul> ';
+									str+='</td>  ';
+								}
 							}
 						}
 					}
@@ -1496,8 +1533,8 @@ function buildCadreDetailedReport(result){
 	}
 	$("#detailedDiv1").html(str);
 	$("#detailRepTableId").dataTable({
-			"iDisplayLength": 50,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			"iDisplayLength": 10,
+			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 		});
 }
 
