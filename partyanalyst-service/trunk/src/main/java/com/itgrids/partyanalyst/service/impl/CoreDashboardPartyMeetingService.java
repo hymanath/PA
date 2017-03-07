@@ -65,7 +65,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private ICoreDashboardGenericService coreDashboardGenericService;
 	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	 private IPartyMeetingTypeDAO partyMeetingTypeDAO;
-	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;  
+	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;    
 	 private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	 private TransactionTemplate transactionTemplate;
 	 private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
@@ -6670,7 +6670,6 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 */
 	public List<MeetingBasicDetailsVO> locationWiseMeetingDetails(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,List<Long> locLevelIdList, Long state,String startDateString, String endDateString){
 		try{
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 			List<MeetingBasicDetailsVO> basicDetailsVOs = new ArrayList<MeetingBasicDetailsVO>();
 			MeetingBasicDetailsVO basicDetailsVO = null;
 			
@@ -7121,7 +7120,47 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			e.printStackTrace();
 		}
 	}
-	
+	public void createMeetingWiseInviteeAbsentMap(Map<Long,Set<Long>> totalInviteesMap,Map<Long,Set<Long>> totalInviteeAttendenceMap,Map<Long,Set<Long>> totalInviteeAbsentMap){
+		try{
+			if(totalInviteesMap != null && totalInviteesMap.size() > 0){
+				for(Entry<Long,Set<Long>> entry : totalInviteesMap.entrySet()){
+					Long meetingId = entry.getKey();
+					Set<Long> cadreList = entry.getValue();
+					if(cadreList != null && cadreList.size() > 0){
+						Set<Long> absentSet = new HashSet<Long>();
+						absentSet.addAll(cadreList);
+						if(totalInviteeAttendenceMap.get(meetingId) != null && totalInviteeAttendenceMap.get(meetingId).size() > 0){
+							absentSet.removeAll(totalInviteeAttendenceMap.get(meetingId));
+						}
+						totalInviteeAbsentMap.put(meetingId, absentSet);
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void createTotalMeetingWiseThenSessionWiseInviteeAbsentMap(Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap,Map<Long,Set<Long>> totalInviteesMap,Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAbsentMap){
+		try{
+			createDuplicateMap(totalMeetingWiseThenSessionWiseInviteeAbsentMap,totalMeetingWiseThenSessionWiseInviteeAttendenceMap);
+			if(totalMeetingWiseThenSessionWiseInviteeAbsentMap != null && totalMeetingWiseThenSessionWiseInviteeAbsentMap.size() > 0){
+				for(Entry<Long,Map<Long,Set<Long>>> outerEntry : totalMeetingWiseThenSessionWiseInviteeAbsentMap.entrySet()){
+					if(outerEntry.getValue() != null && outerEntry.getValue().size() > 0){
+						for(Entry<Long,Set<Long>> innerEntry : outerEntry.getValue().entrySet()){
+							if(innerEntry.getValue() != null && innerEntry.getValue().size() > 0){
+								Set<Long> inviteeList = totalInviteesMap.get(outerEntry.getKey());
+								inviteeList.removeAll((innerEntry.getValue()));
+								innerEntry.getValue().clear();
+								innerEntry.getValue().addAll(inviteeList);
+							}      
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();    
+		}
+	}
 	/*
 	 * Teja Kollu
 	 * @see com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService#getMeetingDtls(java.lang.Long,java.lang.Long, java.util.List, java.lang.String, java.lang.String, java.lang.String)
@@ -7286,7 +7325,323 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 		LOG.error("exception occurred in getCustomPartyMeetingsMainTypeOverViewData()", e);
 	 	}
 	 	return finalList;
-	   }      
+	}
+	/*
+	 * 
+	 * Swadhin K Lenka
+	 */
+	public List<List<MeetingDtlsVO>> getDistWiseMeetingDtlsForDiffLevelOfMeetings(Long activityMemberId, Long partyMeetingMainTypeId, Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId){
+		try{
+			List<List<MeetingDtlsVO>> lists = new ArrayList<List<MeetingDtlsVO>>();
+			Set<Long> locationValuesSet = new java.util.HashSet<Long>();  
+			Long locationId = 0L;
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			   }
+		    } 
+			List<Long> mainMeetingIdsList = new ArrayList<Long>();
+			mainMeetingIdsList.add(partyMeetingMainTypeId);
+		    List<Object[]> meetingTypeIdsList = null;
+			if(mainMeetingIdsList != null && mainMeetingIdsList.size() > 0){
+				meetingTypeIdsList = partyMeetingTypeDAO.getPartyMeetingTypeIds(mainMeetingIdsList);
+			}
+			List<Long> meetingTypeIds = new ArrayList<Long>();
+		    if(meetingTypeIdsList != null && meetingTypeIdsList.size() > 0){
+		    	for(Object[] param : meetingTypeIdsList){
+		    		meetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+		    	}
+		    }  
+			
+			PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+			inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+			inputVO.setPartyMeetingGroupId(partyMeetingGroupId);
+			inputVO.setPartyMeetingTypeIds(meetingTypeIds);
+			List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+			inputVO.setStartDate(datesList.get(0));
+			inputVO.setEndDate(datesList.get(1));
+			inputVO.setStateId(stateId);
+			
+			List<Long> locLevelIdList = null;
+			String location = "";
+			if(locLevelId.longValue() == 2L){
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(2l);
+				location = "District";
+			}else if(locLevelId.longValue() == 3L){
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(3l);
+				location = "Constituency";
+			}else if(locLevelId.longValue() == 4L){
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(4l);
+				locLevelIdList.add(5l);
+				locLevelIdList.add(6l);
+				location = "Mandal/Town/Division";
+			}else if(locLevelId.longValue() == 7L){
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(7l);
+				locLevelIdList.add(8l);
+				location = "Village/Ward";
+			}else{
+				
+			}
+			List<MeetingDtlsVO> meetingDtlsVOs = null;
+			Map<Long,List<MeetingDtlsVO>> LocLvlIdAndLocDtlsMap = new HashMap<Long,List<MeetingDtlsVO>>();
+			List<Object[]> inviteeCadreList = partyMeetingInviteeDAO.meetingWiseInviteeCadreListForLevelWise(inputVO,locationId,locationValuesSet,locLevelIdList);
+			List<Object[]> attendedCadreList = partyMeetingAttendanceDAO.getAttendedCadresMeetingWiseForLevel(inputVO,locationId,locationValuesSet,locLevelIdList);
+			List<Object[]> duplicateInviteeCadreList = null;
+			List<Object[]> duplicateAttendedCadreList = null;
+			if(locLevelId.longValue() > 0L){
+				meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+				buildLevelWiseResponse(location,locLevelIdList,sessionId,inviteeCadreList,attendedCadreList,meetingDtlsVOs);
+				LocLvlIdAndLocDtlsMap.put(locLevelId, meetingDtlsVOs);
+			}else{
+				//for district
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(2l);
+				location = "District";
+				duplicateInviteeCadreList = new ArrayList<Object[]>();
+				duplicateAttendedCadreList = new ArrayList<Object[]>();
+				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
+				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
+					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					LocLvlIdAndLocDtlsMap.put(2L, meetingDtlsVOs);
+				}
+				
+				//for constituency 
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(3l);
+				location = "Constituency";
+				duplicateInviteeCadreList = new ArrayList<Object[]>();
+				duplicateAttendedCadreList = new ArrayList<Object[]>();
+				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
+				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
+					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					LocLvlIdAndLocDtlsMap.put(3L, meetingDtlsVOs);  
+				}
+				
+				//for Mandal, town, division
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(4l);
+				locLevelIdList.add(5l);
+				locLevelIdList.add(6l);
+				location = "Mandal/Town/Division";
+				duplicateInviteeCadreList = new ArrayList<Object[]>();
+				duplicateAttendedCadreList = new ArrayList<Object[]>();
+				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
+				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
+					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					LocLvlIdAndLocDtlsMap.put(4L, meetingDtlsVOs);  
+				}
+				
+				//for village, ward
+				locLevelIdList = new ArrayList<Long>();
+				locLevelIdList.add(7l);
+				locLevelIdList.add(8l);
+				location = "Village/Ward";
+				duplicateInviteeCadreList = new ArrayList<Object[]>();
+				duplicateAttendedCadreList = new ArrayList<Object[]>();
+				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
+				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
+					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					LocLvlIdAndLocDtlsMap.put(7L, meetingDtlsVOs);  
+				}
+				
+			}  
+			if(LocLvlIdAndLocDtlsMap != null && LocLvlIdAndLocDtlsMap.size() > 0){
+				lists.addAll(LocLvlIdAndLocDtlsMap.values());
+			}
+			return lists;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("exception occurred in getDistWiseMeetingDtlsForDiffLevelOfMeetings()", e);
+		}
+		return null;
+	}
+	public void filterDateBasedOnLocation(List<Object[]> inviteeCadreList,List<Object[]> attendedCadreList,List<Long> locLevelIdList,List<Object[]> duplicateInviteeCadreList,List<Object[]> duplicateAttendedCadreList){
+		try{
+			if(inviteeCadreList != null && inviteeCadreList.size() > 0){
+				for(Object[] param : inviteeCadreList){
+					if(locLevelIdList.contains(commonMethodsUtilService.getLongValueForObject(param[3]))){
+						duplicateInviteeCadreList.add(param);  
+					}
+				}
+			}
+			if(attendedCadreList != null && attendedCadreList.size() > 0){
+				for(Object[] param : attendedCadreList){
+					if(locLevelIdList.contains(commonMethodsUtilService.getLongValueForObject(param[8]))){
+						duplicateAttendedCadreList.add(param);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void buildLevelWiseResponse(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> inviteeCadreList, List<Object[]> attendedCadreList,List<MeetingDtlsVO> meetingDtlsVOs){
+		try{
+			Map<Long,Long> cadreIdAndDistIdMap = new HashMap<Long,Long>();
+			if(inviteeCadreList != null && inviteeCadreList.size() > 0){
+				for(Object[] param : inviteeCadreList){
+					cadreIdAndDistIdMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			if(attendedCadreList != null && attendedCadreList.size() > 0){
+				for(Object[] param : attendedCadreList){
+					cadreIdAndDistIdMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[7]));
+				}
+			}
+			
+			Map<Long,Set<Long>> totalAttendenceMap = new HashMap<Long,Set<Long>>();
+			Map<Long,Set<Long>> totalInviteesMap = new HashMap<Long,Set<Long>>();
+			Map<Long,Set<Long>> totalInviteeAttendenceMap = new HashMap<Long,Set<Long>>();
+			Map<Long,Set<Long>> totalInviteeAbsentMap = new HashMap<Long,Set<Long>>();
+			
+			
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAbsentMap = new HashMap<Long,Map<Long,Set<Long>>>();
+			Map<Long,Map<Long,Set<Long>>> totalMeetingWiseThenSessionWiseInviteeAttendenceMap = new HashMap<Long,Map<Long,Set<Long>>>();
+			
+			Set<Long> totalAttendedLeaders = new HashSet<Long>();
+			Set<Long> totalAbsentLeaders = new HashSet<Long>();
+			
+			if(sessionId.longValue() == 0L){//for all session
+				createMeetingWiseAttendenceMap(attendedCadreList, totalAttendenceMap);//totalAttendenceMap->meeting wise attended leader
+				if(totalAttendenceMap != null && totalAttendenceMap.size() > 0){
+					for(Entry<Long,Set<Long>> entry : totalAttendenceMap.entrySet()){
+						if(entry.getValue() != null && entry.getValue().size() > 0){
+							totalAttendedLeaders.addAll(entry.getValue());
+						}
+					}
+				}
+				createMeetingWiseInvitedMap(inviteeCadreList, totalInviteesMap);
+				createMeetingWiseInviteeAttendenceMap(totalInviteesMap, totalAttendenceMap, totalInviteeAttendenceMap);
+				createMeetingWiseInviteeAbsentMap(totalInviteesMap, totalInviteeAttendenceMap, totalInviteeAbsentMap);//totalInviteeAbsentMap->meeting wise absent leader
+				if(totalInviteeAbsentMap != null && totalInviteeAbsentMap.size() > 0){
+					for(Entry<Long,Set<Long>> entry : totalInviteeAbsentMap.entrySet()){
+						if(entry.getValue() != null && entry.getValue().size() > 0){
+							totalAbsentLeaders.addAll(entry.getValue());
+						}
+					}
+				}
+			}else{//for individual session
+				createTotalMeetingWiseThenSessionWiseAttendenceMap(attendedCadreList,totalMeetingWiseThenSessionWiseAttendenceMap);
+				if(totalMeetingWiseThenSessionWiseAttendenceMap != null && totalMeetingWiseThenSessionWiseAttendenceMap.size() > 0){
+					for(Entry<Long,Map<Long,Set<Long>>> entry : totalMeetingWiseThenSessionWiseAttendenceMap.entrySet()){
+						if(entry.getValue() != null && entry.getValue().size() > 0){
+							if(entry.getValue().get(sessionId) != null && entry.getValue().get(sessionId).size() > 0){
+								totalAttendedLeaders.addAll(entry.getValue().get(sessionId));
+							}
+						}
+					}
+				}
+				createMeetingWiseInvitedMap(inviteeCadreList, totalInviteesMap);
+				createTotalMeetingWiseThenSessionWiseInviteeAttendenceMap( totalMeetingWiseThenSessionWiseInviteeAttendenceMap, totalMeetingWiseThenSessionWiseAttendenceMap, totalInviteesMap);
+				createTotalMeetingWiseThenSessionWiseInviteeAbsentMap( totalMeetingWiseThenSessionWiseInviteeAttendenceMap, totalInviteesMap, totalMeetingWiseThenSessionWiseInviteeAbsentMap);
+				if(totalMeetingWiseThenSessionWiseInviteeAbsentMap != null && totalMeetingWiseThenSessionWiseInviteeAbsentMap.size() > 0){
+					for(Entry<Long,Map<Long,Set<Long>>> entry : totalMeetingWiseThenSessionWiseInviteeAbsentMap.entrySet()){
+						if(entry.getValue() != null && entry.getValue().size() > 0){
+							if(entry.getValue().get(sessionId) != null && entry.getValue().get(sessionId).size() > 0){
+								totalAbsentLeaders.addAll(entry.getValue().get(sessionId));
+							}
+						}
+					}
+				}
+			}
+			
+			
+			//DistrictId and DistrictId count map for total attended leaders
+			Map<Long,Long> distIdAndCountForAttendedMap = new HashMap<Long,Long>();
+			Long leaderCount = null;
+			if(totalAttendedLeaders != null && totalAttendedLeaders.size() > 0){
+				for(Long param : totalAttendedLeaders){
+					Long locId = cadreIdAndDistIdMap.get(param);
+					leaderCount = distIdAndCountForAttendedMap.get(locId);
+					if(leaderCount == null){
+						leaderCount = new Long(0);
+						distIdAndCountForAttendedMap.put(locId, leaderCount + 1);
+					}else{
+						distIdAndCountForAttendedMap.put(locId, distIdAndCountForAttendedMap.get(locId) + 1);
+					}	
+				}
+			}
+			
+			
+			//DistrictId and DistrictId count map for total invitee absent leaders
+			Map<Long,Long> distIdAndCountForAbsentMap = new HashMap<Long,Long>();
+			if(totalAbsentLeaders != null && totalAbsentLeaders.size() > 0){
+				for(Long param : totalAbsentLeaders){
+					Long locId = cadreIdAndDistIdMap.get(param);
+					leaderCount = distIdAndCountForAbsentMap.get(locId);
+					if(leaderCount == null){
+						leaderCount = new Long(0);
+						distIdAndCountForAbsentMap.put(locId, leaderCount + 1);
+					}else{
+						distIdAndCountForAbsentMap.put(locId, distIdAndCountForAbsentMap.get(locId) + 1);
+					}	
+				}
+			}
+			
+			//build Template for State.
+			MeetingDtlsVO dataVO = null;
+			Map<Long,MeetingDtlsVO> locIdAndLocDtlsMap = new HashMap<Long,MeetingDtlsVO>();
+			List<Object[]> distIdNameList = districtDAO.getDistrictDetailsByDistrictIds(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));  
+			if(distIdNameList != null && distIdNameList.size() > 0){  
+				for(Object[] param : distIdNameList){
+					dataVO = new MeetingDtlsVO();
+					dataVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					dataVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					dataVO.setName(location);
+					dataVO.setLocLevelIdList(locLevelIdList);  
+					locIdAndLocDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), dataVO);
+				}
+			}
+			
+			//push attended leader into template
+			if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+				for(Entry<Long,MeetingDtlsVO> entry : locIdAndLocDtlsMap.entrySet()){
+					Long leaderCnt = distIdAndCountForAttendedMap.get(entry.getKey());
+					if(leaderCnt == null){
+						entry.getValue().setAttendedCount(0L);
+					}else{
+						entry.getValue().setAttendedCount(leaderCnt);
+					}
+				}
+			}
+			
+			//push absent leader into template
+			
+			if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+				for(Entry<Long,MeetingDtlsVO> entry : locIdAndLocDtlsMap.entrySet()){
+					Long leaderCnt = distIdAndCountForAbsentMap.get(entry.getKey());
+					if(leaderCnt == null){
+						entry.getValue().setInviteAbsentCount(0L);
+					}else{
+						entry.getValue().setInviteAbsentCount(leaderCnt);
+					}
+				}
+			}
+			 
+			//List<MeetingDtlsVO> meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+			if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+				meetingDtlsVOs.addAll(locIdAndLocDtlsMap.values());
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId){
 		List<PartyMeetingsDataVO> returnList = new ArrayList<PartyMeetingsDataVO>();
 		try{
