@@ -16052,5 +16052,10 @@
 				<param name="root">listOfMeetingDtlsVOs</param>     
 			</result>
 		</action>
+		<action name="getCandidateLocationWiseDetailsAction" class="nominatedPostProfileAction"  method="getCandidateLocationWiseDetails">
+			<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

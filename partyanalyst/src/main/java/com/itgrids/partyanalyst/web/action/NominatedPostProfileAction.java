@@ -2025,7 +2025,18 @@ public String execute()
 			String gender = jObj.getString("gender");
 			Long stateId = jObj.getLong("stateId");
 			String searchType = jObj.getString("searchType");
-			idAndNameVOList = nominatedPostMainDashboardService.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType);
+			JSONArray statusIds = jObj.getJSONArray("postStatusIdsLst");
+			
+			List<Long> postStatusIds = new ArrayList<Long>(0);
+			if(statusIds !=null && statusIds.length()>0){
+				for (int i = 0; i < statusIds.length(); i++) {
+					Long locId = Long.valueOf(statusIds.get(i).toString());
+					postStatusIds.add(locId);
+				}
+			}
+			
+			idAndNameVOList = nominatedPostMainDashboardService.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,
+					ageRangeId,positionId,gender,stateId,searchType,postStatusIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2054,10 +2065,18 @@ public String execute()
 					locIdsList.add(locId);
 				}
 			}
+			JSONArray statusIds = jObj.getJSONArray("postStatusIdsLst");
 			
+			List<Long> postStatusIds = new ArrayList<Long>(0);
+			if(statusIds !=null && statusIds.length()>0){
+				for (int i = 0; i < statusIds.length(); i++) {
+					Long locId = Long.valueOf(statusIds.get(i).toString());
+					postStatusIds.add(locId);
+				}
+			}
 			String dataType = jObj.getString("dataType");
 			
-			nominatedPostDashboardvoList = nominatedPostMainDashboardService.getLocationAndBoardLevelWiseCasteCatgryPostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,locIdsList,dataType);
+			nominatedPostDashboardvoList = nominatedPostMainDashboardService.getLocationAndBoardLevelWiseCasteCatgryPostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,locIdsList,dataType,postStatusIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2092,5 +2111,46 @@ public String execute()
 	
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getCandidateLocationWiseDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long postLevelId = jObj.getLong("postLevelId");
+			Long casteGrpId = jObj.getLong("casteGrpId");
+			Long casteId = jObj.getLong("casteId");
+			Long ageRangeId = jObj.getLong("ageRangeId");
+			Long positionId = jObj.getLong("positionId");
+			String gender = jObj.getString("gender");
+			Long stateId = jObj.getLong("stateId");
+			String searchType = jObj.getString("searchType");
+			
+			JSONArray locIdsArry = jObj.getJSONArray("locationIdsList");
+			
+			List<Long> locIdsList = new ArrayList<Long>(0);
+			if(locIdsArry !=null && locIdsArry.length()>0){
+				for (int i = 0; i < locIdsArry.length(); i++) {
+					Long locId = Long.valueOf(locIdsArry.get(i).toString());
+					locIdsList.add(locId);
+				}
+			}
+			JSONArray statusIds = jObj.getJSONArray("postStatusIdsLst");
+			
+			List<Long> postStatusIds = new ArrayList<Long>(0);
+			if(statusIds !=null && statusIds.length()>0){
+				for (int i = 0; i < statusIds.length(); i++) {
+					Long locId = Long.valueOf(statusIds.get(i).toString());
+					postStatusIds.add(locId);
+				}
+			}
+			String casteCatgNm = jObj.getString("casteCatgNm");
+			
+			idNameVOList = nominatedPostMainDashboardService.getCandidateLocationWiseDetails(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,locIdsList,postStatusIds,casteCatgNm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Entered into getLocationAndBoardLevelWiseCasteCatgryPostsData method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
 	}
 }

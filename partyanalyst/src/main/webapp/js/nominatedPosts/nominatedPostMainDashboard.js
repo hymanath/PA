@@ -288,10 +288,10 @@ $(document).on("click",".casteGroupCls",function(){
 			if(result != null && result.length > 0){
 				buildPositionTabMenu(result);
 				for(var i in result){
-					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#candPositonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					$('#positonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
-				$("#positionId").trigger("chosen:updated");
+				$("#candPositonId").trigger("chosen:updated");
 				$("#positonId").trigger("chosen:updated");
 			}
 		});
@@ -2098,16 +2098,21 @@ function getLocationAndBoardLevelWisePostsData(){
     $("#loctnLvlCntId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
   //var searchType = $('#geoViewType').val();
   var searchType  = $('input[name=checkBoxName]:checked').val();
-
+if($("#positionStatusId").val() == 0){
+ var postStatusIdsLst = [3,6,5,7];
+}else{
+ var postStatusIdsLst = [$("#positionStatusId").val()];
+}
   var jsObj={
         postLevelId : $('#locationsLevelId').val(),
 		casteGrpId   :$('#casteGroupId').val(),
 		casteId      : 0,
 		ageRangeId:0,
-		positionId:$('#positionId').val(),
+		positionId:$('#candPositonId').val(),
 		gender:0,
 		stateId:globalStateId,
-		searchType:searchType
+		searchType:searchType,
+		postStatusIdsLst:postStatusIdsLst
     
       };
       $.ajax({
@@ -2161,13 +2166,13 @@ function getLocationAndBoardLevelWisePostsData(){
 		for(var k in result[i].distList){	
 			total = total+result[i].distList[k].tsTotal;
 		 }
-		str+='<td  attr_location_id ='+result[i].id+' class="" style="text-align:center" attr_location_name =\''+result[i].name+'\'>'+total+'</td>';
+		str+='<td  attr_location_id ='+result[i].id+' class="" style="text-align:center" attr_location_name =\''+result[i].name+'\' style="text-align:center;color:green;cursor:pointer;" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="0" attr_caste_categry_name="" attr_loc_id="'+result[i].id+'">'+total+'</td>';
 		totalCount = totalCount+total;
         for(var j in result[i].distList){
 			if(distList[j].tsTotal == 0){
             str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style="text-align:center"  attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';			
           }else{
-            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="castePstnCls" style="text-align:center" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="candidateLocCls" style="text-align:center;color:green;cursor:pointer;" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\' attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="0" attr_caste_categry_name="" attr_loc_id="'+result[i].id+'" attr_post_level_id="'+result[i].distList[i].id+'"><u>'+distList[j].tsTotal+'</u></td>';
 			if(result[i].distList[j].id == "1"){
 				centralCount = centralCount+distList[j].tsTotal;
 			  }
@@ -2194,13 +2199,13 @@ function getLocationAndBoardLevelWisePostsData(){
     }
 	  str+='</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
 	  str += '<td style="text-align:center">Total</td>';
-	  str += '<td style="text-align:center">'+totalCount+'</td>';
-	  str += '<td style="text-align:center" >'+centralCount+'</td>';
-	  str += '<td style="text-align:center" >'+stateCount+'</td>';
-      str += '<td style="text-align:center" >'+districtCount+'</td>';
-      str += '<td style="text-align:center" >'+assemblyCount+'</td>';  	  
-	  str += '<td style="text-align:center" >'+mandalCorpCount+'</td>';
-	  str += '<td style="text-align:center" >'+villageCount+'</td>';
+	  str += '<td  class="" style="text-align:center;"><u>'+totalCount+'</u></td>';
+	  str += '<td  class="" style="text-align:center;" ><u>'+centralCount+'</u></td>';
+	  str += '<td class="" style="text-align:center;"><u>'+stateCount+'</u></td>';
+      str += '<td  class="" style="text-align:center;"><u>'+districtCount+'</u></td>';
+      str += '<td  class="" style="text-align:center;"><u>'+assemblyCount+'</u></td>';  	  
+	  str += '<td  class="" style="text-align:center;"><u>'+mandalCorpCount+'</u></td>';
+	  str += '<td  class="" style="text-align:center;"><u>'+villageCount+'</u></td>';
       str += '</tr></tfoot>';
     str+='</table>';
         str+='</div>';
@@ -2211,7 +2216,7 @@ function getLocationAndBoardLevelWisePostsData(){
 			$("#tableschrollId1").mCustomScrollbar({setHeight: '440px'});  
 		} */
  }
- $(document).on("change","#positonId",function(){
+ $(document).on("change","#candPositonId",function(){
 	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
 		if(searchType1 == "1" ){
 			getLocationAndBoardLevelWisePostsData();
@@ -2294,7 +2299,12 @@ $(document).on("click",".radioBtnCls",function(){
 	  if(distIdArr == null){
 		  distIdArr = [];
 	  }
-	  
+	  if($("#positionStatusId").val() == 0){
+ var postStatusIdsLst = [3,6,5,7];
+}else{
+ var postStatusIdsLst = [$("#positionStatusId").val()];
+}
+	  var positionId = $("#candPositonId").val();
 	 var searchType1  = $('input[name=checkBoxName1]:checked').val();
 	 if(searchType1 == "2" ){
 		 var subType  = $('input[name=checkBoxName]:checked').val();	     
@@ -2312,15 +2322,16 @@ $(document).on("click",".radioBtnCls",function(){
 	 }
     $("#loctnLvlCntId1").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');      
   var jObj ={
-        postLevelId : 0,
+        postLevelId :  $("#locationsLevelId").val(),
 		casteGrpId   :0,
 		casteId      : 0,
 		ageRangeId:0,
-		positionId:0,
+		positionId:positionId,
 		gender:0,
 		stateId:globalStateId,
 		searchType:subType,
 		locationIdsList :distIdArr,
+		postStatusIdsLst : postStatusIdsLst,
 		dataType:"casteCategory"
 		
     
@@ -2355,7 +2366,7 @@ $(document).on("click",".radioBtnCls",function(){
 				if(result[0].positinsList[0].applicatnStatsList[i].statusName == 'Total')
 					str+='<th colspan="3"> Total </th>'
 				else
-					str+='<th colspan="2">'+result[0].positinsList[0].applicatnStatsList[i].statusName+'</th>'
+					str+='<th colspan="2" >'+result[0].positinsList[0].applicatnStatsList[i].statusName+'</th>'
 			}
 		}
 		str+='</tr>';
@@ -2389,31 +2400,31 @@ $(document).on("click",".radioBtnCls",function(){
 						//
 						if(result[i].positinsList[k].applicatnStatsList[j].statusName == 'Total'){ 
 							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
-								str+='<td class="" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" style="">'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</td>';
+								str+='<td class="" >'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</td>';
 							}else{
-								str+='<td class="" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" style="">'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</td>';
+								str+='<td class="candidateLocCls" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].positinsList[k].id+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" style="color:green;cursor:pointer;" attr_loc_id="'+result[i].statusId+'" attr_post_level_id="0" ><u>'+result[i].positinsList[k].applicatnStatsList[j].statusCount+'</u></td>';
 							}
 							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
-								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+								str+='<td class="" >'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
 							}else{
-								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+								str+='<td class="candidateLocCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].id+'" attr_age_range_id="0" style="color:green;cursor:pointer;" attr_loc_id="'+result[i].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" attr_post_level_id="0" ><u>'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</u></td>';
 							}
 							if(result[i].positinsList[k].applicatnStatsList[j].statusCount == 0){
-								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+								str+='<td class="" >'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
 							}else{
-								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id="0" style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+								str+='<td class="candidateLocCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].id+'" attr_age_range_id="0" style="color:green;cursor:pointer;" attr_loc_id="'+result[i].statusId+'" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" attr_post_level_id="0" ><u>'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</u></td>';
 							}
 						}
 						else{
 							if(result[i].positinsList[k].applicatnStatsList[j].maleCount == 0){
-								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+								str+='<td class=""  >'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
 							}else{
-								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</td>';
+								str+='<td class="candidateLocCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].positinsList[k].id+'" attr_loc_id="'+result[i].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="color:green;cursor:pointer;" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" attr_post_level_id="0" ><u>'+result[i].positinsList[k].applicatnStatsList[j].maleCount+'</u></td>';
 							}
 							if(result[i].positinsList[k].applicatnStatsList[j].femaleCount == 0){
-								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+								str+='<td class=""  >'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
 							}else{
-								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].statusId+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="">'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</td>';
+								str+='<td class="candidateLocCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].positinsList[k].id+'" attr_age_range_id='+result[i].positinsList[k].applicatnStatsList[j].statusId+' style="color:green;cursor:pointer;" attr_caste_categry_name="'+result[i].positinsList[k].statusName+'" attr_loc_id="'+result[i].statusId+'" attr_post_level_id="0" ><u>'+result[i].positinsList[k].applicatnStatsList[j].femaleCount+'</u></td>';
 							}
 						}
 					}
@@ -2542,6 +2553,69 @@ $(document).on("click",".radioBtnCls",function(){
 	  } 
  });
   }
+  
+  $(document).on("click",".candidateLocCls",function(){
+	var distIdArr = [];
+	var subType  = $('input[name=checkBoxName]:checked').val();	     
+	 distIdArr.push($(this).attr("attr_loc_id"));
+
+	if($("#positionStatusId").val() == 0)
+	{
+		var postStatusIdsLst = [3,6,5,7];
+	}else{
+		var postStatusIdsLst = [$("#positionStatusId").val()];
+	}
+	  var positionId = $("#candPositonId").val();
+	  var positionName = $("#candPositonId option:selected").text().toUpperCase();      
+  
+        var  postLevelId = $("#locationsLevelId").val();
+		var casteGrpId = 0;
+		if($(this).attr("attr_cstGrup_id") == 'null'){
+			casteGrpId  = 0;
+		}else{
+			casteGrpId  = $(this).attr("attr_cstGrup_id");
+		}
+		var casteId      = 0;
+		var  ageRangeId=$(this).attr("attr_age_range_id");
+		var gender=$(this).attr("attr_gender_type");
+		var stateId=globalStateId;
+		var casteCatgNm = $(this).attr("attr_caste_categry_name");
+		var boardLevel = $("#locationsLevelId option:selected").text().toUpperCase();
+getCandidateLocationWiseDetails(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,subType,distIdArr,postStatusIdsLst,casteCatgNm);
+$(".modelHeading").html("");
+$(".modelHeading").html(boardLevel+ " " +casteCatgNm+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
+$("#nominatedPostCandidateDetailsId").html("");
+$("#nominatedCandadteModalId").modal("show");
+});
+
+function getCandidateLocationWiseDetails(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,locationIdsList,postStatusIdsLst,casteCatgNm){
+	$("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
+	var jObj ={
+          postLevelId :postLevelId,
+		 casteGrpId :casteGrpId,
+		 casteId     :casteId,
+		  ageRangeId:ageRangeId,
+		 positionId:positionId,
+		 gender:gender,
+		 stateId:stateId,
+		 searchType:searchType,
+		 locationIdsList :locationIdsList,
+		 postStatusIdsLst :postStatusIdsLst,
+		 casteCatgNm:casteCatgNm
+	};
+	 $.ajax({
+          type:'GET',
+          url: 'getCandidateLocationWiseDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jObj)}
+   }).done(function(result){
+	   if(result != null){
+    		  buildNominatedCandidateDetails(result)
+    	  }else {
+			  $("#nominatedPostCandidateDetailsId").html('No Data AVailabale');
+		  }
+   });
+}
 $(document).on('change','#districtSelectBoxId',function(){    
 	var distIdArr=[];
    $('#distcsLevelId :selected').each(function(){
