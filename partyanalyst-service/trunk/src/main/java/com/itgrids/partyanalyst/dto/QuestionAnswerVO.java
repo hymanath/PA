@@ -36,8 +36,17 @@ public class QuestionAnswerVO implements Serializable {
 	private Long candidateId;
 	private String startDate;
 	private String endDate;
+	private Long locationScopeId;
 
 	
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+
 	public String getStartDate() {
 		return startDate;
 	}
