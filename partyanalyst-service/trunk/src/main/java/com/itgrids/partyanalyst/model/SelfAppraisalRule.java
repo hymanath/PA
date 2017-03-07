@@ -17,6 +17,7 @@ public class SelfAppraisalRule {
 
 	private Long selfAppraisalRuleId;
 	private String ruleName;
+	private String isActive;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -33,6 +34,13 @@ public class SelfAppraisalRule {
 	}
 	public void setRuleName(String ruleName) {
 		this.ruleName = ruleName;
+	}
+	@Column(name = "is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 	
