@@ -513,7 +513,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="row">
 					<div class="span12" >
 						<label>
-						<strong>Youtube : </strong>
+						<strong>Youtube URL : </strong>
 						</label>
 						<input type="text" Class="selectWidth span12" id="youtubeUrl"/>
 					</div>
