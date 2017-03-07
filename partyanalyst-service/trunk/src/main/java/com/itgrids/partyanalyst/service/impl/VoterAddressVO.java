@@ -9,11 +9,21 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 public class VoterAddressVO implements Serializable{
      
 	private Long districtId;
+	private String districtName;
+	private Long parliamentId;
+	private String parliamentName;
 	private Long constituencyId;
+	private String constituencyName;
 	private Long tehsilId;
+	private String tehsilName;
 	private Long localElectionBodyId;
+	private String localElectionBodyName;
 	private Long villageId;
+	private String villageName;
 	private Long wardId;
+	private String wardName;
+	private Long boothId;
+	private String boothName;
 	private List<IdNameVO> constList;
 	private List<LocationWiseBoothDetailsVO> tehLebDivList;
 	private List<LocationWiseBoothDetailsVO> villWardList;
@@ -24,6 +34,66 @@ public class VoterAddressVO implements Serializable{
 	
 	private Long locationScopeId;
 	
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	public String getLocalElectionBodyName() {
+		return localElectionBodyName;
+	}
+	public void setLocalElectionBodyName(String localElectionBodyName) {
+		this.localElectionBodyName = localElectionBodyName;
+	}
+	public String getVillageName() {
+		return villageName;
+	}
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
+	public String getBoothName() {
+		return boothName;
+	}
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
 	public String getHouseNo() {
 		return houseNo;
 	}
