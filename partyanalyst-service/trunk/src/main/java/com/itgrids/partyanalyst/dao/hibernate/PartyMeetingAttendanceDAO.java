@@ -1098,4 +1098,86 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	}
     	return query.list();  
 	}
+	public List<Object[]> getAttendedCadresMeetingWiseForLevel(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList){  
+		StringBuilder queryStr = new StringBuilder();   
+		queryStr.append(" select " +
+				" model.partyMeeting.partyMeetingId, " +
+				" model.partyMeeting.meetingName, " +
+				" model.partyMeetingSession.sessionType.sessionTypeId, " +
+				" model.attendance.tdpCadre.tdpCadreId, " +
+				" model.attendance.attendedTime, " +
+				" date(model.attendance.attendedTime), " +
+				" min(time(model.attendance.attendedTime)), " +
+				" model.attendance.tdpCadre.userAddress.district.districtId, " +
+				" model.partyMeeting.partyMeetingLevelId" +
+				" from " +
+				" PartyMeetingAttendance model, PartyMeetingGroupsMappingInfo model2 " +
+				" where " +
+				" model.attendance.tdpCadre.isDeleted = 'N' " +
+				" and model.partyMeeting.isActive = 'Y' " +
+				" and model.partyMeetingSession.isDeleted = 'N' " +
+				" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId ");
+		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
+    	}  
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) " );
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
+    		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
+    	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0L){
+    		queryStr.append(" and model2.partyMeetingGroup.partyMeetingGroupId = :partyMeetingGroupId ");
+    	}
+    	if(locLevelIdList != null && locLevelIdList.size() > 0){
+    		queryStr.append(" and model.partyMeeting.partyMeetingLevelId in (:locLevelIdList) ");
+    	}
+    	if(inputVO.getStateId().longValue() == 1L){
+    		queryStr.append(" and model.attendance.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
+    	}else if(inputVO.getStateId().longValue() == 36L){
+    		queryStr.append(" and model.attendance.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+    	}    
+		queryStr.append(" group by model.partyMeeting.partyMeetingId,model.partyMeetingSession.sessionType.sessionTypeId,model.attendance.tdpCadre.tdpCadreId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+    	
+    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
+    		query.setParameter("partyMeetingMainTypeId", inputVO.getPartyMeetingMainTypeId());
+    	}
+    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
+    		query.setParameterList("partyMeetingTypeIdList", inputVO.getPartyMeetingTypeIds());
+    	}
+    	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+    		query.setDate("startDate",inputVO.getStartDate());
+    		query.setDate("endDate",inputVO.getEndDate());
+    	}
+    	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
+    		query.setParameter("stateId", inputVO.getStateId());
+    	}
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
+    		query.setParameterList("locationValuesSet",locationValuesSet);
+    	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0L){
+    		query.setParameter("partyMeetingGroupId", inputVO.getPartyMeetingGroupId());
+    	} 
+    	if(locLevelIdList != null && locLevelIdList.size() > 0){
+    		query.setParameterList("locLevelIdList",locLevelIdList);
+    	}
+    	return query.list();
+	}
 }
