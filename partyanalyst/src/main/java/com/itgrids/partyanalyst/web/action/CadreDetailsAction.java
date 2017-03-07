@@ -1355,8 +1355,16 @@ public String updateLeaderShip(){
 			jObj=new JSONObject(getTask());
 			Long candidateId=jObj.getLong("candidateId");
 			Long cadreId = jObj.getLong("cadreId");
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long mandalId = jObj.getLong("mandalId");
+			Long lebId = jObj.getLong("lebId");
+			Long panchayatId = jObj.getLong("panchayatId");
+			Long wardId = jObj.getLong("wardId");
 			
-			finalList=cadreDetailsService.getSurveysOnCandidateDetails(candidateId,cadreId);
+			//finalList=cadreDetailsService.getSurveysOnCandidateDetails(candidateId,cadreId);
+			finalList = cadreDetailsService.getSurveysOnCandidateDetailsNew(candidateId, cadreId, stateId, districtId, constituencyId, mandalId, lebId, panchayatId, wardId);
 		}catch(Exception e){
 			LOG.error("Exception Occured in getSurveysOnCandidateDetails() in CadreDetailsAction ",e);
 		}
