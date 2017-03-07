@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingDtlsVO implements Serializable {
@@ -18,6 +19,7 @@ public class MeetingDtlsVO implements Serializable {
 	private List<String> sessionList;
 	private Long meetingId;
 	private Long sessionId;
+	private List<Long> locLevelIdList = new ArrayList<Long>();
 	public Long getLocationId() {
 		return locationId;
 	}
@@ -95,6 +97,12 @@ public class MeetingDtlsVO implements Serializable {
 	}
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
+	}
+	public List<Long> getLocLevelIdList() {
+		return locLevelIdList;
+	}
+	public void setLocLevelIdList(List<Long> locLevelIdList) {
+		this.locLevelIdList = locLevelIdList;
 	}
 	
 }

@@ -17,6 +17,7 @@ public class PartyMeetingsInputVO implements Serializable{
 	private Long partyMeetingId;
 	private String category = "";
 	private String status;
+	private Long partyMeetingGroupId;
 	private List<Long> categoryIdList = new ArrayList<Long>();
 	public Long getPartyMeetingMainTypeId() {
 		return partyMeetingMainTypeId;
@@ -84,6 +85,10 @@ public class PartyMeetingsInputVO implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+	public Long getPartyMeetingGroupId() {
+		return partyMeetingGroupId;
+	}
+	public void setPartyMeetingGroupId(Long partyMeetingGroupId) {
+		this.partyMeetingGroupId = partyMeetingGroupId;
+	}
 }
