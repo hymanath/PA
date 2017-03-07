@@ -8283,30 +8283,86 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		}
 	}
 	
+	/**
+	 * @Author: Srishailam Pittala
+	 * @description : to get cadre wise designation details for tdpcadreidsList
+	 * @param tdpCadreIdsList
+	 * @return Map<Long,String>
+	 */
+	
+	public Map<Long,String> getCadreRolesDetailsByTdpCadreIdsList(List<Long> tdpCadreIdsList,String searchType){
+		Map<Long,String> partyPostMap = new LinkedHashMap<Long, String>();
+		try {
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size() >0){
+
+				if(searchType != null && searchType.equalsIgnoreCase("All") || searchType != null && searchType.equalsIgnoreCase("GOVT_Designation")){
+				      List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(tdpCadreIdsList);
+				       if(commonMethodsUtilService.isListOrSetValid(partyPositionDetails)){
+				         for (Object[] obj : partyPositionDetails) {
+				           
+				           String level = obj[0] != null ? obj[0].toString() : "" ;
+				           String role = obj[1] != null ? obj[1].toString() : "";
+				           Long cadreId = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+				           String state = commonMethodsUtilService.getStringValueForObject(obj[6]);
+				           String commiteestr = obj[2] != null ? obj[2].toString() : "";
+				           if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+				           {
+				             level = state+" "+level;
+				           }
+				           String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+				           partyPostMap.put(cadreId, partyPositionStr);
+				        }
+				      }	
+				       if(searchType != null && searchType.equalsIgnoreCase("GOVT_Designation"))
+				    	   return partyPostMap;
+				}
+				
+				if(searchType != null && searchType.equalsIgnoreCase("All") || searchType != null && searchType.equalsIgnoreCase("Party_Designation")){
+					 List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(tdpCadreIdsList);
+				      if(commonMethodsUtilService.isListOrSetValid(publicRepDertails)){
+				        for(Object[] obj:publicRepDertails){
+				          Long cadrePositionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				          String positiontype = obj[2] != null ? obj[2].toString():"";
+				          String position = partyPostMap.get(cadrePositionId);
+				          if(position != null && position.trim().length() > 0l){
+				            position = position+" , "+positiontype;
+				          }
+				          else{
+				            position = positiontype;
+				          }
+				          partyPostMap.put(cadrePositionId, position);
+				        }
+				      }
+				      
+				      if(searchType != null && searchType.equalsIgnoreCase("Party_Designation"))
+				    	  return partyPostMap;
+				}
+		    } 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreRolesDetailsByTdpCadreIdsList", e);
+		}
+		return partyPostMap;
+	}
 	public CadrePerformanceVO getCadrePeoplePerformanceDetails(List<Long> tdpCadreIdsList){
 		CadrePerformanceVO returnVO = new CadrePerformanceVO();
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(tdpCadreIdsList)){
 				Map<Long,CadreBasicPerformaceVO> cadreBasicMap =  cadreDetailsService.getCadreCasteDetailsByTdpCadreIds(tdpCadreIdsList);
 				Map<Long,CadrePerformanceVO> cadresMap =  new HashMap<Long, CadrePerformanceVO>(0);
+				Map<Long,String> cadreGovtDesigntionsMap = getCadreRolesDetailsByTdpCadreIdsList(tdpCadreIdsList,"GOVT_Designation");
+				Map<Long,String> cadrePartyDesigntionsMap = getCadreRolesDetailsByTdpCadreIdsList(tdpCadreIdsList,"Party_Designation");
+				
 				if(commonMethodsUtilService.isMapValid(cadreBasicMap)){
 					for (Long cadreId : cadreBasicMap.keySet()) {
 						CadrePerformanceVO cadreVO = new CadrePerformanceVO();
 						cadreVO.setCadreBasicPerformaceVO(cadreBasicMap.get(cadreId));
+						cadreVO.getCadreBasicPerformaceVO().setDesignation(cadreGovtDesigntionsMap.get(cadreId));
+						cadreVO.getCadreBasicPerformaceVO().setPartyPosition(cadrePartyDesigntionsMap.get(cadreId));
+						
+						CadreStatsVO electionVO = new CadreStatsVO();
+						electionVO.setSubList(cadreVO.getCadreBasicPerformaceVO().getCadreStatsVOList());
+						cadreVO.setCadreStatsVO(electionVO);
 						cadresMap.put(cadreId, cadreVO);
-					}
-					
-					Map<Long,List<CadreStatsVO>> cadreElectionMap = cadreDetailsService.getElectionPerformanceDetailsForCadreLocations(tdpCadreIdsList);
-					Map<Long,List<CadreStatsVO>> cadreMemberShipMap = cadreDetailsService.getTotalMemberShipRegsInCadresLocations(tdpCadreIdsList);
-					if(commonMethodsUtilService.isMapValid(cadreElectionMap)){
-						for (Long cadreid : cadreElectionMap.keySet()) {
-							CadrePerformanceVO vo = cadresMap.get(cadreid);
-							
-							CadreStatsVO electionVO = new CadreStatsVO();
-							electionVO.getSubList().addAll(cadreElectionMap.get(cadreid));
-							electionVO.getSubList().addAll(cadreMemberShipMap.get(cadreid));
-							vo.setCadreStatsVO(electionVO);
-						}
 					}
 					
 					Map<Long, List<CadreEventsVO>> eventsMap =  getCadresEventsSummary(tdpCadreIdsList);
