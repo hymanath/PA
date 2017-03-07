@@ -1187,6 +1187,11 @@
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalProgram</value>
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalDesignationProgramTarget</value>
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateProgramDetails</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalRule</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalRuleProgram</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalProgramDesignationRule</value>
+	                   
+	                   
 	              </list>
 			
 		</property>

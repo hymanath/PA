@@ -3791,8 +3791,18 @@
     <bean id="electionResultInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionResultInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-    
     <bean id="tdpCadreRegistraionInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreRegistraionInfoDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="selfAppraisalRuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalRuleDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="selfAppraisalRuleProgramDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalRuleProgramDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+     <bean id="selfAppraisalProgramDesignationRuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalProgramDesignationRuleDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    
 </beans>		
