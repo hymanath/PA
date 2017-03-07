@@ -421,7 +421,7 @@
                     </div>
 					<div class="col-md-2 col-sm-4 col-xs-12 m_top10 geoGraphicOverHideShow">
                     	<label>Position</label>
-                        <select class="chosenSelect" id="positonId">
+                        <select class="chosenSelect" id="candPositonId">
                         	<option value="0">ALL</option>
                         </select>
                     </div>
