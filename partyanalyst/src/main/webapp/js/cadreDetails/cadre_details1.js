@@ -258,11 +258,41 @@ function getIVRSurveysOnCandidateDetails()
 {
 	$("#ivrTypeDetailsDivId").html("");
 	$('.ivrSurveyCandtDetailsCls').html("");
-	
 	$("#ivrDetailsBodyId").html("");
+	
+	var ivrStateId = $("#cadreStateId").val();
+	var ivrDistrictId = $("#cadreDistrictId").val();
+	var ivrConstituencyId = $("#cadreConstituencyId").val();
+	var ivrMandalId = $("#cadremandalId").val();
+	var ivrLebId = $("#cadreRuralORUrbanId").val();
+	var ivrPanchayatId = $("#cadrePanchaytId").val();
+	var ivrWardId = $("#cadreWardId").val();
+	
+	if(ivrStateId == "")
+		ivrStateId = 0;
+	if(ivrDistrictId == "")
+		ivrDistrictId = 0;
+	if(ivrConstituencyId == "")
+		ivrConstituencyId = 0;
+	if(ivrMandalId == "")
+		ivrMandalId = 0;
+	if(ivrLebId == "")
+		ivrLebId = 0;
+	if(ivrPanchayatId == "")
+		ivrPanchayatId = 0;
+	if(ivrWardId == "")
+		ivrWardId = 0;
+	
 	var jsObj={
 			candidateId:globalCandidateId,
 			cadreId : memberCadreId,
+			stateId : ivrStateId,
+			districtId : ivrDistrictId,
+			constituencyId : ivrConstituencyId,
+			mandalId : ivrMandalId,
+			lebId : ivrLebId,
+			panchayatId : ivrPanchayatId,
+			wardId : ivrWardId,
 			task:""
 	}
 	$('#ivrsurveyDataLoadoing').show();
@@ -272,9 +302,72 @@ function getIVRSurveysOnCandidateDetails()
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
 		$('#ivrsurveyDataLoadoing').hide();
-		buildSurveysOnCandidateDetails(result);
+		buildSurveysOnCandidateDetailsNew(result);
 	});
 }
+
+function buildSurveysOnCandidateDetailsNew(result){
+	
+	var str = '';
+	if(result != null && result.length >0){
+	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+			for(var i in result){
+				
+			 str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+							str+='<h4 class="panel-title">';
+								str+=''+result[i].name+'';
+							str+='</h4>';
+						str+='</a>';
+					str+='</div>';
+					
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+						str+='<div class="panel-body">';
+						str+='<div class="table-responsive">';
+				for(var j in result[i].questions)
+					{
+						var count = parseInt(result[i].questions[j].options.length)+parseInt(1);
+						str+='<table class="table table-bordered">';
+						str+='<tr><td colspan="'+count+'" style="text-weight:bold">'+result[i].questions[j].name+'</td></tr>';
+						str+='<b><tr>';
+							str+='<td>Level</td>';
+							for(var k in result[i].questions[j].options){
+								str+='<td>'+result[i].questions[j].options[k].name+'</td>';
+							}
+						str+='</tr></b>';
+						str+='<tr>';
+							str+='<td>'+result[i].questions[j].remarks+'</td>';
+							for(var k in result[i].questions[j].options){
+								str+='<td>'+result[i].questions[j].options[k].count+' ('+result[i].questions[j].options[k].percentage+'%)</td>';
+							}
+						str+='</tr>';
+						/*str+='<b><tr><td>Option</td><td>Count</td><td>Percentage</td></tr></b>';
+						for(var k in result[i].questions[j].options){
+							str+='<tr>';
+								str+='<td>'+result[i].questions[j].options[k].name+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].count+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].percentage+'</td>';
+							str+='</tr>';
+						}*/
+						
+						str+='</table>';
+					}
+						str+='</div>';
+					 str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+			
+			}
+			str+='</div>';
+			$('.ivrSurveyCandtDetailsCls').html(str);
+			
+	}else{
+		
+		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
+	}
+}
+
 function buildSurveysOnCandidateDetails(result){
 	
 	var str = '';
