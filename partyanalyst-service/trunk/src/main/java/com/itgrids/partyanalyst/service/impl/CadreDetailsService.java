@@ -12266,6 +12266,16 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 			//8-insertedDate,9-casteName,10-categoryName
 			
 			List<EnrollmentYear> registeredYrs = enrollmentYearDAO.getAll();
+			Set<Long> districtIdsLsit = new HashSet<Long>(0);
+			Set<Long> parliamentIdsList = new HashSet<Long>(0);
+			Set<Long> assemblyIdsLsit = new HashSet<Long>(0);
+			Set<Long> tehilIdsLsit = new HashSet<Long>(0);
+			Set<Long> lebIdsLsit = new HashSet<Long>(0);
+			Set<Long> panchayatIdsLsit = new HashSet<Long>(0);
+			Set<Long> wardIdsLsit = new HashSet<Long>(0);
+			Set<Long> boothIdsLsit = new HashSet<Long>(0);
+			Set<Long> specialBoothIdsList = new HashSet<Long>(0);
+			Set<Long> voterIds = new HashSet<Long>(0);
 			
 			List<Object[]> cadreCasteList = tdpCadreDAO.getCadreCasteDetailsByTdpCadreIds(tdpCadreIds);
 			if(cadreCasteList != null && cadreCasteList.size() > 0){
@@ -12310,9 +12320,147 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 						}
 						vo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[11]));
 						vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[12]));
+						vo.setVoterId(commonMethodsUtilService.getLongValueForObject(objects[21]));
+						if(vo.getVoterId() == null)
+							vo.setVoterId(commonMethodsUtilService.getLongValueForObject(objects[22]));
+						
+						VoterAddressVO addressVO = new VoterAddressVO();
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[13]));
+						addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[14]));
+						addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(objects[15]));						
+						addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(objects[16]));
+						addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(objects[17]));
+						addressVO.setVillageId(commonMethodsUtilService.getLongValueForObject(objects[18]));
+						addressVO.setWardId(commonMethodsUtilService.getLongValueForObject(objects[19]));
+						addressVO.setBoothId(commonMethodsUtilService.getLongValueForObject(objects[20]));
+						
+						vo.setVoterAddressVO(addressVO);
+						
+						List<CadreStatsVO> startsVOList = new ArrayList<CadreStatsVO>(0);
+						startsVOList.add(new CadreStatsVO(0L,"ELECTION"));
+						startsVOList.add(new CadreStatsVO(1L,"CADRE_2014"));
+						startsVOList.add(new CadreStatsVO(2L,"CADRE_2016"));
+						
+						vo.setCadreStatsVOList(startsVOList);
+						
+						districtIdsLsit.add(addressVO.getDistrictId());
+						parliamentIdsList.add(addressVO.getParliamentId());
+						assemblyIdsLsit.add(addressVO.getConstituencyId());
+						tehilIdsLsit.add(addressVO.getTehsilId());
+						lebIdsLsit.add(addressVO.getLocalElectionBodyId());
+						panchayatIdsLsit.add(addressVO.getVillageId());
+						wardIdsLsit.add(addressVO.getWardId());
+						boothIdsLsit.add(addressVO.getBoothId());
+						voterIds.add(vo.getVoterId());
 						returnMap.put((Long)objects[0], vo);
 					}
 				}
+				
+				List<Object[]> boothObjectArr = boothPublicationVoterDAO.getBoothsOfVoterIds(new ArrayList<Long>(voterIds),11L);
+				Map<Long,Long> voterBoothIdMap = new HashMap<Long, Long>(0);
+				
+				if(commonMethodsUtilService.isListOrSetValid(boothObjectArr)){
+					for (Object[] param : boothObjectArr) {
+						specialBoothIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						voterBoothIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				if(commonMethodsUtilService.isListOrSetValid(districtIdsLsit)){
+					
+					//Map<String,Map<Long,String>> districtWiseElectionPercMap = null;
+					Map<String,Map<Long,String>> assemblyWiseElectionPercMap =  null;
+					Map<String,Map<Long,String>> lebWiseElectionPercMap =  null;
+					Map<String,Map<Long,String>> mandalWiseElectionPercMap =  null;
+					Map<String,Map<Long,String>> wardWiseElectionPercMap =  null;	
+					Map<String,Map<Long,String>> panchayatWiseElectionPercMap =  null;
+					Map<String,Map<Long,String>> boothWiseElectionPercMap =  null;
+					
+					//if(commonMethodsUtilService.isListOrSetValid(districtIdsLsit))
+					//	districtWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("district",districtIdsLsit,2016L);	
+					if(commonMethodsUtilService.isListOrSetValid(assemblyIdsLsit))
+						assemblyWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Constituency",assemblyIdsLsit,2016L,null);
+					if(commonMethodsUtilService.isListOrSetValid(lebIdsLsit))
+						lebWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Muncipality",lebIdsLsit,2016L,null);
+					if(commonMethodsUtilService.isListOrSetValid(tehilIdsLsit))
+						mandalWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Mandal",tehilIdsLsit,2016L,null);	
+					if(commonMethodsUtilService.isListOrSetValid(wardIdsLsit))
+						wardWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("district",wardIdsLsit,2016L,null);	
+					if(commonMethodsUtilService.isListOrSetValid(panchayatIdsLsit))
+						panchayatWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Panchayat",panchayatIdsLsit,2016L,null);	
+					if(commonMethodsUtilService.isListOrSetValid(boothIdsLsit))
+						boothWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Booth",boothIdsLsit,2016L,specialBoothIdsList);
+					
+					for (Long cadreId : returnMap.keySet()) {
+						CadreBasicPerformaceVO vo = returnMap.get(cadreId);
+						if(vo != null){
+							vo.setPrevisBoothId(voterBoothIdMap.get(vo.getVoterId()));
+							if(vo.getCadreStatsVOList() != null){
+								for (CadreStatsVO statsVO : vo.getCadreStatsVOList()) {
+									/*if(commonMethodsUtilService.isMapValid(districtWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = districtWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											statsVO.setDistrictPerc(areaPercMap.get(vo.getVoterAddressVO().getDistrictId()));
+										}
+									}
+									*/
+									/*if(commonMethodsUtilService.isMapValid(districtWiseElectionPercMap)){
+									Map<Long,String> areaPercMap = districtWiseElectionPercMap.get(statsVO.getName());
+									if(commonMethodsUtilService.isMapValid(areaPercMap)){
+										statsVO.setParliamenPerc(areaPercMap.get(vo.getVoterAddressVO().getDistrictId()));
+									}
+								}*/
+									
+									if(commonMethodsUtilService.isMapValid(assemblyWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = assemblyWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											statsVO.setAssemblyPerc(areaPercMap.get(vo.getVoterAddressVO().getConstituencyId()));
+										}
+									}
+									
+									if(commonMethodsUtilService.isMapValid(lebWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = lebWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											statsVO.setMandalORMuncORUrbanPerc(areaPercMap.get(vo.getVoterAddressVO().getLocalElectionBodyId()));
+										}
+									}
+									
+									if(commonMethodsUtilService.isMapValid(mandalWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = mandalWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap) && statsVO.getMandalORMuncORUrbanPerc() == null ){
+											statsVO.setMandalORMuncORUrbanPerc(areaPercMap.get(vo.getVoterAddressVO().getTehsilId()));
+										}
+									}
+									
+									if(commonMethodsUtilService.isMapValid(wardWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = wardWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											statsVO.setPanchayatORWardPerc(areaPercMap.get(vo.getVoterAddressVO().getWardId()));
+										}
+									}
+									
+									if(commonMethodsUtilService.isMapValid(panchayatWiseElectionPercMap) && statsVO.getPanchayatORWardPerc() == null ){
+										Map<Long,String> areaPercMap = panchayatWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											statsVO.setPanchayatORWardPerc(areaPercMap.get(vo.getVoterAddressVO().getVillageId()));
+										}
+									}
+									
+									if(commonMethodsUtilService.isMapValid(boothWiseElectionPercMap)){
+										Map<Long,String> areaPercMap = boothWiseElectionPercMap.get(statsVO.getName());
+										if(commonMethodsUtilService.isMapValid(areaPercMap)){
+											if(statsVO.getName().equalsIgnoreCase("ELECTION"))
+												statsVO.setBoothPerc(areaPercMap.get(vo.getPrevisBoothId()));
+											else
+												statsVO.setBoothPerc(areaPercMap.get(vo.getVoterAddressVO().getBoothId()));
+										}
+									}
+									
+								}
+							}
+						}
+					}
+				}
+				
 			}
 		} catch (Exception e){
 			LOG.error(" Exception Occured in getCadreCasteDetailsByTdpCadreIds() Method, Exception is - ",e);
@@ -12320,6 +12468,113 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 		return returnMap;
 		
 	}
+	
+	/**
+	 * @Date 7th March,2016
+	 * @author Srishailam Pittala (srishailam.pittala@itgrids.com)
+	 * @description  to get Area wise election and membership perc detials 
+	 * @return Map<String,String> area wise perc details
+	 */
+	public Map<String,Map<Long,String>> getAreaWiseElectionAndMemberShipPerc(String locationType, Set<Long> areaIdsList,Long year,Set<Long> specialBoothIdsList){
+		Map<String,Map<Long,String>> areaWiseElectionPercMap = new HashMap<String,Map<Long, String>>(0);
+		try {
+			List<Long> partyIds = new ArrayList<Long>();
+			partyIds.add(872l);//TDP partyId
+			partyIds.add(163l);//BJP partyId
+			Long electionId = 258L;
+			if(year != null && year.longValue() == 2009L)
+				electionId = 38L;
+			Map<Long,Long> totalVotesMap_2014 = new HashMap<Long, Long>(0);
+			List<Object[]> totalVotersList_2014 =  null;
+			
+			if(locationType.equalsIgnoreCase("booth"))
+				totalVotersList_2014 = boothConstituencyElectionDAO.getTotalVotersByLocationId(new ArrayList<Long>(specialBoothIdsList),locationType,electionId, null,null,11L);
+			else
+				totalVotersList_2014 = boothConstituencyElectionDAO.getTotalVotersByLocationId(new ArrayList<Long>(areaIdsList),locationType,electionId, null,null,11L);
+			
+			if(commonMethodsUtilService.isListOrSetValid(totalVotersList_2014)){
+				for (Object[] param : totalVotersList_2014) {
+					totalVotesMap_2014.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+			}
+			
+			Map<Long,Long> totalVotesMap_2016 = new HashMap<Long, Long>(0);
+			
+			List<Object[]> totalVoterList_2016 = boothConstituencyElectionDAO.getTotalVotersByLocationId(new ArrayList<Long>(areaIdsList),locationType,electionId, null,null,22L);
+			if(commonMethodsUtilService.isListOrSetValid(totalVoterList_2016)){
+				for (Object[] param : totalVoterList_2016) {
+						totalVotesMap_2016.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			List<Object[]> earnedVotesList = null;
+			if(locationType.equalsIgnoreCase("booth"))
+				earnedVotesList = candidateBoothResultDAO.getTotalEarnedVotesForLocation(new ArrayList<Long>(specialBoothIdsList), locationType,electionId , null, partyIds,null);
+			else
+				earnedVotesList = candidateBoothResultDAO.getTotalEarnedVotesForLocation(new ArrayList<Long>(areaIdsList), locationType,electionId , null, partyIds,null);
+			if(commonMethodsUtilService.isListOrSetValid(earnedVotesList)){
+				for (Object[] param : earnedVotesList) {
+					Long earnedVotes = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Long totalVotes = totalVotesMap_2014.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					String perc = calculatePercentage(totalVotes,earnedVotes);
+					Map<Long,String> areaMap = new HashMap<Long, String>(0);
+					if(areaWiseElectionPercMap.get("ELECTION") != null ){
+						areaMap = areaWiseElectionPercMap.get("ELECTION");
+					}
+					areaMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), perc);
+					areaWiseElectionPercMap.put("ELECTION",areaMap );
+				}
+			}
+			
+			List<Object[]> totalMembershipsList =  tdpCadreLocationInfoDAO.getMemberShipRegistratonsInCadreLocation(locationType, new ArrayList<Long>(areaIdsList), year,null,null,0L);
+			if(commonMethodsUtilService.isListOrSetValid(totalMembershipsList)){
+				for (Object[] param : totalMembershipsList) {
+					Long total_2014 = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Long total_2016 = commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long totalVotes_2014 = totalVotesMap_2014.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					Long totalVotes_2016 = totalVotesMap_2016.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					String perc_2014 = calculatePercentage(totalVotes_2014,total_2014);
+					String perc_2016 = calculatePercentage(totalVotes_2016,total_2016);
+					
+					
+					Map<Long,String> areaMap = new HashMap<Long, String>(0);
+					if(areaWiseElectionPercMap.get("CADRE_2014") != null ){
+						areaMap = areaWiseElectionPercMap.get("CADRE_2014");
+					}
+					areaMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), perc_2014);
+					areaWiseElectionPercMap.put("CADRE_2014",areaMap );
+					
+					Map<Long,String> areaMap1 = new HashMap<Long, String>(0);
+					if(areaWiseElectionPercMap.get("CADRE_2016") != null ){
+						areaMap1 = areaWiseElectionPercMap.get("CADRE_2016");
+					}
+					areaMap1.put(commonMethodsUtilService.getLongValueForObject(param[0]), perc_2016);
+					areaWiseElectionPercMap.put("CADRE_2016",areaMap1 );
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getAreaWiseElectionPerc() Method, Exception is - ",e);
+		}
+		return areaWiseElectionPercMap;
+	}
+	
+	
+	public Long getMembersShipCount(String locationType, Long locationId,Long year,Long constituencyId,List<Long> constituencyIds,Long yearId)
+	{
+		Long count = 0l;
+		try{
+			 if(locationType != null && locationType.equalsIgnoreCase("Muncipality") || locationType.equalsIgnoreCase("Mandal"))
+					 count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationDtlsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			 else
+				 count =  tdpCadreLocationInfoDAO.getMemberShipRegistrationsInCadreLocation(locationType, locationId, year,constituencyId,constituencyIds,yearId);
+			return (count != null?count:0l);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setMemberShipCount() method, Exception - ",e);
+			return count;
+		}
+		
+	}
+	
 	public CadreBasicPerformaceVO getMatchedVOForEnrollmentYrId(List<CadreBasicPerformaceVO> returnList,Long id){
 		try{
 			if(returnList == null || returnList.size() == 0 || id == null )
