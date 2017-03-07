@@ -65,11 +65,14 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId,Long nominatePostApplicationId);
 	 public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 	 public List<Object[]> getPositionDetaislOfEveryApplicationnStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);
-	 public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType);
-	 public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,
-			 Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,List<Long> locationIds,String type,String casteType);
+	 public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,
+			 String gender,Long stateId,String searchType,List<Long> postStatusIds);
+	 public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
+				List<Long> locIdsList,String type,String casteType,List<Long> postStatusIds);
 	 public List<Long> getNominatedPostFinalIdsByMemberOfFinalReview(Long memberId,List<Long> status);
 	 public List<Long> getNominatedPostIds(Long nominateCandId,Long applicationId,Long statusId);
 	 public List<Long> getNominatedPostApplicationIdsByPostIds(List<Long> nominatedPostIdsLsit);
 	 public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Long userId,Date currentDate);
+	 public List<Object[]> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
+				List<Long> locIdsList,List<Long> postStatusIds,String casteType);
 }

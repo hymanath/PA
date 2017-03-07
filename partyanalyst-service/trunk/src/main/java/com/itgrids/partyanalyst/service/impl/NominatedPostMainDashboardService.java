@@ -1097,7 +1097,8 @@ public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteSt
 	return finalList;
 }
 
-public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType){
+public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,
+		Long positionId,String gender,Long stateId,String searchType,List<Long> postStatusIds){
 	List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	try{
 		List<Object[]> locations =  null;
@@ -1108,7 +1109,7 @@ public List<IdAndNameVO> getLocationAndBoardLevelWisePostsData(Long postLevelId,
 		}
 		returnList = setObjectDataToVO(returnList,locations,"locations");
 		
-		List<Object[]> locatnLvlCounts = nominatedPostFinalDAO.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType);
+		List<Object[]> locatnLvlCounts = nominatedPostFinalDAO.getLocationAndBoardLevelWisePostsData(postLevelId,casteGrpId,casteId,ageRangeId,positionId,gender,stateId,searchType,postStatusIds);
 		returnList = setObjectDataToVO(returnList,locatnLvlCounts,"counts");
 		
 		
@@ -1252,7 +1253,8 @@ public List<NominatedPostDashboardVO> setDataToCasteCategoryMap(List<Object[]> l
 	}
 	return returnList;
 }
-public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,Long stateId,String searchType,List<Long> locIdsList,String type){
+public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,
+		Long stateId,String searchType,List<Long> locIdsList,String type,List<Long> postStatusIds){
 	List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 	try {
 		
@@ -1263,7 +1265,7 @@ public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPos
 		
 		//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
 		List<Object[]> list = nominatedPostFinalDAO.getLocationAndBoardLevelWiseCasteCatgryPostsData( postLevelId, casteGrpId, casteId1, ageRangeId, positionId, 
-				gender1, stateId, searchType, locIdsList,type,"casteCatgry");
+				gender1, stateId, searchType, locIdsList,type,"casteCatgry",postStatusIds);
 		
 		
 		if(commonMethodsUtilService.isListOrSetValid(list)){
@@ -1296,7 +1298,7 @@ public List<NominatedPostDashboardVO> getLocationAndBoardLevelWiseCasteCatgryPos
 		returnList = setDataToCasteCategoryMap(list,returnList,"casteCatgry");
 			
 		List<Object[]> minorityData = nominatedPostFinalDAO.getLocationAndBoardLevelWiseCasteCatgryPostsData( postLevelId, casteGrpId, casteId1, 
-					ageRangeId, positionId, gender1, stateId, searchType, locIdsList,type,"minority");
+					ageRangeId, positionId, gender1, stateId, searchType, locIdsList,type,"minority",postStatusIds);
 			
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
@@ -1470,5 +1472,60 @@ public NominatedPostDashboardVO getMatchedVOByList1(List<NominatedPostDashboardV
 		LOG.error("Exception raised at getMatchedVOByList() method of NominatedPostMainDashboardervice", e);
 	}
 	return null;
+}
+public  List<IdNameVO> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,
+		Long stateId,String searchType,List<Long> locIdsList,List<Long> postStatusIds,String type){
+			List<IdNameVO>  finalList = new ArrayList<IdNameVO>();
+			List<Long> cadreIds = new ArrayList<Long>();
+			Map<Long,IdNameVO> cadreMap = new HashMap<Long,IdNameVO>();
+			try{
+			List<Object[]> candidateLst = nominatedPostFinalDAO.getCandidateLocationWiseDetails(postLevelId,casteGrpId,casteId1,ageRangeId,positionId,gender1,
+					stateId,searchType,locIdsList,postStatusIds,type);
+			if(candidateLst !=null && !candidateLst.isEmpty()){
+			for(Object[] param : candidateLst){
+			IdNameVO idNameVO = new IdNameVO();
+			idNameVO.setId(param[0] != null ? (Long)param[0] : 0l);
+			idNameVO.setName(param[1] != null ? param[1].toString() : "");
+			idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+			idNameVO.setRelativeName(param[3] != null ? param[3].toString() : "");//relative Name
+			idNameVO.setMembershipNo(param[4]!=null ? param[4].toString() : "");
+			idNameVO.setImageUrl(param[5] != null ? param[5].toString() : "");// imageUrl
+			//idNameVO.setDistId(param[6] != null ? (Long)param[6] :"");
+			//idNameVO.setDistrictName(param[7] != null ? param[7].toString() :"");
+			//idNameVO.setConstitunecyId(param[8] != null ? (Long)param[8] : 0l);
+			//idNameVO.setConstituencyName(param[9] != null ? param[9].toString() : "");
+			idNameVO.setCadreId(param[6] != null ? (Long)param[6] : 0l);
+			if(idNameVO.getCadreId() != null && idNameVO.getCadreId().longValue() > 0l){
+			cadreIds.add(idNameVO.getCadreId());
+			cadreMap.put(idNameVO.getCadreId(), idNameVO);
+			}
+			idNameVO.setDepartmentId(param[7] != null ? (Long)param[7] : 0l);
+			idNameVO.setDeptName(param[8] != null ? param[8].toString() : "");
+			idNameVO.setBoardId(param[9] != null ? (Long)param[9] : 0l);
+			idNameVO.setBoardName(param[10] != null ? param[10].toString() : "");
+			idNameVO.setPostionId(param[11] != null ? (Long)param[11] : 0l);
+			idNameVO.setPositionName(param[12] != null ? param[12].toString() : "");
+			idNameVO.setApplicationStatusId(param[13] != null ? (Long)param[13] : 0l);
+			idNameVO.setApplicationStatus(param[14] != null ? param[14].toString() : "");
+			finalList.add(idNameVO);
+			}
+			}
+			
+			List<Object[]> pubRepDetails = null;
+			if(cadreIds != null && cadreIds.size() >0 )
+			pubRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(cadreIds);
+			
+			if(pubRepDetails !=null && !pubRepDetails.isEmpty()){
+			for(Object[] param : pubRepDetails){
+			IdNameVO vo = cadreMap.get(param[0]);
+			vo.setCadreUserId(param[1] != null ? (Long)param[1] : 0l);//public Rep Id
+			vo.setPublicRepr(param[2] != null ? param[2].toString() : "");//
+			}
+			}
+			
+			}catch(Exception e){
+			LOG.error("Exception occured into NominatedPostMainDashboardervice",e);
+			}
+			return finalList;
 }
 }
