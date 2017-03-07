@@ -18,6 +18,11 @@ public class CadreStatsVO implements java.io.Serializable{
 	private String year;
 	private List<CadreStatsVO> subList = new ArrayList<CadreStatsVO>(0);
 	
+	public CadreStatsVO(){}
+	public CadreStatsVO(Long  id, String name){
+		this.id=id;
+		this.name=name;
+	}
 	
 	public String getYear() {
 		return year;

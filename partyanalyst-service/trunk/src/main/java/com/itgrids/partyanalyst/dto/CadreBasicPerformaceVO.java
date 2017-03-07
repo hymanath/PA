@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
+
 /**
  * @author Srishailam Pittala
  * @Date 1st March, 2017
@@ -24,8 +26,50 @@ public class CadreBasicPerformaceVO implements java.io.Serializable{
 	private String status;
 	private String constituencyName;
 	private String districtName;
+	private String designation;
+	private String partyPosition;
+	private Long voterId;
+	private Long previsBoothId;
+	private VoterAddressVO voterAddressVO;
+	private List<CadreStatsVO> cadreStatsVOList = new ArrayList<CadreStatsVO>(0);
 	
 	
+	public Long getPrevisBoothId() {
+		return previsBoothId;
+	}
+	public void setPrevisBoothId(Long previsBoothId) {
+		this.previsBoothId = previsBoothId;
+	}
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	public List<CadreStatsVO> getCadreStatsVOList() {
+		return cadreStatsVOList;
+	}
+	public void setCadreStatsVOList(List<CadreStatsVO> cadreStatsVOList) {
+		this.cadreStatsVOList = cadreStatsVOList;
+	}
+	public VoterAddressVO getVoterAddressVO() {
+		return voterAddressVO;
+	}
+	public void setVoterAddressVO(VoterAddressVO voterAddressVO) {
+		this.voterAddressVO = voterAddressVO;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public String getPartyPosition() {
+		return partyPosition;
+	}
+	public void setPartyPosition(String partyPosition) {
+		this.partyPosition = partyPosition;
+	}
 	public String getConstituencyName() {
 		return constituencyName;
 	}
