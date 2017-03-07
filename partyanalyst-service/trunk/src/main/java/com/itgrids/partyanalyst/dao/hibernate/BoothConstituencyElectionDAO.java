@@ -882,6 +882,52 @@ public Long getTotalVotesByLocationId(Long locationId,String locationType,Long e
 	
 }
 
+public List<Object[]> getTotalVotersByLocationId(List<Long> locationIdsList,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList,Long publicationDateId)
+{
+	StringBuilder str = new StringBuilder();
+	//if(locationType.equalsIgnoreCase("Parliament"))
+		//str.append(" select sum(model.totalVoters) ");
+	//else
+		str.append(" select model.reportLevelValue , model.totalVoters ");
+		str.append(" from VoterInfo model where model.publicationDate.publicationDateId =:publicationDateId ");
+		
+		if(locationIdsList != null && locationIdsList.size()>0){
+			if(locationType.equalsIgnoreCase("constituency"))
+				  str.append("  and  model.reportLevelValue in (:locationIdsList)  and model.voterReportLevel.voterReportLevelId = 1  ");
+				
+				else if(locationType.equalsIgnoreCase("mandal"))//2014 Election
+					str.append("  and  model.reportLevelValue in (:locationIdsList) and model.voterReportLevel.voterReportLevelId = 2  ");
+				
+				else if(locationType.equalsIgnoreCase("panchayat"))
+					str.append("  and  model.reportLevelValue in (:locationIdsList) and model.voterReportLevel.voterReportLevelId = 3  ");
+				
+				else if(locationType.equalsIgnoreCase("booth"))
+					str.append("  and  model.reportLevelValue in (:locationIdsList) and model.voterReportLevel.voterReportLevelId = 4  ");
+				
+				else if(locationType.equalsIgnoreCase("muncipality"))
+					str.append("  and  model.reportLevelValue in (:locationIdsList) and model.voterReportLevel.voterReportLevelId = 5  ");
+				
+				else if(locationType.equalsIgnoreCase("District"))
+					str.append("  and  model.reportLevelValue in (:locationIdsList) and model.voterReportLevel.voterReportLevelId = 11  ");
+				
+				//else if(locationType.equalsIgnoreCase("Parliament"))
+				// str.append("  and model.voterReportLevel.voterReportLevelId = 1 and   model.reportLevelValue in (:constituencyIdsList) ");
+		}
+		str.append(" group by model.reportLevelValue ");
+	Query query = getSession().createQuery(str.toString());
+	
+	if(!locationType.equalsIgnoreCase("Parliament"))
+	  query.setParameterList("locationIdsList", locationIdsList);
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	
+	//if(locationType.equalsIgnoreCase("Parliament"))
+	//  query.setParameterList("constituencyIdsList", constituencyIdsList);
+	
+		return query.list();
+	
+}
+
 public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId)
 {
 	Query query = getSession().createQuery(" select sum(model.booth.totalVoters) from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId and" +

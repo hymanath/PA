@@ -1784,6 +1784,102 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 	  return (Long) query.uniqueResult();
    }
    
+   public List<Object[]> getTotalEarnedVotesForLocation(List<Long> locationIdsList,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds)
+   {
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select "); 
+	  if(locationtype.equalsIgnoreCase("Constituency"))
+			 str.append("   model.boothConstituencyElection.booth.constituency.constituencyId , ");
+			
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 258l)//2014 Election
+			 str.append("   model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId , ");
+	  
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 38l)//2009 Election(panchayat Id is not mapped in Booth Table)
+			 str.append("    model.boothConstituencyElection.booth.tehsil.tehsilId , ");
+			
+	  else if(locationtype.equalsIgnoreCase("Panchayat"))
+			 str.append("   model.boothConstituencyElection.booth.panchayat.panchayatId , ");
+			
+	  else if(locationtype.equalsIgnoreCase("Booth"))
+			 str.append("   model.boothConstituencyElection.booth.boothId ,");
+		   
+	  else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append("  model.boothConstituencyElection.booth.localBody.localElectionBodyId ,");
+	  
+	  else if(locationtype.equalsIgnoreCase("District"))
+	         str.append("  model.boothConstituencyElection.booth.constituency.district.districtId ,  ");
+	  
+	  str.append(" sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
+	  str.append(" and model.nomination.party.partyId in (:partyIds)  and ");
+	  
+	  
+	  if(locationtype.equalsIgnoreCase("Constituency"))
+			 str.append("  model.boothConstituencyElection.booth.constituency.constituencyId in (:locationIdsList) ");
+			
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 258l)//2014 Election
+			 str.append("  model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId in (:locationIdsList)  and model.boothConstituencyElection.booth.localBody is null ");
+	  
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 38l)//2009 Election(panchayat Id is not mapped in Booth Table)
+			 str.append("  model.boothConstituencyElection.booth.tehsil.tehsilId in (:locationIdsList)  and model.boothConstituencyElection.booth.localBody is null ");
+			
+	  else if(locationtype.equalsIgnoreCase("Panchayat"))
+			 str.append("  model.boothConstituencyElection.booth.panchayat.panchayatId in (:locationIdsList)  ");
+			
+	  else if(locationtype.equalsIgnoreCase("Booth"))
+			 str.append(" model.boothConstituencyElection.booth.boothId in (:locationIdsList)  ");
+		   
+	  else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append("model.boothConstituencyElection.booth.localBody.localElectionBodyId in (:locationIdsList)  and model.boothConstituencyElection.booth.localBody is not null ");
+	  
+	  else if(locationtype.equalsIgnoreCase("District"))
+	         str.append(" model.boothConstituencyElection.booth.constituency.district.districtId in (:locationIdsList)  ");
+	  
+	 // else if(locationtype.equalsIgnoreCase("Parliament"))
+		//  str.append("  model.boothConstituencyElection.booth.constituency.constituencyId in (:constituencyIds) ");
+	  
+	 // if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+	//	   str.append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId  ");
+	  
+	  if(locationtype.equalsIgnoreCase("Constituency"))
+			 str.append("   group by model.boothConstituencyElection.booth.constituency.constituencyId ");
+			
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 258l)//2014 Election
+			 str.append("   group by model.boothConstituencyElection.booth.panchayat.tehsil.tehsilId ");
+	  
+	  else if(locationtype.equalsIgnoreCase("Mandal") && electionId.longValue() == 38l)//2009 Election(panchayat Id is not mapped in Booth Table)
+			 str.append("   group by model.boothConstituencyElection.booth.tehsil.tehsilId  ");
+			
+	  else if(locationtype.equalsIgnoreCase("Panchayat"))
+			 str.append("  group by  model.boothConstituencyElection.booth.panchayat.panchayatId  ");
+			
+	  else if(locationtype.equalsIgnoreCase("Booth"))
+			 str.append("  group by  model.boothConstituencyElection.booth.boothId ");
+		   
+	  else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append("  group by  model.boothConstituencyElection.booth.localBody.localElectionBodyId ");
+	  
+	  else if(locationtype.equalsIgnoreCase("District"))
+	         str.append("  group by model.boothConstituencyElection.booth.constituency.district.districtId   ");
+	   
+	  Query query = getSession().createQuery(str.toString());
+	  
+	  if(!locationtype.equalsIgnoreCase("Parliament"))
+	    query.setParameterList("locationIdsList", locationIdsList);
+	  
+	  query.setParameter("electionId", electionId);
+	  
+	  //if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+	 //   query.setParameter("constituencyId", constituencyId);
+	  
+	  
+	 // if(locationtype.equalsIgnoreCase("Parliament"))
+	//	 query.setParameterList("constituencyIds", constituencyIds);
+	  
+	  
+	  query.setParameterList("partyIds", partyIds);
+	  return query.list();
+   }
+   
    
    public Long getTotalEarnedVotesByBoothIdsList(List<Long> boothIdsList,Long electionId,List<Long> partyIds)
    {

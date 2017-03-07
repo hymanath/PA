@@ -1164,6 +1164,82 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		
 	}
 	
+	public Long getMemberShipRegistratinDtlsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct TCEY.tdpCadreId) ");
+		str.append(" from TdpCadreEnrollmentYear TCEY, TdpCadre TC, UserAddress UA" +
+				" where TCEY.tdpCadreId = TC.tdpCadreId and TC.userAddress.userAddressId = UA.userAddressId and TCEY.enrollmentYearId=:yearId and  " +
+				" TCEY.isDeleted='N' and  TC.isDeleted ='N' and TC.enrollmentYear=2014 ");
+
+			if(locationtype.equalsIgnoreCase("Mandal"))
+				 str.append(" and UA.tehsil.tehsilId =:locationId  ");
+			
+			else if(locationtype.equalsIgnoreCase("Muncipality"))
+			 str.append(" and UA.localElectionBody.localElectionBodyId =:locationId  ");
+			
+			if(constituencyId != null && constituencyId.longValue()>0L)
+				 str.append(" and UA.constituency.constituencyId  = :constituencyId ");
+		Query query = getSession().createQuery(str.toString()); 
+		
+		  query.setParameter("locationId", locationId);
+		  if(constituencyId != null && constituencyId.longValue()>0L)
+		  query.setParameter("constituencyId", constituencyId);  
+	   	  query.setParameter("yearId", yearId);
+	   	  
+		return (Long) query.uniqueResult();		
+		
+	}
+	
+	public List<Object[]> getMemberShipRegistratonsInCadreLocation(String locationtype,List<Long> locationIdsList,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
+	{
+		StringBuilder str = new StringBuilder();
+	
+		if(locationtype.equalsIgnoreCase("Parliament"))
+			str.append(" select model.locationValue , sum(model.cadre2014),sum(model.cadre2016) ");
+		else
+			str.append(" select model.locationValue, model.cadre2014, model.cadre2016 ");	
+				
+		str.append(" from TdpCadreLocationInfo model where model.type='Total' " );
+		
+			if(locationtype.equalsIgnoreCase("District"))
+			 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 3 ");
+			else if(locationtype.equalsIgnoreCase("Constituency"))
+			 str.append(" and model.locationValue in (:locationIdsList)  and model.locationScopeId = 4 ");
+			else if(locationtype.equalsIgnoreCase("Mandal"))
+				 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 5 ");
+			else if(locationtype.equalsIgnoreCase("Panchayat"))
+				 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 6 ");
+			else if(locationtype.equalsIgnoreCase("Muncipality"))
+				 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 7 ");
+			else if(locationtype.equalsIgnoreCase("ward"))
+				 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 8 ");
+			else if(locationtype.equalsIgnoreCase("Booth"))
+				 str.append(" and model.locationValue in (:locationIdsList)   and model.locationScopeId = 9 ");
+			else if(locationtype.equalsIgnoreCase("Parliament"))
+			  str.append("  and model.locationValue in (:constituencyIdsList) ");
+		    
+		 // if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+			//str.append(" and model.locationValue =:constituencyId  and model.locationScopeId = 4 "); 
+		str.append(" group by model.locationValue ");
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		if(!locationtype.equalsIgnoreCase("Parliament"))
+		  query.setParameterList("locationIdsList", locationIdsList);
+		
+		
+	  // if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
+		//query.setParameter("constituencyId", constituencyId);
+	   
+	   if(constituencyIdsList != null && locationtype.equalsIgnoreCase("Parliament"))
+		  query.setParameterList("constituencyIdsList", constituencyIdsList);  
+	   
+		return  query.list();		
+		
+	}
+	
 	public Long getMemberShipRegistrationDtlsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList,Long yearId)
 	{
 		
@@ -1191,5 +1267,8 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		return (Long) query.uniqueResult();		
 		
 	}
+	
+	
+	
 	
 }
