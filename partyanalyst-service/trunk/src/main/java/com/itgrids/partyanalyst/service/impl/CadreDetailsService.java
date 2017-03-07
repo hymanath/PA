@@ -8287,6 +8287,119 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return returnList;
 	}
 	
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetailsNew(Long candidateId,Long cadreId,Long stateId,Long districtId,Long constituencyId,
+			Long mandalId,Long lebId,Long panchayatId,Long wardId)
+	{
+		List<QuestionAnswerVO> returnList = new ArrayList<QuestionAnswerVO>();
+		try{
+			//List<Long> optionIds = new ArrayList<Long>();
+			
+			List<Object[]> surveyLocationList = ivrSurveyCandidateQuestionDAO.getIvrSurveyScopeIdsByCandidate(candidateId, cadreId);
+			if(surveyLocationList != null && !surveyLocationList.isEmpty()){
+				for (Object[] obj : surveyLocationList) {
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long questionId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					QuestionAnswerVO surveyvo = getMatchedVO(returnList,surveyId);
+					if(surveyvo == null){
+						surveyvo = new QuestionAnswerVO();
+						surveyvo.setId(surveyId);
+						surveyvo.setName(obj[1] != null ? obj[1].toString():"");
+						surveyvo.setQuestions(new ArrayList<QuestionAnswerVO>(0));
+						returnList.add(surveyvo);
+					}
+					
+					QuestionAnswerVO questionvo = getMatchedVO(surveyvo.getQuestions(),questionId);
+					if(questionvo == null){
+						questionvo = new QuestionAnswerVO();
+						questionvo.setId(questionId);
+						questionvo.setName(obj[4] != null ? obj[4].toString():"");
+						questionvo.setLocationScopeId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						questionvo.setOptions(new ArrayList<QuestionAnswerVO>(0));
+						surveyvo.getQuestions().add(questionvo);
+					}
+				}
+			}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (QuestionAnswerVO surveyvo : returnList) {
+					if(surveyvo.getQuestions() != null && !surveyvo.getQuestions().isEmpty()){
+						for (QuestionAnswerVO questionvo : surveyvo.getQuestions()) {
+							String locationType = null;
+							Long locationValue = 0l;
+							if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 2l){
+								locationType = "state";
+								locationValue = stateId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 3l){
+								locationType = "district";
+								locationValue = districtId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 4l){
+								locationType = "constituency";
+								locationValue = constituencyId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 5l){
+								locationType = "mandal";
+								locationValue = mandalId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 6l){
+								locationType = "panchayat";
+								locationValue = panchayatId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 7l){
+								locationType = "leb";
+								locationValue = lebId;
+							}
+							else if(questionvo.getLocationScopeId() != null && questionvo.getLocationScopeId() > 0l && questionvo.getLocationScopeId() == 8l){
+								locationType = "ward";
+								locationValue = wardId;
+							}
+							questionvo.setRemarks(locationType);
+							
+							List<Object[]> optionsList = ivrSurveyCandidateQuestionDAO.getLocationScopeWiseQuestionOptions(surveyvo.getId(), questionvo.getId(), locationType, locationValue);
+							if(optionsList != null && !optionsList.isEmpty()){
+								for (Object[] obj : optionsList) {
+									QuestionAnswerVO optionvo = new QuestionAnswerVO();
+									optionvo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+									optionvo.setName(obj[1] != null ? obj[1].toString():"");
+									//optionIds.add(optionvo.getId());
+									optionvo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+									optionvo.setPercentage("0.0");
+									questionvo.setCount(questionvo.getCount()+optionvo.getCount());
+									questionvo.getOptions().add(optionvo);
+								}
+							}
+						}
+					}
+				}
+				
+				for (QuestionAnswerVO surveyvo : returnList) {
+					if(surveyvo.getQuestions() != null && !surveyvo.getQuestions().isEmpty()){
+						for (QuestionAnswerVO questionvo : surveyvo.getQuestions()) {
+							if(questionvo.getOptions() != null && !questionvo.getOptions().isEmpty()){
+								for (QuestionAnswerVO optionvo : questionvo.getOptions()) {
+									 if(questionvo.getCount() != null && questionvo.getCount() > 0){
+										 String percentage = (new BigDecimal(optionvo.getCount()*(100.0)/questionvo.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+										 optionvo.setPercentage(percentage);
+									 }
+									 else
+										 optionvo.setPercentage("0.0"); 
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
 	public QuestionAnswerVO getMatchedVO(List<QuestionAnswerVO> returnList,Long id)
 	{
 		try{

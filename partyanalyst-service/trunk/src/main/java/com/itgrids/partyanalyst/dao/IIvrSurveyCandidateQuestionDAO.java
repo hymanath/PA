@@ -11,5 +11,6 @@ public interface IIvrSurveyCandidateQuestionDAO extends GenericDao<IvrSurveyCand
 	public List<Long> getIvrSurveyQuestionsByCandiate(Long candidateId,Long cadreId);
 	public List<Object[]> getIvrSurveyQuestionsOptionsByCandiate(List<Long> questionIds);
 	
-
+	public List<Object[]> getIvrSurveyScopeIdsByCandidate(Long candidateId,Long cadreId);
+	public List<Object[]> getLocationScopeWiseQuestionOptions(Long surveyId,Long questionId,String locationType,Long locationVal);
 }

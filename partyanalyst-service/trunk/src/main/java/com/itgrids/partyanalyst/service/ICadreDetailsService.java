@@ -155,4 +155,7 @@ public interface ICadreDetailsService {
 	public Map<Long,CadreBasicPerformaceVO> getCadreCasteDetailsByTdpCadreIds(List<Long> tdpCadreIds);
 	public Map<Long,List<CadreStatsVO>> getElectionPerformanceDetailsForCadreLocations(List<Long> tdpCadreIds);
 	public Map<Long,List<CadreStatsVO>> getTotalMemberShipRegsInCadresLocations(List<Long> tdpCadreIds);
+	
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetailsNew(Long candidateId,Long cadreId,Long stateId,Long districtId,Long constituencyId,
+			Long mandalId,Long lebId,Long panchayatId,Long wardId);
 }
