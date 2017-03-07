@@ -192,4 +192,5 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<Object[]> getPanchayatBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
 	public List<Object[]> getLocalBodyBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
 	
+	public List<Object[]> getTotalVotersByLocationId(List<Long> locationIdsList,String locationType,Long electionId,Long constituencyId,List<Long> constituencyIdsList,Long publicationDateId);
 }
