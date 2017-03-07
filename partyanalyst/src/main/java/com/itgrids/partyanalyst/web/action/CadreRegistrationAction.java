@@ -166,11 +166,19 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private List<MeetingDtlsVO> meetingDtlsVOs;
+	private List<List<MeetingDtlsVO>> listOfMeetingDtlsVOs ;
 	private List<IdNameVO> idNameVOs;
 	private List<MeetingBasicDetailsVO> basicDetailsVOs;
 	
 	
 	
+	public List<List<MeetingDtlsVO>> getListOfMeetingDtlsVOs() {
+		return listOfMeetingDtlsVOs;
+	}
+	public void setListOfMeetingDtlsVOs(
+			List<List<MeetingDtlsVO>> listOfMeetingDtlsVOs) {
+		this.listOfMeetingDtlsVOs = listOfMeetingDtlsVOs;
+	}
 	public List<MeetingBasicDetailsVO> getBasicDetailsVOs() {
 		return basicDetailsVOs;
 	}
@@ -3298,15 +3306,33 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				for( int i=0;i<locLevelIdsArray.length();i++){
 					locLevelIdList.add(Long.valueOf(locLevelIdsArray.getString(i)));
 				}
-			}
+			}  
 			
 			
 			basicDetailsVOs = coreDashboardPartyMeetingService.locationWiseMeetingDetails(activityMemberId, partyMeetingMainTypeId, partyMeetingTypeIds, locLevelIdList,  state, startDateString,  endDateString);
 			
-	}catch(Exception e){
-		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
 	}
-	return Action.SUCCESS;
+  	public String getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = jobj.getLong("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");  
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			Long locLevelId = jobj.getLong("locLevelId");
+			Long partyMeetingGroupId = jobj.getLong("partyMeetingGroupId");
+			Long sessionId = jobj.getLong("sessionId");
+			
+			listOfMeetingDtlsVOs = coreDashboardPartyMeetingService.getDistWiseMeetingDtlsForDiffLevelOfMeetings(activityMemberId, partyMeetingMainTypeId, locLevelId, stateId, startDateString, endDateString, partyMeetingGroupId, sessionId);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
 	}
 }
-
