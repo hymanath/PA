@@ -263,5 +263,5 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	 public Long getTotalAndEarnedVotesForLocation(Long locationId,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds);
 	 
 	 public Long getTotalEarnedVotesByBoothIdsList(List<Long> boothIdsList,Long electionId,List<Long> partyIds);
-	 
+	 public List<Object[]> getTotalEarnedVotesForLocation(List<Long> locationIdsList,String locationtype,Long electionId,Long constituencyId,List<Long> partyIds,List<Long> constituencyIds);
 }
