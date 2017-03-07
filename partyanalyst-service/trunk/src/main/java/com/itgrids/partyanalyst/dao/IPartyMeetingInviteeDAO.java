@@ -67,4 +67,5 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> meetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
 	public List<PartyMeetingInvitee> getInviteesByPartyMeetingAndCadreId(Long partyMeetingId,Long tdpCadreId);
 	public List<Object[]> plannedMeetingWiseInviteeCadreList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
+	public List<Object[]> meetingWiseInviteeCadreListForLevelWise(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList);
 }
