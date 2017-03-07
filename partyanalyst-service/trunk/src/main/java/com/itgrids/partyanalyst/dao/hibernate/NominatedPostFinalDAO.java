@@ -2246,7 +2246,8 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId,Long nomi
 	    return query.list();
  }
  
- public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType){
+ public List<Object[]> getLocationAndBoardLevelWisePostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,
+		 String gender,Long stateId,String searchType,List<Long> appStatusIds){
 	 
 	 StringBuilder queryStr = new StringBuilder();
 	 
@@ -2260,7 +2261,9 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId,Long nomi
 	 queryStr.append(" ,model.nominatedPostMember.boardLevel.boardLevelId,model.nominatedPostMember.boardLevel.level,count(model.nominationPostCandidate.nominationPostCandidateId) " +
 	 		"  from NominatedPostFinal model where model.isDeleted = 'N'  and  model.isExpired = 'N' and "+
 				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " );
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " +
+				" and model.nominatedPost.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' " +
+					 " and model.nominatedPostApplication.isExpired='N' and model.nominatedPost.isExpired='N'  " );
 	 
 	
 		if(!(positionId.equals(0l)) && positionId != null){
@@ -2269,7 +2272,9 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId,Long nomi
 		if(!(postLevelId.equals(0l)) && postLevelId != null){
 			queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :postLevelId  ");
 		}
-		
+		if(appStatusIds != null && !appStatusIds.isEmpty()){
+			queryStr.append(" and model.nominatedPostApplication.applicationStatus.applicationStatusId in(:appStatusIds)");
+      	  }
 		if(!(ageRangeId.equals(0l)) && ageRangeId != null){
 			queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId = :ageRangeId " );
 		}
@@ -2279,8 +2284,12 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId,Long nomi
 		if(!(casteGrpId.equals(0l)) && casteGrpId != null){
 			queryStr.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId  ");
 		}
-		if(stateId != null && stateId.longValue() > 0){
-			queryStr.append(" and  model.nominationPostCandidate.address.state.stateId=:stateId  ");
+		if(stateId != null && stateId.longValue() > 0l){
+			if( stateId.longValue() == 1l){
+				queryStr.append(" and  model.nominationPostCandidate.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if( stateId.longValue()==36l){
+				queryStr.append(" and model.nominationPostCandidate.address.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
 		}
 		if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
 			queryStr.append(" and  model.nominationPostCandidate.gender=:gender  ");
@@ -2309,17 +2318,18 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId,Long nomi
 	 if(!(ageRangeId.equals(0l)) && ageRangeId != null){
 		 query.setParameter("ageRangeId", ageRangeId); 
 	 }
-	 if(stateId != null && stateId.longValue() > 0){
-		 query.setParameter("stateId", stateId); 
-	 }
+	 
 	 if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
 		 query.setParameter("gender", gender); 
+	 }
+	 if(appStatusIds != null && !appStatusIds.isEmpty()){
+		 query.setParameterList("appStatusIds", appStatusIds);
 	 }
 	    
 	    return query.list();
  }
 public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
-		List<Long> locIdsList,String type,String casteType){
+		List<Long> locIdsList,String type,String casteType,List<Long> appStatusIds){
 	 
 	 StringBuilder queryStr = new StringBuilder();
 	 
@@ -2336,7 +2346,7 @@ public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long post
 		queryStr.append(" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
 					" model.nominationPostCandidate.gender," +
-					" count(model.nominationPostCandidate.nominationPostCandidateId)");
+					" count(distinct model.nominationPostCandidate.nominationPostCandidateId)");
 		if(searchType != null && searchType.equalsIgnoreCase("constituency")){
 			 queryStr.append(" , model.nominationPostCandidate.address.constituency.constituencyId,model.nominationPostCandidate.address.constituency.name " );
 		 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
@@ -2345,7 +2355,9 @@ public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long post
 	 
 	 queryStr.append("  from NominatedPostFinal model where model.isDeleted = 'N'  and  model.isExpired = 'N' and "+
 				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " );
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " +
+				" and model.nominatedPost.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' " +
+				" and model.nominatedPostApplication.isExpired='N' and model.nominatedPost.isExpired='N' " );
 	 if(casteType != null && casteType.equalsIgnoreCase("casteCatgry")){
 		 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId not in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
 	 }else if(casteType != null && casteType.equalsIgnoreCase("minority")){
@@ -2359,6 +2371,9 @@ public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long post
 			queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :postLevelId  ");
 		}
 		
+		if(appStatusIds != null && !appStatusIds.isEmpty()){
+			queryStr.append(" and model.nominatedPostApplication.applicationStatus.applicationStatusId in(:appStatusIds)");
+      	  }
 		if(!(ageRangeId.equals(0l)) && ageRangeId != null){
 			queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId = :ageRangeId " );
 		}
@@ -2394,7 +2409,9 @@ public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long post
 			 }
 		}
 		if(type != null && type.equalsIgnoreCase("casteCategory"))
-			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					"model.nominationPostCandidate.gender,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId" +
+					" ");
 		else if(type != null && type.equalsIgnoreCase("casteName"))
 			queryStr.append(" ,model.nominationPostCandidate.casteState.caste.casteId ");
 	 Query query = getSession().createQuery(queryStr.toString());
@@ -2422,6 +2439,10 @@ public List<Object[]> getLocationAndBoardLevelWiseCasteCatgryPostsData(Long post
 	 }
 	 if(locIdsList != null && locIdsList.size() > 0l){
 		 query.setParameterList("locIdsList", locIdsList); 
+	 }
+	 
+	 if(appStatusIds != null && !appStatusIds.isEmpty()){
+		 query.setParameterList("appStatusIds", appStatusIds);
 	 }
 	    
 	    return query.list();
@@ -2501,5 +2522,154 @@ public List<Long> getNominatedPostIds(Long nominateCandId,Long applicationId,Lon
 	 return query.list();
 	 
 }
-
+public List<Object[]> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
+		List<Long> locIdsList,List<Long> appStatusIds,String casteType){
+ 
+		 
+		 StringBuilder queryStr = new StringBuilder();
+		 
+		 queryStr.append(" select " );
+		 
+		 queryStr.append(" model2.nominationPostCandidateId," +
+		                 " model2.candidateName," +
+				         " model2.mobileNo,"+
+		                 " tc.relativename," +
+				         " tc.memberShipNo," +
+		                 " model2.imageurl," );
+				         //" model2.address.district.districtId,"+
+		                 //" model2.address.district.districtName," );
+		        /* if(type.toString().equalsIgnoreCase("candidate")){
+		        	 sb.append(" const.constituencyId," +
+		                 " const.name," );
+		         }else if(type.toString().equalsIgnoreCase("application")){
+		        	 sb.append(" tc.userAddress.constituency.constituencyId,tc.userAddress.constituency.name, ");
+		         }*/
+		 queryStr.append(" tc.tdpCadreId,model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+		                 " model.nominatedPostMember.nominatedPostPosition.departments.deptName,model.nominatedPostMember.nominatedPostPosition.board.boardId," +
+		                 "model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+		                 "model.nominatedPostMember.nominatedPostPosition.position.positionName ");
+		         
+		         if(appStatusIds != null && !appStatusIds.isEmpty()){
+		        	 queryStr.append(" , model.nominatedPostApplication.applicationStatus.applicationStatusId, model.nominatedPostApplication.applicationStatus.status ");
+		        }
+		       
+		 queryStr.append(" from NominatedPostFinal model , NominationPostCandidate model2 " +
+		 		"left join model2.tdpCadre tc ");
+		 
+		 queryStr.append(" where model.isDeleted = 'N'  and  model.isExpired = 'N' and "+
+					" model.nominatedPostMember.isDeleted='N' and "+
+					" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model2.isDeleted = 'N' "+
+					 "and  model.nominationPostCandidate.nominationPostCandidateId = model2.nominationPostCandidateId " +
+					 " and model.nominatedPost.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' " +
+					 " and model.nominatedPostApplication.isExpired='N' and model.nominatedPost.isExpired='N'  " );
+		 if(casteType != null && casteType.length() >0){
+			 if(casteType != null && casteType.equalsIgnoreCase("Minority")){
+				 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId  in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+			 }else{
+				 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId not in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+			 }
+		 }
+		
+			if(!(positionId.equals(0l)) && positionId != null){
+				queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId  ");
+			}
+			if(appStatusIds != null && !appStatusIds.isEmpty()){
+				queryStr.append(" and model.nominatedPostApplication.applicationStatus.applicationStatusId in(:appStatusIds)");
+	      	  }
+			if(!(postLevelId.equals(0l)) && postLevelId != null){
+				queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :postLevelId  ");
+			}
+			/*if(gender != null && !gender.equalsIgnoreCase("")){
+				queryStr.append(" and  model2.gender =:gender ");
+	   		  }*/
+			if(!(ageRangeId.equals(0l)) && ageRangeId != null){
+				queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId = :ageRangeId " );
+			}else{
+				if(casteType != null && casteType.length() >0){
+					queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId is not null " );
+				}
+			}
+			if(!(casteId.equals(0l)) && casteId != null){
+				queryStr.append(" and model.nominationPostCandidate.casteState.casteStateId = :casteId  ");
+			}
+			if(!(casteGrpId.equals(0l)) && casteGrpId != null){
+				queryStr.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId  ");
+			}
+			
+			
+			if(stateId != null && stateId.longValue() > 0l){
+				if( stateId.longValue() == 1l){
+					queryStr.append(" and  model.nominationPostCandidate.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if( stateId.longValue()==36l){
+					queryStr.append(" and model.nominationPostCandidate.address.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}
+			}
+			if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
+				queryStr.append(" and  model.nominationPostCandidate.gender=:gender  ");
+			}else{
+				if(casteType != null && casteType.length() >0){
+					queryStr.append(" and  model.nominationPostCandidate.gender is not null  ");
+				}
+			}
+			if(locIdsList != null && locIdsList.size() > 0l){
+				if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+					 queryStr.append(" and model.nominationPostCandidate.address.constituency.constituencyId  in (:locIdsList)  " );
+				 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+					 queryStr.append(" and model.nominationPostCandidate.address.district.districtId in (:locIdsList)  " );
+				 }
+			}
+			
+			/*if(casteType != null && casteType.length() >0){
+				if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+						queryStr.append(" group by model.nominationPostCandidate.address.constituency.constituencyId," +
+								"model.nominatedPostMember.boardLevel.boardLevelId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId " );
+					 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+						queryStr.append(" group by model.nominationPostCandidate.address.district.districtId," +
+									"model.nominatedPostMember.boardLevel.boardLevelId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId " );
+					 }
+				queryStr.append(" ,model.nominationPostCandidate.gender," +
+						"model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " );
+			}else{
+					if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+						 queryStr.append("  group by model.nominationPostCandidate.address.constituency.constituencyId,model.nominatedPostMember.boardLevel.boardLevelId " );
+					 }else if(searchType != null && searchType.equalsIgnoreCase("district")){
+						 queryStr.append(" group by model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
+					 }
+			}
+			*/
+		 Query query = getSession().createQuery(queryStr.toString());
+		 
+		 if(!(casteGrpId.equals(0l)) && casteGrpId != null){
+			 query.setParameter("castGroupId", casteGrpId);
+		 }
+		 if(!(positionId.equals(0l)) && positionId != null){
+			 query.setParameter("positionId", positionId);
+		 }
+		 if(!(postLevelId.equals(0l)) && postLevelId != null){
+			 query.setParameter("postLevelId", postLevelId);
+		 }
+		 if(!(casteId.equals(0l)) && casteId != null){
+			 query.setParameter("casteId", casteId); 
+		 }
+		 if(!(ageRangeId.equals(0l)) && ageRangeId != null){
+			 query.setParameter("ageRangeId", ageRangeId); 
+		 }
+		 /*if(stateId != null && stateId.longValue() > 0){
+			 query.setParameter("stateId", stateId); 
+		 }*/
+		 if(gender != null && gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("F")){
+			 query.setParameter("gender", gender); 
+		 }
+		 if(locIdsList != null && locIdsList.size() > 0l){
+			 query.setParameterList("locIdsList", locIdsList); 
+		 }
+		 if(gender != null && !gender.equalsIgnoreCase("")){
+			 query.setParameter("gender", gender); 
+		 }
+		 if(appStatusIds != null && !appStatusIds.isEmpty()){
+			 query.setParameterList("appStatusIds", appStatusIds);
+		 }
+		    
+		    return query.list();
+	 } 
 }
