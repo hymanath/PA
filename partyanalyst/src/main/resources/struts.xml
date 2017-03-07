@@ -16047,5 +16047,10 @@
 				<param name="root">partyMeetingDataVOList</param>
 			</result>
 		</action>
+		<action name="getDistWiseMeetingDtlsForDiffLevelOfMeetingsAction" class="cadreRegistrationAction" method="getDistWiseMeetingDtlsForDiffLevelOfMeetings">
+			<result type="json" name="success">
+				<param name="root">listOfMeetingDtlsVOs</param>     
+			</result>
+		</action>
  </package>
 </struts>
