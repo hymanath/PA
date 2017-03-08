@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TdpCadreVO implements java.io.Serializable
@@ -70,7 +69,15 @@ public class TdpCadreVO implements java.io.Serializable
 	private String year;
 	private String enrollmentYears;
 	private String enrollmentYearIdStr;
+	private List<String> enrollmentYearList = new ArrayList<String>();
 	
+	
+	public List<String> getEnrollmentYearList() {
+		return enrollmentYearList;
+	}
+	public void setEnrollmentYearList(List<String> enrollmentYearList) {
+		this.enrollmentYearList = enrollmentYearList;
+	}
 	public String getEnrollmentYearIdStr() {
 		return enrollmentYearIdStr;
 	}

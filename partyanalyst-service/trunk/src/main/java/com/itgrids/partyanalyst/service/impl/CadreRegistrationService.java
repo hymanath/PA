@@ -13775,12 +13775,20 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
 							vo.setImagePathStr("http://mytdp.com/images/cadre_images/"+(obj[5] != null ? obj[5].toString():""));
 							vo.setIsCsd(obj[6] != null ? obj[6].toString():"");
+							if(vo.getInviteeAttendeeCnt() == 3l)
+								vo.getEnrollmentYears().add("2014-2016");
+							else if(vo.getInviteeAttendeeCnt() == 4l)
+								vo.getEnrollmentYears().add("2016-2018");
 							voterCadreMap.put(vId, vo);
 						}
 						else{
 							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 							if(enrid.longValue() > vo.getInviteeAttendeeCnt().longValue())
 								vo.setInviteeAttendeeCnt(enrid);
+							if(vo.getInviteeAttendeeCnt() == 3l)
+								vo.getEnrollmentYears().add("2014-2016");
+							else if(vo.getInviteeAttendeeCnt() == 4l)
+								vo.getEnrollmentYears().add("2016-2018");
 							vo.setIsCsd(obj[6] != null ? obj[6].toString():"");
 						}
 					}
@@ -13797,6 +13805,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setTotalImagePathStr(vo.getImagePathStr());
 							voterVO.setMobileNumber(vo.getMobileNumber());
 							voterVO.setIsCsd(vo.getIsCsd());
+							voterVO.getEnrollmentYearList().addAll(vo.getEnrollmentYears());
 						}
 					}
 				}
@@ -13896,6 +13905,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
 						vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImageURL());
 						
+						if(vo.getEnrollmentYearId() == 3l)
+							vo.getEnrollmentYearList().add("2014-2016");
+						else if(vo.getEnrollmentYearId() == 4l)
+							vo.getEnrollmentYearList().add("2016-2018");
 						
 						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[10]));
 						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[12]));
@@ -13904,6 +13917,11 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					else{
 						vo.setEnrollmentYearId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
 						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
+						
+						if(vo.getEnrollmentYearId() == 3l)
+							vo.getEnrollmentYearList().add("2014-2016");
+						else if(vo.getEnrollmentYearId() == 4l)
+							vo.getEnrollmentYearList().add("2016-2018");
 						
 						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[10]));
 						voterIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[12]));
