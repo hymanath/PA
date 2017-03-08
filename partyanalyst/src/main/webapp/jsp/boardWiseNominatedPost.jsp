@@ -1402,9 +1402,9 @@ function buildCadreDetailedReport(result){
 			str+='<th rowspan="2"> SUB CASTE NAME  </th>';
 			str+='<th colspan="4"> MEMBERSHIP </th>';
 			//str+='<th colspan="6"> 2009 Election Performance </th>';
-			str+='<th colspan="6"> 2014 Election Performance </th>';
-			str+='<th colspan="6"> 2014 Membership Enrollment </th>';
-			str+='<th colspan="6"> 2016 Membership Enrollment </th>';
+			str+='<th colspan="4"> 2014 Election Performance </th>';
+			str+='<th colspan="4"> 2014 Membership Enrollment </th>';
+			str+='<th colspan="4"> 2016 Membership Enrollment </th>';
 			//str+='<th colspan="5"> 2016 Membership Enrollment </th>';
 			
 			 str+='<th rowspan="2"> 2015 Mahanadu Attendance </th>';
@@ -1425,21 +1425,18 @@ function buildCadreDetailedReport(result){
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
-			str+='<th> Own Parliament%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
-			str+='<th> Own Parliament%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
 			str+='<th> Own Mandal/Own Muncipality%  </th>';
 			str+='<th> Own Panchayat/Own Ward%  </th>';
 			str+='<th> Own Booth%  </th>';
-			str+='<th> Own Parliament%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			str+='</tr>';
 			
@@ -1449,7 +1446,7 @@ function buildCadreDetailedReport(result){
 				str+='<tr>';
 					//str+='<td>'+(parseInt(i)+1)+'</td>';
 					str+='<td> <img style="width:50px;height:50px;" src="https://www.mytdp.com/images/cadre_images/'+result.subList[i].cadreBasicPerformaceVO.imagePath+'"/></td>';
-					str+='<td>'+result.subList[i].cadreBasicPerformaceVO.name+'</td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.name+'</td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.districtName+' </td>';
 					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.constituencyName+' </td>';
 					
@@ -1490,12 +1487,24 @@ function buildCadreDetailedReport(result){
 					
 					if(result.subList[i].cadreStatsVO != null && result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
 						for(var j in result.subList[i].cadreStatsVO.subList){
-							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
-							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc+'</td>';
-							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc+'</td>';
-							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].boothPerc+'</td>';
-							str+='<td>'+result.subList[i].cadreStatsVO.subList[j].parliamenPerc+'</td>';
-							//str+='<td> - </td>';
+							if(result.subList[i].cadreStatsVO.subList[j].assemblyPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							
+							if(result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							if(result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							if(result.subList[i].cadreStatsVO.subList[j].boothPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].boothPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							
 						}
 					}
 					
