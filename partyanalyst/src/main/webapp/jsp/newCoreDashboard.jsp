@@ -110,6 +110,21 @@
         </div>
     </div>
 </header>
+<div class="rightNavigationMenu" style="display:none">
+	<ul>
+		<li class="active">Alerts</li>
+		<li>debates</li>
+		<li>Print Media</li>
+		<li>electronic media</li>
+		<li>Tours</li>
+		<li>meetings</li>
+		<li>cadre reg</li>
+		<li>committees</li>
+		<li>events & activities</li>
+		<li>attendance</li>
+		<li>training</li>
+	</ul>
+</div>
 <div class="scrollTopHtml hide">
 	<i class="glyphicon glyphicon-chevron-up"></i>
 	Top
@@ -1889,13 +1904,13 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-7 meetingHead">
+							<div class="col-md-9 col-sm-9 col-xs-12 meetingHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> this month</small>
 								</h4>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-5 meetingHead1">
+							<div class="col-md-3 col-sm-3 col-xs-12 meetingHead1">
 								<!--<span class="settingsIcon pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							    </span>-->
@@ -1937,8 +1952,13 @@
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
-									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
-									<!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span>--><span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
+									<h4>
+										<span class="headingColor text-capital">committee meetings</span>
+										<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+										<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>
+										<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
+									<!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span>-->
+									<span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
@@ -1956,7 +1976,8 @@
 									<h4>
 										<span class="headingColor text-capitalize">state level meetings</span>
 										<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
+										<!--<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>-->
+										<span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
 									</h4>
 								    <div class="settingsStateLevelMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
