@@ -20,7 +20,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="SelfAppraisalDesignationProgramTarget")
+@Table(name = "self_appraisal_designation_program_target")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SelfAppraisalDesignationProgramTarget {
 

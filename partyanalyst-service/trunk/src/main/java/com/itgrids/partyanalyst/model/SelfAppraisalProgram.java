@@ -21,7 +21,7 @@ public class SelfAppraisalProgram {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="self_appraisal_candidate_id", unique=true, nullable=false)
+	@Column(name="self_appraisal_program_id", unique=true, nullable=false)
 	public Long getSelfAppraisalProgramId() {
 		return selfAppraisalProgramId;
 	}
