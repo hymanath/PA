@@ -2172,7 +2172,7 @@ if($("#positionStatusId").val() == 0){
 			if(distList[j].tsTotal == 0){
             str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].id+' class="" style="text-align:center"  attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\'>'+distList[j].tsTotal+'</td>';			
           }else{
-            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="candidateLocCls" style="text-align:center;color:green;cursor:pointer;" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\' attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="0" attr_caste_categry_name="" attr_loc_id="'+result[i].id+'" attr_post_level_id="'+result[i].distList[i].id+'"><u>'+distList[j].tsTotal+'</u></td>';
+            str+='<td attr_level_id='+result[i].distList[j].id+' attr_location_id ='+result[i].casteId+' class="candidateLocCls" style="text-align:center;color:green;cursor:pointer;" attr_level_name='+result[i].distList[j].name+' attr_location_name =\''+result[i].name+'\' attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="0" attr_caste_categry_name="" attr_loc_id="'+result[i].id+'" attr_post_level_id="'+result[i].distList[j].id+'"><u>'+distList[j].tsTotal+'</u></td>';
 			if(result[i].distList[j].id == "1"){
 				centralCount = centralCount+distList[j].tsTotal;
 			  }
@@ -2568,7 +2568,12 @@ $(document).on("click",".radioBtnCls",function(){
 	  var positionId = $("#candPositonId").val();
 	  var positionName = $("#candPositonId option:selected").text().toUpperCase();      
   
-        var  postLevelId = $("#locationsLevelId").val();
+  if($(this).attr("attr_post_level_id") == 0){
+	  var  postLevelId = $("#locationsLevelId").val();
+  }else{
+	  var  postLevelId = $(this).attr("attr_post_level_id");
+  }
+       
 		var casteGrpId = 0;
 		if($(this).attr("attr_cstGrup_id") == 'null'){
 			casteGrpId  = 0;
