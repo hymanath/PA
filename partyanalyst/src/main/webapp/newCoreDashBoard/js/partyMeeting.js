@@ -664,6 +664,51 @@ $(document).on("click",".meetingLiCls",function(){
 	  buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(globalUserWiseMeetingMemberRslt);
 	 }
 });
+	$(document).on("click",".mainMeetingsIcon",function(){
+		var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+		var meetingTypeId = $(this).attr("attr_meeting_type_id");
+		$(".stateLevelMeetingsExpand,.specialMeetings,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		
+		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+		$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		$(".showMoreBlockCls").attr("attr_selected_type","stateLevel");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
+		$(".meetingsHiddenBlock").find("i").show();
+		$(".meetingChortCls").hide();
+		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+		
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		
+		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".dateRangePickerClsForMeetings").addClass("hide");
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".stateGeneralMeeting,.specialMeetings,.stateLevelMeetingsExpand,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		}else{
+			$(".meetingHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+			$(".meetingHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
+			$(".stateLevelMeetingBlock").show();
+			$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
+			getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+			setTimeout(function(){
+				$('html,body').animate({
+					scrollTop: $(".meetingsBlock").offset().top},
+				'slow');
+			},500);
+		}
+	});
 	$(document).on("click",".meetingsIconExpand",function(){
 		$(".dateRangePickerClsForMeetings").toggleClass("hide");
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
@@ -683,11 +728,12 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
 			$(".moreMeetingsBlocksComparision").hide();
-			$(".stateGeneralMeeting,.specialMeetings,.stateLevelMeetingsExpand,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(".stateGeneralMeeting,.specialMeetings,.stateLevelMeetingsExpand,.statelevelSessionMeeting,.mainMeetingsIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 		}else{
 			//getUserTypeWiseTotalEligibleAndAttendedCnt();
 			$(".meetingsRefresh").attr("attr_refresh_status","true");
 			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
+			$(".mainMeetingsIcon").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 			setTimeout(function(){
 				$('html,body').animate({
 					scrollTop: $(".meetingsBlock").offset().top},
@@ -882,7 +928,7 @@ $(document).on("click",".meetingLiCls",function(){
 	        $(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",partyMeetingTypeId);
 	        $(".meetingsRefresh").attr("attr_special_meeting_id",partyMeetingId);
 			$(".meetingsRefresh").attr("attr_meeting_type","specailSessionTypeMeeting");
-			$(".statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(".statelevelSessionMeeting,.mainMeetingsIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".stateLevelMeetingBlock").show();
 			$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
