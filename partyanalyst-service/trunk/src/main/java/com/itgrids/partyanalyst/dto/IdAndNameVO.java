@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +48,15 @@ public class IdAndNameVO {
 	private String noPerc;
 	private String mayPerc;
 	
+	private List<String> enrollmentYears = new ArrayList<String>();
+	
+	
+	public List<String> getEnrollmentYears() {
+		return enrollmentYears;
+	}
+	public void setEnrollmentYears(List<String> enrollmentYears) {
+		this.enrollmentYears = enrollmentYears;
+	}
 	public String getYesPerc() {
 		return yesPerc;
 	}

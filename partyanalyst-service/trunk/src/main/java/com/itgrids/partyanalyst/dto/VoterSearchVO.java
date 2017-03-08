@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VoterSearchVO implements Serializable{
 
@@ -23,8 +25,15 @@ public class VoterSearchVO implements Serializable{
 	private String mobileNumber;
 	private String actualMobiNumber; 
 	private String isCsd;
+	private List<String> enrollmentYearList = new ArrayList<String>();
 	
 	
+	public List<String> getEnrollmentYearList() {
+		return enrollmentYearList;
+	}
+	public void setEnrollmentYearList(List<String> enrollmentYearList) {
+		this.enrollmentYearList = enrollmentYearList;
+	}
 	public String getIsCsd() {
 		return isCsd;
 	}
