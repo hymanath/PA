@@ -5243,7 +5243,6 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 			  List<Object[]> committeesInvitedList = partyMeetingInviteeDAO.getCommitteeWiseInvitedCadreCountForMeeting(inputVO);
 			  setCommiteeLevelWiseInviteeMembers(committeesInvitedList,committWiseInviteeMap);
 			  List<Object[]> inviteeAttendedObjLst = partyMeetingInviteeDAO.getCommitteeWiseInvitteeAttendedCadreCountForMeeting(inputVO);
-			  
 			  List<Object[]> inviteeAttendObjLst = partyMeetingInviteeDAO.getWithoutCommitteeWiseInvitteeAttendedCadreCountForMeeting(inputVO);
 			  if(commonMethodsUtilService.isListOrSetValid(inviteeAttendObjLst)){
 				  if(!commonMethodsUtilService.isListOrSetValid(inviteeAttendedObjLst)){
