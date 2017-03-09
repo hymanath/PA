@@ -3719,7 +3719,34 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				Map<String,Map<Long,Long>> deptCorpMap = new HashMap<String,Map<Long,Long>>(0);
 				
 				if(commonMethodsUtilService.isMapValid(missedPostiontsMap)){
-					List<Object[]> deptCorpList = nominatedPostMemberDAO.getTotalBoardsAndCorpIdsByMembrIdsList(new ArrayList<Long>(missedPostiontsMap.keySet()));
+					List<Long> idsList = new ArrayList<Long>(missedPostiontsMap.keySet());
+					List<Object[]> deptCorpList =  new ArrayList<Object[]>(0);
+					
+					if(idsList != null && idsList.size()>0){
+						 
+				    	 int filterCount = 300;
+				    	 int i = 0; 
+				    	 int j = filterCount;
+				    	 int maxcount = idsList.size();
+				    	 while (maxcount >0){  
+				    		 if(maxcount<filterCount)
+				    			 j = i+maxcount;
+				    		 
+				    		 //System.out.println("j :"+j);
+				    		 //System.out.println(tempIdsList.subList(i, j));
+				    		 
+				    		 List<Object[]>  tempList  = nominatedPostMemberDAO.getTotalBoardsAndCorpIdsByMembrIdsList(idsList.subList(i, j));
+								if(commonMethodsUtilService.isListOrSetValid(tempList)){
+									deptCorpList.addAll(tempList);
+								}
+				    		 i=j;
+				    		 maxcount = maxcount-filterCount;
+				    		 j=j+filterCount;
+				    		 
+				    		 //System.out.println("maxcount :"+maxcount);
+				    	 }
+					}
+					
 					if(commonMethodsUtilService.isListOrSetValid(deptCorpList)){
 						for (Object[] param : deptCorpList) {
 							Long memberId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -3734,9 +3761,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							
 							memberCountMap.put(memberId, missedPostiontsMap.get(memberId));
 							deptCorpMap.put(deptId+"-"+corpId, memberCountMap);
+							}
 						}
-					}
-				}
+					}		
 				if(commonMethodsUtilService.isMapValid(deptNameMap)){
 					for (Long dept : deptNameMap.keySet()) {
 						
