@@ -1746,8 +1746,10 @@ function getActivitiesDetails(){
 	  var toDateStr=dateArray[1];
 	
 	var jsObj={
-		fromDate: '01/01/2014',//customStartDateActivities,
-		toDate: '01/01/2020'  //customEndDateActivities
+		//fromDate: '01/01/2014',//customStartDateActivities,
+		//toDate: '01/01/2020'  //customEndDateActivities
+		fromDate : '01/02/2015',
+	    toDate : '01/02/2020'
 	}	
 	$.ajax({
 	 type: "POST",
@@ -2390,8 +2392,8 @@ function districtWiseCohort(activityId){
 	var  scopeId = 3;
 	var jsObj ={
 	   activityId : globalActivityIdsList,
-	   fromDate : fromDateStr,//customStartDateActivities,
-	   toDate : toDateStr,//customEndDateActivities,
+	   fromDate : '01/02/2015',//fromDateStr,//customStartDateActivities,
+	   toDate : '01/02/2020',//toDateStr,//customEndDateActivities,
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -2553,8 +2555,10 @@ function stateWiseCohort(activityId){
 	
 	var jsObj ={
 	   activityId : globalActivityIdsList,
-	   fromDate : fromDateStr,//customStartDateActivities,
-	   toDate : toDateStr,//customEndDateActivities,
+	   //fromDate : fromDateStr,//customStartDateActivities,
+	   //toDate : toDateStr,//customEndDateActivities,
+	   fromDate : '01/02/2015',
+	   toDate : '01/02/2020',
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -2886,8 +2890,10 @@ function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 		locationScope:"state",
 		locationValue:1,		
 		day:1,
-		fromDateStr:"01-01-2015",
-		toDateStr:"22-01-2017",
+		//fromDateStr:"01-01-2015",
+		//toDateStr:"22-01-2017",
+		fromDateStr : '01-02-2015',
+	    toDateStr : '01-02-2020',
 		locationName:Obj.locationName,
 		startIndex:0,
 		maxIndex:0,
@@ -3033,8 +3039,10 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		locationScope:locationScope,
 		locationValue:locationScopeValue,		
 		day:day,
-		fromDateStr:"01-01-2015",
-		toDateStr:"22-01-2017",
+		//fromDateStr:"01-01-2015",
+		//toDateStr:"22-01-2017",
+		fromDateStr : '01-02-2015',
+	    toDateStr : '01-02-2020',
 		type:"popup",
 		startIndex:num,
 		maxIndex:10,
@@ -3515,8 +3523,10 @@ function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 				 activityIds:activityIds,
 				 activityLevelIds:activityLevelIds,
 				 userTypeId : globalUserTypeId,
-				 fromDateStr: fromDateStr, //customStartDateActivities,
-				 toDateStr: toDateStr //customEndDateActivities
+				 //fromDateStr: fromDateStr, //customStartDateActivities,
+				 //toDateStr: toDateStr //customEndDateActivities
+				 fromDateStr : '01/02/2015',
+	             toDateStr : '01/02/2020'
 			  }
 	$.ajax({
 		type : 'POST',
@@ -4398,8 +4408,10 @@ function getSettingActivities(){
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
 	var jsObj={
-		fromDate: '01/01/2014',//customStartDateActivities,
-		toDate: '01/01/2020' //customEndDateActivities
+		//fromDate: '01/01/2014',//customStartDateActivities,
+		//toDate: '01/01/2020' //customEndDateActivities
+		fromDate : '01/02/2015',
+	    toDate : '01/02/2020'
 	}	
 	$.ajax({
 	 type: "POST",
