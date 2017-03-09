@@ -1400,11 +1400,11 @@ function buildCadreDetailedReport(result){
 			str+='<th rowspan="2"> MEMBERSHIP NO  </th>';
 			str+='<th rowspan="2"> CASTE NAME  </th>';
 			str+='<th rowspan="2"> SUB CASTE NAME  </th>';
-			str+='<th colspan="4"> MEMBERSHIP </th>';
+			str+='<th colspan="4" class="text-center"> MEMBERSHIP(Own) </th>';
 			//str+='<th colspan="6"> 2009 Election Performance </th>';
-			str+='<th colspan="4"> 2014 Election Performance </th>';
-			str+='<th colspan="4"> 2014 Membership Enrollment </th>';
-			str+='<th colspan="4"> 2016 Membership Enrollment </th>';
+			str+='<th colspan="4" class="text-center"> 2014 Election Performance(Own) </th>';
+			str+='<th colspan="4" class="text-center"> 2014 Membership Enrollment(Own) </th>';
+			str+='<th colspan="4" class="text-center"> 2016 Membership Enrollment(Own) </th>';
 			//str+='<th colspan="5"> 2016 Membership Enrollment </th>';
 			
 			 str+='<th rowspan="2"> 2015 Mahanadu Attendance </th>';
@@ -1422,21 +1422,21 @@ function buildCadreDetailedReport(result){
 			str+='<th> 2014  </th>';
 			str+='<th> 2016  </th>';
 			str+='<th> Constituency%  </th>';
-			str+='<th> Own Mandal/Own Muncipality%  </th>';
-			str+='<th> Own Panchayat/Own Ward%  </th>';
-			str+='<th> Own Booth%  </th>';
+			str+='<th> Mandal/Own Muncipality%  </th>';
+			str+='<th> Panchayat/Own Ward%  </th>';
+			str+='<th> Booth%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
-			str+='<th> Own Mandal/Own Muncipality%  </th>';
-			str+='<th> Own Panchayat/Own Ward%  </th>';
-			str+='<th> Own Booth%  </th>';
+			str+='<th>  Mandal/Own Muncipality%  </th>';
+			str+='<th>  Panchayat/Own Ward%  </th>';
+			str+='<th>  Booth%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			
 			str+='<th> Constituency%  </th>';
-			str+='<th> Own Mandal/Own Muncipality%  </th>';
-			str+='<th> Own Panchayat/Own Ward%  </th>';
-			str+='<th> Own Booth%  </th>';
+			str+='<th> Mandal/Own Muncipality%  </th>';
+			str+='<th> Panchayat/Own Ward%  </th>';
+			str+='<th> Booth%  </th>';
 			//str+='<th> Booth Influence%  </th>';
 			str+='</tr>';
 			
