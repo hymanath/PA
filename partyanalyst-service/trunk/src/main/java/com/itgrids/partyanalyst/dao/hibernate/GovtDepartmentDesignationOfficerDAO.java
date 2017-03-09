@@ -29,12 +29,13 @@ public class GovtDepartmentDesignationOfficerDAO extends GenericDaoHibernate<Gov
 	}
 	
 	public List<Object[]> getDeptDesignationsForUser(Long userId){
-		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignation.govtDepartmentDesignationId," +
-												" model.govtDepartmentDesignation.designationName," +
-												" model.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
-												" model.govtDepartmentDesignation.govtDepartment.departmentName" +
-												" from GovtDepartmentDesignationOfficer model" +
-												" where model.userId = :userId");
+		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName" +
+												" from GovtDepartmentDesignationOfficerDetails model" +
+												" where model.userId = :userId" +
+												" and model.isDeleted = 'N'");
 		query.setParameter("userId", userId);
 		return query.list();
 	}
