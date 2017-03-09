@@ -16057,5 +16057,15 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getMultiLocationWiseMeetingGroupsDataAction" class="coreDashboardAction" method="getMultiLocationWiseMeetingGroupsData">
+			<result type="json" name="success">
+				<param name="root">meetingVO</param>     
+			</result>
+		</action>
+		<action name="getPartyLevelIdWiseMeetingsCountAction" class="coreDashboardAction" method="getPartyLevelIdWiseMeetingsCount">
+			<result type="json" name="success">
+				<param name="root">meetingBasicDetailsVO</param>     
+			</result>
+		</action>
  </package>
 </struts>

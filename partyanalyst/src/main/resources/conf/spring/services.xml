@@ -3770,6 +3770,7 @@
 	    <property name="partyMeetingStatusTempDAO" ref="partyMeetingStatusTempDAO" />
 	    <property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 	    <property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
+	    <property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO" />
 	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
