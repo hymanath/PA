@@ -62,4 +62,7 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Long> getPartyMeetingIdList();
 	public List<Object[]> plannedMeetingIdAndName(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
 	public List<Object[]> getCustomPartyMeetingsMainTypeOverViewData(Date startDate, Date endDate);
+	public List<Object[]> getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,Date fromDate,Date toDate,Long stateId);
+	public Long getPlannedCount(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
+			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId);
 }

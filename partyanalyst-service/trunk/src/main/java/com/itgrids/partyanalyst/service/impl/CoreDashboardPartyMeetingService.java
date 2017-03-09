@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusTempDAO;
@@ -34,21 +36,21 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISessionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
-import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
-import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
+import com.itgrids.partyanalyst.dto.MeetingVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.PartyMeetingLevel;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -75,7 +77,18 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private IPartyMeetingStatusTempDAO partyMeetingStatusTempDAO;
 	 private IPartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	 private IPartyMeetingDocumentDAO partyMeetingDocumentDAO; 
+	 private IPartyMeetingLevelDAO partyMeetingLevelDAO;
 	 
+	 
+	 
+	public IPartyMeetingLevelDAO getPartyMeetingLevelDAO() {
+		return partyMeetingLevelDAO;
+	}
+
+	public void setPartyMeetingLevelDAO(IPartyMeetingLevelDAO partyMeetingLevelDAO) {
+		this.partyMeetingLevelDAO = partyMeetingLevelDAO;
+	}
+
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
@@ -7805,4 +7818,186 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		return returnList;
 	}
+	
+	public MeetingVO getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId){
+		MeetingVO returnVO = new MeetingVO();
+		Date startDate = null;
+		Date endDate = null;
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		try{
+			 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 startDate = format.parse(fromDateStr);
+				 endDate = format.parse(toDateStr);
+			}
+			Long locationId = 0L;
+			Set<Long> locationValuesSet = new HashSet<Long>(0);
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			   }
+		    } 
+			List<MeetingVO> meetingGrpList = new ArrayList<MeetingVO>();
+			List<Object[]> meetingsList = partyMeetingDAO.getMultiLocationWiseMeetingGroupsData(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId);
+			
+			if(commonMethodsUtilService.isListOrSetValid(meetingsList)){
+				for(Object[] obj :meetingsList){
+					returnVO.setLevelId(commonMethodsUtilService.getLongValueForObject(obj[0]));//partyMeetnMainTypId
+					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));//partyMeetnMainTyp
+					MeetingVO meetingGrp = getMatchedVOByList(returnVO.getUserAccessLevelList(),(Long)obj[2]);
+					if(meetingGrp == null){
+						meetingGrp = new MeetingVO();
+						meetingGrpList.add(meetingGrp);
+						meetingGrp.setLevelId(commonMethodsUtilService.getLongValueForObject(obj[2]));//partyMeetingGroupId
+						meetingGrp.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));//partyMeetingGroupName
+						 meetingGrp.setUserAccessLevelValuesList(getPartyMeetingLevels());//partyMeetingLevels
+						 MeetingVO partylevelVO = getMatchedVOByList(meetingGrp.getUserAccessLevelValuesList(),(Long)obj[5]);
+						 if(partylevelVO != null)
+						 partylevelVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					}
+				}
+			}
+			returnVO.setUserAccessLevelList(meetingGrpList);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getMultiLocationWiseMeetingGroupsData", e);
+		}
+		return returnVO;
+	}
+	
+	public MeetingVO getMatchedVOByList(List<MeetingVO> voList,Long id){
+		MeetingVO returnvo = null;
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(voList)){
+				for (MeetingVO nominatedPostDashboardVO : voList) {
+					if(nominatedPostDashboardVO.getLevelId().longValue() == id.longValue()){
+						return nominatedPostDashboardVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMatchedVOByList() method of NominatedPostProfileService", e);
+		}
+		return returnvo;
+	}
+	public List<MeetingVO> getPartyMeetingLevels(){
+		List<MeetingVO> returnList = new ArrayList<MeetingVO>();
+		try{
+			List<PartyMeetingLevel> partyMeetingLevel = partyMeetingLevelDAO.getAll();
+			if(commonMethodsUtilService.isListOrSetValid(partyMeetingLevel)){
+				for(PartyMeetingLevel level :partyMeetingLevel){
+					MeetingVO meetingVO = new MeetingVO();
+					meetingVO.setLevelId(level.getPartyMeetingLevelId());
+					meetingVO.setName(level.getLevel());
+					returnList.add(meetingVO);
+				}
+				}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyMeetingLevels", e);
+		}
+		return returnList;
+	}
+	
+	public MeetingBasicDetailsVO getPartyLevelIdWiseMeetingsCount(Long partyMeetnMainTypId,
+			Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
+		MeetingBasicDetailsVO returnVo = new MeetingBasicDetailsVO();
+		Date startDate = null;
+		Date endDate = null;
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		try{
+			 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 startDate = format.parse(fromDateStr);
+				 endDate = format.parse(toDateStr);
+			}
+			Long locationId = 0L;
+			Set<Long> locationValuesSet = new HashSet<Long>(0);
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			   }
+		    } 
+		    
+		    //Long plannedCount = partyMeetingDAO.getPlannedCount(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+					//partyMeetingLevelId,partyMeetngGrpId);
+			//Long conductedCount = partyMeetingAttendanceDAO.getConductedCount(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+				//	partyMeetingLevelId,partyMeetngGrpId); 
+			
+			/*Long notConductedCount = 0l;
+			if(plannedCount != null && plannedCount.longValue() > 0l && conductedCount != null){
+				returnVo.setPlanned(plannedCount); 
+				notConductedCount = plannedCount-conductedCount;
+				returnVo.setNonConducted(notConductedCount);
+				returnVo.setConducted(conductedCount);
+			}*/
+		    Set<Long> attendedIds = null;
+		    Set<Long> partyMetingIds = new HashSet<Long>();
+			Map<Long,Set<Long>> attendeeMap = new HashMap<Long,Set<Long>>();
+			List<Object[]> attendedList = partyMeetingAttendanceDAO.getAttendeeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+					partyMeetingLevelId,partyMeetngGrpId);
+			if(commonMethodsUtilService.isListOrSetValid(attendedList)){
+				for(Object[] obj :attendedList){
+					attendedIds = attendeeMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(attendedIds == null){
+						attendedIds = new HashSet<Long>();
+						attendeeMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), attendedIds);
+					}
+					partyMetingIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					attendedIds.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(partyMetingIds)){
+				returnVo.setConducted(Long.valueOf(partyMetingIds.size()));//conducted Count
+			}
+			List<Object[]> invitteeList = partyMeetingInviteeDAO.getInvitteeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+					partyMeetingLevelId,partyMeetngGrpId);
+			
+			Set<Long> inviteeIds = null;
+			Map<Long,Set<Long>> inviteeMap = new HashMap<Long,Set<Long>>();
+			if(commonMethodsUtilService.isListOrSetValid(invitteeList)){
+				for(Object[] obj :invitteeList){
+					inviteeIds = inviteeMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(inviteeIds == null){
+						inviteeIds = new HashSet<Long>();
+						inviteeMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), inviteeIds);
+					}
+					inviteeIds.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				}
+			}
+			Set<Long> inviteeAttended = new HashSet<Long>();
+			Set<Long> nonInviteeAttended = new HashSet<Long>();
+			if(commonMethodsUtilService.isListOrSetValid(inviteeIds)){
+				returnVo.setInvited(Long.valueOf(inviteeIds.size()));//InvitteeCount
+				for(Long invitee :inviteeIds){
+					if(attendedIds.contains(invitee)){
+						inviteeAttended.add(invitee);
+					}else{
+						nonInviteeAttended.add(invitee);
+					}
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(inviteeAttended)){
+				returnVo.setAttended(Long.valueOf(inviteeAttended.size()));//AttendedCount
+			}
+			if(commonMethodsUtilService.isListOrSetValid(nonInviteeAttended)){
+				returnVo.setNonInvitee(Long.valueOf(nonInviteeAttended.size()));//nonInvitteeAttended
+			}
+			
+			if(returnVo.getInvited() != null && returnVo.getInvited().longValue() > 0l && returnVo.getAttended() != null){
+				returnVo.setAbsent(returnVo.getInvited().longValue()-returnVo.getAttended().longValue());//Abscent
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyLevelIdWisemeetingsCount", e);
+		}
+		
+		return returnVo;
+	}
+	
 }
