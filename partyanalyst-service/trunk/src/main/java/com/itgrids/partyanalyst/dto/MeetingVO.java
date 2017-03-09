@@ -9,8 +9,17 @@ public class MeetingVO implements java.io.Serializable{
 	private List<MeetingVO> userAccessLevelList;
 	private List<MeetingVO> userAccessLevelValuesList;
 	private List<Long> levelValues;
+	private Long count;
 	
 	
+	
+	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public List<Long> getLevelValues() {
 		return levelValues;
 	}
