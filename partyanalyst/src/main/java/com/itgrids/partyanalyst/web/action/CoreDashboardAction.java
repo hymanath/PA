@@ -30,10 +30,11 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
-import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
+import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -140,6 +141,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	private InputStream 						inputStream;
 	private NewCadreRegistrationVO newCadreRegistrationVO;
+	private MeetingVO meetingVO;
+	private MeetingBasicDetailsVO meetingBasicDetailsVO;
 	
 	/**
 	 * starting Payment Gateway required parameters
@@ -162,8 +165,26 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	
 	//setters And Getters
+	
+	
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
+	}
+
+	public MeetingBasicDetailsVO getMeetingBasicDetailsVO() {
+		return meetingBasicDetailsVO;
+	}
+
+	public void setMeetingBasicDetailsVO(MeetingBasicDetailsVO meetingBasicDetailsVO) {
+		this.meetingBasicDetailsVO = meetingBasicDetailsVO;
+	}
+
+	public MeetingVO getMeetingVO() {
+		return meetingVO;
+	}
+
+	public void setMeetingVO(MeetingVO meetingVO) {
+		this.meetingVO = meetingVO;
 	}
 
 	public void setMemberList(List<List<ToursBasicVO>> memberList) {
@@ -3770,6 +3791,51 @@ public String getCustomWisePartyMeetingDocuments()
 		
 	} catch (Exception e) {
 		LOG.error("Exception occured in getCustomWisePartyMeetingDocuments ",e);
+	}
+	return Action.SUCCESS;
+}
+public String getMultiLocationWiseMeetingGroupsData()
+{
+	try {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		
+		meetingVO = coreDashboardPartyMeetingService.getMultiLocationWiseMeetingGroupsData( partyMeetingMainTypeId,
+				 activityMemberId, fromDateStr, toDateStr, stateId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getMultiLocationWiseMeetingGroupsData ",e);
+	}
+	return Action.SUCCESS;
+}
+public String getPartyLevelIdWiseMeetingsCount()
+{
+	try {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		Long partyMeetnMainTypId = jObj.getLong("partyMeetingMainTypeId");
+		Long partyMeetngGrpId = jObj.getLong("meetingGrpId");
+		meetingBasicDetailsVO = coreDashboardPartyMeetingService.getPartyLevelIdWiseMeetingsCount( partyMeetnMainTypId,
+				 activityMemberId, fromDateStr, toDateStr, stateId, partyMeetingLevelId, partyMeetngGrpId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getPartyLevelIdWiseMeetingsCount ",e);
 	}
 	return Action.SUCCESS;
 }
