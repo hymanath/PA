@@ -584,7 +584,7 @@
 <!--<script src="js/Tours/toursDetails.js" type="text/javascript"></script>-->
 <!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
+<!--<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>-->
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
 <script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <script type="text/javascript" src="dragAndDropPhoto/js/editUpdateDetails.js?v=1.0.5"></script>                
