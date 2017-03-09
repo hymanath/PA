@@ -911,7 +911,7 @@ function buildAlertAssignedCandidateData(result)
 <script src="dist/alertDashBoard/alertClarification.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
+<!--<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>  -->   
 <script type="text/javascript" src="dragAndDropPhoto/js/alertScanCopy.js?v=1.0.5"></script> 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript">
