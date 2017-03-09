@@ -629,6 +629,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .bg_ED {
     background-color: rgb(237, 238, 240);
 }
+.bg_E0
+{
+	background-color:#E0E0E0
+}
 .committesBlockUl {
     margin: 0;
     padding: 0;
@@ -2668,4 +2672,26 @@ color: rgb(51, 122, 183);
 }
 .onHoverPopUp li {
     width: 100%;
+}
+.b_bottom0
+{
+	border-bottom:0px !important;
+}
+.b_top0
+{
+	border-top:0px !important;
+}
+.multiLocationWiseMeetingCount
+{
+	cursor:pointer;
+}
+.multiLocationWiseMeetingCount.active:after
+{
+	position: absolute;
+	height: 4px;
+	display: block;
+	content: '';
+	width: 100%;
+	background-color: #E0E0E0;
+	bottom: 0px;
 }
