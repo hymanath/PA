@@ -79,6 +79,18 @@
 	cursor:pointer;
 	top:-3px
 }
+.enrolled-mem li.yes {
+    background-color: #d7f0db;
+}
+.enrolled-mem li {
+    border: 1px solid #666;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 3px;
+}
+.enrolled-mem li.no {
+    background-color: #e3c5c7;
+}
 </style>
 </head>
 <body>
@@ -276,6 +288,22 @@
     </div>
   </div>
 </div>
+</div>
+<div class="modal fade" tabindex="-1" id="detailedReprot" role="dialog">  
+	<div class="modal-dialog" style="width:85%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">DETAILED REPORT </h4>
+			</div>
+			<div class="modal-body">
+				<div  id="detailedDiv1" class="table-responsive"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -630,6 +658,19 @@ $(document).on("click",".pdfModalCloseBtn",function(){
 	},500);
 });
  
+</script>
+<script>
+var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 </script>
 </body>
 </html>
