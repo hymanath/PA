@@ -12383,8 +12383,8 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 						lebWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Muncipality",lebIdsLsit,2016L,null);
 					if(commonMethodsUtilService.isListOrSetValid(tehilIdsLsit))
 						mandalWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Mandal",tehilIdsLsit,2016L,null);	
-					if(commonMethodsUtilService.isListOrSetValid(wardIdsLsit))
-						wardWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("district",wardIdsLsit,2016L,null);	
+					//if(commonMethodsUtilService.isListOrSetValid(wardIdsLsit))
+						//wardWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("ward",wardIdsLsit,2016L,null);	
 					if(commonMethodsUtilService.isListOrSetValid(panchayatIdsLsit))
 						panchayatWiseElectionPercMap = getAreaWiseElectionAndMemberShipPerc("Panchayat",panchayatIdsLsit,2016L,null);	
 					if(commonMethodsUtilService.isListOrSetValid(boothIdsLsit))
@@ -12531,6 +12531,15 @@ public BenefitVO getBenefitDetailsAlongFamily(Long tdpCadreId,List<Long> familly
 					Long total_2014 = commonMethodsUtilService.getLongValueForObject(param[1]);
 					Long total_2016 = commonMethodsUtilService.getLongValueForObject(param[2]);
 					Long totalVotes_2014 = totalVotesMap_2014.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(totalVotes_2014 == null || totalVotes_2014.longValue()==0L){
+						if(commonMethodsUtilService.isListOrSetValid(specialBoothIdsList)){
+							for (Long boothId : specialBoothIdsList) {
+								totalVotes_2014 = totalVotesMap_2014.get(boothId);
+								if(total_2014 != null && totalVotes_2014.longValue()>0L)
+									break;
+							}
+						}
+					}
 					Long totalVotes_2016 = totalVotesMap_2016.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					String perc_2014 = calculatePercentage(totalVotes_2014,total_2014);
 					String perc_2016 = calculatePercentage(totalVotes_2016,total_2016);
