@@ -2032,6 +2032,28 @@
 										</div>
 									 </div>
 								   </div>
+									<!--<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
+											  <div class="panel panel-default panelNew">
+												<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
+													<h4 class="panel-title" style="display: inline-block">
+														<span class="headingColor text-capital">multilocation meetings</span>
+														<i class="glyphicon glyphicon-fullscreen meetingsIconExpand" style="background-color: #fff;"></i>
+													</h4>
+													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
+													</a>
+												</div>
+												<div id="collapseMultiLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingMultiLocation">
+												  <div class="panel-body b_top0 pad_5">
+													<div id="MultiLocationWiseMeetingGroupsData"></div>  
+												  </div>
+												</div>
+											  </div>
+											</div>
+										</div>
+									</div>-->
+									
 								</div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock">
@@ -4169,6 +4191,7 @@
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
@@ -4358,6 +4381,7 @@ var globalImages;
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
+		//getMultiLocationWiseMeetingGroupsData();
 		//events
 		getEventBasicCntDtls();
 		//news please dont remove
