@@ -600,10 +600,11 @@ $(document).on('click','.showPdfCls',function(){
 	$("#pdfReportDetailsId").html(str);
 }); 
 var totalWishListCount = 0;
+var globalCadreIds = [];
 function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
 	totalWishListCount = 0;
-	
+	str+='<div class="pull-right"> <button class="btn btn-xs btn-mini btn-success"  onclick="getCadreDetailsReport()"> Detailed Report </button></div>'
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
 		if(gblStatus=="finaliZed" && result.subList.length != 1){
@@ -636,6 +637,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
 				str+='<td style="width:150px;">';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					globalCadreIds.push(result.subList[i].tdpCadreId);
 					str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
 					if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
@@ -2081,4 +2083,196 @@ function buildPostDetails(result){
 			 str+='</table>';
 			  str+='</div>';
 		 $("#nominatedPostDtlsTblId").html(str);
+}
+function getCadreDetailsReport(){
+	$("#detailedDiv1").html("");
+	$('#detailedReprot').modal('show');
+	$('#detailedDiv1').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset" src="images/search.gif">');
+	var tdpCadreIdsArr  = [];
+	
+	var jsObj={
+		tdpCadreIds:globalCadreIds	
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getCadreDetailedReportAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  
+	 if(result.subList != null && result.subList.length>0){
+		  buildCadreDetailedReport(result);
+	  }else{
+		$("#detailedDiv1").html("<center>NO DATA AVAILABLE</center>");  
+	  }
+   }); 
+}
+function buildCadreDetailedReport(result){
+	var str='';
+	if(result.subList != null && result.subList.length>0){
+		str+='<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="display:inline-block;"> Export To Excel </span>';
+			str+='<table id="detailRepTableId" class="table table-bordered table-condensed">';
+			
+			str+='<thead>';
+			str+='<tr>';
+			//str+='<th rowspan="2" > SNO </th>';
+			str+='<th rowspan="2"> PHOTO </th>';
+			str+='<th rowspan="2"> NAME  </th>';
+			str+='<th rowspan="2"> DISTRICT  </th>';
+			str+='<th rowspan="2"> CONSTITUENCY  </th>';
+			str+='<th rowspan="2"> PARTY DESIGNATION  </th>';
+			str+='<th rowspan="2"> GOVT DESIGNATION  </th>';
+			str+='<th rowspan="2"> CELL NO  </th>';
+			str+='<th rowspan="2"> MEMBERSHIP NO  </th>';
+			str+='<th rowspan="2"> CASTE NAME  </th>';
+			str+='<th rowspan="2"> SUB CASTE NAME  </th>';
+			str+='<th colspan="4" class="text-center"> MEMBERSHIP(Own) </th>';
+			//str+='<th colspan="6"> 2009 Election Performance </th>';
+			str+='<th colspan="4" class="text-center"> 2014 Election Performance(Own) </th>';
+			str+='<th colspan="4" class="text-center"> 2014 Membership Enrollment(Own) </th>';
+			str+='<th colspan="4" class="text-center"> 2016 Membership Enrollment(Own) </th>';
+			//str+='<th colspan="5"> 2016 Membership Enrollment </th>';
+			
+			 str+='<th rowspan="2" class="text-center"> 2015 Mahanadu Attendance </th>';
+			str+='<th rowspan="2" class="text-center"> 2016 Mahanadu Attendance </th>';
+			
+			str+='<th rowspan="2"> Training Attendance </th>';
+			str+='<th rowspan="2"> Invited Party Meetings </th>';
+			str+='<th rowspan="2"> Attended Party Meetings </th>';
+			//str+='<th rowspan="2"> Involved Alerts </th>';
+			
+			str+='</tr>';
+			str+='<tr>';
+			str+='<th> 2010  </th>';
+			str+='<th> 2012  </th>';
+			str+='<th> 2014  </th>';
+			str+='<th> 2016  </th>';
+			str+='<th> Constituency%  </th>';
+			str+='<th> Mandal/Own Muncipality%  </th>';
+			str+='<th> Panchayat/Own Ward%  </th>';
+			str+='<th> Booth%  </th>';
+			//str+='<th> Booth Influence%  </th>';
+			
+			str+='<th> Constituency%  </th>';
+			str+='<th> Mandal/Own Muncipality%  </th>';
+			str+='<th> Panchayat/Own Ward%  </th>';
+			str+='<th> Booth%  </th>';
+			//str+='<th> Booth Influence%  </th>';
+			
+			str+='<th> Constituency%  </th>';
+			str+='<th> Mandal/Own Muncipality%  </th>';
+			str+='<th> Panchayat/Own Ward%  </th>';
+			str+='<th> Booth%  </th>';
+			//str+='<th> Booth Influence%  </th>';
+			str+='</tr>';
+			
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result.subList){
+				str+='<tr>';
+					//str+='<td>'+(parseInt(i)+1)+'</td>';
+					str+='<td> <img style="width:50px;height:50px;" src="https://www.mytdp.com/images/cadre_images/'+result.subList[i].cadreBasicPerformaceVO.imagePath+'"/></td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.name+'</td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.districtName+' </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.constituencyName+' </td>';
+					
+					if(result.subList[i].cadreBasicPerformaceVO.designation != null)
+						str+='<td> '+result.subList[i].cadreBasicPerformaceVO.designation+' </td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result.subList[i].cadreBasicPerformaceVO.partyPosition != null)
+						str+='<td> '+result.subList[i].cadreBasicPerformaceVO.partyPosition+' </td>';
+					else
+						str+='<td> - </td>';
+					
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.mobileNO+' </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.membershipNo+' </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteGroup+' </td>';
+					str+='<td> '+result.subList[i].cadreBasicPerformaceVO.casteName+' </td>';
+					
+					if(result.subList[i].cadreBasicPerformaceVO.subList != null && result.subList[i].cadreBasicPerformaceVO.subList.length>0){
+						for(var j in result.subList[i].cadreBasicPerformaceVO.subList){
+						
+								str+='<td> ';
+								if(result.subList[i].cadreBasicPerformaceVO.subList[j].status =='YES')	{								
+								str+='<ul class="enrolled-mem">';
+									str+='<li class="yes">'+result.subList[i].cadreBasicPerformaceVO.subList[j].year+'<span></span></li>&nbsp;';
+									str+=' </ul> ';
+								}
+								else{
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="no">'+result.subList[i].cadreBasicPerformaceVO.subList[j].year+'<span></span></li>&nbsp;';
+									str+=' </ul> ';
+								}
+									str+='</td> ';								
+							
+						
+						}
+					}
+					
+					if(result.subList[i].cadreStatsVO != null && result.subList[i].cadreStatsVO.subList != null && result.subList[i].cadreStatsVO.subList.length>0){
+						for(var j in result.subList[i].cadreStatsVO.subList){
+							if(result.subList[i].cadreStatsVO.subList[j].assemblyPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].assemblyPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							
+							if(result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].mandalORMuncORUrbanPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							if(result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].panchayatORWardPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							if(result.subList[i].cadreStatsVO.subList[j].boothPerc != null)
+								str+='<td>'+result.subList[i].cadreStatsVO.subList[j].boothPerc+'</td>';
+							else
+								str+='<td> - </td>';
+							
+						}
+					}
+					
+					if(result.subList[i].cadreEventsVO != null && result.subList[i].cadreEventsVO.subList != null && result.subList[i].cadreEventsVO.subList.length>0){
+						for(var j in result.subList[i].cadreEventsVO.subList){
+							if(result.subList[i].cadreEventsVO.subList[j].name =='PartyMeetings' || result.subList[i].cadreEventsVO.subList[j].name =='Alert'){
+								if(result.subList[i].cadreEventsVO.subList[j].invitedCount != null && result.subList[i].cadreEventsVO.subList[j].invitedCount>0)
+									str+='<td> '+result.subList[i].cadreEventsVO.subList[j].invitedCount+' </td>';
+								else
+									str+='<td> '+result.subList[i].cadreEventsVO.subList[j].attendedCount+' </td>';
+							
+							}else{
+								if(result.subList[i].cadreEventsVO.subList[j].attendedCount != null && result.subList[i].cadreEventsVO.subList[j].attendedCount>0){
+									str+='<td>  ';
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="yes"> YES <span></span></li>&nbsp;';
+									str+=' </ul> </td> ';
+									
+								}else{
+									//str+='<td> NO </td>';
+									str+='<td>  ';
+									str+='<ul class="enrolled-mem">';
+									str+='<li class="no"> NO <span></span></li>&nbsp;';
+									str+=' </ul> ';
+									str+='</td>  ';
+								}
+							}
+						}
+					}
+					
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+	}
+	$("#detailedDiv1").html(str);
+	$("#detailRepTableId").dataTable({
+			"iDisplayLength": 10,
+			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+		});
+}
+function exportToExcel()
+{
+	tableToExcel('detailRepTableId', 'District Wise Committees');
 }
