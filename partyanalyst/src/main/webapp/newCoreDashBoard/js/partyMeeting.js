@@ -6049,7 +6049,7 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 	}
 }
 
-getMultiLocationWiseMeetingGroupsData();
+//getMultiLocationWiseMeetingGroupsData();
 function getMultiLocationWiseMeetingGroupsData(){
 	$("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
@@ -6070,7 +6070,7 @@ function getMultiLocationWiseMeetingGroupsData(){
 			console.log(result);
 			});
 }
-getPartyLevelIdWiseMeetingsCount();
+//getPartyLevelIdWiseMeetingsCount();
 function getPartyLevelIdWiseMeetingsCount(){
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
