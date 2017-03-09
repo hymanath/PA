@@ -7920,19 +7920,17 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
 			   }
 		    } 
-		    
-		    //Long plannedCount = partyMeetingDAO.getPlannedCount(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
-					//partyMeetingLevelId,partyMeetngGrpId);
-			//Long conductedCount = partyMeetingAttendanceDAO.getConductedCount(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
-				//	partyMeetingLevelId,partyMeetngGrpId); 
-			
-			/*Long notConductedCount = 0l;
-			if(plannedCount != null && plannedCount.longValue() > 0l && conductedCount != null){
-				returnVo.setPlanned(plannedCount); 
-				notConductedCount = plannedCount-conductedCount;
-				returnVo.setNonConducted(notConductedCount);
-				returnVo.setConducted(conductedCount);
-			}*/
+		    Map<Long,String> sessionLateTimes = new HashMap<Long,String>();
+		    List<Object[]> lateTimesList = partyMeetingSessionDAO.getLateTimeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+					partyMeetingLevelId,partyMeetngGrpId);
+		    if(commonMethodsUtilService.isListOrSetValid(lateTimesList)){
+				for(Object[] obj :lateTimesList){
+					String lateTime = sessionLateTimes.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(lateTime == null || lateTime == ""){
+						sessionLateTimes.put(commonMethodsUtilService.getLongValueForObject(obj[0]), commonMethodsUtilService.getStringValueForObject(obj[02]));
+					}
+				}
+			}
 		    Set<Long> attendedIds = null;
 		    Set<Long> partyMetingIds = new HashSet<Long>();
 			Map<Long,Set<Long>> attendeeMap = new HashMap<Long,Set<Long>>();
@@ -7950,6 +7948,18 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					
 				}
 			}
+			Long lateAttenders = null;
+			//Map<Long,Long> sessionWiseLateCount = getSessionWiseLateTimersCount(sessionLateTimes,attendedList);
+			
+			/*if(commonMethodsUtilService.isMapValid(sessionWiseLateCount)){
+				for(Map.Entry<Long, Long> entry : sessionWiseLateCount.entrySet()){
+					lateAttenders = lateAttenders + entry.getValue();
+				}
+			}*/
+			
+			/*if(lateAttenders != null && lateAttenders.longValue() > 0l){
+				returnVo.setLate(lateAttenders);
+			}*/
 			if(commonMethodsUtilService.isListOrSetValid(partyMetingIds)){
 				returnVo.setConducted(Long.valueOf(partyMetingIds.size()));//conducted Count
 			}
@@ -7998,6 +8008,41 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		
 		return returnVo;
+	}
+	
+	public Map<Long,Long> getSessionWiseLateTimersCount(Map<Long,String> sessionLateTimes,List<Object[]> attendedList){
+		Map<Long,Long> sessionWiseCount = new HashMap<Long,Long>();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
+		try{
+			
+			if(commonMethodsUtilService.isListOrSetValid(attendedList)){
+				for(Object[] obj :attendedList){
+					String attTime = commonMethodsUtilService.getStringValueForObject(obj[3]);
+					String ltTime = sessionLateTimes.get(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					Date attendedTime = sdf1.parse(attTime);
+					Date lateTime = sdf.parse(ltTime);
+					Long attTimeMilis = attendedTime.getTime();
+					Long ltTimeMilis = lateTime.getTime();
+					
+					
+					if(attTimeMilis > ltTimeMilis){//true -> late
+						Long lateAttders = sessionWiseCount.get(commonMethodsUtilService.getLongValueForObject(obj[4]));
+						if(lateAttders == null){
+							sessionWiseCount.put(commonMethodsUtilService.getLongValueForObject(obj[4]), 1l);
+						}else{
+							lateAttders = lateAttders +1;
+							sessionWiseCount.put(commonMethodsUtilService.getLongValueForObject(obj[4]), lateAttders);
+						}
+					}
+					
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getSessionWiseLateTimersCount", e);
+		}
+		return sessionWiseCount;
 	}
 	
 }
