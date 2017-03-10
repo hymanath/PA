@@ -43,7 +43,6 @@ import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingLocationVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
@@ -1038,7 +1037,7 @@ public class AttendanceService implements IAttendanceService{
 					PartyMeetingAttendance partyMeetingAttendance = new PartyMeetingAttendance();
 					partyMeetingAttendance.setPartyMeetingId(inputvo.getPartyMeetingId());
 					partyMeetingAttendance.setPartyMeetingSessionId(inputvo.getPartyMeetingSessionId());
-					partyMeetingAttendance.setAttendanceId(attendance.getAttendanceId());
+					partyMeetingAttendance.setAttendance(attendance);
 					partyMeetingAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					partyMeetingAttendance = partyMeetingAttendanceDAO.save(partyMeetingAttendance);
 					
