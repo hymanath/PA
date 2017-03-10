@@ -29,7 +29,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" FROM NominatedPostApplication model  left join model.position position " +
 				" left join model.departments department " +
 				" left join model.board board  " +
-				" WHERE   model.isDeleted ='N' and model.isExpired = 'N'   ");
+				" WHERE   model.isDeleted ='N' and model.isExpired = 'N'  and model.applicationStatus.applicationStatusId not in (2,4,8)   ");
 				//" AND model.locationValue = :locationValue ");
 		if(boardLevelId.longValue() !=5L)
 			str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
@@ -274,11 +274,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		//Query
 		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 				" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
-				" count(distinct model.nominatedPostApplicationId) " +
+				" count(distinct model.nominatedPostApplicationId)  ,  " +
+				" model.applicationStatus.applicationStatusId , model.applicationStatus.status " +
 				" FROM NominatedPostApplication model left join model.position position " +
 				" left join model.departments department " +
 				" left join model.board board   " +
-				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N'  " );
+				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8)  " );
 				//" AND model.locationValue = :locationValue" );
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() !=5L)
@@ -405,9 +406,10 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		StringBuilder str = new StringBuilder();
 		
 		//Query
-		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age, count(distinct model.nominatedPostApplicationId) " +
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age, count(distinct model.nominatedPostApplicationId), " +
+				"  model.applicationStatus.applicationStatusId , model.applicationStatus.status" +
 				" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board   " +
-				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N' " );
+				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8)  " );
 				if(boardLevelId != null && boardLevelId.longValue()>0L){
 					if(boardLevelId.longValue() !=5L)
 						str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");

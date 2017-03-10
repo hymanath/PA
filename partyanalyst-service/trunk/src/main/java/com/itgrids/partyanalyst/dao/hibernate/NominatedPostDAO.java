@@ -2029,4 +2029,33 @@ query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
 return (Long) query.uniqueResult();
 	   
    }
+ public List<Object[]> getTotalPostCandidates(Long departmentId,Long boardId,Long positionId){
+		Query query = getSession().createQuery("select model.nominatedPostMember.nominatedPostPosition.positionId,count(model.nominatedPostId) " +
+		   " from NominatedPost model " +
+		   " where  model.nominatedPostMember.nominatedPostPosition.departmentId =:departmentId and " +
+		   " model.nominatedPostMember.nominatedPostPosition.boardId =:boardId and " +
+		   " model.nominatedPostMember.nominatedPostPosition.positionId =:positionId  and " +
+		   "  model.isDeleted = 'N'  and model.nominatedPostMember.isDeleted = 'N' " +
+		   " and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N' " +
+		   " GROUP BY model.nominatedPostMember.nominatedPostPosition.positionId ");
+		
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		query.setParameter("positionId", positionId);
+		return  query.list();
+	}
+ public List<Object[]> getOpenPostCandidates(Long departmentId,Long boardId,Long positionId){
+		Query query = getSession().createQuery("select model.nominatedPostMember.nominatedPostPosition.positionId,count(model.nominatedPostId) " +
+				   							   " from NominatedPost model " +
+				   							   " where  model.nominatedPostMember.nominatedPostPosition.departmentId =:departmentId and " +
+				   							   " model.nominatedPostMember.nominatedPostPosition.boardId =:boardId and " +
+				   							   " model.nominatedPostMember.nominatedPostPosition.positionId =:positionId and  " +
+				   							   " model.isDeleted = 'N'  and model.nominatedPostMember.isDeleted = 'N'  " +
+				   							   " and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N' and model.nominatedPostStatusId = 1  and " +
+				   							   " model.nominationPostCandidateId is null GROUP BY model.nominatedPostMember.nominatedPostPosition.positionId ");
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		query.setParameter("positionId", positionId);
+		return  query.list();
+	}
 }

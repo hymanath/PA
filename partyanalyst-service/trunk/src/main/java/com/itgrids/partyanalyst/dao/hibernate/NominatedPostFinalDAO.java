@@ -1709,14 +1709,134 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   	return query.executeUpdate();
 	}
 	
-	public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+
+	public List<Object[]> getPendingCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 			Long locationValue,String type,Long searchLevelId){
 	
 		StringBuilder str = new StringBuilder();
 		
 		//Query
-		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
-				" FROM NominatedPostFinal model" +
+		str.append(" SELECT position.positionId, position.positionName, count(distinct model.nominatedPostApplicationId), " +
+				" model.applicationStatus.applicationStatusId , model.applicationStatus.status " +
+				" FROM NominatedPostApplication model " +
+				" left join model.position position " +
+				" left join model.departments department " +
+				" left join model.board board " +
+				" WHERE " +
+				" model.isDeleted = 'N'" +
+				" AND model.applicationStatus.applicationStatusId in (1)   and model.isExpired = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8) ");
+		if(boardLevelId.longValue() !=5L)
+			str.append(" AND model.boardLevel.boardLevelId=:boardLevelId ");
+		else 
+			str.append(" AND model.boardLevel.boardLevelId in (5,6) ");
+		
+		if(searchLevelId != null && searchLevelId.longValue()>0L){
+			if((searchLevelId.longValue() == 1L))
+				str.append(" and model.address.country.countryId  = 1 ");
+			else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.state.stateId  = :locationValue ");
+			else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.district.districtId =:locationValue ");
+			else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.constituency.constituencyId =:locationValue ");
+			else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.tehsil.tehsilId =:locationValue ");
+			else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
+			else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.panchayatId =:locationValue ");
+		}
+		
+		if(type !=null && type.equalsIgnoreCase("Any")){
+		
+			str.append(" AND ( ");
+			 if(departmentId != null && departmentId.longValue() > 0L)
+				 str.append(" department.departmentId =:departmentId ");
+			 else 
+				 str.append(" department.departmentId is null ");
+			 
+			 if(boardId != null && boardId.longValue() > 0L)
+				 str.append(" OR  board.boardId =:boardId ");
+			 else 
+				 str.append("  OR  board.boardId is null ");
+			
+			 str.append(" )");
+			 
+			 str.append("  AND position.positionId is null ");
+			 
+		}else {
+			if(departmentId != null && departmentId.longValue() > 0l){
+				str.append(" AND department.departmentId = :departmentId" );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
+			else if(boardId != null && boardId.longValue() > 0l){
+					if(departmentId != null && departmentId.longValue() > 0l)
+						str.append(" AND department.departmentId = :departmentId" );
+					else
+						str.append(" AND department.departmentId is null " );
+					if(boardId != null && boardId.longValue() > 0l)
+						str.append("  AND board.boardId = :boardId " );
+					else
+						str.append("  AND board.boardId is null " );
+					if(positionId != null && positionId.longValue() > 0l)
+						str.append("  AND position.positionId=:positionId " );
+					else
+						str.append("  AND position.positionId is  null " );
+					
+			}
+			else if(positionId != null && positionId.longValue() > 0l){
+				if(departmentId != null && departmentId.longValue() > 0l)
+					str.append(" AND department.departmentId = :departmentId" );
+				else
+					str.append(" AND department.departmentId is null " );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId " );
+				else
+					str.append("  AND position.positionId is null " );
+			}
+		}
+		
+		str.append(" and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' GROUP BY model.applicationStatus.applicationStatusId,position.positionId ");
+		
+		//Query Calling
+		Query query = getSession().createQuery(str.toString());
+		
+		 if(departmentId != null && departmentId.longValue() > 0L)
+				query.setParameter("departmentId", departmentId);
+		 if(boardId != null && boardId.longValue() > 0L)
+			 query.setParameter("boardId", boardId);
+		 if(positionId != null && positionId.longValue() > 0L)
+			 query.setParameter("positionId", positionId);
+		 
+		if(boardLevelId.longValue() !=5L)
+			query.setParameter("boardLevelId", boardLevelId);
+		
+		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);		
+		return query.list();
+	}
+	
+	public List<Object[]> getShortlistdCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+			Long locationValue,String type,Long searchLevelId){
+	
+		StringBuilder str = new StringBuilder();
+		
+		//Query
+		str.append(" SELECT position.positionId, position.positionName, count(distinct model.nominatedPostApplicationId), model.applicationStatus.applicationStatusId , model.applicationStatus.status " +
+				" FROM NominatedPostFinal model " +
 				//" left join model.nominatedPostMember  nominatedPostMember" +
 				//" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
 				//" left join nominatedPostPosition.position position " +
@@ -1824,7 +1944,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		str.append(" and model.isDeleted='N' and "+
 				" model.nominatedPostMember.isDeleted='N' and "+
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' GROUP BY position.positionId ");
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' GROUP BY model.applicationStatus.applicationStatusId,position.positionId ");
 		
 		//Query Calling
 		Query query = getSession().createQuery(str.toString());
@@ -2671,5 +2791,5 @@ public List<Object[]> getCandidateLocationWiseDetails(Long postLevelId,Long cast
 		 }
 		    
 		    return query.list();
-	 } 
+	 }
 }
