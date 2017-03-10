@@ -244,7 +244,7 @@ var globalSearchLevelValue = parseInt('${param.searchLevelValue}');
 if(globalPositionId == 0)
 	globalStats =" <b class='headingColor'  style='text-transform:uppercase;' >ANY POST</b>  ";
 if(globalStats == "readyToShortList")
-	globalStats =" <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POST</b>";
+	globalStats =" <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POSITION</b>";
 else if(globalStats == "positionLink")
 	globalStats =" Linking  <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POST</b>";
 
@@ -1082,8 +1082,14 @@ function buildNominatePostPositionDetails(result,positionId){
 					str+='<tr>';
 					str+='<th rowspan="2"></th>';
 					//str+='<th rowspan="2">TOTAL AVAILABLE POSTS</th>';
-					str+='<th rowspan="2">APPLICATIONS RECEIVED</th>';
-					str+='<th rowspan="2">SHORTLISTED</th>';
+					//str+='<th rowspan="2">APPLICATIONS RECEIVED</th>';
+					//str+='<th rowspan="2">SHORTLISTED</th>'; 
+					str+='<th rowspan="2">TOTAL POSTS</th>';
+					str+='<th rowspan="2">OPEN POSTS</th>';
+					str+='<th rowspan="2">READY TO SHORT LIST</th>';
+					str+='<th rowspan="2">READY TO FINAL REVIEW</th>';
+					<!--str+='<th rowspan="2">READY FOR FINAL REVIEW</th>';-->
+					str+='<th rowspan="2">FINALIZED/GO ISSUED</th>';
 					str+='<th colspan="4">CASTE GROUP</th>';
 					str+='<th colspan="5">AGE GROUP</th>';
 					str+='</tr>';
@@ -1108,10 +1114,18 @@ function buildNominatePostPositionDetails(result,positionId){
 				   if(positionId !=null && positionId>0){
 						if(result[i].id != null && result[i].id > 0){
 							str+='<tr>';
-							str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
+							str+='<td><p>THIS POSITION';
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign "  title="Requested for this post members shortlisted..."></i></p> </td>';
+							//<small>Requested for this post members shortlisted</small></td>';
 							//str+='<td>02</td>';
-							str+='<td>'+result[i].receivedCount+'</td>';
-							str+='<td>'+result[i].shortListedCount+'</td>';
+							//str+='<td>'+result[i].receivedCount+'</td>';
+							//str+='<td>'+result[i].shortListedCount+'</td>';	
+							//str+='<td>'+result[i].shortListedCount+'</td>';
+                            str+='<td>'+result[i].totalPosts+'</td>';
+                            str+='<td>'+result[i].openPosts+'</td>';								
+							str+='<td>'+result[i].readyToShortListedCnt+'</td>'; 
+                            str+='<td>'+result[i].shortListedCount+'</td>';								
+							str+='<td>'+result[i].finalizeAndGOCount+'</td>';	
 							for(var j in result[i].idNameVoList){
 							str+='<td>'+result[i].idNameVoList[j].count+'</td>';
 							}
@@ -1122,7 +1136,7 @@ function buildNominatePostPositionDetails(result,positionId){
 							str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
 							str+='</tr>';
 						}
-						else {
+						/*else {
 							str+='<tr>';
 							str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
 							//str+='<td>02</td>';
@@ -1137,8 +1151,8 @@ function buildNominatePostPositionDetails(result,positionId){
 							str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
 							str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
 							str+='</tr>';
-						}
-				   }else{
+						}*/
+				   }/*else{
 					   
 					   //alert(i+"22");
 					   
@@ -1160,15 +1174,18 @@ function buildNominatePostPositionDetails(result,positionId){
 							str+='</tr>';
 					   }
 							
-				   }
+				   }*/
 				}	
+				str+='<tr><td colspan="14"><p> <b> NOTE :</b> Here Caste and Age details may or may not matched . Because no data updated respective attributes. </p> </td></tr>';
 				if(globalPostId>0)  
 				{
 					$("#positionDivId").html(str);
 				}else{
 					$("#positionDivId").closest(".panelDepartmentHead").remove();
 				}
-			   
+			str+='</tbody>';
+            str+='</table>';			
+	 
 		   }
 }
 function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType){
