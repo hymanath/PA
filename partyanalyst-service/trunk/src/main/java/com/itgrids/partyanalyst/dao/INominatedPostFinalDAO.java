@@ -50,7 +50,7 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Long> getNominatedPostFinalIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	 public Integer updateGoIssuedStatusInNominatedPostFinal(List<Long> nominatedPostFinalIds,Date date);
 	 public Long getTotalApplicationsByLocation(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);
-	 public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+	 public List<Object[]> getShortlistdCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 				Long locationValue,String type,Long searchLevelId);
 	 public List<Object[]> getShortlistedApplicationDetailsOfCandidate(Set<Long> candidateIds);
 	 public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
@@ -75,4 +75,6 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsit, Long userId,Date currentDate);
 	 public List<Object[]> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId,Long ageRangeId,Long positionId,String gender,Long stateId,String searchType,
 				List<Long> locIdsList,List<Long> postStatusIds,String casteType);
+	 public List<Object[]> getPendingCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+				Long locationValue,String type,Long searchLevelId);
 }

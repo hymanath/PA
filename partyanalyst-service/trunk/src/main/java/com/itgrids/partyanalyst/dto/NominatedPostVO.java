@@ -89,8 +89,30 @@ public class NominatedPostVO implements Serializable{
 	private Long pstnLnkedAndShrtLstdCnt =0l;
 	private Long pstnLnkedAndFinalized =0l;
 	private Long pstnLnkedAndFinalReview =0l;
+	private Long finalizeAndGOCount =0L;
+	private Long readyToFinalReview  =0L;
+	private Long totalPosts =0L;
+	private Long openPosts =0L;
 	
 	
+	public Long getTotalPosts() {
+		return totalPosts;
+	}
+	public void setTotalPosts(Long totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+	public Long getOpenPosts() {
+		return openPosts;
+	}
+	public void setOpenPosts(Long openPosts) {
+		this.openPosts = openPosts;
+	}
+	public Long getFinalizeAndGOCount() {
+		return finalizeAndGOCount;
+	}
+	public void setFinalizeAndGOCount(Long finalizeAndGOCount) {
+		this.finalizeAndGOCount = finalizeAndGOCount;
+	}
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
@@ -508,5 +530,12 @@ public class NominatedPostVO implements Serializable{
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	public Long getReadyToFinalReview() {
+		return readyToFinalReview;
+	}
+	public void setReadyToFinalReview(Long readyToFinalReview) {
+		this.readyToFinalReview = readyToFinalReview;
+	}
+	
 	
 }

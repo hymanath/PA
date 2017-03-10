@@ -3229,11 +3229,109 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			//Short Listed Candidates
+			List<Object[]> readyToShortList = nominatedPostFinalDAO.getPendingCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			
-			List<Object[]> shrtObj = nominatedPostFinalDAO.getShortlistedCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
+			if(readyToShortList !=null && readyToShortList.size()>0){
+				for(Object[] obj : readyToShortList){
+					Long statusId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+					Long count = commonMethodsUtilService.getLongValueForObject(obj[2]);
+					String name = obj[1] !=null ? obj[1].toString():"";
+					
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}
+					if(mainVo != null){
+						mainVo.setName(name); //position name
+						if(statusId.longValue() == 1L)
+							mainVo.setReadyToShortListedCnt(count); // short listed count 
+					}						
+				}
+			} 
+			
+		List<Object[]> shrtObj = nominatedPostFinalDAO.getShortlistdCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
+			
+		List<Object[]> totalPostsObj = nominatedPostDAO.getTotalPostCandidates(departmentId,boardId,positionId);
+		List<Object[]> openPostsObj = nominatedPostDAO.getOpenPostCandidates(departmentId,boardId,positionId);
+			
+			if(totalPostsObj !=null && totalPostsObj.size()>0){
+				for(Object[] obj : totalPostsObj){
+					Long count = commonMethodsUtilService.getLongValueForObject(obj[1]);
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}
+					if(mainVo != null){
+						mainVo.setTotalPosts(count); //total posts
+					}						
+				}
+			} 
+			
+			if(openPostsObj !=null && openPostsObj.size()>0){
+				for(Object[] obj : openPostsObj){
+					Long count = commonMethodsUtilService.getLongValueForObject(obj[1]);
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}
+					if(mainVo != null){
+						mainVo.setOpenPosts(count); //total posts
+					}						
+				}
+			} 
+			
+			
+			/*NominatedPostVO VO = new NominatedPostVO();	
+			 if(totalPostsObj != null && totalPostsObj.longValue()>0){ 
+				 VO.setTotalPosts(totalPostsObj);
+			  }
+			 if(openPostsObj != null && openPostsObj.longValue()>0){
+				 VO.setOpenPosts(openPostsObj);
+			 }*/
 			
 					if(shrtObj !=null && shrtObj.size()>0){
 						for(Object[] obj : shrtObj){
+							Long statusId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+							Long count = commonMethodsUtilService.getLongValueForObject(obj[2]);
+							String name = obj[1] !=null ? obj[1].toString():"";
+							
+							NominatedPostVO mainVo =null;
+							
+							if(obj[0] ==null){
+								 mainVo =	finalMap.get(null);
+							}else{
+								 mainVo = finalMap.get((Long)obj[0]);
+							}
+							
+							
+							if(mainVo != null){
+								mainVo.setName(name); //position name
+								
+								if(statusId.longValue() == 3L)
+									mainVo.setShortListedCount(count); // short listed count 
+								
+								else if (statusId.longValue() == 5L || statusId.longValue() == 6L){ // finalized and GO Passed
+									mainVo.setFinalizeAndGOCount(mainVo.getFinalizeAndGOCount()+count);
+								}
+							    
+							}						
+						}
+					} 
+					
+		if(positionId !=null && positionId>0l){
+			List<Object[]> readyToShortAnyList = nominatedPostFinalDAO.getPendingCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
+					
+				if(readyToShortAnyList !=null && readyToShortAnyList.size()>0){
+						for(Object[] obj : readyToShortAnyList){
+							Long statusId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+							Long count = commonMethodsUtilService.getLongValueForObject(obj[2]);
+							String name = obj[1] !=null ? obj[1].toString():"";
 							
 							NominatedPostVO mainVo =null;
 							if(obj[0] ==null){
@@ -3241,20 +3339,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}else{
 								 mainVo = finalMap.get((Long)obj[0]);
 							}
-							
 							if(mainVo != null){
-								mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-								mainVo.setShortListedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+								mainVo.setName(name); //position name
+								if(statusId.longValue() == 1L)
+									mainVo.setReadyToShortListedCnt(count); // short listed count 
 							}						
 						}
-					} 
-					
-				if(positionId !=null && positionId>0l){
-					List<Object[]> shrtAnyObj = nominatedPostFinalDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
+					}
+					List<Object[]> shrtAnyObj = nominatedPostFinalDAO.getShortlistdCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
 										
-										if(shrtAnyObj !=null && shrtAnyObj.size()>0){
+									if(shrtAnyObj !=null && shrtAnyObj.size()>0){
 											for(Object[] obj : shrtAnyObj){
-												
+												Long statusId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+												Long count = commonMethodsUtilService.getLongValueForObject(obj[2]);
+												String name = obj[1] !=null ? obj[1].toString():"";
 												NominatedPostVO mainVo =null;
 												if(obj[0] ==null){
 													 mainVo =	finalMap.get(null);
@@ -3263,47 +3361,56 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 												}
 												
 												if(mainVo != null){
-													mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-													mainVo.setShortListedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+													mainVo.setName(name); //position name
+													//mainVo.setTotalPosts(totalPostsObj); //total posts
+													//mainVo.setOpenPosts(openPostsObj); //open posts
+													
+													if(statusId.longValue() == 3L)
+														mainVo.setShortListedCount(count); // short listed count 
+													
+													else if (statusId.longValue() == 5L || statusId.longValue() == 6L){ // finalized and GO Passed
+														mainVo.setFinalizeAndGOCount(mainVo.getFinalizeAndGOCount()+count);
+													}
+												    
 												}						
 											}
-										}
+									}
 				}
 				
-				
-				
-			
-			List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
-			if(casteObj !=null && casteObj.size()>0){
-				for(Object[] obj : casteObj){
+		List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
+		if(casteObj !=null && casteObj.size()>0){
+			for(Object[] obj : casteObj){
+				//Long statusId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+				Long count = commonMethodsUtilService.getLongValueForObject(obj[4]);
+				NominatedPostVO mainVo =null;
+				if(obj[0] ==null){
+					 mainVo =	finalMap.get(null);
+				}else{
+					 mainVo = finalMap.get((Long)obj[0]);
+				}						
+				if(mainVo !=null){
+					mainVo.setName(obj[1] !=null ? obj[1].toString():"");
 					
-					NominatedPostVO mainVo =null;
-					if(obj[0] ==null){
-						 mainVo =	finalMap.get(null);
-					}else{
-						 mainVo = finalMap.get((Long)obj[0]);
-					}						
-					if(mainVo !=null){
-						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-						
-						List<IdNameVO> lst = mainVo.getIdNameVoList();
- 						if(lst !=null && lst.size()>0){
-							for (IdNameVO idNameVO : lst) {
-								String idStr = obj[2].toString();
-				                if(idNameVO.getId().toString().equalsIgnoreCase(idStr)){
-									idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
-								}
+					List<IdNameVO> lst = mainVo.getIdNameVoList();
+						if(lst !=null && lst.size()>0){
+						for (IdNameVO idNameVO : lst) {
+							String idStr = obj[2].toString();
+			                if(idNameVO.getId().toString().equalsIgnoreCase(idStr)){
+			                	idNameVO.setCount(count);
+								//idNameVO.setCount(mainVo.getReadyToShortListedCnt()+count);
 							}
 						}
 					}
 				}
 			}
-			
+		}
+		
 			if(positionId !=null && positionId>0l){
 				List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
 				
 				if(casteAnyObj !=null && casteAnyObj.size()>0){
 					for(Object[] obj : casteAnyObj){
+						Long statusId = commonMethodsUtilService.getLongValueForObject(obj[5]);
 						NominatedPostVO mainVo =null;
 						if(obj[0] ==null){
 							 mainVo =	finalMap.get(null);
@@ -3395,7 +3502,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			if(finalMap !=null && finalMap.size()>0){
 				finalList = new ArrayList<NominatedPostVO>(finalMap.values());
 			}
-							
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
