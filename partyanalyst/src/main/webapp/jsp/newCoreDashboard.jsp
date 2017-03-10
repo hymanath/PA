@@ -241,15 +241,15 @@
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-2">   
 											 <!--<label class="text-centre;">District</label>--> 
-												<select class="form-control districtSelectBoxCls" style="display:none;" id="dstrctSlctBxId">
+												<select class="form-control districtSelectBoxCls" style="display:none;" id="dstrctSlctBxId" onchange="getDetailsDistrictWise();">
 												</select>
 										</div>
 										<div class="col-md-7 col-xs-12 col-sm-7">
 											<ul class="activeUlCls alertFilterCls list-inline pull-right">
-												<li class="active optionsCls" attr_id="1">Overview</li>
-												<li class="optionsCls" attr_id="2">Categories</li>  
-												<li class="optionsCls" attr_id="3">Status</li> 
-												<li><i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>
+												<li class="active optionsCls" onClick="optionsCls('1')" attr_id="1">Overview</li>
+												<li class="optionsCls" onClick="optionsCls('2')" attr_id="2">Categories</li>  
+												<li class="optionsCls" onClick="optionsCls('3')" attr_id="3">Status</li> 
+												<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>
 											</ul>
 										</div>
 								       <div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
@@ -346,11 +346,11 @@
 										<div class="row">
 											 <div class="col-md-8 col-xs-12 col-sm-12"> 
 												<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Alerts</span>
-												<span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertConstSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon  glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i>
+												<span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertConstSettingsId" onClick="alertConstSettings()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon  glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i>
 												</h4>
 											 </div>
 											  <div class="specialAlertDropDownAlertCons" style="right:13px;top:30px;display:none;z-index:999">  
-												<i class="glyphicon glyphicon-remove alertSetCloseCons pull-right" style="cursor:pointer;"></i>
+												<i class="glyphicon glyphicon-remove alertSetCloseCons pull-right" style="cursor:pointer;" onClick="alertSetCloseCons();"></i>
 													<div role="tabpanel" class="tab-pane" id="alertImpactScopeCons">
 														<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
 														<hr style ="margin-bottom:0px;" />
@@ -358,7 +358,7 @@
 															<ul class="alertConsSettingsUl" style="list-style:none;">
 																<li>
 																	<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="All" class="alertConImpactCheckCls" id="alertImpactSelectAllIdCons" checked>
+																<input type="checkbox" attr_scope_type="All" class="alertConImpactCheckCls" id="alertImpactSelectAllIdCons" onClick="alertImpactSelectAllIdCons()" checked>
 																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
 																	</label>
 																</li>
@@ -382,7 +382,7 @@
 																</li>	
 															</ul>
 														</div>
-													<button type="button" class="btn btn-success alertConstDtlsBtnCls btn-sm pull-right">Get Details</button> 
+													<button type="button" class="btn btn-success alertConstDtlsBtnCls btn-sm pull-right" onClick="alertConstDtlsBtnCls()">Get Details</button> 
 												   </div>
 											   </div>
 											   <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
@@ -406,10 +406,10 @@
 									  </div>	
 									  <div class="row constituencyPublicationCls m_top20" style="display:none;">
 									    <div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Publication Alert</span> <span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertPubConstSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i></h4>
+											<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Publication Alert</span> <span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertPubConstSettingsId" onClick="alertPubConstSettings();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i></h4>
 										</div>
 										<div class="publicationAlertDropDownAlertCons" style="z-index:999;display:none;margin-left: 30px; margin-top: 35px;left:0px;">  
-												<i class="glyphicon glyphicon-remove alertSetClosePubCons pull-right" style="cursor:pointer;"></i>
+												<i class="glyphicon glyphicon-remove alertSetClosePubCons pull-right" style="cursor:pointer;" onClick="alertSetClosePubCons()"></i>
 													<div role="tabpanel" class="tab-pane" id="alertImpactScopeCons">
 														<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
 														<hr style ="margin-bottom:0px;" />
@@ -417,7 +417,7 @@
 															<ul class="alertPubConsSettingsUl" style="list-style:none;">
 																<li>
 																	<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="All" class="alertPubConImpactCheckCls" id="alertImpactSelectAllIdPubCons" checked>
+																<input type="checkbox" attr_scope_type="All" onClick="alertImpactSelectAllIdPubCons()" class="alertPubConImpactCheckCls" id="alertImpactSelectAllIdPubCons" checked>
 																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
 																	</label>
 																</li>
@@ -441,7 +441,7 @@
 																</li>	
 															</ul>
 														</div>
-													<button type="button" class="btn btn-success alertPubConstDtlsBtnCls btn-sm pull-right">Get Details</button> 
+													<button type="button" class="btn btn-success alertPubConstDtlsBtnCls btn-sm pull-right" onClick="alertPubConstDtlsBtnCls()">Get Details</button> 
 												   </div>
 											   </div>
 									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
