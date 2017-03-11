@@ -1,12 +1,35 @@
 
 
-function getMultiLocationWiseMeetingGroupsData()
+
+getMultiLocationWiseMeetingGroupsData();
+function getMultiLocationWiseMeetingGroupsData(){
+	$("#MultiLocationWiseMeetingGroupsData").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	 var dates=$('.searchDateCls ').val();
+
+		var jObj = {
+			fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
+			toDateStr : '01/02/2020',//customEndDateMeetings,
+			activityMemberId : 44,
+			stateId : globalStateId,
+			partyMeetingMainTypeId:4
+		};
+		 
+		$.ajax({
+          type:'GET',
+          url: 'getMultiLocationWiseMeetingGroupsDataAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildMultiLocationWiseMeetingGroupsData(result);
+		});
+}
+/*
+function get111MultiLocationWiseMeetingGroupsData()
 {
 	$("#MultiLocationWiseMeetingGroupsData").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	var jObj = {
-		fromDateStr :customStartDateMeetings,
-		toDateStr : customEndDateMeetings,
+		fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
+		toDateStr : '01/02/2020',//customEndDateMeetings,
 		activityMemberId : globalActivityMemberId,
 		stateId : globalStateId,
 		partyMeetingMainTypeId:4
@@ -25,28 +48,35 @@ function getMultiLocationWiseMeetingGroupsData()
 		}
 	});
 }
+*/
 function buildMultiLocationWiseMeetingGroupsData(result)
 {
 	var str='';
+	var levelId=0;
+	var meetingGrpId =0;
 	str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			for(var i in result.userAccessLevelList)
 			{
-				str+='<h4 class="panel-title">'+result.userAccessLevelList[i].name+'</h4>';
+				if(i==0)
+					meetingGrpId = result.userAccessLevelList[i].levelId;
+				str+='<h4 class="panel-title text-capital ">'+result.userAccessLevelList[i].name+'</h4>';
 				str+='<table class="table table-bordered bg_ED">';
-					str+='<tr>';
+				str+='<tr>';
+					
 					for(var j in result.userAccessLevelList[i].userAccessLevelValuesList)
 					{
-						if(result.userAccessLevelList[i].userAccessLevelValuesList[j].count != null && result.userAccessLevelList[i].userAccessLevelValuesList[j].count > 0)
+						if(result.userAccessLevelList[i].userAccessLevelValuesList != null && result.userAccessLevelList[i].userAccessLevelValuesList.length>0)
 						{
+							if(j==0)
+								levelId = result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId;
 							str+='<td style="position:relative;">';
-								str+='<p class="text-muted">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].name+'</p>';
-								str+='<p class="multiLocationWiseMeetingCount " attr_count="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'</p>';	
-							str+='</td>';
+								str+='<p class="text-muted text-capital ">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].name+'</p>';
+								str+='<p class="multiLocationWiseMeetingCount " attr_count="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'" attr_group_id="'+result.userAccessLevelList[i].levelId+'" attr_levelId="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId+'">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'</p>';
+							str+='</td>';							
 						}
 					}
-						
-					str+='</tr>';
+						str+='</tr>';	
 				str+='</table>';
 				str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -59,25 +89,30 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 		str+='</div>';
 	str+='</div>';
 	$("#MultiLocationWiseMeetingGroupsData").html(str);
+	getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count);
 }
 $(document).on("click",".multiLocationWiseMeetingCount",function(){
 	$(this).addClass("active");
 	var count = $(this).attr("attr_count");
-	getPartyLevelIdWiseMeetingsCount(count);
+	var attr_group_id = $(this).attr("attr_group_id");
+	var attr_levelId = $(this).attr("attr_levelId");
+	
+	getPartyLevelIdWiseMeetingsCount(attr_group_id,attr_levelId,count);
 });
 
-function getPartyLevelIdWiseMeetingsCount(count)
+function getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,count)
 {
+	
 	$("#partyLevelIdWiseMeetingsCount").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 
 	var jObj = {
-		fromDateStr :customStartDateMeetings,
-		toDateStr : customEndDateMeetings,
+		fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
+		toDateStr : '01/02/2020',//customEndDateMeetings,
 		activityMemberId : globalActivityMemberId,
 		stateId : globalStateId,
 		partyMeetingMainTypeId:4,
-		partyMeetingLevelId:3,
-		meetingGrpId:1
+		partyMeetingLevelId:levelId,
+		meetingGrpId:meetingGrpId
 	};
 	
 	$.ajax({
@@ -103,6 +138,8 @@ function buildPartyLevelIdWiseMeetingsCount(result,count)
 				if(result.conducted != null && result.conducted > 0)
 				{
 					str+='<p>'+result.conducted+'</p>';
+				}else{
+					str+='<p> - </p>';
 				}
 			str+='</td>';
 			str+='<td>';
@@ -111,52 +148,147 @@ function buildPartyLevelIdWiseMeetingsCount(result,count)
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Image Covered</p>';
-				str+='<p>0</p>';	
+				if(result.imagesCovered != null && result.imagesCovered>0)
+					str+='<p>'+result.imagesCovered+'</p>';	
+				else
+					str+='<p> - </p>';	
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Images</p>';
-				str+='<p>0</p>';	
+				if(result.totalImages != null && result.totalImages>0)
+					str+='<p>'+result.totalImages+'</p>';	
+				else
+					str+='<p> - </p>';					
 			str+='</td>';
 		str+='</tr>';
 		str+='<tr>';
+			str+='<td class="bg_E0">';
 			if(result.invited != null && result.invited > 0)
 			{
-				str+='<td class="bg_E0">';
-					str+='<p>'+result.invited+'</p>';
-					str+='<p class="text-muted">Invited</p>';
-				str+='</td>';
+				str+='<p>'+result.invited+'</p>';
 			}
+			else
+				str+='<p> - </p>';
+				str+='<p class="text-muted">Invited</p>';
+			str+='</td>';
+			str+='<td class="bg_E0">';
 			if(result.attended != null && result.attended > 0)
 			{
-				str+='<td class="bg_E0">';
-						str+='<p>'+result.attended+'</p>';
-						str+='<p class="text-success">Attended</p>';
-				str+='</td>';
+				str+='<p>'+result.attended+'</p>';
 			}
+			else
+				str+='<p> - </p>';
+				str+='<p class="text-success">Attended</p>';
+			str+='</td>';
+			
+			str+='<td class="bg_E0">';
 			if(result.late != null && result.late > 0)
 			{
-				str+='<td class="bg_E0">';
 					str+='<p>'+result.late+'</p>';
-					str+='<p class="text-danger">Late</p>';
-				str+='</td>';
-			}
+			}else
+				str+='<p> - </p>';
+				str+='<p class="text-danger">Late</p>';
+			str+='</td>';
+			str+='<td class="bg_E0">';
 			if(result.absent != null && result.absent > 0)
-			{
-				str+='<td class="bg_E0">';
-					str+='<p>'+result.absent+'</p>';
-					str+='<p class="text-muted">Absent</p>';
-				str+='</td>';
-			}
+			{				
+				str+='<p>'+result.absent+'</p>';
+			}else
+				str+='<p> - </p>';
+				str+='<p class="text-muted">Absent</p>';
+			str+='</td>';
+			str+='<td class="bg_E0">';
 			if(result.nonInvitee != null && result.nonInvitee > 0)
-			{
-				str+='<td class="bg_E0">';
-					str+='<p>'+result.nonInvitee+'</p>';
-					str+='<p class="text-muted">Non-Invitee</p>';
-				str+='</td>';
+			{				
+				str+='<p>'+result.nonInvitee+'</p>';				
 			}
+			else
+				str+='<p> - </p>';
+			str+='<p class="text-muted">Non-Invitee</p>';
+				str+='</td>';
 				
 		str+='</tr>';
 		
+		if(result.subList != null && result.subList.length>0){
+			str+='<tr><td colspan="5"></td></tr>';
+			/*
+			str+='<tr>';
+					str+='<td class="bg_E0">';
+						str+='<p> </p>';
+					str+='</td>';
+					str+='<td class="bg_E0">';
+							str+='<p class="text-success">Attended</p>';
+					str+='</td>';
+					str+='<td class="bg_E0">';
+						str+='<p class="text-danger">Late</p>';
+					str+='</td>';
+					str+='<td class="bg_E0">';
+						str+='<p class="text-muted">Absent</p>';
+					str+='</td>';
+					str+='<td class="bg_E0">';
+						str+='<p class="text-muted">Non-Invitee</p>';
+					str+='</td>';
+				str+='</tr>';
+				*/
+			for(var k in result.subList){
+				str+='<tr>';
+					
+						str+='<td class="bg_E0">';
+							str+='<p>'+result.subList[k].name+'</p>';
+						str+='</td>';
+					
+					if(result.subList[k].inviteeAttendedCount != null && result.subList[k].inviteeAttendedCount > 0)
+					{
+						str+='<td class="bg_E0">';
+								str+='<p>'+result.subList[k].inviteeAttendedCount+'</p>';
+								//str+='<p class="text-success">Attended</p>';
+						str+='</td>';
+					}
+					else{
+						str+='<td class="bg_E0">';
+								str+='<p> - </p>';								
+						str+='</td>';
+					}
+					if(result.subList[k].lateCount != null && result.subList[k].lateCount > 0)
+					{
+						str+='<td class="bg_E0">';
+							str+='<p>'+result.subList[k].lateCount+'</p>';
+							//str+='<p class="text-danger">Late</p>';
+						str+='</td>';
+					}else{
+						str+='<td class="bg_E0">';
+								str+='<p> - </p>';								
+						str+='</td>';
+					}
+					var absent =result.subList[k].absentCount;
+					
+					if(absent != null && absent > 0)
+					{
+						str+='<td class="bg_E0">';
+							str+='<p>'+absent+'</p>';
+							//str+='<p class="text-muted">Absent</p>';
+						str+='</td>';
+					}else{
+						str+='<td class="bg_E0">';
+								str+='<p> '+absent+' </p>';								
+						str+='</td>';
+					}
+					
+					if(result.subList[k].nonInviteeCount != null && result.subList[k].nonInviteeCount > 0)
+					{
+						str+='<td class="bg_E0">';
+							str+='<p>'+result.subList[k].nonInviteeCount+'</p>';
+							//str+='<p class="text-muted">Non-Invitee</p>';
+						str+='</td>';
+					}else{
+						str+='<td class="bg_E0">';
+								str+='<p> - </p>';								
+						str+='</td>';
+					}
+						
+				str+='</tr>';
+			}
+		}
 	str+='</table>';
 	$("#partyLevelIdWiseMeetingsCount").html(str);
 }
