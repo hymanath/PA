@@ -27,4 +27,5 @@ public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocumen
 	public List<Object[]>  getPanchaytNamesByMandalIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long mandalId);
 	public List<Object[]> getCustomWisePartyMeetingDocuments(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
 	public Long getCustomWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
+	public List<Object[]> getSessionWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
 }
