@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MeetingBasicDetailsVO implements Serializable {
 	private Long partyMeetingId;
@@ -17,10 +19,16 @@ public class MeetingBasicDetailsVO implements Serializable {
 	private Long nonConducted;
 	private String nonConductedPerc;
 	private String imagesCovered;
-	private Long totalImages;
+	private Long totalImages;	
+	private List<SessionVO> subList = new ArrayList<SessionVO>(0);
 	
 	
-	
+	public List<SessionVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<SessionVO> subList) {
+		this.subList = subList;
+	}
 	public Long getPlanned() {
 		return planned;
 	}

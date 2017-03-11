@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SessionVO implements Serializable{
 	
@@ -12,9 +14,39 @@ public class SessionVO implements Serializable{
 	private Long invitedCount =0l;
 	private Long lateCount =0l;
 	private Long absentCount = 0l;
+	private Long inviteeAttendedCount =0l;
 	private Long nonInviteeCount =0l;
 	private Long imagesCovered =0l;
 	private Long imagesCount=0l;
+	private String lateTime;
+	private Set<Long> inviteeAttendedCadreIdsList = new HashSet<Long>();
+	private Set<Long> nonInviteeAttendedCadreIdsList = new HashSet<Long>();
+	
+	public Long getInviteeAttendedCount() {
+		return inviteeAttendedCount;
+	}
+	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
+		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	public Set<Long> getInviteeAttendedCadreIdsList() {
+		return inviteeAttendedCadreIdsList;
+	}
+	public void setInviteeAttendedCadreIdsList(Set<Long> inviteeAttendedCadreIdsList) {
+		this.inviteeAttendedCadreIdsList = inviteeAttendedCadreIdsList;
+	}
+	public Set<Long> getNonInviteeAttendedCadreIdsList() {
+		return nonInviteeAttendedCadreIdsList;
+	}
+	public void setNonInviteeAttendedCadreIdsList(
+			Set<Long> nonInviteeAttendedCadreIdsList) {
+		this.nonInviteeAttendedCadreIdsList = nonInviteeAttendedCadreIdsList;
+	}
+	public String getLateTime() {
+		return lateTime;
+	}
+	public void setLateTime(String lateTime) {
+		this.lateTime = lateTime;
+	}
 	public Long getId() {
 		return id;
 	}
