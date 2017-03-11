@@ -6049,35 +6049,14 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 	}
 }
 
-//getMultiLocationWiseMeetingGroupsData();
-function getMultiLocationWiseMeetingGroupsData(){
-	$("#popupImages").html('<img src="./images/Loading-data.gif" />');
-	 var dates=$('.searchDateCls ').val();
-
-		var jObj = {
-			fromDateStr : '01/01/2017',
-		    toDateStr : '01/02/2018',
-			activityMemberId : 44,
-			stateId : globalStateId,
-			partyMeetingMainTypeId:4
-		};
-		 
-		$.ajax({
-          type:'GET',
-          url: 'getMultiLocationWiseMeetingGroupsDataAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			console.log(result);
-			});
-}
 //getPartyLevelIdWiseMeetingsCount();
-function getPartyLevelIdWiseMeetingsCount(){
+function get1111PartyLevelIdWiseMeetingsCount(){
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
 
 		var jObj = {
-			fromDateStr : '01/01/2017',
-		    toDateStr : '01/02/2018',
+			fromDateStr : '01/02/2000' ,//customStartDateMeetings,
+			toDateStr : '01/02/2020',//customEndDateMeetings,
 			activityMemberId : 44,
 			stateId : globalStateId,
 			partyMeetingMainTypeId:4,
@@ -6090,6 +6069,6 @@ function getPartyLevelIdWiseMeetingsCount(){
           url: 'getPartyLevelIdWiseMeetingsCountAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			console.log(result);
+			buildMultiLocationWiseMeetingGroupsData(result);
 			});
 }
