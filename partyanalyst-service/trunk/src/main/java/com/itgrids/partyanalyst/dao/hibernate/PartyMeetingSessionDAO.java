@@ -126,7 +126,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 	public List<Object[]> getLateTimeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select  model.sessionType.sessionTypeId,model.sessionType.type,model.lateTime from PartyMeetingSession model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
+		queryStr.append(" select  distinct model.sessionType.sessionTypeId,model.sessionType.type,model.lateTime from PartyMeetingSession model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
 				" and  model.partyMeeting.partyMeetingType.isActive = 'Y' and model.partyMeeting.isActive='Y' and " +
 				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		
@@ -161,7 +161,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 			    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 			 }
 		
-		//queryStr.append(" group by model.partyMeetingLevel.partyMeetingLevelId,model1.partyMeetingGroup.partyMeetingGroupId ");
+		queryStr.append(" group by  model.sessionType.sessionTypeId  ");
 		Query query = getSession().createQuery(queryStr.toString());
 		 if(locationValuesSet != null && locationValuesSet.size() > 0){
 			   query.setParameterList("userAccessLevelValues", locationValuesSet);
