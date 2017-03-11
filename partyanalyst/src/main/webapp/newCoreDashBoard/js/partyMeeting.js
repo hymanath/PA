@@ -2664,7 +2664,7 @@ function buildParyMeetingMemberDtls(result,meetingMainTypeId,meetingTypeIdStr,me
 } 
 
 
-function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTypeIdsString){
+function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTypeIdsString){	
 	$("#districtWisePartyMeetingTypeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
 	 var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
@@ -2707,7 +2707,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result,mainMeetingTypeId,part
 				str+=result[i].name;
 				str+='<div id="districtWiseMeetingType'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
-									
+								
 		}
 		$("#districtWisePartyMeetingTypeDivId").html(str);
 		
@@ -5574,7 +5574,7 @@ function buildCustomPartyMeetingsMainTypeOverViewData(result){
 							str+='</td>';
 							str+='<td>';
 								str+='<p>Images</p>';
-								str+='<h4 class="getImageClass" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4>';
+								str+='<h4 class="getImageClass getModalImagesCls" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4>';
 							str+='</td>';
 						str+='</tr>';
 						str+='<tr class="bg_D8">';
@@ -5681,7 +5681,7 @@ function buildCustomPartyMeetingsMainTypeOverViewData(result){
 str+='</div>';
 $("#customMeetingsDiv").html(str);
 }
-$(document).on("click",".getImageClass",function(){
+$(document).on("click",".getModalImagesCls",function(){
 	$("#myModalImageId").modal("show");
 	var levelId = $(this).attr('attr_Meeting_level_id');
 	var meetingId = $(this).attr('attr_Meeting_id');
@@ -5692,12 +5692,12 @@ $(document).on("click",".getImageClass",function(){
 				str+='<nav class="navbar navbar-default navbarCollapseCustom">';
 					str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
 					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
-					  
+					 
 					  str+='</ul>';
 					str+='</div>';
 				str+='</nav>';
 				str+='<div class="bg_CC pad_10" id="popupImages">';
-					
+				
 				str+='</div>';
 				str+=' <div id="paginationDivId"></div>';
 			str+='</div>';
@@ -5707,7 +5707,8 @@ $(document).on("click",".getImageClass",function(){
 		str+='</div>';
 
 	$("#buildPoupupImage").html(str);
-	getEventDocumentForPopupForMultiLocation(levelId,meetingId,0);
+	getEventDocumentForPopupForMultiLocation(3,0,0);
+	getDistrictsForCustomMeetingImges(3,0);	
 });
 function getDistrictsForCustomMeetingImges(levelId,meetingId){
 	var meetingLevelId = levelId;
@@ -5735,18 +5736,18 @@ function getDistrictsForCustomMeetingImges(levelId,meetingId){
 }
 function buildDistrictNamesForCustomMeetings(result,meetingLevelId,meetingId){
 	var str='';
-	str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+	str+='<div class="panel-group" id="accordionModalMeeting" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
 	  str+='<div class="panel panel-default panel-custommodal">';
 		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingModalMeetings'+i+'">';
-			str+='<a role="button" class="constituencyClsMeetings accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" attr_distId="'+result[i].districtId+'" href="#collapseModalMeetings'+i+'" aria-expanded="true" attr_level_id="'+meetingLevelId+'" attr_meeting_id ="'+meetingId+'" aria-controls="collapseModalMeetings'+i+'">';
+			str+='<a role="button" class="constituencyClsMeetings accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMeeting" attr_distId="'+result[i].districtId+'" href="#collapseModalMeetings'+i+'" aria-expanded="true" attr_level_id="'+meetingLevelId+'" attr_meeting_id ="'+meetingId+'" aria-controls="collapseModalMeetings'+i+'">';
 				str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 			  str+='</a>';
 		str+='</div>';
 		str+='<div id="collapseModalMeetings'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingModalMeetings'+i+'">';
 		  str+='<div class="panel-body pad_0">';
-			str+='<div id="constituenciesBlock'+result[i].districtId+'"></div>';
+			str+='<div id="constituenciesBlockMeeting'+result[i].districtId+'"></div>';
 		  str+='</div>';
 		str+='</div>';
 	  str+='</div>';
@@ -5763,7 +5764,7 @@ $(document).on("click",".constituencyClsMeetings",function(){
 function getConstituencyListForMultiMeetings(distId,partyMeetingLevelId,meetingId){
 	var partyMeetingLevelId = partyMeetingLevelId;
 	var meetingId = meetingId;
-	$("#constituenciesBlock"+distId).html('');
+	$("#constituenciesBlockMeeting"+distId).html('');
 	$(".allConstCls").html('');
 //	$('.dayssCls').each(function(){
 		//if($(this).hasClass("active")){
@@ -5776,7 +5777,7 @@ function getConstituencyListForMultiMeetings(distId,partyMeetingLevelId,meetingI
 		//}
 	//});
 	
-	$("#constituenciesBlock"+distId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#constituenciesBlockMeeting"+distId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var jObj = {
 		partyMeetingLevelId:partyMeetingLevelId,
 		districtId : distId
@@ -5789,7 +5790,7 @@ function getConstituencyListForMultiMeetings(distId,partyMeetingLevelId,meetingI
 		if(result != null && result.length > 0)
 			buildConstituencyListForMultiLocation(result,distId,partyMeetingLevelId,meetingId);
 		else
-		$("#constituenciesBlock"+distId).html("No Data Available.");
+		$("#constituenciesBlockMeeting"+distId).html("No Data Available.");
 	});
 }
 function buildConstituencyListForMultiLocation(result,distId,partyMeetingLevelId,meetingId){
@@ -5812,7 +5813,7 @@ function buildConstituencyListForMultiLocation(result,distId,partyMeetingLevelId
 	  str+='</div>';
 	}
 	str+='</div>';
-	$("#constituenciesBlock"+distId).html(str);
+	$("#constituenciesBlockMeeting"+distId).html(str);
 }
 $(document).on("click",".mandalPopupCls",function(){
 	var constituencyId = $(this).attr("attr_consId");
@@ -5942,7 +5943,6 @@ function buildPanchayatListForMultiLocation(result,mandalId,value){
 	}
 }
 function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num){
-	
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
 
@@ -5964,17 +5964,19 @@ function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num){
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			buildDayWisImagesForPopup1ForMultiLocation(result,jObj);
-			});
+		});
 }
 function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 	
-	$("#popupImages").html('');
+	//$("#buildPoupupImage").html('');
 	var str ='';
 	$('.slider-for,.slider-nav').slick('unslick');
 	if(result != null)
 	{
 	
-		str+='<ul class="slider-for">';
+	str+='<div class="row">';	
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';	
+		str+='<ul class="slider-forparty_meeting slider-for">';
 		//if(path != null && path.length>0)
 			//str+='<li><img src="https://mytdp.com/DocFiles/' +path+'"></li>';
 			for(var i in result)
@@ -5982,7 +5984,9 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 				/* for(var j in result[i])
 				{ */
 					
-					str+='<li><img src="https://mytdp.com/DocFiles/' +result[i].path+'"></li>';
+					str+='<li><img src="https://mytdp.com/DocFiles/' +result[i].path+'" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
+					
+				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
 				//}
 			}
 			  str+='</ul>';
@@ -5994,9 +5998,13 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 			//for(var j in result[i])
 		//	{
 				str+='<li><img src="https://mytdp.com/DocFiles/' +result[i].path+'" style="cursor:pointer;"/></li>';	
+				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"style="cursor:pointer;" ></li>';
+				
 			//}
 		}
 				str+='</ul>';
+			str+='</div>';	
+		str+='</div>';	
 			$("#popupImages").html(str);
 			
 			setTimeout(function(){		
