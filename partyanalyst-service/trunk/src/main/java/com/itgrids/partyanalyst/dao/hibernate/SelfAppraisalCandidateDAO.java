@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -148,6 +149,27 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	  Query query = getSession().createQuery("select model.tdpCadreId from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalCandidateId=:selfAppraisalCandiateId ");
 	  query.setParameter("selfAppraisalCandiateId", selfAppraisalCandiateId);
 	  return (Long)query.uniqueResult();
+  }
+  
+  public List<Long> getDesignationIdsList(Long tdpCadreId){
+	  Query query = getSession().createQuery(" select distinct  model.selfAppraisalDesignation.selfAppraisalDesignationId from SelfAppraisalCandidate model " +
+               "  where model.tdpCadreId=:tdpCadreId and model.isActive='Y' order by model.selfAppraisalDesignation.designation  ");
+	  query.setParameter("tdpCadreId", tdpCadreId);
+	  return query.list();
+  }
+  
+  public List<Object[]> getCandidateInfoOfDesginations(Long tdpCadreId,Set<Long> designationIds){
+	  
+	  Query query = getSession().createQuery(" select model.selfAppraisalDesignationId,model.selfAppraisalCandidateId " +
+	  		" from SelfAppraisalCandidate model " +
+	  		" where model.tdpCadreId = :tdpCadreId " +
+	  		" and model.selfAppraisalDesignationId in (:designationIds) ");
+	  
+	  query.setParameter("tdpCadreId", tdpCadreId);
+	  query.setParameterList("designationIds", designationIds);
+	   
+	  return query.list();
+	  
   }
   
 }

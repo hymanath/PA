@@ -43,6 +43,7 @@ public class ToursNewVO implements Serializable {
 	private Map<File,String> files = new HashMap<File,String>();
 	private List<ToursNewVO> toursVoListNew = new ArrayList<ToursNewVO>(0);
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
+	private List<ToursNewVO> toursVoProgramsList = new ArrayList<ToursNewVO>(0);
 	
 	private String tourDateId;
 	private Long tourCategoryId;
@@ -351,6 +352,14 @@ public class ToursNewVO implements Serializable {
 
 	public void setTourDays(Long tourDays) {
 		this.tourDays = tourDays;
+	}
+
+	public List<ToursNewVO> getToursVoProgramsList() {
+		return toursVoProgramsList;
+	}
+
+	public void setToursVoProgramsList(List<ToursNewVO> toursVoProgramsList) {
+		this.toursVoProgramsList = toursVoProgramsList;
 	}
 
 	
