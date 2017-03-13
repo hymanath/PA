@@ -2143,6 +2143,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 	 String idStr = commonMethodsUtilService.getStringValueForObject(param[2]);
 						 if(type.equalsIgnoreCase("tourType")){
 							 idStr = "0"+idStr;
+						 }else if(type.equalsIgnoreCase("tourProgram")){
+							 idStr = "1"+idStr; /* We are appending 1 before tourProgram for Identification purpose because in single list
+          				     i am sending tour category,tour type and tour program which all can have same id */ 
 						 }
 						 ToursBasicVO categoryVO = categoryMap.get(idStr);
 						 if(categoryVO == null){
