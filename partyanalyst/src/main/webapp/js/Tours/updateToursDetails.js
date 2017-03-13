@@ -1822,17 +1822,17 @@ function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,t
 	}).done(function(result){
 		$("#changedDate").html('('+moment().format("MMM-YYYY")+')');
 		//console.log(result);
-		if(result != null && result.length > 0){
+		if(result != null){
 			buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate);
 		}else{
 			$("#candidateNameId").html("");
-		if(saveUpdate == '1')
-		{
-			$("#toursCandidateDetails,attachementsId").html("No data available...");
-		}else if(saveUpdate == '2')
-		{
-			$("#toursCandidateDetailsModal,attachementsIdModal").html("No data available...");
-		}
+			if(saveUpdate == '1')
+			{
+				$("#toursCandidateDetails,attachementsId").html("No data available...");
+			}else if(saveUpdate == '2')
+			{
+				$("#toursCandidateDetailsModal,attachementsIdModal").html("No data available...");
+			}
 		}	
 	});
 }
@@ -1844,78 +1844,146 @@ function buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate){
 	$(this).parent(".panelProfile").find().html(tdpCadreName);
 	var str = '';
 	var str1 = '';
-	if(result != null && result.length > 0){
-		str+='<table class="table table-bordered">';
-		  str+='<thead>';
-			str+='<th>Designation</th>';
-			str+='<th>Tour Category</th>';
-			str+='<th>Type</th>';
-			str+='<th>Tours Submitted</th>';
-			str+='<th>Updated Date</th>';
-		  str+='</thead>';
-		  str+='<tbody>';
-		  for(var i in result){
-				str+='<tr>';
-					if(result[i].designation != null){
-						str+='<td class="desigCls'+i+'" attr_desig_id='+result[i].designationId+' attr_candidate_id='+result[i].candidateId+' attr_category_id='+result[i].categoryId+' details_newId='+result[i].detailsNewId+' tour_type_id='+result[i].tourTypeId+' tour_Days_id='+result[i].tourDays+'>'+result[i].designation+'</td>';
-						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="'+result[i].designationId+'">';
-					}else{
-						str+='<td>-</td>';
-						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="0">';
-					}	
-					if(result[i].detailsNewId != null){
-						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="'+result[i].detailsNewId+'">';
-					}else{
-						str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="0">';
+	
+	var strp = '';//Program 
+	
+	if(result != null){
+		
+		//CategoryWise Info
+		if(result.toursVoList != null && result.toursVoList.length > 0){
+				str+='<table class="table table-bordered">';
+				  str+='<thead style="background-color:#ccc">';
+					str+='<th>Designation</th>';
+					str+='<th>Tour Category</th>';
+					str+='<th>Type</th>';
+					str+='<th>Tours Submitted Days</th>';
+					str+='<th>Updated Date</th>';
+				  str+='</thead>';
+				  str+='<tbody>';
+				  for(var i in result.toursVoList){
+						str+='<tr>';
+							if(result.toursVoList[i].designation != null){
+								str+='<td class="desigCls'+i+'" attr_desig_id='+result.toursVoList[i].designationId+' attr_candidate_id='+result.toursVoList[i].candidateId+' attr_category_id='+result.toursVoList[i].categoryId+' details_newId='+result.toursVoList[i].detailsNewId+' tour_type_id='+result.toursVoList[i].tourTypeId+' tour_Days_id='+result.toursVoList[i].tourDays+'>'+result.toursVoList[i].designation+'</td>';
+								str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="'+result.toursVoList[i].designationId+'">';
+							}else{
+								str+='<td>-</td>';
+								str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].designationId" value="0">';
+							}	
+							if(result.toursVoList[i].detailsNewId != null){
+								str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="'+result.toursVoList[i].detailsNewId+'">';
+							}else{
+								str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].detailsNewId" value="0">';
+							}
+							str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].candidateId" value="'+result.toursVoList[i].candidateId+'">';					
+						  str+='<td>'+result.toursVoList[i].category+'</td>';
+						  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourCategoryId" value="'+result.toursVoList[i].categoryId+'">';
+						  str+='<td>'+result.toursVoList[i].comment+'</td>';//TourType
+						  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourTypeId" value="'+result.toursVoList[i].tourTypeId+'">';
+						  if(result.toursVoList[i].tourDays != null){
+							  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control toursDaysCls" onkeypress="return isNumberKey(event)" id="tourDaysId'+i+'" value="'+result.toursVoList[i].tourDays+'"/></td>';
+						  }else{
+							  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control toursDaysCls" value="0" onkeypress="return isNumberKey(event)" /></td>'; 
+						  }
+						  if(result.toursVoList[i].tourDate != null){
+							  var tourDate = result.toursVoList[i].tourDate.substring(0, 19);
+							   str+='<td>'+tourDate+'</td>';
+						  }else{
+							   str+='<td class="text-center">-</td>';
+						  }
+						 
+						str+='</tr>';
 					}
-					str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].candidateId" value="'+result[i].candidateId+'">';					
-				  str+='<td>'+result[i].category+'</td>';
-				  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourCategoryId" value="'+result[i].categoryId+'">';
-				  str+='<td>'+result[i].comment+'</td>';//TourType
-				  str+='<input type="hidden" name="toursNewVO.toursVoListNew['+i+'].tourTypeId" value="'+result[i].tourTypeId+'">';
-				  if(result[i].tourDays != null){
-					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control toursDaysCls" onkeypress="return isNumberKey(event)" id="tourDaysId'+i+'" value="'+result[i].tourDays+'"/></td>';
-				  }else{
-					  str+='<td><input type="text" name="toursNewVO.toursVoListNew['+i+'].tourDays" class="form-control toursDaysCls" value="0" onkeypress="return isNumberKey(event)" /></td>'; 
-				  }
-				  if(result[i].tourDate != null){
-					  var tourDate = result[i].tourDate.substring(0, 19);
-					   str+='<td>'+tourDate+'</td>';
-				  }else{
-					   str+='<td class="text-center">-</td>';
-				  }
-				 
-				str+='</tr>';
+				  str+='</tbody>';
+				str+='</table>';
+				
 			}
-		  str+='</tbody>';
-		str+='</table>';
-		str1+='<h4 class="panel-title m_top20">Uploaded Attachments</h4>';
-		str1+='<div class="m_top10">';
-			str1+='<table class="table tableAttachments">';
-			for(var j in result[0].toursVoList){
-				str1+='<tr id="documentTrId'+result[0].toursVoList[j].id+'">';
-					str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
-					str1+='<td>'+result[0].toursVoList[j].filePath+'</td>';
-					if(saveUpdate == '2')
-					{
-						var tourUpdatedDate = result[0].toursVoList[j].tourDate.substring(0, 19);
-						str1+='<td>UPDATED : '+tourUpdatedDate+'</td>';
+			if(result.docList != null && result.docList.length > 0){
+				str1+='<h4 class="panel-title" style="margin-top:20px !important">Uploaded Attachments</h4>';
+				str1+='<div class="m_top10">';
+					str1+='<table class="table tableAttachments">';
+					
+						for(var j in result.docList){
+							
+						str1+='<tr id="documentTrId'+result.docList[j].id+'">';
+							str1+='<td><img src="images/pdf.jpg" class="media-object" style="width:20px;"/></td>';
+							str1+='<td>'+result.docList[j].filePath+'</td>';
+							if(saveUpdate == '2')
+							{
+								var tourUpdatedDate = result.docList[j].tourDate.substring(0, 19);
+								str1+='<td>UPDATED : '+tourUpdatedDate+'</td>';
+							}
+							str1+='<td><button class="btn btnView viewPdfCls" attr_filePath="'+result.docList[j].filePath+'" type="button">VIEW</button></td>';
+							str1+='<td><button class="btn btnDelete deletePdfCls" type="button" attr_id='+result.docList[j].id+'>DELETE</button></td>';
+							str1+='</tr>';
+						}	
+					
+					str1+='</table>';
+					str1+='</div>';
+				}
+			// ProgramWise Info
+			
+			if(result.toursVoListNew != null && result.toursVoListNew.length > 0){
+				strp+='<table class="table table-bordered">';
+				  strp+='<thead style="background-color:#ccc">';
+					strp+='<th>Designation</th>';
+					strp+='<th>Program</th>';
+					strp+='<th>Tour Visits</th>';
+					strp+='<th>Updated Date</th>';
+				  strp+='</thead>';
+				  strp+='<tbody>';
+				  for(var i in result.toursVoListNew){
+						strp+='<tr>';//toursVoProgramsList
+							if(result.toursVoListNew[i].designation != null){
+								strp+='<td class="desigCls'+i+'" attr_desig_id='+result.toursVoListNew[i].designationId+' attr_candidate_id='+result.toursVoListNew[i].candidateId+' details_newId='+result.toursVoListNew[i].detailsNewId+' tour_Days_id='+result.toursVoListNew[i].tourDays+'>'+result.toursVoListNew[i].designation+'</td>';
+								strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].designationId" value="'+result.toursVoListNew[i].designationId+'">';
+							}else{
+								strp+='<td>-</td>';
+								strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].designationId" value="0">';
+							}	
+							if(result.toursVoListNew[i].detailsNewId != null){
+								strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].detailsNewId" value="'+result.toursVoListNew[i].detailsNewId+'">';
+							}else{
+								strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].detailsNewId" value="0">';
+							}
+							
+							if(result.toursVoListNew[i].candidateId !=null && result.toursVoListNew[i].candidateId>0){
+								strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].candidateId" value="'+result.toursVoListNew[i].candidateId+'">';
+							}
+						  strp+='<td>'+result.toursVoListNew[i].category+'</td>';
+						  strp+='<input type="hidden" name="toursNewVO.toursVoProgramsList['+i+'].tourCategoryId" value="'+result.toursVoListNew[i].categoryId+'">';
+						  if(result.toursVoListNew[i].tourDays != null){
+							  strp+='<td><input type="text" name="toursNewVO.toursVoProgramsList['+i+'].tourDays" class="form-control toursDaysCls" onkeypress="return isNumberKey(event)" id="tourDaysId'+i+'" value="'+result.toursVoListNew[i].tourDays+'"/></td>';
+						  }else{
+							  strp+='<td><input type="text" name="toursNewVO.toursVoProgramsList['+i+'].tourDays" class="form-control toursDaysCls" value="0" onkeypress="return isNumberKey(event)" /></td>'; 
+						  }
+						  if(result.toursVoListNew[i].tourDate != null){
+							  var tourDate = result.toursVoListNew[i].tourDate.substring(0, 19);
+							   strp+='<td>'+tourDate+'</td>';
+						  }else{
+							   strp+='<td class="text-center">-</td>';
+						  }
+						 
+						strp+='</tr>';
 					}
-					str1+='<td><button class="btn btnView viewPdfCls" attr_filePath="'+result[0].toursVoList[j].filePath+'" type="button">VIEW</button></td>';
-					str1+='<td><button class="btn btnDelete deletePdfCls" type="button" attr_id='+result[0].toursVoList[j].id+'>DELETE</button></td>';
-				str1+='</tr>';
-			}	
-			str1+='</table>';
-		str1+='</div>';
+				  strp+='</tbody>';
+				strp+='</table>';				
+			}
+			
+			
 	}
+	
 	if(saveUpdate == '1')
 	{
 		$("#toursCandidateDetails").html(str);
 		$("#attachementsId").html(str1);
+		
+		$("#toursCandidateProgramDetails").html(strp);
+		
 	}else if(saveUpdate == '2')
 	{
 		$("#toursCandidateDetailsModal").html(str);
 		$("#attachementsIdModal").html(str1);
+		$("#toursCandidateProgramDetailsModal").html(strp);
 		
 	}
 }

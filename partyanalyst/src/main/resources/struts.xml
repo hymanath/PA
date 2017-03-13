@@ -15621,7 +15621,7 @@
 	
 	<action name="getSelectedprofileToursOverviewAction" class="toursAction" method="getSelectedprofileToursOverview">
 		<result type="json" name="success"> 
-   			<param name="root">toursVOList</param> 
+   			<param name="root">toursVO</param> 
    		</result>
 	</action>
 	

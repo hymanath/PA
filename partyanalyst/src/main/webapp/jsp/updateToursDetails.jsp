@@ -55,12 +55,6 @@
 #toursCandidateDetails .table-bordered input{
 	width:80px;
 }
-#toursCandidateDetails .table-bordered thead th
-{
-  border-left:0px !important;
-  border-right:0px !important;
-  color:#ccc;
-}
 .chosen-container{width:100% !important}
 .requiredFont{
 		color:red;
@@ -222,6 +216,8 @@
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="commentsUlId"></div>
+												<h4 style="margin-top:20px !important">Program Wise Info</h4>
+												<div id="toursCandidateProgramDetails" style="margin-top:10px;"></div>
 												<div id="attachementsId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -546,6 +542,7 @@
 			<div class="modal-body">
 				<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">-->
 					<div id="toursCandidateDetailsModal"></div>
+					<div id="toursCandidateProgramDetailsModal"></div>					
 					<div id="attachementsIdModal"></div>
 					<div class="row" id="updateToursModalDiv">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
