@@ -122,6 +122,22 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		query.setParameterList("meetingIds", meetingIds);
 		return query.list();  
 	}
+	public List<Object[]> getLateTimeListForMultiMeetings(Set<Long> meetingIds){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct" +
+				" model.sessionType.sessionTypeId ," +
+				" model.lateTime, " +
+				" model.sessionType.lateTime, " +
+				" model.sessionType.type" +
+				" from PartyMeetingSession model " +
+				" where " +
+				" model.isDeleted = 'N' " +
+				" and model.partyMeeting.partyMeetingId in (:meetingIds) " +
+				" order by model.orderNo ");  
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("meetingIds", meetingIds);
+		return query.list();  
+	}
 	
 	public List<Object[]> getLateTimeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
@@ -182,4 +198,4 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		query.setParameter("partyMeetnMainTypId", partyMeetnMainTypId);
 		return query.list();
 	}
-}
+}//

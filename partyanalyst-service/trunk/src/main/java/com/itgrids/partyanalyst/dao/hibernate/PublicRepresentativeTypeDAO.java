@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.model.PublicRepresentativeType;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PublicRepresentativeTypeDAO extends GenericDaoHibernate<PublicRepresentativeType, Long> implements IPublicRepresentativeTypeDAO{
 
@@ -25,6 +26,14 @@ public class PublicRepresentativeTypeDAO extends GenericDaoHibernate<PublicRepre
 	public List<Long> getIds(List<Long> representativeIds){
 		Query query = getSession().createQuery(" select PRT.publicRepresentativeTypeId from PublicRepresentativeType PRT where PRT.publicRepresentativeTypeId not in (:representativeIds)");
 		query.setParameterList("representativeIds", representativeIds);
+		return query.list();
+	}
+	public List<Object[]> getPublicRepresentativeInfoList(){
+		Query query = getSession().createQuery("select model.publicRepresentativeTypeId," +
+				" model.type" +
+				" from PublicRepresentativeType model where model.publicRepresentativeTypeId in ("+IConstants.REQUIRED_PUBLIC_REPRESENTATIVE_TYPE_IDS+")" +
+				" order by model.orderNo");
+
 		return query.list();
 	}
 }
