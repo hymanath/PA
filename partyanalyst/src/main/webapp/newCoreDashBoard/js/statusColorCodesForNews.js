@@ -1,7 +1,7 @@
 
 var statusColorArr = [];
 var statusarr = ['TDP','YSRC','INC','BJP'];
-var specialMeetingsColorArr=[];
+var sessionstatusColorArr=[];
 var sessionArr = ['All Sessions','Morning Session','Afternoon Session','Session-3','Session-4','Session-5','Session-6','Session-7','Session-8','Session-9','Session-10'];
 function setcolorsForStatus()
 	{
