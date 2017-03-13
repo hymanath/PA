@@ -142,7 +142,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 	public List<Object[]> getLateTimeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select  distinct model.sessionType.sessionTypeId,model.sessionType.type,model.lateTime from PartyMeetingSession model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
+		queryStr.append(" select  distinct model.sessionType.sessionTypeId,model.sessionType.type,model.lateTime, model.partyMeeting.partyMeetingType.partyMeetingTypeId from PartyMeetingSession model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
 				" and  model.partyMeeting.partyMeetingType.isActive = 'Y' and model.partyMeeting.isActive='Y' and " +
 				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		

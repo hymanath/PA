@@ -2372,7 +2372,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId," +
-				"model.tdpCadre.tdpCadreId from PartyMeetingInvitee model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
+				"model.tdpCadre.tdpCadreId, model.partyMeeting.partyMeetingType.partyMeetingTypeId from PartyMeetingInvitee model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
 				" and  model.partyMeeting.partyMeetingType.isActive = 'Y' and model.partyMeeting.isActive='Y' and " +
 				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		
