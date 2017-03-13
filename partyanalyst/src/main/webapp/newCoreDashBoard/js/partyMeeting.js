@@ -4063,15 +4063,14 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null ){
-		  buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result)	
+		  buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,"")	
 		}else{
           $("#stateLevelMeetingBlockId").html("NO DATA AVAILABLE.");
 		} 
 	});
 }
-function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
-	var str='';
-	
+function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,isClickRequired){
+	var str='';      
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 ">'; 
 	str+='<div class="row">';
 		str+='<ul class="list-inline pull-right">'; 
@@ -4224,7 +4223,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								var id = this.id;
 								var group = this.group;
 								var partyMeetingId = this.partyMeetingId;
-								getPublicRepAndcommitteeInviteeDtls(id,partyMeetingId);        
+								getPublicRepAndcommitteeInviteeDtls(id,partyMeetingId,isClickRequired);        
 								}                     
 							}
 						}
@@ -4310,7 +4309,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								var name = this.series.userOptions.name;
 								var sessionId = this.series.userOptions.sessionId;
 								var partyMeetingId = this.series.userOptions.partyMeetingId;
-								getPublicRepAndcommitteeAttendedDtls(id,status,name,sessionId,partyMeetingId);
+								getPublicRepAndcommitteeAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired);
 								}         
 							}
 						}
@@ -4394,7 +4393,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								var name = this.series.userOptions.name;
 								var sessionId = this.series.userOptions.sessionId;
 								var partyMeetingId = this.series.userOptions.partyMeetingId;
-								getPublicRepAndcommitteeLateAttendedDtls(id,status,name,sessionId,partyMeetingId);          
+								getPublicRepAndcommitteeLateAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired);          
 								}         
 							}
 						}
@@ -4479,7 +4478,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								var name = this.series.userOptions.name;
 								var sessionId = this.series.userOptions.sessionId;
 								var partyMeetingId = this.series.userOptions.partyMeetingId;
-								getPublicRepAndcommitteeInviteeAbsentDtls(id,status,name,sessionId,partyMeetingId);            
+								getPublicRepAndcommitteeInviteeAbsentDtls(id,status,name,sessionId,partyMeetingId,isClickRequired);            
 								}         
 							}
 						}
@@ -4563,7 +4562,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 								var name = this.series.userOptions.name;
 								var sessionId = this.series.userOptions.sessionId;
 								var partyMeetingId = this.series.userOptions.partyMeetingId;
-								getPublicRepAndcommitteeNonInviteeAttendedDtls(id,status,name,sessionId,partyMeetingId);                  
+								getPublicRepAndcommitteeNonInviteeAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired);                  
 								}         
 							}
 						}
@@ -5099,7 +5098,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		$("#cmtMemberDtlsTableId").dataTable();
 	}
 	
-	function getPublicRepAndcommitteeInviteeDtls(id,partyMeetingId){
+	function getPublicRepAndcommitteeInviteeDtls(id,partyMeetingId,isClickRequired){
+		if(isClickRequired=="noClick"){
+			return;  
+		}
 		var partyMeetingTypeArr=[];	
 		$("#specialMeetingUlId li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -5154,7 +5156,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		});
 	}
 	
-	function getPublicRepAndcommitteeAttendedDtls(id,status,name,sessionId,partyMeetingId){
+	function getPublicRepAndcommitteeAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired){
+		if(isClickRequired=="noClick"){
+			return;  
+		}
 		var partyMeetingTypeArr=[];	
 		$("#specialMeetingUlId li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -5207,7 +5212,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			} 
 		});
 	}
-	function getPublicRepAndcommitteeLateAttendedDtls(id,status,name,sessionId,partyMeetingId){
+	function getPublicRepAndcommitteeLateAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired){
+		if(isClickRequired=="noClick"){
+			return;  
+		}
 		var partyMeetingTypeArr=[];	
 		$("#specialMeetingUlId li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -5261,7 +5269,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			} 
 		});
 	}
-	function getPublicRepAndcommitteeInviteeAbsentDtls(id,status,name,sessionId,partyMeetingId){
+	function getPublicRepAndcommitteeInviteeAbsentDtls(id,status,name,sessionId,partyMeetingId,isClickRequired){
+		if(isClickRequired=="noClick"){
+			return;  
+		}
 		var partyMeetingTypeArr=[];	
 		$("#specialMeetingUlId li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -5315,7 +5326,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			} 
 		});
 	}
-	function getPublicRepAndcommitteeNonInviteeAttendedDtls(id,status,name,sessionId,partyMeetingId){
+	function getPublicRepAndcommitteeNonInviteeAttendedDtls(id,status,name,sessionId,partyMeetingId,isClickRequired){
+		if(isClickRequired=="noClick"){
+			return;  
+		}
 		var partyMeetingTypeArr=[];	
 		$("#specialMeetingUlId li").each(function() {
 			if($(this).find("input").is(":checked")){
@@ -6080,8 +6094,11 @@ function get1111PartyLevelIdWiseMeetingsCount(){
 			buildMultiLocationWiseMeetingGroupsData(result);
 			});
 }
-/*Swadhin*/  
-getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls();
+/*Swadhin*/ 
+$(document).on("click","#multicLocationMeetingId",function(){
+	getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls();  
+}); 
+
 function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(){
 	var jsObj ={    
 		activityMemberId:44,
@@ -6098,7 +6115,7 @@ function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocat
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result);	
+			buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,"noClick");	
 		});    
 }
 getDistWiseMeetingDtlsForDiffLevelOfMeetings();
@@ -6122,4 +6139,3 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
 			alert(1);
 		});  
 }
-
