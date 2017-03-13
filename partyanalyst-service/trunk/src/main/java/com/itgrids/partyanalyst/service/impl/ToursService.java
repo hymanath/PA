@@ -38,7 +38,9 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDocumentDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateProgramDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationProgramTargetDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalTourCategoryDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
@@ -65,6 +67,7 @@ import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsLocation;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsNew;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation;
+import com.itgrids.partyanalyst.model.SelfAppraisalCandidateProgramDetails;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IToursService;
@@ -106,8 +109,19 @@ public class ToursService implements IToursService {
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	private ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO;
 	private ISelfAppraisalCandidateDetailsLocationDAO selfAppraisalCandidateDetailsLocationDAO;
+	private ISelfAppraisalDesignationProgramTargetDAO selfAppraisalDesignationProgramTargetDAO;
+	private ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO;
 
 	
+	
+	public void setSelfAppraisalDesignationProgramTargetDAO(
+			ISelfAppraisalDesignationProgramTargetDAO selfAppraisalDesignationProgramTargetDAO) {
+		this.selfAppraisalDesignationProgramTargetDAO = selfAppraisalDesignationProgramTargetDAO;
+	}
+	public void setSelfAppraisalCandidateProgramDetailsDAO(
+			ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO) {
+		this.selfAppraisalCandidateProgramDetailsDAO = selfAppraisalCandidateProgramDetailsDAO;
+	}
 	public void setSelfAppraisalCandidateDetailsLocationDAO(
 			ISelfAppraisalCandidateDetailsLocationDAO selfAppraisalCandidateDetailsLocationDAO) {
 		this.selfAppraisalCandidateDetailsLocationDAO = selfAppraisalCandidateDetailsLocationDAO;
@@ -1031,8 +1045,7 @@ public class ToursService implements IToursService {
 										
 									}
 								}
-							}														
-							//Over All Toured Days Saving End
+							}//Over All Toured Days Saving End
 							
 							//Day Wise Saving Start
 							
@@ -2689,7 +2702,7 @@ public class ToursService implements IToursService {
 						}
 						
 						
-						
+					//	Category Wise Saving
 					if(toursVo !=null && toursVo.getToursVoListNew() !=null && toursVo.getToursVoListNew().size()>0){
 					
 						for (ToursNewVO innerTourVo : toursVo.getToursVoListNew()) {
@@ -2744,13 +2757,18 @@ public class ToursService implements IToursService {
 								//Over All Toured Days Saving End
 						}
 					
+					// Programs Wise Saving Start 					
+						String programMessage = saveDesignationProgramWiseTourDetails(toursVo,toursMonthId);
+					
+					
 						//Documents Saving	
 						if(documentMap !=null && documentMap.size()>0){
 							saveDesignationWiseApplicationDocuments(toursVo,documentMap);
 						}
 						
-						transStatus.setMessage("success");
+						transStatus.setMessage("success");//Category Status Message
 						transStatus.setResultCode(1);
+						transStatus.setExceptionMsg(programMessage);// Program Status Message
 						
 						return transStatus;
 						
@@ -2764,7 +2782,101 @@ public class ToursService implements IToursService {
 	    		LOG.error("Exception Occured in saveNewTourDetails() in ToursService class ", e);
 	    	}
 	    	return status;
-	    }  
+	    } 
+	    
+	    public String saveDesignationProgramWiseTourDetails(final ToursNewVO toursVo,final Long toursMonthId){
+	    	String status=null;
+	    	try{
+	    		
+					status = (String)transactionTemplate.execute(new TransactionCallback() {
+						@SuppressWarnings("null")
+						public Object doInTransaction(TransactionStatus arg0) {
+														
+							if(toursVo !=null && toursVo.getToursVoProgramsList() !=null && toursVo.getToursVoProgramsList().size()>0){
+								
+								//If Candidate Id Not Available
+								
+									Set<Long> designationIds = new HashSet<Long>();
+									for (ToursNewVO candidate :  toursVo.getToursVoProgramsList()) {										
+										designationIds.add(candidate.getDesignationId());										
+									}
+									
+									Map<Long,Long> candidateMap = new HashMap<Long, Long>();
+									//0-designation,1-candidateId
+									List<Object[]> desginationCandidates =  selfAppraisalCandidateDAO.getCandidateInfoOfDesginations(toursVo.getTdpCadreId(), designationIds);
+									if(desginationCandidates !=null && desginationCandidates.size()>0){
+										for (Object[] obj : desginationCandidates) {											
+											candidateMap.put((Long)obj[0], (Long)obj[1]);
+										}
+									}								
+								
+								
+								for (ToursNewVO innerTourVo : toursVo.getToursVoProgramsList()) {
+									
+									if(innerTourVo !=null && innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0l){ //tour Visits
+										
+										//Set CandidateId
+										if(innerTourVo.getCandidateId() == null || innerTourVo.getCandidateId()<=0){
+											innerTourVo.setCandidateId(candidateMap.get(innerTourVo.getDesignationId())) ;
+										}
+										
+										
+										if(innerTourVo.getDetailsNewId()  !=null && innerTourVo.getDetailsNewId()>0l)  // detailsProgramId
+										{ //Update 
+											
+											innerTourVo.setUserId(toursVo.getUserId());
+											innerTourVo.setToursMonthId(toursMonthId);
+											updateDesignationProgramWiseNewTourDetails(innerTourVo);
+											
+										}else{											
+											
+											DateUtilService dateUtilService = new DateUtilService();
+											
+											//Over All toured Program Visits Saving Start
+															SelfAppraisalCandidateProgramDetails selfAppraisalCandidateProgramDetails = new SelfAppraisalCandidateProgramDetails();
+															
+															selfAppraisalCandidateProgramDetails.setSelfAppraisalToursMonthId(toursMonthId !=null && toursMonthId >0l ? toursMonthId:null);
+															
+															selfAppraisalCandidateProgramDetails.setSelfAppraisalCandidateId(innerTourVo.getCandidateId());								
+															selfAppraisalCandidateProgramDetails.setSelfAppraisalDesignationId(innerTourVo.getDesignationId());	
+															
+															
+															selfAppraisalCandidateProgramDetails.setSelfAppraisalProgramId(innerTourVo.getTourCategoryId());
+															
+															/*if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+																selfAppraisalCandidateDetailsNew.setRemarks(innerTourVo.getDescription().toString());
+															}*/
+															
+															selfAppraisalCandidateProgramDetails.setTourVisits(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():null );
+															
+															selfAppraisalCandidateProgramDetails.setIsDeleted("N");
+															
+															selfAppraisalCandidateProgramDetails.setInsertedBy(toursVo.getUserId());
+															selfAppraisalCandidateProgramDetails.setUpdatedBy(toursVo.getUserId());
+															selfAppraisalCandidateProgramDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+															selfAppraisalCandidateProgramDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+															
+															
+															SelfAppraisalCandidateProgramDetails selfAppraisalCandidateProgramDetailsNewObj = selfAppraisalCandidateProgramDetailsDAO.save(selfAppraisalCandidateProgramDetails);
+																														
+														}
+											}
+									}														
+										//Over All Toured Days Saving End
+								}
+							
+							return "success";
+						}
+						
+					});
+	    		
+	    		
+	    	}catch(Exception e){
+	    		LOG.error("Exception Occured in saveDesignationProgramWiseTourDetails() in ToursService class ", e);
+	    	}
+	    	return "failure";
+	    }
+	  
 	    
 	   /* Cadre Profile Page Service */
 	    
@@ -2977,7 +3089,53 @@ public class ToursService implements IToursService {
     	}
     	return result;
     }
-    
+    public String updateDesignationProgramWiseNewTourDetails( final ToursNewVO innerTourVo){
+    	String result = null;
+    	try{    		
+    		
+    		result = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+    		
+					ResultStatus status=new ResultStatus();
+					    								
+				DateUtilService dateUtilService = new DateUtilService();
+
+						
+						if(innerTourVo !=null){
+							
+							SelfAppraisalCandidateProgramDetails selfAppraisalCandidateProgramDetails = selfAppraisalCandidateProgramDetailsDAO.get(innerTourVo.getDetailsNewId());//detailsNewId
+						
+							selfAppraisalCandidateProgramDetails.setSelfAppraisalToursMonthId(innerTourVo.getToursMonthId() !=null && innerTourVo.getToursMonthId() >0l ? innerTourVo.getToursMonthId() :null);
+							
+							/*if(innerTourVo.getDescription() !=null && !innerTourVo.getDescription().isEmpty()){
+								selfAppraisalCandidateProgramDetails.setRemarks(innerTourVo.getDescription().toString());
+							}*/
+							
+							selfAppraisalCandidateProgramDetails.setTourVisits(innerTourVo.getTourDays() !=null && innerTourVo.getTourDays()>0 ? innerTourVo.getTourDays():null );
+							
+							selfAppraisalCandidateProgramDetails.setIsDeleted("N");
+							
+							selfAppraisalCandidateProgramDetails.setUpdatedBy(innerTourVo.getUserId());
+							selfAppraisalCandidateProgramDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							
+							
+							SelfAppraisalCandidateProgramDetails selfAppraisalCandidateProgramDetailsNewObj = selfAppraisalCandidateProgramDetailsDAO.save(selfAppraisalCandidateProgramDetails);
+														
+						}
+				
+				
+				selfAppraisalCandidateDetailsNewDAO.flushAndclearSession();
+				
+				return "success";
+				
+				}
+    		});
+    		
+    	}catch(Exception e){
+    		LOG.error("Exception Occured in updateDesignationProgramWiseNewTourDetails() in ToursService", e);
+    	}
+    	return "failure";
+    }
     public void saveDesignationWiseApplicationDocuments(ToursNewVO toursVO,final Map<File,String> documentMap){
 		
 		try{
@@ -3048,11 +3206,11 @@ public class ToursService implements IToursService {
 	  	  * date: 30th Jan, 2017
 	  	  * desc: To get  Tours Overview  for a cadre
 	  	  */
-		public List<ToursVO> getSelectedprofileToursOverview(String tourDate,Long tdpCadreId,Long toursMonthId){  
+		public ToursVO getSelectedprofileToursOverview(String tourDate,Long tdpCadreId,Long toursMonthId){  
 			LOG.info("Entered into getSelectedprofileToursOverview() of ToursService{}");
 			List<ToursVO> finalList = new ArrayList<ToursVO>(0);
 			List<ToursVO> documentsList = new ArrayList<ToursVO>(0);
-			ToursVO vo = null;
+			ToursVO finalVo = new ToursVO();
 			try{
 				//Long toursMonthId=0l; 
 				if(tourDate !=null && !tourDate.trim().isEmpty()){
@@ -3068,7 +3226,7 @@ public class ToursService implements IToursService {
     	    	List<Object[]> toursList = selfAppraisalCandidateLocationNewDAO.getLocationWiseCandidate(tdpCadreId);
     	    	if(toursList != null && toursList.size() > 0){
     	    		for (Object[] objects2 : toursList) {
-    	    			vo = new ToursVO();
+    	    			ToursVO vo = new ToursVO();
     	    			vo.setId(commonMethodsUtilService.getLongValueForObject(objects2[0]));
     	    			vo.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects2[1]));
     	    			vo.setCategoryId(commonMethodsUtilService.getLongValueForObject(objects2[2]));
@@ -3086,7 +3244,7 @@ public class ToursService implements IToursService {
 	    	    List<Object[]> documentObjLst = selfAppraisalCandidateDocumentDAO.getSelfAppraisalDocuments(tdpCadreId, toursMonthId);
 	    	    if(documentObjLst != null && documentObjLst.size() >0){
 	    	    	for (Object[] params : documentObjLst) {
-	    	    		vo = new ToursVO();
+	    	    		ToursVO vo = new ToursVO();
 	    	    		vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
 	    	    		vo.setFilePath(commonMethodsUtilService.getStringValueForObject(params[1]));//documentPath
 	    	    		vo.setCandidateId(commonMethodsUtilService.getLongValueForObject(params[2]));
@@ -3095,7 +3253,7 @@ public class ToursService implements IToursService {
 					}
 	    	    }
 	    	    if(finalList != null && finalList.size() > 0){
-	    	    	finalList.get(0).setToursVoList(documentsList);
+	    	    	//finalList.get(0).setToursVoList(documentsList);
 	    	    	 //detailsId-0,designationId -1,designation-2,categoryId -3,category-4,tourType-5,tourDays-6,updatedtime-7,candidateId-8,tourTypeId-9
 	    			List<Object[]> tourObjLst = selfAppraisalCandidateDetailsNewDAO.getToursOverviewByCadre(tdpCadreId,toursMonthId);
 	    	    	if(tourObjLst != null && tourObjLst.size() > 0){
@@ -3113,13 +3271,78 @@ public class ToursService implements IToursService {
 						}
 	    	    	}
 	    	    	
+	    	    	finalVo.setToursVoList(finalList); // Setting Category And Tour Type List To FinalVo
+	    	    	
 	    	    }
+	    	    
+	    	    //Get Program Details	    		    	    
+	    	    setProgramDetails(tdpCadreId,toursMonthId,finalVo);
+	    	    
+	    	    //Documents List
+	    	    if(documentsList !=null && documentsList.size()>0){
+	    	    	finalVo.setDocList(documentsList);
+	    	    }
+	    	    
 			}catch(Exception e){
 	    		LOG.error("Exception Occured in getSelectedprofileToursOverview() in ToursService class ", e);
 	    	}
-			return finalList;
+			return finalVo;
 			
 	    }
+		
+		public void setProgramDetails(Long tdpCadreId,Long toursMonthId,ToursVO finalVo){
+			
+			List<ToursVO> programsList = new ArrayList<ToursVO>();
+			
+			try {				
+				 List<Long> desgIds =  selfAppraisalCandidateDAO.getDesignationIdsList(tdpCadreId);
+				 
+				 if(desgIds !=null && desgIds.size()>0){
+					 //0.desgId,1.desig,2,programid,3.program
+					List<Object[]> listObj = selfAppraisalDesignationProgramTargetDAO.getDesignationWiseDetails(desgIds, toursMonthId);
+					
+					if(listObj !=null && listObj.size()>0){
+						for (Object[] objects : listObj) {							
+							ToursVO vo = new ToursVO();
+							
+							vo.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+	    	    			vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[1]));
+	    	    			vo.setCategoryId(commonMethodsUtilService.getLongValueForObject(objects[2]));//programId
+	    	    			vo.setCategory(commonMethodsUtilService.getStringValueForObject(objects[3]));//program
+							
+	    	    			programsList.add(vo);
+	    	    			
+						}
+					}
+					
+					
+					if(programsList != null && programsList.size() > 0){
+		    	    	 //detailsId-0,designationId -1,designation-2,categoryId -3,category-4,tourType-5,tourDays-6,updatedtime-7,candidateId-8,tourTypeId-9
+						//0.detailsId,1.designationId,2.designation,3.programId,4.program,5.tourVisits,6.updatedTime,7.candidateId
+		    			List<Object[]> tourObjLst = selfAppraisalCandidateProgramDetailsDAO.getToursProgramOverviewByCadre(tdpCadreId,toursMonthId);
+		    	    	if(tourObjLst != null && tourObjLst.size() > 0){
+		    	    		for (Object[] obj : tourObjLst) {
+		    	    			for (ToursVO tourVo : programsList) {
+		    	    				tourVo = getMatchedVOForProgramById(programsList, (Long)obj[1],(Long)obj[3]);
+		    	    				if(tourVo != null){
+		    	    					tourVo.setTourDays(commonMethodsUtilService.getLongValueForObject(obj[5]));//tour Visits
+		    	    					tourVo.setTourDate(commonMethodsUtilService.getStringValueForObject(obj[6]));
+		    	    					tourVo.setDetailsNewId(commonMethodsUtilService.getLongValueForObject(obj[0]));//programDetailsId
+		    	    					tourVo.setCandidateId(commonMethodsUtilService.getLongValueForObject(7));
+		    	    				}
+		    					}
+							}
+		    	    	}		    	    	
+		    	    	finalVo.setToursVoListNew(programsList); // Setting Category And Tour Type List To FinalVo		    	    	
+		    	    }
+					
+				 }
+				 
+			} catch (Exception e) {
+				LOG.error("Exception Occured in setProgramDetails() in ToursService class ", e);
+			}
+		}
+		
 	public ToursVO getMatchedVOById(List<ToursVO> returnList,Long candidateId,Long categoryId,Long tourTypeId)
 		{
 			try{
@@ -3136,6 +3359,23 @@ public class ToursService implements IToursService {
 				e.printStackTrace();
 			}
 			return null;
+	}
+	public ToursVO getMatchedVOForProgramById(List<ToursVO> returnList,Long designationId,Long programId)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0 || designationId == null )
+				return null;
+			for(ToursVO vo : returnList)
+			{
+				if(vo.getDesignationId().longValue()== designationId.longValue() && vo.getCategoryId().longValue()== programId.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	public void saveUserLocationsOfTour1(Long candidateId,Long categoryId,Long detailsId,Long tourTypeId){
     	try{    		    	

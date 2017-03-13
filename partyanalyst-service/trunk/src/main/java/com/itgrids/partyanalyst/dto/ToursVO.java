@@ -43,6 +43,7 @@ public class ToursVO {
 	private Map<File,String> files = new HashMap<File,String>();
 	private List<ToursVO> toursVoListNew = new ArrayList<ToursVO>(0);
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
+	private List<ToursVO> docList = new ArrayList<ToursVO>();
 	
 	private String tourDateId;
 	private Long tourCategoryId;
@@ -357,6 +358,14 @@ public class ToursVO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<ToursVO> getDocList() {
+		return docList;
+	}
+
+	public void setDocList(List<ToursVO> docList) {
+		this.docList = docList;
 	}
 	
 }

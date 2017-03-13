@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -18,4 +19,6 @@ public interface ISelfAppraisalCandidateDAO extends GenericDao<SelfAppraisalCand
 	public List<Object[]> getDesignationsList(Long tdpCadreId);
 	public List<Object[]> getSelfAppraisalCandidateIdAndDesignationByTdpCadreId(Long tdpCadreId);
 	public Long getTdpCadreId(Long selfAppraisalCandiateId);
+	public List<Long> getDesignationIdsList(Long tdpCadreId);
+	public List<Object[]> getCandidateInfoOfDesginations(Long tdpCadreId,Set<Long> designationIds);
 }
