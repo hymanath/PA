@@ -2032,14 +2032,15 @@
 										</div>
 									 </div>
 								   </div>
-									<!--<div class="row">
+									<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
 											  <div class="panel panel-default panelNew">
 												<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
 													<h4 class="panel-title" style="display: inline-block">
-														<span class="headingColor text-capital">multilocation meetings</span>
+														<span class="headingColor text-capital">multi Location meetings</span>
 														<i class="glyphicon glyphicon-fullscreen meetingsIconExpand" style="background-color: #fff;"></i>
+														<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 													</h4>
 													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
 													</a>
@@ -2052,7 +2053,7 @@
 											  </div>
 											</div>
 										</div>
-									</div>-->
+									</div>
 									
 								</div>
 							</div>
