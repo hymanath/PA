@@ -216,7 +216,7 @@
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="commentsUlId"></div>
-												<h4 style="margin-top:20px !important">Program Wise Info</h4>
+												<!--<h4 style="margin-top:20px !important">Program Wise Info</h4>-->
 												<div id="toursCandidateProgramDetails" style="margin-top:10px;"></div>
 												<div id="attachementsId"></div>
 											</div>
