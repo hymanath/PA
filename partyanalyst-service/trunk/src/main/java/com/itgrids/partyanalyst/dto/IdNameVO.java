@@ -80,6 +80,26 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<IdNameVO> publicRepDesgList;
 	private List<IdNameVO> committeeDesgList;
 	 
+	private String time;
+	private List<SessionVO> sessionsList = new ArrayList<SessionVO>(0);
+	
+	 
+	public List<SessionVO> getSessionsList() {
+		return sessionsList;
+	}
+
+	public void setSessionsList(List<SessionVO> sessionsList) {
+		this.sessionsList = sessionsList;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
 	public Long getConstituencyNo() {
 		return constituencyNo;
 	}
