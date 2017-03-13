@@ -3988,10 +3988,8 @@
 	  <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
 	  <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
 	  <property name="selfAppraisalCandidateDetailsLocationDAO" ref="selfAppraisalCandidateDetailsLocationDAO"></property>
-	  
 	  <property name="selfAppraisalDesignationProgramTargetDAO" ref="selfAppraisalDesignationProgramTargetDAO"></property>
-	  <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>	  
-	 
+	  <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>	
 	</bean>  
 	
 	
@@ -4016,6 +4014,8 @@
 	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
 	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
 	 <property name="selfAppraisalCandidateDocumentDAO" ref="selfAppraisalCandidateDocumentDAO"></property>
+	 <property name="selfAppraisalDesignationProgramTargetDAO" ref="selfAppraisalDesignationProgramTargetDAO"></property>
+	 <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>
 	</bean>
 	
 	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService">
