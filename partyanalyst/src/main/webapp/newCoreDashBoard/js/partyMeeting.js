@@ -6098,7 +6098,8 @@ function get1111PartyLevelIdWiseMeetingsCount(){
 }
 /*Swadhin*/ 
 $(document).on("click","#multicLocationMeetingId",function(){
-	getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls();  
+	getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls();
+	getDistWiseMeetingDtlsForDiffLevelOfMeetings();     	
 }); 
 
 function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(){
@@ -6120,12 +6121,12 @@ function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocat
 			buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,"noClick");	
 		});    
 }
-getDistWiseMeetingDtlsForDiffLevelOfMeetings();
-function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
+
+function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){    
 	var jsObj ={
 		activityMemberId:44,
 		partyMeetingMainTypeId : 4,          
-		locLevelId:0,                     
+		locLevelId:0,                          
 		startDateString:"01/03/2017",
 		endDateString:"30/03/2017",   
 		state:1,                                 
@@ -6138,6 +6139,125 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			//alert(1);
+			buildParyMeetingDetailsLocLvlWise(result);
 		});  
 }
+	function buildParyMeetingDetailsLocLvlWise(resultList){
+		
+		$("#districtWiseSpecialMeetingsGraph").html('');  
+		var str='';
+		for(var j in resultList){
+			var result = resultList[j];
+			if(result != null && result.length > 0){
+				str+='<div><h4><span class="headingColor text-capitalize">'+result[0].name+'</span></h4></div>';          
+				str+='<div id="districtWiseGraphSpecialMee'+j+'" class="chartLiD" style="height:300px" ></div>';
+			}
+		}  
+		$("#districtWiseSpecialMeetingsGraph").html(str);
+		for(var j in resultList){  
+			var result = resultList[j];
+			if(result != null && result.length > 0){
+				var locationNameArray =[];
+				var attendedCountArray = [];
+				var inviteAbsentCountArray = [];
+				for(var i in result){
+					locationNameArray.push(result[i].locationName);
+					var sessionId = 0;
+					if(result[i].sessionId != null && parseInt(result[i].sessionId)>0){
+						sessionId = parseInt(result[i].sessionId);
+					}
+					attendedCountArray.push({"dataBuildType":"present","y":parseInt(result[i].attendedCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
+					inviteAbsentCountArray.push({"dataBuildType":"absent","y":parseInt(result[i].inviteAbsentCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
+				}  
+			}
+			functionHighcharts(j,locationNameArray,attendedCountArray,inviteAbsentCountArray);
+		}
+	}
+	function functionHighcharts(id,locationNameArray,attendedCountArray,inviteAbsentCountArray){
+		$(function () {
+			$('#districtWiseGraphSpecialMee'+id).highcharts({
+				colors: ['#3C763D','#A94442'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					 min: 0,
+						 gridLineWidth: 0,
+						 minorGridLineWidth: 0,
+						categories: locationNameArray,
+					labels: {
+							rotation: -45,
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+				},
+				yAxis: {
+					min: 0,
+						   gridLineWidth: 0,
+							minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} - {point.percentage:.1f}%</b><br/>',
+					shared: true
+				},
+				plotOptions: {
+					useHTML: true,
+					//text-align:'center',
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return '<span style="text-align:center">'+(this.y)+'</span>';
+								}
+							}
+						  
+						}
+					},
+					series: {
+						cursor: 'pointer',
+						point: {
+						events: {
+						click: function () {
+							
+							}  
+						}
+					}
+				}
+				},
+				series: [{
+					name: 'Attended',  
+					data: attendedCountArray
+				}, {
+					name: 'Absent',
+					data: inviteAbsentCountArray
+				}]
+			});
+		});
+	}
