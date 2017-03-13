@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MeetingBasicDetailsVO implements Serializable {
 	private Long partyMeetingId;
@@ -21,8 +23,15 @@ public class MeetingBasicDetailsVO implements Serializable {
 	private String imagesCovered;
 	private Long totalImages;	
 	private List<SessionVO> subList = new ArrayList<SessionVO>(0);
+	private Set<Long> partyMeetingTypeIds = new HashSet<Long>();
 	
 	
+	public Set<Long> getPartyMeetingTypeIds() {
+		return partyMeetingTypeIds;
+	}
+	public void setPartyMeetingTypeIds(Set<Long> partyMeetingTypeIds) {
+		this.partyMeetingTypeIds = partyMeetingTypeIds;
+	}
 	public List<SessionVO> getSubList() {
 		return subList;
 	}

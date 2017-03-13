@@ -1430,7 +1430,8 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId," +
 				"model.attendance.tdpCadre.tdpCadreId,model.attendance.attendedTime,model.partyMeetingSession.sessionTypeId , " +
-				" concat(model.attendance.tdpCadre.tdpCadreId,'-',model.partyMeetingSession.sessionTypeId),model.partyMeetingSession.sessionType.type from PartyMeetingAttendance model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
+				" concat(model.attendance.tdpCadre.tdpCadreId,'-',model.partyMeetingSession.sessionTypeId),model.partyMeetingSession.sessionType.type " +
+				", model.partyMeeting.partyMeetingType.partyMeetingTypeId from PartyMeetingAttendance model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
 				" and  model.partyMeeting.partyMeetingType.isActive = 'Y' and model.partyMeeting.isActive='Y' and " +
 				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		

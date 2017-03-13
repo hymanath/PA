@@ -6779,7 +6779,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						param.setStatus("conducted");
 						param.setAttended(Long.valueOf(totalAttendenceMap.get(param.getPartyMeetingId()).size()));
 					}else{
-						param.setStatus("Not-condicted");
+						param.setStatus("Notconducted");
 						param.setAttended(0L);
 					}    
 					if(totalInviteesMap.get(param.getPartyMeetingId()) != null && totalInviteesMap.get(param.getPartyMeetingId()).size() > 0){
@@ -8133,6 +8133,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	public MeetingBasicDetailsVO getPartyLevelIdWiseMeetingsCount(Long partyMeetnMainTypId,
 			Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
 		MeetingBasicDetailsVO returnVo = new MeetingBasicDetailsVO();
+		Set<Long> partyMeetingTypeIds = new HashSet<Long>(); 
 		Date startDate = null;
 		Date endDate = null;
 		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -8155,6 +8156,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					partyMeetingLevelId,partyMeetngGrpId);
 		    if(commonMethodsUtilService.isListOrSetValid(lateTimesList)){
 				for(Object[] obj :lateTimesList){
+					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(obj[3]));
 					SessionVO sessionVO = sessionLateTimesMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					if(sessionVO == null){
 						sessionVO = new SessionVO();
@@ -8179,6 +8181,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						inviteeIds = new HashSet<Long>();
 						inviteeMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), inviteeIds);
 					}
+					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(obj[3]));
 					inviteeIds.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					totalInviteeList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				}
@@ -8195,6 +8198,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					totalImagesCount = totalImagesCount+imagesCount;
 					totalImagesCoveredCount = totalImagesCoveredCount + imagesCoveredCount;
 					SessionVO sessionVO = sessionLateTimesMap.get(sessionId);
+					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
 					if(sessionVO != null){
 						sessionVO.setImagesCount(imagesCount);
 						sessionVO.setImagesCovered(imagesCoveredCount);
@@ -8218,6 +8222,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					}
 					partyMetingIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
 					attendedIds.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(obj[37]));
 					
 					if(commonMethodsUtilService.isMapValid(sessionLateTimesMap)){
 						SessionVO sessionVO = sessionLateTimesMap.get(commonMethodsUtilService.getLongValueForObject(obj[4]));
@@ -8284,7 +8289,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			if(returnVo.getInvited() != null && returnVo.getInvited().longValue() > 0l && returnVo.getAttended() != null){
 				returnVo.setAbsent(returnVo.getInvited().longValue()-returnVo.getAttended().longValue());//Abscent
 			}
-			
+			if(partyMeetingTypeIds != null && partyMeetingTypeIds.size() >0)
+			returnVo.setPartyMeetingTypeIds((partyMeetingTypeIds));//partyMeetingTypeIds
 			
 		}catch(Exception e){
 			e.printStackTrace();

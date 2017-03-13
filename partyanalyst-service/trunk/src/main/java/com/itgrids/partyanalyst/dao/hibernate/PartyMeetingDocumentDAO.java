@@ -548,7 +548,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 				 str.append("   , count(distinct model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId  ) ");  
 			 }
 		}
-		str.append("  from PartyMeetingDocument model,PartyMeetingGroupsMappingInfo model2  " +
+		str.append(" , model.partyMeeting.partyMeetingType.partyMeetingTypeId from PartyMeetingDocument model,PartyMeetingGroupsMappingInfo model2  " +
 				" where model.partyMeeting.partyMeetingLevelId = :partyMeetingLevelId" +
 				"  and model.isDeleted = 'N' and model.partyMeeting.partyMeetingId = model2.partyMeetingId  " );
 			if(stateId != null && stateId.longValue() > 0L){
