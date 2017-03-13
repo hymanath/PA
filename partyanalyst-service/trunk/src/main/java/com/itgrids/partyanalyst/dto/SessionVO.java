@@ -23,6 +23,9 @@ public class SessionVO implements Serializable{
 	private Set<Long> inviteeAttendedCadreIdsList = new HashSet<Long>();
 	private Set<Long> nonInviteeAttendedCadreIdsList = new HashSet<Long>();
 	private String isLate;
+	private String uploadedTime;
+	private String upLoadedDate;
+	private String imagePath;
 	
 	
 	public String getIsLate() {
@@ -127,6 +130,24 @@ public class SessionVO implements Serializable{
 	}
 	public void setImagesCount(Long imagesCount) {
 		this.imagesCount = imagesCount;
+	}
+	public String getUploadedTime() {
+		return uploadedTime;
+	}
+	public void setUploadedTime(String uploadedTime) {
+		this.uploadedTime = uploadedTime;
+	}
+	public String getUpLoadedDate() {
+		return upLoadedDate;
+	}
+	public void setUpLoadedDate(String upLoadedDate) {
+		this.upLoadedDate = upLoadedDate;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 			
