@@ -1486,4 +1486,83 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		query.setParameter("partyMeetnMainTypId", partyMeetnMainTypId);
 		return query.list();
 	}
+	
+	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
+			 Date fromDateStr,Date toDateStr, Long stateId, Long partyMeetingLevelId,Long  partyMeetngGrpId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT ");
+		queryStr.append(" st.session_type_id as session_type_id, " +
+				" st.type as type,a.tdp_cadre_id as tdp_cadre_id, " +
+				" a.attended_time as attended_time, " +
+				" DATE_FORMAT(a.attended_time,'%H:%i:%s') as time ," +
+				" tc.first_name as first_name ," +
+				" tc.membership_id as membership_id, " +
+				" tc.mobile_no as mobile_no,tc.image as image ");
+		queryStr.append(" FROM  ");
+		queryStr.append(" party_meeting pm, ");
+		queryStr.append(" party_meeting_session pms, ");
+		queryStr.append(" session_type st, ");
+		queryStr.append(" party_meeting_groups_mapping_info pmg, ");
+		queryStr.append(" party_meeting_attendance pma,  ");
+		queryStr.append(" attendance a, ");
+		queryStr.append(" tdp_cadre tc , ");
+		queryStr.append(" party_meeting_type pmt,  ");
+		queryStr.append(" party_meeting_main_type pmmt, user_address ua ");
+		queryStr.append(" where ");
+		queryStr.append(" pm.party_meeting_address_id = ua.user_address_id and pmg.party_meeting_group_id = :party_meeting_group_id and  ");
+		queryStr.append(" pmg.party_meeting_id = pm.party_meeting_id and  ");
+		queryStr.append(" pma.party_meeting_id = pm.party_meeting_id and  ");
+		queryStr.append(" pma.attendance_id = a.attendance_id and  ");
+		queryStr.append(" a.tdp_cadre_id = tc.tdp_cadre_id and  ");
+		queryStr.append(" tc.enrollment_year = '2014' and  ");
+		queryStr.append(" tc.is_deleted='N' and  ");
+		queryStr.append(" pm.party_meeting_type_id = pmt.party_meeting_type_id and  ");
+		queryStr.append(" pmt.party_meeting_main_type_id= pmmt.party_meeting_main_type_id AND ");
+		queryStr.append(" pms.party_meeting_id=pm.party_meeting_id and  ");
+		queryStr.append(" pms.session_type_id = st.session_type_id and  ");
+		queryStr.append(" pms.is_deleted='N' and  ");
+		queryStr.append(" pmg.is_deleted='N' and  ");
+		if(partyMeetingLevelId != null && partyMeetingLevelId.longValue()>0L)
+			queryStr.append(" pm.party_meeting_level_id =:party_meeting_level_id ");
+		if(partyMeetnMainTypId != null && partyMeetnMainTypId.longValue()>0L)
+			queryStr.append(" pmmt.party_meeting_main_type_id =:party_meeting_main_type_id ");
+		
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			   queryStr.append(" and ua.state_id in (:userAccessLevelValues)");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and ua.district_id in (:userAccessLevelValues)");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		        queryStr.append(" and ua.parliament_constituency_id in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		        queryStr.append(" and ua.constituency_id in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			    queryStr.append(" and ua.tehsil_id in (:userAccessLevelValues)");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			    queryStr.append(" and ua.local_election_body in (:userAccessLevelValues)"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			    queryStr.append(" and ua.panchayat_id in (:userAccessLevelValues)"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			    queryStr.append(" and ua.ward_id in (:userAccessLevelValues)"); 
+			 }
+		
+		queryStr.append(" ORDER BY a.tdp_cadre_id  ");
+		
+		Query query =getSession().createSQLQuery(queryStr.toString())
+				.addScalar("session_type_id",Hibernate.LONG)
+				.addScalar("type",Hibernate.STRING)
+				.addScalar("tdp_cadre_id",Hibernate.LONG)
+				.addScalar("attended_time",Hibernate.STRING)
+				.addScalar("time",Hibernate.STRING)
+				.addScalar("first_name",Hibernate.STRING)
+				.addScalar("membership_id",Hibernate.STRING)
+				.addScalar("mobile_no",Hibernate.STRING)
+				.addScalar("image",Hibernate.STRING);
+		
+		query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		query.setParameter("party_meeting_main_type_id", partyMeetnMainTypId);
+		query.setParameter("party_meeting_group_id", partyMeetngGrpId);
+		query.setParameter("party_meeting_level_id", partyMeetingLevelId);
+		
+		return query.list();
+	}
 }
