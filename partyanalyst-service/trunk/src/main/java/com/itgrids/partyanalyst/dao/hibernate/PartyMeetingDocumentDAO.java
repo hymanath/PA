@@ -150,7 +150,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		queryStr.append(" select distinct " +
 				" model.partyMeeting.partyMeetingId, " +
 				" model.partyMeetingSession.partyMeetingSessionId," +
-				" model.partyMeetingDocumentId " +
+				" model.partyMeetingDocumentId , model.path,model.uploadedTime " +
 				" from PartyMeetingDocument model where " +
 				" model.isDeleted = 'N' " +
 				" and model.partyMeeting.isActive = 'Y' " +
@@ -179,7 +179,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
     		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
     	}
-    	
+    	queryStr.append(" order by model.uploadedTime ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
