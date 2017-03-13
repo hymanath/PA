@@ -60,7 +60,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 			queryStr.append(" select " +
 			 " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 			 " model.selfAppraisalDesignation.designation," +
-			 " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId) " +
+			 " model.selfAppraisalCandidate.selfAppraisalCandidateId " +
 			 " from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' " +
 			 " and model.selfAppraisalDesignation.isActive='Y' ");
 		   if(monthYearIds != null && monthYearIds.size() > 0 ){
@@ -69,7 +69,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		   if(candiateIds != null && candiateIds.size() > 0){
 			  queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)"); 
 		   }
-		  queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
+		  queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		  				  " model.selfAppraisalCandidate.selfAppraisalCandidateId");
 		  Query query = getSession().createQuery(queryStr.toString());
 		  if(candiateIds != null && candiateIds.size() > 0){
 			  query.setParameterList("candiateIds", candiateIds);
@@ -101,7 +102,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 			 queryStr.append(" and model.selfAppraisalCandidateId=:selfAppraisalCandidateId");  
 		   }
 		   if(candiateIds != null && candiateIds.size() > 0){
-			   queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)");    
+			   queryStr.append(" and model.selfAppraisalCandidateId.selfAppraisalToursMonthId in (:candiateIds)");    
 		   }
 		   if(type.equalsIgnoreCase("tourCategory")){
 			   queryStr.append(" and model.tourTypeId not in ("+IConstants.GOVT_TOUR_TYPE_ID+")");
@@ -236,8 +237,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	 StringBuilder queryStr = new StringBuilder();
 	  queryStr.append( " select " +
 	    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
-	    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId),model.tdpCadreId " + // Submitted Leaders Count
-
+	    		       " model.selfAppraisalCandidate.selfAppraisalCandidateId " + // Submitted Leaders Count
 	    		       " from SelfAppraisalCandidateDetailsNew model " +
 	    		       " where model.selfAppraisalCandidate.isActive='Y' " +
 	    		       " and model.isDeleted ='N' "); 
@@ -249,7 +249,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	                if(desigIds != null && desigIds.size()>0){
 	                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
 	                }
-	                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId " );
+	                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId," +
+	                		        " model.selfAppraisalCandidate.selfAppraisalCandidateId " );
 	                
 	                Query query = getSession().createQuery(queryStr.toString());
 	                if(desigIds != null && desigIds.size()>0){  
@@ -560,4 +561,71 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	      query.setParameter("tourMonthId", tourMonthId);
        	return query.list();
        }
+	
+	public List<Object[]> getProgramVistedLeaderDetails(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  " +
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
+		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId," +//2
+		   				" SACL.selfAppraisalCandidate.tdpCadre.firstname " +//3 
+		   		   		" from " +
+				   		" SelfAppraisalCandidateLocationNew SACL,SelfAppraisalCandidateProgramDetails SACPD " +
+				   		" where SACL.selfAppraisalCandidate.selfAppraisalCandidateId = SACPD.selfAppraisalCandidate.selfAppraisalCandidateId and  " +
+				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and " +  
+				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and SACPD.isDeleted='N' and " +
+				   		" SACL.userAddress.state.stateId = :stateId ");
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		   }
+		   if(userTypeId != IConstants.STATE_USER_TYPE_ID || designationIds != null && designationIds.size() > 0){
+				  queryStr.append(" and SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in (:designationIds) "); 
+		   }
+		   if(monthYearIds != null && monthYearIds.size() > 0 ){
+            queryStr.append(" and SACPD.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+       }
+		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				   " SACL.selfAppraisalCandidate.selfAppraisalCandidateId");   
+		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   
+		   if(locationValueSet != null && locationValueSet.size() > 0){
+			   query.setParameterList("userAccessLevelValues", locationValueSet);
+		   }
+		   if(monthYearIds != null && monthYearIds.size() > 0 ){
+				query.setParameterList("monthYearIds", monthYearIds);
+		   }
+		   if(stateId != null && stateId.longValue() > 0){
+			   query.setParameter("stateId", stateId);
+		   }
+		   if(designationIds != null && designationIds.size() > 0){
+			   query.setParameterList("designationIds",designationIds);   
+		   }else{
+			 /*  if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+			    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
+		       }else*/ if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		       }else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		       }else if(userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS));
+		      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS));
+		      }else if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
+		      }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.INCHARGE_MINISTER_SUB_LEVEL_DESIG_IDS));	
+		      }  
+		   }
+		
+		   return query.list();  
+	   }
 }
