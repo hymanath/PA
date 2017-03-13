@@ -3839,4 +3839,29 @@ public String getPartyLevelIdWiseMeetingsCount()
 	}
 	return Action.SUCCESS;
 }
+
+public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
+	try {
+		//HttpSession session = request.getSession();
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		Long partyMeetnMainTypId = jObj.getLong("partyMeetingMainTypeId");
+		Long partyMeetngId = jObj.getLong("partyMeetingId");
+		Long partyMeetngGrpId = jObj.getLong("meetingGrpId");
+		Long sessionTypeId = jObj.getLong("sessionTypeId");
+		String cadreType = jObj.getString("cadreType");
+		
+		idNameVO = coreDashboardPartyMeetingService.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetngId,partyMeetnMainTypId,
+				 activityMemberId, fromDateStr, toDateStr, stateId, partyMeetingLevelId, partyMeetngGrpId,sessionTypeId,cadreType);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getPartyLevelIdWiseMeetingsAttendanceDetails ",e);
+	}
+	return Action.SUCCESS;
+}
 }
