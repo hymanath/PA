@@ -6767,7 +6767,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			
 			//session wise images count
 			Map<Long,Long> meetingWiseImageCountMap = new HashMap<Long,Long>();
-			createMeetingWiseImageCountMap(imageList,meetingWiseImageCountMap);
+			Map<Long,List<SessionVO>> map  = createMeetingWiseImageCountMap(imageList,meetingWiseImageCountMap);
 			
 			//late attended
 			Map<Long,Set<Long>> totalLateAttendedMap = new HashMap<Long,Set<Long>>();
@@ -6812,6 +6812,11 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						param.setLate(0L);
 					}
 					
+					List<SessionVO> imagePaths = map.get(param.getPartyMeetingId());
+					if(imagePaths!= null && imagePaths.size()>0)
+					{
+						param.setSubList(imagePaths);
+					}
 				}
 			}
 			return basicDetailsVOs;  
@@ -7228,23 +7233,38 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			e.printStackTrace();
 		}
 	} 
-	public void createMeetingWiseImageCountMap(List<Object[]> imageList,Map<Long,Long> meetingWiseImageCountMap){
+	public Map<Long, List<SessionVO>> createMeetingWiseImageCountMap(List<Object[]> imageList,Map<Long,Long> meetingWiseImageCountMap){
+		Map<Long,List<SessionVO>>  meetingWiseImagePathMap = new HashMap<Long,List<SessionVO>>();
 		try{
 			Long meetingImageCount = null;
+			List<SessionVO>  meetingImagePath =null;
 			if(imageList != null && imageList.size() > 0){
 				for(Object[] param : imageList){
 					meetingImageCount = meetingWiseImageCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					meetingImagePath = meetingWiseImagePathMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(meetingImageCount == null){
 						meetingImageCount = new Long(0);
 						meetingWiseImageCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), meetingImageCount + 1);
 					}else{
 						meetingWiseImageCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), meetingWiseImageCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) + 1);
-					}      
+					}  
+				 if(meetingImagePath == null){
+					 meetingImagePath =new ArrayList<SessionVO>();
+					 meetingWiseImagePathMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),meetingImagePath);
+					}
+				 SessionVO meetingVo =new SessionVO();
+				   meetingVo.setImagePath(commonMethodsUtilService.getStringValueForObject(param[3]));
+				   meetingVo.setUpLoadedDate(commonMethodsUtilService.getStringValueForObject(param[4]).substring(0, 10));
+				   meetingVo.setUploadedTime(commonMethodsUtilService.getStringValueForObject(param[4]).substring(11, 18)); 
+				   
+				   meetingImagePath.add(meetingVo);
+				  
 				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return meetingWiseImagePathMap;
 	}
 	public void createMeetingWiseInviteeAbsentMap(Map<Long,Set<Long>> totalInviteesMap,Map<Long,Set<Long>> totalInviteeAttendenceMap,Map<Long,Set<Long>> totalInviteeAbsentMap){
 		try{
