@@ -8505,6 +8505,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 							CadrePerformanceVO vo = cadresMap.get(cadreId);							
 							CadreEventsVO eventsVO = new CadreEventsVO();
 							eventsVO.getSubList().addAll( eventsMap.get(cadreId));
+							if(vo != null)
 							vo.setCadreEventsVO(eventsVO);
 						}
 					}
