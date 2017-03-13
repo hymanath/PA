@@ -2336,10 +2336,10 @@ color: rgb(51, 122, 183);
 .slider-nav li img {
     height: 40px;
 }
-.slider-for {
+.slider-for ,.slider-forparty_meeting{
     padding: 0;
 }
-.slider-for li img {
+.slider-for li img,.slider-forparty_meeting li img {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.65);
     display: block;
     height: 350px;
@@ -2396,11 +2396,11 @@ color: rgb(51, 122, 183);
 {
 	height:40px;
 }
-.slider-for
+.slider-for,.slider-forparty_meeting
 {
 	padding:0px;
 }
-.slider-for li img
+.slider-for li img,.slider-forparty_meeting li img
 {
 	width:100%;
 	height:350px;

@@ -13,7 +13,7 @@ $(document).on("click",".meetingsRefresh",function(){
 				var partyMeetingIdArr = [meetingId];
 				getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(mainMeetingTypeId,partymeetingtypeidsstring,partyMeetingIdArr);
 		 }
-	 }
+	 } 
 	getPartyMeetingBasicCountDetails();
 	//getCustomPartyMeetingsMainTypeOverViewDataDetails();
 	getPartyMeetingsMainTypeStateLevelOverview();
@@ -5587,8 +5587,8 @@ function buildCustomPartyMeetingsMainTypeOverViewData(result){
 								str+='<h4>1000</h4>';
 							str+='</td>';
 							str+='<td>';
-								str+='<p>Images</p>';
-								str+='<h4 class="getImageClass getModalImagesCls" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4>';
+								str+='<p>Images</p>';			
+								str+='<u><h4 class="getImageClass getModalImagesCls" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4></u>';
 							str+='</td>';
 						str+='</tr>';
 						str+='<tr class="bg_D8">';
@@ -5697,6 +5697,8 @@ $("#customMeetingsDiv").html(str);
 }
 $(document).on("click",".getModalImagesCls",function(){
 	$("#myModalImageId").modal("show");
+	var location = $(this).attr('attr_location');
+	$("#myModalLabelId").html(location+" "+"IMAGE DETAILS");
 	var levelId = $(this).attr('attr_Meeting_level_id');
 	var meetingId = $(this).attr('attr_Meeting_id');
 	getDistrictsForCustomMeetingImges(levelId,meetingId);
@@ -5721,8 +5723,8 @@ $(document).on("click",".getModalImagesCls",function(){
 		str+='</div>';
 
 	$("#buildPoupupImage").html(str);
-	getEventDocumentForPopupForMultiLocation(3,0,0);
-	getDistrictsForCustomMeetingImges(3,0);	
+	getEventDocumentForPopupForMultiLocation(levelId,meetingId,0);
+	getDistrictsForCustomMeetingImges(levelId,meetingId);	
 });
 function getDistrictsForCustomMeetingImges(levelId,meetingId){
 	var meetingLevelId = levelId;
@@ -5733,7 +5735,7 @@ function getDistrictsForCustomMeetingImges(levelId,meetingId){
 	    stateId : globalStateId,
 		fromDate : '01/01/2017',
 		toDate : '01/02/2018',
-		meetingId:meetingId,
+		meetingId:0,
 		meetingGrpId :0
 		
 	};
@@ -5969,7 +5971,7 @@ function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num){
 			startIndex:num,
 			maxIndex:10,
 			meetingGrpId :0,
-			meetingId :meetingId
+			meetingId :0
 		};
 		
 		$.ajax({
@@ -6136,6 +6138,6 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			alert(1);
+			//alert(1);
 		});  
 }
