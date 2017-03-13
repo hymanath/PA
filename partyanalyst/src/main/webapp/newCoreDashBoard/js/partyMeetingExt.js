@@ -137,14 +137,14 @@ function buildPartyLevelIdWiseMeetingsCount(result,count)
 				str+='<p class="text-muted">Conducted</p>';
 				if(result.conducted != null && result.conducted > 0)
 				{
-					str+='<p>'+result.conducted+'</p>';
+					str+='<p class="locWisedetails" attr_type="conducted" style="cursor:pointer;">'+result.conducted+'</p>';
 				}else{
 					str+='<p> - </p>';
 				}
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Not Conducted</p>';
-				str+='<p>'+((count)-(result.conducted))+'  <small></small></p>';	
+				str+='<p class="locWisedetails" attr_type="Notconducted" style="cursor:pointer;">'+((count)-(result.conducted))+'  <small></small></p>';	
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Image Covered</p>';
@@ -322,3 +322,136 @@ function getAttendedCadreDetails(){
 function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 	console.log(result);	
 }
+
+$(document).on("click",".locWisedetails",function(){ 
+var dataType= $(this).attr("attr_type");
+locationWiseMeetingDetails(dataType);
+});
+
+function locationWiseMeetingDetails(dataType){
+	$("#debateModelDivId").modal('show');
+	$("#modalLabelNameId").html('Location Wise Meeting Details');	
+	$(".debateModelCls").html("");	
+	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var partyMeetingTypeIds = [];
+	partyMeetingTypeIds.push(29);
+	var locLevelIdList = [];
+	locLevelIdList.push(3);
+	var jsObj ={
+		activityMemberId:44,
+		state:globalStateId, 
+		partyMeetingMainTypeId : 4,          
+		partyMeetingTypeIds:  partyMeetingTypeIds,                  
+		startDateString:"01/03/2017",
+		endDateString:"30/03/2017",   
+		locLevelIdList: locLevelIdList              
+	}      
+		$.ajax({
+			type : 'POST',
+			url : 'locationWiseMeetingDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			buildLocationWiseMeetingDetails(result,dataType);
+		});  
+}
+function buildLocationWiseMeetingDetails(result,dataType){
+	var str = '';
+	str +='<table class="table bg_ED table-responsive" id="partMeetingModalData">'; 
+	str +='<thead>';
+	str +='<th> PLANNED</th>';
+	str +='<th> STATUS</th>';
+	str +='<th> INVITED</th>';
+	str +='<th> ATTENDED</th>';
+	str +='<th> LATE</th>';
+	str +='<th> ABSENT</th>';
+	str +='<th> NON INVITEE</th>';
+	str +='<th> TOTAL IMAGES</th>';
+	//str +='<th></th>';
+	str +='</thead>';
+	str +='<tbody>';
+	for(var i in result){
+		if(result[i].status != null && result[i].status == dataType){
+			str+='<tr>';
+		if(result[i].planned != null){
+			str+='<td id="'+result[i].partyMeetingId+'">'+result[i].partyMeetingName+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].status != null && result[i].status == "conducted"){
+			str+='<td style="color:green">'+result[i].status+'</td>';
+		}else if(result[i].status != null && result[i].status == "Notconducted"){
+			str+='<td style="">'+result[i].status+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].invited != null){
+			str+='<td>'+result[i].invited+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].attended != null){
+			str+='<td>'+result[i].attended+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].late != null){
+			str+='<td>'+result[i].late+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].absent != null){
+			str+='<td>'+result[i].absent+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].nonInvitee != null){
+			str+='<td>'+result[i].nonInvitee+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].totalImages != null){
+			str+='<td>'+result[i].totalImages+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		/* str+='<td>';
+			str+='<ul class="list-inline modalImagesUl">';
+			if(result[i].subList != null && result[i].subList.length > 0){
+			var imagesLength = result[i].subList.length;
+			alert(imagesLength)
+			//if(imagesLength > 0){
+			alert(3)
+				str+='<li>';
+					str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
+				str+='</li>';
+				if(imagesLength > 2){
+					alert(5)
+					var imagesDiff = imagesLength-2;
+				str+='<li>';
+					str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[1].imagePath+'" alt=""/>';
+					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
+				str+='</li>';
+				
+					str+='<li>';
+					str+='<p>'+imagesDiff+'</p>';
+					str+='<p>View All</p>';
+				str+='</li>';
+				}
+			//}
+			}
+			str+='</ul>';
+		str+='</td>'; */
+		str+='</tr>';
+		}
+	}
+	str +='</tbody>';
+	str +='</table>';
+	$(".debateModelCls").html(str); 
+	$("#partMeetingModalData").dataTable()
+	
+}
+

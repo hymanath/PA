@@ -2032,7 +2032,7 @@
 										</div>
 									 </div>
 								   </div>
-									<div class="row">
+									<!--<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
 											  <div class="panel panel-default panelNew">
@@ -2053,7 +2053,7 @@
 											  </div>
 											</div>
 										</div>
-									</div>
+									</div>-->
 									
 								</div>
 							</div>
@@ -3602,10 +3602,14 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Debate Details</h4>
+				<h4 class="modal-title" id="modalLabelNameId">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
-				  <div  class="row debateModelCls"></div>				 
+				  <div  class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class=" debateModelCls"></div>
+					</div>
+				  </div>				 
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
