@@ -6080,3 +6080,46 @@ function get1111PartyLevelIdWiseMeetingsCount(){
 			buildMultiLocationWiseMeetingGroupsData(result);
 			});
 }
+/*Swadhin*/  
+getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls();
+function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(){
+	var jsObj ={    
+		activityMemberId:44,
+		partyMeetingMainTypeId : 4,          
+		locLevelId:3,                
+		startDateString:"01/03/2017",
+		endDateString:"30/03/2017",   
+		state:1,                             
+		partyMeetingGroupId:1  
+	}      
+		$.ajax({
+			type : 'POST',
+			url : 'getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result);	
+		});    
+}
+getDistWiseMeetingDtlsForDiffLevelOfMeetings();
+function getDistWiseMeetingDtlsForDiffLevelOfMeetings(){
+	var jsObj ={
+		activityMemberId:44,
+		partyMeetingMainTypeId : 4,          
+		locLevelId:0,                     
+		startDateString:"01/03/2017",
+		endDateString:"30/03/2017",   
+		state:1,                                 
+		partyMeetingGroupId:1,
+		sessionId:0               
+	}      
+		$.ajax({
+			type : 'POST',
+			url : 'getDistWiseMeetingDtlsForDiffLevelOfMeetingsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			alert(1);
+		});  
+}
+
