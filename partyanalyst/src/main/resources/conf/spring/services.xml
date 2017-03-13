@@ -3987,7 +3987,10 @@
 	  <property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO"></property>
 	  <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
 	  <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
-	  <property name="selfAppraisalCandidateDetailsLocationDAO" ref="selfAppraisalCandidateDetailsLocationDAO"></property>	  
+	  <property name="selfAppraisalCandidateDetailsLocationDAO" ref="selfAppraisalCandidateDetailsLocationDAO"></property>
+	  
+	  <property name="selfAppraisalDesignationProgramTargetDAO" ref="selfAppraisalDesignationProgramTargetDAO"></property>
+	  <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>	  
 	 
 	</bean>  
 	
