@@ -16072,5 +16072,12 @@
 				<param name="root">meetingBasicDetailsVO</param>     
 			</result>
 		</action>
+
+		<action name="getPartyLevelIdWiseMeetingsAttendanceDetails" class="coreDashboardAction" method="getPartyLevelIdWiseMeetingsAttendanceDetails">
+			<result type="json" name="success">
+				<param name="root">idNameVO</param>     
+			</result>
+		</action>
+		
  </package>
 </struts>
