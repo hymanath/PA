@@ -81,6 +81,10 @@ public class ToursBasicVO {
 	private Double ownContituencyComplaincePer = 0.0d;
 	private Double ownDistrictComplaincePer =0.0d;
 	private Double stateTourCategoryComplaincePer = 0.0d;
+	private Double anganwadiVisitsComplaincePer = 0.0d;
+	private Double midDayMealComplaincePer = 0.0d;
+
+
 	
 	private Long govtWorkTrDays=0l;
 	private Long govtWorkComplainceDays=0l;
@@ -711,6 +715,18 @@ public class ToursBasicVO {
 	}
 	public void setToursMonthId(Long toursMonthId) {
 		this.toursMonthId = toursMonthId;
+	}
+	public Double getAnganwadiVisitsComplaincePer() {
+		return anganwadiVisitsComplaincePer;
+	}
+	public void setAnganwadiVisitsComplaincePer(Double anganwadiVisitsComplaincePer) {
+		this.anganwadiVisitsComplaincePer = anganwadiVisitsComplaincePer;
+	}
+	public Double getMidDayMealComplaincePer() {
+		return midDayMealComplaincePer;
+	}
+	public void setMidDayMealComplaincePer(Double midDayMealComplaincePer) {
+		this.midDayMealComplaincePer = midDayMealComplaincePer;
 	}
    
 }
