@@ -19,9 +19,24 @@ public class SessionVO implements Serializable{
 	private Long imagesCovered =0l;
 	private Long imagesCount=0l;
 	private String lateTime;
+	private String attendedTime;
 	private Set<Long> inviteeAttendedCadreIdsList = new HashSet<Long>();
 	private Set<Long> nonInviteeAttendedCadreIdsList = new HashSet<Long>();
+	private String isLate;
 	
+	
+	public String getIsLate() {
+		return isLate;
+	}
+	public void setIsLate(String isLate) {
+		this.isLate = isLate;
+	}
+	public String getAttendedTime() {
+		return attendedTime;
+	}
+	public void setAttendedTime(String attendedTime) {
+		this.attendedTime = attendedTime;
+	}
 	public Long getInviteeAttendedCount() {
 		return inviteeAttendedCount;
 	}
