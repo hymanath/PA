@@ -56,4 +56,5 @@ public interface ICoreDashboardPartyMeetingService {
 	public MeetingVO getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId);
 	public MeetingBasicDetailsVO getPartyLevelIdWiseMeetingsCount(Long partyMeetnMainTypId,
 			Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId);
+	public IdNameVO getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetngId,Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId,Long sessionTypId,String cadreType);
 }
