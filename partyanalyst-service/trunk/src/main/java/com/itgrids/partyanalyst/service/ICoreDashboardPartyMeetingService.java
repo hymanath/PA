@@ -52,6 +52,7 @@ public interface ICoreDashboardPartyMeetingService {
 	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId);
 	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
 	public List<List<MeetingDtlsVO>> getDistWiseMeetingDtlsForDiffLevelOfMeetings(Long activityMemberId, Long partyMeetingMainTypeId, Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId);
+	public List<PartyMeetingsDataVO> getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId);
 	public MeetingVO getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId);
 	public MeetingBasicDetailsVO getPartyLevelIdWiseMeetingsCount(Long partyMeetnMainTypId,
 			Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId);
