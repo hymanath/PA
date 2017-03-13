@@ -3335,4 +3335,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+  	public String getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = jobj.getLong("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString"); 
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			Long locLevelId = jobj.getLong("locLevelId");
+			Long partyMeetingGroupId = jobj.getLong("partyMeetingGroupId");
+			
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(activityMemberId, partyMeetingMainTypeId, locLevelId, stateId, startDateString, endDateString, partyMeetingGroupId);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
