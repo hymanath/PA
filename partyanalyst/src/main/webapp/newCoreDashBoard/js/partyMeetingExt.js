@@ -70,9 +70,10 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 						{
 							if(j==0)
 								levelId = result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId;
+							    locationName =result.userAccessLevelList[i].name;
 							str+='<td style="position:relative;">';
 								str+='<p class="text-muted text-capital ">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].name+'</p>';
-								str+='<p class="multiLocationWiseMeetingCount " attr_count="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'" attr_group_id="'+result.userAccessLevelList[i].levelId+'" attr_levelId="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId+'">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'</p>';
+								str+='<p class="multiLocationWiseMeetingCount " attr_count="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'" attr_group_id="'+result.userAccessLevelList[i].levelId+'" attr_levelId="'+result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId+'" attr_locationName ="'+result.userAccessLevelList[i].name+'">'+result.userAccessLevelList[i].userAccessLevelValuesList[j].count+'</p>';
 							str+='</td>';							
 						}
 					}
@@ -89,20 +90,20 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 		str+='</div>';
 	str+='</div>';
 	$("#MultiLocationWiseMeetingGroupsData").html(str);
-	getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count);
+	getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count,locationName);
 }
 $(document).on("click",".multiLocationWiseMeetingCount",function(){
 	$(this).addClass("active");
 	var count = $(this).attr("attr_count");
 	var attr_group_id = $(this).attr("attr_group_id");
 	var attr_levelId = $(this).attr("attr_levelId");
-	
-	getPartyLevelIdWiseMeetingsCount(attr_group_id,attr_levelId,count);
+    var attr_location_name=$(this).attr("attr_locationName");
+	getPartyLevelIdWiseMeetingsCount(attr_group_id,attr_levelId,count,attr_location_name);
 });
 
-function getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,count)
+function getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,count,locationName)
 {
-	
+
 	$("#partyLevelIdWiseMeetingsCount").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 
 	var jObj = {
@@ -120,11 +121,11 @@ function getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,count)
 	  url: 'getPartyLevelIdWiseMeetingsCountAction.action',
 	 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		buildPartyLevelIdWiseMeetingsCount(result,count);
+		buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName);
 	});
 }
 
-function buildPartyLevelIdWiseMeetingsCount(result,count)
+function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName)
 {
 	var str='';
 	str+='<table class="table bg_ED">';
@@ -156,7 +157,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count)
 			str+='<td>';
 				str+='<p class="text-muted">Images</p>';
 				if(result.totalImages != null && result.totalImages>0)
-					str+='<p>'+result.totalImages+'</p>';	
+					str+='<u><p  class="getImageClass getModalImagesCls" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." attr_Meeting_level_id="'+levelId+'" attr_location="'+locationName+'" >'+result.totalImages+'</p></u>';	
 				else
 					str+='<p> - </p>';					
 			str+='</td>';

@@ -441,7 +441,7 @@
 																</li>	
 															</ul>
 														</div>
-													<button type="button" class="btn btn-success alertPubConstDtlsBtnCls btn-sm pull-right" onClick="alertPubConstDtlsBtnCls()">Get Details</button> 
+													<button type="button" class="btn btn-success alertPubConstDtlsBtnCls btn-sm pull-right" onClick="alertPubConstDtlsBtnCls()">Get Details</button>  
 												   </div>
 											   </div>
 									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
@@ -4120,7 +4120,7 @@
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"></h4>
+        <h4 class="modal-title" id="myModalLabelId"></h4>
       </div>
       <div class="modal-body" style="padding:0px 15px;">
        <div id="buildPoupupImage"></div>
