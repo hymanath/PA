@@ -10,5 +10,6 @@ public interface IPublicRepresentativeTypeDAO extends GenericDao<PublicRepresent
 
 	public List<Object[]> getAllPublicRepresentativeList();
 	public List<Long> getIds(List<Long> representativeIds);
+	public List<Object[]> getPublicRepresentativeInfoList();
 
 }
