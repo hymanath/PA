@@ -1274,4 +1274,11 @@ public interface IConstants {
 	public static final List<Long> MAHANADUEVENTIDS = Arrays.asList(7l,30l);
 	
 	public static final String TAB_ATTENDANCE_ACCEPT_CARDS_YEAR = "All";//"2014-2016","2016-2018"
+	
+	public static final String  REQUIRED_COMMITTEE_LEVEL_IDS = "10,11";
+	public static final String  REMAINING_COMMITTEE_LEVEL_IDS = "5,6,7,8,9,12";
+	public static final String  REQUIRED_PUBLIC_REPRESENTATIVE_TYPE_IDS = "1,2,12,21";
+	public static final String  REMAINING_PUBLIC_REPRESENTATIVE_TYPE_IDS = "3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29";
+	public static final String POSITION_OF_MLA_AND_MLC = "3,4";
+	
 }
