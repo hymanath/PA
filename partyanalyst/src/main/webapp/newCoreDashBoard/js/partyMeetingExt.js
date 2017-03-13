@@ -292,3 +292,33 @@ function buildPartyLevelIdWiseMeetingsCount(result,count)
 	str+='</table>';
 	$("#partyLevelIdWiseMeetingsCount").html(str);
 }
+
+function getAttendedCadreDetails(){
+	
+	$("#partyLevelIdWiseMeetingsCount").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+
+	var jObj = {
+		fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
+		toDateStr : '01/02/2020',//customEndDateMeetings,
+		activityMemberId : globalActivityMemberId,
+		stateId : globalStateId,
+		partyMeetingMainTypeId:4,
+		partyMeetingLevelId:levelId,
+		meetingGrpId:meetingGrpId,
+		sessionId:1,
+		cadreType:"inviteeAttended"
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getPartyLevelIdWiseMeetingsAttendanceDetailsAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildPartyLevelIdWiseMeetingsAttendanceDetails(result);
+	});
+	
+}
+
+function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
+	console.log(result);	
+}
