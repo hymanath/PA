@@ -3290,7 +3290,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String endDateString   = jobj.getString("endDateString");  
 			Long activityMemberId = jobj.getLong("activityMemberId");
 			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
-			
+			Long partyMeetingGrpId = jobj.getLong("meetingGrpId");
 			
 			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
 			JSONArray partyMeetingTypeIdsArray=jobj.getJSONArray("partyMeetingTypeIds");
@@ -3309,7 +3309,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			}  
 			
 			
-			basicDetailsVOs = coreDashboardPartyMeetingService.locationWiseMeetingDetails(activityMemberId, partyMeetingMainTypeId, partyMeetingTypeIds, locLevelIdList,  state, startDateString,  endDateString);
+			basicDetailsVOs = coreDashboardPartyMeetingService.locationWiseMeetingDetails(activityMemberId, partyMeetingMainTypeId, partyMeetingTypeIds, locLevelIdList, 
+					state, startDateString,  endDateString,partyMeetingGrpId);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);

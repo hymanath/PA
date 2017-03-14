@@ -121,11 +121,11 @@ function getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,count,locationNam
 	  url: 'getPartyLevelIdWiseMeetingsCountAction.action',
 	 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName);
+		buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,meetingGrpId);
 	});
 }
 
-function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName)
+function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,meetingGrpId)
 {
 	var str='';
 	str+='<table class="table bg_ED">';
@@ -138,14 +138,14 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName)
 				str+='<p class="text-muted">Conducted</p>';
 				if(result.conducted != null && result.conducted > 0)
 				{
-					str+='<p class="locWisedetails" attr_type="conducted" style="cursor:pointer;">'+result.conducted+'</p>';
+					str+='<p class="locWisedetails" attr_type="conducted" attr_meetingGrpId="'+meetingGrpId+'" style="cursor:pointer;" attr_level_id="'+levelId+'">'+result.conducted+'</p>';
 				}else{
 					str+='<p> - </p>';
 				}
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Not Conducted</p>';
-				str+='<p class="locWisedetails" attr_type="Notconducted" style="cursor:pointer;">'+((count)-(result.conducted))+'  <small></small></p>';	
+				str+='<p class="locWisedetails" attr_type="Notconducted" attr_meetingGrpId="'+meetingGrpId+'" style="cursor:pointer;" attr_level_id="'+levelId+'">'+((count)-(result.conducted))+'  <small></small></p>';	
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Image Covered</p>';
@@ -326,25 +326,29 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 
 $(document).on("click",".locWisedetails",function(){ 
 var dataType= $(this).attr("attr_type");
-locationWiseMeetingDetails(dataType);
+var meetingGrpId = $(this).attr("attr_meetingGrpId");
+var levelId = $(this).attr("attr_level_id");
+locationWiseMeetingDetails(dataType,meetingGrpId,levelId);
 });
 
-function locationWiseMeetingDetails(dataType){
+function locationWiseMeetingDetails(dataType,meetingGrpId,levelId){
 	$("#debateModelDivId").modal('show');
 	$("#modalLabelNameId").html('Location Wise Meeting Details');	
 	$(".debateModelCls").html("");	
 	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeIds = [];
-	partyMeetingTypeIds.push(29);
+	//partyMeetingTypeIds.push(29);
 	var locLevelIdList = [];
-	locLevelIdList.push(3);
+	locLevelIdList.push(levelId);
+	
 	var jsObj ={
-		activityMemberId:44,
+		activityMemberId:globalActivityMemberId,
 		state:globalStateId, 
 		partyMeetingMainTypeId : 4,          
 		partyMeetingTypeIds:  partyMeetingTypeIds,                  
-		startDateString:"01/03/2017",
-		endDateString:"30/03/2017",   
+		startDateString:"01/02/2000",
+		endDateString:"01/02/2020", 
+		meetingGrpId:meetingGrpId,		
 		locLevelIdList: locLevelIdList              
 	}      
 		$.ajax({
@@ -360,7 +364,7 @@ function buildLocationWiseMeetingDetails(result,dataType){
 	var str = '';
 	str +='<table class="table bg_ED table-responsive" id="partMeetingModalData">'; 
 	str +='<thead>';
-	str +='<th> PLANNED</th>';
+	str +='<th> MEETING NAME</th>';
 	str +='<th> STATUS</th>';
 	str +='<th> INVITED</th>';
 	str +='<th> ATTENDED</th>';
@@ -374,7 +378,7 @@ function buildLocationWiseMeetingDetails(result,dataType){
 	for(var i in result){		
 		if(result[i].status != null && result[i].status == dataType){
 			str+='<tr>';
-		if(result[i].planned != null){
+		if(result[i].partyMeetingName != null){
 			str+='<td id="'+result[i].partyMeetingId+'">'+result[i].partyMeetingName+'</td>';
 		}else{
 			str+='<td>-</td>';
