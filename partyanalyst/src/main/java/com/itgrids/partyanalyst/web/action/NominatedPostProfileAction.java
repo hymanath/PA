@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -82,6 +83,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long tdpCadreId;
 	private Long applicationId;
 	private CadrePerformanceVO cadrePerformanceVO;
+	private List<LocationsVO> locationVoList;
 	
 	
 	public CadrePerformanceVO getCadrePerformanceVO() {
@@ -319,6 +321,13 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setApplicationId(Long applicationId) {
 		this.applicationId = applicationId;
+	}
+	
+	public List<LocationsVO> getLocationVoList() {
+		return locationVoList;
+	}
+	public void setLocationVoList(List<LocationsVO> locationVoList) {
+		this.locationVoList = locationVoList;
 	}
 	public String nominatedPosts()
 	{
@@ -2150,6 +2159,21 @@ public String execute()
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Entered into getLocationAndBoardLevelWiseCasteCatgryPostsData method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getLocationByDepartment(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long levelId = jObj.getLong("levelId");
+			Long departmentId = jObj.getLong("departmentId");
+			Long boardId = jObj.getLong("boardId");
+			Long positionId = jObj.getLong("positionId");
+		locationVoList = nominatedPostProfileService.getLocationByDepartment(levelId,departmentId,boardId,positionId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		 LOG.error("Entered into getLocationByDepartment method of NominatedPostProfileAction ",e);
 		}
 		return Action.SUCCESS;
 	}
