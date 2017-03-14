@@ -2518,13 +2518,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	StringBuilder queryStr = new StringBuilder();
 	    	queryStr.append(" select distinct " +
 	    			" model.partyMeetingId, model.meetingName " +
-	    			" from PartyMeeting model " +
+	    			" from PartyMeeting model ,PartyMeetingGroupsMappingInfo model1 " +
 	    			" where " +
 	    			" model.isActive = 'Y' " +
-	    			" and model.partyMeetingType.isActive = 'Y' ");
+	    			" and model.partyMeetingType.isActive = 'Y' and model1.partyMeeting.partyMeetingId = model.partyMeetingId ");
 	    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 	    		queryStr.append(" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId ");
 	    	}
+	    	
+	    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+				queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
+			}
 	    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
 	    		queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) ");
 	    	}
@@ -2570,6 +2574,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	if(inputVO.getCategoryIdList() != null && inputVO.getCategoryIdList().size() > 0){
 	    		query.setParameterList("partyMeetingLevelIds",inputVO.getCategoryIdList());
 	    	}
+	    	
+	    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+				 query.setParameter("partyMeetngGrpId", inputVO.getPartyMeetingGroupId()); 
+			 }
 	    	return query.list();
 	    }  
 	 @SuppressWarnings("unchecked")
