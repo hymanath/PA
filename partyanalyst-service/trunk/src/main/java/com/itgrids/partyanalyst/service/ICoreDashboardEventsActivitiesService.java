@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardEventsActivitiesService {
@@ -15,4 +16,9 @@ public interface ICoreDashboardEventsActivitiesService {
     public EventDetailsVO getEventPoorPerformanceLocation(Long userTypeId,Long stateId,Long activityMemberId,List<Long> eventsId,String searchType);
     public List<List<UserTypeVO>> getUserTypeActivityConductedCnt(List<Long> activityIds,List<Long> activityLevelIds, Long activityMemberId,Long userId,Long userTypeId,Long stateId,String fromDateStr,String toDateStr);
    
+    public List<UserTypeVO> getSelectedChildMembersForMultiLocationMeetings(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,
+				Long partyMeetingMainTypeId,Long partyMeetingLevelId,Long meetingGrpId,String fromDateStr,String toDateStr);
+    public List<PartyMeetingVO> getLocationWiseSelectedChildMembersForMultiLocationMeetings(Long locationLevelId,List<Long> locationValues,Long stateId,
+ 			Long partyMeetingMainTypeId,Long partyMeetingLevelId,Long meetingGrpId,String fromDateStr,String toDateStr);
+    public List<Long> getPartyMeetingLevelIdsByAccessLevel(Long accessLevelId,List<Long> levelValues,Long stateId,Long partyMeetingMainTypeId,Long meetingGrpId,String fromDateStr,String toDateStr);
 }

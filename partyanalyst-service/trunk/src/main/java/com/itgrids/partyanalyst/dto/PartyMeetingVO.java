@@ -61,9 +61,93 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private String partyMeetingName;
 	private String mobileNo;
 	private List<String> docmentsList = new ArrayList<String>();
-	
+	private Long count = 0l;
+	private Long conductedCount = 0l;
+	private Long notConductedCount = 0l;
 	private List<PartyMeetingsDataVO> sessionList = new ArrayList<PartyMeetingsDataVO>(0);
+	private List<Long> attendedList = new ArrayList<Long>(0);
+	private List<Long> invitedList = new ArrayList<Long>(0);
+	private List<Long> inviteeAttendedList = new ArrayList<Long>(0);
+	private List<Long> nonInviteeAttendedList = new ArrayList<Long>(0);
+	private List<Long> absentList = new ArrayList<Long>(0);
+	private Long inviteeAttendedCount = 0l;
+	private Double inviteeAttendedPerc = 0.00;
+	private Double inviteeAbscentPerc = 0.00;
+	private Double nonInviteePerc = 0.00;
 	
+	
+	public Double getInviteeAttendedPerc() {
+		return inviteeAttendedPerc;
+	}
+	public void setInviteeAttendedPerc(Double inviteeAttendedPerc) {
+		this.inviteeAttendedPerc = inviteeAttendedPerc;
+	}
+	public Double getInviteeAbscentPerc() {
+		return inviteeAbscentPerc;
+	}
+	public void setInviteeAbscentPerc(Double inviteeAbscentPerc) {
+		this.inviteeAbscentPerc = inviteeAbscentPerc;
+	}
+	public Double getNonInviteePerc() {
+		return nonInviteePerc;
+	}
+	public void setNonInviteePerc(Double nonInviteePerc) {
+		this.nonInviteePerc = nonInviteePerc;
+	}
+	public Long getInviteeAttendedCount() {
+		return inviteeAttendedCount;
+	}
+	public void setInviteeAttendedCount(Long inviteeAttendedCount) {
+		this.inviteeAttendedCount = inviteeAttendedCount;
+	}
+	public List<Long> getAbsentList() {
+		return absentList;
+	}
+	public void setAbsentList(List<Long> absentList) {
+		this.absentList = absentList;
+	}
+	public List<Long> getAttendedList() {
+		return attendedList;
+	}
+	public void setAttendedList(List<Long> attendedList) {
+		this.attendedList = attendedList;
+	}
+	public List<Long> getInvitedList() {
+		return invitedList;
+	}
+	public void setInvitedList(List<Long> invitedList) {
+		this.invitedList = invitedList;
+	}
+	public List<Long> getInviteeAttendedList() {
+		return inviteeAttendedList;
+	}
+	public void setInviteeAttendedList(List<Long> inviteeAttendedList) {
+		this.inviteeAttendedList = inviteeAttendedList;
+	}
+	public List<Long> getNonInviteeAttendedList() {
+		return nonInviteeAttendedList;
+	}
+	public void setNonInviteeAttendedList(List<Long> nonInviteeAttendedList) {
+		this.nonInviteeAttendedList = nonInviteeAttendedList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getConductedCount() {
+		return conductedCount;
+	}
+	public void setConductedCount(Long conductedCount) {
+		this.conductedCount = conductedCount;
+	}
+	public Long getNotConductedCount() {
+		return notConductedCount;
+	}
+	public void setNotConductedCount(Long notConductedCount) {
+		this.notConductedCount = notConductedCount;
+	}
 	public List<PartyMeetingsDataVO> getSessionList() {
 		return sessionList;
 	}

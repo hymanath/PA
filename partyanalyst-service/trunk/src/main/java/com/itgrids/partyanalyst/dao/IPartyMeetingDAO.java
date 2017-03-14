@@ -65,4 +65,23 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,Date fromDate,Date toDate,Long stateId);
 	public Long getPlannedCount(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
 			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId);
+	
+	public List<Object[]> getTotalMeetingsCounts(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getTotalConductedMeetingsCounts(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getTotalAttendedMembers(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getTotalInvitedMembers(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	
+	public List<Object[]> getLocationWiseTotalMeetingsCounts(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getLocationWiseTotalConductedMeetingsCounts(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getLocationWiseTotalAttendedMembers(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Object[]> getLocationWiseTotalInvitedMembers(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
+			Long meetingGrpId,Date fromDate,Date toDate);
+	public List<Long> getPartyMeetingLevelIdsByAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long meetingGrpId,Date fromDate,Date toDate);
 }
