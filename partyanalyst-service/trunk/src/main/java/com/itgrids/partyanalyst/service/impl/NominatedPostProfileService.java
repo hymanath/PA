@@ -84,6 +84,7 @@ import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -8542,6 +8543,32 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				}
 			}
 		}
+	}catch(Exception e){
+		LOG.error("Exception Occured in getGoPassedDocumentDuration()", e);
+	}
+	return returnList;
+}
+	
+  public List<LocationsVO> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId)
+	{
+		List<LocationsVO> returnList = new ArrayList<LocationsVO>();
+	try{				
+		LocationsVO returnVo = null;
+		//Long levelId,Long deptId,Long boardId,Long positionId		 
+			List<Object[]> locationWiseDepartments = nominatedPostMemberDAO.getLocationByDepartment(levelId,departmentId,boardId,positionId);
+			if(locationWiseDepartments != null && locationWiseDepartments.size()>0){
+				for(Object[] level : locationWiseDepartments){
+					returnVo =new LocationsVO();
+					returnVo.setPostMemberId(commonMethodsUtilService.getLongValueForObject(level[0]));
+					returnVo.setStateId(commonMethodsUtilService.getLongValueForObject(level[1])); 
+					returnVo.setDistrictId(commonMethodsUtilService.getLongValueForObject(level[2]));
+					returnVo.setConstId(commonMethodsUtilService.getLongValueForObject(level[3]));
+					returnVo.setTehsilId(commonMethodsUtilService.getLongValueForObject(level[4]));
+					returnVo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(level[5]));
+				}
+				returnList.add(returnVo);
+			}
+		
 	}catch(Exception e){
 		LOG.error("Exception Occured in getGoPassedDocumentDuration()", e);
 	}

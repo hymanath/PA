@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -85,4 +86,5 @@ public interface INominatedPostProfileService {
 	 public ResultStatus savingNominatedPostDocumnets(final Long nominatedPostCandidateId,final Long tdpCadreId,final Long applicationId,final Map<File,String> mapfiles,final Long loggerUserId);
 	 public String UpdateExpiredAppicationsInNominatedPosts(final Long userId);
 	 public CadrePerformanceVO getCadrePeoplePerformanceDetails(List<Long> tdpCadreIdsList);
+	 public List<LocationsVO> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId);
 }
