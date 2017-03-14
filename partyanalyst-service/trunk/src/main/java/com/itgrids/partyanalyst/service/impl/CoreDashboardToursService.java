@@ -3374,7 +3374,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 if(type.equalsIgnoreCase("tourType")){
 						 ids = "0"+ids;
 					 }else if(type.equalsIgnoreCase("tourProgram")){
-						 ids = "01"+ids; 
+						 ids = "1"+ids; 
 					 }
 					 ToursBasicVO monthVO = getMonthMatchVO(monthList, monthId);
 					 if(monthVO != null){
@@ -3460,7 +3460,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 if(type.equalsIgnoreCase("tourType")){
 						 ids = "0"+ids;
 					 }else if(type.equalsIgnoreCase("tourProgram")){
-						 ids = "01"+ids;
+						 ids = "1"+ids;
 					 }
 					 List<ToursBasicVO> monthList = categoryMap.get(ids);
 					  if(monthList == null){
@@ -3488,7 +3488,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   if(type.equalsIgnoreCase("tourType")){
 					   categoryIds = "0"+categoryIds;  
 				   }else if(type.equalsIgnoreCase("tourProgram")){
-					   categoryIds = "01"+categoryIds;
+					   categoryIds = "1"+categoryIds;
 				   }
 				   Long monthId = commonMethodsUtilService.getLongValueForObject(param[4]);
 				   Long tourDaysCntPerMonth = commonMethodsUtilService.getLongValueForObject(param[5]);
@@ -3527,7 +3527,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   if(type.equalsIgnoreCase("tourType")){
 					   categoryIds = "0"+categoryIds;  
 				   }else if(type.equalsIgnoreCase("tourProgram")){
-					   categoryIds = "01"+categoryIds;
+					   categoryIds = "1"+categoryIds;
 				   }
 				   Long monthId = commonMethodsUtilService.getLongValueForObject(param[4]);
 				   Long tourDaysCntPerMonth = commonMethodsUtilService.getLongValueForObject(param[5]);
