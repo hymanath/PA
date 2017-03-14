@@ -368,10 +368,10 @@ function buildLocationWiseMeetingDetails(result,dataType){
 	str +='<th> ABSENT</th>';
 	str +='<th> NON INVITEE</th>';
 	str +='<th> TOTAL IMAGES</th>';
-	//str +='<th></th>';
+	str +='<th> RECENT IMAGES</th>';
 	str +='</thead>';
 	str +='<tbody>';
-	for(var i in result){
+	for(var i in result){		
 		if(result[i].status != null && result[i].status == dataType){
 			str+='<tr>';
 		if(result[i].planned != null){
@@ -416,36 +416,36 @@ function buildLocationWiseMeetingDetails(result,dataType){
 		}else{
 			str+='<td>-</td>';
 		}
-		/* str+='<td>';
-			str+='<ul class="list-inline modalImagesUl">';
-			if(result[i].subList != null && result[i].subList.length > 0){
-			var imagesLength = result[i].subList.length;
-			alert(imagesLength)
-			//if(imagesLength > 0){
-			alert(3)
+		 str+='<td>';
+		if(result[i].totalImages > 0){  
+				str+='<ul class="list-inline modalImagesUl">';
+     	if(result[i].totalImages > 1){
 				str+='<li>';
-					str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
 					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
 					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
 				str+='</li>';
-				if(imagesLength > 2){
-					alert(5)
-					var imagesDiff = imagesLength-2;
 				str+='<li>';
-					str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[1].imagePath+'" alt=""/>';
+				   str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[1].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
 					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
 				str+='</li>';
-				
-					str+='<li>';
-					str+='<p>'+imagesDiff+'</p>';
-					str+='<p>View All</p>';
+			}else{
+				str+='<li>';
+				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
+					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
 				str+='</li>';
-				}
-			//}
 			}
-			str+='</ul>';
-		str+='</td>'; */
+				str+='</ul>';
+			}
+		else{
+				str+='-';
+		}
+		str+='</td>'; 
 		str+='</tr>';
 		}
 	}
