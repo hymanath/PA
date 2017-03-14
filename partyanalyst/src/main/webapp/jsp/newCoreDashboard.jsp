@@ -2081,7 +2081,7 @@
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="active meetingDetailedBlock">Detailed</li>
 									<li class="meetingComparisionBlock">Comparison</li>
-									
+									<li class="multiLocation">multiLocation</li>
 								</ul>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed meetingChortCls" style="display:none">
@@ -2160,6 +2160,70 @@
 									
 								</div>                       	
 							</div>
+							
+							<!--multiLocation-->
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksMultiLocationComparision" style="display:none;">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="childUserTypeDetailsDivIdForMeetingMultiLocation"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row"> 
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childActivityMemberDivIdForMeetingMultiLocation"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildActivityMeetingMemberDivMultiLocation"></div>
+												   <div class="row">
+														 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														   <!-- <b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> meetings conducted locations</span></b>-->
+															<div class="row m_top20">
+															 <div id="topPoorLocationsMeetingDivMultiLocation"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="stateWiseDiv" style="display:none;margin-top: 25px;">
+												<label>STATE LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="stateWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="districtWiseDiv" style="display:none;margin-top: 25px;">
+												<label>DISTRICT LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="districtWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="constituencyWiseDiv" style="display:none;margin-top: 25px;">
+												<label>CONSTITUENCY LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="constituencyWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="mandalWiseDiv" style="display:none;margin-top: 25px;">
+												<label>MANDAL LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="mandalWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="lebWiseDiv" style="display:none;margin-top: 25px;">
+												<label>TOWN LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="lebWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="villageDiv" style="display:none;margin-top: 25px;">
+												<label>VILLAGE LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="villageWiseHighChartsDiv"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="wardWiseDiv" style="display:none;margin-top: 25px;">
+												<label>WARD LEVEL MEETINGS & ATTENDANCE RATIO</label>
+												<div id="wardWiseHighChartsDiv"></div>
+											</div>
+										</div>
+									</div>
+									
+								</div>                       	
+							</div>
+							
+							
 						</div>
 					</div>
 				</div>
