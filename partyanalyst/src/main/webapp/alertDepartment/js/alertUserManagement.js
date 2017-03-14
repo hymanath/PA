@@ -439,6 +439,8 @@ function buildTotalAlertByStatusForOfficer(result){
  
 function getTotalAlertByDeptForOfficer()
 { 
+	$("#overDepartmentWiseAlertOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
     var jsObj ={
       fromDate:'01/01/2017',     
       toDate:'20/02/2017'    
@@ -449,18 +451,18 @@ function getTotalAlertByDeptForOfficer()
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		$("#overDepartmentWiseAlertOverview").html('');
-		$("#departmentWiseAlertGraphDiv").html('');
+		//$("#departmentWiseAlertGraphDiv").html('');
 		if(result != null && result.length > 0){
 			buildTotalAlertByDeptForOfficer(result);  
 		}else{
 			$("#overDepartmentWiseAlertOverview").html('NO ALERTS AVAILABLE');
-			$("#departmentWiseAlertGraphDiv").html('NO ALERTS AVAILABLE');
+			//$("#departmentWiseAlertGraphDiv").html('NO ALERTS AVAILABLE');
 		} 
     });
 }
 function getTotalAlertGroutByDeptThenStatus()
 {
-	$("#overDepartmentWiseAlertOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	//$("#overDepartmentWiseAlertOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$("#departmentWiseAlertGraphDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	var jObj ={
