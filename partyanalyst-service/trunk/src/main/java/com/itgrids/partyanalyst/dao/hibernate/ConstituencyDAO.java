@@ -1459,7 +1459,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	public List<Object[]> getConstituenciesByStateAndDistrict(Long stateId, List<Long> districtIds){
 		 StringBuilder str = new StringBuilder();
 			 
-			  str.append("select model.constituencyId , model.name from Constituency model" +
+			  str.append("select model.constituencyId , model.name, model.district.districtId from Constituency model" +
 					" where model.electionScope.electionType.electionTypeId = :electionTypeId and model.deformDate is null");
 			  
 				  if(stateId.equals(36l)){
