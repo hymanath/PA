@@ -15,6 +15,8 @@ public class LocationsVO implements Serializable {
 	private Long locatElectBodyId;
 	private Long boothId;
 	private Long panchayatId;
+	private Long stateId;
+	private Long postMemberId;
 	public Long getDistrictId() {
 		return districtId;
 	}
@@ -81,7 +83,17 @@ public class LocationsVO implements Serializable {
 	public void setPanchayatId(Long panchayatId) {
 		this.panchayatId = panchayatId;
 	}
-
-	
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getPostMemberId() {
+		return postMemberId;
+	}
+	public void setPostMemberId(Long postMemberId) {
+		this.postMemberId = postMemberId;
+	}
 	
 }

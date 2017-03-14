@@ -267,4 +267,38 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		query.setParameterList("memberIdsList", memberIdsList);
 		return query.list();
 	}
+	public List<Object[]> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.nominatedPostMemberId,model.address.state.stateId,model.address.district.districtId, " +
+				 "   model.address.constituency.constituencyId,model.address.tehsil.tehsilId, " +
+				 "   model.address.panchayat.panchayatId from NominatedPostMember model " );
+		str.append(" where ");
+		if(levelId != null && levelId.longValue()>0){
+			str.append(" model.boardLevel.boardLevelId =:levelId ");
+		}
+		if(departmentId != null && departmentId.longValue()>0){
+			str.append(" and model.nominatedPostPosition.departments.departmentId  =:departmentId ");
+		}
+		if(boardId != null && boardId.longValue()>0){
+			str.append(" and model.nominatedPostPosition.board.boardId  =:boardId ");
+		}
+		if(positionId != null && positionId.longValue()>0){
+			str.append(" and model.nominatedPostPosition.position.positionId  =:positionId ");
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(levelId != null && levelId.longValue()>0){
+			query.setParameter("levelId", levelId);
+		}
+		if(departmentId != null && departmentId.longValue()>0){
+			query.setParameter("departmentId", departmentId);
+		}
+		if(boardId != null && boardId.longValue()>0){
+			query.setParameter("boardId", boardId);
+		}
+		if(positionId != null && positionId.longValue()>0){
+			query.setParameter("positionId", positionId);
+		}
+		return query.list();
+		
+	}
 }
