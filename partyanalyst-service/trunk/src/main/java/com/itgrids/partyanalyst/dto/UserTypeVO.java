@@ -55,6 +55,9 @@ public class UserTypeVO implements Serializable{
 	private Long conductedMeetingCnt=0l;
 	private Long notConductedMeetingCnt=0l;
 	private Long mayBeMeetingCnt=0l;
+	private List<Long> attndMembersList = new ArrayList<Long>(0);
+	private List<Long> invitedMembrsList = new ArrayList<Long>(0);
+	private List<Long> invitAttndMbrsList = new ArrayList<Long>(0);
 	
 	private Double conductedAndMayBeMeetingPer=0.0;
 	private Double conductedMeetingPerc=0.0;
@@ -479,5 +482,23 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setImagesCvredCountPerc(Double imagesCvredCountPerc) {
 		this.imagesCvredCountPerc = imagesCvredCountPerc;
+	}
+	public List<Long> getAttndMembersList() {
+		return attndMembersList;
+	}
+	public void setAttndMembersList(List<Long> attndMembersList) {
+		this.attndMembersList = attndMembersList;
+	}
+	public List<Long> getInvitedMembrsList() {
+		return invitedMembrsList;
+	}
+	public void setInvitedMembrsList(List<Long> invitedMembrsList) {
+		this.invitedMembrsList = invitedMembrsList;
+	}
+	public List<Long> getInvitAttndMbrsList() {
+		return invitAttndMbrsList;
+	}
+	public void setInvitAttndMbrsList(List<Long> invitAttndMbrsList) {
+		this.invitAttndMbrsList = invitAttndMbrsList;
 	}
 }
