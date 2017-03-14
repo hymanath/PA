@@ -151,16 +151,21 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 				" model.partyMeeting.partyMeetingId, " +
 				" model.partyMeetingSession.partyMeetingSessionId," +
 				" model.partyMeetingDocumentId , model.path,model.uploadedTime " +
-				" from PartyMeetingDocument model where " +
+				" from PartyMeetingDocument model,PartyMeetingGroupsMappingInfo model1  where " +
 				" model.isDeleted = 'N' " +
 				" and model.partyMeeting.isActive = 'Y' " +
-				" and model.partyMeetingSession.isDeleted = 'N' ");
+				" and model.partyMeetingSession.isDeleted = 'N'" +
+				" and model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId ");
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
     	}  
     	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) " );
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
+		}
+    	
     	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
     		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
     	}
@@ -198,6 +203,9 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
     		query.setParameterList("locationValuesSet",locationValuesSet);  
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			 query.setParameter("partyMeetngGrpId", inputVO.getPartyMeetingGroupId()); 
+		 }
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")

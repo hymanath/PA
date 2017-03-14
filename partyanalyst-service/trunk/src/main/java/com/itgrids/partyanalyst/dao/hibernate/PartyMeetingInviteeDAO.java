@@ -1951,14 +1951,19 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select distinct " +
     			" model.partyMeeting.partyMeetingId, model.tdpCadre.tdpCadreId " +
-    			" from PartyMeetingInvitee model " +
+    			" from PartyMeetingInvitee model,PartyMeetingGroupsMappingInfo model1  " +
     			" where " +
     			" model.tdpCadre.isDeleted = 'N' " +
     			" and model.partyMeeting.isActive = 'Y' " +
-    			" and model.partyMeeting.partyMeetingType.isActive = 'Y' ");
+    			" and model.partyMeeting.partyMeetingType.isActive = 'Y' " +
+    			"and model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId ");
     	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId ");
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
+		}
+    	
     	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) ");
     	}
@@ -2004,6 +2009,9 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	if(inputVO.getCategoryIdList() != null && inputVO.getCategoryIdList().size() > 0){
     		query.setParameterList("partyMeetingLevelIds",inputVO.getCategoryIdList());
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			 query.setParameter("partyMeetngGrpId", inputVO.getPartyMeetingGroupId()); 
+		 }
     	return query.list();
     } 
     public List<Object[]> meetingWiseInviteeCadreListForLevelWise(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList){

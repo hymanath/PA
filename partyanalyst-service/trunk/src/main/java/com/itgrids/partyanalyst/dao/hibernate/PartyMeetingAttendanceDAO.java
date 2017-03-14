@@ -1041,11 +1041,12 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 				" date(model.attendance.attendedTime), " +
 				" min(time(model.attendance.attendedTime)) " +
 				" from " +
-				" PartyMeetingAttendance model " +
+				" PartyMeetingAttendance model,PartyMeetingGroupsMappingInfo model1  " +
 				" where " +
 				" model.attendance.tdpCadre.isDeleted = 'N' " +
 				" and model.partyMeeting.isActive = 'Y' " +
-				" and model.partyMeetingSession.isDeleted = 'N' ");
+				" and model.partyMeetingSession.isDeleted = 'N'" +
+				" and model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
     	}  
@@ -1055,6 +1056,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
     		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
+		}
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
     	}
@@ -1096,6 +1100,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	if(inputVO.getCategoryIdList() != null && inputVO.getCategoryIdList().size() > 0){
     		query.setParameterList("partyMeetingLevelIds",inputVO.getCategoryIdList());
     	}
+    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){
+			 query.setParameter("partyMeetngGrpId", inputVO.getPartyMeetingGroupId()); 
+		 }
     	return query.list();  
 	}
 	public List<Object[]> getAttendedCadresMeetingWiseForLevel(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList){  

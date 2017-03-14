@@ -6697,7 +6697,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 * Swadhin Lenka
 	 * @see com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService#locationWiseMeetingDetails(java.lang.Long, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.String, java.lang.String)
 	 */
-	public List<MeetingBasicDetailsVO> locationWiseMeetingDetails(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,List<Long> locLevelIdList, Long state,String startDateString, String endDateString){
+	public List<MeetingBasicDetailsVO> locationWiseMeetingDetails(Long activityMemberId, Long partyMeetingMainTypeId, List<Long> partyMeetingTypeIds,
+			List<Long> locLevelIdList, Long state,String startDateString, String endDateString,Long partyMeetingGroupId){
 		try{
 			List<MeetingBasicDetailsVO> basicDetailsVOs = new ArrayList<MeetingBasicDetailsVO>();
 			MeetingBasicDetailsVO basicDetailsVO = null;
@@ -6733,6 +6734,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			inputVO.setStartDate(datesList.get(0));
 			inputVO.setEndDate(datesList.get(1));
 			inputVO.setStateId(state);
+			inputVO.setPartyMeetingGroupId(partyMeetingGroupId);
+			inputVO.setCategoryIdList(locLevelIdList);
 			
 			
 			List<Object[]> meetingList = partyMeetingDAO.plannedMeetingIdAndName(inputVO,locationId,locationValuesSet);
@@ -8222,7 +8225,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					}
 					partyMetingIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
 					attendedIds.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(obj[37]));
+					partyMeetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(obj[7]));
 					
 					if(commonMethodsUtilService.isMapValid(sessionLateTimesMap)){
 						SessionVO sessionVO = sessionLateTimesMap.get(commonMethodsUtilService.getLongValueForObject(obj[4]));
