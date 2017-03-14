@@ -131,8 +131,8 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 	str+='<table class="table bg_ED">';
 		str+='<tr>';
 			str+='<td>';
-				str+='<p class="text-muted">Planned</p>';
-				str+='<p>'+count+'</p>';	
+				str+='<p class="text-muted" >Planned</p>';
+				str+='<p class="locWisedetails" attr_type ="All" attr_meetingGrpId="'+meetingGrpId+'" style="cursor:pointer;" attr_level_id="'+levelId+'">'+count+'</p>';	
 			str+='</td>';
 			str+='<td class="bg_E0">';
 				str+='<p class="text-muted">Conducted</p>';
@@ -451,6 +451,81 @@ function buildLocationWiseMeetingDetails(result,dataType){
 		}
 		str+='</td>'; 
 		str+='</tr>';
+		}else if(dataType == "All"){
+			str+='<tr>';
+		if(result[i].partyMeetingName != null){
+			str+='<td id="'+result[i].partyMeetingId+'">'+result[i].partyMeetingName+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].status != null && result[i].status == "conducted"){
+			str+='<td style="color:green">'+result[i].status+'</td>';
+		}else if(result[i].status != null && result[i].status == "Notconducted"){
+			str+='<td style="">'+result[i].status+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].invited != null){
+			str+='<td>'+result[i].invited+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].attended != null){
+			str+='<td>'+result[i].attended+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].late != null){
+			str+='<td>'+result[i].late+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].absent != null){
+			str+='<td>'+result[i].absent+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].nonInvitee != null){
+			str+='<td>'+result[i].nonInvitee+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].totalImages != null){
+			str+='<td>'+result[i].totalImages+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		 str+='<td>';
+		if(result[i].totalImages > 0){  
+				str+='<ul class="list-inline modalImagesUl">';
+     	if(result[i].totalImages > 1){
+				str+='<li>';
+				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
+					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
+				str+='</li>';
+				str+='<li>';
+				   str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[1].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
+					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
+				str+='</li>';
+			}else{
+				str+='<li>';
+				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
+					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
+					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
+					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
+				str+='</li>';
+			}
+				str+='</ul>';
+			}
+		else{
+				str+='-';
+		}
+		str+='</td>'; 
+		str+='</tr>';
 		}
 	}
 	str +='</tbody>';
@@ -459,4 +534,3 @@ function buildLocationWiseMeetingDetails(result,dataType){
 	$("#partMeetingModalData").dataTable()
 	
 }
-
