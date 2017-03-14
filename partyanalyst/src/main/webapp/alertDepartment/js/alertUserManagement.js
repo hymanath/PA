@@ -597,7 +597,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 			
 			}
 	
-		$(function() {
+		
 			var chart = new Highcharts.Chart({
 				//colors: ['#FE9900','#0B9614','#8E4654','#F25C81'],
 				chart: {
@@ -677,7 +677,7 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 				span.css('left', textX + (span.width() * -0.5));
 				span.css('top', textY + (span.height() * -0.5));
 			});
-		});	
+			
 }	
 
 }
