@@ -16098,5 +16098,11 @@
 			</result>
 		</action>
 		
+		<action name="getLocationByDepartmentsAction" class="nominatedPostProfileAction" method="getLocationByDepartment">
+		<result type="json" name="success">
+   			<param name="root">locationVoList</param>
+   		</result>
+	    </action>
+		
  </package>
 </struts>

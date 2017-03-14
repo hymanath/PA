@@ -1482,7 +1482,24 @@ function getEducationalQualifications(divId){
 		}
 	});
 }
-
+//getLocationByDepartment();
+function getLocationByDepartment(){
+	alert(2);
+   var jsObj={
+       	   levelId :4,
+		   departmentId :2,
+		   boardId :188,
+		   positionId :1
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getLocationByDepartmentsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		alert(33);
+	});
+}
 </script>
 </body>
 </html>
