@@ -17209,7 +17209,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		List<LocationWiseBoothDetailsVO> finalList =  new ArrayList<LocationWiseBoothDetailsVO>();
 		if(rslt!=null && rslt.size()>0){
 			for(Object[] temp:rslt){
-				if(constisSplttdMap.get(Long.valueOf(temp[0].toString())) != (Long)temp[2] ){
+				if(constisSplttdMap.get(Long.valueOf(temp[0].toString())) == null ){
+					LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+			       	vo.setLocationId(Long.valueOf(temp[0].toString()));
+			       	vo.setLocationName(temp[1].toString());
+			       	finalList.add(vo);
+				}
+				else if(constisSplttdMap.get(Long.valueOf(temp[0].toString())) != (Long)temp[2] ){
 					LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
 			       	vo.setLocationId(Long.valueOf(temp[0].toString()));
 			       	vo.setLocationName(temp[1].toString());
