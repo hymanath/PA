@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
@@ -143,6 +144,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private NewCadreRegistrationVO newCadreRegistrationVO;
 	private MeetingVO meetingVO;
 	private MeetingBasicDetailsVO meetingBasicDetailsVO;
+	private List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>();
+	private List<Long> partyMeetingLevelIds = new ArrayList<Long>();
 	
 	/**
 	 * starting Payment Gateway required parameters
@@ -169,6 +172,22 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
+	}
+
+	public List<Long> getPartyMeetingLevelIds() {
+		return partyMeetingLevelIds;
+	}
+
+	public void setPartyMeetingLevelIds(List<Long> partyMeetingLevelIds) {
+		this.partyMeetingLevelIds = partyMeetingLevelIds;
+	}
+
+	public List<PartyMeetingVO> getPartyMeetingVOList() {
+		return partyMeetingVOList;
+	}
+
+	public void setPartyMeetingVOList(List<PartyMeetingVO> partyMeetingVOList) {
+		this.partyMeetingVOList = partyMeetingVOList;
 	}
 
 	public MeetingBasicDetailsVO getMeetingBasicDetailsVO() {
@@ -2357,6 +2376,120 @@ public String getSelectedChildTypeMembersForEvent(){
 	}
 	return Action.SUCCESS;
 }
+
+public String getSelectedChildTypeMembersForMultiLocationMeetings(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		
+		List<Long> childUserTypeIds=new ArrayList<Long>();
+		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			for( int i=0;i<childUserTypeIdsArray.length();i++){
+				childUserTypeIds.add(childUserTypeIdsArray.getString(i) != null && !childUserTypeIdsArray.getString(i).trim().isEmpty() ?Long.valueOf(childUserTypeIdsArray.getString(i)):0L);
+			}
+		}
+		String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		List<Long> eventsIds = new ArrayList<Long>();
+		/*JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}*/
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		Long meetingGrpId = jObj.getLong("meetingGrpId");
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		
+		//String searchType = jObj.getString("searchType");
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForMultiLocationMeetings(parentActivityMemberId,childUserTypeIds,reportType,stateId,
+									partyMeetingMainTypeId,partyMeetingLevelId,meetingGrpId,fromDateStr,toDateStr);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getSelectedChildTypeMembersForEvent() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getLocationWiseSelectedChildMembersForMultiLocationMeetings(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long locationLevelId = jObj.getLong("locationLevelId");
+		
+		List<Long> locationValues=new ArrayList<Long>();
+		JSONArray locationValuesArray=jObj.getJSONArray("locationValuesArray");
+		if(locationValuesArray!=null &&  locationValuesArray.length()>0){
+			for( int i=0;i<locationValuesArray.length();i++){
+				locationValues.add(locationValuesArray.getString(i) != null && !locationValuesArray.getString(i).trim().isEmpty() ?Long.valueOf(locationValuesArray.getString(i)):0L);
+			}
+		}
+		//String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		//List<Long> eventsIds = new ArrayList<Long>();
+		/*JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}*/
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		Long meetingGrpId = jObj.getLong("meetingGrpId");
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		
+		//String searchType = jObj.getString("searchType");
+		partyMeetingVOList = coreDashboardEventsActivitiesService.getLocationWiseSelectedChildMembersForMultiLocationMeetings(locationLevelId,locationValues,stateId,
+									partyMeetingMainTypeId,partyMeetingLevelId,meetingGrpId,fromDateStr,toDateStr);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getLocationWiseSelectedChildMembersForMultiLocationMeetings() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getPartyMeetingLevelIdsByAccessLevel(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long locationLevelId = jObj.getLong("locationLevelId");
+		
+		List<Long> locationValues=new ArrayList<Long>();
+		JSONArray locationValuesArray=jObj.getJSONArray("locationValuesArray");
+		if(locationValuesArray!=null &&  locationValuesArray.length()>0){
+			for( int i=0;i<locationValuesArray.length();i++){
+				locationValues.add(locationValuesArray.getString(i) != null && !locationValuesArray.getString(i).trim().isEmpty() ?Long.valueOf(locationValuesArray.getString(i)):0L);
+			}
+		}
+		//String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		//List<Long> eventsIds = new ArrayList<Long>();
+		/*JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}*/
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		Long meetingGrpId = jObj.getLong("meetingGrpId");
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		
+		//String searchType = jObj.getString("searchType");
+		partyMeetingLevelIds = coreDashboardEventsActivitiesService.getPartyMeetingLevelIdsByAccessLevel(locationLevelId,locationValues,stateId,
+									partyMeetingMainTypeId,meetingGrpId,fromDateStr,toDateStr);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getPartyMeetingLevelIdsByAccessLevel() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 public String getDirectChildTypeMembersForEvent(){
 	try{
 		

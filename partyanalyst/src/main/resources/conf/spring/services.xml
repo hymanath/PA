@@ -3786,6 +3786,13 @@
 	 <property name="activityScopeDAO" ref="activityScopeDAO" />
 	 <property name="activityConductedInfoDAO" ref="activityConductedInfoDAO"/>
 	 <property name="activityDocumentDAO" ref="activityDocumentDAO"/>
+	 <property name="partyMeetingDAO" ref="partyMeetingDAO"/>
+	 <property name="stateDAO" ref="stateDAO"/>
+	 <property name="districtDAO" ref="districtDAO"/>
+	 <property name="constituencyDAO" ref="constituencyDAO"/>
+	 <property name="tehsilDAO" ref="tehsilDAO"/>
+	 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+	 <property name="panchayatDAO" ref="panchayatDAO"/>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
