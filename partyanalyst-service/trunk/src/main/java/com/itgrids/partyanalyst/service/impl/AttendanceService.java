@@ -1044,7 +1044,8 @@ public class AttendanceService implements IAttendanceService{
 					if(list != null && !list.isEmpty()){
 						PartyMeetingInvitee partyMeetingInvitee = list.get(0);
 						partyMeetingInvitee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						partyMeetingInvitee.setUpdatedById(inputvo.getUserId());
+						//partyMeetingInvitee.setUpdatedById(inputvo.getUserId());
+						partyMeetingInvitee.setTabUserId(inputvo.getUserId());
 						partyMeetingInvitee.setAbsenteeRemark(inputvo.getRemarks());
 						partyMeetingInvitee = partyMeetingInviteeDAO.save(partyMeetingInvitee);
 					}
@@ -1171,11 +1172,12 @@ public class AttendanceService implements IAttendanceService{
 					partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
 					partyMeetingDocument.setDocumentType("MINUTE");
 					partyMeetingDocument.setDocumentFormat("IMAGE");
-					partyMeetingDocument.setUploadedById(inputvo.getUserId());
-					partyMeetingDocument.setUpdatedById(inputvo.getUserId());
+					//partyMeetingDocument.setUploadedById(inputvo.getUserId());
+					//partyMeetingDocument.setUpdatedById(inputvo.getUserId());
 					partyMeetingDocument.setUploadedTime(dateUtilService.getCurrentDateAndTime());
 					partyMeetingDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					partyMeetingDocument.setIsDeleted("N");
+					partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
 					partyMeetingDocument = partyMeetingDocumentDAO.save(partyMeetingDocument);
 					
 					return partyMeetingDocument.getPartyMeetingDocumentId();
