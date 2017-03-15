@@ -25,9 +25,30 @@ public class ResultStatus implements Serializable{
     private String host;
     private String tempHost;
     private Long resultState;
+    private Long tabPrimaryKey;
+    private String uniqueKey;
+    private Long serverPrimaryKey;
     
     
-    public String getTempHost() {
+    public Long getServerPrimaryKey() {
+		return serverPrimaryKey;
+	}
+	public void setServerPrimaryKey(Long serverPrimaryKey) {
+		this.serverPrimaryKey = serverPrimaryKey;
+	}
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
+	}
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
+	public String getTempHost() {
 		return tempHost;
 	}
 	public void setTempHost(String tempHost) {

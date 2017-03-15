@@ -25,6 +25,6 @@ public interface IAttendanceService {
 	public ResultStatus savePublicActivityAttendance(final ActivityAttendanceVO inputVO,final Long userId);
 	public ResultStatus saveActivityQuestionAnswer(final AttendanceQuestionnariWSVO aqWSVO);
 	
-	public String updateManualAttendanceDetails(final ManualAttendanceVO inputvo);
-	public String savingPartyMeetingImages(final ManualAttendanceVO inputvo);
+	public ResultStatus updateManualAttendanceDetails(final ManualAttendanceVO inputvo);
+	public ResultStatus savingPartyMeetingImages(final ManualAttendanceVO inputvo);
 }

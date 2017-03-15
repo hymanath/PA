@@ -991,10 +991,10 @@ public class AttendanceService implements IAttendanceService{
 		return rs;
 	}
 	
-	public String updateManualAttendanceDetails(final ManualAttendanceVO inputvo){
-		String status = null;
+	public ResultStatus updateManualAttendanceDetails(final ManualAttendanceVO inputvo){
+		ResultStatus resultStatus = new ResultStatus();
 		try {
-			status = (String)transactionTemplate.execute(new TransactionCallback() {
+			Long serverKey = (Long)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
 					String folderName = folderCreation();
@@ -1049,13 +1049,23 @@ public class AttendanceService implements IAttendanceService{
 						partyMeetingInvitee = partyMeetingInviteeDAO.save(partyMeetingInvitee);
 					}
 					
-					return "success";
+					return attendance.getAttendanceId();
 				}
 			});
+			
+			resultStatus.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+			resultStatus.setUniqueKey(inputvo.getUniqueKey());
+			resultStatus.setMessage("success");
+			resultStatus.setResultCode(0);
+			resultStatus.setServerPrimaryKey(serverKey);
 		} catch (Exception e) {
+			resultStatus.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+			resultStatus.setUniqueKey(inputvo.getUniqueKey());
+			resultStatus.setMessage("failure");
+			resultStatus.setResultCode(1);
 			LOG.error("Exception raised at updateManualAttendanceDetails in AttendanceService", e);
 		}
-		return status;
+		return resultStatus;
 	}
 	
 	public static String folderCreation(){
@@ -1124,10 +1134,10 @@ public class AttendanceService implements IAttendanceService{
 		}
 	}
 	
-	public String savingPartyMeetingImages(final ManualAttendanceVO inputvo){
-		String status = null;
+	public ResultStatus savingPartyMeetingImages(final ManualAttendanceVO inputvo){
+		ResultStatus resultStatus = new ResultStatus();
 		try {
-			status = (String)transactionTemplate.execute(new TransactionCallback() {
+			Long serverKey = (Long)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
 					String folderName = folderCreation();
@@ -1168,12 +1178,22 @@ public class AttendanceService implements IAttendanceService{
 					partyMeetingDocument.setIsDeleted("N");
 					partyMeetingDocument = partyMeetingDocumentDAO.save(partyMeetingDocument);
 					
-					return "success";
+					return partyMeetingDocument.getPartyMeetingDocumentId();
 				}
 			});
+			
+			resultStatus.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+			resultStatus.setUniqueKey(inputvo.getUniqueKey());
+			resultStatus.setMessage("success");
+			resultStatus.setResultCode(0);
+			resultStatus.setServerPrimaryKey(serverKey);
 		} catch (Exception e) {
+			resultStatus.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+			resultStatus.setUniqueKey(inputvo.getUniqueKey());
+			resultStatus.setMessage("failure");
+			resultStatus.setResultCode(1);
 			LOG.error("Exception raised at savingPartyMeetingImages in AttendanceService", e);
 		}
-		return status;
+		return resultStatus;
 	}
 }
