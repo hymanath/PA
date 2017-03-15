@@ -1395,6 +1395,7 @@ function buildAlertData(result,jsObj){
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
 	str+='<th>Alert Status</th>';
+	str+='<th>Alert Location</th>';
 	str+='<th>Verification Status</th>'; 
 	str+='<th>Involved Candidates</th>';
 	str+='<th>Created Date</th>'; 
@@ -1406,6 +1407,7 @@ function buildAlertData(result,jsObj){
 	var j=0;
 	for(var i in result)
 	{
+     var locationDtls = result[i].locationVO;
 		j++;
 	str+='<tr>';
 	str+='<td>'+result[i].alertSource+'</td>';
@@ -1413,6 +1415,15 @@ function buildAlertData(result,jsObj){
 	str+='<td>'+result[i].alertCategoryName+'</td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
+	if(locationDtls != null){
+		if(locationDtls.constituencyName != null && locationDtls.constituencyName.length > 0){
+			str+='<td>'+locationDtls.constituencyName+'</td>';
+		}else if(locationDtls.districtName != null && locationDtls.districtName.length > 0){
+			str+='<td>'+locationDtls.districtName+'</td>';
+		}else if(locationDtls.state != null && locationDtls.state.length > 0){
+			str+='<td>'+locationDtls.state+'</td>';
+		}
+	}
 	if(result[i].verificationStatus != null){
 		str+='<td>'+result[i].verificationStatus+'</td>';
 	}else{
