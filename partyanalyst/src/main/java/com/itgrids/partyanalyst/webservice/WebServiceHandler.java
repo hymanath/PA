@@ -2575,7 +2575,7 @@ public class WebServiceHandler {
 		@Path("/updateManualAttendanceDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public String updateManualAttendanceDetails(ManualAttendanceVO inputVo){
+		public ResultStatus updateManualAttendanceDetails(ManualAttendanceVO inputVo){
 			try{
 				return attendanceService.updateManualAttendanceDetails(inputVo);
 			}
@@ -2590,7 +2590,7 @@ public class WebServiceHandler {
 		@Path("/savingPartyMeetingImages")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public String savingPartyMeetingImages(ManualAttendanceVO inputVo){
+		public ResultStatus savingPartyMeetingImages(ManualAttendanceVO inputVo){
 			try{
 				return attendanceService.savingPartyMeetingImages(inputVo);
 			}
