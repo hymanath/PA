@@ -625,13 +625,13 @@ public class RegistrationService implements IRegistrationService{
 			if(mobile.length() == 0){
 				mobile="999999999";
 			}
-			usname = mobile;
+			//usname = mobile;
 			String address = row.getCell(0).toString().trim();
 			String accessValue = row.getCell(6).toString().trim().replace(".0", "");
-			String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
+			String enKey = encrypt.MD5(usname.toLowerCase())+encrypt.MD5(pasword);
 			String md5Key = encrypt.MD5(enKey);
 			regVO.setParty(872l);
-			regVO.setUserName(mobileNo);
+			regVO.setUserName(usname);
 			regVO.setFirstName(firstName);
 			regVO.setLastName(lastName);
 			regVO.setPassword(md5Key);
