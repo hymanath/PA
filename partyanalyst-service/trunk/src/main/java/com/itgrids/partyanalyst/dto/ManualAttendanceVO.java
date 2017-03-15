@@ -23,8 +23,15 @@ public class ManualAttendanceVO {
 	private Long userId;
 	private Long tabPrimaryKey;
 	private Long partyMeetingSessionId;
+	private String attendedTime;
 	
 	
+	public String getAttendedTime() {
+		return attendedTime;
+	}
+	public void setAttendedTime(String attendedTime) {
+		this.attendedTime = attendedTime;
+	}
 	public Long getPartyMeetingSessionId() {
 		return partyMeetingSessionId;
 	}

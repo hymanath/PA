@@ -999,7 +999,6 @@ public class AttendanceService implements IAttendanceService{
 					
 					String folderName = folderCreation();
 					 
-					
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(new Date());
 					 int year = calendar.get(Calendar.YEAR);
@@ -1022,7 +1021,7 @@ public class AttendanceService implements IAttendanceService{
 					attendance.setTdpCadreId(inputvo.getTdpCadreId());
 					attendance.setImageStr(inputvo.getBase64ImageStr());
 					attendance.setImgPath(pathBuilder.toString());
-					attendance.setAttendedTime(dateUtilService.getCurrentDateAndTime());
+					attendance.setAttendedTime(dateUtilService.getDateByStringAndFormat(inputvo.getAttendedTime(),"yyyy-MM-dd HH:mm:ss"));
 					attendance.setImei(inputvo.getImeiNo());
 					attendance.setUniqueKey(inputvo.getUniqueKey());
 					attendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
