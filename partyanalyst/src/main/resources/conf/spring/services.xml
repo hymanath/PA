@@ -4095,6 +4095,11 @@
 		<property name="panchayatDAO" ref="panchayatDAO" ></property>
 	</bean>
 	<bean name="geodemographicService" class="com.itgrids.api.service.impl.GeodemographicService">	
+	    <property name="districtDAO" ref="districtDAO" ></property>
+	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" ></property>
+	    <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" ></property>
+	    <property name="panchayatDAO" ref="panchayatDAO" ></property>
+	    <property name="boothDAO" ref="boothDAO" ></property>
 	</bean>
 	
 </beans>			
