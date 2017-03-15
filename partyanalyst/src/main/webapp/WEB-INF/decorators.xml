@@ -735,6 +735,9 @@
 		<pattern>/updateNominationPostCandidateDetailsAction*</pattern>
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
 		<pattern>/committeeCreationDetailsAction*</pattern>
+		 <!-- geoDemographics Start -->
+		<pattern>/geoDemographicsAction*</pattern>
+		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
 		<pattern>/govtLoginAction*</pattern>
