@@ -1744,5 +1744,10 @@
 	<bean id="cccDashboardAction" class="com.itgrids.partyanalyst.web.action.CccDashboardAction" singleton="false">
 		<property name="cccDashboardService" ref="cccDashboardService" />  
 	</bean>	
+	
+	<bean id="geodemographicsAction" class="com.itgrids.partyanalyst.web.action.GeodemographicsAction" singleton="false">
+		<property name="geodemographicService" ref="geodemographicService" />  
+	</bean>
+	
 </beans>	
 	

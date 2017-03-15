@@ -16103,6 +16103,9 @@
    			<param name="root">locationVoList</param>
    		</result>
 	    </action>
+	    <action name="geoDemographicsAction" class="geodemographicsAction">
+	   		 <result name="success">/jsp/geoDemographicsStats.jsp</result>			
+	    </action>
 		
  </package>
 </struts>
