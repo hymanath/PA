@@ -508,7 +508,7 @@ function buildTotalAlertByDeptForOfficer(result){
 					}else{
 						str+='<td>'+result[j].status+'</td>';  
 					}
-					str+='<td style="text-align:center"><span class="colorStyleAlert totalAlertDetails"     attr_status_id="0" attr_department_id="'+result[i].id+'" attr_type="toDay">'+result[j].count+'</span></td>';
+					str+='<td style="text-align:center"><span class="colorStyleAlert totalAlertDetails"     attr_status_id="0" attr_department_id="'+result[j].id+'" attr_type="toDay">'+result[j].count+'</span></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
