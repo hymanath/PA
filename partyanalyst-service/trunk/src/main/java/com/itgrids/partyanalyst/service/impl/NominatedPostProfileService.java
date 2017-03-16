@@ -3660,55 +3660,18 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try {
 			
 			List<Object[]> depOCorpList = new ArrayList<Object[]>(0);
-			
 			List<Long> apllicationIds = new ArrayList<Long>();
+			List<Object[]> depOCorpList1 =null;
 			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName
 			if(type !=null && type.trim().equalsIgnoreCase("applied")){
-				depOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
+			     depOCorpList1 = new ArrayList<Object[]>(0);
+				depOCorpList1 = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,9l);
+				setBrdWisNominPstAppliedDepOrCorpApplledDetails(depOCorpList1,apllicationIds,returnVoList,"expired");
+				depOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,null);
+				setBrdWisNominPstAppliedDepOrCorpApplledDetails(depOCorpList,apllicationIds,returnVoList,"applied");
 			}else if(type !=null && type.trim().equalsIgnoreCase("shortlisted")){
 				depOCorpList = nominatedPostFinalDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
-			}
-			
-			if(depOCorpList != null && depOCorpList.size() > 0){
-				for (Object[] obj : depOCorpList) {
-					apllicationIds.add(commonMethodsUtilService.getLongValueForObject(obj[11]));
-					NominatedPostVO VO = new NominatedPostVO();	
-					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					VO.setLocationVal(commonMethodsUtilService.getLongValueForObject(obj[10]));
-					if(VO.getId() == 1L){
-						VO.setName("India");
-					}
-					else if(VO.getId() == 2L){
-						VO.setName(stateDAO.get(VO.getLocationVal()).getStateName());
-					}
-					else if(VO.getId() == 3L){
-						VO.setName(districtDAO.get(VO.getLocationVal()).getDistrictName());
-					}
-					else if(VO.getId() == 4L){
-						VO.setName(constituencyDAO.get(VO.getLocationVal()).getName());
-					}
-					else if(VO.getId() == 5L){
-						VO.setName(tehsilDAO.get(VO.getLocationVal()).getTehsilName());
-					}
-					else if(VO.getId() == 6L){
-						VO.setName(localElectionBodyDAO.get(VO.getLocationVal()).getName());
-					}
-					else if(VO.getId() == 7L){
-						VO.setName(panchayatDAO.get(VO.getLocationVal()).getPanchayatName());
-					}
-					VO.setStateId(commonMethodsUtilService.getLongValueForObject(obj[0]));
-					VO.setPerc(commonMethodsUtilService.getStringValueForObject(obj[1]));
-					VO.setHno(commonMethodsUtilService.getStringValueForObject(obj[3]));
-					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[4]));//deptId
-					VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[5]));//deptName
-					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
-					VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[7]));//boardName
-					VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positnId
-					VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));//positnName
-					VO.setAddDistrictName(commonMethodsUtilService.getLongValueForObject(obj[11]));//applicationId
-					returnVoList.add(VO);
-				}
-								
+				setBrdWisNominPstAppliedDepOrCorpApplledDetails(depOCorpList,apllicationIds,returnVoList,"shortlisted");
 			}
 			
 			List<Object[]> postnLinkedData = nominatedPostFinalDAO.getApplicationDataByApplctnIds(apllicationIds,null);
@@ -8575,6 +8538,63 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		LOG.error("Exception Occured in getGoPassedDocumentDuration()", e);
 	}
 	return returnList;
-}
+} 
+  
+  public void setBrdWisNominPstAppliedDepOrCorpApplledDetails(List<Object[]> depOCorpList,List<Long> apllicationIds,List<NominatedPostVO> returnVoList,String status)
+  {
+	  try{
+		  if(depOCorpList != null && depOCorpList.size() > 0){
+				for (Object[] obj : depOCorpList) {
+					apllicationIds.add(commonMethodsUtilService.getLongValueForObject(obj[11]));
+					NominatedPostVO VO = new NominatedPostVO();	
+					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					VO.setLocationVal(commonMethodsUtilService.getLongValueForObject(obj[10]));
+					if(VO.getId() == 1L){
+						VO.setName("India");
+					}
+					else if(VO.getId() == 2L){
+						VO.setName(stateDAO.get(VO.getLocationVal()).getStateName());
+					}
+					else if(VO.getId() == 3L){
+						VO.setName(districtDAO.get(VO.getLocationVal()).getDistrictName());
+					}
+					else if(VO.getId() == 4L){
+						VO.setName(constituencyDAO.get(VO.getLocationVal()).getName());
+					}
+					else if(VO.getId() == 5L){
+						VO.setName(tehsilDAO.get(VO.getLocationVal()).getTehsilName());
+					}
+					else if(VO.getId() == 6L){
+						VO.setName(localElectionBodyDAO.get(VO.getLocationVal()).getName());
+					}
+					else if(VO.getId() == 7L){
+						VO.setName(panchayatDAO.get(VO.getLocationVal()).getPanchayatName());
+					}
+					VO.setStateId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					VO.setPerc(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					VO.setHno(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[4]));//deptId
+					VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[5]));//deptName
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
+					VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[7]));//boardName
+					VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positnId
+					VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));//positnName
+					VO.setAddDistrictName(commonMethodsUtilService.getLongValueForObject(obj[11]));//applicationId
+					if(status != null && status.equalsIgnoreCase("expired") ){
+						returnVoList.add(0,VO);
+					}else{
+					returnVoList.add(VO);
+					}
+					
+				}
+								
+			}
+		  
+	  }catch(Exception e){
+		  LOG.error("Exception Occured in setBrdWisNominPstAppliedDepOrCorpApplledDetails()", e);
+	  }
 	
-}
+  }
+ }
+
+

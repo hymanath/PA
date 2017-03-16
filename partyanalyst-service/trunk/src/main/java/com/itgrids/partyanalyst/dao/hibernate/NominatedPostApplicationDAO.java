@@ -895,9 +895,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        }
 	        return query.list();
 	  }
-	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
-	    
-	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId," +
+	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId,Long statusId){
+		StringBuilder str = new StringBuilder(); 
+		str.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId," +
 	    		"model.boardLevel.level,dept.departmentId," +
 	        " dept.deptName," +
 	        " board.boardId,board.boardName," +
@@ -907,12 +907,24 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        " left join model.departments dept" +
 	        " left join model.board board" +
 	        " left join model.position position " +
-	        " where model.nominationPostCandidateId = :candidateId " +
-	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.isExpired = 'N' " );
+	        " where " );
+		if(candidateId != null && candidateId.longValue()>0){
+	        str.append(" model.nominationPostCandidateId = :candidateId " );
+		 }
+		str.append(" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' " );
+		if(statusId != null && statusId.longValue() == 9l){
+			str.append(" and model.isExpired = 'Y' and model.applicationStatus.applicationStatusId = :statusId " );
+		 }else{
+			str.append(" and model.isExpired = 'N' " );
+		 }
 	      //  " and model.applicationStatus.status =:applied ");
-	        
+		 Query query = getSession().createQuery(str.toString());
+		if(candidateId != null && candidateId.longValue()>0){
 	        query.setParameter("candidateId", candidateId);
-	    
+		 }
+		if(statusId != null && statusId.longValue() == 9l){
+			query.setParameter("statusId", statusId);
+		}
 	      //  query.setParameter("applied",IConstants.NOMINATED_APPLIED_STATUS);
 	        return query.list();
 	  }

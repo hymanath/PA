@@ -22,7 +22,7 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 			Long locationValue,String type,Long searchLevelId);
 	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId,Long statusId);
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId);
-	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
+	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId,Long statusId);
 	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> levelValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionsType );
 	
 	public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status);
