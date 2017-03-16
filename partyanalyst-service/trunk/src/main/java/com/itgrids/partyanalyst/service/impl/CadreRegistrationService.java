@@ -6150,6 +6150,10 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		Long distId = input.getDistrictId();
 		Long mandalId = input.getMandalId();
 		Long townId = input.getTownId();
+		Long enrollmentId = input.getEnrollmentId();
+		
+		if(enrollmentId == null)
+			enrollmentId = IConstants.PRESENT_CADRE_ENROLLMENT_YEAR;
 		
 		String isOtherState = input.getIsOtherState();
 		
@@ -6210,6 +6214,9 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		{
 			sb.append(" and model.voter.voterIDCardNo = '"+input.getVoterIdCardNo().trim()+"' ");
 		}
+		
+		if(enrollmentId != null)
+			sb.append(" and model1.enrollmentYear.enrollmentYearId = "+enrollmentId+" ");
 		
 		//Get MembershipIds For voter and family voter ids scenarion search.
 		Set<String> voterMemberCards = new HashSet<String>();
@@ -6449,10 +6456,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			 return finalList;
 		 }
 		 
+		 Long enrollmentId = input.getEnrollmentId();
+			
+		if(enrollmentId == null)
+			enrollmentId = IConstants.PRESENT_CADRE_ENROLLMENT_YEAR;
+			
 		 //QUERY BUILDING
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date srvyDt = null;
 		
 		String isOtherState = input.getIsOtherState();
 		if(isOtherState == null)
@@ -6480,10 +6490,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
 			{
 				String memberShipNumber1 = input.getMemberShipNumber() ;
-			 	StringBuilder queryStr = new StringBuilder();
 			 	sb.append(" and (model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 			}
 		}
+		
+		if(enrollmentId != null)
+			sb.append(" and model1.enrollmentYear.enrollmentYearId = "+enrollmentId+" ");
 		
 		//QUERIES
 		Set<String> voterMemberCards = new HashSet<String>();
@@ -6502,9 +6514,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), null, null, null, null,null,null,null);
 			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null,null);
 		}
-		
-		//List<String> memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
-		//List<String> memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
 		
 		if(memberCards!=null && memberCards.size()>0)
 			voterMemberCards.addAll(memberCards);
