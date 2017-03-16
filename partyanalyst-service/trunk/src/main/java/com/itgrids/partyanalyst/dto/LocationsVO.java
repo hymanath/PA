@@ -17,6 +17,15 @@ public class LocationsVO implements Serializable {
 	private Long panchayatId;
 	private Long stateId;
 	private Long postMemberId;
+	private Long wardId;
+	
+	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
 	public Long getDistrictId() {
 		return districtId;
 	}
