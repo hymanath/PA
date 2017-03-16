@@ -70,6 +70,9 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 	public String execute(){
 		return Action.SUCCESS;
 	}
+	public String newConstituencyPage(){
+		return Action.SUCCESS;
+	}
 	public String getDistrictsDetails(){
 			try{
 				jObj = new JSONObject(getTask());
