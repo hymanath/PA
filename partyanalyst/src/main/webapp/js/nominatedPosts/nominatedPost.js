@@ -2,13 +2,14 @@ function getOpenPositionDistrictsForState(state,id,num){
 	if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
+	   $("#errdeptBoardPostnId"+num).html("");
 	   $("#deptBoardId"+num).trigger("chosen:updated")
 	   $("#deptBoardPostnId"+num).html('');
 	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
        $("#depmtsId"+num).html('');
 	   $("#depmtsId"+num).trigger("chosen:updated")
 	$("#searchDataImgForDistrict"+num).show();
-	state = $("#nominatedStaeId"+num).val();
+	//state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
 	$("#nominatedDistId"+num+"").empty();
 	$("#nominatdConstId"+num+"").empty();
@@ -42,7 +43,7 @@ function getOpenPositionDistrictsForState(state,id,num){
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){   
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-		   location.reload(); 
+		   //location.reload(); 
 	   }
 	   $("#searchDataImgForDistrict"+num).hide();
 	   $("#nominatedDistId"+num).empty();
@@ -51,6 +52,14 @@ function getOpenPositionDistrictsForState(state,id,num){
 			$("#nominatedDistId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	   }
 		$("#nominatedDistId"+num).trigger("chosen:updated");
+		 if(globallevelId ==  3 || globallevelId ==  4 || globallevelId ==  5 || globallevelId ==  7){
+			  getOpenPositionConstituenciesForDistrict(gDisId,'nominatedDistId','');
+			  $("#nominatedDistId").val(gDisId).trigger('chosen:updated');
+			   
+		   }
+		   if(globallevelId == 3){
+			   getDepartments(0);
+		   }
    });
 }
 
@@ -58,6 +67,7 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 	if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
+	   $("#errdeptBoardPostnId"+num).html("");
 	   $("#deptBoardId"+num).trigger("chosen:updated")
 	   $("#deptBoardPostnId"+num).html('');
 	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
@@ -96,6 +106,13 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 			$("#nominatdConstId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	   }
 		$("#nominatdConstId"+num).trigger("chosen:updated");
+		if(globallevelId ==  4  || globallevelId ==  5 || globallevelId ==  7){
+			   getOpenPositionMandalsForConstituency('','nominatdConstId');
+			   $("#nominatdConstId").val(gConsId).trigger('chosen:updated');
+			}
+		   if(globallevelId == 4){
+			   getDepartments(0);
+		   }
    });
 }
 
@@ -103,14 +120,20 @@ function getOpenPositionMandalsForConstituency(num,id){
 	if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
+	   $("#errdeptBoardPostnId"+num).html("");
 	   $("#deptBoardId"+num).trigger("chosen:updated")
 	   $("#deptBoardPostnId"+num).html('');
 	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
        $("#depmtsId"+num).html('');
 	   $("#depmtsId"+num).trigger("chosen:updated")
 	var constituencyId  =0;
+	
 	 $("#searchImgForConst"+num).show();
 	constituencyId = $("#nominatdConstId"+num).val();
+	 if(gConsId != null && gConsId >0){
+		constituencyId =gConsId; 
+	} 
+	//$("#nominatdConstId").val(constituencyId).trigger('chosen:updated');
 	$("#nominatedMandlId"+num+"  option").remove();
 	$("#nominatedMandlId"+num).append('<option value="0">Select Mandal/Municipality</option>');
 	$("#nominatedPanchayatId"+num+" option").remove();
@@ -142,22 +165,38 @@ function getOpenPositionMandalsForConstituency(num,id){
 			$("#nominatedMandlId"+num).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 	   }
 		$("#nominatedMandlId"+num).trigger("chosen:updated");
+		 if(globallevelId ==  5 || globallevelId ==  7){
+			  getOpenPositionVillagesForMandal('','nominatedMandlId');
+			  $("#nominatedMandlId"+num).val(gMandlId).trigger('chosen:updated');
+			}
+		   
+		   if(globallevelId == 5){
+			   getDepartments(0);
+		   }
    });
 }
 
 function getOpenPositionVillagesForMandal(num,id){
 	var mandalId=0;
+	$("#errdeptBoardPostnId"+num).html("");
+	
 	var constituencyId = 0; 
 		 $("#searchImgForMandl"+num).show();
 	mandalId=$("#nominatedMandlId"+num).val();
 	constituencyId = $("#nominatdConstId"+num).val();
+	if(gConsId != null && gConsId.length >0){
+		constituencyId =gConsId; 
+	}
+	if(gMandlId != null && gMandlId.length > 0){
+		mandalId =gMandlId; 
+	}
+	
 	$("#nominatedPanchayatId"+num+"  option").remove();
 	$("#nominatedPanchayatId"+num).append('<option value="0">Select Panchayat</option>');
-	
 	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
 	
 	var jsObj=
-   {			
+	{			
 		mandalId	:mandalId,
 		constituencyId:constituencyId,
 		boardLevelId:$('#boardLvlId'+num+'').val()			
@@ -178,6 +217,10 @@ function getOpenPositionVillagesForMandal(num,id){
 			$("#nominatedPanchayatId"+num).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 	   }
 		$("#nominatedPanchayatId"+num).trigger("chosen:updated");
+		
+		if(globallevelId == 7){
+			   getDepartments(0);
+		   }
    });
 }
 
@@ -1229,11 +1272,13 @@ $('.searchTypeCls').click(function(){
 		 }
 	   }
 		  $("#"+id+''+num+'').trigger("chosen:updated");
+		  $("#nominatedStaeId").val(gsId).trigger('chosen:updated');
 	   });
 	  }
   
   function getDepartmentBoardPositions(num){
 	$("#searchDataImgForPos"+num).show();
+	$("#errdeptBoardPostnId"+num).html("");
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
      var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
@@ -1298,12 +1343,15 @@ $('.searchTypeCls').click(function(){
 		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
 	  } 
 		for(var i in result){
-			if(result[i].name != null)
-			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			if(result[i].name != null && result[i].id == globalposId){
+					$("#deptBoardPostnId"+num).append('<option selected="selected" value='+result[i].id+'>'+result[i].name+'</option>');
+				}else if(result[i].name != null){
+					$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
 			}
 		$("#deptBoardPostnId"+num).trigger("chosen:updated");
    }else{
-	   //$("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
+	   $("#errdeptBoardPostnId"+num).html('<b style="color:red;"> Already applied to this position.</b>');
 	   $("#deptBoardPostnId"+num).trigger("chosen:updated");
    }
    	  
@@ -1311,7 +1359,7 @@ $('.searchTypeCls').click(function(){
   }
   
     function getDepartmentBoards(num){
-		
+		$("#errdeptBoardPostnId"+num).html("");
 	$("#searchDataImgForDep"+num).show();
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
@@ -1373,14 +1421,19 @@ $('.searchTypeCls').click(function(){
      $("#deptBoardPostnId"+num).empty();   
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
-		   
-		  // if(result != null && result.length >1)
-		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
+			$("#deptBoardId"+num).append('<option value="0">Any</option>');
 	   
-	   if(depmtId > 0 )
+	   if(depmtId > 0 ){
 				for(var i in result){
-					$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	  }
+					if(globalboardId == result[i].id){
+						$("#deptBoardId"+num).append('<option selected value='+result[i].id+'>'+result[i].name+'</option>');
+					}else{
+						$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					}
+			}
+	   }
+	   if(globalboardId > 0)
+		getDepartmentBoardPositions(num);   
    }
    else{
 	   //$("#errdeptBoardId"+num).html('<b style="color:red;"> All Boards are filled out.</b>');
@@ -1392,7 +1445,8 @@ $('.searchTypeCls').click(function(){
    });
   }  
   function getDepartments(num){
-	//$("#searchDataImgForDist").show();
+	  //$("#searchDataImgForDist").show();
+	  $("#errdeptBoardPostnId"+num).html("");
 	 var postTypeId=0;
 	 var boardLevelId = $("#boardLvlId"+num).val();
 	 if(num ==0)
@@ -1485,13 +1539,21 @@ $('.searchTypeCls').click(function(){
 			$("#depmtsId"+num).append('<option value="0">Any</option>'); 
 		
 		 for(var i in result){
-		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			 if(globaldeptId == result[i].id){
+				 $("#depmtsId"+num).append('<option selected value='+result[i].id+'>'+result[i].name+'</option>');
+			 }else{
+				$("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			 }
+			 
 		 }
 	   }else{
 		  // $("#errdepmtsId"+num).html('<b style="color:red;"> All Departments are filled out.</b>');
 		   $("#depmtsId"+num).append('<option value=" "> No Departmets Available </option>'); 
 	   }
 		  $("#depmtsId"+num).trigger("chosen:updated");
+		  if(globaldeptId > 0){
+			getDepartmentBoards(num);
+		  }
    });
   }
   
@@ -2395,6 +2457,14 @@ function populateFields(result){
 			$("#addedRefferalsDiv").show();
 			$("#uploadFlDivId").show();
 			$("#submitBtnId").show();
+			 if(globallevelId > 0){
+			   $('#boardLvlId').val(globallevelId).trigger('chosen:updated');
+		   }
+		   if(globallevelId > 1){
+			   getLocationByDepartment();
+				getOpenedPostionsStates('nominatedStaeId','');
+				showHideByNominatedPost('');
+		   }
 			getCandidateAppliedPostsByCadre(globalCadreId,candiId);
 		  }
 		
@@ -2405,6 +2475,7 @@ function populateFields(result){
 			$("#submitBtnId").hide();
 		}
 });
+
  function getCandidateAppliedPostsByCadre(globalCadreId,candiId){
 
 	 var type = $("input[type='radio']:checked").val();
@@ -2422,8 +2493,8 @@ function populateFields(result){
 		}).done(function(result){
 		   if(result !=null){
 			   buildCandidateAppliedPostByCadreDetails(result,cadreId,candiId);
-		   }   
-   });	
+		   } 
+	});	
   }
   function buildCandidateAppliedPostByCadreDetails(result,cadreId,candiId){
 	 var str = '';
