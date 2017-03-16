@@ -31,7 +31,14 @@ public class CadrePrintInputVO {
 	private String isOtherState;
 	private String relativeName;
 	private String voterIdCardNo;
+	private Long enrollmentId;
 	
+	public Long getEnrollmentId() {
+		return enrollmentId;
+	}
+	public void setEnrollmentId(Long enrollmentId) {
+		this.enrollmentId = enrollmentId;
+	}
 	public String getVoterIdCardNo() {
 		return voterIdCardNo;
 	}
