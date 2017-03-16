@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -87,4 +88,7 @@ public interface INominatedPostProfileService {
 	 public String UpdateExpiredAppicationsInNominatedPosts(final Long userId);
 	 public CadrePerformanceVO getCadrePeoplePerformanceDetails(List<Long> tdpCadreIdsList);
 	 public List<LocationsVO> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId);
+	 //public List<CadreEventsVO> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId,List<Long> extraEventIdsList);
+	 public void setBrdWisNominPstAppliedDepOrCorpApplledDetails(List<Object[]> depOCorpList,List<Long> apllicationIds,List<NominatedPostVO> returnVoList,String status);
+	 
 }
