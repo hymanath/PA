@@ -16106,6 +16106,9 @@
 	    <action name="geoDemographicsAction" class="geodemographicsAction">
 	   		 <result name="success">/jsp/geoDemographicsStats.jsp</result>			
 	    </action>
+	    <action name="newConstituencyPage" class="geodemographicsAction" method="newConstituencyPage">
+	   		 <result name="success">/jsp/newConstituencyPage.jsp</result>			
+	    </action>
 		<action name="getDistrictsDetailsAction" class="geodemographicsAction" method="getDistrictsDetails">
 			<result type="json" name="success">
 				<param name="root">result</param>				
