@@ -429,7 +429,10 @@ var str = '';
 					}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
 							    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'<i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" data-toggle="tooltip" data-placement="top" attr_report_type="Position" data-original-title="Get post details." ></i> </span>';
-								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';		
+								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';
+									if(result[i].count > 0){
+										str+='<a href="javascript:{}" style="margin-left:10px;" class="btn appleNewPostBtn" attr_position_id="'+result[i].id+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_level_id="'+globalLocationLevelId+'">Apply For Post</a>';
+									}
 							}
 						str+='</div>';  
 					str+='</div>';

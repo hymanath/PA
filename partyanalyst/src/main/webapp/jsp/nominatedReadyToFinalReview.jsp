@@ -305,6 +305,16 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" tabindex="-1" id="newApplyPost" role="dialog">  
+	<div class="modal-dialog" style="width:80%;">      
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" onclick="refreshingPage();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 <iframe  style="width:100%;border:0px" class="newPostApplyPopup"></iframe> 
+			</div>
+		</div>
+	</div>
+</div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -324,7 +334,25 @@ if(gblStatus !=null && gblStatus.trim().length>0){
 function capitalizeFirstLetter(stringStr){
 	return stringStr.charAt(0).toUpperCase() + stringStr.slice(1);
 }
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/nominatedReadyToFinalReviewAction")));
+wurl = wurl.replace("/PartyAnalyst","");
 
+var getHeight = $(window).height();
+getHeight = (getHeight -( ( getHeight/100 ) * 10));
+
+$(".newPostApplyPopup").css("height",getHeight)
+$(document).on("click",".appleNewPostBtn",function(){
+	var pId = $(this).attr("attr_position_id");
+	var dId = $(this).attr("attr_department_id");
+	var bId = $(this).attr("attr_board_id");
+	var lId= $(this).attr("attr_level_id");
+	
+	$(".newPostApplyPopup").attr("src",wurl+"/nominatedPostProfileAction.action?status=openPost&lId="+lId+"&deptId="+dId+"&boardId="+bId+"&positionId="+pId+"");
+	setTimeout(function(){
+		$("#newApplyPost").modal('show');
+	}, 1000);
+});
 function setHeight(){
 	var maxHeight = 0;
 	$(".heightSet").height("100%");

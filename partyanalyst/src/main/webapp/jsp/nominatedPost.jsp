@@ -331,7 +331,7 @@
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>State</label>
                                         <select class="chosenSelect" attr_id="addStateId" id="changestateId" onchange="getDistrictsForStates(this.value,this.id,'');"  name="nominatedPostVO.addStateName">
-										<option value="0">Select State</option>
+											<option value="0">Select State</option>
                                         	<option value="1">Andhra Pradesh</option>
 											<option value="36">Telangana</option>
                                         </select>
@@ -1015,7 +1015,11 @@ $(function() {
      format:"MM/DD/YYYY"   
     });
 });
-var globalstatus='${status}';
+var globalstatus='${param.status}';
+var globallevelId = '${param.lId}';
+var globaldeptId = '${param.deptId}';
+var globalboardId = '${param.boardId}';
+var globalposId = '${param.positionId}';
 onload();
 
 function onload(){
@@ -1025,6 +1029,7 @@ function onload(){
     //},500);
   } 
 }
+
 $("#DOBId").val(moment().format('MM/DD/YYYY'));
 $("#DOBId").val(" ");
 /*
@@ -1482,14 +1487,14 @@ function getEducationalQualifications(divId){
 		}
 	});
 }
-//getLocationByDepartment();
+
 function getLocationByDepartment(){
-	alert(2);
+	
    var jsObj={
-       	   levelId :4,
-		   departmentId :2,
-		   boardId :188,
-		   positionId :1
+       	   levelId :globallevelId,
+		   departmentId :globaldeptId,
+		   boardId :globalboardId,
+		   positionId :globalposId
 	}
 	$.ajax({
 		  type:'GET',
@@ -1497,9 +1502,49 @@ function getLocationByDepartment(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-		alert(33);
+	   if(result != null)
+		prepopulateDetails(result);
 	});
 }
+var gDisId = 0;
+var gConsId = 0;
+var gMandlId = 0;
+var gVillId = 0;
+var gsId = 0;
+function prepopulateDetails(result){
+	
+	if(globallevelId ==  2 || globallevelId ==  3 || globallevelId ==  4 || globallevelId ==  5 || globallevelId ==  7){
+		//alert(5)
+		$("#nominatedStaeId").val(result[0].stateId).trigger('chosen:updated');
+		getOpenPositionDistrictsForState(result[0].stateId,'nominatedStaeId','');
+		}
+		if(globallevelId ==  2){
+			setTimeout(function(){
+				getDepartments(0);
+			},2000);
+		}
+		//getDepartments(0);
+	
+		//$("#nominatedStaeId").val(result[0].stateId).trigger('chosen:updated');
+		if(result[0].stateId != null && result[0].stateId > 0){
+			gsId = result[0].stateId;
+		}
+		if(result[0].districtId != null && result[0].districtId > 0){
+			gDisId = result[0].districtId;
+		}
+		if(result[0].constId != null && result[0].constId > 0){
+			gConsId = result[0].constId;
+		}
+		if(result[0].locatElectBodyId != null && result[0].locatElectBodyId > 0){
+			gMandlId = "1"+result[0].locatElectBodyId;
+		}else if(result[0].tehsilId != null && result[0].tehsilId > 0){
+			gMandlId = "2"+result[0].tehsilId;
+		}
+		if(result[0].wardId != null && result[0].wardId > 0)
+			gVillId = result[0].wardId;
+		else if(result[0].panchayatId != null && result[0].panchayatId > 0)
+			gVillId = result[0].panchayatId;
+	}
 </script>
 </body>
 </html>
