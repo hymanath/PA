@@ -8565,6 +8565,8 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					returnVo.setConstId(commonMethodsUtilService.getLongValueForObject(level[3]));
 					returnVo.setTehsilId(commonMethodsUtilService.getLongValueForObject(level[4]));
 					returnVo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(level[5]));
+					returnVo.setLocatElectBodyId(commonMethodsUtilService.getLongValueForObject(level[6]));
+					returnVo.setWardId(commonMethodsUtilService.getLongValueForObject(level[7]));
 				}
 				returnList.add(returnVo);
 			}

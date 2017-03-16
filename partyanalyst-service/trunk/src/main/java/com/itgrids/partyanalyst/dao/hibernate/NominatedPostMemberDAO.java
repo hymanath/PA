@@ -269,12 +269,25 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	}
 	public List<Object[]> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model.nominatedPostMemberId,model.address.state.stateId,model.address.district.districtId, " +
-				 "   model.address.constituency.constituencyId,model.address.tehsil.tehsilId, " +
-				 "   model.address.panchayat.panchayatId from NominatedPostMember model " );
+		str.append(" select model.nominatedPostMemberId,state.stateId,district.districtId, " +
+				 "   constituency.constituencyId,tehsil.tehsilId, " +
+				 "   panchayat.panchayatId,localElectionBody.localElectionBodyId ,ward.constituencyId from NominatedPostMember model " +
+				 " left join  model.address.state state " +
+				 " left join model.address.district district " +
+				 " left join model.address.constituency constituency " +
+				 " left join model.address.tehsil tehsil " +
+				 " left join model.address.localElectionBody localElectionBody " +
+				 " left join model.address.ward ward " +
+				 " left join model.address.panchayat panchayat  " );
 		str.append(" where ");
 		if(levelId != null && levelId.longValue()>0){
-			str.append(" model.boardLevel.boardLevelId =:levelId ");
+			if(levelId.equals(5)){
+				str.append(" model.boardLevel.boardLevelId  in (5,6) ");
+			}else if(levelId.equals(7)){
+				str.append("  model.boardLevel.boardLevelId  in (7,8) ");
+			}else{
+				str.append("  model.boardLevel.boardLevelId  =:levelId ");
+			}
 		}
 		if(departmentId != null && departmentId.longValue()>0){
 			str.append(" and model.nominatedPostPosition.departments.departmentId  =:departmentId ");
@@ -286,7 +299,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 			str.append(" and model.nominatedPostPosition.position.positionId  =:positionId ");
 		}
 		Query query = getSession().createQuery(str.toString());
-		if(levelId != null && levelId.longValue()>0){
+		if(levelId != null && levelId.longValue()>0 && !levelId.equals(5) && !levelId.equals(7)){
 			query.setParameter("levelId", levelId);
 		}
 		if(departmentId != null && departmentId.longValue()>0){
