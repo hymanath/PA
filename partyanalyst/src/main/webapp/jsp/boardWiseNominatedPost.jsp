@@ -1223,6 +1223,9 @@ function buildDepartmentDetails(result,divId){
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
+			if(result[i].perc == "GO Expired")
+			str+='<tr style=" background-color:gray;">';
+		else
 			str+='<tr>';
 				str+='<td>'+result[i].hno+'</td>';
 				str+='<td>'+result[i].name+'</td>';
@@ -1238,7 +1241,12 @@ function buildDepartmentDetails(result,divId){
 					str+='<td>'+result[i].voterCardNo+'</td>';
 				else
 					str+='<td> Any </td>';
-				str+='<td>'+result[i].perc+'</td>';
+				if(result[i].perc == "GO Expired"){
+					str+='<td style="color:red;" ><b>'+result[i].perc+'</b></td>';
+				}else{
+					str+='<td>'+result[i].perc+'</td>';
+				}
+				
 			str+='</tr>';
 		}
 		str+='</tbody>';
