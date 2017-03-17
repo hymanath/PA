@@ -5131,6 +5131,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 		          queryStr.append(" and model.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
 		 }
+		 
+		 queryStr.append(" order by model.userAddress.district.districtId");
+		 
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(fromDate !=null && toDate !=null){
 			query.setDate("startDate", fromDate);
