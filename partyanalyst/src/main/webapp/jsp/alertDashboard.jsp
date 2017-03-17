@@ -1390,12 +1390,13 @@ function buildAlertData(result,jsObj){
 	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
 	str+='<thead>';
 	
+	str+='<th>Alert Location</th>';
 	str+='<th>Alert Source </th>';
 	str+='<th>Title</th>';
 	str+='<th>Alert Category </th>';
 	str+='<th>Alert Type </th>';
 	str+='<th>Alert Status</th>';
-	str+='<th>Alert Location</th>';
+	//str+='<th>Alert Location</th>';
 	str+='<th>Verification Status</th>'; 
 	str+='<th>Involved Candidates</th>';
 	str+='<th>Created Date</th>'; 
@@ -1410,12 +1411,24 @@ function buildAlertData(result,jsObj){
      var locationDtls = result[i].locationVO;
 		j++;
 	str+='<tr>';
+	if(locationDtls != null){
+		if(locationDtls.constituencyName != null && locationDtls.constituencyName.length > 0){
+			str+='<td>'+locationDtls.constituencyName+' Constituency</td>';
+		}else if(locationDtls.districtName != null && locationDtls.districtName.length > 0){
+			str+='<td>'+locationDtls.districtName+' District</td>';
+		}else if(locationDtls.state != null && locationDtls.state.length > 0){
+			str+='<td>'+locationDtls.state+'</td>';
+		}
+	}
+	else{
+		str+='<td> - </td>';
+	}
 	str+='<td>'+result[i].alertSource+'</td>';
 	str+='<td>'+result[i].title+'</td>';
 	str+='<td>'+result[i].alertCategoryName+'</td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
-	if(locationDtls != null){
+	/*if(locationDtls != null){
 		if(locationDtls.constituencyName != null && locationDtls.constituencyName.length > 0){
 			str+='<td>'+locationDtls.constituencyName+'</td>';
 		}else if(locationDtls.districtName != null && locationDtls.districtName.length > 0){
@@ -1423,7 +1436,7 @@ function buildAlertData(result,jsObj){
 		}else if(locationDtls.state != null && locationDtls.state.length > 0){
 			str+='<td>'+locationDtls.state+'</td>';
 		}
-	}
+	}*/
 	if(result[i].verificationStatus != null){
 		str+='<td>'+result[i].verificationStatus+'</td>';
 	}else{
