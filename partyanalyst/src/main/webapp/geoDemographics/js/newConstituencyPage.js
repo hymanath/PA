@@ -327,17 +327,3 @@ function buildElectionYearsWithAssets(myResults)
 $(document).on("click","#candidateProfileId",function(){
 	window.open('cadreDetailsAction.action?cadreId=5709765','_blank');
 });
-function getAssetsElectionYearsInfo(constiId){
-        var jsObj=
-		{
-				candidateId:constiId					
-		};
-	$.ajax({
-      type : "GET",
-      url : "getConstituencyDetailedInformationAction.action",
-      dataType : 'json',
-      data : {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		buildElectionYearsWithAssets(result);
-	});
-}
