@@ -1747,6 +1747,15 @@
 	
 	<bean id="geodemographicsAction" class="com.itgrids.partyanalyst.web.action.GeodemographicsAction" singleton="false">
 		<property name="geodemographicService" ref="geodemographicService" />  
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="problemManagementReportService" ref="problemManagementReportService" />
+		<property name="electionTrendzService" ref="electionTrendzService" />
+		<property name="localBodyElectionService" ref="localBodyElectionService" />
+		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
+		<property name="constituencyManagementService" ref="constituencyManagementService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 </beans>	
