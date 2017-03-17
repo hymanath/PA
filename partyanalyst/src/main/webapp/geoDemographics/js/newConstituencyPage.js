@@ -1,98 +1,133 @@
-$(window).load(function() {
- getCountsForConstituency();
-});
-
-
+onLoadAjaxCalls(); //ajaxcalls through newconstituencypage.js
+var globalConsId = 232;
+function onLoadAjaxCalls()
+{
+	getCountsForConstituency();
+	getAllPartiesAllElectionResultsChart();
+}
 function getCountsForConstituency(){
+	$("#consCountsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var tehsilId=0;
-	$("#reportLevelheading").html("");
-
-	var level =  $("#reportLevel").val();
 	var publicationDateId = 22;
-	var typeName = '';
-
-	type = 'constituency';
+	var type = 'constituency';
 	id = 232;
-
+	var $list = $('#consCountsId'),
+        templatess = Handlebars.compile($('#cons-counts').html());
+	
 	var jsObj=
-		{
-			tehsilId:tehsilId,
-			type:type,	
-			id:id,
-			publicationDateId:publicationDateId,
-			constituencyId:232,
-			task:"getCountForLevel"
-		}
-		$.ajax({
-		  type:'GET',
-		  url: 'getCountForLevelAction.action',
-		  data: {task :JSON.stringify(jsObj)}
-		}).done(function(results){
-			var str="";	
-
-			if(results !=null && results.length>0){
-				
-				if(results[0].totalmandals == null)
-					results[0].totalmandals = 0;
-				if(results[0].noOfLocalBodies == null)
-				results[0].noOfLocalBodies = 0;
-				if(results[0].totalPanchayats == null)
-					results[0].totalPanchayats = 0;
-				if(results[0].totalBooths == null)
-					results[0].totalBooths = 0;
-
-				if(results[0].totalmandals !=null && results[0].totalmandals!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Mandals</h4>';
-							str +='<h3>'+results[0].totalmandals+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				
-				if(results[0].noOfLocalBodies !=null && results[0].noOfLocalBodies!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Muncipalities</h4>';
-							str +='<h3>'+results[0].noOfLocalBodies+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				
-				
-				if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Panchayats</h4>';
-							str +='<h3>'+results[0].totalPanchayats+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Wards</h4>';
-							str +='<h3>'+results[0].totalNoOfWards+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				if(results[0].totalBooths !=null && results[0].totalBooths!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Booths</h4>';
-							str +='<h3>'+results[0].totalBooths+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				if(results[0].totalNoOfHamlets !=null && results[0].totalNoOfHamlets!=0 ){
-					str +='<td>';
-							str +='<h4 class="text-capitalize text-muted">Hamlets</h4>';
-							str +='<h3>'+results[0].totalNoOfHamlets+'</h3>';
-							str +='<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>';
-					str +='</td>';
-				}
-				
-				$("#belowLevelsSizeId").html(str);
-				
-			}
-		});		
+	{
+		tehsilId:tehsilId,
+		type:type,	
+		id:id,
+		publicationDateId:publicationDateId,
+		constituencyId:232,
+		task:"getCountForLevel"
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getCountForLevelAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(results){
+		$list.html(templatess(results[0]));
+	});		
 		 			
 }
+function getAllPartiesAllElectionResultsChart()
+{
+	var id = 'assemblyElectionDetails';
+	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+    var jsObj = {
+		constituencyId:232,
+		task:"partiesPerformanceInDiffElectionsAjax"
+    };
+    
+    $.ajax({
+		type:'GET',
+		url: 'getPartiesPerformanceInDiffElectionsAjax.action',
+		data: {task :JSON.stringify(jsObj)}
+    }).done(function(results){
+		
+		if(results !=null && results.length > 0){
+			var mainArray = [];
+			var type = 'line';
+			var years = [];
+			
+			for(var i in results[0].partiesList)
+			{
+				
+				if(results[0].partiesList != null && results[0].partiesList.length > 0)
+				{
+					var tempArr = [];
+					var Obj = {
+						name : results[0].partiesList[i].name , 
+						data : tempArr
+					}
+					mainArray.push(Obj)
+				}
+			}
+			for(var i in results)
+			{
+				years.push(results[i].electionYear+" "+results[i].electionType);
+				if(results[i].partyResultsVO != null && results[i].partyResultsVO.length > 0)
+				{
+					for(var j in results[i].partyResultsVO)
+					{
+						mainArray[j].data.push(parseFloat(results[i].partyResultsVO[j].percentage))
+					}
+				}
+				
+			}
+			console.log(mainArray)
+			
+			
+			var type = {
+				type: 'line',
+				backgroundColor:'transparent'
+			}
+			var legend = {
+				enabled: true,
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: 00,
+				y: 00,
+				floating: false,
+				shadow: false
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: true,
+				},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: years,
+				labels: {
+					enabled:true
+				}
+			}
+			highcharts(id,type,xAxis,yAxis,legend,mainArray);	
+		}
+    });
+}
+
+
+/* Old Page COde*/
 function getDistrictDetails(){
     jsObj={
       locationId:1
