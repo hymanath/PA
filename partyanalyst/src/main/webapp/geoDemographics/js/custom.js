@@ -17,7 +17,7 @@ function globalFunction()
 	'use strict';
 	collapseClick();
 	responsiveTabs();
-	casteWiseVoters();
+	/* casteWiseVoters();
 	casteGroupVoters();
 	cadreInfoGraph();
 	cadreInfoGraphBar();
@@ -28,7 +28,7 @@ function globalFunction()
 	benefitsGraph();
 	problemsDetailedGraph();
 	committees();
-	problemsSolveGraph();
+	problemsSolveGraph(); */
 	minimise('.right-nav-list li');
 	rightNav();
 	
@@ -137,55 +137,28 @@ function collapseClick()
 }
 
 
-function highcharts(id,type,data,dataLabels)
+function highcharts(id,type,xAxis,yAxis,legend,data)
 {
 	'use strict';
 	
 	$('#'+id).highcharts({
-		chart: {
-			type: type,
-		},
+		chart: type,
 		title: {
-			text: ''
+			text: null
 		},
 		subtitle: {
-			text: ''
+			text: null
 		},
-		xAxis: {
-		 	min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			categories: '',
-			labels: {
-				enabled:false
-			}
-		},
-		yAxis: {
-			min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			title: {
-				text: ''
-			},
-			labels: {
-				enabled: false,
-			},
-			stackLabels: {
-				enabled: false,
-				style: {
-					fontWeight: 'bold',
-					color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			}
-		},
+		xAxis: xAxis,
+		yAxis: yAxis,
 		tooltip: {
-			enabled:false,
+			enabled:true,
 			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
 		},
 		plotOptions: {
 			series: {
 				dataLabels: {
-					enabled: dataLabels,
+					enabled: false,
 					formatter: function() {
 						if (this.y === 0) {
 							return null;
@@ -196,22 +169,8 @@ function highcharts(id,type,data,dataLabels)
 				}
 			}
 		},
-		legend: {
-			enabled: false,
-			layout: 'vertical',
-			align: 'right',
-			verticalAlign: 'top',
-			x: -40,
-			y: 80,
-			floating: true,
-			borderWidth: 1,
-			backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-			shadow: true
-		},
-
-		series: [{
-			 data: data
-		}]
+		legend: legend,
+		series: data
 	});
 }
 function highChartsDonut(id,data,legend)
@@ -281,7 +240,7 @@ function casteWiseVoters()
 				['Grapes (bunch)', 1]
 			];
 	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highcharts(id,type,data,false);
+	highcharts(id,type,data,false,'');
 }
 function casteGroupVoters()
 {
@@ -301,7 +260,7 @@ function casteGroupVoters()
 				{name:'Grapes (bunch)',y: 1}
 			];
 	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highcharts(id,type,data,true);
+	highcharts(id,type,data,true,'');
 }
 function cadreInfoGraph()
 {
@@ -339,7 +298,7 @@ function cadreInfoGraphBar()
 				{name:'Grapes (bunch)',y: 1}
 			];
 	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highcharts(id,type,data,true);
+	highcharts(id,type,data,true,'');
 	
 }
 function grievanceDetails()
@@ -398,7 +357,7 @@ function nominatedPosts()
 				['Grapes (bunch)', 1]
 			];
 	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highcharts(id,type,data,false);	
+	highcharts(id,type,data,false,'');	
 }
 function overallAlerts()
 {
@@ -563,5 +522,5 @@ function problemsSolveGraph()
 				['Grapes (bunch)', 1]
 			];
 	$("#"+id).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	highcharts(id,type,data,false);	
+	highcharts(id,type,data,false,'');	
 }

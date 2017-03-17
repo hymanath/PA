@@ -7,7 +7,8 @@ pageEncoding="ISO-8859-1"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Constituency Page </title>
+<title><c:out value='${constituencyDetails.constituencyName}'/>&nbsp;
+	<c:out value='${constituencyDetails.constituencyType}'/> Constituency</title>
 <link href="geoDemographics/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="geoDemographics/css/custom.css" rel="stylesheet" type="text/css">
 </head>
@@ -40,34 +41,51 @@ pageEncoding="ISO-8859-1"%>
 		 	<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="block">
 					<div class="row">
+						<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
 						<div class="col-md-6 col-xs-12 col-sm-6">
 							<div class="media media-profile">
 								<div class="media-left">
-									<img src="Assests/img/profile.jpg" class="media-object profile-image img-border" alt="profile"/>
+									<img src="images/candidates/${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}.jpg" class="media-object profile-image img-border" alt="profile"/>
 									<span class="border-image img-border">
-										<img src="Assests/img/BJP.png" alt="party"/>
+										<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyFlag}" alt="party"/>
 									</span>
 								</div>
 								<div class="media-body">
-									<h4 class="m_top20 text-success text-capital">rami reddy pratap kumar reddy</h4>
-									<p class="text-muted">MLA<span class="text-capitalize">Member of legislative assembly</span></p>
+									<h4 class="m_top20 text-success text-capital">${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}</h4>
+									<p class="text-muted">MLA<span class="text-capitalize">[Member of legislative assembly]</span></p>
+									<button class="btn btn-success btn-success-white text-capital">view candidate profile</button>
 								</div>
 							</div>
 						</div>
+						</c:if>
+						<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div class="media media-profile">
+								<div class="media-left">
+									<img src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}.jpg" class="media-object profile-image img-border" alt="profile"/>
+									<span class="border-image img-border">
+										<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" alt="party"/>
+									</span>
+								</div>
+								<div class="media-body">
+									<h4 class="m_top20 text-success text-capital">${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</h4>
+									<p class="text-muted">MP<span class="text-capitalize">[Member of Parliament]</span></p>
+									<button class="btn btn-success btn-success-white text-capital">view candidate profile</button>
+								</div>
+							</div>
+						</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-				<table class="table table-bordered block">
-					<tr id="belowLevelsSizeId">
-					</tr>
-				</table>
+				<div id="consCountsId"></div>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
 				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
 				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
 				 <div class="block">
-					 <div class="row">
+					<div class="row">
 						 <div class="col-md-12 col-xs-12 col-sm-12">
 							 <label class="text-capital m_left5">
 							 	<input type="checkbox"/>ALL
@@ -81,7 +99,21 @@ pageEncoding="ISO-8859-1"%>
 							 
 							 <div id="test"></div>
 						 </div>
-					 </div>
+					</div>
+				</div>
+				<div class="block">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h4 class="text-capitalize">Assembly Election Details</h4>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div id="assemblyElectionDetails"></div>
+							<div id="assemblyElectionDetails1"></div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							
+						</div>
+					</div>
 				 </div>
 			</div>
 			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="constituencyVoters">
@@ -98,37 +130,37 @@ pageEncoding="ISO-8859-1"%>
 					<table class="table tableVoters">
 						<thead>
 							<th>
-								<img src="Assests/img/tableHead.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead1.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead1.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="Assests/img/tableHead1.png" alt="voters"/>
+								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
@@ -582,7 +614,7 @@ pageEncoding="ISO-8859-1"%>
 					<div class="row">
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_right0">
 							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="Assests/img/news.png"/>print media</h4>
+								<h4 class="text-capitalize"><img src="geoDemographics/img/news.png"/>print media</h4>
 								<table class="table table-noborder m_top10">
 									<thead class="text-capitalize f-12 bg-E9">
 										<tr>
@@ -618,7 +650,7 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_left0">
 							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="Assests/img/electronic.png"/>electronic media</h4>
+								<h4 class="text-capitalize"><img src="geoDemographics/img/electronic.png"/>electronic media</h4>
 								<table class="table table-noborder m_top10">
 									<thead class="text-capitalize f-12 bg-E9">
 										<tr>
@@ -672,7 +704,7 @@ pageEncoding="ISO-8859-1"%>
 									<tbody>
 										<tr>
 											<td>
-												<img src="Assests/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -680,7 +712,7 @@ pageEncoding="ISO-8859-1"%>
 										</tr>
 										<tr>
 											<td>
-												<img src="Assests/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -688,7 +720,7 @@ pageEncoding="ISO-8859-1"%>
 										</tr>
 										<tr>
 											<td>
-												<img src="Assests/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -1201,10 +1233,44 @@ pageEncoding="ISO-8859-1"%>
 <script src="geoDemographics/js/bootstrap.js" type="text/javascript"></script>
 <script src="geoDemographics/js/handlebars-v4.0.5.js" type="text/javascript"></script>
 <script src="geoDemographics/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<!-- handlebars cons counts template -->
+<script id="cons-counts" type="text/x-handlebars-template">
+	<table class="table table-bordered block">
+		<tr>
+			<td>
+				<h4 class="text-capitalize text-muted">Mandals</h4>
+				<h3>{{totalmandals}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+			<td>
+				<h4 class="text-capitalize text-muted">Muncipalities</h4>
+				<h3>{{noOfLocalBodies}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+			<td>
+				<h4 class="text-capitalize text-muted">Panchayats</h4>
+				<h3>{{totalPanchayats}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+			<td>
+				<h4 class="text-capitalize text-muted">Wards</h4>
+				<h3>{{totalNoOfWards}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+			<td>
+				<h4 class="text-capitalize text-muted">Booths</h4>
+				<h3>{{totalBooths}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+			<td>
+				<h4 class="text-capitalize text-muted">Hamlets</h4>
+				<h3>{{totalNoOfHamlets}}</h3>
+				<i class="glyphicon glyphicon-option-horizontal pull-right text-muted f-16"></i>
+			</td>
+		</tr>
+	</table>
+</script>
 <script src="geoDemographics/js/custom.js" type="text/javascript"></script>
 <script src="geoDemographics/js/newConstituencyPage.js" type="text/javascript"></script>
 </body>
-
-<script>
-</script>
 </html>
