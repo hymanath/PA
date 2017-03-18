@@ -83,7 +83,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String time;
 	private List<SessionVO> sessionsList = new ArrayList<SessionVO>(0);
 	
-	 
+	
 	public List<SessionVO> getSessionsList() {
 		return sessionsList;
 	}
