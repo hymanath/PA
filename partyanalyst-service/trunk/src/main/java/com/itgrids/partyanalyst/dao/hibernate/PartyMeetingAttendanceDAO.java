@@ -1496,7 +1496,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	}
 	
 	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
-			 Date fromDateStr,Date toDateStr, Long stateId, Long partyMeetingLevelId,Long  partyMeetngGrpId){
+			 Date fromDateStr,Date toDateStr, Long stateId, Long partyMeetingLevelId,Long  partyMeetngGrpId,Long sessionTypId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" st.session_type_id as session_type_id, " +
@@ -1517,7 +1517,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" party_meeting_type pmt,  ");
 		queryStr.append(" party_meeting_main_type pmmt, user_address ua ");
 		queryStr.append(" where ");
-		queryStr.append(" pm.party_meeting_address_id = ua.user_address_id and pmg.party_meeting_group_id = :party_meeting_group_id and  ");
+		queryStr.append(" pm.meeting_address_id = ua.user_address_id and pmg.party_meeting_group_id = :party_meeting_group_id and  ");
 		queryStr.append(" pmg.party_meeting_id = pm.party_meeting_id and  ");
 		queryStr.append(" pma.party_meeting_id = pm.party_meeting_id and  ");
 		queryStr.append(" pma.attendance_id = a.attendance_id and  ");
@@ -1528,31 +1528,34 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" pmt.party_meeting_main_type_id= pmmt.party_meeting_main_type_id AND ");
 		queryStr.append(" pms.party_meeting_id=pm.party_meeting_id and  ");
 		queryStr.append(" pms.session_type_id = st.session_type_id and  ");
-		queryStr.append(" pms.is_deleted='N' and  ");
-		queryStr.append(" pmg.is_deleted='N' and  ");
+		queryStr.append(" pms.is_deleted='N' and  pma.party_meeting_session_id = pms.party_meeting_session_id and ");
+		
 		if(partyMeetingLevelId != null && partyMeetingLevelId.longValue()>0L)
-			queryStr.append(" pm.party_meeting_level_id =:party_meeting_level_id ");
+			queryStr.append(" pm.party_meeting_level_id =:party_meeting_level_id and ");
 		if(partyMeetnMainTypId != null && partyMeetnMainTypId.longValue()>0L)
-			queryStr.append(" pmmt.party_meeting_main_type_id =:party_meeting_main_type_id ");
+			queryStr.append(" pmmt.party_meeting_main_type_id =:party_meeting_main_type_id and ");
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			   queryStr.append(" and ua.state_id in (:userAccessLevelValues)");  
+			   queryStr.append("  ua.state_id in (:userAccessLevelValues) and ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			   queryStr.append(" and ua.district_id in (:userAccessLevelValues)");  
+			   queryStr.append("  ua.district_id in (:userAccessLevelValues) and ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-		        queryStr.append(" and ua.parliament_constituency_id in (:userAccessLevelValues) ");  
+		        queryStr.append("  ua.parliament_constituency_id in (:userAccessLevelValues) and  ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		        queryStr.append(" and ua.constituency_id in (:userAccessLevelValues) ");  
+		        queryStr.append("  ua.constituency_id in (:userAccessLevelValues)  and ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-			    queryStr.append(" and ua.tehsil_id in (:userAccessLevelValues)");  
+			    queryStr.append("  ua.tehsil_id in (:userAccessLevelValues) and ");  
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-			    queryStr.append(" and ua.local_election_body in (:userAccessLevelValues)"); 
+			    queryStr.append("  ua.local_election_body in (:userAccessLevelValues) and "); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-			    queryStr.append(" and ua.panchayat_id in (:userAccessLevelValues)"); 
+			    queryStr.append("  ua.panchayat_id in (:userAccessLevelValues) and "); 
 			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-			    queryStr.append(" and ua.ward_id in (:userAccessLevelValues)"); 
+			    queryStr.append("  ua.ward_id in (:userAccessLevelValues) and "); 
 			 }
+		//if(sessionTypId != null && sessionTypId.longValue()>0L)
+		//	queryStr.append(" st.session_type_id =:sessionTypId and  ");
 		
+		queryStr.append(" pmg.is_deleted='N'  group by a.tdp_cadre_id,st.session_type_id   ");
 		queryStr.append(" ORDER BY a.tdp_cadre_id  ");
 		
 		Query query =getSession().createSQLQuery(queryStr.toString())
@@ -1570,6 +1573,8 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		query.setParameter("party_meeting_main_type_id", partyMeetnMainTypId);
 		query.setParameter("party_meeting_group_id", partyMeetngGrpId);
 		query.setParameter("party_meeting_level_id", partyMeetingLevelId);
+		//if(sessionTypId != null && sessionTypId.longValue()>0L)
+		//	query.setParameter("sessionTypId", sessionTypId);
 		
 		return query.list();
 	}
