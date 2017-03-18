@@ -84,4 +84,11 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getLocationWiseTotalInvitedMembers(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingLevelId,
 			Long meetingGrpId,Date fromDate,Date toDate);
 	public List<Long> getPartyMeetingLevelIdsByAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long meetingGrpId,Date fromDate,Date toDate);
+	
+	public List<Object[]> getPartyMeetingSessionWiseDtls(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,
+			List<Long> partyMeetingTypeIds,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String meetingLevelType);
+	public List<Object[]> getPartyMeetingsInvitedMembersBySessions(List<Long> sessionIds);
+	public List<Object[]> getPartyMeetingsAttendedMembersBySessions(List<Long> sessionIds);
+	public List<Object[]> getPartyMeetingsImagesCountsByMeetings(List<Long> meetingIds);
+	public List<Object[]> getPartyMeetingsImagesCoveredByMeetings(List<Long> meetingIds);
 }
