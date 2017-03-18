@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SessionVO implements Serializable{
@@ -27,7 +29,131 @@ public class SessionVO implements Serializable{
 	private String upLoadedDate;
 	private String imagePath;
 	
-	
+	private String meetingType;
+	private Long meetingTypeId;
+	private String meetingName;
+	private Long districtId;
+	private String districtName;
+	private String conductedDate;
+	private String remarks;
+	private Long constituencyId;
+    private String constituencyName;
+    private Long mandalTwnDivisionId;
+    private String mandalTwnDivision;
+    private Long sessionId;
+    private String sessionName;
+    private Set<Long> inviteedCadreIdsList = new HashSet<Long>();
+    private Set<Long> attendedCadreIdsList = new HashSet<Long>();
+    private Set<Long> absentCadreIdsList = new HashSet<Long>();
+    private List<SessionVO> subList = new ArrayList<SessionVO>();
+    
+	public SessionVO(){}
+	public SessionVO(Long sessionId, String sessionName){
+		this.sessionId=sessionId;
+		this.sessionName = sessionName;
+	}
+	public List<SessionVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<SessionVO> subList) {
+		this.subList = subList;
+	}
+	public Set<Long> getAbsentCadreIdsList() {
+		return absentCadreIdsList;
+	}
+	public void setAbsentCadreIdsList(Set<Long> absentCadreIdsList) {
+		this.absentCadreIdsList = absentCadreIdsList;
+	}
+	public Set<Long> getAttendedCadreIdsList() {
+		return attendedCadreIdsList;
+	}
+	public void setAttendedCadreIdsList(Set<Long> attendedCadreIdsList) {
+		this.attendedCadreIdsList = attendedCadreIdsList;
+	}
+	public Set<Long> getInviteedCadreIdsList() {
+		return inviteedCadreIdsList;
+	}
+	public void setInviteedCadreIdsList(Set<Long> inviteedCadreIdsList) {
+		this.inviteedCadreIdsList = inviteedCadreIdsList;
+	}
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+	public String getSessionName() {
+		return sessionName;
+	}
+	public void setSessionName(String sessionName) {
+		this.sessionName = sessionName;
+	}
+	public String getMeetingType() {
+		return meetingType;
+	}
+	public void setMeetingType(String meetingType) {
+		this.meetingType = meetingType;
+	}
+	public Long getMeetingTypeId() {
+		return meetingTypeId;
+	}
+	public void setMeetingTypeId(Long meetingTypeId) {
+		this.meetingTypeId = meetingTypeId;
+	}
+	public String getMeetingName() {
+		return meetingName;
+	}
+	public void setMeetingName(String meetingName) {
+		this.meetingName = meetingName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getConductedDate() {
+		return conductedDate;
+	}
+	public void setConductedDate(String conductedDate) {
+		this.conductedDate = conductedDate;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getMandalTwnDivisionId() {
+		return mandalTwnDivisionId;
+	}
+	public void setMandalTwnDivisionId(Long mandalTwnDivisionId) {
+		this.mandalTwnDivisionId = mandalTwnDivisionId;
+	}
+	public String getMandalTwnDivision() {
+		return mandalTwnDivision;
+	}
+	public void setMandalTwnDivision(String mandalTwnDivision) {
+		this.mandalTwnDivision = mandalTwnDivision;
+	}
 	public String getIsLate() {
 		return isLate;
 	}

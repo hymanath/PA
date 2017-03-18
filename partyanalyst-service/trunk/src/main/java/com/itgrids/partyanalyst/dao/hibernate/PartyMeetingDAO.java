@@ -3905,4 +3905,182 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		return query.list();
 	}
+	
+	public List<Object[]> getPartyMeetingSessionWiseDtls(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,
+			List<Long> partyMeetingTypeIds,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String meetingLevelType){
+		 
+		   StringBuilder queryStr = new StringBuilder();
+	    	
+	         queryStr.append("select model.partyMeetingId," + //0
+	         " model1.meetingName," + //1
+	         " model1.partyMeetingType.partyMeetingTypeId," + //2
+	         " model1.partyMeetingType.type ");//3
+	         queryStr.append(",model1.meetingAddress.district.districtId ");//4
+	         queryStr.append(",model1.meetingAddress.district.districtName ");//5
+	         queryStr.append(",model1.conductedDate" +//6
+    		                ",model1.remarks" +//7
+    		                ",model2.partyMeetingSessionId" +//8
+    		                ",model2.sessionType.sessionTypeId" +//9
+    		                ",model2.sessionType.type " );//10
+         if(meetingLevelType != null && meetingLevelType.equalsIgnoreCase("Constituency") || meetingLevelType.equalsIgnoreCase("Village/Ward") || meetingLevelType.equalsIgnoreCase("Mandal/Town/Division")){
+          queryStr.append(",model1.meetingAddress.constituency.constituencyId " +//11
+          		        " ,model1.meetingAddress.constituency.name ");	//12
+         }
+	        if(meetingLevelType != null && meetingLevelType.equalsIgnoreCase("Village/Ward") || meetingLevelType.equalsIgnoreCase("Mandal/Town/Division")){
+		          queryStr.append(",tehsil.tehsilId ");//13
+		          queryStr.append(",tehsil.tehsilName ");//14
+		          queryStr.append(",localElectionBody.localElectionBodyId ");//15
+		          queryStr.append(",localElectionBody.name ");//16
+		    }
+	         queryStr.append(" from PartyMeetingSession model2,PartyMeetingStatus model " +
+	         				 " join model.partyMeeting model1  " +
+	         				 " left join model1.meetingAddress meetingAddress  " +
+	         		         " left join meetingAddress.tehsil tehsil  " +
+	         		         " left join meetingAddress.localElectionBody localElectionBody " +
+	         " where model2.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId" +
+	         " and model1.isActive='Y' and model2.isDeleted = 'N'");
+	  		         
+	    if(meetingStatus != null && meetingStatus.trim().length() > 0){
+	     	queryStr.append(" and model.mettingStatus=:mettingStatus"); 
+	    }
+	    if(isComment != null && isComment.equalsIgnoreCase("Yes")){
+	   	 queryStr.append(" and model.partyMeeting.remarks is not null ");
+	    }
+	    if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+	   	 queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds)");
+	    }
+	     if(stateId != null && stateId.longValue() > 0){
+				 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
+		  }
+		  if(fromDate!= null && toDate!=null){
+			  queryStr.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");	 
+		 }
+		 if(partyMeetingTypeIds != null && partyMeetingTypeIds.size() > 0){
+				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+		 }
+	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
+	     }
+	 
+		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	       queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		    queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+		    queryStr.append(" and model.partyMeeting.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+		 }
+	     Query query = getSession().createQuery(queryStr.toString());
+	   
+		 if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+			 query.setParameterList("partyMeetingLevelIds", PartyMeetingLevelIds); 
+		 }
+		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 }
+		 if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		 }
+		 if(stateId != null && stateId.longValue() > 0){
+			 query.setParameter("stateId", stateId);
+		 }
+		 if(partyMeetingTypeIds != null && partyMeetingTypeIds.size() > 0){
+			 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeIds); 
+		 }
+		 if(meetingStatus != null && meetingStatus.trim().length() > 0){
+			 query.setParameter("mettingStatus", meetingStatus); 
+		 }
+		 if(locationId != null && locationId > 0){
+			 query.setParameter("locationId", locationId);
+		 }
+	return query.list(); 
+	 }
+	
+	public List<Object[]> getPartyMeetingsInvitedMembersBySessions(List<Long> meetingIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.partyMeeting.partyMeetingId," +
+					" model1.sessionType.sessionTypeId," +
+					" model.tdpCadre.tdpCadreId" +
+					" from PartyMeetingInvitee model,PartyMeetingSession model1" +
+					" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId" +
+					" and model1.isDeleted = 'N' and model.partyMeeting.isActive = 'Y'");
+		if(meetingIds != null && !meetingIds.isEmpty())
+			sb.append(" and model.partyMeeting.partyMeetingId in (:meetingIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(meetingIds != null && !meetingIds.isEmpty())
+			query.setParameterList("meetingIds", meetingIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getPartyMeetingsAttendedMembersBySessions(List<Long> meetingIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.partyMeeting.partyMeetingId," +
+					" model1.sessionType.sessionTypeId," +
+					" model.attendance.tdpCadre.tdpCadreId" +
+					" from PartyMeetingAttendance model,PartyMeetingSession model1" +
+					" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId" +
+					" and model1.isDeleted = 'N' and model.partyMeeting.isActive = 'Y'");
+		if(meetingIds != null && !meetingIds.isEmpty())
+			sb.append(" and model.partyMeeting.partyMeetingId in (:meetingIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(meetingIds != null && !meetingIds.isEmpty())
+			query.setParameterList("meetingIds", meetingIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getPartyMeetingsImagesCountsByMeetings(List<Long> meetingIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.partyMeeting.partyMeetingId," +
+					" model.partyMeetingSession.sessionType.sessionTypeId," +
+					" count(model.path)" +
+					" from PartyMeetingDocument model" +
+					" where model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y'");
+		if(meetingIds != null && !meetingIds.isEmpty())
+			sb.append(" and model.partyMeeting.partyMeetingId in (:meetingIds)");
+		sb.append(" group by model.partyMeeting.partyMeetingId,model.partyMeetingSession.sessionType.sessionTypeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(meetingIds != null && !meetingIds.isEmpty())
+			query.setParameterList("meetingIds", meetingIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getPartyMeetingsImagesCoveredByMeetings(List<Long> meetingIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.partyMeeting.partyMeetingId," +
+					" model.partyMeetingSession.sessionType.sessionTypeId" +
+					//" count(model.path)" +
+					" from PartyMeetingDocument model" +
+					" where model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y'");
+		if(meetingIds != null && !meetingIds.isEmpty())
+			sb.append(" and model.partyMeeting.partyMeetingId in (:meetingIds)");
+		sb.append(" group by model.partyMeeting.partyMeetingId,model.partyMeetingSession.sessionType.sessionTypeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(meetingIds != null && !meetingIds.isEmpty())
+			query.setParameterList("meetingIds", meetingIds);
+		
+		return query.list();
+	}
  }

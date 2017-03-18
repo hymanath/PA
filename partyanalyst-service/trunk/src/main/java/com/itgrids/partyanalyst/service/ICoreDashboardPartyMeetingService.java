@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SessionVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardPartyMeetingService {
@@ -58,4 +59,7 @@ public interface ICoreDashboardPartyMeetingService {
 	public MeetingBasicDetailsVO getPartyLevelIdWiseMeetingsCount(Long partyMeetnMainTypId,
 			Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId);
 	public IdNameVO getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetngId,Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId,Long sessionTypId,String cadreType);
+	
+	public List<SessionVO> getPartyMeetingsSessionWiseIndividualDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+				List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,Long locationId,String locationType);
 }

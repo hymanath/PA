@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -9327,5 +9328,317 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		return returnVO;
 	}
 	
-	
+	 public List<SessionVO> getPartyMeetingsSessionWiseIndividualDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+			 				List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,Long locationId,String locationType){
+		 
+	     List<SessionVO> resultList = new ArrayList<SessionVO>();
+	     Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>();
+	     List<Long> partyMeetingLevelIdsList = new ArrayList<Long>(0);
+	     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     Date fromDate=null;
+		 Date toDate=null;
+	 try{
+		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+			 fromDate = sdf.parse(fromDateStr);
+			 toDate = sdf.parse(toDateStr);
+		 }
+		 if(partyMeetingLevel != null && partyMeetingLevel.equalsIgnoreCase("State")){
+			 partyMeetingLevelIdsList.add(1l); 
+		 }else if(partyMeetingLevel.equalsIgnoreCase("District")){
+			 partyMeetingLevelIdsList.add(2l); 
+		 }else if(partyMeetingLevel.equalsIgnoreCase("Constituency")){
+			 partyMeetingLevelIdsList.add(3l);
+		 }else if(partyMeetingLevel.equalsIgnoreCase("Mandal/Town/Division")){
+			 partyMeetingLevelIdsList.add(4l);
+			 partyMeetingLevelIdsList.add(5l);
+			 partyMeetingLevelIdsList.add(6l);
+		 }else if(partyMeetingLevel.equalsIgnoreCase("Village/Ward")){
+			 partyMeetingLevelIdsList.add(7l);
+			 partyMeetingLevelIdsList.add(8l);
+		 }
+		
+	    List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+	    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+		   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+			Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+			 if(locationValuesSet == null){
+				 locationValuesSet = new java.util.HashSet<Long>();
+				 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+			 }
+			 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+		}
+	   } 
+	    if(locationType.equalsIgnoreCase("Mandal")){
+	    	String strLocationId = null;
+			if(locationId != null && locationId>0){
+				strLocationId = locationId.toString();
+			}
+			 Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
+			 if(firstDigit.longValue()==1l){
+				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+				 locationType="Mandal";
+			 }else if(firstDigit.longValue()==2l){
+				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+				 locationType="TownDivision";
+	     }
+	    }
+	    /*if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		   for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
+			   List<Object[]> rtrnObjList = partyMeetingDAO.getPartyMeetingCommentsDtls(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,partyMeetingLevel);
+			   setMeetingCommentsDtla(rtrnObjList,resultList,partyMeetingLevel);
+		   }
+	   }*/
+	    
+	    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+	    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+			  for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
+				   Map<Long,Map<Long,SessionVO>> meetingSessionWiseMap = new LinkedHashMap<Long, Map<Long,SessionVO>>();
+				   List<Long> partyMeetingIdsList = new ArrayList<Long>();
+				    
+				   List<Object[]> list = partyMeetingDAO.getPartyMeetingSessionWiseDtls(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,partyMeetingLevel);
+				   
+				   if(list != null && !list.isEmpty()){
+					   Map<Long,SessionVO> glSessionMap  = new TreeMap<Long, SessionVO>();
+					   for (Object[] param : list) {
+						   Long sessionId = commonMethodsUtilService.getLongValueForObject(param[9]);
+						   glSessionMap.put(sessionId, new SessionVO(sessionId,commonMethodsUtilService.getStringValueForObject(param[10])));
+					   }
+					   
+					   
+					   for (Object[] param : list) {
+						   Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
+						   Long sessionId = commonMethodsUtilService.getLongValueForObject(param[9]);
+						   
+						   partyMeetingIdsList.add(id);
+						   
+						   Map<Long,SessionVO> sessionMap = meetingSessionWiseMap.get(id);
+						   if(sessionMap == null){
+							   sessionMap = new LinkedHashMap<Long, SessionVO>();
+							   if(commonMethodsUtilService.isMapValid(glSessionMap)){
+								   for (Long sesstionTypeId: glSessionMap.keySet()) {
+									   sessionMap.put(sesstionTypeId, glSessionMap.get(sesstionTypeId));
+								}
+							   }
+							   
+							   SessionVO sessionvo = new SessionVO();
+							   sessionvo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							   sessionvo.setMeetingName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							   sessionvo.setMeetingTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							   sessionvo.setMeetingType(commonMethodsUtilService.getStringValueForObject(param[3]));
+							   sessionvo.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[4]));
+							   sessionvo.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
+								 if(param[6] != null && param[6].toString().trim().length() > 0 ){
+									 sessionvo.setConductedDate(sdf1.format(param[6]));
+								 }
+								 sessionvo.setRemarks(commonMethodsUtilService.getStringValueForObject(param[7]));
+								 sessionvo.setSessionId(commonMethodsUtilService.getLongValueForObject(param[9]));
+								 sessionvo.setSessionName(commonMethodsUtilService.getStringValueForObject(param[10]));
+								 
+								 if(partyMeetingLevel != null && partyMeetingLevel.equalsIgnoreCase("Constituency")){
+									  sessionvo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+									  sessionvo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+								  }
+								 if(partyMeetingLevel != null && partyMeetingLevel.equalsIgnoreCase("Village/Ward") || partyMeetingLevel.equalsIgnoreCase("Mandal/Town/Division")){
+									 sessionvo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+									 sessionvo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+									 if(param[10] != null){
+										  Long mandalId=Long.valueOf("1"+param[13].toString());
+										  sessionvo.setMandalTwnDivisionId(mandalId);
+										  sessionvo.setMandalTwnDivision(commonMethodsUtilService.getStringValueForObject(param[14]));
+									  }
+									  if(param[12] != null ){
+										Long twnDivisionId = Long.valueOf("2"+param[15].toString());
+										sessionvo.setMandalTwnDivisionId(twnDivisionId);
+										sessionvo.setMandalTwnDivision(commonMethodsUtilService.getStringValueForObject(param[16]));
+									  }
+								 }
+								 
+								 sessionMap.put(sessionId, sessionvo);
+								 meetingSessionWiseMap.put(id, sessionMap);
+						   }
+						   else{
+							   SessionVO sessionvo = sessionMap.get(sessionId);
+							   if(sessionvo == null){
+								   sessionvo = new SessionVO();
+								   sessionvo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								   sessionvo.setMeetingName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								   sessionvo.setMeetingTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
+								   sessionvo.setMeetingType(commonMethodsUtilService.getStringValueForObject(param[3]));
+								   sessionvo.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[4]));
+								   sessionvo.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
+									 if(param[6] != null && param[6].toString().trim().length() > 0 ){
+										 sessionvo.setConductedDate(sdf1.format(param[6]));
+									 }
+									 sessionvo.setRemarks(commonMethodsUtilService.getStringValueForObject(param[7]));
+									 sessionvo.setSessionId(commonMethodsUtilService.getLongValueForObject(param[9]));
+									 sessionvo.setSessionName(commonMethodsUtilService.getStringValueForObject(param[10]));
+									 
+									 if(partyMeetingLevel != null && partyMeetingLevel.equalsIgnoreCase("Constituency")){
+										  sessionvo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+										  sessionvo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+									  }
+									 if(partyMeetingLevel != null && partyMeetingLevel.equalsIgnoreCase("Village/Ward") || partyMeetingLevel.equalsIgnoreCase("Mandal/Town/Division")){
+										 sessionvo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+										 sessionvo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[12]));
+										 if(param[10] != null){
+											  Long mandalId=Long.valueOf("1"+param[13].toString());
+											  sessionvo.setMandalTwnDivisionId(mandalId);
+											  sessionvo.setMandalTwnDivision(commonMethodsUtilService.getStringValueForObject(param[14]));
+										  }
+										  if(param[12] != null ){
+											Long twnDivisionId = Long.valueOf("2"+param[15].toString());
+											sessionvo.setMandalTwnDivisionId(twnDivisionId);
+											sessionvo.setMandalTwnDivision(commonMethodsUtilService.getStringValueForObject(param[16]));
+										  }
+									 }
+									 sessionMap.put(sessionId, sessionvo);
+							   }
+						   }
+					   }
+				   }
+				   
+				   List<Object[]> invitedList = partyMeetingDAO.getPartyMeetingsInvitedMembersBySessions(partyMeetingIdsList);
+				   if(invitedList != null && !invitedList.isEmpty()){
+					   for (Object[] obj : invitedList) {
+						Long meetingId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long sessionId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						
+						Map<Long,SessionVO> sessionMap = meetingSessionWiseMap.get(meetingId);
+						if(sessionMap != null){
+							SessionVO vo = sessionMap.get(sessionId);
+							if(vo != null)
+								vo.getInviteedCadreIdsList().add(cadreId);
+						}
+					  }
+				   }
+				   
+				   List<Object[]> attendedList = partyMeetingDAO.getPartyMeetingsAttendedMembersBySessions(partyMeetingIdsList);
+				   if(attendedList != null && !attendedList.isEmpty()){
+					   for (Object[] obj : attendedList) {
+						   Long meetingId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						   Long sessionId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						   Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+							
+						   Map<Long,SessionVO> sessionMap = meetingSessionWiseMap.get(meetingId);
+						   if(sessionMap != null){
+							   SessionVO vo = sessionMap.get(sessionId);
+							   if(vo != null)
+								   vo.getAttendedCadreIdsList().add(cadreId);
+						   }
+					  }
+				   }
+				   
+				   if(meetingSessionWiseMap != null){
+					   for (Entry<Long,Map<Long,SessionVO>> meetingEntry : meetingSessionWiseMap.entrySet()){
+						   Map<Long,SessionVO> sessionMap = meetingEntry.getValue();
+						   if(sessionMap != null){
+							   for (Entry<Long,SessionVO> sessionEntry : sessionMap.entrySet()){
+								   SessionVO vo = sessionEntry.getValue();
+								   if(vo != null){
+									   if(vo.getInviteedCadreIdsList() != null && !vo.getInviteedCadreIdsList().isEmpty()){
+										   if(vo.getAttendedCadreIdsList() != null && !vo.getAttendedCadreIdsList().isEmpty()){
+											   for (Long id : vo.getInviteedCadreIdsList()) {
+												   if(vo.getAttendedCadreIdsList().contains(id))
+													   vo.getInviteeAttendedCadreIdsList().add(id);
+												   else
+													   vo.getAbsentCadreIdsList().add(id);
+											}
+										 }
+										   else{
+											   vo.setAbsentCadreIdsList(vo.getInviteeAttendedCadreIdsList());
+										   }
+									   }
+									   else
+										   vo.setNonInviteeAttendedCadreIdsList(vo.getAttendedCadreIdsList());
+									   
+									   if(vo.getAttendedCadreIdsList() != null && !vo.getAttendedCadreIdsList().isEmpty() && vo.getInviteedCadreIdsList() != null && !vo.getInviteedCadreIdsList().isEmpty()){
+										   for (Long id : vo.getAttendedCadreIdsList()) {
+											if(!vo.getInviteedCadreIdsList().contains(id))
+												vo.getNonInviteeAttendedCadreIdsList().add(id);
+										}
+									   }
+									   
+									   vo.setInvitedCount((long)vo.getInviteedCadreIdsList().size());
+									   vo.setInviteeAttendedCount((long)vo.getInviteeAttendedCadreIdsList().size());
+									   vo.setAbsentCount((long)vo.getAbsentCadreIdsList().size());
+									   vo.setNonInviteeCount((long) vo.getNonInviteeAttendedCadreIdsList().size());
+								   }
+							   }
+						   }
+					   }
+				   }
+				   
+				   List<Object[]> imagesCountList = partyMeetingDAO.getPartyMeetingsImagesCountsByMeetings(partyMeetingIdsList);
+				   if(imagesCountList != null && !imagesCountList.isEmpty()){
+					   for (Object[] obj : imagesCountList) {
+						   Long meetingId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						   Long sessionId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						   Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+							
+						   Map<Long,SessionVO> sessionMap = meetingSessionWiseMap.get(meetingId);
+						   if(sessionMap != null){
+							   SessionVO vo = sessionMap.get(sessionId);
+							   if(vo != null)
+								   vo.setImagesCount(count);
+						   }
+					   }
+				   }
+				   
+				   List<Object[]> imagesCoveredList = partyMeetingDAO.getPartyMeetingsImagesCoveredByMeetings(partyMeetingIdsList);
+				   if(imagesCoveredList != null && !imagesCoveredList.isEmpty()){
+					   for (Object[] obj : imagesCoveredList) {
+						   Long meetingId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						   Long sessionId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						   
+						   Map<Long,SessionVO> sessionMap = meetingSessionWiseMap.get(meetingId);
+						   if(sessionMap != null){
+							   SessionVO vo = sessionMap.get(sessionId);
+							   if(vo != null)
+								   vo.setImagesCovered(1l);
+						   }
+					  }
+				   }
+				   
+				  if(meetingSessionWiseMap != null){
+					  for (Entry<Long,Map<Long,SessionVO>> meetingEntry : meetingSessionWiseMap.entrySet()){
+						  Map<Long,SessionVO> sessionMap = meetingEntry.getValue();
+						  SessionVO meetingvo = new SessionVO();
+						  if(sessionMap != null){
+							  meetingvo.setSubList(new ArrayList<SessionVO>(sessionMap.values()));
+							  for (Entry<Long,SessionVO> sessionEntry : sessionMap.entrySet()){
+								  SessionVO sessionvo = sessionEntry.getValue();
+								  if(sessionvo.getId() != null && sessionvo.getId().longValue() > 0l){
+									  meetingvo.setId(sessionvo.getId());
+									  meetingvo.setMeetingName(sessionvo.getMeetingName());
+									  meetingvo.setMeetingTypeId(sessionvo.getMeetingTypeId());
+									  meetingvo.setMeetingType(sessionvo.getMeetingType());
+									  meetingvo.setDistrictId(sessionvo.getDistrictId());
+									  meetingvo.setDistrictName(sessionvo.getDistrictName());
+									  meetingvo.setConductedCount(sessionvo.getConductedCount());
+									  meetingvo.setRemarks(sessionvo.getRemarks());
+									  meetingvo.setConstituencyId(sessionvo.getConstituencyId());
+									  meetingvo.setConstituencyName(sessionvo.getConstituencyName());
+									  meetingvo.setMandalTwnDivisionId(sessionvo.getMandalTwnDivisionId());
+									  meetingvo.setMandalTwnDivision(sessionvo.getMandalTwnDivision());
+									  
+									  meetingvo.setInvitedCount(sessionvo.getInvitedCount());
+									  meetingvo.setInviteeAttendedCount(meetingvo.getInviteeAttendedCount()+sessionvo.getInviteeAttendedCount());
+									  meetingvo.setAbsentCount(meetingvo.getAbsentCount()+sessionvo.getAbsentCount());
+									  meetingvo.setNonInviteeCount(meetingvo.getNonInviteeCount()+sessionvo.getNonInviteeCount());
+								  }
+							  }
+						  }
+						  
+						  resultList.add(meetingvo);
+					  }
+				  }
+			  }
+	    }
+	    
+	  }catch(Exception e){
+		 LOG.error("Error occured at getPartyMeetingCommentsDetails() in CoreDashboardPartyMeetingService {}",e); 
+	 }
+	 return resultList;
+ }
 }
