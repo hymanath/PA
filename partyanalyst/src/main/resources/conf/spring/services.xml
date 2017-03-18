@@ -3773,6 +3773,7 @@
 	    <property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO" />
 	    <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
 	    <property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO" />
+	     <property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
