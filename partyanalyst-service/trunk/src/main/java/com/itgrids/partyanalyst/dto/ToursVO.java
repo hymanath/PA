@@ -57,6 +57,17 @@ public class ToursVO {
 	private String designation; 
 	private String category;
 	private Long id;
+	private String remark;
+	
+		
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public List<IdNameVO> getSubList() {
 		return subList;
 	}

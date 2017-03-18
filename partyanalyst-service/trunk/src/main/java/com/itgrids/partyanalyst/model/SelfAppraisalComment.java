@@ -34,16 +34,18 @@ public class SelfAppraisalComment extends BaseModel implements Serializable {
 	private String isDeleted;
 	private String comment;
 	
-		
+	private TdpCadre tdpCadre;
+	private SelfAppraisalToursMonth selfAppraisalToursMonth;
+	
+	
+	
 	public String getComment() {
 		return comment;
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
-	private TdpCadre tdpCadre;
-	private SelfAppraisalToursMonth selfAppraisalToursMonth;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
