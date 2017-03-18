@@ -466,7 +466,7 @@ function getCandidateList(designationId){
 		}
 	}
 	$(document).on("click","#profileCheckboxId",function(){
-		
+		$("#remarkId").val('');
 		$("#addNewTourBlock").html("");
 		$(".jFiler-items-list").html(' ');
 		if($(this).is(':checked')){
@@ -1785,7 +1785,8 @@ function getCandidateList(designationId){
 			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
-function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,tdpCadreName,monthDate){//Teja
+function getAllTourDetailsOverview(saveUpdate,tdpCadreId,toursMonthId,tourdate,tdpCadreName,monthDate){
+	
     $("#toursCandidateDetails").html("");
 	$("#attachementsId").html("");
 	$("#toursCandidateDetailsModal").html("");
@@ -1848,6 +1849,11 @@ function buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate){
 	var strp = '';//Program 
 	
 	if(result != null){
+		if(result.remark!=null && !result.remark==''){
+			$("#remarkId").val(result.remark);
+		}else{
+			$("#remarkId").val('');
+		}
 		
 		//CategoryWise Info
 		if(result.toursVoList != null && result.toursVoList.length > 0){
