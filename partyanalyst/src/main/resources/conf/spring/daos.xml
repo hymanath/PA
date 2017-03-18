@@ -3803,6 +3803,9 @@
      <bean id="selfAppraisalProgramDesignationRuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalProgramDesignationRuleDAO">
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="selfAppraisalCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCommentDAO">
+      <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     
     
 </beans>		

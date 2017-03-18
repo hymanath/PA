@@ -1190,6 +1190,7 @@
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalRule</value>
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalRuleProgram</value>
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalProgramDesignationRule</value>
+	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalComment</value>
 	                   
 	                   
 	              </list>
