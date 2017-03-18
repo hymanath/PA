@@ -2820,8 +2820,6 @@ public class ToursService implements IToursService {
 							saveDesignationWiseApplicationDocuments(toursVo,documentMap);
 						}
 						
-						
-						saveSelfAppraisalComment(toursVo,toursMonthId);
 						transStatus.setMessage("success");//Category Status Message
 						transStatus.setResultCode(1);
 						transStatus.setExceptionMsg(programMessage);// Program Status Message
@@ -2839,9 +2837,19 @@ public class ToursService implements IToursService {
 	    	return status;
 	    } 
 	    
+	    /**
+	     * Author : Srinu Pittala
+	     * Date: 2nd March,2017
+	     * Description : to update Tours Comments 
+	     * @param toursVo
+	     * @param toursMonthId
+	     * @return status of saving comments -- success/failure
+	     */
+	    
 	    public String saveSelfAppraisalComment(ToursNewVO toursVo,Long toursMonthId){
 	    	
 			DateUtilService dateUtilService = new DateUtilService();
+			String status="";
 	    	try {
 	    		SelfAppraisalComment selfAppraisalComment=new SelfAppraisalComment();
 				
@@ -2853,11 +2861,12 @@ public class ToursService implements IToursService {
 				selfAppraisalComment.setComment(toursVo.getRemark());
 				
 				selfAppraisalCommentDAO.save(selfAppraisalComment);
-				
+				status ="success";
 			} catch (Exception e) {
 				LOG.error("Exception Occured in saveSelfAppraisalComment() in ToursService class ", e);
+				status ="failure";
 			}
-			return "SUCCESS"; 
+			return status; 
 	    	
 	    }
 	    public String saveDesignationProgramWiseTourDetails(final ToursNewVO toursVo,final Long toursMonthId){
