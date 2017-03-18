@@ -52,6 +52,10 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private Long villageId;
 	private String villageName;
 	
+	private String ivrStatus;
+	private Long localElcBodyId;
+	private String localElcBodyName;
+	
 	public String getDateStr() {
 		return dateStr;
 	}
@@ -307,6 +311,24 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	}
 	public void setVillageName(String villageName) {
 		this.villageName = villageName;
+	}
+	public String getIvrStatus() {
+		return ivrStatus;
+	}
+	public void setIvrStatus(String ivrStatus) {
+		this.ivrStatus = ivrStatus;
+	}
+	public Long getLocalElcBodyId() {
+		return localElcBodyId;
+	}
+	public void setLocalElcBodyId(Long localElcBodyId) {
+		this.localElcBodyId = localElcBodyId;
+	}
+	public String getLocalElcBodyName() {
+		return localElcBodyName;
+	}
+	public void setLocalElcBodyName(String localElcBodyName) {
+		this.localElcBodyName = localElcBodyName;
 	}
 	
 	
