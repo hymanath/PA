@@ -229,6 +229,10 @@
 														</div>
 													</div>
 												</div>
+												<div class="">
+													  <label>Comment:</label>
+													  <textarea style="resize: none;" name="toursNewVO.remark" class="form-control" id="remarkId"></textarea>
+												</div>												
 												<div class="row" id="uploadFlDivId">
 													<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 														<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
