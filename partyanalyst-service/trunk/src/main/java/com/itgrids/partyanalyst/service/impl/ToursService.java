@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITourTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCommentDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -3371,6 +3372,15 @@ public class ToursService implements IToursService {
 	    	    	
 	    	    }
 	    	    
+	    	    List<String> retrieveComment=selfAppraisalCommentDAO.getCandidateCommentDetails(tdpCadreId, toursMonthId);
+	    	    
+	    	    if(retrieveComment !=null && retrieveComment.size()>0){
+	    	    	for (String obj : retrieveComment) {
+	    	    		if(obj != null )
+	    	    			finalVo.setRemark((String)obj);	   		
+	    	    	}	    	    	
+	    	    }
+	    	    
 	    	    //Get Program Details	    		    	    
 	    	    setProgramDetails(tdpCadreId,toursMonthId,finalVo);
 	    	    
@@ -3379,6 +3389,7 @@ public class ToursService implements IToursService {
 	    	    	finalVo.setDocList(documentsList);
 	    	    }
 	    	    
+	    	    	    	    
 			}catch(Exception e){
 	    		LOG.error("Exception Occured in getSelectedprofileToursOverview() in ToursService class ", e);
 	    	}

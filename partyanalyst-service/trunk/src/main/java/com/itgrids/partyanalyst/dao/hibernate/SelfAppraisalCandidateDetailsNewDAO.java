@@ -548,7 +548,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	       			" SelfAppraisalCandidateDetailsNew model ");
 	       	
 	    	queryStr.append( " where " +
-	       			" model.tdpCadreId = :tdpCadreId ");
+	       			" model.tdpCadre.tdpCadreId = :tdpCadreId ");
 	    	 if(tourMonthId != null){
 	    		 queryStr.append( " and model.selfAppraisalToursMonthId = :tourMonthId ");
 	    	 }
@@ -628,4 +628,12 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		
 		   return query.list();  
 	   }
+	public List<Object[]> getCandiateComment(Long tdpCadreId){
+		Query query = getSession().createQuery("select model.selfAppraisalToursMonthId,model.comment " +
+				                               " from SelfAppraisalComment model " +
+				                               " where model.isDeleted='N' and model.tdpCadreId =:tdpCadreId " +
+				                               " order by model.insertedtime desc");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
 }

@@ -3171,6 +3171,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	 List<ToursBasicVO> monthList = new ArrayList<ToursBasicVO>();
 	 List<ToursBasicVO> monthWiseComplainceList = new ArrayList<ToursBasicVO>();
 	 Map<String,String> ctegoryIdAndNameMap = new HashMap<String, String>();
+	 Map<Long,String> candiateCommentMap = new HashMap<Long, String>(0);
 	 Date fromDate=null;
 	 Date toDate = null;
 	 try{
@@ -3253,8 +3254,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   //calculating category wise complaince per
 		   calculateCategoryWiseComplainceCnt(candiateMap);
 		   //Get Candidate Wise Document 
+		   Long tdpCadreId = 0l;
 		   if(monthyearIds.size() > 0){
-			Long tdpCadreId = selfAppraisalCandidateDAO.getTdpCadreId(selfAppraisalCandidateId);
+		    tdpCadreId = selfAppraisalCandidateDAO.getTdpCadreId(selfAppraisalCandidateId);
            List<Object[]> rtrnObjList = selfAppraisalCandidateDocumentDAO.getCandiateDocument(monthyearIds, tdpCadreId);
             setCandidateDocument(rtrnObjList,monthWiseCandiateDocMap);
 		   }
@@ -3267,6 +3269,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   //Getting Program Details 
 		   List<Object[]> rtrnMonthPrograDtls = selfAppraisalCandidateProgramDetailsDAO.getMonthWiseTourSubmittedDetails(monthyearIds, selfAppraisalCandidateId);
 		   setMonthWiseTourDetails(rtrnMonthPrograDtls,monthWiseTourDtlsMap,monthMap);
+		   
+		   //Getting Candidate Wise comment
+		   List<Object[]> rtrnCommentObjLst = selfAppraisalCandidateDetailsNewDAO.getCandiateComment(tdpCadreId);
+		    setCandidateComment(rtrnCommentObjLst,candiateCommentMap);
 		   }
 		    Double totalPer =0.0d;
 		    if(candiateMap != null && candiateMap.size() > 0){
@@ -3322,7 +3328,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    		}
 		    	}
 		    }
-		    
+		    //Setting comment month wise
+		    if(resultVO.getSubList3() != null && resultVO.getSubList3().size() > 0){
+		    	for(ToursBasicVO monthDtlsVO:resultVO.getSubList3()){
+		    		monthDtlsVO.setComment(candiateCommentMap.get(monthDtlsVO.getId()));
+		    	}
+		    }
 	 }catch(Exception e){
 		 LOG.error("Exception Occured in getIndividualPersonTourDetails() in CoreDashboardToursService  : ",e);	 
 	 }
@@ -3362,6 +3373,20 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   }
 	 }catch(Exception e){
 		 LOG.error("Exception Occured in mergeRequiredData() in CoreDashboardToursService  : ",e);	  
+	 }
+ }
+ public void setCandidateComment(List<Object[]> commentObjList,Map<Long,String> candidateCommentMap){
+	 try{
+		 if(commentObjList != null && commentObjList.size() > 0){
+			 for(Object[] param:commentObjList){
+				 String comment = candidateCommentMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  if(comment == null){
+					  candidateCommentMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				  }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception Occured in setCandidateComment() in CoreDashboardToursService  : ",e); 
 	 }
  }
  public void setMonthWiseTargetBasedOnCategory(List<Object[]> objList,List<ToursBasicVO> monthList,String type){
