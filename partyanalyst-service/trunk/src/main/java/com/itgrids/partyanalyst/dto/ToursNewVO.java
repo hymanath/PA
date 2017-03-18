@@ -56,8 +56,16 @@ public class ToursNewVO implements Serializable {
 	private Long tourDays;
 	private Long tdpCadreId;
 	private String type;
-	
-	
+	private String remark;
+		
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
 	public String getType() {
 		return type;
