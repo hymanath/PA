@@ -9072,6 +9072,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		try{
 			Date startDate = null;
 			Date endDate = null;
+			Set<Long> totalCadreIds = new HashSet<Long>();
 			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
 				 startDate = format.parse(fromDateStr);
@@ -9115,6 +9116,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					remarksMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), commonMethodsUtilService.getStringValueForObject(obj[5]));
 				}
 			}
+			
+			totalCadreIds.addAll(totalInviteeList);
 			
 		    List<Object[]> attendanceMembrsList = partyMeetingAttendanceDAO.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetnMainTypId, locationId,locationValuesSet,startDate,endDate, stateId, partyMeetingLevelId,partyMeetngGrpId,sessionTypId);
 		    Map<Long,IdNameVO> cadreMap = new HashMap<Long, IdNameVO>(0);
@@ -9250,8 +9253,30 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		    	}}
 		    }
 		    
+		    totalCadreIds.addAll(cadreMap.keySet());
+		    
+		    Map<Long,List<String>> designationMap = getDesignationsForCadreIds(new ArrayList<Long>(totalCadreIds));
+		    
+		    if(cadreMap != null){
+		    	for(Entry<Long, IdNameVO> entry:cadreMap.entrySet()){
+		    		IdNameVO vo = entry.getValue();
+		    		Long id = vo.getId();
+		    		List<String> designationList = designationMap.get(id);
+		    		vo.setSubList(designationList);
+		    	}
+		    }
+		    
+		    List<IdNameVO> list = getTdpCadreRelatedMembers(new ArrayList<IdNameVO>(cadreMap.values()), new LinkedHashMap<String, IdNameVO>());
+		    
+		    if(list != null && !list.isEmpty()){
+		    	cadreMap.clear();
+		    	for (IdNameVO idNameVO : list) {
+					cadreMap.put(idNameVO.getId(), idNameVO);
+				}
+		    }
+		    
 		    returnVo = filterBySearchCriteria(cadreMap,sessionTypId,cadreType);
-					 
+		    		 
 		}catch(Exception e){
 			LOG.error("Exception raised in getPartyLevelIdWiseMeetingAttendanceDetails", e);
 		}
@@ -9641,4 +9666,85 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	 }
 	 return resultList;
  }
+	 
+	 public Map<Long,List<String>> getDesignationsForCadreIds(List<Long> tdpCadreIds){
+		 Map<Long,List<String>> designationMap = new LinkedHashMap<Long, List<String>>();
+		 try {
+			List<Object[]> list = trainingCampAttendanceDAO.getMembersDetails(tdpCadreIds);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					List<String> designList = designationMap.get(id);
+					if(designList == null){
+						designList = new ArrayList<String>();
+						String status;
+						if(obj[2] != null){
+							status = obj[2].toString();
+							designList.add(status);
+						}
+						else if(obj[3] != null){
+							status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+							designList.add(status);
+						}
+						designationMap.put(id, designList);
+					}
+					else{
+						String status;
+						if(obj[2] != null){
+							status = obj[2].toString();
+							designList.add(status);
+						}
+						else if(obj[3] != null){
+							status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+							designList.add(status);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured at getDesignationsForCadreIds() in CoreDashboardPartyMeetingService {}",e);
+		}
+		 return designationMap;
+	 }
+	 
+	 public List<IdNameVO> getTdpCadreRelatedMembers(List<IdNameVO> idNameVOs ,  Map<String, IdNameVO> designationsMap ){
+		 List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			 if(idNameVOs != null && idNameVOs.size() > 0)
+		     {
+		    	 for(IdNameVO VO : idNameVOs)
+		    	 {
+		    		 //if(VO != null && VO.getIsInvitee() != null && VO.getIsInvitee().equalsIgnoreCase("true"))
+		    		// {
+		    			 finalList.add(VO);
+		    			 
+		    			 //collect designations count.
+		    			 if(VO.getSubList() != null && VO.getSubList().size() > 0)
+		    			 {
+		    				 for(String sts : VO.getSubList())
+		    				 {
+		    					 if(designationsMap.containsKey(sts)){
+										IdNameVO desgVO = designationsMap.get(sts);
+										desgVO.setCount( desgVO.getCount() + 1);
+								 }else{
+									IdNameVO desgVO = new IdNameVO();
+									desgVO.setName(sts);
+									desgVO.setCount(1L);
+									designationsMap.put( desgVO.getName() , desgVO);
+								 }
+		    				 }
+		    			 }
+		    			 
+		    		 //}
+		    	 }
+		     }
+			 if(finalList != null && finalList.size() > 0){
+		    	 alignAllDesignations( finalList , designationsMap);
+		     }
+		}catch(Exception e){
+			 LOG.error("exception occurred in getOnlyInvitedRelatedMembers()", e);
+		}
+		return finalList;
+	}
 }
