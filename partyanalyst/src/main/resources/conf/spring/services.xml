@@ -3998,6 +3998,7 @@
 	  <property name="selfAppraisalCandidateDetailsLocationDAO" ref="selfAppraisalCandidateDetailsLocationDAO"></property>
 	  <property name="selfAppraisalDesignationProgramTargetDAO" ref="selfAppraisalDesignationProgramTargetDAO"></property>
 	  <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>	
+	  <property name="selfAppraisalCommentDAO" ref="selfAppraisalCommentDAO"></property>
 	</bean>  
 	
 	
