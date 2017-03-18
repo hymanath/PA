@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDocumentDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateProgramDetailsDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCommentDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationProgramTargetDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationTargetDAO;
@@ -69,6 +70,7 @@ import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetailsNew;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateProgramDetails;
+import com.itgrids.partyanalyst.model.SelfAppraisalComment;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IToursService;
@@ -112,6 +114,16 @@ public class ToursService implements IToursService {
 	private ISelfAppraisalCandidateDetailsLocationDAO selfAppraisalCandidateDetailsLocationDAO;
 	private ISelfAppraisalDesignationProgramTargetDAO selfAppraisalDesignationProgramTargetDAO;
 	private ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO;
+	private ISelfAppraisalCommentDAO selfAppraisalCommentDAO;
+	
+	
+	public ISelfAppraisalCommentDAO getSelfAppraisalCommentDAO() {
+		return selfAppraisalCommentDAO;
+	}
+	public void setSelfAppraisalCommentDAO(
+			ISelfAppraisalCommentDAO selfAppraisalCommentDAO) {
+		this.selfAppraisalCommentDAO = selfAppraisalCommentDAO;
+	}
 
 	public void setSelfAppraisalCandidateDetailsLocationDAO(
 			ISelfAppraisalCandidateDetailsLocationDAO selfAppraisalCandidateDetailsLocationDAO) {
@@ -2801,17 +2813,18 @@ public class ToursService implements IToursService {
 					
 					// Programs Wise Saving Start 					
 						String programMessage = saveDesignationProgramWiseTourDetails(toursVo,toursMonthId);
-					
+						String commentStatus =  saveSelfAppraisalComment(toursVo,toursMonthId);
 					
 						//Documents Saving	
 						if(documentMap !=null && documentMap.size()>0){
 							saveDesignationWiseApplicationDocuments(toursVo,documentMap);
 						}
 						
+						
+						saveSelfAppraisalComment(toursVo,toursMonthId);
 						transStatus.setMessage("success");//Category Status Message
 						transStatus.setResultCode(1);
 						transStatus.setExceptionMsg(programMessage);// Program Status Message
-						
 						return transStatus;
 						
 					}
@@ -2826,6 +2839,27 @@ public class ToursService implements IToursService {
 	    	return status;
 	    } 
 	    
+	    public String saveSelfAppraisalComment(ToursNewVO toursVo,Long toursMonthId){
+	    	
+			DateUtilService dateUtilService = new DateUtilService();
+	    	try {
+	    		SelfAppraisalComment selfAppraisalComment=new SelfAppraisalComment();
+				
+				selfAppraisalComment.setTdpCadreId(toursVo.getTdpCadreId());
+				selfAppraisalComment.setSelfAppraisalToursMonthId(toursMonthId);
+				selfAppraisalComment.setInsertedBy(toursVo.getUserId());
+				selfAppraisalComment.setInsertedtime(dateUtilService.getCurrentDateAndTime());
+				selfAppraisalComment.setIsDeleted("N");
+				selfAppraisalComment.setComment(toursVo.getRemark());
+				
+				selfAppraisalCommentDAO.save(selfAppraisalComment);
+				
+			} catch (Exception e) {
+				LOG.error("Exception Occured in saveSelfAppraisalComment() in ToursService class ", e);
+			}
+			return "SUCCESS"; 
+	    	
+	    }
 	    public String saveDesignationProgramWiseTourDetails(final ToursNewVO toursVo,final Long toursMonthId){
 	    	String status=null;
 	    	try{
