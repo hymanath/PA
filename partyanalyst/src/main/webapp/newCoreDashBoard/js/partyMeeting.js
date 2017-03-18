@@ -5816,7 +5816,10 @@ $("#customMeetingsDiv").html(str);
 $(document).on("click",".getModalImagesCls",function(){
 	$("#myModalImageId").modal("show");
 	var location = $(this).attr('attr_location');
-	$("#myModalLabelId").html(location+" "+"IMAGE DETAILS");
+	if(location != null && location != 'undefined')
+		$("#myModalLabelId").html(location+" "+"IMAGE DETAILS");
+	else
+		$("#myModalLabelId").html("IMAGE DETAILS");
 	var levelId = $(this).attr('attr_Meeting_level_id');
 	var meetingId = $(this).attr('attr_Meeting_id');
 	getDistrictsForCustomMeetingImges(levelId,meetingId);
