@@ -1995,12 +1995,12 @@ function isNumberKey(evt){
              return false;
           return true;
 } 
-	   
+	   $('#remarkId').val('');
 function savingApplication1(){
 	var tourdate = $("#tourMonthYear").val();
 	var flag = false;
 	var isDataEntered	= false;
-	
+
 	  $(".toursDaysCls").each(function(){
 			var enteredValue = parseInt($(this).val());
 			if(enteredValue>0){
