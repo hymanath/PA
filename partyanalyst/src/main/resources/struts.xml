@@ -16134,5 +16134,25 @@
 				<param name="root">result</param>				
 			</result>			
 		</action>
+		<action name="getConstituenciesForActivitiesAction" class="committeeDashBoardAction" method="getConstituenciesByActivity">
+		    <result type="json" name="success">		   
+			    <param name="root">idNameVOList</param>
+			</result>
+		</action>
+		<action name="getMandalsForConstituenciesAction" class="committeeDashBoardAction" method="getMandalsByConstituency">
+		    <result type="json" name="success">		   
+			    <param name="root">idNameVOList</param>
+			</result>
+		</action>
+		<action name="getPanchayatsForMandalsAction" class="committeeDashBoardAction" method="getPanchayatsByMandals">
+		    <result type="json" name="success">		   
+			    <param name="root">idNameVOList</param>
+			</result>
+		</action>
+		<action name="getLocationDetailsForActivityAction" class="committeeDashBoardAction" method="getActivityLocationDetails">
+		<result type="json" name="success">
+			<param name="root">locationWiseBoothDetailsVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
