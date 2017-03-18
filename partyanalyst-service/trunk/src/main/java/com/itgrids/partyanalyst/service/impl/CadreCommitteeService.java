@@ -20589,4 +20589,125 @@ public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(Str
 	  
 	return locationsList;
 }
+
+public List<IdNameVO> getConstituenciesByActivityId(Long activityId)
+{
+	List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> constLsit = activityLocationInfoDAO.getCnstenciesByActivityId(activityId);
+		if(constLsit != null && constLsit.size()>0)
+		{
+			for (Object[] objects : constLsit) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					idNameVoList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+		LOG.error("Exception Occured in getConstituenciesByActivityId() method, Exception - ",e);
+		}
+	return idNameVoList;
+}
+public List<IdNameVO> getMandalsByConstituencyId(Long constituencyId)
+{
+	List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> mandalsLsit = activityLocationInfoDAO.getMandalsByConstituency(constituencyId);
+		if(mandalsLsit != null && mandalsLsit.size()>0)
+		{
+			for (Object[] objects : mandalsLsit) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
+					vo.setBoardId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[2])));
+					vo.setBoardName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Muncipality ");
+					idNameVoList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+		LOG.error("Exception Occured in getMandalsByConstituencyId() method, Exception - ",e);
+		}
+	return idNameVoList;
+}
+public List<IdNameVO> getPanchayatBymandalId(Long mandalId)
+{
+	List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>();
+	try {
+		if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+			List<Object[]> panchayatsLsit = panchayatDAO.getPanchayatList(Long.valueOf(mandalId.toString().substring(1)));
+				if(panchayatsLsit != null && panchayatsLsit.size()>0)
+				{
+					for (Object[] objects : panchayatsLsit) {
+							IdNameVO vo = new IdNameVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							idNameVoList.add(vo);
+						}
+					}
+			}
+		if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+			List<Object[]> wardsLsit = constituencyDAO.getWardIdAndName(Long.valueOf(mandalId.toString().substring(1)));
+				if(wardsLsit != null && wardsLsit.size()>0)
+				{
+					for (Object[] objects : wardsLsit) {
+							IdNameVO vo = new IdNameVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							idNameVoList.add(vo);
+						}
+					}
+			}
+		} catch (Exception e) {
+		LOG.error("Exception Occured in getPanchayatBymandalId() method, Exception - ",e);
+		}
+	return idNameVoList;
+}
+public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType){
+	List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
+	try{
+		List<Long> locationIds = new ArrayList<Long>();
+		if(searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat")){
+			Long locId = Long.valueOf(locationId.toString().substring(1));
+			locationIds.add(locId);
+		}else{
+			locationIds.add(locationId);
+		}
+		
+		List<Object[]> lctWiseList = activityLocationInfoDAO.getLocationWise(levelId, locationIds, activityScopeId, searchType);
+		if(lctWiseList != null && lctWiseList.size() > 0){
+				if(searchType.trim().equalsIgnoreCase("District")){
+					for (Object[] objects : lctWiseList) {
+						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							vo.setPlanedDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							vo.setConductedDate(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							returnList.add(vo);
+					}
+				}else if(searchType.trim().equalsIgnoreCase("Constituency") || searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat")){
+					for (Object[] objects : lctWiseList) {
+						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+							vo.setMandalId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
+							vo.setLocalElcBodyId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							vo.setLocalElcBodyName(commonMethodsUtilService.getStringValueForObject(objects[3])+ " Muncipality ");
+							vo.setVillageId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							vo.setVillageName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							vo.setPlanedDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							vo.setConductedDate(commonMethodsUtilService.getStringValueForObject(objects[9]));
+							vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[10]));
+							returnList.add(vo);
+				}
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception Occured in getActivityLocationDetails() method, Exception - ",e);
+	}
+	return returnList;
+}
+
 }
