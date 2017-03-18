@@ -2032,7 +2032,7 @@
 										</div>
 									 </div>
 								   </div>
-									<div class="row">
+									<div class="row" style="display: none;">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
 											  <div class="panel panel-default panelNew">
