@@ -3831,7 +3831,8 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				 $("#meetingSubLevelRsltProcessingImgId").hide();
 			   }
 			if(result != null && result.length > 0){
-				buildMeetingCommentDtlsRslt(result,divId,statusType,meetingLevel);
+				//buildMeetingCommentDtlsRslt(result,divId,statusType,meetingLevel);
+				buildMeetingIndividualDtlsRslt(result,divId,statusType,meetingLevel);
 			}else{
 			   if(statusType=="directRslt"){
 				  $("#"+divId).html("NO DATA AVAILABLE.");
@@ -3841,6 +3842,123 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			}
 		});  
   } 
+  
+  function buildMeetingIndividualDtlsRslt(result,divId,statusType,meetingLevel){
+	   var str='';
+	   str+='<div class="table-responsive">';
+	   if(statusType == "directRslt"){
+		str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-bordered" id="meetingCommentDataTblId">';   
+	   }else{
+		str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-bordered" id="subLevelDataTblRsltId">';   
+	   }
+	   str+='<thead>';
+	   str+='<tr>';
+             str+='<th rowspan="2" style="text-align: center;">District</th>';
+			 if(meetingLevel == "Constituency"){
+			 str+='<th rowspan="2" style="text-align: center;">Constituency</th>'	 
+			 }
+			 if(meetingLevel=="Village/Ward" || meetingLevel=="Mandal/Town/Division"){
+				str+='<th rowspan="2" style="text-align: center;">Constituency</th>'	  
+				str+='<th rowspan="2" style="text-align: center;">Mandal/Town/Division</th>'	  
+			 }
+			 str+='<th rowspan="2" style="text-align: center;">Meeting Name</th>';
+			 str+='<th rowspan="2" style="text-align: center;">Conducted Date</th>';
+			 str+='<th rowspan="2" style="text-align: center;">Invited</th>';
+			 if(result[0].subList != null && result[0].subList.length > 0){
+				 for(var i in result[0].subList){
+					 str+='<th colspan="5" style="text-align: center;">'+result[0].subList[i].sessionName+'</th>';
+				 }
+			 }
+			 str+='<th rowspan="2" style="text-align: center;">Comment</th>';
+			 str+='</tr>';
+			 str+='<tr>';
+			 if(result[0].subList != null && result[0].subList.length > 0){
+				 for(var i in result[0].subList){
+					 str+='<th>Invitee Attended</th>';
+					 str+='<th>Absent</th>';
+					 str+='<th>Non-Invitee Attended</th>';
+					 str+='<th>imagesCount</th>';
+					 str+='<th>imagesCovered</th>';
+				 }
+			 }
+			 str+='</tr>';
+		 str+='</thead>';
+		str+='<tbody>';
+		  for(var i in result){
+			str+='<tr>';
+			 if(result[i].districtName != null && result[i].districtName.length > 0){
+				str+='<td>'+result[i].districtName+'</td>';      
+			  }else{
+				str+='<td> - </td>';  
+			  }
+			 if(meetingLevel == "Constituency"){
+			  if(result[i].constituencyName != null && result[i].constituencyName.length > 0){
+				str+='<td>'+result[i].constituencyName+'</td>';  
+			  }else{
+			  str+='<td> - </td>';  
+			  }
+			  }
+			  if(meetingLevel=="Village/Ward" || meetingLevel=="Mandal/Town/Division"){
+				   if(result[i].constituencyName != null && result[i].constituencyName.length > 0){
+					str+='<td>'+result[i].constituencyName+'</td>';  
+				   }else{
+				  str+='<td> - </td>';  
+				  }  
+				  if(result[i].mandalTwnDivision != null && result[i].mandalTwnDivision.length > 0){
+					str+='<td>'+result[i].mandalTwnDivision+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }	  
+			 }
+			 if(result[i].meetingName != null && result[i].meetingName.length > 0){
+				str+='<td>'+result[i].meetingName+'</td>';  
+			  }else{
+			  str+='<td> - </td>';  
+			  }
+			  if(result[i].conductedDate != null && result[i].conductedDate.length > 0){
+				  str+='<td>'+result[i].conductedDate+'</td>';      
+			  }else{
+				str+='<td> - </td>';  
+			  }
+			  str+='<td>'+result[i].invitedCount+'</td>';
+			  if(result[i].subList != null && result[i].subList.length > 0){
+				  for(var j in result[i].subList){
+					  str+='<td>'+result[i].subList[j].inviteeAttendedCount+'</td>';
+					  str+='<td>'+result[i].subList[j].absentCount+'</td>';
+					  str+='<td>'+result[i].subList[j].nonInviteeCount+'</td>';
+					  str+='<td>'+result[i].subList[j].imagesCount+'</td>';
+					  str+='<td>'+result[i].subList[j].imagesCovered+'</td>';
+				  }
+			  }
+			  
+			  
+			  if(result[i].remarks != null && result[i].remarks.length > 0){
+				 str+='<td>'+result[i].remarks+'</td>';       
+			  }else{
+				str+='<td> - </td>';  
+			  }
+			str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+			 str+='</div>';
+			//$("#"+divId).html(str);
+	  if(statusType == "directRslt"){
+	
+     	$("#"+divId).html(str);
+		 $("#meetingCommentDataTblId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 10	
+		 });
+	   }else{
+		 $("#"+divId).html(str);
+		 $("#subLevelDataTblRsltId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 10	
+		 });
+	   }
+   }
+  
    function buildMeetingCommentDtlsRslt(result,divId,statusType,meetingLevel){
 	   var str='';
 	   if(statusType == "directRslt"){
