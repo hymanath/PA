@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SessionVO;
 import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
@@ -146,6 +147,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private MeetingBasicDetailsVO meetingBasicDetailsVO;
 	private List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>();
 	private List<Long> partyMeetingLevelIds = new ArrayList<Long>();
+	private List<SessionVO> sessionVOList = new ArrayList<SessionVO>();
 	
 	/**
 	 * starting Payment Gateway required parameters
@@ -172,6 +174,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
+	}
+
+	public List<SessionVO> getSessionVOList() {
+		return sessionVOList;
+	}
+
+	public void setSessionVOList(List<SessionVO> sessionVOList) {
+		this.sessionVOList = sessionVOList;
 	}
 
 	public List<Long> getPartyMeetingLevelIds() {
@@ -2811,7 +2821,9 @@ public String getPartyMeetingCommentsDetails(){
 		}
 		Long locationId = jObj.getLong("locationId");
 		String locationType = jObj.getString("locationType");
-		partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingCommentsDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+		//partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingCommentsDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+		sessionVOList = coreDashboardPartyMeetingService.getPartyMeetingsSessionWiseIndividualDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+		
 	} catch (Exception e) {
 		LOG.error("Exception raised at getPartyMeetingCommentsDetails() method of CoreDashBoard", e);
 	}
