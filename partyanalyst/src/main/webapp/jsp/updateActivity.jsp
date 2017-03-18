@@ -13,6 +13,9 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/css/activity.custom.css' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/Date/daterangepicker-bs3.css' rel='stylesheet' type='text/css'>
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+	
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>	
@@ -53,6 +56,26 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<!-- images -->
+	<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
+	<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	
+	
+	
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 	
@@ -60,7 +83,7 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
-<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+<!--<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>-->
 	
  <style type="text/css">
 	.m_top10{margin-top:10px}
@@ -145,12 +168,15 @@
 							</div>	
 							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
 								<label>Constituency</label>
-								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
+								<!--<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >-->
+								<select id="constiList" class="form-control" name="activityVO.constituencyId" >
+									<option value="0"> Select Constituency</option>
 								</select><span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg3"></span>
 							</div>
 							<div class="col-md-4 m_top10" id="mandalDivId" style="display:none;">
 								<label >Mandal/ Town/ Division</label>
-								<select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">
+								<!--<select id="mandalsList" class="form-control" onchange="getPanchayatWardByMandal(this.value);">-->
+								<select id="mandalsList" class="form-control">
 									<option value="0"> Mandal/ Town/ Division</option>
 								</select>
 								<span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg"></span>
@@ -164,7 +190,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','','0','0',1);">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationWiseDetailsForActivity();">SEARCH</button>
 							</div>
 							</div>
 								
@@ -229,16 +255,19 @@
 		-->
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
-		<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
+		<!--<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
 		<input type="checkbox" onclick="getLocationDetailsForActivity('','','0','0',2);" id="imageChekId">
 			SHOW ONLY IMAGES UPLOADED LOCATIONS
-		</span>
+		</span>-->
 		</div>
             	<div class="panel-heading">
                 	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
                     	<label class="checkbox-inline">
-							<span>
+						<span>
+								<i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;width" title="View Images"></i>
+							</span>
+							<!--<span>
 								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">All
 							</span>
 							<span>
@@ -246,7 +275,7 @@
 							</span>
 							<span  style="margin-left:30px;">
 								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','','0','0',2);" name="radio1">Show Not Conducted Locations
-							</span>
+							</span> -->
 							<!--<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
 							</span>-->
@@ -523,6 +552,23 @@
 				</div>
 			  </div>
 </div>
+<!-- Modal for Images -->
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabelId"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildPoupupImage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="hiddenActivityScopeId"></input>
+<input type="hidden" id="hiddenActivityLevelId"></input>
+
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -532,6 +578,9 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="js/Activities/activitiesImages.js" type="text/javascript"></script>
+
 <script>
 
 var actScopeId = '${activityScopeId}';
@@ -673,10 +722,11 @@ function submitForm(){
 	
 function getActivityNames(id)
 {
+	
 	$('#mandalsList').find('option').remove();
 	$('#mandalsList').append('<option value="0"> Select Mandal/Town/Division</option>');
 	$('#villageWardsList').find('option').remove();
-	$('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');
+	$('#villageWardsList').append('<option value="0"> Select Panchayat/Ward</option>');
 	
 	$("#constituencyDivId").hide();
 	$("#mandalDivId").hide();
@@ -2583,6 +2633,267 @@ $(document).on("click","#closeButtonId",function(){
 	},1000)
 	
 });
+$(document).on("change","#ActivityList",function(){
+	$('#constiList').find('option').remove();
+	$('#constiList').append('<option value="0">Select Constituency</option>');
+	var activityId = $(this).val();
+	
+	var jsObj={	
+			activityId:activityId		 
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getConstituenciesForActivitiesAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0)
+			{
+				$('#constiList').find('option').remove();
+				$('#constiList').append('<option value="0">All</option>');
+				for(var i in result)
+				$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
+		   });
+});
+$(document).on("change","#constiList",function(){
+	$('#mandalsList').find('option').remove();
+	$('#mandalsList').append('<option value="0">All</option>');
+	var constituencyId = $(this).val();
+	
+	var jsObj={	
+			constituencyId:constituencyId		 
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getMandalsForConstituenciesAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#mandalsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		   });
+});
+$(document).on("change","#mandalsList",function(){
+	$('#villageWardsList').find('option').remove();
+	$('#villageWardsList').append('<option value="0">All</option>');
+	var mandalId = $(this).val();
+	
+	var jsObj={	
+			mandalId:mandalId		 
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getPanchayatsForMandalsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0)
+			{
+				for(var i in result)
+				$('#villageWardsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
+		   });
+});
+function getLocationWiseDetailsForActivity()
+{
+	
+	//getActivityStatusDetailsByScopeIdAndLocationValue();
+	//$("#questionsDiv").show();
+	//$("#activityresponsesDiv").show();
+	var activityTypeId =$('#activityTypeList').val();
+	var activityLevelId =$('#activityLevelList').val();
+	var ActivityId =$('#ActivityList').val();
+	var constituencyId =$('#constiList').val();
+	var districtId =$('#districtList').val();
+	$('#ErrDiv').html("");
+	var errStr ='';
+	if(activityTypeId == null || activityTypeId == 0)
+	{
+		errStr+="Please Select Activity Type.";
+	}
+	else if(activityLevelId == null || activityLevelId == 0)
+	{
+		errStr+="Please Select Activity Level.";
+	}
+	else if(ActivityId == null || ActivityId == 0)
+	{
+		errStr+="Please Select Activity .";
+	}
+	else if(districtId == null || districtId == 0)
+	{
+		if(activityLevelId == 5 || activityLevelId == 3){
+		errStr+="Please Select District.";
+		}
+	}
+	else if(constituencyId == null || constituencyId == 0)
+	{
+		if(activityLevelId == 1 || activityLevelId == 2){
+		errStr+="Please Select Constituency.";
+		}
+	}
+	
+	/*if(errStr!= null && errStr.length>0){
+		//$('#ErrDiv').html(errStr);
+		//return;
+	}
+	else
+	{*/
+		/*if(activityLevelId == 3){
+		$('#resultsDiv').hide();
+		}else{*/
+			$('#resultsDiv').show();
+		//}		
+		$('#home').html("<img src='images/Loading-data.gif'/>");	
+			/* if(startDate.trim().length == 0)
+			{
+				startDate = $("input[name=daterangepicker_start]").val();
+				endDate =  $("input[name=daterangepicker_end]").val();
+				var dates=$('.searchDateCls ').val();
+				if(dates != null && dates.trim().length > 0){
+					var dateArray=dates.split("to");
+				  startDate=dateArray[0];
+				  endDate=dateArray[1];
+				}
+			}	 */
+			
+			var searchBy="Panchayat";
+			var locationId = $('#villageWardsList').val();	
+			if(locationId == 0)
+			{
+				locationId = $('#mandalsList').val();
+				searchBy = "mandal";
+				
+				 if(locationId == 0)
+				{
+					locationId = $('#constiList').val();
+					searchBy = "Constituency";
+					if(locationId == 0)
+				{
+					locationId = $('#districtList').val();
+					searchBy = "District";
+				}
+				}
+				
+			}
+			
+			/* var value = "all";
+			if($("#all").is(':checked'))
+			{
+				value = "all";
+			}
+			else{
+				if($("#notConductedId").is(':checked'))
+				value = "notConducted";
+			if($("#conductedId").is(':checked'))
+				value = "conducted";
+			} */
+			
+			var activityScopeId = $('#ActivityList').val();
+			var jObj = {
+				//startDate:startDate,
+				//endDate:endDate,
+				//checkedValue:value,
+				activityScopeId:$('#ActivityList').val(),
+				activityLevelId:activityLevelId,
+				searchBy:searchBy,
+				locationId:locationId,
+				task:"",
+				//constituencyId : constituencyId,
+				//optionId : optionId,
+				//questionId : questionId
+			};		
+			$.ajax({
+				  type:'GET',
+				  url: 'getLocationDetailsForActivityAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				 var str='';
+					if( result!= null)
+					{
+						$("#buildAssConsActivity").hide();
+						$("#hideAsmblyData").hide();
+						$("#showAsmblyData").show();
+						str+='<table class="table table-bordered bg_ff" id="locationsTab">';
+						str+='<thead>';
+						str+='<tr>';
+						//str+='<th>CONSTITUENCY</th>';
+						if(activityLevelId == 2)
+							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+						else if(activityLevelId == 1){	
+							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
+						}
+						else if(activityLevelId == 5)
+							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';
+						else if(activityLevelId == 4)
+							str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
+						else if(activityLevelId == 3)
+							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
+						
+							str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+						
+						//str+='<th>PRESIDENT</th>';
+						//str+='<th>GENERAL SECRETARY</th>';
+						//str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
+						str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+							if(activityLevelId == 5){
+								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
+							}else if(activityLevelId == 1){
+								if(result[i].mandalId != null && result[i].mandalId != 0){
+									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
+									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
+								}else if(result[i].localElcBodyId != null && result[i].localElcBodyId != 0){
+									str+='<td id='+result[i].localElcBodyId+'>'+result[i].localElcBodyName+'</td>';
+									str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+							}
+							if(result[i].planedDate != null && result[i].planedDate != ""){
+								str+='<td>'+result[i].planedDate+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].conductedDate != null && result[i].conductedDate != ""){
+								str+='<td>'+result[i].conductedDate+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
+								str+='<td>'+result[i].ivrStatus+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+							//str+='<td>'+result[i].constituencyName+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+						str+='</table>';
+					}
+					$('#home').html(str);
+					
+					$("#locationsTab").dataTable({
+					"iDisplayLength": 20,
+					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+					$("#locationsTab").removeClass("dataTable");
+					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
+					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
+				
+			 });
+	}
+
 </script>
 </body>
 </html>
