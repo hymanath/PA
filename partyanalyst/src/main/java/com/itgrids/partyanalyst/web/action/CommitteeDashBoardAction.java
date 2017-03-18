@@ -1672,4 +1672,46 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getConstituenciesByActivity(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long activityId =jObj.getLong("activityId");
+			
+			idNameVOList = cadreCommitteeService.getConstituenciesByActivityId(activityId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getConstituenciesByActivity ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String getMandalsByConstituency(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long constituencyId =jObj.getLong("constituencyId");
+			
+			idNameVOList = cadreCommitteeService.getMandalsByConstituencyId(constituencyId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String getPanchayatsByMandals(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long mandalId =jObj.getLong("mandalId");
+			
+			idNameVOList = cadreCommitteeService.getPanchayatBymandalId(mandalId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getPanchayatsByMandals ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String getActivityLocationDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			locationWiseBoothDetailsVOList=cadreCommitteeService.getActivityLocationDetails(jObj.getLong("activityLevelId"),jObj.getLong("locationId"),jObj.getLong("activityScopeId"),jObj.getString("searchBy"));
+		}catch (Exception e) {
+			LOG.error("Exception occured in getActivityLocationDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
