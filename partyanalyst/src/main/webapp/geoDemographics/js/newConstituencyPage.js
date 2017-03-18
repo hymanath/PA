@@ -2,8 +2,11 @@ onLoadAjaxCalls(); //ajaxcalls through newconstituencypage.js
 var globalConsId = 232;
 function onLoadAjaxCalls()
 {
-	getCountsForConstituency();
-	getAllPartiesAllElectionResultsChart();
+	getCountsForConstituency(); //Assembly election details
+	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
+	getPrintMediaCountsForConstituencyPage(); //electronic media
+	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
+	//getDetailedGovtOverAllAnalysisProblemsForView();
 }
 function getCountsForConstituency(){
 	$("#consCountsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -362,3 +365,152 @@ function buildElectionYearsWithAssets(myResults)
 $(document).on("click","#candidateProfileId",function(){
 	window.open('cadreDetailsAction.action?cadreId=5709765','_blank');
 });
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+wurl = url.substr(0,(url.indexOf(".in")+3));
+
+function getPrintMediaCountsForConstituencyPage(){
+	var $list = $('#printMediaCounts')
+	var $list1 = $('#electronicMediaCounts')
+    var templatess = Handlebars.compile($('#media-counts').html());
+	$list.html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$list1.html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var userAccessLevelValuesArray=232;
+	var userAccessLevelId=5;
+	var state="ap";
+	var startDate="18-03-2015",endDate="18-03-2017";
+    var newsPaperIdsStr=" ";
+    var impactScopeIdsStr=" ";
+    var benefitIdsStr=" ";
+    var orgIdsStr=" ";
+    var type="Print";
+    var isDept="N";
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+1+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+type+"/"+benefitIdsStr+"/"+isDept
+		
+	}).then(function(result){
+		$list.html(templatess(result.coreDashBoardVOList));
+		$list1.html(templatess(result.coreDashBoardVOList1));
+	});
+}
+	
+function getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(){
+	var $list = $('#probDetailedCounts'),
+        templatess = Handlebars.compile($('#prob-counts').html());
+	$('#probDetailedCounts').html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var userAccessLevelValuesArray=232;
+	var userAccessLevelId=5;
+	var state="ap";
+	var startDate="18-03-2016",endDate="18-03-2017";
+	var npIdsStr=" ";
+	var propertyIdStr=" ";
+	var impactScopeIdsStr=[1,2];
+	var orgIdStr=" ";
+	var isDept="N";
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		
+	}).then(function(result){
+		var data = []
+		for(var i in result){
+			var Obj = {
+				name : result[i].name,
+				y: result[i].positivePerc
+			}
+			data.push(Obj);
+		}
+		console.log(data);
+		highChartsDonut('problemsDetailedGraph',data,false);
+	});
+}
+function getDetailedGovtOverAllAnalysisProblemsForView(){
+	//$('#probDetailedCounts').html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var userAccessLevelValuesArray=1;
+	var userAccessLevelId=2;
+	var state="ap";
+	var startDate="01-01-2017",endDate="18-03-2017";
+	var npIdsStr=[1,2,3,10,11,12];
+	var propertyIdStr=[26,28,29,32];
+	var impactScopeIdsStr=[1,2,3,4,5,6,8];
+	var orgIdStr=" ";
+	var isDept="N";
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+npIdsStr+"/"+impactScopeIdsStr+"/"+orgIdsStr+"/"+0+"/"+12
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisProblemsForConstituencyPage/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+state+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyIdStr+"/"+impactScopeIdsStr
+		
+	}).then(function(result){
+		if(results !=null && results.length > 0){
+			var mainArray = [];
+			var type = 'bar';
+			var years = [];
+			
+			for(var i in results[i])
+			{
+				
+				if(results[i] != null && results.length > 0)
+				{
+					var tempArr = [];
+					var Obj = {
+						name : results[i].name , 
+						data : tempArr
+					}
+					mainArray.push(Obj)
+				}
+			}
+			for(var i in results)
+			{
+				if(results[i] != null && results[i].length > 0)
+				{				
+						mainArray[j].data.push(parseFloat(results[i].PositivePerc))
+				}
+				
+			}
+			
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+			}
+			var legend = {
+				enabled: true,
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: 00,
+				y: 00,
+				floating: false,
+				shadow: false
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: true,
+				},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: years,
+				labels: {
+					enabled:true
+				}
+			}
+			highcharts('problemsSolveGraph',type,xAxis,yAxis,legend,mainArray);
+		}
+	});
+}
