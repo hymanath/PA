@@ -615,74 +615,14 @@ pageEncoding="ISO-8859-1"%>
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_right0">
 							<div class="block pad_5">
 								<h4 class="text-capitalize"><img src="geoDemographics/img/news.png"/>print media</h4>
-								<table class="table table-noborder m_top10">
-									<thead class="text-capitalize f-12 bg-E9">
-										<tr>
-											<th>total articles</th>
-											<th>positive</th>
-											<th>negative</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-									</tbody>
-								</table>
+								<div id="printMediaCounts"></div>
 							</div>
 						</div>
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_left0">
 							<div class="block pad_5">
 								<h4 class="text-capitalize"><img src="geoDemographics/img/electronic.png"/>electronic media</h4>
-								<table class="table table-noborder m_top10">
-									<thead class="text-capitalize f-12 bg-E9">
-										<tr>
-											<th>total articles</th>
-											<th>positive</th>
-											<th>negative</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-										<tr>
-											<td>250</td>
-											<td>100 <small class="m_left5 text-success">40%</small></td>
-											<td>100 <small class="m_left5 text-danger">40%</small></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+								<div id="electronicMediaCounts"></div>
+</div>
 						</div>
 					</div>
 					<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
@@ -743,30 +683,7 @@ pageEncoding="ISO-8859-1"%>
 				<div class="block pad_5">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-12">
-							<table class="table table-noborder f-12">
-								<thead class="bg-E9 text-capitalize">
-									<th>status</th>
-									<th>total</th>
-									<th>%</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-									<tr>
-										<td>no need of money</td>
-										<td>38</td>
-										<td>35%</td>
-									</tr>
-								</tbody>
-							</table>
+							<div id="probDetailedCounts"></div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-12 text-center">
 							<div id="problemsDetailedGraph" style="height:200px"></div>
@@ -1269,6 +1186,44 @@ pageEncoding="ISO-8859-1"%>
 			</td>
 		</tr>
 	</table>
+</script>
+<script id="prob-counts" type="text/x-handlebars-template">
+<table class="table table-noborder f-12">
+	<thead class="bg-E9 text-capitalize">
+		<th>status</th>
+		<th>total</th>
+		<th>%</th>
+	</thead>
+	<tbody>
+	{{#each this}}
+		<tr>
+			<td>{{name}}</td>
+			<td>{{count}}</td>
+			<td>{{positivePerc}}%</td>
+		</tr>
+	{{/each}}
+	</tbody>
+</table>
+</script>
+<script id="media-counts" type="text/x-handlebars-template">
+<table class="table table-noborder m_top10">
+	<thead class="text-capitalize f-12 bg-E9">
+		<tr>
+			<th>total articles</th>
+			<th>positive</th>
+			<th>negative</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each this}}
+		<tr>
+			<td>{{count}}</td>
+			<td>{{positiveCountMain}} <small class="m_left5 text-success">{{positivePerc}}%</small></td>
+			<td>{{negativCountMain}} <small class="m_left5 text-danger">{{negativePerc}}%</small></td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
 </script>
 <script src="geoDemographics/js/custom.js" type="text/javascript"></script>
 <script src="geoDemographics/js/newConstituencyPage.js" type="text/javascript"></script>
