@@ -145,20 +145,20 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 		str+='<tr>';
 			str+='<td>';
 				str+='<p class="text-muted">Planned</p>';
-				str+='<p>'+count+'</p>';	
+				str+='<p><a class="locWisedetails" attr_meetingGrpId="'+meetingGrpId+'" attr_level_id="'+levelId+'" attr_type="All" style="cursor:pointer;">'+count+'</a></p>';	
 			str+='</td>';
 			str+='<td class="bg_ED">';
 				str+='<p class="text-muted">Conducted</p>';
 				if(result.conducted != null && result.conducted > 0)
 				{
-					str+='<p>'+result.conducted+'</p>';
+					str+='<p><a class="locWisedetails" attr_meetingGrpId="'+meetingGrpId+'" attr_level_id="'+levelId+'" attr_type="conducted" style="cursor:pointer;">'+result.conducted+'</a></p>';
 				}else{
 					str+='<p> - </p>';
 				}
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Not Conducted</p>';
-				str+='<p>'+((count)-(result.conducted))+'  <small></small></p>';	
+				str+='<p><a class="locWisedetails" attr_meetingGrpId="'+meetingGrpId+'" attr_level_id="'+levelId+'" attr_type="Notconducted" style="cursor:pointer;">'+((count)-(result.conducted))+'  </a><small></small></p>';	
 			str+='</td>';
 			str+='<td>';
 				str+='<p class="text-muted">Image Covered</p>';
@@ -170,7 +170,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td>';
 				str+='<p class="text-muted">Images</p>';
 				if(result.totalImages != null && result.totalImages>0)
-					str+='<p>'+result.totalImages+'</p>';	
+					str+='<p><a class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" style="cursor:pointer;">'+result.totalImages+'</a></p>';	
 				else
 					str+='<p> - </p>';					
 			str+='</td>';
