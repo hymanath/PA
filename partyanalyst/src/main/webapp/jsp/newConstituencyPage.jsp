@@ -9,8 +9,8 @@ pageEncoding="ISO-8859-1"%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><c:out value='${constituencyDetails.constituencyName}'/>&nbsp;
 	<c:out value='${constituencyDetails.constituencyType}'/> Constituency</title>
-<link href="geoDemographics/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="geoDemographics/css/custom.css" rel="stylesheet" type="text/css">
+<link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="coreApi/css/custom.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <section>
@@ -130,37 +130,37 @@ pageEncoding="ISO-8859-1"%>
 					<table class="table tableVoters">
 						<thead>
 							<th>
-								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead.png" alt="voters"/>
+								<img src="coreApi/img/tableHead.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
 							<th>
-								<img src="geoDemographics/img/tableHead1.png" alt="voters"/>
+								<img src="coreApi/img/tableHead1.png" alt="voters"/>
 								<h4 class="text-capitalize">total population</h4>
 								<h3>12500</h3>
 							</th>
@@ -614,13 +614,13 @@ pageEncoding="ISO-8859-1"%>
 					<div class="row">
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_right0">
 							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="geoDemographics/img/news.png"/>print media</h4>
+								<h4 class="text-capitalize"><img src="coreApi/img/news.png"/>print media</h4>
 								<div id="printMediaCounts"></div>
 							</div>
 						</div>
 						<div class="col-dm-6 col-xs-12 col-sm-6 pad_left0">
 							<div class="block pad_5">
-								<h4 class="text-capitalize"><img src="geoDemographics/img/electronic.png"/>electronic media</h4>
+								<h4 class="text-capitalize"><img src="coreApi/img/electronic.png"/>electronic media</h4>
 								<div id="electronicMediaCounts"></div>
 </div>
 						</div>
@@ -644,7 +644,7 @@ pageEncoding="ISO-8859-1"%>
 									<tbody>
 										<tr>
 											<td>
-												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -652,7 +652,7 @@ pageEncoding="ISO-8859-1"%>
 										</tr>
 										<tr>
 											<td>
-												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -660,7 +660,7 @@ pageEncoding="ISO-8859-1"%>
 										</tr>
 										<tr>
 											<td>
-												<img src="geoDemographics/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
 											</td>
 											<td>secretary</td>
 											<td>50%</td>
@@ -701,10 +701,10 @@ pageEncoding="ISO-8859-1"%>
 						  	<div class="panel-body">
 								<div class="row">
 									<div class="col-md-7 col-xs-12 col-sm-7">
-										
+										<div id="problemsSolveId"></div>
 									</div>
 									<div class="col-md-5 col-xs-12 col-sm-5">
-										<div id="problemsSolveGraph" style="height:160px;"></div>
+										<div id="problemsSolveGraph" style="height:1060px;"></div>
 									</div>
 								</div>
 							</div>
@@ -1142,14 +1142,11 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 		  </div>
 	</div>
-	<div id="electionYearsWithAssets_Div"></div>
-	<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
-	<div id="electionYearsWithAssets_Panel_Div"></div>
 </section>
-<script src="geoDemographics/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="geoDemographics/js/bootstrap.js" type="text/javascript"></script>
-<script src="geoDemographics/js/handlebars-v4.0.5.js" type="text/javascript"></script>
-<script src="geoDemographics/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
+<script src="coreApi/js/handlebars-v4.0.5.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <!-- handlebars cons counts template -->
 <script id="cons-counts" type="text/x-handlebars-template">
 	<table class="table table-bordered block">
@@ -1225,7 +1222,14 @@ pageEncoding="ISO-8859-1"%>
 	</tbody>
 </table>
 </script>
-<script src="geoDemographics/js/custom.js" type="text/javascript"></script>
-<script src="geoDemographics/js/newConstituencyPage.js" type="text/javascript"></script>
+<script id="problem-graph" type="text/x-handlebars-template" >
+<ul class="textAlignDepartment">
+{{#each this}}
+		<li><span class="problemsMinimiseText">{{name}}</span> <span class="pull-right">{{count}}</span></li>
+{{/each}}									
+</ul>
+</script>
+<script src="coreApi/js/custom.js" type="text/javascript"></script>
+<script src="coreApi/js/newConstituencyPage.js" type="text/javascript"></script>
 </body>
 </html>
