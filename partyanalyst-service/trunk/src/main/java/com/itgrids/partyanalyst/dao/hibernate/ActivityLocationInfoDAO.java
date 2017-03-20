@@ -3007,12 +3007,13 @@ public List<Object[]> getCnstenciesByActivityId(Long activityId){
 	Query query = getSession().createQuery("select distinct model.address.constituency.constituencyId,model.address.constituency.name" +
 			" from ActivityLocationInfo model " +
 			//" left join model.constituency constituency" +
-			" where model.activityScope.activity.activityId = :activityId order by model.address.constituency.name");
+			" where model.activityScope.activityScopeId = :activityId order by model.address.constituency.name");
 	query.setParameter("activityId", activityId);
 	return query.list();
 }
 public List<Object[]> getMandalsByConstituency(Long constituencyId){
-	Query query = getSession().createQuery("select distinct tehsil.tehsilId,tehsil.tehsilName," +
+	Query query = getSession().createQuery("select distinct " +
+			" tehsil.tehsilId,tehsil.tehsilName," +
 			" leb.localElectionBodyId,leb.name " +
 			" from ActivityLocationInfo model " +
 			" left join model.address.tehsil tehsil" +
@@ -3021,7 +3022,7 @@ public List<Object[]> getMandalsByConstituency(Long constituencyId){
 	query.setParameter("constituencyId", constituencyId);
 	return query.list();
 }
-public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long activityScopeId,String locationType){
+public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue){
 	
     StringBuilder queryStr = new StringBuilder();
 
@@ -3041,7 +3042,7 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAcce
          queryStr.append(" w.name ,");
 	    }
     
-    queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus ");
+    queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus,model.activityLocationInfoId ");
     queryStr.append(" FROM ActivityLocationInfo model " +
            // " userAddress UA " +
             " left join model.address.district d "+
@@ -3061,6 +3062,14 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAcce
 	}else if(locationType != null && locationType.equalsIgnoreCase("Panchayat")){
 		   queryStr.append(" and model.address.panchayat.panchayatId in (:userAccessLevelValues)");  
 	}
+	
+	if(checkedValue.trim().equalsIgnoreCase("notConducted")){
+		queryStr.append(" and (model.conductedDate is null or (model.ivrStatus is null and model.ivrStatus = 'N')) ");
+	}else if(checkedValue.trim().equalsIgnoreCase("conducted")){
+		queryStr.append(" and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
+	}
+	queryStr.append(" and model.activityScope.activity.isActive = 'Y'" +
+			" and model.activityScope.isDeleted = 'N' ");
 	Query sqlQuery = getSession().createQuery(queryStr.toString());
 		sqlQuery.setParameter("activityScopeId", activityScopeId);
 		sqlQuery.setParameterList("userAccessLevelValues", userAccessLevelValues);
