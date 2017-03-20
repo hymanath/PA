@@ -170,7 +170,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td>';
 				str+='<p class="text-muted">Images</p>';
 				if(result.totalImages != null && result.totalImages>0)
-					str+='<p><a class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" style="cursor:pointer;">'+result.totalImages+'</a></p>';	
+					str+='<p><a class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'"  attr_location ="'+locationName+'" style="cursor:pointer;">'+result.totalImages+'</a></p>';	
 				else
 					str+='<p> - </p>';					
 			str+='</td>';
@@ -415,10 +415,10 @@ function locationWiseMeetingDetails(dataType,meetingGrpId,levelId){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			buildLocationWiseMeetingDetails(result,dataType);
+			buildLocationWiseMeetingDetails(result,dataType,levelId);
 		});  
 }
-function buildLocationWiseMeetingDetails(result,dataType){
+function buildLocationWiseMeetingDetails(result,dataType,levelId){
 	var str = '';
 	str +='<table class="table bg_ED table-responsive" id="partMeetingModalData">'; 
 	str +='<thead>';
@@ -482,17 +482,26 @@ function buildLocationWiseMeetingDetails(result,dataType){
 		if(result[i].totalImages > 0){  
 				str+='<ul class="list-inline modalImagesUl">';
      	if(result[i].totalImages > 1){
+			var remaingImagePath = result[i].totalImages-2;
+			var time = result[i].subList[0].uploadedTime;
+			//formatAMPM(time);
 				str+='<li>';
 				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
-					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
+					str+='<p>'+time+'</p>';
 					str+='<p>'+result[i].subList[0].upLoadedDate+'</p>';
 				str+='</li>';
+				var time1 = result[i].subList[1].uploadedTime;
+				//formatAMPM(time1);
 				str+='<li>';
 				   str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[1].imagePath+'" alt=""/>';
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
-					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
+					str+='<p>'+time1+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
+				str+='</li>';
+				str+='<li>';
+				str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;">'+remaingImagePath+'+'+'</p>';
+				 str+='<p>View All</p>';
 				str+='</li>';
 			}else{
 				str+='<li>';
@@ -557,6 +566,7 @@ function buildLocationWiseMeetingDetails(result,dataType){
 		if(result[i].totalImages > 0){  
 				str+='<ul class="list-inline modalImagesUl">';
      	if(result[i].totalImages > 1){
+			var remaingImagePath = result[i].totalImages-2;
 				str+='<li>';
 				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
@@ -568,6 +578,10 @@ function buildLocationWiseMeetingDetails(result,dataType){
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
 					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
+				str+='</li>';
+				str+='<li>';
+				str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;">'+remaingImagePath+'+'+'</p>';
+				 str+='<p>View All</p>';
 				str+='</li>';
 			}else{
 				str+='<li>';
