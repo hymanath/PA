@@ -1708,7 +1708,7 @@ public String getAllConstituencysForADistrict(){
 	public String getActivityLocationDetails(){
 		try{
 			jObj = new JSONObject(getTask());
-			locationWiseBoothDetailsVOList=cadreCommitteeService.getActivityLocationDetails(jObj.getLong("activityLevelId"),jObj.getLong("locationId"),jObj.getLong("activityScopeId"),jObj.getString("searchBy"));
+			locationWiseBoothDetailsVOList=cadreCommitteeService.getActivityLocationDetails(jObj.getLong("activityLevelId"),jObj.getLong("locationId"),jObj.getLong("activityScopeId"),jObj.getString("searchBy"),jObj.getString("checkedValue"));
 		}catch (Exception e) {
 			LOG.error("Exception occured in getActivityLocationDetails ",e);
 		}
