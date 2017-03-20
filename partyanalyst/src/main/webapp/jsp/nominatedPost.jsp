@@ -119,6 +119,43 @@
 	}
 	.font_weight{font-weight: bold;}
 	.font_16{font-size:16px;}
+	.enrolled-mem{
+		padding-left:0px;
+	}
+	.enrolled-mem li{
+		border: 1px solid #666;
+		border-radius: 3px;
+		display: inline-block;
+		padding: 3px;
+	}
+	.enrolled-mem li.yes{
+		background-color: #d7f0db;
+	}
+	.enrolled-mem li.no{
+		background-color: #e3c5c7;
+	}
+	.enrolled-mem li.yes span::after {
+		color: #666;
+		content: "\e013";
+		display: inline-block;
+		font-family: "Glyphicons Halflings";
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1;
+		position: relative;
+		top: 1px;
+	}
+	.enrolled-mem li.no span::after {
+		color: #666;
+		content: "\e014";
+		display: inline-block;
+		font-family: "Glyphicons Halflings";
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1;
+		position: relative;
+		top: 1px;
+	}
 </style>
 </head>
 <body class="bodycolr">
@@ -141,7 +178,7 @@
                         <label class="radio-inline" >
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName" style="margin-top: 3px;"/><span>Not Cadre</span>
                         </label>
-						
+						 <a  class="pull-right resetCls" title="click here to refresh" style="cursor:pointer">Reset</a>
 						<span id="addMemberDivId" style="display:none;position: relative; margin-left: 8px; cursor: pointer; background: #ddd; padding: 4px; border-radius: 12px; top: 2px;" class="addMemberModal" onclick="clearAssignValues();">
                            <i class="glyphicon glyphicon-plus-sign"></i>
                            Add Member
