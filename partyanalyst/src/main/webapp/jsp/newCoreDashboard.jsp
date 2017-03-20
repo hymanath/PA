@@ -2032,7 +2032,7 @@
 										</div>
 									 </div>
 								   </div>
-									<div class="row" style="display: none;">
+									<div class="row" style="display: block;">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
 											  <div class="panel panel-default panelNew">
@@ -2043,7 +2043,7 @@
 															<i class="glyphicon glyphicon-fullscreen"></i>
 														</span>
 														<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-														
+														<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>-->
 													</h4>  
 													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
 													</a>
@@ -4187,7 +4187,7 @@
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabelId"></h4>
+        <h4 class="modal-title" id="myModalLabelId" style="text-transform: uppercase;"></h4>
       </div>
       <div class="modal-body" style="padding:0px 15px;">
        <div id="buildPoupupImage"></div>
