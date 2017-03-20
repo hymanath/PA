@@ -5897,7 +5897,7 @@ function buildDistrictNamesForCustomMeetings(result,meetingLevelId,meetingId){
 $(document).on("click",".constituencyClsMeetings",function(){
 	var distId = $(this).attr("attr_distId");
 	var partyMeetingLevelId = $(this).attr("attr_level_id");
-	var meetingId = $(this).attr("attr_meeting_id");
+	var meetingId = $(this).attr("attr_meeting_id");	
 	getConstituencyListForMultiMeetings(distId,partyMeetingLevelId,meetingId);
 });
 function getConstituencyListForMultiMeetings(distId,partyMeetingLevelId,meetingId){
@@ -6006,7 +6006,7 @@ function buildMandalOrMuncListForMultiLocation(result,constituencyId,levelId,val
 			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 		  str+='</a>';
 		}else{
-			 str+='<a role="button" class="panchayatPopCls accordionmodalMeetingForMandal-toggle" data-parent="#accordionMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'"  attr_Level_Id="'+levelId+'" href="#collapseModalMandalMeetings'+i+'" aria-expanded="true" aria-controls="collapseModalMandalMeetings'+i+'">'; 
+			 str+='<a role="button" class="panchayatPopCls accordionmodalMeetingForMandal-toggle" data-parent="#accordionMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'"  attr_Level_Id="'+levelId+'" attr_meeting_id ="'+meetingId+'" href="#collapseModalMandalMeetings'+i+'" aria-expanded="true" aria-controls="collapseModalMandalMeetings'+i+'">'; 
 			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
 		  str+='</a>';
 		}
