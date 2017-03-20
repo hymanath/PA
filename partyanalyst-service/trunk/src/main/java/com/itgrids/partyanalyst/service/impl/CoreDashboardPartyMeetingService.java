@@ -8194,11 +8194,13 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			List<Object[]> sesionWiseImagesCountList = partyMeetingDocumentDAO.getSessionWisePartyMeetingDocumentsCount(startDate,endDate,locationId,locationValuesSet,0, 0,stateId,partyMeetingLevelId,null,partyMeetngGrpId);
 			Long totalImagesCount =0L;
 			Long totalImagesCoveredCount =0L;
+			Long partyMeetingId =0L;
 			if(commonMethodsUtilService.isListOrSetValid(sesionWiseImagesCountList)){
 				for (Object[] param : sesionWiseImagesCountList) {
 					Long sessionId  = commonMethodsUtilService.getLongValueForObject(param[0]);
 					Long imagesCount  = commonMethodsUtilService.getLongValueForObject(param[1]);
 					Long imagesCoveredCount  = commonMethodsUtilService.getLongValueForObject(param[2]);
+					partyMeetingId = commonMethodsUtilService.getLongValueForObject(param[4]);
 					totalImagesCount = totalImagesCount+imagesCount;
 					totalImagesCoveredCount = totalImagesCoveredCount + imagesCoveredCount;
 					SessionVO sessionVO = sessionLateTimesMap.get(sessionId);
@@ -8206,10 +8208,12 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					if(sessionVO != null){
 						sessionVO.setImagesCount(imagesCount);
 						sessionVO.setImagesCovered(imagesCoveredCount);
+						
 					}
 				}
 				returnVo.setImagesCovered(totalImagesCoveredCount.toString());
 				returnVo.setTotalImages(totalImagesCount);
+				returnVo.setPartyMeetingId(partyMeetingId);
 			}
 			
 		    Set<Long> attendedIds = new HashSet<Long>(0);
