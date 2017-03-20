@@ -107,7 +107,7 @@ public class DashBoardElectionResultsService implements
 		this.userDAO = userDAO;
 	}
 
-	private WebServiceClient webServiceClient;
+	/*private WebServiceClient webServiceClient;
 
 	public WebServiceClient getWebServiceClient() {
 		return webServiceClient;
@@ -115,7 +115,7 @@ public class DashBoardElectionResultsService implements
 
 	public void setWebServiceClient(WebServiceClient webServiceClient) {
 		this.webServiceClient = webServiceClient;
-	}
+	}*/
 
 	public DashBoardResultsVO getElectionResultsSummary()
 	{
@@ -2100,7 +2100,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			}
     		}
     	}
-    	 surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds,constituencyTotalVoters.longValue());
+    	// surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds,constituencyTotalVoters.longValue());
     	OptionVO.CastePercs values = surveyDataCasteWise.get(0).getCastePercs();
     	surveyDataCasteWise.get(0).setTotal(totalVotes);
     	LinkedHashMap<Long,Double> castePercs = new LinkedHashMap<Long,Double>();
@@ -2156,7 +2156,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds){
         List<OptionVO> surveyDataCasteWise = null;
         try{
-        	surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnPartyStateWide(stateType,surveyIds);
+        	//surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnPartyStateWide(stateType,surveyIds);
         }catch(Exception e){
        	 LOG.error("Exception rised in  getTop5CastePeopleOpnionOnPartyStateWide",e);
         }
@@ -2746,8 +2746,9 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     	{
 			
     	            
-    		ElectionComparisonVO result  =  webServiceClient.getOptionWiseCountDetailsForSelectedSurveysByConstituencyId(constituencyId,surveyIds);
+    		//ElectionComparisonVO result  =  webServiceClient.getOptionWiseCountDetailsForSelectedSurveysByConstituencyId(constituencyId,surveyIds);
             
+    		ElectionComparisonVO result  =  new ElectionComparisonVO();
     		
     		List<SurveyReportVO> partiesResult = result.getPartyWiseResult();
     		
@@ -2942,15 +2943,8 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     	try	{
            User user = userDAO.get(Long.valueOf(id));
            
-          /* String savedSecretKey = user.getHashKeyTxt();
-           String encryptedPassword = user.getPasswdHashTxt();*/
-          
-           String salt = user.getPasswordSalt();
-    	   String hash = user.getPasswordHash();
-    	   
-    	   
-    	   PBKDF2 pb1=new PBKDF2();
-			String storedPwd=pb1.generatePassword(newPassword);
+    	    PBKDF2 pb1 = new PBKDF2();
+			String storedPwd = pb1.generatePassword(newPassword);
 			String[] parts = storedPwd.split(":");
 	        //int iterations = Integer.parseInt(parts[0]);
 	        String passwordSalt=parts[1];
