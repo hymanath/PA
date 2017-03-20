@@ -16163,5 +16163,10 @@
 	    <action name="newStatePage" class="newStatePageAction" method="newStatePage">
 	   		 <result name="success">/jsp/newStatePage.jsp</result>			
 	    </action>
+		<action name="getGeoLevelReportDetailsAction" class="nominatedPostProfileAction" method="getGeoLevelReportDetails">
+			<result type="json" name="success">
+				<param name="root">geoLevelListVO</param>				
+			</result>			
+		</action>
  </package>
 </struts>
