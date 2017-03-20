@@ -273,12 +273,12 @@ public class ZebraPrintDetailsDAOHibernateTest extends BaseDaoTestCase{
 		return returnVo;
 	}*/
 	
-	public void testUpdateVoterName()
+	/*public void testUpdateVoterName()
 	{
 		ZebraPrintDetails zebraPrintDetails = zebraPrintDetailsDAO.get(206753l);
 		long zebraPrintDetailsId = zebraPrintDetails.getZebraPrintDetailsId();
 		String voterName = zebraPrintDetails.getVoterName();
 		voterName = voterName.replaceAll("\\p{C}", "");
 		System.out.println(zebraPrintDetailsDAO.updateVoterName(zebraPrintDetailsId, voterName));
-	}
+	}*/
 }
