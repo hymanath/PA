@@ -20618,10 +20618,13 @@ public List<IdNameVO> getMandalsByConstituencyId(Long constituencyId)
 		{
 			for (Object[] objects : mandalsLsit) {
 					IdNameVO vo = new IdNameVO();
-					vo.setId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
-					vo.setBoardId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[2])));
-					vo.setBoardName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Muncipality ");
+					if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0){
+						vo.setId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
+					}else if(commonMethodsUtilService.getLongValueForObject(objects[2]) != null && commonMethodsUtilService.getLongValueForObject(objects[2]) != 0){
+						vo.setId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[2])));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Muncipality ");
+					}
 					idNameVoList.add(vo);
 				}
 			}
@@ -20663,7 +20666,7 @@ public List<IdNameVO> getPanchayatBymandalId(Long mandalId)
 		}
 	return idNameVoList;
 }
-public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType){
+public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue){
 	List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 	try{
 		List<Long> locationIds = new ArrayList<Long>();
@@ -20673,35 +20676,63 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 		}else{
 			locationIds.add(locationId);
 		}
-		
-		List<Object[]> lctWiseList = activityLocationInfoDAO.getLocationWise(levelId, locationIds, activityScopeId, searchType);
+		List<Long> villageIdsList = new ArrayList<Long>();
+		List<Long> wardIdsList = new ArrayList<Long>();
+		List<Long> constituencyIdsList = new ArrayList<Long>();
+		List<Object[]> lctWiseList = activityLocationInfoDAO.getLocationWise(levelId, locationIds, activityScopeId, searchType,checkedValue);
 		if(lctWiseList != null && lctWiseList.size() > 0){
 				if(searchType.trim().equalsIgnoreCase("District")){
 					for (Object[] objects : lctWiseList) {
 						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
 							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							constituencyIdsList.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							vo.setPlanedDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
 							vo.setConductedDate(commonMethodsUtilService.getStringValueForObject(objects[3]));
 							vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							vo.setActivityLocatInfoId(commonMethodsUtilService.getLongValueForObject(objects[5]));
 							returnList.add(vo);
 					}
 				}else if(searchType.trim().equalsIgnoreCase("Constituency") || searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat")){
 					for (Object[] objects : lctWiseList) {
 						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+						if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0){
 							vo.setMandalId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
-							vo.setLocalElcBodyId(commonMethodsUtilService.getLongValueForObject(objects[2]));
-							vo.setLocalElcBodyName(commonMethodsUtilService.getStringValueForObject(objects[3])+ " Muncipality ");
-							vo.setVillageId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							vo.setVillageId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[4])));
 							vo.setVillageName(commonMethodsUtilService.getStringValueForObject(objects[5]));
-							vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[6]));
-							vo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							villageIdsList.add(commonMethodsUtilService.getLongValueForObject(objects[4]));
+						}else if(commonMethodsUtilService.getLongValueForObject(objects[2]) != null && commonMethodsUtilService.getLongValueForObject(objects[2]) != 0){
+							vo.setMandalId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[3])+ " Muncipality ");
+							vo.setVillageId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[6])));
+							vo.setVillageName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							wardIdsList.add(commonMethodsUtilService.getLongValueForObject(objects[6]));
+						}
 							vo.setPlanedDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
 							vo.setConductedDate(commonMethodsUtilService.getStringValueForObject(objects[9]));
 							vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[10]));
+							vo.setActivityLocatInfoId(commonMethodsUtilService.getLongValueForObject(objects[11]));
 							returnList.add(vo);
 				}
+			}
+		}
+		Map<Long,Long> docmntListMap = new LinkedHashMap<Long, Long>();
+		List<Object[]> docListCnt = null;
+		if(searchType.trim().equalsIgnoreCase("District")){
+			docListCnt = activityInfoDocumentDAO.getDocumentCuntByScopeId(activityScopeId,constituencyIdsList);
+		}else if(searchType.trim().equalsIgnoreCase("Constituency") || searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat")){
+			 docListCnt = activityInfoDocumentDAO.getDocumentsCuntByScopeId(activityScopeId,villageIdsList,wardIdsList);
+		}
+		if(docListCnt != null && docListCnt.size() > 0){
+			for (Object[] objects : docListCnt) {
+				docmntListMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getLongValueForObject(objects[1]));
+			}
+		}
+		if(returnList != null && !returnList.isEmpty()){
+			for (LocationWiseBoothDetailsVO vo : returnList) {
+				Long scopeId = vo.getActivityLocatInfoId();
+					vo.setCount(docmntListMap.get(scopeId));
 			}
 		}
 	}catch(Exception e){
