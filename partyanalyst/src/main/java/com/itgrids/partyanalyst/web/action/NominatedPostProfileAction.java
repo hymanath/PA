@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
+import com.itgrids.partyanalyst.dto.GeoLevelListVO;
+import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -84,8 +86,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long applicationId;
 	private CadrePerformanceVO cadrePerformanceVO;
 	private List<LocationsVO> locationVoList;
+	private List<GeoLevelListVO> geoLevelListVO;
 	
 	
+	public List<GeoLevelListVO> getGeoLevelListVO() {
+		return geoLevelListVO;
+	}
+	public void setGeoLevelListVO(List<GeoLevelListVO> geoLevelListVO) {
+		this.geoLevelListVO = geoLevelListVO;
+	}
 	public CadrePerformanceVO getCadrePerformanceVO() {
 		return cadrePerformanceVO;
 	}
@@ -2170,6 +2179,82 @@ public String execute()
 			Long boardId = jObj.getLong("boardId");
 			Long positionId = jObj.getLong("positionId");
 		locationVoList = nominatedPostProfileService.getLocationByDepartment(levelId,departmentId,boardId,positionId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		 LOG.error("Entered into getLocationByDepartment method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getGeoLevelReportDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			GeoLevelReportVO vo = new GeoLevelReportVO();
+			vo.setBoardLevelId(jObj.getLong("levelId"));
+			
+			JSONArray statusIds = jObj.getJSONArray("statusIds");
+			List<Long> appStatusIds = new ArrayList<Long>(0);
+			if(statusIds !=null && statusIds.length()>0){
+				for (int i = 0; i < statusIds.length(); i++) {
+					Long locId = Long.valueOf(statusIds.get(i).toString());
+					appStatusIds.add(locId);
+				}
+			}
+			JSONArray casteIds = jObj.getJSONArray("casteIds");
+			List<Long> casteIds1 = new ArrayList<Long>(0);
+			if(casteIds !=null && casteIds.length()>0){
+				for (int i = 0; i < casteIds.length(); i++) {
+					Long casteId = Long.valueOf(casteIds.get(i).toString());
+					casteIds1.add(casteId);
+				}
+			}
+			JSONArray castCatgs = jObj.getJSONArray("casteCategoryIds");
+			List<Long> castCatgIds = new ArrayList<Long>(0);
+			if(castCatgs !=null && castCatgs.length()>0){
+				for (int i = 0; i < castCatgs.length(); i++) {
+					Long castCatgry = Long.valueOf(castCatgs.get(i).toString());
+					castCatgIds.add(castCatgry);
+				}
+			}
+			JSONArray ageRangeIds = jObj.getJSONArray("ageRangeIds");
+			List<Long> ageRangeGrpIds = new ArrayList<Long>(0);
+			if(ageRangeIds !=null && ageRangeIds.length()>0){
+				for (int i = 0; i < ageRangeIds.length(); i++) {
+					Long ageRangId = Long.valueOf(ageRangeIds.get(i).toString());
+					ageRangeGrpIds.add(ageRangId);
+				}
+			}
+			
+			JSONArray positionIds = jObj.getJSONArray("positionIds");
+			List<Long> positionIds1 = new ArrayList<Long>(0);
+			if(positionIds !=null && positionIds.length()>0){
+				for (int i = 0; i < positionIds.length(); i++) {
+					Long posId = Long.valueOf(positionIds.get(i).toString());
+					positionIds1.add(posId);
+				}
+			}
+			JSONArray locationIds = jObj.getJSONArray("locationIds");
+			List<Long> locationIds1 = new ArrayList<Long>(0);
+			if(locationIds !=null && locationIds.length()>0){
+				for (int i = 0; i < locationIds.length(); i++) {
+					Long locId = Long.valueOf(locationIds.get(i).toString());
+					locationIds1.add(locId);
+				}
+			}
+			vo.setLocationIds(locationIds1);
+			vo.setPositionIds(positionIds1);
+			vo.setAgeRangeIds(ageRangeGrpIds);
+			vo.setCasteGrpIds(castCatgIds);
+			vo.setCasteIds(casteIds1);
+			vo.setStatusIds(appStatusIds);
+			vo.setGender(jObj.getString("gender"));
+			vo.setLocationType(jObj.getString("locationType"));
+			vo.setIsCasteChkd(jObj.getString("isCasteChkd"));
+			vo.setIsPositionChkd(jObj.getString("isPositionChkd"));
+			vo.setIsCasteGrpChkd(jObj.getString("isCasteGrpChkd"));
+			vo.setIsGenderChkd(jObj.getString("isGenderChkd"));
+			vo.setIsAgeRngeChkd(jObj.getString("isAgeRngeChkd"));
+			geoLevelListVO = nominatedPostMainDashboardService.getGeoLevelReportDetails(vo);
 			
 		}catch(Exception e){
 			e.printStackTrace();

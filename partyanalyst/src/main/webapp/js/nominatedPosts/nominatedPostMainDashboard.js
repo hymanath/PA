@@ -2629,4 +2629,187 @@ $(document).on('change','#districtSelectBoxId',function(){
     });
 	getConstituenciesForDistricts(distIdArr);
 });  
+//getGeoLevelReportDetails();
+function  getGeoLevelReportDetails(){
+	$("#totalReportDiv").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
+	var statusIds = [];
+	//statusIds.push(3);
+	var casteIds = [];
+	//casteIds.push(1);
+	var casteCategoryIds = [];
+	//casteCategoryIds.push(1);
+	var ageRangeIds = [];
+	//ageRangeIds.push(2);
+	//var positionIds = [];
+	//positionIds.push(1);
+	var locationIds = [];
+	locationIds.push(19);
+	//locationIds.push(23);
+	var positionIds = [];
+	//positionIds.push(1);
+	
+	var jObj ={
+          levelId :0,
+		 statusIds :statusIds,
+		 casteIds     :casteIds,
+		 casteCategoryIds:casteCategoryIds,
+		 ageRangeIds:ageRangeIds,
+		 positionIds:positionIds,
+		 locationIds:locationIds,
+		 gender:"",
+		 locationType :"district",
+		 isCasteChkd :"true",
+		 isPositionChkd:"true",
+		 isCasteGrpChkd :"true",
+		 isGenderChkd:"true",
+		 isAgeRngeChkd:"true"
+		 
+	};
+	 $.ajax({
+          type:'GET',
+          url: 'getGeoLevelReportDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jObj)}
+   }).done(function(result){
+	   if(result != null && result.length >0)
+	  buildGeoLevelReportDetails(result,jObj);
+   });
+}
+
+function buildGeoLevelReportDetails(result,jObj)
+{
+	
+	
+	var str='';
+	str+='<table class="table table-condensed table-bordered" id="totalReportTab">';
+	str+='<thead>';
+		str+='<tr>';
+			str+='<th rowspan="3"> LOCATION NAME </th>';
+			str+='<th rowspan="3"> TOTAL </th>';
+			str+='<th rowspan="3"> POSITION  </th>';
+			if(jObj.isCasteGrpChkd != "false")
+			str+='<th rowspan="3"> CASTE GROUP  </th>';
+		
+			if(jObj.isCasteChkd != "false")
+			str+='<th rowspan="3"> CASTE NAME  </th>';
+			
+			for(var i in result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList){
+				str+='<th colspan="'+((result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList[0].ageRangeList.length)*2)+'"> '+result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList[i].name+'  </th>';
+			}
+			
+		str+='</tr>';
+	str+='<tr>';
+	if(jObj.isAgeRngeChkd != "false"){
+		for(var i in result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList){
+				for(var j in result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList[i].ageRangeList){
+					str+='<th colspan="2"> '+result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList[i].ageRangeList[j].name+' </th>';
+				}
+		}
+	}
+	str+='</tr>';
+	str+='<tr>';
+	//if(jObj.isGenderChkd != "false"){
+		for(var i in result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList){
+				for(var j in result[0].positionList[0].casteCagryList[0].casteList[0].boardLvlList[i].ageRangeList){
+					str+='<th style="background-color:lightgrey;"> M </th>';
+					str+='<th> F </th>';
+				}
+		}
+	//}
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	
+	for(var i in result){		
+	str+='<tr>';
+	var locationRowCount =0;
+		for(var j in result[i].positionList){
+			for(var k in result[i].positionList[j].casteCagryList){
+					locationRowCount =locationRowCount+parseInt(result[i].positionList[j].casteCagryList[k].casteList.length);
+			}
+		}
+		str+='<td rowspan="'+locationRowCount+'">'+result[i].name+' </td>';							
+		str+='<td rowspan="'+locationRowCount+'"> '+result[i].total+'  </td>';
+							
+	
+				for(var j in result[i].positionList){
+					
+					var positionRowCount =0;
+					for(var k in result[i].positionList[j].casteCagryList){
+							positionRowCount =positionRowCount+parseInt(result[i].positionList[j].casteCagryList[k].casteList.length);
+					}
+					str+='<td rowspan="'+positionRowCount+'">'+result[i].positionList[j].name+' </td>';
+							
+					for(var k in result[i].positionList[j].casteCagryList){
+						var categoryRowCount =parseInt(result[i].positionList[j].casteCagryList[k].casteList.length);
+						if(jObj.isCasteGrpChkd != "false")
+							str+='<td rowspan="'+categoryRowCount+'">'+result[i].positionList[j].casteCagryList[k].name+' </td>';
+						for(var l in result[i].positionList[j].casteCagryList[k].casteList){
+							if(jObj.isCasteChkd != "false")
+								str+='<td>'+result[i].positionList[j].casteCagryList[k].casteList[l].name+'</td>';
+							for(var m in result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList){
+								for(var n in result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList){
+									var title = "";
+									var locationName = "";
+									var positionNm = "";
+									var casteGrpNm = "";
+									var casteName = "";
+									var boardLvlNm = "";
+									var ageRangNm = "";
+									
+									if(result[i].name != null && result[i].name != ""){
+										locationName = result[i].name+ '&nbsp;(location)';
+									}
+									if(result[i].positionList[j].name != null && result[i].positionList[j].name != ""){
+										positionNm = result[i].positionList[j].name+ '&nbsp;(position)';
+									}
+									if(result[i].positionList[j].casteCagryList[k].name != null && result[i].positionList[j].casteCagryList[k].name != ""){
+										casteGrpNm = result[i].positionList[j].casteCagryList[k].name+ '&nbsp;(category)';
+									}
+									if(result[i].positionList[j].casteCagryList[k].casteList[l].name != null && result[i].positionList[j].casteCagryList[k].casteList[l].name != ""){
+										casteName = result[i].positionList[j].casteCagryList[k].casteList[l].name+ '&nbsp;(caste)';
+									}
+									if(result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].name != null && 
+									result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].name != ""){
+										boardLvlNm = result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].name+ '&nbsp;(board level)';
+									}
+									if(result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].name != null && 
+									result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].name != ""){
+										ageRangNm = result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].name+ '&nbsp;(age range)';
+									}
+										title = locationName+ ' - ' +positionNm+ '- '+casteGrpNm+ ' -' +casteName+  ' -' +boardLvlNm+ ' -' +ageRangNm ;
+										//if(jObj.isGenderChkd != "false"){
+											if(result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].maleCount != null && result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].maleCount>0){
+												str+='<td   style="background-color:lightgrey;cursor:pointer;" title="'+title+ '- male count"> '+result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].maleCount+' </td>';
+											}else{
+												str+='<td  style="background-color:lightgrey;"> - </td>';
+											}
+											if(result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].feMaleCount != null && result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].feMaleCount>0){
+												str+='<td style="cursor:pointer;" title="'+title+ ' - female count"> '+result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].feMaleCount+' </td>';
+											}else{
+												str+='<td> - </td>';
+											}
+										//}else{
+											//str+='<td style="cursor:pointer;" title="'+title+ ' - female count"> '+result[i].positionList[j].casteCagryList[k].casteList[l].boardLvlList[m].ageRangeList[n].total+' </td>';
+										//}
+								}
+							}
+							str+='</tr>';
+							str+='<tr>';
+						
+						}
+						
+					}
+				}
+		
+		str+='</tr>';
+	}
+	
+	
+	str+='</tbody>';
+	
+	str+='</table>';
+	$('#totalReportDiv').html(str);
+	//$("#totalReportTab").dataTable();
+}
  

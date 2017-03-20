@@ -435,6 +435,7 @@
                 	<div class="pad_10 bg_ff" id="">
                     	<div class="table-responsive" id="loctnLvlCntId"></div>
                     	<div class="table-responsive" id="loctnLvlCntId1"></div>
+						<div class="table-responsive" id="totalReportDiv"></div>
                     </div>
                 </div>
             </div>
