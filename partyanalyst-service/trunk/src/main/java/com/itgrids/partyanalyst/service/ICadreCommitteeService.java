@@ -195,5 +195,5 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getConstituenciesByActivityId(Long activityId);
 	 public List<IdNameVO> getPanchayatBymandalId(Long constituencyId);
 	 public List<IdNameVO> getMandalsByConstituencyId(Long constituencyId);
-	 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType);
+	 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue);
 }
