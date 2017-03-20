@@ -2549,7 +2549,7 @@
    <bean name="multiThreadRunner" class="com.itgrids.partyanalyst.utils.MultiThreadRunner"/>
     
     <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService" lazy-init="true" >
-         <property name="webServiceClient" ref="webServiceClient"/>  
+         <!-- <property name="webServiceClient" ref="webServiceClient"/>  --> 
          <property name="userDAO" ref="userDAO"></property>
     </bean>
     
