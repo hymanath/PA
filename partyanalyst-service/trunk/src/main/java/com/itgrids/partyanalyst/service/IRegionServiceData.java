@@ -107,4 +107,5 @@ public interface IRegionServiceData {
 	
 	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
 	public List<SelectOptionVO> getMandalsAndMuncipalitiesByConstituencyIDS(List<Long> constituencyID);
+	public List<SelectOptionVO> getConstituenciesByDistrictID1(Long districtID);
 }

@@ -1905,7 +1905,26 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return userAccessValue;
 	}
-	
+	public List<SelectOptionVO> getConstituenciesByDistrictID1(Long districtID)
+	{
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Object[]> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict1(districtID);
+			if(constituencies != null && constituencies.size()>0)
+			{
+				returnList = new ArrayList<SelectOptionVO>(0);
+				for (Object[] param : constituencies) {
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));				
+					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			log.error("error Occured while executing areaCountListByAreaIdsOnScope in RegionServiceDataImp Service...",e);
+		}
+		return returnList;
+	}
 }
 	
  
