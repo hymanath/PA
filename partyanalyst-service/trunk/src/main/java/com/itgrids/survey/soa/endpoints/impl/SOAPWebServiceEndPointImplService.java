@@ -30,8 +30,8 @@ public class SOAPWebServiceEndPointImplService
         try {
             URL baseUrl;
             baseUrl = com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPointImplService.class.getResource(".");
-            url = new URL(baseUrl, IConstants.SMS_APP_URL+"/SOAWebService?wsdl");
-        } catch (MalformedURLException e) {
+           // url = new URL(baseUrl, IConstants.SMS_APP_URL+"/SOAWebService?wsdl");
+        } catch (Exception e) {
             logger.warning("Failed to create URL for the wsdl Location: 'http://localhost/Survey/SOAWebService?wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
