@@ -1579,7 +1579,7 @@ public void setCount(List<GeoLevelListVO> list,List<Object[]> geoReport){
 					GeoLevelListVO positionVO = getMatchedVO(locationVO.getPositionList(), commonMethodsUtilService.getLongValueForObject(obj[2]));
 					if(positionVO != null){
 						
-					GeoLevelListVO castCatgryVO = getMatchedVO(positionVO.getCasteCagryList(), commonMethodsUtilService.getIntegerToLong((Integer)obj[4]));
+					GeoLevelListVO castCatgryVO = getMatchedVO(positionVO.getCasteCagryList(), commonMethodsUtilService.getLongValueForObject(obj[4]));
 						if(castCatgryVO != null){								
 							GeoLevelListVO casteVO = getMatchedVO(castCatgryVO.getCasteList(),commonMethodsUtilService.getLongValueForObject(obj[6]));
 							if(casteVO != null){
