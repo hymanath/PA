@@ -1609,11 +1609,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostApplication.setInsertedBy(loggerUserId);
 		nominatedPostApplication.setUpdatedBy(loggerUserId);
 		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		
 		nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setIsDeleted("N");
 		nominatedPostApplication.setIsExpired("N");
 		nominatedPostApplication.setApplicationStatusId(1l);
 		nominatedPostApplication.setAddressId(nominatedPostAddress.getUserAddressId());
+		Long nominatedPostApplicationId =nominatedPostApplicationDAO.nominatedPostAppPostionDetails(nominatedPostApplication.getBoardLevelId(),nominatedPostApplication.getLocationValue(),nominatedPostApplication.getDepartmentId(),nominatedPostApplication.getBoardId(),nominatedPostApplication.getPositionId(),nominatedPostApplication.getPostTypeId(),nominatedPostApplication.getNominationPostCandidateId());
+		if(nominatedPostApplicationId == null)
 		nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 		saveApplicationDocuments(nominatedPostApplication.getNominatedPostApplicationId(),nominatedPostCandi,mapfiles);
 		}catch(Exception e){
@@ -8595,6 +8598,68 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	  }
 	
   }
+  /* public List<CadreEventsVO> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId,List<Long> extraEventIdsList)
+	{
+		List<CadreEventsVO> returnList = new ArrayList<CadreEventsVO>();
+		List<CadreEventsVO> daywiseList = new ArrayList<CadreEventsVO>();
+		//List<Object[]>  eventAttendeeDetailsMaxTime =null;
+		//List<Object[]>  eventAttendeeDetailsMinTime =null;
+		String eventAttendeeDetailsMaxTime1 = null;
+		String eventAttendeeDetailsMinTime1 =null;
+	try{				
+		CadreEventsVO returnVo = null;
+		    List<Object[]> eventAttendeeDetails = eventAttendeeDAO.getCadreDetailedReportEventAttendeeDetailsDayWise(parentEventId,cadreId);
+			//List<Object[]> eventAttendeeDetailsDayWise = eventAttendeeDAO.getCadreDetailedReportEventAttendeeDetailsDayWise(parentEventId,cadreId);
+			//eventAttendeeDetailsMaxTime =eventAttendeeDAO.getCadreDetailedReportEventAttendeeMaxTime(extraEventIdsList);
+			//eventAttendeeDetailsMinTime =eventAttendeeDAO.getCadreDetailedReportEventAttendeeMinTime(extraEventIdsList);
+			
+			//eventAttendeeDetailsMaxTime1 =eventAttendeeDAO.getCadreDetailedReportEventAttendeeMaxTime1(extraEventIdsList);
+			//eventAttendeeDetailsMinTime1 =eventAttendeeDAO.getCadreDetailedReportEventAttendeeMinTime1(extraEventIdsList);
+			
+		   if(eventAttendeeDetails != null && eventAttendeeDetails.size()>0){
+				for(Object[] param : eventAttendeeDetails){
+					CadreEventsVO subVo = new CadreEventsVO();
+					subVo.setEventId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					//subVo.setName("day1");
+					//subVo.setEventName("25-3-2017");
+					daywiseList.add(subVo);
+				}
+			}
+			if(eventAttendeeDetails != null && eventAttendeeDetails.size()>0){
+				for(Object[] param : eventAttendeeDetails){
+					returnVo =new CadreEventsVO();
+					returnVo.setEventId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					returnVo.setEventName(commonMethodsUtilService.getStringValueForObject(param[1])); 
+					returnVo.setAttendedTime(commonMethodsUtilService.getStringValueForObject(param[2]));					
+					
+				returnVo.setSubList(daywiseList);
+				
+				}
+				
+				Long timeDeff =null;
+				String eventMaxTime = null;
+				String eventMinTime =null;
+				/*if(eventAttendeeDetailsMaxTime != null && eventAttendeeDetailsMaxTime.size()>0){
+					for(Object[] param : eventAttendeeDetailsMaxTime){
+						CadreEventsVO subVo1 = new CadreEventsVO();
+						subVo1.setEventAttendedTime(commonMethodsUtilService.getStringValueForObject(param[0]));
+						subVo1.setEventMaxTime(commonMethodsUtilService.getStringValueForObject(param[1]).substring(11, 18));
+						
+						 //eventMaxTime = subVo1.getEventMaxTime();
+						durationList.add(subVo1);
+						//returnVo.setSubList(durationList);
+					}
+				}*/
+				//returnVo.setTimedifferance(timeDeff);
+				/*returnList.add(returnVo);
+			}
+		
+	}catch(Exception e){
+		LOG.error("Exception Occured in getGoPassedDocumentDuration()", e);
+	}
+	return returnList;
+ }*/
+
  }
 
 

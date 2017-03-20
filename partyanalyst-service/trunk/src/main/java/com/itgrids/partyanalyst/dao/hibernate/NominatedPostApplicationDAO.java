@@ -2424,5 +2424,57 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 int count = query.executeUpdate();
 		 return count;
 	}
+	public Long nominatedPostAppPostionDetails(Long boardLevelId,Long locationValue,Long deptId,Long boardId,Long positionId,Long postTypeId,Long nominationCandidateId ){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.nominatedPostApplicationId from NominatedPostApplication model ");
+		queryStr.append(" where " );
+			if(boardLevelId != null && boardLevelId.longValue()>0){  
+				queryStr.append(" model.boardLevel.boardLevelId =:boardLevelId ");
+			}
+			if(locationValue != null && locationValue.longValue()>0){
+				queryStr.append("  and model.locationValue =:locationValue ");
+			}
+			if(deptId != null && deptId.longValue()>0){
+				queryStr.append(" and model.departments.departmentId =:deptId ");
+			}
+			if(boardId != null && boardId.longValue()>0){
+				queryStr.append(" and model.board.boardId =:boardId ");
+			}
+			if(positionId != null && positionId.longValue()>0){
+				queryStr.append(" and model.position.positionId =:positionId ");
+			}
+			if(postTypeId != null && postTypeId.longValue()>0){
+				queryStr.append(" and model.postType.postTypeId =:postTypeId ");
+			}
+			if(nominationCandidateId != null && nominationCandidateId.longValue()>0){
+				queryStr.append(" and model.nominationPostCandidate.nominationPostCandidateId =:nominationCandidateId ");
+			}
+			queryStr.append(" and model.isDeleted ='N' and  model.isExpired ='N' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(boardLevelId != null && boardLevelId.longValue()>0){  
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(locationValue != null && locationValue.longValue()>0){
+			query.setParameter("locationValue", locationValue);
+		}
+		if(deptId != null && deptId.longValue()>0){
+			query.setParameter("deptId", deptId);
+		}
+		if(boardId != null && boardId.longValue()>0){
+			query.setParameter("boardId", boardId);
+		}
+		if(positionId != null && positionId.longValue()>0){
+			query.setParameter("positionId", positionId);
+		}
+		if(postTypeId != null && postTypeId.longValue()>0){
+			query.setParameter("postTypeId", postTypeId);
+		}
+		if(nominationCandidateId != null && nominationCandidateId.longValue()>0){
+			query.setParameter("nominationCandidateId", nominationCandidateId);
+		}
+		 return (Long) query.uniqueResult();
+		
+	}
 	
 }

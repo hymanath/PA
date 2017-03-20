@@ -42,6 +42,7 @@ public class SessionVO implements Serializable{
     private String mandalTwnDivision;
     private Long sessionId;
     private String sessionName;
+    private Long partyMeetingId;
     private Set<Long> inviteedCadreIdsList = new HashSet<Long>();
     private Set<Long> attendedCadreIdsList = new HashSet<Long>();
     private Set<Long> absentCadreIdsList = new HashSet<Long>();
@@ -274,6 +275,12 @@ public class SessionVO implements Serializable{
 	}
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	public Long getPartyMeetingId() {
+		return partyMeetingId;
+	}
+	public void setPartyMeetingId(Long partyMeetingId) {
+		this.partyMeetingId = partyMeetingId;
 	}
 	
 			
