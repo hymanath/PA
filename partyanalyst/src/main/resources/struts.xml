@@ -16168,5 +16168,10 @@
 				<param name="root">geoLevelListVO</param>				
 			</result>			
 		</action>
+		<action name="getCadreDetailedReportEventAttendeeAction" class="nominatedPostProfileAction" method="getCadreDetailedReportEventAttendee">
+		<result type="json" name="success">
+   			<param name="root">cadreReportVO</param>
+   		</result>
+	    </action>
  </package>
 </struts>

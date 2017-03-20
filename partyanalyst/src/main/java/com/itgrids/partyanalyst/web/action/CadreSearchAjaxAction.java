@@ -282,7 +282,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("districtId")));
+		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID1(Long.valueOf(jObj.getString("districtId")));
 		/*
 		 * Modified by ravi 
 		 * please refer previous version to check for original code.
