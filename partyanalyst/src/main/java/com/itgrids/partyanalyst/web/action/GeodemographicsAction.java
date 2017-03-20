@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.api.service.IGeodemographicService;
+import com.itgrids.core.api.service.IGeodemographicService;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -89,6 +89,13 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 	
 	
 	
+	public IGeodemographicService getGeodemographicService() {
+		return geodemographicService;
+	}
+	public void setGeodemographicService(
+			IGeodemographicService geodemographicService) {
+		this.geodemographicService = geodemographicService;
+	}
 	public Boolean getPollWidget() {
 		return pollWidget;
 	}
@@ -369,18 +376,11 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 			IConstituencyManagementService constituencyManagementService) {
 		this.constituencyManagementService = constituencyManagementService;
 	}
-	public IGeodemographicService getGeodemographicService() {
-		return geodemographicService;
-	}
 	public List<SelectOptionVO> getResult() {
 		return result;
 	}
 	public void setResult(List<SelectOptionVO> result) {
 		this.result = result;
-	}
-	public void setGeodemographicService(
-			IGeodemographicService geodemographicService) {
-		this.geodemographicService = geodemographicService;
 	}
 	public JSONObject getjObj() {
 		return jObj;
