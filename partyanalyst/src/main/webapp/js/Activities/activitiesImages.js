@@ -4287,7 +4287,7 @@ $(document).on("click",".ConstImagesClose",function(){
 		$("body").addClass("modal-open");
 	},400)
 });
-$(document).on("click",".getPopUpImagesCls",function(){
+$(document).on("click",".getImagesCls",function(){
 	$(".imagesModalClose").addClass("ConstImagesClose");
 	$('#imagesModalDivId').modal({
 		show: true,
@@ -4300,11 +4300,11 @@ $(document).on("click",".getPopUpImagesCls",function(){
 	//alert(cnstitncyId);
 	var searchType = $(this).attr("attr_search_type");
 	var value = $(this).attr("attr_value");
-	if(searchType == "constituency"){
+	 if(searchType == "district"){
 		getMandalOrMuncList(cnstitncyId,1,value,attr_activity_scopeid);
-	}else if(searchType == "mandal"){
+	}/*else if(searchType == "mandal"){
 		getPanchayatList(cnstitncyId,attr_activity_scopeid,value);
-	}/* else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
+	} *//* else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
 		str +='<th class="text-capital">Village/Ward name</th>';
 	} */
 	
@@ -4336,22 +4336,28 @@ $(document).on("click",".getPopUpImagesCls",function(){
 //getAvailableDates(globallocationScope,globallocationValue,day,path);
 if(searchType == "constituency"){
 	globalActivityScope = attr_activity_scopeid;
-	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
+	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
+	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
 }else if(searchType == "mandal"){
-	globalActivityScope = attr_activity_scopeid;
-	getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
-	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId,"");
-}else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
+}else if(searchType == "panchayat"){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
+	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
+}else if(searchType == "district"){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
+	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
 }
 
 });
