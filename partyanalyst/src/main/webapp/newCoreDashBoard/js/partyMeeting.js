@@ -5858,7 +5858,7 @@ function getDistrictsForCustomMeetingImges(levelId,meetingId){
 	    stateId : globalStateId,
 		fromDate : '01/01/2017',
 		toDate : '01/02/2018',
-		meetingId:0,
+		meetingId:meetingId,
 		meetingGrpId :0
 		
 	};
@@ -6094,7 +6094,7 @@ function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num){
 			startIndex:num,
 			maxIndex:10,
 			meetingGrpId :0,
-			meetingId :0
+			meetingId :meetingId
 		};
 		
 		$.ajax({
@@ -6123,7 +6123,7 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 				/* for(var j in result[i])
 				{ */
 					
-					str+='<li><img src="https://mytdp.com/DocFiles/' +result[i].path+'" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
+					str+='<li><img src="https://mytdp.com/party_meetings/' +result[i].path+'" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
 					
 				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
 				//}
@@ -6136,7 +6136,7 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 		{	 
 			//for(var j in result[i])
 		//	{
-				str+='<li><img src="https://mytdp.com/DocFiles/' +result[i].path+'" style="cursor:pointer;"/></li>';	
+				str+='<li><img src="https://mytdp.com/party_meetings/' +result[i].path+'" style="cursor:pointer;"/></li>';	
 				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"style="cursor:pointer;" ></li>';
 				
 			//}
