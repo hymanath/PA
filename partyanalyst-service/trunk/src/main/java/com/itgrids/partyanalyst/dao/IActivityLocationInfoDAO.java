@@ -55,5 +55,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> activitiesDistrictWiseCount(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,Long stateId,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 	public List<Object[]> getCnstenciesByActivityId(Long activityId);
 	public List<Object[]> getMandalsByConstituency(Long constituencyId);
-	public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long activityScopeId,String locationType);
+	public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue);
 }
