@@ -1027,4 +1027,67 @@ public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long mun
 	
 	return query.list();
 }
+public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> villageIdsList,List<Long> wardIdsList){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.activityLocationInfo.activityLocationInfoId,count(model.activityDocument.activityDocumentId) " +
+			" from ActivityInfoDocument model " +
+			//" left join model.userAddress.panchayat p " +
+			//" left join model.userAddress.ward w " +
+			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId " );
+			//" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
+			//" and model.activityDocument.activityScope.isDeleted = 'N' " );
+	
+	if(villageIdsList != null && villageIdsList.size() > 0) {
+			sb.append(" and (model.userAddress.panchayat.panchayatId in (:villageIdsList) "); 
+			if(wardIdsList.isEmpty()){
+				sb.append(" and model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
+			}
+			
+	}if(wardIdsList != null && wardIdsList.size() > 0){
+		if(wardIdsList != null && wardIdsList.size() > 0){
+			sb.append(" or model.userAddress.ward.constituencyId in (:wardIdsList)) ");
+		}else{
+			sb.append(" and model.userAddress.ward.constituencyId in (:wardIdsList) ");
+		}
+	}
+	
+	sb.append(" group by model.activityLocationInfo.activityLocationInfoId ");
+	if(villageIdsList != null && villageIdsList.size() > 0){
+		sb.append(", model.userAddress.panchayat.panchayatId ");
+	}if(wardIdsList != null && wardIdsList.size() > 0){
+		sb.append(", model.userAddress.ward.constituencyId");
+	}
+	
+	Query query = getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+	if(villageIdsList != null && villageIdsList.size() > 0) {
+		query.setParameterList("villageIdsList", villageIdsList);
+	}if(wardIdsList != null && wardIdsList.size() > 0){
+		query.setParameterList("wardIdsList", wardIdsList);
+	} 
+	return query.list();
+}
+public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> constiIdsList){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.activityLocationInfo.activityLocationInfoId,count(model.activityDocument.activityDocumentId) " +
+			" from ActivityInfoDocument model " +
+			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId ");
+			//" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
+			//" and model.activityDocument.activityScope.isDeleted = 'N' " );
+	
+	if(constiIdsList != null && constiIdsList.size() > 0){
+		sb.append(" and model.userAddress.constituency.constituencyId in (:constiIdsList)"); 
+	}
+	sb.append(" group by model.activityLocationInfo.activityLocationInfoId ");
+	if(constiIdsList != null && constiIdsList.size() > 0){
+		sb.append(", model.userAddress.constituency.constituencyId ");
+	}
+	
+	Query query = getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+	if(constiIdsList != null && constiIdsList.size() > 0){
+		query.setParameterList("constiIdsList", constiIdsList);	
+	}
+	return query.list();
+}	
 }
