@@ -336,7 +336,7 @@ $(document).on("click",".selectAll",function(){
 							  }else if(levelWiseResult[i].mayBeCount > 0){
 								  if(levelWiseResult[i].updationCount != null && levelWiseResult[i].updationCount > 0){
 									str+='<p class="text-muted text-capital">maybe</p>';	
-	                             str+='<h4><span attr_meeting_status="M" attr_level_type="'+levelWiseResult[i].name+'" style="cursor: pointer;" attr_comment="No" class="overAllMeetingCls" id="partyMeetingsIdE'+i+'"  onclick="overAllMeetings(this.id);">'+levelWiseResult[i].mayBeCount+'</span><span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span><span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'"></span></h4>';
+	                             str+='<h4><span attr_meeting_status="M" attr_level_type="'+levelWiseResult[i].name+'" style="cursor: pointer;" attr_comment="No" class="overAllMeetingCls" id="partyMeetingsIdE'+i+'"  onclick="overAllMeetings(this.id);">'+levelWiseResult[i].mayBeCount+'</span><span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span><span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'" attr_status="maybe"></span></h4>';
 								  }else{
 									  str+='<p class="text-muted text-capital">maybe</p>';	
 	                             str+='<h4><span attr_meeting_status="M" attr_level_type="'+levelWiseResult[i].name+'" style="cursor: pointer;" attr_comment="No" class="overAllMeetingCls" id="partyMeetingsIdE'+i+'"  onclick="overAllMeetings(this.id);">'+levelWiseResult[i].mayBeCount+'</span><span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span><!--<span class="glyphicon glyphicon-info-sign updationDetailsCls" style="cursor: pointer;margin-left: 4px;font-size:14px;" attr_level_type="'+levelWiseResult[i].name+'"></span>--></h4>';
@@ -5523,6 +5523,7 @@ $(document).on("click",".updationDetailsCls",function(){
 		$("#commentsModalId").modal('show');
 		$("#commentsBlock").html('');
 		var levelType = $(this).attr("attr_level_type");
+		var status = $(this).attr("attr_status");
 		var locationLevel ;
 		if(levelType == "Village/Ward"){
 			locationLevel = 7;
@@ -5538,7 +5539,8 @@ $(document).on("click",".updationDetailsCls",function(){
 		var jsObj ={ 
 		             levelId : locationLevel,
 					 startDate : customStartDateMeetings,   
-					 endDate : customEndDateMeetings
+					 endDate : customEndDateMeetings,
+					 status : status
 				  }
 		$.ajax({
 			type : 'POST',
