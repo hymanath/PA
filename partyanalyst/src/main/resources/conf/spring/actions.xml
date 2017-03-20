@@ -1757,6 +1757,13 @@
 		<property name="constituencyManagementService" ref="constituencyManagementService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
-	
+	<bean id="newDistrictPageAction" class="com.itgrids.partyanalyst.web.action.NewDistrictPageAction" singleton="false">
+	</bean>
+	<bean id="newParliamentPageAction" class="com.itgrids.partyanalyst.web.action.NewParliamentPageAction" singleton="false">
+	</bean>
+	<bean id="newStatePageAction" class="com.itgrids.partyanalyst.web.action.NewStatePageAction" singleton="false">
+	</bean>
+	<bean id="locationBaseAction" class="com.itgrids.partyanalyst.web.action.LocationBaseAction" singleton="false">
+	</bean>
 </beans>	
 	
