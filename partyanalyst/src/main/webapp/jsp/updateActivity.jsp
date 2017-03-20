@@ -267,15 +267,15 @@
 						<span>
 								<i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;width" title="View Images"></i>
 							</span>
-							<!--<span>
-								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">All
+							<span>
+								<input type="radio" checked="checked" id="allId" onclick="getLocationWiseDetailsForActivity();" name="radio1">All
 							</span>
 							<span>
-								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','','0','0',2);" name="radio1">Show Conducted Locations
+								<input type="radio" id="conductedId" onclick="getLocationWiseDetailsForActivity();" name="radio1">Show Conducted Locations
 							</span>
 							<span  style="margin-left:30px;">
-								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','','0','0',2);" name="radio1">Show Not Conducted Locations
-							</span> -->
+								<input type="radio" id="notConductedId" onclick="getLocationWiseDetailsForActivity();" name="radio1">Show Not Conducted Locations
+							</span> 
 							<!--<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
 							</span>-->
@@ -562,6 +562,21 @@
       </div>
       <div class="modal-body" style="padding:0px 15px;">
        <div id="buildPoupupImage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal for popup Images -->
+<div class="modal fade" id="imagesModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close imagesModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildImagesId"></div>
       </div>
     </div>
   </div>
@@ -2760,7 +2775,7 @@ function getLocationWiseDetailsForActivity()
 				}
 			}	 */
 			
-			var searchBy="Panchayat";
+			var searchBy="panchayat";
 			var locationId = $('#villageWardsList').val();	
 			if(locationId == 0)
 			{
@@ -2770,17 +2785,17 @@ function getLocationWiseDetailsForActivity()
 				 if(locationId == 0)
 				{
 					locationId = $('#constiList').val();
-					searchBy = "Constituency";
+					searchBy = "constituency";
 					if(locationId == 0)
 				{
 					locationId = $('#districtList').val();
-					searchBy = "District";
+					searchBy = "district";
 				}
 				}
 				
 			}
 			
-			/* var value = "all";
+			var value = "all";
 			if($("#all").is(':checked'))
 			{
 				value = "all";
@@ -2790,13 +2805,13 @@ function getLocationWiseDetailsForActivity()
 				value = "notConducted";
 			if($("#conductedId").is(':checked'))
 				value = "conducted";
-			} */
+			}
 			
 			var activityScopeId = $('#ActivityList').val();
 			var jObj = {
 				//startDate:startDate,
 				//endDate:endDate,
-				//checkedValue:value,
+				checkedValue:value,
 				activityScopeId:$('#ActivityList').val(),
 				activityLevelId:activityLevelId,
 				searchBy:searchBy,
@@ -2837,6 +2852,7 @@ function getLocationWiseDetailsForActivity()
 							str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">TOTAL IMAGES</th>';
 						
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
@@ -2849,15 +2865,16 @@ function getLocationWiseDetailsForActivity()
 							if(activityLevelId == 5){
 								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
 							}else if(activityLevelId == 1){
-								if(result[i].mandalId != null && result[i].mandalId != 0){
+								//if(result[i].mandalId != null && result[i].mandalId != 0){
 									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
 									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
-								}else if(result[i].localElcBodyId != null && result[i].localElcBodyId != 0){
+								/* }else if(result[i].localElcBodyId != null && result[i].localElcBodyId != 0){
 									str+='<td id='+result[i].localElcBodyId+'>'+result[i].localElcBodyName+'</td>';
 									str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
-								}else{
+								} */
+								/* else{
 									str+='<td> - </td>';
-								}
+								} */
 							}
 							if(result[i].planedDate != null && result[i].planedDate != ""){
 								str+='<td>'+result[i].planedDate+'</td>';
@@ -2873,6 +2890,13 @@ function getLocationWiseDetailsForActivity()
 								str+='<td>'+result[i].ivrStatus+'</td>';
 							}else{
 								str+='<td> - </td>';
+							}
+							if(result[i].count != null && result[i].count > 0){
+								str+='<td>'+result[i].count;
+								str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+								
+							}else{
+								str+='<td>'+0+'</td>';
 							}
 							
 							//str+='<td>'+result[i].constituencyName+'</td>';
