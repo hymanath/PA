@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CastePositionVO;
+import com.itgrids.partyanalyst.dto.GeoLevelListVO;
+import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
@@ -37,4 +39,5 @@ public interface INominatedPostMainDashboardService {
 				Long stateId,String searchType,List<Long> locIdsList,String type,List<Long> postStatusIds);
 	 public  List<IdNameVO> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,
 				Long stateId,String searchType,List<Long> locIdsList,List<Long> postStatusIds,String type);
+	 public List<GeoLevelListVO> getGeoLevelReportDetails(GeoLevelReportVO vo);
 }

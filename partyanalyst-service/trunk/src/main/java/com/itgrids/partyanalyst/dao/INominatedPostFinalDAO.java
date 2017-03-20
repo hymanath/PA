@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 
@@ -77,4 +78,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 				List<Long> locIdsList,List<Long> postStatusIds,String casteType);
 	 public List<Object[]> getPendingCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 				Long locationValue,String type,Long searchLevelId);
+	 public List<Object[]> getGeoLevelReportDetails(GeoLevelReportVO vo);
 }

@@ -8,7 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -2792,4 +2792,184 @@ public List<Object[]> getCandidateLocationWiseDetails(Long postLevelId,Long cast
 		    
 		    return query.list();
 	 }
+
+public List<Object[]> getGeoLevelReportDetails(GeoLevelReportVO vo){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	 
+	 queryStr.append(" select " );
+	 
+	 if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("district")){
+		 queryStr.append("  model.nominationPostCandidate.address.district.districtId,model.nominationPostCandidate.address.district.districtName " );
+	 }else if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+		 queryStr.append("  model.nominationPostCandidate.address.constituency.constituencyId,model.nominationPostCandidate.address.constituency.name " );
+	 }
+	 
+	 if(vo.getIsPositionChkd() != null && vo.getIsPositionChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+					" model.nominatedPostMember.nominatedPostPosition.position.positionName ");
+	}else{
+			queryStr.append(" ,'','' ");
+	}
+	 
+		if(vo.getIsCasteGrpChkd() != null && vo.getIsCasteGrpChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName");
+		}else{
+			queryStr.append(" ,'',''");
+		}
+		
+		 if(vo.getIsCasteChkd() != null && vo.getIsCasteChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.caste.casteId," +
+						" model.nominationPostCandidate.casteState.caste.casteName");
+		}else{
+			queryStr.append(" ,'',''");
+		}
+		 
+		 queryStr.append(" ,model.nominatedPostMember.boardLevel.boardLevelId,model.nominatedPostMember.boardLevel.level ");
+		 
+		if(vo.getIsAgeRngeChkd() != null && vo.getIsAgeRngeChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange");
+		}else{
+			queryStr.append(" ,'',''");
+		}
+		
+		if(vo.getIsGenderChkd() != null && vo.getIsGenderChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.gender ");
+		}else{
+			queryStr.append(" ,''");
+		}
+		
+		
+		queryStr.append(" ,count(distinct model.nominationPostCandidate.nominationPostCandidateId)");
+	 
+	 queryStr.append("  from NominatedPostFinal model where model.isDeleted = 'N'  and  model.isExpired = 'N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominationPostCandidate.isDeleted = 'N' " +
+				" and model.nominatedPost.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' " +
+				" and model.nominatedPostApplication.isExpired='N' and model.nominatedPost.isExpired='N' " );
+	 /*if(casteType != null && casteType.equalsIgnoreCase("casteCatgry")){
+		 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId not in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+	 }else if(casteType != null && casteType.equalsIgnoreCase("minority")){
+		 queryStr.append( " and model.nominationPostCandidate.casteState.casteStateId  in  ("+IConstants.CADRE_NEW_MINORITY_CASTE_IDS+") " );
+	 }*/
+	
+		if(vo.getPositionIds().size() >0 && vo.getPositionIds() != null){
+			queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIds)  ");
+		}
+		if(!(vo.getBoardLevelId().equals(0l)) && vo.getBoardLevelId() != null){
+			queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :postLevelId  ");
+		}
+		
+		if(vo.getStatusIds() != null && vo.getStatusIds().size() > 0l){
+			queryStr.append(" and model.nominatedPostApplication.applicationStatus.applicationStatusId in(:appStatusIds)");
+      	  }
+		if(vo.getAgeRangeIds().size() > 0 && vo.getAgeRangeIds() != null){
+			queryStr.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId in (:ageRangeIds) " );
+		}
+		if(vo.getCasteIds().size() >0 && vo.getCasteIds() != null){
+			queryStr.append(" and model.nominationPostCandidate.casteState.casteStateId in (:casteIds)  ");
+		}
+		if(vo.getCasteGrpIds().size() > 0 && vo.getCasteGrpIds() != null){
+			queryStr.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIds)  ");
+		}
+		
+		
+		if(vo.getStateId() != null && vo.getStateId().longValue() > 0l){
+			if( vo.getStateId().longValue() == 1l){
+				queryStr.append(" and  model.nominationPostCandidate.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if( vo.getStateId().longValue()==36l){
+				queryStr.append(" and model.nominationPostCandidate.address.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
+		if(vo.getGender() != null && vo.getGender().equalsIgnoreCase("M") || vo.getGender().equalsIgnoreCase("F")){
+			queryStr.append(" and  model.nominationPostCandidate.gender=:gender  ");
+		}
+		if(vo.getLocationIds() != null && vo.getLocationIds().size() > 0l){
+			if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+				 queryStr.append(" and model.nominationPostCandidate.address.constituency.constituencyId  in (:locIdsList)" );
+			 }else if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("district")){
+				 queryStr.append(" and model.nominationPostCandidate.address.district.districtId in (:locIdsList)  " );
+			 }
+		}
+		queryStr.append(" group by " );
+		if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("district")){
+			 queryStr.append("  model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
+		 }else if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+			 queryStr.append("  model.nominationPostCandidate.address.constituency.constituencyId,model.nominatedPostMember.boardLevel.boardLevelId " );
+		 }
+		if(vo.getIsCasteGrpChkd() != null && vo.getIsCasteGrpChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId" );
+		}
+		
+		if(vo.getIsCasteChkd() != null && vo.getIsCasteChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.caste.casteId " );
+		}
+		if(vo.getIsAgeRngeChkd() != null && vo.getIsAgeRngeChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " );
+		}
+		
+		if(vo.getIsGenderChkd() != null && vo.getIsGenderChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.gender ");
+		}
+		
+		if(vo.getIsPositionChkd() != null && vo.getIsPositionChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		}
+		queryStr.append(" order by " );
+		if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("district")){
+			 queryStr.append("  model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
+		 }else if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+			 queryStr.append("  model.nominationPostCandidate.address.constituency.constituencyId,model.nominatedPostMember.boardLevel.boardLevelId " );
+		 }
+		if(vo.getIsCasteGrpChkd() != null && vo.getIsCasteGrpChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId" );
+		}
+		
+		if(vo.getIsCasteChkd() != null && vo.getIsCasteChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.casteState.caste.casteId " );
+		}
+		if(vo.getIsAgeRngeChkd() != null && vo.getIsAgeRngeChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " );
+		}
+		
+		if(vo.getIsGenderChkd() != null && vo.getIsGenderChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominationPostCandidate.gender ");
+		}
+		
+		if(vo.getIsPositionChkd() != null && vo.getIsPositionChkd().equalsIgnoreCase("true")){
+			queryStr.append(" ,model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		}
+	 Query query = getSession().createQuery(queryStr.toString());
+	 
+	 if(vo.getCasteGrpIds().size() > 0 && vo.getCasteGrpIds() != null){
+		 query.setParameterList("castGroupIds", vo.getCasteGrpIds());
+	 }
+	 if(vo.getPositionIds().size() > 0 && vo.getPositionIds() != null){
+		 query.setParameterList("positionIds", vo.getPositionIds());
+	 }
+	 if(!(vo.getBoardLevelId().equals(0l)) && vo.getBoardLevelId() != null){
+			query.setParameter("postLevelId", vo.getBoardLevelId());
+		}
+	 if(vo.getCasteIds().size() > 0 && vo.getCasteIds() != null){
+		 query.setParameterList("casteIds", vo.getCasteIds()); 
+	 }
+	 if(vo.getAgeRangeIds().size() > 0 && vo.getAgeRangeIds() != null){
+		 query.setParameterList("ageRangeIds", vo.getAgeRangeIds()); 
+	 }
+	 
+	 if(vo.getGender() != null && vo.getGender().equalsIgnoreCase("M") || vo.getGender().equalsIgnoreCase("F")){
+		 query.setParameter("gender", vo.getGender()); 
+	 }
+	if( vo.getLocationIds() != null && vo.getLocationIds().size() > 0l){
+		 query.setParameterList("locIdsList", vo.getLocationIds()); 
+	 }
+	 
+	if(vo.getStatusIds() != null && vo.getStatusIds().size() > 0l){
+		 query.setParameterList("appStatusIds", vo.getStatusIds());
+	 }
+	    
+	    return query.list();
+ } 
 }

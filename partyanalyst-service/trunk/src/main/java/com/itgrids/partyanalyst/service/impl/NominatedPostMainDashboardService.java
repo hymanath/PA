@@ -5,10 +5,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -31,6 +33,8 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
+import com.itgrids.partyanalyst.dto.GeoLevelListVO;
+import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
@@ -1528,4 +1532,299 @@ public  List<IdNameVO> getCandidateLocationWiseDetails(Long postLevelId,Long cas
 			}
 			return finalList;
 }
+
+public List<GeoLevelListVO> getGeoLevelReportDetails(GeoLevelReportVO vo){
+	List<GeoLevelListVO> locationsList = new ArrayList<GeoLevelListVO>();
+	try{
+		
+		List<Object[]> geoReport = nominatedPostFinalDAO.getGeoLevelReportDetails(vo);
+		
+		 locationsList = buildGeoReportData(geoReport,0,1);
+		List<GeoLevelListVO> positionList = buildGeoReportData(geoReport,2,3);
+		List<GeoLevelListVO> castGrpList = buildGeoReportData(geoReport,4,5);
+		List<GeoLevelListVO> casteList = buildGeoReportData(geoReport,6,7);
+		List<GeoLevelListVO> boardLevelList = buildGeoReportData(geoReport,8,9);
+		List<GeoLevelListVO> ageGrpList = buildGeoReportData(geoReport,10,11);
+		
+		
+		locationsList = setReturnListValues(locationsList,positionList,"positions");
+		locationsList = setReturnListValues(locationsList,castGrpList,"category");
+		locationsList = setReturnListValues(locationsList,casteList,"caste");
+		locationsList = setReturnListValues(locationsList,boardLevelList,"boardLevel");
+		locationsList = setReturnListValues(locationsList,ageGrpList,"ageGrp");
+		if(commonMethodsUtilService.isListOrSetValid(ageGrpList)){
+			setCount(locationsList,geoReport);
+		}
+		
+		//List<GeoLevelListVO> boardLevelList = buildGeoReportData(geoReport,8,9);
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception occured into getGeoLevelReportDetails () of NominatedPostMainDashboardervice ",e);
+	}
+	return locationsList;
+}
+public void setCount(List<GeoLevelListVO> list,List<Object[]> geoReport){
+	
+	try{
+		if(commonMethodsUtilService.isListOrSetValid(geoReport)){
+			
+			Map<Long,Map<Long,Map<Long,Set<Long>>>> availableDataMap = new HashMap<Long,Map<Long,Map<Long,Set<Long>>>>(0);
+			for(Object[] obj :geoReport){
+				GeoLevelListVO locationVO = getMatchedVO(list, commonMethodsUtilService.getLongValueForObject(obj[0]));
+				
+				if(locationVO != null){
+					Long totalCount = commonMethodsUtilService.getLongValueForObject(obj[13]);
+					locationVO.setTotal(locationVO.getTotal()+totalCount);
+
+					GeoLevelListVO positionVO = getMatchedVO(locationVO.getPositionList(), commonMethodsUtilService.getLongValueForObject(obj[2]));
+					if(positionVO != null){
+						
+					GeoLevelListVO castCatgryVO = getMatchedVO(positionVO.getCasteCagryList(), commonMethodsUtilService.getIntegerToLong((Integer)obj[4]));
+						if(castCatgryVO != null){								
+							GeoLevelListVO casteVO = getMatchedVO(castCatgryVO.getCasteList(),commonMethodsUtilService.getLongValueForObject(obj[6]));
+							if(casteVO != null){
+								GeoLevelListVO boardLvlVO = getMatchedVO(casteVO.getBoardLvlList(), commonMethodsUtilService.getLongValueForObject(obj[8]));
+								if(boardLvlVO != null){
+									GeoLevelListVO ageRangeVO = getMatchedVO(boardLvlVO.getAgeRangeList(), commonMethodsUtilService.getLongValueForObject(obj[10]));
+									if(ageRangeVO != null){
+										Long count = commonMethodsUtilService.getLongValueForObject(obj[13]);
+										if(commonMethodsUtilService.getStringValueForObject(obj[12]).equalsIgnoreCase("M") || commonMethodsUtilService.getStringValueForObject(obj[12]).equalsIgnoreCase("Male")){
+											ageRangeVO.setMaleCount(ageRangeVO.getMaleCount()+count);
+										}else if(commonMethodsUtilService.getStringValueForObject(obj[12]).equalsIgnoreCase("F") || commonMethodsUtilService.getStringValueForObject(obj[12]).equalsIgnoreCase("Female")){
+											ageRangeVO.setFeMaleCount(ageRangeVO.getFeMaleCount()+count);
+										}
+										ageRangeVO.setTotal(ageRangeVO.getTotal()+count);
+										if(count.longValue()>0L){
+											
+											
+											Map<Long,Map<Long,Set<Long>>> availablePositionsMap = new HashMap<Long, Map<Long,Set<Long>>>(0);
+											Map<Long,Set<Long>> availableCategoryMap = new HashMap<Long,Set<Long>>(0);
+											//Map<Long,Set<Long>> availableCasteMap = new HashMap<Long,Set<Long>>(0);
+											Set<Long> castIds = new HashSet<Long>(0);
+											
+											if(availableDataMap.get(locationVO.getLevelId()) != null){
+												availablePositionsMap = availableDataMap.get(locationVO.getLevelId());
+												if(availablePositionsMap.get(positionVO.getLevelId()) != null){
+													availableCategoryMap = availablePositionsMap.get(positionVO.getLevelId());
+												}
+												if(availableCategoryMap.get(castCatgryVO.getLevelId()) != null){
+													castIds = availableCategoryMap.get(castCatgryVO.getLevelId());
+												}
+											}
+											castIds.add(casteVO.getLevelId());
+											
+											availableCategoryMap.put(castCatgryVO.getLevelId(), castIds);
+											availablePositionsMap.put(positionVO.getLevelId(), availableCategoryMap);
+											availableDataMap.put(locationVO.getLevelId(), availablePositionsMap);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			
+			for (GeoLevelListVO vo : list) {
+				//System.out.println(availableDataMap.get(vo.getLevelId()));
+				if(commonMethodsUtilService.isListOrSetValid(vo.getPositionList())){
+					List<GeoLevelListVO> filteredpositionList = new ArrayList<GeoLevelListVO>(0);
+					
+					Map<Long,Map<Long,Set<Long>>> availablePositionsMap = availableDataMap.get(vo.getLevelId());
+					for (GeoLevelListVO positionVO : vo.getPositionList()) {
+						//System.out.println(availableDataMap.get(vo.getLevelId().get(positionVO.getLevelId())));
+						Map<Long,Set<Long>> availableCategoryMap = availablePositionsMap.get(positionVO.getLevelId());
+						if(commonMethodsUtilService.isMapValid(availableCategoryMap)){
+							
+							GeoLevelListVO postionVO = new GeoLevelListVO();
+							postionVO.setLevelId(positionVO.getLevelId());
+							postionVO.setName(positionVO.getName());
+							
+							for (GeoLevelListVO categoryVO : positionVO.getCasteCagryList()) {
+								//System.out.println(availableDataMap.get(vo.getLevelId().get(positionVO.getLevelId()).get(categoryVO.getLevelId())));
+								Set<Long> castIds = availableCategoryMap.get(categoryVO.getLevelId());
+								if(commonMethodsUtilService.isListOrSetValid(castIds)){
+									
+									GeoLevelListVO casteCategory = new GeoLevelListVO();
+									casteCategory.setLevelId(categoryVO.getLevelId());
+									casteCategory.setName(categoryVO.getName());
+									
+									for (GeoLevelListVO casteVO : categoryVO.getCasteList()) {
+										if(castIds.contains(casteVO.getLevelId())){
+											GeoLevelListVO caste = new GeoLevelListVO();
+											caste.setLevelId(casteVO.getLevelId());
+											caste.setName(casteVO.getName());
+											caste.getBoardLvlList().addAll(casteVO.getBoardLvlList());
+											
+											casteCategory.getCasteList().add(caste);
+										}
+									}
+									postionVO.getCasteCagryList().add(casteCategory);
+								}
+							}
+							
+							filteredpositionList.add(postionVO);
+						}
+					}
+					vo.getPositionList().clear();
+					vo.setPositionList(filteredpositionList);
+				}
+				
+			}
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception occured into setCount () of NominatedPostMainDashboardervice ",e);
+	}
+}
+public void setListForVO(GeoLevelListVO vo,List<GeoLevelListVO> subList,String type){
+	
+	try{
+		if(commonMethodsUtilService.isListOrSetValid(subList)){
+			if(type != null && type.equalsIgnoreCase("positions")){
+				for (GeoLevelListVO subVO : subList) {
+					GeoLevelListVO postnVO = new GeoLevelListVO();
+					postnVO.setLevelId(subVO.getLevelId());
+					postnVO.setName(subVO.getName());
+					vo.getPositionList().add(postnVO);
+				}
+			}else if(type != null && type.equalsIgnoreCase("category")){
+				for (GeoLevelListVO subVO : subList) {
+					GeoLevelListVO postnVO = new GeoLevelListVO();
+					postnVO.setLevelId(subVO.getLevelId());
+					postnVO.setName(subVO.getName());
+					vo.getCasteCagryList().add(postnVO);
+				}
+			}
+			else if(type != null && type.equalsIgnoreCase("caste")){
+				for (GeoLevelListVO subVO : subList) {
+					GeoLevelListVO postnVO = new GeoLevelListVO();
+					postnVO.setLevelId(subVO.getLevelId());
+					postnVO.setName(subVO.getName());
+					vo.getCasteList().add(postnVO);
+				}
+			}
+			else if(type != null && type.equalsIgnoreCase("boardLevel")){
+				for (GeoLevelListVO subVO : subList) {
+					GeoLevelListVO postnVO = new GeoLevelListVO();
+					postnVO.setLevelId(subVO.getLevelId());
+					postnVO.setName(subVO.getName());
+					vo.getBoardLvlList().add(postnVO);
+				}
+			}else if(type != null && type.equalsIgnoreCase("ageGrp")){
+				for (GeoLevelListVO subVO : subList) {
+					GeoLevelListVO postnVO = new GeoLevelListVO();
+					postnVO.setLevelId(subVO.getLevelId());
+					postnVO.setName(subVO.getName());
+					vo.getAgeRangeList().add(postnVO);
+				}
+			}
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception occured into setListForVO () of NominatedPostMainDashboardervice ",e);
+	}
+}
+public List<GeoLevelListVO> setReturnListValues(List<GeoLevelListVO> locationsList,List<GeoLevelListVO> subList,String type){
+	
+	try{
+		
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationsList)){
+		for(GeoLevelListVO locVO :locationsList){
+			if(type != null && type.equalsIgnoreCase("positions")){
+				 setListForVO(locVO,subList,type);
+				}else if(type != null && type.equalsIgnoreCase("category")){
+				List<GeoLevelListVO>  posiList= locVO.getPositionList();
+				for(GeoLevelListVO posiVO :posiList){
+					posiVO.getCasteCagryList().clear();
+					setListForVO(posiVO,subList,type);
+				}
+			}
+			else if(type != null && type.equalsIgnoreCase("caste")){
+				List<GeoLevelListVO>  posiList= locVO.getPositionList();
+					for(GeoLevelListVO posiVO :posiList){
+						List<GeoLevelListVO>  categoryList= posiVO.getCasteCagryList();
+						for(GeoLevelListVO catgVO :categoryList){
+							catgVO.getCasteList().clear();
+							setListForVO(catgVO,subList,type);
+						   }
+						}
+					}
+			
+			else if(type != null && type.equalsIgnoreCase("boardLevel")){
+				List<GeoLevelListVO>  posiList= locVO.getPositionList();
+				for(GeoLevelListVO posiVO :posiList){
+					List<GeoLevelListVO>  categoryList= posiVO.getCasteCagryList();
+					for(GeoLevelListVO catgVO :categoryList){
+						List<GeoLevelListVO>  casteList= catgVO.getCasteList();
+						for(GeoLevelListVO casteVO :casteList){
+							setListForVO(casteVO,subList,type);
+						}
+					}
+				}
+			}else if(type != null && type.equalsIgnoreCase("ageGrp")){
+				List<GeoLevelListVO>  posiList= locVO.getPositionList();
+				for(GeoLevelListVO posiVO :posiList){
+					List<GeoLevelListVO>  categoryList= posiVO.getCasteCagryList();
+					for(GeoLevelListVO catgVO :categoryList){
+						List<GeoLevelListVO>  casteList= catgVO.getCasteList();
+						for(GeoLevelListVO casteVO :casteList){
+							List<GeoLevelListVO>  boardLvlList= casteVO.getBoardLvlList();
+							for(GeoLevelListVO boardLvl :boardLvlList){
+								 setListForVO(boardLvl,subList,type);
+							}
+						}
+					}
+				}
+			}
+		}
+		}
+	}catch(Exception e){
+		
+	}
+	return locationsList;
+}
+ public List<GeoLevelListVO> buildGeoReportData(List<Object[]> geoReport,int index1,int index2){
+	 List<GeoLevelListVO> returnList = new ArrayList<GeoLevelListVO>();
+	 Map<Long,GeoLevelListVO> map = new HashMap<Long,GeoLevelListVO>();
+	 try{
+		 
+		 if(commonMethodsUtilService.isListOrSetValid(geoReport)){
+			 for(Object[] obj : geoReport){
+				 GeoLevelListVO locationVO = new GeoLevelListVO(); 
+					 locationVO.setLevelId(commonMethodsUtilService.getLongValueForObject(obj[index1]));
+					 locationVO.setName(commonMethodsUtilService.getStringValueForObject(obj[index2]));
+					 
+					 map.put(commonMethodsUtilService.getLongValueForObject(obj[index1]), locationVO);
+			}
+		}
+	 }catch(Exception e){
+		 e.printStackTrace();
+			LOG.error("Exception occured into buildGeoReportData () of NominatedPostMainDashboardervice ",e);
+	 }
+	 if(commonMethodsUtilService.isMapValid(map)){
+		 returnList.addAll(map.values());
+	 }
+	 return returnList;
+ }
+ 
+ public GeoLevelListVO getMatchedVO(List<GeoLevelListVO> list,Long id){
+		GeoLevelListVO returnVO = null;
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for(GeoLevelListVO vo:list){
+					if(vo.getLevelId() != null && vo.getLevelId().longValue() == id.longValue() ){
+						return vo;
+						
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured into getMatchedVO () of NominatedPostMainDashboardervice ",e);
+		}
+		return returnVO;
+	}
 }
