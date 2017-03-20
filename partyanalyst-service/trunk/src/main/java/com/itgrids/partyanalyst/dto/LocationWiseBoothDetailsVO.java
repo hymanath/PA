@@ -23,7 +23,7 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private Long votesPolled;
 	private Long total = 0l;;
 	private String electionYear;
-	private Long count;
+	private Long count = 0l;
 	
 	private Long id;
 	private String name;
@@ -55,6 +55,7 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private String ivrStatus;
 	private Long localElcBodyId;
 	private String localElcBodyName;
+	private Long activityLocatInfoId;
 	
 	public String getDateStr() {
 		return dateStr;
@@ -329,6 +330,12 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	}
 	public void setLocalElcBodyName(String localElcBodyName) {
 		this.localElcBodyName = localElcBodyName;
+	}
+	public Long getActivityLocatInfoId() {
+		return activityLocatInfoId;
+	}
+	public void setActivityLocatInfoId(Long activityLocatInfoId) {
+		this.activityLocatInfoId = activityLocatInfoId;
 	}
 	
 	
