@@ -164,6 +164,7 @@
 							<div class="col-md-4 m_top10" id="districtDivId" style="display:none;">
 								<label>District</label>
 								<select id="districtList" class="form-control" name="activityVO.districtId" >
+									<option value="0"> Select District</option>
 								</select>
 							</div>	
 							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
@@ -187,7 +188,36 @@
 									<option value="0"> Select Panchayat/ Ward</option>
 								</select>
 							</div>
+							<div class="col-md-4 m_top10" id="attributeTypeId" style="display:none;">
+								<label>Attribute Types</label>
+								<select id="attributeTypeList" class="form-control">
+									<option value="0"> Select Option</option>
+									<option value="1"> Conducted Date</option>
+									<option value="2"> Planned Date</option>
+									<option value="3"> Ivr Status</option>
+									<option value="4"> Update Details</option>
+								</select>
+							</div>	
+								<div class="col-md-4 m_top10" id="planedDateDivId" style="display:none;">
+									<label>Planned Date</label>
+									<div class="input-group input-g1">
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</span>
+										<input type="text" class="form-control" id="plannedDate">
+									</div>
+								</div>
+									<div class="col-md-4 m_top10" id="conductedDateDivId" style="display:none;">
+										<label>Select Conducted Date</label>
+										<div class="input-group input-g1">
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+											<input type="text" class="form-control" id="conductedDate">
+										</div>
+									</div>
 							</div>
+							
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationWiseDetailsForActivity();">SEARCH</button>
@@ -683,6 +713,7 @@ $(function () {
   $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
 });
+
 /*
 function getActivityNames()
 {
@@ -823,18 +854,22 @@ function getUserAccessConstituencyList()
 function getUserAccessDistrictList()
 {
 	$('#districtList').find('option').remove();
-	//$('#districtList').append('<option value="0"> Select District</option>');	
+	$('#districtList').append('<option value="0"> Select District</option>');	
+	
+	var activityId = $("#ActivityList").val();
 	var jObj = {
+			activityId : activityId
 		};
 		
 		$.ajax({
           type:'GET',
-          url: 'getUserAccessDistrictListAction.action',
+          url: 'getDistrictsListForActivitiesAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			
 			if(result != null && result.length >0)
-			{
+			{	
+				$('#districtList').find('option').remove();
 				$('#districtList').append('<option value="0"> All </option>');
 				for(var i in result)
 					$('#districtList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -2649,9 +2684,18 @@ $(document).on("click","#closeButtonId",function(){
 	
 });
 $(document).on("change","#ActivityList",function(){
+	var levlId = $("#activityLevelList").val();
+	if(levlId == 3 || levlId ==5){
+		getUserAccessDistrictList();
+	}else if(levlId == 1){
+		getConstitiensList();
+	}
+});
+
+function getConstitiensList(){	
 	$('#constiList').find('option').remove();
 	$('#constiList').append('<option value="0">Select Constituency</option>');
-	var activityId = $(this).val();
+	var activityId = $("#ActivityList").val();
 	
 	var jsObj={	
 			activityId:activityId		 
@@ -2670,7 +2714,7 @@ $(document).on("change","#ActivityList",function(){
 				$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		}
 		   });
-});
+	}
 $(document).on("change","#constiList",function(){
 	$('#mandalsList').find('option').remove();
 	$('#mandalsList').append('<option value="0">All</option>');
@@ -2836,6 +2880,7 @@ function getLocationWiseDetailsForActivity()
 						str+='<thead>';
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;"><input type="checkbox" id="imageChekId"></th>';
 						if(activityLevelId == 2)
 							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1){	
@@ -2862,12 +2907,17 @@ function getLocationWiseDetailsForActivity()
 						str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
+							str+='<td value='+result[i].activityLocatInfoId+'><input type="checkbox" id="imageChekId"></td>';
 							if(activityLevelId == 5){
+								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+								str+='<input type="hidden" value="'+result[i].constituencyId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
 							}else if(activityLevelId == 1){
 								//if(result[i].mandalId != null && result[i].mandalId != 0){
 									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
 									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
+									str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+									str+='<input type="hidden" value="'+result[i].villageId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								/* }else if(result[i].localElcBodyId != null && result[i].localElcBodyId != 0){
 									str+='<td id='+result[i].localElcBodyId+'>'+result[i].localElcBodyName+'</td>';
 									str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
@@ -2875,25 +2925,35 @@ function getLocationWiseDetailsForActivity()
 								/* else{
 									str+='<td> - </td>';
 								} */
+							}else if(activityLevelId == 3){
+								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+									str+='<input type="hidden" value="'+result[i].districtId+'" name="activityVO.activityVoList['+i+'].locationValue">';
+								str+='<td id='+result[i].districtId+'>'+result[i].districtName+'</td>';
 							}
 							if(result[i].planedDate != null && result[i].planedDate != ""){
-								str+='<td>'+result[i].planedDate+'</td>';
+								str+='<td>'+result[i].planedDate+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" /></td>';
 							}else{
 								str+='<td> - </td>';
 							}
 							if(result[i].conductedDate != null && result[i].conductedDate != ""){
-								str+='<td>'+result[i].conductedDate+'</td>';
+								str+='<td >'+result[i].conductedDate+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result[i].conductedDate+'" /></td>';
 							}else{
 								str+='<td> - </td>';
 							}
 							if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
-								str+='<td>'+result[i].ivrStatus+'</td>';
+								str+='<td>'+result[i].ivrStatus+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" /></td>';
 							}else{
 								str+='<td> - </td>';
 							}
 							if(result[i].count != null && result[i].count > 0){
 								str+='<td>'+result[i].count;
-								str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+								if(activityLevelId == 5){
+								 str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+0+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+								}else if(activityLevelId == 1){
+									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+								}else if(activityLevelId == 3){
+									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].districtId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+								}
 								
 							}else{
 								str+='<td>'+0+'</td>';
@@ -2907,6 +2967,7 @@ function getLocationWiseDetailsForActivity()
 					}
 					$('#home').html(str);
 					
+					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
 					$("#locationsTab").dataTable({
 					"iDisplayLength": 20,
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
