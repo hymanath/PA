@@ -415,25 +415,14 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 	public String execute(){
 		return Action.SUCCESS;
 	}
-	public String newConstituencyPage(){
+	public String newConstituencyPage()
+	{
 		constituencyId = 232l;
 		String url = request.getRequestURL().toString();
 		String substr = url.substring(7);
 		String path = substr.substring(0, substr.indexOf('/')) ;
 		String userStatusType = null;
 		session = request.getSession();
-		
-		if(!("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))){
-			if(session.getAttribute("constituencyPageLoadingFirstTime") == null)
-			{
-				session.setAttribute("constituencyPageLoadingFirstTime", "true");
-			}
-			else
-				session.setAttribute("constituencyPageLoadingFirstTime", "false");
-		}else{
-			session.setAttribute("constituencyPageLoadingFirstTime", "false");
-		}
-		
 		
 		request.setAttribute("host", IConstants.DEPLOYED_HOST);
 		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
@@ -442,7 +431,7 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 			mapKey = "https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
 		else 
 			mapKey = "https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
-			//mapKey = "https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true";
+		
 		if("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST)){
 			mapKey = "https://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyCSbtF4m2Eeh77OFbfIEJiN6hs-yPa7Qg4&sensor=true";
 		}
@@ -489,47 +478,8 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 		LOG.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
 		LOG.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
-		Set<String> partiesInChart = null;
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId,true);
 		
-		String pieChart = "";
-		String pieChartPath = "";
-		String title = "";
-		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
-		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
-		String cPath = request.getContextPath();
-		int i=0;
-	/*	for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
-			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+".png";
-			//For Charts
-			if(cPath.contains("PartyAnalyst"))
-			   pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
-			else
-				pieChartPath = IWebConstants.CHART_URL_IN_SERVER + pieChart;
-			
-			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
-				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-					title = "Each Mandal Voters Share* After Delimitation";
-				else
-					title = "Each Assembly Voters Share* After Delimitation";
-				extraInfo[i] = "* Based On 2009 Elections Data";
-			}
-			else{
-				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-					title = "Each Mandal Voters Share** Before Delimitation";
-				else
-					title = "Each Assembly Voters Share** Before Delimitation";
-				extraInfo[i] = "** Based On 2004 Elections Data";
-			}
-				
-			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
-				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, 
-						null,true,260,270);
-			chartNames[i++] = pieChart;
-		}
-		
-		constituencyVO.setPieChartNames(chartNames);
-		constituencyVO.setExtraInfo(extraInfo);*/
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
 		List<Long> listOfConstituencies = new ArrayList<Long>();
@@ -559,30 +509,9 @@ public class GeodemographicsAction extends ActionSupport implements ServletReque
 			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.
 					getElectionYear(), constituencyId));
            }
-           	// jfree chart code
-       /* chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
-      String chartPath;
-        if(cPath.contains("PartyAnalyst"))
-            chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-        else
-        	chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
-        
-        partiesInChart = new LinkedHashSet<String>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
-   				createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true );
-   		
-   		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
-   		String enlargedChartPath = "";
-   		if(cPath.contains("PartyAnalyst"))
-   			enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
-   		else
-   			enlargedChartPath = IWebConstants.CHART_URL_IN_SERVER + enlargedChartName;
-        
-        partiesInChart = new LinkedHashSet<String>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
-   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);*/
-   		List<Long> constituencyIds = new ArrayList<Long>();
-   		if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+   			List<Long> constituencyIds = new ArrayList<Long>();
+   			
+   			if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
    			constituencyIds.add(constituencyId);
    		}else{
    			ConstituencyInfoVO  constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(constituencyId);
