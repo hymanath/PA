@@ -345,7 +345,7 @@
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>
+											<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>
 											<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	
 												<option></option>
 											</select>
