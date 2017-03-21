@@ -2901,15 +2901,114 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	     }
 	    }
 		
-			 
-	   if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
-		   for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
-			   List<Object[]> returnObjList = partyMeetingStatusDAO.getPartyMeetingComulativeCommentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,reportType, "MeetingCount");
-			   setMeetingCommentsComulativeDetailsToMap(returnObjList,locationMap,"MeetingCount");
-			   List<Object[]> returnCmmntCntObjList = partyMeetingStatusDAO.getPartyMeetingComulativeCommentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,reportType, "commentCount");
-			   setMeetingCommentsComulativeDetailsToMap(returnCmmntCntObjList,locationMap,"commentCount");
-		   }
-	   } 
+	    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+			   for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
+				   List<Object[]> returnObjList = partyMeetingStatusDAO.getPartyMeetingComulativeCommentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,reportType, "MeetingCount");
+				   setMeetingCommentsComulativeDetailsToMap(returnObjList,locationMap,"MeetingCount");
+				   List<Object[]> returnCmmntCntObjList = partyMeetingStatusDAO.getPartyMeetingComulativeCommentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,reportType, "commentCount");
+				   setMeetingCommentsComulativeDetailsToMap(returnCmmntCntObjList,locationMap,"commentCount");
+			   }
+		   } 
+	    
+	    if(partyMeetingLevel.equalsIgnoreCase("District")){
+	    	 for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
+	    		 List<Object[]> meetingIdsList = partyMeetingStatusDAO.getPartyMeetingComulativeCommentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,reportType, "MeetingDtls");
+	    		 if(commonMethodsUtilService.isListOrSetValid(meetingIdsList)){
+	    			 Set<Long> meetingIds = new HashSet<Long>(0);	
+	    			 Map<Long,Set<Long>> partyMeetingInviteesMap = new HashMap<Long, Set<Long>>(0);
+	    			 Map<Long,Set<Long>> partyMeetingAttendedMap = new HashMap<Long, Set<Long>>(0);
+	    			 Map<Long,Long> partyMeetingLocationMap = new HashMap<Long, Long>(0);
+	    			 
+	    			 for (Object[] param : meetingIdsList) {
+	    				 meetingIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+	    				 partyMeetingLocationMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+	    			 if(commonMethodsUtilService.isListOrSetValid(meetingIds)){
+	    				 List<Object[]> inviteesForPartyMeetingsDetls = partyMeetingInviteeDAO.getInviteesForPartyMeetings(new ArrayList<Long>(meetingIds));
+	    				 if(commonMethodsUtilService.isListOrSetValid(inviteesForPartyMeetingsDetls)){
+	    					 for (Object[] param : inviteesForPartyMeetingsDetls) {
+	    						 Long partyMeetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	    						 Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(param[1]);
+	    						 Set<Long> tdpCadreList = new HashSet<Long>(0);
+	    						 if(partyMeetingInviteesMap.get(partyMeetingId) != null){
+	    							 tdpCadreList = partyMeetingInviteesMap.get(partyMeetingId);
+	    						 }
+	    						 tdpCadreList.add(tdpCadreId);
+	    						 partyMeetingInviteesMap.put(partyMeetingId, tdpCadreList);
+	    					}
+	    				 }
+	    				 
+	    				 List<Object[]> partyMeetingsSessionWiseAttendanceDetsils = partyMeetingAttendanceDAO.getSpecialMeetingsSessionWiseAttendence(new ArrayList<Long>(meetingIds),1L);// committee meetings main typeId =1 
+	    				 if(commonMethodsUtilService.isListOrSetValid(partyMeetingsSessionWiseAttendanceDetsils)){
+	    					 for (Object[] param : partyMeetingsSessionWiseAttendanceDetsils) {
+	    						 Long partyMeetingId =commonMethodsUtilService.getLongValueForObject(param[1]);
+	    						 Long tdpCadreId =commonMethodsUtilService.getLongValueForObject(param[4]);
+	    						 Set<Long> tdpCadreList = new HashSet<Long>(0);
+	    						 if(partyMeetingAttendedMap.get(partyMeetingId) != null){
+	    							 tdpCadreList = partyMeetingAttendedMap.get(partyMeetingId);
+	    						 }
+	    						 tdpCadreList.add(tdpCadreId);
+	    						 partyMeetingAttendedMap.put(partyMeetingId, tdpCadreList);
+	    					}
+	    				 }
+	    				 
+	    				 Map<Long,Map<String,Set<Long>>> cadreDetailsMap = new HashMap<Long, Map<String,Set<Long>>>(0);
+	    				 for (Long meetingId : meetingIds) {
+	    					 
+							Set<Long> inviteesList = partyMeetingInviteesMap.get(meetingId) != null ?  partyMeetingInviteesMap.get(meetingId) : new HashSet<Long>(0) ;
+							Set<Long> attendanceList = partyMeetingAttendedMap.get(meetingId) != null ?  partyMeetingAttendedMap.get(meetingId) : new HashSet<Long>(0);
+							
+							Set<Long> filterSet = new HashSet<Long>(0);
+							if(inviteesList.size()>attendanceList.size())
+								filterSet = inviteesList;
+							else
+								filterSet = attendanceList;
+							
+							Map<String,Set<Long>> statusCadrsMap = new HashMap<String, Set<Long>>(0);
+							if(cadreDetailsMap.get(meetingId) != null){
+								statusCadrsMap = cadreDetailsMap.get(meetingId);
+							}else{
+								statusCadrsMap.put("Invited",inviteesList);
+								statusCadrsMap.put("Attended", new HashSet<Long>(0));
+								statusCadrsMap.put("Absent", inviteesList);
+								statusCadrsMap.put("NonInviteeAttended", new HashSet<Long>(0));
+							}
+							
+							for (Long cadreId : filterSet) {
+								if(inviteesList.contains(cadreId) && attendanceList.contains(cadreId)){
+									statusCadrsMap.get("Attended").add(cadreId);
+								}else if(!inviteesList.contains(cadreId)){
+									statusCadrsMap.get("NonInviteeAttended").add(cadreId);
+								}
+							}
+							
+							PartyMeetingsVO locationVO = locationMap.get(partyMeetingLocationMap.get(meetingId));
+						    if(locationVO != null ){
+						    	   Long inviteCount = commonMethodsUtilService.isListOrSetValid(statusCadrsMap.get("Invited")) ?Long.valueOf(String.valueOf(statusCadrsMap.get("Invited").size())):0L;
+						    	        Long attended = commonMethodsUtilService.isListOrSetValid(statusCadrsMap.get("Attended"))?Long.valueOf(String.valueOf(statusCadrsMap.get("Attended").size())):0L;
+						    	Long nonInviteCount = commonMethodsUtilService.isListOrSetValid(statusCadrsMap.get("NonInviteeAttended"))?Long.valueOf(String.valueOf(statusCadrsMap.get("NonInviteeAttended").size())):0L;
+						    	
+						    	Long absent =0L;
+						    	if(inviteCount == null)
+						    		inviteCount=0L;
+						    	if(attended == null)
+						    		attended=0L;
+						    	else{
+						    		absent = inviteCount - attended;
+						    	}
+						    	if(nonInviteCount == null)
+						    		nonInviteCount=0L;
+						    	
+						    	locationVO.setInvitedCount(locationVO.getInvitedCount()+inviteCount);
+						    	locationVO.setAbsentCount(locationVO.getAbsentCount()+absent);
+						    	locationVO.setNonInviteesCount(locationVO.getNonInviteesCount()+nonInviteCount);
+						    	
+						    }
+						}
+	    			 }
+	    		 }
+	    	 }
+	    }
 	  if(locationMap != null && locationMap.size() > 0){
 		  resultList.addAll(locationMap.values());
 		  locationMap.clear();
