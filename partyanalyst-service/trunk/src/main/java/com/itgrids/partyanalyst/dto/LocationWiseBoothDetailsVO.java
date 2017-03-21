@@ -56,6 +56,7 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private Long localElcBodyId;
 	private String localElcBodyName;
 	private Long activityLocatInfoId;
+	private String tableName;
 	
 	public String getDateStr() {
 		return dateStr;
@@ -336,6 +337,12 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	}
 	public void setActivityLocatInfoId(Long activityLocatInfoId) {
 		this.activityLocatInfoId = activityLocatInfoId;
+	}
+	public String getTableName() {
+		return tableName;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 	
 	

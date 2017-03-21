@@ -96,6 +96,10 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String muncipalityName;
 	private Long muncipalityCount = 0l;
 	private Long panchayatId;
+	private String selectedCnductedDate;
+	private String selectedPlanedDate;
+	private String actalIvrStatus;
+	private String table;
 	
 	public Long getAttributeId() {
 		return attributeId;
@@ -576,6 +580,30 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setPanchayatId(Long panchayatId) {
 		this.panchayatId = panchayatId;
+	}
+	public String getSelectedCnductedDate() {
+		return selectedCnductedDate;
+	}
+	public void setSelectedCnductedDate(String selectedCnductedDate) {
+		this.selectedCnductedDate = selectedCnductedDate;
+	}
+	public String getSelectedPlanedDate() {
+		return selectedPlanedDate;
+	}
+	public void setSelectedPlanedDate(String selectedPlanedDate) {
+		this.selectedPlanedDate = selectedPlanedDate;
+	}
+	public String getActalIvrStatus() {
+		return actalIvrStatus;
+	}
+	public void setActalIvrStatus(String actalIvrStatus) {
+		this.actalIvrStatus = actalIvrStatus;
+	}
+	public String getTable() {
+		return table;
+	}
+	public void setTable(String table) {
+		this.table = table;
 	}
 	
 }
