@@ -13922,6 +13922,12 @@
 	  		<param name="root">sessionVOList</param>     
 	 	</result>
 	</action>
+	<action name="getDistrictPartyMeetingCommentsDetailsAction" class="coreDashboardAction" method="getDistrictPartyMeetingCommentsDetails">
+		<result type="json" name="success">
+	  		<param name="root">sessionVOList</param>     
+	 	</result>
+	</action>
+	
 	<action name="getPartyMeetingComulativeCommentDetailsAction" class="coreDashboardAction" method="getPartyMeetingComulativeCommentDetails">
 		<result type="json" name="success">
 	  		<param name="root">partyMeetingsVOList</param>     
