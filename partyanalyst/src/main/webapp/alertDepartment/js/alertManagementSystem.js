@@ -1197,9 +1197,9 @@ function buildAssignedOfficersDetailsForAlert(result)
 					str+='<img src="" alt="" class="media-object"/>';
 				str+='</div>';*/
 				str+='<div class="media-body">';
-					//str+='<p><b>'+result[i].name+'</b></p>';
+					str+='<p><b>'+result[i].name+'</b></p>';
 					str+='<p><b><i>'+result[i].department+'</i></b></p>';
-					//str+='<p>'+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].mobileNo+'</p>';
 					str+='<p>'+result[i].designation+'</p>';
 				str+='</div>';
 			str+='</div>';
@@ -1239,8 +1239,8 @@ function locationsBasedOnLevel(levelId)
 	$("#locationsId").trigger("chosen:updated");
 	$("#designationsId").empty();
 	$("#designationsId").trigger("chosen:updated");
-	//$("#officerNamesId").empty();
-	//$("#officerNamesId").trigger("chosen:updated");
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
 	$("#constituencyLevelDiv").hide();
 	$("#mndlMuncLevelDiv").hide();
 	
@@ -1438,8 +1438,8 @@ function designationsByDepartment()
 {
 	$("#designationsId").empty();
 	$("#designationsId").trigger("chosen:updated");
-	//$("#officerNamesId").empty();
-	//$("#officerNamesId").trigger("chosen:updated");
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
 	var LevelId = $("#locationLevelSelectId").chosen().val();
 	var deprtmntId = $("#departmentsId").chosen().val();
 	
@@ -1462,11 +1462,11 @@ function designationsByDepartment()
 		$("#designationsId").trigger("chosen:updated");
 	});
 }
-/*$(document).on('change','#designationsId', function(evt, params) {
+$(document).on('change','#designationsId', function(evt, params) {
 	var designationId = $(this).val();
 	officersByDesignationAndLevel(designationId)
-});*/
-/*function officersByDesignationAndLevel(designationId)
+});
+function officersByDesignationAndLevel(designationId)
 {
 	$("#officerNamesId").empty();
 	$("#officerNamesId").trigger("chosen:updated");
@@ -1492,7 +1492,7 @@ function designationsByDepartment()
 		$("#officerNamesId").html(str);
 		$("#officerNamesId").trigger("chosen:updated");
 	});
-}*/
+}
 $(document).on("click","#assignOfficerId",function(){
 if(!fieldsValidation())
 	{
@@ -2436,7 +2436,7 @@ function fieldsValidation(){
 	$("#errMsgLocationId").html("");
 	$("#errMsgDeptId").html("");
 	$("#errMsgDesgId").html("");
-	//$("#errMsgOffcrId").html("");
+	$("#errMsgOffcrId").html("");
 	$("#errMsgCmntId").html("");
 	$("#errMsgImgId").html("");
 	
@@ -2444,7 +2444,7 @@ function fieldsValidation(){
 	var levelId = $("#locationLevelSelectId").val();
 	var locationId = $("#locationsId").val();
  	var designationId = $("#designationsId").val();
-	//var offcierId = $("#officerNamesId").val(); 
+	var offcierId = $("#officerNamesId").val(); 
 	var comments = $("#alertDescId").val();
 	//var image = $("#imageId").val();
 	
@@ -2464,10 +2464,10 @@ function fieldsValidation(){
 		$("#errMsgDesgId").html("Select Designation.");
 		return false;
 	}
-	/*if(offcierId == 0){
+	if(offcierId == 0){
 		$("#errMsgOffcrId").html("Select OfficerName.");
 		return false;
-	} */
+	}
 	if(comments.length == 0){
 		$("#errMsgCmntId").html("Enter Comments.");
 		return false;
@@ -2493,8 +2493,8 @@ function fieldsEmpty(){
 	$("#locationsId").trigger("chosen:updated");
 	$("#designationsId").empty();
 	$("#designationsId").trigger("chosen:updated");
-	//$("#officerNamesId").empty();
-	//$("#officerNamesId").trigger("chosen:updated");
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
 	$("#telugu").prop("checked", true);
 	$("#alertDescId").val('');
 	var filerKit = $("#imageId").prop("jFiler");
@@ -2805,8 +2805,9 @@ function getDepartmentAndDistrictWiseAlertsCountsAlerts(val,stIndex)
 	
 }
 
-$(document).on('change','#designationsId', function(evt, params) {
-	var designationId = $("#designationsId option:selected").text();
+$(document).on('change','#officerNamesId', function(evt, params) {
+	var designation = $("#designationsId option:selected").text();
+	var officerName = $("#officerNamesId option:selected").text();
 	var departmentval = $("#departmentsId option:selected").text();
 	
 	$("#assignedOfficersId").html('');
@@ -2824,7 +2825,8 @@ $(document).on('change','#designationsId', function(evt, params) {
 					//str+='<p><b>'+result[i].name+'</b></p>';
 					str+='<p><b><i>'+departmentval+'</i></b></p>';
 					//str+='<p>'+result[i].mobileNo+'</p>';
-					str+='<p>'+designationId+'</p>';
+					str+='<p>'+designation+'</p>';
+					str+='<p>'+officerName+'</p>';
 				str+='</div>';
 			str+='</div>';
 		str+='</li>';

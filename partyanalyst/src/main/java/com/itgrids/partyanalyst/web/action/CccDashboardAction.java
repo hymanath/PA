@@ -67,14 +67,14 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 	    private String categoryStr;
 	    
 	    private Long level;
-	    private String userDesignation;
+	    private String officerName;
 	    
-	    
-		public String getUserDesignation() {
-			return userDesignation;
+
+		public String getOfficerName() {
+			return officerName;
 		}
-		public void setUserDesignation(String userDesignation) {
-			this.userDesignation = userDesignation;
+		public void setOfficerName(String officerName) {
+			this.officerName = officerName;
 		}
 		public Long getLevel() {
 			return level;
@@ -638,8 +638,8 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long userId = regVo.getRegistrationID();
 				
-				userDesignation = cccDashboardService.getDesignationForUser(userId);
-				session.setAttribute("userDesignation", userDesignation);
+				officerName = cccDashboardService.getDesignationForUser(userId);
+				session.setAttribute("officerName", officerName);
 				
 			}catch(Exception e){
 				e.printStackTrace();

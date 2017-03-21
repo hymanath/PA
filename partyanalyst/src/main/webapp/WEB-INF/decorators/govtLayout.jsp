@@ -47,7 +47,7 @@
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
           	<li class="dropdown profileDropDown">
-              <a class="dropdown-toggle" style="color:#fff;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> ${sessionScope.userDesignation}<span class="caret"></span></a>
+              <a class="dropdown-toggle" style="color:#fff;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> ${sessionScope.officerName}<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="govtLogoutAction.action">LOGOUT</a>  </li>
               </ul>

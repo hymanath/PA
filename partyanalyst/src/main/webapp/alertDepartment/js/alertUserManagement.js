@@ -2124,9 +2124,9 @@ function buildAssignedOfficersDetailsForAlert(result)
 					str+='<img src="" alt="" class="media-object"/>';
 				str+='</div>';*/
 				str+='<div class="media-body">';
-					//str+='<p><b>'+result[i].name+'</b></p>';
+					str+='<p><b>'+result[i].name+'</b></p>';
 					str+='<p><b><i>'+result[i].department+'</i></b></p>';
-					//str+='<p>'+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].mobileNo+'</p>';
 					str+='<p>'+result[i].designation+'</p>';
 				str+='</div>';
 			str+='</div>';
