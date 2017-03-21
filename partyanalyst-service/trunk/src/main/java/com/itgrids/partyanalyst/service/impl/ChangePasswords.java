@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +12,19 @@ import com.itgrids.partyanalyst.security.PBKDF2;
 
 public class ChangePasswords {
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		Map<String,String> pwdMap = new HashMap<String, String>(0);
-		pwdMap.put("FDCS_SKLM_CSM","457849");
-		changePassword(pwdMap);
+		
+		BufferedReader br = new BufferedReader(new FileReader("E:\\pwdChange.txt"));
+		
+		while (br.readLine() != null){
+		    System.out.println(br.readLine());
+		}
+		
+		/*pwdMap.put("FDCS_SKLM_CSM","457849");
+		changePassword(pwdMap);*/
+		
 	}
 	
 	public static void changePassword(Map<String,String> pwdMap)
