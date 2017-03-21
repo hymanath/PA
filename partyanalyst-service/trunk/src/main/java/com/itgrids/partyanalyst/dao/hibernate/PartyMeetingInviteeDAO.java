@@ -2377,15 +2377,21 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     }
     
     public List<Object[]> getInvitteeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
-			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId){
+			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long partyMeetingId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId," +
-				"model.tdpCadre.tdpCadreId, model.partyMeeting.partyMeetingType.partyMeetingTypeId,'', model.absenteeRemark  from PartyMeetingInvitee model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
-				"  and " +
-				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
+				"model.tdpCadre.tdpCadreId, model.partyMeeting.partyMeetingType.partyMeetingTypeId,'', model.absenteeRemark  " +
+				"from PartyMeetingInvitee model");
+		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
+			queryStr.append(" ,PartyMeetingGroupsMappingInfo model1");
+		}
+		
+		queryStr.append(" where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId ");
+		if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
+			queryStr.append(" and model.partyMeeting.partyMeetingId = :partyMeetingId");
 		
 		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
-			queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
+			queryStr.append(" and model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
 		}
 		
 		if(levelIdsList != null && levelIdsList.size() > 0l){
@@ -2433,6 +2439,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		 if(levelIdsList != null && levelIdsList.size() > 0l){
 			 query.setParameterList("levelIdsList", levelIdsList); 
 		 }
+		 if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
+			 query.setParameter("partyMeetingId", partyMeetingId);
 		query.setParameter("partyMeetnMainTypId", partyMeetnMainTypId);
 		return query.list();
 	}

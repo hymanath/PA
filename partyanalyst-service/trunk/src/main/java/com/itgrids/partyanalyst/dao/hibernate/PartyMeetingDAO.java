@@ -3917,7 +3917,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	         " model1.partyMeetingType.type ");//3
 	         queryStr.append(",model1.meetingAddress.district.districtId ");//4
 	         queryStr.append(",model1.meetingAddress.district.districtName ");//5
-	         queryStr.append(",model1.conductedDate" +//6
+	         queryStr.append(",date(model1.conductedDate)" +//6
     		                ",model1.remarks" +//7
     		                ",model2.partyMeetingSessionId" +//8
     		                ",model2.sessionType.sessionTypeId" +//9

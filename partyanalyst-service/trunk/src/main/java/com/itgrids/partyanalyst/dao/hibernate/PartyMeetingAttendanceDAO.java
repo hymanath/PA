@@ -1496,7 +1496,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	}
 	
 	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
-			 Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList,Long  partyMeetngGrpId,Long sessionTypId){
+			 Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList,Long  partyMeetngGrpId,Long sessionTypId,Long partyMeetingId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" st.session_type_id as session_type_id, " +
@@ -1505,20 +1505,25 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 				" DATE_FORMAT(a.attended_time,'%H:%i:%s') as time ," +
 				" tc.first_name as first_name ," +
 				" tc.membership_id as membership_id, " +
-				" tc.mobile_no as mobile_no,tc.image as image ");
+				" tc.mobile_no as mobile_no,tc.image as image,d.district_name as districtName ");
 		queryStr.append(" FROM  ");
 		queryStr.append(" party_meeting pm, ");
 		queryStr.append(" party_meeting_session pms, ");
 		queryStr.append(" session_type st, ");
-		queryStr.append(" party_meeting_groups_mapping_info pmg, ");
+		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l)
+			queryStr.append(" party_meeting_groups_mapping_info pmg, ");
 		queryStr.append(" party_meeting_attendance pma,  ");
 		queryStr.append(" attendance a, ");
 		queryStr.append(" tdp_cadre tc , ");
 		queryStr.append(" party_meeting_type pmt,  ");
 		queryStr.append(" party_meeting_main_type pmmt, user_address ua ");
+		queryStr.append(" left join district d on ua.district_id = d.district_id ");
 		queryStr.append(" where ");
-		queryStr.append(" pm.meeting_address_id = ua.user_address_id and pmg.party_meeting_group_id = :party_meeting_group_id and  ");
-		queryStr.append(" pmg.party_meeting_id = pm.party_meeting_id and  ");
+		queryStr.append(" pm.meeting_address_id = ua.user_address_id and ");
+		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
+			queryStr.append(" pmg.party_meeting_group_id = :party_meeting_group_id and  ");
+			queryStr.append(" pmg.party_meeting_id = pm.party_meeting_id and  pmg.is_deleted='N' and  ");
+		}
 		queryStr.append(" pma.party_meeting_id = pm.party_meeting_id and  ");
 		queryStr.append(" pma.attendance_id = a.attendance_id and  ");
 		queryStr.append(" a.tdp_cadre_id = tc.tdp_cadre_id and  ");
@@ -1528,7 +1533,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" pmt.party_meeting_main_type_id= pmmt.party_meeting_main_type_id AND ");
 		queryStr.append(" pms.party_meeting_id=pm.party_meeting_id and  ");
 		queryStr.append(" pms.session_type_id = st.session_type_id and  ");
-		queryStr.append(" pms.is_deleted='N' and  pma.party_meeting_session_id = pms.party_meeting_session_id and ");
+		queryStr.append("  pma.party_meeting_session_id = pms.party_meeting_session_id and ");
+		if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
+			queryStr.append(" pm.party_meeting_id = :partyMeetingId and ");
 		
 		if(levelIdsList != null && levelIdsList.size()>0L)
 			queryStr.append(" pm.party_meeting_level_id  in (:levelIdsList) and ");
@@ -1555,7 +1562,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		//if(sessionTypId != null && sessionTypId.longValue()>0L)
 		//	queryStr.append(" st.session_type_id =:sessionTypId and  ");
 		
-		queryStr.append(" pmg.is_deleted='N'  group by a.tdp_cadre_id,st.session_type_id   ");
+		queryStr.append(" pms.is_deleted='N'  group by a.tdp_cadre_id,st.session_type_id   ");
 		queryStr.append(" ORDER BY a.tdp_cadre_id  ");
 		
 		Query query =getSession().createSQLQuery(queryStr.toString())
@@ -1567,12 +1574,17 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 				.addScalar("first_name",Hibernate.STRING)
 				.addScalar("membership_id",Hibernate.STRING)
 				.addScalar("mobile_no",Hibernate.STRING)
-				.addScalar("image",Hibernate.STRING);
+				.addScalar("image",Hibernate.STRING)
+				.addScalar("districtName",Hibernate.STRING);
+		
 		
 		query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		query.setParameter("party_meeting_main_type_id", partyMeetnMainTypId);
-		query.setParameter("party_meeting_group_id", partyMeetngGrpId);
+		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l)
+			query.setParameter("party_meeting_group_id", partyMeetngGrpId);
 		query.setParameterList("levelIdsList", levelIdsList);
+		if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
+			query.setParameter("partyMeetingId", partyMeetingId);
 		//if(sessionTypId != null && sessionTypId.longValue()>0L)
 		//	query.setParameter("sessionTypId", sessionTypId);
 		
