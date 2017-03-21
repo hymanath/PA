@@ -2801,7 +2801,7 @@ public String getRegistrationCountDtls(){
     }
     return Action.SUCCESS;
   }
-public String getPartyMeetingCommentsDetails(){
+public String getDistrictPartyMeetingCommentsDetails(){
 	try {
 		LOG.info("Entered into getPartyMeetingCommentsDetails()  of CoreDashboardAction");
 		jObj = new JSONObject(getTask());
@@ -2829,6 +2829,37 @@ public String getPartyMeetingCommentsDetails(){
 	}
 	return Action.SUCCESS;
 }
+
+public String getPartyMeetingCommentsDetails(){
+	try {
+		LOG.info("Entered into getPartyMeetingCommentsDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		Long locationId = jObj.getLong("locationId");
+		String locationType = jObj.getString("locationType");
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingCommentsDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+		
+		//sessionVOList = coreDashboardPartyMeetingService.getPartyMeetingsSessionWiseIndividualDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised at getPartyMeetingCommentsDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 public String getPartyMeetingComulativeCommentDetails(){
 	try {
 		LOG.info("Entered into getPartyMeetingCommentsDetails()  of CoreDashboardAction");
@@ -3997,15 +4028,22 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 		String toDateStr = jObj.getString("toDateStr");
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
-		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
+		//Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
 		Long partyMeetnMainTypId = jObj.getLong("partyMeetingMainTypeId");
 		Long partyMeetngId = jObj.getLong("partyMeetingId");
 		Long partyMeetngGrpId = jObj.getLong("meetingGrpId");
 		Long sessionTypeId = jObj.getLong("sessionTypeId");
 		String cadreType = jObj.getString("cadreType");
 		
+		JSONArray levelIdsArr = jObj.getJSONArray("levelIdsLsit");
+		List<Long> levelIdsList = new ArrayList<Long>(0);
+		if(levelIdsArr != null && levelIdsArr.length()>0){
+			for (int i = 0; i < levelIdsArr.length(); i++) {
+				levelIdsList.add(levelIdsArr.get(i) != null?Long.valueOf(levelIdsArr.get(i).toString()):0L);
+			}
+		}
 		idNameVO = coreDashboardPartyMeetingService.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetngId,partyMeetnMainTypId,
-				 activityMemberId, fromDateStr, toDateStr, stateId, partyMeetingLevelId, partyMeetngGrpId,sessionTypeId,cadreType);
+				 activityMemberId, fromDateStr, toDateStr, stateId, levelIdsList, partyMeetngGrpId,sessionTypeId,cadreType);
 		
 	} catch (Exception e) {
 		LOG.error("Exception occured in getPartyLevelIdWiseMeetingsAttendanceDetails ",e);
