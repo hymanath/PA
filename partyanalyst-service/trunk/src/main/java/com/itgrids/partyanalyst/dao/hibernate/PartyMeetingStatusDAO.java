@@ -738,14 +738,20 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		 StringBuilder queryStr = new StringBuilder();
 	    	
 		 queryStr.append("select " );
-	  	if(reportType != null && reportType.equalsIgnoreCase("District")){
-	  		queryStr.append(" model1.meetingAddress.district.districtId, model1.meetingAddress.district.districtName,");
-		}else if(reportType.equalsIgnoreCase("Constituency")){
-			queryStr.append(" model1.meetingAddress.constituency.constituencyId, model1.meetingAddress.constituency.name,");	
-		}
-	  	queryStr.append(" count(distinct model1.partyMeetingId) from PartyMeetingStatus model,PartyMeeting model1 " +
-	  		         " where " +
-	  		         " model1.isActive='Y' and model.partyMeetingId=model1.partyMeetingId ");
+		 if(type != null && !type.equalsIgnoreCase("MeetingDtls")){
+			  	if(reportType != null && reportType.equalsIgnoreCase("District")){
+			  		queryStr.append(" model1.meetingAddress.district.districtId, model1.meetingAddress.district.districtName, count(distinct model1.partyMeetingId) ");
+				}else if(reportType.equalsIgnoreCase("Constituency")){
+					queryStr.append(" model1.meetingAddress.constituency.constituencyId, model1.meetingAddress.constituency.name, count(distinct model1.partyMeetingId) ");	
+				}
+			 }
+			 else{
+				 queryStr.append(" distinct model.partyMeetingId,model1.meetingAddress.district.districtId ");
+			 }
+		 
+		 queryStr.append(" from PartyMeetingStatus model,PartyMeeting model1 " +
+  		         " where " +
+  		         " model1.isActive='Y' and model.partyMeetingId=model1.partyMeetingId ");
 	  	if(type != null && type.equalsIgnoreCase("commentCount")){
 	    	queryStr.append(" and model1.remarks is not null "); 
 	     }
@@ -794,12 +800,13 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		 }
 		
-		 if(reportType != null && reportType.equalsIgnoreCase("District")){
-			queryStr.append(" group by model1.meetingAddress.district.districtId order by model1.meetingAddress.district.districtId ");
-		}else if(reportType.equalsIgnoreCase("Constituency")){
-			queryStr.append(" group by model1.meetingAddress.constituency.constituencyId order by model1.meetingAddress.constituency.constituencyId ");
-		}
-		 
+		 if(type != null && !type.equalsIgnoreCase("MeetingDtls")){
+			 if(reportType != null && reportType.equalsIgnoreCase("District")){
+				queryStr.append(" group by model1.meetingAddress.district.districtId order by model1.meetingAddress.district.districtId ");
+			 }else if(reportType.equalsIgnoreCase("Constituency")){
+				queryStr.append(" group by model1.meetingAddress.constituency.constituencyId order by model1.meetingAddress.constituency.constituencyId ");
+			 }
+		 }
 	     Query query = getSession().createQuery(queryStr.toString());
 	
 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){

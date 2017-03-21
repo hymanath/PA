@@ -62,6 +62,28 @@ public class PartyMeetingsVO implements Serializable{
 	private Long commentCount=0l;
 	private Long updationCount = 0l;
 
+	private Long invitedCount=0L;
+	private Long nonInviteesCount=0L;
+	private Long absentCount =0L;
+	
+	public Long getInvitedCount() {
+		return invitedCount;
+	}
+	public void setInvitedCount(Long invitedCount) {
+		this.invitedCount = invitedCount;
+	}
+	public Long getNonInviteesCount() {
+		return nonInviteesCount;
+	}
+	public void setNonInviteesCount(Long nonInviteesCount) {
+		this.nonInviteesCount = nonInviteesCount;
+	}
+	public Long getAbsentCount() {
+		return absentCount;
+	}
+	public void setAbsentCount(Long absentCount) {
+		this.absentCount = absentCount;
+	}
 	public Long getId() {
 		return id;
 	}
