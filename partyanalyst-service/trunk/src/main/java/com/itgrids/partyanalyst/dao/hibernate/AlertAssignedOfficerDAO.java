@@ -21,11 +21,11 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 
 	public List<Object[]> getAssignedOfficersForAlert(Long alertId){
 		Query query = getSession().createQuery("select distinct model.alertAssignedOfficerId," +
-											" ''," +
+											" model.govtOfficer.officerName ," +
 											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-											" ''," +
+											" model.govtOfficer.mobileNo," +
 											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
-											" from AlertAssignedOfficer model" +
+											" from AlertAssignedOfficer model " +
 											" where model.alert.alertId = :alertId" +
 											" and model.isDeleted = 'N'" +
 											" and model.isApproved = 'Y'");
@@ -632,8 +632,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")");
 		if(desigOffcId != null && desigOffcId.longValue() > 0l)
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :desigOffcId");
-		//if(govtOffcId != null && govtOffcId.longValue() > 0l)
-			//sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcId");
+		if(govtOffcId != null && govtOffcId.longValue() > 0l)
+			sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcId");
 		
 		//if(levelId != null && levelId > 0l)
 			//sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevel.govtDepartmentLevelId = :levelId");
@@ -696,8 +696,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		if(desigOffcId != null && desigOffcId.longValue() > 0l)
 			query.setParameter("desigOffcId", desigOffcId);
-		//if(govtOffcId != null && govtOffcId.longValue() > 0l)
-			//query.setParameter("govtOffcId", govtOffcId);
+		if(govtOffcId != null && govtOffcId.longValue() > 0l)
+			query.setParameter("govtOffcId", govtOffcId);
 		
 		if(levelValues != null && !levelValues.isEmpty())
 			query.setParameterList("levelValues", levelValues);
@@ -791,7 +791,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
-						" '0', " +
+						" model.govtOfficerId, " +
 						" model.alert.alertId " +
 						" from " +
 						" AlertAssignedOfficer model " +

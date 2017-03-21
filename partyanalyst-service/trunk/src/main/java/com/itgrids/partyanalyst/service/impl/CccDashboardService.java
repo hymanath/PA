@@ -788,7 +788,9 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					}
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
+					//List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
+							inputvo.getGovtOfficerId());
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
 					
@@ -796,7 +798,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
 					alertAssignedOfficer.setAlertId(inputvo.getAlertId());
 					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					//alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
 					alertAssignedOfficer.setInsertedBy(inputvo.getUserId());
 					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
 					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
@@ -811,7 +813,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
 					alertAssignedOfficerTracking.setAlertId(inputvo.getAlertId());
 					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					//alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
 					alertAssignedOfficerTracking.setInsertedBy(inputvo.getUserId());
 					alertAssignedOfficerTracking.setUpdatedBy(inputvo.getUserId());
 					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
@@ -825,7 +827,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 							AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 							alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 							alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-							//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+							alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 							alertAssignedOfficerAction.setAlertStatusId(2l);
 							if(i == 0)
 								alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
@@ -842,7 +844,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 						AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 						alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 						alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-						//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+						alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 						alertAssignedOfficerAction.setAlertStatusId(2l);
 						alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
 							
@@ -886,9 +888,9 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					GovtDepartmentVO vo = new GovtDepartmentVO();
 					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					//vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setDepartment(obj[2] != null ? obj[2].toString():"");
-					//vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
 					vo.setDesignation(obj[4] != null ? obj[4].toString():"");
 					
 					returnList.add(vo);
@@ -1752,7 +1754,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			if(myList != null && !myList.isEmpty()){
 				for (Object[] obj : myList) {
 					designationOffId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					//govtOffId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					govtOffId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 				}
 			}
 			
@@ -2217,19 +2219,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();
 			Long deptDesigOfficerId = null;
-			//Long officerId = null;
+			Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			//Long officerId2 = null;
+			Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L ){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2)){
+							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2 !=null && deptDesigOfficerId2.longValue() > 0L && officerId2 !=null && officerId2.longValue()>0l){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}
 							}
@@ -2304,19 +2306,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();    
 			Long deptDesigOfficerId = null;
-			//Long officerId = null;
+			Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			//Long officerId2 = null;
+			Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2) ){
+							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2 !=null && deptDesigOfficerId2.longValue() > 0L && officerId2 !=null && officerId2.longValue()>0l){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}  
 							}
@@ -2597,19 +2599,19 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 			Set<Long> alertIdSet = new HashSet<Long>();
 			Long deptDesigOfficerId = null;
-			//Long officerId = null;
+			Long officerId = null;
 			Long deptDesigOfficerId2 = null;
-			//Long officerId2 = null;
+			Long officerId2 = null;
 			if(userInfoList != null && userInfoList.size() > 0 && alertList != null && alertList.size() > 0){
 				for(Object[] param : userInfoList){
 					deptDesigOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					//officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					officerId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					if(deptDesigOfficerId.longValue() > 0L){
 						for(Object[] param2 : alertList){
 							deptDesigOfficerId2 = commonMethodsUtilService.getLongValueForObject(param2[0]);
-							//officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
-							if(deptDesigOfficerId2.longValue() > 0L ){
-								if(deptDesigOfficerId.equals(deptDesigOfficerId2) ){
+							officerId2 = commonMethodsUtilService.getLongValueForObject(param2[1]);
+							if(deptDesigOfficerId2 !=null && deptDesigOfficerId2.longValue() > 0L && officerId2 !=null && officerId2.longValue()>0l){
+								if(deptDesigOfficerId.equals(deptDesigOfficerId2) && officerId.equals(officerId2)){
 									alertIdSet.add(commonMethodsUtilService.getLongValueForObject(param2[2]));
 								}         
 							}
@@ -2796,15 +2798,15 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 	}
 	
 	public String getDesignationForUser(Long userId){
-		String designation = null;
+		String officerName = null;
 		try {
-			List<String> desginationList = govtDepartmentDesignationOfficerDetailsDAO.getDesignationsForUser(userId);
-			if(desginationList != null && !desginationList.isEmpty())
-				designation = desginationList.get(0);
+			List<String> officerList = govtDepartmentDesignationOfficerDetailsDAO.getDesignationsForUser(userId);
+			if(officerList != null && !officerList.isEmpty())
+				officerName = officerList.get(0);
 		} catch (Exception e) {
 			logger.error("Error occured getDesignationForUser() method of CccDashboardService",e);
 		}
-		return designation;
+		return officerName;
 	}
 	//fromDate, toDate, stateId,govtDptIdList,paperIdList, chanelIdList,levelId,regionScopeValues
 	//,type,statusId,startIndex,endIndex

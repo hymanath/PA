@@ -44,11 +44,34 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		//query.setParameter("officerId", officerId);
 		return query.list();
 	}
+	public List<Long> getDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+											" from GovtDepartmentDesignationOfficerDetails model" +
+											" where model.govtDepartmentDesignationOfficer.govtDepartmentLevelId = :levelId" +
+											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
+											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId" +
+											" and model.isDeleted = 'N'  " );
+		
+		if(officerId !=null && officerId.longValue()>0l){
+			sb.append(" and model.govtOfficerId = :officerId");
+		}
+	
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("designationId", designationId);
+		query.setParameter("officerId", officerId);
+		return query.list();
+	}
 	public List<Object[]> getDeptDesigOfficerIdAndGovtOfficerIdForUserId(Long userId,List<Long> deptIdList, Long locValue, List<Long> locIdList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct" +
 						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
-						//" , model.govtOfficer.govtOfficerId " +
+						" , model.govtOfficerId " +
 						" , '0' " +
 						" from " +
 						" GovtDepartmentDesignationOfficerDetails model" +
@@ -101,7 +124,8 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 	}
 	
 	public List<String> getDesignationsForUser(Long userId){
-		Query query = getSession().createQuery("select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+		Query query = getSession().createQuery("select model.govtOfficer.officerName " +
+				//("select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
 												" from GovtDepartmentDesignationOfficerDetails model" +
 												" where model.user.userId = :userId" +
 												" and model.isDeleted = 'N'");
