@@ -3354,4 +3354,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+  	
+  	public String getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings(){
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = jobj.getLong("state");
+			String startDateString = jobj.getString("startDateString");
+			String endDateString   = jobj.getString("endDateString");  
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			Long partyMeetingMainTypeId = jobj.getLong("partyMeetingMainTypeId");
+			Long locLevelId = jobj.getLong("locLevelId");
+			Long partyMeetingGroupId = jobj.getLong("partyMeetingGroupId");
+			Long sessionId = jobj.getLong("sessionId");
+			String type= jobj.getString("type");
+			listOfMeetingDtlsVOs = coreDashboardPartyMeetingService.getDistWiseMeetingsBaseDtlsForDiffLevelOfMeetings(activityMemberId, partyMeetingMainTypeId, locLevelId, stateId, startDateString, endDateString, partyMeetingGroupId, sessionId,type);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
