@@ -549,7 +549,14 @@ function prepopulateDebateForm(result)
 	str += '<div  class="span1 offset10">';
 	str += '<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Option" onClick="addMorePole();"><i class="icon-plus"></i></a>';
 	str += '</div>';
-
+	str += '<div class="row">';
+		str += '<div class="span12" >';
+			str += '<label>';
+			str += '<strong>Youtube URL : </strong>';
+			str += '</label>';
+			str += '<input type="text" Class="selectWidth span12" id="youtubeUrl"/>';
+		str += '</div>';
+	str += '</div>';
 				
 	str += '<div id="debateSummery" class="row-fluid m_top10">';
 	str += '<legend class="boxHeading">Summary :<font class="requiredFont">*</font><span id="debetSumErr" class="errDiv"></span></legend>';
