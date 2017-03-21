@@ -2582,7 +2582,7 @@ public String getSummaryDetails(){
 				locationVO.setLocationValue(jObj.getLong("locationValue"));				
 				locationVO.setLocationLevel(jObj.getLong("activityLevelId"));
 				locationVO.setDay(jObj.getLong("day"));
-				activityVO.getActivityVoList().add(locationVO);*/
+				activityVO.getActivityVoList().add(locationVO);
 			}
 			 
 			status = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
