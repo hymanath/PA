@@ -1767,16 +1767,6 @@
 	</bean>
 	<bean id="customReportAction" class="com.itgrids.partyanalyst.web.action.CustomReportAction" singleton="false">		
 	</bean>	
-	<bean id="customReportImageAction" class="com.itgrids.partyanalyst.web.action.CustomReportImageAction" singleton="false">		
-	</bean>
-	<bean id="customReportLocationAction" class="com.itgrids.partyanalyst.web.action.CustomReportLocationAction" singleton="false">		
-	</bean>
-	<bean id="customReportProgramAction" class="com.itgrids.partyanalyst.web.action.CustomReportProgramAction" singleton="false">		
-	</bean>
-	<bean id="customReportObserverAction" class="com.itgrids.partyanalyst.web.action.CustomReportObserverAction" singleton="false">		
-	</bean>
-	<bean id="customReportFileAction" class="com.itgrids.partyanalyst.web.action.CustomReportFileAction" singleton="false">		
-	</bean>
 	
 </beans>	
 	
