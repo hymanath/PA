@@ -3761,6 +3761,12 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				 str+='<th>Constituency Name</th>';
 			}
             str+='<th style="text-align:center;">Meeting Count</th>';
+			if(reportType=="District"){
+				  str+='<th style="text-align:center;"> Total Invitees </th>';
+				  str+='<th style="text-align:center;"> Invitee Attended </th>';
+				  str+='<th style="text-align:center;"> Absent </th>';
+				  str+='<th style="text-align:center;"> Non-Invitee Attended </th>';
+			}
 			 str+='<th style="text-align:center;">Comment Count</th>';
 		 str+='</thead>';
 		 str+='<tbody>';
@@ -3772,9 +3778,15 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				str+='<td> - </td>';  
 			  }
 			  if(result[i].meetingCount != null && result[i].meetingCount > 0){
-				str+='<td attr_comment="No" attr_location_id="'+result[i].id+'" attr_meeting_status='+meetingStatus+' attr_level_type='+meetingLevel+' attr_location_type='+reportType+' style="cursor: pointer;text-align:center;" class="commentDetailsCls">'+result[i].meetingCount+'</td>';  
+				str+='<td attr_comment="No" attr_location_id="'+result[i].id+'" attr_meeting_status='+meetingStatus+' attr_level_type='+meetingLevel+' attr_location_type='+reportType+' style="cursor: pointer;text-align:center;color:green;font-weight:bold;" class="commentDetailsCls"> '+result[i].meetingCount+'</td>';  
 			  }else{
 			  str+='<td> - </td>';  
+			  }
+			  if(reportType=="District"){
+				  str+='<td>'+result[i].invitedCount+'</td>';  
+				  str+='<td>'+((result[i].invitedCount) - (result[i].absentCount))+'</td>';  
+				  str+='<td>'+result[i].absentCount+'</td>';  
+				  str+='<td>'+result[i].nonInviteesCount+'</td>';  
 			  }
 			  if(result[i].commentCount != null && result[i].commentCount > 0){
 				  str+='<td attr_comment="Yes" attr_location_id="'+result[i].id+'" attr_meeting_status='+meetingStatus+' attr_level_type='+meetingLevel+' attr_location_type='+reportType+' style="cursor: pointer;text-align:center;" class="commentDetailsCls">'+result[i].commentCount+'</td>';      
