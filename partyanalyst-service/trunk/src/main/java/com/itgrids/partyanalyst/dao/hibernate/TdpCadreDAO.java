@@ -5851,7 +5851,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			Query query = getSession().createQuery("select model.tdpCadreId, model.firstname,model.memberShipNo,model.mobileNo,model.image," +
 					" date(model.dateOfBirth),model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.casteState.caste.casteName,model.age," +
-					" model.relativename " +
+					" model.relativename,model.userAddress.district.districtName " +
 					" from " +
 					" TdpCadre model " +
 					" where model.isDeleted ='N' " +
