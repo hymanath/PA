@@ -2019,7 +2019,7 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	queryStr.append(" select distinct " +
     			" model.partyMeeting.partyMeetingId, " +
     			" model.tdpCadre.tdpCadreId, " +
-    			" model.tdpCadre.userAddress.district.districtId, " +
+    			"model.partyMeeting.meetingAddress.district.districtId, " +
     			" model.partyMeeting.partyMeetingLevelId" +
     			" from PartyMeetingInvitee model, PartyMeetingGroupsMappingInfo model2 " +
     			" where " +
@@ -2059,9 +2059,9 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     		queryStr.append(" and model2.partyMeetingGroup.partyMeetingGroupId = :partyMeetingGroupId ");
     	}
     	if(inputVO.getStateId().longValue() == 1L){
-    		queryStr.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
     	}else if(inputVO.getStateId().longValue() == 36L){
-    		queryStr.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+    		queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
     	}
     	
     	Query query = getSession().createQuery(queryStr.toString());
