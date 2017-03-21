@@ -3807,5 +3807,26 @@
       <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
+    <!--  CUSTOM REPORT START -->
+	<bean id="customReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="customReportProgramDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportProgramDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="customReportObserverDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportObserverDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="customReportLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportLocationDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="customReportFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportFileDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="customReportImageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomReportImageDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+    <!--  CUSTOM REPORTS END -->
+    
     
 </beans>		
