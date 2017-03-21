@@ -4486,6 +4486,10 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 				for(IdNameVO obj : idNameVOs){
 					if(obj.getStatus() == null || obj.getStatus().trim().isEmpty()){
 						obj.setStatus("OTHERS");
+						if(!commonMethodsUtilService.isListOrSetValid(obj.getSubList())){
+							obj.setSubList(new ArrayList<String>());
+						}
+						
 						obj.getSubList().add("OTHERS");
 						if(othersVO == null){
 							othersVO = new IdNameVO();
@@ -8271,7 +8275,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			}
 		    
 		    List<Object[]> invitteeList = partyMeetingInviteeDAO.getInvitteeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
-		    		levelIdsList,partyMeetngGrpId);
+		    		levelIdsList,partyMeetngGrpId,0l);
 			
 			Set<Long> inviteeIds = null;
 			Set<Long> totalInviteeList = new HashSet<Long>(0);
@@ -9214,7 +9218,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			}
 		    
 		    List<Object[]> invitteeList = partyMeetingInviteeDAO.getInvitteeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
-		    		levelIdsList,partyMeetngGrpId);
+		    		levelIdsList,partyMeetngGrpId,partyMeetngId);
 			
 			Set<Long> totalInviteeList = new HashSet<Long>(0);
 			Map<Long,String> remarksMap = new HashMap<Long, String>(0);
@@ -9228,7 +9232,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			
 			totalCadreIds.addAll(totalInviteeList);
 			
-		    List<Object[]> attendanceMembrsList = partyMeetingAttendanceDAO.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetnMainTypId, locationId,locationValuesSet,startDate,endDate, stateId, levelIdsList,partyMeetngGrpId,sessionTypId);
+		    List<Object[]> attendanceMembrsList = partyMeetingAttendanceDAO.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetnMainTypId, locationId,locationValuesSet,startDate,endDate, stateId, levelIdsList,partyMeetngGrpId,sessionTypId,partyMeetngId);
 		    Map<Long,IdNameVO> cadreMap = new HashMap<Long, IdNameVO>(0);
 		   
 		    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -9258,6 +9262,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						cadreVO.setMembershipNo(membershiId);
 						cadreVO.setMemberId(tdpCadreId);
 						cadreVO.setImage(image);
+						cadreVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
 						cadreVO.setMobileNo(mobielNo);
 						cadreVO.setIsInvitee("false");
 						if(totalInviteeList.contains(tdpCadreId))
@@ -9291,8 +9296,10 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 								}
 							}
 						}
-						
-						cadreMap.put(tdpCadreId, cadreVO);
+						if(cadreType.equalsIgnoreCase("nonInvitees") && cadreVO.getIsInvitee().equalsIgnoreCase("false"))
+							cadreMap.put(tdpCadreId, cadreVO);
+						else if(cadreType.equalsIgnoreCase("late") || cadreType.equalsIgnoreCase("absent") || cadreVO.getIsInvitee().trim().equalsIgnoreCase("true"))
+							cadreMap.put(tdpCadreId, cadreVO);
 		    		}else{
 		    			IdNameVO cadreVO = cadreMap.get(tdpCadreId);
 		    			if(cadreVO != null){
@@ -9346,6 +9353,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
     						cadreVO.setMemberId(tdpCadreId);
     						cadreVO.setImage(image);
     						cadreVO.setMobileNo(mobielNo);
+    						cadreVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[11]));
     						cadreVO.setIsInvitee("true");
     						if(commonMethodsUtilService.isMapValid(sessionLateTimesMap)){
     							for (Long sessionId : sessionLateTimesMap.keySet()) {
@@ -9375,19 +9383,30 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		    		Long id = vo.getId();
 		    		List<String> designationList = designationMap.get(id);
 		    		vo.setSubList(designationList);
+		    		if(designationList != null && !designationList.isEmpty())
+		    			vo.setStatus(designationList.toString());
 		    	}
 		    }
 		    
-		    List<IdNameVO> list = getTdpCadreRelatedMembers(new ArrayList<IdNameVO>(cadreMap.values()), new LinkedHashMap<String, IdNameVO>());
+		    //List<IdNameVO> list = getTdpCadreRelatedMembers(new ArrayList<IdNameVO>(cadreMap.values()), new LinkedHashMap<String, IdNameVO>());
 		    
-		    if(list != null && !list.isEmpty()){
+		    /*if(list != null && !list.isEmpty()){
 		    	cadreMap.clear();
 		    	for (IdNameVO idNameVO : list) {
 					cadreMap.put(idNameVO.getId(), idNameVO);
 				}
-		    }
+		    }*/
 		    
-		    returnVo = filterBySearchCriteria(cadreMap,sessionTypId,cadreType);
+		    /*if(partyMeetngId != null && partyMeetngId.longValue() > 0l){
+		    	List<IdNameVO> list = getTdpCadreRelatedMembers(new ArrayList<IdNameVO>(cadreMap.values()), new LinkedHashMap<String, IdNameVO>());
+			    returnVo.setSubList1(list);
+		    }
+		    else{*/
+			    returnVo = filterBySearchCriteria(cadreMap,sessionTypId,cadreType);
+			    
+			    List<IdNameVO> list = getTdpCadreRelatedMembers(returnVo.getSubList1(), new LinkedHashMap<String, IdNameVO>());
+			    returnVo.setSubList1(list);
+		    //}
 		    		 
 		}catch(Exception e){
 			LOG.error("Exception raised in getPartyLevelIdWiseMeetingAttendanceDetails", e);
@@ -9778,6 +9797,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 									  meetingvo.setConstituencyName(sessionvo.getConstituencyName());
 									  meetingvo.setMandalTwnDivisionId(sessionvo.getMandalTwnDivisionId());
 									  meetingvo.setMandalTwnDivision(sessionvo.getMandalTwnDivision());
+									  meetingvo.setConductedDate(sessionvo.getConductedDate());
 									  
 									  meetingvo.setInvitedCount(sessionvo.getInvitedCount());
 									  meetingvo.setInviteeAttendedCount(meetingvo.getInviteeAttendedCount()+sessionvo.getInviteeAttendedCount());
