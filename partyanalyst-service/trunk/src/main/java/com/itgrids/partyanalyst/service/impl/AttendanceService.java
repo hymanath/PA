@@ -1170,7 +1170,7 @@ public class AttendanceService implements IAttendanceService{
 					partyMeetingDocument.setAddressId(partyMeeting.getMeetingAddressId());
 					partyMeetingDocument.setPath(pathBuilder.toString());
 					partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
-					partyMeetingDocument.setDocumentType("MINUTE");
+					partyMeetingDocument.setDocumentType("MEETING");
 					partyMeetingDocument.setDocumentFormat("IMAGE");
 					//partyMeetingDocument.setUploadedById(inputvo.getUserId());
 					//partyMeetingDocument.setUpdatedById(inputvo.getUserId());
