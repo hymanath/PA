@@ -2548,5 +2548,49 @@ public String getSummaryDetails(){
 			LOG.error("Exception occured in getTdpCommitteePanchayatWardByMandal() method ",e);
 		}
 		return Action.SUCCESS;
-	}	
+	}
+/*public String saveActivityLocationDetails(){
+		
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();
+			try {
+				 jObj = new JSONObject(getTask());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(jObj != null){
+				activityVO = new ActivityVO();
+				activityVO.setActivityLevelId(jObj.getLong("activityScopeId"));
+				activityVO.setConstituencyId(jObj.getLong("contituencyId"));
+				activityVO.setTable(jObj.getString("tableName"));
+				Long attributeTypeId = jObj.getLong("attrTypeId");
+				if(attributeTypeId.longValue() == 1l){
+					activityVO.setSelectedCnductedDate(jObj.getString("conductedDate"));
+				}else if(attributeTypeId.longValue() == 2l){
+					activityVO.setSelectedPlanedDate(jObj.getString("plannedDate"));
+				}else if(attributeTypeId.longValue() == 3l){
+					activityVO.setActalIvrStatus(jObj.getString("ivrStatus"));
+				}
+				
+				/*ActivityVO locationVO = new ActivityVO();
+				locationVO.setConductedDate(jObj.getString("conductedDateStr").trim());
+				locationVO.setPlannedDate(jObj.getString("plannedDateStr").trim());
+				locationVO.setLocationValue(jObj.getLong("locationValue"));				
+				locationVO.setLocationLevel(jObj.getLong("activityLevelId"));
+				locationVO.setDay(jObj.getLong("day"));
+				activityVO.getActivityVoList().add(locationVO);*/
+			}
+			 
+			status = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in saveActivityDetails() At CadreCommitteeAction",e);
+		}
+		
+		return Action.SUCCESS;
+	}*/
 }
