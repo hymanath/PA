@@ -1192,6 +1192,14 @@
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalProgramDesignationRule</value>
 	                   <value>com.itgrids.partyanalyst.model.SelfAppraisalComment</value>
 	                   
+	                   <!--  CUSTOM REPORT START-->
+	                  	 <value>com.itgrids.partyanalyst.model.CustomReport</value>
+	                  	 <value>com.itgrids.partyanalyst.model.CustomReportProgram</value>
+	                  	 <value>com.itgrids.partyanalyst.model.CustomReportObserver</value>
+	                  	 <value>com.itgrids.partyanalyst.model.CustomReportLocation</value>
+	                  	 <value>com.itgrids.partyanalyst.model.CustomReportFile</value>
+	               	 	 <value>com.itgrids.partyanalyst.model.CustomReportImage</value>
+	                   <!--  CUSTOM REPORT END -->
 	                   
 	              </list>
 			
