@@ -3807,6 +3807,11 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
 		  }
 	   });
+	   
+	   var ajaxUrl ="getPartyMeetingCommentsDetailsAction.action";
+	   if(meetingLevel == "District")
+		   ajaxUrl="getDistrictPartyMeetingCommentsDetailsAction.action";
+	   
 	  	var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
@@ -3821,7 +3826,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				  }
 		$.ajax({
 			type : 'POST',
-			url : 'getPartyMeetingCommentsDetailsAction.action',
+			url : ajaxUrl,
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -3853,6 +3858,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   }
 	   str+='<thead>';
 	   str+='<tr>';
+	    if(meetingLevel == "District"){
              str+='<th rowspan="2" style="text-align: center;">District</th>';
 			 if(meetingLevel == "Constituency"){
 			 str+='<th rowspan="2" style="text-align: center;">Constituency</th>'	 
@@ -3863,24 +3869,41 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			 }
 			 str+='<th rowspan="2" style="text-align: center;">Meeting Name</th>';
 			 str+='<th rowspan="2" style="text-align: center;">Conducted Date</th>';
-			 str+='<th rowspan="2" style="text-align: center;">Invited</th>';
-			 if(result[0].subList != null && result[0].subList.length > 0){
-				 for(var i in result[0].subList){
-					 str+='<th colspan="5" style="text-align: center;">'+result[0].subList[i].sessionName+'</th>';
+			 
+			
+				 str+='<th rowspan="2" style="text-align: center;">Invited</th>';
+				 if(result[0].subList != null && result[0].subList.length > 0){
+					 for(var i in result[0].subList){
+						 str+='<th colspan="5" style="text-align: center;">'+result[0].subList[i].sessionName+'</th>';
+					 }
 				 }
-			 }
-			 str+='<th rowspan="2" style="text-align: center;">Comment</th>';
-			 str+='</tr>';
-			 str+='<tr>';
-			 if(result[0].subList != null && result[0].subList.length > 0){
-				 for(var i in result[0].subList){
-					 str+='<th>Invitee Attended</th>';
-					 str+='<th>Absent</th>';
-					 str+='<th>Non-Invitee Attended</th>';
-					 str+='<th>imagesCount</th>';
-					 str+='<th>imagesCovered</th>';
+				 str+='<th rowspan="2" style="text-align: center;">Comment  </th>';
+				 str+='</tr>';
+				 str+='<tr>';
+				 if(result[0].subList != null && result[0].subList.length > 0){
+					 for(var i in result[0].subList){
+						 str+='<th>Invitee Attended</th>';
+						 str+='<th>Absent</th>';
+						 str+='<th>Non-Invitee Attended</th>';
+						 str+='<th>imagesCount</th>';
+						 str+='<th>imagesCovered</th>';
+					 }
 				 }
+			 }else{
+				 
+				 str+='<th style="text-align: center;">District</th>';
+				 if(meetingLevel == "Constituency"){
+				 str+='<th style="text-align: center;">Constituency</th>'	 
+				 }
+				 if(meetingLevel=="Village/Ward" || meetingLevel=="Mandal/Town/Division"){
+					str+='<th style="text-align: center;">Constituency</th>'	  
+					str+='<th style="text-align: center;">Mandal/Town/Division</th>'	  
+				 }
+				 str+='<th style="text-align: center;">Meeting Name</th>';
+				 str+='<th style="text-align: center;">Conducted Date</th>';
+				 str+='<th style="text-align: center;">Comment </th>';
 			 }
+			 
 			 str+='</tr>';
 		 str+='</thead>';
 		str+='<tbody>';
@@ -3920,16 +3943,19 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			  }else{
 				str+='<td> - </td>';  
 			  }
-			  str+='<td>'+result[i].invitedCount+'</td>';
-			  if(result[i].subList != null && result[i].subList.length > 0){
-				  for(var j in result[i].subList){
-					  str+='<td>'+result[i].subList[j].inviteeAttendedCount+'</td>';
-					  str+='<td>'+result[i].subList[j].absentCount+'</td>';
-					  str+='<td>'+result[i].subList[j].nonInviteeCount+'</td>';
-					  str+='<td>'+result[i].subList[j].imagesCount+'</td>';
-					  str+='<td>'+result[i].subList[j].imagesCovered+'</td>';
+			  
+			   if(meetingLevel == "District"){
+				  str+='<td>'+result[i].invitedCount+'</td>';
+				  if(result[i].subList != null && result[i].subList.length > 0){
+					  for(var j in result[i].subList){
+						  str+='<td>'+result[i].subList[j].inviteeAttendedCount+'</td>';
+						  str+='<td>'+result[i].subList[j].absentCount+'</td>';
+						  str+='<td>'+result[i].subList[j].nonInviteeCount+'</td>';
+						  str+='<td>'+result[i].subList[j].imagesCount+'</td>';
+						  str+='<td>'+result[i].subList[j].imagesCovered+'</td>';
+					  }
 				  }
-			  }
+			   }
 			  
 			  
 			  if(result[i].remarks != null && result[i].remarks.length > 0){
