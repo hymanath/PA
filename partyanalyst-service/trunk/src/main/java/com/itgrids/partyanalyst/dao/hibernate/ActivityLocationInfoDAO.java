@@ -3013,25 +3013,27 @@ public List<Object[]> getCnstenciesByActivityId(Long activityId){
 }
 public List<Object[]> getMandalsByConstituency(Long constituencyId){
 	Query query = getSession().createQuery("select distinct " +
-			" tehsil.tehsilId,tehsil.tehsilName," +
-			" leb.localElectionBodyId,leb.name " +
+			" model.address.tehsil.tehsilId,model.address.tehsil.tehsilName" +
+			//" leb.localElectionBodyId,leb.name " +
 			" from ActivityLocationInfo model " +
-			" left join model.address.tehsil tehsil" +
-			" left join model.address.localElectionBody leb" +
+			//" left join model.address.tehsil tehsil" +
+			//" left join model.address.localElectionBody leb" +
 			" where model.address.constituency.constituencyId = :constituencyId");
 	query.setParameter("constituencyId", constituencyId);
 	return query.list();
 }
-public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue){
+public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue){
 	
     StringBuilder queryStr = new StringBuilder();
 
      queryStr.append("select distinct");
 
-     if(locationType != null && locationType.equalsIgnoreCase("District")){
+     if(userAccessLevelId.longValue() == 3l || userAccessLevelId.longValue() == 5l){
+    	 queryStr.append(" d.districtId ,");
+    	 queryStr.append(" d.districtName ,");
     	 queryStr.append(" c.constituencyId ,"); //3
 	     queryStr.append(" c.name ,");
-     }else if(locationType != null && (locationType.equalsIgnoreCase("Constituency") || locationType.equalsIgnoreCase("Mandal") || locationType.equalsIgnoreCase("Panchayat") )){
+     }else if(userAccessLevelId.longValue() == 1l || userAccessLevelId.longValue() == 2l){
     	 queryStr.append(" t.tehsilId ,");
          queryStr.append(" t.tehsilName ,");
          queryStr.append(" leb.localElectionBodyId ,");
@@ -3053,26 +3055,48 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,List<Long> userAcce
             " left join model.address.ward w ");
 	queryStr.append(" WHERE model.activityScope.activityScopeId = :activityScopeId " );
 	
-	if(locationType != null && locationType.equalsIgnoreCase("District")){
-	      queryStr.append(" and model.address.district.districtId in (:userAccessLevelValues)");  
-	}else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-	   queryStr.append(" and model.address.constituency.constituencyId in (:userAccessLevelValues)");  
-	}else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
-		   queryStr.append(" and model.address.tehsil.tehsilId in (:userAccessLevelValues)");  
-	}else if(locationType != null && locationType.equalsIgnoreCase("Panchayat")){
-		   queryStr.append(" and model.address.panchayat.panchayatId in (:userAccessLevelValues)");  
+	if(userAccessLevelValues != null && userAccessLevelValues.longValue() > 0){
+		if(locationType != null && locationType.equalsIgnoreCase("District")){
+		      queryStr.append(" and model.address.district.districtId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+		   queryStr.append(" and model.address.constituency.constituencyId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+			   queryStr.append(" and model.address.tehsil.tehsilId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("Panchayat")){
+			   queryStr.append(" and model.address.panchayat.panchayatId = :userAccessLevelValues");  
+		}
 	}
 	
 	if(checkedValue.trim().equalsIgnoreCase("notConducted")){
-		queryStr.append(" and (model.conductedDate is null or (model.ivrStatus is null and model.ivrStatus = 'N')) ");
+		queryStr.append(" and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) ");
 	}else if(checkedValue.trim().equalsIgnoreCase("conducted")){
 		queryStr.append(" and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
 	}
-	queryStr.append(" and model.activityScope.activity.isActive = 'Y'" +
-			" and model.activityScope.isDeleted = 'N' ");
+	/*queryStr.append(" and model.activityScope.activity.isActive = 'Y'" +
+			" and model.activityScope.isDeleted = 'N' ");*/
 	Query sqlQuery = getSession().createQuery(queryStr.toString());
 		sqlQuery.setParameter("activityScopeId", activityScopeId);
-		sqlQuery.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	if(userAccessLevelValues != null && userAccessLevelValues.longValue() > 0)
+		sqlQuery.setParameter("userAccessLevelValues", userAccessLevelValues);
 	return sqlQuery.list();
+}
+public List<Object[]> getDistrictsByActivityId(Long activityScopeId){
+	Query query = getSession().createQuery("select distinct model.address.district.districtId,model.address.district.districtName" +
+			" from ActivityLocationInfo model " +
+			//" left join model.constituency constituency" +
+			" where model.activityScope.activityScopeId = :activityScopeId order by model.address.district.districtName");
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
+public List<Object[]> getMuncipalitiesByConstituency(Long constituencyId){
+	Query query = getSession().createQuery("select distinct " +
+			" model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name " +
+			//" localElectionBody.localElectionBodyId,localElectionBody.name " +
+			" from ActivityLocationInfo model " +
+			//" left join model.address.tehsil tehsil" +
+			//" left join model.address.localElectionBody leb" +
+			" where model.address.constituency.constituencyId = :constituencyId");
+	query.setParameter("constituencyId", constituencyId);
+	return query.list();
 }
 }
