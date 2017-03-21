@@ -456,9 +456,9 @@ function buildLocationWiseMeetingDetails(result,dataType,levelId){
 		}else{
 			str+='<td>-</td>';
 		}
-		if(result[i].status != null && result[i].status == "conducted"){
+		if(result[i].status != null && result[i].status == "Conducted"){
 			str+='<td style="color:green">'+result[i].status+'</td>';
-		}else if(result[i].status != null && result[i].status == "Notconducted"){
+		}else if(result[i].status != null && result[i].status == "Not-Conducted"){
 			str+='<td style="">'+result[i].status+'</td>';
 		}else{
 			str+='<td>-</td>';
@@ -735,6 +735,7 @@ $(document).on("click",".moreMeetingsBlocksIconMulti",function(){
 	var sessionId= $(this).attr('attr_sessionId');
 	$(".moreMultiMeetingsBlocksDetailed,.moreMeetingsBlocksList").show();
 	getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId);
+	//getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId);
 });
 
 function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(locLevelId,partyMeetingGroupId){
@@ -778,6 +779,7 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGro
 			buildParyMeetingDetailsLocLvlWise(result);
 		});  
 }
+
 	function buildParyMeetingDetailsLocLvlWise(resultList){
 		
 		$("#districtWiseSpecialMeetingsGraph").html('');  
@@ -910,6 +912,8 @@ $(document).on("click",".multiMetingDetailedBlock",function(){
 	var partyMeetingGroupId = $(this).attr('attr_group_id');
 	var sessionId= $(this).attr('attr_sessionId');
 	getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId);
+	//getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId);
+	
 });
 
 //SRAVANTH.
@@ -1476,7 +1480,7 @@ function buildgetDirectChildActivityMemberMeetingsDetailsMultiLocation(result,se
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
 					str+='<th style="text-align:center;">total meetings planned</th>';
-					str+='<th style="text-align:center;">conducted</th>';
+					str+='<th style="text-align:center;">Conducted</th>';
 					//str+='<th style="text-align:center;">%</th>';
 					str+='<th style="text-align:center;">Not-conducted</th>';
 					//str+='<th style="text-align:center;">%</th>';
@@ -1636,7 +1640,6 @@ $(document).on("click",".compareActivityMemberClsForMeetingMultiLocation",functi
 	//getLocationWiseMeetingsDetails(locationLevelId,locationValues);
 });
 
-
 function getInviteeAtendedDetails(locationId, levelIdsArr,sesionId,buildType){
 	
 	//getAttendedCadreDetails(buildType,sesionId,levelIdsArr,1,locationId)
@@ -1676,3 +1679,143 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locati
 	});
 	
 }
+function getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId){ 
+var jsObj ={
+		activityMemberId:globalActivityMemberId,
+		partyMeetingMainTypeId : 4,          
+		locLevelId:locLevelId,                          
+		startDateString:"01/03/2010",
+		endDateString:"30/03/2017",   
+		state:globalStateId,                                 
+		partyMeetingGroupId:partyMeetingGroupId,
+		sessionId:sessionId ,
+		type : "meetingsBased"
+	}      
+		$.ajax({
+			type : 'POST',
+			url : 'getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetingsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			buildParyMeetingsBasedDetailsLocLvlWise(result);
+		});  
+}
+function buildParyMeetingsBasedDetailsLocLvlWise(resultList){
+		
+		$("#districtWiseSpecialMeetingsGraph").html('');  
+		var str='';
+		for(var j in resultList){
+			var result = resultList[j];
+			if(result != null && result.length > 0){
+				str+='<div><h4><span class="headingColor text-capitalize">'+result[0].name+' Level Multi Location Meetings </span></h4></div>';          
+				str+='<div id="districtWiseGraphSpecialMee'+j+'" class="chartLiD" style="height:300px" ></div>';
+			}
+		}  
+		$("#districtWiseSpecialMeetingsGraph").html(str);
+		for(var j in resultList){  
+			var result = resultList[j];
+			if(result != null && result.length > 0){
+				var locationNameArray =[];
+				var conductedCountArray = [];
+				var notConductedCountArray = [];
+				for(var i in result){
+					locationNameArray.push(result[i].locationName);
+					var sessionId = 0;
+					if(result[i].sessionId != null && parseInt(result[i].sessionId)>0){
+						sessionId = parseInt(result[i].sessionId);
+					}
+					conductedCountArray.push({"dataBuildType":"present","y":parseInt(result[i].conductedCnt),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
+					notConductedCountArray.push({"dataBuildType":"absent","y":parseInt(result[i].notConductedCnt),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
+				}  
+			}
+			functionHighcharts(j,locationNameArray,conductedCountArray,notConductedCountArray);
+		}
+	}
+	function functionHighcharts(id,locationNameArray,conductedCountArray,notConductedCountArray){
+		$(function () {
+			$('#districtWiseGraphSpecialMee'+id).highcharts({
+				colors: ['#3C763D','#A94442'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					 min: 0,
+						 gridLineWidth: 0,
+						 minorGridLineWidth: 0,
+						categories: locationNameArray,
+					labels: {
+							rotation: -45,
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+				},
+				yAxis: {
+					min: 0,
+						   gridLineWidth: 0,
+							minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} - {point.percentage:.1f}%</b><br/>',
+					shared: true
+				},
+				plotOptions: {
+					useHTML: true,
+					//text-align:'center',
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return '<span style="text-align:center">'+(this.y)+'</span>';
+								}
+							}
+						  
+						}
+					},
+					series: {
+						cursor: 'pointer',
+						point: {
+						events: {
+						click: function () {
+							
+							}  
+						}
+					}
+				}
+				},
+				series: [{
+					name: 'Conducted',  
+					data: conductedCountArray
+				}, {
+					name: 'Not Conducted',
+					data: notConductedCountArray
+				}]
+			});
+		});
+	}
