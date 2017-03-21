@@ -3721,50 +3721,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    <h4  class="modal-title" id="meetingHeadingId"></h4>
 		<!--<input type="button" value="view not comment meeting"/>-->
-		<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12 consolidatedCls">
-			<div class="col-md-4 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;">
-			<label class="radio-inline">
-			  <input type="radio" id="ConsolidatedradioId" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Consolidated 
-			</label>
-			<label  class="radio-inline individualRadioBtnCls">
-			  <input type="radio" id="individualradioId" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Individual
-			</label>
-			</div>
-			<div class="col-md-3 col-xs-12 col-sm-6">
-			<label>Consolidated Type</label>
-			<select  id="commentFilterSelectBoxId" class="form-control col-xs-3">
-			  <option value="0">District</option>
-			  <option value="1">Constituency</option>
-			</select>
-			</div>
-		</div>
-		</div>
-		<div class="row m_top10">
-			<div class="col-md-12 col-xs-12 col-sm-12 filterCls">
-				<div class="col-md-3 col-xs-12 col-sm-6 districtSlctBxCls">
-				<label>District</label>
-				<select  id="districtSlctBxId" class="form-control col-xs-3">
-				 <option value="0">Select District</option>
-				</select>
-				</div>
-				<div class="col-md-3 col-xs-12 col-sm-6 constituencySlctBxCls">
-				<label>Constituency</label>
-				<select  id="constituencySlctBxId" class="form-control col-xs-3">
-				<option value="0">Select Constituency</option>
-				</select>
-				</div>
-				<div class="col-md-3 col-xs-12 col-sm-6 mandalSlctBxCls">
-				<label>Mandal/Town/Division</label>
-				<select  id="mandalSlctBxId" class="form-control col-xs-3">
-				<option value="0">select Mandal/Town/Division</option>
-				</select>
-				</div>
-				<div class="col-md-3 col-xs-12 col-sm-6" style="margin-top: 25px;">
-			     <input type="button" id="getDetailsBtnId" class="btn btn-success" value="GetDetails"/>
-				</div>
-			</div>
-	    </div>
+		
 		<!--<div class="row m_top10">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			 <input type="checkbox" id="getMeetingDetails" class="btn btn-success"/>If u will check this. you will get all (comment / not comment ) meeting details
@@ -3772,6 +3729,51 @@
 		</div>-->
 	  </div>
       <div class="modal-body">
+	  <div class="row consolidatedCls well well-xs" style="margin-top: -15px;">
+		
+			<div class="col-md-3 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;">
+			<label class="radio-inline">
+			  <input type="radio" id="ConsolidatedradioId" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Consolidated 
+			</label>
+			<label  class="radio-inline individualRadioBtnCls">
+			  <input type="radio" id="individualradioId" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Individual
+			</label>
+			</div>
+			<div class="col-md-2 col-xs-12 col-sm-6">
+			<label>Consolidated Type</label>
+			<select  id="commentFilterSelectBoxId" class="form-control col-xs-3">
+			  <option value="0">District</option>
+			  <option value="1">Constituency</option>
+			</select>
+			</div>
+			<div class="col-md-2 col-xs-12 col-sm-6 districtSlctBxCls">
+				<label>District</label>
+				<select  id="districtSlctBxId" class="form-control col-xs-3">
+				 <option value="0">All</option>
+				</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-6 constituencySlctBxCls">
+				<label>Constituency</label>
+				<select  id="constituencySlctBxId" class="form-control col-xs-3">
+				<option value="0">All</option>
+				</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-6 mandalSlctBxCls">
+				<label>Mandal/Town/Division</label>
+				<select  id="mandalSlctBxId" class="form-control col-xs-3">
+				<option value="0">All</option>
+				</select>
+				</div>
+				<div class="col-md-2 col-xs-12 col-sm-6" style="margin-top: 25px;">
+			     <input type="button" id="getDetailsBtnId" class="btn btn-success" value="GetDetails"/>
+				</div>
+		
+		</div>
+		<!--<div class="row m_top10">
+			<div class="col-md-12 col-xs-12 col-sm-12 filterCls">
+				
+			</div>
+	    </div>-->
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="meetingCommentProcessingImgId"></center></div>
@@ -3915,7 +3917,7 @@
  <div class="modal-dialog" role="document" style="width:85%;">   
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close closeBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="">Member Details</h4>      
       </div>
       <div class="modal-body" id="">   
@@ -3924,7 +3926,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default closeBtnCls" data-dismiss="modal">Close</button>
       </div>
     </div><!--   /.modal-content -->  
   </div><!--  /.modal-dialog -->

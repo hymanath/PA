@@ -152,7 +152,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td class="bg_ED">';
 			if(result.invited != null && result.invited > 0)
 			{
-				str+='<p> <a style="font-weight:bold;" href="javascript:{getAttendedCadreDetails(\'invited\',0,'+levelId+','+meetingGrpId+');}"> '+result.invited+'</a></p>';
+				str+='<p> <a style="font-weight:bold;" href="javascript:{getAttendedCadreDetails(\'invited\',0,'+levelId+','+meetingGrpId+',0,4,0);}"> '+result.invited+'</a></p>';
 			}
 			else
 				str+='<p> - </p>';
@@ -161,7 +161,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td class="bg_ED">';
 			if(result.attended != null && result.attended > 0)
 			{
-				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'attended\',0,'+levelId+','+meetingGrpId+');}"> '+result.attended+' </a></p>';
+				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'attended\',0,'+levelId+','+meetingGrpId+',0,4,0);}"> '+result.attended+' </a></p>';
 			}
 			else
 				str+='<p> - </p>';
@@ -179,7 +179,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td class="bg_ED">';
 			if(result.absent != null && result.absent > 0)
 			{				
-				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'absent\',0,'+levelId+','+meetingGrpId+');}"> '+result.absent+' </a></p>';
+				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'absent\',0,'+levelId+','+meetingGrpId+',0,4,0);}"> '+result.absent+' </a></p>';
 			}else
 				str+='<p> - </p>';
 				str+='<p class="text-muted">Absent</p>';
@@ -187,7 +187,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td class="bg_ED">';
 			if(result.nonInvitee != null && result.nonInvitee > 0)
 			{				
-				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'noninvitees\',0,'+levelId+','+meetingGrpId+');}"> '+result.nonInvitee+' </a></p>';				
+				str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'noninvitees\',0,'+levelId+','+meetingGrpId+',0,4,0);}"> '+result.nonInvitee+' </a></p>';				
 			}
 			else
 				str+='<p> - </p>';
@@ -207,7 +207,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 					if(result.subList[k].inviteeAttendedCount != null && result.subList[k].inviteeAttendedCount > 0)
 					{
 						str+='<td class="bg_ED">';
-								str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'attended\','+result.subList[k].id+','+levelId+','+meetingGrpId+');}"> '+result.subList[k].inviteeAttendedCount+'</p>';
+								str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'attended\','+result.subList[k].id+','+levelId+','+meetingGrpId+',0,4,0);}"> '+result.subList[k].inviteeAttendedCount+'</p>';
 								//str+='<p class="text-success">Attended</p>';
 						str+='</td>';
 					}
@@ -219,7 +219,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 					if(result.subList[k].lateCount != null && result.subList[k].lateCount > 0)
 					{
 						str+='<td class="bg_ED">';
-							str+='<p >  <a  class="text-danger" style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'late\','+result.subList[k].id+','+levelId+','+meetingGrpId+');}"> '+result.subList[k].lateCount+' </a></p>';
+							str+='<p >  <a  class="text-danger" style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'late\','+result.subList[k].id+','+levelId+','+meetingGrpId+',0,4,0);}"> '+result.subList[k].lateCount+' </a></p>';
 							//str+='<p class="text-danger">Late</p>';
 						str+='</td>';
 					}else{
@@ -232,7 +232,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 					if(absent != null && absent > 0)
 					{
 						str+='<td class="bg_ED">';
-							str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'absent\','+result.subList[k].id+','+levelId+','+meetingGrpId+');}"> '+absent+'  </a> </p>';
+							str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'absent\','+result.subList[k].id+','+levelId+','+meetingGrpId+',0,4,0);}"> '+absent+'  </a> </p>';
 							//str+='<p class="text-muted">Absent</p>';
 						str+='</td>';
 					}else{
@@ -244,7 +244,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 					if(result.subList[k].nonInviteeCount != null && result.subList[k].nonInviteeCount > 0)
 					{
 						str+='<td class="bg_ED">';
-							str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'nonInvitees\','+result.subList[k].id+','+levelId+','+meetingGrpId+');}"> '+result.subList[k].nonInviteeCount+' </a></p>';
+							str+='<p>  <a  style="font-weight:bold;"  href="javascript:{getAttendedCadreDetails(\'nonInvitees\','+result.subList[k].id+','+levelId+','+meetingGrpId+',0,4,0);}"> '+result.subList[k].nonInviteeCount+' </a></p>';
 							//str+='<p class="text-muted">Non-Invitee</p>';
 						str+='</td>';
 					}else{
@@ -287,12 +287,19 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locati
 	
 }
 */
-function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
+
+$(document).on("click",".requiredClass",function(){
+	var search = $(this).attr("attr_search");
+	var designation = $(this).attr("attr_desg_name");
+	buildPartyLevelIdWiseMeetingsAttendanceDetails(globalMembersResult,"overview",search,designation);
+});
+
+function buildPartyLevelIdWiseMeetingsAttendanceDetails(result,position,searchReq,designationName){
 	
 	var str='';
-	
-	//if(position == "overview"){
-		/*	if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0 ){
+	//var position = "overview";
+	if(position == "overview"){
+			if(result.subList1[0].publicRepDesgList != null && result.subList1[0].publicRepDesgList.length > 0 ){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="panel panel-default">';
 				  str+='<div class="panel-heading">';
@@ -300,11 +307,11 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 				  str+='</div>';
 				  str+='<div class="panel-body">';
 						str+='<p style="font-size:15px;" class="m_top10">';
-							if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0){
-								 for(var i in result[0].publicRepDesgList){
-									str+='<span style="text-transform:uppercase;">'+result[0].publicRepDesgList[i].name+'</span> ';
-									str+='( <span class ="getCmtMemDtlsDesgClick" attr_search="required" attr_position="'+position+'" attr_non_invitee="'+isNonInvitee+'" attr_status="'+status+'" attr_desg_name="'+result[0].publicRepDesgList[i].name+'" style="font-weight:bold;color:green;cursor:pointer;">'+result[0].publicRepDesgList[i].count+'</span> )';
-									if( i!= result[0].publicRepDesgList.length -1 ){
+							if(result.subList1[0].publicRepDesgList != null && result.subList1[0].publicRepDesgList.length > 0){
+								 for(var i in result.subList1[0].publicRepDesgList){
+									str+='<span style="text-transform:uppercase;">'+result.subList1[0].publicRepDesgList[i].name+'</span> ';
+									str+='( <span class ="requiredClass" attr_search="required" attr_desg_name="'+result.subList1[0].publicRepDesgList[i].name+'" style="font-weight:bold;color:green;cursor:pointer;">'+result.subList1[0].publicRepDesgList[i].count+'</span> )';
+									if( i!= result.subList1[0].publicRepDesgList.length -1 ){
 										str+=' , ';
 									}
 								 }
@@ -313,8 +320,8 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 				  str+='</div>';
 				str+='</div>';
 				str+='</div>';
-	      }*/
-		//}
+	      }
+		}
 		
 		
 	str+='<div class="row m_top10">';
@@ -323,7 +330,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 		  str+='<table class="table border_top_apply table-condensed table-bordered" id="cmtMemberDtlsTableId">';
 			str+='<thead>';
 				str+='<tr>';
-					//str+='<th>District Name</th>';
+					str+='<th>District Name</th>';
 					str+='<th>Leader Name</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Contact Number</th>';
@@ -342,7 +349,21 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 			str+='<tbody>';
 			
 			for(var i in result.subList1){
-				var designations ="";
+				var build = false;
+				if(searchReq == "required"){
+					if(result.subList1[i].subList != null && result.subList1[i].subList.length > 0){
+						for( var j in result.subList1[i].subList){
+							if(result.subList1[i].subList[j].trim().toUpperCase() == designationName.trim().toUpperCase()){
+								build = true;
+								break;
+							}
+						}
+					}
+				}else{
+					build = true;
+				}
+				if(build){
+					var designations ="";
 					if(result.subList1[i].subList != null){
 						for(var n in result.subList1[i].subList){
 							if(n == 0)
@@ -353,7 +374,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 					}	
 								
                     str+='<tr>';	
-					//str+='<td> - </td>';
+					str+='<td>'+result.subList1[i].districtName+'</td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
 					if(designations.length>0)
 						str+='<td> '+designations+'</td> ';
@@ -386,6 +407,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 					else
 						str+='<td> - </td>';  
 					str+='</tr>';	
+				}
 			}
 		   str+='</tbody>';
 		   str+='</table>';
@@ -1645,8 +1667,8 @@ function getInviteeAtendedDetails(locationId, levelIdsArr,sesionId,buildType){
 	//getAttendedCadreDetails(buildType,sesionId,levelIdsArr,1,locationId)
 }
 
-
-function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locationId){
+var globalMembersResult;
+function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locationId,partyMeetingMainTypeId,partyMeetingId){
 	$("#meetingMemDetailsId").modal("show");     
 	$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
 	var levelIdArr = new Array();
@@ -1660,13 +1682,13 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locati
 		toDateStr : '01/02/2020',//customEndDateMeetings,
 		activityMemberId : globalActivityMemberId,
 		stateId : globalStateId,
-		partyMeetingMainTypeId:4,
+		partyMeetingMainTypeId:partyMeetingMainTypeId,
 		partyMeetingLevelId:levelId,
 		levelIdsLsit:levelIdArr,
 		meetingGrpId:meetingGrpId,
 		sessionTypeId:sessionId,
 		cadreType:cadreType,
-		partyMeetingId:0,
+		partyMeetingId:partyMeetingId,
 		locationId:locationId
 	};
 	
@@ -1675,7 +1697,12 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locati
 	  url: 'getPartyLevelIdWiseMeetingsAttendanceDetails.action',
 	 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		buildPartyLevelIdWiseMeetingsAttendanceDetails(result);
+		if(result != null && result.subList1 != null && result.subList1.length > 0){
+			globalMembersResult = result;
+			buildPartyLevelIdWiseMeetingsAttendanceDetails(result,"overview","","");
+		}
+		else
+			$("#meetingMemDetailsBodyId").html("NO DATA AVAILABLE...");
 	});
 	
 }
