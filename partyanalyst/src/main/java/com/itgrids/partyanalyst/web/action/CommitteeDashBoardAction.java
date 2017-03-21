@@ -1714,4 +1714,15 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getDistrictsListByActivity(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long activityId =jObj.getLong("activityId");
+			
+			idNameVOList = cadreCommitteeService.getDistrictsByActivityId(activityId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getDistrictsListByActivity ",e);
+		}
+	   return Action.SUCCESS;
+	}
 }
