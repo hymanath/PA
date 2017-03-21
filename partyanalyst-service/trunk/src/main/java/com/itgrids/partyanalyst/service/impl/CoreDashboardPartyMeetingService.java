@@ -7973,6 +7973,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		return returnList;
 	}
+	@SuppressWarnings("serial")
 	public MeetingVO getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId){
 		MeetingVO returnVO = new MeetingVO();
 		Date startDate = null;
@@ -7998,7 +7999,16 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				for(Object[] obj :meetingsList){
 					Long mainTypeId =commonMethodsUtilService.getLongValueForObject(obj[0]);
 					Long groupId =commonMethodsUtilService.getLongValueForObject(obj[2]);
+					Long meetingLevelId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+					Long count = commonMethodsUtilService.getLongValueForObject(obj[4]);
 					
+					if(meetingLevelId != null && meetingLevelId.longValue()>0L){
+						if(new ArrayList<Long>(){{add(7L);add(8L);}}.contains(meetingLevelId.longValue())){
+							meetingLevelId = 7L;
+						}else if(new ArrayList<Long>(){{add(4L);add(5L);add(6L);}}.contains(meetingLevelId.longValue())){
+							meetingLevelId = 4L;
+						}
+					}
 					Map<Long,List<MeetingVO>> meetingMap = new LinkedHashMap<Long, List<MeetingVO>>(0);
 					List<MeetingVO> meetignsList = new ArrayList<MeetingVO>(0);
 					if(groupMeetingsMap.get(mainTypeId) != null){
@@ -8014,28 +8024,14 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					meetingGrpVO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));//partyMeetingGroupName
 					
 					meetingGrpVO.setUserAccessLevelValuesList(getPartyMeetingLevels());//partyMeetingLevels
-					MeetingVO partylevelVO = getMatchedVOByList(meetingGrpVO.getUserAccessLevelValuesList(),(Long)obj[5]);
+					MeetingVO partylevelVO = getMatchedVOByList(meetingGrpVO.getUserAccessLevelValuesList(),meetingLevelId);
 					if(partylevelVO != null)
-					 partylevelVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					 partylevelVO.setCount(partylevelVO.getCount()+count);
 					
 					meetignsList.add(meetingGrpVO);
 					meetingMap.put(groupId, meetignsList);
 					
 					groupMeetingsMap.put(meetingGrpVO.getId(), meetingMap);
-					
-					/*returnVO.setLevelId(commonMethodsUtilService.getLongValueForObject(obj[0]));//partyMeetnMainTypId
-					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));//partyMeetnMainTyp
-					MeetingVO meetingGrp = getMatchedVOByList(returnVO.getUserAccessLevelList(),(Long)obj[2]);
-					if(meetingGrp == null){
-						meetingGrp = new MeetingVO();
-						meetingGrpList.add(meetingGrp);
-						meetingGrp.setLevelId(commonMethodsUtilService.getLongValueForObject(obj[2]));//partyMeetingGroupId
-						meetingGrp.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));//partyMeetingGroupName
-						 meetingGrp.setUserAccessLevelValuesList(getPartyMeetingLevels());//partyMeetingLevels
-						 MeetingVO partylevelVO = getMatchedVOByList(meetingGrp.getUserAccessLevelValuesList(),(Long)obj[5]);
-						 if(partylevelVO != null)
-						 partylevelVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
-					}*/
 				}
 			}
 			
@@ -9370,7 +9366,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		return returnVO;
 	}
 	
-	 public List<SessionVO> getPartyMeetingsSessionWiseIndividualDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+	 @SuppressWarnings({ "serial", "serial" })
+	public List<SessionVO> getPartyMeetingsSessionWiseIndividualDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
 			 				List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,Long locationId,String locationType){
 		 
 	     List<SessionVO> resultList = new ArrayList<SessionVO>();
@@ -9439,7 +9436,25 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				   List<Long> partyMeetingIdsList = new ArrayList<Long>();
 				    
 				   List<Object[]> list = partyMeetingDAO.getPartyMeetingSessionWiseDtls(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,partyMeetingLevel);
+				   //srishailam
 				   
+				   	PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+					inputVO.setPartyMeetingMainTypeId(1L);
+					inputVO.setPartyMeetingTypeIds(Arrays.asList(2L,21L));// district montly meeting , district general body meetings
+					//inputVO.setPartyMeetingTypeIds(meetingTypeIds);
+					List<Date> datesList = coreDashboardGenericService.getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
+					inputVO.setStartDate(datesList.get(0));
+					inputVO.setEndDate(datesList.get(1));
+					inputVO.setStateId(stateId);
+					inputVO.setPartyMeetingGroupId(0L);
+					inputVO.setCategoryIdList(partyMeetingLevelIdsList);
+					
+				   List<Object[]> imageList = partyMeetingDocumentDAO.getPartyMeetingdocList(inputVO,locationId,entry.getValue());
+					//session wise images count
+					Map<Long,Long> meetingWiseImageCountMap = new HashMap<Long,Long>();
+					Map<Long,List<SessionVO>> partyMeetingWiseImagesListMap  = createMeetingWiseImageCountMap(imageList,meetingWiseImageCountMap);
+					
+					
 				   if(list != null && !list.isEmpty()){
 					   Map<Long,SessionVO> glSessionMap  = new TreeMap<Long, SessionVO>();
 					   for (Object[] param : list) {
@@ -9669,6 +9684,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 									  meetingvo.setInviteeAttendedCount(meetingvo.getInviteeAttendedCount()+sessionvo.getInviteeAttendedCount());
 									  meetingvo.setAbsentCount(meetingvo.getAbsentCount()+sessionvo.getAbsentCount());
 									  meetingvo.setNonInviteeCount(meetingvo.getNonInviteeCount()+sessionvo.getNonInviteeCount());
+									  meetingvo.setImagesList(partyMeetingWiseImagesListMap.get(meetingvo.getId()));
 								  }
 							  }
 						  }
