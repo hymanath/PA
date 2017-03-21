@@ -619,6 +619,19 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
+			
+			Long regionScopeId = getRegionScopeIdBylevel(levelId);
+			
+			if(regionScopeId !=null && regionScopeId.longValue()>0l){
+				
+				if(regionScopeId.longValue() == 5l || regionScopeId.longValue() == 7l){
+					if(levelValue !=null && levelValue.longValue()>0l){
+						levelValue = Long.valueOf(levelValue.toString().substring(1));
+					}						
+				}
+				
+			}
+			
 			List<Object[]> list = govtDepartmentDesignationOfficerDetailsDAO.getOfficersByDesignationAndLevel(levelId, levelValue, designationId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
