@@ -68,7 +68,7 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 					{
 						if(result.userAccessLevelList[i].userAccessLevelValuesList != null && result.userAccessLevelList[i].userAccessLevelValuesList.length>0)
 						{
-							if(j==2)
+							if(j==0)
 							{
 								levelId = result.userAccessLevelList[i].userAccessLevelValuesList[j].levelId; 
 							    locationName =result.userAccessLevelList[i].name;
@@ -99,7 +99,7 @@ function buildMultiLocationWiseMeetingGroupsData(result)
 		str+='</div>';
 	str+='</div>';
 	$("#MultiLocationWiseMeetingGroupsData").html(str);
-	getPartyLevelIdWiseMeetingsCount(meetingGrpId,3,result.userAccessLevelList[i].userAccessLevelValuesList[j].count,locationName);
+	getPartyLevelIdWiseMeetingsCount(meetingGrpId,levelId,result.userAccessLevelList[i].userAccessLevelValuesList[j].count,locationName);
 }
 $(document).on("click",".multiLocationWiseMeetingCount",function(){
 	$(".multiLocationWiseMeetingCount").removeClass("active").parent("td").removeClass("bg_E0");
@@ -264,7 +264,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 						str+='</td>';
 					}else{
 						str+='<td class="bg_ED">';
-								str+='<p> '+absent+' </p>';								
+								str+='<p>  -  </p>';								
 						str+='</td>';
 					}
 					
@@ -286,8 +286,8 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 	str+='</table>';
 	$("#partyLevelIdWiseMeetingsCount").html(str);
 }
-
-function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId){
+/*
+function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locationId){
 	$("#meetingMemDetailsId").modal("show");     
 	$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
 	var jObj = {
@@ -300,7 +300,8 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId){
 		meetingGrpId:meetingGrpId,
 		sessionTypeId:sessionId,
 		cadreType:cadreType,
-		partyMeetingId:0
+		partyMeetingId:0,
+		locationId:locationId
 	};
 	
 	$.ajax({
@@ -312,17 +313,44 @@ function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId){
 	});
 	
 }
-
+*/
 function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 	
 	var str='';
+	
+	//if(position == "overview"){
+		/*	if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0 ){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="panel panel-default">';
+				  str+='<div class="panel-heading">';
+					str+='<h3 class="panel-title">DESIGNATIONS SUMMARY</h3>';
+				  str+='</div>';
+				  str+='<div class="panel-body">';
+						str+='<p style="font-size:15px;" class="m_top10">';
+							if(result[0].publicRepDesgList != null && result[0].publicRepDesgList.length > 0){
+								 for(var i in result[0].publicRepDesgList){
+									str+='<span style="text-transform:uppercase;">'+result[0].publicRepDesgList[i].name+'</span> ';
+									str+='( <span class ="getCmtMemDtlsDesgClick" attr_search="required" attr_position="'+position+'" attr_non_invitee="'+isNonInvitee+'" attr_status="'+status+'" attr_desg_name="'+result[0].publicRepDesgList[i].name+'" style="font-weight:bold;color:green;cursor:pointer;">'+result[0].publicRepDesgList[i].count+'</span> )';
+									if( i!= result[0].publicRepDesgList.length -1 ){
+										str+=' , ';
+									}
+								 }
+							}
+						str+='</p>';
+				  str+='</div>';
+				str+='</div>';
+				str+='</div>';
+	      }*/
+		//}
+		
+		
 	str+='<div class="row m_top10">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		  str+='<div class="table-responsive">';
 		  str+='<table class="table border_top_apply table-condensed table-bordered" id="cmtMemberDtlsTableId">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th>District Name</th>';
+					//str+='<th>District Name</th>';
 					str+='<th>Leader Name</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Contact Number</th>';
@@ -341,10 +369,24 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 			str+='<tbody>';
 			
 			for(var i in result.subList1){
+				var designations ="";
+					if(result.subList1[i].subList != null){
+						for(var n in result.subList1[i].subList){
+							if(n == 0)
+								designations = result.subList1[i].subList[n];
+							else
+								designations = designations+","+result.subList1[i].subList[n];
+						}
+					}	
+								
                     str+='<tr>';	
-					str+='<td> - </td>';
+					//str+='<td> - </td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
-					str+='<td>  - </td>';
+					if(designations.length>0)
+						str+='<td> '+designations+'</td> ';
+					else
+						str+='<td> - </td>';
+					
 					str+='<td>  '+result.subList1[i].mobileNo+' </td>';
 					if(result.subList1[i].isInvitee =='true')
 						str+='<td> Invitee </td>';
@@ -360,7 +402,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result){
 								else
 									str+='<td class="text-success"> Y ('+result.subList1[i].sessionsList[k].attendedTime+')</td>';
 							}else{
-								str+='<td class="text-danger">  N </td>';
+								str+='<td class="text-danger"> N </td>';
 							}
 						}  
 					}else{
@@ -740,7 +782,8 @@ function getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocat
 		});    
 }
 
-function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId){    
+function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId){  
+	$("#districtWiseSpecialMeetingsGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj ={
 		activityMemberId:globalActivityMemberId,
 		partyMeetingMainTypeId : 4,          
@@ -784,8 +827,8 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGro
 					if(result[i].sessionId != null && parseInt(result[i].sessionId)>0){
 						sessionId = parseInt(result[i].sessionId);
 					}
-					attendedCountArray.push({"dataBuildType":"present","y":parseInt(result[i].attendedCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
-					inviteAbsentCountArray.push({"dataBuildType":"absent","y":parseInt(result[i].inviteAbsentCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId)});
+					attendedCountArray.push({"dataBuildType":"present","y":parseInt(result[i].attendedCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId),"locLevelIdList":result[i].locLevelIdList});
+					inviteAbsentCountArray.push({"dataBuildType":"absent","y":parseInt(result[i].inviteAbsentCount),"id":parseInt(result[i].locationId),"meetingId":parseInt(result[i].meetingId),"sessionId":parseInt(sessionId),"locLevelIdList":result[i].locLevelIdList});
 				}  
 			}
 			functionHighcharts(j,locationNameArray,attendedCountArray,inviteAbsentCountArray);
@@ -863,7 +906,11 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGro
 						point: {
 						events: {
 						click: function () {
-							
+								var locationId = this.id;
+								var locLevelIdList = this.locLevelIdList;
+								var sessionId = this.sessionId;
+								var dataBuildType = this.dataBuildType;
+								getInviteeAtendedDetails(locationId,locLevelIdList,sessionId,dataBuildType);
 							}  
 						}
 					}
@@ -881,9 +928,9 @@ function getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGro
 	}
 	
 $(document).on("click",".multiMetingDetailedBlock",function(){
-	$(".moreMeetingsBlocksMultiLocationComparision").hide();
+	$(".moreMeetingsBlocksMultiLocationComparision,.moreMultiMeetingsBlocksDetailed").hide();
 	
-	$(".moreMultiMeetingsBlocksDetailed").hide();
+	$(".multiMeetingChortCls").show();
 	var locLevelId = $(this).attr('attr_levelId');
 	var partyMeetingGroupId = $(this).attr('attr_group_id');
 	var sessionId= $(this).attr('attr_sessionId');
@@ -1613,3 +1660,44 @@ $(document).on("click",".compareActivityMemberClsForMeetingMultiLocation",functi
 		}
 	//getLocationWiseMeetingsDetails(locationLevelId,locationValues);
 });
+
+
+function getInviteeAtendedDetails(locationId, levelIdsArr,sesionId,buildType){
+	
+	//getAttendedCadreDetails(buildType,sesionId,levelIdsArr,1,locationId)
+}
+
+
+function getAttendedCadreDetails(cadreType,sessionId,levelId,meetingGrpId,locationId){
+	$("#meetingMemDetailsId").modal("show");     
+	$("#meetingMemDetailsBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div>');
+	var levelIdArr = new Array();
+	if(levelId.length>1)
+		levelIdArr=levelId;
+	else
+		levelIdArr.push(levelId)
+	
+	var jObj = {
+		fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
+		toDateStr : '01/02/2020',//customEndDateMeetings,
+		activityMemberId : globalActivityMemberId,
+		stateId : globalStateId,
+		partyMeetingMainTypeId:4,
+		partyMeetingLevelId:levelId,
+		levelIdsLsit:levelIdArr,
+		meetingGrpId:meetingGrpId,
+		sessionTypeId:sessionId,
+		cadreType:cadreType,
+		partyMeetingId:0,
+		locationId:locationId
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getPartyLevelIdWiseMeetingsAttendanceDetails.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		buildPartyLevelIdWiseMeetingsAttendanceDetails(result);
+	});
+	
+}
