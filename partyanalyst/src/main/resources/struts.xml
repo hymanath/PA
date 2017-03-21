@@ -16175,9 +16175,14 @@
 			</result>			
 		</action>
 		<action name="getCadreDetailedReportEventAttendeeAction" class="nominatedPostProfileAction" method="getCadreDetailedReportEventAttendee">
-		<result type="json" name="success">
-   			<param name="root">cadreReportVO</param>
-   		</result>
-	    </action>
+			<result type="json" name="success">
+				<param name="root">locationWiseBoothDetailsVOList</param>
+			</result>
+		</action>
+		<action name="getDistrictsListForActivitiesAction" class="committeeDashBoardAction" method="getDistrictsListByActivity">
+		    <result type="json" name="success">		   
+			    <param name="root">idNameVOList</param>
+			</result>
+		</action>
  </package>
 </struts>
