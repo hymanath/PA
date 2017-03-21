@@ -3852,6 +3852,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
  
    function buildMeetingIndividualDtlsRslt(result,divId,statusType,meetingLevel){
 	   var str='';
+	   var levelId=1;
 	   str+='<div class="table-responsive">';
 	   if(statusType == "directRslt"){
 		str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-bordered" id="meetingCommentDataTblId">';   
@@ -3861,8 +3862,10 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   str+='<thead>';
 	   str+='<tr>';
 	    if(meetingLevel == "District"){
+			levelId=2;
              str+='<th rowspan="2" style="text-align: center;">District</th>';
 			 if(meetingLevel == "Constituency"){
+				 levelId=3;
 			 str+='<th rowspan="2" style="text-align: center;">Constituency</th>'	 
 			 }
 			 if(meetingLevel=="Village/Ward" || meetingLevel=="Mandal/Town/Division"){
@@ -3876,9 +3879,10 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				 str+='<th rowspan="2" style="text-align: center;">Invited</th>';
 				 if(result[0].subList != null && result[0].subList.length > 0){
 					 for(var i in result[0].subList){
-						 str+='<th colspan="5" style="text-align: center;">'+result[0].subList[i].sessionName+'</th>';
+						 str+='<th colspan="3" style="text-align: center;">'+result[0].subList[i].sessionName+'</th>';
 					 }
 				 }
+				  str+='<th rowspan="2" style="text-align: center;"> Images</th>';
 				 str+='<th rowspan="2" style="text-align: center;">Comment  </th>';
 				 str+='</tr>';
 				 str+='<tr>';
@@ -3887,8 +3891,8 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 						 str+='<th>Invitee Attended</th>';
 						 str+='<th>Absent</th>';
 						 str+='<th>Non-Invitee Attended</th>';
-						 str+='<th>imagesCount</th>';
-						 str+='<th>imagesCovered</th>';
+						// str+='<th>imagesCount</th>';
+						// str+='<th> Images</th>';
 					 }
 				 }
 			 }else{
@@ -3952,13 +3956,52 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 					  	str+='<td>'+result[i].subList[j].inviteeAttendedCount+'</td>';
 					 	 str+='<td>'+result[i].subList[j].absentCount+'</td>';
 					 	 str+='<td>'+result[i].subList[j].nonInviteeCount+'</td>';
-					  	str+='<td>'+result[i].subList[j].imagesCount+'</td>';
-					 	 str+='<td>'+result[i].subList[j].imagesCovered+'</td>';
+					  	//str+='<td>'+result[i].subList[j].imagesCount+'</td>';
+					 	// str+='<td>'+result[i].subList[j].imagesCovered+'</td>';
 				 	 }
 			 	 }
 			  }
 			  
-			  
+			   str+='<td>';
+				if(result[i].subList[j].imagesCount > 0){  
+						str+='<ul class="list-inline modalImagesUl">';
+				if(result[i].subList[j].imagesCount > 1){
+					var remaingImagePath = result[i].subList[j].imagesCount-2;
+					var time = result[i].imagesList[0].uploadedTime;
+						str+='<li>';
+							str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[0].imagePath+'" alt=""/>';
+							str+='<p>'+time+'</p>';
+							str+='<p>'+result[i].imagesList[0].upLoadedDate+'</p>';
+						str+='</li>';
+						var time1 = result[i].imagesList[1].uploadedTime;
+						str+='<li>';
+						   str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[1].imagePath+'" alt=""/>';
+							str+='<p>'+time1+'</p>';
+							str+='<p>'+result[i].imagesList[1].upLoadedDate+'</p>';
+						str+='</li>';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;" >';
+						if(remaingImagePath>result[i].subList[j].imagesCount)
+							str+='<p >'+remaingImagePath+'+'+'</p>';
+						 str+='<p >View All</p>';
+						str+='</li>';
+					}else{
+						str+='<li>';
+							str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].imagesList[0].imagePath+'" alt=""/>';
+							str+='<p>'+result[i].imagesList[0].uploadedTime+'</p>';
+							str+='<p>'+result[i].imagesList[0].upLoadedDate+'</p>';
+						str+='</li>';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;">';
+						//str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;"> 1 </p>';
+						 str+='<p >View All</p>';
+						str+='</li>';
+					}
+						str+='</ul>';
+					}
+				else{
+						str+='-';
+				}
+				str+='</td>'; 
+				
 			  if(result[i].remarks != null && result[i].remarks.length > 0){
 				 str+='<td>'+result[i].remarks+'</td>';       
 			  }else{
@@ -6222,30 +6265,5 @@ function buildDayWisImagesForPopup1ForMultiLocation(result,jObj){
 	
 	}
 }
-
-//getPartyLevelIdWiseMeetingsCount();
-function get1111PartyLevelIdWiseMeetingsCount(){
-	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
-	 var dates=$('.searchDateCls ').val();
-
-		var jObj = {
-			fromDateStr : '01/02/2000' ,//customStartDateMeetings,
-			toDateStr : '01/02/2020',//customEndDateMeetings,
-			activityMemberId : 44,
-			stateId : globalStateId,
-			partyMeetingMainTypeId:4,
-			partyMeetingLevelId:3,
-			meetingGrpId:1
-		};
-		
-		$.ajax({
-          type:'GET',
-          url: 'getPartyLevelIdWiseMeetingsCountAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			buildMultiLocationWiseMeetingGroupsData(result);
-			});
-}
-
 
 
