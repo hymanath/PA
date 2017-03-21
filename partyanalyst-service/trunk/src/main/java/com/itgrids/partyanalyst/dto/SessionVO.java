@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Administrator
+ *
+ */
 public class SessionVO implements Serializable{
 	
 	private Long id;
@@ -47,7 +51,14 @@ public class SessionVO implements Serializable{
     private Set<Long> attendedCadreIdsList = new HashSet<Long>();
     private Set<Long> absentCadreIdsList = new HashSet<Long>();
     private List<SessionVO> subList = new ArrayList<SessionVO>();
+    private List<SessionVO> imagesList = new ArrayList<SessionVO>();
     
+	public List<SessionVO> getImagesList() {
+		return imagesList;
+	}
+	public void setImagesList(List<SessionVO> imagesList) {
+		this.imagesList = imagesList;
+	}
 	public SessionVO(){}
 	public SessionVO(Long sessionId, String sessionName){
 		this.sessionId=sessionId;
