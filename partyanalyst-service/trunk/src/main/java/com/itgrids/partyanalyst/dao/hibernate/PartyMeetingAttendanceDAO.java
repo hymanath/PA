@@ -1496,7 +1496,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	}
 	
 	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
-			 Date fromDateStr,Date toDateStr, Long stateId, Long partyMeetingLevelId,Long  partyMeetngGrpId,Long sessionTypId){
+			 Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList,Long  partyMeetngGrpId,Long sessionTypId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" st.session_type_id as session_type_id, " +
@@ -1530,8 +1530,8 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" pms.session_type_id = st.session_type_id and  ");
 		queryStr.append(" pms.is_deleted='N' and  pma.party_meeting_session_id = pms.party_meeting_session_id and ");
 		
-		if(partyMeetingLevelId != null && partyMeetingLevelId.longValue()>0L)
-			queryStr.append(" pm.party_meeting_level_id =:party_meeting_level_id and ");
+		if(levelIdsList != null && levelIdsList.size()>0L)
+			queryStr.append(" pm.party_meeting_level_id  in (:levelIdsList) and ");
 		if(partyMeetnMainTypId != null && partyMeetnMainTypId.longValue()>0L)
 			queryStr.append(" pmmt.party_meeting_main_type_id =:party_meeting_main_type_id and ");
 		
@@ -1572,7 +1572,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		query.setParameter("party_meeting_main_type_id", partyMeetnMainTypId);
 		query.setParameter("party_meeting_group_id", partyMeetngGrpId);
-		query.setParameter("party_meeting_level_id", partyMeetingLevelId);
+		query.setParameterList("levelIdsList", levelIdsList);
 		//if(sessionTypId != null && sessionTypId.longValue()>0L)
 		//	query.setParameter("sessionTypId", sessionTypId);
 		
