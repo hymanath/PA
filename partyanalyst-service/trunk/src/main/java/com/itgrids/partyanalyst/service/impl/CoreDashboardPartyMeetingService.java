@@ -6780,10 +6780,10 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			if(basicDetailsVOs != null && basicDetailsVOs.size() > 0){
 				for(MeetingBasicDetailsVO param : basicDetailsVOs){
 					if(totalAttendenceMap.get(param.getPartyMeetingId()) != null && totalAttendenceMap.get(param.getPartyMeetingId()).size() > 0){
-						param.setStatus("conducted");
+						param.setStatus("Conducted");
 						param.setAttended(Long.valueOf(totalAttendenceMap.get(param.getPartyMeetingId()).size()));
 					}else{
-						param.setStatus("Notconducted");
+						param.setStatus("Not-Conducted");
 						param.setAttended(0L);
 					}    
 					if(totalInviteesMap.get(param.getPartyMeetingId()) != null && totalInviteesMap.get(param.getPartyMeetingId()).size() > 0){
@@ -9781,4 +9781,223 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		return finalList;
 	}
+	 
+	 public List<List<MeetingDtlsVO>> getDistWiseMeetingsBaseDtlsForDiffLevelOfMeetings(Long activityMemberId, Long partyMeetingMainTypeId,
+			 Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId,String type){
+			try{
+				List<List<MeetingDtlsVO>> lists = new ArrayList<List<MeetingDtlsVO>>();
+				Set<Long> locationValuesSet = new java.util.HashSet<Long>();  
+				Long locationId = 0L;
+				List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+				   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+					   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				   }
+			    } 
+				List<Long> mainMeetingIdsList = new ArrayList<Long>();
+				mainMeetingIdsList.add(partyMeetingMainTypeId);
+			    List<Object[]> meetingTypeIdsList = null;
+				if(mainMeetingIdsList != null && mainMeetingIdsList.size() > 0){
+					meetingTypeIdsList = partyMeetingTypeDAO.getPartyMeetingTypeIds(mainMeetingIdsList);
+				}
+				List<Long> meetingTypeIds = new ArrayList<Long>();
+			    if(meetingTypeIdsList != null && meetingTypeIdsList.size() > 0){
+			    	for(Object[] param : meetingTypeIdsList){
+			    		meetingTypeIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			    	}
+			    }  
+				
+				PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+				inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+				inputVO.setPartyMeetingGroupId(partyMeetingGroupId);
+				inputVO.setPartyMeetingTypeIds(meetingTypeIds);
+				List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+				inputVO.setStartDate(datesList.get(0));
+				inputVO.setEndDate(datesList.get(1));
+				inputVO.setStateId(stateId);
+				
+				List<Long> locLevelIdList = null;
+				String location = "";
+				
+				List<MeetingDtlsVO> meetingDtlsVOs = null;
+				Map<Long,List<MeetingDtlsVO>> LocLvlIdAndLocDtlsMap = new HashMap<Long,List<MeetingDtlsVO>>();
+				List<Object[]> totalPartyMeetings = partyMeetingDAO.meetingsBaseTotalCountForDiffLevels(inputVO,locationId,locationValuesSet,locLevelIdList);
+				List<Object[]> condustedMeetings = partyMeetingAttendanceDAO.getMeetingsBasedConductedCountForDiffLevels(inputVO,locationId,locationValuesSet,locLevelIdList);
+				if(locLevelId.longValue() > 0L){
+					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+					buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+					LocLvlIdAndLocDtlsMap.put(locLevelId, meetingDtlsVOs);
+				}else{
+					
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(1l);
+					location = "State";
+					
+						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						LocLvlIdAndLocDtlsMap.put(1L, meetingDtlsVOs);
+					
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(2l);
+					location = "District";
+					
+						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						LocLvlIdAndLocDtlsMap.put(2L, meetingDtlsVOs);
+					
+					
+					//for constituency 
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(3l);
+					location = "Constituency";
+					
+						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						LocLvlIdAndLocDtlsMap.put(3L, meetingDtlsVOs);  
+					
+					//for Mandal, town, division
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(4l);
+					locLevelIdList.add(5l);
+					locLevelIdList.add(6l);
+					location = "Mandal/Town/Division";
+					
+						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						LocLvlIdAndLocDtlsMap.put(4L, meetingDtlsVOs);  
+					
+					
+					//for village, ward
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(7l);
+					locLevelIdList.add(8l);
+					location = "Village/Ward";
+					
+						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						LocLvlIdAndLocDtlsMap.put(7L, meetingDtlsVOs);  
+					
+					
+				}  
+				if(LocLvlIdAndLocDtlsMap != null && LocLvlIdAndLocDtlsMap.size() > 0){
+					lists.addAll(LocLvlIdAndLocDtlsMap.values());
+				}
+				return lists;
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("exception occurred in getDistWiseMeetingDtlsForDiffLevelOfMeetings()", e);
+			}
+			return null;
+		}
+	 
+	 public void buildLevelWiseMeetingsBaseDetails(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> totalMeetingsList, List<Object[]> condustedMeetingsList,List<MeetingDtlsVO> meetingDtlsVOs){
+			try{
+				
+				
+				Map<Long,Map<Long,Long>> distLevlTotalContMap = new HashMap<Long,Map<Long,Long>>();
+				//Map<Long,Long> lvlCntMap = new HashMap<Long,Long>();
+				if(commonMethodsUtilService.isListOrSetValid(totalMeetingsList)){
+					for(Object[] obj : totalMeetingsList){
+						Long count = commonMethodsUtilService.getLongValueForObject(obj[0]);
+						Map<Long,Long> lvlCntMap = distLevlTotalContMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						if(lvlCntMap != null){
+							Long count1 = lvlCntMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+							if(count1 != null && count != null){
+								lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), count1+count);
+							}else if( count != null){
+								lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), count);
+							}
+						}else{
+							lvlCntMap = new HashMap<Long,Long>();
+							lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), commonMethodsUtilService.getLongValueForObject(obj[0]));
+							distLevlTotalContMap.put(commonMethodsUtilService.getLongValueForObject(obj[1]), lvlCntMap);
+						}
+					}
+				}
+				Map<Long,Map<Long,Long>> distLevlCondctdContMap = new HashMap<Long,Map<Long,Long>>();
+				//Map<Long,Long> lvlCntMap = new HashMap<Long,Long>();
+				if(commonMethodsUtilService.isListOrSetValid(totalMeetingsList)){
+					for(Object[] obj : totalMeetingsList){
+						Long count = commonMethodsUtilService.getLongValueForObject(obj[0]);
+						Map<Long,Long> lvlCntMap = distLevlCondctdContMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						if(lvlCntMap != null){
+							Long count1 = lvlCntMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));
+							if(count1 != null && count != null){
+								lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), count1+count);
+							}else if( count != null){
+								lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), count);
+							}
+						}else{
+							lvlCntMap = new HashMap<Long,Long>();
+							lvlCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), commonMethodsUtilService.getLongValueForObject(obj[0]));
+							distLevlCondctdContMap.put(commonMethodsUtilService.getLongValueForObject(obj[1]), lvlCntMap);
+						}
+					}
+				}
+				//build Template for State.
+				MeetingDtlsVO dataVO = null;
+				Map<Long,MeetingDtlsVO> locIdAndLocDtlsMap = new HashMap<Long,MeetingDtlsVO>();
+				List<Object[]> distIdNameList = districtDAO.getDistrictDetailsByDistrictIds(Arrays.asList(IConstants.AP_NEW_DISTRICTS_IDS));  
+				if(distIdNameList != null && distIdNameList.size() > 0){  
+					for(Object[] param : distIdNameList){
+						dataVO = new MeetingDtlsVO();
+						dataVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						dataVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						dataVO.setName(location);
+						dataVO.setLocLevelIdList(locLevelIdList);  
+						locIdAndLocDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), dataVO);
+					}
+				}
+				
+				if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+					for(Entry<Long,MeetingDtlsVO> entry : locIdAndLocDtlsMap.entrySet()){
+						Map<Long,Long> lvlContMap = distLevlCondctdContMap.get(entry.getKey());
+						MeetingDtlsVO vo = entry.getValue();
+						List<Long> levelIds = vo.getLocLevelIdList();
+						for(Long level :levelIds){
+							if(lvlContMap != null){
+								Long levlCnt = lvlContMap.get(level);
+								if(levlCnt == null){
+									entry.getValue().setTotal(entry.getValue().getTotal()+0L);
+								}else{
+									entry.getValue().setTotal(entry.getValue().getTotal()+levlCnt);
+								}
+							}
+						}
+					}
+				}
+				
+				if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+					for(Entry<Long,MeetingDtlsVO> entry : locIdAndLocDtlsMap.entrySet()){
+						Map<Long,Long> lvlContMap = distLevlCondctdContMap.get(entry.getKey());
+						MeetingDtlsVO vo = entry.getValue();
+						List<Long> levelIds = vo.getLocLevelIdList();
+						for(Long level :levelIds){
+							if(lvlContMap != null){
+								Long levlCnt = lvlContMap.get(level);
+								if(levlCnt == null){
+									entry.getValue().setConductedCnt(0L);
+									entry.getValue().setNotConductedCnt(0L);
+								}else{
+									Long total = entry.getValue().getTotal();
+									entry.getValue().setConductedCnt(levlCnt);
+									Long notConducted = total-levlCnt;
+									entry.getValue().setNotConductedCnt(notConducted);
+								}
+							}
+						}
+					}
+				}
+				
+				if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
+					meetingDtlsVOs.addAll(locIdAndLocDtlsMap.values());
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}
 }

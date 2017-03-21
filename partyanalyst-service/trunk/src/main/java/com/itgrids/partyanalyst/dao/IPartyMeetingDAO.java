@@ -91,4 +91,5 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getPartyMeetingsAttendedMembersBySessions(List<Long> sessionIds);
 	public List<Object[]> getPartyMeetingsImagesCountsByMeetings(List<Long> meetingIds);
 	public List<Object[]> getPartyMeetingsImagesCoveredByMeetings(List<Long> meetingIds);
+	public List<Object[]> meetingsBaseTotalCountForDiffLevels(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList);
 }

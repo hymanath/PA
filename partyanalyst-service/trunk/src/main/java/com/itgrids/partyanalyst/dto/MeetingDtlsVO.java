@@ -12,6 +12,9 @@ public class MeetingDtlsVO implements Serializable {
 	private Long attendedCount = 0L;
 	private Long lateAttendedCount = 0L;
 	
+	private Long total = 0l;
+	private Long conductedCnt = 0l;
+	private Long notConductedCnt = 0l;
 	private String name;
 	private String designation;
 	private String phone;
@@ -20,6 +23,26 @@ public class MeetingDtlsVO implements Serializable {
 	private Long meetingId;
 	private Long sessionId;
 	private List<Long> locLevelIdList = new ArrayList<Long>();
+	
+	
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+	public Long getConductedCnt() {
+		return conductedCnt;
+	}
+	public void setConductedCnt(Long conductedCnt) {
+		this.conductedCnt = conductedCnt;
+	}
+	public Long getNotConductedCnt() {
+		return notConductedCnt;
+	}
+	public void setNotConductedCnt(Long notConductedCnt) {
+		this.notConductedCnt = notConductedCnt;
+	}
 	public Long getLocationId() {
 		return locationId;
 	}
