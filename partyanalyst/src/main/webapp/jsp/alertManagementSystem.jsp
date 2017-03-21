@@ -374,12 +374,12 @@
 											<option></option>	
 											</select>
 										</div>
-										<!--<div class="col-md-3 col-xs-12 col-sm-6">
+										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>
 											<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 												<option></option>
 											</select>
-										</div>-->
+										</div>
 									</div>
 								</div>
 							</div>
