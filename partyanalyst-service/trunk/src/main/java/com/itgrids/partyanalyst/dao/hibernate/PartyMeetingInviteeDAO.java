@@ -2377,19 +2377,19 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     }
     
     public List<Object[]> getInvitteeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
-			Date fromDate,Date toDate,Long stateId,Long partyMeetingLevelId,Long partyMeetngGrpId){
+			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId," +
 				"model.tdpCadre.tdpCadreId, model.partyMeeting.partyMeetingType.partyMeetingTypeId,'', model.absenteeRemark  from PartyMeetingInvitee model,PartyMeetingGroupsMappingInfo model1 where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId " +
-				" and  model.partyMeeting.partyMeetingType.isActive = 'Y' and model.partyMeeting.isActive='Y' and " +
+				"  and " +
 				" model1.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId  ");
 		
 		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
 			queryStr.append(" and model1.partyMeetingGroup.partyMeetingGroupId = :partyMeetngGrpId ");
 		}
 		
-		if(partyMeetingLevelId != null && partyMeetingLevelId.longValue() > 0l){
-			queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId ");
+		if(levelIdsList != null && levelIdsList.size() > 0l){
+			queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:levelIdsList) ");
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
@@ -2430,8 +2430,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		 if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
 			 query.setParameter("partyMeetngGrpId", partyMeetngGrpId); 
 		 }
-		 if(partyMeetingLevelId != null && partyMeetingLevelId.longValue() > 0l){
-			 query.setParameter("partyMeetingLevelId", partyMeetingLevelId); 
+		 if(levelIdsList != null && levelIdsList.size() > 0l){
+			 query.setParameterList("levelIdsList", levelIdsList); 
 		 }
 		query.setParameter("partyMeetnMainTypId", partyMeetnMainTypId);
 		return query.list();
