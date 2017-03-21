@@ -12,7 +12,7 @@ public class MeetingVO implements java.io.Serializable{
 	private List<MeetingVO> userAccessLevelList = new ArrayList<MeetingVO>();
 	private List<MeetingVO> userAccessLevelValuesList = new ArrayList<MeetingVO>() ;
 	private List<Long> levelValues;
-	private Long count;
+	private Long count=0L;
 	
 	public Long getId() {
 		return id;
