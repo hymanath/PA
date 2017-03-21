@@ -36,6 +36,8 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	private Date updatedTime;;
 	private Long insertedBy;
 	private Long updatedBy;
+	private Date plannedDate;
+	private Date conductedDate;
 	
 	
 	private ActivityScope activityScope;
@@ -171,6 +173,22 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	}
 	public void setIvrStatus(String ivrStatus) {
 		this.ivrStatus = ivrStatus;
+	}
+	
+	@Column(name="planned_date")
+	public Date getPlannedDate() {
+		return plannedDate;
+	}
+	public void setPlannedDate(Date plannedDate) {
+		this.plannedDate = plannedDate;
+	}
+	
+	@Column(name="conducted_date")
+	public Date getConductedDate() {
+		return conductedDate;
+	}
+	public void setConductedDate(Date conductedDate) {
+		this.conductedDate = conductedDate;
 	}
 	
 				

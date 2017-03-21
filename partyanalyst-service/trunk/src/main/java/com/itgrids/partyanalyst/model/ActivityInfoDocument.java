@@ -44,6 +44,8 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private Long activityLocationInfoId;
 	private ActivityLocationInfo activityLocationInfo;
 	private Long activityAddressId;
+	private Long activityConductedInfoId;
+	private ActivityConductedInfo activityConductedInfo;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_info_document_id", unique = true, nullable = false)
@@ -192,6 +194,25 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	public void setActivityAddressId(Long activityAddressId) {
 		this.activityAddressId = activityAddressId;
+	}
+	
+	@Column(name = "activity_conducted_info_id")
+	public Long getActivityConductedInfoId() {
+		return activityConductedInfoId;
+	}
+	public void setActivityConductedInfoId(Long activityConductedInfoId) {
+		this.activityConductedInfoId = activityConductedInfoId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_conducted_info_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityConductedInfo getActivityConductedInfo() {
+		return activityConductedInfo;
+	}
+	public void setActivityConductedInfo(ActivityConductedInfo activityConductedInfo) {
+		this.activityConductedInfo = activityConductedInfo;
 	}
 	
 	
