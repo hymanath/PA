@@ -193,7 +193,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 5L){
     		queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:locationValuesSet) ");
     	}
-    	queryStr.append(" order by model.uploadedTime ");
+    	queryStr.append(" order by model.uploadedTime desc ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
