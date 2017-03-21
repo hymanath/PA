@@ -22,33 +22,6 @@ function getMultiLocationWiseMeetingGroupsData(){
 			buildMultiLocationWiseMeetingGroupsData(result);
 		});
 }
-/*
-function get111MultiLocationWiseMeetingGroupsData()
-{
-	$("#MultiLocationWiseMeetingGroupsData").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	
-	var jObj = {
-		fromDateStr : '01/02/2000'  ,//customStartDateMeetings,
-		toDateStr : '01/02/2020',//customEndDateMeetings,
-		activityMemberId : globalActivityMemberId,
-		stateId : globalStateId,
-		partyMeetingMainTypeId:4
-	};
-	 
-	$.ajax({
-	  type:'GET',
-	  url: 'getMultiLocationWiseMeetingGroupsDataAction.action',
-	 data : {task:JSON.stringify(jObj)} ,
-	}).done(function(result){
-		if(result.length != null && result.length > 0 )
-		{
-			buildMultiLocationWiseMeetingGroupsData(result);
-		}else{
-			$("#MultiLocationWiseMeetingGroupsData").html('NO DATA AVAILABLE');
-		}
-	});
-}
-*/
 function buildMultiLocationWiseMeetingGroupsData(result)
 {
 	var str='';
@@ -541,8 +514,9 @@ function buildLocationWiseMeetingDetails(result,dataType,levelId){
 					str+='<p>'+time1+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
 				str+='</li>';
-				str+='<li>';
-				str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;">'+remaingImagePath+'+'+'</p>';
+				str+='<li   class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
+				if(remaingImagePath>result[i].totalImages)
+				str+='<p>'+remaingImagePath+'+'+'</p>';
 				 str+='<p>View All</p>';
 				str+='</li>';
 			}else{
@@ -621,12 +595,13 @@ function buildLocationWiseMeetingDetails(result,dataType,levelId){
 					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
 				str+='</li>';
-				str+='<li>';
-				str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;">'+remaingImagePath+'+'+'</p>';
+				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
+				if(remaingImagePath>result[i].totalImages)
+					str+='<p >'+remaingImagePath+'+'+'</p>';
 				 str+='<p>View All</p>';
 				str+='</li>';
 			}else{
-				str+='<li>';
+				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
 				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
 					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
