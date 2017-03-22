@@ -2087,6 +2087,13 @@
 									<!--<li class="multiLocation">multiLocation</li>-->
 								</ul>
 							</div>
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none">
+										<ul class="list-inline pull-right activeUlCls">
+											<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
+											<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
+											<!--<li class="multiLocation">multiLocation</li>-->
+										</ul>
+							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMultiMeetingsBlocksDetailed multiMeetingChortCls " style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
