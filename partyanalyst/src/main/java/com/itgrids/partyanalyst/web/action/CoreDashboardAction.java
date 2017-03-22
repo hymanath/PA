@@ -3913,7 +3913,8 @@ public String getDistrictsForCustomMeetingImgesLst(){
 			String endDateStr = jObj.getString("toDate");
 			Long meetingId = jObj.getLong("meetingId");
 			Long meetingGrpId = jObj.getLong("meetingGrpId");
-			partyMeetingDataVOList = coreDashboardPartyMeetingService.getDistrictsForCustomMeetingImgesLst(activityMemberId,stateId,partyMeetingLevelId,startDateStr,endDateStr,meetingId,meetingGrpId);
+			Long locationvalue = jObj.getLong("locationValue");
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getDistrictsForCustomMeetingImgesLst(activityMemberId,stateId,partyMeetingLevelId,startDateStr,endDateStr,meetingId,meetingGrpId,locationvalue);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getDistrictsForCustomMeetingImgesLst()", e);
 	 }
@@ -3966,7 +3967,8 @@ public String getCustomWisePartyMeetingDocuments()
 		Long partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");
 		Long meetingId = jObj.getLong("meetingId");
 		Long meetingGrpId = jObj.getLong("meetingGrpId");
-		partyMeetingDataVOList = coreDashboardPartyMeetingService.getCustomWisePartyMeetingDocuments(fromDateStr,toDateStr,startIndex,maxIndex,activityMemberId,stateId,partyMeetingLevelId,meetingId,meetingGrpId);
+		Long locationValue = jObj.getLong("locationValue");
+		partyMeetingDataVOList = coreDashboardPartyMeetingService.getCustomWisePartyMeetingDocuments(fromDateStr,toDateStr,startIndex,maxIndex,activityMemberId,stateId,partyMeetingLevelId,meetingId,meetingGrpId,locationValue);
 		
 	} catch (Exception e) {
 		LOG.error("Exception occured in getCustomWisePartyMeetingDocuments ",e);

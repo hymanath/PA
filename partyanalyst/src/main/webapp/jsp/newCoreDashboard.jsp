@@ -3756,19 +3756,19 @@
 			<div class="col-md-2 col-xs-12 col-sm-6 districtSlctBxCls">
 				<label>District</label>
 				<select  id="districtSlctBxId" class="form-control col-xs-3">
-				 <option value="0">All</option>
+				 <option value="0">Select District</option>
 				</select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-6 constituencySlctBxCls">
 				<label>Constituency</label>
 				<select  id="constituencySlctBxId" class="form-control col-xs-3">
-				<option value="0">All</option>
+				<option value="0">Select Constituency</option>
 				</select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-6 mandalSlctBxCls">
 				<label>Mandal/Town/Division</label>
 				<select  id="mandalSlctBxId" class="form-control col-xs-3">
-				<option value="0">All</option>
+				<option value="0">Select Mandal/Town/Division</option>
 				</select>
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-6" style="margin-top: 25px;">
@@ -3784,6 +3784,8 @@
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="meetingCommentProcessingImgId"></center></div>
+			<div id="meetingSummaryDtlsTblId"></div> 
+			<!--<div id="meetingDesignSummaryDtlsTblId"></div> -->
 			<div id="meetingCommentDtlsTblId"></div> 
 			</div>
 		</div>
@@ -4195,7 +4197,7 @@
   <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
     <div class="modal-content customModal">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabelId" style="text-transform: uppercase;"></h4>
       </div>
       <div class="modal-body" style="padding:0px 15px;">
