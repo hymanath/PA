@@ -65,7 +65,22 @@ public class PartyMeetingsVO implements Serializable{
 	private Long invitedCount=0L;
 	private Long nonInviteesCount=0L;
 	private Long absentCount =0L;
+	private List<SessionVO> imagesList = new ArrayList<SessionVO>();
+	private Long imagesCount = 0l;
 	
+	
+	public Long getImagesCount() {
+		return imagesCount;
+	}
+	public void setImagesCount(Long imagesCount) {
+		this.imagesCount = imagesCount;
+	}
+	public List<SessionVO> getImagesList() {
+		return imagesList;
+	}
+	public void setImagesList(List<SessionVO> imagesList) {
+		this.imagesList = imagesList;
+	}
 	public Long getInvitedCount() {
 		return invitedCount;
 	}

@@ -53,6 +53,43 @@ public class SessionVO implements Serializable{
     private List<SessionVO> subList = new ArrayList<SessionVO>();
     private List<SessionVO> imagesList = new ArrayList<SessionVO>();
     
+    private List<KeyValueVO> invitedDesgnList = new ArrayList<KeyValueVO>();
+    private List<KeyValueVO> attendedDesgnList = new ArrayList<KeyValueVO>();
+    private List<KeyValueVO> inviteeAttndDesgnList = new ArrayList<KeyValueVO>();
+    private List<KeyValueVO> absentDesgnList = new ArrayList<KeyValueVO>();
+    private List<KeyValueVO> nonInviteeDesgnList = new ArrayList<KeyValueVO>();
+    
+    
+	public List<KeyValueVO> getInvitedDesgnList() {
+		return invitedDesgnList;
+	}
+	public void setInvitedDesgnList(List<KeyValueVO> invitedDesgnList) {
+		this.invitedDesgnList = invitedDesgnList;
+	}
+	public List<KeyValueVO> getAttendedDesgnList() {
+		return attendedDesgnList;
+	}
+	public void setAttendedDesgnList(List<KeyValueVO> attendedDesgnList) {
+		this.attendedDesgnList = attendedDesgnList;
+	}
+	public List<KeyValueVO> getInviteeAttndDesgnList() {
+		return inviteeAttndDesgnList;
+	}
+	public void setInviteeAttndDesgnList(List<KeyValueVO> inviteeAttndDesgnList) {
+		this.inviteeAttndDesgnList = inviteeAttndDesgnList;
+	}
+	public List<KeyValueVO> getAbsentDesgnList() {
+		return absentDesgnList;
+	}
+	public void setAbsentDesgnList(List<KeyValueVO> absentDesgnList) {
+		this.absentDesgnList = absentDesgnList;
+	}
+	public List<KeyValueVO> getNonInviteeDesgnList() {
+		return nonInviteeDesgnList;
+	}
+	public void setNonInviteeDesgnList(List<KeyValueVO> nonInviteeDesgnList) {
+		this.nonInviteeDesgnList = nonInviteeDesgnList;
+	}
 	public List<SessionVO> getImagesList() {
 		return imagesList;
 	}

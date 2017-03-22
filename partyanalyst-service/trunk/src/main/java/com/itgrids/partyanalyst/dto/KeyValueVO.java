@@ -6,6 +6,7 @@ public class KeyValueVO implements Serializable {
 
 	private Long id;
 	private String name;
+	private Long count;
 	
 	public Long getId() {
 		return id;
@@ -19,7 +20,10 @@ public class KeyValueVO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 }

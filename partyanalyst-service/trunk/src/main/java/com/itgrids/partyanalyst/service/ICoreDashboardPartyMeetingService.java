@@ -51,8 +51,8 @@ public interface ICoreDashboardPartyMeetingService {
 	public List<PartyMeetingsDataVO> getConstByDistrictIdForWiseCustomPartyMeetings(Long partyMeetinglevelId,Long districtId);
 	public List<PartyMeetingsDataVO> getPanchayatOrWardsByMandalOrMuncIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long mandalOrMuncId);
 	public List<PartyMeetingsDataVO> getMandOrMuncByconstituencyIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long constituencyId);
-	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId);
-	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
+	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId,Long locationValue);
+	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue);
 	public List<List<MeetingDtlsVO>> getDistWiseMeetingDtlsForDiffLevelOfMeetings(Long activityMemberId, Long partyMeetingMainTypeId, Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId);
 	public List<PartyMeetingsDataVO> getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(Long activityMemberId, Long partyMeetingMainTypeId, Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId);
 	public MeetingVO getMultiLocationWiseMeetingGroupsData(Long partyMeetnMainTypId,Long activityMemberId,String fromDateStr,String toDateStr,Long stateId);

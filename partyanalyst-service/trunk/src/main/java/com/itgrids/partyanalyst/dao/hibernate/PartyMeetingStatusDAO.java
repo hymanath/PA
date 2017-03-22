@@ -761,13 +761,13 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	     if(isComment != null && isComment.equalsIgnoreCase("Yes")){
 	    	 queryStr.append(" and model.partyMeeting.remarks is not null ");
 	     }
-	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+	     if(locationType != null && locationType.equalsIgnoreCase("District") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
 	     }
 	     if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
