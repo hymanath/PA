@@ -9935,9 +9935,34 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				inputVO.setStartDate(datesList.get(0));
 				inputVO.setEndDate(datesList.get(1));
 				inputVO.setStateId(stateId);
+				inputVO.setSessionId(sessionId);
 				
 				List<Long> locLevelIdList = null;
 				String location = "";
+				if(locLevelId.longValue() == 1L){
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(1l);
+					location = "State";
+				}else if(locLevelId.longValue() == 2L){
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(2l);
+					location = "District";
+				}else if(locLevelId.longValue() == 3L){
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(3l);
+					location = "Constituency";
+				}else if(locLevelId.longValue() == 4L){
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(4l);
+					locLevelIdList.add(5l);
+					locLevelIdList.add(6l);
+					location = "Mandal/Town/Division";
+				}else if(locLevelId.longValue() == 7L){
+					locLevelIdList = new ArrayList<Long>();
+					locLevelIdList.add(7l);
+					locLevelIdList.add(8l);
+					location = "Village/Ward";
+				}
 				
 				List<MeetingDtlsVO> meetingDtlsVOs = null;
 				Map<Long,List<MeetingDtlsVO>> LocLvlIdAndLocDtlsMap = new HashMap<Long,List<MeetingDtlsVO>>();
@@ -9945,7 +9970,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				List<Object[]> condustedMeetings = partyMeetingAttendanceDAO.getMeetingsBasedConductedCountForDiffLevels(inputVO,locationId,locationValuesSet,locLevelIdList);
 				if(locLevelId.longValue() > 0L){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+					 Map<Long,SessionVO> sessionLateTimesMap = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap);
 					LocLvlIdAndLocDtlsMap.put(locLevelId, meetingDtlsVOs);
 				}else{
 					
@@ -9954,7 +9981,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					location = "State";
 					
 						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						 Map<Long,SessionVO> sessionLateTimesMap = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+									locLevelIdList,partyMeetingGroupId);
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap);
 						LocLvlIdAndLocDtlsMap.put(1L, meetingDtlsVOs);
 					
 					locLevelIdList = new ArrayList<Long>();
@@ -9962,7 +9991,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					location = "District";
 					
 						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						 Map<Long,SessionVO> sessionLateTimesMap1 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+									locLevelIdList,partyMeetingGroupId);
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap1);
 						LocLvlIdAndLocDtlsMap.put(2L, meetingDtlsVOs);
 					
 					
@@ -9972,7 +10003,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					location = "Constituency";
 					
 						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						 Map<Long,SessionVO> sessionLateTimesMap2 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+									locLevelIdList,partyMeetingGroupId);
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap2);
 						LocLvlIdAndLocDtlsMap.put(3L, meetingDtlsVOs);  
 					
 					//for Mandal, town, division
@@ -9983,7 +10016,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					location = "Mandal/Town/Division";
 					
 						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						 Map<Long,SessionVO> sessionLateTimesMap3 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+									locLevelIdList,partyMeetingGroupId);
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap3);
 						LocLvlIdAndLocDtlsMap.put(4L, meetingDtlsVOs);  
 					
 					
@@ -9994,7 +10029,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					location = "Village/Ward";
 					
 						meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs);
+						 Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+									locLevelIdList,partyMeetingGroupId);
+						buildLevelWiseMeetingsBaseDetails(location,locLevelIdList,sessionId,totalPartyMeetings,condustedMeetings,meetingDtlsVOs,sessionLateTimesMap4);
 						LocLvlIdAndLocDtlsMap.put(7L, meetingDtlsVOs);  
 					
 					
@@ -10011,7 +10048,32 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			return null;
 		}
 	 
-	 public void buildLevelWiseMeetingsBaseDetails(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> totalMeetingsList, List<Object[]> condustedMeetingsList,List<MeetingDtlsVO> meetingDtlsVOs){
+	 public Map<Long,SessionVO> getSessionTypesForEachLevelId(Long partyMeetnMainTypId,Long locationId,Set<Long> locationValuesSet,Date startDate,Date endDate,Long stateId,
+	    		List<Long> levelIdsList,Long partyMeetngGrpId){
+		 Map<Long,SessionVO> sessionLateTimesMap = new HashMap<Long,SessionVO>();
+		 try{
+		    List<Object[]> lateTimesList = partyMeetingSessionDAO.getLateTimeDetails(partyMeetnMainTypId,locationId,locationValuesSet,startDate,endDate,stateId,
+		    		levelIdsList,partyMeetngGrpId);
+		    if(commonMethodsUtilService.isListOrSetValid(lateTimesList)){
+				for(Object[] obj :lateTimesList){
+					SessionVO sessionVO = sessionLateTimesMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(sessionVO == null){
+						sessionVO = new SessionVO();
+						sessionVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						sessionVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+						sessionVO.setLateTime(commonMethodsUtilService.getStringValueForObject(obj[2]));
+						sessionLateTimesMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),sessionVO );
+					}
+				}
+			}
+		 }catch(Exception e){
+			 e.printStackTrace();
+				LOG.error("exception occurred in getSessionTypesForEachLevelId()", e);
+		 }
+		 return sessionLateTimesMap;
+	 }
+	 public void buildLevelWiseMeetingsBaseDetails(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> totalMeetingsList, List<Object[]> condustedMeetingsList,
+			 List<MeetingDtlsVO> meetingDtlsVOs,Map<Long,SessionVO> sessionLateTimesMap){
 			try{
 				
 				
@@ -10037,8 +10099,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				}
 				Map<Long,Map<Long,Long>> distLevlCondctdContMap = new HashMap<Long,Map<Long,Long>>();
 				//Map<Long,Long> lvlCntMap = new HashMap<Long,Long>();
-				if(commonMethodsUtilService.isListOrSetValid(totalMeetingsList)){
-					for(Object[] obj : totalMeetingsList){
+				if(commonMethodsUtilService.isListOrSetValid(condustedMeetingsList)){
+					for(Object[] obj : condustedMeetingsList){
 						Long count = commonMethodsUtilService.getLongValueForObject(obj[0]);
 						Map<Long,Long> lvlCntMap = distLevlCondctdContMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
 						if(lvlCntMap != null){
@@ -10065,6 +10127,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						dataVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 						dataVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						dataVO.setName(location);
+						dataVO.getSessionVOs().addAll(sessionLateTimesMap.values());
 						dataVO.setLocLevelIdList(locLevelIdList);  
 						locIdAndLocDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), dataVO);
 					}
@@ -10101,14 +10164,15 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 									entry.getValue().setNotConductedCnt(0L);
 								}else{
 									Long total = entry.getValue().getTotal();
-									entry.getValue().setConductedCnt(levlCnt);
-									Long notConducted = total-levlCnt;
-									entry.getValue().setNotConductedCnt(notConducted);
+									entry.getValue().setConductedCnt(entry.getValue().getConductedCnt()+levlCnt);
+									Long notConducted = total-entry.getValue().getConductedCnt();
+									entry.getValue().setNotConductedCnt(entry.getValue().getNotConductedCnt()+notConducted);
 								}
 							}
 						}
 					}
 				}
+				
 				
 				if(locIdAndLocDtlsMap != null && locIdAndLocDtlsMap.size() > 0){
 					meetingDtlsVOs.addAll(locIdAndLocDtlsMap.values());
