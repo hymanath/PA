@@ -55,10 +55,10 @@ public class GovtDepartmentDesignationOfficerDAO extends GenericDaoHibernate<Gov
 	public List<Long> getLevelIdForDesignation(Long userId,Long designationId){
 		Query query = getSession().createQuery("select distinct model.govtDepartmentLevel.govtDepartmentLevelId" +
 												" from GovtDepartmentDesignationOfficer model" +
-												" where model.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" +
-												" and model.userId = :userId");
+												" where model.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" );
+												//" and model.userId = :userId");
 		query.setParameter("designationId", designationId);
-		query.setParameter("userId", userId);
+		//query.setParameter("userId", userId);
 		return query.list();
 	}
 	
