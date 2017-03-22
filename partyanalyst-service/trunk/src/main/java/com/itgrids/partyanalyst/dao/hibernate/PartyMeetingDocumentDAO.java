@@ -222,7 +222,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]>  getDistrictsForCustomMeetingImgesLst(Long partyMeetingLevelId,Long stateId,Date fromDate,Date toDate,Long locationId,Set<Long> locationValuesSet,Long meetingId,Long meetingGrpId){
+	public List<Object[]>  getDistrictsForCustomMeetingImgesLst(Long partyMeetingLevelId,Long stateId,Date fromDate,Date toDate,Long locationId,Set<Long> locationValuesSet,Long meetingId,Long meetingGrpId,Long locationValue){
 		StringBuilder sb = new StringBuilder();
 		
 			if(meetingGrpId != null && meetingGrpId.longValue() > 0){
@@ -253,6 +253,9 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			if(meetingId != null && meetingId.longValue() > 0){
 				sb.append(" and model.partyMeeting.partyMeetingId = :meetingId " );
 			}
+			
+			if(locationValue != null && locationValue.longValue() > 0l)
+				sb.append(" and model.partyMeeting.meetingAddress.district.districtId = :locationValue");
 			
 			if(fromDate != null && toDate != null){
 				sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate " );
@@ -287,6 +290,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		if(meetingGrpId != null && meetingGrpId.longValue() > 0){
 			query.setParameter("meetingGrpId", meetingGrpId);
 		}
+		if(locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
@@ -400,7 +405,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 	 * @ Teja
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getCustomWisePartyMeetingDocuments(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId)
+	public List<Object[]> getCustomWisePartyMeetingDocuments(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue)
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -415,7 +420,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			str.append("select model.documentName,model.path " +
 					"  from PartyMeetingDocument model " +
 					"  where model.partyMeeting.partyMeetingLevelId = :partyMeetingLevelId" +
-					"  and model.isDeleted = 'N'  " );
+					"  and model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y' " );
 		}
 		
 		if(stateId != null && stateId.longValue() > 0L){
@@ -424,6 +429,9 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		if(meetingId != null && meetingId.longValue() > 0){
 			str.append(" and model.partyMeeting.partyMeetingId = :meetingId " );
 		}
+		if(locationValue != null && locationValue.longValue() > 0l)
+			str.append(" and model.partyMeeting.meetingAddress.district.districtId = :locationValue");
+		
 			if(locationLevelId != null && locationLevelId.longValue() > 0l){
 				if(locationLevelvalues != null && locationLevelvalues.size() > 0){
 					if(locationLevelId != null && locationLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -448,7 +456,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			
 		if(startDate != null && endDate!= null)
 		{
-			str.append(" and (( date(model.partyMeeting.startDate) between :startDate and :endDate ) or (date(model.partyMeeting.endDate) between :startDate and :endDate) ) ");
+			//str.append(" and (( date(model.partyMeeting.startDate) between :startDate and :endDate ) or (date(model.partyMeeting.endDate) between :startDate and :endDate) ) ");
+			str.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
 		}
 		Query query = getSession().createQuery(str.toString());
 
@@ -478,6 +487,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		if(meetingGrpId != null && meetingGrpId.longValue() > 0){
 			query.setParameter("meetingGrpId", meetingGrpId);
 		}
+		if(locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);
 		return query.list();
 	}
 	
@@ -486,7 +497,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 	 */
 	
 	@SuppressWarnings("unchecked")
-	public Long getCustomWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId)
+	public Long getCustomWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue)
 	{
 		StringBuilder str = new StringBuilder();
 		if(meetingGrpId != null && meetingGrpId.longValue()>0L){
@@ -499,7 +510,7 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			str.append("select distinct count(model.partyMeetingDocumentId) " +
 					"  from PartyMeetingDocument model  " +
 					" where model.partyMeeting.partyMeetingLevelId = :partyMeetingLevelId" +
-					"  and model.isDeleted = 'N'  " );
+					"  and model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y' " );
 		}
 			if(stateId != null && stateId.longValue() > 0L){
 				str.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
@@ -507,6 +518,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			if(meetingId != null && meetingId.longValue() > 0){
 				str.append(" and model.partyMeeting.partyMeetingId = :meetingId " );
 			}
+			if(locationValue != null && locationValue.longValue() > 0l)
+				str.append(" and model.partyMeeting.meetingAddress.district.districtId = :locationValue");
 			
 			if(locationLevelId != null && locationLevelId.longValue() > 0l){
 				if(locationLevelvalues != null && locationLevelvalues.size() > 0){
@@ -531,7 +544,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			}
 		if(startDate != null && endDate!= null)
 		{
-			str.append(" and (( date(model.partyMeeting.startDate) between :startDate and :endDate ) or (date(model.partyMeeting.endDate) between :startDate and :endDate) ) ");
+			//str.append(" and (( date(model.partyMeeting.startDate) between :startDate and :endDate ) or (date(model.partyMeeting.endDate) between :startDate and :endDate) ) ");
+			str.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
 		}
 		Query query = getSession().createQuery(str.toString());
 
@@ -561,6 +575,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		if(meetingGrpId != null && meetingGrpId.longValue() > 0){
 			query.setParameter("meetingGrpId", meetingGrpId);
 		}
+		if(locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);
 		return (Long) query.uniqueResult();
 	}
 	

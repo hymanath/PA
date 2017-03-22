@@ -19,13 +19,13 @@ public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocumen
 	public List<Object[]> getMinuteAtrDocumentSummaryForAMeeting(Long meetingId,String type,String accessType,List<Long> accessValue);
 	public List<Long> getDocDetails(List<Long> meetingIds,String type);
 	public List<Object[]> getPartyMeetingdocList(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet);
-	public List<Object[]>  getDistrictsForCustomMeetingImgesLst(Long partyMeetingLevelId,Long stateId,Date fromDate,Date toDate,Long locationId,Set<Long> locationValuesSet,Long meetingId,Long meetingGrpId);
+	public List<Object[]>  getDistrictsForCustomMeetingImgesLst(Long partyMeetingLevelId,Long stateId,Date fromDate,Date toDate,Long locationId,Set<Long> locationValuesSet,Long meetingId,Long meetingGrpId,Long locationValue);
 	public List<Object[]>  getConstByDistrictIdForWiseCustomPartyMeetings(Long partymeetingLevelId,Long districtId);
 	public List<Object[]>  getMuncipalityNamesByConstiencyIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long constitencyId);
 	public List<Object[]>  getMandalsByconstituencyIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long constitencyId);
 	public List<Object[]>  getWardNamesByMuncipalityIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long muncipalityId);
 	public List<Object[]>  getPanchaytNamesByMandalIdForWiseCustomPartyMeetings(Long partyMeetingLevelId,Long mandalId);
-	public List<Object[]> getCustomWisePartyMeetingDocuments(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
-	public Long getCustomWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
+	public List<Object[]> getCustomWisePartyMeetingDocuments(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue);
+	public Long getCustomWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue);
 	public List<Object[]> getSessionWisePartyMeetingDocumentsCount(Date startDate,Date endDate,Long locationLevelId,Set<Long> locationLevelvalues,int startIndex,int maxIndex,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId);
 }

@@ -1640,13 +1640,13 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 if(partyMeetingTypeIds != null && partyMeetingTypeIds.size() > 0){
 				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
 		 }
-	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+	     if(locationType != null && locationType.equalsIgnoreCase("District") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
 	     }
 	 
@@ -3958,13 +3958,13 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 if(partyMeetingTypeIds != null && partyMeetingTypeIds.size() > 0){
 				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
 		 }
-	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+	     if(locationType != null && locationType.equalsIgnoreCase("District") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
-	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision") && locationId != null && locationId > 0){
 	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
 	     }
 	 

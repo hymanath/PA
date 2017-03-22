@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
@@ -2766,16 +2767,17 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	    	String strLocationId = null;
 			if(locationId != null && locationId>0){
 				strLocationId = locationId.toString();
+				
+				 Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
+				 if(firstDigit.longValue()==1l){
+					 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+					 locationType="Mandal";
+				 }else if(firstDigit.longValue()==2l){
+					 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+					 locationType="TownDivision";
+		     }
 			}
-			 Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
-			 if(firstDigit.longValue()==1l){
-				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
-				 locationType="Mandal";
-			 }else if(firstDigit.longValue()==2l){
-				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
-				 locationType="TownDivision";
-	     }
-	    }
+		}
 	    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 		   for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
 			   List<Object[]> rtrnObjList = partyMeetingDAO.getPartyMeetingCommentsDtls(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate, partyMeetingTypeValues, meetingStatus, partyMeetingLevelIdsList,isComment,locationId,locationType,partyMeetingLevel);
@@ -2890,16 +2892,17 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	    	String strLocationId = null;
 			if(locationId != null && locationId>0){
 				strLocationId = locationId.toString();
+				
+				Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
+				 if(firstDigit.longValue()==1l){
+					 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+					 locationType="Mandal";
+				 }else if(firstDigit.longValue()==2l){
+					 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
+					 locationType="TownDivision";
+		     }
 			}
-			 Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
-			 if(firstDigit.longValue()==1l){
-				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
-				 locationType="Mandal";
-			 }else if(firstDigit.longValue()==2l){
-				 locationId=Long.valueOf(strLocationId.substring(1, strLocationId.length()));	
-				 locationType="TownDivision";
-	     }
-	    }
+		}
 		
 	    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 			   for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
@@ -2952,6 +2955,22 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	    					}
 	    				 }
 	    				 
+    				 	PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+    					inputVO.setPartyMeetingMainTypeId(1L);
+    					inputVO.setPartyMeetingTypeIds(Arrays.asList(2L,21L));// district montly meeting , district general body meetings
+    					//inputVO.setPartyMeetingTypeIds(meetingTypeIds);
+    					List<Date> datesList = coreDashboardGenericService.getDates(fromDateStr, toDateStr, new SimpleDateFormat("dd/MM/yyyy"));
+    					inputVO.setStartDate(datesList.get(0));
+    					inputVO.setEndDate(datesList.get(1));
+    					inputVO.setStateId(stateId);
+    					inputVO.setPartyMeetingGroupId(0L);
+    					inputVO.setCategoryIdList(partyMeetingLevelIdsList);
+    					
+	    				 List<Object[]> imageList = partyMeetingDocumentDAO.getPartyMeetingdocList(inputVO,locationId,entry.getValue());
+	 					//session wise images count
+	 					Map<Long,Long> meetingWiseImageCountMap = new HashMap<Long,Long>();
+	 					Map<Long,List<SessionVO>> partyMeetingWiseImagesListMap  = createMeetingWiseImageCountMap(imageList,meetingWiseImageCountMap);
+	 					
 	    				 Map<Long,Map<String,Set<Long>>> cadreDetailsMap = new HashMap<Long, Map<String,Set<Long>>>(0);
 	    				 for (Long meetingId : meetingIds) {
 	    					 
@@ -3003,7 +3022,15 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 						    	locationVO.setAbsentCount(locationVO.getAbsentCount()+absent);
 						    	locationVO.setNonInviteesCount(locationVO.getNonInviteesCount()+nonInviteCount);
 						    	
+						    	List<SessionVO> imagesVOList = partyMeetingWiseImagesListMap.get(meetingId);
+				    			if(commonMethodsUtilService.isListOrSetValid(imagesVOList)){
+				    				for (SessionVO sessionVO : imagesVOList) {
+										locationVO.getImagesList().add(sessionVO);
+									}
+				    			}
+						    	
 						    }
+						    locationVO.setImagesCount((long)locationVO.getImagesList().size());
 						}
 	    			 }
 	    		 }
@@ -7912,7 +7939,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		
 	}
 	
-	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId){
+	public List<PartyMeetingsDataVO> getDistrictsForCustomMeetingImgesLst(Long activityMemberId,Long stateId,Long partyMeetingLevelId,String startDateStr,String endDateStr,Long meetingId,Long meetingGropuId,Long locationValue){
 		List<PartyMeetingsDataVO> returnList = new ArrayList<PartyMeetingsDataVO>();
 		try{
 			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -7932,7 +7959,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			   }
 		    } 
 			
-			List<Object[]> districtCountList = partyMeetingDocumentDAO.getDistrictsForCustomMeetingImgesLst(partyMeetingLevelId,stateId,fromDate,toDate,locationId,locationValuesSet,meetingId,meetingGropuId);
+			List<Object[]> districtCountList = partyMeetingDocumentDAO.getDistrictsForCustomMeetingImgesLst(partyMeetingLevelId,stateId,fromDate,toDate,locationId,locationValuesSet,meetingId,meetingGropuId,locationValue);
 			if(districtCountList != null && districtCountList.size() > 0l){
 				for (Object[] objects : districtCountList) {
 					PartyMeetingsDataVO vo = new PartyMeetingsDataVO();
@@ -8028,7 +8055,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 		}
 		return returnList;
 	}
-	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId)
+	public List<PartyMeetingsDataVO> getCustomWisePartyMeetingDocuments(String fromDateStr,String toDateStr,int startIndex,int maxIndex,Long activityMemberId,Long stateId,Long partyMeetingLevelId,Long meetingId,Long meetingGrpId,Long locationValue)
 	{
 		List<PartyMeetingsDataVO> returnList = null;
 		List<Long> days =new ArrayList<Long>();
@@ -8053,8 +8080,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			List<Object[]> list = null;
 			Long totalCount = null;
 		
-				list = partyMeetingDocumentDAO.getCustomWisePartyMeetingDocuments(startDate,endDate,locationId,locationValuesSet,startIndex,maxIndex,stateId,partyMeetingLevelId,meetingId,meetingGrpId);
-				totalCount = partyMeetingDocumentDAO.getCustomWisePartyMeetingDocumentsCount(startDate,endDate,locationId,locationValuesSet,startIndex,maxIndex,stateId,partyMeetingLevelId,meetingId,meetingGrpId);
+				list = partyMeetingDocumentDAO.getCustomWisePartyMeetingDocuments(startDate,endDate,locationId,locationValuesSet,startIndex,maxIndex,stateId,partyMeetingLevelId,meetingId,meetingGrpId,locationValue);
+				totalCount = partyMeetingDocumentDAO.getCustomWisePartyMeetingDocumentsCount(startDate,endDate,locationId,locationValuesSet,startIndex,maxIndex,stateId,partyMeetingLevelId,meetingId,meetingGrpId,locationValue);
 			
 			if(list != null && list.size() > 0)
 			{
@@ -9548,6 +9575,12 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 	   }*/
 	    
 	    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+	    Set<Long> invitedSummarySet = new HashSet<Long>();
+	    Set<Long> attendedSummarySet = new HashSet<Long>();
+	    Set<Long> inviteeAttndedSummarySet = new HashSet<Long>();
+	    Set<Long> absentSummarySet = new HashSet<Long>();
+	    Set<Long> nonInviteeSummarySet = new HashSet<Long>();
+	    
 	    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 			  for(Entry<Long, Set<Long>> entry:locationAccessLevelMap.entrySet()){
 				   Map<Long,Map<Long,SessionVO>> meetingSessionWiseMap = new LinkedHashMap<Long, Map<Long,SessionVO>>();
@@ -9739,6 +9772,12 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 									   vo.setInviteeAttendedCount((long)vo.getInviteeAttendedCadreIdsList().size());
 									   vo.setAbsentCount((long)vo.getAbsentCadreIdsList().size());
 									   vo.setNonInviteeCount((long) vo.getNonInviteeAttendedCadreIdsList().size());
+									   
+									   invitedSummarySet.addAll(vo.getInviteedCadreIdsList());
+									   attendedSummarySet.addAll(vo.getAttendedCadreIdsList());
+									   inviteeAttndedSummarySet.addAll(vo.getInviteeAttendedCadreIdsList());
+									   absentSummarySet.addAll(vo.getAbsentCadreIdsList());
+									   nonInviteeSummarySet.addAll(vo.getNonInviteeAttendedCadreIdsList());
 								   }
 							   }
 						   }
@@ -9814,11 +9853,118 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			  }
 	    }
 	    
+	    Map<Long,List<String>> invitedDesgMap = getDesignationsForCadreIds(new ArrayList<Long>(invitedSummarySet));
+	    Map<Long,List<String>> attendedDesgMap = getDesignationsForCadreIds(new ArrayList<Long>(attendedSummarySet));
+	    Map<Long,List<String>> inviteeAttendedDesgMap = getDesignationsForCadreIds(new ArrayList<Long>(inviteeAttndedSummarySet));
+	    Map<Long,List<String>> absentDesgMap = getDesignationsForCadreIds(new ArrayList<Long>(absentSummarySet));
+	    Map<Long,List<String>> nonInviteeDesgMap = getDesignationsForCadreIds(new ArrayList<Long>(nonInviteeSummarySet));
+	    
+	    Map<String,Long> invitedCountsMap = getDesignationWiseCountsMap(invitedDesgMap);
+	    /*Long invOtrsCount = (long)(invitedSummarySet.size() - invitedDesgMap.keySet().size());
+	    if(invOtrsCount != null && invOtrsCount > 0l)
+	    	invitedCountsMap.put("OTHERS", invOtrsCount);*/
+	    if(invitedCountsMap != null){
+	    	for(Entry<String,Long> entry : invitedCountsMap.entrySet()){
+	    		KeyValueVO vo = new KeyValueVO();
+	    		vo.setName(entry.getKey());
+	    		vo.setCount(entry.getValue());
+	    		resultList.get(0).getInvitedDesgnList().add(vo);
+	    	}
+	    }
+	    
+	    Map<String,Long> attendedCountsMap = getDesignationWiseCountsMap(attendedDesgMap);
+	    /*Long attdOtrsCount = (long)(attendedSummarySet.size() - attendedDesgMap.keySet().size());
+	    if(attdOtrsCount != null && attdOtrsCount > 0l)
+	    	attendedCountsMap.put("OTHERS", attdOtrsCount);*/
+	    if(attendedCountsMap != null){
+	    	for(Entry<String,Long> entry : attendedCountsMap.entrySet()){
+	    		KeyValueVO vo = new KeyValueVO();
+	    		vo.setName(entry.getKey());
+	    		vo.setCount(entry.getValue());
+	    		resultList.get(0).getAttendedDesgnList().add(vo);
+	    	}
+	    }
+	    
+	    Map<String,Long> inviteeAttendedCountsMap = getDesignationWiseCountsMap(inviteeAttendedDesgMap);
+	    /*Long invAttdOtrsCount = (long)(inviteeAttndedSummarySet.size() - inviteeAttendedDesgMap.keySet().size());
+	    if(invAttdOtrsCount != null && invAttdOtrsCount > 0l)
+	    	inviteeAttendedCountsMap.put("OTHERS", invAttdOtrsCount);*/
+	    if(inviteeAttendedCountsMap != null){
+	    	for(Entry<String,Long> entry : inviteeAttendedCountsMap.entrySet()){
+	    		KeyValueVO vo = new KeyValueVO();
+	    		vo.setName(entry.getKey());
+	    		vo.setCount(entry.getValue());
+	    		resultList.get(0).getInviteeAttndDesgnList().add(vo);
+	    	}
+	    }
+	    
+	    Map<String,Long> absentCountsMap = getDesignationWiseCountsMap(absentDesgMap);
+	    /*Long absOtrsCount = (long)(absentSummarySet.size() - absentDesgMap.keySet().size());
+	    if(absOtrsCount != null && absOtrsCount > 0l)
+	    	absentCountsMap.put("OTHERS", absOtrsCount);*/
+	    if(absentCountsMap != null){
+	    	for(Entry<String,Long> entry : absentCountsMap.entrySet()){
+	    		KeyValueVO vo = new KeyValueVO();
+	    		vo.setName(entry.getKey());
+	    		vo.setCount(entry.getValue());
+	    		resultList.get(0).getAbsentDesgnList().add(vo);
+	    	}
+	    }
+	    
+	    Map<String,Long> nonInviteeCountsMap = getDesignationWiseCountsMap(nonInviteeDesgMap);
+	    /*Long nonInvOtrsCount = (long)(nonInviteeSummarySet.size() - nonInviteeDesgMap.keySet().size());
+	    if(nonInvOtrsCount != null && nonInvOtrsCount > 0l)
+	    	nonInviteeCountsMap.put("OTHERS", nonInvOtrsCount);*/
+	    if(nonInviteeCountsMap != null){
+	    	for(Entry<String,Long> entry : nonInviteeCountsMap.entrySet()){
+	    		KeyValueVO vo = new KeyValueVO();
+	    		vo.setName(entry.getKey());
+	    		vo.setCount(entry.getValue());
+	    		resultList.get(0).getNonInviteeDesgnList().add(vo);
+	    	}
+	    }
+	    
 	  }catch(Exception e){
 		 LOG.error("Error occured at getPartyMeetingCommentsDetails() in CoreDashboardPartyMeetingService {}",e); 
 	 }
 	 return resultList;
  }
+	 
+	 public Map<String,Long> getDesignationWiseCountsMap(Map<Long,List<String>> cadreDesgMap){
+		 Map<String,Long> desgCountsMap = new TreeMap<String, Long>();
+		 try {
+			if(cadreDesgMap != null){
+				for(Entry<Long,List<String>> entry : cadreDesgMap.entrySet()){
+					List<String> subList = entry.getValue();
+					if(subList != null && !subList.isEmpty()){
+						for (String desgn : subList) {
+							Long count = desgCountsMap.get(desgn);
+							if(count == null){
+								count=1L;
+							}
+							else
+								count = count + 1;
+							
+							desgCountsMap.put(desgn, count);
+						}
+					}
+					else{
+						Long count = desgCountsMap.get("OTHERS");
+						if(count == null){
+							count=1L;
+						}
+						else
+							count = count + 1;
+						
+						desgCountsMap.put("OTHERS", count);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured at getDesignationWiseCountsMap() in CoreDashboardPartyMeetingService {}",e);
+		}
+		 return desgCountsMap;
+	 }
 	 
 	 public Map<Long,List<String>> getDesignationsForCadreIds(List<Long> tdpCadreIds){
 		 Map<Long,List<String>> designationMap = new LinkedHashMap<Long, List<String>>();
