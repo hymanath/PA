@@ -561,7 +561,7 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 			if(level != null && level.longValue() == 1l)
 				list = boothDAO.getPanchayatsForConstituency(mandalIds, 22l);
 			else if(level != null && level.longValue() == 2l)
-				list = boothDAO.getWardsByLocalElecBodyId(manlId, 22l, constituencyId);
+				list = boothDAO.getWardsByLocalElecBody(manlId, 22l, constituencyId);
 			
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
