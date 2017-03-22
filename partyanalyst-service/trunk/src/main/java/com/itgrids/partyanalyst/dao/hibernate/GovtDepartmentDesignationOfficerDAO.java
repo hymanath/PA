@@ -67,10 +67,10 @@ public class GovtDepartmentDesignationOfficerDAO extends GenericDaoHibernate<Gov
 												" model.govtDepartmentLevel.levelName" +
 												" from GovtDepartmentDesignationOfficer model" +
 												" where model.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :departmentId" +
-												" and model.userId = :userId" +
+												//" and model.userId = :userId" +
 												" order by model.govtDepartmentLevel.govtDepartmentLevelId");
 		query.setParameter("departmentId", departmentId);
-		query.setParameter("userId", userId);
+		//query.setParameter("userId", userId);
 		return query.list();
 	}
 }

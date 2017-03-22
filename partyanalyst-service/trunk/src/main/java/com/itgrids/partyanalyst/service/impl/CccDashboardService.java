@@ -795,10 +795,17 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 					alert.setUpdatedBy(inputvo.getUserId());
 					alert = alertDAO.save(alert);
 					
-					if(inputvo.getLevelId() == 5l || inputvo.getLevelId() == 7l){
-						Long levelVal = Long.valueOf(inputvo.getLevelValue().toString().substring(1));
-						inputvo.setLevelValue(levelVal);
+					if(inputvo.getLevelId() !=null && inputvo.getLevelId().longValue()>0l ){
+						
+						Long regionScopeId = getRegionScopeIdBylevel(inputvo.getLevelId());						
+						
+						if(regionScopeId !=null && (regionScopeId == 5l || regionScopeId == 7l)){
+							Long levelVal = Long.valueOf(inputvo.getLevelValue().toString().substring(1));
+							inputvo.setLevelValue(levelVal);
+						}
 					}
+					
+					
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
 					//List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsDAO.getDesignationOfficerIds(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId());
