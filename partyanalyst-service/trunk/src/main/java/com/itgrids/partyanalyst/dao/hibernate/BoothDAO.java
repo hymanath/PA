@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -2810,4 +2811,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 					
 			
 		}
+		public List<Object[]> getWardsByLocalElecBody(Long id,Long publicationDateId,Long constituencyId){
+			StringBuilder query = new StringBuilder();
+			query.append(" select distinct c1.constituency_id AS ward_id , c1.name as name" +
+					"  from booth B, constituency C ,constituency c1 " +
+					" where c1.local_election_body_id = B.local_election_body_id and B.constituency_id=C.constituency_id " +
+					" and B.publication_date_id=:publicationDateId and " +
+					" B.local_election_body_id=:id and B.constituency_id=:constituencyId ");
+			
+			Query queryObj = getSession().createSQLQuery(query.toString()).addScalar("ward_id",Hibernate.LONG)
+					.addScalar("name",Hibernate.STRING);
+			
+			queryObj.setParameter("publicationDateId", publicationDateId);
+			queryObj.setParameter("constituencyId", constituencyId);
+			queryObj.setParameter("id", id);
+			return queryObj.list();
+	}
 }
