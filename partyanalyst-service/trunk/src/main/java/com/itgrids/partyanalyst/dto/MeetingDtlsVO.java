@@ -23,8 +23,15 @@ public class MeetingDtlsVO implements Serializable {
 	private Long meetingId;
 	private Long sessionId;
 	private List<Long> locLevelIdList = new ArrayList<Long>();
+	private List<SessionVO> sessionVOs = new ArrayList<SessionVO>(0);
 	
 	
+	public List<SessionVO> getSessionVOs() {
+		return sessionVOs;
+	}
+	public void setSessionVOs(List<SessionVO> sessionVOs) {
+		this.sessionVOs = sessionVOs;
+	}
 	public Long getTotal() {
 		return total;
 	}

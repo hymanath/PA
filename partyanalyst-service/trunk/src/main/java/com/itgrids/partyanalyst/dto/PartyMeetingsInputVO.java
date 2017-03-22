@@ -18,7 +18,16 @@ public class PartyMeetingsInputVO implements Serializable{
 	private String category = "";
 	private String status;
 	private Long partyMeetingGroupId;
+	private Long sessionId;
 	private List<Long> categoryIdList = new ArrayList<Long>();
+	
+	
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
 	public Long getPartyMeetingMainTypeId() {
 		return partyMeetingMainTypeId;
 	}

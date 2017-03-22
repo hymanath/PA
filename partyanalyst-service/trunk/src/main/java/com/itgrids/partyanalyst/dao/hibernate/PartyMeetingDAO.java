@@ -4089,14 +4089,18 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	queryStr.append(" select count(distinct " +
 	    			" model.partyMeetingId), " +
 	    			"model.meetingAddress.district.districtId, " +
-	    			" model.partyMeetingLevelId,model.meetingAddress.district.districtName " +
-	    			" from PartyMeeting model, PartyMeetingGroupsMappingInfo model2 " +
+	    			" model.partyMeetingLevelId,model3.sessionType.sessionTypeId " +
+	    			" from PartyMeeting model, PartyMeetingGroupsMappingInfo model2,PartyMeetingSession model3 " +
 	    			" where " +
 	    			"  model.isActive = 'Y' " +
 	    			" and model.partyMeetingType.isActive = 'Y' " +
-	    			" and model.partyMeetingId = model2.partyMeeting.partyMeetingId ");
+	    			" and model.partyMeetingId = model2.partyMeeting.partyMeetingId " +
+	    			" and model3.isDeleted = 'N' and model3.partyMeeting.partyMeetingId = model.partyMeetingId ");
 	    	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 	    		queryStr.append(" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId ");
+	    	}
+	    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+				queryStr.append(" and model3.sessionType.sessionTypeId = :sessionTypeId " );
 	    	}
 	    	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
 	    		queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) ");
@@ -4156,6 +4160,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0L){
 	    		query.setParameter("partyMeetingGroupId", inputVO.getPartyMeetingGroupId());
 	    	}  
+	    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+	    		query.setParameter("sessionTypeId", inputVO.getSessionId());
+	    	}
 	    	return query.list();
 	    } 
  }

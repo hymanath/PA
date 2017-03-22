@@ -1596,13 +1596,17 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" select " +
 				" count(model.partyMeeting.partyMeetingId), " +//0
 				" model.partyMeeting.meetingAddress.district.districtId, " +//7
-				" model.partyMeeting.partyMeetingLevelId,model.partyMeeting.meetingAddress.district.districtName " +//8
+				" model.partyMeeting.partyMeetingLevelId,model.partyMeetingSession.sessionType.sessionTypeId " +//8
 				" from " +
 				" PartyMeetingAttendance model, PartyMeetingGroupsMappingInfo model2 " +
 				" where " +
 				"  model.partyMeeting.isActive = 'Y' " +
 				" and model.partyMeetingSession.isDeleted = 'N' " +
 				" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId ");
+		
+		if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+			queryStr.append(" and model.partyMeetingSession.sessionType.sessionTypeId = :sessionTypeId " );
+    	}
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
     	}  
@@ -1658,11 +1662,17 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 ){
     		query.setParameterList("locationValuesSet",locationValuesSet);
     	}
+    	if(locLevelIdList != null && locLevelIdList.size() > 0){
+    		query.setParameterList("locLevelIdList",locLevelIdList);
+    	}
     	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0L){
     		query.setParameter("partyMeetingGroupId", inputVO.getPartyMeetingGroupId());
     	} 
     	if(locLevelIdList != null && locLevelIdList.size() > 0){
     		query.setParameterList("locLevelIdList",locLevelIdList);
+    	}
+    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+    		query.setParameter("sessionTypeId", inputVO.getSessionId());
     	}
     	return query.list();
 	}
