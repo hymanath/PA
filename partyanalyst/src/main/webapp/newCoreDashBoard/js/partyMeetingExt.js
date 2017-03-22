@@ -143,7 +143,7 @@ function buildPartyLevelIdWiseMeetingsCount(result,count,levelId,locationName,me
 			str+='<td>';
 				str+='<p class="text-muted">Images</p>';
 				if(result.totalImages != null && result.totalImages>0)
-					str+='<p><a class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'"  attr_location ="'+locationName+'" style="cursor:pointer;">'+result.totalImages+'</a></p>';	
+					str+='<p><a class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'"  attr_location ="'+locationName+'" attr_location_value="0" style="cursor:pointer;">'+result.totalImages+'</a></p>';	
 				else
 					str+='<p> - </p>';					
 			str+='</td>';
@@ -536,7 +536,7 @@ function buildLocationWiseMeetingDetails(result,dataType,levelId){
 					str+='<p>'+time1+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
 				str+='</li>';
-				str+='<li   class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
+				str+='<li   class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" attr_location_value="0" style="cursor:pointer;" >';
 				if(remaingImagePath>result[i].totalImages)
 				str+='<p>'+remaingImagePath+'+'+'</p>';
 				 str+='<p>View All</p>';
@@ -617,13 +617,13 @@ function buildLocationWiseMeetingDetails(result,dataType,levelId){
 					str+='<p>'+result[i].subList[1].uploadedTime+'</p>';
 					str+='<p>'+result[i].subList[1].upLoadedDate+'</p>';
 				str+='</li>';
-				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
+				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" attr_location_value="0" style="cursor:pointer;" >';
 				if(remaingImagePath>result[i].totalImages)
 					str+='<p >'+remaingImagePath+'+'+'</p>';
 				 str+='<p>View All</p>';
 				str+='</li>';
 			}else{
-				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'" style="cursor:pointer;" >';
+				str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].partyMeetingId+'"  attr_location_value="0" style="cursor:pointer;" >';
 				    str+='<img src="https://www.mytdp.com/party_meetings/'+result[i].subList[0].imagePath+'" alt=""/>';
 					//str+='<img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"  alt=""/>';
 					str+='<p>'+result[i].subList[0].uploadedTime+'</p>';
