@@ -1280,15 +1280,17 @@ function locationsBasedOnLevel(levelId)
 
 var globalRegionScope=0;
 $(document).on('change','#constLvlId', function() {
+	$("#locationsId").html("");
+	$("#locationsId").trigger("chosen:updated");
 	$("#mndlMuncLevelDiv").hide();
 	var levelId = $("#locationLevelSelectId").val();		
 	getRegionScopeIdByLevel(levelId);
 	var constId = $(this).val();
 	 setTimeout(function(){
-		if(globalRegionScope == 5 || globalRegionScope == 6){		
-			getMandalsByConstituency(constId,getRegionScopeIdByLevel(levelId));
+		if(globalRegionScope == 5 || globalRegionScope == 6){	
+			getMandalsByConstituency(constId,globalRegionScope);
 		}else if(globalRegionScope == 7 || globalRegionScope == 8){
-			getLebsByConstituency(constId,getRegionScopeIdByLevel(levelId));
+			getLebsByConstituency(constId,globalRegionScope);
 		}
 	 }, 3000);
 
@@ -1310,6 +1312,7 @@ function getRegionScopeIdByLevel(levelId){
 }
 
 function getMandalsByConstituency(constId,levelId){
+	var levelId = levelId;
 	var jsObj = {
 		constituencyId : constId
 	}
@@ -1329,8 +1332,7 @@ function getMandalsByConstituency(constId,levelId){
 				}
 				$("#mndlMuncLvlId").html(str);
 				$("#mndlMuncLvlId").trigger("chosen:updated");
-			}
-			else{
+			}else{
 				str+='<option value="0">Select Location</option>';
 				for(var i in result)
 				{
@@ -1344,6 +1346,7 @@ function getMandalsByConstituency(constId,levelId){
 }
 
 function getLebsByConstituency(constId,levelId){
+	var levelId = levelId;
 	var jsObj = {
 		constituencyId : constId
 	}
@@ -1354,7 +1357,7 @@ function getLebsByConstituency(constId,levelId){
     }).done(function(result){
 		if(result != null && result.length > 0){
 			var str='';
-			if(levelId == 8){
+			if(levelId == 7){
 				$("#mndlMuncLevelDiv").show();
 				str+='<option value="0">Select Muncipality</option>';
 				for(var i in result)
@@ -2840,6 +2843,8 @@ $(document).on('change','#officerNamesId', function(evt, params) {
 	//officersByDesignationAndLevel(designationId)
 });
 $(document).on('click','.removeSelectedDepartment', function() {
+	$("#officerNamesId").html("");
+	$("#officerNamesId").trigger("chosen:updated");
 	$("#assignedOfficersId").html('');
 	$("#assignedOfcrCountId").html('<span>assigned officers - 0</span> ');
 });
