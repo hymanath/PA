@@ -4517,7 +4517,7 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		
-		
+		getPartySpecialMeetingsMainTypeOverview(0);
 	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
 		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock").remove();
