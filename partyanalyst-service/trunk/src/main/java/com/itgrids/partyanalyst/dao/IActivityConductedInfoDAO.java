@@ -26,4 +26,6 @@ public interface IActivityConductedInfoDAO extends GenericDao<ActivityConductedI
 	public List<Object[]> activitiesDistrictWiseCount(List<Long> activityIdsLst,Date startDate,Date endDate,Long scopeId,String type,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 	public List<Object[]> getConductedCounts(Long locationId,Long activityScopeId, String searchType,Long stateId,String levelType,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 	public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue);
+	public ActivityConductedInfo isAlreadyAvailableLocationDtls(Long locationInfoId);
+	public List<Long> getActivityLocationInfoIdByLocationLevelAndLocationValue(Long activityScopeId,Long locationLevel,Long locationValue);
 }

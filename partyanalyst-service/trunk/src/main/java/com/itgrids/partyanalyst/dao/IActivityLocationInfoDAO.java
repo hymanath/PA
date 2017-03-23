@@ -58,4 +58,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue);
 	public List<Object[]> getDistrictsByActivityId(Long activityScopeId);
 	public List<Object[]> getMuncipalitiesByConstituency(Long constituencyId);
+	public ActivityLocationInfo isAlreadyAvailableLocationDtls(Long locationInfoId);
 }
