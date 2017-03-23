@@ -100,6 +100,7 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String selectedPlanedDate;
 	private String actalIvrStatus;
 	private String table;
+	private List<ActivityVO> attrTypeList = new ArrayList<ActivityVO>(0);
 	
 	public Long getAttributeId() {
 		return attributeId;
@@ -604,6 +605,12 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setTable(String table) {
 		this.table = table;
+	}
+	public List<ActivityVO> getAttrTypeList() {
+		return attrTypeList;
+	}
+	public void setAttrTypeList(List<ActivityVO> attrTypeList) {
+		this.attrTypeList = attrTypeList;
 	}
 	
 }
