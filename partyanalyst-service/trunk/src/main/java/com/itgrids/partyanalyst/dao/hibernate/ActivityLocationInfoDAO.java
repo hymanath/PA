@@ -3099,4 +3099,13 @@ public List<Object[]> getMuncipalitiesByConstituency(Long constituencyId){
 	query.setParameter("constituencyId", constituencyId);
 	return query.list();
 }
+public ActivityLocationInfo isAlreadyAvailableLocationDtls(Long locationInfoId){
+	
+	StringBuilder sb=new StringBuilder();
+	sb.append(" select  model from ActivityLocationInfo model where model.activityLocationInfoId =:locationInfoId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+		query.setParameter("locationInfoId",locationInfoId);
+	return (ActivityLocationInfo) query.uniqueResult();
+} 
 }
