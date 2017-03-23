@@ -15,7 +15,7 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getDepartmentLevels();
 	public List<GovtDepartmentVO> getLocationsBasedOnLevel(Long levelId);
 	public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId);
-	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId);
+	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue);
 	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId);
 	public List<IdAndNameVO> getNewsPapaerList();
 	public List<IdAndNameVO> getChannelList();

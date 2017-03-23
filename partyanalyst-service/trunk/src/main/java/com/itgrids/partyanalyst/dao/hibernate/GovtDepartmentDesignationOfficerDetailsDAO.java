@@ -132,4 +132,18 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getDesignationsForDepartmentAndLevelLocation(Long govtDepartmentId,Long levelId,Long levelValue){
+		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+												" from GovtDepartmentDesignationOfficerDetails model" +
+												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId = :govtDepartmentId" +
+												" and model.govtDepartmentDesignationOfficer.govtDepartmentLevel.govtDepartmentLevelId = :levelId " +
+												" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue ");
+		
+		query.setParameter("govtDepartmentId", govtDepartmentId);
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		return query.list();
+	}
 }
