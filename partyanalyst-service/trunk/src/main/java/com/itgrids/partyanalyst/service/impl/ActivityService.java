@@ -27,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityAttributeDAO;
 import com.itgrids.partyanalyst.dao.IActivityAttributeQuestionnaireInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
@@ -192,6 +194,7 @@ public class ActivityService implements IActivityService{
 	private ICallSupportTypeDAO callSupportTypeDAO;
 	private ICallStatusDAO callStatusDAO;
 	private ICadreCallingFeedbackDAO cadreCallingFeedbackDAO;
+	private IActivityConductedInfoDAO activityConductedInfoDAO;
 	
 	
 	public ICallStatusDAO getCallStatusDAO() {
@@ -568,6 +571,13 @@ public class ActivityService implements IActivityService{
 	}
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	
+	public IActivityConductedInfoDAO getActivityConductedInfoDAO() {
+		return activityConductedInfoDAO;
+	}
+	public void setActivityConductedInfoDAO(IActivityConductedInfoDAO activityConductedInfoDAO) {
+		this.activityConductedInfoDAO = activityConductedInfoDAO;
 	}
 	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr)
@@ -3059,7 +3069,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			
 		    activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		    activityInfoDocument.setUserAddress(userAddress);
+		    activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
 		    
 		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
 			
@@ -3102,12 +3112,21 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    	levelValue = eventFileUploadVO.getLevelValue();
 		    activityInfoDocument.setLocationValueAddress(levelValue);
 		    
-		    List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
+		    
+		   List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
 			if(ids != null && ids.size()>0){
 				try {
 					 activityInfoDocument.setActivityLocationInfoId(ids.get(0));
 				} catch (Exception e) {}
-			}else
+			}else{
+				List<Long> conductedIds  = activityConductedInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
+				if(conductedIds != null && conductedIds.size()>0){
+					try {
+						 activityInfoDocument.setActivityConductedInfoId(conductedIds.get(0));
+					} catch (Exception e) {}
+				}	
+			}
+			/*else
 			{
 				ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
 				 
@@ -3142,7 +3161,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 				ActivityLocationInfo tempactivityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
 				activityInfoDocument.setActivityLocationInfoId(tempactivityLocationInfo.getActivityLocationInfoId());
-			}
+			}*/
+		    //activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
 		    activityInfoDocument = activityInfoDocumentDAO.save(activityInfoDocument);
 		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		    resultStatus.setResultState(activityInfoDocument.getActivityInfoDocumentId());
