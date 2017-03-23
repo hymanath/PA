@@ -1521,7 +1521,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				sb.append(" UA.state_id = 36 and ");		
 			}
 		}
-		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");
 		sb.append(" group by  PMS.session_type_id,TC.tdp_cadre_id ");
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1534,7 +1535,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		query.setDate("fromDate",inputVO.getStartDate());
 		query.setDate("toDate",inputVO.getEndDate());
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-		query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
 		query.setParameter("partyMeetingId",inputVO.getPartyMeetingId());
 		if(inputVO.getDistId().longValue() > 0L){
 			query.setParameter("districtId",inputVO.getDistId()); 
@@ -1646,7 +1648,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				sb.append(" UA.state_id = 36 and "); 		
 			}
 		}
-		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");      
 		sb.append(" group by  PMS.session_type_id,TC.tdp_cadre_id ");
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1661,7 +1664,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		query.setDate("fromDate",inputVO.getStartDate());
 		query.setDate("toDate",inputVO.getEndDate());
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-		query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
 		query.setParameter("partyMeetingId",inputVO.getPartyMeetingId());
 		if(inputVO.getDistId().longValue() > 0L){
 			query.setParameter("districtId",inputVO.getDistId());   
@@ -1776,7 +1780,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				sb.append(" UA.state_id = 36 and ");		
 			}
 		}
-		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");
 		sb.append(" group by  PM.party_meeting_id,TC.tdp_cadre_id ");
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1789,7 +1794,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		query.setDate("fromDate",inputVO.getStartDate());
 		query.setDate("toDate",inputVO.getEndDate());
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-		query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
 		query.setParameter("partyMeetingId",inputVO.getPartyMeetingId());
 		if(inputVO.getDistId().longValue() > 0L){
 			query.setParameter("districtId",inputVO.getDistId()); 
@@ -1837,7 +1843,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 				sb.append(" UA.state_id = 36 and "); 		
 			}
 		}
-		sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			sb.append(" PMT.party_meeting_type_id in (:partyMeetingTypeId) and ");
 		sb.append(" PM.party_meeting_id = :partyMeetingId ");      
 		sb.append(" group by  PM.party_meeting_id,TC.tdp_cadre_id ");
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -1851,7 +1858,8 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		query.setDate("fromDate",inputVO.getStartDate());
 		query.setDate("toDate",inputVO.getEndDate());
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-		query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
+		if(inputVO.getPartyMeetingTypeIds() != null && !inputVO.getPartyMeetingTypeIds().isEmpty())
+			query.setParameterList("partyMeetingTypeId",inputVO.getPartyMeetingTypeIds());
 		query.setParameter("partyMeetingId",inputVO.getPartyMeetingId());
 		if(inputVO.getDistId().longValue() > 0L){
 			query.setParameter("districtId",inputVO.getDistId());   
