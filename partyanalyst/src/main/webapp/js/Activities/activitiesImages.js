@@ -4296,8 +4296,7 @@ $(document).on("click",".getImagesCls",function(){
 		backdrop: 'static'
 	});
 	var attr_activity_scopeid = $(this).attr("attr_scope_id");
-	var activityLevelId = $(this).attr("attr_activity_lvl_id");;
-	alert(activityLevelId);
+	var activityLevelId = $(this).attr("attr_activity_lvl_id");
 	var cnstitncyId = $(this).attr("attr_constituency_id");
 	//alert(cnstitncyId);
 	var searchType = $(this).attr("attr_search_type");
