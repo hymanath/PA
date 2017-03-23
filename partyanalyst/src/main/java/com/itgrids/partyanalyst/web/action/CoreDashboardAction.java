@@ -2438,6 +2438,13 @@ public String getLocationWiseSelectedChildMembersForMultiLocationMeetings(){
 				locationValues.add(locationValuesArray.getString(i) != null && !locationValuesArray.getString(i).trim().isEmpty() ?Long.valueOf(locationValuesArray.getString(i)):0L);
 			}
 		}
+		/*String locationValuesArray = jObj.getString("locationValuesArray");
+		String[] stringArr = locationValuesArray.split(",");
+		if(stringArr != null && stringArr.length > 0){
+			for (String string : stringArr) {
+				locationValues.add(Long.valueOf(string));
+			}
+		}*/
 		//String reportType = jObj.getString("reportType");
 		Long stateId = jObj.getLong("stateId");
 		//List<Long> eventsIds = new ArrayList<Long>();

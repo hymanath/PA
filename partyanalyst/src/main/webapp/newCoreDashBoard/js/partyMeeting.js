@@ -2385,7 +2385,14 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='<h4 attr_search = "notrequired" attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="invited" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].invitedCount+'<span class="font-10 text-success"></span></h4>';
 						  str+='<p class="text-muted text-capital">Invited</p>';
 						 str+='</td>';
-						 str+='<td class="text-muted text-capital">  </td>';
+						 str+='<td>';
+							if(result[i].imagesCount != null && result[i].imagesCount > 0)
+							  str+='<h4>'+result[i].imagesCount+'</h4>';
+							else
+								str+='<h4> - </h4>'
+							  str+='<p class="text-muted text-capital">total images</p>';
+						 str+='</td>';
+						 str+='<td>';
 						 str+='<td class="text-muted text-capital">  </td>';
 						 str+='<td class="text-muted text-capital" >  </td>';
 						 str+='<td class="text-muted text-capital" >  </td>';
@@ -2432,8 +2439,12 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr>';
 											str+='<td colspan=6>';
 												str+='<span data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold;">'+result[i].subList1[k].name+'  </span>';
-												str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px;margin-right: 15px; margin-left: 15px;""><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
-												str+='<span class="text-capital">Total - Invitees : <b>'+result[i].subList1[k].invitedCount+'</b></span>';
+												str+='<span class="statelevelSessionMeeting"  party_meeting_type_id="'+result[i].id+'"  party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px;margin-right: 10px; margin-left: 10px;""><i class="glyphicon glyphicon-fullscreen "  style="cursor:pointer;"></i></span>';
+												str+='<span class="text-capital" style="margin-right: 10px;">Invitees : <b>'+result[i].subList1[k].invitedCount+'</b></span>';
+												if(result[i].subList1[k].imagesCount != null && result[i].subList1[k].imagesCount > 0)
+													str+='<span class="text-capital getModalImagesCls " attr_Meeting_level_id="0" attr_Meeting_id="'+result[i].subList1[k].id+'" attr_count="0" attr_location_value="0" style="cursor:pointer;" >Images : <b>'+result[i].subList1[k].imagesCount+'</b></span>';
+												//else
+												//	str+='<span class="text-capital"></span>';
 												str+='</td>';
 										 str+='</tr>';
 										  str+='<tr>';
@@ -3735,6 +3746,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   var dateArr=date.split("/");
 	   return dateArr[1]+"/"+dateArr[0]+"/"+dateArr[2];
    }
+   var globalImgsMdlCnt = 0;
    function getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,isComment,customStartDateMeetings,customEndDateMeetings,reportType,locationId,locationType){
 	   $("#meetingSummaryDtlsTblId").html('');
 	 var partyMeetingTypeArr=[];
@@ -3833,7 +3845,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 							str+='<p style="font-size:10px">'+time1+'</p>';
 							str+='<p style="font-size:10px">'+result[i].imagesList[1].upLoadedDate+'</p>';
 						str+='</li>';
-						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0" attr_location_value="'+result[i].id+'" style="cursor:pointer;" >';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0" attr_location_value="'+result[i].id+'" attr_count="1" style="cursor:pointer;" >';
 						if(remaingImagePath>result[i].imagesCount)
 							str+='<p style="font-size:10px">'+remaingImagePath+'+'+'</p>';
 						 str+='<p style="font-size:10px">View All</p>';
@@ -3844,7 +3856,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 							str+='<p>'+result[i].imagesList[0].uploadedTime+'</p>';
 							str+='<p>'+result[i].imagesList[0].upLoadedDate+'</p>';
 						str+='</li>';
-						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0"  attr_location_value="'+result[i].id+'" style="cursor:pointer;">';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="0"  attr_location_value="'+result[i].id+'" attr_count="1" style="cursor:pointer;">';
 						//str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;"> 1 </p>';
 						 str+='<p >View All</p>';
 						str+='</li>';
@@ -4192,7 +4204,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 							str+='<p style="font-size:10px">'+time1+'</p>';
 							str+='<p style="font-size:10px">'+result[i].imagesList[1].upLoadedDate+'</p>';
 						str+='</li>';
-						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" attr_location_value="0" style="cursor:pointer;" >';
+						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" attr_location_value="0" attr_count="1" style="cursor:pointer;" >';
 						if(remaingImagePath>result[i].subList[j].imagesCount)
 							str+='<p style="font-size:10px">'+remaingImagePath+'+'+'</p>';
 						 str+='<p style="font-size:10px">View All</p>';
@@ -4203,7 +4215,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 							str+='<p>'+result[i].imagesList[0].uploadedTime+'</p>';
 							str+='<p>'+result[i].imagesList[0].upLoadedDate+'</p>';
 						str+='</li>';
-						str+='<li  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" attr_location_value="0" style="cursor:pointer;">';
+						str+='<li  class="getModalImagesCls" attr_count="1" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" attr_location_value="0" style="cursor:pointer;">';
 						//str+='<p  class="getModalImagesCls" attr_Meeting_level_id="'+levelId+'" attr_Meeting_id="'+result[i].subList[j].id+'" style="cursor:pointer;"> 1 </p>';
 						 str+='<p >View All</p>';
 						str+='</li>';
@@ -6008,7 +6020,7 @@ function buildCustomPartyMeetingsMainTypeOverViewData(result){
 							str+='</td>';
 							str+='<td>';
 								str+='<p>Images</p>';			
-								str+='<u><h4 class="getImageClass getModalImagesCls" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" attr_location_value="0" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4></u>';
+								str+='<u><h4 class="getImageClass getModalImagesCls" attr_Meeting_level_id="'+result[0].subList1[0].levelId+'" attr_Meeting_id="'+result[0].subList1[0].subList1[0].id+'" attr_location_value="0"  attr_count="0" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images."><a>1000</a></h4></u>';
 							str+='</td>';
 						str+='</tr>';
 						str+='<tr class="bg_D8">';
@@ -6122,6 +6134,7 @@ $(document).on("click",".getModalImagesCls",function(){
 		$("#myModalLabelId").html(location+" "+"IMAGE DETAILS");
 	else
 		$("#myModalLabelId").html("IMAGE DETAILS");
+	globalImgsMdlCnt = $(this).attr("attr_count");
 	var levelId = $(this).attr('attr_Meeting_level_id');
 	var meetingId = $(this).attr('attr_Meeting_id');
 	var locationValue = $(this).attr("attr_location_value");
@@ -6387,8 +6400,8 @@ function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num,location
 	 var dates=$('.searchDateCls ').val();
 
 		var jObj = {
-			fromDateStr : '01/01/2017',
-		    toDateStr : '01/02/2018',
+			fromDateStr : '01/01/2015',
+		    toDateStr : '01/02/2020',
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,
 			partyMeetingLevelId:levelId,
@@ -6506,8 +6519,10 @@ $(document).on('click','.closeBtnCls',function(){
 	}
 });
 
-$(document).on('click','.imageCloseBtnCls',function(){  
-	setTimeout(function(){
-		$('body').addClass("modal-open");
-	}, 500);
+$(document).on('click','.imageCloseBtnCls',function(){ 
+	if(globalImgsMdlCnt > 0){
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);
+	}
 });
