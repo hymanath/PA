@@ -418,9 +418,9 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 			str.append(" and model2.partyMeetingGroupsMappingInfoId = :meetingGrpId " );
 		}else{
 			str.append("select model.documentName,model.path " +
-					"  from PartyMeetingDocument model " +
-					"  where model.partyMeeting.partyMeetingLevelId = :partyMeetingLevelId" +
-					"  and model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y' " );
+					"  from PartyMeetingDocument model where model.isDeleted = 'N' and model.partyMeeting.isActive = 'Y' " );
+			if(partyMeetingLevelId  != null && partyMeetingLevelId.longValue()>0L)
+				str.append("  and model.partyMeeting.partyMeetingLevelId = :partyMeetingLevelId");
 		}
 		
 		if(stateId != null && stateId.longValue() > 0L){
@@ -461,7 +461,8 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		}
 		Query query = getSession().createQuery(str.toString());
 
-		query.setParameter("partyMeetingLevelId", partyMeetingLevelId);
+		if(partyMeetingLevelId  != null && partyMeetingLevelId.longValue()>0L)
+			query.setParameter("partyMeetingLevelId", partyMeetingLevelId);
 		if(locationLevelId != null && locationLevelId.longValue() > 0l){
 			if(locationLevelvalues != null && locationLevelvalues.size() > 0){
 				query.setParameterList("locationLevelvalues", locationLevelvalues);
@@ -681,4 +682,13 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
 		return query.list();
 	}
 	
+	public List<Object[]> getImagesCountsForPartyMeetings(List<Long> partyMeetingIds){
+		Query query = getSession().createQuery("select model.partyMeeting.partyMeetingId,count(model.partyMeetingDocumentId)" +
+												" from PartyMeetingDocument model" +
+												" where model.partyMeeting.partyMeetingId in (:partyMeetingIds)" +
+												" and model.isDeleted = 'N' and model.partyMeeting.isActive='Y'" +
+												" group by model.partyMeeting.partyMeetingId");
+		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		return query.list();
+	}
 }

@@ -64,8 +64,15 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Long panchayatId;
 	private String path;
 	private Long levelId;
+	private Long imagesCount = 0l;
 	
 	
+	public Long getImagesCount() {
+		return imagesCount;
+	}
+	public void setImagesCount(Long imagesCount) {
+		this.imagesCount = imagesCount;
+	}
 	public Long getLevelId() {
 		return levelId;
 	}
