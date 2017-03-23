@@ -13,6 +13,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/css/activity.custom.css' rel='stylesheet' type='text/css'>
 	<link href='dist/activity/Date/daterangepicker-bs3.css' rel='stylesheet' type='text/css'>
+	<link href='daterangepicker/bootstrap-datetimepicker.min-bs3.css' rel='stylesheet' type='text/css'>
 	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 	
@@ -23,7 +24,7 @@
 	<!--<script type="text/javascript" src="js/bootstrap.js" ></script> -->
 	 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
 	 <script src="dist/activity/Date/daterangepicker.js" type="text/javascript"></script>
-	 
+	 <link href='daterangepicker/bootstrap-datetimepicker.min-bs3.js' rel='stylesheet' type='text/css'>
 	
 	 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -78,8 +79,10 @@
 	
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
-	
-	
+<!-- Multiselect -->
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<!--<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />-->
+
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
@@ -104,7 +107,7 @@
  </style>
 </head>
 <body>
-	<form method="POST" enctype="multipart/form-data" name="saveActivityDetails" action="saveActivityDetailsAction.action">
+	<form method="POST" enctype="multipart/form-data" name="saveActivityDetails" id="saveActivityDetails">
 <div class="container">
 
 
@@ -144,7 +147,7 @@
 							<div class="col-md-4"><span class="starMark">*</span>
 								<label> Activity Name </label>
 								<select id="ActivityList" class="form-control" name="activityVO.activityLevelId">
-									<option value="0"> Select Activity </option>
+									<option value="0"> Select Activity</option>
 								</select>
 							</div>
 								<!--
@@ -188,36 +191,7 @@
 									<option value="0"> Select Panchayat/ Ward</option>
 								</select>
 							</div>
-							<div class="col-md-4 m_top10" id="attributeTypeId" style="display:none;">
-								<label>Attribute Types</label>
-								<select id="attributeTypeList" class="form-control">
-									<option value="0"> Select Option</option>
-									<option value="1"> Conducted Date</option>
-									<option value="2"> Planned Date</option>
-									<option value="3"> Ivr Status</option>
-									<option value="4"> Update Details</option>
-								</select>
-							</div>	
-								<div class="col-md-4 m_top10" id="planedDateDivId" style="display:none;">
-									<label>Planned Date</label>
-									<div class="input-group input-g1">
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
-										<input type="text" class="form-control" id="plannedDate">
-									</div>
-								</div>
-									<div class="col-md-4 m_top10" id="conductedDateDivId" style="display:none;">
-										<label>Select Conducted Date</label>
-										<div class="input-group input-g1">
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-											<input type="text" class="form-control" id="conductedDate">
-										</div>
-									</div>
-							</div>
-							
+						
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationWiseDetailsForActivity();">SEARCH</button>
@@ -283,19 +257,60 @@
 		</div>
 		
 		-->
+		<div class="row" style=" margin-bottom: 10px;">
+			<div class="col-md-3" id="attributeTypeId" style="display:none;">
+				<label>Attribute Types</label>
+				<select attr_no="" class="chosenSelect form-control" id="attributeTypeList" name="activityVO.attributeId" data-placeholder ="ALL">
+					<option value="0">Select Option</option>
+					<option value="1"> Conducted Date</option>
+					<option value="2"> Planned Date</option>
+					<option value="3"> Ivr Status</option>
+					<option value="4"> Update Details</option>
+				</select><br>
+				<!--<span id="errdeptBoardPostnId" class="errdeptBoardPostnCls"></span>-->
+			</div>
+		
+			<div class="col-md-3 " id="planedDateDivId" style="display:none;">
+				<label>Planned Date</label>
+				<div class="input-group input-g1">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control planedDateCls" id="plannedDateId" name="activityVO.selectedPlanedDate">
+				</div>
+				</div>
+					<div class="col-md-3" id="conductedDateDivId" style="display:none;">
+						<label>Select Conducted Date</label>
+						<div class="input-group input-g1">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							<input type="text" class="form-control conductedDateCls" id="conductedDateId" name="activityVO.selectedCnductedDate">
+						</div>
+					</div>
+					<div class="col-md-3" id="statusDivId" style="display:none;">
+						<label>ivr Status</label>
+						<select id="ivrStusId" class="form-control" name="activityVO.actalIvrStatus">
+							<option value="Y"> Y </option>
+							<option value="N"> N </option>
+							<option value="NULL"> NA </option>
+						</select>
+					</div>
+					<button id="reSearchId" class="btn btn-success" style="margin-top:18px;display:none;" onclick="getLocationWiseDetailsForActivity();" >Get Details</button>
+		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
-		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
+		<div style="margin-bottom:35px;margin-right:5px">
 		<!--<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
 		<input type="checkbox" onclick="getLocationDetailsForActivity('','','0','0',2);" id="imageChekId">
 			SHOW ONLY IMAGES UPLOADED LOCATIONS
 		</span>-->
 		</div>
-            	<div class="panel-heading">
-                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
+            	<div class="panel-heading m_top10">
+                	<h4 class="panel-title m_top10"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
                     	<label class="checkbox-inline">
 						<span>
-								<i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;width" title="View Images"></i>
+								 <!--<i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;width" title="View Images"></i> -->
 							</span>
 							<span>
 								<input type="radio" checked="checked" id="allId" onclick="getLocationWiseDetailsForActivity();" name="radio1">All
@@ -613,7 +628,9 @@
 </div>
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <input type="hidden" id="hiddenActivityLevelId"></input>
+<input type="hidden" id="hiddenCheckBxVal"></input>
 
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -625,6 +642,7 @@
 <script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="js/Activities/activitiesImages.js" type="text/javascript"></script>
+
 
 <script>
 
@@ -642,7 +660,15 @@ var gobalTempVar = "dayCalCulationNotReq";
 var gobalDay = 0;
 var globalLctnInfoId = null;
 
+$('.chosenSelect').chosen({width:'100%'});
 $(document).ready(function(){
+  /* $('#attributeTypeList').multiselect({
+	noneSelectedText:"Select option(s)"
+  }); */
+
+	$(".conductedDateCls").daterangepicker();
+
+	$(".planedDateCls").daterangepicker();
 	//$('.searchDateCls').daterangepicker();
 	$('#activityTypeList').val(1);
 	$('#activityLevelList').val(2);
@@ -709,9 +735,20 @@ $(function () {
   //$('.searchDateCls').val(moment().format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY'));
 
   $('.searchDateCls').daterangepicker(optionSet1, cb);
+  $('.conductedDateCls').daterangepicker(optionSet1, cb);
+  $('.planedDateCls').daterangepicker(optionSet1, cb);
 
   $('.searchDateCls').on('show.daterangepicker', function() { console.log("show event fired"); });
   $('.searchDateCls').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  	var customStartDateAlert = moment().format('DD/MM/YYYY')
+	var customEndDateAlert = moment().format('DD/MM/YYYY');
+	
+    $('#conductedDateId').data('daterangepicker').setStartDate(moment());
+	$('#conductedDateId').data('daterangepicker').setEndDate(moment());
+	$('#plannedDateId').data('daterangepicker').setStartDate(moment());
+	$('#plannedDateId').data('daterangepicker').setEndDate(moment());plannedDateId
+			customStartDateAlert = moment().format("DD/MM/YYYY")
+			customEndDateAlert = moment().format("DD/MM/YYYY")
 });
 
 /*
@@ -780,7 +817,7 @@ function getActivityNames(id)
 	$("#districtDivId").hide();
 	$("#constiList").val(0);
 	$('#ActivityList').find('option').remove();
-	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
+	
 	
 	var activityLevelId = id;
 	if(id == 0)
@@ -817,6 +854,7 @@ function getActivityNames(id)
         }).done(function(result){			
 			if(result != null && result.length >0)
 			{
+				$('#ActivityList').append('<option value="0"> Select Activity </option>');	
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				
@@ -1828,9 +1866,10 @@ $("#hideAsmblyData").click(function(){
 		
 		var locationName = $(this).attr("attr_location_Name");
 		gobalLevelValue = $(this).attr("attr_location_Value");
-		var dateStr = $("#"+dateVal).val();
+		//var dateStr = $("#"+dateVal).val();
+		var locationInfoId = $(this).attr("attr_act_location_info_id");
 		setGobalValues();
-		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&eventDateStr='+dateStr+'','_blank');
+		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&lctionInfoId='+locationInfoId+'','_blank');
 		
 	});
 	
@@ -2102,7 +2141,7 @@ $("#hideAsmblyData").click(function(){
 				var jsObj =
 			{
 				tdpCadreId :cadreId,
-				activityLocationInfoId:lctnInfoId,
+				//activityLocationInfoId:lctnInfoId,
 				conductedDate:conductedDate,
 				task:""
 			}
@@ -2167,7 +2206,7 @@ $("#hideAsmblyData").click(function(){
 				name :name,
 				mobileNumber:mobileNumber,
 				voterCard:voterCard,
-				activityLocationInfoId:lctnInfoId,
+				//activityLocationInfoId:lctnInfoId,
 				bloodGroupId:"",
 				conductedDate:conductedDate,
 				tdpCadreId :0,
@@ -2768,6 +2807,7 @@ function getLocationWiseDetailsForActivity()
 	var ActivityId =$('#ActivityList').val();
 	var constituencyId =$('#constiList').val();
 	var districtId =$('#districtList').val();
+	var attrTypeId=$("#attributeTypeList").val();
 	$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
@@ -2880,7 +2920,7 @@ function getLocationWiseDetailsForActivity()
 						str+='<thead>';
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
-						str+='<th style="background-color:#00B17D; color:#fff;"><input type="checkbox" id="imageChekId"></th>';
+						str+='<th></th>';
 						if(activityLevelId == 2)
 							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1){	
@@ -2893,12 +2933,18 @@ function getLocationWiseDetailsForActivity()
 							str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
 						else if(activityLevelId == 3)
 							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
-						
+						if(attrTypeId == 2)
 							str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
+						else if(attrTypeId == 1)
+							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
+						else if(attrTypeId == 3)
+							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+						else if(attrTypeId == 0){
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+						}
 							str+='<th style="background-color:#00B17D; color:#fff;">TOTAL IMAGES</th>';
-						
+							str+='<th style="background-color:#00B17D; color:#fff;">Upload Images</th>';
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
 						//str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
@@ -2907,17 +2953,15 @@ function getLocationWiseDetailsForActivity()
 						str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
-							str+='<td value='+result[i].activityLocatInfoId+'><input type="checkbox" id="imageChekId"></td>';
+							str+='<input type="hidden" value="'+result[i].tableName+'" name="activityVO.activityVoList['+i+'].table">';
+							str+='<td><input type="checkbox" class="checkBoxCls" attr_no="'+i+'" value="'+result[i].activityLocatInfoId+'" /></td>';
+							str+='<input type="hidden" id="chckBxIdVal'+i+'" name="activityVO.activityVoList['+i+'].activityLocationInfoId"/>';
 							if(activityLevelId == 5){
-								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
-								str+='<input type="hidden" value="'+result[i].constituencyId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
-							}else if(activityLevelId == 1){
+							}else if(activityLevelId == 1 || activityLevelId == 2){
 								//if(result[i].mandalId != null && result[i].mandalId != 0){
 									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
 									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
-									str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
-									str+='<input type="hidden" value="'+result[i].villageId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								/* }else if(result[i].localElcBodyId != null && result[i].localElcBodyId != 0){
 									str+='<td id='+result[i].localElcBodyId+'>'+result[i].localElcBodyName+'</td>';
 									str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
@@ -2926,24 +2970,61 @@ function getLocationWiseDetailsForActivity()
 									str+='<td> - </td>';
 								} */
 							}else if(activityLevelId == 3){
-								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
-									str+='<input type="hidden" value="'+result[i].districtId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								str+='<td id='+result[i].districtId+'>'+result[i].districtName+'</td>';
 							}
-							if(result[i].planedDate != null && result[i].planedDate != ""){
-								str+='<td>'+result[i].planedDate+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" /></td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].conductedDate != null && result[i].conductedDate != ""){
-								str+='<td >'+result[i].conductedDate+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result[i].conductedDate+'" /></td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
-								str+='<td>'+result[i].ivrStatus+'&nbsp;&nbsp;<input type="checkbox" name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" /></td>';
-							}else{
-								str+='<td> - </td>';
+							if(attrTypeId == 2){
+								if(result[i].planedDate != null && result[i].planedDate != ""){
+									str+='<td><input type="text" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" /></td>';
+								}else{
+									str+='<td><input type="text" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" /></td>';
+								}
+							}else if(attrTypeId == 1){
+								if(result[i].conductedDate != null && result[i].conductedDate != ""){
+									str+='<td ><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'"  class="condDateCls" /></td>';
+								}else{
+									str+='<td><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'" class="condDateCls" /></td>';
+								}
+							}else if(attrTypeId == 3){
+								if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
+									str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
+										if(result[i].ivrStatus != null && result[i].ivrStatus == 'Y'){
+											str+='<option selected value="Y">Y</option>';
+											str+='<option  value="N">N</option>';
+										}
+										else if(result[i].ivrStatus != null && result[i].ivrStatus == 'N'){
+											str+='<option value="Y">Y</option>';
+											str+='<option selected value="N">N</option>';
+										}
+									str+='</select></td>';
+								}else{
+									str+='<td> No Status <select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">'; 
+									 str+='<option  value="Y" >Y</option>';
+									 str+='<option  value="N" >N</option></select></td>';
+								}
+							}else if(attrTypeId == 0){
+								if(result[i].conductedDate != null && result[i].conductedDate != ""){
+									str+='<td><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'" class="condDateCls" /></td>';
+								}else{
+									str+='<td><input type="text" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result[i].conductedDate+'" class="condDateCls" /></td>';
+								}
+								if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
+									str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
+										if(result[i].ivrStatus != null && result[i].ivrStatus == 'Y'){
+											str+='<option selected value="Y" >Y</option>';
+											str+='<option  value="N" >N</option>';
+										}else if(result[i].ivrStatus != null && result[i].ivrStatus == 'N'){
+											str+='<option  value="Y" >Y</option>';
+											str+='<option selected value="N">N</option>';
+										}
+											
+									str+='</select></td>';
+								}else{
+									 str+='<td> No Status <select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">  '; 
+										
+										 str+='<option  value="Y" >Y</option>';
+										 str+='<option  value="N" >N</option></select></td>';
+								}
+								
 							}
 							if(result[i].count != null && result[i].count > 0){
 								str+='<td>'+result[i].count;
@@ -2958,6 +3039,15 @@ function getLocationWiseDetailsForActivity()
 							}else{
 								str+='<td>'+0+'</td>';
 							}
+							str+='<td>';
+							if(activityLevelId == 5){
+								str+='<img attr_location_Value="'+result[i].constituencyId+'" attr_location_Name=\''+result[i].constituencyName+'\'  id="uploadImagesId" style="position:absolute;width: 40px; height: 40px;background:#FFA500;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].constituencyId+'"/>';
+							}else if(activityLevelId == 1 || activityLevelId == 2){
+								str+='<img attr_location_Value="'+result[i].villageId+'" attr_location_Name=\''+result[i].villageName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; background:#FFA500;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].villageId+'"/>';
+							}else if(activityLevelId == 3){
+								str+='<img attr_location_Value="'+result[i].districtId+'" attr_location_Name=\''+result[i].districtName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; background:#FFA500;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].districtId+'"/>';
+							}
+							str+='</td>';
 							
 							//str+='<td>'+result[i].constituencyName+'</td>';
 							str+='</tr>';
@@ -2966,8 +3056,12 @@ function getLocationWiseDetailsForActivity()
 						str+='</table>';
 					}
 					$('#home').html(str);
+					$("#attributeTypeId").show();
+					//$(".condDateCls").datetimepicker();
+					$(".condDateCls").daterangepicker({singleDatePicker:true});
+					//$(".condDateCls").val(moment().format('MM/DD/YYYY'));
 					
-					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
+					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails();"/></div>');
 					$("#locationsTab").dataTable({
 					"iDisplayLength": 20,
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
@@ -2978,7 +3072,57 @@ function getLocationWiseDetailsForActivity()
 				
 			 });
 	}
-
+ 
+function saveActyDetails(){
+	
+	 $(".checkBoxCls").each(function(){
+		 if(($(this).is(":checked")) == true){
+		var infoId = $(this).val();
+		var num = $(this).attr("attr_no");
+		$("#chckBxIdVal"+num).val(infoId);
+		}
+	 });
+	 
+	
+	 /* if(($("#checkBoxId").is(":checked")) == true){
+		 $(this).each(function(){
+			var infoId = $(this).val();
+		 )};
+		}  */
+		
+		return;
+	var uploadHandler = {
+		 upload: function(result) {
+			//console.log(result);
+			uploadResult = result.responseText; 
+			alert(uploadResult);
+		}
+	};
+	
+		YAHOO.util.Connect.setForm('saveActivityDetails',true);
+		YAHOO.util.Connect.asyncRequest('POST','saveActivityLocDetailsAction.action',uploadHandler);
+	
+}
+var array = [];
+$(document).on("change","#attributeTypeList",function(){
+	var attrTypeId = $(this).val();
+	 if(attrTypeId == 1){
+		$("#conductedDateDivId").show();
+		$("#planedDateDivId").hide();
+		$("#statusDivId").hide();
+		$("#reSearchId").show();
+	}else if(attrTypeId == 2){
+		$("#planedDateDivId").show();
+		$("#conductedDateDivId").hide();
+		$("#statusDivId").hide();
+		$("#reSearchId").show();
+	}else if(attrTypeId == 3){
+		$("#statusDivId").show();
+		$("#planedDateDivId").hide();
+		$("#conductedDateDivId").hide();
+		$("#reSearchId").show();
+	}   
+});
 </script>
 </body>
 </html>

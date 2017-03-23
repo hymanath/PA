@@ -115,7 +115,7 @@
 							
 						</div>
 							<div id="uploadDiv" class="col-md-6 m_top20">
-							    <button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>
+							    <!--<button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>-->
 							</div>
 							<div class="col-md-12" style="margin-top: 38px;">
 								<div class="errorDiv"></div>
@@ -176,7 +176,8 @@ var actScopeId = '${activityScopeId}';
 var locationValueID = '${locationValue}';
 var actvityLevelId = '${activityLevel}';
 var locationName = '${locationName}';
-var globalLctnInfoId = 0;
+var globalLctnInfoId = '${lctionInfoId}';
+
 
 
 
