@@ -16184,9 +16184,14 @@
 			    <param name="root">idNameVOList</param>
 			</result>
 		</action>
-	    <action name="getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetingsAction" class="cadreRegistrationAction" method="getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings">
+		<action name="getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetingsAction" class="cadreRegistrationAction" method="getDistWiseMeetingsBasedDtlsForDiffLevelOfMeetings">
 			<result type="json" name="success">
 				<param name="root">listOfMeetingDtlsVOs</param>     
+			</result>
+		</action>
+		<action name="saveActivityLocDetailsAction" class="cadreCommitteeAction" method="saveActivityLocationDetails">
+		    <result type="json" name="success">		   
+			    <param name="root">result1</param>
 			</result>
 		</action>
  </package>
