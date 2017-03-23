@@ -101,7 +101,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
     private EventCreationVO eventCreationVO;
 	private List<VO> resultList;
 	private Long locationId;
-	private ActivityVO activityVO;
+	private ActivityVO activityVO = new ActivityVO();
 	private List<IdNameVO>  castes;
 	private List<GISUserTrackingVO> gisTrackVolst;
 	private Long constitunecyId;
@@ -2549,7 +2549,7 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}
-/*public String saveActivityLocationDetails(){
+public String saveActivityLocationDetails(){
 		
 		try {
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -2557,40 +2557,29 @@ public String getSummaryDetails(){
 				return "input";
 			}
 			Long userId = regVO.getRegistrationID();
-			try {
+			/*try {
 				 jObj = new JSONObject(getTask());
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			if(jObj != null){
-				activityVO = new ActivityVO();
-				activityVO.setActivityLevelId(jObj.getLong("activityScopeId"));
-				activityVO.setConstituencyId(jObj.getLong("contituencyId"));
-				activityVO.setTable(jObj.getString("tableName"));
-				Long attributeTypeId = jObj.getLong("attrTypeId");
-				if(attributeTypeId.longValue() == 1l){
-					activityVO.setSelectedCnductedDate(jObj.getString("conductedDate"));
-				}else if(attributeTypeId.longValue() == 2l){
-					activityVO.setSelectedPlanedDate(jObj.getString("plannedDate"));
-				}else if(attributeTypeId.longValue() == 3l){
-					activityVO.setActalIvrStatus(jObj.getString("ivrStatus"));
-				}
-				
+			}*/
+			//if(jObj != null){
+				//activityVO = new ActivityVO();
+				//activityVO.setTable(jObj.getString("tableName"));
 				/*ActivityVO locationVO = new ActivityVO();
 				locationVO.setConductedDate(jObj.getString("conductedDateStr").trim());
 				locationVO.setPlannedDate(jObj.getString("plannedDateStr").trim());
 				locationVO.setLocationValue(jObj.getLong("locationValue"));				
 				locationVO.setLocationLevel(jObj.getLong("activityLevelId"));
 				locationVO.setDay(jObj.getLong("day"));
-				activityVO.getActivityVoList().add(locationVO);
-			}
+				activityVO.getActivityVoList().add(locationVO);*/
+			//}
 			 
-			status = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
+			result1 = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in saveActivityDetails() At CadreCommitteeAction",e);
 		}
 		
 		return Action.SUCCESS;
-	}*/
+	}
 }
