@@ -1986,6 +1986,15 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 				
 		 }
 		 
+		 Map<Long,Long> documentsMap = new LinkedHashMap<Long, Long>();
+		 if(partyMeetingIdsLsit != null && !partyMeetingIdsLsit.isEmpty()){
+			 List<Object[]> documentsList = partyMeetingDocumentDAO.getImagesCountsForPartyMeetings(new ArrayList<Long>(partyMeetingIdsLsit));
+			 if(documentsList != null && !documentsList.isEmpty()){
+				 for (Object[] obj : documentsList) 
+					documentsMap.put(Long.valueOf(obj[0] != null ? obj[0].toString():"0"), Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+			 }
+		 }
+		 
 		 if(meetingTypeVOMap != null && meetingTypeVOMap.size() > 0 ){
 			 
 			 for(Long partyMeetingTypeId : meetingTypeVOMap.keySet()){
@@ -1998,6 +2007,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 					 Long absentCount = 0L;
 					 Long invitedCount = 0L;
 					 Long nonInvitedCount = 0L;
+					 Long imagesCount = 0L;
 					 if(commonMethodsUtilService.isListOrSetValid(partyMetingsList)){
 						 for (PartyMeetingsDataVO vo : partyMetingsList) {
 							 attendedCount = attendedCount+vo.getAttendedCount();
@@ -2005,6 +2015,10 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 							 absentCount = absentCount+vo.getNotAttendedCount();
 							 invitedCount = invitedCount+vo.getInvitedCount();
 							 nonInvitedCount = nonInvitedCount+vo.getNonInviteeCount();
+							 
+							 vo.setImagesCount(documentsMap.get(vo.getId()));
+							 if(vo.getImagesCount() != null && vo.getImagesCount() > 0l)
+								 imagesCount = imagesCount+vo.getImagesCount();
 						}
 						 
 						 if(lateCount != null && lateCount.longValue()>0L){
@@ -2019,6 +2033,7 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 					 meetingTypeVO.setNotAttendedCount(absentCount);
 					 meetingTypeVO.setLateAttendedCount(lateCount);
 					 meetingTypeVO.setNonInviteeCount(nonInvitedCount);
+					 meetingTypeVO.setImagesCount(imagesCount);
 					 
 					 meetingTypeVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getAttendedCount(),meetingTypeVO.getInvitedCount()) );
 					 meetingTypeVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getInvitteeAttendedCount(),meetingTypeVO.getInvitedCount()) );
