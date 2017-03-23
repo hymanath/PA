@@ -71,7 +71,7 @@ $(document).ready(function() {
             url: "eventsUploadFormAction.action",
             data: {"activityScopeId":gobalActivityScopeId,"day":gobalDay,
 						"levelId":gobalLevelId,levelValue:gobalLevelValue,
-						"activityDate":gobalActivityDate,gobalTempVar:gobalTempVar,"insertType":"WEB","lctnInfoId":globalLctnInfoId},
+						"activityDate":gobalActivityDate,gobalTempVar:gobalTempVar,"insertType":"WEB","activityLocationInfoId":globalLctnInfoId},
             type: 'POST',
 			
            enctype: 'multipart/form-data',
