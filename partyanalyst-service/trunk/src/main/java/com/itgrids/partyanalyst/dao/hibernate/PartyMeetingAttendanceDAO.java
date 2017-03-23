@@ -1594,7 +1594,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	public List<Object[]> getMeetingsBasedConductedCountForDiffLevels(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList){  
 		StringBuilder queryStr = new StringBuilder();   
 		queryStr.append(" select " +
-				" count(model.partyMeeting.partyMeetingId), " +//0
+				" count(distinct model.partyMeeting.partyMeetingId), " +//0
 				" model.partyMeeting.meetingAddress.district.districtId, " +//7
 				" model.partyMeeting.partyMeetingLevelId,model.partyMeetingSession.sessionType.sessionTypeId " +//8
 				" from " +
