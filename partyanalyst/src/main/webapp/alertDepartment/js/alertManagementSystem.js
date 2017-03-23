@@ -1231,7 +1231,7 @@ function buildAssignedOfficersDetailsForAlert(result)
 $(document).on('change','#locationLevelSelectId', function(evt, params) {
 	var levelId = $(this).val();
 	locationsBasedOnLevel(levelId);
-	designationsByDepartment();	
+	//designationsByDepartment();	locationsId
 });
 function locationsBasedOnLevel(levelId)
 {
@@ -1409,9 +1409,9 @@ function getVillageAndWardsByMandal(mandalId,constituencyId){
 	});
 }
 
-/*$(document).on('change','#locationsId', function(evt, params) {
+$(document).on('change','#locationsId', function(evt, params) {
 	designationsByDepartment();
-}); */
+});
 function departmentsByAlert()
 {
 	var alertId = $("#hiddenAlertId").val();
@@ -1445,10 +1445,12 @@ function designationsByDepartment()
 	$("#officerNamesId").trigger("chosen:updated");
 	var LevelId = $("#locationLevelSelectId").chosen().val();
 	var deprtmntId = $("#departmentsId").chosen().val();
+	var levelValue = $("#locationsId").chosen().val();
 	
 	var jsObj = {
 		departmentId	: deprtmntId,
 		levelId			: LevelId,
+		levelValue			: levelValue
 	}
 	$.ajax({
       type:'GET',
@@ -2468,7 +2470,7 @@ function fieldsValidation(){
 		return false;
 	}
 	if(offcierId == 0){
-		$("#errMsgOffcrId").html("Select OfficerName.");
+		$("#errMsgOffcrId").html("Select Officer.");
 		return false;
 	}
 	if(comments.length == 0){
@@ -2843,7 +2845,8 @@ $(document).on('change','#officerNamesId', function(evt, params) {
 	//officersByDesignationAndLevel(designationId)
 });
 $(document).on('click','.removeSelectedDepartment', function() {
-	$("#officerNamesId").html("");
+	//$("#officerNamesId").html("");
+	$("#officerNamesId").val(0);
 	$("#officerNamesId").trigger("chosen:updated");
 	$("#assignedOfficersId").html('');
 	$("#assignedOfcrCountId").html('<span>assigned officers - 0</span> ');
