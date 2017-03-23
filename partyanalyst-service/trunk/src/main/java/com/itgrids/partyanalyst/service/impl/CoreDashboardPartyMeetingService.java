@@ -7696,7 +7696,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			List<Object[]> duplicateAttendedCadreList = null;
 			if(locLevelId.longValue() > 0L){
 				meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-				buildLevelWiseResponse(location,locLevelIdList,sessionId,inviteeCadreList,attendedCadreList,meetingDtlsVOs);
+				Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+						locLevelIdList,partyMeetingGroupId);
+				buildLevelWiseResponse(location,locLevelIdList,sessionId,inviteeCadreList,attendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 				LocLvlIdAndLocDtlsMap.put(locLevelId, meetingDtlsVOs);
 			}else{
 				//for state
@@ -7708,7 +7710,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
 				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 					LocLvlIdAndLocDtlsMap.put(1L, meetingDtlsVOs);
 				}
 				//for district
@@ -7720,7 +7724,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
 				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 					LocLvlIdAndLocDtlsMap.put(2L, meetingDtlsVOs);
 				}
 				
@@ -7733,7 +7739,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
 				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 					LocLvlIdAndLocDtlsMap.put(3L, meetingDtlsVOs);  
 				}
 				
@@ -7748,7 +7756,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
 				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 					LocLvlIdAndLocDtlsMap.put(4L, meetingDtlsVOs);  
 				}
 				
@@ -7762,7 +7772,9 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 				filterDateBasedOnLocation(inviteeCadreList,attendedCadreList,locLevelIdList,duplicateInviteeCadreList,duplicateAttendedCadreList);
 				if(duplicateInviteeCadreList.size() > 0 || duplicateAttendedCadreList.size() > 0){
 					meetingDtlsVOs = new ArrayList<MeetingDtlsVO>();
-					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs);
+					Map<Long,SessionVO> sessionLateTimesMap4 = getSessionTypesForEachLevelId(partyMeetingMainTypeId,locationId,locationValuesSet,datesList.get(0),datesList.get(1),stateId,
+							locLevelIdList,partyMeetingGroupId);
+					buildLevelWiseResponse(location,locLevelIdList,sessionId,duplicateInviteeCadreList,duplicateAttendedCadreList,meetingDtlsVOs,sessionLateTimesMap4);
 					LocLvlIdAndLocDtlsMap.put(7L, meetingDtlsVOs);  
 				}
 				
@@ -7799,7 +7811,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 			e.printStackTrace();
 		}
 	}
-	public void buildLevelWiseResponse(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> inviteeCadreList, List<Object[]> attendedCadreList,List<MeetingDtlsVO> meetingDtlsVOs){
+	public void buildLevelWiseResponse(String location,List<Long> locLevelIdList, Long sessionId,List<Object[]> inviteeCadreList, List<Object[]> attendedCadreList,
+			List<MeetingDtlsVO> meetingDtlsVOs,Map<Long,SessionVO> sessionLateTimesMap){
 		try{
 			Map<Long,Long> cadreIdAndDistIdMap = new HashMap<Long,Long>();
 			if(inviteeCadreList != null && inviteeCadreList.size() > 0){
@@ -7913,6 +7926,8 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 					dataVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					dataVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					dataVO.setName(location);
+					dataVO.setSessionId(sessionId);
+					dataVO.getSessionVOs().addAll(sessionLateTimesMap.values());
 					dataVO.setLocLevelIdList(locLevelIdList);  
 					locIdAndLocDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), dataVO);
 				}
@@ -10290,6 +10305,7 @@ public Map<String,Long> getLvelWiseUpdationCount(Date startDate,Date endDate){
 						dataVO.setName(location);
 						dataVO.getSessionVOs().addAll(sessionLateTimesMap.values());
 						dataVO.setLocLevelIdList(locLevelIdList);  
+						dataVO.setSessionId(sessionId);
 						locIdAndLocDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), dataVO);
 					}
 				}
