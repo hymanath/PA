@@ -2966,4 +2966,9 @@ $(document).on("click",".statusWiseTotalAlertsDiv",function(){
 		
 		
 });
-	
+
+$(document).on("click",".linkedArticlesClickId",function(){	 
+		var temp=$(this).attr('src');
+		$(this).attr('src',$(".mainImage").attr('src'));
+		$(".mainImage").attr('src',temp);
+	});
