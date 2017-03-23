@@ -322,8 +322,9 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 				jObj = new JSONObject(getTask());
 				Long departmentId = jObj.getLong("departmentId");
 				Long levelId = jObj.getLong("levelId");
+				Long levelValue = jObj.getLong("levelValue");
 			
-				govtDeptVoList = cccDashboardService.getDesignationsByDepartment(departmentId,levelId);
+				govtDeptVoList = cccDashboardService.getDesignationsByDepartment(departmentId,levelId,levelValue);
 		   } catch (Exception e) {
 			   LOG.error("Exception Raised in getDesignationsByDepartment() in CccDashboardAction",e);
 			}
