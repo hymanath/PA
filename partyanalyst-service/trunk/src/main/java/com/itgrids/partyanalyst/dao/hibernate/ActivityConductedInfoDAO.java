@@ -1385,4 +1385,25 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
 		sqlQuery.setParameter("userAccessLevelValues", userAccessLevelValues);
 	return sqlQuery.list();
 }
+public ActivityConductedInfo isAlreadyAvailableLocationDtls(Long locationInfoId){
+	
+	StringBuilder sb=new StringBuilder();
+	sb.append(" select  model from ActivityConductedInfo model where model.activityConductedInfoId =:locationInfoId ");
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("locationInfoId",locationInfoId);
+	
+	
+	return  (ActivityConductedInfo) query.uniqueResult();
+} 
+public List<Long> getActivityLocationInfoIdByLocationLevelAndLocationValue(Long activityScopeId,Long locationLevel,Long locationValue){
+	
+	Query query = getSession().createQuery(" select model.activityConductedInfoId from ActivityConductedInfo model " +
+						" where model.locationLevel = :locationLevel and model.locationValue = :locationValue and model.activityScopeId=:activityScopeId ");
+	
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameter("locationLevel", locationLevel);
+	query.setParameter("locationValue", locationValue);
+	
+	return query.list();
+}
 }
