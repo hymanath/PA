@@ -1322,6 +1322,7 @@ function getMandalsByConstituency(constId,levelId){
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
+			
 			var str='';
 			if(levelId == 6){
 				$("#mndlMuncLevelDiv").show();
@@ -1355,10 +1356,11 @@ function getLebsByConstituency(constId,levelId){
       url: 'getLebsForConstituencyAction.action',
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
+		
 		if(result != null && result.length > 0){
 			var str='';
 			if(levelId == 7){
-				$("#mndlMuncLevelDiv").show();
+				/*$("#mndlMuncLevelDiv").show();
 				str+='<option value="0">Select Muncipality</option>';
 				for(var i in result)
 				{
@@ -1366,6 +1368,16 @@ function getLebsByConstituency(constId,levelId){
 				}
 				$("#mndlMuncLvlId").html(str);
 				$("#mndlMuncLvlId").trigger("chosen:updated");
+				*/
+				
+				str+='<option value="0">Select Location</option>';
+				for(var i in result)
+				{
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#locationsId").html(str);
+				$("#locationsId").trigger("chosen:updated");
+				
 			}
 			else{
 				str+='<option value="0">Select Location</option>';
@@ -2473,7 +2485,7 @@ function fieldsValidation(){
 		$("#errMsgOffcrId").html("Select Officer.");
 		return false;
 	}
-	if(comments.length == 0){
+	if(comments.trim().length == 0){
 		$("#errMsgCmntId").html("Enter Comments.");
 		return false;
 	}
