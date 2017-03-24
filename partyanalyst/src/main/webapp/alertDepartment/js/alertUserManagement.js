@@ -1971,7 +1971,7 @@ $(document).on("click","#assignOfficerId",function(){
 	var comments = $("#alertDescId").val();
 	var updateStatusId = $("#changeStatusId").val();
 	
-	if(comments.length == 0){
+	if(comments == null || comments.trim().length == 0 || comments == "undefined" || comments === undefined ){
 		$("#errMsgCmntId").html("Enter Comments.");
 		return;
 	}
