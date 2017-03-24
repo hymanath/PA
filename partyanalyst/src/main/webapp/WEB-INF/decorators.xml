@@ -738,6 +738,7 @@
 		 <!-- geoDemographics Start -->
 		<pattern>/geoDemographicsAction*</pattern>
 		<pattern>/newConstituencyPage*</pattern>
+		<pattern>/customReportAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
