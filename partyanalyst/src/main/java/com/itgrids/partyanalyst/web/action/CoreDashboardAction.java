@@ -4043,7 +4043,7 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 		Long partyMeetngGrpId = jObj.getLong("meetingGrpId");
 		Long sessionTypeId = jObj.getLong("sessionTypeId");
 		String cadreType = jObj.getString("cadreType");
-		
+		Long locationId = jObj.getLong("locationId"); 
 		JSONArray levelIdsArr = jObj.getJSONArray("levelIdsLsit");
 		List<Long> levelIdsList = new ArrayList<Long>(0);
 		if(levelIdsArr != null && levelIdsArr.length()>0){
@@ -4052,7 +4052,7 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 			}
 		}
 		idNameVO = coreDashboardPartyMeetingService.getPartyLevelIdWiseMeetingAttendanceDetails(partyMeetngId,partyMeetnMainTypId,
-				 activityMemberId, fromDateStr, toDateStr, stateId, levelIdsList, partyMeetngGrpId,sessionTypeId,cadreType);
+				 activityMemberId, fromDateStr, toDateStr, stateId, levelIdsList, partyMeetngGrpId,sessionTypeId,cadreType,locationId);
 		
 	} catch (Exception e) {
 		LOG.error("Exception occured in getPartyLevelIdWiseMeetingsAttendanceDetails ",e);
