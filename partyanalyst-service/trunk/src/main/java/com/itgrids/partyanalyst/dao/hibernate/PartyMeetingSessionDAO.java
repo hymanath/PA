@@ -140,7 +140,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 	}
 	
 	public List<Object[]> getLateTimeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
-			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId){
+			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long locationValId){
 		StringBuilder queryStr = new StringBuilder();
 		
 		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
@@ -158,6 +158,10 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		}
 		if(levelIdsList != null && levelIdsList.size() > 0l){
 			queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:levelIdsList) ");
+		}
+		
+		if(locationValId != null && locationValId.longValue() > 0l){
+			queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId = :locationValId "); 
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
@@ -183,6 +187,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 			    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 			 }
 		
+		
 		queryStr.append(" group by  model.sessionType.sessionTypeId  ");
 		Query query = getSession().createQuery(queryStr.toString());
 		 if(locationValuesSet != null && locationValuesSet.size() > 0){
@@ -197,6 +202,9 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 		 }
 		 if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
 			 query.setParameter("partyMeetngGrpId", partyMeetngGrpId); 
+		 }
+		 if(locationValId != null && locationValId.longValue() > 0l){
+			 query.setParameter("locationValId", locationValId);
 		 }
 		 if(levelIdsList != null && levelIdsList.size() > 0l){
 			 query.setParameterList("levelIdsList", levelIdsList); 

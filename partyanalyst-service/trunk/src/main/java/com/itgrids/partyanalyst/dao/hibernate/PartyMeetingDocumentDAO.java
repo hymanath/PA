@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -209,7 +210,9 @@ public class PartyMeetingDocumentDAO extends GenericDaoHibernate<PartyMeetingDoc
     	if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0L){
     		query.setParameter("stateId", inputVO.getStateId());
     	}
-    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && Arrays.asList(2,3,4,5).contains(locationId)){
+    	//List<Long> list = new ArrayList<Long>(0);
+    	//list.addAll(2l,3l,4l,5l);
+    	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && Arrays.asList(2L,3L,4L,5L).contains(locationId)){
     		query.setParameterList("locationValuesSet",locationValuesSet);  
     	}
     	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0l){

@@ -1116,20 +1116,24 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 				" date(model.attendance.attendedTime), " +//5
 				" min(time(model.attendance.attendedTime)), " +//6
 				" model.partyMeeting.meetingAddress.district.districtId, " +//7
-				" model.partyMeeting.partyMeetingLevelId" +//8
+				" model.partyMeeting.partyMeetingLevelId,model3.sessionType.sessionTypeId " +//8
 				" from " +
-				" PartyMeetingAttendance model, PartyMeetingGroupsMappingInfo model2 " +
+				" PartyMeetingAttendance model, PartyMeetingGroupsMappingInfo model2,PartyMeetingSession model3  " +
 				" where " +
 				" model.attendance.tdpCadre.isDeleted = 'N' " +
 				" and model.attendance.tdpCadre.enrollmentYear = 2014 " +
 				" and model.partyMeeting.isActive = 'Y' " +
 				" and model.partyMeetingSession.isDeleted = 'N' " +
-				" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId ");
+				" and model3.isDeleted = 'N' and model3.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId " +
+				" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId and model.partyMeeting.partyMeetingLevelId = 2 ");
 		if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
 			queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId " );
     	}  
     	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) " );
+    	}
+    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+			queryStr.append(" and model3.sessionType.sessionTypeId = :sessionTypeId " );
     	}
     	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
     		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate " );
@@ -1185,6 +1189,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
     	} 
     	if(locLevelIdList != null && locLevelIdList.size() > 0){
     		query.setParameterList("locLevelIdList",locLevelIdList);
+    	}
+    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+    		query.setParameter("sessionTypeId", inputVO.getSessionId());
     	}
     	return query.list();
 	}
@@ -1496,7 +1503,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 	}
 	
 	public List<Object[]> getPartyLevelIdWiseMeetingAttendanceDetails(Long partyMeetnMainTypId,Long  userAccessLevelId,Set<Long> userAccessLevelValues, 
-			 Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList,Long  partyMeetngGrpId,Long sessionTypId,Long partyMeetingId){
+			 Date fromDateStr,Date toDateStr, Long stateId, List<Long> levelIdsList,Long  partyMeetngGrpId,Long sessionTypId,Long partyMeetingId,Long locationValId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" st.session_type_id as session_type_id, " +
@@ -1519,7 +1526,7 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		queryStr.append(" party_meeting_main_type pmmt, user_address ua ");
 		queryStr.append(" left join district d on ua.district_id = d.district_id ");
 		queryStr.append(" where ");
-		queryStr.append(" pm.meeting_address_id = ua.user_address_id and ");
+		queryStr.append(" pm.meeting_address_id = ua.user_address_id and pm.is_active='Y' and  ");
 		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
 			queryStr.append(" pmg.party_meeting_group_id = :party_meeting_group_id and  ");
 			queryStr.append(" pmg.party_meeting_id = pm.party_meeting_id and  pmg.is_deleted='N' and  ");
@@ -1539,6 +1546,10 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		
 		if(levelIdsList != null && levelIdsList.size()>0L)
 			queryStr.append(" pm.party_meeting_level_id  in (:levelIdsList) and ");
+		
+		if(locationValId != null && locationValId.longValue() > 0l){
+			queryStr.append("  ua.district_id = :locationValId  and "); 
+		}
 		if(partyMeetnMainTypId != null && partyMeetnMainTypId.longValue()>0L)
 			queryStr.append(" pmmt.party_meeting_main_type_id =:party_meeting_main_type_id and ");
 		
@@ -1585,6 +1596,9 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		query.setParameterList("levelIdsList", levelIdsList);
 		if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
 			query.setParameter("partyMeetingId", partyMeetingId);
+		if(locationValId != null && locationValId.longValue() > 0l){
+			 query.setParameter("locationValId", locationValId);
+		 }
 		//if(sessionTypId != null && sessionTypId.longValue()>0L)
 		//	query.setParameter("sessionTypId", sessionTypId);
 		
