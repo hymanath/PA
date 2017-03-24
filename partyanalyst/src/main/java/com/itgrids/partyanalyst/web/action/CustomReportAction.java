@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CustomReportAction extends ActionSupport implements ServletRequestAware{
@@ -44,4 +46,9 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	public void setServletRequest(HttpServletRequest arg0) {
 	}
   
+	public String execute(){
+		
+		return Action.SUCCESS;
+	}
+	
 }

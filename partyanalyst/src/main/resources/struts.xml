@@ -16194,5 +16194,8 @@
 			    <param name="root">result1</param>
 			</result>
 		</action>
+		 <action name="customReportAction" class="customReportAction">
+	   		 <result name="success">/jsp/customReports.jsp</result>			
+	    </action>
  </package>
 </struts>
