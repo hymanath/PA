@@ -16,7 +16,7 @@
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>  
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>  
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
-
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -27,7 +27,8 @@
 <script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 <script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
-<script type="text/javascript" src="js/yahoo/get-min.js"></script> 	  
+<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>	  
 <style>
 .candiateCls
 {
@@ -218,6 +219,10 @@
 												<div id="commentsUlId"></div>
 												<!--<h4 style="margin-top:20px !important">Program Wise Info</h4>-->
 												<div id="toursCandidateProgramDetails" style="margin-top:10px;"></div>
+												<!-- <div id="remarkId6" style="display:none">
+													<label>Comment: </label>
+													<textarea id="remarkId7" class="form-control" style="resize: none;"></textarea>
+												</div> -->	
 												<div id="attachementsId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -231,7 +236,7 @@
 												</div>
 												<div class="">
 													  <label>Comment:</label>
-													  <textarea style="resize: none;" name="toursNewVO.remark" class="form-control" id="remarkId"></textarea>
+													  <textarea style="resize: none;" name="toursNewVO.remark" class="form-control lang" id="remarkId"></textarea>
 												</div>												
 												<div class="row" id="uploadFlDivId">
 													<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -546,7 +551,13 @@
 			<div class="modal-body">
 				<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">-->
 					<div id="toursCandidateDetailsModal"></div>
-					<div id="toursCandidateProgramDetailsModal"></div>					
+					<div id="toursCandidateProgramDetailsModal"></div>
+					
+					<div id="remarkId3" style="display:none">
+						<label>Comment: </label>
+						<textarea id="remarkId2" name="toursNewVO.remark" class="form-control" style="resize: none;"></textarea>
+					</div>	
+						
 					<div id="attachementsIdModal"></div>
 					<div class="row" id="updateToursModalDiv">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -573,6 +584,7 @@
 		</div>
 	  </div>
 	</div>
+
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
@@ -593,6 +605,7 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 
 <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 /*New Code*/
 /*Month & Year Picker*/
@@ -605,6 +618,25 @@ $('#tourMonthYear').on('dp.change', function(e) {
 	$("#changedDate").html('('+(date)+')');
 });
 editUpdateDetailsInitilize();
+ google.load("elements", "1", {
+          packages: "transliteration"
+    });
+
+    function onLoad() {
+      var options = {
+          sourceLanguage:
+              google.elements.transliteration.LanguageCode.ENGLISH,
+          destinationLanguage:
+              [google.elements.transliteration.LanguageCode.TELUGU],
+          shortcutKey: 'alt+t',
+          transliterationEnabled: true
+      };
+      var control = new google.elements.transliteration.TransliterationControl(options);
+		control.makeTransliteratable(['remarkId']);
+		control.makeTransliteratable(['remarkId2']);
+		
+    }
+    google.setOnLoadCallback(onLoad);
 var TourCategoryArray =[];
 var TourTypesArray =[];
 var tourCloneMainDivCount=1;
@@ -832,7 +864,7 @@ if($(window).width() > 500)
 	$(document).on("click",".newsTourRemoveBtnCls",function(){
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
-	});    
+	}); 
 </script>
 </body>
 </html>

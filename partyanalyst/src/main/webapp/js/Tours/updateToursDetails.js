@@ -1988,6 +1988,11 @@ function buildAllTourDetailsOverview(result,saveUpdate,tdpCadreName,monthDate){
 		
 	}else if(saveUpdate == '2')
 	{
+		if(result.remark!=null){
+		$('#remarkId3').css('display','block');
+		$('#remarkId2').val(result.remark);
+		}else{}
+		
 		$("#toursCandidateDetailsModal").html(str);
 		$("#attachementsIdModal").html(str1);
 		$("#toursCandidateProgramDetailsModal").html(strp);
