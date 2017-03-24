@@ -3435,7 +3435,7 @@ function getTotalArticledetails(articleId){
 		  //url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
 		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
 	}).then(function(results){
-			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward","NATIONAL","INTERNATIONAL"];
 				var result = results[0];
 				var str = '';
 					str+='<div class="modal-header">';
