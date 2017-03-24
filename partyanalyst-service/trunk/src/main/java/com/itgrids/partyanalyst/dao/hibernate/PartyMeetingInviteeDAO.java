@@ -2028,20 +2028,25 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     			" model.partyMeeting.partyMeetingId, " +
     			" model.tdpCadre.tdpCadreId, " +
     			"model.partyMeeting.meetingAddress.district.districtId, " +
-    			" model.partyMeeting.partyMeetingLevelId" +
-    			" from PartyMeetingInvitee model, PartyMeetingGroupsMappingInfo model2 " +
+    			" model.partyMeeting.partyMeetingLevelId,model3.sessionType.sessionTypeId " +
+    			" from PartyMeetingInvitee model, PartyMeetingGroupsMappingInfo model2,PartyMeetingSession model3 " +
     			" where " +
     			" model.tdpCadre.isDeleted = 'N' " +
     			" and model.tdpCadre.enrollmentYear = 2014 " +  
     			" and model.partyMeeting.isActive = 'Y' " +
     			" and model.partyMeeting.partyMeetingType.isActive = 'Y' " +
-    			" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId ");
+    			" and model.partyMeeting.partyMeetingId = model2.partyMeeting.partyMeetingId " +
+    			" and model3.isDeleted = 'N' and model3.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId ");
     	if(inputVO.getPartyMeetingMainTypeId() != null && inputVO.getPartyMeetingMainTypeId().longValue() > 0L){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId ");
+    	}
+    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+			queryStr.append(" and model3.sessionType.sessionTypeId = :sessionTypeId " );
     	}
     	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size() > 0){
     		queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIdList) ");
     	}
+    	
     	if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
     		queryStr.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate ");
     	}
@@ -2095,7 +2100,10 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     	}
     	if(inputVO.getPartyMeetingGroupId() != null && inputVO.getPartyMeetingGroupId().longValue() > 0L){
     		query.setParameter("partyMeetingGroupId", inputVO.getPartyMeetingGroupId());
-    	}  
+    	} 
+    	if(inputVO.getSessionId() != null && inputVO.getSessionId().longValue() > 0L){
+    		query.setParameter("sessionTypeId", inputVO.getSessionId());
+    	}
     	return query.list();
     } 
     public List<Object[]> getCommitteeWiseInvitedCadreCountForMultiLocationMeeting(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList,String isRequired){
@@ -2385,16 +2393,16 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
     }
     
     public List<Object[]> getInvitteeDetails(Long partyMeetnMainTypId,Long userAccessLevelId,Set<Long> locationValuesSet,
-			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long partyMeetingId){
+			Date fromDate,Date toDate,Long stateId,List<Long> levelIdsList,Long partyMeetngGrpId,Long partyMeetingId,Long locationValId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select  model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId," +
 				"model.tdpCadre.tdpCadreId, model.partyMeeting.partyMeetingType.partyMeetingTypeId,'', model.absenteeRemark  " +
-				"from PartyMeetingInvitee model");
+				"from PartyMeetingInvitee model ");
 		if(partyMeetngGrpId != null && partyMeetngGrpId.longValue() > 0l){
 			queryStr.append(" ,PartyMeetingGroupsMappingInfo model1");
 		}
 		
-		queryStr.append(" where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId ");
+		queryStr.append(" where model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetnMainTypId and  model.partyMeeting.isActive='Y' ");
 		if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
 			queryStr.append(" and model.partyMeeting.partyMeetingId = :partyMeetingId");
 		
@@ -2404,6 +2412,10 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		
 		if(levelIdsList != null && levelIdsList.size() > 0l){
 			queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:levelIdsList) ");
+		}
+		
+		if(locationValId != null && locationValId.longValue() > 0l){
+			queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId = :locationValId "); 
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
@@ -2446,6 +2458,9 @@ public List<Object[]> getPublicRepresentativeWiseInvitedCadreCountForMeeting(Par
 		 }
 		 if(levelIdsList != null && levelIdsList.size() > 0l){
 			 query.setParameterList("levelIdsList", levelIdsList); 
+		 }
+		 if(locationValId != null && locationValId.longValue() > 0l){
+			 query.setParameter("locationValId", locationValId);
 		 }
 		 if(partyMeetingId != null && partyMeetingId.longValue() > 0l)
 			 query.setParameter("partyMeetingId", partyMeetingId);
