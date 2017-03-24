@@ -58,6 +58,7 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="js/customReports.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	$(".multiDateRangePicker").daterangepicker({
