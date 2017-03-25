@@ -193,8 +193,8 @@ public interface ICadreCommitteeService {
 	 public List<BasicVO> userWiseDetailsForDashBoard(Long userId, String accessType, String accessValue);
 	 public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(String mandalId,Long constituencyId,Long enrollmentId);
 	 public List<IdNameVO> getConstituenciesByActivityId(Long activityId);
-	 public List<IdNameVO> getPanchayatBymandalId(Long constituencyId);
-	 public List<IdNameVO> getMandalsByConstituencyId(Long constituencyId);
+	 public List<IdNameVO> getPanchayatBymandalId(Long constituencyId,Long activityScopeId);
+	 public List<IdNameVO> getMandalsByConstituencyId(Long constituencyId,Long activityScopeId);
 	 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue);
 	 public List<IdNameVO> getDistrictsByActivityId(Long activityId);
 	 public String saveActivityLocationDetails(final ActivityVO activityVO,final Long userId);

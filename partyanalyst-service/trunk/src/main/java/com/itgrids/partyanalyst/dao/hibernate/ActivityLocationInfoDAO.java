@@ -3011,15 +3011,17 @@ public List<Object[]> getCnstenciesByActivityId(Long activityId){
 	query.setParameter("activityId", activityId);
 	return query.list();
 }
-public List<Object[]> getMandalsByConstituency(Long constituencyId){
+public List<Object[]> getMandalsByConstituency(Long constituencyId,Long activityScopeId){
 	Query query = getSession().createQuery("select distinct " +
 			" model.address.tehsil.tehsilId,model.address.tehsil.tehsilName" +
 			//" leb.localElectionBodyId,leb.name " +
 			" from ActivityLocationInfo model " +
 			//" left join model.address.tehsil tehsil" +
 			//" left join model.address.localElectionBody leb" +
-			" where model.address.constituency.constituencyId = :constituencyId");
+			" where model.address.constituency.constituencyId = :constituencyId" +
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.tehsil.tehsilName");
 	query.setParameter("constituencyId", constituencyId);
+	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
 public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLevelValues,Long activityScopeId,String locationType,String checkedValue){
@@ -3088,15 +3090,17 @@ public List<Object[]> getDistrictsByActivityId(Long activityScopeId){
 	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
-public List<Object[]> getMuncipalitiesByConstituency(Long constituencyId){
+public List<Object[]> getMuncipalitiesByConstituency(Long constituencyId,Long activityScopeId ){
 	Query query = getSession().createQuery("select distinct " +
 			" model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name " +
 			//" localElectionBody.localElectionBodyId,localElectionBody.name " +
 			" from ActivityLocationInfo model " +
 			//" left join model.address.tehsil tehsil" +
 			//" left join model.address.localElectionBody leb" +
-			" where model.address.constituency.constituencyId = :constituencyId");
+			" where model.address.constituency.constituencyId = :constituencyId" +
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.localElectionBody.name");
 	query.setParameter("constituencyId", constituencyId);
+	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
 public ActivityLocationInfo isAlreadyAvailableLocationDtls(Long locationInfoId){
@@ -3108,4 +3112,30 @@ public ActivityLocationInfo isAlreadyAvailableLocationDtls(Long locationInfoId){
 		query.setParameter("locationInfoId",locationInfoId);
 	return (ActivityLocationInfo) query.uniqueResult();
 } 
+public List<Object[]> getPanchayatByTehsil(Long tehsilId,Long activityScopeId ){
+	Query query = getSession().createQuery("select distinct " +
+			" model.address.panchayat.panchayatId,model.address.panchayat.panchayatName " +
+			//" localElectionBody.localElectionBodyId,localElectionBody.name " +
+			" from ActivityLocationInfo model " +
+			//" left join model.address.tehsil tehsil" +
+			//" left join model.address.localElectionBody leb" +
+			" where model.address.tehsil.tehsilId = :tehsilId" +
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.panchayat.panchayatName ");
+	query.setParameter("tehsilId", tehsilId);
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
+public List<Object[]> getWardsByMun(Long muncipId,Long activityScopeId ){
+	Query query = getSession().createQuery("select distinct " +
+			" model.address.ward.constituencyId,model.address.ward.name " +
+			//" localElectionBody.localElectionBodyId,localElectionBody.name " +
+			" from ActivityLocationInfo model " +
+			//" left join model.address.tehsil tehsil" +
+			//" left join model.address.localElectionBody leb" +
+			" where model.address.localElectionBody.localElectionBodyId = :muncipId" +
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.ward.name ");
+	query.setParameter("muncipId", muncipId);
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
 }
