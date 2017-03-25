@@ -2573,7 +2573,9 @@ public String saveActivityLocationDetails(){
 				locationVO.setDay(jObj.getLong("day"));
 				activityVO.getActivityVoList().add(locationVO);*/
 			//}
-			 
+			 if(activityVO.getTypes() == null){
+				 activityVO.setTypes("6,7");
+			 }
 			result1 = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
 			
 		} catch (Exception e) {

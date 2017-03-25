@@ -1687,8 +1687,9 @@ public String getAllConstituencysForADistrict(){
 		try{
 			jObj = new JSONObject(getTask());
 			Long constituencyId =jObj.getLong("constituencyId");
+			Long activityScopeId = jObj.getLong("activityScopeId");
 			
-			idNameVOList = cadreCommitteeService.getMandalsByConstituencyId(constituencyId);
+			idNameVOList = cadreCommitteeService.getMandalsByConstituencyId(constituencyId,activityScopeId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getMandalsByConstituency ",e);
 		}
@@ -1698,8 +1699,9 @@ public String getAllConstituencysForADistrict(){
 		try{
 			jObj = new JSONObject(getTask());
 			Long mandalId =jObj.getLong("mandalId");
+			Long activityScopeId = jObj.getLong("activityScopeId");
 			
-			idNameVOList = cadreCommitteeService.getPanchayatBymandalId(mandalId);
+			idNameVOList = cadreCommitteeService.getPanchayatBymandalId(mandalId,activityScopeId);
 		}catch(Exception e){
 			LOG.error("Exception occured in getPanchayatsByMandals ",e);
 		}
