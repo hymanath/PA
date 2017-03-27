@@ -14,16 +14,12 @@ public class CustomReportDAO extends GenericDaoHibernate<CustomReport, Long> imp
 		super(CustomReport.class);
 	}
 	
-	public List<Object[]> getTotalExpertedReports(Long customReportProgramId) {
-		Query query = getSession().createQuery("select " +
-				" model.isSubmitted, " +
-				" count(distinct model.customReportId) " +
-				" from " +
-				" CustomReport model " +
-				" where " +
-				" model.customReport.customReportProgramId = :customReportProgramId " +
+	public List<Object[]> getTotalExpectedReports(Long customReportProgramId) {
+		Query query = getSession().createQuery("select model.isSubmitted, count(distinct model.customReportId) " +
+				" from CustomReport model " +
+				" where model.customReportProgramId = :customReportProgramId " +
 				" and model.isDeleted='N' " +
-				" GROUP BY customReport.isSubmitted  ");
+				" GROUP BY model.isSubmitted  ");
 		query.setParameter("customReportProgramId", customReportProgramId);
 		return query.list();	
 }

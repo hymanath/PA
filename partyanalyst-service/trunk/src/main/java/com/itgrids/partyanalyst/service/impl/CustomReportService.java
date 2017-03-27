@@ -90,12 +90,12 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	public void setCustomReportFileDAO(CustomReportFileDAO customReportFileDAO) {
 		this.customReportFileDAO = customReportFileDAO;
 	}
-	public List<CustomReportVO> getTotalExpertedReports(Long customReportProgramId) {
+	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId) {
 		List<CustomReportVO> customReportList=new ArrayList<CustomReportVO>();
 		List<Object[]> reportDetails=null;
 		
 		try{
-			reportDetails = customReportDAO.getTotalExpertedReports(customReportProgramId);
+			reportDetails = customReportDAO.getTotalExpectedReports(customReportProgramId);
 			if(reportDetails !=null && reportDetails.size() >0){
 				for(Object[] objects:reportDetails)
 				{
@@ -205,7 +205,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return resultStatus;
 	}
-	public List<CustomReportVO> getCustomReportProgram(String startDateStr,String endDateStr){
+	public List<CustomReportVO> getCustomReportPrograms(String startDateStr,String endDateStr){
 		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
 		
 		try {
@@ -218,11 +218,12 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		      }			
 			List<Object[]> objList =customReportProgramDAO.getCustomReportPogram(fromDate,toDate);
 			if(objList !=null && objList.size()>0){
-				for (Object[] objects : objList) {
+				for (int i = 0; i < objList.size(); i++) {
 					CustomReportVO vo=new CustomReportVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-					
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objList.get(i)[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objList.get(i)[1]));
+					if(i==0)
+						vo.setSelected("true");
 					finalList.add(vo);
 				}
 			}
