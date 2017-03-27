@@ -98,6 +98,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
+import com.itgrids.partyanalyst.dao.IRequiredAttributeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
@@ -291,7 +292,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private CoreDashboardGenericService coreDashboardGenericService;
 	private ICommitteeConfirmRuleConditionDAO committeeConfirmRuleConditionDAO;
 	private IActivityConductedInfoDAO activityConductedInfoDAO;
+	private IRequiredAttributeDAO requiredAttributeDAO;
 	
+		
+	public IRequiredAttributeDAO getRequiredAttributeDAO() {
+		return requiredAttributeDAO;
+	}
+
+	public void setRequiredAttributeDAO(IRequiredAttributeDAO requiredAttributeDAO) {
+		this.requiredAttributeDAO = requiredAttributeDAO;
+	}
+
 	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
 		return activityMemberAccessLevelDAO;
 	}
@@ -18390,6 +18401,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				if(commonMethodsUtilService.isListOrSetValid(idnameList)){
 					returnVO.setIdNameVolist(idnameList);
 				}
+
 				
 				//getting Required attributes For every scope end
 				
@@ -20808,6 +20820,20 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 					vo.setCount(docmntListMap.get(locationInfoId));
 			}
 		}
+
+		//srinu
+		List<Object[]> scopeValues = requiredAttributeDAO.getAttributesTypes(activityScopeId);
+		//List<LocationWiseBoothDetailsVO> scopeValuesVoList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+	if(scopeValues != null && !scopeValues.isEmpty()){
+		for (Object[] obj : scopeValues) {
+		LocationWiseBoothDetailsVO vo=new LocationWiseBoothDetailsVO();
+
+		vo.setPopulation(obj[0]!=null ? (Long)obj[0] :0L);
+		vo.setRoleType(obj[1]!=null ? obj[1].toString() :"");
+		returnList.get(0).getResult3().add(vo);
+	}
+}
+			
 	}catch(Exception e){
 		LOG.error("Exception Occured in getActivityLocationDetails() method, Exception - ",e);
 	}
