@@ -1,14 +1,17 @@
 package com.itgrids.partyanalyst.service;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CustomReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.CustomReportVO;
 
 public interface ICustomReportService {
 	public List<CustomReportVO> getTotalExpertedReports(Long customReportProgramId);
 	 public ResultStatus saveCustomReportUploadFile(final Map<File,String> mapfiles,final Long userId);
+	public List<CustomReportVO> getCustomReportProgram(String startDateStr,String endDateStr);
 
 }

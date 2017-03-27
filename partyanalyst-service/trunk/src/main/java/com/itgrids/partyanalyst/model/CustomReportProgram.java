@@ -48,5 +48,4 @@ public class CustomReportProgram implements Serializable {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
 }
