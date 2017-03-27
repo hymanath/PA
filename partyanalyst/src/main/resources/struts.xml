@@ -16194,7 +16194,7 @@
 			    <param name="root">result1</param>
 			</result>
 		</action>
-		 <action name="customReportAction" class="customReportAction">
+		<action name="customReportAction" class="customReportAction">
 	   		 <result name="success">/jsp/customReports.jsp</result>			
 	    </action>
 	    <action name="getTotalExpertedReportsAction" class="customReportAction" method="getTotalExpertedReports">
@@ -16207,5 +16207,10 @@
 				<param name="root">resultStatus</param>
 			</result>
 	    </action>
+		<action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
+		    <result type="json" name="success">		   
+			    <param name="root">customVoList</param>
+			</result>
+		</action>		 
  </package>
 </struts>
