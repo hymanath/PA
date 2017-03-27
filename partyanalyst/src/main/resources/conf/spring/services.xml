@@ -4109,5 +4109,9 @@
 	</bean>
 	<bean name="customReportService" class="com.itgrids.partyanalyst.service.impl.CustomReportService">
 	</bean>
+	
+	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
+		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" ></property>
+	</bean>
 </beans>			
 	
