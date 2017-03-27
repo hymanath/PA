@@ -14982,7 +14982,7 @@
 	</action>
 	<action name="getTotalAlertGroupByLocationThenStatusAction" class="createAlertAction"  method="getTotalAlertGroupByLocationThenStatus">
 		<result type="json" name="success">    
-			<param name="root">alertVOs</param>
+			<param name="root">resultList</param>
 		</result>
 	</action>
 	<action name="getDepartmentBoardPositionsAction1" class="nominatedPostProfileAction" method="getDepartmentBoardPositions1">
@@ -15075,7 +15075,7 @@
    			<param name="root">cardPrintVO</param>
    		</result>
 	</action>
-	<action name="getStateImpactLevelAlertDtlsCntAction" class="createAlertAction"  method="getStateImpactLevelAlertDtlsCnt">
+	<action name="getStateOrGhmcImpactLevelAlertStatusWiseAction" class="createAlertAction"  method="getStateOrGhmcImpactLevelAlertStatusWise">
 		<result type="json" name="success">    
 			<param name="root">alertOverviewVO</param>  
 		</result>  
@@ -16103,7 +16103,41 @@
 				<param name="root">idNameVO</param>     
 			</result>
 		</action>
-		
+		<action name="getStateImpactandItsSubLevelAlertAction" class="createAlertAction"  method="getStateImpactandItsSubLevelAlert">
+			<result type="json" name="success">    
+				<param name="root">alertOverviewVO</param>  
+			</result>  
+		</action>
+		<action name="getDistrictOrConstituencyImpactandItsSubLevelAlert" class="createAlertAction"  method="getDistrictOrConstituencyImpactandItsSubLevelAlert">
+			<result type="json" name="success">    
+				<param name="root">alertOverviewVO</param>  
+			</result>  
+		</action>
+		<action name="getCorpGMCAlertAction" class="createAlertAction"  method="getCorpGMCAlert">
+			<result type="json" name="success">    
+				<param name="root">alertOverviewVO</param>  
+			</result>  
+		</action>
+		 <action name="getDirectChildActivityAlertDetailsAction" class="createAlertAction" method="getDirectChildActivityAlertDetails">
+			<result type="json" name="success">
+	   			<param name="root">activityMembersList</param>
+	   		</result>
+		 </action>
+		  <action name="getAlertByUserTypeBasedOnAccessLevelAction" class="createAlertAction" method="getAlertByUserTypeBasedOnAccessLevel">
+			<result type="json" name="success">
+	   			<param name="root">activityMembersList</param>
+	   		</result>
+		 </action>
+	    <action name="getDirectChildMemberAlertStatusWiseAction" class="createAlertAction"  method="getDirectChildMemberAlertStatusWise">
+			<result type="json" name="success">    
+				<param name="root">resultList</param>  
+			</result>  
+		</action>
+		<action name="getStateOrGHMCImpcatLevelAlertCntPublicationWiseAction" class="createAlertAction"  method="getStateOrGHMCImpcatLevelAlertCntPublicationWise">
+			<result type="json" name="success">    
+				<param name="root">alertOverviewVO</param>  
+			</result>  
+		</action>
 		<action name="getLocationByDepartmentsAction" class="nominatedPostProfileAction" method="getLocationByDepartment">
 		<result type="json" name="success">
    			<param name="root">locationVoList</param>
@@ -16194,7 +16228,7 @@
 			    <param name="root">result1</param>
 			</result>
 		</action>
-		<action name="customReportAction" class="customReportAction">
+	 	<action name="customReportAction" class="customReportAction">
 	   		 <result name="success">/jsp/customReports.jsp</result>			
 	    </action>
 	    <action name="getTotalExpectedReportsAction" class="customReportAction" method="getTotalExpectedReports">

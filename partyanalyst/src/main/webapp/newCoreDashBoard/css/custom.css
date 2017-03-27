@@ -602,7 +602,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-weight: bold;
     text-transform: uppercase;
 }
-.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon, #multicLocationMeetingId{
+.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon,.alertSettingBlock, #multicLocationMeetingId{
     background-color: rgb(254, 203, 0);
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -613,11 +613,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
     top: -3px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i, #multicLocationMeetingId i{
+.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i,.alertSettingBlock i,#multicLocationMeetingId i{
     transition: all 0.2s ease-in-out 0s;
 }
 .iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,
-.NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover,.mainMeetingsIcon i:hover, #multicLocationMeetingId i:hover{
+.NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover,.mainMeetingsIcon i:hover,.alertSettingBlock i:hover,#multicLocationMeetingId i:hover{
     transform: scale(1.4);
 }
 .text-capital {
@@ -720,7 +720,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-width: 16px;
     margin-left: -16px;
 }
-.basicCommitteesBlockDropDown, .newsBlockDropDown, .cadreRDD , .emnBlockDropDown , .actBlockDropDown{
+.basicCommitteesBlockDropDown, .newsBlockDropDown, .cadreRDD , .emnBlockDropDown , .actBlockDropDown,.basicAlertBlockDropDown{
     background: rgb(255, 255, 255);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
     display: none;
@@ -2722,4 +2722,48 @@ color: rgb(51, 122, 183);
 .meetingsHeadingExpandIcon
 {
 	cursor:pointer;
+}
+.navTabsAlerts li , .navTabsAlerts li a
+{
+	background:#fff;
+	border-radius:0px;
+	padding:4px;
+	font-size:22px;
+}
+.constituencyUl li
+{
+	border:1px solid #ddd;
+	padding:2px 3px;
+	text-transform:uppercase;
+	cursor:pointer;
+}
+.constituencyUl li:last-child
+{
+	padding:0px;
+}
+.districtUl li
+{
+	border:1px solid #ddd;
+	padding:2px 3px;
+	text-transform:uppercase;
+	cursor:pointer;
+}
+.districtUl li:last-child
+{
+	padding:0px;
+}
+.alertsGraphUl
+{
+	padding:0px;
+	border-bottom:1px solid #ccc
+}
+.alertsGraphUl li
+{
+	list-style:none;
+	border-right:1px solid #ccc;
+	padding:10px;
+}
+.alertsGraphUl li:last-child
+{
+	border-right:0px;
 }

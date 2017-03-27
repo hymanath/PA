@@ -3592,6 +3592,7 @@
 		<property name="smsSenderService" ref="smsSenderService"></property>
 		<property name="newsPaperDAO" ref="newsPaperDAO"></property>
 		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO"></property>
+		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
 	</bean>            
 	<!-- Debate End -->
 	
