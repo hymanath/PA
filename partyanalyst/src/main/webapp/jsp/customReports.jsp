@@ -16,6 +16,16 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
 <!-- for file uploader -->
+<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
+<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
 <style type="text/css">
 .text-capital{
 	
@@ -66,15 +76,19 @@
 		  <div class="modal-body">
 			<div class="row" >
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3> 
+					<form name="customApplication" method="post" id="customApplication">
 					<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
 					<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+					
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="uploacFilesBtnId">Save changes</button>
+					</form>
 				</div>
 			</div>  
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
+			
 		  </div>
 		</div>
 	  </div>
@@ -100,6 +114,17 @@ initializeCustomReport();
 	$(document).on('click','.uploadDivCls',function(){
 		$("#uploadModalDivId").modal("show");
 		
+	});
+	
+	$(document).on("click","#uploacFilesBtnId",function(){alert(21);
+		var uploadHandler = { 
+			upload: function(o) {
+				uploadResult = o.responseText;
+				//showSbmitStatusNew(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('customApplication',true);  
+		YAHOO.util.Connect.asyncRequest('POST','saveCustomReportUploadFileAction.action',uploadHandler);
 	});
 </script>	
 </body>

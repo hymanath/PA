@@ -16197,5 +16197,15 @@
 		 <action name="customReportAction" class="customReportAction">
 	   		 <result name="success">/jsp/customReports.jsp</result>			
 	    </action>
+	    <action name="getTotalExpertedReportsAction" class="customReportAction" method="getTotalExpertedReports">
+			<result type="json" name="success">
+   				<param name="root">customReportVO</param>
+   			</result>
+	    </action>
+	    <action name="saveCustomReportUploadFileAction" class="customReportAction" method="saveCustomReportUploadFile">
+	  	   <result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+	    </action>
  </package>
 </struts>

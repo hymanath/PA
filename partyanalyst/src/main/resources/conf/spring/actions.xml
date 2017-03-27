@@ -1765,7 +1765,8 @@
 	</bean>
 	<bean id="locationBaseAction" class="com.itgrids.partyanalyst.web.action.LocationBaseAction" singleton="false">
 	</bean>
-	<bean id="customReportAction" class="com.itgrids.partyanalyst.web.action.CustomReportAction" singleton="false">		
+	<bean id="customReportAction" class="com.itgrids.partyanalyst.web.action.CustomReportAction" singleton="false">
+		<property name="customReportService" ref="customReportService" />  		
 	</bean>	
 	
 </beans>	
