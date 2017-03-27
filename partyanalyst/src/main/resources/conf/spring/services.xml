@@ -4113,6 +4113,7 @@
 	
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" ></property>
+		<property name="insuranceStatusDAO" ref="insuranceStatusDAO" ></property>
 	</bean>
 </beans>			
 	
