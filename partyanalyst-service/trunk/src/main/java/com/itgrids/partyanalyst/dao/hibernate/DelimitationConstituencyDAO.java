@@ -460,7 +460,17 @@ IDelimitationConstituencyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getLatestConstituenciesForDistrict1(Long districtId){
-		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
-				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.year =(Select max(model.year) from DelimitationConstituency model) ");
+		 if(districtId != null && districtId.longValue()>0){
+			 sb.append(" and model.constituency.district.districtId =:districtId "); 
+		 }
+		 sb.append(" order by model.constituency.name ");
+		 Query query = getSession().createQuery(sb.toString()); 
+		 if(districtId != null && districtId.longValue()>0){
+			 query.setParameter("districtId", districtId);
+		 }
+			return query.list();
 	}
 }

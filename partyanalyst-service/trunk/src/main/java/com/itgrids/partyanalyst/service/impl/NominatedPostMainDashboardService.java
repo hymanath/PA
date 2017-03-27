@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -69,6 +70,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	public ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICasteCategoryDAO casteCategoryDAO;
+	private ICasteStateDAO casteStateDAO;
 
 	
 	
@@ -212,6 +214,17 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
 		this.panchayatDAO = panchayatDAO;
 	}
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+
 	/**
 	 * @Author  Santosh
 	 * @Version NominatedPostMainDashboardService.java  july 30, 2016 06:50:00 PM 
@@ -1826,5 +1839,37 @@ public List<GeoLevelListVO> setReturnListValues(List<GeoLevelListVO> locationsLi
 			LOG.error("Exception occured into getMatchedVO () of NominatedPostMainDashboardervice ",e);
 		}
 		return returnVO;
+	}
+ public List<IdAndNameVO> getAllAgeRangesList(){
+		LOG.info("Entered into getAllAgeRangesList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> ageRanges = new ArrayList<IdAndNameVO>();
+			List<Object[]> ageRangesList = nominatedPostAgeRangeDAO.getAllAgeRangesByOrder();
+			if(ageRangesList != null && ageRangesList.size() > 0){
+				setDataToVO(ageRangesList, ageRanges);
+			}
+			return ageRanges;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAllAgeRangesList()", e);
+		}
+		return null;    
+	}
+ public List<IdAndNameVO> getCastListByCasteCatgryId(List<Long> casteCatgryId,Long stateId){
+		LOG.info("Entered into getCastListByCasteCatgryId() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> ageRanges = new ArrayList<IdAndNameVO>();
+			List<Object[]> ageRangesList = casteStateDAO.getStatewiseCastNamesByCasteCategoryGroupId(casteCatgryId,stateId);
+			if(ageRangesList != null && ageRangesList.size() > 0){
+				setDataToVO(ageRangesList, ageRanges);
+			}
+			return ageRanges;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getCastListByCasteCatgryId()", e);
+		}
+		return null;    
 	}
 }

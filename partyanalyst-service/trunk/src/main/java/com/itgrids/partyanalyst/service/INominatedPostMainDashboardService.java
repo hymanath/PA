@@ -40,4 +40,6 @@ public interface INominatedPostMainDashboardService {
 	 public  List<IdNameVO> getCandidateLocationWiseDetails(Long postLevelId,Long casteGrpId,Long casteId1,Long ageRangeId,Long positionId,String gender1,
 				Long stateId,String searchType,List<Long> locIdsList,List<Long> postStatusIds,String type);
 	 public List<GeoLevelListVO> getGeoLevelReportDetails(GeoLevelReportVO vo);
+	 public List<IdAndNameVO> getAllAgeRangesList();
+	 public List<IdAndNameVO> getCastListByCasteCatgryId(List<Long> casteCatgryId,Long stateId);
 }
