@@ -144,6 +144,7 @@
                                     <s:select theme="simple" headerKey="0" headerValue="Select Activity Type" name="surveyType" id="activityTypeList" value="surveyTypeId" list="basicVO.panchayatVoterInfo" listKey="id" listValue="name" cssClass="input-block-level form-control"/>
                             </div>
 							<div class="col-md-4"><span class="starMark">*</span>
+								<span id="errCnstId" style="color:red;"></span>
 								<label>Activity Level</label>
 								<s:select theme="simple" headerKey="0" headerValue="Select Activity Level" name="surveyType" id="activityLevelList" value="surveyTypeId" list="idNameVOList" listKey="id" listValue="name" onchange="getActivityNames(this.value);" cssClass="input-block-level form-control"/>
 							</div>
@@ -176,7 +177,6 @@
 								<span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg2"></span>
 							</div>	
 							<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
-								<span id="errCnstId" style="color:red;"></span>
 								<label>Constituency</label>
 								<!--<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >-->
 								<select id="constiList" class="form-control" name="activityVO.constituencyId" >
@@ -266,11 +266,11 @@
 			<div class="col-md-3" id="attributeTypeId" style="display:none;">
 				<label>Required Attributes</label>
 				<select attr_no="" multiple class="chosenSelect form-control" id="attributeTypeList" name="" data-placeholder ="Select Option" name="activityVO.types">
-					<option value="0">Select Option</option>
+					<!-- <option value="0">Select Option</option>
 					<option selected value="6"> Conducted Date</option>
-					<option value="5"> Planned Date</option>
+					<!--<option value="5"> Planned Date</option>
 					<option selected value="7"> Ivr Status</option>
-					<option value="1">Upload Images</option>
+					<option value="1">Upload Images</option> -->
 				</select><br>
 				<span id="chCkBxErrMsgId"></span>
 			</div>
@@ -1402,21 +1402,22 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 	});
 
 function gettingCadreDetails(locationId,locationName,constituencyId){	
-	
 	$("#cadreDetailsDiv").html('');
 	
 	$('#dialogSummaryDistsrict').find('h3').html('<span>'+locationName+'  '+$("#activityLevelList option:selected").text()+' Main Committee Members </span>');
 	$("#dialogSummaryDistsrict").modal("show");
 	$("#dataLoadingImg").show();
 	
-	locationId = ""+locationId+"";
+	var locationTypeId = $('#activityLevelList').val();
+	var activityLevellId = $('#activityLevelList').val();
+	if(activityLevellId == 3){
+		locationId = locationId;
+	}else{
+		locationId = ""+locationId+"";
 	var firstChar = locationId.substr(0,1);
 	//console.log(firstChar);
 	 locationId = locationId.slice(1);
-	 
-	 
-	var locationTypeId = $('#activityLevelList').val();
-	var activityLevellId = $('#activityLevelList').val();
+	} 
 	
 	var locationType = 5;
 	if(activityLevellId == 2)
@@ -1434,7 +1435,13 @@ function gettingCadreDetails(locationId,locationName,constituencyId){
 			locationType = 6;
 		else if(firstChar == 2)
 			locationType = 8;
-	}
+	}else if(activityLevellId == 3){
+		locationType = 3;
+	} 
+	
+	
+	
+	
 	
 		 var jsObj={
 		         locationId:locationId,locationType:locationType,basicCommitteeTypeId:1,constituencyId:constituencyId
@@ -2516,7 +2523,7 @@ function getActivityDates(){
 		}else{
 			$("#constituencyDivId").hide();
 		}
-		
+		var scopeId =$('#ActivityList').val();
 		var activityLevelId = $('#activityLevelList').val();
 		$("#procesingImg3").show();
 		if(activityLevelId == 5){
@@ -2524,18 +2531,18 @@ function getActivityDates(){
 		var districtId = $(this).val();
 		var jObj = {
 			task:"getConstituenciesForDistrict",
-			districtId:districtId
+			districtId:districtId,
+			activityScopeId : scopeId
 		};
 		//$("#procesingImg3").show();
 		$.ajax({
           type:'GET',
-          url: 'getConstituenciesForADistrictAjaxAction.action',
+          url: '	getConstituenciesForADistrictsAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			
+			$("#procesingImg3").hide();
 			if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1)
 			{}else{
-				$("#procesingImg3").hide();
 				for(var i in result)
 					$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			}
@@ -2788,9 +2795,9 @@ $(document).on("change","#constiList",function(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
+			   $("#procesingImg").hide();
 			   if(result != null && result.length >0)
 			{
-				$("#procesingImg").hide();
 				for(var i in result)
 					$('#mandalsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			}
@@ -2967,25 +2974,11 @@ function getLocationWiseDetailsForActivity()
 									str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
 								}else if(parseInt(dataArr[i].trim()) == 1){
 									str+='<th style="background-color:#00B17D; color:#fff;">TOTAL IMAGES</th>';
-									str+='<th style="background-color:#00B17D; color:#fff;">Upload Images</th>';
+									str+='<th style="background-color:#00B17D; color:#fff;">UPLOAD IMAGES</th>';
 								}
 							}
 						}
-						/*if(attrTypeId == 2)
-							str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
-						else if(attrTypeId == 5)
-							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
-						else if(attrTypeId == 6)
-							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
-						else if(attrTypeId == 0){
-							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
-							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
-						}*/
-							//str+='<th style="background-color:#00B17D; color:#fff;">TOTAL IMAGES</th>';
-							//str+='<th style="background-color:#00B17D; color:#fff;">Upload Images</th>';
-						//str+='<th>PRESIDENT</th>';
-						//str+='<th>GENERAL SECRETARY</th>';
-						//str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
 						str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -3077,32 +3070,15 @@ function getLocationWiseDetailsForActivity()
 								}
 							}
 							}
-							
-							
-							/*if(result[i].count != null && result[i].count > 0){
-								str+='<td>'+result[i].count;
-								if(activityLevelId == 5){
-								 str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+0+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}else if(activityLevelId == 1){
-									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}else if(activityLevelId == 3){
-									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].districtId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}
-								
-							}else{
-								str+='<td>'+0+'</td>';
-							}
 							str+='<td>';
 							if(activityLevelId == 5){
-								str+='<img attr_location_Value="'+result[i].constituencyId+'" attr_location_Name=\''+result[i].constituencyName+'\'  id="uploadImagesId" style="position:absolute;width: 30px; height: 30px;background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].constituencyId+'" />';
+							   str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result[i].constituencyId+',\''+result[i].constituencyName+'\',\''+constituencyId+'\');" style="margin-left: 45px;"/>';
 							}else if(activityLevelId == 1 || activityLevelId == 2){
-								str+='<img attr_location_Value="'+result[i].villageId+'" attr_location_Name=\''+result[i].villageName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].villageId+'" />';
+								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result[i].villageId+',\''+result[i].villageName+'\',\''+constituencyId+'\');" style="margin-left: 45px;"/>';
 							}else if(activityLevelId == 3){
-								str+='<img attr_location_Value="'+result[i].districtId+'" attr_location_Name=\''+result[i].districtName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].districtId+'" />';
+								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+'\',\''+constituencyId+'\');" style="margin-left: 45px;"/>';
 							}
-							str+='</td>';*/
-							
-							//str+='<td>'+result[i].constituencyName+'</td>';
+							str+='</td>';
 							str+='</tr>';
 						}
 						str+='</tbody>';
@@ -3110,11 +3086,20 @@ function getLocationWiseDetailsForActivity()
 					}
 					$('#home').html(str);
 					$("#attributeTypeId").show();
-					//$(".condDateCls").datetimepicker();
-					
+					$("#attributeTypeList").empty();
+					$("#attributeTypeList").append('<option value="0">Select Option</option>');
+					$("#attributeTypeList").trigger("chosen:updated");
+					if(result[0].subList != null && result[0].subList.length > 0){
+					  for(var i in result[0].subList){
+					   //$("#attributeTypeList").css('display','block');
+					   if(result[0].subList[i].id != null){
+					   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'">'+result[0].subList[i].name+'</option>');
+					   
+					  }
+					 }
+					 $("#attributeTypeList").trigger("chosen:updated");
+					}
 					$(".condDateCls").daterangepicker({singleDatePicker:true,format:'YYYY-MM-DD'});
-					//$(".condDateCls").daterangepicker({format('YYYY-MM-DD')});
-					
 					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px;z-index:99;"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails();"/></div>');
 					$("#locationsTab").dataTable({
 					"iDisplayLength": 20,
@@ -3127,11 +3112,6 @@ function getLocationWiseDetailsForActivity()
 			 });
 	}
 
-/* $(document).on("change",".condDateCls",function(){
-	$(".condDateCls").daterangepicker({format('YYYY-MM-DD')});
-}); */
-	
- 
 function saveActyDetails(){
 	var infoId;
 	$("#chCkBxErrMsgId").html("");
@@ -3146,13 +3126,6 @@ function saveActyDetails(){
 		 $("#chCkBxErrMsgId").html('<span style="color:red;">Please check atleast one check box.</span>');
 		 return;
 	 }
-	
-	 /* if(($("#checkBoxId").is(":checked")) == true){
-		 $(this).each(function(){
-			var infoId = $(this).val();
-		 )};
-		}  */
-		
 		
 	var uploadHandler = {
 		 upload: function(result) {
@@ -3160,6 +3133,8 @@ function saveActyDetails(){
 			uploadResult = result.responseText; 
 			var stringext = uploadResult.substr(6,7);
 			alert(stringext);
+			if(stringext == "success")
+				getLocationWiseDetailsForActivity();
 		}
 	};
 	
@@ -3190,10 +3165,11 @@ $(document).on("change","#attributeTypeList",function(){
 	 }
 	 
 });
-/* $(document).on("change","#",function(){
-	
+ $(document).on("change","#activityLevelList",function(){
+	 $('#constiList').find('option').remove();
+	 $('#constiList').append('<option value="0">Select Constituency</option>');
 });
- */
+ 
 </script>
 </body>
 </html>
