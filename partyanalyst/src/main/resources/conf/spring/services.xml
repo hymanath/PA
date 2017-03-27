@@ -651,6 +651,7 @@
 		<property name="wardDAO" ref="wardDAO" />	
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />	
 		<property name="locationInfoDAO" ref="locationInfoDAO" />
+		<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
@@ -3049,7 +3050,8 @@
 		     <property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
 			<!-- <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />	 -->		 
    			<property name="committeeConfirmRuleConditionDAO" ref="committeeConfirmRuleConditionDAO" />
-   			<property name="activityConductedInfoDAO" ref="activityConductedInfoDAO" />  
+   			<property name="activityConductedInfoDAO" ref="activityConductedInfoDAO" />
+   			<property name="requiredAttributeDAO" ref="requiredAttributeDAO" />  
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
