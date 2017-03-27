@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -87,6 +88,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private CadrePerformanceVO cadrePerformanceVO;
 	private List<LocationsVO> locationVoList;
 	private List<GeoLevelListVO> geoLevelListVO;
+	private List<CadreEventsVO> cadreReportVO;
 	
 	
 	public List<GeoLevelListVO> getGeoLevelListVO() {
@@ -337,6 +339,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setLocationVoList(List<LocationsVO> locationVoList) {
 		this.locationVoList = locationVoList;
+	}
+	public List<CadreEventsVO> getCadreReportVO() {
+		return cadreReportVO;
+	}
+	public void setCadreReportVO(List<CadreEventsVO> cadreReportVO) {
+		this.cadreReportVO = cadreReportVO;
 	}
 	public String nominatedPosts()
 	{
@@ -2241,6 +2249,14 @@ public String execute()
 					locationIds1.add(locId);
 				}
 			}
+			JSONArray distIdArr = jObj.getJSONArray("distIdArr");
+			List<Long> distIds = new ArrayList<Long>(0);
+			if(distIdArr !=null && distIdArr.length()>0){
+				for (int i = 0; i < distIdArr.length(); i++) {
+					Long distId = Long.valueOf(distIdArr.get(i).toString());
+					distIds.add(distId);
+				}
+			}
 			vo.setLocationIds(locationIds1);
 			vo.setPositionIds(positionIds1);
 			vo.setAgeRangeIds(ageRangeGrpIds);
@@ -2254,12 +2270,68 @@ public String execute()
 			vo.setIsCasteGrpChkd(jObj.getString("isCasteGrpChkd"));
 			vo.setIsGenderChkd(jObj.getString("isGenderChkd"));
 			vo.setIsAgeRngeChkd(jObj.getString("isAgeRngeChkd"));
+			vo.setStateId(jObj.getLong("stateId"));
+			vo.setDistIds(distIds);
 			geoLevelListVO = nominatedPostMainDashboardService.getGeoLevelReportDetails(vo);
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		 LOG.error("Entered into getLocationByDepartment method of NominatedPostProfileAction ",e);
 		}
+		return Action.SUCCESS;
+	}
+	/*public String getCadreDetailedReportEventAttendee(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long parentEventId = jObj.getLong("parentEventId");
+			Long cadreId = jObj.getLong("cadreId");
+         JSONArray extraEventIdsArry = jObj.getJSONArray("extraEventIds");
+			
+			List<Long> extraEventIdsList = new ArrayList<Long>(0);
+			if(extraEventIdsArry !=null && extraEventIdsArry.length()>0){
+				for (int i = 0; i < extraEventIdsArry.length(); i++) {
+					Long eventId = Long.valueOf(extraEventIdsArry.get(i).toString());
+					extraEventIdsList.add(eventId);
+				}
+			}
+			//cadreReportVO = nominatedPostProfileService.getCadreDetailedReportEventAttendee(parentEventId,cadreId,extraEventIdsList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		 LOG.error("Entered into getCadreDetailedReportEventAttendee method of NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}*/
+	public String getAllAgeRangesList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getAllAgeRangesList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAllAgeRangesList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getCastListByCasteCatgryId(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+       JSONArray casteCatgryIdsArry = jObj.getJSONArray("casteCatgryId");
+			
+			List<Long> casteCatgryIdsList = new ArrayList<Long>(0);
+			if(casteCatgryIdsArry !=null && casteCatgryIdsArry.length()>0){
+				for (int i = 0; i < casteCatgryIdsArry.length(); i++) {
+					Long casteCatgryId = Long.valueOf(casteCatgryIdsArry.get(i).toString());
+					casteCatgryIdsList.add(casteCatgryId);
+				}
+			}
+			//Long casteCatgryId = jObj.getLong("casteCatgryId");
+			idAndNameVOList = nominatedPostMainDashboardService.getCastListByCasteCatgryId(casteCatgryIdsList,stateId);  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastListByCasteCatgryId method of NominatedPostProfileAction Action",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
