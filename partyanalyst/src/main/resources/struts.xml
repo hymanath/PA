@@ -16217,5 +16217,15 @@
            		<param name="root">constituenciesListForADistrict</param>
         	</result>       		
         </action>
+	    <action name="getAllAgeRangesListAction" class="nominatedPostProfileAction" method="getAllAgeRangesList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	    </action>
+	    <action name="getCastListByCasteCatgryIdAction" class="nominatedPostProfileAction" method="getCastListByCasteCatgryId">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	    </action>
  </package>
 </struts>
