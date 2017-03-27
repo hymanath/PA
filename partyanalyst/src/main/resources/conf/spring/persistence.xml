@@ -1199,6 +1199,7 @@
 	                  	 <value>com.itgrids.partyanalyst.model.CustomReportLocation</value>
 	                  	 <value>com.itgrids.partyanalyst.model.CustomReportFile</value>
 	               	 	 <value>com.itgrids.partyanalyst.model.CustomReportImage</value>
+	               	 	 <value>com.itgrids.partyanalyst.model.ActivityRequiredAttribute</value>
 	                   <!--  CUSTOM REPORT END -->
 	                   
 	              </list>
