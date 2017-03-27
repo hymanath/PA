@@ -144,6 +144,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO1;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO2;
@@ -20826,11 +20827,11 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 		//List<LocationWiseBoothDetailsVO> scopeValuesVoList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 	if(scopeValues != null && !scopeValues.isEmpty()){
 		for (Object[] obj : scopeValues) {
-		LocationWiseBoothDetailsVO vo=new LocationWiseBoothDetailsVO();
+		KeyValueVO vo = new KeyValueVO();
 
-		vo.setPopulation(obj[0]!=null ? (Long)obj[0] :0L);
-		vo.setRoleType(obj[1]!=null ? obj[1].toString() :"");
-		returnList.get(0).getResult3().add(vo);
+		vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString() :"0"));
+		vo.setName(obj[1] !=null ? obj[1].toString() :"");
+		returnList.get(0).getSubList().add(vo);
 	}
 }
 			
