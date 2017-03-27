@@ -41,11 +41,11 @@
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">  
 				<div class="panel panel-default">
-					  <div class="panel-heading">
-						  <div class="row">
-							<div class="col-md-9 col-xs-12 col-sm-12" style="margin-top: 10px;">
-								<h3 class="panel-title text-capital f_18">Program</h3>
-							</div>
+					<div class="panel-heading">
+						<div class="row">
+								<div class="col-md-9 col-xs-12 col-sm-12" style="margin-top: 10px;">
+									<h3 class="panel-title text-capital f_18">Program</h3>
+								</div>
 							<div class="col-md-3 col-xs-12 col-sm-12">
 								<div class="input-group inputGCustom">
 									<span class="input-group-addon">
@@ -54,18 +54,17 @@
 									<input type="text" class="form-control multiDateRangePicker"/>
 								</div>
 							</div>
-						  </div>
+						</div>
 						
-					  </div>
-					  <div class="panel-body">
-						Panel content
+				    </div>
+					    <div class="panel-body">
+					        Panel content
 						<button type="button" class="btn btn-success uploadDivCls">Upload</button>
-					  </div>
+					    </div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<div class="modal fade" id="uploadModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -93,7 +92,6 @@
 		</div>
 	  </div>
 	</div>
-
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
@@ -102,7 +100,7 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="js/customReports.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/updateCustomReorts.js?v=1.0.5"></script>     
+<script type="text/javascript" src="dragAndDropPhoto/js/updateCustomReorts.js?v=1.0.5"></script>
 <script type="text/javascript">
 initializeCustomReport();
 	$(".multiDateRangePicker").daterangepicker({
@@ -111,6 +109,7 @@ initializeCustomReport();
 		  format: 'MM/DD/YYYY'
 		}		
 	});
+	
 	$(document).on('click','.uploadDivCls',function(){
 		$("#uploadModalDivId").modal("show");
 		
@@ -126,6 +125,6 @@ initializeCustomReport();
 		YAHOO.util.Connect.setForm('customApplication',true);  
 		YAHOO.util.Connect.asyncRequest('POST','saveCustomReportUploadFileAction.action',uploadHandler);
 	});
-</script>	
+</script>
 </body>
 </html>

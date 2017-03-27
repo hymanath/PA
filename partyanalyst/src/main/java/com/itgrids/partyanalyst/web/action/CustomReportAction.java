@@ -26,14 +26,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CustomReportAction extends ActionSupport implements ServletRequestAware{
 	private static final Logger LOG = Logger.getLogger(CustomReportAction.class);
-	private HttpServletRequest 					request;
-	private HttpSession 						session;
-	private String 								task;
-	private JSONObject							jObj;
+	private HttpServletRequest 			request;
+	private HttpSession 				session;
+	private String 						task;
+	private JSONObject					jObj;
+
     private List<CustomReportVO>                     customReportVO;
     private ICustomReportService			 		customReportService;
 	private ResultStatus                         resultStatus;
-	
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -79,12 +80,23 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	}
 	public void setServletRequest(HttpServletRequest arg0) {
 	}
-	
-    public String execute(){
+	public String execute(){
 		
 		return Action.SUCCESS;
-	}
-	
+	}	
+	public String getCustomReportProgram(){
+		try 
+		{
+			jObj = new JSONObject(getTask());
+			
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			customReportVO = customReportService.getCustomReportProgram(startDateStr,endDateStr);
+		} catch (Exception e){
+			LOG.error("Exception occured in getCustomReportProgram in CustomReportAction class  ",e);
+		}
+			return Action.SUCCESS;		
+}  
 	
     public String getTotalExpertedReports(){
     		String param=null;		
