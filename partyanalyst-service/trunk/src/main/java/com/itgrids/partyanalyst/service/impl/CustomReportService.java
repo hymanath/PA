@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 //import static com.itgrids.partyanalyst.service.impl.AlertService.LOG;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportFileDAO;
 import com.itgrids.partyanalyst.dto.CustomReportVO;
@@ -21,28 +23,46 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CustomReportFile;
 import com.itgrids.partyanalyst.service.ICustomReportService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
-public class CustomReportService extends AlertService implements ICustomReportService {
+public class CustomReportService extends AlertService implements ICustomReportService{
 	private final static Logger LOG =  Logger.getLogger(CustomReportService.class);
 	 private CustomReportDAO customReportDAO;
 	 private CustomReportVO customReportVO;
 	 private ActivityService activityService;
 	 private CustomReportFileDAO customReportFileDAO;
-	 
+	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private ICustomReportProgramDAO customReportProgramDAO;
+
 	 public ActivityService getActivityService() {
-		return activityService;
-	}
+			return activityService;
+		}
 
-	public void setActivityService(ActivityService activityService) {
-		this.activityService = activityService;
-	}
+		public void setActivityService(ActivityService activityService) {
+			this.activityService = activityService;
+		}
 
-	public TransactionTemplate getTransactionTemplate() {
-		return transactionTemplate;
+		public TransactionTemplate getTransactionTemplate() {
+			return transactionTemplate;
+		}
+	public ICustomReportProgramDAO getCustomReportProgramDAO() {
+		return customReportProgramDAO;
 	}
-
+	public void setCustomReportProgramDAO(
+			ICustomReportProgramDAO customReportProgramDAO) {
+		this.customReportProgramDAO = customReportProgramDAO;
+	}
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -185,13 +205,34 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return resultStatus;
 	}
-
-	
-	
-			
-			
+	public List<CustomReportVO> getCustomReportProgram(String startDateStr,String endDateStr){
+		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
 		
+		try {
+			  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		      Date fromDate = null,toDate = null;
+		      
+		      if(startDateStr != null && endDateStr != null){
+		        fromDate = sdf.parse(startDateStr);
+		        toDate = sdf.parse(endDateStr);
+		      }			
+			List<Object[]> objList =customReportProgramDAO.getCustomReportPogram(fromDate,toDate);
+			if(objList !=null && objList.size()>0){
+				for (Object[] objects : objList) {
+					CustomReportVO vo=new CustomReportVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					
+					finalList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getCustomReportProgram() method, Exception - ",e);
+		}
+		return finalList;
+	}	
 	
+	 
 	
 
 }
