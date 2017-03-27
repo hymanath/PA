@@ -611,5 +611,28 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		
 		return Action.SUCCESS;
 	}
-	
+	public String getConstituenciesForDistricts()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("districtId")),jObj.getLong("activityScopeId"));
+		/*
+		 * Modified by ravi 
+		 * please refer previous version to check for original code.
+		 */ 
+		if(constituenciesListForADistrict == null || constituenciesListForADistrict.size() == 0)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		if(constituenciesListForADistrict != null && constituenciesListForADistrict.size() > 1)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		return Action.SUCCESS;
+	}
 }	
