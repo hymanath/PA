@@ -26,6 +26,7 @@ public class CustomReportProgramDAO extends GenericDaoHibernate<CustomReportProg
 			sb.append(" and date(model.lastDate) between :fromDate and :toDate ");
 		}
 		
+		sb.append(" order by model.lastDate desc ");
 		Query query=getSession().createQuery(sb.toString());
 		
 		if(fromDate != null && toDate != null){

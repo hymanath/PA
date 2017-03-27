@@ -10,8 +10,8 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CustomReportVO;
 
 public interface ICustomReportService {
-	public List<CustomReportVO> getTotalExpertedReports(Long customReportProgramId);
+	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId);
 	 public ResultStatus saveCustomReportUploadFile(final Map<File,String> mapfiles,final Long userId);
-	public List<CustomReportVO> getCustomReportProgram(String startDateStr,String endDateStr);
+	public List<CustomReportVO> getCustomReportPrograms(String startDateStr,String endDateStr);
 
 }
