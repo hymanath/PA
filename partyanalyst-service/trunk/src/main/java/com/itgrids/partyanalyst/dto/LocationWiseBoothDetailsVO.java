@@ -19,7 +19,6 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private List<SelectOptionVO> hamletsOfTownship;
 	private List<LocationWiseBoothDetailsVO> result = new ArrayList<LocationWiseBoothDetailsVO>(0);
 	private List<LocationWiseBoothDetailsVO2> result2 = new ArrayList<LocationWiseBoothDetailsVO2>(0);
-	private List<LocationWiseBoothDetailsVO> result3 = new ArrayList<LocationWiseBoothDetailsVO>(0);
 	private Long population;
 	private Long votesPolled;
 	private Long total = 0l;
@@ -58,7 +57,15 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private String localElcBodyName;
 	private Long activityLocatInfoId;
 	private String tableName;
+	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>();
 	
+	
+	public List<KeyValueVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<KeyValueVO> subList) {
+		this.subList = subList;
+	}
 	public String getDateStr() {
 		return dateStr;
 	}
@@ -345,13 +352,4 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
-	public List<LocationWiseBoothDetailsVO> getResult3() {
-		return result3;
-	}
-	public void setResult3(List<LocationWiseBoothDetailsVO> result3) {
-		this.result3 = result3;
-	}
-	
-	
-	
 }
