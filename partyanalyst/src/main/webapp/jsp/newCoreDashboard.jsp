@@ -162,9 +162,9 @@
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-5 col-xs-5" style="padding-left:0px">
-							<!--<span class="notesIconEvents pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-							</span>-->
+							<span class="alertSettingBlock pull-right">
+							 <i title="" data-placement="top" data-toggle="tooltip" class="fa fa-gears" data-original-title="Settings"></i>
+							</span>
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
@@ -180,21 +180,92 @@
 							
 						</div>     
 					</div>
-					<!--<div class="notesDropDown notesArrow " >
-						<h4 class="text-capital">notes
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-list-alt"></i>
-							</span>
-						</h4>
-						<div id="notesEventsId"></div>
-						<hr/>
-						<div id="eventsUpId" style="color:red;"></div>
-						<label>Create Notes</label>
-						<textarea class="form-control notesAreaEvents"></textarea>
-						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-					</div>-->
+					<div class="basicAlertBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
+					<i class="glyphicon glyphicon-remove basicAlertSetClose pull-right" style="cursor:pointer;"></i>
+						<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="text-capital active"><a href="#impactScope" aria-controls="impactScope" role="tab" data-toggle="tab">Impact Scope </a></li>
+								<li role="presentation"   class="text-capital"><a href="#alertStatus" aria-controls="alertStatus" role="tab" data-toggle="tab">Alert Status</a></li>
+							  </ul>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane active" id="impactScope">
+								<hr style ="margin-bottom:0px;" />
+									<ul class="settingsUl alertImpactSettingCls">
+											<li>
+												<label class="checkbox-inline">
+												<input type="checkbox" attr_scope_type="All" class="alertImpactCheckCls" id="alertImpactScopeSelectAllId" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">All</h5></div>
+												</label>
+											</li>
+										   	 <li>
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="State" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="District" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
+												</label>
+											</li>
+											<li>												
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="Constituency" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+												</label>	
+											</li>	
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="MuncipalityGMC" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">CORP-GMC</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" attr_scope_type="mandalMuncipality" class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+												<input type="checkbox" attr_scope_type="VillageWardPanchayat"  class="alertImpactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
+												</label>
+											</li>	
+									</ul>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="alertStatus">
+									<hr style ="margin-bottom:0px;" />
+									 <ul class="settingsUl alertStatusSettingUl">
+									  <!--<div id="alertStatusliDivId"></div>-->
+									  <li>
+										<label class="checkbox-inline">
+										<input type="checkbox" id="alertStatusSelectAllId" attr_scope_type="All" attr_status_id="0" class="alertStausCls" checked>
+										<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">All</h5></div>
+										</label>
+									  </li>
+									    <c:forEach items="${alertOverviewVO.subList}" var="status">
+											<li>
+											<label class="checkbox-inline">
+											<input type="checkbox" attr_status_id="${status.id}"  class="alertStausCls" checked>
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${status.name}</h5></div>
+											</label>
+										   </li>
+									    </c:forEach>
+									</ul>
+								</div>
+								<button type="button" class="btn btn-success getAlertDetailsCls" onClick="getAlertDtlsBasedOnSelection('click');">Get Details</button>
+							  </div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="panel-body">
+				    
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 								<h6 id="lastAlertUpdatedTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
@@ -208,247 +279,197 @@
 							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId" class="row"></div>
 						</div>    
+						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
-							<div class="panel panel-default panelNew hideStateLevelAlertCls">
-								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
-									<h4 class="panel-title"><span class="headingColor text-capital">State Impact Scope Level Alerts</span></h4>
-								</div>
-								<div class="panel-body" style="padding:15px 0px">
-									 <div class="row">
-										  <div class="col-md-12 col-xs-12 col-sm-12">
-										      <div id="processingImgDivId"></div>
-											  <div class="col-md-1 col-xs-12 col-sm-12" style="padding:0px;">
-											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
-												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
-											  </div>	
-											 <div class="col-md-4 col-xs-12 col-sm-12" style="padding:0px;">
-											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
-												<div id="categoryWiseAlertDiv" style="height:200px;"></div>     
-											  </div>											
-											  <div class="col-md-7 col-xs-12 col-sm-12">
-											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
-												<div id="statusWiseAlertDiv" style="height:200px;"></div>     
-											  </div>											
-										  </div>
-									</div>
-								</div>
-							</div>
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
-										<div class="col-md-3 col-xs-12 col-sm-3">   
-											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span></h4>
-										</div>
-										<div class="col-md-2 col-xs-12 col-sm-2">   
-											 <!--<label class="text-centre;">District</label>--> 
-												<select class="form-control districtSelectBoxCls" style="display:none;" id="dstrctSlctBxId" onchange="getDetailsDistrictWise();">
-												</select>
-										</div>
-										<div class="col-md-7 col-xs-12 col-sm-7">
+										<div class="col-md-12 col-xs-12 col-sm-12">
 											<ul class="activeUlCls alertFilterCls list-inline pull-right">
-												<li class="active optionsCls" onClick="optionsCls('1')" attr_id="1">Overview</li>
-												<li class="optionsCls" onClick="optionsCls('2')" attr_id="2">Categories</li>  
-												<li class="optionsCls" onClick="optionsCls('3')" attr_id="3">Status</li> 
-												<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>
+											    <li class="" style="background:#ddd;">Detailed</li>
+												<li class="active optionsCls" onClick="getAlertDetails('1')" attr_id="1" style="margin-left: -7px;">Overview</li>
+												<li class="optionsCls" onClick="getAlertDetails('2')" attr_id="2" style="margin-left: -5px;">Status</li> 
+												<li class="optionsCls" onClick="getAlertDetails('3')" attr_id="3" style="margin-left: -6px;">Publication</li>  
+												<li class="optionsCls" onClick="getAlertDetails('4')" attr_id="4">Comparison</li>  
+												<!--<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>-->
 											</ul>
 										</div>
-								       <div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
-										<i class="glyphicon glyphicon-remove alertSetClose pull-right" style="cursor:pointer;"></i>
-											<div role="tabpanel" class="tab-pane" id="alertImpactScope">
-												<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
-												<hr style ="margin-bottom:0px;" />
-												<div class="">
-													<ul class="alertSettingsUl" style="list-style:none;">
-														<li>
-															<label class="checkbox-inline">
-														<input type="checkbox" attr_scope_type="All" class="alertImpactCheckCls" id="alertImpactSelectAllId" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-													   <li>
-														 <!--<label class="checkbox-inline">
-															<input type="checkbox" attr_scope_type="National" class="alertImpactCheckCls" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">NATIONAL</h5></div>
-														 </label>
-														</li>
-														<li>
-														 <label class="checkbox-inline">
-															<input type="checkbox" attr_scope_type="International" class="alertImpactCheckCls" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">INTERNATIONAL</h5></div>
-														 </label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="State" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">STATE</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="Parliament" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">PARLIAMENT</h5></div>
-															</label>
-														</li>-->
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="District" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
-															</label>
-														</li>
-														<li>												
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="Constituency" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-															</label>	
-														</li>	
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="MuncipalityGMC" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">CORP-GMC</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="mandalMuncipality" class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-															<input type="checkbox" attr_scope_type="VillageWard"  class="alertImpactCheckCls" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
-															</label>
-														</li>	
-													</ul>
-												</div>
-											<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button> 
-										   </div>
-									   </div> 
-									</div>
+								   </div>
 								</div>  
-								<div class="panel-body">  
-								   
-									<div class="row">
-									  <div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="districtWiseAlertCountId"></div>     
-										</div>
-									</div>
-									<div class="row districtAlertCls" style="display:none;">
-									    <div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span><i class="glyphicon glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i></h4>
-										</div>
-									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
-											<div id="districtSummaryAlertDivId"></div>     
-										</div>
-									</div>
-									<div class="row constituencyAlertCls" style="display:none;margin-top: 20px;" >
-									  <div class="col-md-12 col-xs-12 col-sm-12"> 
-										<div class="row">
-											 <div class="col-md-8 col-xs-12 col-sm-12"> 
-												<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Alerts</span>
-												<span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertConstSettingsId" onClick="alertConstSettings()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon  glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i>
-												</h4>
-											 </div>
-											  <div class="specialAlertDropDownAlertCons" style="right:13px;top:30px;display:none;z-index:999">  
-												<i class="glyphicon glyphicon-remove alertSetCloseCons pull-right" style="cursor:pointer;" onClick="alertSetCloseCons();"></i>
-													<div role="tabpanel" class="tab-pane" id="alertImpactScopeCons">
-														<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
-														<hr style ="margin-bottom:0px;" />
-														<div class="">
-															<ul class="alertConsSettingsUl" style="list-style:none;">
-																<li>
-																	<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="All" class="alertConImpactCheckCls" id="alertImpactSelectAllIdCons" onClick="alertImpactSelectAllIdCons()" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-																	</label>
-																</li>
-															  <li>												
-																	<label class="checkbox-inline">
-																		<input type="checkbox" attr_scope_type="Constituency" class="alertConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-																	</label>	
-																</li>	
-																<li>
-																	<label class="checkbox-inline">
-																		<input type="checkbox" attr_scope_type="mandal" class="alertConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
-																	</label>
-																</li>
-																<li>
-																	<label class="checkbox-inline">
-																	<input type="checkbox" attr_scope_type="VillageWard"  class="alertConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
-																	</label>
-																</li>	
-															</ul>
+								<div class="panel-body alertImpctLevelBlcock">  
+								   <div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
+										   <div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">state overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Nav tabs -->
+														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="stateLevelHighchartBuildingFunction();"  class="active impactLevelCls collapseHIghChartViewCls"><a href="#stateOvervwGraph" aria-controls="stateOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="stateLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#stateOvervwTable" aria-controls="stateOvervwTable" role="tab" data-toggle="tab">
+																<i class="fa fa-table"></i>
+															</a></li>
+														  </ul>
+													</div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Tab panes -->
+														  <div class="tab-content">
+															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="stateOvervwGraph">
+																<div id="stateImpactLevelHighChartDivId" style="height:250px;"></div>
+															</div>
+															<div role="tabpanel" class="tab-pane collapseTblViewCls" id="stateOvervwTable">
+																<div id="stateImpactLevelTblDivId"></div>
+															</div>
+														  </div>
 														</div>
-													<button type="button" class="btn btn-success alertConstDtlsBtnCls btn-sm pull-right" onClick="alertConstDtlsBtnCls()">Get Details</button> 
-												   </div>
-											   </div>
-											   <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
-													<div id="constituencyAlertDivId"></div>     
-											   </div>
-										</div>
-											
-									  </div>
-									   
+													</div>
+												</div>
+											</div>
 									</div>
-									  <div class="row districtPublicationCls m_top20" style="display:none;">
-									    <!--<div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">Publication Wise Alerts</span></h4>
-										</div>-->
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">   
-												<h4 class="panel-title"><span class="headingColor text-capital">District Wise Publication Alerts</span><i class="glyphicon glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i></h4>
-										</div>
-									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
-											<div id="dstrctWsPublctnAlrtCntSmmryDvId"></div>     
-									    </div>
-									  </div>	
-									  <div class="row constituencyPublicationCls m_top20" style="display:none;">
-									    <div class="col-md-12 col-xs-12 col-sm-12">   
-											<h4 class="panel-title"><span class="headingColor text-capital">Constituency Wise Publication Alert</span> <span><i class="fa fa-gears alertConsDropDownStyles" style="cursor:pointer;" id="alertPubConstSettingsId" onClick="alertPubConstSettings();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></span><i class="glyphicon glyphicon-minus alertExpandCls" style="float:none;margin-left:10px;" ></i></h4>
-										</div>
-										<div class="publicationAlertDropDownAlertCons" style="z-index:999;display:none;margin-left: 30px; margin-top: 35px;left:0px;">  
-												<i class="glyphicon glyphicon-remove alertSetClosePubCons pull-right" style="cursor:pointer;" onClick="alertSetClosePubCons()"></i>
-													<div role="tabpanel" class="tab-pane" id="alertImpactScopeCons">
-														<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
-														<hr style ="margin-bottom:0px;" />
-														<div class="">
-															<ul class="alertPubConsSettingsUl" style="list-style:none;">
-																<li>
-																	<label class="checkbox-inline">
-																<input type="checkbox" attr_scope_type="All" onClick="alertImpactSelectAllIdPubCons()" class="alertPubConImpactCheckCls" id="alertImpactSelectAllIdPubCons" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-																	</label>
-																</li>
-															  <li>												
-																	<label class="checkbox-inline">
-																		<input type="checkbox" attr_scope_type="Constituency" class="alertPubConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-																	</label>	
-																</li>	
-																<li>
-																	<label class="checkbox-inline">
-																		<input type="checkbox" attr_scope_type="mandal" class="alertPubConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/MUNICIPALITY</h5></div>
-																	</label>
-																</li>
-																<li>
-																	<label class="checkbox-inline">
-																	<input type="checkbox" attr_scope_type="VillageWard"  class="alertPubConImpactCheckCls" checked>
-																		<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward/PANCHAYAT</h5></div>
-																	</label>
-																</li>	
-															</ul>
+								     <div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
+										   <div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">District overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row" >
+													<div class="col-md-8 col-xs-12 col-sm-8">
+														<ul class="list-inline activeUlCls districtUl">
+															<li class="descendingConstituencyCls active" onClick="getSortedDistrictInRequiredFormat('Decending')">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li>
+															<li class="ascendingConstituencyCls" onClick="getSortedDistrictInRequiredFormat('Ascending')">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="atozDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalAscending')">
+																A-Z
+															</li>
+															<li class="ztoaDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalDescending')">
+																Z-A
+															</li>
+															<li>
+																<select class="form-control" id="districtSelectBoxId" onChange="getSortedDistrictInRequiredFormat('Search')">
+																 <option value="0">Select District </option>
+																</select>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														  <!-- Nav tabs -->
+														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="districtLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls districtCollapseHIghChartViewCls"><a href="#districtOvervwGraph" aria-controls="districtOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="districtLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls districtCollapseTblViewCls"><a href="#districtOvervwTable" aria-controls="districtOvervwTable" role="tab" data-toggle="tab">
+																<i class="fa fa-table"></i>
+															</a></li>
+														  </ul>
+													</div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Tab panes -->
+														  <div class="tab-content">
+														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls districtCollapseHIghChartViewCls" id="districtOvervwGraph">
+																<div id="districtImpactLevelHighChartDivId" style="height:650px;"></div>
 														</div>
-													<button type="button" class="btn btn-success alertPubConstDtlsBtnCls btn-sm pull-right" onClick="alertPubConstDtlsBtnCls()">Get Details</button>  
-												   </div>
-											   </div>
-									    <div class="col-md-12 col-xs-12 col-sm-12 m_top20 hideShowCls">
-											<div id="cnsttncyWsPublctnAlrtCntSmmryDvId"></div>     
-									    </div>
-									  </div>	
-									  
+														<div role="tabpanel" class="tab-pane collapseTblViewCls districtCollapseTblViewCls" id="districtOvervwTable">
+															<div id="districtImpactLevelTblDivId"></div>
+														</div>
+														  </div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
+										   <div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">CORP-GMC overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Nav tabs -->
+														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="gmcLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls"><a href="#corpGmcOvervwGraph" aria-controls="corpGmcOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="gmcLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#corpGmcOvervwTable" aria-controls="corpGmcOvervwTable" role="tab" data-toggle="tab">
+																<i class="fa fa-table"></i>
+															</a></li>
+														  </ul>
+													</div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Tab panes -->
+														  <div class="tab-content">
+														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="corpGmcOvervwGraph">
+															<div id="gmcImpactLevelHighChartDivId" style="height:250px;"></div>
+														</div>
+														<div role="tabpanel" class="tab-pane collapseTblViewCls" id="corpGmcOvervwTable">
+															 <div id="gmcImpactLevelTblDivId"></div>
+														</div>
+														  </div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 constituencyImpactLevelBlockCls">
+										   <div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Constituency overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-8 col-xs-12 col-sm-8">
+														<ul class="list-inline activeUlCls  constituencyUl">
+																<li class="descendingConstituencyCls active" onClick="getSortedConstituencyInRequiredFormat('Decending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																</li >
+																<li class="ascendingConstituencyCls" onClick="getSortedConstituencyInRequiredFormat('Ascending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																</li>
+																<li class="atozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalAscending')">
+																	A-Z
+																</li>
+																<li class="ztozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalDescending')">
+																	Z-A
+																</li>
+																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdAscendingOrder')">
+																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+																</li>
+																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdDescendingOrder')">
+																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+																</li>
+																<li>
+																<select class="form-control" id="constituencySeletBoxId" onChange="getSortedConstituencyInRequiredFormat('Search')">
+																    <option value="0">Select Constitency </option>
+																</select>
+															    </li>
+															</ul>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														  <!-- Nav tabs -->
+														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="constituencyLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls constituencyHighChartViewCls"><a href="#constituencyOvervwGraph" aria-controls="constituencyOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="constituencyTblBuildingFunction();" class="impactLevelCls collapseTblViewCls constituencyCollapseTblViewCls"><a href="#constituencyOvervwTable" aria-controls="constituencyOvervwTable" role="tab" data-toggle="tab">
+																<i class="fa fa-table"></i>
+															</a></li>
+														  </ul>
+													</div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+														  <!-- Tab panes -->
+													<div class="tab-content">
+														 <div role="tabpanel" class="tab-pane active collapseHIghChartViewCls constituencyHighChartViewCls" id="constituencyOvervwGraph">
+															<div id="constituencyLevelHighChartDivId" style="height:450px;"></div>
+														</div>
+														<div role="tabpanel" class="tab-pane collapseTblViewCls constituencyCollapseTblViewCls" id="constituencyOvervwTable">
+															 <div id="constituencyLevelTblDivId"></div>
+														</div>
+													</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									<div class="row m_top20">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
@@ -456,12 +477,41 @@
 										</div>
 									</div>
 								</div>
+								</div>
 							</div>
-						</div>  
+						</div> 
+						<div class="col-md-12 col-xs-12 col-sm-12  alertComparisonblock" style="display:none;">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-7 col-md-12">
+											 <div id="childUserTypeDetailsDivForAlerts"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="alertChildActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20"> 
+												 <div id="userTypeWiseChildDtlsTabForAlertId"></div>
+													<div class="row impactLevelWiseComparisonBlockCls">
+														<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+														  <h4 class="text-capital" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert </h4>
+															  <div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>	
 	 <!--Alerts End -->
 	 <!-- DEBATES PROGRAM BLOCK -->
 			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
@@ -4488,7 +4538,8 @@ var globalImages;
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
-		getAlertOverviewDetails();  
+		//getAlertOverviewDetails();  
+		getAlertDtlsBasedOnSelection('default');
 		/* Activities Default Call */
 		getActivitiesDetails();
 		getAttendanceOverViewForPartyOffice();
@@ -4535,7 +4586,8 @@ var globalImages;
 		//getNewsBasicCounts();
 		commonNewsBasicCalls();
 		getAllNewsPapers();
-		getAlertOverviewDetails();
+		//getAlertOverviewDetails();
+		getAlertDtlsBasedOnSelection('default');
 	  }
 	  else{
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
@@ -4583,7 +4635,8 @@ var globalImages;
 			getAllTvChannels();
 			getRescentNewsBulletinTime();
 			/* Alert Default Call */
-			getAlertOverviewDetails();  
+			//getAlertOverviewDetails();
+			getAlertDtlsBasedOnSelection('default');
 			/* Activities Default Call */
 			getActivitiesDetails();
 			getAttendanceOverViewForPartyOffice();
@@ -4670,7 +4723,6 @@ function refreshMeeting(){
 function refreshMeetingStatus(){
 	getinsertDataInToPartyMeetingStatus();
 }
- 
 </script> 
 </body>
 </html>

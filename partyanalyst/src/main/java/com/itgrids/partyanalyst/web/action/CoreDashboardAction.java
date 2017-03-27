@@ -18,6 +18,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
@@ -99,6 +101,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	private IAttendanceCoreDashBoardService attendanceCoreDashBoardService;
 	private ICoreDashboardToursService coreDashboardToursService;
+	private IAlertService alertService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
@@ -148,6 +151,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<PartyMeetingVO> partyMeetingVOList = new ArrayList<PartyMeetingVO>();
 	private List<Long> partyMeetingLevelIds = new ArrayList<Long>();
 	private List<SessionVO> sessionVOList = new ArrayList<SessionVO>();
+	private AlertOverviewVO alertOverviewVO = new AlertOverviewVO();
 	
 	/**
 	 * starting Payment Gateway required parameters
@@ -828,6 +832,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setPartyMeetingStatus(ResultStatus partyMeetingStatus) {
 		this.partyMeetingStatus = partyMeetingStatus;
 	}
+   	public AlertOverviewVO getAlertOverviewVO() {
+		return alertOverviewVO;
+	}
+
+	public void setAlertOverviewVO(AlertOverviewVO alertOverviewVO) {
+		this.alertOverviewVO = alertOverviewVO;
+	}
+
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
+	}
 
 	//business methods
 	public String execute(){
@@ -868,7 +883,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			if(committeeDataVOList!=null && committeeDataVOList.size()>0){
 				userDataVO.setSubList(committeeDataVOList);
 			}
-			
+			 List<AlertOverviewVO> resultList = alertService.getAlertStatus(0l);
+			 if(resultList != null && resultList.size() > 0){
+				 alertOverviewVO.getSubList().addAll(resultList);	 
+			 }
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
 		}
