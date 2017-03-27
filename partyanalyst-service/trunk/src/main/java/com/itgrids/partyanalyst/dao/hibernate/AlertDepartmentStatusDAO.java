@@ -92,4 +92,23 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 	      }
 	      return query.list();   
    }
+   public List<Object[]> getAlertStatusByAlertStatusId(List<Long> alertStatusIds,Long alertTypeId){
+	   StringBuilder queryStr = new StringBuilder();
+	       queryStr.append(" select distinct model.alertStatus.alertStatusId,model.alertStatus.alertStatus,model.alertStatus.color," +
+	       		" model.alertStatus.shortName from AlertDepartmentStatus model ");
+	     if(alertStatusIds != null && alertStatusIds.size() > 0l){
+	        queryStr.append(" where model.alertStatus.alertStatusId in(:alertStatusIds) ");	 
+	     }
+	     if(alertTypeId != null && alertTypeId.longValue() > 0l){
+		        queryStr.append(" and model.alertType.alertTypeId=:alertTypeId ");	 
+		 }
+	      Query query = getSession().createQuery(queryStr.toString());
+	      if(alertStatusIds != null && alertStatusIds.size() > 0l){
+	    	  query.setParameterList("alertStatusIds", alertStatusIds);  
+	      }
+	      if(alertTypeId != null && alertTypeId.longValue() > 0l){
+	    	  query.setParameter("alertTypeId", alertTypeId);  
+	      }
+	      return query.list();   
+   }
 }

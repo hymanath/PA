@@ -15,8 +15,8 @@ public interface IVerificationStatusDAO extends GenericDao<VerificationStatus, L
 	public Long getAlertStatusId(Long alertId);
 	public List<Object[]> getStatusWiseAlertCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId);
 	public List<Object[]> getAllAlerts(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,Date fromDate2,Date toDate2);
-	public List<Object[]> getAlertCountStatusWiseBasedOnActionType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType,List<Long> editionTypes);
-	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, Long alertActionStatusId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId);
+	public List<Object[]> getAlertCountStatusWiseBasedOnActionType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertType,List<Long> editionTypes,List<Long> scopeIds,List<Long> alertStatusIds);
+	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, List<Long> alertActionStatusIds, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId,List<Long> impactScopeids);
 	public List<Object[]> getTotalStatus();
 	
 	public List<Object[]> getAllAlertsForCentralMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,Date fromDate2,Date toDate2);

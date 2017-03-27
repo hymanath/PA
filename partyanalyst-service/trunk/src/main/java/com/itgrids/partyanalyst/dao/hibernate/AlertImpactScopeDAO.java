@@ -23,5 +23,13 @@ public class AlertImpactScopeDAO extends GenericDaoHibernate<AlertImpactScope, L
 		Query query = getSession().createQuery("select model.alertImpactScopeId,model.impactScope from AlertImpactScope model order by model.orderNo ");
 		return query.list();
 	}	
+	public List<Object[]> getAlertImpactScopeByImpactId(List<Long> alertImpactLevelIds)
+	{
+		Query query = getSession().createQuery(" select model.alertImpactScopeId,model.impactScope " +
+											  " from AlertImpactScope model where model.alertImpactScopeId in(:alertImpactLevelIds)" +
+											  " order by model.orderNo ");
+		query.setParameterList("alertImpactLevelIds", alertImpactLevelIds);
+		return query.list();
+	}	
 	
 }
