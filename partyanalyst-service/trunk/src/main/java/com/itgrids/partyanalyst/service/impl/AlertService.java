@@ -8473,6 +8473,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
      public void setLocationLevelWiseData(List<Object[]> objList,Map<Long,AlertOverviewVO> locationMap,List<Long> impactLevelIds){
     	 try{
     		 if(objList != null && objList.size() > 0){
+    			 List<AlertOverviewVO> impactLevelList = getAlertImpactLevelWiseLocationSubTemplate(impactLevelIds);
     			 for(Object[] param:objList){
     				  Long locationLevelId = commonMethodsUtilService.getLongValueForObject(param[2]);
     				  Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[3]);
@@ -8481,7 +8482,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
     					   locationVO = new AlertOverviewVO();
     					   locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0])); 
     					   locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-    					   locationVO.setSubList1(getAlertImpactLevel(getAlertImpactLevelWiseLocationSubTemplate(impactLevelIds)));
+    					   locationVO.setSubList1(getAlertImpactLevel(impactLevelList));
     					   locationMap.put(locationVO.getId(), locationVO);
     				   }
     				   setAlertAlertCount(locationVO,locationLevelId,alertCnt);
