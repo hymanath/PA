@@ -708,7 +708,8 @@ function buildTotalAlertGroutByDeptThenStatus(result){
 		});
 		
 	}
-	var levelDepartmentArray =[{"id":3,"name":"District"},{"id":4,"name":"Constituency"}]
+	//var levelDepartmentArray =[{"id":3,"name":"District"},{"id":4,"name":"Constituency"}]
+	var levelDepartmentArray =[{"id":3,"name":"District"}]
 	function buildAlertCountLocationWiseThenStatusWise(result,departmentId,lvlValue){
 		
 		$('#levelDepartmentId').html('');
