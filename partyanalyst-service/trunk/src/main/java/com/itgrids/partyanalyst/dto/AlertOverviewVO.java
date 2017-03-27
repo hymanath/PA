@@ -61,7 +61,8 @@ public class AlertOverviewVO {
 	private String publicationId;
 	private String publicationName;
 	private List<Long> locationIdList;
-	
+	private Long assignedAlertCnt=0l;
+	private Long involveAlertCnt=0l;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -326,4 +327,17 @@ public class AlertOverviewVO {
 	public void setLocationIdList(List<Long> locationIdList) {
 		this.locationIdList = locationIdList;
 	}
+	public Long getAssignedAlertCnt() {
+		return assignedAlertCnt;
+	}
+	public void setAssignedAlertCnt(Long assignedAlertCnt) {
+		this.assignedAlertCnt = assignedAlertCnt;
+	}
+	public Long getInvolveAlertCnt() {
+		return involveAlertCnt;
+	}
+	public void setInvolveAlertCnt(Long involveAlertCnt) {
+		this.involveAlertCnt = involveAlertCnt;
+	}
+	
 }                                                          
