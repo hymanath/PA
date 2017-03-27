@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -167,6 +166,19 @@ public List<Object[]> getAllCasteInfoDetails(){
    public List<Object[]> getStatewisesCastNames(Long stateId){
 		
 		Query query = getSession().createQuery("select distinct model.casteStateId,model.caste.casteName from CasteState model where model.state.stateId = :stateId order by model.caste.casteName ");
+		query.setParameter("stateId", stateId);	
+		return query.list();
+	}
+   public List<Object[]> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> casteCategoryGroupId,Long stateId){
+	   StringBuilder str = new StringBuilder();
+	   str.append("select distinct model.casteStateId,model.caste.casteName from CasteState model where model.state.stateId = :stateId " );
+	   if(casteCategoryGroupId != null && casteCategoryGroupId.size()>0){
+		   str.append("and model.casteCategoryGroup.casteCategory.casteCategoryId in(:casteCategoryGroupId)");
+	   }
+	   Query query = getSession().createQuery(str.toString());
+	   if(casteCategoryGroupId != null && casteCategoryGroupId.size()>0){
+		query.setParameterList("casteCategoryGroupId", casteCategoryGroupId);
+	   }
 		query.setParameter("stateId", stateId);	
 		return query.list();
 	}

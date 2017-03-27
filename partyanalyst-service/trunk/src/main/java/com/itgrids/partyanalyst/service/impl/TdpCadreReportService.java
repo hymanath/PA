@@ -1695,7 +1695,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		try {
 			if(districtIdList != null && districtIdList.size()>0)
 			{
-				List<Object[]> constituencyList = constituencyDAO.getConstituencysByDistrictId(districtIdList);
+				getConstituencyDetailsForDistricts(districtIdList,returnVO);
+				/*List<Object[]> constituencyList = constituencyDAO.getConstituencysByDistrictId(districtIdList);
 				
 				List<SurveyTransactionVO> returnList = null;
 				if(constituencyList != null && constituencyList.size()>0)
@@ -1713,7 +1714,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				if(returnList != null && returnList.size()>0)
 				{
 					returnVO.setSurveyTransactionVOList(returnList);
-				}
+				}*/
+			}else{
+				getConstituencyDetailsForDistricts(districtIdList,returnVO);
 			}
 						
 		} catch (Exception e) {
@@ -6122,4 +6125,26 @@ public class TdpCadreReportService implements ITdpCadreReportService{
     		}
     		return returnList;
     	}
+    	public void getConstituencyDetailsForDistricts(List<Long> districtIdList,SurveyTransactionVO returnVO ){
+    		List<Object[]> constituencyList = constituencyDAO.getConstituencysByDistrictId(districtIdList);
+    		
+    		List<SurveyTransactionVO> returnList = null;
+    		if(constituencyList != null && constituencyList.size()>0)
+    		{
+    			returnList = new ArrayList<SurveyTransactionVO>(0);
+    			for (Object[] printStatus : constituencyList) 
+    			{
+    				SurveyTransactionVO reportVo = new SurveyTransactionVO();
+    				reportVo.setId(printStatus[0] != null ? Long.valueOf(printStatus[0].toString().trim()):0L);
+    				reportVo.setName(printStatus[1] != null ? printStatus[1].toString().trim():"");
+    				returnList.add(reportVo);
+    			}
+    		}
+    		
+    		if(returnList != null && returnList.size()>0)
+    		{
+    			returnVO.setSurveyTransactionVOList(returnList);
+    		}
+    	}
 }
+

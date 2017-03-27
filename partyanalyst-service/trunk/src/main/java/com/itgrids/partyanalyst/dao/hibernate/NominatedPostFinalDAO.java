@@ -2893,6 +2893,11 @@ public List<Object[]> getGeoLevelReportDetails(GeoLevelReportVO vo){
 				 queryStr.append(" and model.nominationPostCandidate.address.district.districtId in (:locIdsList)  " );
 			 }
 		}
+		if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+		if(vo.getDistIds() != null && vo.getDistIds().size()>0l){
+			 queryStr.append(" and model.nominationPostCandidate.address.district.districtId in (:distIds)  " );
+		}
+    }
 		queryStr.append(" group by " );
 		if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("district")){
 			 queryStr.append("  model.nominationPostCandidate.address.district.districtId,model.nominatedPostMember.boardLevel.boardLevelId " );
@@ -2969,7 +2974,11 @@ public List<Object[]> getGeoLevelReportDetails(GeoLevelReportVO vo){
 	if(vo.getStatusIds() != null && vo.getStatusIds().size() > 0l){
 		 query.setParameterList("appStatusIds", vo.getStatusIds());
 	 }
-	    
-	    return query.list();
+	if(vo.getLocationType() != null && vo.getLocationType().equalsIgnoreCase("constituency")){
+		if(vo.getDistIds() != null && vo.getDistIds().size()>0l){
+			query.setParameterList("distIds", vo.getDistIds() );
+		}
+		}   
+	  return query.list();
  } 
 }
