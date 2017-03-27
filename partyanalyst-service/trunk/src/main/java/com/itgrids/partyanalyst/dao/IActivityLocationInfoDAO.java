@@ -61,4 +61,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public ActivityLocationInfo isAlreadyAvailableLocationDtls(Long locationInfoId);
 	public List<Object[]> getPanchayatByTehsil(Long tehsilId,Long activityScopeId );
 	public List<Object[]> getWardsByMun(Long muncipId,Long activityScopeId );
+	public List<Object[]> getConstituenciesByDistricts(Long districtId,Long activityScopeId );
 }
