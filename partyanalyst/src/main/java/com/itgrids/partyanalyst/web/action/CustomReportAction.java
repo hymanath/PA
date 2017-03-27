@@ -31,7 +31,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	private String 						task;
 	private JSONObject					jObj;
 
-    private List<CustomReportVO>                     customReportVO;
+    private List<CustomReportVO>                     customReportVOList;
     private ICustomReportService			 		customReportService;
 	private ResultStatus                         resultStatus;
 
@@ -47,12 +47,11 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	public void setCustomReportService(ICustomReportService customReportService) {
 		this.customReportService = customReportService;
 	}
-	
-	public List<CustomReportVO> getCustomReportVO() {
-		return customReportVO;
+	public List<CustomReportVO> getCustomReportVOList() {
+		return customReportVOList;
 	}
-	public void setCustomReportVO(List<CustomReportVO> customReportVO) {
-		this.customReportVO = customReportVO;
+	public void setCustomReportVOList(List<CustomReportVO> customReportVOList) {
+		this.customReportVOList = customReportVOList;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
@@ -91,34 +90,22 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 			
 			String startDateStr = jObj.getString("startDateStr");
 			String endDateStr = jObj.getString("endDateStr");
-			customReportVO = customReportService.getCustomReportProgram(startDateStr,endDateStr);
+			customReportVOList = customReportService.getCustomReportPrograms(startDateStr,endDateStr);
 		} catch (Exception e){
 			LOG.error("Exception occured in getCustomReportProgram in CustomReportAction class  ",e);
 		}
 			return Action.SUCCESS;		
 }  
 	
-    public String getTotalExpertedReports(){
-    		String param=null;		
-    		param=request.getParameter("task");
-    		try {
-    			jObj=new JSONObject(param);
-    			LOG.info("jObj = "+jObj);
-    		} catch (ParseException e) {
-    			e.printStackTrace();
-    		}	
+	public String getTotalExpectedReports(){
+		try {
+    		jObj=new JSONObject(getTask());
     		
-    		try {
-    			jObj = new JSONObject(getTask());	
-    					
-    			customReportVO = customReportService.getTotalExpertedReports(jObj.getLong("id"));	
-    		//	Collections.sort(states);
-    		}catch(Exception e){
-    			e.printStackTrace();
-    		}
-    		
-    		return SUCCESS;  
-    	
+    		customReportVOList = customReportService.getTotalExpectedReports(jObj.getLong("id"));	
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return Action.SUCCESS;  	
      }
     public String saveCustomReportUploadFile()
 	{
