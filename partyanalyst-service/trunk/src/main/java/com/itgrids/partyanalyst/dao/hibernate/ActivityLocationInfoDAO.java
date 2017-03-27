@@ -3138,4 +3138,17 @@ public List<Object[]> getWardsByMun(Long muncipId,Long activityScopeId ){
 	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
+public List<Object[]> getConstituenciesByDistricts(Long districtId,Long activityScopeId ){
+	Query query = getSession().createQuery("select distinct " +
+			" model.address.constituency.constituencyId,model.address.constituency.name " +
+			//" localElectionBody.localElectionBodyId,localElectionBody.name " +
+			" from ActivityLocationInfo model " +
+			//" left join model.address.tehsil tehsil" +
+			//" left join model.address.localElectionBody leb" +
+			" where model.address.district.districtId = :districtId" +
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.constituency.name ");
+	query.setParameter("districtId", districtId);
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
 }
