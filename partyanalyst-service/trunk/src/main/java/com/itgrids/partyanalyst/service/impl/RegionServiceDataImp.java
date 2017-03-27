@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -78,6 +79,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private ILocationInfoDAO locationInfoDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
@@ -247,6 +249,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setModuleDetailsDAO(IModuleDetailsDAO moduleDetailsDAO) {
 		this.moduleDetailsDAO = moduleDetailsDAO;
+	}
+
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+
+	public void setActivityLocationInfoDAO(IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1922,6 +1932,26 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			}
 		} catch (Exception e) {
 			log.error("error Occured while executing areaCountListByAreaIdsOnScope in RegionServiceDataImp Service...",e);
+		}
+		return returnList;
+	}
+	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID,Long activityScopeId)
+	{
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Object[]> constituencies = activityLocationInfoDAO.getConstituenciesByDistricts(districtID,activityScopeId);
+			if(constituencies != null && constituencies.size()>0)
+			{ 
+				returnList = new ArrayList<SelectOptionVO>(0);
+				for (Object[] param : constituencies) {
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));				
+					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			log.error("error Occured while executing getConstituenciesByDistrictID in RegionServiceDataImp Service...",e);
 		}
 		return returnList;
 	}
