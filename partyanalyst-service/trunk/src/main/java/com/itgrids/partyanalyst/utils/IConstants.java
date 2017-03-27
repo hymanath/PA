@@ -1281,5 +1281,5 @@ public interface IConstants {
 	public static final String  REMAINING_PUBLIC_REPRESENTATIVE_TYPE_IDS = "3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29";
 	public static final String POSITION_OF_MLA_AND_MLC = "3,4";
 	
-	public static final String[] CORE_DASHBOARD_INSURANCE_STATUS = {"INTIMATIONS","FORWARDED","SETTLED","REJECTED"};
+	public static final String CORE_DASHBOARD_INSURANCE_STATUS = "INTIMATIONS,FORWARDED,SETTLED,REJECTED";
 }
