@@ -16197,9 +16197,9 @@
 		<action name="customReportAction" class="customReportAction">
 	   		 <result name="success">/jsp/customReports.jsp</result>			
 	    </action>
-	    <action name="getTotalExpertedReportsAction" class="customReportAction" method="getTotalExpertedReports">
+	    <action name="getTotalExpectedReportsAction" class="customReportAction" method="getTotalExpectedReports">
 			<result type="json" name="success">
-   				<param name="root">customReportVO</param>
+   				<param name="root">customReportVOList</param>
    			</result>
 	    </action>
 	    <action name="saveCustomReportUploadFileAction" class="customReportAction" method="saveCustomReportUploadFile">
@@ -16207,12 +16207,12 @@
 				<param name="root">resultStatus</param>
 			</result>
 	    </action>
-	    <action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
+		<action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
 		    <result type="json" name="success">		   
-			    <param name="root">customVoList</param>
+			    <param name="root">customReportVOList</param>
 			</result>
 		</action>
-	    <action name="getConstituenciesForADistrictsAction" class="cadreSearchAjaxAction" method="getConstituenciesForDistricts"> 
+		<action name="getConstituenciesForADistrictsAction" class="cadreSearchAjaxAction" method="getConstituenciesForDistricts"> 
               <result type="json" name="success">
            		<param name="root">constituenciesListForADistrict</param>
         	</result>       		
@@ -16226,6 +16226,6 @@
 		<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
-	    </action>
+	    </action>		 
  </package>
 </struts>

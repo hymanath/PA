@@ -8,6 +8,7 @@
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
@@ -26,6 +27,7 @@
 <script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
 <script type="text/javascript" src="js/yahoo/get-min.js"></script> 
 <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 <style type="text/css">
 .text-capital{
 	
@@ -58,8 +60,11 @@
 						
 				    </div>
 					    <div class="panel-body">
-					        Panel content
-						<button type="button" class="btn btn-success uploadDivCls">Upload</button>
+							<div id="tempDivId"></div>
+							<select class="form-control" id="programSelId">
+							</select>
+							
+							<button type="button" class="btn btn-success uploadDivCls">Upload</button>
 					    </div>
 				</div>
 			</div>
@@ -94,15 +99,24 @@
 	</div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="js/customReports.js" type="text/javascript"></script>
+
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/updateCustomReorts.js?v=1.0.5"></script>
+<script id="select-box" type="text/x-handlebars">
+	<option value="0">Select Option</option>
+	{{#each this}}
+		<option value="{{id}}" selected="{{selected}}">{{name}}</option>
+	{{/each}}
+</script>
+<script src="js/customReports.js" type="text/javascript"></script>
 <script type="text/javascript">
 initializeCustomReport();
+	$('select').chosen({width:'100%'});
 	$(".multiDateRangePicker").daterangepicker({
 		opens: 'left',
 	 	locale: {
@@ -111,11 +125,10 @@ initializeCustomReport();
 	});
 	
 	$(document).on('click','.uploadDivCls',function(){
-		$("#uploadModalDivId").modal("show");
-		
+		$("#uploadModalDivId").modal("show");	
 	});
 	
-	$(document).on("click","#uploacFilesBtnId",function(){alert(21);
+	$(document).on("click","#uploacFilesBtnId",function(){
 		var uploadHandler = { 
 			upload: function(o) {
 				uploadResult = o.responseText;
@@ -125,6 +138,23 @@ initializeCustomReport();
 		YAHOO.util.Connect.setForm('customApplication',true);  
 		YAHOO.util.Connect.asyncRequest('POST','saveCustomReportUploadFileAction.action',uploadHandler);
 	});
+	
+	
+	
+	function getRequiredDocumentsSummary(){alert(12);
+		var jsObj={
+			id:$("#programSelId").val()
+		}
+		
+		$.ajax({
+		  type : "GET",
+		  url : "getTotalExpectedReportsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
 </script>
 </body>
 </html>
