@@ -4108,6 +4108,7 @@
 	<bean name="coreService" class="com.itgrids.core.api.service.impl.CoreService">	
 	</bean>
 	<bean name="customReportService" class="com.itgrids.partyanalyst.service.impl.CustomReportService">
+		<property name="customReportDAO" ref="customReportDAO" ></property>
 	</bean>
 	
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
