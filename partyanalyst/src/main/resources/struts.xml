@@ -16207,10 +16207,15 @@
 				<param name="root">resultStatus</param>
 			</result>
 	    </action>
-		<action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
+	    <action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
 		    <result type="json" name="success">		   
 			    <param name="root">customVoList</param>
 			</result>
-		</action>		 
+		</action>
+	    <action name="getConstituenciesForADistrictsAction" class="cadreSearchAjaxAction" method="getConstituenciesForDistricts"> 
+              <result type="json" name="success">
+           		<param name="root">constituenciesListForADistrict</param>
+        	</result>       		
+        </action>
  </package>
 </struts>
