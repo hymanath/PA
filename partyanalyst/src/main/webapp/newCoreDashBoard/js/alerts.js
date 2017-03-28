@@ -84,7 +84,7 @@
 			return;
 		}
 	   if(type == "click"){
-				 $(".constituencyUl li").removeClass("active");
+		        $(".constituencyUl li").removeClass("active");
 				 $(".constituencyUl li:first-child").addClass("active");
 				 $(".districtUl li").removeClass("active");
 				 $(".districtUl li:first-child").addClass("active");
@@ -99,13 +99,16 @@
 			    $(".collapseHIghChartViewCls").addClass("active");
 	  		    $(".impactLevelCls").attr("attr_level","Overview");
 				getAlertOverviewDetails();
+			if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".alertLocationDiv").show();
 				getAlertCategoryDtlsLocationWise(0,0);
 				getStateImpactandItsSubLevelAlert();
 				getDistrictImpactandItsSubLevelAlert("Decending","0");
 				getCorpGMCAlert(0);
 				getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
 				getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
-				$(".basicAlertBlockDropDown").hide(); 
+		    }
+			$(".basicAlertBlockDropDown").hide(); 
 		}else if(type= "default"){
 		 getAlertOverviewDetails();	
 		}
@@ -5587,6 +5590,7 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 });
 	function getAllItsSubUserTypeIdsByParentUserTypeIdForAlert(){
 		   $(".alertComparisonblock").show();
+		   $(".alertComBlockCls").show();
 	     if(globalDistrictImpactLevelScopeArr == null || globalDistrictImpactLevelScopeArr.length == 0){
 			 $(".alertComparisonblock").hide();
 			 return;
@@ -5605,7 +5609,8 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 			if(result != null && result.length > 0){
 			buildUserTypesAndItsChildRlstForAlert(result);	
 			}else{
-			$("#childUserTypeDetailsDivForAlerts").html("NO DATA AVAILABLE");	
+			$("#childUserTypeDetailsDivForAlerts").html("NO DATA AVAILABLE");
+			$(".alertComBlockCls").hide();
 			}
 		});		 
 	}
