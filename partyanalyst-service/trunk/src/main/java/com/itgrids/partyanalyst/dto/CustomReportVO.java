@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomReportVO implements Serializable {
 	
@@ -13,8 +15,33 @@ public class CustomReportVO implements Serializable {
 	private File file;
 	private String selected = "false";
 	private Long reportId;
+	private String scope;
+	private Long locationValue;
+	private String path;
 	
-	
+	private List<CustomReportVO> observersList = new ArrayList<CustomReportVO>(0);
+	private List<CustomReportVO> locationsList = new ArrayList<CustomReportVO>(0);
+	private List<CustomReportVO> imagesList = new ArrayList<CustomReportVO>(0);
+	private List<CustomReportVO> fileList = new ArrayList<CustomReportVO>(0);
+		
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getScope() {
+		return scope;
+	}
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
 	public Long getReportId() {
 		return reportId;
 	}
@@ -63,5 +90,30 @@ public class CustomReportVO implements Serializable {
 	public void setCount(Long count) {
 		
 		this.count = count;
+	}
+	public List<CustomReportVO> getObserversList() {
+		return observersList;
+	}
+	public void setObserversList(List<CustomReportVO> observersList) {
+		this.observersList = observersList;
+	}
+	public List<CustomReportVO> getLocationsList() {
+		return locationsList;
+	}
+	public void setLocationsList(List<CustomReportVO> locationsList) {
+		this.locationsList = locationsList;
+	}
+	public List<CustomReportVO> getImagesList() {
+		return imagesList;
+	}
+	public void setImagesList(List<CustomReportVO> imagesList) {
+		this.imagesList = imagesList;
+	}
+	public List<CustomReportVO> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<CustomReportVO> fileList) {
+		this.fileList = fileList;
 	}	
+	
 }
