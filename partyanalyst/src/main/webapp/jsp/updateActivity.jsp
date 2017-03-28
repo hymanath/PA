@@ -199,7 +199,7 @@
 								<span > <img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg5"></span>
 							</div>
 							<div class="col-md-3" style="margin-top:35px;">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationWiseDetailsForActivity();">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationWiseDetailsForActivity(0);">SEARCH</button>
 							</div>
 							</div>
 								
@@ -264,7 +264,7 @@
 		-->
 		<div class="row" style=" margin-bottom: 10px;">
 			<div class="col-md-3" id="attributeTypeId" style="display:none;">
-				<label>Required Attributes</label>
+				<label>Required Fields : </label>
 				<select attr_no="" multiple class="chosenSelect form-control" id="attributeTypeList" name="" data-placeholder ="Select Option" name="activityVO.types">
 					<!-- <option value="0">Select Option</option>
 					<option selected value="6"> Conducted Date</option>
@@ -274,7 +274,8 @@
 				</select><br>
 				<span id="chCkBxErrMsgId"></span>
 			</div>
-		
+		</div>
+		<div class="row" style="margin-bottom: 10px;">
 			<div class="col-md-3" id="planedDateDivId" style="display:none;">
 				<label>Planned Date</label>
 				<div class="input-group input-g1">
@@ -307,16 +308,27 @@
 		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		    	<div class="panel-heading">
-                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
-						<span class="pull-right">
-							 <i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;display:none" title="View Images" id="imageButId"></i>
-						</span>
+                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level) <!--( <span >
+							 <i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;display:none" title="View All Images" id="imageButId"></i>
+						</span> )--></span>
+						
+						<span style="background-color: lightblue; border-radius: 5px; padding: 10px;">
+						<label class="checkbox-inline">
+								<input type="radio" checked="checked" id="allId" onclick="getLocationWiseDetailsForActivity(1);" name="radio1">All
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" id="conductedId" onclick="getLocationWiseDetailsForActivity(1);" name="radio1">Show Conducted Locations
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" id="notConductedId" onclick="getLocationWiseDetailsForActivity(1);" name="radio1">Show Not Conducted Locations
+							</label>
+						</span>	
                     </h4>
                 </div>
                 <div class="panel-body">
-					<div>
+					<!--<div>
                     	
-							
+						
 							<label class="checkbox-inline">
 								<input type="radio" checked="checked" id="allId" onclick="getLocationWiseDetailsForActivity();" name="radio1">All
 							</label>
@@ -326,12 +338,12 @@
 							<label class="checkbox-inline">
 								<input type="radio" id="notConductedId" onclick="getLocationWiseDetailsForActivity();" name="radio1">Show Not Conducted Locations
 							</label>
-							<!--<span  style="margin-left:30px;">
+							<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
-							</span>-->
+							</span>
 							
                         
-                    </div>
+                    </div>-->
                 	<div>
                       <!-- Nav tabs -->
                       <!--<ul class="nav nav-tabs nav-tabs-custom" role="tablist">
@@ -691,7 +703,7 @@ $(document).ready(function(){
 		//alert(startDate);
 	});
 	
-	$(".conductedDateCls").daterangepicker({singleDatePicker:true,showDropdowns: true,format:'YYYY-MM-DD'});
+	$(".conductedDateCls").daterangepicker({singleDatePicker:true,showDropdowns: true,format:'YYYY-MM-DD',maxDate:new Date()});
 	$(".conductedDateCls").val(moment().format('YYYY-MM-DD'));
 	$(".planedDateCls").daterangepicker({singleDatePicker:true,format:'YYYY-MM-DD'});
 	$(".planedDateCls").val(moment().format('YYYY-MM-DD'));
@@ -861,8 +873,8 @@ function getActivityNames(id)
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				
-				//$('#ActivityList').val(16);
-				//$('#ActivityList').trigger('change');
+				$('#ActivityList').val(51);
+				$('#ActivityList').trigger('change');
 			}
 		});
 		
@@ -1204,7 +1216,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 						$("#buildAssConsActivity").hide();
 						$("#hideAsmblyData").hide();
 						$("#showAsmblyData").show();
-						str+='<table class="table table-bordered bg_ff" id="locationsTab">';
+						str+='<table class="table table-bordered bg_ff" id="locatiionsTab">';
 						str+='<thead>';
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
@@ -1362,11 +1374,11 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 					*/
 					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					
-					$("#locationsTab").dataTable({
+					$("#locatiionsTab").dataTable({
 					"iDisplayLength": 20,
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 					});
-					$("#locationsTab").removeClass("dataTable");
+					$("#locatiionsTab").removeClass("dataTable");
 					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
 					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 				});	
@@ -1883,8 +1895,9 @@ $("#hideAsmblyData").click(function(){
 		gobalLevelValue = $(this).attr("attr_location_Value");
 		//var dateStr = $("#"+dateVal).val();
 		var locationInfoId = $(this).attr("attr_act_location_info_id");
+		var tableName = $(this).attr("attr_table_name");
 		setGobalValues();
-		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&lctionInfoId='+locationInfoId+'','_blank');
+		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&temp='+locationInfoId+'&task='+tableName+'','_blank');
 		
 	});
 	
@@ -2753,14 +2766,15 @@ $(document).on("change","#ActivityList",function(){
 	}
 });
 
-function getConstitiensList(){	
+function getConstitiensList(){ 	
 	$('#constiList').find('option').remove();
 	$('#constiList').append('<option value="0">Select Constituency</option>');
 	$("#procesingImg3").show();
 	var activityId = $("#ActivityList").val();
 	
 	var jsObj={	
-			activityId:activityId		 
+			activityId:activityId,
+			stateId:1			
 		}
 		$.ajax({
 			type:'GET',
@@ -2772,7 +2786,7 @@ function getConstitiensList(){
 			{
 				$("#procesingImg3").hide();
 				$('#constiList').find('option').remove();
-				$('#constiList').append('<option value="0">All</option>');
+				//$('#constiList').append('<option value="0">All</option>');
 				for(var i in result)
 				$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		}
@@ -2826,12 +2840,18 @@ $(document).on("change","#mandalsList",function(){
 		}
 		   });
 });
-function getLocationWiseDetailsForActivity()
+
+var round=0;
+function getLocationWiseDetailsForActivity(roundId)
 {
+	if(roundId==0)
+		round=0;
+	
 //alert(222);	
 	//getActivityStatusDetailsByScopeIdAndLocationValue();
 	//$("#questionsDiv").show();
 	//$("#activityresponsesDiv").show();
+	$('#conductedDateId').val('');
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
@@ -2948,11 +2968,11 @@ function getLocationWiseDetailsForActivity()
 						str+='<thead>';
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
-						str+='<th></th>';
+						str+='<th> <input type="checkbox" class="allcheckBoxCls" style="background-color:#00B17D; color:#fff;"/> Select All </th>';
 						if(activityLevelId == 2)
-							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+							;//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1){	
-							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+							//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
 						}
 						else if(activityLevelId == 5)
@@ -2963,7 +2983,7 @@ function getLocationWiseDetailsForActivity()
 							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
 						if(dataArr == null || dataArr == "" || typeof(dataArr) == "undefined"){
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
-							str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+							//str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
 						}else{
 							for(var i in dataArr){
 								if(parseInt(dataArr[i].trim()) == 5){
@@ -2971,14 +2991,14 @@ function getLocationWiseDetailsForActivity()
 								}else if(parseInt(dataArr[i].trim()) == 6){
 									str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 								}else if(parseInt(dataArr[i].trim()) == 7){
-									str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
+								//	str+='<th style="background-color:#00B17D; color:#fff;">IVR STATUS</th>';
 								}else if(parseInt(dataArr[i].trim()) == 1){
 									str+='<th style="background-color:#00B17D; color:#fff;">TOTAL IMAGES</th>';
 									str+='<th style="background-color:#00B17D; color:#fff;">UPLOAD IMAGES</th>';
 								}
 							}
 						}
-						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
+					//	str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
 						str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -2990,7 +3010,7 @@ function getLocationWiseDetailsForActivity()
 							if(activityLevelId == 5){
 								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
 							}else if(activityLevelId == 1 || activityLevelId == 2){
-									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
+									//str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
 									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
 							}else if(activityLevelId == 3){
 								str+='<td id='+result[i].districtId+'>'+result[i].districtName+'</td>';
@@ -2999,9 +3019,9 @@ function getLocationWiseDetailsForActivity()
 								if(result[i].conductedDate != null && result[i].conductedDate != ""){
 										str+='<td ><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'"  class="condDateCls" /></td>';
 									}else{
-										str+='<td>-</td>';
+										str+='<td><input type="text" name="activityVO.activityVoList['+i+'].conductedDate "  class="condDateCls" /></td>';
 									}
-									if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
+								/*	if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
 										str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
 											if(result[i].ivrStatus != null && result[i].ivrStatus == 'Y'){
 												str+='<option selected value="Y">Y</option>';
@@ -3013,64 +3033,72 @@ function getLocationWiseDetailsForActivity()
 											}
 										str+='</select></td>';
 									}else{
-										str+='<td>-</td>';
-									}
+										str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
+												str+='<option selected value="0">Select IVR Status </option>';
+												str+='<option value="Y">Y</option>';
+												str+='<option  value="N">N</option>';
+										str+='</select></td>';
+									}*/
 							}else{
-								for(var i in dataArr){
-								if(parseInt(dataArr[i].trim()) == 5){
+								for(var k in dataArr){
+								if(parseInt(dataArr[k].trim()) == 5){
 									if(result[i].planedDate != null && result[i].planedDate != ""){
-										str+='<td><input type="text" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" class="condDateCls" /></td>';
-									}else{
-										str+='<td> - </td>';
-									}
-								}else if(parseInt(dataArr[i].trim()) == 6){
-									if(result[i].conductedDate != null && result[i].conductedDate != ""){
-										str+='<td ><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'"  class="condDateCls" /></td>';
-									}else{
-										str+='<td>-</td>';
-									}
-								}else if(parseInt(dataArr[i].trim()) == 7){
-									if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
-										str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
-											if(result[i].ivrStatus != null && result[i].ivrStatus == 'Y'){
-												str+='<option selected value="Y">Y</option>';
-												str+='<option  value="N">N</option>';
+											str+='<td><input type="text" name="activityVO.activityVoList['+i+'].plannedDate" value="'+result[i].planedDate+'" class="condDateCls" /></td>';
+										}else{
+											str+='<td> <input type="text" name="activityVO.activityVoList['+i+'].plannedDate"  class="condDateCls" /> </td>';
+										}
+									}else if(parseInt(dataArr[k].trim()) == 6){
+										if(result[i].conductedDate != null && result[i].conductedDate != ""){
+											str+='<td ><input type="text" name="activityVO.activityVoList['+i+'].conductedDate " value="'+result[i].conductedDate+'"  class="condDateCls" /></td>';
+										}else{
+											str+='<td><input type="text" name="activityVO.activityVoList['+i+'].conductedDate "  class="condDateCls" /></td>';
+										}
+									}else if(parseInt(dataArr[k].trim()) == 7){
+										/*if(result[i].ivrStatus != null && result[i].ivrStatus != "" ){
+											str+='<td><select  name="activityVO.activityVoList['+i+'].ivrStatus" value="'+result[i].ivrStatus+'" id="isValidOrNotId">';
+												if(result[i].ivrStatus != null && result[i].ivrStatus == 'Y'){
+													str+='<option selected value="Y">Y</option>';
+													str+='<option  value="N">N</option>';
+												}
+												else if(result[i].ivrStatus != null && result[i].ivrStatus == 'N'){
+													str+='<option value="Y">Y</option>';
+													str+='<option selected value="N">N</option>';
+												}else{
+													str+='<option selected value="0">Select IVR Status </option>';
+													str+='<option value="Y">Y</option>';
+													str+='<option  value="N">N</option>';
+												}
+											str+='</select></td>';
+										}else{
+											str+='<td>-</td>';
+										}*/
+									}else if(parseInt(dataArr[k].trim()) == 1){
+										if(result[i].count != null && result[i].count > 0){
+											str+='<td> '+result[i].count;
+											if(activityLevelId == 5){
+											 str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+0+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+											}else if(activityLevelId == 1){
+												str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
+											}else if(activityLevelId == 3){
+												str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].districtId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
 											}
-											else if(result[i].ivrStatus != null && result[i].ivrStatus == 'N'){
-												str+='<option value="Y">Y</option>';
-												str+='<option selected value="N">N</option>';
-											}
-										str+='</select></td>';
-									}else{
-										str+='<td>-</td>';
+											
+										}else{
+											str+='<td> 0 </td>';
+										}
+										str+='<td>';
+										if(activityLevelId == 5){
+											str+='<img attr_location_Value="'+result[i].constituencyId+'" attr_location_Name=\''+result[i].constituencyName+'\'  id="uploadImagesId" style="position:absolute;width: 30px; height: 30px;background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_table_name="'+result[i].tableName+'" attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].constituencyId+'" />';
+										}else if(activityLevelId == 1 || activityLevelId == 2){
+											str+='<img attr_location_Value="'+result[i].villageId+'" attr_location_Name=\''+result[i].villageName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_table_name="'+result[i].tableName+'"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].villageId+'" />';
+										}else if(activityLevelId == 3){
+											str+='<img attr_location_Value="'+result[i].districtId+'" attr_location_Name=\''+result[i].districtName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"   attr_table_name="'+result[i].tableName+'" attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].districtId+'" />';
+										}
+										str+='</td>';
 									}
-								}else if(parseInt(dataArr[i].trim()) == 1){
-									if(result[i].count != null && result[i].count > 0){
-								str+='<td>'+result[i].count;
-								if(activityLevelId == 5){
-								 str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+0+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}else if(activityLevelId == 1){
-									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}else if(activityLevelId == 3){
-									str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].districtId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"></i></td>';
-								}
-								
-							}else{
-								str+='<td>'+0+'</td>';
-							}
-							str+='<td>';
-							if(activityLevelId == 5){
-								str+='<img attr_location_Value="'+result[i].constituencyId+'" attr_location_Name=\''+result[i].constituencyName+'\'  id="uploadImagesId" style="position:absolute;width: 30px; height: 30px;background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].constituencyId+'" />';
-							}else if(activityLevelId == 1 || activityLevelId == 2){
-								str+='<img attr_location_Value="'+result[i].villageId+'" attr_location_Name=\''+result[i].villageName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].villageId+'" />';
-							}else if(activityLevelId == 3){
-								str+='<img attr_location_Value="'+result[i].districtId+'" attr_location_Name=\''+result[i].districtName+'\' id="uploadImagesId" style="position:absolute;width: 30px; height: 30px; background:#FFA500;cursor:pointer;" src="images/imageUpload.png"  title="Upload Images"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].districtId+'" />';
-							}
-							str+='</td>';
 								}
 							}
-							}
-							str+='<td>';
+						/*	str+='<td>';
 							if(activityLevelId == 5){
 							   str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result[i].constituencyId+',\''+result[i].constituencyName+'\',\''+constituencyId+'\');" style="margin-left: 45px;"/>';
 							}else if(activityLevelId == 1 || activityLevelId == 2){
@@ -3078,7 +3106,7 @@ function getLocationWiseDetailsForActivity()
 							}else if(activityLevelId == 3){
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result[i].districtId+',\''+result[i].districtName+'\',\''+constituencyId+'\');" style="margin-left: 45px;"/>';
 							}
-							str+='</td>';
+							str+='</td>';*/
 							str+='</tr>';
 						}
 						str+='</tbody>';
@@ -3086,20 +3114,25 @@ function getLocationWiseDetailsForActivity()
 					}
 					$('#home').html(str);
 					$("#attributeTypeId").show();
-					$("#attributeTypeList").empty();
-					$("#attributeTypeList").append('<option value="0">Select Option</option>');
-					$("#attributeTypeList").trigger("chosen:updated");
-					if(result[0].subList != null && result[0].subList.length > 0){
-					  for(var i in result[0].subList){
-					   //$("#attributeTypeList").css('display','block');
-					   if(result[0].subList[i].id != null){
-					   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'">'+result[0].subList[i].name+'</option>');
-					   
-					  }
-					 }
-					 $("#attributeTypeList").trigger("chosen:updated");
+					
+					if(round==0){
+						round = 1;
+						$("#attributeTypeList").empty();
+						$("#attributeTypeList").append('<option value="0">Select Option</option>');
+						$("#attributeTypeList").trigger("chosen:updated");
+						if(result[0].subList != null && result[0].subList.length > 0){
+						  for(var i in result[0].subList){
+						   //$("#attributeTypeList").css('display','block');
+						   if(result[0].subList[i].id != null){
+						   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'">'+result[0].subList[i].name+'</option>');
+						   
+						  }
+						 }
+						 $("#attributeTypeList").trigger("chosen:updated");
+						}
 					}
-					$(".condDateCls").daterangepicker({singleDatePicker:true,format:'YYYY-MM-DD'});
+					
+					$(".condDateCls").daterangepicker({singleDatePicker:true,format:'YYYY-MM-DD',maxDate:new Date()});
 					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px;z-index:99;"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails();"/></div>');
 					$("#locationsTab").dataTable({
 					"iDisplayLength": 20,
@@ -3132,9 +3165,13 @@ function saveActyDetails(){
 			//console.log(result);
 			uploadResult = result.responseText; 
 			var stringext = uploadResult.substr(6,7);
-			alert(stringext);
-			if(stringext == "success")
-				getLocationWiseDetailsForActivity();
+			
+			if(stringext == "success"){
+				alert("Activity Details Updated Successfully...");
+				getLocationWiseDetailsForActivity(1);
+			}else{
+				alert("Activity Details Not Updated. Please check once.");
+			}
 		}
 	};
 	
@@ -3145,6 +3182,8 @@ function saveActyDetails(){
 var dataArr;
 $(document).on("change","#attributeTypeList",function(){
 	$("#reSearchId").show();
+	$("#home").html('');
+	
 	 var attrTypeId = $(this).val();
 	 $("#statusDivId").hide();
 	$("#planedDateDivId").hide();
@@ -3165,6 +3204,14 @@ $(document).on("change","#attributeTypeList",function(){
 	 }
 	 
 });
+
+ $(document).on("click",".allcheckBoxCls",function(){
+	 if($(this).is(':checked')){		
+		 $('.checkBoxCls').prop('checked', true);
+	 }else{
+		 $('.checkBoxCls').prop('checked', false);
+	 }
+ });
  $(document).on("change","#activityLevelList",function(){
 	 $('#constiList').find('option').remove();
 	 $('#constiList').append('<option value="0">Select Constituency</option>');
