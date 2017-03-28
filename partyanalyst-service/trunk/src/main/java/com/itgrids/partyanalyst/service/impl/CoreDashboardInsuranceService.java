@@ -120,6 +120,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					}
 				}
 			}
+			
+			if(statusMap != null)
+				returnList = new ArrayList<CoreDashboardInsuranceVO>(statusMap.values());
 		    
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails on CoreDashboardInsuranceService", e);
