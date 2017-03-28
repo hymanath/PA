@@ -1674,10 +1674,32 @@ public String getAllConstituencysForADistrict(){
 	}
 	public String getConstituenciesByActivity(){
 		try{
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
 			jObj = new JSONObject(getTask());
 			Long activityId =jObj.getLong("activityId");
 			
-			idNameVOList = cadreCommitteeService.getConstituenciesByActivityId(activityId);
+			idNameVOList = new ArrayList<IdNameVO>(0);
+			
+			List<IdNameVO> tempidNameVOList = cadreCommitteeService.getConstituenciesByActivityId(activityId);
+			
+			BasicVO userAccessLocationsVo = cadreCommitteeService.getAccessLocationValuesByState(user.getAccessType(),Long.valueOf(user.getAccessValue()),jObj.getLong("stateId"),user.getRegistrationID(),null);
+			if(userAccessLocationsVo != null && userAccessLocationsVo.getHamletVoterInfo().size()>0){
+				List<Long> accessIds = new ArrayList<Long>(0);
+				for (BasicVO vo : userAccessLocationsVo.getHamletVoterInfo()) {
+					accessIds.add(vo.getId());
+				}
+				
+				if(tempidNameVOList != null && tempidNameVOList.size()>0){
+					for (IdNameVO vo : tempidNameVOList) {
+						if(accessIds.contains(vo.getId()))
+							idNameVOList.add(vo);
+					}
+				}
+			}else{
+				idNameVOList.addAll(tempidNameVOList);
+			}
+			
 		}catch(Exception e){
 			LOG.error("Exception occured in getConstituenciesByActivity ",e);
 		}
