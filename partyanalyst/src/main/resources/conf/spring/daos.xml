@@ -3831,5 +3831,19 @@
 	 </bean>
     <!--  CUSTOM REPORTS END -->
     
+    <!-- ASSEMBLY SESSION DAO'S -->
+     <bean id="speechAspectDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpeechAspectDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="memberSpeechAspectDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberSpeechAspectDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="speechCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpeechCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="memberSpeechCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberSpeechCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <!--  ASSEMBLY SESSION DAO'S END -->	
     
 </beans>		
