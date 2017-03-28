@@ -139,9 +139,7 @@ initializeCustomReport();
 		YAHOO.util.Connect.asyncRequest('POST','saveCustomReportUploadFileAction.action',uploadHandler);
 	});
 	
-	
-	
-	function getRequiredDocumentsSummary(){alert(12);
+	function getRequiredDocumentsSummary(){
 		var jsObj={
 			id:$("#programSelId").val()
 		}

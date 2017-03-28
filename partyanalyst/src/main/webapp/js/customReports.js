@@ -17,6 +17,22 @@ getCustomReportPrograms();
 				$list.html(templatess(result));
 				$list.trigger("chosen:updated");
 				getRequiredDocumentsSummary();
+				getProgramReportsDetails();
 			}			
+		});
+	}
+	
+	function getProgramReportsDetails(){
+		var jsObj={
+			id:$("#programSelId").val()
+		}
+		
+		$.ajax({
+		  type : "GET",
+		  url : "getProgramReportsDetailsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
 		});
 	}
