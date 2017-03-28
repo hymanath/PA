@@ -20697,8 +20697,7 @@ public List<IdNameVO> getPanchayatBymandalId(Long mandalId,Long activityScopeId)
 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue){
 	List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 	try{
-		if(searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat") || 
-				searchType.trim().equalsIgnoreCase("Muncipality") || searchType.trim().equalsIgnoreCase("ward")){
+		if(searchType.trim().equalsIgnoreCase("Mandal") ||	searchType.trim().equalsIgnoreCase("Muncipality") ){
 			locationId = Long.valueOf(locationId.toString().substring(1));
 		}
 		
@@ -20809,9 +20808,9 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 		
 		if(docListCnt != null && docListCnt.size() > 0){
 			for (Object[] objects : docListCnt) {
-				if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue() > 0 && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue() != 0){
+				if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue() > 0L && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue() != 0L){
 					docmntListMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getLongValueForObject(objects[1]));
-				}else if(commonMethodsUtilService.getLongValueForObject(objects[2]) != null && commonMethodsUtilService.getLongValueForObject(objects[2]).longValue() > 0 && commonMethodsUtilService.getLongValueForObject(objects[2]).longValue() != 0){
+				}else if(commonMethodsUtilService.getLongValueForObject(objects[2]) != null && commonMethodsUtilService.getLongValueForObject(objects[2]).longValue() > 0L && commonMethodsUtilService.getLongValueForObject(objects[2]).longValue() != 0L){
 					docmntListMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), commonMethodsUtilService.getLongValueForObject(objects[1]));
 				}
 			}
@@ -20832,7 +20831,7 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 
 		vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString() :"0"));
 		vo.setName(obj[1] !=null ? obj[1].toString() :"");
-		if(commonMethodsUtilService.isListOrSetValid(returnList) && returnList.get(0) != null )
+		if(commonMethodsUtilService.isListOrSetValid(returnList) && returnList.get(0) != null)
 			returnList.get(0).getSubList().add(vo);
 	}
 }
