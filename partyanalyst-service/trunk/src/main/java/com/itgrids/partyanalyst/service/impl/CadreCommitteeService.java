@@ -20697,7 +20697,8 @@ public List<IdNameVO> getPanchayatBymandalId(Long mandalId,Long activityScopeId)
 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue){
 	List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 	try{
-		if(searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat")){
+		if(searchType.trim().equalsIgnoreCase("Mandal") || searchType.trim().equalsIgnoreCase("Panchayat") || 
+				searchType.trim().equalsIgnoreCase("Muncipality") || searchType.trim().equalsIgnoreCase("ward")){
 			locationId = Long.valueOf(locationId.toString().substring(1));
 		}
 		
@@ -20831,7 +20832,8 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 
 		vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString() :"0"));
 		vo.setName(obj[1] !=null ? obj[1].toString() :"");
-		returnList.get(0).getSubList().add(vo);
+		if(commonMethodsUtilService.isListOrSetValid(returnList) && returnList.get(0) != null && commonMethodsUtilService.isListOrSetValid(returnList.get(0).getSubList()))
+			returnList.get(0).getSubList().add(vo);
 	}
 }
 			
