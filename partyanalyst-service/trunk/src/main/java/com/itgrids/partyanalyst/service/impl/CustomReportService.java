@@ -10,12 +10,16 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICustomReportFileDAO;
+import com.itgrids.partyanalyst.dao.ICustomReportImageDAO;
+import com.itgrids.partyanalyst.dao.ICustomReportLocationDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportObserverDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
@@ -34,14 +38,32 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	 private CustomReportDAO customReportDAO;
 	 private CustomReportVO customReportVO;
 	 private ActivityService activityService;
-	 private CustomReportFileDAO customReportFileDAO;
+	 private ICustomReportFileDAO customReportFileDAO;
 	
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ICustomReportProgramDAO customReportProgramDAO;
 	private ICustomReportObserverDAO customReportObserverDAO;
-
+    private ICustomReportLocationDAO customReportLocationDAO;
+    private ICustomReportImageDAO customReportImageDAO;
+    
 	
-	 public ICustomReportObserverDAO getCustomReportObserverDAO() {
+	 public ICustomReportImageDAO getCustomReportImageDAO() {
+		return customReportImageDAO;
+	}
+	public void setCustomReportImageDAO(ICustomReportImageDAO customReportImageDAO) {
+		this.customReportImageDAO = customReportImageDAO;
+	}
+	public void setCustomReportFileDAO(ICustomReportFileDAO customReportFileDAO) {
+		this.customReportFileDAO = customReportFileDAO;
+	}
+	public ICustomReportLocationDAO getCustomReportLocationDAO() {
+		return customReportLocationDAO;
+	}
+	public void setCustomReportLocationDAO(
+			ICustomReportLocationDAO customReportLocationDAO) {
+		this.customReportLocationDAO = customReportLocationDAO;
+	}
+	public ICustomReportObserverDAO getCustomReportObserverDAO() {
 		return customReportObserverDAO;
 	}
 
@@ -96,10 +118,6 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		this.customReportDAO = customReportDAO;
 	}
 
-	public CustomReportFileDAO getCustomReportFileDAO() {
-		return customReportFileDAO;
-	}
-
 	public void setCustomReportFileDAO(CustomReportFileDAO customReportFileDAO) {
 		this.customReportFileDAO = customReportFileDAO;
 	}
@@ -115,8 +133,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					CustomReportVO customReportVO=new CustomReportVO();
 					customReportVO.setName(objects[0] !=null ? objects[0].toString():"");
 					customReportVO.setCount(objects[1]!=null && (Long)objects[1]> 0l ?(Long)objects[1]:0l);
-					customReportList.add(customReportVO);
-					
+					customReportList.add(customReportVO);					
 					
 				}
 			}
@@ -250,6 +267,10 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
 		try {
 			Map<Long,List<CustomReportVO>> observersMap = new LinkedHashMap<Long, List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> locationsMap =new LinkedHashMap<Long, List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> filesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			
 			//get observer details for program
 			//0-customReportId,1-tdpCadreId,2-firstname
 			List<Object[]> obserersObjList = customReportObserverDAO.getObserverDetails(programId);
@@ -273,11 +294,141 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 				}
 			}
 			
+			//get location details for program 
+			//0-customReportId,1-locationScopeId,2-scope,3-locationValue,4-customReportLocationId 
+			List<Object[]> locationsObjList = customReportLocationDAO.getLocationDetails(programId);
+			if (locationsObjList != null && locationsObjList.size() > 0) {
+				for (Object[] objects : locationsObjList) {
+					if (locationsMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newLocationVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setScope(objects[2].toString());
+						vo.setLocationValue((Long)objects[3]);
+						newLocationVoList.add(vo);
+						locationsMap.put((Long)objects[0], newLocationVoList);						
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setScope(objects[2].toString());
+						vo.setLocationValue((Long)objects[3]);
+						locationsMap.get((Long)objects[0]).add(vo);
+					}
+				}				
+			}
+			//get image details for program
+			//0-customReportId,1-imageName,2-path,3-customReportimageId
+			List<Object[]> imagesObjList = customReportImageDAO.getImageDetails(programId);
+			if (imagesObjList != null && imagesObjList.size() > 0) {
+				for (Object[] objects : imagesObjList) {
+					if (imagesMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newImageVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						newImageVoList.add(vo);
+						imagesMap.put((Long)objects[0], newImageVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						imagesMap.get((Long)objects[0]).add(vo);
+					}
+				}				
+			}
+			
+			//get file details for program
+			//0-customReportId,1.fileName,2.path,3-customReportFileId
+			List<Object[]> fileObjList = customReportFileDAO.getFileDetails(programId);
+			if(fileObjList !=null && fileObjList.size() > 0){
+				for(Object[] objects :fileObjList){
+					if(filesMap.get((Long)objects[0]) ==null){
+						List<CustomReportVO> newFileVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						newFileVoList.add(vo);
+						filesMap.put((Long)objects[0], newFileVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						filesMap.get((Long)objects[0]).add(vo);
+					}
+				}
+			}
+			
+			if(observersMap != null && observersMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : observersMap.entrySet()) {
+					CustomReportVO vo = new CustomReportVO();
+					vo.setReportId(entry.getKey());
+					vo.setObserversList(entry.getValue());
+					finalList.add(vo);
+				}
+			}
+			
+			if(locationsMap != null && locationsMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : locationsMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setLocationsList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setLocationsList(entry.getValue());
+					}
+				}
+			}
+			
+			if(imagesMap != null && imagesMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : imagesMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setImagesList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setImagesList(entry.getValue());
+					}
+				}
+			}
+			
+			if(filesMap != null && filesMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : filesMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setFileList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setFileList(entry.getValue());
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getCustomReportProgram() method, Exception - ",e);
 		}
 		return finalList;
 	} 
 	
+	public CustomReportVO getMatchedVO(List<CustomReportVO> list,Long programId){
+		if(list != null && list.size() > 0){
+			for (CustomReportVO customReportVO : list) {
+				if(customReportVO.getReportId().equals(programId))
+					return customReportVO;
+			}
+		}
+		return null;
+	}
 
 }

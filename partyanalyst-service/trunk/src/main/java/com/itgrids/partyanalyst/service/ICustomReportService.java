@@ -5,9 +5,6 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CustomReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import java.util.List;
-
-import com.itgrids.partyanalyst.dto.CustomReportVO;
 
 public interface ICustomReportService {
 	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId);
