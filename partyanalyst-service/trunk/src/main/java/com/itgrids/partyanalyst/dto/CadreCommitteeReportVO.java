@@ -32,8 +32,14 @@ public class CadreCommitteeReportVO {
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList = new ArrayList<CadreCommitteeReportVO>();
 	private Long afflStartedCommittees  =0l;
 	private Long afflCompletedCommittees  =0l;
+	private String state;
 	
-	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public Long getAfflStartedCommittees() {
 		return afflStartedCommittees;
 	}
