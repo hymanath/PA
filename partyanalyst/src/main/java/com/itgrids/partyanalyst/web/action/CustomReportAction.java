@@ -150,4 +150,13 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;	
 	}
 	
+    public String getProgramReportsDetails(){
+    	try {
+    		jObj = new JSONObject(getTask());
+    		customReportService.getProgramReportsDetails(jObj.getLong("id"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getProgramReportsDetails() method, Exception - ",e); 
+		}
+    	return Action.SUCCESS;	
+    }
 }
