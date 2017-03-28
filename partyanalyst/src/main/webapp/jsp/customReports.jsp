@@ -36,6 +36,10 @@
 .f_18{
 	font-size:18px;
 }
+.border-box{
+	padding:10px 20px;
+    border: 1px dotted black;
+}
 </style>
 </head>
 <body>  
@@ -61,9 +65,25 @@
 				    </div>
 					    <div class="panel-body">
 							<div id="tempDivId"></div>
-							<select class="form-control" id="programSelId">
-							</select>
-							
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-4">
+									<select class="form-control" id="programSelId">
+									</select>
+								</div>
+								<div class="col-md-5 col-xs-12 col-sm-5">
+									<ul class="list-inline border-box">
+										<li>Total Expected Reports:
+										<span> 150</span>
+										</li>
+										<li>Submited:
+										<span> 100 </span>
+										</li>
+										<li>Not Submited:
+										<span> 50</span>
+										</li>
+									</ul>
+								</div>
+							</div>
 							<button type="button" class="btn btn-success uploadDivCls">Upload</button>
 					    </div>
 				</div>
@@ -150,7 +170,15 @@ initializeCustomReport();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			for(var i in result){
+			if(result[i].name === 'y'){
+			  var submitted = result[i].count;	
+			} 
+			 if(result[i].name === 'n'){
+				var notSubmitted = result[i].count;
+			}
+			var totalExpertedReports= submitted+notSubmitted;
+			}
 		});
 	}
 </script>
