@@ -1029,14 +1029,14 @@ public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long mun
 }
 public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> villageIdsList,List<Long> wardIdsList){
 	StringBuilder sb = new StringBuilder();
-	sb.append("select model.activityLocationInfo.activityLocationInfoId,count(model.activityDocument.activityDocumentId)," +
-			" model.activityConductedInfo.activityConductedInfoId " +
+	sb.append("select locationInfo.activityLocationInfoId,count(distinct model.activityDocument.activityDocumentId)," +
+			" conductedInfo.activityConductedInfoId " +
 			" from ActivityInfoDocument model " +
 			" left join model.activityLocationInfo locationInfo " +
 			" left join model.activityConductedInfo conductedInfo " +
-			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId " );
-			//" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
-			//" and model.activityDocument.activityScope.isDeleted = 'N' " );
+			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId "+
+			" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
+			" and model.activityDocument.activityScope.isDeleted = 'N' " );
 	
 	if(villageIdsList != null && villageIdsList.size() > 0) {
 		if(wardIdsList.isEmpty()){
@@ -1045,9 +1045,9 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 			sb.append(" and (model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
 		}
 			
-	}if(wardIdsList != null && wardIdsList.size() > 0){
+	}else if(wardIdsList != null && wardIdsList.size() > 0){
 		if(wardIdsList != null && wardIdsList.size() > 0){
-			sb.append(" or model.userAddress.ward.constituencyId in (:wardIdsList)) ");
+			sb.append(" and  model.userAddress.ward.constituencyId in (:wardIdsList)) ");
 		}else{
 			sb.append(" and model.userAddress.ward.constituencyId in (:wardIdsList) ");
 		}
@@ -1056,7 +1056,7 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 	sb.append(" group by model.activityLocationInfo.activityLocationInfoId ");
 	if(villageIdsList != null && villageIdsList.size() > 0){
 		sb.append(", model.userAddress.panchayat.panchayatId ");
-	}if(wardIdsList != null && wardIdsList.size() > 0){
+	}else if(wardIdsList != null && wardIdsList.size() > 0){
 		sb.append(", model.userAddress.ward.constituencyId ");
 	}
 	
@@ -1064,21 +1064,21 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 		query.setParameter("activityScopeId", activityScopeId);
 	if(villageIdsList != null && villageIdsList.size() > 0) {
 		query.setParameterList("villageIdsList", villageIdsList);
-	}if(wardIdsList != null && wardIdsList.size() > 0){
+	}else if(wardIdsList != null && wardIdsList.size() > 0){
 		query.setParameterList("wardIdsList", wardIdsList);
 	} 
 	return query.list();
 }
 public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> districtIds,List<Long> constiIdsList){
 	StringBuilder sb = new StringBuilder();
-	sb.append("select model.activityLocationInfo.activityLocationInfoId,count(model.activityDocument.activityDocumentId)," +
-			" model.activityConductedInfo.activityConductedInfoId " +
+	sb.append("select locationInfo.activityLocationInfoId,count(distinct model.activityDocument.activityDocumentId)," +
+			" conductedInfo.activityConductedInfoId " +
 			" from ActivityInfoDocument model " +
 			" left join model.activityLocationInfo locationInfo " +
 			" left join model.activityConductedInfo conductedInfo " +
-			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId ");
-			//" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
-			//" and model.activityDocument.activityScope.isDeleted = 'N' " );
+			" where model.activityDocument.activityScope.activityScopeId = :activityScopeId "+
+			" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
+			" and model.activityDocument.activityScope.isDeleted = 'N' " );
 	if(districtIds != null && districtIds.size() > 0){
 		sb.append(" and model.userAddress.district.districtId in (:districtIds)"); 
 	}
