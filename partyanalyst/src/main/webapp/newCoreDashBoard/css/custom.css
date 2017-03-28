@@ -1158,7 +1158,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     height: 25px;
     width: 25px;
 }
-.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn , .toursDateRangePickerCls , .hideShowNewToursDateRangeCls{
+.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn , .toursDateRangePickerCls , .hideShowNewToursDateRangeCls, .dateRangePickerClsForAlert{
     margin-right: 5px;
     position: relative;
     top: -3px;
@@ -2767,3 +2767,5 @@ color: rgb(51, 122, 183);
 {
 	border-right:0px;
 }
+.text_align_center thead  th{text-align:center};
+.text_align_center tbody tr td{text-align:center};

@@ -155,13 +155,13 @@
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-8 col-sm-7 col-xs-7" style="padding-right:0px">
+						<div class="col-md-7 col-sm-7 col-xs-12" style="padding-right:0px">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
 								Alerts <small class="text-muted"> - <span id="alertDateHeadingId">  </span></small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-5 col-xs-5" style="padding-left:0px">
+						<div class="col-md-5 col-sm-5 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
 							<span class="alertSettingBlock pull-right">
 							 <i title="" data-placement="top" data-toggle="tooltip" class="fa fa-gears" data-original-title="Settings"></i>
 							</span>
@@ -171,8 +171,8 @@
 							<span class="alertsIconRefresh pull-right">
 								<i class="glyphicon glyphicon-refresh"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:210px; margin-right: 12px; margin-top: -7px;">
-								<input type="text" id="dateRangeIdForAlert" style="width:190px" class="form-control" />
+							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px;">
+								<input type="text" id="dateRangeIdForAlert" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -484,7 +484,7 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
-											<div class="col-xs-12 col-sm-7 col-md-12">
+											<div class="col-xs-12 col-sm-12 col-md-12">
 											 <div id="childUserTypeDetailsDivForAlerts"></div>
 											</div>
 										</div>
@@ -498,10 +498,8 @@
 												<div class="bg_ED pad_15 m_top20"> 
 												 <div id="userTypeWiseChildDtlsTabForAlertId"></div>
 													<div class="row impactLevelWiseComparisonBlockCls">
-														<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-														  <h4 class="text-capital impactLevelHeadingCls" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert<span style="margin-left:12px" id="selectedMemberHeadingId"></span></h4>
-															  <div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
-														</div>
+													<div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
+														
 													</div>
 												</div>
 											</div>
