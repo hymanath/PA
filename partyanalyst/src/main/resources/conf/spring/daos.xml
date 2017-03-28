@@ -3752,6 +3752,12 @@
 	<bean id="govtDepartmentLevelDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentLevelDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="govtDepartmentDesignationMappingDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationMappingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	
     <!-- Command Control Alerts End -->
     <bean id="committeeIvrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeIvrSurveyDAO">
       <property name="sessionFactory" ref="sessionFactory" />
