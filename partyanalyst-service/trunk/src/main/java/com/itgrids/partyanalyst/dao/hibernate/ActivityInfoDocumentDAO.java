@@ -1042,12 +1042,12 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 		if(wardIdsList.isEmpty()){
 			sb.append(" and model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
 		}else{
-			sb.append(" and (model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
+			sb.append(" and model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
 		}
 			
-	}else if(wardIdsList != null && wardIdsList.size() > 0){
+	} if(wardIdsList != null && wardIdsList.size() > 0){
 		if(wardIdsList != null && wardIdsList.size() > 0){
-			sb.append(" and  model.userAddress.ward.constituencyId in (:wardIdsList)) ");
+			sb.append(" and  model.userAddress.ward.constituencyId in (:wardIdsList) ");
 		}else{
 			sb.append(" and model.userAddress.ward.constituencyId in (:wardIdsList) ");
 		}
@@ -1064,7 +1064,7 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 		query.setParameter("activityScopeId", activityScopeId);
 	if(villageIdsList != null && villageIdsList.size() > 0) {
 		query.setParameterList("villageIdsList", villageIdsList);
-	}else if(wardIdsList != null && wardIdsList.size() > 0){
+	}if(wardIdsList != null && wardIdsList.size() > 0){
 		query.setParameterList("wardIdsList", wardIdsList);
 	} 
 	return query.list();
@@ -1082,7 +1082,7 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 	if(districtIds != null && districtIds.size() > 0){
 		sb.append(" and model.userAddress.district.districtId in (:districtIds)"); 
 	}
-	else if(constiIdsList != null && constiIdsList.size() > 0){
+	if(constiIdsList != null && constiIdsList.size() > 0){
 		sb.append(" and model.userAddress.constituency.constituencyId in (:constiIdsList)"); 
 	}
 	sb.append(" group by model.activityLocationInfo.activityLocationInfoId ");
@@ -1097,7 +1097,7 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 		query.setParameter("activityScopeId", activityScopeId);
 	if(districtIds != null && districtIds.size() > 0){
 		query.setParameterList("districtIds", districtIds);	
-	}else if(constiIdsList != null && constiIdsList.size() > 0){
+	} if(constiIdsList != null && constiIdsList.size() > 0){
 		query.setParameterList("constiIdsList", constiIdsList);	
 	}
 	return query.list();
