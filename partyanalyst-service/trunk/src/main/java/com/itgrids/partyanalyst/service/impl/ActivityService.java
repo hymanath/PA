@@ -73,7 +73,6 @@ import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
@@ -103,6 +102,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
+import com.itgrids.partyanalyst.model.ActivityConductedInfo;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.model.ActivityInfoDocument;
 import com.itgrids.partyanalyst.model.ActivityLevel;
@@ -3058,7 +3058,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					if(activityLocationInfo != null){
 						//activityInfoDocument.setLocationScopeId(activityLocationInfo.getLocationLevel());
 						//activityInfoDocument.setLocationValueAddress(activityLocationInfo.getLocationValue());
-						userAddress = saveUserAddressByLevelIdAndLevelValue(activityLocationInfo.getLocationLevel(),activityLocationInfo.getLocationValue());
+						userAddress = activityLocationInfo.getAddress();//saveUserAddressByLevelIdAndLevelValue(activityLocationInfo.getLocationLevel(),activityLocationInfo.getLocationValue());
 					}
 				}
 			}
@@ -3069,7 +3069,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			
 		    activityInfoDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		    activityInfoDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		    activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
+		    //activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
 		    
 		    activityInfoDocument.setLocationScopeId(eventFileUploadVO.getLevelId());
 			
@@ -3116,12 +3116,23 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    if(eventFileUploadVO.getTableName() != null){
 		    	if(eventFileUploadVO.getTableName().equalsIgnoreCase("LocationInfo")){
 		    		 activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    		 ActivityLocationInfo activityLocationInfo = activityLocationInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
+		    		 if(activityLocationInfo != null)
+		    			 userAddress = activityLocationInfo.getAddress();
 		    	}else if(eventFileUploadVO.getTableName().equalsIgnoreCase("ConductedInfo")){
 		    		 activityInfoDocument.setActivityConductedInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    		 ActivityConductedInfo activityConductedInfo = activityConductedInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
+		    		 if(activityConductedInfo != null)
+		    			 userAddress = activityConductedInfo.getAddress();
 		    	}else{
 		    		 activityInfoDocument.setActivityConductedInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    		 ActivityConductedInfo activityConductedInfo = activityConductedInfoDAO.get(eventFileUploadVO.getActivityLocationInfoId());
+		    		 if(activityConductedInfo != null)
+		    			 userAddress = activityConductedInfo.getAddress();
 		    	}
 		    }
+		    
+		    activityInfoDocument.setActivityAddressId(userAddress.getUserAddressId());
 		  /* List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
 			if(ids != null && ids.size()>0){
 				try {
