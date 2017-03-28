@@ -4118,6 +4118,8 @@
 		<property name="customReportDAO" ref="customReportDAO" ></property>
 		<property name="customReportFileDAO" ref="customReportFileDAO" ></property>
 		<property name="customReportObserverDAO" ref="customReportObserverDAO" ></property>
+		<property name="customReportLocationDAO" ref="customReportLocationDAO" ></property>
+		<property name="customReportImageDAO" ref="customReportImageDAO" ></property>
 	</bean>
 	
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
